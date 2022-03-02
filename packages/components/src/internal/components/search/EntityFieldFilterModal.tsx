@@ -29,7 +29,7 @@ interface Props {
     api?: ComponentsAPIWrapper;
     entityDataType: EntityDataType;
     onCancel: () => void;
-    onFind: (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }) => void;
+    onFind: (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }, queryLabels: { [key: string]: string }) => void;
     queryName?: string;
     fieldKey?: string;
     cards?: FilterProps[];
@@ -199,7 +199,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         });
         const filterErrors = getFieldFiltersValidationResult(validDataTypeFilters, queryLabels);
         if (!filterErrors) {
-            onFind(entityDataType.instanceSchemaName, validDataTypeFilters);
+            onFind(entityDataType.instanceSchemaName, validDataTypeFilters, queryLabels);
         } else {
             setFilterError(filterErrors);
             api.query.incrementClientSideMetricCount(metricFeatureArea, 'filterModalError');

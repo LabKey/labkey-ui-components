@@ -112,7 +112,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     </div>
                 )}
                 <Row>
-                    <Col xs={6}>
+                    <Col xs={taggedValues?.length > 0 ? 6 : 12}>
                         <ul className="nav nav-stacked labkey-wizard-pills">
                             {filteredFieldDistinctValues?.map((value, index) => {
                                 let displayValue = value;
@@ -126,13 +126,13 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                     >
                                         <div className="form-check">
                                             <input
-                                                className="form-check-input"
+                                                className="form-check-input search-filter-values__checkbox"
                                                 type="checkbox"
                                                 name={'field-value-' + index}
                                                 onChange={event => onChange(value, event.target.checked)}
                                                 checked={checkedValues.indexOf(value) > -1}
                                             />
-                                            <span className="search-filter-values__value">{displayValue}</span>
+                                            <div className="search-filter-values__value">{displayValue}</div>
                                         </div>
                                     </li>
                                 );

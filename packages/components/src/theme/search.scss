@@ -186,14 +186,21 @@
 
 .OmniBox--multi {
     .OmniBox-value.search-filter-tags__value {
-        max-width: 90%;
+        max-width: 95%;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
         margin: 3px 0;
+        padding: 0 6px 0 20px;
+        word-break: break-all;
 
         &:hover {
             white-space: normal;
+        }
+
+        i.symbol {
+            margin-left: -15px;
+            padding-right: 4px;
         }
     }
 }
@@ -209,9 +216,16 @@
         overflow-y: scroll;
 }
 
+.search-filter-values__checkbox {
+    position: absolute;
+}
+
 .search-filter-values__value {
-    margin-left: 5px;
+    display: inline-block;
+    margin-left: 20px;
+    padding-right: 5px;
     word-break: break-all;
+
     &:hover {
         color: $gray-light;
         cursor: pointer;

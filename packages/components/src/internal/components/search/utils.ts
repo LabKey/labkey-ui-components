@@ -7,7 +7,7 @@ import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
 import { User } from '../base/models/User';
 
-import { getOmittedSampleTypeColumns } from '../samples/utils';
+import { getOmittedSampleTypeColumns, isSamplesSchema } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
 import { resolveFilterType } from '../omnibox/actions/Filter';
@@ -19,6 +19,7 @@ import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfF
 import { getLabKeySql } from '../../query/filter';
 
 import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
+import { QueryInfo } from '../../../public/QueryInfo';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -568,4 +569,18 @@ export function getUpdatedChooseValuesFilter(
     }
 
     return Filter.create(fieldKey, newCheckedValues, Filter.Types.IN);
+}
+
+export function isValidFilterField(field: QueryColumn, queryInfo: QueryInfo, entityDataType): boolean {
+    // cannot include fields that are not supported by the database
+    if (!queryInfo.supportGroupConcatSubSelect && entityDataType.exprColumnsWithSubSelect?.indexOf(field.fieldKey) === -1) {
+        return false;
+    }
+    // exclude the storage Units field for sample types since the display of this field is nonstandard and it is not
+    // a useful field for filtering parent values
+    if (isSamplesSchema(queryInfo.schemaQuery) && field.fieldKey === "Units") {
+        return false;
+    }
+    // also exclude lookups since MVFKs don't support following lookups
+    return !field.isLookup();
 }

@@ -23,7 +23,7 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';
-import { getFieldFiltersValidationResult } from './utils';
+import { getFieldFiltersValidationResult, isValidFilterField } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -109,6 +109,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             });
     }, [entityDataType]); // don't add cards or queryName to deps, only init DataTypeFilters once per entityDataType
 
+
     const onEntityClick = useCallback(
         (queryName: string, fieldKey?: string) => {
             setActiveQuery(queryName);
@@ -124,15 +125,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 .getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
                 .then(queryInfo => {
                     const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
-                    let supportedFields = fields;
-                    if (!queryInfo.supportGroupConcatSubSelect && entityDataType.exprColumnsWithSubSelect?.length > 0) {
-                        supportedFields = fromJS(
-                            fields.filter(
-                                field => entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) === -1
-                            )
-                        );
-                    }
-                    setQueryFields(supportedFields);
+                    setQueryFields(fromJS(fields.filter(field => isValidFilterField(field, queryInfo, entityDataType))));
                     if (fieldKey) {
                         const field = fields.find(field => field.getDisplayFieldKey() === fieldKey);
                         setActiveField(field);

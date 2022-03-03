@@ -20,6 +20,8 @@ import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfF
 
 import { formatDate } from '../../util/Date';
 
+import { SampleTypeDataType } from '../entities/constants';
+
 import {
     ALL_VALUE_DISPLAY,
     EMPTY_VALUE_DISPLAY,
@@ -41,7 +43,6 @@ import {
     searchFiltersToJson,
 } from './utils';
 import { FieldFilter } from './models';
-import { SampleTypeDataType } from '../entities/constants';
 
 test('getFinderStartText', () => {
     expect(getFinderStartText([])).toBe('Start by adding  properties.');
@@ -117,9 +118,12 @@ describe('getFinderViewColumnsConfig', () => {
 
     test('with new required columns', () => {
         const modelUpdate = model.mutate({ requiredColumns: ['Name', 'ExtraField', 'SampleState'] });
-        expect(getFinderViewColumnsConfig(modelUpdate, {ExtraField: 'Extra Field Display'})).toStrictEqual({
+        expect(getFinderViewColumnsConfig(modelUpdate, { ExtraField: 'Extra Field Display' })).toStrictEqual({
             hasUpdates: true,
-            columns: [{ fieldKey: 'Name', title: undefined }, { fieldKey: 'ExtraField', title: 'Extra Field Display' }],
+            columns: [
+                { fieldKey: 'Name', title: undefined },
+                { fieldKey: 'ExtraField', title: 'Extra Field Display' },
+            ],
         });
     });
 });
@@ -900,7 +904,8 @@ describe('getLabKeySqlWhere', () => {
             'WHERE "intField" = 1 AND "Boolean Field" = TRUE'
         );
 
-        const expectedWhere = "WHERE \"String Field\" IS NULL AND \"float Field\" >= 1.234 AND \"strField\" BETWEEN '1' AND '5' AND \"floatField2\" BETWEEN 1 AND 5 AND (\"String Field\" IN ('value1', 'value2', 'value3')) AND (\"FloatField\" NOT IN (1.1, 2.2, 3.3) OR \"FloatField\" IS NULL) AND \"Boolean Field\" = TRUE AND (\"Date Field\" < '2020-08-06' OR \"Date Field\" >= '2020-08-12')";
+        const expectedWhere =
+            'WHERE "String Field" IS NULL AND "float Field" >= 1.234 AND "strField" BETWEEN \'1\' AND \'5\' AND "floatField2" BETWEEN 1 AND 5 AND ("String Field" IN (\'value1\', \'value2\', \'value3\')) AND ("FloatField" NOT IN (1.1, 2.2, 3.3) OR "FloatField" IS NULL) AND "Boolean Field" = TRUE AND ("Date Field" < \'2020-08-06\' OR "Date Field" >= \'2020-08-12\')';
         expect(
             getLabKeySqlWhere([
                 isBlankFilter,
@@ -961,54 +966,69 @@ describe('getExpDescendantOfSelectClause', () => {
     });
 });
 
-describe("getSampleFinderColumnNames", () => {
+describe('getSampleFinderColumnNames', () => {
+    test('no cards', () => {
+        expect(getSampleFinderColumnNames(undefined)).toStrictEqual({});
+    });
 
-   test("no cards", () => {
-       expect(getSampleFinderColumnNames(undefined)).toStrictEqual({});
-   });
+    test('empty cards', () => {
+        expect(getSampleFinderColumnNames([])).toStrictEqual({});
+    });
 
-   test("empty cards", () => {
-      expect(getSampleFinderColumnNames([])).toStrictEqual({});
-   });
+    test('cards without dataTypeDisplayName', () => {
+        expect(
+            getSampleFinderColumnNames([
+                {
+                    entityDataType: SampleTypeDataType,
+                    schemaQuery: SchemaQuery.create('test', 'query'),
+                    filterArray: [
+                        {
+                            fieldKey: 'IntValue',
+                            fieldCaption: 'Integer',
+                            filter: Filter.create('IntValue', 3, Filter.Types.GT),
+                            jsonType: 'int',
+                        },
+                    ],
+                },
+            ])
+        ).toStrictEqual({});
+    });
 
-   test("cards without dataTypeDisplayName", () => {
-       expect(getSampleFinderColumnNames([{
-           entityDataType: SampleTypeDataType,
-           schemaQuery: SchemaQuery.create("test", "query"),
-           filterArray: [{
-               fieldKey: "IntValue",
-               fieldCaption: "Integer",
-               filter: Filter.create("IntValue", 3, Filter.Types.GT),
-               jsonType: 'int'
-           }],
-       }])).toStrictEqual({});
-   });
+    test('cards without filters', () => {
+        expect(
+            getSampleFinderColumnNames([
+                {
+                    entityDataType: SampleTypeDataType,
+                    schemaQuery: SchemaQuery.create('test', 'query'),
+                    dataTypeDisplayName: 'Test Samples',
+                    filterArray: [],
+                },
+            ])
+        ).toStrictEqual({
+            'QueryableInputs/Materials/query': 'Test Samples ID',
+        });
+    });
 
-   test("cards without filters", () => {
-       expect(getSampleFinderColumnNames([{
-           entityDataType: SampleTypeDataType,
-           schemaQuery: SchemaQuery.create("test", "query"),
-           dataTypeDisplayName: "Test Samples",
-           filterArray: [],
-       }])).toStrictEqual({
-           'QueryableInputs/Materials/query': 'Test Samples ID',
-       });
-   });
-
-   test("cards with filters", () => {
-       expect(getSampleFinderColumnNames([{
-           entityDataType: SampleTypeDataType,
-           schemaQuery: SchemaQuery.create("test", "query"),
-           dataTypeDisplayName: "Test Samples",
-           filterArray: [{
-               fieldKey: "IntValue",
-               fieldCaption: "Integer",
-               filter: Filter.create("IntValue", 3, Filter.Types.GT),
-               jsonType: 'int'
-           }],
-       }])).toStrictEqual({
-           'QueryableInputs/Materials/query': 'Test Samples ID',
-           'QueryableInputs/Materials/query/IntValue': 'Test Samples Integer'
-       });
-   });
+    test('cards with filters', () => {
+        expect(
+            getSampleFinderColumnNames([
+                {
+                    entityDataType: SampleTypeDataType,
+                    schemaQuery: SchemaQuery.create('test', 'query'),
+                    dataTypeDisplayName: 'Test Samples',
+                    filterArray: [
+                        {
+                            fieldKey: 'IntValue',
+                            fieldCaption: 'Integer',
+                            filter: Filter.create('IntValue', 3, Filter.Types.GT),
+                            jsonType: 'int',
+                        },
+                    ],
+                },
+            ])
+        ).toStrictEqual({
+            'QueryableInputs/Materials/query': 'Test Samples ID',
+            'QueryableInputs/Materials/query/IntValue': 'Test Samples Integer',
+        });
+    });
 });

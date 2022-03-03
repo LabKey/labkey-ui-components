@@ -15,7 +15,17 @@ interface FilterEditProps extends FilterProps {
 
 // exported for jest testing
 export const FilterCard: FC<FilterEditProps> = memo(props => {
-    const { entityDataType, filterArray, index, onAdd, onDelete, onEdit, schemaQuery, onFilterValueExpand, dataTypeDisplayName } = props;
+    const {
+        entityDataType,
+        filterArray,
+        index,
+        onAdd,
+        onDelete,
+        onEdit,
+        schemaQuery,
+        onFilterValueExpand,
+        dataTypeDisplayName,
+    } = props;
 
     const _onAdd = useCallback(() => {
         onAdd(entityDataType);
@@ -32,7 +42,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
     if (!schemaQuery) {
         return (
             <>
-                <div className="filter-cards__card" onClick={_onAdd}>
+                <div className="filter-cards__card filter-cards__popout" onClick={_onAdd}>
                     <div className={'filter-card__header without-secondary ' + entityDataType.filterCardHeaderClass}>
                         <div className="primary-text">
                             {capitalizeFirstChar(entityDataType.nounAsParentSingular)} Properties

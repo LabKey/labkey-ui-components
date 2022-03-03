@@ -52,7 +52,14 @@
 }
 
 .parent-search-panel__container {
-    min-width: 500px;
+    .list-group-item {
+        padding: 8px 10px;
+        border-radius: 0;
+    }
+
+    .list-group-item.active {
+        font-weight: bold;
+    }
 
     .field_count_circle {
         border-radius: 50%;
@@ -90,15 +97,24 @@
         padding-left: 8px;
     }
 
-    .parent-search-panel__col.col-xs-6 {
+    .parent-search-panel__col.col-sm-6, .parent-search-panel__col.col-xs-6, .parent-search-panel__col.col-xs-12 {
         padding-right: 8px;
     }
 
     .parent-search-panel__col-content {
         height: 470px;
+        @media (max-width: $screen-sm-min) {
+            height: 150px;
+        }
+
         overflow: scroll;
         border: 1px solid $light-gray;
         margin-bottom: 20px;
+
+        .loading-spinner {
+            display: inline-block;
+            padding: 10px 15px;
+        }
 
         .list-group-item {
             border: none;
@@ -119,6 +135,12 @@
                 overflow: hidden;
             }
             height: 380px;
+        }
+    }
+
+    .parent-search-panel__col_filter_exp .parent-search-panel__col-content {
+        @media (max-width: $screen-sm-min) {
+            height: 250px;
         }
     }
 
@@ -181,14 +203,22 @@
 
 .OmniBox--multi {
     .OmniBox-value.search-filter-tags__value {
-        max-width: 90%;
+        max-width: 100%;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
         margin: 3px 0;
+        padding: 0 6px 0 20px;
+        word-break: break-all;
+        color: $gray;
 
         &:hover {
             white-space: normal;
+        }
+
+        i.symbol {
+            margin-left: -15px;
+            padding-right: 4px;
         }
     }
 }
@@ -204,9 +234,17 @@
         overflow-y: scroll;
 }
 
+.search-filter-values__checkbox {
+    position: absolute;
+}
+
 .search-filter-values__value {
-    margin-left: 5px;
+    display: inline-block;
+    margin-left: 20px;
+    padding-right: 5px;
     word-break: break-all;
+    color: $gray;
+
     &:hover {
         color: $gray-light;
         cursor: pointer;

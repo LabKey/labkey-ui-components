@@ -20,8 +20,7 @@ export interface ChartConfig {
     charts: ChartSelector[];
     colorPath?: string[];
     groupPath?: string[];
-    createText?: string;
-    createURL?: () => AppURL;
+    showSampleButtons?: boolean;
     emptyStateMsg?: ReactNode;
     filterDataRegionName?: string;
     getAppURL?: (data: ChartData, evt?: any) => AppURL;

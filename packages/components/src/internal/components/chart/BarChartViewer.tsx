@@ -260,25 +260,21 @@ export class BarChartViewer extends PureComponent<Props, State> {
 
 const SampleButtons: FC = () => {
     return (
-        <RequiresPermission perms={PermissionTypes.Insert}>
-            <div className="pull-right bar-chart-viewer-sample-buttons">
-                {isSampleFinderEnabled() && (
-                    <Button
-                        bsStyle="primary"
-                        className="button-right-spacing"
-                        href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}
-                    >
-                        Go to Sample Finder
-                    </Button>
-                )}
+        <div className="pull-right bar-chart-viewer-sample-buttons">
+            {isSampleFinderEnabled() && (
                 <Button
-                    bsStyle="success"
+                    bsStyle="primary"
                     className="button-right-spacing"
-                    href={App.NEW_SAMPLES_HREF.toHref()}
+                    href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}
                 >
+                    Go to Sample Finder
+                </Button>
+            )}
+            <RequiresPermission perms={PermissionTypes.Insert}>
+                <Button bsStyle="success" className="button-right-spacing" href={App.NEW_SAMPLES_HREF.toHref()}>
                     Create Samples
                 </Button>
-            </div>
-        </RequiresPermission>
+            </RequiresPermission>
+        </div>
     );
 };

@@ -72,7 +72,7 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
                                         overlay={
                                             <Popover bsClass="popover" id={'filter-value-list-popover-' + index}>
                                                 <div>
-                                                    {[...values].splice(5).map((val, i) => (
+                                                    {[...values].splice(5).map(val => (
                                                         <div key={val}>{val}</div>
                                                     ))}
                                                 </div>

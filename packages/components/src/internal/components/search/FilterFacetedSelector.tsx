@@ -142,25 +142,27 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                             )}
                         </ul>
                     </Col>
-                    <Col xs={6}>
-                        {taggedValues?.length > 0 && <div className="search-filter-tags__title">Selected</div>}
-                        <ul className="nav nav-stacked labkey-wizard-pills search-filter-tags__div">
-                            {taggedValues?.map((value, index) => {
-                                let displayValue = value;
+                    {taggedValues?.length > 0 && (
+                        <Col xs={6}>
+                            <div className="search-filter-tags__title">Selected</div>
+                            <ul className="nav nav-stacked labkey-wizard-pills search-filter-tags__div">
+                                {taggedValues?.map((value, index) => {
+                                    let displayValue = value;
 
-                                if (value === null || value === undefined) displayValue = '[blank]';
+                                    if (value === null || value === undefined) displayValue = '[blank]';
 
-                                return (
-                                    <li key={index} className="OmniBox--multi">
-                                        <div className="OmniBox-value search-filter-tags__value">
-                                            <i className="symbol fa fa-close" onClick={() => onChange(value, false)} />
-                                            <span>{displayValue}</span>
-                                        </div>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </Col>
+                                    return (
+                                        <li key={index} className="OmniBox--multi">
+                                            <div className="OmniBox-value search-filter-tags__value">
+                                                <i className="symbol fa fa-close" onClick={() => onChange(value, false)} />
+                                                <span>{displayValue}</span>
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </Col>
+                    )}
                 </Row>
             </div>
         </>

@@ -15,11 +15,11 @@
  */
 import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord, Set } from 'immutable';
 import { normalize, schema } from 'normalizr';
-import { Filter, getServerContext, Query, QueryDOM } from '@labkey/api';
+import { Filter, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson } from '../../public/SchemaQuery';
-import { isSubfolderDataEnabled } from '../app/utils';
+import { isProjectContainer, isSubfolderDataEnabled } from '../app/utils';
 import {
     caseInsensitive,
     QueryColumn,
@@ -925,8 +925,7 @@ export function getContainerFilter(containerPath?: string): Query.ContainerFilte
         return undefined;
     }
 
-    const path = containerPath ?? getServerContext().container.path;
-    const isProject = path.split('/').filter(p => !!p).length === 1;
+    const isProject = isProjectContainer(containerPath);
 
     // When requesting data from a top-level folder context the ContainerFilter filters
     // "down" the folder hierarchy for data.

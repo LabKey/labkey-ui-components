@@ -2,12 +2,6 @@
     height: 418px;
 }
 
-.bar-chart-viewer-sample-buttons .button-right-spacing {
-    @media (max-width: $screen-md-max) {
-        margin: 5px 0 0 10px;
-    }
-}
-
 .base-bar-chart a.bar-individual {
     cursor: pointer;
 }

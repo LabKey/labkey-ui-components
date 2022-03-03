@@ -238,7 +238,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                     </div>
                 )}
                 {!hasError && selectedCharts?.length > 1 && (
-                    <div className="btn-group pull-right">
+                    <div className="btn-group button-left-spacing pull-right">
                         <Tip caption="Previous">
                             <Button disabled={currentChart === 0} onClick={this.prevChart}>
                                 <i className="fa fa-chevron-left" />
@@ -264,14 +264,13 @@ const SampleButtons: FC = () => {
             {isSampleFinderEnabled() && (
                 <Button
                     bsStyle="primary"
-                    className="button-right-spacing"
                     href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}
                 >
                     Go to Sample Finder
                 </Button>
             )}
             <RequiresPermission perms={PermissionTypes.Insert}>
-                <Button bsStyle="success" className="button-right-spacing" href={App.NEW_SAMPLES_HREF.toHref()}>
+                <Button bsStyle="success" className="button-left-spacing" href={App.NEW_SAMPLES_HREF.toHref()}>
                     Create Samples
                 </Button>
             </RequiresPermission>

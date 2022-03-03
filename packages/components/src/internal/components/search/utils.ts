@@ -128,8 +128,9 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
                 const filter = f.filter;
                 const columnName = filter.getColumnName();
 
-                // lookup fields not supported for lineage MVFK column
-                if (columnName.indexOf('/') === -1) {
+                // lookup fields not supported for lineage MVFK column and the 'Name' field is redundant
+                // since we always add a column for the parent type ID
+                if (columnName.indexOf('/') === -1 && columnName != 'Name') {
                     const newColumnName = cardColumnName + '/' + columnName;
                     requiredColumns.push(newColumnName);
                 }
@@ -464,7 +465,7 @@ export function getUpdateFilterExpressionFilter(
 export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string[]): string[] {
     if (!filter || !allValues)
         // if no existing filter, check all values by default
-        return allValues;
+        return [];
 
     if (filter.getFilterType().isDataValueRequired() && filter.getValue() == null) return allValues;
 

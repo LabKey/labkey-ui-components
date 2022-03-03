@@ -7,6 +7,16 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Don't clear filter values when switching between filter types
   * Exclude lookup columns and the storage "Units" column for Sample types
 
+### version 2.138.4
+*Released*: 3 March 2022
+* Item 9817: Sample Finder v1 polish fixes/updates
+  * Add padding to loading spinner
+  * Choose Values panel fix for long text options and empty state
+  * Filter modal styling fixes for list group: remove rounded corner, reduce padding, bold when active
+  * Update cursor behavior and hover behavior on filter cards and edit/remove icons
+  * Filter modal updates to better support display on narrow screen
+  * Add "Go to Sample Finder" button to the dashboard insights panel
+
 ### version 2.138.3
 *Released*: 2 March 2022
 * Sample Finder Polishing

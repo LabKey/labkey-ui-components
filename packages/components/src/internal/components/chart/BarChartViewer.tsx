@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { FC, PureComponent } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
 import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import {
     Alert,
+    App,
     AppURL,
     AssayDesignEmptyAlert,
     getActionErrorMessage,
@@ -20,7 +21,7 @@ import {
     User,
 } from '../../..';
 
-import { getDateFormat } from '../../app/utils';
+import { getDateFormat, isSampleFinderEnabled } from '../../app/utils';
 
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 
@@ -237,7 +238,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                     </div>
                 )}
                 {!hasError && selectedCharts?.length > 1 && (
-                    <div className="btn-group pull-right">
+                    <div className="btn-group button-left-spacing pull-right">
                         <Tip caption="Previous">
                             <Button disabled={currentChart === 0} onClick={this.prevChart}>
                                 <i className="fa fa-chevron-left" />
@@ -250,21 +251,27 @@ export class BarChartViewer extends PureComponent<Props, State> {
                         </Tip>
                     </div>
                 )}
-                {!hasError && hasSectionItems && !!selectedGroup.createURL && !!selectedGroup.createText && (
-                    <RequiresPermission perms={PermissionTypes.Insert}>
-                        <div className="pull-right">
-                            <Button
-                                bsStyle="primary"
-                                className="button-right-spacing"
-                                href={selectedGroup.createURL().toHref()}
-                            >
-                                {selectedGroup.createText}
-                            </Button>
-                        </div>
-                    </RequiresPermission>
-                )}
+                {!hasError && hasSectionItems && selectedGroup.showSampleButtons && <SampleButtons />}
                 <div className="margin-top">{body}</div>
             </Section>
         );
     }
 }
+
+// export for jest testing
+export const SampleButtons: FC = () => {
+    return (
+        <div className="pull-right bar-chart-viewer-sample-buttons">
+            {isSampleFinderEnabled() && (
+                <Button bsStyle="primary" href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
+                    Go to Sample Finder
+                </Button>
+            )}
+            <RequiresPermission perms={PermissionTypes.Insert}>
+                <Button bsStyle="success" className="button-left-spacing" href={App.NEW_SAMPLES_HREF.toHref()}>
+                    Create Samples
+                </Button>
+            </RequiresPermission>
+        </div>
+    );
+};

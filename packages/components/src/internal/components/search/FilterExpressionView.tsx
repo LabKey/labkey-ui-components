@@ -83,7 +83,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const onFieldFilterTypeChange = useCallback(
         (fieldname: any, filterUrlSuffix: any) => {
             const newActiveFilterType = fieldFilterOptions?.find(option => option.value === filterUrlSuffix);
-            const shouldClear = !newActiveFilterType.valueRequired || (activeFilterType?.multiValue && !newActiveFilterType.multiValue);
+            const shouldClear = !newActiveFilterType?.valueRequired || (activeFilterType?.multiValue && !newActiveFilterType.multiValue);
             setActiveFilterType(newActiveFilterType);
             if (shouldClear) {
                 setFirstFilterValue(undefined);

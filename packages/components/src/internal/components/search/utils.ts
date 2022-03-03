@@ -38,7 +38,10 @@ export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQu
 
 const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
 
-export function getFinderViewColumnsConfig(queryModel: QueryModel, columnDisplayNames: {[key: string]: string}): { hasUpdates: boolean; columns: any } {
+export function getFinderViewColumnsConfig(
+    queryModel: QueryModel,
+    columnDisplayNames: { [key: string]: string }
+): { hasUpdates: boolean; columns: any } {
     const defaultDisplayColumns = queryModel.queryInfo?.getDisplayColumns().toArray();
     const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey);
     const columnKeys = [];
@@ -185,14 +188,15 @@ export function getSampleFinderQueryConfigs(
     return configs;
 }
 
-export function getSampleFinderColumnNames(cards: FilterProps[]): {[key: string]: string } {
+export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string]: string } {
     const columnNames = {};
     cards?.forEach(card => {
         const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
         if (card.dataTypeDisplayName) {
-            columnNames[cardColumnName] = card.dataTypeDisplayName + " ID";
+            columnNames[cardColumnName] = card.dataTypeDisplayName + ' ID';
             card.filterArray?.forEach(filter => {
-                columnNames[cardColumnName + "/" + filter.fieldKey] = card.dataTypeDisplayName + " " + filter.fieldCaption
+                columnNames[cardColumnName + '/' + filter.fieldKey] =
+                    card.dataTypeDisplayName + ' ' + filter.fieldCaption;
             });
         }
     });

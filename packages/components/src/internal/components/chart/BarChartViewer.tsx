@@ -1,4 +1,4 @@
-import React, {FC, PureComponent} from 'react';
+import React, { FC, PureComponent } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
 import { Filter, PermissionTypes, Query } from '@labkey/api';
@@ -263,10 +263,7 @@ export const SampleButtons: FC = () => {
     return (
         <div className="pull-right bar-chart-viewer-sample-buttons">
             {isSampleFinderEnabled() && (
-                <Button
-                    bsStyle="primary"
-                    href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}
-                >
+                <Button bsStyle="primary" href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
                     Go to Sample Finder
                 </Button>
             )}

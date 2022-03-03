@@ -29,7 +29,11 @@ interface Props {
     api?: ComponentsAPIWrapper;
     entityDataType: EntityDataType;
     onCancel: () => void;
-    onFind: (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] }, queryLabels: { [key: string]: string }) => void;
+    onFind: (
+        schemaName: string,
+        dataTypeFilters: { [key: string]: FieldFilter[] },
+        queryLabels: { [key: string]: string }
+    ) => void;
     queryName?: string;
     fieldKey?: string;
     cards?: FilterProps[];

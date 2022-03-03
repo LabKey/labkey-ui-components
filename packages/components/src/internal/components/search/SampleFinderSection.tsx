@@ -49,7 +49,7 @@ const SAMPLE_FINDER_TITLE = 'Sample Finder';
 const SAMPLE_FINDER_CAPTION = 'Find all generations of samples that meet all the criteria defined below';
 
 interface SampleFinderSamplesGridProps {
-    columnDisplayNames?: {[key: string]: string}
+    columnDisplayNames?: { [key: string]: string };
     user: User;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
@@ -166,7 +166,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     };
 
     const onFind = useCallback(
-        (schemaName: string, dataTypeFilters: { [key: string]: FieldFilter[] },  queryLabels: { [key: string]: string }) => {
+        (
+            schemaName: string,
+            dataTypeFilters: { [key: string]: FieldFilter[] },
+            queryLabels: { [key: string]: string }
+        ) => {
             const newFilterCards = [...filters].filter(filter => {
                 return filter.entityDataType.instanceSchemaName !== chosenEntityType.instanceSchemaName;
             });

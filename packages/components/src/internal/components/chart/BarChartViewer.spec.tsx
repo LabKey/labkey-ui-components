@@ -1,9 +1,10 @@
 import React from 'react';
-import {Button} from "react-bootstrap";
+import { Button } from 'react-bootstrap';
+
+import { mountWithServerContext } from '../../testHelpers';
+import { TEST_USER_READER, TEST_USER_AUTHOR } from '../../../test/data/users';
 
 import { SampleButtons } from './BarChartViewer';
-import {mountWithServerContext} from "../../testHelpers";
-import {TEST_USER_READER, TEST_USER_AUTHOR} from "../../../test/data/users";
 
 describe('SampleButtons', () => {
     test('with insert and sample finder enabled', () => {

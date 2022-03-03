@@ -154,7 +154,10 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                     return (
                                         <li key={index} className="OmniBox--multi">
                                             <div className="OmniBox-value search-filter-tags__value">
-                                                <i className="symbol fa fa-close" onClick={() => onChange(value, false)} />
+                                                <i
+                                                    className="symbol fa fa-close"
+                                                    onClick={() => onChange(value, false)}
+                                                />
                                                 <span>{displayValue}</span>
                                             </div>
                                         </li>

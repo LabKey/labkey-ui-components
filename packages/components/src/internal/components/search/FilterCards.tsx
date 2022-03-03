@@ -15,7 +15,17 @@ interface FilterEditProps extends FilterProps {
 
 // exported for jest testing
 export const FilterCard: FC<FilterEditProps> = memo(props => {
-    const { entityDataType, filterArray, index, onAdd, onDelete, onEdit, schemaQuery, onFilterValueExpand, dataTypeDisplayName } = props;
+    const {
+        entityDataType,
+        filterArray,
+        index,
+        onAdd,
+        onDelete,
+        onEdit,
+        schemaQuery,
+        onFilterValueExpand,
+        dataTypeDisplayName,
+    } = props;
 
     const _onAdd = useCallback(() => {
         onAdd(entityDataType);

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Sample Finder Polish
+  * Don't clear filter values when switching between filter types
+
 ### version 2.138.3
 *Released*: 2 March 2022
 * Sample Finder Polishing

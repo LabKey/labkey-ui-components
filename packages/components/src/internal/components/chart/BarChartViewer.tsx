@@ -258,7 +258,8 @@ export class BarChartViewer extends PureComponent<Props, State> {
     }
 }
 
-const SampleButtons: FC = () => {
+// export for jest testing
+export const SampleButtons: FC = () => {
     return (
         <div className="pull-right bar-chart-viewer-sample-buttons">
             {isSampleFinderEnabled() && (

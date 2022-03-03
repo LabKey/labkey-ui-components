@@ -18,7 +18,7 @@ import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
 
 import { fromJS, List } from 'immutable';
 
-import { DomainDesign, DomainField, SelectInputOption, selectRows } from '../../../..';
+import { DomainDesign, DomainField, SelectInputOption, selectRowsDeprecated } from '../../../..';
 
 import { DatasetModel } from './models';
 import {
@@ -35,7 +35,7 @@ import {
 
 export function fetchCategories(): Promise<List<SelectInputOption>> {
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             saveInSession: true,
             schemaName: 'study',
             sql: 'SELECT DISTINCT CategoryId.Label, CategoryId.RowId FROM DataSets',
@@ -93,7 +93,7 @@ export function getAdditionalKeyFields(domain: DomainDesign): List<SelectInputOp
 
 export function fetchCohorts(): Promise<List<SelectInputOption>> {
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             schemaName: 'study',
             queryName: 'Cohort',
         })

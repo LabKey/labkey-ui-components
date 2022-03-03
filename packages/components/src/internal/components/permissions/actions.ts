@@ -6,7 +6,7 @@ import { List, Map, fromJS } from 'immutable';
 
 import { Filter, Security } from '@labkey/api';
 
-import { ISelectRowsResult, selectRows } from '../../..';
+import { ISelectRowsResult, selectRowsDeprecated } from '../../..';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 
@@ -41,7 +41,7 @@ function processPrincipalsResponse(data: ISelectRowsResult, resolve) {
 
 export function getPrincipals(): Promise<List<Principal>> {
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             saveInSession: true, // needed so that we can call getQueryDetails
             schemaName: 'core',
             // issue 17704, add displayName for users
@@ -59,7 +59,7 @@ export function getPrincipals(): Promise<List<Principal>> {
 
 export function getInactiveUsers(): Promise<List<Principal>> {
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             schemaName: 'core',
             queryName: 'Users',
             columns: 'UserId,Email,DisplayName',

@@ -13,7 +13,7 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SelectInput } from '../forms/input/SelectInput';
-import { selectRows, updateRows, insertRows, deleteRows } from '../../query/api';
+import { selectRowsDeprecated, updateRows, insertRows, deleteRows } from '../../query/api';
 import { caseInsensitive } from '../../util/utils';
 import { SCHEMAS } from '../../schemas';
 import { resolveErrorMessage } from '../../util/messaging';
@@ -48,7 +48,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>();
 
     useEffect(() => {
-        selectRows({
+        selectRowsDeprecated({
             schemaName: STATE_TYPE_SQ.schemaName,
             queryName: STATE_TYPE_SQ.queryName,
             columns: 'RowId,Value',

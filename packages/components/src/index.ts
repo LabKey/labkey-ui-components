@@ -192,7 +192,7 @@ import {
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
     searchRows,
-    selectRows,
+    selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
@@ -855,7 +855,7 @@ export {
     InsertFormats,
     InsertOptions,
     insertRows,
-    selectRows,
+    selectRowsDeprecated,
     searchRows,
     updateRows,
     deleteRows,

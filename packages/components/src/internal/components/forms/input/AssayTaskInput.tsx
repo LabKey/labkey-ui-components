@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Filter } from '@labkey/api';
 
-import { Alert, LoadingSpinner, SelectInput, selectRows } from '../../../..';
+import { Alert, LoadingSpinner, SelectInput, selectRowsDeprecated } from '../../../..';
 
 interface InputOption {
     label: string;
@@ -9,7 +9,7 @@ interface InputOption {
 }
 
 async function loadInputOptions(assayId: number): Promise<InputOption[]> {
-    const { key, models } = await selectRows({
+    const { key, models } = await selectRowsDeprecated({
         schemaName: 'samplemanagement',
         queryName: 'Tasks',
         columns: 'RowId,Name,AssayTypes,Run/Name',

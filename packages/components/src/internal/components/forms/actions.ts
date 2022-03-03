@@ -28,7 +28,7 @@ import {
     QuerySelectOwnProps,
     searchRows,
     SelectInputOption,
-    selectRows,
+    selectRowsDeprecated,
     updateRows,
 } from '../../..';
 
@@ -115,7 +115,7 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                             filter = Filter.create(valueColumn, props.value);
                         }
 
-                        selectRows({
+                        selectRowsDeprecated({
                             columns: getQueryColumnNames(model),
                             containerFilter,
                             containerPath,

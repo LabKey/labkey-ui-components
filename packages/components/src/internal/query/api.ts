@@ -352,9 +352,12 @@ export interface ISelectRowsResult {
     caller?: any;
 }
 
-// Fetches an API response and normalizes the result JSON according to schema.
-// This makes every API response have the same shape, regardless of how nested it was.
-export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
+/**
+ * @deprecated
+ * Fetches an API response and normalizes the result JSON according to schema.
+ * This makes every API response have the same shape, regardless of how nested it was.
+ */
+export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsResult> {
     return new Promise((resolve, reject) => {
         let schemaQuery, key;
         if (userConfig.queryName) {
@@ -579,7 +582,7 @@ export function searchRows(selectRowsConfig, token: any, exactColumn?: string): 
         }
 
         const selects = [
-            selectRows(
+            selectRowsDeprecated(
                 Object.assign({}, selectRowsConfig, {
                     filterArray: qFilters,
                 })
@@ -588,7 +591,7 @@ export function searchRows(selectRowsConfig, token: any, exactColumn?: string): 
 
         if (exactFilters) {
             selects.push(
-                selectRows(
+                selectRowsDeprecated(
                     Object.assign({}, selectRowsConfig, {
                         filterArray: exactFilters,
                     })

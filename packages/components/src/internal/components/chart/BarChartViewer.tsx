@@ -16,7 +16,7 @@ import {
     SampleTypeEmptyAlert,
     SchemaQuery,
     Section,
-    selectRows,
+    selectRowsDeprecated,
     Tip,
     User,
 } from '../../..';
@@ -93,7 +93,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 const itemCount = await fetchItemCount(itemCountSQ, itemCountFilters);
 
                 const { queryName, schemaName, sort } = this.getSelectedChartGroup();
-                const response = await selectRows({ schemaName, queryName, sort });
+                const response = await selectRowsDeprecated({ schemaName, queryName, sort });
 
                 this.setState(state => ({
                     itemCounts: { ...state.itemCounts, [currentGroup]: itemCount },

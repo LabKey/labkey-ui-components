@@ -9,7 +9,7 @@ import {
     naturalSortByProperty,
     QueryInfo,
     replaceSelected,
-    selectRows,
+    selectRowsDeprecated,
     setSelected,
 } from '../..';
 import { bindColumnRenderers } from '../../internal/renderers';
@@ -92,7 +92,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         return queryInfo.merge({ columns: bindColumnRenderers(queryInfo.columns) }) as QueryInfo;
     },
     async loadRows(model) {
-        const result = await selectRows({
+        const result = await selectRowsDeprecated({
             schemaName: model.schemaName,
             queryName: model.queryName,
             viewName: model.viewName,

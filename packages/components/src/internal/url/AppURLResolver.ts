@@ -16,7 +16,7 @@
 import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { AssayProtocolModel, caseInsensitive, fetchProtocol, getQueryDetails, SCHEMAS, selectRows } from '../..';
+import { AssayProtocolModel, caseInsensitive, fetchProtocol, getQueryDetails, SCHEMAS, selectRowsDeprecated } from '../..';
 
 import { SAMPLE_MANAGEMENT } from '../schemas';
 
@@ -100,7 +100,7 @@ export class AssayRunResolver implements AppRouteResolver {
             return Promise.resolve(spliceURL(parts, newParts, 0, assayRunIdIndex));
         } else {
             return new Promise(resolve => {
-                return selectRows({
+                return selectRowsDeprecated({
                     schemaName: SCHEMAS.EXP_TABLES.ASSAY_RUNS.schemaName,
                     queryName: SCHEMAS.EXP_TABLES.ASSAY_RUNS.queryName,
                     columns: 'RowId,Protocol/RowId',
@@ -181,7 +181,7 @@ export class ListResolver implements AppRouteResolver {
 
         // fetch it
         try {
-            const result = await selectRows({
+            const result = await selectRowsDeprecated({
                 schemaName: SCHEMAS.LIST_METADATA_TABLES.LIST_MANAGER.schemaName,
                 queryName: SCHEMAS.LIST_METADATA_TABLES.LIST_MANAGER.queryName,
                 columns: 'ListId,Name,Container/Path',
@@ -246,7 +246,7 @@ export class SamplesResolver implements AppRouteResolver {
         } else {
             // fetch it
             return new Promise(resolve => {
-                return selectRows({
+                return selectRowsDeprecated({
                     schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
                     queryName: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
                     columns: 'RowId,SampleSet',
@@ -341,7 +341,7 @@ export class ExperimentRunResolver implements AppRouteResolver {
             return AppURL.create('workflow', rowId);
         }
         try {
-            const result = await selectRows({
+            const result = await selectRowsDeprecated({
                 schemaName: SAMPLE_MANAGEMENT.JOBS.schemaName,
                 queryName: SAMPLE_MANAGEMENT.JOBS.queryName,
                 filterArray: [Filter.create('RowId', rowId)],

@@ -32,7 +32,7 @@ import {
     SchemaQuery,
 } from '..';
 
-import { getQueryDetails, selectRows } from './query/api';
+import { getQueryDetails, selectRowsDeprecated } from './query/api';
 import { isEqual } from './query/filter';
 import { buildQueryString, getLocation, Location } from './util/URL';
 import {
@@ -1095,7 +1095,7 @@ export function getSelectedData(
     filterArray.push(Filter.create(keyColumn, selections, Filter.Types.IN));
 
     return new Promise((resolve, reject) =>
-        selectRows({
+        selectRowsDeprecated({
             schemaName,
             queryName,
             filterArray,
@@ -1324,7 +1324,7 @@ const findLookupValues = async (
         selectRowsOptions.filterArray = [Filter.create(keyColumn, lookupKeyValues, Filter.Types.IN)];
     }
 
-    const result = await selectRows(selectRowsOptions);
+    const result = await selectRowsDeprecated(selectRowsOptions);
 
     const { key, models } = result;
 

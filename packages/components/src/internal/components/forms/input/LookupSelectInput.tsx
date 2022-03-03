@@ -19,7 +19,7 @@ import { Filter, Query } from '@labkey/api';
 
 import {
     ISelectRowsResult,
-    selectRows,
+    selectRowsDeprecated,
     LoadingSpinner,
     QueryColumn,
     QueryLookup,
@@ -135,7 +135,7 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
         this.setState(() => ({ isLoading: true }));
 
         const { schemaName, queryName } = queryColumn.lookup;
-        selectRows({ containerFilter, containerPath, schemaName, queryName, filterArray, sort })
+        selectRowsDeprecated({ containerFilter, containerPath, schemaName, queryName, filterArray, sort })
             .then(response => {
                 this.setState(() => ({
                     isLoading: false,

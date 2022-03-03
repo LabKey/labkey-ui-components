@@ -195,6 +195,7 @@ import {
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
+import { selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
     DataViewInfoTypes,
@@ -855,6 +856,7 @@ export {
     InsertFormats,
     InsertOptions,
     insertRows,
+    selectRows,
     selectRowsDeprecated,
     searchRows,
     updateRows,
@@ -1503,6 +1505,7 @@ export type { AppRouteResolver } from './internal/url/AppURLResolver';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
+export type { SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
 export type { Location } from './internal/util/URL';
 export type {
     RoutingTableState,

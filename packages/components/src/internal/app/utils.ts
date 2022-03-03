@@ -232,6 +232,11 @@ export function isProjectContainer(containerPath?: string) {
     return path.split('/').filter(p => !!p).length === 1;
 }
 
+export function getContainerProject(containerPath?: string) {
+    const path = containerPath ?? getServerContext().container.path;
+    return path.split('/').filter(p => !!p)[0] + "/";
+}
+
 // exported for testing
 export function getStorageSectionConfig(
     user: User,

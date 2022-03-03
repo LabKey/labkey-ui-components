@@ -583,6 +583,7 @@ import {
 
 import {
     CloseEventCode,
+    getContainerProject,
     getDateFormat as getAppDateFormat,
     getDateTimeFormat as getAppDateTimeFormat,
     getPrimaryAppProperties,
@@ -705,6 +706,7 @@ const App = {
     isSampleStatusEnabled,
     isSubfolderDataEnabled,
     getPrimaryAppProperties,
+    getContainerProject,
     hasPremiumModule,
     hasModule,
     getDateFormat: getAppDateFormat,

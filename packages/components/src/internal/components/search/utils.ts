@@ -380,9 +380,8 @@ export function getFieldFiltersValidationResult(
     dataTypeFilters: { [key: string]: FieldFilter[] },
     queryLabels?: { [key: string]: string }
 ): string {
-    let errorMsg = 'Invalid/incomplete filter values. Please correct input for fields. ',
-        hasError = false,
-        parentFields = {};
+    let parentFields = {},
+        hasError = false;
     Object.keys(dataTypeFilters).forEach(parent => {
         const filters = dataTypeFilters[parent];
         filters.forEach(fieldFilter => {
@@ -409,11 +408,12 @@ export function getFieldFiltersValidationResult(
     });
 
     if (hasError) {
+        const parentMsgs = [];
         Object.keys(parentFields).forEach(parent => {
             const parentLabel = queryLabels?.[parent] ?? parent;
-            errorMsg += parentLabel + ': ' + parentFields[parent].join(', ') + '. ';
+            parentMsgs.push(parentLabel + ': ' + parentFields[parent].join(', '));
         });
-        return errorMsg;
+        return 'Missing filter values for: ' + parentMsgs.join('; ')+ '.';
     }
 
     return null;

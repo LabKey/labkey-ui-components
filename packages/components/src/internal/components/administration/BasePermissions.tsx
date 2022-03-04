@@ -4,11 +4,10 @@
  */
 import React, { ReactNode } from 'react';
 import { MenuItem } from 'react-bootstrap';
-import { WithRouterProps } from 'react-router';
 import { Map } from 'immutable';
 
 import { PermissionsProviderProps, SecurityPolicy } from '../permissions/models';
-import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
+import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
 import { fetchContainerSecurityPolicy } from '../permissions/actions';
 import { dismissNotifications } from '../notifications/global';
 import { createNotification } from '../notifications/actions';
@@ -17,7 +16,7 @@ import { CreatedModified } from '../base/CreatedModified';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { AppURL } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
-import { ServerContextConsumer } from '../../../index';
+import { PermissionsPageContextProvider, ServerContextConsumer } from '../../../index';
 
 import { PermissionsPanel } from './PermissionsPanel';
 
@@ -40,7 +39,7 @@ interface State {
     error: string;
 }
 
-export class BasePermissions extends React.PureComponent<Props, State> {
+class BasePermissionsImpl extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -124,3 +123,5 @@ export class BasePermissions extends React.PureComponent<Props, State> {
         );
     }
 }
+
+export const BasePermissions = withRouteLeave<OwnProps>(PermissionsPageContextProvider(BasePermissionsImpl) as any);

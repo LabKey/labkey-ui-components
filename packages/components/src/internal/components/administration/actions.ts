@@ -1,11 +1,37 @@
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { Security } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import { ITab } from '../navigation/SubNav';
 import { AppURL } from '../../url/AppURL';
-import { SecurityPolicy } from '../permissions/models';
+import {SecurityPolicy, SecurityRole} from '../permissions/models';
+import {SECURITY_ROLE_DESCRIPTIONS} from "./constants";
+
+export function getUpdatedPolicyRoles(roles: List<SecurityRole>, updatedRoleInfo: Map<string, string>): List<SecurityRole> {
+    return roles.map((role) => {
+        return updatedRoleInfo.has(role.uniqueName) ? getUpdatedRole(role, updatedRoleInfo) : role;
+    }).toList();
+}
+
+export function getUpdatedPolicyRolesByUniqueName(roles: List<SecurityRole>, updatedRoleInfo: Map<string, string>): Map<string, SecurityRole> {
+    let rolesByUniqueName = Map<string, SecurityRole>();
+
+    // map to role display names for the SM app
+    roles.forEach((role) => {
+        const updatedRole = updatedRoleInfo.has(role.uniqueName) ? getUpdatedRole(role, updatedRoleInfo) : role;
+        rolesByUniqueName = rolesByUniqueName.set(role.uniqueName, updatedRole);
+    });
+
+    return rolesByUniqueName;
+}
+
+function getUpdatedRole(role: SecurityRole, updatedRoleInfo: Map<string, string>): SecurityRole {
+    return role.merge({
+        displayName: updatedRoleInfo.get(role.uniqueName) + 's',
+        description: SECURITY_ROLE_DESCRIPTIONS.get(role.uniqueName) || role.description
+    }) as SecurityRole;
+}
 
 export function getAdministrationSubNavTabs(user: User): List<ITab> {
     let tabs = List<string>();

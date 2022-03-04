@@ -293,8 +293,10 @@ import { SampleFinderSection } from './internal/components/search/SampleFinderSe
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { loadNameExpressionOptions } from './internal/components/settings/actions';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
-import { UserManagementPageImpl } from './internal/components/administration/UserManagementPageImpl';
+import { UserManagementPage } from './internal/components/administration/UserManagement';
+import { BasePermissions } from './internal/components/administration/BasePermissions';
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './internal/components/administration/utils';
+import { SECURITY_ROLE_DESCRIPTIONS, HOSTED_APPLICATION_SECURITY_ROLES } from './internal/components/administration/constants';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
@@ -1062,8 +1064,11 @@ export {
     loadNameExpressionOptions,
     // administration
     AdministrationSubNav,
-    UserManagementPageImpl,
+    UserManagementPage,
+    BasePermissions,
     isLoginAutoRedirectEnabled,
+    SECURITY_ROLE_DESCRIPTIONS,
+    HOSTED_APPLICATION_SECURITY_ROLES,
     showPremiumFeatures,
     // assay
     AssayUploadResultModel,

@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, {FC, PureComponent} from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
 import { getServerContext, PermissionRoles, Utils } from '@labkey/api';
@@ -23,6 +23,7 @@ import { UsersGridPanel } from '../user/UsersGridPanel';
 
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
+import {useServerContext} from "../base/ServerContext";
 
 export function getNewUserRoles(
     user: User,
@@ -49,11 +50,9 @@ export function getNewUserRoles(
             });
         }
     }
-    if (extraRoles) {
-        extraRoles.forEach(role => {
-            roles.push({ id: role[0], label: role[1] });
-        });
-    }
+    extraRoles?.forEach(role => {
+        roles.push({ id: role[0], label: role[1] });
+    });
     if (user.isAppAdmin()) {
         roles.push({
             id: PermissionRoles.ApplicationAdmin,
@@ -75,7 +74,7 @@ interface State {
 }
 
 // exported for jest testing
-export class UserManagementPageImpl extends PureComponent<Props, State> {
+class UserManagement extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -277,4 +276,20 @@ export class UserManagementPageImpl extends PureComponent<Props, State> {
             </BasePermissionsCheckPage>
         );
     }
+}
+
+interface UserManagementPageProps {
+    extraRoles?: string[][];
+}
+
+export const UserManagementPage: FC<UserManagementPageProps> = props => {
+    const {extraRoles} = props;
+    const { user } = useServerContext();
+
+    return(
+        <UserManagement
+            extraRoles={extraRoles}
+            user={user}
+        />
+    );
 }

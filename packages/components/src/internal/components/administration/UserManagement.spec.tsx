@@ -8,14 +8,14 @@ import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPag
 import { UsersGridPanel } from '../user/UsersGridPanel';
 import { SecurityPolicy } from '../permissions/models';
 import { Container } from '../base/models/Container';
-import { App, UserManagementPageImpl } from '../../../index';
 
-import { getNewUserRoles } from './UserManagementPageImpl';
+import {getNewUserRoles, UserManagement} from './UserManagement';
+import {App} from "../../../index";
 
 declare const LABKEY: import('@labkey/api').LabKey;
 
 const DEFAULT_PROPS = {
-    menu: undefined,
+    extraRoles: undefined,
     user: App.TEST_USER_APP_ADMIN,
 };
 
@@ -28,7 +28,7 @@ beforeEach(() => {
     LABKEY.moduleContext.api = {};
 });
 
-describe('UserManagementPageImpl', () => {
+describe('UserManagement', () => {
     function validate(wrapper: ReactWrapper, hasNewUserRoles = false, allowResetPassword = true): void {
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(1);
         expect(wrapper.find(UsersGridPanel)).toHaveLength(1);
@@ -39,20 +39,20 @@ describe('UserManagementPageImpl', () => {
     }
 
     test('default props', () => {
-        const wrapper = mount(<UserManagementPageImpl {...DEFAULT_PROPS} />);
+        const wrapper = mount(<UserManagement {...DEFAULT_PROPS} />);
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('non-inherit security policy', () => {
-        const wrapper = mount(<UserManagementPageImpl {...DEFAULT_PROPS} />);
+        const wrapper = mount(<UserManagement {...DEFAULT_PROPS} />);
         wrapper.setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '1' }) });
         validate(wrapper, true);
         wrapper.unmount();
     });
 
     test('inherit security policy', () => {
-        const wrapper = mount(<UserManagementPageImpl {...DEFAULT_PROPS} />);
+        const wrapper = mount(<UserManagement {...DEFAULT_PROPS} />);
         wrapper.setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '2' }) });
         validate(wrapper);
         wrapper.unmount();
@@ -60,7 +60,7 @@ describe('UserManagementPageImpl', () => {
 
     test('allowResetPassword false', () => {
         LABKEY.moduleContext.api = { AutoRedirectSSOAuthConfiguration: true };
-        const wrapper = mount(<UserManagementPageImpl {...DEFAULT_PROPS} />);
+        const wrapper = mount(<UserManagement {...DEFAULT_PROPS} />);
         validate(wrapper, false, false);
         wrapper.unmount();
     });

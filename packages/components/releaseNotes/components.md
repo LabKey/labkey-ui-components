@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.138.5
+*Released*: 4 March 2022
+* Sample Finder Polish
+  * Don't clear filter values when switching between filter types
+  * Exclude lookup columns and the storage "Units" column for Sample types
+  * Add client side metric for tracking clicks on dashboard "Go to Sample Finder" button
+  * Start on the Choose Values tab if available
+  * Remove "Has Any Value" (no-op) filter type
+  * Change `isSampleFinderEnabled` to look for Biologics experimental flag
+
 ### version 2.138.4
 *Released*: 3 March 2022
 * Item 9817: Sample Finder v1 polish fixes/updates

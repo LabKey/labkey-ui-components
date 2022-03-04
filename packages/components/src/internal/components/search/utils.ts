@@ -7,7 +7,7 @@ import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
 import { User } from '../base/models/User';
 
-import { getOmittedSampleTypeColumns } from '../samples/utils';
+import { getOmittedSampleTypeColumns, isSamplesSchema } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
 import { resolveFilterType } from '../omnibox/actions/Filter';
@@ -19,6 +19,7 @@ import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfF
 import { getLabKeySql } from '../../query/filter';
 
 import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
+import { QueryInfo } from '../../../public/QueryInfo';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -130,8 +131,8 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
                 const filter = f.filter;
                 const columnName = filter.getColumnName();
 
-                // lookup fields not supported for lineage MVFK column
-                if (columnName.indexOf('/') === -1) {
+                // The'Name' field is redundant since we always add a column for the parent type ID
+                if (columnName != 'Name') {
                     const newColumnName = cardColumnName + '/' + columnName;
                     requiredColumns.push(newColumnName);
                 }
@@ -204,6 +205,7 @@ export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string
 }
 
 export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [
+    Filter.Types.HAS_ANY_VALUE.getURLSuffix(),
     Filter.Types.CONTAINS.getURLSuffix(),
     Filter.Types.DOES_NOT_CONTAIN.getURLSuffix(),
     Filter.Types.DOES_NOT_START_WITH.getURLSuffix(),
@@ -381,9 +383,8 @@ export function getFieldFiltersValidationResult(
     dataTypeFilters: { [key: string]: FieldFilter[] },
     queryLabels?: { [key: string]: string }
 ): string {
-    let errorMsg = 'Invalid/incomplete filter values. Please correct input for fields. ',
-        hasError = false,
-        parentFields = {};
+    let parentFields = {},
+        hasError = false;
     Object.keys(dataTypeFilters).forEach(parent => {
         const filters = dataTypeFilters[parent];
         filters.forEach(fieldFilter => {
@@ -410,11 +411,12 @@ export function getFieldFiltersValidationResult(
     });
 
     if (hasError) {
+        const parentMsgs = [];
         Object.keys(parentFields).forEach(parent => {
             const parentLabel = queryLabels?.[parent] ?? parent;
-            errorMsg += parentLabel + ': ' + parentFields[parent].join(', ') + '. ';
+            parentMsgs.push(parentLabel + ': ' + parentFields[parent].join(', '));
         });
-        return errorMsg;
+        return 'Missing filter values for: ' + parentMsgs.join('; ')+ '.';
     }
 
     return null;
@@ -472,6 +474,7 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
 
     const filterUrlSuffix = filter.getFilterType().getURLSuffix();
     const filterValues = getFilterValuesAsArray(filter);
+    const hasBlank = allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1;
 
     switch (filterUrlSuffix) {
         case '':
@@ -480,7 +483,7 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
         case 'isblank':
             return [EMPTY_VALUE_DISPLAY];
         case 'isnonblank':
-            return allValues.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY);
+            return hasBlank ? allValues.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY) : allValues;
         case 'neq':
         case 'neqornull':
             return allValues.filter(value => value !== filterValues[0] && value !== ALL_VALUE_DISPLAY);
@@ -525,8 +528,12 @@ export function getUpdatedChooseValuesFilter(
     oldFilter: Filter.IFilter,
     uncheckOthers?: /* click on the row but not on the checkbox would check the row value and uncheck everything else*/ boolean
 ): Filter.IFilter {
-    // if check all, or everything is checked
-    if (newValue === ALL_VALUE_DISPLAY && check) return Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE);
+    const hasBlank = allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1;
+    // if check all, or everything is checked, this is essentially "no filter", unless there is no blank value
+    // then it's an NONBLANK filter
+    if (newValue === ALL_VALUE_DISPLAY && check) {
+        return hasBlank ? null : Filter.create(fieldKey, null, Filter.Types.NONBLANK);
+    }
 
     const newCheckedDisplayValues = getUpdatedCheckedValues(allValues, newValue, check, oldFilter, uncheckOthers);
     const newUncheckedDisplayValue = allValues.filter(val => newCheckedDisplayValues.indexOf(val) === -1);
@@ -543,9 +550,9 @@ export function getUpdatedChooseValuesFilter(
             newUncheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
         });
 
-    // if everything is checked
+    // if everything is checked, this is the same as not filtering
     if ((newValue === ALL_VALUE_DISPLAY && check) || newCheckedValues.length === allValues.length)
-        return Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE);
+        return null;
 
     // if uncheck all or if everything is unchecked, create a new NOTANY filter type
     if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)
@@ -571,4 +578,19 @@ export function getUpdatedChooseValuesFilter(
     }
 
     return Filter.create(fieldKey, newCheckedValues, Filter.Types.IN);
+}
+
+export function isValidFilterField(field: QueryColumn, queryInfo: QueryInfo, entityDataType): boolean {
+    // cannot include fields that are not supported by the database
+    if (!queryInfo.supportGroupConcatSubSelect &&
+        (entityDataType.exprColumnsWithSubSelect && entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) !== -1)) {
+        return false;
+    }
+    // exclude the storage Units field for sample types since the display of this field is nonstandard and it is not
+    // a useful field for filtering parent values
+    if (isSamplesSchema(queryInfo.schemaQuery) && field.fieldKey === "Units") {
+        return false;
+    }
+    // also exclude lookups since MVFKs don't support following lookups
+    return !field.isLookup();
 }

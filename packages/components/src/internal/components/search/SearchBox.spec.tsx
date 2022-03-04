@@ -8,9 +8,10 @@ describe('SearchBox', () => {
         const wrapper = mount(<SearchBox onSearch={jest.fn} onFindByIds={jest.fn} findNounPlural="Items" />);
         expect(wrapper.find('DropdownButton')).toHaveLength(1);
         const menuItem = wrapper.find('MenuItem');
-        expect(menuItem).toHaveLength(2);
+        expect(menuItem).toHaveLength(3);
         expect(menuItem.at(0).text().trim()).toBe('Find Items by Barcode');
         expect(menuItem.at(1).text().trim()).toBe('Find Items by ID');
+        expect(menuItem.at(2).text().trim()).toBe('Sample Finder');
     });
 
     test('without Find', () => {

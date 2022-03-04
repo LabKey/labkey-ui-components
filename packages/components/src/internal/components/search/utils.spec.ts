@@ -38,6 +38,7 @@ import {
     getUpdatedCheckedValues,
     getUpdatedChooseValuesFilter,
     getUpdateFilterExpressionFilter,
+    isValidFilterField,
     SAMPLE_FINDER_VIEW_NAME,
     searchFiltersFromJson,
     searchFiltersToJson,
@@ -478,7 +479,7 @@ describe('getFieldFiltersValidationResult', () => {
                 sampleType1: [anyValueFilter, badIntFilter],
                 sampleType2: [intEqFilter],
             })
-        ).toEqual('Invalid/incomplete filter values. Please correct input for fields. sampleType1: intField. ');
+        ).toEqual('Missing filter values for: sampleType1: intField.');
     });
 
     test('missing value, with query label', () => {
@@ -490,7 +491,7 @@ describe('getFieldFiltersValidationResult', () => {
                 },
                 { sampleType1: 'Sample Type 1' }
             )
-        ).toEqual('Invalid/incomplete filter values. Please correct input for fields. Sample Type 1: intField. ');
+        ).toEqual('Missing filter values for: Sample Type 1: intField.');
     });
 
     test('missing between filter value', () => {
@@ -500,7 +501,7 @@ describe('getFieldFiltersValidationResult', () => {
                 sampleType2: [intEqFilter, badIntFilter, badBetweenFilter],
             })
         ).toEqual(
-            'Invalid/incomplete filter values. Please correct input for fields. sampleType1: intField. sampleType2: intField, doubleField. '
+            'Missing filter values for: sampleType1: intField; sampleType2: intField, doubleField.'
         );
     });
 });
@@ -598,6 +599,7 @@ describe('getUpdateFilterExpressionFilter', () => {
 });
 
 const distinctValues = ['[All]', '[blank]', 'ed', 'ned', 'ted', 'red', 'bed'];
+const distinctValuesNoBlank = ['[All]', 'ed', 'ned', 'ted', 'red', 'bed'];
 const fieldKey = 'thing';
 
 const checkedOne = Filter.create(fieldKey, 'ed');
@@ -634,6 +636,7 @@ describe('getCheckedFilterValues', () => {
 
     test('not blank', () => {
         expect(getCheckedFilterValues(notblankFilter, distinctValues)).toEqual(['ed', 'ned', 'ted', 'red', 'bed']);
+        expect(getCheckedFilterValues(notblankFilter, distinctValuesNoBlank)).toEqual(['[All]', 'ed', 'ned', 'ted', 'red', 'bed']);
     });
 
     test('in values', () => {
@@ -730,8 +733,6 @@ describe('getUpdatedCheckedValues', () => {
 
 describe('getUpdatedChooseValuesFilter', () => {
     function validate(resultFilter: Filter.IFilter, expectedFilterUrlSuffix: string, expectedFilterValue?: any) {
-        if (resultFilter == null) expect(resultFilter).toBeNull();
-
         expect(resultFilter.getFilterType().getURLSuffix()).toEqual(expectedFilterUrlSuffix);
 
         if (expectedFilterValue == null) expect(resultFilter.getValue()).toBeNull();
@@ -739,7 +740,7 @@ describe('getUpdatedChooseValuesFilter', () => {
     }
 
     test('check ALL, from eq one', () => {
-        validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, ALL_VALUE_DISPLAY, true, checkedOne), '');
+        expect(getUpdatedChooseValuesFilter(distinctValues, fieldKey, ALL_VALUE_DISPLAY, true, checkedOne)).toBeNull();
     });
 
     test('check another, from eq one', () => {
@@ -809,8 +810,12 @@ describe('getUpdatedChooseValuesFilter', () => {
     });
 
     test('one unchecked, then check that one', () => {
-        validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'red', true, uncheckedOne), '');
+        expect(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'red', true, uncheckedOne)).toBeNull();
     });
+
+    test('check all, no blank', () => {
+        validate(getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, ALL_VALUE_DISPLAY, true, uncheckedOne), 'isnonblank');
+    })
 });
 
 const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/PST
@@ -1032,3 +1037,89 @@ describe('getSampleFinderColumnNames', () => {
         });
     });
 });
+
+describe("isValidFilterField", () => {
+    test("lookup field", () => {
+        expect(isValidFilterField(
+            QueryColumn.create({ name: 'test', lookup: { isPublic: true } }),
+            QueryInfo.create({
+                schemaName: 'test',
+                name: 'query',
+                supportGroupConcatSubSelect: true
+            }),
+            SampleTypeDataType
+        )).toBe(false);
+    });
+
+    test("Units field", () => {
+        expect(isValidFilterField(
+            QueryColumn.create({ name: 'Units', fieldKey: 'Units' }),
+            QueryInfo.create({
+                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                name: "test",
+                supportGroupConcatSubSelect: true
+            }),
+            SampleTypeDataType
+        )).toBe(false);
+    });
+
+    test("group concat field not supported", () => {
+        expect(isValidFilterField(
+            QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' }),
+            QueryInfo.create({
+                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                name: "test",
+                supportGroupConcatSubSelect: false
+            }),
+            SampleTypeDataType
+        )).toBe(false);
+    });
+
+    test("group concat field not supported, regular field", () => {
+        expect(isValidFilterField(
+            QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' }),
+            QueryInfo.create({
+                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                name: "test",
+                supportGroupConcatSubSelect: false
+            }),
+            SampleTypeDataType
+        )).toBe(true);
+    });
+
+    test("group concat field not supported, no group concat fields", () => {
+        expect(isValidFilterField(
+            QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' }),
+            QueryInfo.create({
+                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                name: "test",
+                supportGroupConcatSubSelect: false
+            }),
+            {...SampleTypeDataType, exprColumnsWithSubSelect: undefined}
+        )).toBe(true);
+    });
+
+    test("group concat field is supported", () => {
+        expect(isValidFilterField(
+            QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' }),
+            QueryInfo.create({
+                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                name: "test",
+                supportGroupConcatSubSelect: true
+            }),
+            SampleTypeDataType
+        )).toBe(true);
+    });
+
+    test("regular field", () => {
+        expect(isValidFilterField(
+            QueryColumn.create({ name: 'Regular', fieldKey: 'Regular' }),
+            QueryInfo.create({
+                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                name: "test",
+                supportGroupConcatSubSelect: false
+            }),
+            SampleTypeDataType
+        )).toBe(true);
+    });
+})

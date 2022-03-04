@@ -1,4 +1,4 @@
-import React, { FC, PureComponent } from 'react';
+import React, { FC, memo, PureComponent, useCallback } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
 import { Filter, PermissionTypes, Query } from '@labkey/api';
@@ -28,6 +28,8 @@ import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';
 import { ChartConfig, ChartData, ChartSelector } from './types';
+import { SAMPLE_FILTER_METRIC_AREA } from '../search/utils';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 function fetchItemCount(schemaQuery: SchemaQuery, filters?: Filter.IFilter[]): Promise<number> {
     return new Promise(resolve => {
@@ -258,12 +260,22 @@ export class BarChartViewer extends PureComponent<Props, State> {
     }
 }
 
+interface SampleButtonProps {
+    api?: ComponentsAPIWrapper;
+}
+
 // export for jest testing
-export const SampleButtons: FC = () => {
+export const SampleButtons: FC<SampleButtonProps> = memo((props) => {
+    const { api } = props;
+
+    const onSampleFinder = useCallback(() => {
+        api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'dashboardButtonNavigation');
+    }, [api]);
+
     return (
         <div className="pull-right bar-chart-viewer-sample-buttons">
             {isSampleFinderEnabled() && (
-                <Button bsStyle="primary" href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
+                <Button bsStyle="primary" onClick={onSampleFinder} href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
                     Go to Sample Finder
                 </Button>
             )}
@@ -274,4 +286,8 @@ export const SampleButtons: FC = () => {
             </RequiresPermission>
         </div>
     );
+});
+
+SampleButtons.defaultProps = {
+    api: getDefaultAPIWrapper(),
 };

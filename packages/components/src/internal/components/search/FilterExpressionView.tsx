@@ -91,7 +91,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             }
             updateFilter(newActiveFilterType, shouldClear ? undefined : firstFilterValue, undefined, shouldClear);
         },
-        [fieldFilterOptions]
+        [fieldFilterOptions,activeFilterType]
     );
 
     const updateBooleanFilterFieldValue = useCallback(

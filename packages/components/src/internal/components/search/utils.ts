@@ -206,6 +206,7 @@ export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string
 }
 
 export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [
+    Filter.Types.HAS_ANY_VALUE.getURLSuffix(),
     Filter.Types.CONTAINS.getURLSuffix(),
     Filter.Types.DOES_NOT_CONTAIN.getURLSuffix(),
     Filter.Types.DOES_NOT_START_WITH.getURLSuffix(),
@@ -468,12 +469,13 @@ export function getUpdateFilterExpressionFilter(
 export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string[]): string[] {
     if (!filter || !allValues)
         // if no existing filter, check all values by default
-        return [];
+        return allValues;
 
     if (filter.getFilterType().isDataValueRequired() && filter.getValue() == null) return allValues;
 
     const filterUrlSuffix = filter.getFilterType().getURLSuffix();
     const filterValues = getFilterValuesAsArray(filter);
+    const hasBlank = allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1;
 
     switch (filterUrlSuffix) {
         case '':
@@ -482,7 +484,7 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
         case 'isblank':
             return [EMPTY_VALUE_DISPLAY];
         case 'isnonblank':
-            return allValues.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY);
+            return hasBlank ? allValues.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY) : allValues;
         case 'neq':
         case 'neqornull':
             return allValues.filter(value => value !== filterValues[0] && value !== ALL_VALUE_DISPLAY);
@@ -527,8 +529,12 @@ export function getUpdatedChooseValuesFilter(
     oldFilter: Filter.IFilter,
     uncheckOthers?: /* click on the row but not on the checkbox would check the row value and uncheck everything else*/ boolean
 ): Filter.IFilter {
-    // if check all, or everything is checked
-    if (newValue === ALL_VALUE_DISPLAY && check) return Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE);
+    const hasBlank = allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1;
+    // if check all, or everything is checked, this is essentially "no filter", unless there is no blank value
+    // then it's an NONBLANK filter
+    if (newValue === ALL_VALUE_DISPLAY && check) {
+        return hasBlank ? null : Filter.create(fieldKey, null, Filter.Types.NONBLANK);
+    }
 
     const newCheckedDisplayValues = getUpdatedCheckedValues(allValues, newValue, check, oldFilter, uncheckOthers);
     const newUncheckedDisplayValue = allValues.filter(val => newCheckedDisplayValues.indexOf(val) === -1);
@@ -545,9 +551,9 @@ export function getUpdatedChooseValuesFilter(
             newUncheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
         });
 
-    // if everything is checked
+    // if everything is checked, this is the same as not filtering
     if ((newValue === ALL_VALUE_DISPLAY && check) || newCheckedValues.length === allValues.length)
-        return Filter.create(fieldKey, null, Filter.Types.HAS_ANY_VALUE);
+        return null;
 
     // if uncheck all or if everything is unchecked, create a new NOTANY filter type
     if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)

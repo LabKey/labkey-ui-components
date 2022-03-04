@@ -6,6 +6,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Sample Finder Polish
   * Don't clear filter values when switching between filter types
   * Exclude lookup columns and the storage "Units" column for Sample types
+  * Start on the Choose Values tab if available
+  * Remove "Has Any Value" (no-op) filter type
 
 ### version 2.138.4
 *Released*: 3 March 2022

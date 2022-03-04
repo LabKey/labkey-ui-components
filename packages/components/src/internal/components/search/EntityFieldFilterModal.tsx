@@ -69,7 +69,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const [activeQuery, setActiveQuery] = useState<string>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
-    const [activeTab, setActiveTab] = useState<EntityFieldFilterTabs>(EntityFieldFilterTabs.Filter);
+    const [activeTab, setActiveTab] = useState<EntityFieldFilterTabs>(undefined);
 
     const [loadingError, setLoadingError] = useState<string>(undefined);
     const [filterError, setFilterError] = useState<string>(undefined);
@@ -133,6 +133,9 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     if (fieldKey) {
                         const field = fields.find(field => field.getDisplayFieldKey() === fieldKey);
                         setActiveField(field);
+                        if (allowFaceting(field)) {
+                            setActiveTab(EntityFieldFilterTabs.ChooseValues);
+                        }
                     }
                 })
                 .catch(error => {
@@ -142,17 +145,15 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         [api, entityDataType, skipDefaultViewCheck]
     );
 
-    const allowFaceting = useMemo(() => {
+    const allowFaceting = (activeField: QueryColumn) => {
         return activeField?.allowFaceting() && activeField?.getDisplayFieldJsonType() === 'string'; // current plan is to only support facet for string fields, to reduce scope
-    }, [activeField]);
+    };
 
     const onFieldClick = useCallback(
         (queryColumn: QueryColumn) => {
             setActiveField(queryColumn);
 
-            if (activeTab === EntityFieldFilterTabs.ChooseValues) {
-                setActiveTab(EntityFieldFilterTabs.Filter);
-            }
+            setActiveTab(allowFaceting(queryColumn) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter);
         },
         [activeTab, activeField]
     );
@@ -179,10 +180,13 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         const filters = {};
         Object.keys(dataTypeFilters).forEach(parent => {
             const filterFields = dataTypeFilters[parent];
-            filters[parent] = filterFields.filter(field => {
+            const parentFilters = filterFields.filter(field => {
                 const urlSuffix = field?.filter?.getFilterType()?.getURLSuffix();
                 return urlSuffix !== NOT_ANY_FILTER_TYPE.getURLSuffix() && urlSuffix !== '';
             });
+            if (parentFilters.length > 0) {
+                filters[parent] = parentFilters;
+            }
         });
         return filters;
     }, [dataTypeFilters]);
@@ -241,8 +245,10 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         Object.keys(dataTypeFilters).forEach(parent => {
             const filterFields = dataTypeFilters[parent];
             filterFields.forEach(field => {
-                const key = parent + '-' + field.fieldKey;
-                status[key] = true;
+                if (field.filter.getFilterType() !== NOT_ANY_FILTER_TYPE) {
+                    const key = parent + '-' + field.fieldKey;
+                    status[key] = true;
+                }
             });
         });
 
@@ -268,8 +274,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 <Modal.Title>Select Sample {capParentNoun} Properties</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {loadingError && <Alert>{loadingError}</Alert>}
-                {filterError && <Alert>{filterError}</Alert>}
+                <Alert>{loadingError}</Alert>
+                <Alert>{filterError}</Alert>
                 <Row className="parent-search-panel__container">
                     <Col xs={6} sm={3} className="parent-search-panel__col parent-search-panel__col_queries">
                         <div className="parent-search-panel__col-title">
@@ -280,7 +286,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             {entityQueries?.map((parent, index) => {
                                 const label = parent.label ?? parent.get?.('label'); // jest test data is Map, instead of js object
                                 const parentValue = parent.value ?? parent.get?.('value');
-                                const fieldFilterCount = dataTypeFilters?.[parentValue]?.length ?? 0;
+                                const fieldFilterCount = dataTypeFilters?.[parentValue]?.filter(f => f.filter.getFilterType() !== NOT_ANY_FILTER_TYPE)?.length ?? 0;
                                 return (
                                     <ChoicesListItem
                                         active={parentValue === activeQuery}
@@ -349,7 +355,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                     <div>
                                         <Nav bsStyle="tabs">
                                             <NavItem eventKey={EntityFieldFilterTabs.Filter}>Filter</NavItem>
-                                            {allowFaceting && (
+                                            {allowFaceting(activeField) && (
                                                 <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>
                                                     {CHOOSE_VALUES_TAB_KEY}
                                                 </NavItem>
@@ -369,7 +375,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                     />
                                                 )}
                                             </Tab.Pane>
-                                            {activeTab === EntityFieldFilterTabs.ChooseValues && allowFaceting && (
+                                            {activeTab === EntityFieldFilterTabs.ChooseValues && allowFaceting(activeField) && (
                                                 <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
                                                     <div className="parent-search-panel__col-sub-title">
                                                         Find values for {activeField.caption}

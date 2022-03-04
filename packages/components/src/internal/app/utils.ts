@@ -232,12 +232,18 @@ export function isCommunityDistribution(): boolean {
 }
 
 export function isProjectContainer(containerPath?: string) {
-    const path = containerPath ?? getServerContext().container.path;
+    let path = containerPath ?? getServerContext().container.path;
+    if (!path)
+        return false;
+    if (!path.endsWith('/'))
+        path = path + '/';
     return path.split('/').filter(p => !!p).length === 1;
 }
 
 export function getContainerProject(containerPath?: string) {
     const path = containerPath ?? getServerContext().container.path;
+    if (!path)
+        return null;
     return path.split('/').filter(p => !!p)[0] + "/";
 }
 

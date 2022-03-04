@@ -9,8 +9,9 @@ import { UsersGridPanel } from '../user/UsersGridPanel';
 import { SecurityPolicy } from '../permissions/models';
 import { Container } from '../base/models/Container';
 
-import {getNewUserRoles, UserManagement} from './UserManagement';
-import {App} from "../../../index";
+import { App } from '../../../index';
+
+import { getNewUserRoles, UserManagement } from './UserManagement';
 
 declare const LABKEY: import('@labkey/api').LabKey;
 

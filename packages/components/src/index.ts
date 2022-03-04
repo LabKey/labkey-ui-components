@@ -296,7 +296,10 @@ import { AdministrationSubNav } from './internal/components/administration/Admin
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { BasePermissions } from './internal/components/administration/BasePermissions';
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './internal/components/administration/utils';
-import { SECURITY_ROLE_DESCRIPTIONS, HOSTED_APPLICATION_SECURITY_ROLES } from './internal/components/administration/constants';
+import {
+    SECURITY_ROLE_DESCRIPTIONS,
+    HOSTED_APPLICATION_SECURITY_ROLES,
+} from './internal/components/administration/constants';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {

@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, {FC, PureComponent} from 'react';
+import React, { FC, PureComponent } from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
 import { getServerContext, PermissionRoles, Utils } from '@labkey/api';
@@ -21,9 +21,10 @@ import { AppURL } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { UsersGridPanel } from '../user/UsersGridPanel';
 
+import { useServerContext } from '../base/ServerContext';
+
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
-import {useServerContext} from "../base/ServerContext";
 
 export function getNewUserRoles(
     user: User,
@@ -283,13 +284,8 @@ interface UserManagementPageProps {
 }
 
 export const UserManagementPage: FC<UserManagementPageProps> = props => {
-    const {extraRoles} = props;
+    const { extraRoles } = props;
     const { user } = useServerContext();
 
-    return(
-        <UserManagement
-            extraRoles={extraRoles}
-            user={user}
-        />
-    );
-}
+    return <UserManagement extraRoles={extraRoles} user={user} />;
+};

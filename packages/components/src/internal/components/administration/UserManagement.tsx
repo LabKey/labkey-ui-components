@@ -75,7 +75,7 @@ interface State {
 }
 
 // exported for jest testing
-class UserManagement extends PureComponent<Props, State> {
+export class UserManagement extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 

@@ -32,7 +32,7 @@ interface OwnProps {
     description?: ReactNode;
 }
 
-type Props = PermissionsProviderProps & WithRouterProps & OwnProps & InjectedRouteLeaveProps;
+type Props = PermissionsProviderProps & OwnProps & InjectedRouteLeaveProps;
 
 interface State {
     policy: SecurityPolicy;

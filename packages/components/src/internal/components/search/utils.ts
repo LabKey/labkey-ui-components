@@ -583,7 +583,8 @@ export function getUpdatedChooseValuesFilter(
 
 export function isValidFilterField(field: QueryColumn, queryInfo: QueryInfo, entityDataType): boolean {
     // cannot include fields that are not supported by the database
-    if (!queryInfo.supportGroupConcatSubSelect && entityDataType.exprColumnsWithSubSelect?.indexOf(field.fieldKey) === -1) {
+    if (!queryInfo.supportGroupConcatSubSelect &&
+        (entityDataType.exprColumnsWithSubSelect && entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) !== -1)) {
         return false;
     }
     // exclude the storage Units field for sample types since the display of this field is nonstandard and it is not

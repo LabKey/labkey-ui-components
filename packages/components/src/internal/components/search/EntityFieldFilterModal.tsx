@@ -119,11 +119,6 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             setActiveQuery(queryName);
             setQueryFields(undefined);
             setActiveField(undefined);
-
-            if (activeTab === EntityFieldFilterTabs.ChooseValues) {
-                setActiveTab(EntityFieldFilterTabs.Filter);
-            }
-
             setLoadingError(undefined);
             api.query
                 .getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
@@ -135,6 +130,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         setActiveField(field);
                         if (allowFaceting(field)) {
                             setActiveTab(EntityFieldFilterTabs.ChooseValues);
+                        } else {
+                            setActiveTab(EntityFieldFilterTabs.Filter);
                         }
                     }
                 })

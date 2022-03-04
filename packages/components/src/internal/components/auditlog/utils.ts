@@ -56,7 +56,7 @@ export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {
                 display = (d.displayValue ?? d.value)?.toString() ?? null;
             }
 
-            if (showLink) {
+            if (showLink && !d.hideLink) {
                 const href = d.url ?? getTimelineEntityUrl(d)?.toHref();
                 if (href) {
                     display = React.createElement('a', { href }, display);

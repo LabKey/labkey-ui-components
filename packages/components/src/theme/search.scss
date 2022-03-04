@@ -53,11 +53,14 @@
 
 .parent-search-panel__container {
     .list-group-item {
+        color: $text-color;
+        font-size: 16px;
         padding: 8px 10px;
         border-radius: 0;
     }
 
     .list-group-item.active {
+        color: $white;
         font-weight: bold;
     }
 
@@ -243,10 +246,9 @@
     margin-left: 20px;
     padding-right: 5px;
     word-break: break-all;
-    color: $gray;
+    color: $text-color;
 
     &:hover {
-        color: $gray-light;
         cursor: pointer;
     }
 }

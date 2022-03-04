@@ -14,9 +14,10 @@ import { createNotification } from '../notifications/actions';
 import { invalidateUsers } from '../../global';
 import { CreatedModified } from '../base/CreatedModified';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
+import { ServerContextConsumer } from '../base/ServerContext';
 import { AppURL } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
-import { PermissionsPageContextProvider, ServerContextConsumer } from '../../../index';
+import { PermissionsPageContextProvider } from '../permissions/PermissionsContextProvider';
 
 import { PermissionsPanel } from './PermissionsPanel';
 

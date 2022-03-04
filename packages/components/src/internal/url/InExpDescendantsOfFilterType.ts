@@ -1,24 +1,23 @@
 import { Filter } from '@labkey/api';
 
 /**
- * A dummy FilterType to indicate no value is selected, not even '[blank]'. The counterpart to IFilterType.HAS_ANY_VALUE
- * Used by FilterFacetedSelector for unchecking '[All]' value(s).
+ * This implements the filter corresponding to <code>QueryServiceImpl.InLineageOfClause: inexpdescendantsof</code>
  */
-class NotAnyFilterType implements Filter.IFilterType {
+class InExpDescendantsOfFilterType implements Filter.IFilterType {
     getDisplaySymbol(): string {
         return null;
     }
     getDisplayText(): string {
-        return 'NotAny';
+        return 'IN DESCENDANTS OF';
     }
     getLongDisplayText(): string {
         return this.getDisplayText();
     }
     getURLSuffix(): string {
-        return 'notany';
+        return 'inexpdescendantsof';
     }
     isDataValueRequired(): boolean {
-        return false;
+        return true;
     }
     isMultiValued(): boolean {
         return false;
@@ -56,4 +55,4 @@ class NotAnyFilterType implements Filter.IFilterType {
     }
 }
 
-export const NOT_ANY_FILTER_TYPE = new NotAnyFilterType();
+export const IN_EXP_DESCENDANTS_OF_FILTER_TYPE = new InExpDescendantsOfFilterType();

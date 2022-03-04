@@ -129,6 +129,10 @@ export function userCanDeletePublicPicklists(user: User): boolean {
     return user.isAdmin;
 }
 
+export function userCanManageSampleWorkflow(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.ManageSampleWorkflows], false);
+}
+
 export function userCanDesignSourceTypes(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.DesignDataClass]);
 }

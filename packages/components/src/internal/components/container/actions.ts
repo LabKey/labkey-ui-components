@@ -42,6 +42,12 @@ export interface UseContainerUser extends ContainerUser {
     isLoaded: boolean;
 }
 
+export interface UseContainerUsers {
+    error: string;
+    isLoaded: boolean;
+    containerUsers: {[key: string] : ContainerUser};
+}
+
 /**
  * React hook that supplies the container, user, and the container-relative permissions for the user.
  * @param containerIdOrPath The container id or container path to request.
@@ -105,4 +111,40 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
     }, [api, containerIdOrPath, user]);
 
     return { container, error, isLoaded: !isLoading(loadingState), user: contextUser };
+}
+
+export function useContainerUsers(projectContainerIdOrPath: string): UseContainerUsers {
+    const [containerUsers, setContainerUsers] = useState<{[key: string] : ContainerUser}>({});
+    const [error, setError] = useState<string>();
+    const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const { api } = useAppContext();
+    const { user } = useServerContext();
+
+    useEffect(() => {
+        if (!projectContainerIdOrPath) return;
+
+        (async () => {
+            setError(undefined);
+            setLoadingState(LoadingState.LOADING);
+
+            try {
+                let userContainerMap = {};
+                const containers = await api.security.fetchContainers({ containerPath: projectContainerIdOrPath });
+                containers.forEach(container => {
+                    const contextUser = applyPermissions(container, user)
+                    userContainerMap[container.path] = {
+                        container: container,
+                        user: contextUser
+                    }
+                })
+                setContainerUsers(userContainerMap);
+            } catch (e) {
+                setError(resolveErrorMessage(e));
+            }
+
+            setLoadingState(LoadingState.LOADED);
+        })();
+    }, [api, projectContainerIdOrPath, user]);
+
+    return { error, isLoaded: !isLoading(loadingState), containerUsers };
 }

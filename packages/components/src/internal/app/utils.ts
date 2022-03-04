@@ -184,7 +184,8 @@ export function isSampleStatusEnabled(): boolean {
 }
 
 export function isSampleFinderEnabled(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_SAMPLE_FINDER] === true;
+    return !biologicsIsPrimaryApp(moduleContext) ||
+        (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_SAMPLE_FINDER] === true;
 }
 
 export function getCurrentAppProperties(): AppProperties {

@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add client side metric for tracking clicks on dashboard "Go to Sample Finder" button
   * Start on the Choose Values tab if available
   * Remove "Has Any Value" (no-op) filter type
+  * Change `isSampleFinderEnabled` to look for Biologics experimental flag
 
 ### version 2.138.4
 *Released*: 3 March 2022

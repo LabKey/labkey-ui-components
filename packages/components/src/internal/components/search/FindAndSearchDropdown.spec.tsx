@@ -3,8 +3,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MenuItem } from 'react-bootstrap';
 
-import { EXPERIMENTAL_SAMPLE_FINDER } from '../../app/constants';
-
 import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 
 describe('FindAndSearchDropdown', () => {
@@ -47,9 +45,6 @@ describe('FindAndSearchDropdown', () => {
         LABKEY.moduleContext = {
             api: {
                 moduleNames: ['samplemanagement', 'study', 'premium'],
-            },
-            samplemanagement: {
-                [EXPERIMENTAL_SAMPLE_FINDER]: true,
             },
         };
         const wrapper = mount(

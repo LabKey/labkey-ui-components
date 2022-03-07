@@ -13,13 +13,13 @@ interface GridButtonProps {
 }
 
 export const PicklistGridButtons: FC<GridButtonProps & RequiresModelAndActions> = memo(props => {
-    const { AdditionalGridButtons } = props;
+    const { AdditionalGridButtons, ...buttonProps } = props;
 
     return (
         <>
             {AdditionalGridButtons !== undefined && (
                 <div className="btn-group gridbar-buttons">
-                    <AdditionalGridButtons {...props} />
+                    <AdditionalGridButtons {...buttonProps} />
                 </div>
             )}
         </>

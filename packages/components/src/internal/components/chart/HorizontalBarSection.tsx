@@ -73,7 +73,11 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
             }
         });
     } else {
-        horizontalBars.push(<div className="horizontal-bar--empty-text">{emptyText ?? DEFAULT_EMPTY_TEXT}</div>);
+        horizontalBars.push(
+            <div className="horizontal-bar--empty-text" key="empty-text">
+                {emptyText ?? DEFAULT_EMPTY_TEXT}
+            </div>
+        );
     }
 
     return (

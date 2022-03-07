@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, Query, Utils } from '@labkey/api';
 import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { immerable } from 'immer';
@@ -570,6 +570,7 @@ export interface EntityDataType {
     isFromSharedContainer?: boolean; // if the data type is defined in /Shared project
     filterCardHeaderClass?: string; // css class to use for styling the header in the display of cards for Sample Finder
     exprColumnsWithSubSelect?: string[]; // A list of fields that are backed by ExprColumn and the ExprColumn's sql contain sub select clauses
+    containerFilter?: Query.ContainerFilter;
 }
 
 export class OperationConfirmationData {

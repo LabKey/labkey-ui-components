@@ -78,8 +78,8 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
                         onClick={onSampleFinder}
                         href={
                             createProductUrl(
-                                getPrimaryAppProperties().productId,
-                                getCurrentAppProperties().productId,
+                                getPrimaryAppProperties()?.productId,
+                                getCurrentAppProperties()?.productId,
                                 FIND_SAMPLES_BY_FILTER_HREF.toHref()
                             ) as string
                         }

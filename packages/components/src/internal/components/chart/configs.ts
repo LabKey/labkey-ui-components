@@ -41,8 +41,7 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
             CHART_SELECTORS.Today,
         ],
         colorPath: ['Color', 'value'],
-        createText: 'Create Samples',
-        createURL: () => App.NEW_SAMPLES_HREF,
+        showSampleButtons: true,
         getAppURL: row => AppURL.create(SAMPLES_KEY, row.x || row['label']),
         itemCountSQ: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
         key: SAMPLES_KEY,
@@ -58,8 +57,7 @@ export const CHART_GROUPS: Record<string, ChartConfig> = {
         ],
         colorPath: ['Color', 'value'],
         groupPath: ['Status', 'value'],
-        createText: 'Create Samples',
-        createURL: () => App.NEW_SAMPLES_HREF,
+        showSampleButtons: true,
         getAppURL: (row, evt) => {
             let url = AppURL.create(SAMPLES_KEY, row.xSub || row['subLabel']);
             if (evt.target.tagName === 'rect') {

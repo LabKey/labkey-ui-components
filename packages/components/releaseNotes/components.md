@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Export `PICKLIST_SAMPLES_FILTER`
+
 ### version 2.139.0
 *Released*: 7 March 2022
 * Support EditableGridPanel conversion for LKFM add and move samples use cases

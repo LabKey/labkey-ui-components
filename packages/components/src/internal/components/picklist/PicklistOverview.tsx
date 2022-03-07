@@ -297,7 +297,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                 ],
             };
 
-            // add a queryConfig for each distinct sample type of the picklist samples, with an filter clause
+            // add a queryConfig for each distinct sample type of the picklist samples, with a filter clause
             // for the picklist id (which the server will turn into a sampleId IN clause)
             [...picklist.sampleTypes].sort().forEach(sampleType => {
                 const id = `${PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX}${LOAD_PICKLIST_COUNTER}|samples/${sampleType}`;

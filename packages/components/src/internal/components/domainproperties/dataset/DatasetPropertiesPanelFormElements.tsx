@@ -112,7 +112,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     helpTip={this.getHelpTipElement('name')}
                     value={model.name}
                     placeholder="Enter a name for this dataset"
-                    disabled={model.isFromAssay()}
+                    disabled={model.isFromLinkedSource()}
                     onValueChange={onInputChange}
                     showInAdvancedSettings={false}
                     required={true}
@@ -255,7 +255,7 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
         const domain = model.domain;
         const additionalKeyFields = getAdditionalKeyFields(domain);
         const dataRowSetting = model.getDataRowSetting();
-        const showAdditionalKeyField = dataRowSetting === 2 || model.isFromAssay();
+        const showAdditionalKeyField = dataRowSetting === 2 || model.isFromLinkedSource();
 
         let keyPropertyName = model.keyPropertyName;
         if (model.useTimeKeyField) {
@@ -272,7 +272,7 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
         const keyPropertyManagedCls =
             showAdditionalKeyField && validKeyField ? 'dataset_data_row_element_show' : 'dataset_data_row_element_hide';
 
-        const managedKeyDisabled = !showAdditionalKeyField || !validKeyField || model.isFromAssay();
+        const managedKeyDisabled = !showAdditionalKeyField || !validKeyField || model.isFromLinkedSource();
 
         return (
             <>
@@ -281,7 +281,7 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                 <DataRowUniquenessElements
                     onRadioChange={onRadioChange}
                     dataRowSetting={dataRowSetting}
-                    isFromAssay={model.isFromAssay()}
+                    isFromAssay={model.isFromLinkedSource()}
                 />
 
                 <div className={showAdditionalKeyFieldCls}>
@@ -291,7 +291,7 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                         selectOptions={additionalKeyFields.toArray()}
                         onSelectChange={onSelectChange}
                         selectedValue={keyPropertyName}
-                        disabled={!showAdditionalKeyField || model.isFromAssay()}
+                        disabled={!showAdditionalKeyField || model.isFromLinkedSource()}
                         helpTip={this.getHelpTipForAdditionalField()}
                         clearable={false}
                     />

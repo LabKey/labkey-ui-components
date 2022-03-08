@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { FC, memo, PureComponent, useCallback } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
 import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import {
     Alert,
+    App,
     AppURL,
     AssayDesignEmptyAlert,
     getActionErrorMessage,
@@ -20,13 +21,15 @@ import {
     User,
 } from '../../..';
 
-import { getDateFormat } from '../../app/utils';
+import { getDateFormat, isSampleFinderEnabled } from '../../app/utils';
 
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 
 import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';
 import { ChartConfig, ChartData, ChartSelector } from './types';
+import { SAMPLE_FILTER_METRIC_AREA } from '../search/utils';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 function fetchItemCount(schemaQuery: SchemaQuery, filters?: Filter.IFilter[]): Promise<number> {
     return new Promise(resolve => {
@@ -237,7 +240,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                     </div>
                 )}
                 {!hasError && selectedCharts?.length > 1 && (
-                    <div className="btn-group pull-right">
+                    <div className="btn-group button-left-spacing pull-right">
                         <Tip caption="Previous">
                             <Button disabled={currentChart === 0} onClick={this.prevChart}>
                                 <i className="fa fa-chevron-left" />
@@ -250,21 +253,41 @@ export class BarChartViewer extends PureComponent<Props, State> {
                         </Tip>
                     </div>
                 )}
-                {!hasError && hasSectionItems && !!selectedGroup.createURL && !!selectedGroup.createText && (
-                    <RequiresPermission perms={PermissionTypes.Insert}>
-                        <div className="pull-right">
-                            <Button
-                                bsStyle="primary"
-                                className="button-right-spacing"
-                                href={selectedGroup.createURL().toHref()}
-                            >
-                                {selectedGroup.createText}
-                            </Button>
-                        </div>
-                    </RequiresPermission>
-                )}
+                {!hasError && hasSectionItems && selectedGroup.showSampleButtons && <SampleButtons />}
                 <div className="margin-top">{body}</div>
             </Section>
         );
     }
 }
+
+interface SampleButtonProps {
+    api?: ComponentsAPIWrapper;
+}
+
+// export for jest testing
+export const SampleButtons: FC<SampleButtonProps> = memo((props) => {
+    const { api } = props;
+
+    const onSampleFinder = useCallback(() => {
+        api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'dashboardButtonNavigation');
+    }, [api]);
+
+    return (
+        <div className="pull-right bar-chart-viewer-sample-buttons">
+            {isSampleFinderEnabled() && (
+                <Button bsStyle="primary" onClick={onSampleFinder} href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
+                    Go to Sample Finder
+                </Button>
+            )}
+            <RequiresPermission perms={PermissionTypes.Insert}>
+                <Button bsStyle="success" className="button-left-spacing" href={App.NEW_SAMPLES_HREF.toHref()}>
+                    Create Samples
+                </Button>
+            </RequiresPermission>
+        </div>
+    );
+});
+
+SampleButtons.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};

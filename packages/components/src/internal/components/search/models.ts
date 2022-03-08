@@ -66,6 +66,7 @@ export interface FilterProps {
     entityDataType: EntityDataType;
     filterArray?: FieldFilter[]; // the filters to be used in conjunction with the schemaQuery
     schemaQuery?: SchemaQuery;
+    dataTypeDisplayName?: string;
     index?: number;
 }
 

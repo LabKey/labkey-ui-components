@@ -96,7 +96,7 @@ describe('EntityFieldFilterModal', () => {
     }
 
     function verifyOpenedFieldsPanel(wrapper, isFieldSelected?: boolean) {
-        const fieldCount = 28;
+        const fieldCount = 14;
 
         const fieldsContainerBody = wrapper.find('.parent-search-panel__fields-col-content');
         const fields = fieldsContainerBody.find(ChoicesListItem);

@@ -431,7 +431,7 @@ export function getEntityTypeOptions(
             queryName: typeListingSchemaQuery.queryName,
             columns: 'LSID,Name,RowId,Folder/Path',
             filterArray,
-            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
+            containerFilter: entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(result => {
                 const rows = fromJS(result.models[result.key]);

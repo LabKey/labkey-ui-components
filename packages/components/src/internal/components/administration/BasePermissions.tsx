@@ -125,4 +125,4 @@ class BasePermissionsImpl extends React.PureComponent<Props, State> {
     }
 }
 
-export const BasePermissions = withRouteLeave<OwnProps>(PermissionsPageContextProvider(BasePermissionsImpl) as any);
+export const BasePermissions = withRouteLeave<OwnProps>(PermissionsPageContextProvider(BasePermissionsImpl));

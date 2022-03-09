@@ -2,7 +2,7 @@
  * Copyright (c) 2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { ComponentType, PureComponent } from 'react';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
@@ -21,13 +21,15 @@ const Context = React.createContext<PermissionsProviderProps>(undefined);
 const PermissionsContextProvider = Context.Provider;
 export const PermissionsContextConsumer = Context.Consumer;
 
-type Props = PermissionsProviderProps;
-
 type State = PermissionsProviderProps;
 
-export const PermissionsPageContextProvider = (Component: React.ComponentType) => {
-    class PermissionsProviderImpl extends React.Component<Props, State> {
-        constructor(props: Props) {
+export function PermissionsPageContextProvider<Props>(
+    Component: ComponentType<Props>
+): ComponentType<Props & PermissionsProviderProps> {
+    type WrappedProps = Props & PermissionsProviderProps;
+
+    class PermissionsProviderImpl extends PureComponent<WrappedProps, State> {
+        constructor(props: WrappedProps) {
             super(props);
 
             this.state = {
@@ -98,4 +100,4 @@ export const PermissionsPageContextProvider = (Component: React.ComponentType) =
     }
 
     return PermissionsProviderImpl;
-};
+}

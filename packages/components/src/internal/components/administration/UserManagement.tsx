@@ -25,6 +25,7 @@ import { useServerContext } from '../base/ServerContext';
 
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
+import { PermissionsPageContextProvider } from '../permissions/PermissionsContextProvider';
 
 export function getNewUserRoles(
     user: User,
@@ -283,9 +284,11 @@ interface UserManagementPageProps {
     extraRoles?: string[][];
 }
 
-export const UserManagementPage: FC<UserManagementPageProps> = props => {
+const UserManagementPageImpl: FC<UserManagementPageProps> = props => {
     const { extraRoles } = props;
     const { user } = useServerContext();
 
     return <UserManagement extraRoles={extraRoles} user={user} />;
 };
+
+export const UserManagementPage = PermissionsPageContextProvider<UserManagementPageProps>(UserManagementPageImpl);

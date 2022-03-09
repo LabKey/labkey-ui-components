@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Don't use expensive `QueryableInputs` now that we have the query for descendants
+
 ### version 2.138.5
 *Released*: 4 March 2022
 * Sample Finder Polish

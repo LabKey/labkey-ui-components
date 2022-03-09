@@ -34,7 +34,8 @@ export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): str
 }
 
 export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQuery: SchemaQuery): string {
-    return entityDataType.inputColumnName.replace('Inputs', 'QueryableInputs').replace('First', schemaQuery.queryName);
+    return entityDataType.inputColumnName
+        .replace('First', schemaQuery.queryName);
 }
 
 const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];

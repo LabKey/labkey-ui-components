@@ -293,10 +293,10 @@ describe('URL Resolvers', () => {
         expect(newResult.getIn(['rows', 1, 'LookupExpShowData', 'url'])).toBe('/labkey/otherContainer/experiment-showData.view?rowId=124');
 
         // validate LookupMapper('/q/')
-        expect(newResult.getIn(['rows', 1, 'LookupColumn', 'url'])).toBe('/labkey/otherContainer/url?blam=2392');
+        expect(newResult.getIn(['rows', 1, 'LookupColumn', 'url'])).toBe('/labkey/otherContainer/url-app?blam=2392');
 
         // validate LookupMapper('exp-dataclasses')
-        expect(newResult.getIn(['rows', 1, 'DataClassLookupColumn', 'url'])).toBe('/labkey/otherContainer/url?blam=19');
+        expect(newResult.getIn(['rows', 1, 'DataClassLookupColumn', 'url'])).toBe('/labkey/otherContainer/url-app?blam=19');
 
         // validate LookupMapper('issues')
         expect(newResult.getIn(['rows', 1, 'LookupIssues', 'url'])).toBe(

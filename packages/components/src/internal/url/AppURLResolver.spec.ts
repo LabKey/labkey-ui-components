@@ -179,6 +179,50 @@ describe('URL Resolvers', () => {
                     value: 584,
                 },
             },
+            {
+                // note: the "data" has been removed here as it would have already been processed by selectRows handler
+                DataClassLookupColumn: {
+                    displayValue: 'MyDataClass',
+                    url: '/labkey/testContainer/subContainer/url?blam=19',
+                    value: 19,
+                },
+                LookupColumn: {
+                    url: '/labkey/testContainer/subContainer/url?blam=2392',
+                    value: 101,
+                },
+                NonLookupExpShowDataClass: {
+                    url: '/labkey/testContainer/subContainer/experiment-showDataClass.view?rowId=124',
+                    value: 'NoLookupDataClass',
+                },
+                LookupExpShowDataClass: {
+                    displayValue: 'BeepBoop',
+                    url: '/labkey/testContainer/subContainer/experiment-showDataClass.view?rowId=124',
+                    value: 'Has Lookup',
+                },
+                NonLookupExpShowData: {
+                    url: '/labkey/testContainer/subContainer/experiment-showData.view?rowId=124',
+                    value: 'No Lookup',
+                },
+                LookupExpShowData: {
+                    url: '/labkey/testContainer/subContainer/experiment-showData.view?rowId=124',
+                    value: 'Has Lookup',
+                },
+                LookupIssues: {
+                    displayValue: 'My Foo Request',
+                    url: '/labkey/testContainer/subContainer/issues-details.view?issueId=523',
+                    value: 523,
+                },
+                LookupExpRun: {
+                    displayValue: 'An Assay Run',
+                    url: '/labkey/testContainer/subContainer/assay-assayDetailRedirect.view?runId=584',
+                    value: 584,
+                },
+                LookupExpRun2: {
+                    displayValue: 'An Assay Run - 2',
+                    url: '/labkey/testContainer/subContainer/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253',
+                    value: 584,
+                },
+            },
         ],
     });
 
@@ -224,7 +268,7 @@ describe('URL Resolvers', () => {
         expect(newResult.getIn(['rows', 0, 'LookupExpRun2', 'url'])).toBe('#/rd/assayrun/253');
     });
 
-    test('Should not remap URLs within SelectRowsResult if lookup to different container', () => {
+    test('Should not remap URLs within SelectRowsResult if lookup to different container not in folder tree', () => {
         const resolver = new URLResolver();
 
         // http://facebook.github.io/jest/docs/en/expect.html#expectassertionsnumber
@@ -264,6 +308,105 @@ describe('URL Resolvers', () => {
 
         // validate ActionMapper('assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253')
         expect(newResult.getIn(['rows', 1, 'LookupExpRun2', 'url'])).toBe('/labkey/otherContainer/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253');
+    });
+
+    test('Should remap URLs within SelectRowsResult if url containers are sub-folders', () => {
+        const resolver = new URLResolver();
+
+        // http://facebook.github.io/jest/docs/en/expect.html#expectassertionsnumber
+        // avoid false positives by defining number of assertions in a test
+        expect.assertions(9);
+
+        const result = resolver.resolveSelectRows(selectRowsResult);
+        const newResult = fromJS(result);
+
+        // validate ActionMapper('experiment', 'showDataClass') -- no lookup
+        expect(newResult.getIn(['rows', 2, 'NonLookupExpShowDataClass', 'url'])).toBe(
+            '#/rd/dataclass/NoLookupDataClass'
+        );
+
+        // validate ActionMapper('experiment', 'showDataClass') -- with lookup
+        expect(newResult.getIn(['rows', 2, 'LookupExpShowDataClass', 'url'])).toBe('#/rd/dataclass/BeepBoop');
+
+        // validate ActionMapper('experiment', 'showData') -- no lookup
+        expect(newResult.getIn(['rows', 2, 'NonLookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
+
+        // validate ActionMapper('experiment', 'showData') -- with lookup
+        expect(newResult.getIn(['rows', 2, 'LookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
+
+        // validate LookupMapper('/q/')
+        expect(newResult.getIn(['rows', 2, 'LookupColumn', 'url'])).toBe('#/q/BoomSchema/PowQuery/101');
+
+        // validate LookupMapper('exp-dataclasses')
+        expect(newResult.getIn(['rows', 2, 'DataClassLookupColumn', 'url'])).toBe('#/rd/dataclass/MyDataClass');
+
+        // validate LookupMapper('issues')
+        expect(newResult.getIn(['rows', 2, 'LookupIssues', 'url'])).toBe(
+            '/labkey/testContainer/issues-details.view?issueId=523'
+        );
+
+        // validate LookupMapper('exp-runs')
+        expect(newResult.getIn(['rows', 2, 'LookupExpRun', 'url'])).toBe('#/rd/assayrun/584');
+
+        // validate ActionMapper('assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253')
+        expect(newResult.getIn(['rows', 2, 'LookupExpRun2', 'url'])).toBe('#/rd/assayrun/253');
+    });
+
+    test('Should remap URLs within SelectRowsResult if url containers are super-folders', () => {
+        initMockServerContext({
+            container: {
+                id: 'subTestContainerEntityId',
+                title: 'Sub Test Container',
+                path: '/testContainer/subContainer1/subContainer2',
+                formats: {
+                    dateFormat: 'yyyy-MM-dd',
+                    dateTimeFormat: 'yyyy-MM-dd HH:mm',
+                    numberFormat: null,
+                },
+                activeModules: ['Core', 'Query'], // add in the Ontology module if you want to test the Field Editor integrations
+            },
+            contextPath: '/labkey',
+        });
+
+        const resolver = new URLResolver();
+
+        // http://facebook.github.io/jest/docs/en/expect.html#expectassertionsnumber
+        // avoid false positives by defining number of assertions in a test
+        expect.assertions(9);
+
+        const result = resolver.resolveSelectRows(selectRowsResult);
+        const newResult = fromJS(result);
+
+        // validate ActionMapper('experiment', 'showDataClass') -- no lookup
+        expect(newResult.getIn(['rows', 0, 'NonLookupExpShowDataClass', 'url'])).toBe(
+            '#/rd/dataclass/NoLookupDataClass'
+        );
+
+        // validate ActionMapper('experiment', 'showDataClass') -- with lookup
+        expect(newResult.getIn(['rows', 0, 'LookupExpShowDataClass', 'url'])).toBe('#/rd/dataclass/BeepBoop');
+
+        // validate ActionMapper('experiment', 'showData') -- no lookup
+        expect(newResult.getIn(['rows', 0, 'NonLookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
+
+        // validate ActionMapper('experiment', 'showData') -- with lookup
+        expect(newResult.getIn(['rows', 0, 'LookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
+
+        // validate LookupMapper('/q/')
+        expect(newResult.getIn(['rows', 0, 'LookupColumn', 'url'])).toBe('#/q/BoomSchema/PowQuery/101');
+
+        // validate LookupMapper('exp-dataclasses')
+        expect(newResult.getIn(['rows', 0, 'DataClassLookupColumn', 'url'])).toBe('#/rd/dataclass/MyDataClass');
+
+        // validate LookupMapper('issues')
+        expect(newResult.getIn(['rows', 0, 'LookupIssues', 'url'])).toBe(
+            '/labkey/testContainer/issues-details.view?issueId=523'
+        );
+
+        // validate LookupMapper('exp-runs')
+        expect(newResult.getIn(['rows', 0, 'LookupExpRun', 'url'])).toBe('#/rd/assayrun/584');
+
+        // validate ActionMapper('assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253')
+        expect(newResult.getIn(['rows', 0, 'LookupExpRun2', 'url'])).toBe('#/rd/assayrun/253');
     });
 });
 

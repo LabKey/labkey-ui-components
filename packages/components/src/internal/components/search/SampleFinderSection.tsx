@@ -354,7 +354,7 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
 
     if (errors) return <Alert>{errors}</Alert>;
 
-    if (!queryConfigs || sampleTypeNames.length == 0) return <LoadingSpinner />;
+    if (!queryConfigs || !sampleTypeNames) return <LoadingSpinner />;
 
     return (
         <SampleFinderSamplesWithQueryModels

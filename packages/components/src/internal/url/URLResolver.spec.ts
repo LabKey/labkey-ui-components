@@ -7,8 +7,10 @@ import { LineageResult } from '../components/lineage/models';
 import { registerDefaultURLMappers } from '../testHelpers';
 
 import { parsePathName, URLResolver } from './URLResolver';
+import {initUnitTestMocks} from "../testHelperMocks";
 
 beforeAll(() => {
+    initUnitTestMocks();
     registerDefaultURLMappers();
 });
 
@@ -46,7 +48,7 @@ describe('resolveLineage', () => {
                     queryName: 'Source 1',
                     type: 'Data',
                     schemaName: 'exp.data',
-                    url: '/labkey/Sam%20Man/experiment-showData.view?rowId=6648',
+                    url: '/labkey/testContainer/experiment-showData.view?rowId=6648',
                     parents: [],
                     rowId: 6648,
                 },
@@ -75,7 +77,7 @@ describe('resolveLineage', () => {
         );
 
         expect(resolvedLinks.list).toEqual(undefined);
-        expect(resolvedLinks.overview).toEqual('/labkey/ExampleLineage/experiment-showRunGraph.view?rowId=794');
+        expect(resolvedLinks.overview).toEqual('/labkey/testContainer/experiment-showRunGraph.view?rowId=794');
     });
 });
 

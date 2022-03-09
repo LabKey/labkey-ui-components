@@ -21,8 +21,10 @@ import { initMockServerContext, registerDefaultURLMappers } from '../testHelpers
 
 import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './AppURLResolver';
 import { URLResolver } from './URLResolver';
+import {initUnitTestMocks} from "../testHelperMocks";
 
 beforeAll(() => {
+    initUnitTestMocks();
     registerDefaultURLMappers();
 });
 
@@ -101,35 +103,35 @@ describe('URL Resolvers', () => {
                     value: 101,
                 },
                 NonLookupExpShowDataClass: {
-                    url: '/labkey/biologics/experiment-showDataClass.view?rowId=124',
+                    url: '/labkey/testContainer/experiment-showDataClass.view?rowId=124',
                     value: 'NoLookupDataClass',
                 },
                 LookupExpShowDataClass: {
                     displayValue: 'BeepBoop',
-                    url: '/labkey/biologics/experiment-showDataClass.view?rowId=124',
+                    url: '/labkey/testContainer/experiment-showDataClass.view?rowId=124',
                     value: 'Has Lookup',
                 },
                 NonLookupExpShowData: {
-                    url: '/labkey/biologics/experiment-showData.view?rowId=124',
+                    url: '/labkey/testContainer/experiment-showData.view?rowId=124',
                     value: 'No Lookup',
                 },
                 LookupExpShowData: {
-                    url: '/labkey/biologics/experiment-showData.view?rowId=124',
+                    url: '/labkey/testContainer/experiment-showData.view?rowId=124',
                     value: 'Has Lookup',
                 },
                 LookupIssues: {
                     displayValue: 'My Foo Request',
-                    url: '/labkey/biologics/issues-details.view?issueId=523',
+                    url: '/labkey/testContainer/issues-details.view?issueId=523',
                     value: 523,
                 },
                 LookupExpRun: {
                     displayValue: 'An Assay Run',
-                    url: '/labkey/biologics/assay-assayDetailRedirect.view?runId=584',
+                    url: '/labkey/testContainer/assay-assayDetailRedirect.view?runId=584',
                     value: 584,
                 },
                 LookupExpRun2: {
                     displayValue: 'An Assay Run - 2',
-                    url: '/labkey/biologics/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253',
+                    url: '/labkey/testContainer/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253',
                     value: 584,
                 },
             },
@@ -138,9 +140,6 @@ describe('URL Resolvers', () => {
 
     test('Should remap URLs within SelectRowsResult', () => {
         const resolver = new URLResolver();
-        initMockServerContext({
-            contextPath: 'labkeyTest',
-        });
 
         // http://facebook.github.io/jest/docs/en/expect.html#expectassertionsnumber
         // avoid false positives by defining number of assertions in a test
@@ -171,7 +170,7 @@ describe('URL Resolvers', () => {
 
         // validate LookupMapper('issues')
         expect(newResult.getIn(['rows', 0, 'LookupIssues', 'url'])).toBe(
-            '/labkey/biologics/issues-details.view?issueId=523'
+            '/labkey/testContainer/issues-details.view?issueId=523'
         );
 
         // validate LookupMapper('exp-runs')

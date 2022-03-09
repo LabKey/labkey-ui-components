@@ -4,7 +4,7 @@
   "metaData" : {
     "importTemplates" : [ {
       "label" : "Download Template",
-      "url" : "/labkey/Sample%20Management/query-exportExcelTemplate.view?schemaName=assay.General.GPAT%201&query.queryName=Runs&headerType=DisplayFieldKey"
+      "url" : "/labkey/testContainer/query-exportExcelTemplate.view?schemaName=assay.General.GPAT%201&query.queryName=Runs&headerType=DisplayFieldKey"
     } ],
     "root" : "rows",
     "totalProperty" : "rowCount",
@@ -695,12 +695,12 @@
     "data" : {
       "RowId" : {
         "value" : 650,
-        "url" : "/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=650"
+        "url" : "/labkey/testContainer/assay-assayDetailRedirect.view?runId=650"
       },
       "CreatedBy" : {
         "value" : 1005,
         "displayValue" : "susanh",
-        "url" : "/labkey/Sample%20Management/user-details.view?schemaName=core&query.queryName=Users&userId=1005"
+        "url" : "/labkey/testContainer/user-details.view?schemaName=core&query.queryName=Users&userId=1005"
       },
       "Modified" : {
         "formattedValue" : "2019-08-07 13:18",
@@ -721,10 +721,10 @@
       "ModifiedBy" : {
         "value" : 1005,
         "displayValue" : "susanh",
-        "url" : "/labkey/Sample%20Management/user-details.view?schemaName=core&query.queryName=Users&userId=1005"
+        "url" : "/labkey/testContainer/user-details.view?schemaName=core&query.queryName=Users&userId=1005"
       },
       "DataOutputs/DataFileUrl" : [ {
-        "value" : "file:///Users/susanhert/Development/labkey/trunk/build/deploy/files/Sample%20Management/@files/assaydata/GPAT_1-2019-08-07-1318.tmp"
+        "value" : "file:///Users/susanhert/Development/labkey/trunk/build/deploy/files/testContainer/@files/assaydata/GPAT_1-2019-08-07-1318.tmp"
       } ],
       "Created" : {
         "formattedValue" : "2019-08-07 13:18",
@@ -732,7 +732,7 @@
       },
       "Name" : {
         "value" : "GPAT 1_2019-08-07_13-18-06",
-        "url" : "/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=650"
+        "url" : "/labkey/testContainer/assay-assayDetailRedirect.view?runId=650"
       },
       "ReplacesRun" : {
         "value" : 646,
@@ -744,7 +744,7 @@
       "DataOutputs" : [ {
         "value" : 2010,
         "displayValue" : "GPAT_1-2019-08-07-1318.tmp",
-        "url" : "/labkey/Sample%20Management/experiment-showData.view?rowId=2010"
+        "url" : "/labkey/testContainer/experiment-showData.view?rowId=2010"
       } ],
       "run_multi_field" : {
         "value" : null

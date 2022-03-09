@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Don't use expensive `QueryableInputs` now that we have the query for descendants
+* Sample Finder Optimizations
+  * Don't use expensive `QueryableInputs` now that we have the query for descendants
+  * Don't load the grid until we have sample type names
 
 ### version 2.138.5
 *Released*: 4 March 2022

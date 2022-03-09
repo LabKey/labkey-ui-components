@@ -21,7 +21,8 @@ import {
     addAssaysSectionConfig,
     addSamplesSectionConfig,
     addSourcesSectionConfig,
-    biologicsIsPrimaryApp, getContainerProject,
+    biologicsIsPrimaryApp,
+    getContainerProject,
     getCurrentAppProperties,
     getMenuSectionConfigs,
     getPrimaryAppProperties,
@@ -31,7 +32,8 @@ import {
     isCommunityDistribution,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
-    isProductNavigationEnabled, isProjectContainer,
+    isProductNavigationEnabled,
+    isProjectContainer,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
     sampleManagerIsPrimaryApp,
@@ -359,42 +361,40 @@ describe('utils', () => {
         expect(isProjectContainer('project a/b')).toBeFalsy();
         expect(isProjectContainer('project a/b/d')).toBeFalsy();
 
-        LABKEY.container = { path: 'project'};
+        LABKEY.container = { path: 'project' };
         expect(isProjectContainer()).toBeTruthy();
         expect(isProjectContainer('project')).toBeTruthy();
         expect(isProjectContainer('project a/b')).toBeFalsy();
 
-        LABKEY.container = { path: 'project a/'};
+        LABKEY.container = { path: 'project a/' };
         expect(isProjectContainer()).toBeTruthy();
         expect(isProjectContainer('project a/b')).toBeFalsy();
 
-        LABKEY.container = { path: 'project a/b'};
+        LABKEY.container = { path: 'project a/b' };
         expect(isProjectContainer()).toBeFalsy();
         expect(isProjectContainer('project')).toBeTruthy();
-
     });
 
     test('getContainerProject', () => {
         LABKEY.container = {};
-        expect(getContainerProject()).toBeNull()
+        expect(getContainerProject()).toBeNull();
         expect(getContainerProject('project')).toBe('project/');
         expect(getContainerProject('project a/')).toBe('project a/');
         expect(getContainerProject('project a/b')).toBe('project a/');
         expect(getContainerProject('project a/b/d')).toBe('project a/');
 
-        LABKEY.container = { path: 'project'};
+        LABKEY.container = { path: 'project' };
         expect(getContainerProject()).toBe('project/');
         expect(getContainerProject('project')).toBe('project/');
         expect(getContainerProject('project a/b')).toBe('project a/');
 
-        LABKEY.container = { path: 'project a/'};
+        LABKEY.container = { path: 'project a/' };
         expect(getContainerProject()).toBe('project a/');
         expect(getContainerProject('project a/b')).toBe('project a/');
 
-        LABKEY.container = { path: 'project a/b'};
+        LABKEY.container = { path: 'project a/b' };
         expect(getContainerProject()).toBe('project a/');
         expect(getContainerProject('project')).toBe('project/');
-
     });
 
     test('isPremiumProductEnabled', () => {
@@ -564,7 +564,7 @@ describe('getStorageSectionConfig', () => {
 
     test('admin', () => {
         LABKEY.container = {
-            path: 'Project A'
+            path: 'Project A',
         };
 
         const config = getStorageSectionConfig(
@@ -574,15 +574,15 @@ describe('getStorageSectionConfig', () => {
             4
         );
         expect(config.maxItemsPerColumn).toBe(4);
-        expect(config.seeAllURL).toBe("/labkey/freezermanager/Project%20A/app.view#/home");
-        expect(config.headerURL).toBe("/labkey/freezermanager/Project%20A/app.view#/home");
-        expect(config.emptyURL).toBe("/labkey/freezermanager/Project%20A/app.view#/freezers/new");
+        expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20A/app.view#/home');
+        expect(config.headerURL).toBe('/labkey/freezermanager/Project%20A/app.view#/home');
+        expect(config.emptyURL).toBe('/labkey/freezermanager/Project%20A/app.view#/freezers/new');
         expect(config.emptyURLText).toBe('Create a freezer');
     });
 
     test('admin, child folder', () => {
         LABKEY.container = {
-            path: 'Project A/Child Folder 1'
+            path: 'Project A/Child Folder 1',
         };
 
         const config = getStorageSectionConfig(
@@ -592,16 +592,15 @@ describe('getStorageSectionConfig', () => {
             4
         );
         expect(config.maxItemsPerColumn).toBe(4);
-        expect(config.seeAllURL).toBe("/labkey/freezermanager/Project%20A/Child%20Folder%201/app.view#/home");
-        expect(config.headerURL).toBe("/labkey/freezermanager/Project%20A/Child%20Folder%201/app.view#/home");
+        expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20A/Child%20Folder%201/app.view#/home');
+        expect(config.headerURL).toBe('/labkey/freezermanager/Project%20A/Child%20Folder%201/app.view#/home');
         expect(config.emptyURL).toBe(undefined);
-        expect(config.emptyURLText).toBe("Get started...");
+        expect(config.emptyURLText).toBe('Get started...');
     });
-
 
     test('storage editor', () => {
         LABKEY.container = {
-            path: undefined
+            path: undefined,
         };
 
         const config = getStorageSectionConfig(
@@ -618,7 +617,7 @@ describe('getStorageSectionConfig', () => {
 
     test('storage designer', () => {
         LABKEY.container = {
-            path: 'Project B'
+            path: 'Project B',
         };
 
         const config = getStorageSectionConfig(
@@ -628,15 +627,15 @@ describe('getStorageSectionConfig', () => {
             4
         );
         expect(config.maxItemsPerColumn).toBe(4);
-        expect(config.seeAllURL).toBe("/labkey/freezermanager/Project%20B/app.view#/home");
-        expect(config.headerURL).toBe("/labkey/freezermanager/Project%20B/app.view#/home");
-        expect(config.emptyURL).toBe("/labkey/freezermanager/Project%20B/app.view#/freezers/new");
+        expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20B/app.view#/home');
+        expect(config.headerURL).toBe('/labkey/freezermanager/Project%20B/app.view#/home');
+        expect(config.emptyURL).toBe('/labkey/freezermanager/Project%20B/app.view#/freezers/new');
         expect(config.emptyURLText).toBe('Create a freezer');
     });
 
     test('storage designer, child container', () => {
         LABKEY.container = {
-            path: 'Project B/Child 1'
+            path: 'Project B/Child 1',
         };
 
         const config = getStorageSectionConfig(
@@ -646,12 +645,11 @@ describe('getStorageSectionConfig', () => {
             4
         );
         expect(config.maxItemsPerColumn).toBe(4);
-        expect(config.seeAllURL).toBe("/labkey/freezermanager/Project%20B/Child%201/app.view#/home");
-        expect(config.headerURL).toBe("/labkey/freezermanager/Project%20B/Child%201/app.view#/home");
+        expect(config.seeAllURL).toBe('/labkey/freezermanager/Project%20B/Child%201/app.view#/home');
+        expect(config.headerURL).toBe('/labkey/freezermanager/Project%20B/Child%201/app.view#/home');
         expect(config.emptyURL).toBe(undefined);
-        expect(config.emptyURLText).toBe("Get started...");
+        expect(config.emptyURLText).toBe('Get started...');
     });
-
 });
 
 describe('addSourcesSectionConfig', () => {

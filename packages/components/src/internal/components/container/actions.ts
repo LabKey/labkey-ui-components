@@ -35,7 +35,7 @@ function applyPermissions(container: Container, user: User): User {
 export interface ContainerUser {
     container: Container;
     user: User;
-    containerUsers?: {[key: string] : ContainerUser};
+    containerUsers?: { [key: string]: ContainerUser };
 }
 
 export interface UseContainerUser extends ContainerUser {

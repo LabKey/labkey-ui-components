@@ -188,8 +188,10 @@ export function isSampleStatusEnabled(): boolean {
 }
 
 export function isSampleFinderEnabled(moduleContext?: any): boolean {
-    return !biologicsIsPrimaryApp(moduleContext) ||
-        (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_SAMPLE_FINDER] === true;
+    return (
+        !biologicsIsPrimaryApp(moduleContext) ||
+        (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_SAMPLE_FINDER] === true
+    );
 }
 
 export function getCurrentAppProperties(): AppProperties {
@@ -232,20 +234,17 @@ export function isCommunityDistribution(): boolean {
     return !hasModule('SampleManagement') && !hasPremiumModule();
 }
 
-export function isProjectContainer(containerPath?: string) : boolean {
+export function isProjectContainer(containerPath?: string): boolean {
     let path = containerPath ?? getServerContext().container.path;
-    if (!path)
-        return false;
-    if (!path.endsWith('/'))
-        path = path + '/';
+    if (!path) return false;
+    if (!path.endsWith('/')) path = path + '/';
     return path.split('/').filter(p => !!p).length === 1;
 }
 
-export function getProjectPath(containerPath?: string) : string {
+export function getProjectPath(containerPath?: string): string {
     const path = containerPath ?? getServerContext().container.path;
-    if (!path)
-        return undefined;
-    return path.split('/').filter(p => !!p)[0] + "/";
+    if (!path) return undefined;
+    return path.split('/').filter(p => !!p)[0] + '/';
 }
 
 // exported for testing

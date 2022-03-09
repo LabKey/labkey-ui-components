@@ -67,13 +67,13 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
                         if (index > 5) return null;
                         if (index === 5) {
                             return (
-                                <li className="filter-display__filter-value-li">
+                                <li className="filter-display__filter-value-li" key={index}>
                                     <OverlayTrigger
                                         overlay={
                                             <Popover bsClass="popover" id={'filter-value-list-popover-' + index}>
                                                 <div>
                                                     {[...values].splice(5).map(val => (
-                                                        <div>{val}</div>
+                                                        <div key={val}>{val}</div>
                                                     ))}
                                                 </div>
                                             </Popover>

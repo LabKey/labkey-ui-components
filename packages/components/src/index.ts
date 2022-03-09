@@ -222,7 +222,6 @@ import { EditableGridPanelDeprecated } from './internal/components/editable/Edit
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
-import { EditableGridModal } from './internal/components/editable/EditableGridModal';
 
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
@@ -642,6 +641,7 @@ import {
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
+    FIND_SAMPLES_BY_FILTER_HREF,
     FIND_SAMPLES_BY_FILTER_KEY,
     FIND_SAMPLES_BY_ID_HREF,
     FIND_SAMPLES_BY_ID_KEY,
@@ -765,6 +765,7 @@ const App = {
     NEW_SOURCE_TYPE_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_ASSAY_DESIGN_HREF,
+    FIND_SAMPLES_BY_FILTER_HREF,
     FIND_SAMPLES_BY_ID_HREF,
     PICKLIST_HOME_HREF,
     WORKFLOW_HOME_HREF,
@@ -851,7 +852,6 @@ export {
     EditableGridPanel,
     EditableGridPanelDeprecated,
     EditableGridPanelForUpdate,
-    EditableGridModal,
     EditorModel,
     cancelEvent,
     // url and location related items

@@ -538,8 +538,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     fieldsAdditionalRenderer={this.renderColumnMappingSection}
                     successBsStyle={successBsStyle}
                     domainFormDisplayOptions={{
-                        isDragDisabled: model.isFromAssay(),
-                        hideAddFieldsButton: model.isFromAssay(),
+                        isDragDisabled: model.isFromLinkedSource(),
+                        hideAddFieldsButton: model.isFromLinkedSource(),
                         hideImportData: model.definitionIsShared, // Shared (Dataspace) study does not have permission to import data. See study-importAction.validatePermission
                         retainReservedFields: true, // reserved fields are used for mapping the participant and visit columns.
                     }}

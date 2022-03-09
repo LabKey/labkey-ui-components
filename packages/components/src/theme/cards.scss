@@ -155,9 +155,14 @@ $circle-size: 12 * $scale;
     margin-right: 15px;
     margin-top: 8px;
 
-
     @include shadow(1);
 
+    a, .actions i {
+        cursor: pointer;
+    }
+}
+
+.filter-cards__popout {
     &:hover,&:focus {
         text-decoration: none;
 

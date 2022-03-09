@@ -95,11 +95,11 @@ describe('URL Resolvers', () => {
                 // note: the "data" has been removed here as it would have already been processed by selectRows handler
                 DataClassLookupColumn: {
                     displayValue: 'MyDataClass',
-                    url: 'some/url?blam=19',
+                    url: '/labkey/testContainer/url?blam=19',
                     value: 19,
                 },
                 LookupColumn: {
-                    url: '/lookup-url/2392',
+                    url: '/labkey/testContainer/url?blam=2392',
                     value: 101,
                 },
                 NonLookupExpShowDataClass: {

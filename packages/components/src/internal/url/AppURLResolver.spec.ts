@@ -135,6 +135,50 @@ describe('URL Resolvers', () => {
                     value: 584,
                 },
             },
+            {
+                // note: the "data" has been removed here as it would have already been processed by selectRows handler
+                DataClassLookupColumn: {
+                    displayValue: 'MyDataClass',
+                    url: '/labkey/otherContainer/url?blam=19',
+                    value: 19,
+                },
+                LookupColumn: {
+                    url: '/labkey/otherContainer/url?blam=2392',
+                    value: 101,
+                },
+                NonLookupExpShowDataClass: {
+                    url: '/labkey/otherContainer/experiment-showDataClass.view?rowId=124',
+                    value: 'NoLookupDataClass',
+                },
+                LookupExpShowDataClass: {
+                    displayValue: 'BeepBoop',
+                    url: '/labkey/otherContainer/experiment-showDataClass.view?rowId=124',
+                    value: 'Has Lookup',
+                },
+                NonLookupExpShowData: {
+                    url: '/labkey/otherContainer/experiment-showData.view?rowId=124',
+                    value: 'No Lookup',
+                },
+                LookupExpShowData: {
+                    url: '/labkey/otherContainer/experiment-showData.view?rowId=124',
+                    value: 'Has Lookup',
+                },
+                LookupIssues: {
+                    displayValue: 'My Foo Request',
+                    url: '/labkey/otherContainer/issues-details.view?issueId=523',
+                    value: 523,
+                },
+                LookupExpRun: {
+                    displayValue: 'An Assay Run',
+                    url: '/labkey/otherContainer/assay-assayDetailRedirect.view?runId=584',
+                    value: 584,
+                },
+                LookupExpRun2: {
+                    displayValue: 'An Assay Run - 2',
+                    url: '/labkey/otherContainer/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253',
+                    value: 584,
+                },
+            },
         ],
     });
 
@@ -178,6 +222,48 @@ describe('URL Resolvers', () => {
 
         // validate ActionMapper('assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253')
         expect(newResult.getIn(['rows', 0, 'LookupExpRun2', 'url'])).toBe('#/rd/assayrun/253');
+    });
+
+    test('Should not remap URLs within SelectRowsResult if lookup to different container', () => {
+        const resolver = new URLResolver();
+
+        // http://facebook.github.io/jest/docs/en/expect.html#expectassertionsnumber
+        // avoid false positives by defining number of assertions in a test
+        expect.assertions(9);
+
+        const result = resolver.resolveSelectRows(selectRowsResult);
+        const newResult = fromJS(result);
+
+        // validate ActionMapper('experiment', 'showDataClass') -- no lookup
+        expect(newResult.getIn(['rows', 1, 'NonLookupExpShowDataClass', 'url'])).toBe(
+            '/labkey/otherContainer/experiment-showDataClass.view?rowId=124'
+        );
+
+        // validate ActionMapper('experiment', 'showDataClass') -- with lookup
+        expect(newResult.getIn(['rows', 1, 'LookupExpShowDataClass', 'url'])).toBe('/labkey/otherContainer/experiment-showDataClass.view?rowId=124');
+
+        // validate ActionMapper('experiment', 'showData') -- no lookup
+        expect(newResult.getIn(['rows', 1, 'NonLookupExpShowData', 'url'])).toBe('/labkey/otherContainer/experiment-showData.view?rowId=124');
+
+        // validate ActionMapper('experiment', 'showData') -- with lookup
+        expect(newResult.getIn(['rows', 1, 'LookupExpShowData', 'url'])).toBe('/labkey/otherContainer/experiment-showData.view?rowId=124');
+
+        // validate LookupMapper('/q/')
+        expect(newResult.getIn(['rows', 1, 'LookupColumn', 'url'])).toBe('/labkey/otherContainer/url?blam=2392');
+
+        // validate LookupMapper('exp-dataclasses')
+        expect(newResult.getIn(['rows', 1, 'DataClassLookupColumn', 'url'])).toBe('/labkey/otherContainer/url?blam=19');
+
+        // validate LookupMapper('issues')
+        expect(newResult.getIn(['rows', 1, 'LookupIssues', 'url'])).toBe(
+            '/labkey/otherContainer/issues-details.view?issueId=523'
+        );
+
+        // validate LookupMapper('exp-runs')
+        expect(newResult.getIn(['rows', 1, 'LookupExpRun', 'url'])).toBe('/labkey/otherContainer/assay-assayDetailRedirect.view?runId=584');
+
+        // validate ActionMapper('assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253')
+        expect(newResult.getIn(['rows', 1, 'LookupExpRun2', 'url'])).toBe('/labkey/otherContainer/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253');
     });
 });
 

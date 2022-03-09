@@ -31,27 +31,29 @@ describe('resolveSearchUsingIndex', () => {
 describe('resolveLineage', () => {
     const resolver = new URLResolver();
 
+    let node = {
+            lsid: 'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4',
+            children: [
+                {
+                    lsid: 'urn:lsid:labkey.com:Run.Folder-252:a6e5fa05-28cd-1038-ad87-68bd1b9ac33e',
+                    role: 'no role',
+                },
+            ],
+            name: 'D-32',
+            cpasType: 'urn:lsid:labkey.com:DataClass.Folder-252:Source+1',
+            queryName: 'Source 1',
+            type: 'Data',
+            schemaName: 'exp.data',
+            url: '/labkey/testContainer/experiment-showData.view?rowId=6648',
+            parents: [],
+            rowId: 6648,
+    }
+
     test('name with spaces', () => {
         const lineageResult = LineageResult.create({
             seed: 'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4',
             nodes: {
-                'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4': {
-                    lsid: 'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4',
-                    children: [
-                        {
-                            lsid: 'urn:lsid:labkey.com:Run.Folder-252:a6e5fa05-28cd-1038-ad87-68bd1b9ac33e',
-                            role: 'no role',
-                        },
-                    ],
-                    name: 'D-32',
-                    cpasType: 'urn:lsid:labkey.com:DataClass.Folder-252:Source+1',
-                    queryName: 'Source 1',
-                    type: 'Data',
-                    schemaName: 'exp.data',
-                    url: '/labkey/testContainer/experiment-showData.view?rowId=6648',
-                    parents: [],
-                    rowId: 6648,
-                },
+                'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4': node,
             },
         });
         const resolvedLinks = resolver.resolveLineageItem(
@@ -60,6 +62,23 @@ describe('resolveLineage', () => {
 
         expect(resolvedLinks.list).toEqual('#/rd/dataclass/Source%201');
         expect(resolvedLinks.overview).toEqual('#/rd/expdata/6648');
+    });
+
+    test('url to different container', () => {
+        let url = '/labkey/otherContainer/experiment-showData.view?rowId=6648'
+        node['url'] = url;
+        const lineageResult = LineageResult.create({
+            seed: 'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4',
+            nodes: {
+                'urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4': node
+            },
+        });
+        const resolvedLinks = resolver.resolveLineageItem(
+            lineageResult.nodes.get('urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4')
+        );
+
+        expect(resolvedLinks.list).toEqual('#/rd/dataclass/Source%201');
+        expect(resolvedLinks.overview).toEqual(url);
     });
 
     test('accepted types', () => {

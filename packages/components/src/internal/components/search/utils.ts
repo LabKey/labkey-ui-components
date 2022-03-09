@@ -176,16 +176,18 @@ export function getSampleFinderQueryConfigs(
         },
     };
 
-    for (const name of sampleTypeNames) {
-        const id = getSampleFinderConfigId(finderId, 'samples/' + name);
-        const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
-        configs[id] = {
-            id,
-            title: name,
-            schemaQuery,
-            omittedColumns,
-            ...commonConfig,
-        };
+    if (sampleTypeNames) {
+        for (const name of sampleTypeNames) {
+            const id = getSampleFinderConfigId(finderId, 'samples/' + name);
+            const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
+            configs[id] = {
+                id,
+                title: name,
+                schemaQuery,
+                omittedColumns,
+                ...commonConfig,
+            };
+        }
     }
     return configs;
 }

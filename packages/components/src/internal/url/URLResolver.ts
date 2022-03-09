@@ -513,6 +513,14 @@ export const URL_MAPPERS = {
 
 export class URLResolver {
     private mapURL = (mapper: MapURLOptions): string => {
+
+        // Don't override URLs if the URL has a different container than the current container and is not in the subfolder
+        // tree of the current container. This scopes the apps to their current container and sub-containers, and supports
+        // adding FKs from other containers and preserving the URL from the server.
+        let urlContainerPath = parsePathName(mapper.url).containerPath;
+        if (urlContainerPath !== ActionURL.getContainer() && urlContainerPath.indexOf(ActionURL.getContainer() + '/') === -1)
+            return mapper.url;
+
         const _url = URLService.getUrlMappers()
             .toSeq()
             .map(m => m.resolve(mapper.url, mapper.row, mapper.column, mapper.schema, mapper.query))

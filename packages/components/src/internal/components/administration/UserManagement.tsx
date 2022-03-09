@@ -63,12 +63,12 @@ export function getNewUserRoles(
     return roles;
 }
 
-interface StateProps {
+interface OwnProps {
     extraRoles?: string[][];
     user: User;
 }
 
-type Props = StateProps & PermissionsProviderProps;
+type Props = OwnProps & PermissionsProviderProps;
 
 interface State {
     policy: SecurityPolicy;
@@ -266,7 +266,7 @@ export class UserManagement extends PureComponent<Props, State> {
                 renderButtons={this.renderButtons}
             >
                 <UsersGridPanel
-                    {...this.props}
+                    user={user}
                     onCreateComplete={this.onCreateComplete}
                     onUsersStateChangeComplete={this.onUsersStateChangeComplete}
                     newUserRoleOptions={newUserRoleOptions}

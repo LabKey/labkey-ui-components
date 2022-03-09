@@ -8,16 +8,37 @@ import { ITab, SubNav } from '../navigation/SubNav';
 import { AppURL } from '../../url/AppURL';
 import { useServerContext } from '../base/ServerContext';
 
-import { getAdministrationSubNavTabs } from './actions';
+import { User } from "../base/models/User";
+import { List } from "immutable";
+import {biologicsIsPrimaryApp} from "../../app/utils";
 
-interface Props {}
+export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
+    let tabs = List<string>();
+
+    if (user.isAdmin) {
+        tabs = tabs.push('Users');
+        tabs = tabs.push('Permissions');
+    }
+    // Settings tab to be implemented in story 2 of In-App Admin
+    if (user.isAppAdmin() && !biologicsIsPrimaryApp()) {
+        tabs = tabs.push('Settings');
+    }
+
+    return tabs
+        .map(text => ({
+            text,
+            url: AppURL.create('admin', text.toLowerCase()),
+        }))
+        .toList();
+};
 
 const PARENT_TAB: ITab = {
     text: 'Dashboard',
     url: AppURL.create('home'),
 };
 
-export const AdministrationSubNav: FC<Props> = props => {
+export const AdministrationSubNav: FC = () => {
     const { user } = useServerContext();
+
     return <SubNav tabs={getAdministrationSubNavTabs(user)} noun={PARENT_TAB} />;
 };

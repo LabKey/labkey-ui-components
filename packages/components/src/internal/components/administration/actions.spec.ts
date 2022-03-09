@@ -2,22 +2,43 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List } from 'immutable';
+import {fromJS, List, Map} from 'immutable';
 
-import { App } from '../../../index';
-
-import { getAdministrationSubNavTabs, getUserGridFilterURL } from './actions';
+import {getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName, getUserGridFilterURL} from './actions';
+import {SecurityRole} from "../permissions/models";
 
 describe('Administration actions', () => {
-    test('getAdministrationSubNavTabs', () => {
-        expect(getAdministrationSubNavTabs(App.TEST_USER_GUEST).size).toBe(0);
-        expect(getAdministrationSubNavTabs(App.TEST_USER_READER).size).toBe(0);
-        expect(getAdministrationSubNavTabs(App.TEST_USER_AUTHOR).size).toBe(0);
-        expect(getAdministrationSubNavTabs(App.TEST_USER_EDITOR).size).toBe(0);
-        expect(getAdministrationSubNavTabs(App.TEST_USER_ASSAY_DESIGNER).size).toBe(0);
-        expect(getAdministrationSubNavTabs(App.TEST_USER_FOLDER_ADMIN).size).toBe(2);
-        expect(getAdministrationSubNavTabs(App.TEST_USER_PROJECT_ADMIN).size).toBe(2);
-        expect(getAdministrationSubNavTabs(App.TEST_USER_APP_ADMIN).size).toBe(3);
+    test('getUpdatedPolicyRoles', () => {
+        const testRole = SecurityRole.create({uniqueName: 'testRole', displayName: 'TestRoleDisplayName'});
+        const roles = List<SecurityRole>([testRole]);
+
+        // test with no changes
+        const noChangeRoles = getUpdatedPolicyRoles(roles, Map<string, string>());
+        expect(roles.size === noChangeRoles.size).toBeTruthy();
+        expect(noChangeRoles.get(0).uniqueName).toBe(testRole.uniqueName);
+        expect(noChangeRoles.get(0).displayName).toBe(testRole.displayName);
+
+        // test with a mapping to a new displayName
+        const changedRoles = getUpdatedPolicyRoles(roles, fromJS({testRole: 'UpdatedDisplayName'}));
+        expect(roles.size === changedRoles.size).toBeTruthy();
+        expect(changedRoles.get(0).uniqueName).toBe(testRole.uniqueName);
+        expect(changedRoles.get(0).displayName).toBe('UpdatedDisplayNames');
+    });
+
+    test('getUpdatedPolicyRolesByUniqueName', () => {
+        const key = 'testRole';
+        const testRole = SecurityRole.create({uniqueName: key, displayName: 'TestRoleDisplayName'});
+        const roles = List<SecurityRole>([testRole]);
+
+        // test with no changes
+        const noChangeRoles = getUpdatedPolicyRolesByUniqueName(roles, Map<string, string>());
+        expect(noChangeRoles.get(key).uniqueName).toBe(testRole.uniqueName);
+        expect(noChangeRoles.get(key).displayName).toBe(testRole.displayName);
+
+        // test with a mapping to a new displayName
+        const changedRoles = getUpdatedPolicyRolesByUniqueName(roles, fromJS({testRole: 'UpdatedDisplayName'}));
+        expect(changedRoles.get(key).uniqueName).toBe(testRole.uniqueName);
+        expect(changedRoles.get(key).displayName).toBe('UpdatedDisplayNames');
     });
 
     test('getUserGridFilterURL', () => {

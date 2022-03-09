@@ -2,8 +2,6 @@ import { List, Map } from 'immutable';
 
 import { Security } from '@labkey/api';
 
-import { User } from '../base/models/User';
-import { ITab } from '../navigation/SubNav';
 import { AppURL } from '../../url/AppURL';
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
@@ -40,25 +38,6 @@ function getUpdatedRole(role: SecurityRole, updatedRoleInfo: Map<string, string>
         displayName: updatedRoleInfo.get(role.uniqueName) + 's',
         description: SECURITY_ROLE_DESCRIPTIONS.get(role.uniqueName) || role.description,
     }) as SecurityRole;
-}
-
-export function getAdministrationSubNavTabs(user: User): List<ITab> {
-    let tabs = List<string>();
-
-    if (user.isAdmin) {
-        tabs = tabs.push('Users');
-        tabs = tabs.push('Permissions');
-    }
-    if (user.isAppAdmin()) {
-        tabs = tabs.push('Settings');
-    }
-
-    return tabs
-        .map(text => ({
-            text,
-            url: AppURL.create('admin', text.toLowerCase()),
-        }))
-        .toList();
 }
 
 export function getUserGridFilterURL(userIds: List<number>, urlPrefix: string): AppURL {

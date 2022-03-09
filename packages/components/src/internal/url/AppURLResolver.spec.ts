@@ -95,11 +95,11 @@ describe('URL Resolvers', () => {
                 // note: the "data" has been removed here as it would have already been processed by selectRows handler
                 DataClassLookupColumn: {
                     displayValue: 'MyDataClass',
-                    url: '/labkey/testContainer/url?blam=19',
+                    url: '/labkey/testContainer/url-app?blam=19',
                     value: 19,
                 },
                 LookupColumn: {
-                    url: '/labkey/testContainer/url?blam=2392',
+                    url: '/labkey/testContainer/url-app?blam=2392',
                     value: 101,
                 },
                 NonLookupExpShowDataClass: {
@@ -139,11 +139,11 @@ describe('URL Resolvers', () => {
                 // note: the "data" has been removed here as it would have already been processed by selectRows handler
                 DataClassLookupColumn: {
                     displayValue: 'MyDataClass',
-                    url: '/labkey/otherContainer/url?blam=19',
+                    url: '/labkey/otherContainer/url-app?blam=19',
                     value: 19,
                 },
                 LookupColumn: {
-                    url: '/labkey/otherContainer/url?blam=2392',
+                    url: '/labkey/otherContainer/url-app?blam=2392',
                     value: 101,
                 },
                 NonLookupExpShowDataClass: {
@@ -183,11 +183,11 @@ describe('URL Resolvers', () => {
                 // note: the "data" has been removed here as it would have already been processed by selectRows handler
                 DataClassLookupColumn: {
                     displayValue: 'MyDataClass',
-                    url: '/labkey/testContainer/subContainer/url?blam=19',
+                    url: '/labkey/testContainer/subContainer/url-app?blam=19',
                     value: 19,
                 },
                 LookupColumn: {
-                    url: '/labkey/testContainer/subContainer/url?blam=2392',
+                    url: '/labkey/testContainer/subContainer/url-app?blam=2392',
                     value: 101,
                 },
                 NonLookupExpShowDataClass: {
@@ -342,7 +342,7 @@ describe('URL Resolvers', () => {
 
         // validate LookupMapper('issues')
         expect(newResult.getIn(['rows', 2, 'LookupIssues', 'url'])).toBe(
-            '/labkey/testContainer/issues-details.view?issueId=523'
+            '/labkey/testContainer/subContainer/issues-details.view?issueId=523'
         );
 
         // validate LookupMapper('exp-runs')

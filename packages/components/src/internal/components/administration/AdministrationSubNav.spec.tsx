@@ -1,5 +1,6 @@
-import {App} from "../../../index";
-import {getAdministrationSubNavTabs} from "./AdministrationSubNav";
+import { App } from '../../../index';
+
+import { getAdministrationSubNavTabs } from './AdministrationSubNav';
 
 describe('AdministrationSubNav', () => {
     test('getAdministrationSubNavTabs', () => {

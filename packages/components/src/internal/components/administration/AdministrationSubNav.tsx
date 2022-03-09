@@ -4,13 +4,14 @@
  */
 import React, { FC } from 'react';
 
+import { List } from 'immutable';
+
 import { ITab, SubNav } from '../navigation/SubNav';
 import { AppURL } from '../../url/AppURL';
 import { useServerContext } from '../base/ServerContext';
 
-import { User } from "../base/models/User";
-import { List } from "immutable";
-import {biologicsIsPrimaryApp} from "../../app/utils";
+import { User } from '../base/models/User';
+import { biologicsIsPrimaryApp } from '../../app/utils';
 
 export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
     let tabs = List<string>();

@@ -197,10 +197,10 @@ describe('DatasetModel', () => {
         expect(DatasetModel.create({ name: 'test' }).getDomainKind()).toBe('StudyDatasetVisit');
     });
 
-    test('isFromAssay', () => {
-        expect(DatasetModel.create({ name: 'test' }).isFromAssay()).toBeFalsy();
-        expect(DatasetModel.create({ name: 'test', sourceAssayName: undefined }).isFromAssay()).toBeFalsy();
-        expect(DatasetModel.create({ name: 'test', sourceAssayName: null }).isFromAssay()).toBeFalsy();
-        expect(DatasetModel.create({ name: 'test', sourceAssayName: 'test' }).isFromAssay()).toBeTruthy();
+    test('isFromLinkedSource', () => {
+        expect(DatasetModel.create({ name: 'test' }).isFromLinkedSource()).toBeFalsy();
+        expect(DatasetModel.create({ name: 'test', sourceName: undefined }).isFromLinkedSource()).toBeFalsy();
+        expect(DatasetModel.create({ name: 'test', sourceName: null }).isFromLinkedSource()).toBeFalsy();
+        expect(DatasetModel.create({ name: 'test', sourceName: 'test' }).isFromLinkedSource()).toBeTruthy();
     });
 });

@@ -16,7 +16,6 @@ const booleanField = QueryColumn.create({ name: 'BooleanField', rangeURI: BOOLEA
 const dateField = QueryColumn.create({ name: 'DateField', rangeURI: DATE_TYPE.rangeURI, jsonType: 'date' });
 
 const Ops = [
-    'any',
     'eq',
     'neqornull',
     'isblank',
@@ -32,7 +31,6 @@ const Ops = [
 ];
 
 const dateOps = [
-    'any',
     'dateeq',
     'dateneq',
     'isblank',
@@ -45,7 +43,7 @@ const dateOps = [
     'notbetween',
 ];
 
-const booleanOps = ['any', 'eq', 'neqornull', 'isblank', 'isnonblank'];
+const booleanOps = ['eq', 'neqornull', 'isblank', 'isnonblank'];
 
 beforeAll(() => {
     LABKEY.container = {
@@ -93,19 +91,6 @@ describe('FilterExpressionView', () => {
         const wrapper = mount(<FilterExpressionView field={stringField} fieldFilter={null} />);
 
         validateFilterTypeDropdown(wrapper, Ops, null);
-
-        wrapper.unmount();
-    });
-
-    test("string field, 'has any value' operator", () => {
-        const wrapper = mount(
-            <FilterExpressionView
-                field={stringField}
-                fieldFilter={Filter.create('StringField', null, Filter.Types.HAS_ANY_VALUE)}
-            />
-        );
-
-        validate(wrapper, Ops, 0, 'any');
 
         wrapper.unmount();
     });

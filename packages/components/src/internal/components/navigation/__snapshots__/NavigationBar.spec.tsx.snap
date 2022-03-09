@@ -137,6 +137,23 @@ exports[`<NavigationBar/> with findByIds 1`] = `
                              by ID
                           </a>
                         </li>
+                        <li
+                          className=""
+                          role="presentation"
+                        >
+                          <a
+                            href="#/search/samplesByFilter"
+                            onClick={[Function]}
+                            onKeyDown={[Function]}
+                            role="menuitem"
+                            tabIndex="-1"
+                          >
+                            <i
+                              className="fa fa-sitemap"
+                            />
+                             Sample Finder
+                          </a>
+                        </li>
                       </ul>
                     </div>
                   </span>
@@ -210,6 +227,23 @@ exports[`<NavigationBar/> with findByIds 1`] = `
                      Find 
                     Samples
                      by ID
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#/search/samplesByFilter"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="fa fa-sitemap"
+                    />
+                     Sample Finder
                   </a>
                 </li>
                 <li

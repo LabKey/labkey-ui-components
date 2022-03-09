@@ -16,9 +16,10 @@
 import React, { createContext, FC, useContext, useReducer } from 'react';
 import { LabKey } from '@labkey/api';
 
-import { User } from '../../..';
+import { Container, User } from '../../..';
 
 export interface ServerContext extends LabKey {
+    container: Container;
     user: User;
 }
 
@@ -65,6 +66,7 @@ export const ServerContextConsumer = Context.Consumer;
 
 export const withAppUser = (ctx: LabKey): ServerContext => {
     return Object.assign({}, ctx, {
+        container: new Container(ctx.container),
         user: new User(ctx.user),
     });
 };

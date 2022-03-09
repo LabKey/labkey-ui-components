@@ -5,12 +5,53 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Export `PICKLIST_SAMPLES_FILTER`
 
+### version 2.139.1
+*Released*: 7 March 2022
+* Merge release22.3-SNAPSHOT to develop
+    * Includes changes from versions 2.138.1 through 2.138.5
+
 ### version 2.139.0
 *Released*: 7 March 2022
 * Support EditableGridPanel conversion for LKFM add and move samples use cases
   * AppURL switch back to hardcoded app.view
   * remove unused EditableGridModal
   * loadEditorModelData update to support raw value not being an object
+
+### version 2.138.5
+*Released*: 4 March 2022
+* Sample Finder Polish
+  * Don't clear filter values when switching between filter types
+  * Exclude lookup columns and the storage "Units" column for Sample types
+  * Add client side metric for tracking clicks on dashboard "Go to Sample Finder" button
+  * Start on the Choose Values tab if available
+  * Remove "Has Any Value" (no-op) filter type
+  * Change `isSampleFinderEnabled` to look for Biologics experimental flag
+
+### version 2.138.4
+*Released*: 3 March 2022
+* Item 9817: Sample Finder v1 polish fixes/updates
+  * Add padding to loading spinner
+  * Choose Values panel fix for long text options and empty state
+  * Filter modal styling fixes for list group: remove rounded corner, reduce padding, bold when active
+  * Update cursor behavior and hover behavior on filter cards and edit/remove icons
+  * Filter modal updates to better support display on narrow screen
+  * Add "Go to Sample Finder" button to the dashboard insights panel
+
+### version 2.138.3
+*Released*: 2 March 2022
+* Sample Finder Polishing
+  * Add `containerFilter` property to `EntityDataType` model
+  * Assure grid is updated after sample actions are taken
+  * Update grid columns to always show parent id columns and add parent type name to column name
+
+### version 2.138.2
+*Released*: 2 March 2022
+* Container: add isFolder, isProject, isRoot, and isSharedProject
+
+### version 2.138.1
+*Released*: 1 March 2022
+* Item 44544: Sample type dataset definitions should be locked similar to assays
+    * Generalize IDatasetModel.isFromAssay to isFromLinkedSource to handle both assay and sample type datasets
 
 ### version 2.138.0
 *Released*: 28 February 2022

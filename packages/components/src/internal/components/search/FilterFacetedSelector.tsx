@@ -112,7 +112,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     </div>
                 )}
                 <Row>
-                    <Col xs={6}>
+                    <Col xs={taggedValues?.length > 0 ? 6 : 12}>
                         <ul className="nav nav-stacked labkey-wizard-pills">
                             {filteredFieldDistinctValues?.map((value, index) => {
                                 let displayValue = value;
@@ -126,13 +126,13 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                     >
                                         <div className="form-check">
                                             <input
-                                                className="form-check-input"
+                                                className="form-check-input search-filter-values__checkbox"
                                                 type="checkbox"
                                                 name={'field-value-' + index}
                                                 onChange={event => onChange(value, event.target.checked)}
                                                 checked={checkedValues.indexOf(value) > -1}
                                             />
-                                            <span className="search-filter-values__value">{displayValue}</span>
+                                            <div className="search-filter-values__value">{displayValue}</div>
                                         </div>
                                     </li>
                                 );
@@ -142,25 +142,30 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                             )}
                         </ul>
                     </Col>
-                    <Col xs={6}>
-                        {taggedValues?.length > 0 && <div className="search-filter-tags__title">Selected</div>}
-                        <ul className="nav nav-stacked labkey-wizard-pills search-filter-tags__div">
-                            {taggedValues?.map((value, index) => {
-                                let displayValue = value;
+                    {taggedValues?.length > 0 && (
+                        <Col xs={6}>
+                            <div className="search-filter-tags__title">Selected</div>
+                            <ul className="nav nav-stacked labkey-wizard-pills search-filter-tags__div">
+                                {taggedValues?.map((value, index) => {
+                                    let displayValue = value;
 
-                                if (value === null || value === undefined) displayValue = '[blank]';
+                                    if (value === null || value === undefined) displayValue = '[blank]';
 
-                                return (
-                                    <li key={index} className="OmniBox--multi">
-                                        <div className="OmniBox-value search-filter-tags__value">
-                                            <i className="symbol fa fa-close" onClick={() => onChange(value, false)} />
-                                            <span>{displayValue}</span>
-                                        </div>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </Col>
+                                    return (
+                                        <li key={index} className="OmniBox--multi">
+                                            <div className="OmniBox-value search-filter-tags__value">
+                                                <i
+                                                    className="symbol fa fa-close"
+                                                    onClick={() => onChange(value, false)}
+                                                />
+                                                <span>{displayValue}</span>
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </Col>
+                    )}
                 </Row>
             </div>
         </>

@@ -232,7 +232,7 @@ export function isCommunityDistribution(): boolean {
     return !hasModule('SampleManagement') && !hasPremiumModule();
 }
 
-export function isProjectContainer(containerPath?: string) {
+export function isProjectContainer(containerPath?: string) : boolean {
     let path = containerPath ?? getServerContext().container.path;
     if (!path)
         return false;
@@ -241,10 +241,10 @@ export function isProjectContainer(containerPath?: string) {
     return path.split('/').filter(p => !!p).length === 1;
 }
 
-export function getContainerProject(containerPath?: string) {
+export function getProjectPath(containerPath?: string) : string {
     const path = containerPath ?? getServerContext().container.path;
     if (!path)
-        return null;
+        return undefined;
     return path.split('/').filter(p => !!p)[0] + "/";
 }
 

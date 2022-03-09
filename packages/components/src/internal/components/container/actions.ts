@@ -35,17 +35,12 @@ function applyPermissions(container: Container, user: User): User {
 export interface ContainerUser {
     container: Container;
     user: User;
+    containerUsers?: {[key: string] : ContainerUser};
 }
 
 export interface UseContainerUser extends ContainerUser {
     error: string;
     isLoaded: boolean;
-}
-
-export interface UseContainerUsers {
-    error: string;
-    isLoaded: boolean;
-    containerUsers: {[key: string] : ContainerUser};
 }
 
 /**
@@ -84,6 +79,7 @@ export interface UseContainerUsers {
  */
 export function useContainerUser(containerIdOrPath: string): UseContainerUser {
     const [container, setContainer] = useState<Container>();
+    const [containerUsers, setContainerUsers] = useState<Record<string, ContainerUser>>({});
     const [error, setError] = useState<string>();
     const [contextUser, setContextUser] = useState<User>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -99,9 +95,24 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
 
             try {
                 const containers = await api.security.fetchContainers({ containerPath: containerIdOrPath });
-                const container_ = containers[0];
+                let container_, contextUser_;
+
+                const containerUsers_: Record<string, ContainerUser> = containers.reduce((cu, ct, i) => {
+                    const c = ct;
+                    const u = applyPermissions(c, user);
+
+                    if (i === 0) {
+                        container_ = c;
+                        contextUser_ = u;
+                    }
+
+                    cu[c.path] = { container: c, user: u };
+                    return cu;
+                }, {});
+
                 setContainer(container_);
-                setContextUser(applyPermissions(container_, user));
+                setContextUser(contextUser_);
+                setContainerUsers(containerUsers_);
             } catch (e) {
                 setError(resolveErrorMessage(e));
             }
@@ -110,41 +121,5 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
         })();
     }, [api, containerIdOrPath, user]);
 
-    return { container, error, isLoaded: !isLoading(loadingState), user: contextUser };
-}
-
-export function useContainerUsers(projectContainerIdOrPath: string): UseContainerUsers {
-    const [containerUsers, setContainerUsers] = useState<{[key: string] : ContainerUser}>({});
-    const [error, setError] = useState<string>();
-    const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
-    const { api } = useAppContext();
-    const { user } = useServerContext();
-
-    useEffect(() => {
-        if (!projectContainerIdOrPath) return;
-
-        (async () => {
-            setError(undefined);
-            setLoadingState(LoadingState.LOADING);
-
-            try {
-                let userContainerMap = {};
-                const containers = await api.security.fetchContainers({ containerPath: projectContainerIdOrPath });
-                containers.forEach(container => {
-                    const contextUser = applyPermissions(container, user)
-                    userContainerMap[container.path] = {
-                        container: container,
-                        user: contextUser
-                    }
-                })
-                setContainerUsers(userContainerMap);
-            } catch (e) {
-                setError(resolveErrorMessage(e));
-            }
-
-            setLoadingState(LoadingState.LOADED);
-        })();
-    }, [api, projectContainerIdOrPath, user]);
-
-    return { error, isLoaded: !isLoading(loadingState), containerUsers };
+    return { container, containerUsers, error, isLoaded: !isLoading(loadingState), user: contextUser };
 }

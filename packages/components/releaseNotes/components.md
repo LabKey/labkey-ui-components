@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.138.6
+*Released*: 10 March 2022
 * Sample Finder Optimizations
   * Don't use expensive `QueryableInputs` now that we have the query for descendants
   * Don't load the grid until we have sample type names

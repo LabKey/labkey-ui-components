@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### TBD
-*Released*: TBD
+### version 2.141.0
+*Released*: 10 March 2022
 * Support In-App Admin across LKB and LKSM.
 
 ### version 2.140.0

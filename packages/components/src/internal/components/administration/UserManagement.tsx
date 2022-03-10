@@ -23,9 +23,10 @@ import { UsersGridPanel } from '../user/UsersGridPanel';
 
 import { useServerContext } from '../base/ServerContext';
 
+import { PermissionsPageContextProvider } from '../permissions/PermissionsContextProvider';
+
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
-import { PermissionsPageContextProvider } from '../permissions/PermissionsContextProvider';
 
 export function getNewUserRoles(
     user: User,

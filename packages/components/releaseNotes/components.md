@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX 2022
+### version 2.140.0
+*Released*: 10 March 2022
 * Item 9748: Shared freezers across containers
     * Hide 'Create a freezer' link for sub folders
     * Modify useContainerUser to return containerUsers in child folders

@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Support In-App Admin across LKB and LKSM.
 
+### version 2.140.0
+*Released*: 10 March 2022
+* Item 9748: Shared freezers across containers
+    * Hide 'Create a freezer' link for sub folders
+    * Modify useContainerUser to return containerUsers in child folders
+
+### version 2.139.2
+*Released*: 9 March 2022
+* URLResolver update to only handle URLs for the current container or containers in the current folder tree
+
 ### version 2.139.1
 *Released*: 7 March 2022
 * Merge release22.3-SNAPSHOT to develop

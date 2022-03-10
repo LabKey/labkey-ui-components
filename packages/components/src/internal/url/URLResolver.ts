@@ -515,7 +515,7 @@ export class URLResolver {
     private mapURL = (mapper: MapURLOptions): string => {
 
         // Don't override URLs if the URL has a different container than the current container and is not in the folder
-        // tree of the current container. This scopes the apps to their current container and sub-containers, and supports
+        // tree of the current container. This scopes the apps to their current container and container tree, and supports
         // adding FKs from other containers and preserving the URL from the server.
         if (mapper.url) {
             const urlContainerPath = parsePathName(mapper.url).containerPath;

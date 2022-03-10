@@ -4,7 +4,7 @@
   "metaData" : {
     "importTemplates" : [ {
       "label" : "Download Template",
-      "url" : "/labkey/BiologicsAssayTest%20Project/query-exportExcelTemplate.view?schemaName=exp.data&query.queryName=Mixtures&headerType=DisplayFieldKey"
+      "url" : "/labkey/testContainer/query-exportExcelTemplate.view?schemaName=exp.data&query.queryName=Mixtures&headerType=DisplayFieldKey"
     } ],
     "root" : "rows",
     "totalProperty" : "rowCount",
@@ -211,7 +211,7 @@
     "data" : {
       "RowId" : {
         "value" : 41426,
-        "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41426"
+        "url" : "/labkey/testContainer/experiment-showData.view?rowId=41426"
       },
       "expirationTime" : {
         "value" : 30
@@ -222,18 +222,18 @@
       "mixtureTypeId" : {
         "value" : 2,
         "displayValue" : "Solution",
-        "url" : "/labkey/BiologicsAssayTest%20Project/list-details.view?listId=15&pk=2"
+        "url" : "/labkey/testContainer/list-details.view?listId=15&pk=2"
       },
       "Name" : {
         "value" : "DMEXP",
-        "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41426"
+        "url" : "/labkey/testContainer/experiment-showData.view?rowId=41426"
       }
     }
   }, {
     "data" : {
       "RowId" : {
         "value" : 41425,
-        "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41425"
+        "url" : "/labkey/testContainer/experiment-showData.view?rowId=41425"
       },
       "expirationTime" : {
         "value" : 30
@@ -244,18 +244,18 @@
       "mixtureTypeId" : {
         "value" : 2,
         "displayValue" : "Solution",
-        "url" : "/labkey/BiologicsAssayTest%20Project/list-details.view?listId=15&pk=2"
+        "url" : "/labkey/testContainer/list-details.view?listId=15&pk=2"
       },
       "Name" : {
         "value" : "TBS",
-        "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41425"
+        "url" : "/labkey/testContainer/experiment-showData.view?rowId=41425"
       }
     }
   }, {
     "data" : {
       "RowId" : {
         "value" : 41424,
-        "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41424"
+        "url" : "/labkey/testContainer/experiment-showData.view?rowId=41424"
       },
       "expirationTime" : {
         "value" : 30
@@ -266,11 +266,11 @@
       "mixtureTypeId" : {
         "value" : 2,
         "displayValue" : "Solution",
-        "url" : "/labkey/BiologicsAssayTest%20Project/list-details.view?listId=15&pk=2"
+        "url" : "/labkey/testContainer/list-details.view?listId=15&pk=2"
       },
       "Name" : {
         "value" : "PBS",
-        "url" : "/labkey/BiologicsAssayTest%20Project/experiment-showData.view?rowId=41424"
+        "url" : "/labkey/testContainer/experiment-showData.view?rowId=41424"
       }
     }
   } ],

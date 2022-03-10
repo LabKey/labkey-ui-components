@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Export `PICKLIST_SAMPLES_FILTER`
 
+### version 2.139.2
+*Released*: 9 March 2022
+* URLResolver update to only handle URLs for the current container or containers in the current folder tree
+
 ### version 2.139.1
 *Released*: 7 March 2022
 * Merge release22.3-SNAPSHOT to develop

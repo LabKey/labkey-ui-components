@@ -22,7 +22,7 @@ import {
     addSamplesSectionConfig,
     addSourcesSectionConfig,
     biologicsIsPrimaryApp,
-    getContainerProject,
+    getProjectPath,
     getCurrentAppProperties,
     getMenuSectionConfigs,
     getPrimaryAppProperties,
@@ -375,26 +375,26 @@ describe('utils', () => {
         expect(isProjectContainer('project')).toBeTruthy();
     });
 
-    test('getContainerProject', () => {
+    test('getProjectPath', () => {
         LABKEY.container = {};
-        expect(getContainerProject()).toBeNull();
-        expect(getContainerProject('project')).toBe('project/');
-        expect(getContainerProject('project a/')).toBe('project a/');
-        expect(getContainerProject('project a/b')).toBe('project a/');
-        expect(getContainerProject('project a/b/d')).toBe('project a/');
+        expect(getProjectPath()).toBeUndefined();
+        expect(getProjectPath('project')).toBe('project/');
+        expect(getProjectPath('project a/')).toBe('project a/');
+        expect(getProjectPath('project a/b')).toBe('project a/');
+        expect(getProjectPath('project a/b/d')).toBe('project a/');
 
         LABKEY.container = { path: 'project' };
-        expect(getContainerProject()).toBe('project/');
-        expect(getContainerProject('project')).toBe('project/');
-        expect(getContainerProject('project a/b')).toBe('project a/');
+        expect(getProjectPath()).toBe('project/');
+        expect(getProjectPath('project')).toBe('project/');
+        expect(getProjectPath('project a/b')).toBe('project a/');
 
         LABKEY.container = { path: 'project a/' };
-        expect(getContainerProject()).toBe('project a/');
-        expect(getContainerProject('project a/b')).toBe('project a/');
+        expect(getProjectPath()).toBe('project a/');
+        expect(getProjectPath('project a/b')).toBe('project a/');
 
         LABKEY.container = { path: 'project a/b' };
-        expect(getContainerProject()).toBe('project a/');
-        expect(getContainerProject('project')).toBe('project/');
+        expect(getProjectPath()).toBe('project a/');
+        expect(getProjectPath('project')).toBe('project/');
     });
 
     test('isPremiumProductEnabled', () => {

@@ -284,7 +284,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
         const configs = {};
 
         if (picklist?.listId) {
-            const gridId = PICKLIST_ITEMS_ID_PREFIX + LOAD_PICKLIST_COUNTER;
+            const gridId = PICKLIST_ITEMS_ID_PREFIX + picklist.listId + '-' + LOAD_PICKLIST_COUNTER;
             configs[gridId] = {
                 id: gridId,
                 title: 'All Samples',
@@ -300,7 +300,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
             // add a queryConfig for each distinct sample type of the picklist samples, with a filter clause
             // for the picklist id (which the server will turn into a sampleId IN clause)
             [...picklist.sampleTypes].sort().forEach(sampleType => {
-                const id = `${PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX}${LOAD_PICKLIST_COUNTER}|samples/${sampleType}`;
+                const id = `${PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX}-${listId}-${LOAD_PICKLIST_COUNTER}|samples/${sampleType}`;
                 configs[id] = {
                     id,
                     title: sampleType,

@@ -17,15 +17,19 @@ import { Section } from '../base/Section';
 
 import { Notification } from '../notifications/Notification';
 
+import { AppURL } from '../../url/AppURL';
+
+import { useServerContext } from '../base/ServerContext';
+
+import { App } from '../../../index';
+
 import { UserDetailHeader } from './UserDetailHeader';
 import { getUserRoleDisplay } from './actions';
 
 import { UserProfile } from './UserProfile';
 import { ChangePasswordModal } from './ChangePasswordModal';
-import {AppURL} from "../../url/AppURL";
-import {useServerContext} from "../base/ServerContext";
-import {useUserProperties} from "./UserProvider";
-import {App} from "../../../index";
+
+import { useUserProperties } from './UserProvider';
 
 // ToDo: This is copied from SM, and we only need a subset. Use withRouteLeave.
 interface CommonDispatchProps {

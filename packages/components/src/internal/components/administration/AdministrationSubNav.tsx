@@ -21,7 +21,7 @@ export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
         tabs = tabs.push('Permissions');
     }
     // Settings tab to be implemented in story 2 of In-App Admin
-    if (user.isAppAdmin() && !biologicsIsPrimaryApp()) {
+    if (user.isAppAdmin()) {
         tabs = tabs.push('Settings');
     }
 

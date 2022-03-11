@@ -27,6 +27,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   * remove unused EditableGridModal
   * loadEditorModelData update to support raw value not being an object
 
+### version 2.138.6
+*Released*: 10 March 2022
+* Sample Finder Optimizations
+    * Don't use expensive `QueryableInputs` now that we have the query for descendants
+    * Don't load the grid until we have sample type names
+
 ### version 2.138.5
 *Released*: 4 March 2022
 * Sample Finder Polish

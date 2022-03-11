@@ -146,8 +146,8 @@ describe('getSampleFinderCommonConfigs', () => {
                 },
             ])
         ).toStrictEqual({
-            baseFilters: [Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
-            requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'QueryableInputs/Materials/TestQuery'],
+            baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
+            requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
         });
     });
 
@@ -173,7 +173,7 @@ describe('getSampleFinderCommonConfigs', () => {
             ])
         ).toStrictEqual({
             baseFilters: [
-                Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),
+                Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),
                 Filter.create(
                     '*',
                     'SELECT "TestQuery2".expObject() FROM Samples."TestQuery2" WHERE "TestColumn" = \'value\'',
@@ -182,9 +182,9 @@ describe('getSampleFinderCommonConfigs', () => {
             ],
             requiredColumns: [
                 ...SAMPLE_STATUS_REQUIRED_COLUMNS,
-                'QueryableInputs/Materials/TestQuery',
-                'QueryableInputs/Materials/TestQuery2',
-                'QueryableInputs/Materials/TestQuery2/TestColumn',
+                'Inputs/Materials/TestQuery',
+                'Inputs/Materials/TestQuery2',
+                'Inputs/Materials/TestQuery2/TestColumn',
             ],
         });
     });
@@ -237,8 +237,8 @@ describe('getSampleFinderQueryConfigs', () => {
                     SAMPLE_FINDER_VIEW_NAME
                 ),
                 omittedColumns: ['Run'],
-                baseFilters: [Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
-                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'QueryableInputs/Materials/TestQuery'],
+                baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
             },
         });
     });
@@ -297,24 +297,24 @@ describe('getSampleFinderQueryConfigs', () => {
                     SAMPLE_FINDER_VIEW_NAME
                 ),
                 omittedColumns: ['checkedOutBy', 'Run'],
-                baseFilters: [Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
-                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'QueryableInputs/Materials/TestQuery'],
+                baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
             },
             'uuid-1-testId|samples/Sample Type 1': {
                 id: 'uuid-1-testId|samples/Sample Type 1',
                 title: 'Sample Type 1',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
-                baseFilters: [Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
-                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'QueryableInputs/Materials/TestQuery'],
+                baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
             },
             'uuid-1-testId|samples/Sample Type 2': {
                 id: 'uuid-1-testId|samples/Sample Type 2',
                 title: 'Sample Type 2',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
-                baseFilters: [Filter.create('QueryableInputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
-                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'QueryableInputs/Materials/TestQuery'],
+                baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
             },
         });
     });
@@ -1010,7 +1010,7 @@ describe('getSampleFinderColumnNames', () => {
                 },
             ])
         ).toStrictEqual({
-            'QueryableInputs/Materials/query': 'Test Samples ID',
+            'Inputs/Materials/query': 'Test Samples ID',
         });
     });
 
@@ -1032,8 +1032,8 @@ describe('getSampleFinderColumnNames', () => {
                 },
             ])
         ).toStrictEqual({
-            'QueryableInputs/Materials/query': 'Test Samples ID',
-            'QueryableInputs/Materials/query/IntValue': 'Test Samples Integer',
+            'Inputs/Materials/query': 'Test Samples ID',
+            'Inputs/Materials/query/IntValue': 'Test Samples Integer',
         });
     });
 });

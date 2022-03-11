@@ -291,6 +291,14 @@ import { SearchResultsPanel } from './internal/components/search/SearchResultsPa
 import { SampleFinderSection } from './internal/components/search/SampleFinderSection';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { loadNameExpressionOptions } from './internal/components/settings/actions';
+import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
+import { UserManagementPage } from './internal/components/administration/UserManagement';
+import { BasePermissions } from './internal/components/administration/BasePermissions';
+import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './internal/components/administration/utils';
+import {
+    SECURITY_ROLE_DESCRIPTIONS,
+    HOSTED_APPLICATION_SECURITY_ROLES,
+} from './internal/components/administration/constants';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
@@ -585,11 +593,13 @@ import {
     getDateFormat as getAppDateFormat,
     getDateTimeFormat as getAppDateTimeFormat,
     getPrimaryAppProperties,
+    getProjectPath,
     hasModule,
     hasPremiumModule,
     isBiologicsEnabled,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
+    isProjectContainer,
     isRequestsEnabled,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
@@ -602,6 +612,7 @@ import {
     userCanDesignSourceTypes,
     userCanEditStorageData,
     userCanManagePicklists,
+    userCanManageSampleWorkflow,
     userCanReadAssays,
     userCanReadMedia,
     userCanReadNotebooks,
@@ -699,10 +710,12 @@ const App = {
     isSampleManagerEnabled,
     isBiologicsEnabled,
     isPremiumProductEnabled,
+    isProjectContainer,
     sampleManagerIsPrimaryApp,
     isSampleStatusEnabled,
     isSubfolderDataEnabled,
     getPrimaryAppProperties,
+    getProjectPath,
     hasPremiumModule,
     hasModule,
     getDateFormat: getAppDateFormat,
@@ -722,6 +735,7 @@ const App = {
     userCanEditStorageData,
     userCanDesignSourceTypes,
     userCanManagePicklists,
+    userCanManageSampleWorkflow,
     userCanReadAssays,
     userCanReadNotebooks,
     userCanReadMedia,
@@ -1058,6 +1072,14 @@ export {
     // settings
     NameIdSettings,
     loadNameExpressionOptions,
+    // administration
+    AdministrationSubNav,
+    UserManagementPage,
+    BasePermissions,
+    isLoginAutoRedirectEnabled,
+    SECURITY_ROLE_DESCRIPTIONS,
+    HOSTED_APPLICATION_SECURITY_ROLES,
+    showPremiumFeatures,
     // assay
     AssayUploadResultModel,
     AssayDesignDeleteModal,

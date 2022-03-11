@@ -35,6 +35,7 @@ function applyPermissions(container: Container, user: User): User {
 export interface ContainerUser {
     container: Container;
     user: User;
+    containerUsers?: { [key: string]: ContainerUser };
 }
 
 export interface UseContainerUser extends ContainerUser {
@@ -78,6 +79,7 @@ export interface UseContainerUser extends ContainerUser {
  */
 export function useContainerUser(containerIdOrPath: string): UseContainerUser {
     const [container, setContainer] = useState<Container>();
+    const [containerUsers, setContainerUsers] = useState<Record<string, ContainerUser>>({});
     const [error, setError] = useState<string>();
     const [contextUser, setContextUser] = useState<User>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -93,9 +95,24 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
 
             try {
                 const containers = await api.security.fetchContainers({ containerPath: containerIdOrPath });
-                const container_ = containers[0];
+                let container_, contextUser_;
+
+                const containerUsers_: Record<string, ContainerUser> = containers.reduce((cu, ct, i) => {
+                    const c = ct;
+                    const u = applyPermissions(c, user);
+
+                    if (i === 0) {
+                        container_ = c;
+                        contextUser_ = u;
+                    }
+
+                    cu[c.path] = { container: c, user: u };
+                    return cu;
+                }, {});
+
                 setContainer(container_);
-                setContextUser(applyPermissions(container_, user));
+                setContextUser(contextUser_);
+                setContainerUsers(containerUsers_);
             } catch (e) {
                 setError(resolveErrorMessage(e));
             }
@@ -104,5 +121,5 @@ export function useContainerUser(containerIdOrPath: string): UseContainerUser {
         })();
     }, [api, containerIdOrPath, user]);
 
-    return { container, error, isLoaded: !isLoading(loadingState), user: contextUser };
+    return { container, containerUsers, error, isLoaded: !isLoading(loadingState), user: contextUser };
 }

@@ -75,6 +75,12 @@ describe('utils', () => {
         node = getEventDataValueDisplay(Map(data), true) as ReactElement;
         expect(node.type).toEqual('a');
         expect(node.props).toEqual({ children: data.formattedValue, href: data.url });
+
+        data.hideLink = true;
+
+        // hide url
+        expect(getEventDataValueDisplay(Map(data), true)).toEqual(data.formattedValue);
+        expect(getEventDataValueDisplay(data, true)).toEqual(data.formattedValue);
     });
     test('getTimelineEntityUrl', () => {
         expect(getTimelineEntityUrl(undefined)).toEqual(undefined);

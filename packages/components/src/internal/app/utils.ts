@@ -129,6 +129,10 @@ export function userCanDeletePublicPicklists(user: User): boolean {
     return user.isAdmin;
 }
 
+export function userCanManageSampleWorkflow(user: User): boolean {
+    return hasAllPermissions(user, [PermissionTypes.ManageSampleWorkflows], false);
+}
+
 export function userCanDesignSourceTypes(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.DesignDataClass]);
 }
@@ -184,8 +188,10 @@ export function isSampleStatusEnabled(): boolean {
 }
 
 export function isSampleFinderEnabled(moduleContext?: any): boolean {
-    return !biologicsIsPrimaryApp(moduleContext) ||
-        (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_SAMPLE_FINDER] === true;
+    return (
+        !biologicsIsPrimaryApp(moduleContext) ||
+        (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_SAMPLE_FINDER] === true
+    );
 }
 
 export function getCurrentAppProperties(): AppProperties {
@@ -228,6 +234,19 @@ export function isCommunityDistribution(): boolean {
     return !hasModule('SampleManagement') && !hasPremiumModule();
 }
 
+export function isProjectContainer(containerPath?: string): boolean {
+    let path = containerPath ?? getServerContext().container.path;
+    if (!path) return false;
+    if (!path.endsWith('/')) path = path + '/';
+    return path.split('/').filter(p => !!p).length === 1;
+}
+
+export function getProjectPath(containerPath?: string): string {
+    const path = containerPath ?? getServerContext().container.path;
+    if (!path) return undefined;
+    return path.split('/').filter(p => !!p)[0] + '/';
+}
+
 // exported for testing
 export function getStorageSectionConfig(
     user: User,
@@ -249,7 +268,8 @@ export function getStorageSectionConfig(
             seeAllURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
             headerURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),
         });
-        if (userCanDesignLocations(user)) {
+        // freezer creation not supported in sub folders
+        if (userCanDesignLocations(user) && isProjectContainer()) {
             locationsMenuConfig = locationsMenuConfig.merge({
                 emptyURL: fmAppBase + AppURL.create(FREEZERS_KEY, 'new').toHref(),
                 emptyURLText: 'Create a freezer',

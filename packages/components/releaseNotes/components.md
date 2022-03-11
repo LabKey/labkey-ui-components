@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Export `PICKLIST_SAMPLES_FILTER`
 * Include listId in picklist gridId to disambiguate
 
+### version 2.141.1
+*Released*: 11 March 2022
+* Merge release22.3-SNAPSHOT to develop again
+  * Includes changes from version 2.138.6
+
 ### version 2.141.0
 *Released*: 10 March 2022
 * Support In-App Admin across LKB and LKSM.
@@ -31,6 +36,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   * AppURL switch back to hardcoded app.view
   * remove unused EditableGridModal
   * loadEditorModelData update to support raw value not being an object
+
+### version 2.138.6
+*Released*: 10 March 2022
+* Sample Finder Optimizations
+    * Don't use expensive `QueryableInputs` now that we have the query for descendants
+    * Don't load the grid until we have sample type names
 
 ### version 2.138.5
 *Released*: 4 March 2022

@@ -106,6 +106,7 @@ import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { ContentGroup, ContentGroupLabel } from './internal/components/base/ContentGroup';
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
+import { TemplateDownloadButton } from './public/files/TemplateDownloadButton';
 import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
@@ -1231,6 +1232,7 @@ export {
     FileAttachmentEntry,
     FileAttachmentForm,
     FileTree,
+    TemplateDownloadButton,
     WebDavFile,
     getWebDavFiles,
     uploadWebDavFile,

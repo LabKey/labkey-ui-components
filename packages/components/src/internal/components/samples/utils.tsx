@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Filter, Utils } from '@labkey/api';
+import { ActionURL, Filter, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import {
@@ -8,7 +8,7 @@ import {
     caseInsensitive,
     LoadingSpinner,
     MenuItemModel,
-    ProductMenuModel,
+    ProductMenuModel, QueryInfo, SAMPLE_EXPORT_CONFIG, SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleStateType,
@@ -227,3 +227,23 @@ export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
         lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase()
     );
 }
+
+export const getSampleTypeTemplateUrl = (
+    queryInfo: QueryInfo,
+    importAliases: Record<string, string>,
+    excludeColumns: string[] = ['flag']
+): string => {
+    const { schemaQuery } = queryInfo;
+    if (!schemaQuery) return undefined;
+
+    const extraColumns = SAMPLE_INSERT_EXTRA_COLUMNS.concat(Object.keys(importAliases || {}));
+
+    return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
+        ...SAMPLE_EXPORT_CONFIG,
+        schemaName: schemaQuery.getSchema(),
+        'query.queryName': schemaQuery.getQuery(),
+        headerType: 'DisplayFieldKey',
+        excludeColumn: excludeColumns ? excludeColumns.concat(queryInfo.getFileColumnFieldKeys()) : queryInfo.getFileColumnFieldKeys(),
+        includeColumn: extraColumns,
+    });
+};

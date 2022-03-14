@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.141.2
+*Released*: 14 March 2022
 * Export `PICKLIST_SAMPLES_FILTER`
 * Include listId in picklist gridId to disambiguate
 

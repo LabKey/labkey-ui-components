@@ -570,7 +570,7 @@ import { OntologyConceptOverviewPanel } from './internal/components/ontology/Con
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { OntologySearchInput } from './internal/components/ontology/OntologyTreeSearchContainer';
 import { AppModel, LogoutReason } from './internal/app/models';
-import { Picklist } from './internal/components/picklist/models';
+import { Picklist, PICKLIST_SAMPLES_FILTER } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
 import { PicklistListing } from './internal/components/picklist/PicklistListing';
@@ -971,6 +971,7 @@ export {
     PicklistOverview,
     PicklistSubNav,
     getSelectedPicklistSamples,
+    PICKLIST_SAMPLES_FILTER,
     // data class and sample type related items
     DataClassModel,
     deleteDataClass,

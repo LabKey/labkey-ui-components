@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 10165: Provide link to download the import template for types in more places
   * Extract `TemplateDownloadButton` from `FileAttachmentForm`.
+  * refactor method for getting sampleTypeTemplateUrl for use in LKSM and LKB
 
 ### version 2.141.2
 *Released*: 14 March 2022

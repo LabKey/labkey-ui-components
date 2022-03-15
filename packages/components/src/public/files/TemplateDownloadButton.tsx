@@ -1,21 +1,23 @@
 import React, { FC, memo } from 'react';
 
 interface Props {
-    templateUrl: string,
+    templateUrl?: string,
     className?: string,
     text?: string,
+    onClick?: () => void,
 }
 
 export const TemplateDownloadButton: FC<Props> = memo(props => {
-    const { className, templateUrl, text } = props;
+    const { className, onClick, templateUrl, text } = props;
 
-    if (!templateUrl?.length)
+    if (!onClick && !templateUrl?.length)
         return null;
 
     return (
         <a
             className={"btn btn-info " + className}
             title="Download Template"
+            onClick={onClick}
             href={templateUrl}
             rel="noopener noreferrer"
             target="_blank"

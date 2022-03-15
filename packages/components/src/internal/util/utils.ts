@@ -523,6 +523,10 @@ export function downloadAttachment(href: string, openInTab?: boolean, fileName?:
     }
 }
 
+export function downloadFromUrl(href: string): void {
+    window.open(href, "_blank", "noopener,noreferrer");
+}
+
 // copied from platform/api/src/org/labkey/api/attachments/Attachment.java
 const EXTENSION_FONT_CLS_MAP = {
     '7z': 'fa fa-file-archive-o',
@@ -676,3 +680,4 @@ export const handleFileInputChange = (
         }
     };
 };
+

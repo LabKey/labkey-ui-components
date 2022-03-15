@@ -1,6 +1,6 @@
 import React, { FC, memo, useMemo } from 'react';
 
-import { Filter } from '@labkey/api';
+import { Filter, PermissionTypes } from '@labkey/api';
 
 import { Status } from '../domainproperties/assay/models';
 
@@ -9,6 +9,8 @@ import { SCHEMAS } from '../../schemas';
 import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { hasAnyPermissions } from '../base/models/User';
+import { useServerContext } from '../base/ServerContext';
 
 const ACTIVE_GRID_ID = 'active';
 const ALL_GRID_ID = 'all';
@@ -42,6 +44,7 @@ export const StatusGridWithModels = withQueryModels(StatusGridImpl);
 
 export const StatusGrid: FC<OwnProps> = memo(props => {
     const { assayTypes, excludedAssayProviders } = props;
+    const { user } = useServerContext();
 
     const queryConfigs = useMemo(() => {
         const allBaseFilter = assayTypes
@@ -51,7 +54,15 @@ export const StatusGrid: FC<OwnProps> = memo(props => {
             : [];
 
         const activeBaseFilter = allBaseFilter.concat([Filter.create('Status', Status.Active)]);
-
+        const canUpdate = hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]);
+        let requiredColumns = undefined;
+        let omittedColumns =  [];
+        if (canUpdate) {
+            requiredColumns = ['lsid'];
+        }
+        else {
+            omittedColumns.push('lsid');
+        }
         return {
             [ACTIVE_GRID_ID]: {
                 ...ASSAY_LIST_QUERY_CONFIG,
@@ -59,7 +70,8 @@ export const StatusGrid: FC<OwnProps> = memo(props => {
                 id: ACTIVE_GRID_ID,
                 title: 'Active',
                 schemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
-                omittedColumns: ['Status'],
+                omittedColumns: [...omittedColumns, 'Status'],
+                requiredColumns,
             },
             [ALL_GRID_ID]: {
                 ...ASSAY_LIST_QUERY_CONFIG,
@@ -67,6 +79,8 @@ export const StatusGrid: FC<OwnProps> = memo(props => {
                 id: ALL_GRID_ID,
                 title: 'All',
                 schemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
+                omittedColumns,
+                requiredColumns
             },
         };
     }, [assayTypes, excludedAssayProviders]);

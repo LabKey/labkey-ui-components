@@ -54,6 +54,7 @@ import {
     debounce,
     devToolsActive,
     downloadAttachment,
+    downloadFromUrl,
     generateId,
     getDisambiguatedSelectInputOptions,
     handleFileInputChange,
@@ -229,7 +230,7 @@ import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
-import { SampleTypeTemplateDownloadRenderer } from './internal/renderers/TemplateDownloadRenderer';
+import { AssayResultTemplateDownloadRenderer, SampleTypeTemplateDownloadRenderer } from './internal/renderers/TemplateDownloadRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
 import { AttachmentCard } from './internal/renderers/AttachmentCard';
 import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
@@ -892,6 +893,7 @@ export {
     AttachmentCard,
     AliasRenderer,
     AppendUnits,
+    AssayResultTemplateDownloadRenderer,
     DefaultRenderer,
     FileColumnRenderer,
     LabelColorRenderer,
@@ -1250,6 +1252,7 @@ export {
     caseInsensitive,
     capitalizeFirstChar,
     downloadAttachment,
+    downloadFromUrl,
     handleFileInputChange,
     handleRequestFailure,
     resolveKey,

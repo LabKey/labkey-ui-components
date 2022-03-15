@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo } from 'react';
 
 import { SVGIcon } from '../../..';
 
@@ -26,67 +26,54 @@ interface SearchResultProps {
     iconUrl?: string;
 }
 
-export class SearchResultCard extends React.Component<SearchResultProps, any> {
-    renderType(cardData: SearchResultCardData) {
-        if (cardData.typeName) {
-            return (
-                <div>
-                    <strong>Type: </strong>
-                    {cardData.typeName}
-                </div>
-            );
-        }
-    }
-
-    renderDetail(label: string, value?: string) {
-        if (value) {
-            return (
-                <div>
-                    <strong>{label}: </strong>
-                    {value}
-                </div>
-            );
-        }
-    }
-
-    renderImage(cardData: SearchResultCardData) {
-        const { iconUrl } = this.props;
-
-        if (iconUrl) {
-            return <img className="search-result__card-icon" src={iconUrl} />;
-        }
-
-        const { iconDir, iconSrc, altText } = cardData;
-
-        return <SVGIcon iconDir={iconDir} iconSrc={iconSrc} alt={altText} className="search-result__card-icon" />;
-    }
-
-    render() {
-        const { summary, url, cardData } = this.props;
-
-        return (
-            <a href={url}>
-                <div className="row search-result__card-container">
-                    <div className="col-md-2 hidden-sm hidden-xs search-result__card-icon__container">
-                        {this.renderImage(cardData)}
-                    </div>
-                    <div className="col-md-10 col-sm-12">
-                        <div>
-                            <h4 className="text-capitalize">{cardData.title}</h4>
-                        </div>
-                        {this.renderDetail('Category', cardData.category)}
-                        {this.renderDetail('Type', cardData.typeName)}
-                        <div title={summary}>
-                            <strong>Summary: </strong>{' '}
-                            {summary.length
-                                ? summary.length <= 35
-                                    ? summary
-                                    : summary.substr(0, 35) + '...'
-                                : 'No summary provided'}
-                        </div>
-                    </div>
-                </div>
-            </a>
-        );
-    }
+interface DetailProps {
+    label: string;
+    title?: string;
+    value: string;
 }
+
+const CardDetail: FC<DetailProps> = memo(({ label, title, value }) => (
+    <div className="search-result__card-detail" title={title}>
+        <strong>{label}: </strong>
+        {value}
+    </div>
+));
+
+export const SearchResultCard: FC<SearchResultProps> = memo(({ cardData, iconUrl, summary, url }) => {
+    const { altText, category, iconDir, iconSrc, title, typeName } = cardData;
+    let summaryText = 'No summary provided';
+
+    if (summary.length) {
+        summaryText = summary.length <= 35 ? summary : summary.substr(0, 35);
+    }
+
+    return (
+        <a href={url}>
+            <div className="row search-result__card-container">
+                <div className="col-sm-2 hidden-xs search-result__card-icon__container">
+                    {iconUrl && <img className="search-result__card-icon" src={iconUrl} />}
+                    {!iconUrl && (
+                        <SVGIcon
+                            iconDir={iconDir}
+                            iconSrc={iconSrc}
+                            alt={altText}
+                            className="search-result__card-icon"
+                        />
+                    )}
+                </div>
+
+                <div className="col-sm-10">
+                    <div>
+                        <h4 className="text-capitalize">{title}</h4>
+                    </div>
+
+                    {category && <CardDetail label="Category" value={category} />}
+
+                    {typeName && <CardDetail label="Type" value={typeName} />}
+
+                    <CardDetail label="Summary" title="Summary" value={summaryText} />
+                </div>
+            </div>
+        </a>
+    );
+});

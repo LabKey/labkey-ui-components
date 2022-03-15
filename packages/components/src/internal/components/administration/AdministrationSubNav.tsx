@@ -11,7 +11,6 @@ import { AppURL } from '../../url/AppURL';
 import { useServerContext } from '../base/ServerContext';
 
 import { User } from '../base/models/User';
-import { biologicsIsPrimaryApp } from '../../app/utils';
 
 export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
     let tabs = List<string>();

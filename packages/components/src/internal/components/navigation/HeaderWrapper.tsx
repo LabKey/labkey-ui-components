@@ -13,68 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { Component } from 'react';
-import $ from 'jquery';
+import classNames from 'classnames';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
-interface Props {
-    headerHeight: number;
-}
+const HEADER_HEIGHT = 75;
 
-export class HeaderWrapper extends Component<Props> {
-    private headerWrapper: React.RefObject<HTMLDivElement>;
-    private lastScrollY: number;
-
-    constructor(props: Props) {
-        super(props);
-
-        this.lastScrollY = 0;
-        this.headerWrapper = React.createRef();
-    }
-
-    componentDidMount(): void {
-        window.addEventListener('scroll', this.onDocScroll);
-    }
-
-    componentWillUnmount(): void {
-        window.removeEventListener('scroll', this.onDocScroll);
-    }
-
-    componentDidUpdate() {
-        window.requestAnimationFrame(() => {
-            window.scrollTo(0, 0);
+export const HeaderWrapper: FC = ({ children }) => {
+    const [state, setState] = useState({
+        lastScrollY: 0,
+        scrolled: false,
+        showSubNav: false,
+    });
+    const onDocScroll = useCallback(() => {
+        setState(current => {
+            const scrollY = window.scrollY;
+            return {
+                lastScrollY: scrollY,
+                scrolled: scrollY > HEADER_HEIGHT,
+                showSubNav: scrollY < current.lastScrollY,
+            };
         });
-    }
+    }, []);
 
-    onDocScroll = (): void => {
-        const { headerHeight } = this.props;
-        const scrollY = window.scrollY;
+    useEffect(() => {
+        window.addEventListener('scroll', onDocScroll);
+        return () => window.removeEventListener('scroll', onDocScroll);
+    }, [onDocScroll]);
 
-        window.requestAnimationFrame(() => {
-            if (this.headerWrapper.current) {
-                const wrapperEl = $(this.headerWrapper.current);
-
-                if (scrollY === 0) {
-                    wrapperEl.removeClass('scrolled');
-                } else if (scrollY > headerHeight) {
-                    wrapperEl.addClass('scrolled');
-                }
-
-                if (scrollY < this.lastScrollY) {
-                    wrapperEl.addClass('show-sub-nav');
-                } else {
-                    wrapperEl.removeClass('show-sub-nav');
-                }
-            }
-
-            this.lastScrollY = scrollY;
-        });
-    };
-
-    render() {
-        return (
-            <div ref={this.headerWrapper} className="app-header-wrapper">
-                {this.props.children}
-            </div>
-        );
-    }
-}
+    const className = classNames('app-header-wrapper', { scrolled: state.scrolled, 'show-sub-nav': state.showSubNav });
+    return <div className={className}>{children}</div>;
+};

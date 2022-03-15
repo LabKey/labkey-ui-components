@@ -14,8 +14,6 @@ interface State {
     userProperties: Record<string, any>;
 }
 
-export type UserProviderProps = Props & State;
-
 const Context = React.createContext<State>(undefined);
 const UserContextProvider = Context.Provider;
 export const UserContextConsumer = Context.Consumer;

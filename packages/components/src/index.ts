@@ -422,6 +422,8 @@ import { ChangePasswordModal } from './internal/components/user/ChangePasswordMo
 import { UsersGridPanel } from './internal/components/user/UsersGridPanel';
 import { UserProvider, useUserProperties } from './internal/components/user/UserProvider';
 import { UserLink } from './internal/components/user/UserLink';
+import { AccountSubNav } from './internal/components/user/AccountSubNav';
+import { ProfilePage } from './internal/components/user/ProfilePage';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_FIELD_REQUIRED,
@@ -942,6 +944,8 @@ export {
     UserDetailHeader,
     UserProfile,
     UserLink,
+    AccountSubNav,
+    ProfilePage,
     ChangePasswordModal,
     UsersGridPanel,
     InsufficientPermissionsAlert,
@@ -1469,7 +1473,6 @@ export type { SelectInputOption, SelectInputProps } from './internal/components/
 export type { PermissionsProviderProps } from './internal/components/permissions/models';
 export type { ISelectInitData } from './internal/components/forms/model';
 export type { QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
-export type { UserProviderProps } from './internal/components/user/UserProvider';
 export type {
     SampleCreationTypeModel,
     GroupedSampleFields,

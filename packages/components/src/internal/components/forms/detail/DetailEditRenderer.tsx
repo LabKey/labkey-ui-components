@@ -41,6 +41,7 @@ import { SampleStatusRenderer } from '../../../renderers/SampleStatusRenderer';
 import { TextChoiceInput } from '../input/TextChoiceInput';
 
 import { _defaultRenderer, Renderer, RenderOptions } from './DetailDisplay';
+import { SampleTypeTemplateDownloadRenderer } from '../../../renderers/TemplateDownloadRenderer';
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is
@@ -265,6 +266,9 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 break;
             case 'samplestatusrenderer':
                 renderer = (d, r) => <SampleStatusRenderer row={r} />;
+                break;
+            case 'sampletypetemplatedownloadrenderer':
+                renderer = (d, r) => <SampleTypeTemplateDownloadRenderer data={d} row={r} />
                 break;
             default:
                 break;

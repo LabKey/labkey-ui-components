@@ -1,12 +1,13 @@
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, memo } from 'react';
 
 interface Props {
     templateUrl: string,
     className?: string,
+    text?: string,
 }
 
 export const TemplateDownloadButton: FC<Props> = memo(props => {
-    const { className, templateUrl } = props;
+    const { className, templateUrl, text } = props;
 
     if (!templateUrl?.length)
         return null;
@@ -19,7 +20,11 @@ export const TemplateDownloadButton: FC<Props> = memo(props => {
             rel="noopener noreferrer"
             target="_blank"
         >
-            <span className="fa fa-download" /> Template
+            <span className="fa fa-download" /> {text}
         </a>
     );
 });
+
+TemplateDownloadButton.defaultProps = {
+    text: "Template"
+}

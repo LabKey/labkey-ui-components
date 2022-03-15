@@ -754,7 +754,20 @@ export function getExportParams(
         if (options.columns) {
             if (advancedOptions && advancedOptions['includeColumn'])
                 params['query.columns'] = options.columns + ',' + advancedOptions['includeColumn'].join(',');
-            else params['query.columns'] = options.columns;
+            if (advancedOptions && advancedOptions['excludeColumn']) {
+                const toExclude = advancedOptions['excludeColumn'];
+                const columns = [];
+                // FIXME comma-split case to consider
+                options.columns.split(',').forEach(col => {
+                    if (toExclude.indexOf(col) == -1) {
+                        columns.push(col);
+                    }
+                });
+                params['query.column'] = columns.join(',');
+            }
+            else {
+                params['query.columns'] = options.columns;
+            }
         }
 
         if (options.filters) {

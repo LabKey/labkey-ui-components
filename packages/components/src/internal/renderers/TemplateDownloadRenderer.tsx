@@ -1,10 +1,8 @@
 import React, { ReactNode } from 'react';
 import { TemplateDownloadButton } from '../../public/files/TemplateDownloadButton';
 import { Map } from 'immutable';
-import { getSampleTypeTemplateUrl } from '../components/samples/utils';
-import { getQueryDetails } from '../query/api';
+import { downloadSampleTypeTemplate, getSampleTypeTemplateUrl } from '../components/samples/utils';
 import { SCHEMAS } from '../schemas';
-import { getSampleTypeDetails } from '../components/samples/actions';
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { Assay } from '@labkey/api';
 import { downloadFromUrl } from '../util/utils';
@@ -18,16 +16,7 @@ export class SampleTypeTemplateDownloadRenderer extends React.PureComponent<Prop
     onDownload = () => {
         const { row } = this.props;
         const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA,  row.getIn(['Name', 'value']));
-        const promises = []
-        promises.push(getQueryDetails({
-            schemaName: schemaQuery.schemaName,
-            queryName: schemaQuery.queryName,
-        }));
-        promises.push(getSampleTypeDetails(schemaQuery));
-        Promise.all(promises).then(results => {
-            const [queryInfo, domainDetails] = results;
-            downloadFromUrl(getSampleTypeTemplateUrl(queryInfo, domainDetails.options?.get('importAliases')));
-        });
+        downloadSampleTypeTemplate(schemaQuery, getSampleTypeTemplateUrl);
     }
 
     render(): ReactNode {

@@ -6,9 +6,15 @@ import { User } from '../base/models/User';
 import {
     App,
     caseInsensitive,
+    downloadFromUrl,
+    getQueryDetails,
+    getSampleTypeDetails,
     LoadingSpinner,
     MenuItemModel,
-    ProductMenuModel, QueryInfo, SAMPLE_EXPORT_CONFIG, SAMPLE_INSERT_EXTRA_COLUMNS,
+    ProductMenuModel,
+    QueryInfo,
+    SAMPLE_EXPORT_CONFIG,
+    SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleStateType,
@@ -247,3 +253,16 @@ export const getSampleTypeTemplateUrl = (
         includeColumn: extraColumns,
     });
 };
+
+export const downloadSampleTypeTemplate = (schemaQuery: SchemaQuery, getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string) => {
+    const promises = []
+    promises.push(getQueryDetails({
+        schemaName: schemaQuery.schemaName,
+        queryName: schemaQuery.queryName,
+    }));
+    promises.push(getSampleTypeDetails(schemaQuery));
+    Promise.all(promises).then(results => {
+        const [queryInfo, domainDetails] = results;
+        downloadFromUrl(getUrl(queryInfo, domainDetails.options?.get('importAliases')));
+    });
+}

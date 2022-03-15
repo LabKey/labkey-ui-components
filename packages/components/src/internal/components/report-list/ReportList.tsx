@@ -313,7 +313,7 @@ export class ReportListItem extends PureComponent<ReportListItemProps> {
         let iconEl = <Image className={iconClassName} src={icon} />;
 
         if (iconSrc !== undefined && !hasCustomIcon) {
-            iconEl = <SVGIcon className={iconClassName} height={null} iconDir="_images" iconSrc={iconSrc} />;
+            iconEl = <SVGIcon className={iconClassName} height={null} iconSrc={iconSrc} />;
         } else if (iconCls) {
             iconEl = <span className={`${iconClassName} ${iconCls} fa-4x`} />;
         }

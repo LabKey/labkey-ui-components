@@ -56,8 +56,7 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
             return <img className="search-result__card-icon" src={iconUrl} />;
         }
 
-        const { iconSrc, altText } = cardData;
-        const iconDir = cardData.iconDir ?? '_images';
+        const { iconDir, iconSrc, altText } = cardData;
 
         return <SVGIcon iconDir={iconDir} iconSrc={iconSrc} alt={altText} className="search-result__card-icon" />;
     }

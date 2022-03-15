@@ -96,7 +96,6 @@ export class TimelineView extends React.Component<Props, any> {
 
         const icon = (
             <SVGIcon
-                iconDir="_images"
                 iconSrc={isSelected ? iconSrc + '_orange' : iconSrc}
                 className="timeline-event-icon"
                 alt={iconSrc ? iconSrc : ''}

@@ -1,29 +1,35 @@
 import React, { FC, memo } from 'react';
+import { User } from '../../internal/components/base/models/User';
+import { RequiresPermission } from '../../internal/components/base/Permissions';
+import { PermissionTypes } from '@labkey/api';
 
 interface Props {
     templateUrl?: string,
     className?: string,
     text?: string,
     onClick?: () => void,
+    user?: User,
 }
 
 export const TemplateDownloadButton: FC<Props> = memo(props => {
-    const { className, onClick, templateUrl, text } = props;
+    const { className, onClick, templateUrl, text, user } = props;
 
     if (!onClick && !templateUrl?.length)
         return null;
 
     return (
-        <a
-            className={"btn btn-info " + className}
-            title="Download Template"
-            onClick={onClick}
-            href={templateUrl}
-            rel="noopener noreferrer"
-            target="_blank"
-        >
-            <span className="fa fa-download" /> {text}
-        </a>
+        <RequiresPermission perms={[PermissionTypes.Insert, PermissionTypes.Update]} permissionCheck={'any'} user={user}>
+            <a
+                className={"btn btn-info " + className}
+                title="Download Template"
+                onClick={onClick}
+                href={templateUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+            >
+                <span className="fa fa-download" /> {text}
+            </a>
+        </RequiresPermission>
     );
 });
 

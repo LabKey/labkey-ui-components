@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* TODO
+* Support In-App Admin across LKB and LKSM, adding admin & user settings page distinctions, as well as profile settings.
 
 ### version 2.141.2
 *Released*: 14 March 2022

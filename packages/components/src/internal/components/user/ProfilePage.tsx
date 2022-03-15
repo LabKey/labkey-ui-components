@@ -17,8 +17,6 @@ import { Section } from '../base/Section';
 
 import { Notification } from '../notifications/Notification';
 
-import { AppURL } from '../../url/AppURL';
-
 import { useServerContext } from '../base/ServerContext';
 
 import { App } from '../../../index';
@@ -31,22 +29,15 @@ import { ChangePasswordModal } from './ChangePasswordModal';
 
 import { useUserProperties } from './UserProvider';
 
-// ToDo: This is copied from SM, and we only need a subset. Use withRouteLeave.
-interface CommonDispatchProps {
-    navigate: (url: string | AppURL) => any;
-    goBack: (n?: number) => any;
-    menuInit: () => any;
-    menuInvalidate: () => any;
-    setReloadRequired: () => any;
-}
-
-interface Props extends CommonDispatchProps {
+interface Props {
     updateUserDisplayName: (displayName: string) => any;
+    setReloadRequired: () => any;
+    goBack: (n?: number) => any;
 }
 
 const TITLE = 'User Profile';
 
-const ProfilePageImpl: FC<Props> = props => {
+export const ProfilePage: FC<Props> = props => {
     const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
     const { user } = useServerContext();
     const userProperties = useUserProperties(user);
@@ -118,6 +109,3 @@ const ProfilePageImpl: FC<Props> = props => {
         </Page>
     );
 };
-
-// export const ProfilePage = withRouteLeave(withRouter(ProfilePageImpl));
-export const ProfilePage = ProfilePageImpl;

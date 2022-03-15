@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * TODO
 
+### version 2.141.2
+*Released*: 14 March 2022
+* Export `PICKLIST_SAMPLES_FILTER`
+* Include listId in picklist gridId to disambiguate
+
 ### version 2.141.1
 *Released*: 11 March 2022
 * Merge release22.3-SNAPSHOT to develop again

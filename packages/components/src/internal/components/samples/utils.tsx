@@ -26,7 +26,13 @@ import { isSampleStatusEnabled } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
-import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
+import {
+    operationRestrictionMessage,
+    permittedOps,
+    SAMPLE_STATE_COLUMN_NAME,
+    SAMPLE_STORAGE_COLUMNS,
+    SampleOperation
+} from './constants';
 
 import { SampleStatus } from './models';
 
@@ -257,7 +263,7 @@ export const getSampleTypeTemplateUrl = (
 export const downloadSampleTypeTemplate = (
     schemaQuery: SchemaQuery,
     getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>, excludeColumns?: string[]) => string,
-    excludeColumns?: string[]
+    excludeColumns: string[] = SAMPLE_STORAGE_COLUMNS
 ): void => {
     const promises = []
     promises.push(getQueryDetails({

@@ -248,7 +248,9 @@ export const getSampleTypeTemplateUrl = (
     const { schemaQuery } = queryInfo;
     if (!schemaQuery) return undefined;
 
-    const extraColumns = SAMPLE_INSERT_EXTRA_COLUMNS.concat(Object.keys(importAliases || {}));
+    const extraColumns = SAMPLE_INSERT_EXTRA_COLUMNS
+        .concat(Object.keys(importAliases || {}))
+        .filter(col => excludeColumns.indexOf(col) == -1);
 
     return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
         ...SAMPLE_EXPORT_CONFIG,

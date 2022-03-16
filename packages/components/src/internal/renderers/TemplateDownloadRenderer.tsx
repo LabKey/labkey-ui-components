@@ -5,18 +5,19 @@ import { downloadSampleTypeTemplate, getSampleTypeTemplateUrl } from '../compone
 import { SCHEMAS } from '../schemas';
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { Assay } from '@labkey/api';
-import { downloadFromUrl } from '../util/utils';
+import { downloadAttachment } from '../util/utils';
 
 interface Props {
     row?: Map<any, any>;
+    excludeColumns?: string[]
 }
 
 export class SampleTypeTemplateDownloadRenderer extends React.PureComponent<Props> {
 
     onDownload = () => {
-        const { row } = this.props;
+        const { row, excludeColumns } = this.props;
         const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA,  row.getIn(['Name', 'value']));
-        downloadSampleTypeTemplate(schemaQuery, getSampleTypeTemplateUrl);
+        downloadSampleTypeTemplate(schemaQuery, getSampleTypeTemplateUrl, excludeColumns);
     }
 
     render(): ReactNode {
@@ -26,7 +27,6 @@ export class SampleTypeTemplateDownloadRenderer extends React.PureComponent<Prop
     }
 }
 
-
 export class AssayResultTemplateDownloadRenderer extends React.PureComponent<Props> {
 
     onDownload = () => {
@@ -35,7 +35,7 @@ export class AssayResultTemplateDownloadRenderer extends React.PureComponent<Pro
             name: row.getIn(['Name', 'value']),
             success: (assayDef => {
                 if (assayDef?.length) {
-                    downloadFromUrl(assayDef[0].templateLink);
+                    downloadAttachment(assayDef[0].templateLink, true);
                 }
                 else {
                     console.error("Assay definition not found for row", row.toJS());

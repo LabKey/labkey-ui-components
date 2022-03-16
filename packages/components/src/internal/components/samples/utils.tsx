@@ -6,7 +6,7 @@ import { User } from '../base/models/User';
 import {
     App,
     caseInsensitive,
-    downloadFromUrl,
+    downloadAttachment,
     getQueryDetails,
     getSampleTypeDetails,
     LoadingSpinner,
@@ -254,7 +254,11 @@ export const getSampleTypeTemplateUrl = (
     });
 };
 
-export const downloadSampleTypeTemplate = (schemaQuery: SchemaQuery, getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string) => {
+export const downloadSampleTypeTemplate = (
+    schemaQuery: SchemaQuery,
+    getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>, excludeColumns?: string[]) => string,
+    excludeColumns?: string[]
+): void => {
     const promises = []
     promises.push(getQueryDetails({
         schemaName: schemaQuery.schemaName,
@@ -263,6 +267,8 @@ export const downloadSampleTypeTemplate = (schemaQuery: SchemaQuery, getUrl: (qu
     promises.push(getSampleTypeDetails(schemaQuery));
     Promise.all(promises).then(results => {
         const [queryInfo, domainDetails] = results;
-        downloadFromUrl(getUrl(queryInfo, domainDetails.options?.get('importAliases')));
+        downloadAttachment(getUrl(queryInfo, domainDetails.options?.get('importAliases'), excludeColumns), true);
+    }).catch(reason => {
+        console.error("Unable to download sample type template", reason);
     });
 }

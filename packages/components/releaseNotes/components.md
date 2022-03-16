@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.143.0
+*Released*: 16 March 2022
+* Add iconDir to SearchResultCardData
+  * This allows apps to render icons in search results that are in non-default directories
+* Make URLResolver.resolveSearchUsingIndex synchronous
+  * It was a promise, but it did nothing async
+* Convert SearchResultCard to FC
+* Refactor SearchResultCard tests
+  * no longer using snapshots
+  * add additional test cases
+
 ### version 2.142.0
 *Released*: 15 March 2022
 * Support In-App Admin across LKB and LKSM, adding admin & user settings page distinctions, as well as profile settings.

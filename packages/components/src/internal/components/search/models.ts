@@ -48,6 +48,7 @@ export class SearchIdData {
 }
 
 export interface SearchResultCardData {
+    iconDir?: string;
     iconSrc?: string;
     altText?: string;
     title?: string;

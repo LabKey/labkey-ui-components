@@ -11,7 +11,6 @@ import { AppURL } from '../../url/AppURL';
 import { useServerContext } from '../base/ServerContext';
 
 import { User } from '../base/models/User';
-import { biologicsIsPrimaryApp } from '../../app/utils';
 
 export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
     let tabs = List<string>();
@@ -21,7 +20,7 @@ export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
         tabs = tabs.push('Permissions');
     }
     // Settings tab to be implemented in story 2 of In-App Admin
-    if (user.isAppAdmin() && !biologicsIsPrimaryApp()) {
+    if (user.isAppAdmin()) {
         tabs = tabs.push('Settings');
     }
 

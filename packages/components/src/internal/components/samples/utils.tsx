@@ -263,7 +263,7 @@ export const getSampleTypeTemplateUrl = (
 export const downloadSampleTypeTemplate = (
     schemaQuery: SchemaQuery,
     getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>, excludeColumns?: string[]) => string,
-    excludeColumns: string[] = SAMPLE_STORAGE_COLUMNS
+    excludeColumns?: string[]
 ): void => {
     const promises = []
     promises.push(getQueryDetails({

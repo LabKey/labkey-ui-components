@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.142.X
+*Released*: XX March 2022
+* Issue 44865: Default naming pattern is not saved during source type creation
+
 ### version 2.142.0
 *Released*: 15 March 2022
 * Support In-App Admin across LKB and LKSM, adding admin & user settings page distinctions, as well as profile settings.

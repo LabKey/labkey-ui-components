@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.143.0
-*Released*: ?? March 2022
+*Released*: 16 March 2022
 * Add iconDir to SearchResultCardData
   * This allows apps to render icons in search results that are in non-default directories
 * Make URLResolver.resolveSearchUsingIndex synchronous

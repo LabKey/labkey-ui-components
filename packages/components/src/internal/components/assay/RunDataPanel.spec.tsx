@@ -7,6 +7,8 @@ import { AssayUploadTabs } from '../../constants';
 import { EditorModel } from '../../models';
 
 import { RunDataPanel } from './RunDataPanel';
+import { mountWithServerContext } from '../../testHelpers';
+import { TEST_USER_EDITOR } from '../../../test/data/users';
 
 let MODEL_ID_NOT_LOADED = 'not loaded';
 let MODEL_ID_LOADED = 'loaded';
@@ -81,25 +83,22 @@ describe('<RunDataPanel/>', () => {
     });
 
     test('default props', () => {
-        const component = <RunDataPanelWrapper />;
+        const component = mountWithServerContext(<RunDataPanelWrapper />, {user: TEST_USER_EDITOR});
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(component).toMatchSnapshot();
     });
 
     test('custom display props', () => {
-        const component = <RunDataPanelWrapper allowBulkRemove={true} fullWidth={true} />;
-
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        const component = mountWithServerContext(<RunDataPanelWrapper allowBulkRemove={true} fullWidth={true} />, {user: TEST_USER_EDITOR});
+        expect(component).toMatchSnapshot();
     });
 
     test('showsTabs', () => {
-        let wrapper = mount(<RunDataPanelWrapper showTabs={true} />);
+        let wrapper = mountWithServerContext(<RunDataPanelWrapper showTabs={true} />, {user: TEST_USER_EDITOR});
         expect(wrapper.find(FormTabs)).toHaveLength(1);
         wrapper.unmount();
 
-        wrapper = mount(<RunDataPanelWrapper showTabs={false} />);
+        wrapper = mountWithServerContext(<RunDataPanelWrapper showTabs={false} />, {user: TEST_USER_EDITOR});
         expect(wrapper.find(FormTabs)).toHaveLength(0);
         wrapper.unmount();
     });

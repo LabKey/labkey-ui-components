@@ -32,6 +32,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
 import { getSampleStatusType } from './utils';
+import {isSampleAliquotSelectorEnabled} from "../../app/utils";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -116,6 +117,8 @@ export const SampleAssayDetailButtons: FC<SampleAssayDetailButtonsProps> = props
 // export for jest testing
 export const SampleAssayDetailButtonsRight: FC<SampleAssayDetailButtonsProps> = props => {
     const { activeSampleAliquotType, onSampleAliquotTypeChange, isSourceSampleAssayGrid } = props;
+
+    if (!isSampleAliquotSelectorEnabled()) return null;
 
     return (
         <>

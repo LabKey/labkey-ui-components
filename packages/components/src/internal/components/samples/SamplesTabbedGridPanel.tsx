@@ -27,7 +27,7 @@ import {
 
 import { TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
 
-import { userCanEditStorageData } from '../../app/utils';
+import { isSampleAliquotSelectorEnabled, userCanEditStorageData } from '../../app/utils';
 
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
@@ -347,6 +347,8 @@ SamplesTabbedGridPanel.displayName = 'SamplesTabbedGridPanel';
 
 const SampleTabbedGridButtonsRight: FC<SampleGridButtonProps & RequiresModelAndActions> = props => {
     const { model, onTabbedViewAliquotSelectorUpdate, initAliquotMode } = props;
+
+    if (!isSampleAliquotSelectorEnabled()) return null;
 
     return (
         <GridAliquotViewSelector

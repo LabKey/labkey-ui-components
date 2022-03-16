@@ -112,6 +112,19 @@ describe('SampleAssayDetailButtons', () => {
 });
 
 describe('SampleAssayDetailButtonsRight', () => {
+    beforeEach(() => {
+        LABKEY.moduleContext = { samplemanagement: { 'experimental-sample-aliquot-selector': true } };
+    });
+
+    test('experimental flag not enabled', () => {
+        LABKEY.moduleContext = { samplemanagement: { 'experimental-sample-aliquot-selector': false } };
+        const wrapper = mountWithServerContext(<SampleAssayDetailButtonsRight {...DEFAULT_PROPS} />,
+            { user: TEST_USER_READER }
+        );
+        expect(wrapper.find(SampleAliquotViewSelector)).toHaveLength(0);
+        wrapper.unmount();
+    });
+
     test('isSourceSampleAssayGrid false', () => {
         const wrapper = mountWithServerContext(
             <SampleAssayDetailButtonsRight {...DEFAULT_PROPS} isSourceSampleAssayGrid={false} />,

@@ -29,6 +29,7 @@ describe("TemplateDownloadButton", () => {
         );
         expect(wrapper.text()).toBe(" Template");
         expect(wrapper.containsMatchingElement(<span className="fa fa-download" />)).toBeTruthy();
+        wrapper.unmount();
     });
 
     test("editor, with custom properties", () => {
@@ -41,5 +42,6 @@ describe("TemplateDownloadButton", () => {
         );
         expect(wrapper.text()).toBe(" Test Text");
         expect(wrapper.find(".custom-styling").exists()).toBeTruthy();
+        wrapper.unmount();
     })
 });

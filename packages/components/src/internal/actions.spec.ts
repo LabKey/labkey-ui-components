@@ -350,7 +350,7 @@ describe('getExportParams', () => {
     });
 
     test('as csv', () => {
-        expect(getExportParams(EXPORT_TYPES.TSV, schemaQuery)).toStrictEqual({
+        expect(getExportParams(EXPORT_TYPES.CSV, schemaQuery)).toStrictEqual({
             schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],

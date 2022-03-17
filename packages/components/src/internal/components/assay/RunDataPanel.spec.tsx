@@ -1,17 +1,19 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import renderer from 'react-test-renderer';
+
 import { FormTabs, LoadingState, QueryModel, withFormSteps, WithFormStepsProps } from '../../..';
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 import { AssayUploadTabs } from '../../constants';
 import { EditorModel } from '../../models';
 
-import { RunDataPanel } from './RunDataPanel';
 import { mountWithServerContext } from '../../testHelpers';
 import { TEST_USER_EDITOR } from '../../../test/data/users';
 
-let MODEL_ID_NOT_LOADED = 'not loaded';
-let MODEL_ID_LOADED = 'loaded';
+import { RunDataPanel } from './RunDataPanel';
+
+const MODEL_ID_NOT_LOADED = 'not loaded';
+const MODEL_ID_LOADED = 'loaded';
 
 interface OwnProps {
     allowBulkRemove?: boolean;
@@ -83,22 +85,24 @@ describe('<RunDataPanel/>', () => {
     });
 
     test('default props', () => {
-        const component = mountWithServerContext(<RunDataPanelWrapper />, {user: TEST_USER_EDITOR});
+        const component = mountWithServerContext(<RunDataPanelWrapper />, { user: TEST_USER_EDITOR });
 
         expect(component).toMatchSnapshot();
     });
 
     test('custom display props', () => {
-        const component = mountWithServerContext(<RunDataPanelWrapper allowBulkRemove={true} fullWidth={true} />, {user: TEST_USER_EDITOR});
+        const component = mountWithServerContext(<RunDataPanelWrapper allowBulkRemove={true} fullWidth={true} />, {
+            user: TEST_USER_EDITOR,
+        });
         expect(component).toMatchSnapshot();
     });
 
     test('showsTabs', () => {
-        let wrapper = mountWithServerContext(<RunDataPanelWrapper showTabs={true} />, {user: TEST_USER_EDITOR});
+        let wrapper = mountWithServerContext(<RunDataPanelWrapper showTabs={true} />, { user: TEST_USER_EDITOR });
         expect(wrapper.find(FormTabs)).toHaveLength(1);
         wrapper.unmount();
 
-        wrapper = mountWithServerContext(<RunDataPanelWrapper showTabs={false} />, {user: TEST_USER_EDITOR});
+        wrapper = mountWithServerContext(<RunDataPanelWrapper showTabs={false} />, { user: TEST_USER_EDITOR });
         expect(wrapper.find(FormTabs)).toHaveLength(0);
         wrapper.unmount();
     });

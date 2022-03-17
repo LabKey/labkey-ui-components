@@ -363,8 +363,9 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 <div className="col-md-9">{this.shouldRenderAcceptedFormats() && this.renderAcceptedFormats()}</div>
                 <div className="col-md-3">
                     <div className="pull-right">
-                        {this.shouldRenderTemplateButton() &&
-                            <TemplateDownloadButton templateUrl={this.props.templateUrl} />}
+                        {this.shouldRenderTemplateButton() && (
+                            <TemplateDownloadButton templateUrl={this.props.templateUrl} />
+                        )}
                     </div>
                 </div>
             </div>

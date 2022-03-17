@@ -676,4 +676,3 @@ export const handleFileInputChange = (
         }
     };
 };
-

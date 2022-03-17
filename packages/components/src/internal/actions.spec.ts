@@ -15,6 +15,8 @@
  */
 import { List, Map, OrderedMap } from 'immutable';
 
+import { Filter } from '@labkey/api';
+
 import {
     EditorModel,
     EXPORT_TYPES,
@@ -32,7 +34,6 @@ import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import { addColumns, changeColumn, removeColumn, genCellKey, parseCellKey, getExportParams } from './actions';
 import { CellMessage, ValueDescriptor } from './models';
 import { resetQueryGridState, updateQueryGridModel } from './global';
-import { Filter } from '@labkey/api';
 // FIXME, when the editableGridWithData file is read in, the objects are automatically
 //  converted to Maps, which means accessing them like objects doesn't work.  That's a problem.
 // const editableGridWithData = require("./test/data/sampleSet2-editableGridWithData.json");
@@ -326,68 +327,75 @@ describe('CellKey', () => {
 });
 
 describe('getExportParams', () => {
-
-    const schemaName = "test";
+    const schemaName = 'test';
     const queryName = 'query';
     const schemaQuery = SchemaQuery.create(schemaName, queryName);
     test('no options or advanced options', () => {
         expect(getExportParams(EXPORT_TYPES.TSV, schemaQuery)).toStrictEqual({
-            schemaName: schemaName,
+            schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],
             'query.selectionKey': undefined,
         });
     });
 
-    test("with schema view", () => {
-        expect(getExportParams(EXPORT_TYPES.TSV, SchemaQuery.create(schemaName, queryName, "testView")))
-            .toStrictEqual({
-                schemaName: schemaName,
-                'query.queryName': queryName,
-                'query.showRows': ['ALL'],
-                'query.selectionKey': undefined,
-                'query.viewName': 'testView',
-            });
+    test('with schema view', () => {
+        expect(getExportParams(EXPORT_TYPES.TSV, SchemaQuery.create(schemaName, queryName, 'testView'))).toStrictEqual({
+            schemaName,
+            'query.queryName': queryName,
+            'query.showRows': ['ALL'],
+            'query.selectionKey': undefined,
+            'query.viewName': 'testView',
+        });
     });
 
     test('as csv', () => {
         expect(getExportParams(EXPORT_TYPES.TSV, schemaQuery)).toStrictEqual({
-            schemaName: schemaName,
+            schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],
             'query.selectionKey': undefined,
-            'delim': 'COMMA'
+            delim: 'COMMA',
         });
     });
 
     test('with options, no advanced options', () => {
-        expect(getExportParams(EXPORT_TYPES.TSV, schemaQuery, {
-            showRows: 'SELECTED',
-            selectionKey: 'selection-key',
-            columns: 'Field1,Field2',
-            sorts: '-Field2,Field1',
-            filters: List([Filter.create("Field3", "value", Filter.Types.NEQ)])
-        })).toStrictEqual({
-            schemaName: schemaName,
+        expect(
+            getExportParams(EXPORT_TYPES.TSV, schemaQuery, {
+                showRows: 'SELECTED',
+                selectionKey: 'selection-key',
+                columns: 'Field1,Field2',
+                sorts: '-Field2,Field1',
+                filters: List([Filter.create('Field3', 'value', Filter.Types.NEQ)]),
+            })
+        ).toStrictEqual({
+            schemaName,
             'query.queryName': queryName,
             'query.showRows': ['SELECTED'],
             'query.selectionKey': 'selection-key',
             'query.columns': 'Field1,Field2',
             'query.sort': '-Field2,Field1',
-            'query.Field3~neq': ['value']
+            'query.Field3~neq': ['value'],
         });
     });
 
     test('with includeColumn', () => {
-        expect(getExportParams(EXPORT_TYPES.TSV, schemaQuery, {
-            selectionKey: 'selection-key',
-            columns: 'Field1,Field2',
-            sorts: '-Field2,Field1',
-            filters: List([Filter.create("Field3", "value", Filter.Types.NEQ)])
-        }, {
-            includeColumn: ['extra1', 'extra2']
-        })).toStrictEqual({
-            schemaName: schemaName,
+        expect(
+            getExportParams(
+                EXPORT_TYPES.TSV,
+                schemaQuery,
+                {
+                    selectionKey: 'selection-key',
+                    columns: 'Field1,Field2',
+                    sorts: '-Field2,Field1',
+                    filters: List([Filter.create('Field3', 'value', Filter.Types.NEQ)]),
+                },
+                {
+                    includeColumn: ['extra1', 'extra2'],
+                }
+            )
+        ).toStrictEqual({
+            schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],
             'query.selectionKey': 'selection-key',
@@ -399,14 +407,21 @@ describe('getExportParams', () => {
     });
 
     test('with includeColumn, no columns', () => {
-        expect(getExportParams(EXPORT_TYPES.TSV, schemaQuery, {
-            selectionKey: 'selection-key',
-            sorts: '-Field2,Field1',
-            filters: List([Filter.create("Field3", "value", Filter.Types.NEQ)])
-        }, {
-            includeColumn: ['extra1', 'extra2']
-        })).toStrictEqual({
-            schemaName: schemaName,
+        expect(
+            getExportParams(
+                EXPORT_TYPES.TSV,
+                schemaQuery,
+                {
+                    selectionKey: 'selection-key',
+                    sorts: '-Field2,Field1',
+                    filters: List([Filter.create('Field3', 'value', Filter.Types.NEQ)]),
+                },
+                {
+                    includeColumn: ['extra1', 'extra2'],
+                }
+            )
+        ).toStrictEqual({
+            schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],
             'query.selectionKey': 'selection-key',
@@ -417,15 +432,22 @@ describe('getExportParams', () => {
     });
 
     test('with excludeColumn', () => {
-        expect(getExportParams(EXPORT_TYPES.TSV, schemaQuery, {
-            selectionKey: 'selection-key',
-            sorts: '-Field2,Field1',
-            columns: 'Field1,Field2,Field3',
-            filters: List([Filter.create("Field3", "value", Filter.Types.NEQ)])
-        }, {
-            excludeColumn: ['Field3', 'extra2']
-        })).toStrictEqual({
-            schemaName: schemaName,
+        expect(
+            getExportParams(
+                EXPORT_TYPES.TSV,
+                schemaQuery,
+                {
+                    selectionKey: 'selection-key',
+                    sorts: '-Field2,Field1',
+                    columns: 'Field1,Field2,Field3',
+                    filters: List([Filter.create('Field3', 'value', Filter.Types.NEQ)]),
+                },
+                {
+                    excludeColumn: ['Field3', 'extra2'],
+                }
+            )
+        ).toStrictEqual({
+            schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],
             'query.selectionKey': 'selection-key',
@@ -437,16 +459,23 @@ describe('getExportParams', () => {
     });
 
     test('with includeColumn and excludeColumn', () => {
-        expect(getExportParams(EXPORT_TYPES.TSV, schemaQuery, {
-            selectionKey: 'selection-key',
-            sorts: '-Field2,Field1',
-            columns: 'Field1,Field2,Field3',
-            filters: List([Filter.create("Field3", "value", Filter.Types.NEQ)])
-        }, {
-            includeColumn: ['extra1', 'extra2'],
-            excludeColumn: ['Field3', 'extra2']
-        })).toStrictEqual({
-            schemaName: schemaName,
+        expect(
+            getExportParams(
+                EXPORT_TYPES.TSV,
+                schemaQuery,
+                {
+                    selectionKey: 'selection-key',
+                    sorts: '-Field2,Field1',
+                    columns: 'Field1,Field2,Field3',
+                    filters: List([Filter.create('Field3', 'value', Filter.Types.NEQ)]),
+                },
+                {
+                    includeColumn: ['extra1', 'extra2'],
+                    excludeColumn: ['Field3', 'extra2'],
+                }
+            )
+        ).toStrictEqual({
+            schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],
             'query.selectionKey': 'selection-key',
@@ -457,4 +486,4 @@ describe('getExportParams', () => {
             excludeColumn: ['Field3', 'extra2'],
         });
     });
-})
+});

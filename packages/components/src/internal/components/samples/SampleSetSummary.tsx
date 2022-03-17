@@ -32,12 +32,11 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
 
     const canUpdate = hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]);
     const queryConfig = useMemo(() => {
-        let requiredColumns = undefined;
-        let omittedColumns = SAMPLE_QUERY_CONFIG.omittedColumns;
+        let requiredColumns;
+        const omittedColumns = SAMPLE_QUERY_CONFIG.omittedColumns;
         if (canUpdate) {
             requiredColumns = ['lsid'];
-        }
-        else {
+        } else {
             omittedColumns.push('lsid');
         }
 
@@ -63,7 +62,7 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
             {selectedView === SelectView.Cards && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
             {selectedView === SelectView.Grid && (
                 <GridPanelWithModel
-                    advancedExportOptions={{excludeColumn:['lsid']}}
+                    advancedExportOptions={{ excludeColumn: ['lsid'] }}
                     queryConfig={queryConfig}
                     asPanel={false}
                     showPagination

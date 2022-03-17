@@ -55,12 +55,11 @@ export const StatusGrid: FC<OwnProps> = memo(props => {
 
         const activeBaseFilter = allBaseFilter.concat([Filter.create('Status', Status.Active)]);
         const canUpdate = hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]);
-        let requiredColumns = undefined;
-        let omittedColumns =  [];
+        let requiredColumns;
+        const omittedColumns = [];
         if (canUpdate) {
             requiredColumns = ['lsid'];
-        }
-        else {
+        } else {
             omittedColumns.push('lsid');
         }
         return {
@@ -80,7 +79,7 @@ export const StatusGrid: FC<OwnProps> = memo(props => {
                 title: 'All',
                 schemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
                 omittedColumns,
-                requiredColumns
+                requiredColumns,
             },
         };
     }, [assayTypes, excludedAssayProviders]);

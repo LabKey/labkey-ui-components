@@ -765,8 +765,7 @@ export function getExportParams(
                     }
                 });
                 params['query.columns'] = columns.join(',');
-            }
-            else {
+            } else {
                 params['query.columns'] = columnsString;
             }
         }

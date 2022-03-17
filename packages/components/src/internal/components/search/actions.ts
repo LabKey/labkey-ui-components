@@ -7,9 +7,11 @@ import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 import { SearchIdData, SearchResultCardData } from './models';
 import { SAMPLE_FINDER_VIEW_NAME } from './utils';
 
+type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
+
 export function searchUsingIndex(
-    userConfig,
-    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
+    userConfig: any,
+    getCardDataFn?: GetCardDataFn,
     filterCategories?: string[]
 ): Promise<Record<string, any>> {
     return new Promise((resolve, reject) => {
@@ -19,21 +21,11 @@ export function searchUsingIndex(
             params: userConfig,
             success: Utils.getCallbackWrapper(json => {
                 addDataObjects(json);
-                const urlResolver = new URLResolver();
-                urlResolver.resolveSearchUsingIndex(json).then(results => {
-                    resolve({
-                        ...results,
-                        hits: getProcessedSearchHits(results['hits'], getCardDataFn, filterCategories),
-                    });
-                });
+                const results = new URLResolver().resolveSearchUsingIndex(json);
+                const hits = getProcessedSearchHits(results['hits'], getCardDataFn, filterCategories);
+                resolve({ ...results, hits });
             }),
-            failure: Utils.getCallbackWrapper(
-                json => {
-                    reject(json);
-                },
-                null,
-                false
-            ),
+            failure: Utils.getCallbackWrapper(json => reject(json), null, false),
         });
     });
 }
@@ -128,23 +120,18 @@ function getCardData(
 
 // TODO: add categories for other search results so the result['data'] check could be removed.
 export function getProcessedSearchHits(
-    results: any,
+    hits: any[],
     getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
     filterCategories = ['data', 'material', 'workflowJob', 'file workflowJob']
-): {} {
-    return results
-        ? results
-              .filter(result => {
-                  const category = result['category'];
-                  return filterCategories?.indexOf(category) > -1 || result['data'];
-              })
-              .map(result => {
-                  return {
-                      ...result,
-                      cardData: getCardData(result['category'], result['data'], result['title'], getCardDataFn),
-                  };
-              })
-        : undefined;
+): any[] {
+    return hits
+        ?.filter(result => {
+            return filterCategories?.indexOf(result.category) > -1 || result.data;
+        })
+        .map(result => ({
+            ...result,
+            cardData: getCardData(result.category, result.data, result.title, getCardDataFn),
+        }));
 }
 
 export function removeFinderGridView(model: QueryModel): Promise<boolean> {

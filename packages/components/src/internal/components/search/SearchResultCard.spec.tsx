@@ -14,46 +14,74 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
-import { fromJS } from 'immutable';
-
 import { mount } from 'enzyme';
 
 import { SearchResultCard } from './SearchResultCard';
 
 describe('<SearchResultCard/>', () => {
-    test('without category', () => {
+    test('category', () => {
+        const summary = 'Card Summary';
+        const category = 'My Category';
         const cardData = {
             title: 'my title',
             iconSrc: 'testsource',
-            typeName: 'Test Source',
         };
-        const component = <SearchResultCard cardData={cardData} summary="Card Summary" url="#card" />;
+        const wrapper = mount(<SearchResultCard cardData={cardData} summary="Card Summary" url="#card" />);
 
-        const wrapper = mount(component);
-        const icon = wrapper.find('img');
-        expect(icon.getDOMNode().getAttribute('src')).toBe('/labkey/_images/testsource.svg');
-        expect(wrapper.text().indexOf('Type: Test Source')).toBeGreaterThan(-1);
-        wrapper.unmount();
+        // When there is no category or typeName the first card detail will be the summary
+        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Summary: ' + summary);
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        wrapper.setProps({ cardData: { ...cardData, category } });
+        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Category: ' + category);
     });
 
-    test('with category', () => {
+    test('typeName', () => {
+        const summary = 'Card Summary';
+        const typeName = 'My Type';
         const cardData = {
             title: 'my title',
-            iconSrc: 'testSource',
-            typeName: 'Test Source',
-            category: 'sourcecategory',
+            iconSrc: 'testsource',
         };
-        const component = <SearchResultCard cardData={cardData} summary="Card Summary" url="#card" />;
+        const wrapper = mount(<SearchResultCard cardData={cardData} summary="Card Summary" url="#card" />);
 
-        const wrapper = mount(component);
-        expect(wrapper.text().indexOf('Category: sourcecategory')).toBeGreaterThan(-1);
-        wrapper.unmount();
+        // When there is no category or typeName the first card detail will be the summary
+        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Summary: ' + summary);
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        wrapper.setProps({ cardData: { ...cardData, typeName } });
+        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Type: ' + typeName);
+    });
+
+    test('icon', () => {
+        const iconUrl = '/url/for/icon.png';
+        const cardData = {
+            title: 'my title',
+            iconSrc: 'testsource',
+        };
+        const wrapper = mount(<SearchResultCard cardData={cardData} summary="Card Summary" url="#card" />);
+        expect(wrapper.find('img').getDOMNode().getAttribute('src')).toBe('/labkey/_images/testsource.svg');
+
+        // The iconDir prop should override the _images/ default
+        wrapper.setProps({ cardData: { ...cardData, iconDir: 'test/dir' } });
+        expect(wrapper.find('img').getDOMNode().getAttribute('src')).toBe('/labkey/test/dir/testsource.svg');
+
+        // The iconUrl prop should override the cardData.iconSrc attribute
+        wrapper.setProps({ iconUrl });
+        expect(wrapper.find('img').getDOMNode().getAttribute('src')).toBe(iconUrl);
+    });
+
+    test('summary', () => {
+        const shortSummary = 'Short summary';
+        const longSummary = 'This is a very long summary it should get truncated at some point';
+        const expectedLongSummary = longSummary.substr(0, 35);
+        const wrapper = mount(<SearchResultCard cardData={{}} summary="" url="#card" />);
+
+        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Summary: No summary provided');
+
+        wrapper.setProps({ summary: shortSummary });
+        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Summary: ' + shortSummary);
+
+        // Long summary should get truncated
+        wrapper.setProps({ summary: longSummary });
+        expect(wrapper.find('.search-result__card-detail').at(0).text()).toEqual('Summary: ' + expectedLongSummary);
     });
 });

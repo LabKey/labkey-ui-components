@@ -652,54 +652,52 @@ export class URLResolver {
     }
 
     // ToDo: this is rather fragile and data specific. this should be reworked with the mappers and rest of the resolvers to provide for more thorough coverage of our incoming URLs
-    resolveSearchUsingIndex(json): Promise<{}> {
-        return new Promise(resolve => {
-            let resolved = fromJS(JSON.parse(JSON.stringify(json)));
+    resolveSearchUsingIndex(json): any {
+        let resolved = fromJS(JSON.parse(JSON.stringify(json)));
 
-            if (resolved.get('hits').count()) {
-                const rows = resolved.get('hits').map(row => {
-                    if (row && row.has('url')) {
-                        let url = row.get('url'),
-                            id = row.get('id'),
-                            column = List(); // no columns, so providing an empty List to the resolver
-                        let query;
+        if (resolved.get('hits').count()) {
+            const rows = resolved.get('hits').map(row => {
+                if (row && row.has('url')) {
+                    let url = row.get('url'),
+                        id = row.get('id'),
+                        column = List(); // no columns, so providing an empty List to the resolver
+                    let query;
 
-                        // TODO: add reroute for assays/runs when pages and URLs are decided
-                        if (row.has('data') && row.hasIn(['data', 'dataClass'])) {
-                            query = row.getIn(['data', 'dataClass', 'name']); // dataClass is nested Map/Object inside of 'data' return
-                            url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                            return row.set('url', this.mapURL({ url, row, column, query }));
-                        } else if (id.indexOf('dataClass') >= 0) {
-                            query = row.getIn(['data', 'name']);
-                            url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                            return row.set('url', this.mapURL({ url, row, column, query }));
-                        } else if (id.indexOf('materialSource') >= 0) {
-                            query = row.getIn(['data', 'name']);
-                            url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                            return row.set('url', this.mapURL({ url, row, column, query }));
-                        } else if (id.indexOf('assay') >= 0) {
-                            query = row.getIn(['title']);
-                            url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
-                            return row.set('url', this.mapURL({ url, row, column, query }));
-                        } else if (id.indexOf('material') != -1 && row.hasIn(['data', 'sampleSet'])) {
-                            query = row.getIn(['data', 'sampleSet', 'name']);
-                            return row.set('url', this.mapURL({ url, row, column, query }));
-                        } else if (row.has('data') && row.hasIn(['data', 'id'])) {
-                            query = row.getIn(['data', 'type']);
-                            return row.set('url', this.mapURL({ url, row, column, query }));
-                        } else if (id.indexOf('samplemanagerJob') >= 0) {
-                            return row.set('url', this.mapURL({ url, row, column }));
-                        } else if (url.indexOf('samplemanager-downloadAttachments') >= 0) {
-                            return row.set('url', this.mapURL({ url, row, column }));
-                        }
+                    // TODO: add reroute for assays/runs when pages and URLs are decided
+                    if (row.has('data') && row.hasIn(['data', 'dataClass'])) {
+                        query = row.getIn(['data', 'dataClass', 'name']); // dataClass is nested Map/Object inside of 'data' return
+                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
+                        return row.set('url', this.mapURL({ url, row, column, query }));
+                    } else if (id.indexOf('dataClass') >= 0) {
+                        query = row.getIn(['data', 'name']);
+                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
+                        return row.set('url', this.mapURL({ url, row, column, query }));
+                    } else if (id.indexOf('materialSource') >= 0) {
+                        query = row.getIn(['data', 'name']);
+                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
+                        return row.set('url', this.mapURL({ url, row, column, query }));
+                    } else if (id.indexOf('assay') >= 0) {
+                        query = row.getIn(['title']);
+                        url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
+                        return row.set('url', this.mapURL({ url, row, column, query }));
+                    } else if (id.indexOf('material') != -1 && row.hasIn(['data', 'sampleSet'])) {
+                        query = row.getIn(['data', 'sampleSet', 'name']);
+                        return row.set('url', this.mapURL({ url, row, column, query }));
+                    } else if (row.has('data') && row.hasIn(['data', 'id'])) {
+                        query = row.getIn(['data', 'type']);
+                        return row.set('url', this.mapURL({ url, row, column, query }));
+                    } else if (id.indexOf('samplemanagerJob') >= 0) {
+                        return row.set('url', this.mapURL({ url, row, column }));
+                    } else if (url.indexOf('samplemanager-downloadAttachments') >= 0) {
+                        return row.set('url', this.mapURL({ url, row, column }));
                     }
-                    return row;
-                });
+                }
+                return row;
+            });
 
-                resolved = resolved.set('hits', rows);
-            }
+            resolved = resolved.set('hits', rows);
+        }
 
-            resolve(resolved.toJS());
-        });
+        return resolved.toJS();
     }
 }

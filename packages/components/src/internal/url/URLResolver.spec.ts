@@ -19,12 +19,11 @@ describe('resolveSearchUsingIndex', () => {
         const resolver = new URLResolver();
 
         const testJson = fromJS(entitiesJSON);
-        return resolver.resolveSearchUsingIndex(testJson).then(resolved => {
-            expect(resolved).toHaveProperty(['hits']);
-            expect(resolved).toHaveProperty(['hits', 0]);
-            expect(resolved).toHaveProperty(['hits', 0, 'url'], '#/samples/Molecule');
-            expect(resolved).toHaveProperty(['hits', 0, 'data', 'name'], 'Molecule'); // not sure if this is best place to check this...
-        });
+        const resolved = resolver.resolveSearchUsingIndex(testJson);
+        expect(resolved).toHaveProperty(['hits']);
+        expect(resolved).toHaveProperty(['hits', 0]);
+        expect(resolved).toHaveProperty(['hits', 0, 'url'], '#/samples/Molecule');
+        expect(resolved).toHaveProperty(['hits', 0, 'data', 'name'], 'Molecule'); // not sure if this is best place to check this...
     });
 });
 

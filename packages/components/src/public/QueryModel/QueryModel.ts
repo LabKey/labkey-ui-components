@@ -846,22 +846,18 @@ export class QueryModel {
      * Returns the model attributes given a set of queryParams from the URL. Used for URL Binding.
      * @param queryParams: The query attribute from a ReactRouter Location object.
      */
-    attributesForURLQueryParams(queryParams): QueryModelURLState {
+    attributesForURLQueryParams(queryParams: Record<string, string>): QueryModelURLState {
         const prefix = this.urlPrefix;
         const viewName = queryParams[`${prefix}.view`] ?? this.viewName;
-        let filterArray = Filter.getFiltersFromParameters(queryParams, prefix) || this.filterArray;
-        const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]);
-
-        if (searchFilters !== undefined) {
-            filterArray = filterArray.concat(searchFilters);
-        }
+        const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]) ?? [];
+        const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix) || [];
 
         return {
-            filterArray,
-            offset: offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? this.offset,
+            filterArray: columnFilters.concat(searchFilters),
+            offset: offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? DEFAULT_OFFSET,
             schemaQuery: SchemaQuery.create(this.schemaName, this.queryName, viewName),
-            sorts: querySortsFromString(queryParams[`${prefix}.sort`]) ?? this.sorts,
-            selectedReportId: queryParams[`${prefix}.reportId`] ?? this.selectedReportId,
+            sorts: querySortsFromString(queryParams[`${prefix}.sort`]) ?? [],
+            selectedReportId: queryParams[`${prefix}.reportId`] ?? undefined,
         };
     }
 

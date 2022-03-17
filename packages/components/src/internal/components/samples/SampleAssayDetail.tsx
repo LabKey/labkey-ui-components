@@ -32,7 +32,6 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
 import { getSampleStatusType } from './utils';
-import {isSampleAliquotSelectorEnabled} from "../../app/utils";
 
 interface Props {
     api?: ComponentsAPIWrapper;

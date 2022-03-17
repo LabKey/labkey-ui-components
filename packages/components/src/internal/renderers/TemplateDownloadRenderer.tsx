@@ -16,7 +16,8 @@ export class SampleTypeTemplateDownloadRenderer extends React.PureComponent<Prop
 
     onDownload = () => {
         const { row, excludeColumns } = this.props;
-        const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA,  row.getIn(['Name', 'value']));
+        const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA,
+            row.getIn(['Name', 'value']) ?? row.getIn(['name', 'value']));
         downloadSampleTypeTemplate(schemaQuery, getSampleTypeTemplateUrl, excludeColumns);
     }
 

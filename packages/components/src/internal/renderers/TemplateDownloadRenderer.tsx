@@ -32,7 +32,7 @@ export class AssayResultTemplateDownloadRenderer extends React.PureComponent<Pro
     onDownload = () => {
         const { row } = this.props;
         Assay.getByName({
-            name: row.getIn(['Name', 'value']),
+            name: row.getIn(['Name', 'value']) ?? row.getIn(['name', 'value']),
             success: (assayDef => {
                 if (assayDef?.length) {
                     downloadAttachment(assayDef[0].templateLink, true);

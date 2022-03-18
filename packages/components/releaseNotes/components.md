@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* add `exportConfig` parameter to `getSampleTypeTemplateUrl` for better behavior for media templates
+
 ### version 2.144.0
 *Released*: 18 March 2022
 * Item 10165: Provide link to download the import template for types in more places

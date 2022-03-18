@@ -16,7 +16,7 @@ import {
     LoadingSpinner,
     OperationConfirmationData,
     QueryInfo,
-    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME, SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
     SamplesManageButtonSections,
     SampleStateType,
@@ -477,4 +477,15 @@ describe('getSampleTypeTemplateUrl', () => {
         expect(url.indexOf('&includeColumn=a&includeColumn=b') > 1).toBeTruthy();
         expect(url.indexOf('&excludeColumn=flag&excludeColumn=alias') > -1).toBeTruthy();
     });
+
+    test("with no exportConfig, exclude storage", () => {
+        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        const url = getSampleTypeTemplateUrl(qInfo, undefined, SAMPLE_STORAGE_COLUMNS, {});
+        expect(url.indexOf("exportAlias.name=SampleID")).toBe(-1);
+        expect(url.indexOf("exportAlias.aliquotedFromLSID=AliquotedFrom")).toBe(-1);
+        expect(url.indexOf("exportAlias.sampleState=Status")).toBe(-1);
+        SAMPLE_STORAGE_COLUMNS.forEach(col => {
+            expect(url.indexOf('includeColumn=' + col)).toBe(-1);
+        })
+    })
 });

@@ -15,7 +15,7 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { QueryColumn, QueryInfo } from '../../index';
+import { capitalizeFirstChar, QueryColumn, QueryInfo, uncapitalizeFirstChar, withTransformedKeys } from '../../index';
 
 import {
     camelCaseToTitleCase,
@@ -89,6 +89,64 @@ describe('camelCaseToTitleCase', () => {
         for (const [key, value] of Object.entries(testStrings)) {
             expect(camelCaseToTitleCase(key)).toEqual(value);
         }
+    });
+});
+
+describe('capitalizeFirstChar', () => {
+    test('capitalizeFirstChar', () => {
+        const testStrings = {
+            textACRONYM: 'textACRONYM',
+            camelCasedText: 'CamelCasedText',
+            CapsCasedText: 'CapsCasedText'
+        };
+
+        for (const [key, value] of Object.entries(testStrings)) {
+            expect(capitalizeFirstChar(key)).toEqual(value);
+        }
+    });
+});
+
+describe('uncapitalizeFirstChar', () => {
+    test('uncapitalizeFirstChar', () => {
+        const testStrings = {
+            textACRONYM: 'textACRONYM',
+            camelCasedText: 'camelCasedText',
+            CapsCasedText: 'capsCasedText'
+        };
+
+        for (const [key, value] of Object.entries(testStrings)) {
+            expect(uncapitalizeFirstChar(key)).toEqual(value);
+        }
+    });
+});
+
+describe('withTransformedKeys', () => {
+    test('using capitalizeFirstChar', () => {
+        const rawObj = {
+            textACRONYM: 'val1',
+            camelCasedText: 'val2',
+            CapsCasedText: 'val3'
+        };
+
+        expect(withTransformedKeys(rawObj, capitalizeFirstChar)).toEqual({
+            TextACRONYM: 'val1',
+            CamelCasedText: 'val2',
+            CapsCasedText: 'val3'
+        });
+    });
+
+    test('using uncapitalizeFirstChar', () => {
+        const rawObj = {
+            textACRONYM: 'val1',
+            camelCasedText: 'val2',
+            CapsCasedText: 'val3'
+        };
+
+        expect(withTransformedKeys(rawObj, capitalizeFirstChar)).toEqual({
+            textACRONYM: 'val1',
+            camelCasedText: 'val2',
+            capsCasedText: 'val3'
+        });
     });
 });
 

@@ -74,18 +74,10 @@ exports[`<FileAttachmentForm/> with attributes 1`] = `
       <div
         className="pull-right"
       >
-        <a
-          className="btn btn-info"
-          href="#downloadtemplateurl"
-          rel="noopener noreferrer"
-          target="_blank"
-          title="Download Template"
-        >
-          <span
-            className="fa fa-download"
-          />
-           Template
-        </a>
+        <Memo()
+          templateUrl="#downloadtemplateurl"
+          text="Template"
+        />
       </div>
     </div>
   </div>

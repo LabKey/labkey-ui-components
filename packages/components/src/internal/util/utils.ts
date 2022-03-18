@@ -514,7 +514,7 @@ export function isImage(value): boolean {
 
 export function downloadAttachment(href: string, openInTab?: boolean, fileName?: string): void {
     if (openInTab) {
-        window.open(href, '_blank');
+        window.open(href, '_blank', 'noopener,noreferrer');
     } else {
         const link = document.createElement('a');
         link.href = href;

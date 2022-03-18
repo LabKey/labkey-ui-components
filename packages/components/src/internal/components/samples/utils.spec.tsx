@@ -15,6 +15,7 @@ import {
     isSamplesSchema,
     LoadingSpinner,
     OperationConfirmationData,
+    QueryInfo,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
     SamplesManageButtonSections,
@@ -24,7 +25,7 @@ import {
 } from '../../..';
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
-import { shouldShowButtons, getSampleStatus, getSampleStatusType } from './utils';
+import { shouldShowButtons, getSampleStatus, getSampleStatusType, getSampleTypeTemplateUrl } from './utils';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
@@ -435,5 +436,45 @@ describe('getSampleStatus', () => {
         expect(getSampleStatus({ 'SampleID/SampleState/Description': { value: 'Desc2' } }).description).toBe('Desc2');
         expect(getSampleStatus({ Description: { value: undefined } }).description).toBeUndefined();
         expect(getSampleStatus({ Description: { value: 'Desc3' } }).description).toBe('Desc3');
+    });
+});
+
+describe('getSampleTypeTemplateUrl', () => {
+    const BASE_URL =
+        '/labkey/query/ExportExcelTemplate.view?exportAlias.name=SampleID&exportAlias.aliquotedFromLSID=AliquotedFrom&exportAlias.sampleState=Status&schemaName=schema&query.queryName=query&headerType=DisplayFieldKey&excludeColumn=flag&includeColumn=StorageLocation&includeColumn=StorageRow&includeColumn=StorageCol&includeColumn=StoredAmount&includeColumn=Units&includeColumn=FreezeThawCount&includeColumn=EnteredStorage&includeColumn=CheckedOut&includeColumn=CheckedOutBy&includeColumn=StorageComment&includeColumn=AliquotedFrom';
+
+    test('no schemaQuery', () => {
+        expect(getSampleTypeTemplateUrl(QueryInfo.create({}), undefined)).toBe(undefined);
+    });
+
+    test('without importAliases', () => {
+        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        expect(getSampleTypeTemplateUrl(qInfo, undefined)).toBe(BASE_URL);
+    });
+
+    test('with importAliases', () => {
+        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        expect(
+            getSampleTypeTemplateUrl(qInfo, { a: '1', b: '2' }).indexOf('&includeColumn=a&includeColumn=b') > -1
+        ).toBeTruthy();
+    });
+
+    test('with columns to exclude', () => {
+        const qInfo = QueryInfo.fromJSON({
+            schemaName: 'schema',
+            name: 'query',
+            columns: {
+                nonFileCol: { fieldKey: 'nonFileCol', inputType: 'text' },
+                fileCol: { fieldKey: 'fileCol', inputType: 'file' },
+            },
+        });
+        expect(getSampleTypeTemplateUrl(qInfo, undefined).indexOf('&excludeColumn=fileCol') > -1).toBeTruthy();
+    });
+
+    test('with extra excluded columns', () => {
+        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
+        const url = getSampleTypeTemplateUrl(qInfo, { a: '1', b: '2' }, ['flag', 'alias']);
+        expect(url.indexOf('&includeColumn=a&includeColumn=b') > 1).toBeTruthy();
+        expect(url.indexOf('&excludeColumn=flag&excludeColumn=alias') > -1).toBeTruthy();
     });
 });

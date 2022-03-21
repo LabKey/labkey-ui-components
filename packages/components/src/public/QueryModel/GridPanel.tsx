@@ -486,20 +486,37 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
      * Handler called when the user clicks a sort action from a column dropdown menu. Creates an OmniBox style change
      * event and triggers handleSortChange.
      * @param column: QueryColumn
-     * @param direction: '+' or '-'
+     * @param direction: '+' or '-', use undefined for "clear sort" case
      */
-    sortColumn = (column: QueryColumn, direction): void => {
-        const dir = direction === '+' ? '' : '-'; // Sort Action only uses '-' and ''
+    sortColumn = (column: QueryColumn, direction?: string): void => {
         const fieldKey = column.resolveFieldKey(); // resolveFieldKey because of Issue 34627
-        const sort = new QuerySort({ fieldKey, dir });
-        const actionValue = {
-            displayValue: column.shortCaption,
-            value: `${fieldKey} ${direction === '+' ? 'asc' : 'desc'}`,
-            valueObject: sort,
-            action: this.omniBoxActions.sort,
-        };
-        const actionValues = this.state.actionValues.concat(actionValue);
-        this.handleSortChange(actionValues, { type: ChangeType.add });
+
+        if (direction) {
+            const dir = direction === '+' ? '' : '-'; // Sort Action only uses '-' and ''
+            const sort = new QuerySort({ fieldKey, dir });
+            const actionValue = {
+                displayValue: column.shortCaption,
+                value: `${fieldKey} ${direction === '+' ? 'asc' : 'desc'}`,
+                valueObject: sort,
+                action: this.omniBoxActions.sort,
+            };
+            const actionValues = this.state.actionValues.concat(actionValue);
+
+            this.handleSortChange(actionValues, { type: ChangeType.add });
+        } else {
+            let actionIndex = -1;
+            const newActionValues = this.state.actionValues.filter((actionValue, i) => {
+                if (actionValue.action === this.omniBoxActions.sort && actionValue.valueObject.fieldKey === fieldKey) {
+                    actionIndex = i;
+                    return false;
+                }
+                return true;
+            });
+
+            if (actionIndex > -1) {
+                this.handleSortChange(newActionValues, { type: ChangeType.remove, index: actionIndex });
+            }
+        }
     };
 
     /**
@@ -560,7 +577,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             return headerSelectionCell(this.selectPage, model.selectedState, disabled, 'grid-panel__page-checkbox');
         }
 
-        return headerCell(this.sortColumn, column, index, allowSelections, allowSorting, columnCount);
+        return headerCell(this.sortColumn, column, index, allowSelections, allowSorting, columnCount, model);
     };
 
     getHighlightRowIndexes(): List<number> {

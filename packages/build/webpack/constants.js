@@ -62,6 +62,8 @@ const SASS_PLUGINS = [
             importLoaders: 1
         }
     },{
+        loader: 'resolve-url-loader',
+    },{
         loader: 'sass-loader',
         options: {
             implementation: require('sass'),

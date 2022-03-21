@@ -16,7 +16,8 @@ import {
     LoadingSpinner,
     OperationConfirmationData,
     QueryInfo,
-    SAMPLE_STATE_TYPE_COLUMN_NAME, SAMPLE_STORAGE_COLUMNS,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
     SamplesManageButtonSections,
     SampleStateType,
@@ -25,7 +26,7 @@ import {
 } from '../../..';
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
-import { shouldShowButtons, getSampleStatus, getSampleStatusType, getSampleTypeTemplateUrl } from './utils';
+import { getSampleStatus, getSampleStatusType, getSampleTypeTemplateUrl, shouldShowButtons } from './utils';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;

@@ -12,8 +12,20 @@ import { IS_ALIQUOT_COL } from '../samples/constants';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 
 describe('<GridAliquotViewSelector/>', () => {
+    beforeEach(() => {
+        LABKEY.moduleContext = { samplemanagement: { 'experimental-sample-aliquot-selector': true } };
+    });
+
     test('no queryModel', () => {
         const component = <GridAliquotViewSelector />;
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toBe(null);
+    });
+
+    test('experimental flag disabled', () => {
+        LABKEY.moduleContext = { samplemanagement: { 'experimental-sample-aliquot-selector': false } };
+        const model = makeTestQueryModel(SchemaQuery.create('a', 'b'));
+        const component = <GridAliquotViewSelector queryModel={model} />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toBe(null);
     });

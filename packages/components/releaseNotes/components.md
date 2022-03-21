@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.144.1
+*Released*: 21 March 2022
 * Item 10071: Add experimental feature flag for Sample/Aliquot Selector grid button
 
 ### version 2.144.0

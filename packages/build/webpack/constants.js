@@ -66,6 +66,7 @@ const SASS_PLUGINS = [
     },{
         loader: 'sass-loader',
         options: {
+            implementation: require('sass'),
             sourceMap: true
         }
     }
@@ -186,7 +187,7 @@ module.exports = {
                 use: [MiniCssExtractPlugin.loader, 'css-loader']
             },
             {
-                test: /\.scss$/,
+                test: /\.s[ac]ss$/i,
                 use: [MiniCssExtractPlugin.loader].concat(SASS_PLUGINS),
             },
         ],
@@ -196,7 +197,7 @@ module.exports = {
                 use: ['style-loader', 'css-loader']
             },
             {
-                test: /\.scss$/,
+                test: /\.s[ac]ss$/i,
                 use: ['style-loader'].concat(SASS_PLUGINS),
             },
         ],

@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 5.0.1
+*Released*: 21 March 2022
+* Bump node-sass to 7.0.1
+* Bump sass-loader to 12.6.0
+
 ### version 5.0.0
 *Released*: 5 January 2022
 * Migrate webpack-dev-server from v3 to v4

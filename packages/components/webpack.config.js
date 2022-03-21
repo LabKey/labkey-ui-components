@@ -20,7 +20,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.scss$/,
+                test: /\.s[ac]ss$/i,
                 use: [
                     {
                         loader: 'css-loader',
@@ -30,6 +30,7 @@ module.exports = {
                     },{
                         loader: 'sass-loader',
                         options: {
+                            implementation: require('sass'),
                             sourceMap: true
                         }
                     }

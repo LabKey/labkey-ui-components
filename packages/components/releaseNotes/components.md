@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 10191: Add grid column header filter and sort behavior
-  * show grid column header icon indicator for if a sort is applied to that column
+  * show grid column header icon indicator for if a sort and/or filter is applied to that column
   * add "Clear sort" option to colum header actions
 
 ### version 2.144.1

@@ -46,12 +46,21 @@ export function headerCell(
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
     const isOnlyColumn =
         columnCount !== undefined && ((selectable && columnCount === 2) || (!selectable && columnCount === 1));
+    const colFilter = model.filters.find(filter => filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey());
 
     return (
         <span>
             {col.caption === '&nbsp;' ? '' : col.caption}
-            {gridColSortFilterEnabled && isSortAsc && <span className="fa fa-sort-amount-asc grid-panel__menu-icon" title="Sort ascending" />}
-            {gridColSortFilterEnabled && isSortDesc && <span className="fa fa-sort-amount-desc grid-panel__menu-icon" title="Sort descending" />}
+            {gridColSortFilterEnabled && colFilter && (
+                // TODO show filter display value as title attribute
+                <span className="fa fa-filter grid-panel__menu-icon" />
+            )}
+            {gridColSortFilterEnabled && isSortAsc && (
+                <span className="fa fa-sort-amount-asc grid-panel__menu-icon" title="Sorted ascending" />
+            )}
+            {gridColSortFilterEnabled && isSortDesc && (
+                <span className="fa fa-sort-amount-desc grid-panel__menu-icon" title="Sorted descending" />
+            )}
             {sortable && col.sortable && (
                 <span className={classNames({ 'pull-right': (i === 0 && !selectable) || (selectable && i === 1) })}>
                     <Dropdown

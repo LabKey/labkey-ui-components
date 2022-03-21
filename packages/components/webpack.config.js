@@ -28,10 +28,16 @@ module.exports = {
                             importLoaders: 1
                         }
                     },{
+                        loader: 'resolve-url-loader',
+                        options: {
+                            silent: true,
+                        }
+                    },{
                         loader: 'sass-loader',
                         options: {
                             implementation: require('sass'),
-                            sourceMap: true
+                            sourceMap: true,
+                            warnRuleAsWarning: true,
                         }
                     }
                 ]

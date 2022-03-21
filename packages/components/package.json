@@ -107,6 +107,7 @@
     "nps": "5.10.0",
     "nps-utils": "1.7.0",
     "react-test-renderer": "16.14.0",
+    "resolve-url-loader": "5.0.0",
     "sass": "1.49.9",
     "sass-loader": "12.6.0",
     "ts-jest": "27.1.3",

@@ -23,6 +23,7 @@ import { GridColumn, QueryColumn, GRID_CHECKBOX_OPTIONS, QueryModel } from '..';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
 import { CustomToggle } from './components/base/CustomToggle';
+import { isGridColSortFilterEnabled } from './app/utils';
 
 export function headerCell(
     handleSort: (column: QueryColumn, dir?: string) => any,
@@ -39,6 +40,7 @@ export function headerCell(
         return null;
     }
 
+    const gridColSortFilterEnabled = isGridColSortFilterEnabled();
     const colQuerySortDir = model?.sorts?.find(sort => sort.get('fieldKey') === col.resolveFieldKey())?.get('dir');
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
@@ -48,8 +50,8 @@ export function headerCell(
     return (
         <span>
             {col.caption === '&nbsp;' ? '' : col.caption}
-            {isSortAsc && <span className="fa fa-sort-amount-asc grid-panel__menu-icon" title="Sort ascending" />}
-            {isSortDesc && <span className="fa fa-sort-amount-desc grid-panel__menu-icon" title="Sort descending" />}
+            {gridColSortFilterEnabled && isSortAsc && <span className="fa fa-sort-amount-asc grid-panel__menu-icon" title="Sort ascending" />}
+            {gridColSortFilterEnabled && isSortDesc && <span className="fa fa-sort-amount-desc grid-panel__menu-icon" title="Sort descending" />}
             {sortable && col.sortable && (
                 <span className={classNames({ 'pull-right': (i === 0 && !selectable) || (selectable && i === 1) })}>
                     <Dropdown
@@ -91,19 +93,21 @@ export function headerCell(
                                 <span className="fa fa-sort-amount-desc" />
                                 &nbsp; Sort descending
                             </MenuItem>
-                            <MenuItem
-                                disabled={!isSortDesc && !isSortAsc}
-                                onClick={
-                                    isSortDesc || isSortAsc
-                                        ? () => {
-                                            handleSort(col);
-                                        }
-                                        : undefined
-                                }
-                            >
-                                <span className="grid-panel__menu-icon-spacer" />
-                                &nbsp; Clear sort
-                            </MenuItem>
+                            {gridColSortFilterEnabled && (
+                                <MenuItem
+                                    disabled={!isSortDesc && !isSortAsc}
+                                    onClick={
+                                        isSortDesc || isSortAsc
+                                            ? () => {
+                                                handleSort(col);
+                                            }
+                                            : undefined
+                                    }
+                                >
+                                    <span className="grid-panel__menu-icon-spacer" />
+                                    &nbsp; Clear sort
+                                </MenuItem>
+                            )}
                         </Dropdown.Menu>
                     </Dropdown>
                 </span>

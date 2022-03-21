@@ -223,7 +223,11 @@ export function isRequestsEnabled(moduleContext?: any): boolean {
 }
 
 export function isSampleAliquotSelectorEnabled(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR] === true;
+    return (
+        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[
+            EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR
+        ] === true
+    );
 }
 
 export function hasModule(moduleName: string) {

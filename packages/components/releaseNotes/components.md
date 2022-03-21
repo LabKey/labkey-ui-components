@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 10071: Add experimental feature flag for Sample/Aliquot Selector grid button
 
+### version 2.144.0
+*Released*: 18 March 2022
+* Item 10165: Provide link to download the import template for types in more places
+  * Extract `TemplateDownloadButton` from `FileAttachmentForm`.
+  * refactor method for getting sampleTypeTemplateUrl for use in LKSM and LKB
+  * Add `SampleTypeTemplateDownloadRenderer` and `AssayResultTemplateDownloadRenderer` for showing download button in types grid
+
 ### version 2.143.0
 *Released*: 16 March 2022
 * Add iconDir to SearchResultCardData

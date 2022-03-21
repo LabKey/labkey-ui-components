@@ -5,6 +5,8 @@ import { mount } from 'enzyme';
 import { AssayTypeSummary } from '../../..';
 import { initUnitTestMocks } from '../../testHelperMocks';
 import { selectOptionByText, SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
+import { mountWithServerContext } from '../../testHelpers';
+import { TEST_USER_EDITOR } from '../../../test/data/users';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -12,7 +14,7 @@ beforeAll(() => {
 
 describe('<AssayTypeSummary />', () => {
     test('Assay Type Display', async () => {
-        const component = mount(<AssayTypeSummary navigate={jest.fn()} />);
+        const component = mountWithServerContext(<AssayTypeSummary navigate={jest.fn()} />, { user: TEST_USER_EDITOR });
 
         expect(component.find(SELECT_INPUT_CONTROL_SELECTOR)).toHaveLength(1);
         expect(component.find('.heatmap-container')).toHaveLength(0);

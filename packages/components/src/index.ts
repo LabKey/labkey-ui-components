@@ -106,6 +106,7 @@ import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { ContentGroup, ContentGroupLabel } from './internal/components/base/ContentGroup';
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
+import { TemplateDownloadButton } from './public/files/TemplateDownloadButton';
 import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
@@ -228,6 +229,10 @@ import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
+import {
+    AssayResultTemplateDownloadRenderer,
+    SampleTypeTemplateDownloadRenderer,
+} from './internal/renderers/TemplateDownloadRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
 import { AttachmentCard } from './internal/renderers/AttachmentCard';
 import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
@@ -341,6 +346,8 @@ import {
     getSampleSetMenuItem,
     getSampleStatus,
     getSampleStatusType,
+    getSampleTypeTemplateUrl,
+    downloadSampleTypeTemplate,
     isSampleOperationPermitted,
     isSamplesSchema,
     SamplesManageButtonSections,
@@ -560,6 +567,7 @@ import {
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
+    SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
@@ -893,12 +901,14 @@ export {
     AttachmentCard,
     AliasRenderer,
     AppendUnits,
+    AssayResultTemplateDownloadRenderer,
     DefaultRenderer,
     FileColumnRenderer,
     LabelColorRenderer,
     MultiValueRenderer,
     StorageStatusRenderer,
     SampleStatusRenderer,
+    SampleTypeTemplateDownloadRenderer,
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
@@ -990,6 +1000,8 @@ export {
     getSampleDeleteMessage,
     getSampleStatus,
     getSampleStatusType,
+    getSampleTypeTemplateUrl,
+    downloadSampleTypeTemplate,
     DisableableMenuItem,
     SampleOperation,
     SampleStateType,
@@ -998,6 +1010,7 @@ export {
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
+    SAMPLE_STORAGE_COLUMNS,
     FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_DATA_EXPORT_CONFIG,
@@ -1237,6 +1250,7 @@ export {
     FileAttachmentEntry,
     FileAttachmentForm,
     FileTree,
+    TemplateDownloadButton,
     WebDavFile,
     getWebDavFiles,
     uploadWebDavFile,

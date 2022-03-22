@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { FormControl } from 'react-bootstrap';
 
@@ -66,6 +66,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         }
     }, [field]); // leave fieldFilter out of deps list, fieldFilter is used to init once
 
+    const additionalFilterOptions = useMemo((): FieldFilterOption[] => {
+        return fieldFilterOptions?.filter(option => !option.isSoleFilter && activeFilters[0]?.filterType.value !== option.value);
+    }, [fieldFilterOptions, activeFilters]);
+
     const updateFilter = useCallback(
         (
             index: number,
@@ -94,13 +98,24 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             ...newFilterSelection
         };
 
-        setActiveFilters(currentFilters => {
-            return [
-                ...currentFilters.slice(0, index),
-                filterSelection,
-                ...currentFilters.slice(index+1)
-            ]
-        });
+        if (filterSelection.filterType) {
+            setActiveFilters(currentFilters => {
+                return [
+                    ...currentFilters.slice(0, index),
+                    filterSelection,
+                    ...currentFilters.slice(index+1)
+                ]
+            });
+        }
+        else {
+            setActiveFilters(currentFilters => {
+                return [
+                    ...currentFilters.slice(0, index),
+                    ...currentFilters.slice(index+1)
+                ]
+            })
+        }
+
     }, [activeFilters])
 
     const onFieldFilterTypeChange = useCallback(
@@ -145,6 +160,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             else {
                 update.firstFilterValue = newValue;
             }
+            updateActiveFilters(index, update);
             updateFilter(index, activeFilters[index]?.filterType, newValue, isSecondInput);
         },
         [activeFilters]
@@ -160,6 +176,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             else {
                 update.firstFilterValue = newDate;
             }
+            updateActiveFilters(index, update);
             updateFilter(index, activeFilters[index]?.filterType, newDate, isSecondInput);
         },
         [activeFilters]
@@ -273,6 +290,13 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         );
     }, [field, activeFilters]);
 
+    const shouldShowSecondFilter = useCallback((): boolean => {
+        if (!activeFilters?.length)
+            return false;
+
+        return !activeFilters[0].filterType.isSoleFilter;
+    }, [activeFilters])
+
     return (
         <>
             <SelectInput
@@ -286,7 +310,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 options={fieldFilterOptions}
             />
             {renderFilterTypeInputs(0)}
-            {activeFilters?.length > 1 && (
+            {shouldShowSecondFilter() && (
                 <>
                     <div className="parent-search-panel__col-sub-title">
                         and
@@ -296,10 +320,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         name="search-parent-field-filter-type"
                         containerClass="form-group search-filter__input-wrapper"
                         inputClass="search-filter__input-select"
-                        placeholder="No other filter"
-                        value={activeFilters[1].filterType?.value}
-                        onChange={onFieldFilterTypeChange}
-                        options={fieldFilterOptions}
+                        placeholder="Select a filter type..."
+                        value={activeFilters[1]?.filterType?.value}
+                        onChange={(fieldname: any, filterUrlSuffix: any) => onFieldFilterTypeChange(fieldname, filterUrlSuffix, 1)}
+                        options={additionalFilterOptions}
                     />
                     {renderFilterTypeInputs(1)}
                 </>

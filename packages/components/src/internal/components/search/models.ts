@@ -82,4 +82,5 @@ export interface FieldFilterOption {
     valueRequired: boolean;
     multiValue: boolean;
     betweenOperator: boolean;
+    isSoleFilter: boolean;
 }

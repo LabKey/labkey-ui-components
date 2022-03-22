@@ -255,6 +255,7 @@ export function getSampleFinderFilterTypesForType(jsonType: JsonType): FieldFilt
             valueRequired: filter.isDataValueRequired(),
             multiValue: filter.isMultiValued(),
             betweenOperator: isBetweenOperator(urlSuffix),
+            isSoleFilter: urlSuffix === Filter.Types.EQUAL.getURLSuffix() || urlSuffix === Filter.Types.ISBLANK.getURLSuffix()
         } as FieldFilterOption;
     });
 }

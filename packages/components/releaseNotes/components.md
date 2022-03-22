@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.145.0
-*Released*: ?? March 2022
+*Released*: 22 March 2022
 * Fix Issue 44859
   * HeaderWrapper no longer scrolls to the top of the page during update
   * Page component now scrolls to top of the page on mount

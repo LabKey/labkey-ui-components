@@ -35,9 +35,12 @@
     margin-right: 1em;
 }
 
-.grid-panel__menu-icon {
+.grid-panel__col-header-icon {
     color: $brand-secondary;
     padding-left: 2px;
+}
+.grid-panel__menu-icon {
+    width: 14px;
 }
 .grid-panel__menu-icon-spacer {
     padding-right: 14px;

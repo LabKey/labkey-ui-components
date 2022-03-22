@@ -1,7 +1,7 @@
 import React, { ComponentType, FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Set } from 'immutable';
-import { Filter, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
 import {
     Alert,
@@ -19,7 +19,7 @@ import {
 } from '../..';
 import { GRID_SELECTION_INDEX } from '../../internal/constants';
 import { DataViewInfo } from '../../internal/models';
-import { headerCell, headerSelectionCell } from '../../internal/renderers';
+import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 import { ActionValue } from '../../internal/components/omnibox/actions/Action';
 import { FilterAction } from '../../internal/components/omnibox/actions/Filter';
 import { SearchAction } from '../../internal/components/omnibox/actions/Search';
@@ -39,6 +39,7 @@ import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
     allowSorting?: boolean;
+    allowFiltering?: boolean;
     asPanel?: boolean;
     advancedExportOptions?: { [key: string]: any };
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -198,6 +199,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     static defaultProps = {
         allowSelections: true,
         allowSorting: true,
+        allowFiltering: true,
         asPanel: true,
         hideEmptyChartMenu: true,
         hideEmptyViewMenu: true,
@@ -343,14 +345,19 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         };
     };
 
-    handleFilterChange = (actionValues: ActionValue[], change: Change): void => {
+    handleFilterChange = (actionValues: ActionValue[], change: Change, column?: QueryColumn): void => {
         const { model, actions, allowSelections } = this.props;
         let newFilters = model.filterArray;
 
         if (change.type === ChangeType.modify || change.type === ChangeType.remove) {
-            // Remove the old filter
-            const value = this.state.actionValues[change.index].valueObject;
-            newFilters = newFilters.filter(filter => !filtersEqual(filter, value));
+            // Remove the old filter, if a column is provided instead of a change.index then we will remove all
+            // filters for that column
+            if (change.index) {
+                const value = this.state.actionValues[change.index].valueObject;
+                newFilters = newFilters.filter(filter => !filtersEqual(filter, value));
+            } else if (column) {
+                newFilters = newFilters.filter(filter => !isFilterColumnNameMatch(filter, column));
+            }
         }
 
         if (change.type === ChangeType.add || change.type === ChangeType.modify) {
@@ -483,6 +490,29 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     /**
+     * Handler called when the user clicks a filter action from the column dropdown menu.
+     * @param column: QueryColumn
+     * @param remove: true if the user is requesting to remove the filters for this column
+     */
+    filterColumn = (column: QueryColumn, remove = false): void => {
+        const fieldKey = column.resolveFieldKey(); // resolveFieldKey because of Issue 34627
+
+        if (remove) {
+            const newActionValues = this.state.actionValues.filter((actionValue, i) => {
+                return !(
+                    actionValue.action === this.omniBoxActions.filter &&
+                    isFilterColumnNameMatch(actionValue.valueObject, column)
+                );
+            });
+
+            this.handleFilterChange(newActionValues, { type: ChangeType.remove }, column);
+        } else {
+            // TODO
+            console.log('filterColumn', fieldKey, remove);
+        }
+    };
+
+    /**
      * Handler called when the user clicks a sort action from a column dropdown menu. Creates an OmniBox style change
      * event and triggers handleSortChange.
      * @param column: QueryColumn
@@ -569,7 +599,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
-        const { allowSelections, allowSorting, model } = this.props;
+        const { allowSelections, allowSorting, allowFiltering, model } = this.props;
         const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
         const disabled = isLoadingSelections || isLoading || (hasRows && rowCount === 0);
 
@@ -577,7 +607,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             return headerSelectionCell(this.selectPage, model.selectedState, disabled, 'grid-panel__page-checkbox');
         }
 
-        return headerCell(this.sortColumn, column, index, allowSelections, allowSorting, columnCount, model);
+        return headerCell(
+            index,
+            column,
+            allowSelections,
+            columnCount,
+            allowSorting ? this.sortColumn : undefined,
+            allowFiltering ? this.filterColumn : undefined,
+            model
+        );
     };
 
     getHighlightRowIndexes(): List<number> {

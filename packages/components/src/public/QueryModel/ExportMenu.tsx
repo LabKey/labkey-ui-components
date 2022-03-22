@@ -61,15 +61,15 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
 
                                 if (option.type === EXPORT_TYPES.LABEL) {
                                     return (
-                                        <>
-                                            <MenuItem key={option.type + '_header'} header>
+                                        <React.Fragment key={option.type}>
+                                            <MenuItem header>
                                                 Export and Print {model.selections?.size > 0 ? 'Selected' : ''}
                                             </MenuItem>
-                                            <MenuItem key={option.type} onClick={() => this.export(option)}>
+                                            <MenuItem onClick={() => this.export(option)}>
                                                 <span className={`fa ${option.icon} export-menu-icon`} />
                                                 &nbsp; {option.label}
                                             </MenuItem>
-                                        </>
+                                        </React.Fragment>
                                     );
                                 }
                                 return (

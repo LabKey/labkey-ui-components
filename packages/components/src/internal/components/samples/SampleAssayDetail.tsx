@@ -117,6 +117,9 @@ export const SampleAssayDetailButtons: FC<SampleAssayDetailButtonsProps> = props
 export const SampleAssayDetailButtonsRight: FC<SampleAssayDetailButtonsProps> = props => {
     const { activeSampleAliquotType, onSampleAliquotTypeChange, isSourceSampleAssayGrid } = props;
 
+    // NOTE: not checking isSampleAliquotSelectorEnabled() here since we always want to show the selector for this
+    // use case because it doesn't have a grid column to apply the filter directly
+
     return (
         <>
             <SampleAliquotViewSelector

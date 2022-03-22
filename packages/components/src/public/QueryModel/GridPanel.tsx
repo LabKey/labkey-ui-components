@@ -1,7 +1,7 @@
 import React, { ComponentType, FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Set } from 'immutable';
-import { Filter, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
 import {
     Alert,

@@ -345,6 +345,8 @@ SamplesTabbedGridPanel.defaultProps = {
 
 SamplesTabbedGridPanel.displayName = 'SamplesTabbedGridPanel';
 
+// NOTE: if this is removed, we will need to port the syncInitMode behavior from GridAliquotViewSelector so that we
+// can apply the initial sampleAliquotType URL param filter to the grid on page load
 const SampleTabbedGridButtonsRight: FC<SampleGridButtonProps & RequiresModelAndActions> = props => {
     const { model, onTabbedViewAliquotSelectorUpdate, initAliquotMode } = props;
 

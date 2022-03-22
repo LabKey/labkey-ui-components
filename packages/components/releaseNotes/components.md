@@ -6,6 +6,23 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 9999: Shared freezers across containers - Storage View UI
   * Support locked Cell state
 
+### version 2.145.0
+*Released*: 22 March 2022
+* Fix Issue 44859
+  * HeaderWrapper no longer scrolls to the top of the page during update
+  * Page component now scrolls to top of the page on mount
+* Remove circular dependency between Page and NotFound
+* Refactor NavigationBar to render HeaderWrapper and sticky class
+  * This eliminates duplicated code between our apps
+
+### version 2.144.2
+*Released*: 21 March 2022
+* add `exportConfig` parameter to `getSampleTypeTemplateUrl` for better behavior for media templates
+
+### version 2.144.1
+*Released*: 21 March 2022
+* Item 10071: Add experimental feature flag for Sample/Aliquot Selector grid button
+
 ### version 2.144.0
 *Released*: 18 March 2022
 * Item 10165: Provide link to download the import template for types in more places

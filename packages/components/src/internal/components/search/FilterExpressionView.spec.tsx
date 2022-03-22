@@ -66,7 +66,7 @@ describe('FilterExpressionView', () => {
     ) {
         validateFilterTypeDropdown(wrapper, operators, selectedOp);
 
-        const filterInputs = wrapper.find('input.search-filter__input');
+        const filterInputs = wrapper.find('input.filter-expression__input');
 
         expect(filterInputs.length).toEqual(inputCount);
 

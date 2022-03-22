@@ -1047,7 +1047,7 @@ describe("isValidFilterField", () => {
                 name: 'query',
                 supportGroupConcatSubSelect: true
             }),
-            SampleTypeDataType
+            SampleTypeDataType.exprColumnsWithSubSelect
         )).toBe(false);
     });
 
@@ -1059,7 +1059,7 @@ describe("isValidFilterField", () => {
                 name: "test",
                 supportGroupConcatSubSelect: true
             }),
-            SampleTypeDataType
+            SampleTypeDataType.exprColumnsWithSubSelect
         )).toBe(false);
     });
 
@@ -1071,7 +1071,7 @@ describe("isValidFilterField", () => {
                 name: "test",
                 supportGroupConcatSubSelect: false
             }),
-            SampleTypeDataType
+            SampleTypeDataType.exprColumnsWithSubSelect
         )).toBe(false);
     });
 
@@ -1083,7 +1083,7 @@ describe("isValidFilterField", () => {
                 name: "test",
                 supportGroupConcatSubSelect: false
             }),
-            SampleTypeDataType
+            SampleTypeDataType.exprColumnsWithSubSelect
         )).toBe(true);
     });
 
@@ -1095,7 +1095,7 @@ describe("isValidFilterField", () => {
                 name: "test",
                 supportGroupConcatSubSelect: false
             }),
-            {...SampleTypeDataType, exprColumnsWithSubSelect: undefined}
+            undefined
         )).toBe(true);
     });
 
@@ -1107,7 +1107,7 @@ describe("isValidFilterField", () => {
                 name: "test",
                 supportGroupConcatSubSelect: true
             }),
-            SampleTypeDataType
+            SampleTypeDataType.exprColumnsWithSubSelect
         )).toBe(true);
     });
 
@@ -1119,7 +1119,7 @@ describe("isValidFilterField", () => {
                 name: "test",
                 supportGroupConcatSubSelect: false
             }),
-            SampleTypeDataType
+            SampleTypeDataType.exprColumnsWithSubSelect
         )).toBe(true);
     });
 })

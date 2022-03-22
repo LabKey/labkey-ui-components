@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * show grid column header icon indicator for if a sort and/or filter is applied to that column
   * add "Clear sort" option to colum header actions
   * add "Remove filter(s)" option to colum header actions
+  * factor out QueryFilterPanel.tsx from EntityFieldFilterModal.tsx
 
 ### version 2.144.1
 *Released*: 21 March 2022

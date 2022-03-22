@@ -138,8 +138,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 return (
                     <DatePicker
                         autoComplete="off"
-                        className="form-control search-filter__input"
-                        wrapperClassName="form-group search-filter__input-wrapper"
+                        className="form-control filter-expression__input"
+                        wrapperClassName="form-group filter-expression__input-wrapper"
                         selectsEnd
                         isClearable
                         required
@@ -182,7 +182,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (!isMultiValueInput && (jsonType === 'int' || jsonType === 'float')) {
                 return (
                     <FormControl
-                        className="form-control search-filter__input"
+                        className="form-control filter-expression__input"
                         step={jsonType === 'int' ? 1 : undefined}
                         name={'field-value-text' + suffix}
                         onChange={event => updateTextFilterFieldValue(event, true)}
@@ -197,7 +197,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
             return (
                 <input
-                    className="form-control search-filter__input"
+                    className="form-control filter-expression__input"
                     name={'field-value-text' + suffix}
                     type="text"
                     value={valueRaw ?? ''}
@@ -222,7 +222,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         return (
             <>
                 {renderFilterInput(placeholder, isMultiValueInput)}
-                <div className="search-filter__and-op">and</div>
+                <div className="filter-expression__and-op">and</div>
                 {renderFilterInput(placeholder, isMultiValueInput, true)}
             </>
         );
@@ -233,8 +233,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             <SelectInput
                 key="search-parent-field-filter-type"
                 name="search-parent-field-filter-type"
-                containerClass="form-group search-filter__input-wrapper"
-                inputClass="search-filter__input-select"
+                containerClass="form-group filter-expression__input-wrapper"
+                inputClass="filter-expression__input-select"
                 placeholder="Select a filter type..."
                 value={activeFilterType?.value}
                 onChange={onFieldFilterTypeChange}

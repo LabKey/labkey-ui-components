@@ -34,8 +34,7 @@ export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): str
 }
 
 export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQuery: SchemaQuery): string {
-    return entityDataType.inputColumnName
-        .replace('First', schemaQuery.queryName);
+    return entityDataType.inputColumnName.replace('First', schemaQuery.queryName);
 }
 
 const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
@@ -583,17 +582,26 @@ export function getUpdatedChooseValuesFilter(
     return Filter.create(fieldKey, newCheckedValues, Filter.Types.IN);
 }
 
-export function isValidFilterField(field: QueryColumn, queryInfo: QueryInfo, entityDataType): boolean {
+export function isValidFilterField(
+    field: QueryColumn,
+    queryInfo: QueryInfo,
+    exprColumnsWithSubSelect?: string[]
+): boolean {
     // cannot include fields that are not supported by the database
-    if (!queryInfo.supportGroupConcatSubSelect &&
-        (entityDataType.exprColumnsWithSubSelect && entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) !== -1)) {
+    if (
+        !queryInfo.supportGroupConcatSubSelect &&
+        exprColumnsWithSubSelect &&
+        exprColumnsWithSubSelect.indexOf(field.fieldKey) !== -1
+    ) {
         return false;
     }
+
     // exclude the storage Units field for sample types since the display of this field is nonstandard and it is not
     // a useful field for filtering parent values
-    if (isSamplesSchema(queryInfo.schemaQuery) && field.fieldKey === "Units") {
+    if (isSamplesSchema(queryInfo.schemaQuery) && field.fieldKey === 'Units') {
         return false;
     }
+
     // also exclude lookups since MVFKs don't support following lookups
     return !field.isLookup();
 }

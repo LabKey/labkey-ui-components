@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.144.1-fb-gridColHeaderSortFilter.1",
+  "version": "2.144.1-fb-gridColHeaderSortFilter.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

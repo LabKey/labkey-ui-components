@@ -16,7 +16,6 @@
 import React from 'react';
 
 import { PageHeader } from './PageHeader';
-import { NotFound } from './NotFound';
 
 export interface PageProps {
     notFound?: boolean;
@@ -33,11 +32,12 @@ export class Page extends React.Component<PageProps, any> {
     };
 
     componentDidMount() {
-        Page.setDocumentTitle(this.props);
+        this.setDocumentTitle();
+        window.scrollTo(0, 0);
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: PageProps): void {
-        Page.setDocumentTitle(nextProps);
+    componentDidUpdate(): void {
+        this.setDocumentTitle();
     }
 
     static getDocumentTitle(props: PageProps): string {
@@ -48,13 +48,13 @@ export class Page extends React.Component<PageProps, any> {
         return fullTitle;
     }
 
-    static setDocumentTitle(props: PageProps): void {
-        const fullTitle = Page.getDocumentTitle(props);
+    setDocumentTitle = (): void => {
+        const fullTitle = Page.getDocumentTitle(this.props);
 
-        if (document.title != fullTitle) {
+        if (document.title !== fullTitle) {
             document.title = fullTitle;
         }
-    }
+    };
 
     isHeader = (child): boolean => {
         // Dev/Prod builds require slightly different requirements for this check
@@ -62,20 +62,15 @@ export class Page extends React.Component<PageProps, any> {
     };
 
     render() {
-        const { children, notFound, showNotifications } = this.props;
-
-        if (notFound) {
-            return <NotFound />;
-        }
+        const { notFound, showNotifications } = this.props;
+        let { hasHeader } = this.props;
+        const children = notFound ? <h1>Not Found</h1> : this.props.children;
 
         if (children) {
-            let hasHeader = this.props.hasHeader;
             if (!hasHeader) {
                 React.Children.forEach(children, (child: any) => {
-                    if (!hasHeader && child && child.type) {
-                        if (this.isHeader(child)) {
-                            hasHeader = true;
-                        }
+                    if (!hasHeader && child && child.type && this.isHeader(child)) {
+                        hasHeader = true;
                     }
                 });
             }

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.144.2
+*Released*: 21 March 2022
+* add `exportConfig` parameter to `getSampleTypeTemplateUrl` for better behavior for media templates
+
 ### version 2.144.1
 *Released*: 21 March 2022
 * Item 10071: Add experimental feature flag for Sample/Aliquot Selector grid button

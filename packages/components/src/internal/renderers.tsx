@@ -55,7 +55,7 @@ export function headerCell(
     return (
         <span>
             {col.caption === '&nbsp;' ? '' : col.caption}
-            {gridColSortFilterEnabled && colFilters?.length && (
+            {gridColSortFilterEnabled && colFilters?.length > 0 && (
                 <span
                     className="fa fa-filter grid-panel__col-header-icon"
                     title={colFilters?.length + ' filter' + (colFilters?.length > 1 ? 's' : '') + ' applied'}

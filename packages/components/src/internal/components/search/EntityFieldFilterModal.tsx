@@ -9,6 +9,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { QueryColumn } from '../../../public/QueryColumn';
+import { QueryInfo } from '../../../public/QueryInfo';
 import { Alert } from '../base/Alert';
 
 import { resolveErrorMessage } from '../../util/messaging';
@@ -55,15 +56,25 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
     const [entityQueries, setEntityQueries] = useState<IEntityTypeOption[]>(undefined);
-    const [activeQuery, setActiveQuery] = useState<string>(undefined);
+    const [activeQueryInfo, setActiveQueryInfo] = useState<QueryInfo>(undefined);
     const [loadingError, setLoadingError] = useState<string>(undefined);
     const [filterError, setFilterError] = useState<string>(undefined);
     const [dataTypeFilters, setDataTypeFilters] = useState<{ [key: string]: FieldFilter[] }>({});
 
-    const onEntityClick = useCallback((selectedQueryName: string) => {
-        setActiveQuery(selectedQueryName);
-        setLoadingError(undefined);
-    }, []);
+    const onEntityClick = useCallback(async (selectedQueryName: string) => {
+        try {
+            const queryInfo = await api.query.getQueryDetails({
+                schemaName: entityDataType.instanceSchemaName,
+                queryName: selectedQueryName,
+            });
+            setActiveQueryInfo(queryInfo);
+            setLoadingError(undefined);
+        } catch (error) {
+            setLoadingError(resolveErrorMessage(error, selectedQueryName, selectedQueryName, 'load'));
+        }
+    }, [api, entityDataType.instanceSchemaName]);
+
+    const activeQuery = useMemo(() => activeQueryInfo?.name.toLowerCase(), [activeQueryInfo]);
 
     useEffect(() => {
         const activeDataTypeFilters = {};
@@ -222,9 +233,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         filters={dataTypeFilters}
                         metricFeatureArea={metricFeatureArea}
                         onFilterUpdate={onFilterUpdate}
-                        queryName={activeQuery}
-                        schemaName={entityDataType.instanceSchemaName}
-                        setLoadingError={setLoadingError}
+                        queryInfo={activeQueryInfo}
                         skipDefaultViewCheck={skipDefaultViewCheck}
                         validFilterField={isValidFilterField}
                     />

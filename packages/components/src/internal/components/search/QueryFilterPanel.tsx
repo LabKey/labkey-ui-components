@@ -35,11 +35,10 @@ interface Props {
     entityDataType?: EntityDataType; // used for Sample Finder use case
     fieldKey?: string;
     filters: { [key: string]: FieldFilter[] };
+    fullWidth?: boolean;
     metricFeatureArea?: string;
     onFilterUpdate: (field: QueryColumn, newFilter: Filter.IFilter) => void;
-    queryName: string;
-    schemaName: string;
-    setLoadingError: (error: string) => void;
+    queryInfo: QueryInfo;
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
 }
@@ -47,22 +46,22 @@ interface Props {
 export const QueryFilterPanel: FC<Props> = memo(props => {
     const {
         api,
-        schemaName,
-        queryName,
+        queryInfo,
         emptyMsg,
         skipDefaultViewCheck,
-        setLoadingError,
         validFilterField,
         entityDataType,
         fieldKey,
         filters,
         onFilterUpdate,
         metricFeatureArea,
+        fullWidth,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
     const [activeTab, setActiveTab] = useState<EntityFieldFilterTabs>(undefined);
 
+    const queryName = useMemo(() => queryInfo?.name.toLowerCase(), [queryInfo]);
     const allowFaceting = (col: QueryColumn): boolean => {
         return col?.allowFaceting() && col?.getDisplayFieldJsonType() === 'string'; // current plan is to only support facet for string fields, to reduce scope
     };
@@ -70,42 +69,24 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     useEffect(() => {
         setQueryFields(undefined);
         setActiveField(undefined);
-        if (!schemaName || !queryName) return;
+        if (!queryInfo) return;
 
-        api.query
-            .getQueryDetails({ schemaName, queryName })
-            .then(queryInfo => {
-                const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
-                setQueryFields(
-                    fromJS(
-                        fields.filter(
-                            field =>
-                                !validFilterField ||
-                                validFilterField(field, queryInfo, entityDataType.exprColumnsWithSubSelect)
-                        )
-                    )
-                );
-                if (fieldKey) {
-                    const field = fields.find(f => f.getDisplayFieldKey() === fieldKey);
-                    setActiveField(field);
-                    setActiveTab(
-                        allowFaceting(field) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter
-                    );
-                }
-            })
-            .catch(error => {
-                setLoadingError(resolveErrorMessage(error, queryName, queryName, 'load'));
-            });
-    }, [
-        api,
-        schemaName,
-        queryName,
-        skipDefaultViewCheck,
-        setLoadingError,
-        validFilterField,
-        entityDataType.exprColumnsWithSubSelect,
-        fieldKey,
-    ]);
+        const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
+        setQueryFields(
+            fromJS(
+                fields.filter(
+                    field =>
+                        !validFilterField ||
+                        validFilterField(field, queryInfo, entityDataType?.exprColumnsWithSubSelect)
+                )
+            )
+        );
+        if (fieldKey) {
+            const field = fields.find(f => f.getDisplayFieldKey() === fieldKey);
+            setActiveField(field);
+            setActiveTab(allowFaceting(field) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter);
+        }
+    }, [api, queryInfo, skipDefaultViewCheck, validFilterField, entityDataType?.exprColumnsWithSubSelect, fieldKey]);
 
     const activeFieldKey = useMemo(() => {
         return activeField?.getDisplayFieldKey();
@@ -166,7 +147,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     return (
         <>
-            <Col xs={6} sm={3} className="filter-modal__col filter-modal__col_fields">
+            <Col xs={fullWidth ? 12 : 6} sm={fullWidth ? 4 : 3} className="filter-modal__col filter-modal__col_fields">
                 <div className="filter-modal__col-title">Fields</div>
                 {!queryName && emptyMsg && <div className="filter-modal__empty-msg">{emptyMsg}</div>}
                 {queryName && (
@@ -190,7 +171,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                     </div>
                 )}
             </Col>
-            <Col xs={12} sm={6} className="filter-modal__col filter-modal__col_filter_exp">
+            <Col xs={12} sm={fullWidth ? 8 : 6} className="filter-modal__col filter-modal__col_filter_exp">
                 <div className="filter-modal__col-title">Values</div>
                 {queryName && !activeField && <div className="filter-modal__empty-msg">Select a field.</div>}
                 {queryName && activeField && (
@@ -234,7 +215,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                             <FilterFacetedSelector
                                                 selectDistinctOptions={{
                                                     column: activeFieldKey,
-                                                    schemaName: entityDataType?.instanceSchemaName,
+                                                    schemaName: queryInfo.schemaName,
                                                     queryName,
                                                     viewName: FIND_FILTER_VIEW_NAME,
                                                     filterArray: fieldDistinctValueFilters,

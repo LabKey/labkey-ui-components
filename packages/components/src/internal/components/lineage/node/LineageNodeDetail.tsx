@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, PureComponent, ReactNode, useCallback, useState, useMemo } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useCallback, useMemo, useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 import { List } from 'immutable';
 
@@ -12,7 +12,7 @@ import {
     LineageNodeCollectionByType,
 } from '../vis/VisGraphGenerator';
 import { LineageSummary } from '../LineageSummary';
-import { LineageIOWithMetadata, LineageNode } from '../models';
+import { LineageIOWithMetadata, LineageNode, LineageRunStepConfig } from '../models';
 import { LineageOptions } from '../types';
 
 import { Grid } from '../../base/Grid';
@@ -185,7 +185,7 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
         <div className="run-step-node-detail">
             <DetailHeader header={`Run Step: ${stepName}`} iconSrc="default">
                 <a className="lineage-link" onClick={onBack}>
-                    {node.name}
+                    <span>Back to Run Details</span>
                 </a>
                 <span className="spacer-left">&gt;</span>
                 <span className="spacer-left">{stepName}</span>
@@ -193,6 +193,9 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
             <Tabs activeKey={tabKey} defaultActiveKey={1} id="lineage-run-step-tabs" onSelect={changeTab as any}>
                 <Tab eventKey={1} title="Step Details">
                     <LineageDetail item={step} />
+                    {step.properties.length > 0 && (
+                        <RunStepPropertyDetails item={step} />
+                    )}
                     <DetailsListLineageIO item={step} />
                 </Tab>
                 {hasProvenanceModule && (
@@ -233,4 +236,30 @@ export interface RunStepProvenanceMapProps {
 
 const RunStepProvenanceMap: FC<RunStepProvenanceMapProps> = memo(({ item }) => {
     return <Grid columns={PROVENANCE_MAP_COLS} data={item?.provenanceMap ?? []} />;
+});
+
+const RUN_STEP_PROPERTIES_COLS = List([
+    new GridColumn({
+        index: 'name',
+        title: 'Name',
+        showHeader: false
+    }),
+    new GridColumn({
+        index: 'URI',
+        title: 'URI',
+        showHeader: false
+    }),
+    new GridColumn({
+        index: 'value',
+        title: 'Value',
+        showHeader: false
+    }),
+]);
+
+export interface RunStepPropertyDetailsProps {
+    item: LineageRunStepConfig;
+}
+
+const RunStepPropertyDetails: FC<RunStepPropertyDetailsProps> = memo(({ item }) => {
+    return <Grid bordered={false} striped={false} condensed={true} columns={RUN_STEP_PROPERTIES_COLS} data={item?.properties ?? []} />;
 });

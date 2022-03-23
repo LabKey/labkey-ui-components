@@ -99,6 +99,16 @@ export interface ProvenanceMap {
     to: Experiment.LineageItemBase;
 }
 
+export interface RunStepProperties {
+    name: string;
+    uri: string;
+    value: any;
+}
+
+interface LineageRunStepProperties {
+    properties?: RunStepProperties[];
+}
+
 interface LineageIOConfig extends Experiment.LineageIOConfig {
     provenanceMap?: ProvenanceMap[];
     objectInputs?: Experiment.LineageItemBase[];
@@ -116,7 +126,7 @@ export interface LineageIOWithMetadata extends LineageIOConfig {
 
 export interface LineageItemWithIOMetadata extends LineageItemWithMetadata, LineageIOWithMetadata {}
 
-export interface LineageRunStepConfig extends Experiment.LineageRunStepBase, LineageItemWithIOMetadata {}
+export interface LineageRunStepConfig extends Experiment.LineageRunStepBase, LineageItemWithIOMetadata, LineageRunStepProperties {}
 
 export class LineageRunStep implements LineageRunStepConfig {
     [immerable] = true;
@@ -145,6 +155,7 @@ export class LineageRunStep implements LineageRunStepConfig {
     readonly protocol: Experiment.LineageItemBase;
     readonly queryName: string;
     readonly schemaName: string;
+    readonly properties: RunStepProperties[];
 
     constructor(values?: LineageRunStepConfig) {
         Object.assign(this, values, {

@@ -13,6 +13,7 @@ export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
             baseFilters: item.pkFilters.map(pkFilter => Filter.create(pkFilter.fieldKey, pkFilter.value)),
             containerPath: item.container,
             schemaQuery: SchemaQuery.create(item.schemaName, item.queryName),
+            requiredColumns: ['*']
         }),
         [item]
     );

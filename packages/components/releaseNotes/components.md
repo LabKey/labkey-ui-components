@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.138.TBD
+*Released*: TBD March 2022
+* Issue 45093: Fix production navigation menu URl action for going from LKS to app
+
 ### version 2.138.6
 *Released*: 10 March 2022
 * Sample Finder Optimizations

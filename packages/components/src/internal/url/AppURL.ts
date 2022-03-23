@@ -35,9 +35,8 @@ export function createProductUrl(
 ): string | AppURL {
     if (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase())) {
         const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
-        const action = ActionURL.getAction() || 'app';
         return (
-            buildURL(urlProductId.toLowerCase(), action + '.view', undefined, {
+            buildURL(urlProductId.toLowerCase(), 'app.view', undefined, {
                 returnUrl: false,
                 container: containerPath, // if undefined, buildURL will use current container from server context
             }) + href

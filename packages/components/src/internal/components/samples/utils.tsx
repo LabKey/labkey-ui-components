@@ -242,7 +242,8 @@ export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
 export const getSampleTypeTemplateUrl = (
     queryInfo: QueryInfo,
     importAliases: Record<string, string>,
-    excludeColumns: string[] = ['flag']
+    excludeColumns: string[] = ['flag'],
+    exportConfig: any = SAMPLE_EXPORT_CONFIG
 ): string => {
     const { schemaQuery } = queryInfo;
     if (!schemaQuery) return undefined;
@@ -252,7 +253,7 @@ export const getSampleTypeTemplateUrl = (
     );
 
     return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
-        ...SAMPLE_EXPORT_CONFIG,
+        ...exportConfig,
         schemaName: schemaQuery.getSchema(),
         'query.queryName': schemaQuery.getQuery(),
         headerType: 'DisplayFieldKey',

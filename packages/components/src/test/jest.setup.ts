@@ -19,3 +19,8 @@ import Adapter from 'enzyme-adapter-react-16';
 // Enzyme expects an adapter to be configured
 // http://airbnb.io/enzyme/docs/installation/react-16.html
 configure({ adapter: new Adapter() });
+
+// This silences errors related to our Page component using window.scrollTo. JSDom doesn't implement scrollTo, but that
+// is ok, we aren't testing that behavior.
+const noop = () => {};
+Object.defineProperty(window, 'scrollTo', { value: noop, writable: true });

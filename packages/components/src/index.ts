@@ -412,7 +412,6 @@ import { LineageGrid, LineageGridFromLocation } from './internal/components/line
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
-import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
@@ -1170,7 +1169,6 @@ export {
     ProductMenuModel,
     MenuSectionModel,
     MenuItemModel,
-    HeaderWrapper,
     NavigationBar,
     ProductNavigationMenu,
     FindByIdsModal,

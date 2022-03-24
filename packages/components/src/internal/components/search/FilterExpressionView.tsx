@@ -22,8 +22,8 @@ import { FieldFilterOption } from './models';
 
 interface Props {
     field: QueryColumn;
-    fieldFilter: Filter.IFilter; // only one filter supported for v1
-    onFieldFilterUpdate?: (newFilter: Filter.IFilter) => void;
+    fieldFilters: Filter.IFilter[];
+    onFieldFilterUpdate?: (newFilter: Filter.IFilter, index: number) => void;
 }
 
 interface FilterSelection {
@@ -33,7 +33,7 @@ interface FilterSelection {
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { field, fieldFilter, onFieldFilterUpdate } = props;
+    const { field, fieldFilters, onFieldFilterUpdate } = props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
     const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);
@@ -42,29 +42,34 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         const filterOptions = getSampleFinderFilterTypesForType(field?.getDisplayFieldJsonType() as JsonType);
         setFieldFilterOptions(filterOptions);
 
-        if (fieldFilter) {
-            const filterOption = filterOptions?.find(option => {
-                return isFilterUrlSuffixMatch(option.value, fieldFilter.getFilterType());
-            });
+        const filters = [];
+        if (fieldFilters?.length) {
+            fieldFilters?.forEach(fieldFilter => {
+                const filterOption = filterOptions?.find(option => {
+                    // filters will be on the same field, so we can use the first
+                    return isFilterUrlSuffixMatch(option.value, fieldFilter.getFilterType());
+                });
 
-            if (filterOption) {
-                let filter: FilterSelection = {
-                    filterType: filterOption
-                };
+                if (filterOption) {
+                    let filter: FilterSelection = {
+                        filterType: filterOption
+                    };
 
-                const values = getFilterValuesAsArray(fieldFilter, '');
-                if (filterOption.betweenOperator) {
-                    filter.firstFilterValue = values[0];
-                    filter.secondFilterValue = values[1];
-                } else if (values.length > 1) {
-                    filter.firstFilterValue = values.join(';');
-                } else {
-                    filter.firstFilterValue = values[0];
+                    const values = getFilterValuesAsArray(fieldFilter, '');
+                    if (filterOption.betweenOperator) {
+                        filter.firstFilterValue = values[0];
+                        filter.secondFilterValue = values[1];
+                    } else if (values.length > 1) {
+                        filter.firstFilterValue = values.join(';');
+                    } else {
+                        filter.firstFilterValue = values[0];
+                    }
+                    filters.push(filter);
                 }
-                setActiveFilters([filter]);
-            }
+            });
+            setActiveFilters(filters);
         }
-    }, [field]); // leave fieldFilter out of deps list, fieldFilter is used to init once
+    }, [field]); // leave fieldFilters out of deps list, fieldFilters is used to init once
 
     const additionalFilterOptions = useMemo((): FieldFilterOption[] => {
         return fieldFilterOptions?.filter(option => !option.isSoleFilter && activeFilters[0]?.filterType.value !== option.value);
@@ -87,9 +92,13 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 isSecondValue,
                 clearBothValues
             );
-            onFieldFilterUpdate(newFilter);
+            onFieldFilterUpdate(newFilter, index);
+            if (newFilterType?.isSoleFilter) {
+                // we support only 2 filters at the moment.  Remove the other filter.
+                onFieldFilterUpdate(null, index === 1 ? 0 : 1);
+            }
         },
-        [field]
+        [field, activeFilters]
     );
 
     const updateActiveFilters = useCallback((index: number, newFilterSelection: Partial<FilterSelection>) => {
@@ -99,13 +108,18 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         };
 
         if (filterSelection.filterType) {
-            setActiveFilters(currentFilters => {
-                return [
-                    ...currentFilters.slice(0, index),
-                    filterSelection,
-                    ...currentFilters.slice(index+1)
-                ]
-            });
+            if (filterSelection.filterType.isSoleFilter) {
+                setActiveFilters([filterSelection]);
+            }
+            else {
+                setActiveFilters(currentFilters => {
+                    return [
+                        ...currentFilters.slice(0, index),
+                        filterSelection,
+                        ...currentFilters.slice(index + 1)
+                    ]
+                });
+            }
         }
         else {
             setActiveFilters(currentFilters => {
@@ -113,14 +127,14 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     ...currentFilters.slice(0, index),
                     ...currentFilters.slice(index+1)
                 ]
-            })
+            });
         }
-
     }, [activeFilters])
 
     const onFieldFilterTypeChange = useCallback(
         (fieldname: any, filterUrlSuffix: any, index: number) => {
             const newActiveFilterType = fieldFilterOptions?.find(option => option.value === filterUrlSuffix);
+
             const newFilterSelection = {
                 filterType: newActiveFilterType,
                 firstFilterValue: activeFilters[index]?.firstFilterValue,
@@ -132,8 +146,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 newFilterSelection.firstFilterValue = undefined;
                 newFilterSelection.secondFilterValue = undefined;
             }
-            updateActiveFilters(index, newFilterSelection);
+
             updateFilter(index, newActiveFilterType, shouldClear ? undefined : newFilterSelection.firstFilterValue, undefined, shouldClear);
+            updateActiveFilters(index, newFilterSelection);
+
         },
         [fieldFilterOptions, activeFilters]
     );
@@ -141,9 +157,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const updateBooleanFilterFieldValue = useCallback(
         (index: number, event: any) => {
             const newValue = event.target.value;
-            updateActiveFilters(index, {firstFilterValue: newValue}); // boolean columns don't support between operators
 
             updateFilter(index, activeFilters[index]?.filterType, newValue, false);
+            updateActiveFilters(index, {firstFilterValue: newValue}); // boolean columns don't support between operators
         },
         [activeFilters]
     );
@@ -160,8 +176,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             else {
                 update.firstFilterValue = newValue;
             }
-            updateActiveFilters(index, update);
+
             updateFilter(index, activeFilters[index]?.filterType, newValue, isSecondInput);
+            updateActiveFilters(index, update);
         },
         [activeFilters]
     );
@@ -176,8 +193,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             else {
                 update.firstFilterValue = newDate;
             }
-            updateActiveFilters(index, update);
+
             updateFilter(index, activeFilters[index]?.filterType, newDate, isSecondInput);
+            updateActiveFilters(index, update);
         },
         [activeFilters]
     );

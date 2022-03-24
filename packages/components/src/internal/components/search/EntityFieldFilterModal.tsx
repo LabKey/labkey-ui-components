@@ -74,6 +74,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const [loadingError, setLoadingError] = useState<string>(undefined);
     const [filterError, setFilterError] = useState<string>(undefined);
 
+    // key is the parent query name
     const [dataTypeFilters, setDataTypeFilters] = useState<{ [key: string]: FieldFilter[] }>({});
 
     useEffect(() => {
@@ -114,6 +115,28 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     }, [entityDataType]); // don't add cards or queryName to deps, only init DataTypeFilters once per entityDataType
 
 
+    const filterStatus = useMemo(() => {
+        const status = {};
+        if (!dataTypeFilters) return {};
+
+        Object.keys(dataTypeFilters).forEach(parent => {
+            const filterFields = dataTypeFilters[parent];
+            filterFields.forEach(field => {
+                if (field.filter.getFilterType() !== NOT_ANY_FILTER_TYPE) {
+                    const key = parent + '-' + field.fieldKey;
+                    status[key] = true;
+                }
+            });
+        });
+
+        return status;
+    }, [dataTypeFilters]);
+
+    const hasFilters = useCallback((field: QueryColumn) => {
+        return filterStatus?.[activeQuery + '-' + field.fieldKey];
+    }, [filterStatus, activeQuery]);
+
+
     const onEntityClick = useCallback(
         (queryName: string, fieldKey?: string) => {
             setActiveQuery(queryName);
@@ -128,7 +151,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     if (fieldKey) {
                         const field = fields.find(field => field.getDisplayFieldKey() === fieldKey);
                         setActiveField(field);
-                        if (allowFaceting(field)) {
+                        if (allowFaceting(field) && !hasFilters(field)) {
                             setActiveTab(EntityFieldFilterTabs.ChooseValues);
                         } else {
                             setActiveTab(EntityFieldFilterTabs.Filter);
@@ -139,7 +162,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     setLoadingError(resolveErrorMessage(error, queryName, queryName, 'load'));
                 });
         },
-        [api, entityDataType, skipDefaultViewCheck]
+        [api, hasFilters, entityDataType, skipDefaultViewCheck]
     );
 
     const allowFaceting = (activeField: QueryColumn) => {
@@ -149,10 +172,9 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const onFieldClick = useCallback(
         (queryColumn: QueryColumn) => {
             setActiveField(queryColumn);
-
-            setActiveTab(allowFaceting(queryColumn) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter);
+            setActiveTab(allowFaceting(queryColumn)  && !hasFilters(queryColumn) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter);
         },
-        [activeTab, activeField]
+        [activeTab, activeField, hasFilters]
     );
 
     const activeFieldKey = useMemo(() => {
@@ -204,53 +226,67 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         }
     }, [api, metricFeatureArea, entityQueries, entityDataType.instanceSchemaName, onFind, validDataTypeFilters]);
 
-    const currentFieldFilter = useMemo(() => {
+    const currentFieldFilters = useMemo(() : FieldFilter[] => {
         if (!dataTypeFilters || !activeField) return null;
 
         const activeParentFilters: FieldFilter[] = dataTypeFilters[activeQuery];
-        return activeParentFilters?.find(filter => filter.fieldKey === activeFieldKey);
+        return activeParentFilters?.filter(filter => filter?.fieldKey === activeFieldKey);
     }, [activeField, activeQuery, dataTypeFilters, activeFieldKey]);
 
     const onFilterUpdate = useCallback(
-        (newFilter: Filter.IFilter) => {
+        (newFilter: Filter.IFilter, index: number) => {
             setFilterError(undefined);
 
             const dataTypeFiltersUpdated = { ...dataTypeFilters };
             const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
-            const newParentFilters = activeParentFilters?.filter(filter => filter.fieldKey != activeFieldKey) ?? [];
 
-            if (newFilter != null)
-                newParentFilters.push({
+            const otherFieldFilters = []; // the filters on the parent type that aren't associated with this field.
+            let thisFieldFilters = []; // the filters on the parent type currently associated with this field.
+            activeParentFilters?.forEach(filter => {
+                if (filter.fieldKey === activeFieldKey ) {
+                    // on the ChooseValues tab, once we interact to select values, we'll remove the second filter, if it exists
+                    if (activeTab === EntityFieldFilterTabs.Filter) thisFieldFilters.push(filter);
+                } else {
+                    otherFieldFilters.push(filter);
+                }
+            });
+
+
+            if (newFilter != null) {
+                const fieldFilter = {
                     fieldKey: activeFieldKey,
                     fieldCaption: activeField.caption,
                     filter: newFilter,
                     jsonType: activeField.getDisplayFieldJsonType(),
-                } as FieldFilter);
+                } as FieldFilter;
 
-            if (newParentFilters?.length > 0) dataTypeFiltersUpdated[activeQuery] = newParentFilters;
-            else delete dataTypeFiltersUpdated[activeQuery];
+
+                if (activeTab === EntityFieldFilterTabs.Filter && index < thisFieldFilters.length) {
+                    thisFieldFilters[index] = fieldFilter;
+                } else {
+                    thisFieldFilters.push(fieldFilter);
+                }
+            } else {
+                if (index < thisFieldFilters.length) {
+                    thisFieldFilters = [
+                        ...thisFieldFilters.slice(0, index),
+                        ...thisFieldFilters.slice(index+1)
+                    ]
+                }
+            }
+
+
+            if (otherFieldFilters.length + thisFieldFilters.length > 0) {
+                dataTypeFiltersUpdated[activeQuery] = [...otherFieldFilters, ...thisFieldFilters];
+            }
+            else {
+                delete dataTypeFiltersUpdated[activeQuery];
+            }
 
             setDataTypeFilters(dataTypeFiltersUpdated);
         },
-        [dataTypeFilters, activeQuery, activeField, activeFieldKey]
+        [dataTypeFilters, activeQuery, activeField, activeFieldKey, activeTab]
     );
-
-    const filterStatus = useMemo(() => {
-        const status = {};
-        if (!dataTypeFilters) return {};
-
-        Object.keys(dataTypeFilters).forEach(parent => {
-            const filterFields = dataTypeFilters[parent];
-            filterFields.forEach(field => {
-                if (field.filter.getFilterType() !== NOT_ANY_FILTER_TYPE) {
-                    const key = parent + '-' + field.fieldKey;
-                    status[key] = true;
-                }
-            });
-        });
-
-        return status;
-    }, [dataTypeFilters]);
 
     const fieldDistinctValueFilters = useMemo(() => {
         if (!dataTypeFilters || !activeQuery || !activeField) return null;
@@ -319,7 +355,6 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                 {queryFields?.map((field, index) => {
                                     const { caption } = field;
                                     const fieldKey = field.getDisplayFieldKey();
-                                    const hasFilter = filterStatus?.[activeQuery + '-' + fieldKey];
                                     return (
                                         <ChoicesListItem
                                             active={fieldKey === activeFieldKey}
@@ -328,7 +363,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                             label={caption}
                                             onSelect={() => onFieldClick(field)}
                                             componentRight={
-                                                hasFilter && <span className="pull-right search_field_dot" />
+                                                hasFilters(field) && <span className="pull-right search_field_dot" />
                                             }
                                         />
                                     );
@@ -367,7 +402,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                     <FilterExpressionView
                                                         key={activeFieldKey}
                                                         field={activeField}
-                                                        fieldFilter={currentFieldFilter?.filter}
+                                                        fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
                                                         onFieldFilterUpdate={onFilterUpdate}
                                                     />
                                                 )}
@@ -385,7 +420,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                             viewName: FIND_FILTER_VIEW_NAME,
                                                             filterArray: fieldDistinctValueFilters,
                                                         }}
-                                                        fieldFilter={currentFieldFilter?.filter}
+                                                        fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
                                                         fieldKey={activeFieldKey}
                                                         key={activeFieldKey}
                                                         onFieldFilterUpdate={onFilterUpdate}

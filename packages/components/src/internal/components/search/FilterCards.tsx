@@ -6,6 +6,42 @@ import { capitalizeFirstChar } from '../../util/utils';
 import { FieldFilter, FilterProps } from './models';
 import { FilterValueDisplay } from './FilterValueDisplay';
 
+interface GroupedFilterProps {
+    filterArray: FieldFilter[]
+    onFilterValueExpand: (cardIndex: number, fieldFilter: FieldFilter) => void;
+}
+
+export const GroupedFilterValues: FC<GroupedFilterProps> = memo((props) => {
+    const { filterArray, onFilterValueExpand } = props;
+    const groupedFilters = {};
+    filterArray?.forEach(filter => {
+        if (!groupedFilters[filter.fieldKey]) {
+            groupedFilters[filter.fieldKey] = [];
+        }
+        groupedFilters[filter.fieldKey].push(filter);
+    });
+    const rows = [];
+    Object.keys(groupedFilters).forEach(key => {
+        groupedFilters[key].forEach((fieldFilter, index) => {
+            rows.push(
+                <tr key={key + "-" + index} className="filter-display__row">
+                    {(index === 0) &&
+                        <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>}
+                    {(index !== 0) && <td className={"filter-display__field-boolean"}>and</td>}
+                    <td className="filter-display__filter-content">
+                        <FilterValueDisplay
+                            filter={fieldFilter.filter}
+                            onFilterValueExpand={() => onFilterValueExpand(index, fieldFilter)}
+                        />
+                    </td>
+                </tr>
+            )
+        });
+    })
+    return <>{rows}</>;
+});
+
+
 interface FilterEditProps extends FilterProps {
     onDelete: (index) => void;
     onEdit: (index) => void;
@@ -83,17 +119,21 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                     {!!filterArray?.length && (
                         <table>
                             <tbody>
-                                {filterArray.map((fieldFilter, index) => (
-                                    <tr key={fieldFilter.fieldKey + "-" + index} className="filter-display__row">
-                                        <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>
-                                        <td className="filter-display__filter-content">
-                                            <FilterValueDisplay
-                                                filter={fieldFilter.filter}
-                                                onFilterValueExpand={() => onFilterValueExpand(index, fieldFilter)}
-                                            />
-                                        </td>
-                                    </tr>
-                                ))}
+                                <GroupedFilterValues
+                                   filterArray={filterArray}
+                                    onFilterValueExpand={onFilterValueExpand}
+                                />
+                                {/*{filterArray.map((fieldFilter, index) => (*/}
+                                {/*    <tr key={fieldFilter.fieldKey + "-" + index} className="filter-display__row">*/}
+                                {/*        <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>*/}
+                                {/*        <td className="filter-display__filter-content">*/}
+                                {/*            <FilterValueDisplay*/}
+                                {/*                filter={fieldFilter.filter}*/}
+                                {/*                onFilterValueExpand={() => onFilterValueExpand(index, fieldFilter)}*/}
+                                {/*            />*/}
+                                {/*        </td>*/}
+                                {/*    </tr>*/}
+                                {/*))}*/}
                             </tbody>
                         </table>
                     )}

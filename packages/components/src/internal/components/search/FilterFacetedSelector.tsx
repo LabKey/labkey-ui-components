@@ -16,13 +16,13 @@ interface Props {
     api?: ComponentsAPIWrapper;
     selectDistinctOptions: Query.SelectDistinctOptions;
     fieldKey: string;
-    fieldFilter: Filter.IFilter;
-    onFieldFilterUpdate?: (newFilter: Filter.IFilter) => void;
+    fieldFilters: Filter.IFilter[];
+    onFieldFilterUpdate?: (newFilter: Filter.IFilter, index) => void;
     showSearchLength?: number; // show search box if number of unique values > N
 }
 
 export const FilterFacetedSelector: FC<Props> = memo(props => {
-    const { api, selectDistinctOptions, fieldKey, fieldFilter, onFieldFilterUpdate, showSearchLength } = props;
+    const { api, selectDistinctOptions, fieldKey, fieldFilters, onFieldFilterUpdate, showSearchLength } = props;
 
     const [fieldDistinctValues, setFieldDistinctValues] = useState<string[]>(undefined);
     const [error, setError] = useState<string>(undefined);
@@ -55,8 +55,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     }, [selectDistinctOptions, fieldKey]); // on fieldKey change, reload selection values
 
     const checkedValues = useMemo(() => {
-        return getCheckedFilterValues(fieldFilter, fieldDistinctValues);
-    }, [fieldFilter, fieldKey, fieldDistinctValues]); // need to add fieldKey
+        return getCheckedFilterValues(fieldFilters?.[0], fieldDistinctValues);
+    }, [fieldFilters?.[0], fieldKey, fieldDistinctValues]); // need to add fieldKey
 
     const taggedValues = useMemo(() => {
         if (checkedValues?.indexOf(ALL_VALUE_DISPLAY) > -1) return [];
@@ -74,12 +74,12 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 fieldKey,
                 value,
                 checked,
-                fieldFilter,
+                fieldFilters?.[0], // choose values applies only to the first filter
                 uncheckOthers
             );
-            onFieldFilterUpdate(newFilter);
+            onFieldFilterUpdate(newFilter, 0);
         },
-        [fieldDistinctValues, fieldKey, fieldFilter, onFieldFilterUpdate]
+        [fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate]
     );
 
     const filteredFieldDistinctValues = useMemo(() => {

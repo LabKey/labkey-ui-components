@@ -1,4 +1,4 @@
-import { Filter, getServerContext } from '@labkey/api';
+import { Filter, getServerContext, Utils } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { JsonType } from '../domainproperties/PropDescType';
@@ -400,17 +400,25 @@ export function getFieldFiltersValidationResult(
                 const isBetween = isBetweenOperator(filter.getFilterType().getURLSuffix());
 
                 let fieldError = false;
-                if (value === undefined || value === null) {
+                if (value === undefined || value === null || (Utils.isString(value) && !value)) {
                     fieldError = true;
                 } else if (isBetween) {
-                    if (!Array.isArray(value) || value.length < 2) fieldError = true;
+                    if (!Array.isArray(value) || value.length < 2) {
+                        fieldError = true;
+                    } else {
+                        if ((Utils.isString(value[0]) && !value[0]) || (Utils.isString(value[1]) && !value[1])) {
+                            fieldError = true;
+                        }
+                    }
                 }
 
                 if (fieldError == true) {
                     hasError = true;
                     const fields = parentFields[parent] ?? [];
-                    fields.push(fieldFilter.fieldCaption);
-                    parentFields[parent] = fields;
+                    if (fields.indexOf(fieldFilter.fieldCaption) === -1) {
+                        fields.push(fieldFilter.fieldCaption);
+                        parentFields[parent] = fields;
+                    }
                 }
             }
         });
@@ -469,7 +477,9 @@ export function getUpdateFilterExpressionFilter(
                     value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
                 }
             }
-        } else if (!value && field.getDisplayFieldJsonType() === 'boolean') value = 'false';
+        } else if (!value && field.getDisplayFieldJsonType() === 'boolean') {
+            value = 'false';
+        }
 
         filter = Filter.create(fieldKey, value, filterType);
     }

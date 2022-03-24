@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.145.1
-*Released*: ?? March 2022
+*Released*: 24 March 2022
 * Fix issue where models with bindURl set to true could not have default sorts/filters/etc.
 
 ### version 2.145.0

@@ -50,7 +50,7 @@ export function headerCell(
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
     const allowColFilter = handleFilter !== undefined && col.filterable;
-    const colFilters = model?.filters.filter(filter => isFilterColumnNameMatch(filter, col));
+    const colFilters = model?.filterArray.filter(filter => isFilterColumnNameMatch(filter, col)); // using filterArray to indicate user-defined filters only
 
     return (
         <span>

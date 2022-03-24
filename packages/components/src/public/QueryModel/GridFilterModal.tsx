@@ -7,23 +7,23 @@ import { FieldFilter } from '../../internal/components/search/models';
 import { QueryColumn } from '../QueryColumn';
 import { Alert } from '../../internal/components/base/Alert';
 import { QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
-import { QueryInfo } from '../QueryInfo';
 import { NOT_ANY_FILTER_TYPE } from '../../internal/url/NotAnyFilterType';
 import { getFieldFiltersValidationResult, isValidFilterField } from '../../internal/components/search/utils';
+import { QueryModel } from './QueryModel';
 
 interface Props {
     api?: ComponentsAPIWrapper;
     fieldKey?: string;
     initFilters: Filter.IFilter[];
-    metricFeatureArea?: string;
+    model: QueryModel;
     onApply: (filters: Filter.IFilter[]) => void;
     onCancel: () => void;
-    queryInfo: QueryInfo;
     skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
 }
 
 export const GridFilterModal: FC<Props> = memo(props => {
-    const { api, onCancel, initFilters, queryInfo, onApply, fieldKey, skipDefaultViewCheck, metricFeatureArea } = props;
+    const { api, onCancel, initFilters, model, onApply, fieldKey, skipDefaultViewCheck } = props;
+    const { queryInfo } = model;
     const [filterError, setFilterError] = useState<string>(undefined);
     const [filters, setFilters] = useState<FieldFilter[]>(
         initFilters.map(filter => {
@@ -101,11 +101,11 @@ export const GridFilterModal: FC<Props> = memo(props => {
                         fieldKey={fieldKey}
                         filters={{ [queryInfo.name.toLowerCase()]: filters }}
                         fullWidth
-                        metricFeatureArea={metricFeatureArea}
                         onFilterUpdate={onFilterUpdate}
                         queryInfo={queryInfo}
                         skipDefaultViewCheck={skipDefaultViewCheck}
                         validFilterField={isValidFilterField}
+                        viewName={model.viewName}
                     />
                 </Row>
             </Modal.Body>

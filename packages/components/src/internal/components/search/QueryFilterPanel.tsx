@@ -26,7 +26,7 @@ enum EntityFieldFilterTabs {
     ChooseValues = 'Choose values',
 }
 
-const FIND_FILTER_VIEW_NAME = ''; // always use default view for selection
+const DEFAULT_VIEW_NAME = ''; // always use default view for selection, if none provided
 const CHOOSE_VALUES_TAB_KEY = 'Choose values';
 
 interface Props {
@@ -41,6 +41,7 @@ interface Props {
     queryInfo: QueryInfo;
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
+    viewName?: string;
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
@@ -62,6 +63,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     const [activeTab, setActiveTab] = useState<EntityFieldFilterTabs>(undefined);
 
     const queryName = useMemo(() => queryInfo?.name.toLowerCase(), [queryInfo]);
+    const viewName = useMemo(() => props.viewName ?? DEFAULT_VIEW_NAME, [props.viewName]);
     const allowFaceting = (col: QueryColumn): boolean => {
         return col?.allowFaceting() && col?.getDisplayFieldJsonType() === 'string'; // current plan is to only support facet for string fields, to reduce scope
     };
@@ -71,7 +73,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         setActiveField(undefined);
         if (!queryInfo) return;
 
-        const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
+        const fields = skipDefaultViewCheck ? queryInfo.getAllColumns(viewName) : queryInfo.getDisplayColumns(viewName);
         setQueryFields(
             fromJS(
                 fields.filter(
@@ -219,7 +221,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                     column: activeFieldKey,
                                                     schemaName: queryInfo.schemaName,
                                                     queryName,
-                                                    viewName: FIND_FILTER_VIEW_NAME,
+                                                    viewName,
                                                     filterArray: fieldDistinctValueFilters,
                                                 }}
                                                 fieldFilter={currentFieldFilter?.filter}

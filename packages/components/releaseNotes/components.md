@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * add "Remove filter(s)" option to colum header actions
   * factor out QueryFilterPanel.tsx from EntityFieldFilterModal.tsx
   * add "Filter..." option to column header to show GridFilterModal and apply filters
+  * account for model.viewName in QueryFilterPanel
 
 ### version 2.145.1
 *Released*: 24 March 2022

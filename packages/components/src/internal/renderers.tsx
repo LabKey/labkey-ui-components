@@ -48,8 +48,11 @@ const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const gridColSortFilterEnabled = isGridColSortFilterEnabled();
     const [open, setOpen] = useState<boolean>();
 
-    const onToggleClick = useCallback((isOpen: boolean) => {
-        setOpen(isOpen);
+    const onToggleClick = useCallback((shouldOpen: boolean, evt?: any) => {
+        // when menu is closed skip any clicks on icons by just checking for span el type
+        if (shouldOpen && evt && evt.target.tagName.toLowerCase() !== 'span') return;
+
+        setOpen(shouldOpen);
     }, []);
 
     const _handleFilter = useCallback(
@@ -87,7 +90,7 @@ const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     return (
         <>
-            <span onClick={() => onToggleClick(!open)}>
+            <span onClick={(evt) => onToggleClick(!open, evt)}>
                 {col.caption === '&nbsp;' ? '' : col.caption}
                 {gridColSortFilterEnabled && colFilters?.length > 0 && (
                     <span

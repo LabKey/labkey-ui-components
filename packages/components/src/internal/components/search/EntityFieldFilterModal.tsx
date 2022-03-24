@@ -114,7 +114,6 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             });
     }, [entityDataType]); // don't add cards or queryName to deps, only init DataTypeFilters once per entityDataType
 
-
     const filterStatus = useMemo(() => {
         const status = {};
         if (!dataTypeFilters) return {};
@@ -135,7 +134,6 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const hasFilters = useCallback((field: QueryColumn) => {
         return filterStatus?.[activeQuery + '-' + field.fieldKey];
     }, [filterStatus, activeQuery]);
-
 
     const onEntityClick = useCallback(
         (queryName: string, fieldKey?: string) => {
@@ -174,7 +172,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             setActiveField(queryColumn);
             setActiveTab(allowFaceting(queryColumn)  && !hasFilters(queryColumn) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter);
         },
-        [activeTab, activeField, hasFilters]
+        [hasFilters]
     );
 
     const activeFieldKey = useMemo(() => {
@@ -212,7 +210,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const _onFind = useCallback(() => {
         const queryLabels = {};
-        entityQueries?.map(parent => {
+        entityQueries?.forEach(parent => {
             const label = parent.label ?? parent.get?.('label');
             const parentValue = parent.value ?? parent.get?.('value');
             queryLabels[parentValue] = label;
@@ -226,7 +224,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         }
     }, [api, metricFeatureArea, entityQueries, entityDataType.instanceSchemaName, onFind, validDataTypeFilters]);
 
-    const currentFieldFilters = useMemo(() : FieldFilter[] => {
+    const currentFieldFilters = useMemo((): FieldFilter[] => {
         if (!dataTypeFilters || !activeField) return null;
 
         const activeParentFilters: FieldFilter[] = dataTypeFilters[activeQuery];
@@ -243,7 +241,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             const otherFieldFilters = []; // the filters on the parent type that aren't associated with this field.
             let thisFieldFilters = []; // the filters on the parent type currently associated with this field.
             activeParentFilters?.forEach(filter => {
-                if (filter.fieldKey === activeFieldKey ) {
+                if (filter.fieldKey === activeFieldKey) {
                     // on the ChooseValues tab, once we interact to select values, we'll remove the second filter, if it exists
                     if (activeTab === EntityFieldFilterTabs.Filter) thisFieldFilters.push(filter);
                 } else {
@@ -275,11 +273,9 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 }
             }
 
-
             if (otherFieldFilters.length + thisFieldFilters.length > 0) {
                 dataTypeFiltersUpdated[activeQuery] = [...otherFieldFilters, ...thisFieldFilters];
-            }
-            else {
+            } else {
                 delete dataTypeFiltersUpdated[activeQuery];
             }
 

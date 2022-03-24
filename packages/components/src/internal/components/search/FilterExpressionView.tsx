@@ -72,8 +72,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         }
     }, [field]); // leave fieldFilters out of deps list, fieldFilters is used to init once
 
-    const additionalFilterOptions = useMemo((): FieldFilterOption[] => {
-        return fieldFilterOptions?.filter(option => !option.isSoleFilter && activeFilters[0]?.filterType.value !== option.value);
+    const unusedFilterOptions = useCallback((thisIndex: number): FieldFilterOption[] => {
+        const otherIndex = thisIndex == 1 ? 0 : 1;
+        return fieldFilterOptions?.filter(option => (thisIndex == 0 || !option.isSoleFilter) && activeFilters[otherIndex]?.filterType.value !== option.value);
     }, [fieldFilterOptions, activeFilters]);
 
     const updateFilter = useCallback(
@@ -131,7 +132,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             });
             // When a filter is removed, we need to recreate the selectInputs so they pick up the value from the
             // filter that got shifted into the place that was removed. This doesn't happen through normal channels
-            // because this is part of the onChange callback for the selectInput and it has protections against
+            // because this is part of the onChange callback for the selectInput, and it has protections against
             // infinitely updating as a result of the onChange action.
             setRemoveFilterCount(count => ( count+1 ));
         }
@@ -318,7 +319,16 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         if (!activeFilters?.length)
             return false;
 
-        return !activeFilters[0].filterType.isSoleFilter;
+        if (activeFilters[0].filterType.isSoleFilter)
+            return false;
+
+        if (!activeFilters[0].filterType.valueRequired)
+            return true;
+
+        if (activeFilters[0].firstFilterValue === undefined)
+            return false;
+
+        return !activeFilters[0].filterType.multiValue || activeFilters[0].secondFilterValue !== undefined;
     }, [activeFilters])
 
     return (
@@ -331,7 +341,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 placeholder="Select a filter type..."
                 value={activeFilters[0]?.filterType?.value}
                 onChange={(fieldname: any, filterUrlSuffix: any) => onFieldFilterTypeChange(fieldname, filterUrlSuffix, 0)}
-                options={fieldFilterOptions}
+                options={unusedFilterOptions(0)}
             />
             {renderFilterTypeInputs(0)}
             {shouldShowSecondFilter() && (
@@ -347,7 +357,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         placeholder="Select a filter type..."
                         value={activeFilters[1]?.filterType?.value}
                         onChange={(fieldname: any, filterUrlSuffix: any) => onFieldFilterTypeChange(fieldname, filterUrlSuffix, 1)}
-                        options={additionalFilterOptions}
+                        options={unusedFilterOptions(1)}
                     />
                     {renderFilterTypeInputs(1)}
                 </>

@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.145.1
 *Released*: 24 March 2022
+* Fix issue where we could not add assay samples to picklist from the run details page.
+
+### version 2.145.1
+*Released*: 24 March 2022
 * Fix issue where models with bindURl set to true could not have default sorts/filters/etc.
 
 ### version 2.145.0

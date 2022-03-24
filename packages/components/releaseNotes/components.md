@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * factor out QueryFilterPanel.tsx from EntityFieldFilterModal.tsx
   * add "Filter..." option to column header to show GridFilterModal and apply filters
 
+### version 2.145.1
+*Released*: 24 March 2022
+* Fix issue where models with bindURl set to true could not have default sorts/filters/etc.
+
 ### version 2.145.0
 *Released*: 22 March 2022
 * Fix Issue 44859

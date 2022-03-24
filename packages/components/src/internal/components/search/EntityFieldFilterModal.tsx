@@ -23,7 +23,7 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';
-import { getFieldFiltersValidationResult, isValidFilterField } from './utils';
+import { getFieldFiltersValidationResult, getUpdatedDataTypeFilters, isValidFilterField } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -234,52 +234,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const onFilterUpdate = useCallback(
         (newFilter: Filter.IFilter, index: number) => {
             setFilterError(undefined);
-
-            const dataTypeFiltersUpdated = { ...dataTypeFilters };
-            const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
-
-            const otherFieldFilters = []; // the filters on the parent type that aren't associated with this field.
-            let thisFieldFilters = []; // the filters on the parent type currently associated with this field.
-            activeParentFilters?.forEach(filter => {
-                if (filter.fieldKey === activeFieldKey) {
-                    // on the ChooseValues tab, once we interact to select values, we'll remove the second filter, if it exists
-                    if (activeTab === EntityFieldFilterTabs.Filter) thisFieldFilters.push(filter);
-                } else {
-                    otherFieldFilters.push(filter);
-                }
-            });
-
-
-            if (newFilter != null) {
-                const fieldFilter = {
-                    fieldKey: activeFieldKey,
-                    fieldCaption: activeField.caption,
-                    filter: newFilter,
-                    jsonType: activeField.getDisplayFieldJsonType(),
-                } as FieldFilter;
-
-
-                if (activeTab === EntityFieldFilterTabs.Filter && index < thisFieldFilters.length) {
-                    thisFieldFilters[index] = fieldFilter;
-                } else {
-                    thisFieldFilters.push(fieldFilter);
-                }
-            } else {
-                if (index < thisFieldFilters.length) {
-                    thisFieldFilters = [
-                        ...thisFieldFilters.slice(0, index),
-                        ...thisFieldFilters.slice(index+1)
-                    ]
-                }
-            }
-
-            if (otherFieldFilters.length + thisFieldFilters.length > 0) {
-                dataTypeFiltersUpdated[activeQuery] = [...otherFieldFilters, ...thisFieldFilters];
-            } else {
-                delete dataTypeFiltersUpdated[activeQuery];
-            }
-
-            setDataTypeFilters(dataTypeFiltersUpdated);
+            setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, activeField, activeTab, newFilter, index));
         },
         [dataTypeFilters, activeQuery, activeField, activeFieldKey, activeTab]
     );

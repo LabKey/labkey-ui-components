@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { FormControl } from 'react-bootstrap';
 
@@ -12,13 +12,12 @@ import { JsonType } from '../domainproperties/PropDescType';
 import { formatDate, isDateTimeCol } from '../../util/Date';
 
 import {
+    getFilterSelections,
     getFilterTypePlaceHolder,
-    getFilterValuesAsArray,
     getSampleFinderFilterTypesForType,
     getUpdateFilterExpressionFilter,
-    isFilterUrlSuffixMatch,
 } from './utils';
-import { FieldFilterOption } from './models';
+import { FieldFilterOption, FilterSelection } from './models';
 
 interface Props {
     field: QueryColumn;
@@ -26,11 +25,7 @@ interface Props {
     onFieldFilterUpdate?: (newFilter: Filter.IFilter, index: number) => void;
 }
 
-interface FilterSelection {
-    filterType: FieldFilterOption,
-    firstFilterValue?: any,
-    secondFilterValue?: any
-}
+
 
 export const FilterExpressionView: FC<Props> = memo(props => {
     const { field, fieldFilters, onFieldFilterUpdate } = props;
@@ -42,34 +37,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     useEffect(() => {
         const filterOptions = getSampleFinderFilterTypesForType(field?.getDisplayFieldJsonType() as JsonType);
         setFieldFilterOptions(filterOptions);
-
-        const filters = [];
-        if (fieldFilters?.length) {
-            fieldFilters?.forEach(fieldFilter => {
-                const filterOption = filterOptions?.find(option => {
-                    // filters will be on the same field, so we can use the first
-                    return isFilterUrlSuffixMatch(option.value, fieldFilter.getFilterType());
-                });
-
-                if (filterOption) {
-                    let filter: FilterSelection = {
-                        filterType: filterOption
-                    };
-
-                    const values = getFilterValuesAsArray(fieldFilter, '');
-                    if (filterOption.betweenOperator) {
-                        filter.firstFilterValue = values[0];
-                        filter.secondFilterValue = values[1];
-                    } else if (values.length > 1) {
-                        filter.firstFilterValue = values.join(';');
-                    } else {
-                        filter.firstFilterValue = values[0];
-                    }
-                    filters.push(filter);
-                }
-            });
-            setActiveFilters(filters);
-        }
+        setActiveFilters(getFilterSelections(fieldFilters, filterOptions));
     }, [field]); // leave fieldFilters out of deps list, fieldFilters is used to init once
 
     const unusedFilterOptions = useCallback((thisIndex: number): FieldFilterOption[] => {

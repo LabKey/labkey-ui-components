@@ -84,3 +84,9 @@ export interface FieldFilterOption {
     betweenOperator: boolean;
     isSoleFilter: boolean;
 }
+
+export interface FilterSelection {
+    filterType: FieldFilterOption,
+    firstFilterValue?: any,
+    secondFilterValue?: any
+}

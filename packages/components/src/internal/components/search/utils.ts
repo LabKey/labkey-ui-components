@@ -18,8 +18,9 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfFilterType';
 import { getLabKeySql } from '../../query/filter';
 
-import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
+import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 import { QueryInfo } from '../../../public/QueryInfo';
+import { EntityFieldFilterTabs } from './EntityFieldFilterModal';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -616,4 +617,85 @@ export function isValidFilterField(field: QueryColumn, queryInfo: QueryInfo, ent
     }
     // also exclude lookups since MVFKs don't support following lookups
     return !field.isLookup();
+}
+
+export function getUpdatedDataTypeFilters(
+    dataTypeFilters: { [key: string]: FieldFilter[] },
+    activeQuery: string,
+    activeField: QueryColumn,
+    activeTab: string,
+    newFilter: any,
+    index: number
+) : { [key: string]: FieldFilter[] } {
+    const dataTypeFiltersUpdated = { ...dataTypeFilters };
+    const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
+    const activeFieldKey = activeField.fieldKey;
+    const otherFieldFilters = []; // the filters on the parent type that aren't associated with this field.
+    let thisFieldFilters = []; // the filters on the parent type currently associated with this field.
+    activeParentFilters?.forEach(filter => {
+        if (filter.fieldKey === activeFieldKey) {
+            // on the ChooseValues tab, once we interact to select values, we'll remove the second filter, if it exists
+            if (activeTab === EntityFieldFilterTabs.Filter) thisFieldFilters.push(filter);
+        } else {
+            otherFieldFilters.push(filter);
+        }
+    });
+
+
+    if (newFilter != null) {
+        const fieldFilter = {
+            fieldKey: activeFieldKey,
+            fieldCaption: activeField.caption,
+            filter: newFilter,
+            jsonType: activeField.getDisplayFieldJsonType(),
+        } as FieldFilter;
+
+
+        if (activeTab === EntityFieldFilterTabs.Filter && index < thisFieldFilters.length) {
+            thisFieldFilters[index] = fieldFilter;
+        } else {
+            thisFieldFilters.push(fieldFilter);
+        }
+    } else {
+        if (index < thisFieldFilters.length) {
+            thisFieldFilters = [
+                ...thisFieldFilters.slice(0, index),
+                ...thisFieldFilters.slice(index+1)
+            ]
+        }
+    }
+
+    if (otherFieldFilters.length + thisFieldFilters.length > 0) {
+        dataTypeFiltersUpdated[activeQuery] = [...otherFieldFilters, ...thisFieldFilters];
+    } else {
+        delete dataTypeFiltersUpdated[activeQuery];
+    }
+    return dataTypeFiltersUpdated;
+}
+
+export function getFilterSelections(fieldFilters: Filter.IFilter[], filterOptions: FieldFilterOption[] ): FilterSelection[] {
+    const filters = [];
+    fieldFilters?.forEach(fieldFilter => {
+        const filterOption = filterOptions?.find(option => {
+            return isFilterUrlSuffixMatch(option.value, fieldFilter.getFilterType());
+        });
+
+        if (filterOption) {
+            let filter: FilterSelection = {
+                filterType: filterOption
+            };
+
+            const values = getFilterValuesAsArray(fieldFilter, '');
+            if (filterOption.betweenOperator) {
+                filter.firstFilterValue = values[0];
+                filter.secondFilterValue = values[1];
+            } else if (values.length > 1) {
+                filter.firstFilterValue = values.join(';');
+            } else {
+                filter.firstFilterValue = values[0];
+            }
+            filters.push(filter);
+        }
+    });
+    return filters;
 }

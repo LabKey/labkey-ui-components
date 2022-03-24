@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.138.TBD
-*Released*: TBD March 2022
+### version 2.138.7
+*Released*: 24 March 2022
 * Issue 45093: Fix production navigation menu URl action for going from LKS to app
   * Revert change from PR747 to createProductURL() so that we go back to always using app action
 

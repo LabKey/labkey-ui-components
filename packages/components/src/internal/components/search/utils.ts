@@ -132,10 +132,12 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
                 const filter = f.filter;
                 const columnName = filter.getColumnName();
 
-                // The'Name' field is redundant since we always add a column for the parent type ID
+                // The 'Name' field is redundant since we always add a column for the parent type ID
                 if (columnName != 'Name') {
                     const newColumnName = cardColumnName + '/' + columnName;
-                    requiredColumns.push(newColumnName);
+                    if (requiredColumns.indexOf(newColumnName) === -1) {
+                        requiredColumns.push(newColumnName);
+                    }
                 }
             });
 

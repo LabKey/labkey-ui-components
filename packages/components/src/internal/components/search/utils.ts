@@ -598,6 +598,16 @@ export function isValidFilterField(
         return false;
     }
 
+    return true;
+}
+
+export function isValidFilterFieldExcludeLookups(
+    field: QueryColumn,
+    queryInfo: QueryInfo,
+    exprColumnsWithSubSelect?: string[]
+): boolean {
+    if (!isValidFilterField(field, queryInfo, exprColumnsWithSubSelect)) return false;
+
     // also exclude lookups since MVFKs don't support following lookups
     return !field.isLookup();
 }

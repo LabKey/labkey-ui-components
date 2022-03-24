@@ -27,7 +27,7 @@ import { CustomToggle } from './components/base/CustomToggle';
 import { isGridColSortFilterEnabled } from './app/utils';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
-    return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey()
+    return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
 }
 
 export function headerCell(
@@ -85,7 +85,6 @@ export function headerCell(
                             {gridColSortFilterEnabled && allowColFilter && (
                                 <>
                                     <MenuItem
-                                        disabled // TODO
                                         onClick={
                                             () => handleFilter(col)
                                         }

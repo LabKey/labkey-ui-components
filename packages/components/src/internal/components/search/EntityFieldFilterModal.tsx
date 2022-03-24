@@ -21,7 +21,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
 import { FieldFilter, FilterProps } from './models';
-import { getFieldFiltersValidationResult, isValidFilterField } from './utils';
+import { getFieldFiltersValidationResult, isValidFilterFieldExcludeLookups } from './utils';
 import { QueryFilterPanel } from './QueryFilterPanel';
 
 interface Props {
@@ -235,7 +235,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         onFilterUpdate={onFilterUpdate}
                         queryInfo={activeQueryInfo}
                         skipDefaultViewCheck={skipDefaultViewCheck}
-                        validFilterField={isValidFilterField}
+                        validFilterField={isValidFilterFieldExcludeLookups}
                     />
                 </Row>
             </Modal.Body>

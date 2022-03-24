@@ -1,7 +1,7 @@
 import React, { ComponentType, FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Set } from 'immutable';
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import {
     Alert,
@@ -35,6 +35,7 @@ import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
+import { GridFilterModal } from './GridFilterModal';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -190,6 +191,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
 interface State {
     actionValues: ActionValue[];
+    showFilterModalFieldKey: string;
 }
 
 /**
@@ -235,6 +237,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         this.state = {
             actionValues: [],
+            showFilterModalFieldKey: undefined,
         };
     }
 
@@ -350,9 +353,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         let newFilters = model.filterArray;
 
         if (change.type === ChangeType.modify || change.type === ChangeType.remove) {
-            // Remove the old filter, if a column is provided instead of a change.index then we will remove all
-            // filters for that column
-            if (change.index) {
+            // If a column is provided instead of a change.index, then we will remove all filters for that column.
+            if (change.index !== undefined) {
                 const value = this.state.actionValues[change.index].valueObject;
                 newFilters = newFilters.filter(filter => !filtersEqual(filter, value));
             } else if (column) {
@@ -384,6 +386,16 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         // Defer model updates after localState is updated so we don't unnecessarily repopulate the omnibox.
         this.setState({ actionValues }, () => actions.setFilters(model.id, newFilters, allowSelections));
+    };
+
+    handleApplyFilters = (newFilters: Filter.IFilter[]): void => {
+        const { model, actions, allowSelections } = this.props;
+
+        // remove all filter actionValues and replace them with the new set of filters via setFilters
+        const actionValues = this.state.actionValues.filter(({ action }) => action.keyword !== 'filter');
+        this.setState({ actionValues, showFilterModalFieldKey: undefined }, () =>
+            actions.setFilters(model.id, newFilters, allowSelections)
+        );
     };
 
     handleSortChange = (actionValues: ActionValue[], change: Change): void => {
@@ -507,9 +519,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
             this.handleFilterChange(newActionValues, { type: ChangeType.remove }, column);
         } else {
-            // TODO
-            console.log('filterColumn', fieldKey, remove);
+            this.setState({ showFilterModalFieldKey: fieldKey });
         }
+    };
+
+    closeFilterModal = (): void => {
+        this.setState({ showFilterModalFieldKey: undefined });
     };
 
     /**
@@ -640,6 +655,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
+        const { showFilterModalFieldKey } = this.state;
         const { hasData, id, isLoading, isLoadingSelections, rowsError, selectionsError, messages, queryInfoError } =
             model;
         const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
@@ -657,59 +673,70 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const gridEmptyText = getEmptyText?.(model) ?? emptyText;
 
         return (
-            <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-                {title !== undefined && asPanel && (
-                    <div className="grid-panel__title panel-heading">
-                        <span>{title}</span>
-                    </div>
-                )}
-
-                <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
-                    {showButtonBar && (
-                        <ButtonBar {...this.props} onViewSelect={this.onViewSelect} onExport={onExport} />
-                    )}
-
-                    {showOmniBox && (
-                        <div className="grid-panel__omnibox">
-                            <OmniBox
-                                actions={Object.values(this.omniBoxActions)}
-                                disabled={hasError || isLoading}
-                                getColumns={this.getColumns}
-                                getSelectDistinctOptions={this.getSelectDistinctOptions}
-                                mergeValues={false}
-                                onChange={this.omniBoxChange}
-                                values={this.state.actionValues}
-                            />
+            <>
+                <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
+                    {title !== undefined && asPanel && (
+                        <div className="grid-panel__title panel-heading">
+                            <span>{title}</span>
                         </div>
                     )}
 
-                    {(loadingMessage || allowSelections) && (
-                        <div className="grid-panel__info">
-                            {loadingMessage && <LoadingSpinner msg={loadingMessage} />}
-                            {allowSelections && <SelectionStatus model={model} actions={actions} />}
-                        </div>
-                    )}
-
-                    <div className="grid-panel__grid">
-                        {hasError && <Alert>{queryInfoError || rowsError || selectionsError}</Alert>}
-
-                        {!hasGridError && hasData && (
-                            <Grid
-                                headerCell={this.headerCell}
-                                showHeader={showHeader}
-                                calcWidths
-                                condensed
-                                emptyText={gridEmptyText}
-                                gridId={id}
-                                messages={fromJS(messages)}
-                                columns={this.getGridColumns()}
-                                data={model.gridData}
-                                highlightRowIndexes={this.getHighlightRowIndexes()}
-                            />
+                    <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
+                        {showButtonBar && (
+                            <ButtonBar {...this.props} onViewSelect={this.onViewSelect} onExport={onExport} />
                         )}
+
+                        {showOmniBox && (
+                            <div className="grid-panel__omnibox">
+                                <OmniBox
+                                    actions={Object.values(this.omniBoxActions)}
+                                    disabled={hasError || isLoading}
+                                    getColumns={this.getColumns}
+                                    getSelectDistinctOptions={this.getSelectDistinctOptions}
+                                    mergeValues={false}
+                                    onChange={this.omniBoxChange}
+                                    values={this.state.actionValues}
+                                />
+                            </div>
+                        )}
+
+                        {(loadingMessage || allowSelections) && (
+                            <div className="grid-panel__info">
+                                {loadingMessage && <LoadingSpinner msg={loadingMessage} />}
+                                {allowSelections && <SelectionStatus model={model} actions={actions} />}
+                            </div>
+                        )}
+
+                        <div className="grid-panel__grid">
+                            {hasError && <Alert>{queryInfoError || rowsError || selectionsError}</Alert>}
+
+                            {!hasGridError && hasData && (
+                                <Grid
+                                    headerCell={this.headerCell}
+                                    showHeader={showHeader}
+                                    calcWidths
+                                    condensed
+                                    emptyText={gridEmptyText}
+                                    gridId={id}
+                                    messages={fromJS(messages)}
+                                    columns={this.getGridColumns()}
+                                    data={model.gridData}
+                                    highlightRowIndexes={this.getHighlightRowIndexes()}
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
+                {showFilterModalFieldKey && (
+                    <GridFilterModal
+                        fieldKey={showFilterModalFieldKey}
+                        initFilters={model.filterArray}
+                        onApply={this.handleApplyFilters}
+                        onCancel={this.closeFilterModal}
+                        queryInfo={model.queryInfo}
+                    />
+                )}
+            </>
         );
     }
 }

@@ -95,7 +95,7 @@ describe('camelCaseToTitleCase', () => {
 describe('capitalizeFirstChar', () => {
     test('capitalizeFirstChar', () => {
         const testStrings = {
-            textACRONYM: 'textACRONYM',
+            textACRONYM: 'TextACRONYM',
             camelCasedText: 'CamelCasedText',
             CapsCasedText: 'CapsCasedText'
         };
@@ -142,7 +142,7 @@ describe('withTransformedKeys', () => {
             CapsCasedText: 'val3'
         };
 
-        expect(withTransformedKeys(rawObj, capitalizeFirstChar)).toEqual({
+        expect(withTransformedKeys(rawObj, uncapitalizeFirstChar)).toEqual({
             textACRONYM: 'val1',
             camelCasedText: 'val2',
             capsCasedText: 'val3'

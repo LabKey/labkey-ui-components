@@ -142,5 +142,6 @@ module.exports = {
         'react-treebeard',
         'redux-actions',
         'xhr-mock',
-    ]
+    ],
+    stats: process.env.WEBPACK_STATS,
 };

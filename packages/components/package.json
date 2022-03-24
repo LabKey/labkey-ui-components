@@ -12,7 +12,7 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
-    "prepublishOnly": "yarn install && yarn build",
+    "prepublishOnly": "yarn install && cross-env WEBPACK_STATS=errors-only yarn build",
     "test": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
     "test-ci": "cross-env NODE_ENV=test jest --ci --runInBand --silent",
     "watch:build": "watch 'yarn build' ./src",

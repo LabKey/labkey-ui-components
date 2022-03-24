@@ -377,10 +377,6 @@ export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: stri
     return values;
 }
 
-export function getFieldFilterKey(fieldFilter: FieldFilter, schemaQuery?: SchemaQuery): string {
-    return schemaQuery.schemaName + '|' + schemaQuery.queryName + '|' + fieldFilter.fieldKey;
-}
-
 export function getFieldFiltersValidationResult(
     dataTypeFilters: { [key: string]: FieldFilter[] },
     queryLabels?: { [key: string]: string }

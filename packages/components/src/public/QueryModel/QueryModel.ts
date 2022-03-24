@@ -845,20 +845,46 @@ export class QueryModel {
     /**
      * Returns the model attributes given a set of queryParams from the URL. Used for URL Binding.
      * @param queryParams: The query attribute from a ReactRouter Location object.
+     * @param useExistingValues: Set to true if you want to use the values on the model as the default values. Typically
+     * this should be false, because you want to treat the URL as the single source of truth, but when we initialize
+     * models we may programmatically want to set an initial value (e.g. a default sort).
      */
-    attributesForURLQueryParams(queryParams: Record<string, string>): QueryModelURLState {
+    attributesForURLQueryParams(queryParams: Record<string, string>, useExistingValues = false): QueryModelURLState {
         const prefix = this.urlPrefix;
-        const viewName = queryParams[`${prefix}.view`] ?? this.viewName;
+        const viewName = queryParams[`${prefix}.view`] ?? undefined;
         const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]) ?? [];
         const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix) || [];
+        let filterArray = columnFilters.concat(searchFilters);
+        let offset = offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? DEFAULT_OFFSET;
+        let schemaQuery = SchemaQuery.create(this.schemaName, this.queryName, viewName);
+        let selectedReportId = queryParams[`${prefix}.reportId`] ?? undefined;
+        let sorts = querySortsFromString(queryParams[`${prefix}.sort`]) ?? [];
 
-        return {
-            filterArray: columnFilters.concat(searchFilters),
-            offset: offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? DEFAULT_OFFSET,
-            schemaQuery: SchemaQuery.create(this.schemaName, this.queryName, viewName),
-            sorts: querySortsFromString(queryParams[`${prefix}.sort`]) ?? [],
-            selectedReportId: queryParams[`${prefix}.reportId`] ?? undefined,
-        };
+        // If useExistingValues is true we'll assume any value not present on the URL can be overridden by the current
+        // model value. This behavior is really only wanted when we are initializing the model.
+        if (useExistingValues) {
+            if (filterArray.length === 0 && this.filterArray.length > 0) {
+                filterArray = this.filterArray;
+            }
+
+            if (offset === 0 && this.offset !== 0) {
+                offset = this.offset;
+            }
+
+            if (viewName === undefined && this.viewName !== undefined) {
+                schemaQuery = this.schemaQuery;
+            }
+
+            if (selectedReportId === undefined && this.selectedReportId) {
+                selectedReportId = this.selectedReportId;
+            }
+
+            if (sorts.length === 0 && this.sorts.length > 0) {
+                sorts = this.sorts;
+            }
+        }
+
+        return { filterArray, offset, schemaQuery, selectedReportId, sorts };
     }
 
     /**

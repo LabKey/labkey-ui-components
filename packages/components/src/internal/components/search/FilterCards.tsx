@@ -7,12 +7,14 @@ import { FieldFilter, FilterProps } from './models';
 import { FilterValueDisplay } from './FilterValueDisplay';
 
 interface GroupedFilterProps {
-    filterArray: FieldFilter[]
+    cardIndex: number;
+    filterArray: FieldFilter[];
     onFilterValueExpand: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 
+// exported for jest testing
 export const GroupedFilterValues: FC<GroupedFilterProps> = memo((props) => {
-    const { filterArray, onFilterValueExpand } = props;
+    const { cardIndex, filterArray, onFilterValueExpand } = props;
     const groupedFilters = {};
     filterArray?.forEach(filter => {
         if (!groupedFilters[filter.fieldKey]) {
@@ -31,7 +33,7 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo((props) => {
                     <td className="filter-display__filter-content">
                         <FilterValueDisplay
                             filter={fieldFilter.filter}
-                            onFilterValueExpand={() => onFilterValueExpand(index, fieldFilter)}
+                            onFilterValueExpand={() => onFilterValueExpand(cardIndex, fieldFilter)}
                         />
                     </td>
                 </tr>
@@ -120,20 +122,10 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                         <table>
                             <tbody>
                                 <GroupedFilterValues
-                                   filterArray={filterArray}
+                                    cardIndex={index}
+                                    filterArray={filterArray}
                                     onFilterValueExpand={onFilterValueExpand}
                                 />
-                                {/*{filterArray.map((fieldFilter, index) => (*/}
-                                {/*    <tr key={fieldFilter.fieldKey + "-" + index} className="filter-display__row">*/}
-                                {/*        <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>*/}
-                                {/*        <td className="filter-display__filter-content">*/}
-                                {/*            <FilterValueDisplay*/}
-                                {/*                filter={fieldFilter.filter}*/}
-                                {/*                onFilterValueExpand={() => onFilterValueExpand(index, fieldFilter)}*/}
-                                {/*            />*/}
-                                {/*        </td>*/}
-                                {/*    </tr>*/}
-                                {/*))}*/}
                             </tbody>
                         </table>
                     )}

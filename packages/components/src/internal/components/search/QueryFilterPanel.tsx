@@ -164,7 +164,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                     key={currFieldKey}
                                     label={caption}
                                     onSelect={() => onFieldClick(field)}
-                                    componentRight={hasFilter && <span className="filter-modal__field_dot" />}
+                                    componentRight={
+                                        hasFilter && <span className="pull-right filter-modal__field_dot" />
+                                    }
                                 />
                             );
                         })}

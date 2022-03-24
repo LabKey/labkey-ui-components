@@ -27,13 +27,12 @@
     }
 
     .filter-modal__field_dot {
-        position: absolute;
-        top: 13px;
-        right: 10px;
         height: 10px;
         width: 10px;
         border-radius: 50%;
         background-color: $badge-color;
+        display: inline-block;
+        margin-top: 6px;
     }
 
     .filter-modal__col-title {

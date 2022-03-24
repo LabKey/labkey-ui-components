@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ChangeEvent, ReactNode } from 'react';
+import React, {ChangeEvent, ReactNode, FC, memo, useState, useCallback} from 'react';
 import classNames from 'classnames';
 import { OrderedMap, Map } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
@@ -30,22 +30,48 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
 }
 
-export function headerCell(
-    i: number,
-    column: GridColumn,
-    selectable?: boolean,
-    columnCount?: number,
-    handleSort?: (column: QueryColumn, dir?: string) => void,
-    handleFilter?: (column: QueryColumn, remove?: boolean) => void,
-    model?: QueryModel
-): ReactNode {
+interface HeaderCellDropdownProps {
+    i: number;
+    column: GridColumn;
+    selectable?: boolean;
+    columnCount?: number;
+    handleSort?: (column: QueryColumn, dir?: string) => void;
+    handleFilter?: (column: QueryColumn, remove?: boolean) => void;
+    model?: QueryModel;
+}
+
+const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
+    const { i, column, selectable, columnCount, handleSort, handleFilter, model } = props;
     const col: QueryColumn = column.raw;
+    const gridColSortFilterEnabled = isGridColSortFilterEnabled();
+    const [open, setOpen] = useState<boolean>();
+
+    const onToggleClick = useCallback((isOpen: boolean) => {
+        setOpen(isOpen);
+    }, []);
+
+    const _handleFilter = useCallback(
+        (remove?: boolean) => {
+            handleFilter(col, remove);
+            setOpen(false);
+        },
+        [col, handleFilter]
+    );
+
+    const _handleSort = useCallback(
+        (dir?: string) => {
+            handleSort(col, dir);
+            setOpen(false);
+        },
+        [col, handleSort]
+    );
+
     if (!col) return null;
 
     const isOnlyColumn =
         columnCount !== undefined && ((selectable && columnCount === 2) || (!selectable && columnCount === 1));
     const allowColSort = handleSort !== undefined && col.sortable;
-    const gridColSortFilterEnabled = isGridColSortFilterEnabled();
+
     const colQuerySortDir = model?.sorts?.find(sort => sort.get('fieldKey') === col.resolveFieldKey())?.get('dir');
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
@@ -53,20 +79,22 @@ export function headerCell(
     const colFilters = model?.filterArray.filter(filter => isFilterColumnNameMatch(filter, col)); // using filterArray to indicate user-defined filters only
 
     return (
-        <span>
-            {col.caption === '&nbsp;' ? '' : col.caption}
-            {gridColSortFilterEnabled && colFilters?.length > 0 && (
-                <span
-                    className="fa fa-filter grid-panel__col-header-icon"
-                    title={colFilters?.length + ' filter' + (colFilters?.length > 1 ? 's' : '') + ' applied'}
-                />
-            )}
-            {gridColSortFilterEnabled && isSortAsc && (
-                <span className="fa fa-sort-amount-asc grid-panel__col-header-icon" title="Sorted ascending" />
-            )}
-            {gridColSortFilterEnabled && isSortDesc && (
-                <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
-            )}
+        <>
+            <span>
+                {col.caption === '&nbsp;' ? '' : col.caption}
+                {gridColSortFilterEnabled && colFilters?.length > 0 && (
+                    <span
+                        className="fa fa-filter grid-panel__col-header-icon"
+                        title={colFilters?.length + ' filter' + (colFilters?.length > 1 ? 's' : '') + ' applied'}
+                    />
+                )}
+                {gridColSortFilterEnabled && isSortAsc && (
+                    <span className="fa fa-sort-amount-asc grid-panel__col-header-icon" title="Sorted ascending" />
+                )}
+                {gridColSortFilterEnabled && isSortDesc && (
+                    <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
+                )}
+            </span>
             {(allowColSort || allowColFilter) && (
                 <span className={classNames({ 'pull-right': (i === 0 && !selectable) || (selectable && i === 1) })}>
                     <Dropdown
@@ -74,6 +102,8 @@ export function headerCell(
                         className={classNames('hidden-xs hidden-sm', {
                             'pull-right': isOnlyColumn || (i > 0 && !selectable) || i > 1,
                         })}
+                        onToggle={onToggleClick}
+                        open={open}
                     >
                         <CustomToggle bsRole="toggle">
                             <span
@@ -84,11 +114,7 @@ export function headerCell(
                         <Dropdown.Menu>
                             {gridColSortFilterEnabled && allowColFilter && (
                                 <>
-                                    <MenuItem
-                                        onClick={
-                                            () => handleFilter(col)
-                                        }
-                                    >
+                                    <MenuItem onClick={() => _handleFilter()}>
                                         <span className="fa fa-filter grid-panel__menu-icon" />
                                         &nbsp; Filter...
                                     </MenuItem>
@@ -97,7 +123,7 @@ export function headerCell(
                                         onClick={
                                             colFilters?.length
                                                 ? () => {
-                                                    handleFilter(col, true);
+                                                    _handleFilter(true);
                                                 }
                                                 : undefined
                                         }
@@ -117,7 +143,7 @@ export function headerCell(
                                         onClick={
                                             !isSortAsc
                                                 ? () => {
-                                                      handleSort(col, '+');
+                                                    _handleSort('+');
                                                 }
                                                 : undefined
                                         }
@@ -130,7 +156,7 @@ export function headerCell(
                                         onClick={
                                             !isSortDesc
                                                 ? () => {
-                                                    handleSort(col, '-');
+                                                    _handleSort('-');
                                                 }
                                                 : undefined
                                         }
@@ -145,7 +171,7 @@ export function headerCell(
                                             onClick={
                                                 isSortDesc || isSortAsc
                                                     ? () => {
-                                                        handleSort(col);
+                                                        _handleSort();
                                                     }
                                                     : undefined
                                             }
@@ -160,7 +186,29 @@ export function headerCell(
                     </Dropdown>
                 </span>
             )}
-        </span>
+        </>
+    );
+});
+
+export function headerCell(
+    i: number,
+    column: GridColumn,
+    selectable?: boolean,
+    columnCount?: number,
+    handleSort?: (column: QueryColumn, dir?: string) => void,
+    handleFilter?: (column: QueryColumn, remove?: boolean) => void,
+    model?: QueryModel
+): ReactNode {
+    return (
+        <HeaderCellDropdown
+            i={i}
+            column={column}
+            selectable={selectable}
+            columnCount={columnCount}
+            handleSort={handleSort}
+            handleFilter={handleFilter}
+            model={model}
+        />
     );
 }
 

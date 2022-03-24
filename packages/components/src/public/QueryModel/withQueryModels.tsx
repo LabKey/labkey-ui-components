@@ -144,7 +144,7 @@ export function withQueryModels<Props>(
             let model = new QueryModel({ id, ...queryConfigs[id] });
 
             if (model.bindURL && location) {
-                model = model.mutate(model.attributesForURLQueryParams(location.query));
+                model = model.mutate(model.attributesForURLQueryParams(location.query, true));
             }
 
             models[id] = model;

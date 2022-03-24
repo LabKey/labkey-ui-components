@@ -144,7 +144,7 @@ export function withQueryModels<Props>(
             let model = new QueryModel({ id, ...queryConfigs[id] });
 
             if (model.bindURL && location) {
-                model = model.mutate(model.attributesForURLQueryParams(location.query));
+                model = model.mutate(model.attributesForURLQueryParams(location.query, true));
             }
 
             models[id] = model;
@@ -784,7 +784,9 @@ export function withQueryModels<Props>(
                     if (!filterArraysEqual(model.filterArray, filters)) {
                         shouldLoad = true;
                         model.filterArray = filters;
-                        resetRowsState(model); // Changing filters affects row count so we need to reset rows state.
+                        // Changing filters affects row count so we need to reset the offset or pagination can get into
+                        // an impossible state (e.g. page 3 on a grid with one row of data).
+                        model.offset = 0;
                     }
                 }),
                 // When filters change we need to reload selections.

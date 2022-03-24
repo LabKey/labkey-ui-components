@@ -20,7 +20,6 @@ import { shallow } from 'enzyme';
 import { notificationInit } from '../../../test/setupUtils';
 
 import { Page } from './Page';
-import { NotFound } from './NotFound';
 import { PageHeader } from './PageHeader';
 
 beforeEach(() => {
@@ -66,7 +65,7 @@ describe('<Page /> document title', () => {
 describe('<Page />', () => {
     test('page not found', () => {
         const wrapper = shallow(<Page notFound={true} />);
-        expect(wrapper.find(NotFound)).toHaveLength(1);
+        expect(wrapper.find('h1').text()).toEqual('Not Found');
 
         const tree = renderer.create(<Page notFound={true} />).toJSON();
         expect(tree).toMatchSnapshot();

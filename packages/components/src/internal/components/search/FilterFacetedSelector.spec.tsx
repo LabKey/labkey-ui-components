@@ -60,7 +60,7 @@ const DEFAULT_PROPS = {
         }),
     }),
     fieldKey: 'stringField',
-    fieldFilter: null,
+    fieldFilters: null,
     selectDistinctOptions: null,
     showSearchLength: 10,
 };
@@ -72,7 +72,7 @@ const DEFAULT_PROPS_LONG = {
         }),
     }),
     fieldKey: 'stringField',
-    fieldFilter: null,
+    fieldFilters: null,
     selectDistinctOptions: null,
     showSearchLength: 10,
 };
@@ -127,7 +127,7 @@ describe('FilterFacetedSelector', () => {
 
     test('with eq filter', async () => {
         const wrapper = mount(
-            <FilterFacetedSelector {...DEFAULT_PROPS} fieldFilter={Filter.create('stringField', 'ed')} />
+            <FilterFacetedSelector {...DEFAULT_PROPS} fieldFilters={[Filter.create('stringField', 'ed')]} />
         );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
@@ -143,7 +143,7 @@ describe('FilterFacetedSelector', () => {
         const wrapper = mount(
             <FilterFacetedSelector
                 {...DEFAULT_PROPS}
-                fieldFilter={Filter.create('stringField', null, Filter.Types.ISBLANK)}
+                fieldFilters={[Filter.create('stringField', null, Filter.Types.ISBLANK)]}
             />
         );
 
@@ -160,7 +160,7 @@ describe('FilterFacetedSelector', () => {
         const wrapper = mount(
             <FilterFacetedSelector
                 {...DEFAULT_PROPS}
-                fieldFilter={Filter.create('stringField', 'ed', Filter.Types.NOT_EQUAL)}
+                fieldFilters={[Filter.create('stringField', 'ed', Filter.Types.NOT_EQUAL)]}
             />
         );
 
@@ -183,7 +183,7 @@ describe('FilterFacetedSelector', () => {
         const wrapper = mount(
             <FilterFacetedSelector
                 {...DEFAULT_PROPS}
-                fieldFilter={Filter.create('stringField', null, Filter.Types.NONBLANK)}
+                fieldFilters={[Filter.create('stringField', null, Filter.Types.NONBLANK)]}
             />
         );
 
@@ -206,7 +206,7 @@ describe('FilterFacetedSelector', () => {
         const wrapper = mount(
             <FilterFacetedSelector
                 {...DEFAULT_PROPS}
-                fieldFilter={Filter.create('stringField', 'ed;ned', Filter.Types.IN)}
+                fieldFilters={[Filter.create('stringField', 'ed;ned', Filter.Types.IN)]}
             />
         );
 
@@ -223,7 +223,7 @@ describe('FilterFacetedSelector', () => {
         const wrapper = mount(
             <FilterFacetedSelector
                 {...DEFAULT_PROPS}
-                fieldFilter={Filter.create('stringField', 'ed;ned', Filter.Types.NOT_IN)}
+                fieldFilters={[Filter.create('stringField', 'ed;ned', Filter.Types.NOT_IN)]}
             />
         );
 

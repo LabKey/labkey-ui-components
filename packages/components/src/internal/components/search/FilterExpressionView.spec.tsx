@@ -76,7 +76,7 @@ describe('FilterExpressionView', () => {
     }
 
     function validateFilterTypeDropdown(wrapper: ReactWrapper, operators: string[], selectedOp?: string) {
-        const selectInput = wrapper.find(SelectInput);
+        const selectInput = wrapper.find(SelectInput).at(0); // use the first one, for now.
         const options = selectInput.props()['options'];
         const selectedFilter = selectInput.props()['value'];
         if (selectedOp) expect(selectedFilter).toEqual(selectedOp);
@@ -88,7 +88,7 @@ describe('FilterExpressionView', () => {
     }
 
     test('string field, no filter selected', () => {
-        const wrapper = mount(<FilterExpressionView field={stringField} fieldFilter={null} />);
+        const wrapper = mount(<FilterExpressionView field={stringField} fieldFilters={null} />);
 
         validateFilterTypeDropdown(wrapper, Ops, null);
 
@@ -99,7 +99,7 @@ describe('FilterExpressionView', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={stringField}
-                fieldFilter={Filter.create('StringField', 'ABC', Filter.Types.Equals)}
+                fieldFilters={[Filter.create('StringField', 'ABC', Filter.Types.Equals)]}
             />
         );
 
@@ -111,7 +111,7 @@ describe('FilterExpressionView', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={intField}
-                fieldFilter={Filter.create('IntField', '1,200', Filter.Types.BETWEEN)}
+                fieldFilters={[Filter.create('IntField', '1,200', Filter.Types.BETWEEN)]}
             />
         );
 
@@ -123,7 +123,7 @@ describe('FilterExpressionView', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={doubleField}
-                fieldFilter={Filter.create('DoubleField', 1.23, Filter.Types.GT)}
+                fieldFilters={[Filter.create('DoubleField', 1.23, Filter.Types.GT)]}
             />
         );
 
@@ -138,7 +138,7 @@ describe('FilterExpressionView', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={dateField}
-                fieldFilter={Filter.create('DateField', testDate, Filter.Types.DATE_NOT_EQUAL)}
+                fieldFilters={[Filter.create('DateField', testDate, Filter.Types.DATE_NOT_EQUAL)]}
             />
         );
 
@@ -148,7 +148,7 @@ describe('FilterExpressionView', () => {
 
     test('boolean field, equal', async () => {
         const wrapper = mount(
-            <FilterExpressionView field={booleanField} fieldFilter={Filter.create('BooleanField', 'true')} />
+            <FilterExpressionView field={booleanField} fieldFilters={[Filter.create('BooleanField', 'true')]} />
         );
 
         validateFilterTypeDropdown(wrapper, booleanOps, 'eq');

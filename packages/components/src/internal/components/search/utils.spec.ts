@@ -521,6 +521,7 @@ describe('getUpdateFilterExpressionFilter', () => {
         multiValue: false,
         value: 'any',
         valueRequired: false,
+        isSoleFilter: false,
     };
 
     const equalOp = {
@@ -529,6 +530,7 @@ describe('getUpdateFilterExpressionFilter', () => {
         multiValue: false,
         value: 'eq',
         valueRequired: true,
+        isSoleFilter: true,
     };
 
     const betweenOp = {
@@ -537,6 +539,7 @@ describe('getUpdateFilterExpressionFilter', () => {
         multiValue: true,
         value: 'between',
         valueRequired: true,
+        isSoleFilter: false,
     };
 
     const badOp = {
@@ -545,6 +548,7 @@ describe('getUpdateFilterExpressionFilter', () => {
         multiValue: true,
         value: 'NotSupported',
         valueRequired: true,
+        isSoleFilter: false,
     };
 
     test('remove filter type', () => {

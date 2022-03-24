@@ -453,12 +453,19 @@ export function getUpdateFilterExpressionFilter(
             if (clearBothValues) {
                 value = null;
             } else if (isSecondValue) {
-                if (newFilterValue == null) value = previousFirstFilterValue != null ? previousFirstFilterValue : '';
-                else value = (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') + newFilterValue;
+                if (newFilterValue == null) {
+                    value = previousFirstFilterValue != null ? previousFirstFilterValue : '';
+                }
+                else {
+                    value = (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') + newFilterValue;
+                }
             } else {
-                if (newFilterValue == null) value = previousSecondFilterValue != null ? previousSecondFilterValue : '';
-                else
+                if (newFilterValue == null) {
+                    value = previousSecondFilterValue != null ? previousSecondFilterValue : '';
+                }
+                else {
                     value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
+                }
             }
         } else if (!value && field.getDisplayFieldJsonType() === 'boolean') value = 'false';
 

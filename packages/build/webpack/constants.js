@@ -12,6 +12,7 @@ const FREEZER_MANAGER_DIRS = ['inventory', 'packages', 'freezermanager', 'src'];
 const WORKFLOW_DIRS = ['sampleManagement', 'packages', 'workflow', 'src'];
 const cwd = path.resolve('./').split(path.sep);
 const lkModule = cwd[cwd.length - 1];
+const isProductionBuild = process.env.NODE_ENV === 'production';
 
 // Default to the @labkey packages in the node_moules directory.
 // If LINK is set we configure the paths of @labkey modules to point to the source files (see below), which enables
@@ -46,7 +47,7 @@ const watchPort = process.env.WATCH_PORT || 3001;
 // For more information see https://github.com/jantimon/html-webpack-plugin#minification.
 const minifyTemplateOptions = {
     caseSensitive: true,
-    collapseWhitespace: process.env.NODE_ENV === 'production',
+    collapseWhitespace: isProductionBuild,
     keepClosingSlash: true,
     removeComments: true,
     removeRedundantAttributes: true,
@@ -63,10 +64,17 @@ const SASS_PLUGINS = [
         }
     },{
         loader: 'resolve-url-loader',
+        options: {
+            silence: !isProductionBuild
+        }
     },{
         loader: 'sass-loader',
         options: {
             implementation: require('sass'),
+            sassOptions: {
+                quietDeps: !isProductionBuild
+            },
+            // "sourceMap" must be set to true when resolve-url-loader is used downstream
             sourceMap: true
         }
     }

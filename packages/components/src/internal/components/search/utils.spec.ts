@@ -39,6 +39,7 @@ import {
     getUpdatedChooseValuesFilter,
     getUpdateFilterExpressionFilter,
     isValidFilterField,
+    isValidFilterFieldExcludeLookups,
     SAMPLE_FINDER_VIEW_NAME,
     searchFiltersFromJson,
     searchFiltersToJson,
@@ -1040,86 +1041,79 @@ describe('getSampleFinderColumnNames', () => {
 
 describe("isValidFilterField", () => {
     test("lookup field", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'test', lookup: { isPublic: true } }),
-            QueryInfo.create({
-                schemaName: 'test',
-                name: 'query',
-                supportGroupConcatSubSelect: true
-            }),
-            SampleTypeDataType.exprColumnsWithSubSelect
-        )).toBe(false);
+        const field = QueryColumn.create({ name: 'test', lookup: { isPublic: true } });
+        const queryInfo = QueryInfo.create({
+            schemaName: 'test',
+            name: 'query',
+            supportGroupConcatSubSelect: true
+        });
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
     });
 
     test("Units field", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'Units', fieldKey: 'Units' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: true
-            }),
-            SampleTypeDataType.exprColumnsWithSubSelect
-        )).toBe(false);
+        const field = QueryColumn.create({ name: 'Units', fieldKey: 'Units' });
+        const queryInfo = QueryInfo.create({
+            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            name: "test",
+            supportGroupConcatSubSelect: true
+        });
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
     });
 
     test("group concat field not supported", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: false
-            }),
-            SampleTypeDataType.exprColumnsWithSubSelect
-        )).toBe(false);
+        const field = QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' });
+        const queryInfo = QueryInfo.create({
+            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            name: "test",
+            supportGroupConcatSubSelect: false
+        });
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
     });
 
     test("group concat field not supported, regular field", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: false
-            }),
-            SampleTypeDataType.exprColumnsWithSubSelect
-        )).toBe(true);
+        const field = QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' });
+        const queryInfo = QueryInfo.create({
+            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            name: "test",
+            supportGroupConcatSubSelect: false
+        });
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
     });
 
     test("group concat field not supported, no group concat fields", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: false
-            }),
-            undefined
-        )).toBe(true);
+        const field = QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' });
+        const queryInfo = QueryInfo.create({
+            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            name: "test",
+            supportGroupConcatSubSelect: false
+        });
+        expect(isValidFilterField(field, queryInfo, undefined)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, undefined)).toBe(true);
     });
 
     test("group concat field is supported", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: true
-            }),
-            SampleTypeDataType.exprColumnsWithSubSelect
-        )).toBe(true);
+        const field = QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' });
+        const queryInfo = QueryInfo.create({
+            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            name: "test",
+            supportGroupConcatSubSelect: true
+        });
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
     });
 
     test("regular field", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'Regular', fieldKey: 'Regular' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: false
-            }),
-            SampleTypeDataType.exprColumnsWithSubSelect
-        )).toBe(true);
+        const field = QueryColumn.create({ name: 'Regular', fieldKey: 'Regular' });
+        const queryInfo = QueryInfo.create({
+            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            name: "test",
+            supportGroupConcatSubSelect: false
+        });
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
     });
-})
+});

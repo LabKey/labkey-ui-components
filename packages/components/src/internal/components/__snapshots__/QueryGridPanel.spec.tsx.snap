@@ -2198,7 +2198,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                   title="Contains a reference to a user-editable comment about this row"
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Flag
                   </span>
                   <span
@@ -2273,7 +2275,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                   title="Link to the run's graph"
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     
                   </span>
                 </th>
@@ -2287,7 +2291,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                   title="The assay/experiment ID that uniquely identifies this assay run."
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Assay Id
                   </span>
                   <span
@@ -2362,7 +2368,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                   title="Contains the time at which this run was created"
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Created
                   </span>
                   <span
@@ -2437,7 +2445,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                   title="Contains the user who created this run"
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Created By
                   </span>
                   <span
@@ -2512,7 +2522,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                   title="Contains a unique id for this run"
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Run Groups
                   </span>
                   <span
@@ -2586,7 +2598,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Run Text field
                   </span>
                   <span
@@ -2660,7 +2674,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Run Multi-Line Text Field
                   </span>
                   <span
@@ -2734,7 +2750,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Run Boolean Field
                   </span>
                   <span
@@ -2808,7 +2826,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Run Integer Field
                   </span>
                   <span
@@ -2882,7 +2902,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Run Decimal Field
                   </span>
                   <span
@@ -2956,7 +2978,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Run Date and Time Field
                   </span>
                   <span
@@ -3031,7 +3055,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                   title="Contains the associated batch or empty if this run is not part of a batch."
                 >
-                  <span>
+                  <span
+                    onClick={[Function]}
+                  >
                     Batch
                   </span>
                   <span

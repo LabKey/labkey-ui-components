@@ -37,6 +37,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
     const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);
+    const [removeFilterCount, setRemoveFilterCount] = useState<number>(0);
 
     useEffect(() => {
         const filterOptions = getSampleFinderFilterTypesForType(field?.getDisplayFieldJsonType() as JsonType);
@@ -128,6 +129,11 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     ...currentFilters.slice(index+1)
                 ]
             });
+            // When a filter is removed, we need to recreate the selectInputs so they pick up the value from the
+            // filter that got shifted into the place that was removed. This doesn't happen through normal channels
+            // because this is part of the onChange callback for the selectInput and it has protections against
+            // infinitely updating as a result of the onChange action.
+            setRemoveFilterCount(count => ( count+1 ));
         }
     }, [activeFilters])
 
@@ -318,7 +324,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     return (
         <>
             <SelectInput
-                key="search-parent-field-filter-type"
+                key={"search-parent-field-filter-type-" + removeFilterCount} // we need to recreate this component when a filter is removed
                 name="search-parent-field-filter-type"
                 containerClass="form-group search-filter__input-wrapper"
                 inputClass="search-filter__input-select"

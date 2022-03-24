@@ -192,6 +192,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 interface State {
     actionValues: ActionValue[];
     showFilterModalFieldKey: string;
+    headerClickCount: { [key: string]: number };
 }
 
 /**
@@ -238,6 +239,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.state = {
             actionValues: [],
             showFilterModalFieldKey: undefined,
+            headerClickCount: {},
         };
     }
 
@@ -481,7 +483,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             actionValues = [...actionValues.slice(0, actionValues.length - 1), { ...newActionValue, value: viewLabel }];
         }
         // Defer view update to after setState so we don't unnecessarily repopulate the omnibox.
-        this.setState({ actionValues }, updateViewCallback);
+        this.setState({
+            actionValues,
+            headerClickCount: {}, // view change will refresh the grid, so clear the headerClickCount values
+        }, updateViewCallback);
     };
 
     /**
@@ -613,7 +618,19 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return List(model.displayColumns);
     };
 
+    onHeaderCellClick = (column: GridColumn): void => {
+        this.setState(state => {
+            return {
+                headerClickCount: {
+                    ...state.headerClickCount,
+                    [column.index]: (state.headerClickCount[column.index] ?? 0) + 1,
+                },
+            };
+        });
+    };
+
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
+        const { headerClickCount } = this.state;
         const { allowSelections, allowSorting, allowFiltering, model } = this.props;
         const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
         const disabled = isLoadingSelections || isLoading || (hasRows && rowCount === 0);
@@ -629,7 +646,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             columnCount,
             allowSorting ? this.sortColumn : undefined,
             allowFiltering ? this.filterColumn : undefined,
-            model
+            model,
+            headerClickCount[column.index]
         );
     };
 
@@ -713,6 +731,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             {!hasGridError && hasData && (
                                 <Grid
                                     headerCell={this.headerCell}
+                                    onHeaderCellClick={this.onHeaderCellClick}
                                     showHeader={showHeader}
                                     calcWidths
                                     condensed

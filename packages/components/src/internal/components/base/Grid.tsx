@@ -77,7 +77,7 @@ function resolveColumns(data: List<Map<string, any>>): List<GridColumn> {
 interface GridHeaderProps {
     calcWidths?: boolean;
     headerCell?: any;
-    onCellClick?: (column: GridColumn) => any;
+    onCellClick?: (column: GridColumn) => void;
     columns: List<GridColumn>;
     showHeader?: boolean;
     transpose?: boolean;
@@ -85,9 +85,10 @@ interface GridHeaderProps {
 
 // export for jest testing
 export class GridHeader extends PureComponent<GridHeaderProps, any> {
-    _handleClick(column: GridColumn, evt) {
+    _handleClick(column: GridColumn, evt: any): void {
+        const isHeaderCellClick = evt.target.className === 'grid-header-cell';
         evt.stopPropagation();
-        if (this.props.onCellClick) {
+        if (this.props.onCellClick && isHeaderCellClick) {
             this.props.onCellClick(column);
         }
     }
@@ -135,7 +136,8 @@ export class GridHeader extends PureComponent<GridHeaderProps, any> {
                                     title={hideTooltip ? undefined : description}
                                 >
                                     {headerCell ? headerCell(column, i, columns.size) : title}
-                                    {column.helpTipRenderer && (
+                                    {/* headerCell will render the helpTip, so only render here if not using headerCell() */}
+                                    {!headerCell && column.helpTipRenderer && (
                                         <LabelHelpTip
                                             id={column.index}
                                             title={title}
@@ -267,6 +269,7 @@ export interface GridProps {
     emptyText?: string;
     gridId?: string;
     headerCell?: any;
+    onHeaderCellClick?: (column: GridColumn) => void;
     isLoading?: boolean;
     loadingText?: ReactNode;
     messages?: List<Map<string, string>>;
@@ -312,6 +315,7 @@ export class Grid extends PureComponent<GridProps> {
             emptyText,
             gridId,
             headerCell,
+            onHeaderCellClick,
             isLoading,
             loadingText,
             messages,
@@ -331,6 +335,7 @@ export class Grid extends PureComponent<GridProps> {
             calcWidths,
             columns: gridColumns,
             headerCell,
+            onCellClick: onHeaderCellClick,
             showHeader,
             transpose,
         };

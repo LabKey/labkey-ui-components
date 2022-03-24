@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {ChangeEvent, ReactNode, FC, memo, useState, useCallback} from 'react';
+import React, { ChangeEvent, ReactNode, FC, memo, useState, useCallback, useEffect } from 'react';
 import classNames from 'classnames';
 import { OrderedMap, Map } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
-import { GridColumn, QueryColumn, GRID_CHECKBOX_OPTIONS, QueryModel } from '..';
+import { GridColumn, QueryColumn, GRID_CHECKBOX_OPTIONS, QueryModel, LabelHelpTip } from '..';
 
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
 import { CustomToggle } from './components/base/CustomToggle';
 import { isGridColSortFilterEnabled } from './app/utils';
+import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -37,11 +38,12 @@ interface HeaderCellDropdownProps {
     columnCount?: number;
     handleSort?: (column: QueryColumn, dir?: string) => void;
     handleFilter?: (column: QueryColumn, remove?: boolean) => void;
+    headerClickCount?: number;
     model?: QueryModel;
 }
 
 const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
-    const { i, column, selectable, columnCount, handleSort, handleFilter, model } = props;
+    const { i, column, selectable, columnCount, handleSort, handleFilter, headerClickCount, model } = props;
     const col: QueryColumn = column.raw;
     const gridColSortFilterEnabled = isGridColSortFilterEnabled();
     const [open, setOpen] = useState<boolean>();
@@ -66,6 +68,11 @@ const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         [col, handleSort]
     );
 
+    // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
+    useEffect(() => {
+        if (headerClickCount) setOpen(true);
+    }, [headerClickCount]);
+
     if (!col) return null;
 
     const isOnlyColumn =
@@ -80,7 +87,7 @@ const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     return (
         <>
-            <span>
+            <span onClick={() => onToggleClick(!open)}>
                 {col.caption === '&nbsp;' ? '' : col.caption}
                 {gridColSortFilterEnabled && colFilters?.length > 0 && (
                     <span
@@ -93,6 +100,11 @@ const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 )}
                 {gridColSortFilterEnabled && isSortDesc && (
                     <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
+                )}
+                {column.helpTipRenderer && (
+                    <LabelHelpTip id={column.index} title={column.title} popoverClassName="label-help-arrow-top">
+                        <HelpTipRenderer type={column.helpTipRenderer} />
+                    </LabelHelpTip>
                 )}
             </span>
             {(allowColSort || allowColFilter) && (
@@ -197,7 +209,8 @@ export function headerCell(
     columnCount?: number,
     handleSort?: (column: QueryColumn, dir?: string) => void,
     handleFilter?: (column: QueryColumn, remove?: boolean) => void,
-    model?: QueryModel
+    model?: QueryModel,
+    headerClickCount?: number
 ): ReactNode {
     return (
         <HeaderCellDropdown
@@ -207,6 +220,7 @@ export function headerCell(
             columnCount={columnCount}
             handleSort={handleSort}
             handleFilter={handleFilter}
+            headerClickCount={headerClickCount}
             model={model}
         />
     );

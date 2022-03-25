@@ -78,7 +78,7 @@ const DEFAULT_PROPS_LONG = {
 };
 
 describe('FilterFacetedSelector', () => {
-    function validateFilterTypeDropdown(
+    function validate(
         wrapper: ReactWrapper,
         checkedOptions: string[],
         valueTags: string[],
@@ -120,7 +120,7 @@ describe('FilterFacetedSelector', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(wrapper, allDisplayValuesShort, [], allDisplayValuesShort, false);
+        validate(wrapper, allDisplayValuesShort, [], allDisplayValuesShort, false);
 
         wrapper.unmount();
     });
@@ -134,7 +134,7 @@ describe('FilterFacetedSelector', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(wrapper, ['ed'], ['ed'], allDisplayValuesShort, false);
+        validate(wrapper, ['ed'], ['ed'], allDisplayValuesShort, false);
 
         wrapper.unmount();
     });
@@ -151,7 +151,7 @@ describe('FilterFacetedSelector', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(wrapper, ['[blank]'], ['[blank]'], allDisplayValuesShort, false);
+        validate(wrapper, ['[blank]'], ['[blank]'], allDisplayValuesShort, false);
 
         wrapper.unmount();
     });
@@ -168,7 +168,7 @@ describe('FilterFacetedSelector', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(
+        validate(
             wrapper,
             ['[blank]', 'bed', 'ned', 'red', 'ted'],
             ['[blank]', 'bed', 'ned', 'red', 'ted'],
@@ -191,7 +191,7 @@ describe('FilterFacetedSelector', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(
+        validate(
             wrapper,
             ['bed', 'ed', 'ned', 'red', 'ted'],
             ['bed', 'ed', 'ned', 'red', 'ted'],
@@ -214,7 +214,7 @@ describe('FilterFacetedSelector', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(wrapper, ['ed', 'ned'], ['ed', 'ned'], allDisplayValuesShort, false);
+        validate(wrapper, ['ed', 'ned'], ['ed', 'ned'], allDisplayValuesShort, false);
 
         wrapper.unmount();
     });
@@ -231,13 +231,59 @@ describe('FilterFacetedSelector', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(
+        validate(
             wrapper,
             ['[blank]', 'bed', 'red', 'ted'],
             ['[blank]', 'bed', 'red', 'ted'],
             allDisplayValuesShort,
             false
         );
+
+        wrapper.unmount();
+    });
+
+    test('with multiple filters, first is supported', async () => {
+        const wrapper = mount(
+            <FilterFacetedSelector
+                {...DEFAULT_PROPS}
+                fieldFilters={[
+                    Filter.create('stringField', 'ed;ned', Filter.Types.NOT_IN),
+                    Filter.create('stringField', 'bed', Filter.Types.GT)
+                ]}
+            />
+        );
+
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
+
+        validate(
+            wrapper,
+            ['[blank]', 'bed', 'red', 'ted'],
+            ['[blank]', 'bed', 'red', 'ted'],
+            allDisplayValuesShort,
+            false
+        );
+
+        wrapper.unmount();
+    });
+
+    test('with multiple filters, first is not supported', async () => {
+        const wrapper = mount(
+            <FilterFacetedSelector
+                {...DEFAULT_PROPS}
+                fieldFilters={[
+                    Filter.create('stringField', 'bed', Filter.Types.GT),
+                    Filter.create('stringField', 'ed;ned', Filter.Types.NOT_IN),
+                ]}
+            />
+        );
+
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
+
+        validate(wrapper, [], [], allDisplayValuesShort, false);
 
         wrapper.unmount();
     });
@@ -249,7 +295,7 @@ describe('FilterFacetedSelector', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        validateFilterTypeDropdown(wrapper, allDisplayValuesLong, [], allDisplayValuesLong, true);
+        validate(wrapper, allDisplayValuesLong, [], allDisplayValuesLong, true);
 
         wrapper.unmount();
     });
@@ -272,7 +318,7 @@ describe('FilterFacetedSelector', () => {
 
         await waitForLifecycle(wrapper);
 
-        validateFilterTypeDropdown(wrapper, ['hop', 'pop'], [], ['hop', 'pop'], true);
+        validate(wrapper, ['hop', 'pop'], [], ['hop', 'pop'], true);
 
         wrapper.unmount();
     });

@@ -17,7 +17,7 @@ interface Props {
     selectDistinctOptions: Query.SelectDistinctOptions;
     fieldKey: string;
     fieldFilters: Filter.IFilter[];
-    onFieldFilterUpdate?: (newFilter: Filter.IFilter, index) => void;
+    onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index) => void;
     showSearchLength?: number; // show search box if number of unique values > N
 }
 
@@ -77,7 +77,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 fieldFilters?.[0], // choose values applies only to the first filter
                 uncheckOthers
             );
-            onFieldFilterUpdate(newFilter, 0);
+            onFieldFilterUpdate([newFilter], 0);
         },
         [fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate]
     );

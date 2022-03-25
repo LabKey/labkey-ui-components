@@ -12,6 +12,7 @@ import { JsonType } from '../domainproperties/PropDescType';
 import { formatDate, isDateTimeCol } from '../../util/Date';
 
 import {
+    getFilterForFilterSelection,
     getFilterSelections,
     getFilterTypePlaceHolder,
     getSampleFinderFilterTypesForType,
@@ -22,10 +23,8 @@ import { FieldFilterOption, FilterSelection } from './models';
 interface Props {
     field: QueryColumn;
     fieldFilters: Filter.IFilter[];
-    onFieldFilterUpdate?: (newFilter: Filter.IFilter, index: number) => void;
+    onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index: number) => void;
 }
-
-
 
 export const FilterExpressionView: FC<Props> = memo(props => {
     const { field, fieldFilters, onFieldFilterUpdate } = props;
@@ -62,11 +61,24 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 isSecondValue,
                 clearBothValues
             );
-            onFieldFilterUpdate(newFilter, filterIndex);
-            if (newFilterType?.isSoleFilter && activeFilters.length > 1) {
-                // we support only 2 filters at the moment.  Remove the other filter.
-                onFieldFilterUpdate(null, filterIndex === 1 ? 0 : 1);
+            let newFilters = [];
+            if (!newFilter) {
+                if (activeFilters.length > 1) {
+                    // retain the other filter
+                    newFilters = [getFilterForFilterSelection(activeFilters[filterIndex == 1 ? 0 : 1], field)];
+                }
+            } else {
+                if (newFilterType.isSoleFilter) {
+                    newFilters = [newFilter];
+                } else {
+                    if (filterIndex === 1) {
+                        newFilters = [getFilterForFilterSelection(activeFilters[0], field), newFilter];
+                    } else {
+                        newFilters = [newFilter, getFilterForFilterSelection(activeFilters[1], field)];
+                    }
+                }
             }
+            onFieldFilterUpdate(newFilters, filterIndex);
         },
         [field, activeFilters]
     );

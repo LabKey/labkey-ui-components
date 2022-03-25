@@ -248,9 +248,9 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     }, [activeField, activeQuery, dataTypeFilters, activeFieldKey]);
 
     const onFilterUpdate = useCallback(
-        (newFilter: Filter.IFilter, index: number) => {
+        (newFilters: Filter.IFilter[], index: number) => {
             setFilterError(undefined);
-            setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, activeField, activeTab, newFilter, index));
+            setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, activeField, activeTab, newFilters));
         },
         [dataTypeFilters, activeQuery, activeField, activeFieldKey, activeTab]
     );

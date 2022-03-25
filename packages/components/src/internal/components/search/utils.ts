@@ -449,6 +449,19 @@ export function getFieldFiltersValidationResult(
     return null;
 }
 
+export function getFilterForFilterSelection(filterSelection: FilterSelection, field: QueryColumn) : Filter.IFilter
+{
+    return getUpdateFilterExpressionFilter(
+        filterSelection.filterType,
+        field,
+        filterSelection.firstFilterValue,
+        filterSelection.secondFilterValue,
+        filterSelection.firstFilterValue,
+        false,
+        false
+    );
+}
+
 export function getUpdateFilterExpressionFilter(
     newFilterType: FieldFilterOption,
     field?: QueryColumn,
@@ -632,50 +645,29 @@ export function isValidFilterField(field: QueryColumn, queryInfo: QueryInfo, ent
 }
 
 export function getUpdatedDataTypeFilters(
-    dataTypeFilters: { [key: string]: FieldFilter[] },
+    dataTypeFilters: { [p: string]: FieldFilter[] },
     activeQuery: string,
     activeField: QueryColumn,
     activeTab: string,
-    newFilter: any,
-    index: number
-) : { [key: string]: FieldFilter[] } {
+    newFilters: any[]
+) : { [p: string]: FieldFilter[] } {
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
     const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
     const activeFieldKey = activeField.fieldKey;
-    const otherFieldFilters = []; // the filters on the parent type that aren't associated with this field.
-    let thisFieldFilters = []; // the filters on the parent type currently associated with this field.
-    activeParentFilters?.forEach(filter => {
-        if (filter.fieldKey === activeFieldKey) {
-            // on the ChooseValues tab, once we interact to select values, we'll remove the second filter, if it exists
-            if (activeTab === EntityFieldFilterTabs.Filter) thisFieldFilters.push(filter);
-        } else {
-            otherFieldFilters.push(filter);
+    // the filters on the parent type that aren't associated with this field.
+    const otherFieldFilters = activeParentFilters?.filter(filter =>  filter.fieldKey !== activeFieldKey) ?? [];
+
+    // the filters on the parent type associated with this field.
+    const thisFieldFilters = newFilters?.map(newFilter => {
+        if (newFilter != null) {
+            return {
+                fieldKey: activeFieldKey,
+                fieldCaption: activeField.caption,
+                filter: newFilter,
+                jsonType: activeField.getDisplayFieldJsonType(),
+            } as FieldFilter;
         }
-    });
-
-
-    if (newFilter != null) {
-        const fieldFilter = {
-            fieldKey: activeFieldKey,
-            fieldCaption: activeField.caption,
-            filter: newFilter,
-            jsonType: activeField.getDisplayFieldJsonType(),
-        } as FieldFilter;
-
-
-        if (activeTab === EntityFieldFilterTabs.Filter && index < thisFieldFilters.length) {
-            thisFieldFilters[index] = fieldFilter;
-        } else {
-            thisFieldFilters.push(fieldFilter);
-        }
-    } else {
-        if (index < thisFieldFilters.length) {
-            thisFieldFilters = [
-                ...thisFieldFilters.slice(0, index),
-                ...thisFieldFilters.slice(index+1)
-            ]
-        }
-    }
+    }) ?? [];
 
     if (otherFieldFilters.length + thisFieldFilters.length > 0) {
         dataTypeFiltersUpdated[activeQuery] = [...otherFieldFilters, ...thisFieldFilters];

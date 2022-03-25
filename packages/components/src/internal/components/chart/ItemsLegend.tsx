@@ -32,7 +32,7 @@ export class ItemsLegend extends React.PureComponent<Props> {
                     />
                 );
             }
-            else if (legend.faCls === 'lock') {
+            else if (legend.locked) {
                 icon = (
                     <LockIcon
                         id={index + ''}

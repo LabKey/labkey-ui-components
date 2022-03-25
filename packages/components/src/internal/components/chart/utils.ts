@@ -123,7 +123,7 @@ export interface HorizontalBarLegendData {
     circleColor: string;
     backgroundColor: string;
     legendLabel: string;
-    faCls?: string
+    locked?: boolean
 }
 
 export function createHorizontalBarLegendData(data: HorizontalBarData[]): HorizontalBarLegendData[] {

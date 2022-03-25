@@ -15,7 +15,7 @@ import {
     getFilterForFilterSelection,
     getFilterSelections,
     getFilterTypePlaceHolder,
-    getSampleFinderFilterTypesForType,
+    getSampleFinderFilterTypesForType, getUpdatedFilters,
     getUpdateFilterExpressionFilter,
 } from './utils';
 import { FieldFilterOption, FilterSelection } from './models';
@@ -59,33 +59,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             isSecondValue?: boolean,
             clearBothValues?: boolean
         ) => {
-            const newFilter = getUpdateFilterExpressionFilter(
-                newFilterType,
-                field,
-                activeFilters[filterIndex]?.firstFilterValue,
-                activeFilters[filterIndex]?.secondFilterValue,
-                newFilterValue,
-                isSecondValue,
-                clearBothValues
-            );
-            let newFilters = [];
-            if (!newFilter) {
-                if (activeFilters.length > 1) {
-                    // retain the other filter
-                    newFilters = [getFilterForFilterSelection(activeFilters[filterIndex == 1 ? 0 : 1], field)];
-                }
-            } else {
-                if (newFilterType.isSoleFilter) {
-                    newFilters = [newFilter];
-                } else {
-                    if (filterIndex === 1) {
-                        newFilters = [getFilterForFilterSelection(activeFilters[0], field), newFilter];
-                    } else {
-                        newFilters = [newFilter, getFilterForFilterSelection(activeFilters[1], field)];
-                    }
-                }
-            }
-            onFieldFilterUpdate(newFilters, filterIndex);
+            onFieldFilterUpdate(getUpdatedFilters(field, activeFilters, filterIndex, newFilterType, newFilterValue, isSecondValue, clearBothValues), filterIndex);
         },
         [field, activeFilters]
     );
@@ -127,9 +101,16 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         (fieldname: any, filterUrlSuffix: any, filterIndex: number) => {
             const newActiveFilterType = fieldFilterOptions?.find(option => option.value === filterUrlSuffix);
 
+            let firstValue = activeFilters[filterIndex]?.firstFilterValue;
+            // when a value is required, we want to start with 'undefined' instead of 'null' since 'null' is seen as a valid value
+            if (newActiveFilterType.valueRequired && !activeFilters[filterIndex]?.filterType.valueRequired) {
+                firstValue = undefined;
+            } else if (!newActiveFilterType.valueRequired) { // if value is not required, then we'll start with null
+                firstValue = null;
+            }
             const newFilterSelection = {
                 filterType: newActiveFilterType,
-                firstFilterValue: activeFilters[filterIndex]?.firstFilterValue,
+                firstFilterValue: firstValue,
                 secondFilterValue: activeFilters[filterIndex]?.secondFilterValue,
             };
             const shouldClear =

@@ -710,3 +710,41 @@ export function getFilterSelections(
     });
     return filters;
 }
+
+export function getUpdatedFilters(
+    field: QueryColumn,
+    activeFilters: FilterSelection[],
+    filterIndex: number,
+    newFilterType: FieldFilterOption,
+    newFilterValue?: any,
+    isSecondValue?: boolean,
+    clearBothValues?: boolean,
+) : Filter.IFilter[] {
+    const newFilter = getUpdateFilterExpressionFilter(
+        newFilterType,
+        field,
+        activeFilters[filterIndex]?.firstFilterValue,
+        activeFilters[filterIndex]?.secondFilterValue,
+        newFilterValue,
+        isSecondValue,
+        clearBothValues
+    );
+    let newFilters = [];
+    if (!newFilter) {
+        if (activeFilters.length > 1) {
+            // retain the other filter
+            newFilters = [getFilterForFilterSelection(activeFilters[filterIndex == 1 ? 0 : 1], field)];
+        }
+    } else {
+        if (newFilterType.isSoleFilter) {
+            newFilters = [newFilter];
+        } else {
+            if (filterIndex === 1) {
+                newFilters = [getFilterForFilterSelection(activeFilters[0], field), newFilter];
+            } else {
+                newFilters = activeFilters.length <= 1 ? [newFilter] : [newFilter, getFilterForFilterSelection(activeFilters[1], field)];
+            }
+        }
+    }
+    return newFilters;
+}

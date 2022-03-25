@@ -86,7 +86,7 @@ export interface FieldFilterOption {
 }
 
 export interface FilterSelection {
-    filterType: FieldFilterOption,
-    firstFilterValue?: any,
-    secondFilterValue?: any
+    filterType: FieldFilterOption;
+    firstFilterValue?: any;
+    secondFilterValue?: any;
 }

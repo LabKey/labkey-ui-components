@@ -500,9 +500,7 @@ describe('getFieldFiltersValidationResult', () => {
                 sampleType1: [anyValueFilter, badIntFilter],
                 sampleType2: [intEqFilter, badIntFilter, badBetweenFilter],
             })
-        ).toEqual(
-            'Missing filter values for: sampleType1: intField; sampleType2: intField, doubleField.'
-        );
+        ).toEqual('Missing filter values for: sampleType1: intField; sampleType2: intField, doubleField.');
     });
 });
 
@@ -640,7 +638,14 @@ describe('getCheckedFilterValues', () => {
 
     test('not blank', () => {
         expect(getCheckedFilterValues(notblankFilter, distinctValues)).toEqual(['ed', 'ned', 'ted', 'red', 'bed']);
-        expect(getCheckedFilterValues(notblankFilter, distinctValuesNoBlank)).toEqual(['[All]', 'ed', 'ned', 'ted', 'red', 'bed']);
+        expect(getCheckedFilterValues(notblankFilter, distinctValuesNoBlank)).toEqual([
+            '[All]',
+            'ed',
+            'ned',
+            'ted',
+            'red',
+            'bed',
+        ]);
     });
 
     test('in values', () => {
@@ -818,8 +823,11 @@ describe('getUpdatedChooseValuesFilter', () => {
     });
 
     test('check all, no blank', () => {
-        validate(getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, ALL_VALUE_DISPLAY, true, uncheckedOne), 'isnonblank');
-    })
+        validate(
+            getUpdatedChooseValuesFilter(distinctValuesNoBlank, fieldKey, ALL_VALUE_DISPLAY, true, uncheckedOne),
+            'isnonblank'
+        );
+    });
 });
 
 const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/PST
@@ -1042,88 +1050,102 @@ describe('getSampleFinderColumnNames', () => {
     });
 });
 
-describe("isValidFilterField", () => {
-    test("lookup field", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'test', lookup: { isPublic: true } }),
-            QueryInfo.create({
-                schemaName: 'test',
-                name: 'query',
-                supportGroupConcatSubSelect: true
-            }),
-            SampleTypeDataType
-        )).toBe(false);
+describe('isValidFilterField', () => {
+    test('lookup field', () => {
+        expect(
+            isValidFilterField(
+                QueryColumn.create({ name: 'test', lookup: { isPublic: true } }),
+                QueryInfo.create({
+                    schemaName: 'test',
+                    name: 'query',
+                    supportGroupConcatSubSelect: true,
+                }),
+                SampleTypeDataType
+            )
+        ).toBe(false);
     });
 
-    test("Units field", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'Units', fieldKey: 'Units' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: true
-            }),
-            SampleTypeDataType
-        )).toBe(false);
+    test('Units field', () => {
+        expect(
+            isValidFilterField(
+                QueryColumn.create({ name: 'Units', fieldKey: 'Units' }),
+                QueryInfo.create({
+                    schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    name: 'test',
+                    supportGroupConcatSubSelect: true,
+                }),
+                SampleTypeDataType
+            )
+        ).toBe(false);
     });
 
-    test("group concat field not supported", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: false
-            }),
-            SampleTypeDataType
-        )).toBe(false);
+    test('group concat field not supported', () => {
+        expect(
+            isValidFilterField(
+                QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' }),
+                QueryInfo.create({
+                    schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    name: 'test',
+                    supportGroupConcatSubSelect: false,
+                }),
+                SampleTypeDataType
+            )
+        ).toBe(false);
     });
 
-    test("group concat field not supported, regular field", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: false
-            }),
-            SampleTypeDataType
-        )).toBe(true);
+    test('group concat field not supported, regular field', () => {
+        expect(
+            isValidFilterField(
+                QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' }),
+                QueryInfo.create({
+                    schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    name: 'test',
+                    supportGroupConcatSubSelect: false,
+                }),
+                SampleTypeDataType
+            )
+        ).toBe(true);
     });
 
-    test("group concat field not supported, no group concat fields", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: false
-            }),
-            {...SampleTypeDataType, exprColumnsWithSubSelect: undefined}
-        )).toBe(true);
+    test('group concat field not supported, no group concat fields', () => {
+        expect(
+            isValidFilterField(
+                QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' }),
+                QueryInfo.create({
+                    schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    name: 'test',
+                    supportGroupConcatSubSelect: false,
+                }),
+                { ...SampleTypeDataType, exprColumnsWithSubSelect: undefined }
+            )
+        ).toBe(true);
     });
 
-    test("group concat field is supported", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: true
-            }),
-            SampleTypeDataType
-        )).toBe(true);
+    test('group concat field is supported', () => {
+        expect(
+            isValidFilterField(
+                QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' }),
+                QueryInfo.create({
+                    schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    name: 'test',
+                    supportGroupConcatSubSelect: true,
+                }),
+                SampleTypeDataType
+            )
+        ).toBe(true);
     });
 
-    test("regular field", () => {
-        expect(isValidFilterField(
-            QueryColumn.create({ name: 'Regular', fieldKey: 'Regular' }),
-            QueryInfo.create({
-                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                name: "test",
-                supportGroupConcatSubSelect: false
-            }),
-            SampleTypeDataType
-        )).toBe(true);
+    test('regular field', () => {
+        expect(
+            isValidFilterField(
+                QueryColumn.create({ name: 'Regular', fieldKey: 'Regular' }),
+                QueryInfo.create({
+                    schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    name: 'test',
+                    supportGroupConcatSubSelect: false,
+                }),
+                SampleTypeDataType
+            )
+        ).toBe(true);
     });
-})
+});

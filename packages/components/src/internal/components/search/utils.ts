@@ -18,8 +18,9 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfFilterType';
 import { getLabKeySql } from '../../query/filter';
 
-import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 import { QueryInfo } from '../../../public/QueryInfo';
+
+import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 import { EntityFieldFilterTabs } from './EntityFieldFilterModal';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
@@ -35,8 +36,7 @@ export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): str
 }
 
 export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQuery: SchemaQuery): string {
-    return entityDataType.inputColumnName
-        .replace('First', schemaQuery.queryName);
+    return entityDataType.inputColumnName.replace('First', schemaQuery.queryName);
 }
 
 const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
@@ -240,7 +240,7 @@ const CHOOSE_VALUE_FILTERS = [
     Filter.Types.NEQ.getURLSuffix(),
     Filter.Types.NEQ_OR_NULL.getURLSuffix(),
     Filter.Types.NOT_IN.getURLSuffix(),
-]
+];
 
 export function isBetweenOperator(urlSuffix: string): boolean {
     return ['between', 'notbetween'].indexOf(urlSuffix) > -1;
@@ -266,7 +266,8 @@ export function getSampleFinderFilterTypesForType(jsonType: JsonType): FieldFilt
             valueRequired: filter.isDataValueRequired(),
             multiValue: filter.isMultiValued(),
             betweenOperator: isBetweenOperator(urlSuffix),
-            isSoleFilter: urlSuffix === Filter.Types.EQUAL.getURLSuffix() || urlSuffix === Filter.Types.ISBLANK.getURLSuffix()
+            isSoleFilter:
+                urlSuffix === Filter.Types.EQUAL.getURLSuffix() || urlSuffix === Filter.Types.ISBLANK.getURLSuffix(),
         } as FieldFilterOption;
     });
 }
@@ -443,14 +444,13 @@ export function getFieldFiltersValidationResult(
             const parentLabel = queryLabels?.[parent] ?? parent;
             parentMsgs.push(parentLabel + ': ' + parentFields[parent].join(', '));
         });
-        return 'Missing filter values for: ' + parentMsgs.join('; ')+ '.';
+        return 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
     }
 
     return null;
 }
 
-export function getFilterForFilterSelection(filterSelection: FilterSelection, field: QueryColumn) : Filter.IFilter
-{
+export function getFilterForFilterSelection(filterSelection: FilterSelection, field: QueryColumn): Filter.IFilter {
     return getUpdateFilterExpressionFilter(
         filterSelection.filterType,
         field,
@@ -491,15 +491,13 @@ export function getUpdateFilterExpressionFilter(
             } else if (isSecondValue) {
                 if (newFilterValue == null) {
                     value = previousFirstFilterValue != null ? previousFirstFilterValue : '';
-                }
-                else {
+                } else {
                     value = (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') + newFilterValue;
                 }
             } else {
                 if (newFilterValue == null) {
                     value = previousSecondFilterValue != null ? previousSecondFilterValue : '';
-                }
-                else {
+                } else {
                     value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
                 }
             }
@@ -532,7 +530,9 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
         case 'isblank':
             return [EMPTY_VALUE_DISPLAY];
         case 'isnonblank':
-            return hasBlank ? allValues.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY) : allValues;
+            return hasBlank
+                ? allValues.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY)
+                : allValues;
         case 'neq':
         case 'neqornull':
             return allValues.filter(value => value !== filterValues[0] && value !== ALL_VALUE_DISPLAY);
@@ -631,13 +631,16 @@ export function getUpdatedChooseValuesFilter(
 
 export function isValidFilterField(field: QueryColumn, queryInfo: QueryInfo, entityDataType): boolean {
     // cannot include fields that are not supported by the database
-    if (!queryInfo.supportGroupConcatSubSelect &&
-        (entityDataType.exprColumnsWithSubSelect && entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) !== -1)) {
+    if (
+        !queryInfo.supportGroupConcatSubSelect &&
+        entityDataType.exprColumnsWithSubSelect &&
+        entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) !== -1
+    ) {
         return false;
     }
     // exclude the storage Units field for sample types since the display of this field is nonstandard and it is not
     // a useful field for filtering parent values
-    if (isSamplesSchema(queryInfo.schemaQuery) && field.fieldKey === "Units") {
+    if (isSamplesSchema(queryInfo.schemaQuery) && field.fieldKey === 'Units') {
         return false;
     }
     // also exclude lookups since MVFKs don't support following lookups
@@ -650,24 +653,25 @@ export function getUpdatedDataTypeFilters(
     activeField: QueryColumn,
     activeTab: string,
     newFilters: any[]
-) : { [p: string]: FieldFilter[] } {
+): { [p: string]: FieldFilter[] } {
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
     const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
     const activeFieldKey = activeField.fieldKey;
     // the filters on the parent type that aren't associated with this field.
-    const otherFieldFilters = activeParentFilters?.filter(filter =>  filter.fieldKey !== activeFieldKey) ?? [];
+    const otherFieldFilters = activeParentFilters?.filter(filter => filter.fieldKey !== activeFieldKey) ?? [];
 
     // the filters on the parent type associated with this field.
-    const thisFieldFilters = newFilters?.map(newFilter => {
-        if (newFilter != null) {
-            return {
-                fieldKey: activeFieldKey,
-                fieldCaption: activeField.caption,
-                filter: newFilter,
-                jsonType: activeField.getDisplayFieldJsonType(),
-            } as FieldFilter;
-        }
-    }) ?? [];
+    const thisFieldFilters =
+        newFilters?.map(newFilter => {
+            if (newFilter != null) {
+                return {
+                    fieldKey: activeFieldKey,
+                    fieldCaption: activeField.caption,
+                    filter: newFilter,
+                    jsonType: activeField.getDisplayFieldJsonType(),
+                } as FieldFilter;
+            }
+        }) ?? [];
 
     if (otherFieldFilters.length + thisFieldFilters.length > 0) {
         dataTypeFiltersUpdated[activeQuery] = [...otherFieldFilters, ...thisFieldFilters];
@@ -677,7 +681,10 @@ export function getUpdatedDataTypeFilters(
     return dataTypeFiltersUpdated;
 }
 
-export function getFilterSelections(fieldFilters: Filter.IFilter[], filterOptions: FieldFilterOption[] ): FilterSelection[] {
+export function getFilterSelections(
+    fieldFilters: Filter.IFilter[],
+    filterOptions: FieldFilterOption[]
+): FilterSelection[] {
     const filters = [];
     fieldFilters?.forEach(fieldFilter => {
         const filterOption = filterOptions?.find(option => {
@@ -685,8 +692,8 @@ export function getFilterSelections(fieldFilters: Filter.IFilter[], filterOption
         });
 
         if (filterOption) {
-            let filter: FilterSelection = {
-                filterType: filterOption
+            const filter: FilterSelection = {
+                filterType: filterOption,
             };
 
             const values = getFilterValuesAsArray(fieldFilter, '');

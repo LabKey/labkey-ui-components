@@ -13,7 +13,7 @@ interface GroupedFilterProps {
 }
 
 // exported for jest testing
-export const GroupedFilterValues: FC<GroupedFilterProps> = memo((props) => {
+export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
     const { cardIndex, filterArray, onFilterValueExpand } = props;
     const groupedFilters = {};
     filterArray?.forEach(filter => {
@@ -26,10 +26,9 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo((props) => {
     Object.keys(groupedFilters).forEach(key => {
         groupedFilters[key].forEach((fieldFilter, index) => {
             rows.push(
-                <tr key={key + "-" + index} className="filter-display__row">
-                    {(index === 0) &&
-                        <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>}
-                    {(index !== 0) && <td className={"filter-display__field-boolean"}>and</td>}
+                <tr key={key + '-' + index} className="filter-display__row">
+                    {index === 0 && <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>}
+                    {index !== 0 && <td className="filter-display__field-boolean">and</td>}
                     <td className="filter-display__filter-content">
                         <FilterValueDisplay
                             filter={fieldFilter.filter}
@@ -37,12 +36,11 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo((props) => {
                         />
                     </td>
                 </tr>
-            )
+            );
         });
-    })
+    });
     return <>{rows}</>;
 });
-
 
 interface FilterEditProps extends FilterProps {
     onDelete: (index) => void;

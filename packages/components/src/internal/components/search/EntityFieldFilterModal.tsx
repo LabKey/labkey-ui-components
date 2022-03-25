@@ -27,7 +27,7 @@ import {
     getFieldFiltersValidationResult,
     getUpdatedDataTypeFilters,
     isChooseValuesFilter,
-    isValidFilterField
+    isValidFilterField,
 } from './utils';
 
 interface Props {
@@ -136,24 +136,33 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         return status;
     }, [dataTypeFilters]);
 
-    const hasFilters = useCallback((field: QueryColumn) => {
-        return filterStatus?.[activeQuery + '-' + field.fieldKey];
-    }, [filterStatus, activeQuery]);
+    const hasFilters = useCallback(
+        (field: QueryColumn) => {
+            return filterStatus?.[activeQuery + '-' + field.fieldKey];
+        },
+        [filterStatus, activeQuery]
+    );
 
-    const getDefaultActiveTab = useCallback((field: QueryColumn) => {
-        if (!allowFaceting(field)) {
-            return EntityFieldFilterTabs.Filter;
-        }
-        if (!hasFilters(field)) {
-            return EntityFieldFilterTabs.ChooseValues;
-        }
-        const currentFieldFilters = dataTypeFilters[activeQuery].filter(filterField => filterField.fieldKey === field.fieldKey);
-        if (currentFieldFilters.length > 1) {
-            return EntityFieldFilterTabs.Filter;
-        }
-        return isChooseValuesFilter(currentFieldFilters[0].filter) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter;
-
-    }, [hasFilters, dataTypeFilters, activeQuery]);
+    const getDefaultActiveTab = useCallback(
+        (field: QueryColumn) => {
+            if (!allowFaceting(field)) {
+                return EntityFieldFilterTabs.Filter;
+            }
+            if (!hasFilters(field)) {
+                return EntityFieldFilterTabs.ChooseValues;
+            }
+            const currentFieldFilters = dataTypeFilters[activeQuery].filter(
+                filterField => filterField.fieldKey === field.fieldKey
+            );
+            if (currentFieldFilters.length > 1) {
+                return EntityFieldFilterTabs.Filter;
+            }
+            return isChooseValuesFilter(currentFieldFilters[0].filter)
+                ? EntityFieldFilterTabs.ChooseValues
+                : EntityFieldFilterTabs.Filter;
+        },
+        [hasFilters, dataTypeFilters, activeQuery]
+    );
 
     const onEntityClick = useCallback(
         (queryName: string, fieldKey?: string) => {
@@ -165,7 +174,9 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 .getQueryDetails({ schemaName: entityDataType.instanceSchemaName, queryName })
                 .then(queryInfo => {
                     const fields = skipDefaultViewCheck ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns();
-                    setQueryFields(fromJS(fields.filter(field => isValidFilterField(field, queryInfo, entityDataType))));
+                    setQueryFields(
+                        fromJS(fields.filter(field => isValidFilterField(field, queryInfo, entityDataType)))
+                    );
                     if (fieldKey) {
                         const field = fields.find(field => field.getDisplayFieldKey() === fieldKey);
                         setActiveField(field);
@@ -250,7 +261,9 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const onFilterUpdate = useCallback(
         (newFilters: Filter.IFilter[], index: number) => {
             setFilterError(undefined);
-            setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, activeField, activeTab, newFilters));
+            setDataTypeFilters(
+                getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, activeField, activeTab, newFilters)
+            );
         },
         [dataTypeFilters, activeQuery, activeField, activeFieldKey, activeTab]
     );
@@ -286,7 +299,10 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                             {entityQueries?.map((parent, index) => {
                                 const label = parent.label ?? parent.get?.('label'); // jest test data is Map, instead of js object
                                 const parentValue = parent.value ?? parent.get?.('value');
-                                const fieldFilterCount = dataTypeFilters?.[parentValue]?.filter(f => f.filter.getFilterType() !== NOT_ANY_FILTER_TYPE)?.length ?? 0;
+                                const fieldFilterCount =
+                                    dataTypeFilters?.[parentValue]?.filter(
+                                        f => f.filter.getFilterType() !== NOT_ANY_FILTER_TYPE
+                                    )?.length ?? 0;
                                 return (
                                     <ChoicesListItem
                                         active={parentValue === activeQuery}
@@ -374,26 +390,29 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                                     />
                                                 )}
                                             </Tab.Pane>
-                                            {activeTab === EntityFieldFilterTabs.ChooseValues && allowFaceting(activeField) && (
-                                                <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
-                                                    <div className="parent-search-panel__col-sub-title">
-                                                        Find values for {activeField.caption}
-                                                    </div>
-                                                    <FilterFacetedSelector
-                                                        selectDistinctOptions={{
-                                                            column: activeFieldKey,
-                                                            schemaName: entityDataType?.instanceSchemaName,
-                                                            queryName: activeQuery,
-                                                            viewName: FIND_FILTER_VIEW_NAME,
-                                                            filterArray: fieldDistinctValueFilters,
-                                                        }}
-                                                        fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
-                                                        fieldKey={activeFieldKey}
-                                                        key={activeFieldKey}
-                                                        onFieldFilterUpdate={onFilterUpdate}
-                                                    />
-                                                </Tab.Pane>
-                                            )}
+                                            {activeTab === EntityFieldFilterTabs.ChooseValues &&
+                                                allowFaceting(activeField) && (
+                                                    <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
+                                                        <div className="parent-search-panel__col-sub-title">
+                                                            Find values for {activeField.caption}
+                                                        </div>
+                                                        <FilterFacetedSelector
+                                                            selectDistinctOptions={{
+                                                                column: activeFieldKey,
+                                                                schemaName: entityDataType?.instanceSchemaName,
+                                                                queryName: activeQuery,
+                                                                viewName: FIND_FILTER_VIEW_NAME,
+                                                                filterArray: fieldDistinctValueFilters,
+                                                            }}
+                                                            fieldFilters={currentFieldFilters?.map(
+                                                                filter => filter.filter
+                                                            )}
+                                                            fieldKey={activeFieldKey}
+                                                            key={activeFieldKey}
+                                                            onFieldFilterUpdate={onFilterUpdate}
+                                                        />
+                                                    </Tab.Pane>
+                                                )}
                                         </Tab.Content>
                                     </div>
                                 </Tab.Container>

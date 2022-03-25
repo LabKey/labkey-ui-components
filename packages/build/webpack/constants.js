@@ -65,7 +65,7 @@ const SASS_PLUGINS = [
     },{
         loader: 'resolve-url-loader',
         options: {
-            silence: !isProductionBuild
+            silent: !isProductionBuild
         }
     },{
         loader: 'sass-loader',

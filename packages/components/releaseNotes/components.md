@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 10192: Support two filter clauses per field in the `FilterExpressionView` and `FilterCards`
 
+### version 2.145.2
+*Released*: 24 March 2022
+* Support `containerPath` on `LookupSelectInput` and `withAssayModels`.
+* Add test utility `createMockWithRouteLeave`
+
 ### version 2.145.1
 *Released*: 24 March 2022
 * Fix issue where models with bindURl set to true could not have default sorts/filters/etc.

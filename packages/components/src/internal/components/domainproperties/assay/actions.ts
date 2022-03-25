@@ -24,15 +24,25 @@ import { setDomainException } from '../actions';
 
 import { AssayProtocolModel } from './models';
 
-export function fetchProtocol(protocolId?: number, providerName?: string, copy?: boolean): Promise<AssayProtocolModel> {
+export function fetchProtocol(
+    protocolId?: number,
+    providerName?: string,
+    copy?: boolean,
+    containerPath?: string
+): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('assay', 'getProtocol.api', {
-                // give precedence to the protocolId if both are provided
-                protocolId,
-                providerName: protocolId !== undefined ? undefined : providerName,
-                copy: copy || false,
-            }),
+            url: buildURL(
+                'assay',
+                'getProtocol.api',
+                {
+                    // give precedence to the protocolId if both are provided
+                    protocolId,
+                    providerName: protocolId !== undefined ? undefined : providerName,
+                    copy: copy || false,
+                },
+                { container: containerPath }
+            ),
             success: Utils.getCallbackWrapper(data => {
                 resolve(AssayProtocolModel.create(data.data));
             }),

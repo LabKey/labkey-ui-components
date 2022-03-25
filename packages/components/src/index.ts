@@ -573,7 +573,7 @@ import {
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
-import { createMockWithRouterProps } from './test/mockUtils';
+import { createMockWithRouteLeave, createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
 import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
@@ -1415,6 +1415,7 @@ export {
     getAssayImportNotificationMsg,
     // Test Helpers
     sleep,
+    createMockWithRouteLeave,
     createMockWithRouterProps,
     makeQueryInfo,
     mountWithAppServerContextOptions,

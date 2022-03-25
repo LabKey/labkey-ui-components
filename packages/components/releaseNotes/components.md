@@ -1,14 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Fix issue where we could not add assay samples to picklist from the run details page.
+
 ### version 2.145.2
 *Released*: 24 March 2022
 * Support `containerPath` on `LookupSelectInput` and `withAssayModels`.
 * Add test utility `createMockWithRouteLeave`
-
-### version 2.145.1
-*Released*: 24 March 2022
-* Fix issue where we could not add assay samples to picklist from the run details page.
 
 ### version 2.145.1
 *Released*: 24 March 2022

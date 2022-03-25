@@ -1,7 +1,12 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.1.0
+*Released*: 24 March 2022
+* support JSESSIONID cookie for same session requests
+
 ### version 1.0.1
+*Released*: 4 November 2021
 * Regenerate lockfile so TC doesn't fail during install
 
 ### version 1.0.0

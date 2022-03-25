@@ -296,7 +296,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         if (activeFilters[0].firstFilterValue === undefined)
             return false;
 
-        return !activeFilters[0].filterType.multiValue || activeFilters[0].secondFilterValue !== undefined;
+        return !activeFilters[0].filterType.betweenOperator || activeFilters[0].secondFilterValue !== undefined;
     }, [activeFilters])
 
     return (

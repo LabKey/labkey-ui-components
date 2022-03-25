@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import supertest, { SuperTest, Test } from 'supertest';
+import supertest, { Response, SuperTest, Test } from 'supertest';
 import { ActionURL, Container, Utils } from '@labkey/api';
 
 import { sleep } from './utils';
@@ -42,11 +42,13 @@ export interface TestUser extends UserCredentials {
 class RequestContext implements UserCredentials {
     csrfToken?: string;
     password: string;
+    sessionId?: string;
     username: string;
 
     constructor(config: Partial<RequestContext>) {
         this.csrfToken = config.csrfToken;
         this.password = config.password;
+        this.sessionId = config.sessionId;
         this.username = config.username;
     }
 }
@@ -145,7 +147,9 @@ const _createContainer = async (ctx: ServerContext, containerPath: string, name:
 
 const createRequestContext = async (ctx: ServerContext, config: Partial<RequestContext>) => {
     const requestCtx = new RequestContext(config);
-    requestCtx.csrfToken = await initCSRF(ctx);
+    const { csrfToken, sessionId } = await initCSRF(ctx);
+    requestCtx.csrfToken = csrfToken;
+    requestCtx.sessionId = sessionId;
     return requestCtx;
 };
 
@@ -258,7 +262,9 @@ export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
 
 const init = async (ctx: ServerContext, projectName: string, containerOptions?: any): Promise<void> => {
     // Initialize the default request context
-    ctx.defaultContext.csrfToken = await initCSRF(ctx);
+    const { csrfToken, sessionId } = await initCSRF(ctx);
+    ctx.defaultContext.csrfToken = csrfToken;
+    ctx.defaultContext.sessionId = sessionId;
 
     // Ensure project exists
     let project: Container;
@@ -302,7 +308,7 @@ const init = async (ctx: ServerContext, projectName: string, containerOptions?: 
     console.log('container path:', ctx.containerPath);
 };
 
-const initCSRF = async (ctx: ServerContext): Promise<string> => {
+const initCSRF = async (ctx: ServerContext): Promise<{ csrfToken: string, sessionId: string }> => {
     const MAX_RETRIES = 5;
     let lastResponse;
 
@@ -311,7 +317,10 @@ const initCSRF = async (ctx: ServerContext): Promise<string> => {
             let whoAmIResponse = await getRequest(ctx, 'login', 'whoAmI.api').send();
 
             if (whoAmIResponse.status === 200) {
-                return whoAmIResponse.body.CSRF;
+                return {
+                    csrfToken: whoAmIResponse.body.CSRF,
+                    sessionId: parseSessionId(whoAmIResponse),
+                };
             } else {
                 lastResponse = whoAmIResponse;
             }
@@ -325,6 +334,30 @@ const initCSRF = async (ctx: ServerContext): Promise<string> => {
     successfulResponse(lastResponse);
 
     throw new Error('Failed to initialize CSRF. Unable to make successful request to login-whoAmI.api.');
+};
+
+/**
+ * Parses the JSESSIONID cookie value from the response headers.
+ * @param response
+ */
+const parseSessionId = (response: Response): string => {
+    let sessionId: string;
+    const cookies: string[] = response.header['set-cookie'];
+
+    if (cookies) {
+        cookies.forEach(cookieString => {
+            if (cookieString) {
+                const parts = cookieString.split(';').filter(part => part.indexOf('JSESSIONID') > -1).map(part => part.trim());
+
+                if (parts.length === 1) {
+                    sessionId = parts[0].substring('JSESSIONID='.length);
+                    return false;
+                }
+            }
+        });
+    }
+
+    return sessionId;
 };
 
 /**
@@ -364,13 +397,21 @@ const request = (
     options?: RequestOptions
 ): Test => {
     const requestContext = options?.requestContext ?? ctx.defaultContext;
-    const { csrfToken, password, username } = requestContext;
+    const { csrfToken, password, sessionId, username } = requestContext;
 
     const url = ActionURL.buildURL(controller, action, options?.containerPath ?? ctx.containerPath);
+    const cookies: string[] = [];
     let request = agentProvider(ctx.agent, url).auth(username, password);
 
     if (csrfToken) {
-        request = request.set('X-LABKEY-CSRF', csrfToken).set('Cookie', `X-LABKEY-CSRF=${csrfToken}`);
+        request = request.set('X-LABKEY-CSRF', csrfToken);
+        cookies.push(`X-LABKEY-CSRF=${csrfToken}`);
+    }
+    if (sessionId) {
+        cookies.push(`JSESSIONID=${sessionId}`);
+    }
+    if (cookies.length > 0) {
+        request = request.set('Cookie', cookies.join(';'));
     }
 
     return request;

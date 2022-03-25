@@ -24,8 +24,8 @@ import { clearAssayDefinitionCache, fetchAllAssays } from './actions';
 
 export interface AssayLoader {
     clearDefinitionsCache: () => void;
-    loadDefinitions: () => Promise<List<AssayDefinitionModel>>;
-    loadProtocol: (protocolId: number) => Promise<AssayProtocolModel>;
+    loadDefinitions: (containerPath?: string) => Promise<List<AssayDefinitionModel>>;
+    loadProtocol: (protocolId: number, containerPath?: string) => Promise<AssayProtocolModel>;
 }
 
 export interface AssayContext {
@@ -34,6 +34,7 @@ export interface AssayContext {
 }
 
 export interface WithAssayModelProps {
+    assayContainerPath?: string;
     assayLoader?: AssayLoader;
     assayName?: string;
 }
@@ -54,8 +55,9 @@ export const AssayContextConsumer = Context.Consumer;
 
 const DefaultAssayLoader: AssayLoader = {
     clearDefinitionsCache: clearAssayDefinitionCache,
-    loadDefinitions: fetchAllAssays,
-    loadProtocol: fetchProtocol,
+    loadDefinitions: (containerPath: string) => fetchAllAssays(undefined, containerPath),
+    loadProtocol: (protocolId: number, containerPath?: string) =>
+        fetchProtocol(protocolId, undefined, undefined, containerPath),
 };
 
 /**
@@ -90,7 +92,8 @@ export function withAssayModels<Props>(
         };
 
         componentDidUpdate = (prevProps: WrappedProps): void => {
-            if (this.props.assayName !== prevProps.assayName) {
+            const { assayContainerPath, assayName } = this.props;
+            if (assayName !== prevProps.assayName || assayContainerPath !== prevProps.assayContainerPath) {
                 this.load();
             }
         };
@@ -105,7 +108,7 @@ export function withAssayModels<Props>(
         };
 
         loadDefinitions = async (): Promise<void> => {
-            const { assayLoader } = this.props;
+            const { assayContainerPath, assayLoader } = this.props;
             const { model } = this.state;
 
             if (model.definitionsLoadingState === LoadingState.LOADED) {
@@ -115,7 +118,7 @@ export function withAssayModels<Props>(
             this.updateModel({ definitionsError: undefined, definitionsLoadingState: LoadingState.LOADING });
 
             try {
-                const definitions = await assayLoader.loadDefinitions();
+                const definitions = await assayLoader.loadDefinitions(assayContainerPath);
 
                 this.updateModel({
                     definitions: definitions.toArray(),
@@ -127,7 +130,7 @@ export function withAssayModels<Props>(
         };
 
         loadProtocol = async (): Promise<void> => {
-            const { assayLoader, assayName } = this.props;
+            const { assayContainerPath, assayLoader, assayName } = this.props;
             const { model } = this.state;
 
             // If an "assayName" is not provided and one has not ever been loaded by this instance,
@@ -158,7 +161,7 @@ export function withAssayModels<Props>(
             }
 
             try {
-                const assayProtocol = await assayLoader.loadProtocol(assayDefinition.id);
+                const assayProtocol = await assayLoader.loadProtocol(assayDefinition.id, assayContainerPath);
 
                 this.update({
                     context: { assayDefinition, assayProtocol },

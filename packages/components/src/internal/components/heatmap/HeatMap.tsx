@@ -15,11 +15,11 @@
  */
 import React, { FC, memo, ReactNode, useState, useMemo, useEffect, useCallback } from 'react';
 
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { Link } from 'react-router';
 
-import { addDateRangeFilter, AppURL, LoadingSpinner, naturalSort, SchemaQuery } from '../../..';
+import { addDateRangeFilter, AppURL, generateId, LoadingSpinner, naturalSort, SchemaQuery } from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
@@ -50,8 +50,6 @@ export interface HeatMapDisplayCell {
 }
 
 export interface HeatMapProps {
-    schemaQuery: SchemaQuery;
-    filters?: Filter.IFilter[];
     displayNamePath?: string[]; // path within a query row to use for displaying the y axis and by which to sort the rows of data
     nounSingular: string;
     nounPlural: string;
@@ -67,7 +65,6 @@ export interface HeatMapProps {
     emptyDisplay?: any;
     navigate?: (url: string | AppURL) => any;
     urlPrefix?: string; // prefix to use when creating urls for cells and rows and headers
-    modelId?: string;
 }
 
 const getRowDisplayName = (row: any, displayNamePath: string[]): any => {
@@ -78,20 +75,24 @@ const rowSort = (row1, row2, displayNamePath: string[]): number => {
     return naturalSort(getRowDisplayName(row1, displayNamePath), getRowDisplayName(row2, displayNamePath));
 };
 
-const getModelId = (schemaQuery: SchemaQuery): string => {
-    return `heatmap-${schemaQuery.getSchema()}-${schemaQuery.getQuery()}`;
-};
-
 const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
-    const { queryModels, modelId, urlPrefix, nounPlural, navigate, headerClickUrl } = props;
+    const {
+        displayNamePath,
+        getCellUrl,
+        getHeaderUrl,
+        getTotalUrl,
+        headerClickUrl,
+        navigate,
+        nounPlural,
+        queryModels,
+        urlPrefix,
+    } = props;
 
     const [heatMapData, setHeatMapData] = useState<HeatMapCell[]>();
 
-    const model = queryModels[modelId];
+    const model = queryModels.model;
 
     useEffect(() => {
-        const { getCellUrl, displayNamePath } = props;
-
         if (model.isLoading) {
             return;
         }
@@ -138,7 +139,7 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
             }, []);
 
         setHeatMapData(processedData);
-    }, [model]);
+    }, [displayNamePath, getCellUrl, model]);
 
     const renderYCell = useCallback(
         (cell: HeatMapDisplayCell): ReactNode => {
@@ -154,14 +155,12 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
         [urlPrefix]
     );
 
-    const yAxisColumns = useMemo((): { [key: string]: HeatMapDisplayCell } => {
-        const { getHeaderUrl, getTotalUrl } = props;
-
+    const yAxisColumns = useMemo(() => {
         if (!heatMapData) {
             return undefined;
         }
 
-        return heatMapData.reduce<{ [key: string]: HeatMapDisplayCell }>((cols, cell) => {
+        return heatMapData.reduce<Record<string, HeatMapDisplayCell>>((cols, cell) => {
             // error check for empty cells or cells without protocols
             if (cell?.protocolName !== undefined) {
                 cols[cell.protocolName] = {
@@ -176,7 +175,7 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
 
             return cols;
         }, {});
-    }, [heatMapData]);
+    }, [getHeaderUrl, getTotalUrl, heatMapData, renderYCell]);
 
     const renderYTotalCell = useCallback(
         (cell: HeatMapDisplayCell): ReactNode => {
@@ -231,7 +230,7 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
                 navigate(dateUrl.toString(urlPrefix));
             }
         },
-        [navigate]
+        [navigate, urlPrefix]
     );
 
     const onHeaderClick = useCallback(
@@ -246,10 +245,10 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
                 navigate(dateUrl.toString(urlPrefix));
             }
         },
-        [navigate, headerClickUrl]
+        [headerClickUrl, navigate, urlPrefix]
     );
 
-    if (!model || model.isLoading) {
+    if (model.isLoading) {
         return <LoadingSpinner />;
     }
 
@@ -268,19 +267,32 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
 
 const HeatMapWithQueryModels = withQueryModels<HeatMapProps>(HeatMapImpl);
 
-export const HeatMap: FC<HeatMapProps> = memo(props => {
-    const { schemaQuery, filters, urlPrefix } = props;
+interface HeatMapQueryProps {
+    containerFilter?: Query.ContainerFilter;
+    filters?: Filter.IFilter[];
+    schemaQuery: SchemaQuery;
+}
 
-    const modelId = props.modelId || getModelId(schemaQuery);
+export const HeatMap: FC<HeatMapProps & HeatMapQueryProps> = memo(props => {
+    const {
+        containerFilter = Query.ContainerFilter.currentPlusProjectAndShared,
+        filters,
+        schemaQuery,
+        ...heatMapProps
+    } = props;
+    const { urlPrefix } = heatMapProps;
 
-    const queryConfigs = useMemo<QueryConfigMap>(
+    const { key, queryConfigs } = useMemo<{ key: string; queryConfigs: QueryConfigMap }>(
         () => ({
-            [modelId]: { baseFilters: filters, schemaQuery, urlPrefix },
+            key: generateId(),
+            queryConfigs: {
+                model: { baseFilters: filters, containerFilter, maxRows: -1, schemaQuery, urlPrefix },
+            },
         }),
-        [modelId]
+        [containerFilter, filters, schemaQuery, urlPrefix]
     );
 
-    return <HeatMapWithQueryModels {...props} autoLoad={true} modelId={modelId} queryConfigs={queryConfigs} />;
+    return <HeatMapWithQueryModels {...heatMapProps} autoLoad key={key} queryConfigs={queryConfigs} />;
 });
 
 HeatMap.defaultProps = {

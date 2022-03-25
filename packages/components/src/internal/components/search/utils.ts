@@ -234,6 +234,14 @@ export const SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE = [
     ...NEGATE_FILTERS,
 ];
 
+const CHOOSE_VALUE_FILTERS = [
+    Filter.Types.EQUAL.getURLSuffix(),
+    Filter.Types.IN.getURLSuffix(),
+    Filter.Types.NEQ.getURLSuffix(),
+    Filter.Types.NEQ_OR_NULL.getURLSuffix(),
+    Filter.Types.NOT_IN.getURLSuffix(),
+]
+
 export function isBetweenOperator(urlSuffix: string): boolean {
     return ['between', 'notbetween'].indexOf(urlSuffix) > -1;
 }
@@ -281,6 +289,10 @@ export function getFilterTypePlaceHolder(suffix: string, jsonType: string): stri
     }
 
     return null;
+}
+
+export function isChooseValuesFilter(filter: Filter.IFilter): boolean {
+    return CHOOSE_VALUE_FILTERS.indexOf(filter.getFilterType().getURLSuffix()) >= 0;
 }
 
 export function filterToJson(filter: Filter.IFilter): string {

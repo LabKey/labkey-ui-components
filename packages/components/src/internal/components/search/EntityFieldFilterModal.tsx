@@ -23,7 +23,12 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter, FilterProps } from './models';
-import { getFieldFiltersValidationResult, getUpdatedDataTypeFilters, isValidFilterField } from './utils';
+import {
+    getFieldFiltersValidationResult,
+    getUpdatedDataTypeFilters,
+    isChooseValuesFilter,
+    isValidFilterField
+} from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -135,6 +140,21 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         return filterStatus?.[activeQuery + '-' + field.fieldKey];
     }, [filterStatus, activeQuery]);
 
+    const getDefaultActiveTab = useCallback((field: QueryColumn) => {
+        if (!allowFaceting(field)) {
+            return EntityFieldFilterTabs.Filter;
+        }
+        if (!hasFilters(field)) {
+            return EntityFieldFilterTabs.ChooseValues;
+        }
+        const currentFieldFilters = dataTypeFilters[activeQuery].filter(filterField => filterField.fieldKey === field.fieldKey);
+        if (currentFieldFilters.length > 1) {
+            return EntityFieldFilterTabs.Filter;
+        }
+        return isChooseValuesFilter(currentFieldFilters[0].filter) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter;
+
+    }, [hasFilters, dataTypeFilters, activeQuery]);
+
     const onEntityClick = useCallback(
         (queryName: string, fieldKey?: string) => {
             setActiveQuery(queryName);
@@ -149,11 +169,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     if (fieldKey) {
                         const field = fields.find(field => field.getDisplayFieldKey() === fieldKey);
                         setActiveField(field);
-                        if (allowFaceting(field) && !hasFilters(field)) {
-                            setActiveTab(EntityFieldFilterTabs.ChooseValues);
-                        } else {
-                            setActiveTab(EntityFieldFilterTabs.Filter);
-                        }
+                        setActiveTab(getDefaultActiveTab(field));
                     }
                 })
                 .catch(error => {
@@ -170,7 +186,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const onFieldClick = useCallback(
         (queryColumn: QueryColumn) => {
             setActiveField(queryColumn);
-            setActiveTab(allowFaceting(queryColumn)  && !hasFilters(queryColumn) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter);
+            setActiveTab(getDefaultActiveTab(queryColumn));
         },
         [hasFilters]
     );

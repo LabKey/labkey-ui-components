@@ -21,7 +21,6 @@ import { getLabKeySql } from '../../query/filter';
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
-import { EntityFieldFilterTabs } from './EntityFieldFilterModal';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -248,7 +247,7 @@ export function isBetweenOperator(urlSuffix: string): boolean {
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
 
-export function getSampleFinderFilterTypesForType(jsonType: JsonType): FieldFilterOption[] {
+export function getSampleFinderFilterOptionsForType(jsonType: JsonType): FieldFilterOption[] {
     const filterList = Filter.getFilterTypesForType(jsonType).filter(function (result) {
         return SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE.indexOf(result.getURLSuffix()) === -1;
     });
@@ -651,8 +650,7 @@ export function getUpdatedDataTypeFilters(
     dataTypeFilters: { [p: string]: FieldFilter[] },
     activeQuery: string,
     activeField: QueryColumn,
-    activeTab: string,
-    newFilters: any[]
+    newFilters: Filter.IFilter[]
 ): { [p: string]: FieldFilter[] } {
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
     const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
@@ -747,4 +745,30 @@ export function getUpdatedFilters(
         }
     }
     return newFilters;
+}
+
+export function getUpdatedFilterSelection(
+    newActiveFilterType: FieldFilterOption,
+    activeFilter: FilterSelection
+) : { shouldClear: boolean; filterSelection: FilterSelection } {
+    let firstValue = activeFilter?.firstFilterValue;
+    let shouldClear = false;
+
+    // when a value is required, we want to start with 'undefined' instead of 'null' since 'null' is seen as a valid value
+    if ((newActiveFilterType?.valueRequired && !activeFilter?.filterType.valueRequired) ||
+        (activeFilter?.filterType?.multiValue && !newActiveFilterType?.multiValue)) {
+        firstValue = undefined;
+        shouldClear = true;
+    } else if (!newActiveFilterType?.valueRequired) { // if value is not required, then we'll start with null
+        firstValue = null;
+        shouldClear = true;
+    }
+    return {
+        shouldClear,
+        filterSelection: {
+            filterType: newActiveFilterType,
+            firstFilterValue: firstValue,
+            secondFilterValue: shouldClear ? undefined : activeFilter?.secondFilterValue,
+        }
+    };
 }

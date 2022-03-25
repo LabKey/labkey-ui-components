@@ -12,11 +12,11 @@ import { JsonType } from '../domainproperties/PropDescType';
 import { formatDate, isDateTimeCol } from '../../util/Date';
 
 import {
-    getFilterForFilterSelection,
     getFilterSelections,
     getFilterTypePlaceHolder,
-    getSampleFinderFilterTypesForType, getUpdatedFilters,
-    getUpdateFilterExpressionFilter,
+    getSampleFinderFilterOptionsForType,
+    getUpdatedFilters,
+    getUpdatedFilterSelection,
 } from './utils';
 import { FieldFilterOption, FilterSelection } from './models';
 
@@ -34,7 +34,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const [removeFilterCount, setRemoveFilterCount] = useState<number>(0);
 
     useEffect(() => {
-        const filterOptions = getSampleFinderFilterTypesForType(field?.getDisplayFieldJsonType() as JsonType);
+        const filterOptions = getSampleFinderFilterOptionsForType(field?.getDisplayFieldJsonType() as JsonType);
         setFieldFilterOptions(filterOptions);
         setActiveFilters(getFilterSelections(fieldFilters, filterOptions));
     }, [field]); // leave fieldFilters out of deps list, fieldFilters is used to init once
@@ -99,37 +99,18 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
     const onFieldFilterTypeChange = useCallback(
         (fieldname: any, filterUrlSuffix: any, filterIndex: number) => {
+
             const newActiveFilterType = fieldFilterOptions?.find(option => option.value === filterUrlSuffix);
-
-            let firstValue = activeFilters[filterIndex]?.firstFilterValue;
-            // when a value is required, we want to start with 'undefined' instead of 'null' since 'null' is seen as a valid value
-            if (newActiveFilterType.valueRequired && !activeFilters[filterIndex]?.filterType.valueRequired) {
-                firstValue = undefined;
-            } else if (!newActiveFilterType.valueRequired) { // if value is not required, then we'll start with null
-                firstValue = null;
-            }
-            const newFilterSelection = {
-                filterType: newActiveFilterType,
-                firstFilterValue: firstValue,
-                secondFilterValue: activeFilters[filterIndex]?.secondFilterValue,
-            };
-            const shouldClear =
-                !newActiveFilterType?.valueRequired ||
-                (activeFilters[filterIndex]?.filterType?.multiValue && !newActiveFilterType.multiValue);
-
-            if (shouldClear) {
-                newFilterSelection.firstFilterValue = undefined;
-                newFilterSelection.secondFilterValue = undefined;
-            }
+            const { shouldClear, filterSelection} = getUpdatedFilterSelection(newActiveFilterType, activeFilters[filterIndex]);
 
             updateFilter(
                 filterIndex,
                 newActiveFilterType,
-                shouldClear ? undefined : newFilterSelection.firstFilterValue,
-                undefined,
+                filterSelection.firstFilterValue,
+                false,
                 shouldClear
             );
-            updateActiveFilters(filterIndex, newFilterSelection);
+            updateActiveFilters(filterIndex, filterSelection);
         },
         [fieldFilterOptions, activeFilters]
     );

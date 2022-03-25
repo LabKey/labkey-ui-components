@@ -262,7 +262,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         (newFilters: Filter.IFilter[], index: number) => {
             setFilterError(undefined);
             setDataTypeFilters(
-                getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, activeField, activeTab, newFilters)
+                getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, activeField, newFilters)
             );
         },
         [dataTypeFilters, activeQuery, activeField, activeFieldKey, activeTab]

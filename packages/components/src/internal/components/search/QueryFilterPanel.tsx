@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { Col, Nav, NavItem, Tab } from 'react-bootstrap';
 import { fromJS, List } from 'immutable';
 
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -39,6 +39,7 @@ interface Props {
     metricFeatureArea?: string;
     onFilterUpdate: (field: QueryColumn, newFilter: Filter.IFilter) => void;
     queryInfo: QueryInfo;
+    selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
@@ -57,6 +58,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         onFilterUpdate,
         metricFeatureArea,
         fullWidth,
+        selectDistinctOptions,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
@@ -218,10 +220,15 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                             </div>
                                             <FilterFacetedSelector
                                                 selectDistinctOptions={{
+                                                    ...selectDistinctOptions,
                                                     column: activeFieldKey,
                                                     schemaName: queryInfo.schemaName,
                                                     queryName,
                                                     viewName,
+                                                    // TODO this doesn't seem right for the cases like the SM source
+                                                    // samples grid which has a model filter for the source ID
+                                                    // which is getting overridden here. Try using
+                                                    // selectDistinctOptions.filterArray from props in fieldDistinctValueFilters
                                                     filterArray: fieldDistinctValueFilters,
                                                 }}
                                                 fieldFilter={currentFieldFilter?.filter}

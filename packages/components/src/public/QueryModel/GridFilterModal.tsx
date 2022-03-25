@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { Modal, Row } from 'react-bootstrap';
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
 import { FieldFilter } from '../../internal/components/search/models';
@@ -18,11 +18,12 @@ interface Props {
     model: QueryModel;
     onApply: (filters: Filter.IFilter[]) => void;
     onCancel: () => void;
+    selectDistinctOptions?: Query.SelectDistinctOptions;
     skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
 }
 
 export const GridFilterModal: FC<Props> = memo(props => {
-    const { api, onCancel, initFilters, model, onApply, fieldKey, skipDefaultViewCheck } = props;
+    const { api, onCancel, initFilters, model, onApply, fieldKey, selectDistinctOptions, skipDefaultViewCheck } = props;
     const { queryInfo } = model;
     const [filterError, setFilterError] = useState<string>(undefined);
     const [filters, setFilters] = useState<FieldFilter[]>(
@@ -103,6 +104,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
                         fullWidth
                         onFilterUpdate={onFilterUpdate}
                         queryInfo={queryInfo}
+                        selectDistinctOptions={selectDistinctOptions}
                         skipDefaultViewCheck={skipDefaultViewCheck}
                         validFilterField={isValidFilterField}
                         viewName={model.viewName}

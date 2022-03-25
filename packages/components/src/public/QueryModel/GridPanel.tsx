@@ -335,7 +335,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return this.props.model.queryInfo;
     };
 
-    // Needed by OmniBox.
+    // Needed by OmniBox and GridFilterModal.
     getSelectDistinctOptions = (column: string): Query.SelectDistinctOptions => {
         const { model } = this.props;
         return {
@@ -387,7 +387,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
 
         // Defer model updates after localState is updated so we don't unnecessarily repopulate the omnibox.
-        this.setState({ actionValues }, () => actions.setFilters(model.id, newFilters, allowSelections));
+        this.setState({ actionValues, headerClickCount: {} }, () =>
+            actions.setFilters(model.id, newFilters, allowSelections)
+        );
     };
 
     handleApplyFilters = (newFilters: Filter.IFilter[]): void => {
@@ -395,7 +397,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         // remove all filter actionValues and replace them with the new set of filters via setFilters
         const actionValues = this.state.actionValues.filter(({ action }) => action.keyword !== 'filter');
-        this.setState({ actionValues, showFilterModalFieldKey: undefined }, () =>
+        this.setState({ actionValues, showFilterModalFieldKey: undefined, headerClickCount: {} }, () =>
             actions.setFilters(model.id, newFilters, allowSelections)
         );
     };
@@ -439,7 +441,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
 
         // Defer sorts update to after setState is complete so we dont unnecessarily repopulate the omnibox.
-        this.setState({ actionValues }, updateSortsCallback);
+        this.setState({ actionValues, headerClickCount: {} }, updateSortsCallback);
     };
 
     handleSearchChange = (actionValues: ActionValue[], change: Change): void => {
@@ -459,7 +461,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
 
         // Defer search update to after setState so we don't unnecessarily repopulate the omnibox.
-        this.setState({ actionValues }, () => actions.setFilters(model.id, newFilters, allowSelections));
+        this.setState({ actionValues, headerClickCount: {} }, () =>
+            actions.setFilters(model.id, newFilters, allowSelections)
+        );
     };
 
     handleViewChange = (actionValues: ActionValue[], change: Change): void => {
@@ -749,6 +753,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 {showFilterModalFieldKey && (
                     <GridFilterModal
                         fieldKey={showFilterModalFieldKey}
+                        selectDistinctOptions={this.getSelectDistinctOptions(undefined)}
                         initFilters={model.filterArray} // using filterArray to indicate user-defined filters only
                         model={model}
                         onApply={this.handleApplyFilters}

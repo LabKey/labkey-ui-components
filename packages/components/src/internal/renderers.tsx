@@ -48,12 +48,18 @@ const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const gridColSortFilterEnabled = isGridColSortFilterEnabled();
     const [open, setOpen] = useState<boolean>();
 
+    const allowColSort = handleSort !== undefined && col.sortable;
+    const allowColFilter = handleFilter !== undefined && col.filterable;
+    const includeDropdown = allowColSort || allowColFilter;
+
     const onToggleClick = useCallback((shouldOpen: boolean, evt?: any) => {
+        if (!includeDropdown) return;
+
         // when menu is closed skip any clicks on icons by just checking for span el type
         if (shouldOpen && evt && evt.target.tagName.toLowerCase() !== 'span') return;
 
         setOpen(shouldOpen);
-    }, []);
+    }, [includeDropdown]);
 
     const _handleFilter = useCallback(
         (remove?: boolean) => {
@@ -80,12 +86,9 @@ const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const isOnlyColumn =
         columnCount !== undefined && ((selectable && columnCount === 2) || (!selectable && columnCount === 1));
-    const allowColSort = handleSort !== undefined && col.sortable;
-
     const colQuerySortDir = model?.sorts?.find(sort => sort.get('fieldKey') === col.resolveFieldKey())?.get('dir');
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
-    const allowColFilter = handleFilter !== undefined && col.filterable;
     const colFilters = model?.filterArray.filter(filter => isFilterColumnNameMatch(filter, col)); // using filterArray to indicate user-defined filters only
 
     return (
@@ -110,7 +113,7 @@ const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     </LabelHelpTip>
                 )}
             </span>
-            {(allowColSort || allowColFilter) && (
+            {includeDropdown && (
                 <span className={classNames({ 'pull-right': (i === 0 && !selectable) || (selectable && i === 1) })}>
                     <Dropdown
                         id={`grid-menu-${i}`}

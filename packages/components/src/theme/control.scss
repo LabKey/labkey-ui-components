@@ -83,8 +83,8 @@
     margin: 0;
     outline: none;
     // padding: 0;
-    line-height: 14px;  /* For IE 8 compatibility */
-    padding: (($omnibox-input-internal-height - 14) / 2 - 2) 0 (($omnibox-input-internal-height - 14) / 2 + 2);  /* For IE 8 compatibility */
+    line-height: 14px;
+    padding: (calc(($omnibox-input-internal-height - 14px) / 2) - 2) 0 (calc(($omnibox-input-internal-height - 14px) / 2) + 2);
     -webkit-appearance: none;
 
     .is-focused & {

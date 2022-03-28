@@ -1,4 +1,15 @@
-import React, { FC, FormEvent, memo, ReactNode, useCallback, useMemo, useReducer, useRef, useState } from 'react';
+import React, {
+    FC,
+    FormEvent,
+    memo,
+    ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useReducer,
+    useRef,
+    useState
+} from 'react';
 import moment from 'moment';
 
 import { getDateFormat } from '../util/Date';
@@ -79,6 +90,14 @@ export const EditInlineField: FC<Props> = memo(props => {
         }
         setState({ ignoreBlur: false });
     }, [allowBlank, getInputValue, isDate, saveEdit, state.ignoreBlur]);
+
+    // The onBlur callback doesn't have the desired effect for the date picker fields
+    // because after picking a date the input field is not focused, so there is no blur event.
+    useEffect(() => {
+        if (state.editing) {
+            onBlur();
+        }
+    }, [dateValue]);
 
     const onDateChange = useCallback((date: Date | [Date, Date]) => {
         if (date instanceof Array) throw new Error('Unsupported date type');

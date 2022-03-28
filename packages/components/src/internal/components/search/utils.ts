@@ -266,7 +266,9 @@ export function getSampleFinderFilterOptionsForType(jsonType: JsonType): FieldFi
             multiValue: filter.isMultiValued(),
             betweenOperator: isBetweenOperator(urlSuffix),
             isSoleFilter:
-                urlSuffix === Filter.Types.EQUAL.getURLSuffix() || urlSuffix === Filter.Types.ISBLANK.getURLSuffix(),
+                urlSuffix === Filter.Types.EQUAL.getURLSuffix() ||
+                urlSuffix === Filter.Types.ISBLANK.getURLSuffix() ||
+                urlSuffix === Filter.Types.DATE_EQUAL.getURLSuffix(),
         } as FieldFilterOption;
     });
 }
@@ -660,15 +662,13 @@ export function getUpdatedDataTypeFilters(
 
     // the filters on the parent type associated with this field.
     const thisFieldFilters =
-        newFilters?.map(newFilter => {
-            if (newFilter != null) {
-                return {
-                    fieldKey: activeFieldKey,
-                    fieldCaption: activeField.caption,
-                    filter: newFilter,
-                    jsonType: activeField.getDisplayFieldJsonType(),
-                } as FieldFilter;
-            }
+        newFilters?.filter(newFilter => newFilter != null).map(newFilter => {
+            return {
+                fieldKey: activeFieldKey,
+                fieldCaption: activeField.caption,
+                filter: newFilter,
+                jsonType: activeField.getDisplayFieldJsonType(),
+            } as FieldFilter;
         }) ?? [];
 
     if (otherFieldFilters.length + thisFieldFilters.length > 0) {

@@ -1247,6 +1247,25 @@ describe('getUpdatedDataTypeFilters', () => {
         });
     });
 
+    test('remove all filters with null filter in array', () => {
+        const updatedFilters = getUpdatedDataTypeFilters(
+            DATA_TYPE_FILTERS,
+            PARENT_WITH_FILTERS,
+            QueryColumn.create({
+                name: stringEqualFilter.fieldKey,
+                caption: stringEqualFilter.fieldCaption,
+                fieldKey: stringEqualFilter.fieldKey,
+            }),
+            [null]
+        );
+        expect(updatedFilters).toStrictEqual({
+            [PARENT_WITH_FILTERS]: [
+                intEqFilter,
+            ],
+            [PARENT_WITHOUT_FILTERS]: []
+        });
+    });
+
     test('update one filter', () => {
         const updatedFilters = getUpdatedDataTypeFilters(
             DATA_TYPE_FILTERS,

@@ -164,7 +164,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const { filterType, firstFilterValue, secondFilterValue } = activeFilters[filterIndex];
             if (!filterType || !filterType.valueRequired) return null;
 
-            const suffix = isSecondInput ? '-second' : '';
+            const suffix = '-' + filterIndex + (isSecondInput ? 'second' : '');
             const valueRaw = isSecondInput ? secondFilterValue : firstFilterValue;
 
             const jsonType = field.getDisplayFieldJsonType();
@@ -179,7 +179,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         isClearable
                         required
                         selected={valueRaw ? parseDate(valueRaw) : undefined}
-                        name={'field-value-date-' + filterIndex + suffix}
+                        name={'field-value-date' + suffix}
                         onChange={newDate =>
                             updateDateFilterFieldValue(filterIndex, newDate, showTimeStamp, isSecondInput)
                         }
@@ -195,7 +195,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                 checked={valueRaw == 'true'}
                                 className=""
                                 type="radio"
-                                name="field-value-bool"
+                                name={'field-value-bool' + suffix}
                                 value="true"
                                 onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
                             />{' '}
@@ -206,7 +206,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                 checked={valueRaw != 'true'}
                                 className=""
                                 type="radio"
-                                name="field-value-bool"
+                                name={'field-value-bool' + suffix}
                                 value="false"
                                 onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
                             />{' '}

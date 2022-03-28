@@ -11,8 +11,6 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { resolveErrorMessage } from '../../util/messaging';
-
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
@@ -20,6 +18,7 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter } from './models';
+import { isChooseValuesFilter } from './utils';
 
 enum EntityFieldFilterTabs {
     Filter = 'Filter',
@@ -37,7 +36,7 @@ interface Props {
     filters: { [key: string]: FieldFilter[] };
     fullWidth?: boolean;
     metricFeatureArea?: string;
-    onFilterUpdate: (field: QueryColumn, newFilter: Filter.IFilter) => void;
+    onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
     queryInfo: QueryInfo;
     selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
     skipDefaultViewCheck?: boolean;
@@ -70,6 +69,51 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         return col?.allowFaceting() && col?.getDisplayFieldJsonType() === 'string'; // current plan is to only support facet for string fields, to reduce scope
     };
 
+    const filterStatus = useMemo(() => {
+        const status = {};
+        if (!filters) return {};
+
+        Object.keys(filters).forEach(parent => {
+            const filterFields = filters[parent];
+            filterFields.forEach(field => {
+                if (field.filter.getFilterType() !== NOT_ANY_FILTER_TYPE) {
+                    const key = parent + '-' + field.fieldKey;
+                    status[key] = true;
+                }
+            });
+        });
+
+        return status;
+    }, [filters]);
+
+    const hasFilters = useCallback(
+        (field: QueryColumn) => {
+            return filterStatus?.[queryName + '-' + field.fieldKey];
+        },
+        [filterStatus, queryName]
+    );
+
+    const getDefaultActiveTab = useCallback(
+        (field: QueryColumn) => {
+            if (!allowFaceting(field)) {
+                return EntityFieldFilterTabs.Filter;
+            }
+            if (!hasFilters(field)) {
+                return EntityFieldFilterTabs.ChooseValues;
+            }
+            const currentFieldFilters = filters[queryName].filter(
+                filterField => filterField.fieldKey === field.fieldKey
+            );
+            if (currentFieldFilters.length > 1) {
+                return EntityFieldFilterTabs.Filter;
+            }
+            return isChooseValuesFilter(currentFieldFilters[0].filter)
+                ? EntityFieldFilterTabs.ChooseValues
+                : EntityFieldFilterTabs.Filter;
+        },
+        [hasFilters, filters, queryName]
+    );
+
     useEffect(() => {
         setQueryFields(undefined);
         setActiveField(undefined);
@@ -88,37 +132,28 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         if (fieldKey) {
             const field = fields.find(f => f.getDisplayFieldKey() === fieldKey);
             setActiveField(field);
-            setActiveTab(allowFaceting(field) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter);
+            setActiveTab(getDefaultActiveTab(field));
         }
-    }, [api, queryInfo, skipDefaultViewCheck, validFilterField, entityDataType?.exprColumnsWithSubSelect, fieldKey]);
+    }, [
+        queryInfo,
+        skipDefaultViewCheck,
+        validFilterField,
+        entityDataType?.exprColumnsWithSubSelect,
+        fieldKey,
+        viewName,
+        hasFilters,
+    ]);
 
     const activeFieldKey = useMemo(() => {
         return activeField?.getDisplayFieldKey();
     }, [activeField]);
 
-    const currentFieldFilter = useMemo(() => {
+    const currentFieldFilters = useMemo((): FieldFilter[] => {
         if (!filters || !activeField) return null;
 
         const activeQueryFilters: FieldFilter[] = filters[queryName];
-        return activeQueryFilters?.find(filter => filter.fieldKey === activeFieldKey);
+        return activeQueryFilters?.filter(filter => filter.fieldKey === activeFieldKey);
     }, [activeField, queryName, filters, activeFieldKey]);
-
-    const filterStatus = useMemo(() => {
-        const status = {};
-        if (!filters) return {};
-
-        Object.keys(filters).forEach(query => {
-            const filterFields = filters[query];
-            filterFields.forEach(field => {
-                if (field.filter.getFilterType() !== NOT_ANY_FILTER_TYPE) {
-                    const key = query + '-' + field.fieldKey;
-                    status[key] = true;
-                }
-            });
-        });
-
-        return status;
-    }, [filters]);
 
     const fieldDistinctValueFilters = useMemo(() => {
         if (!filters || !queryName || !activeField) return null;
@@ -135,8 +170,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const onFieldClick = useCallback((queryColumn: QueryColumn) => {
         setActiveField(queryColumn);
-        setActiveTab(allowFaceting(queryColumn) ? EntityFieldFilterTabs.ChooseValues : EntityFieldFilterTabs.Filter);
-    }, []);
+        setActiveTab(getDefaultActiveTab(queryColumn));
+    }, [hasFilters]);
 
     const onTabChange = useCallback(
         (tabKey: any) => {
@@ -160,7 +195,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                         {queryFields?.map((field, index) => {
                             const { caption } = field;
                             const currFieldKey = field.getDisplayFieldKey();
-                            const hasFilter = filterStatus?.[queryName + '-' + currFieldKey];
                             return (
                                 <ChoicesListItem
                                     active={currFieldKey === activeFieldKey}
@@ -169,7 +203,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                     label={caption}
                                     onSelect={() => onFieldClick(field)}
                                     componentRight={
-                                        hasFilter && <span className="pull-right filter-modal__field_dot" />
+                                        hasFilters(field) && <span className="pull-right filter-modal__field_dot" />
                                     }
                                 />
                             );
@@ -206,9 +240,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                             <FilterExpressionView
                                                 key={activeFieldKey}
                                                 field={activeField}
-                                                fieldFilter={currentFieldFilter?.filter}
-                                                onFieldFilterUpdate={newFilter =>
-                                                    onFilterUpdate(activeField, newFilter)
+                                                fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
+                                                onFieldFilterUpdate={(newFilters, index) =>
+                                                    onFilterUpdate(activeField, newFilters, index)
                                                 }
                                             />
                                         )}
@@ -231,11 +265,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                     // selectDistinctOptions.filterArray from props in fieldDistinctValueFilters
                                                     filterArray: fieldDistinctValueFilters,
                                                 }}
-                                                fieldFilter={currentFieldFilter?.filter}
+                                                fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
                                                 fieldKey={activeFieldKey}
                                                 key={activeFieldKey}
-                                                onFieldFilterUpdate={newFilter =>
-                                                    onFilterUpdate(activeField, newFilter)
+                                                onFieldFilterUpdate={(newFilters, index) =>
+                                                    onFilterUpdate(activeField, newFilters, index)
                                                 }
                                             />
                                         </Tab.Pane>

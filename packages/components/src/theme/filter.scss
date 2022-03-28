@@ -133,6 +133,12 @@
             text-transform: uppercase;
         }
 
+        .filter-display__field-boolean {
+            float: right;
+            font-style: italic;
+            padding-top: 10px;
+        }
+
         .filter-display__filter-content {
             padding-top: 10px;
 

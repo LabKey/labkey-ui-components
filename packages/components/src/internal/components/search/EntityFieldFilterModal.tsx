@@ -21,7 +21,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
 import { FieldFilter, FilterProps } from './models';
-import { getFieldFiltersValidationResult, isValidFilterFieldExcludeLookups } from './utils';
+import { getFieldFiltersValidationResult, getUpdatedDataTypeFilters, isValidFilterFieldExcludeLookups } from './utils';
 import { QueryFilterPanel } from './QueryFilterPanel';
 
 interface Props {
@@ -59,6 +59,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const [activeQueryInfo, setActiveQueryInfo] = useState<QueryInfo>(undefined);
     const [loadingError, setLoadingError] = useState<string>(undefined);
     const [filterError, setFilterError] = useState<string>(undefined);
+
+    // key is the parent query name
     const [dataTypeFilters, setDataTypeFilters] = useState<{ [key: string]: FieldFilter[] }>({});
 
     const onEntityClick = useCallback(async (selectedQueryName: string) => {
@@ -136,7 +138,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const _onFind = useCallback(() => {
         const queryLabels = {};
-        entityQueries?.map(parent => {
+        entityQueries?.forEach(parent => {
             const label = parent.label ?? parent.get?.('label');
             const parentValue = parent.value ?? parent.get?.('value');
             queryLabels[parentValue] = label;
@@ -151,29 +153,9 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     }, [api, metricFeatureArea, entityQueries, entityDataType.instanceSchemaName, onFind, validDataTypeFilters]);
 
     const onFilterUpdate = useCallback(
-        (field: QueryColumn, newFilter: Filter.IFilter) => {
+        (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => {
             setFilterError(undefined);
-
-            const dataTypeFiltersUpdated = { ...dataTypeFilters };
-            const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
-            const activeFieldKey = field.getDisplayFieldKey();
-            const newParentFilters = activeParentFilters?.filter(filter => filter.fieldKey !== activeFieldKey) ?? [];
-
-            if (newFilter !== null)
-                newParentFilters.push({
-                    fieldKey: activeFieldKey,
-                    fieldCaption: field.caption,
-                    filter: newFilter,
-                    jsonType: field.getDisplayFieldJsonType(),
-                } as FieldFilter);
-
-            if (newParentFilters?.length > 0) {
-                dataTypeFiltersUpdated[activeQuery] = newParentFilters;
-            } else {
-                delete dataTypeFiltersUpdated[activeQuery];
-            }
-
-            setDataTypeFilters(dataTypeFiltersUpdated);
+            setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, field, newFilters));
         },
         [dataTypeFilters, activeQuery]
     );

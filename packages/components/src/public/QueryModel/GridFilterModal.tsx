@@ -69,19 +69,21 @@ export const GridFilterModal: FC<Props> = memo(props => {
     }, [filters, onApply, queryInfo]);
 
     const onFilterUpdate = useCallback(
-        (field: QueryColumn, newFilter: Filter.IFilter) => {
+        (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => {
             setFilterError(undefined);
 
             const activeFieldKey = field.getDisplayFieldKey();
             const updatedFilters = filters?.filter(fieldFilter => fieldFilter.fieldKey !== activeFieldKey) ?? [];
 
-            if (newFilter !== null) {
-                updatedFilters.push({
-                    fieldKey: activeFieldKey,
-                    fieldCaption: field.caption,
-                    filter: newFilter,
-                    jsonType: field.getDisplayFieldJsonType(),
-                } as FieldFilter);
+            if (newFilters) {
+                newFilters.forEach(newFilter => {
+                    updatedFilters.push({
+                        fieldKey: activeFieldKey,
+                        fieldCaption: field.caption,
+                        filter: newFilter,
+                        jsonType: field.getDisplayFieldJsonType(),
+                    } as FieldFilter);
+                });
             }
 
             setFilters(updatedFilters);

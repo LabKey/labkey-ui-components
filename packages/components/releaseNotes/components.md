@@ -5,6 +5,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 10192: Support two filter clauses per field in the `FilterExpressionView` and `FilterCards`
 
+### version 2.146.0
+*Released*: 27 March 2022
+* Package updates for `devDependencies`.
+* Refactor builds to use `sass` instead of `node-sass`.
+* Utilize scss exports from dependent packages when possible.
+* Add `resolve-url-loader` for handling URLs in scss sources. Required for inclusion of certain packages (e.g. font-awesome).
+* Suppress logging of warnings when publishing in `@labkey/components`. Makes use of the [webpack "stats" property](https://webpack.js.org/configuration/stats/).
+* Move declaration of theme/index.scss include.
+
 ### version 2.145.2
 *Released*: 24 March 2022
 * Support `containerPath` on `LookupSelectInput` and `withAssayModels`.

@@ -42,14 +42,15 @@ interface HeaderCellDropdownProps {
     model?: QueryModel;
 }
 
-const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
+// exported for jest testing
+export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const { i, column, selectable, columnCount, handleSort, handleFilter, headerClickCount, model } = props;
     const col: QueryColumn = column.raw;
     const gridColSortFilterEnabled = isGridColSortFilterEnabled();
     const [open, setOpen] = useState<boolean>();
 
-    const allowColSort = handleSort !== undefined && col.sortable;
-    const allowColFilter = handleFilter !== undefined && col.filterable;
+    const allowColSort = handleSort !== undefined && col?.sortable;
+    const allowColFilter = handleFilter !== undefined && col?.filterable;
     const includeDropdown = allowColSort || allowColFilter;
 
     const onToggleClick = useCallback((shouldOpen: boolean, evt?: any) => {
@@ -117,17 +118,14 @@ const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 <span className={classNames({ 'pull-right': (i === 0 && !selectable) || (selectable && i === 1) })}>
                     <Dropdown
                         id={`grid-menu-${i}`}
-                        className={classNames('hidden-xs hidden-sm', {
+                        className={classNames({
                             'pull-right': isOnlyColumn || (i > 0 && !selectable) || i > 1,
                         })}
                         onToggle={onToggleClick}
                         open={open}
                     >
                         <CustomToggle bsRole="toggle">
-                            <span
-                                className="fa fa-chevron-circle-down"
-                                style={{ color: 'lightgray', fontSize: '12px' }}
-                            />
+                            <span className="fa fa-chevron-circle-down grid-panel__menu-toggle" />
                         </CustomToggle>
                         <Dropdown.Menu>
                             {gridColSortFilterEnabled && allowColFilter && (

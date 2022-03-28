@@ -1,4 +1,4 @@
-import { Filter, getServerContext } from '@labkey/api';
+import { Filter, getServerContext, Utils } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { JsonType } from '../domainproperties/PropDescType';
@@ -18,8 +18,9 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfFilterType';
 import { getLabKeySql } from '../../query/filter';
 
-import { FieldFilter, FieldFilterOption, FilterProps, SearchSessionStorageProps } from './models';
 import { QueryInfo } from '../../../public/QueryInfo';
+
+import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -34,8 +35,7 @@ export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): str
 }
 
 export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQuery: SchemaQuery): string {
-    return entityDataType.inputColumnName
-        .replace('First', schemaQuery.queryName);
+    return entityDataType.inputColumnName.replace('First', schemaQuery.queryName);
 }
 
 const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
@@ -132,10 +132,12 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<Quer
                 const filter = f.filter;
                 const columnName = filter.getColumnName();
 
-                // The'Name' field is redundant since we always add a column for the parent type ID
+                // The 'Name' field is redundant since we always add a column for the parent type ID
                 if (columnName != 'Name') {
                     const newColumnName = cardColumnName + '/' + columnName;
-                    requiredColumns.push(newColumnName);
+                    if (requiredColumns.indexOf(newColumnName) === -1) {
+                        requiredColumns.push(newColumnName);
+                    }
                 }
             });
 
@@ -231,13 +233,21 @@ export const SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE = [
     ...NEGATE_FILTERS,
 ];
 
+const CHOOSE_VALUE_FILTERS = [
+    Filter.Types.EQUAL.getURLSuffix(),
+    Filter.Types.IN.getURLSuffix(),
+    Filter.Types.NEQ.getURLSuffix(),
+    Filter.Types.NEQ_OR_NULL.getURLSuffix(),
+    Filter.Types.NOT_IN.getURLSuffix(),
+];
+
 export function isBetweenOperator(urlSuffix: string): boolean {
     return ['between', 'notbetween'].indexOf(urlSuffix) > -1;
 }
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
 
-export function getSampleFinderFilterTypesForType(jsonType: JsonType): FieldFilterOption[] {
+export function getSampleFinderFilterOptionsForType(jsonType: JsonType): FieldFilterOption[] {
     const filterList = Filter.getFilterTypesForType(jsonType).filter(function (result) {
         return SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE.indexOf(result.getURLSuffix()) === -1;
     });
@@ -255,6 +265,10 @@ export function getSampleFinderFilterTypesForType(jsonType: JsonType): FieldFilt
             valueRequired: filter.isDataValueRequired(),
             multiValue: filter.isMultiValued(),
             betweenOperator: isBetweenOperator(urlSuffix),
+            isSoleFilter:
+                urlSuffix === Filter.Types.EQUAL.getURLSuffix() ||
+                urlSuffix === Filter.Types.ISBLANK.getURLSuffix() ||
+                urlSuffix === Filter.Types.DATE_EQUAL.getURLSuffix(),
         } as FieldFilterOption;
     });
 }
@@ -277,6 +291,10 @@ export function getFilterTypePlaceHolder(suffix: string, jsonType: string): stri
     }
 
     return null;
+}
+
+export function isChooseValuesFilter(filter: Filter.IFilter): boolean {
+    return CHOOSE_VALUE_FILTERS.indexOf(filter.getFilterType().getURLSuffix()) >= 0;
 }
 
 export function filterToJson(filter: Filter.IFilter): string {
@@ -397,17 +415,25 @@ export function getFieldFiltersValidationResult(
                 const isBetween = isBetweenOperator(filter.getFilterType().getURLSuffix());
 
                 let fieldError = false;
-                if (value === undefined || value === null) {
+                if (value === undefined || value === null || (Utils.isString(value) && !value)) {
                     fieldError = true;
                 } else if (isBetween) {
-                    if (!Array.isArray(value) || value.length < 2) fieldError = true;
+                    if (!Array.isArray(value) || value.length < 2) {
+                        fieldError = true;
+                    } else {
+                        if ((Utils.isString(value[0]) && !value[0]) || (Utils.isString(value[1]) && !value[1])) {
+                            fieldError = true;
+                        }
+                    }
                 }
 
                 if (fieldError == true) {
                     hasError = true;
                     const fields = parentFields[parent] ?? [];
-                    fields.push(fieldFilter.fieldCaption);
-                    parentFields[parent] = fields;
+                    if (fields.indexOf(fieldFilter.fieldCaption) === -1) {
+                        fields.push(fieldFilter.fieldCaption);
+                        parentFields[parent] = fields;
+                    }
                 }
             }
         });
@@ -419,10 +445,22 @@ export function getFieldFiltersValidationResult(
             const parentLabel = queryLabels?.[parent] ?? parent;
             parentMsgs.push(parentLabel + ': ' + parentFields[parent].join(', '));
         });
-        return 'Missing filter values for: ' + parentMsgs.join('; ')+ '.';
+        return 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
     }
 
     return null;
+}
+
+export function getFilterForFilterSelection(filterSelection: FilterSelection, field: QueryColumn): Filter.IFilter {
+    return getUpdateFilterExpressionFilter(
+        filterSelection.filterType,
+        field,
+        filterSelection.firstFilterValue,
+        filterSelection.secondFilterValue,
+        filterSelection.firstFilterValue,
+        false,
+        false
+    );
 }
 
 export function getUpdateFilterExpressionFilter(
@@ -452,14 +490,21 @@ export function getUpdateFilterExpressionFilter(
             if (clearBothValues) {
                 value = null;
             } else if (isSecondValue) {
-                if (newFilterValue == null) value = previousFirstFilterValue != null ? previousFirstFilterValue : '';
-                else value = (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') + newFilterValue;
+                if (newFilterValue == null) {
+                    value = previousFirstFilterValue != null ? previousFirstFilterValue : '';
+                } else {
+                    value = (previousFirstFilterValue != null ? previousFirstFilterValue + ',' : '') + newFilterValue;
+                }
             } else {
-                if (newFilterValue == null) value = previousSecondFilterValue != null ? previousSecondFilterValue : '';
-                else
+                if (newFilterValue == null) {
+                    value = previousSecondFilterValue != null ? previousSecondFilterValue : '';
+                } else {
                     value = newFilterValue + (previousSecondFilterValue != null ? ',' + previousSecondFilterValue : '');
+                }
             }
-        } else if (!value && field.getDisplayFieldJsonType() === 'boolean') value = 'false';
+        } else if (!value && field.getDisplayFieldJsonType() === 'boolean') {
+            value = 'false';
+        }
 
         filter = Filter.create(fieldKey, value, filterType);
     }
@@ -486,7 +531,9 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
         case 'isblank':
             return [EMPTY_VALUE_DISPLAY];
         case 'isnonblank':
-            return hasBlank ? allValues.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY) : allValues;
+            return hasBlank
+                ? allValues.filter(value => value !== EMPTY_VALUE_DISPLAY && value !== ALL_VALUE_DISPLAY)
+                : allValues;
         case 'neq':
         case 'neqornull':
             return allValues.filter(value => value !== filterValues[0] && value !== ALL_VALUE_DISPLAY);
@@ -585,15 +632,143 @@ export function getUpdatedChooseValuesFilter(
 
 export function isValidFilterField(field: QueryColumn, queryInfo: QueryInfo, entityDataType): boolean {
     // cannot include fields that are not supported by the database
-    if (!queryInfo.supportGroupConcatSubSelect &&
-        (entityDataType.exprColumnsWithSubSelect && entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) !== -1)) {
+    if (
+        !queryInfo.supportGroupConcatSubSelect &&
+        entityDataType.exprColumnsWithSubSelect &&
+        entityDataType.exprColumnsWithSubSelect.indexOf(field.fieldKey) !== -1
+    ) {
         return false;
     }
     // exclude the storage Units field for sample types since the display of this field is nonstandard and it is not
     // a useful field for filtering parent values
-    if (isSamplesSchema(queryInfo.schemaQuery) && field.fieldKey === "Units") {
+    if (isSamplesSchema(queryInfo.schemaQuery) && field.fieldKey === 'Units') {
         return false;
     }
     // also exclude lookups since MVFKs don't support following lookups
     return !field.isLookup();
+}
+
+export function getUpdatedDataTypeFilters(
+    dataTypeFilters: { [p: string]: FieldFilter[] },
+    activeQuery: string,
+    activeField: QueryColumn,
+    newFilters: Filter.IFilter[]
+): { [p: string]: FieldFilter[] } {
+    const dataTypeFiltersUpdated = { ...dataTypeFilters };
+    const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
+    const activeFieldKey = activeField.fieldKey;
+    // the filters on the parent type that aren't associated with this field.
+    const otherFieldFilters = activeParentFilters?.filter(filter => filter.fieldKey !== activeFieldKey) ?? [];
+
+    // the filters on the parent type associated with this field.
+    const thisFieldFilters =
+        newFilters?.filter(newFilter => newFilter != null).map(newFilter => {
+            return {
+                fieldKey: activeFieldKey,
+                fieldCaption: activeField.caption,
+                filter: newFilter,
+                jsonType: activeField.getDisplayFieldJsonType(),
+            } as FieldFilter;
+        }) ?? [];
+
+    if (otherFieldFilters.length + thisFieldFilters.length > 0) {
+        dataTypeFiltersUpdated[activeQuery] = [...otherFieldFilters, ...thisFieldFilters];
+    } else {
+        delete dataTypeFiltersUpdated[activeQuery];
+    }
+    return dataTypeFiltersUpdated;
+}
+
+export function getFilterSelections(
+    fieldFilters: Filter.IFilter[],
+    filterOptions: FieldFilterOption[]
+): FilterSelection[] {
+    const filters = [];
+    fieldFilters?.forEach(fieldFilter => {
+        const filterOption = filterOptions?.find(option => {
+            return isFilterUrlSuffixMatch(option.value, fieldFilter.getFilterType());
+        });
+
+        if (filterOption) {
+            const filter: FilterSelection = {
+                filterType: filterOption,
+            };
+
+            const values = getFilterValuesAsArray(fieldFilter, '');
+            if (filterOption.betweenOperator) {
+                filter.firstFilterValue = values[0];
+                filter.secondFilterValue = values[1];
+            } else if (values.length > 1) {
+                filter.firstFilterValue = values.join(';');
+            } else {
+                filter.firstFilterValue = values[0];
+            }
+            filters.push(filter);
+        }
+    });
+    return filters;
+}
+
+export function getUpdatedFilters(
+    field: QueryColumn,
+    activeFilters: FilterSelection[],
+    filterIndex: number,
+    newFilterType: FieldFilterOption,
+    newFilterValue?: any,
+    isSecondValue?: boolean,
+    clearBothValues?: boolean,
+) : Filter.IFilter[] {
+    const newFilter = getUpdateFilterExpressionFilter(
+        newFilterType,
+        field,
+        activeFilters[filterIndex]?.firstFilterValue,
+        activeFilters[filterIndex]?.secondFilterValue,
+        newFilterValue,
+        isSecondValue,
+        clearBothValues
+    );
+    let newFilters = [];
+    if (!newFilter) {
+        if (activeFilters.length > 1) {
+            // retain the other filter
+            newFilters = [getFilterForFilterSelection(activeFilters[filterIndex == 1 ? 0 : 1], field)];
+        }
+    } else {
+        if (newFilterType.isSoleFilter) {
+            newFilters = [newFilter];
+        } else {
+            if (filterIndex === 1) {
+                newFilters = [getFilterForFilterSelection(activeFilters[0], field), newFilter];
+            } else {
+                newFilters = activeFilters.length <= 1 ? [newFilter] : [newFilter, getFilterForFilterSelection(activeFilters[1], field)];
+            }
+        }
+    }
+    return newFilters;
+}
+
+export function getUpdatedFilterSelection(
+    newActiveFilterType: FieldFilterOption,
+    activeFilter: FilterSelection
+) : { shouldClear: boolean; filterSelection: FilterSelection } {
+    let firstValue = activeFilter?.firstFilterValue;
+    let shouldClear = false;
+
+    // when a value is required, we want to start with 'undefined' instead of 'null' since 'null' is seen as a valid value
+    if ((newActiveFilterType?.valueRequired && !activeFilter?.filterType.valueRequired) ||
+        (activeFilter?.filterType?.multiValue && !newActiveFilterType?.multiValue)) {
+        firstValue = undefined;
+        shouldClear = true;
+    } else if (!newActiveFilterType?.valueRequired) { // if value is not required, then we'll start with null
+        firstValue = null;
+        shouldClear = true;
+    }
+    return {
+        shouldClear,
+        filterSelection: {
+            filterType: newActiveFilterType,
+            firstFilterValue: firstValue,
+            secondFilterValue: shouldClear ? undefined : activeFilter?.secondFilterValue,
+        }
+    };
 }

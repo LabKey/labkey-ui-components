@@ -20,7 +20,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.scss$/,
+                test: /\.s[ac]ss$/i,
                 use: [
                     {
                         loader: 'css-loader',
@@ -28,9 +28,16 @@ module.exports = {
                             importLoaders: 1
                         }
                     },{
+                        loader: 'resolve-url-loader',
+                        options: {
+                            silent: true,
+                        }
+                    },{
                         loader: 'sass-loader',
                         options: {
-                            sourceMap: true
+                            implementation: require('sass'),
+                            sourceMap: true,
+                            warnRuleAsWarning: true,
                         }
                     }
                 ]
@@ -104,7 +111,10 @@ module.exports = {
                 }
             ]
         }),
-        new IgnorePlugin(/^\.\/locale$/, /moment$/)
+        new IgnorePlugin({
+            resourceRegExp: /^\.\/locale$/,
+            contextRegExp: /moment$/,
+        })
     ],
     externals: [
         '@labkey/api',
@@ -132,5 +142,6 @@ module.exports = {
         'react-treebeard',
         'redux-actions',
         'xhr-mock',
-    ]
+    ],
+    stats: process.env.WEBPACK_STATS,
 };

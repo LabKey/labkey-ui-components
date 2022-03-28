@@ -15,6 +15,8 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
+import './theme/index.scss';
+
 import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';

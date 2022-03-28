@@ -39,15 +39,13 @@ export const GridFilterModal: FC<Props> = memo(props => {
         onCancel();
     }, [onCancel]);
 
-    const validDataTypeFilters = useMemo(() => {
+    const validFieldFilters = useMemo(() => {
         if (!filters) return null;
 
-        const validFilters = filters.filter(fieldFilter => {
+        return filters.filter(fieldFilter => {
             const urlSuffix = fieldFilter?.filter?.getFilterType()?.getURLSuffix();
             return urlSuffix !== NOT_ANY_FILTER_TYPE.getURLSuffix() && urlSuffix !== '';
         });
-
-        return validFilters;
     }, [filters]);
 
     const _onApply = useCallback(() => {
@@ -56,17 +54,12 @@ export const GridFilterModal: FC<Props> = memo(props => {
             { [queryInfo.name.toLowerCase()]: queryInfo.title }
         );
         if (!filterErrors) {
-            const validFilters = filters
-                .filter(fieldFilter => {
-                    const urlSuffix = fieldFilter?.filter?.getFilterType()?.getURLSuffix();
-                    return urlSuffix !== NOT_ANY_FILTER_TYPE.getURLSuffix() && urlSuffix !== '';
-                })
-                .map(fieldFilter => fieldFilter.filter);
+            const validFilters = validFieldFilters.map(fieldFilter => fieldFilter.filter);
             onApply(validFilters);
         } else {
             setFilterError(filterErrors);
         }
-    }, [filters, onApply, queryInfo]);
+    }, [filters, onApply, queryInfo, validFieldFilters]);
 
     const onFilterUpdate = useCallback(
         (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => {
@@ -124,7 +117,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
                         type="button"
                         className="btn btn-success"
                         onClick={_onApply}
-                        disabled={Object.keys(validDataTypeFilters).length === 0}
+                        disabled={Object.keys(validFieldFilters).length === 0}
                     >
                         Apply
                     </button>

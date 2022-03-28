@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.147.0
+*Released*: 28 March 2022
 * Item 10192: Support two filter clauses per field in the `FilterExpressionView` and `FilterCards`
 
 ### version 2.146.0

@@ -12,122 +12,157 @@ import { JsonType } from '../domainproperties/PropDescType';
 import { formatDate, isDateTimeCol } from '../../util/Date';
 
 import {
+    getFilterSelections,
     getFilterTypePlaceHolder,
-    getFilterValuesAsArray,
-    getSampleFinderFilterTypesForType,
-    getUpdateFilterExpressionFilter,
-    isFilterUrlSuffixMatch,
+    getSampleFinderFilterOptionsForType,
+    getUpdatedFilters,
+    getUpdatedFilterSelection,
 } from './utils';
-import { FieldFilterOption } from './models';
+import { FieldFilterOption, FilterSelection } from './models';
 
 interface Props {
     field: QueryColumn;
-    fieldFilter: Filter.IFilter; // only one filter supported for v1
-    onFieldFilterUpdate?: (newFilter: Filter.IFilter) => void;
+    fieldFilters: Filter.IFilter[];
+    onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index: number) => void;
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { field, fieldFilter, onFieldFilterUpdate } = props;
+    const { field, fieldFilters, onFieldFilterUpdate } = props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
-    const [activeFilterType, setActiveFilterType] = useState<FieldFilterOption>(undefined);
-    const [firstFilterValue, setFirstFilterValue] = useState<any>();
-    const [secondFilterValue, setSecondFilterValue] = useState<any>();
+    const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);
+    const [removeFilterCount, setRemoveFilterCount] = useState<number>(0);
 
     useEffect(() => {
-        const filterOptions = getSampleFinderFilterTypesForType(field?.getDisplayFieldJsonType() as JsonType);
+        const filterOptions = getSampleFinderFilterOptionsForType(field?.getDisplayFieldJsonType() as JsonType);
         setFieldFilterOptions(filterOptions);
+        setActiveFilters(getFilterSelections(fieldFilters, filterOptions));
+    }, [field]); // leave fieldFilters out of deps list, fieldFilters is used to init once
 
-        if (fieldFilter) {
-            const filterOption = filterOptions?.find(option => {
-                return isFilterUrlSuffixMatch(option.value, fieldFilter.getFilterType());
-            });
-
-            if (filterOption) {
-                setActiveFilterType(filterOption);
-
-                const values = getFilterValuesAsArray(fieldFilter, '');
-                if (filterOption.betweenOperator) {
-                    setFirstFilterValue(values[0]);
-                    setSecondFilterValue(values[1]);
-                } else if (values.length > 1) {
-                    setFirstFilterValue(values.join(';'));
-                } else {
-                    setFirstFilterValue(values[0]);
-                }
-            }
-        }
-    }, [field]); // leave fieldFilter out of deps list, fieldFilter is used to init once
+    const unusedFilterOptions = useCallback(
+        (thisIndex: number): FieldFilterOption[] => {
+            const otherIndex = thisIndex == 1 ? 0 : 1;
+            return fieldFilterOptions?.filter(
+                option =>
+                    (thisIndex == 0 || !option.isSoleFilter) &&
+                    activeFilters[otherIndex]?.filterType.value !== option.value
+            );
+        },
+        [fieldFilterOptions, activeFilters]
+    );
 
     const updateFilter = useCallback(
         (
+            filterIndex: number,
             newFilterType: FieldFilterOption,
             newFilterValue?: any,
             isSecondValue?: boolean,
             clearBothValues?: boolean
         ) => {
-            const newFilter = getUpdateFilterExpressionFilter(
-                newFilterType,
-                field,
-                firstFilterValue,
-                secondFilterValue,
-                newFilterValue,
-                isSecondValue,
-                clearBothValues
-            );
-            onFieldFilterUpdate(newFilter);
+            onFieldFilterUpdate(getUpdatedFilters(field, activeFilters, filterIndex, newFilterType, newFilterValue, isSecondValue, clearBothValues), filterIndex);
         },
-        [field, firstFilterValue, secondFilterValue]
+        [field, activeFilters]
+    );
+
+    const updateActiveFilters = useCallback(
+        (filterIndex: number, newFilterSelection: Partial<FilterSelection>) => {
+            const filterSelection = {
+                ...activeFilters[filterIndex],
+                ...newFilterSelection,
+            };
+
+            if (filterSelection.filterType) {
+                if (filterSelection.filterType.isSoleFilter) {
+                    setActiveFilters([filterSelection]);
+                } else {
+                    setActiveFilters(currentFilters => {
+                        return [
+                            ...currentFilters.slice(0, filterIndex),
+                            filterSelection,
+                            ...currentFilters.slice(filterIndex + 1),
+                        ];
+                    });
+                }
+            } else {
+                setActiveFilters(currentFilters => {
+                    return [...currentFilters.slice(0, filterIndex), ...currentFilters.slice(filterIndex + 1)];
+                });
+                // When a filter is removed, we need to recreate the selectInputs so they pick up the value from the
+                // filter that got shifted into the place that was removed. This doesn't happen through normal channels
+                // because this is part of the onChange callback for the selectInput, and it has protections against
+                // infinitely updating as a result of the onChange action.
+                setRemoveFilterCount(count => count + 1);
+            }
+        },
+        [activeFilters]
     );
 
     const onFieldFilterTypeChange = useCallback(
-        (fieldname: any, filterUrlSuffix: any) => {
+        (fieldname: any, filterUrlSuffix: any, filterIndex: number) => {
+
             const newActiveFilterType = fieldFilterOptions?.find(option => option.value === filterUrlSuffix);
-            const shouldClear = !newActiveFilterType?.valueRequired || (activeFilterType?.multiValue && !newActiveFilterType.multiValue);
-            setActiveFilterType(newActiveFilterType);
-            if (shouldClear) {
-                setFirstFilterValue(undefined);
-                setSecondFilterValue(undefined);
-            }
-            updateFilter(newActiveFilterType, shouldClear ? undefined : firstFilterValue, undefined, shouldClear);
+            const { shouldClear, filterSelection} = getUpdatedFilterSelection(newActiveFilterType, activeFilters[filterIndex]);
+
+            updateFilter(
+                filterIndex,
+                newActiveFilterType,
+                filterSelection.firstFilterValue,
+                false,
+                shouldClear
+            );
+            updateActiveFilters(filterIndex, filterSelection);
         },
-        [fieldFilterOptions,activeFilterType]
+        [fieldFilterOptions, activeFilters]
     );
 
     const updateBooleanFilterFieldValue = useCallback(
-        (event: any) => {
+        (filterIndex: number, event: any) => {
             const newValue = event.target.value;
-            setFirstFilterValue(newValue); // boolean columns don't support between operators
-            updateFilter(activeFilterType, newValue, false);
+
+            updateFilter(filterIndex, activeFilters[filterIndex]?.filterType, newValue, false);
+            updateActiveFilters(filterIndex, { firstFilterValue: newValue }); // boolean columns don't support between operators
         },
-        [activeFilterType, firstFilterValue, secondFilterValue] // updateFilter has deps on firstFilterValue & secondFilterValue
+        [activeFilters]
     );
 
     const updateTextFilterFieldValue = useCallback(
-        (event: any, isNumberInput?: boolean) => {
+        (filterIndex, event: any, isNumberInput?: boolean) => {
             let newValue = isNumberInput ? event.target.valueAsNumber : event.target.value;
             if (isNumberInput && isNaN(newValue)) newValue = null;
             const isSecondInput = event.target.name.endsWith('-second');
-            if (isSecondInput) setSecondFilterValue(newValue);
-            else setFirstFilterValue(newValue);
-            updateFilter(activeFilterType, newValue, isSecondInput);
+            const update: Partial<FilterSelection> = {};
+            if (isSecondInput) {
+                update.secondFilterValue = newValue;
+            } else {
+                update.firstFilterValue = newValue;
+            }
+
+            updateFilter(filterIndex, activeFilters[filterIndex]?.filterType, newValue, isSecondInput);
+            updateActiveFilters(filterIndex, update);
         },
-        [activeFilterType, firstFilterValue, secondFilterValue] // updateFilter has deps on firstFilterValue & secondFilterValue
+        [activeFilters]
     );
 
     const updateDateFilterFieldValue = useCallback(
-        (newValue: any, isTime: boolean, isSecondInput?: boolean) => {
+        (filterIndex: number, newValue: any, isTime: boolean, isSecondInput?: boolean) => {
             const newDate = newValue ? (isTime ? formatDateTime(newValue) : formatDate(newValue)) : null;
-            if (isSecondInput) setSecondFilterValue(newDate);
-            else setFirstFilterValue(newDate);
-            updateFilter(activeFilterType, newDate, isSecondInput);
+            const update: Partial<FilterSelection> = {};
+            if (isSecondInput) {
+                update.secondFilterValue = newDate;
+            } else {
+                update.firstFilterValue = newDate;
+            }
+
+            updateFilter(filterIndex, activeFilters[filterIndex]?.filterType, newDate, isSecondInput);
+            updateActiveFilters(filterIndex, update);
         },
-        [activeFilterType, firstFilterValue, secondFilterValue] // updateFilter has deps on firstFilterValue & secondFilterValue
+        [activeFilters]
     );
 
     const renderFilterInput = useCallback(
-        (placeholder: string, isMultiValueInput?: boolean, isSecondInput?: boolean) => {
-            if (!activeFilterType || !activeFilterType.valueRequired) return null;
+        (placeholder: string, filterIndex: number, isMultiValueInput?: boolean, isSecondInput?: boolean) => {
+            const { filterType, firstFilterValue, secondFilterValue } = activeFilters[filterIndex];
+            if (!filterType || !filterType.valueRequired) return null;
 
             const suffix = isSecondInput ? '-second' : '';
             const valueRaw = isSecondInput ? secondFilterValue : firstFilterValue;
@@ -138,14 +173,16 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 return (
                     <DatePicker
                         autoComplete="off"
-                        className="form-control filter-expression__input"
-                        wrapperClassName="form-group filter-expression__input-wrapper"
+                        className="form-control search-filter__input"
+                        wrapperClassName="form-group search-filter__input-wrapper"
                         selectsEnd
                         isClearable
                         required
                         selected={valueRaw ? parseDate(valueRaw) : undefined}
-                        name={'field-value-date' + suffix}
-                        onChange={newDate => updateDateFilterFieldValue(newDate, showTimeStamp, isSecondInput)}
+                        name={'field-value-date-' + filterIndex + suffix}
+                        onChange={newDate =>
+                            updateDateFilterFieldValue(filterIndex, newDate, showTimeStamp, isSecondInput)
+                        }
                         dateFormat={showTimeStamp ? App.getDateTimeFormat() : App.getDateFormat()}
                         showTimeSelect={showTimeStamp}
                     />
@@ -160,7 +197,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                 type="radio"
                                 name="field-value-bool"
                                 value="true"
-                                onChange={updateBooleanFilterFieldValue}
+                                onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
                             />{' '}
                             TRUE
                         </div>
@@ -171,7 +208,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                 type="radio"
                                 name="field-value-bool"
                                 value="false"
-                                onChange={updateBooleanFilterFieldValue}
+                                onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
                             />{' '}
                             FALSE
                         </div>
@@ -182,10 +219,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (!isMultiValueInput && (jsonType === 'int' || jsonType === 'float')) {
                 return (
                     <FormControl
-                        className="form-control filter-expression__input"
+                        className="form-control search-filter__input"
                         step={jsonType === 'int' ? 1 : undefined}
                         name={'field-value-text' + suffix}
-                        onChange={event => updateTextFilterFieldValue(event, true)}
+                        onChange={event => updateTextFilterFieldValue(filterIndex, event, true)}
                         pattern={jsonType === 'int' ? '-?[0-9]*' : undefined}
                         type="number"
                         value={valueRaw ?? ''}
@@ -197,50 +234,88 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
             return (
                 <input
-                    className="form-control filter-expression__input"
+                    className="form-control search-filter__input"
                     name={'field-value-text' + suffix}
                     type="text"
                     value={valueRaw ?? ''}
-                    onChange={updateTextFilterFieldValue}
+                    onChange={event => updateTextFilterFieldValue(filterIndex, event)}
                     placeholder={placeholder}
                     required
                 />
             );
         },
-        [field, activeFilterType, firstFilterValue, secondFilterValue]
+        [field, activeFilters]
     );
 
-    const renderFilterTypeInputs = useCallback(() => {
-        if (!activeFilterType || !activeFilterType.valueRequired) return null;
+    const renderFilterTypeInputs = useCallback(
+        (filterIndex: number) => {
+            if (filterIndex >= activeFilters.length) return null;
 
-        const isBetweenOperator = activeFilterType.betweenOperator;
-        const isMultiValueInput = activeFilterType.value === 'in' || activeFilterType.value === 'notin';
-        const placeholder = getFilterTypePlaceHolder(activeFilterType.value, field.getDisplayFieldJsonType());
+            const { filterType } = activeFilters[filterIndex];
+            if (!filterType || !filterType.valueRequired) return null;
 
-        if (!isBetweenOperator) return renderFilterInput(placeholder, isMultiValueInput);
+            const isBetweenOperator = filterType.betweenOperator;
+            const isMultiValueInput = filterType.value === 'in' || filterType.value === 'notin';
+            const placeholder = getFilterTypePlaceHolder(filterType.value, field.getDisplayFieldJsonType());
 
-        return (
-            <>
-                {renderFilterInput(placeholder, isMultiValueInput)}
-                <div className="filter-expression__and-op">and</div>
-                {renderFilterInput(placeholder, isMultiValueInput, true)}
-            </>
-        );
-    }, [field, activeFilterType, firstFilterValue, secondFilterValue]);
+            if (!isBetweenOperator) return renderFilterInput(placeholder, filterIndex, isMultiValueInput);
+
+            return (
+                <>
+                    {renderFilterInput(placeholder, filterIndex, isMultiValueInput)}
+                    <div className="search-filter__and-op">and</div>
+                    {renderFilterInput(placeholder, filterIndex, isMultiValueInput, true)}
+                </>
+            );
+        },
+        [field, activeFilters]
+    );
+
+    const shouldShowSecondFilter = useCallback((): boolean => {
+        if (!activeFilters?.length) return false;
+
+        if (activeFilters[0].filterType.isSoleFilter) return false;
+
+        if (!activeFilters[0].filterType.valueRequired) return true;
+
+        if (activeFilters[0].firstFilterValue === undefined) return false;
+
+        return !activeFilters[0].filterType.betweenOperator || activeFilters[0].secondFilterValue !== undefined;
+    }, [activeFilters]);
 
     return (
         <>
             <SelectInput
-                key="search-parent-field-filter-type"
+                key={'search-parent-field-filter-type-' + removeFilterCount} // we need to recreate this component when a filter is removed
                 name="search-parent-field-filter-type"
-                containerClass="form-group filter-expression__input-wrapper"
-                inputClass="filter-expression__input-select"
+                containerClass="form-group search-filter__input-wrapper"
+                inputClass="search-filter__input-select"
                 placeholder="Select a filter type..."
-                value={activeFilterType?.value}
-                onChange={onFieldFilterTypeChange}
-                options={fieldFilterOptions}
+                value={activeFilters[0]?.filterType?.value}
+                onChange={(fieldname: any, filterUrlSuffix: any) =>
+                    onFieldFilterTypeChange(fieldname, filterUrlSuffix, 0)
+                }
+                options={unusedFilterOptions(0)}
             />
-            {renderFilterTypeInputs()}
+            {renderFilterTypeInputs(0)}
+            {shouldShowSecondFilter() && (
+                <>
+                    <div className="parent-search-panel__col-sub-title">and</div>
+                    <SelectInput
+                        key="search-parent-field-filter-type"
+                        name="search-parent-field-filter-type"
+                        containerClass="form-group search-filter__input-wrapper"
+                        inputClass="search-filter__input-select"
+                        placeholder="Select a filter type..."
+                        value={activeFilters[1]?.filterType?.value}
+                        onChange={(fieldname: any, filterUrlSuffix: any) =>
+                            onFieldFilterTypeChange(fieldname, filterUrlSuffix, 1)
+                        }
+                        options={unusedFilterOptions(1)}
+                    />
+                    {renderFilterTypeInputs(1)}
+                </>
+            )}
         </>
     );
 });

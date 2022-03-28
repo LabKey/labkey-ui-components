@@ -15,6 +15,8 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
+import './theme/index.scss';
+
 import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
@@ -571,7 +573,7 @@ import {
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
-import { createMockWithRouterProps } from './test/mockUtils';
+import { createMockWithRouteLeave, createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
 import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
@@ -1411,6 +1413,7 @@ export {
     getAssayImportNotificationMsg,
     // Test Helpers
     sleep,
+    createMockWithRouteLeave,
     createMockWithRouterProps,
     makeQueryInfo,
     mountWithAppServerContextOptions,

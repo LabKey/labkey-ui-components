@@ -52,12 +52,10 @@ describe('withAssayModels', () => {
         const assayLoader = createMockAssayLoader({ loadDefinitions });
         let injectedAssayModel: AssayStateModel;
 
-        const WrappedTestComponent = withAssayModels(
-            ({ assayModel }): ReactElement => {
-                injectedAssayModel = assayModel;
-                return <div />;
-            }
-        );
+        const WrappedTestComponent = withAssayModels(({ assayModel }): ReactElement => {
+            injectedAssayModel = assayModel;
+            return <div />;
+        });
 
         // Act
         const wrapper = mount(<WrappedTestComponent assayLoader={assayLoader} />);
@@ -72,6 +70,7 @@ describe('withAssayModels', () => {
     });
     test('load protocol', async () => {
         // Arrange
+        const expectedAssayContainerPath = '/My/Assay/Container';
         const expectedAssayId = 456;
         const expectedAssayName = 'WellDefinedAssay';
 
@@ -80,13 +79,19 @@ describe('withAssayModels', () => {
         const assayLoader = createMockAssayLoader({ loadDefinitions });
 
         // Act
-        const wrapper = mount(<WithAssayModelsComponent assayLoader={assayLoader} assayName={expectedAssayName} />);
+        const wrapper = mount(
+            <WithAssayModelsComponent
+                assayContainerPath={expectedAssayContainerPath}
+                assayLoader={assayLoader}
+                assayName={expectedAssayName}
+            />
+        );
 
         // Load definitions
         await sleep();
 
         // Assert
-        expect(assayLoader.loadProtocol).toHaveBeenCalledWith(expectedAssayId);
+        expect(assayLoader.loadProtocol).toHaveBeenCalledWith(expectedAssayId, expectedAssayContainerPath);
         wrapper.unmount();
     });
     test('load protocol does not exist', async () => {
@@ -95,12 +100,10 @@ describe('withAssayModels', () => {
         const assayLoader = createMockAssayLoader();
         let injectedAssayModel: AssayStateModel;
 
-        const WrappedTestComponent = withAssayModels(
-            ({ assayModel }): ReactElement => {
-                injectedAssayModel = assayModel;
-                return <div />;
-            }
-        );
+        const WrappedTestComponent = withAssayModels(({ assayModel }): ReactElement => {
+            injectedAssayModel = assayModel;
+            return <div />;
+        });
 
         // Act
         const wrapper = mount(<WrappedTestComponent assayLoader={assayLoader} assayName={nonExistentAssayName} />);
@@ -131,12 +134,10 @@ describe('withAssayModels', () => {
         const assayLoader = createMockAssayLoader({ loadDefinitions, loadProtocol });
         let injectedAssayModel: AssayStateModel;
 
-        const WrappedTestComponent = withAssayModels(
-            ({ assayModel }): ReactElement => {
-                injectedAssayModel = assayModel;
-                return <div />;
-            }
-        );
+        const WrappedTestComponent = withAssayModels(({ assayModel }): ReactElement => {
+            injectedAssayModel = assayModel;
+            return <div />;
+        });
 
         // Act
         const wrapper = mount(<WrappedTestComponent assayLoader={assayLoader} assayName={assayName} />);
@@ -158,13 +159,11 @@ describe('withAssayModels', () => {
         let injectedAssayModel: AssayStateModel;
         let injectedReloadAssays: () => void;
 
-        const WrappedTestComponent = withAssayModels(
-            ({ assayModel, reloadAssays }): ReactElement => {
-                injectedAssayModel = assayModel;
-                injectedReloadAssays = reloadAssays;
-                return <div />;
-            }
-        );
+        const WrappedTestComponent = withAssayModels(({ assayModel, reloadAssays }): ReactElement => {
+            injectedAssayModel = assayModel;
+            injectedReloadAssays = reloadAssays;
+            return <div />;
+        });
 
         // Act
         const wrapper = mount(<WrappedTestComponent assayLoader={assayLoader} />);

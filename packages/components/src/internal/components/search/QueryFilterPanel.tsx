@@ -132,7 +132,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         if (fieldKey) {
             const field = fields.find(f => f.getDisplayFieldKey() === fieldKey);
             setActiveField(field);
-            setActiveTab(getDefaultActiveTab(field));
         }
     }, [
         queryInfo,
@@ -141,8 +140,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         entityDataType?.exprColumnsWithSubSelect,
         fieldKey,
         viewName,
-        hasFilters,
     ]);
+
+    useEffect(() => {
+        if (activeField) setActiveTab(getDefaultActiveTab(activeField));
+    }, [activeField]); // don't include getDefaultActiveTab as we only want this to be triggered when the field selection changes
 
     const activeFieldKey = useMemo(() => {
         return activeField?.getDisplayFieldKey();
@@ -170,8 +172,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const onFieldClick = useCallback((queryColumn: QueryColumn) => {
         setActiveField(queryColumn);
-        setActiveTab(getDefaultActiveTab(queryColumn));
-    }, [hasFilters]);
+    }, []);
 
     const onTabChange = useCallback(
         (tabKey: any) => {

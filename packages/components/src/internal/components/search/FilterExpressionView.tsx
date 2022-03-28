@@ -286,8 +286,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     return (
         <>
             <SelectInput
-                key={'search-parent-field-filter-type-' + removeFilterCount} // we need to recreate this component when a filter is removed
-                name="search-parent-field-filter-type"
+                key={'filter-expression-field-filter-type-' + removeFilterCount} // we need to recreate this component when a filter is removed
+                name="filter-expression-field-filter-type"
                 containerClass="form-group filter-expression__input-wrapper"
                 inputClass="filter-expression__input-select"
                 placeholder="Select a filter type..."
@@ -300,10 +300,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             {renderFilterTypeInputs(0)}
             {shouldShowSecondFilter() && (
                 <>
-                    <div className="parent-search-panel__col-sub-title">and</div>
+                    <div className="filter-modal__col-sub-title">and</div>
                     <SelectInput
-                        key="search-parent-field-filter-type"
-                        name="search-parent-field-filter-type"
+                        key="filter-expression-field-filter-type"
+                        name="filter-expression-field-filter-type"
                         containerClass="form-group filter-expression__input-wrapper"
                         inputClass="filter-expression__input-select"
                         placeholder="Select a filter type..."

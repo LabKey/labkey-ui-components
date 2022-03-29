@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 44709: Update Unique ID confirmation modal so it remains open until update is complete
+* Add per-product metric for search usage
 
 ### version 2.147.1
 *Released*: 29 March 2022

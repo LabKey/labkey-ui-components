@@ -2207,19 +2207,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className="pull-right"
                   >
                     <div
-                      className="hidden-xs hidden-sm dropdown btn-group"
+                      className="dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -2300,19 +2294,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -2377,19 +2365,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -2454,19 +2436,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -2531,19 +2507,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -2607,19 +2577,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -2683,19 +2647,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -2759,19 +2717,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -2835,19 +2787,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -2911,19 +2857,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -2987,19 +2927,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul
@@ -3064,19 +2998,13 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     className=""
                   >
                     <div
-                      className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      className="pull-right dropdown btn-group"
                     >
                       <span
                         onClick={[Function]}
                       >
                         <span
-                          className="fa fa-chevron-circle-down"
-                          style={
-                            Object {
-                              "color": "lightgray",
-                              "fontSize": "12px",
-                            }
-                          }
+                          className="fa fa-chevron-circle-down grid-panel__menu-toggle"
                         />
                       </span>
                       <ul

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.147.1
+*Released*: 29 March 2022
 * Issue 45126: Job start and due dates are not saved after being updated
 
 ### version 2.147.0

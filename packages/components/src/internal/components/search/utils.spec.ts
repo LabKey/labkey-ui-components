@@ -522,10 +522,11 @@ describe('getFieldFiltersValidationResult', () => {
 
     test('missing between filter value', () => {
         expect(
-            getFieldFiltersValidationResult({
-                sampleType1: [anyValueFilter, badIntFilter],
-                sampleType2: [intEqFilter, badIntFilter, badBetweenFilter],
-            },
+            getFieldFiltersValidationResult(
+                {
+                    sampleType1: [anyValueFilter, badIntFilter],
+                    sampleType2: [intEqFilter, badIntFilter, badBetweenFilter],
+                },
                 { sampleType1: 'sampleType1', sampleType2: 'sampleType2' }
             )
         ).toEqual('Missing filter values for: sampleType1: intField; sampleType2: intField, doubleField.');
@@ -533,11 +534,13 @@ describe('getFieldFiltersValidationResult', () => {
 
     test('string value is empty', () => {
         expect(
-            getFieldFiltersValidationResult({
-                sampleType1: [emptyStringLessThanFilter, emptyStringBetweenFilter],
-                sampleType2: [emptyStringBetweenFilter],
-            },
-                { sampleType1: 'sampleType1', sampleType2: 'sampleType2' })
+            getFieldFiltersValidationResult(
+                {
+                    sampleType1: [emptyStringLessThanFilter, emptyStringBetweenFilter],
+                    sampleType2: [emptyStringBetweenFilter],
+                },
+                { sampleType1: 'sampleType1', sampleType2: 'sampleType2' }
+            )
         ).toEqual('Missing filter values for: sampleType1: strField; sampleType2: strField.');
     });
 });
@@ -1088,95 +1091,103 @@ describe('getSampleFinderColumnNames', () => {
     });
 });
 
-describe("isValidFilterField", () => {
-    test("lookup field", () => {
+describe('isValidFilterField', () => {
+    test('lookup field', () => {
         const field = QueryColumn.create({ name: 'test', lookup: { isPublic: true } });
         const queryInfo = QueryInfo.create({
             schemaName: 'test',
             name: 'query',
-            supportGroupConcatSubSelect: true
+            supportGroupConcatSubSelect: true,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
     });
 
-    test("Units field", () => {
+    test('Units field', () => {
         const field = QueryColumn.create({ name: 'Units', fieldKey: 'Units' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-            name: "test",
-            supportGroupConcatSubSelect: true
+            name: 'test',
+            supportGroupConcatSubSelect: true,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
     });
 
-    test("group concat field not supported", () => {
+    test('group concat field not supported', () => {
         const field = QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-            name: "test",
-            supportGroupConcatSubSelect: false
+            name: 'test',
+            supportGroupConcatSubSelect: false,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
     });
 
-    test("group concat field not supported, regular field", () => {
+    test('group concat field not supported, regular field', () => {
         const field = QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-            name: "test",
-            supportGroupConcatSubSelect: false
+            name: 'test',
+            supportGroupConcatSubSelect: false,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
     });
 
-    test("group concat field not supported, no group concat fields", () => {
+    test('group concat field not supported, no group concat fields', () => {
         const field = QueryColumn.create({ name: 'RowId', fieldKey: 'RowId' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-            name: "test",
-            supportGroupConcatSubSelect: false
+            name: 'test',
+            supportGroupConcatSubSelect: false,
         });
         expect(isValidFilterField(field, queryInfo, undefined)).toBe(true);
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, undefined)).toBe(true);
     });
 
-    test("group concat field is supported", () => {
+    test('group concat field is supported', () => {
         const field = QueryColumn.create({ name: 'StorageStatus', fieldKey: 'StorageStatus' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-            name: "test",
-            supportGroupConcatSubSelect: true
+            name: 'test',
+            supportGroupConcatSubSelect: true,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
     });
 
-    test("regular field", () => {
+    test('regular field', () => {
         const field = QueryColumn.create({ name: 'Regular', fieldKey: 'Regular' });
         const queryInfo = QueryInfo.create({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-            name: "test",
-            supportGroupConcatSubSelect: false
+            name: 'test',
+            supportGroupConcatSubSelect: false,
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
-        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
     });
 });
 
 const PARENT_WITH_FILTERS = 'parentWithFilters';
 const PARENT_WITHOUT_FILTERS = 'parentWithoutFilters';
 const DATA_TYPE_FILTERS = {
-    [PARENT_WITH_FILTERS]: [
-        stringEqualFilter,
-        stringBetweenFilter,
-        intEqFilter,
-    ],
-    [PARENT_WITHOUT_FILTERS]: []
-}
+    [PARENT_WITH_FILTERS]: [stringEqualFilter, stringBetweenFilter, intEqFilter],
+    [PARENT_WITHOUT_FILTERS]: [],
+};
 
 describe('getUpdatedDataTypeFilters', () => {
     test('separate field, no new filters', () => {
@@ -1185,7 +1196,7 @@ describe('getUpdatedDataTypeFilters', () => {
             PARENT_WITH_FILTERS,
             QueryColumn.create({
                 caption: floatBetweenFilter.fieldCaption,
-                fieldKey: floatBetweenFilter.fieldKey
+                fieldKey: floatBetweenFilter.fieldKey,
             }),
             undefined
         );
@@ -1204,10 +1215,8 @@ describe('getUpdatedDataTypeFilters', () => {
             undefined
         );
         expect(updatedFilters).toStrictEqual({
-            [PARENT_WITH_FILTERS]: [
-                intEqFilter,
-            ],
-            [PARENT_WITHOUT_FILTERS]: []
+            [PARENT_WITH_FILTERS]: [intEqFilter],
+            [PARENT_WITHOUT_FILTERS]: [],
         });
     });
 
@@ -1223,10 +1232,8 @@ describe('getUpdatedDataTypeFilters', () => {
             []
         );
         expect(updatedFilters).toStrictEqual({
-            [PARENT_WITH_FILTERS]: [
-                intEqFilter,
-            ],
-            [PARENT_WITHOUT_FILTERS]: []
+            [PARENT_WITH_FILTERS]: [intEqFilter],
+            [PARENT_WITHOUT_FILTERS]: [],
         });
     });
 
@@ -1242,10 +1249,8 @@ describe('getUpdatedDataTypeFilters', () => {
             [null]
         );
         expect(updatedFilters).toStrictEqual({
-            [PARENT_WITH_FILTERS]: [
-                intEqFilter,
-            ],
-            [PARENT_WITHOUT_FILTERS]: []
+            [PARENT_WITH_FILTERS]: [intEqFilter],
+            [PARENT_WITHOUT_FILTERS]: [],
         });
     });
 
@@ -1258,18 +1263,11 @@ describe('getUpdatedDataTypeFilters', () => {
                 caption: stringEqualFilter.fieldCaption,
                 fieldKey: stringEqualFilter.fieldKey,
             }),
-            [
-                stringEqualFilter.filter,
-                emptyStringBetweenFilter.filter,
-            ]
+            [stringEqualFilter.filter, emptyStringBetweenFilter.filter]
         );
         expect(updatedFilters).toStrictEqual({
-            [PARENT_WITH_FILTERS]: [
-                intEqFilter,
-                stringEqualFilter,
-                emptyStringBetweenFilter,
-            ],
-            [PARENT_WITHOUT_FILTERS]: []
+            [PARENT_WITH_FILTERS]: [intEqFilter, stringEqualFilter, emptyStringBetweenFilter],
+            [PARENT_WITHOUT_FILTERS]: [],
         });
     });
 
@@ -1282,21 +1280,11 @@ describe('getUpdatedDataTypeFilters', () => {
                 caption: stringEqualFilter.fieldCaption,
                 fieldKey: stringEqualFilter.fieldKey,
             }),
-            [
-                stringEqualFilter.filter,
-                emptyStringBetweenFilter.filter,
-            ]
+            [stringEqualFilter.filter, emptyStringBetweenFilter.filter]
         );
         expect(updatedFilters).toStrictEqual({
-            [PARENT_WITH_FILTERS]: [
-                stringEqualFilter,
-                stringBetweenFilter,
-                intEqFilter,
-            ],
-            [PARENT_WITHOUT_FILTERS]: [
-                stringEqualFilter,
-                emptyStringBetweenFilter
-            ]
+            [PARENT_WITH_FILTERS]: [stringEqualFilter, stringBetweenFilter, intEqFilter],
+            [PARENT_WITHOUT_FILTERS]: [stringEqualFilter, emptyStringBetweenFilter],
         });
     });
 });
@@ -1309,7 +1297,6 @@ const equalFilterOption = {
     betweenOperator: false,
     isSoleFilter: false,
 };
-
 
 const lessThanFilterOption = {
     value: Filter.Types.LT.getURLSuffix(),
@@ -1353,88 +1340,96 @@ const isBlankFilterOption = {
     valueRequired: false,
     multiValue: false,
     betweenOperator: false,
-    isSoleFilter: true
+    isSoleFilter: true,
 };
 
 describe('getFilterSelections', () => {
-
     test('no filters', () => {
         const filterSelections = getFilterSelections(undefined, undefined);
         expect(filterSelections).toStrictEqual([]);
     });
 
     test('no matching filter option', () => {
-        const filterSelections = getFilterSelections([
-            Filter.create("strField", "test")
-        ],  [{
-            value: 'none-such',
-            label: 'Not Valid',
-            valueRequired: true,
-            multiValue: true,
-            betweenOperator: false,
-            isSoleFilter: false
-        }]);
+        const filterSelections = getFilterSelections(
+            [Filter.create('strField', 'test')],
+            [
+                {
+                    value: 'none-such',
+                    label: 'Not Valid',
+                    valueRequired: true,
+                    multiValue: true,
+                    betweenOperator: false,
+                    isSoleFilter: false,
+                },
+            ]
+        );
         expect(filterSelections).toStrictEqual([]);
     });
 
     test('single filter, single value', () => {
-        const filterSelections = getFilterSelections([
-            Filter.create("strField", "test")
-        ],  [equalFilterOption, betweenFilterOption]);
-        expect(filterSelections).toStrictEqual(
-            [{
+        const filterSelections = getFilterSelections(
+            [Filter.create('strField', 'test')],
+            [equalFilterOption, betweenFilterOption]
+        );
+        expect(filterSelections).toStrictEqual([
+            {
                 filterType: equalFilterOption,
                 firstFilterValue: 'test',
-            }]
-        );
+            },
+        ]);
     });
 
     test('single filter, multiple values', () => {
-        const filterSelections = getFilterSelections([
-            Filter.create("strField", ["test","zebra"], Filter.Types.IN)
-        ],  [equalFilterOption, betweenFilterOption, oneOfOption]);
-        expect(filterSelections).toStrictEqual(
-            [{
+        const filterSelections = getFilterSelections(
+            [Filter.create('strField', ['test', 'zebra'], Filter.Types.IN)],
+            [equalFilterOption, betweenFilterOption, oneOfOption]
+        );
+        expect(filterSelections).toStrictEqual([
+            {
                 filterType: oneOfOption,
                 firstFilterValue: 'test;zebra',
-            }]
-        );
+            },
+        ]);
     });
 
     test('single filter, between values', () => {
-        const filterSelections = getFilterSelections([
-            Filter.create("strField", ["test","zebra"], Filter.Types.BETWEEN)
-        ],  [equalFilterOption, betweenFilterOption, oneOfOption]);
-        expect(filterSelections).toStrictEqual(
-            [{
+        const filterSelections = getFilterSelections(
+            [Filter.create('strField', ['test', 'zebra'], Filter.Types.BETWEEN)],
+            [equalFilterOption, betweenFilterOption, oneOfOption]
+        );
+        expect(filterSelections).toStrictEqual([
+            {
                 filterType: betweenFilterOption,
                 firstFilterValue: 'test',
                 secondFilterValue: 'zebra',
-            }]
-        );
+            },
+        ]);
     });
 
     test('multiple filters', () => {
-        const filterSelections = getFilterSelections([
-            Filter.create("strField", ["test","zebra"], Filter.Types.BETWEEN),
-            Filter.create("strField", ["unicorn","walrus"], Filter.Types.IN)
-        ],  [equalFilterOption, betweenFilterOption, oneOfOption]);
-        expect(filterSelections).toStrictEqual(
-            [{
+        const filterSelections = getFilterSelections(
+            [
+                Filter.create('strField', ['test', 'zebra'], Filter.Types.BETWEEN),
+                Filter.create('strField', ['unicorn', 'walrus'], Filter.Types.IN),
+            ],
+            [equalFilterOption, betweenFilterOption, oneOfOption]
+        );
+        expect(filterSelections).toStrictEqual([
+            {
                 filterType: betweenFilterOption,
                 firstFilterValue: 'test',
-                secondFilterValue: 'zebra'
-            }, {
+                secondFilterValue: 'zebra',
+            },
+            {
                 filterType: oneOfOption,
                 firstFilterValue: 'unicorn;walrus',
-            }]
-        );
+            },
+        ]);
     });
 });
 
-
 describe('getUpdatedFilters', () => {
-    const field =  QueryColumn.create({
+    const field = QueryColumn.create({
         name: stringEqualFilter.fieldKey,
         caption: stringEqualFilter.fieldCaption,
         fieldKey: stringEqualFilter.fieldKey,
@@ -1443,12 +1438,14 @@ describe('getUpdatedFilters', () => {
     test('no new filter, one existing filter', () => {
         const updatedFilters = getUpdatedFilters(
             field,
-            [{
-                filterType: equalFilterOption,
-                firstFilterValue: stringEqualFilter.filter.getValue()
-            }],
+            [
+                {
+                    filterType: equalFilterOption,
+                    firstFilterValue: stringEqualFilter.filter.getValue(),
+                },
+            ],
             0,
-           undefined
+            undefined
         );
         expect(updatedFilters).toStrictEqual([]);
     });
@@ -1456,31 +1453,35 @@ describe('getUpdatedFilters', () => {
     test('no new filter, two existing filters', () => {
         const updatedFilters = getUpdatedFilters(
             field,
-            [{
-                filterType: equalFilterOption,
-                firstFilterValue: stringEqualFilter.filter.getValue()
-            }, {
-                filterType: lessThanFilterOption,
-                firstFilterValue: emptyStringLessThanFilter.filter.getValue()
-            }],
+            [
+                {
+                    filterType: equalFilterOption,
+                    firstFilterValue: stringEqualFilter.filter.getValue(),
+                },
+                {
+                    filterType: lessThanFilterOption,
+                    firstFilterValue: emptyStringLessThanFilter.filter.getValue(),
+                },
+            ],
             0,
             undefined
         );
-        expect(updatedFilters).toStrictEqual([
-            emptyStringLessThanFilter.filter
-        ]);
+        expect(updatedFilters).toStrictEqual([emptyStringLessThanFilter.filter]);
     });
 
     test('new filter is sole filter, with two original', () => {
         const updatedFilters = getUpdatedFilters(
             field,
-            [{
-                filterType: equalFilterOption,
-                firstFilterValue: stringEqualFilter.filter.getValue()
-            }, {
-                filterType: lessThanFilterOption,
-                firstFilterValue: emptyStringLessThanFilter.filter.getValue()
-            }],
+            [
+                {
+                    filterType: equalFilterOption,
+                    firstFilterValue: stringEqualFilter.filter.getValue(),
+                },
+                {
+                    filterType: lessThanFilterOption,
+                    firstFilterValue: emptyStringLessThanFilter.filter.getValue(),
+                },
+            ],
             0,
             isBlankFilterOption
         );
@@ -1492,10 +1493,12 @@ describe('getUpdatedFilters', () => {
     test('new filter is sole filter, with one original', () => {
         const updatedFilters = getUpdatedFilters(
             field,
-            [{
-                filterType: equalFilterOption,
-                firstFilterValue: stringEqualFilter.filter.getValue()
-            }],
+            [
+                {
+                    filterType: equalFilterOption,
+                    firstFilterValue: stringEqualFilter.filter.getValue(),
+                },
+            ],
             0,
             isBlankFilterOption
         );
@@ -1507,20 +1510,23 @@ describe('getUpdatedFilters', () => {
     test('new filter not sole filter, two existing, update first', () => {
         const updatedFilters = getUpdatedFilters(
             field,
-            [{
-                filterType: equalFilterOption,
-                firstFilterValue: stringEqualFilter.filter.getValue()
-            }, {
-                filterType: lessThanFilterOption,
-                firstFilterValue: emptyStringLessThanFilter.filter.getValue()
-            }],
+            [
+                {
+                    filterType: equalFilterOption,
+                    firstFilterValue: stringEqualFilter.filter.getValue(),
+                },
+                {
+                    filterType: lessThanFilterOption,
+                    firstFilterValue: emptyStringLessThanFilter.filter.getValue(),
+                },
+            ],
             0,
             lessThanFilterOption,
-            "5"
+            '5'
         );
         expect(updatedFilters).toHaveLength(2);
         expect(updatedFilters[0].getFilterType().getURLSuffix()).toBe(Filter.Types.LT.getURLSuffix());
-        expect(updatedFilters[0].getValue()).toBe("5");
+        expect(updatedFilters[0].getValue()).toBe('5');
         expect(updatedFilters[1].getFilterType().getURLSuffix()).toBe(Filter.Types.LT.getURLSuffix());
         expect(updatedFilters[1].getValue()).toBe(emptyStringLessThanFilter.filter.getValue());
     });
@@ -1528,38 +1534,43 @@ describe('getUpdatedFilters', () => {
     test('new filter not sole filter, two existing, update second', () => {
         const updatedFilters = getUpdatedFilters(
             field,
-            [{
-                filterType: equalFilterOption,
-                firstFilterValue: stringEqualFilter.filter.getValue()
-            }, {
-                filterType: lessThanFilterOption,
-                firstFilterValue: emptyStringLessThanFilter.filter.getValue()
-            }],
+            [
+                {
+                    filterType: equalFilterOption,
+                    firstFilterValue: stringEqualFilter.filter.getValue(),
+                },
+                {
+                    filterType: lessThanFilterOption,
+                    firstFilterValue: emptyStringLessThanFilter.filter.getValue(),
+                },
+            ],
             1,
             lessThanFilterOption,
-            "5"
+            '5'
         );
         expect(updatedFilters).toHaveLength(2);
         expect(updatedFilters[0].getFilterType().getURLSuffix()).toBe(Filter.Types.EQUAL.getURLSuffix());
         expect(updatedFilters[0].getValue()).toBe(stringEqualFilter.filter.getValue());
         expect(updatedFilters[1].getFilterType().getURLSuffix()).toBe(Filter.Types.LT.getURLSuffix());
-        expect(updatedFilters[1].getValue()).toBe("5");
+        expect(updatedFilters[1].getValue()).toBe('5');
     });
 
     test('new filter not sole filter, only one existing', () => {
         const updatedFilters = getUpdatedFilters(
             field,
-            [{
-                filterType: equalFilterOption,
-                firstFilterValue: stringEqualFilter.filter.getValue()
-            }],
+            [
+                {
+                    filterType: equalFilterOption,
+                    firstFilterValue: stringEqualFilter.filter.getValue(),
+                },
+            ],
             0,
             lessThanFilterOption,
-            "5"
+            '5'
         );
         expect(updatedFilters).toHaveLength(1);
         expect(updatedFilters[0].getFilterType().getURLSuffix()).toBe(Filter.Types.LT.getURLSuffix());
-        expect(updatedFilters[0].getValue()).toBe("5");
+        expect(updatedFilters[0].getValue()).toBe('5');
     });
 });
 
@@ -1567,52 +1578,52 @@ describe('getUpdatedFilterSelection', () => {
     test('new value not required', () => {
         const { shouldClear, filterSelection } = getUpdatedFilterSelection(isBlankFilterOption, {
             filterType: equalFilterOption,
-            firstFilterValue: 'x'
+            firstFilterValue: 'x',
         });
         expect(shouldClear).toBe(true);
-        expect(filterSelection).toStrictEqual( {
+        expect(filterSelection).toStrictEqual({
             filterType: isBlankFilterOption,
             firstFilterValue: null,
-            secondFilterValue: undefined
+            secondFilterValue: undefined,
         });
     });
 
     test('new value is required, old not required', () => {
         const { shouldClear, filterSelection } = getUpdatedFilterSelection(equalFilterOption, {
             filterType: isBlankFilterOption,
-            firstFilterValue: null
+            firstFilterValue: null,
         });
         expect(shouldClear).toBe(true);
-        expect(filterSelection).toStrictEqual( {
+        expect(filterSelection).toStrictEqual({
             filterType: equalFilterOption,
             firstFilterValue: undefined,
-            secondFilterValue: undefined
+            secondFilterValue: undefined,
         });
     });
 
     test('new value is required, old value required', () => {
         const { shouldClear, filterSelection } = getUpdatedFilterSelection(equalFilterOption, {
             filterType: lessThanFilterOption,
-            firstFilterValue: 'test'
+            firstFilterValue: 'test',
         });
         expect(shouldClear).toBe(false);
-        expect(filterSelection).toStrictEqual( {
+        expect(filterSelection).toStrictEqual({
             filterType: equalFilterOption,
-            firstFilterValue: "test",
-            secondFilterValue: undefined
+            firstFilterValue: 'test',
+            secondFilterValue: undefined,
         });
     });
 
     test('new value not multivalued, old is', () => {
         const { shouldClear, filterSelection } = getUpdatedFilterSelection(equalFilterOption, {
             filterType: oneOfOption,
-            firstFilterValue: 'test;one;two;three'
+            firstFilterValue: 'test;one;two;three',
         });
         expect(shouldClear).toBe(true);
-        expect(filterSelection).toStrictEqual( {
+        expect(filterSelection).toStrictEqual({
             filterType: equalFilterOption,
             firstFilterValue: undefined,
-            secondFilterValue: undefined
+            secondFilterValue: undefined,
         });
     });
 
@@ -1623,44 +1634,37 @@ describe('getUpdatedFilterSelection', () => {
             secondFilterValue: 'unicorn',
         });
         expect(shouldClear).toBe(false);
-        expect(filterSelection).toStrictEqual( {
+        expect(filterSelection).toStrictEqual({
             filterType: notBetweenFilterOption,
             firstFilterValue: 'test',
-            secondFilterValue: 'unicorn'
+            secondFilterValue: 'unicorn',
         });
     });
 
-    test("new not between, old is", () => {
-        const { shouldClear, filterSelection } = getUpdatedFilterSelection(
-            equalFilterOption,
-            {
+    test('new not between, old is', () => {
+        const { shouldClear, filterSelection } = getUpdatedFilterSelection(equalFilterOption, {
             filterType: betweenFilterOption,
             firstFilterValue: 'test',
             secondFilterValue: 'unicorn',
-            }
-            );
+        });
         expect(shouldClear).toBe(false);
-        expect(filterSelection).toStrictEqual( {
+        expect(filterSelection).toStrictEqual({
             filterType: equalFilterOption,
             firstFilterValue: 'test',
-            secondFilterValue: 'unicorn'
+            secondFilterValue: 'unicorn',
         });
     });
 
     test("new is between, old isn't", () => {
-        const { shouldClear, filterSelection } = getUpdatedFilterSelection(
-            betweenFilterOption,
-            {
-                filterType: equalFilterOption,
-                firstFilterValue: 'test',
-            }
-        );
+        const { shouldClear, filterSelection } = getUpdatedFilterSelection(betweenFilterOption, {
+            filterType: equalFilterOption,
+            firstFilterValue: 'test',
+        });
         expect(shouldClear).toBe(false);
-        expect(filterSelection).toStrictEqual( {
+        expect(filterSelection).toStrictEqual({
             filterType: betweenFilterOption,
             firstFilterValue: 'test',
-            secondFilterValue: undefined
+            secondFilterValue: undefined,
         });
     });
 });
-

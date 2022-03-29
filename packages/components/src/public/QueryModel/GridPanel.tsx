@@ -487,10 +487,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             actionValues = [...actionValues.slice(0, actionValues.length - 1), { ...newActionValue, value: viewLabel }];
         }
         // Defer view update to after setState so we don't unnecessarily repopulate the omnibox.
-        this.setState({
-            actionValues,
-            headerClickCount: {}, // view change will refresh the grid, so clear the headerClickCount values
-        }, updateViewCallback);
+        this.setState(
+            {
+                actionValues,
+                headerClickCount: {}, // view change will refresh the grid, so clear the headerClickCount values
+            },
+            updateViewCallback
+        );
     };
 
     /**

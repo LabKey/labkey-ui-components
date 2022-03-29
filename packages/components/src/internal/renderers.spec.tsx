@@ -5,13 +5,16 @@ import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../public/QueryColumn';
 
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+
+import { SchemaQuery } from '../public/SchemaQuery';
+
+import { QuerySort } from '../public/QuerySort';
+
 import { HeaderCellDropdown, isFilterColumnNameMatch } from './renderers';
 import { GridColumn } from './components/base/models/GridColumn';
 import { LabelHelpTip } from './components/base/LabelHelpTip';
 import { CustomToggle } from './components/base/CustomToggle';
-import {makeTestQueryModel} from "../public/QueryModel/testUtils";
-import {SchemaQuery} from "../public/SchemaQuery";
-import {QuerySort} from "../public/QuerySort";
 
 describe('isFilterColumnNameMatch', () => {
     const filter = Filter.create('Column', 'Value');
@@ -32,9 +35,21 @@ describe('isFilterColumnNameMatch', () => {
 
     test('lookup fieldKey', () => {
         const lkFilter = Filter.create('Column/Lookup', 'Value');
-        expect(isFilterColumnNameMatch(lkFilter, QueryColumn.create({ fieldKey: 'Column', lookup: { displayColumn: '' } }))).toBeFalsy();
-        expect(isFilterColumnNameMatch(lkFilter, QueryColumn.create({ fieldKey: 'Column', lookup: { displayColumn: 'lookup' } }))).toBeFalsy();
-        expect(isFilterColumnNameMatch(lkFilter, QueryColumn.create({ fieldKey: 'Column', lookup: { displayColumn: 'Lookup' } }))).toBeTruthy();
+        expect(
+            isFilterColumnNameMatch(lkFilter, QueryColumn.create({ fieldKey: 'Column', lookup: { displayColumn: '' } }))
+        ).toBeFalsy();
+        expect(
+            isFilterColumnNameMatch(
+                lkFilter,
+                QueryColumn.create({ fieldKey: 'Column', lookup: { displayColumn: 'lookup' } })
+            )
+        ).toBeFalsy();
+        expect(
+            isFilterColumnNameMatch(
+                lkFilter,
+                QueryColumn.create({ fieldKey: 'Column', lookup: { displayColumn: 'Lookup' } })
+            )
+        ).toBeTruthy();
     });
 });
 
@@ -165,7 +180,9 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('isSortAsc', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ sorts: [new QuerySort({ fieldKey: 'column', dir: '' })] });
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+            sorts: [new QuerySort({ fieldKey: 'column', dir: '' })],
+        });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
         validate(wrapper, 1, 6);
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
@@ -184,7 +201,9 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('isSortDesc', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ sorts: [new QuerySort({ fieldKey: 'column', dir: '-' })] });
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+            sorts: [new QuerySort({ fieldKey: 'column', dir: '-' })],
+        });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
         validate(wrapper, 1, 6);
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
@@ -203,7 +222,9 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('one colFilters', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ filterArray: [Filter.create('column', 'value', Filter.Types.EQUALS)] });
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+            filterArray: [Filter.create('column', 'value', Filter.Types.EQUALS)],
+        });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
         validate(wrapper, 1, 6);
         expect(wrapper.find('.fa-filter')).toHaveLength(2);
@@ -216,7 +237,12 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('multiple colFilters', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ filterArray: [Filter.create('column', 'value', Filter.Types.EQUALS), Filter.create('column', 'value', Filter.Types.ISBLANK)] });
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
+            filterArray: [
+                Filter.create('column', 'value', Filter.Types.EQUALS),
+                Filter.create('column', 'value', Filter.Types.ISBLANK),
+            ],
+        });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
         validate(wrapper, 1, 6);
         expect(wrapper.find('.fa-filter')).toHaveLength(2);

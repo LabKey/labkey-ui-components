@@ -439,7 +439,7 @@ export function getFieldFiltersValidationResult(
         const parentMsgs = [];
         Object.keys(parentFields).forEach(parent => {
             const parentLabel = queryLabels?.[parent];
-            parentMsgs.push((parentLabel ? (parentLabel + ': ') : '') + parentFields[parent].join(', '));
+            parentMsgs.push((parentLabel ? parentLabel + ': ' : '') + parentFields[parent].join(', '));
         });
         return 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
     }
@@ -597,8 +597,7 @@ export function getUpdatedChooseValuesFilter(
         });
 
     // if everything is checked, this is the same as not filtering
-    if ((newValue === ALL_VALUE_DISPLAY && check) || newCheckedValues.length === allValues.length)
-        return null;
+    if ((newValue === ALL_VALUE_DISPLAY && check) || newCheckedValues.length === allValues.length) return null;
 
     // if uncheck all or if everything is unchecked, create a new NOTANY filter type
     if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)
@@ -674,14 +673,16 @@ export function getUpdatedDataTypeFilters(
 
     // the filters on the parent type associated with this field.
     const thisFieldFilters =
-        newFilters?.filter(newFilter => newFilter != null).map(newFilter => {
-            return {
-                fieldKey: activeFieldKey,
-                fieldCaption: activeField.caption,
-                filter: newFilter,
-                jsonType: activeField.getDisplayFieldJsonType(),
-            } as FieldFilter;
-        }) ?? [];
+        newFilters
+            ?.filter(newFilter => newFilter != null)
+            .map(newFilter => {
+                return {
+                    fieldKey: activeFieldKey,
+                    fieldCaption: activeField.caption,
+                    filter: newFilter,
+                    jsonType: activeField.getDisplayFieldJsonType(),
+                } as FieldFilter;
+            }) ?? [];
 
     if (otherFieldFilters.length + thisFieldFilters.length > 0) {
         dataTypeFiltersUpdated[activeQuery] = [...otherFieldFilters, ...thisFieldFilters];
@@ -728,8 +729,8 @@ export function getUpdatedFilters(
     newFilterType: FieldFilterOption,
     newFilterValue?: any,
     isSecondValue?: boolean,
-    clearBothValues?: boolean,
-) : Filter.IFilter[] {
+    clearBothValues?: boolean
+): Filter.IFilter[] {
     const newFilter = getUpdateFilterExpressionFilter(
         newFilterType,
         field,
@@ -752,7 +753,10 @@ export function getUpdatedFilters(
             if (filterIndex === 1) {
                 newFilters = [getFilterForFilterSelection(activeFilters[0], field), newFilter];
             } else {
-                newFilters = activeFilters.length <= 1 ? [newFilter] : [newFilter, getFilterForFilterSelection(activeFilters[1], field)];
+                newFilters =
+                    activeFilters.length <= 1
+                        ? [newFilter]
+                        : [newFilter, getFilterForFilterSelection(activeFilters[1], field)];
             }
         }
     }
@@ -762,16 +766,19 @@ export function getUpdatedFilters(
 export function getUpdatedFilterSelection(
     newActiveFilterType: FieldFilterOption,
     activeFilter: FilterSelection
-) : { shouldClear: boolean; filterSelection: FilterSelection } {
+): { shouldClear: boolean; filterSelection: FilterSelection } {
     let firstValue = activeFilter?.firstFilterValue;
     let shouldClear = false;
 
     // when a value is required, we want to start with 'undefined' instead of 'null' since 'null' is seen as a valid value
-    if ((newActiveFilterType?.valueRequired && !activeFilter?.filterType.valueRequired) ||
-        (activeFilter?.filterType?.multiValue && !newActiveFilterType?.multiValue)) {
+    if (
+        (newActiveFilterType?.valueRequired && !activeFilter?.filterType.valueRequired) ||
+        (activeFilter?.filterType?.multiValue && !newActiveFilterType?.multiValue)
+    ) {
         firstValue = undefined;
         shouldClear = true;
-    } else if (!newActiveFilterType?.valueRequired) { // if value is not required, then we'll start with null
+    } else if (!newActiveFilterType?.valueRequired) {
+        // if value is not required, then we'll start with null
         firstValue = null;
         shouldClear = true;
     }
@@ -781,6 +788,6 @@ export function getUpdatedFilterSelection(
             filterType: newActiveFilterType,
             firstFilterValue: firstValue,
             secondFilterValue: shouldClear ? undefined : activeFilter?.secondFilterValue,
-        }
+        },
     };
 }

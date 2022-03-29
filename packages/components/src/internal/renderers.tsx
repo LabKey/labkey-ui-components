@@ -53,14 +53,17 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const allowColFilter = handleFilter && col?.filterable;
     const includeDropdown = allowColSort || allowColFilter;
 
-    const onToggleClick = useCallback((shouldOpen: boolean, evt?: any) => {
-        if (!includeDropdown) return;
+    const onToggleClick = useCallback(
+        (shouldOpen: boolean, evt?: any) => {
+            if (!includeDropdown) return;
 
-        // when menu is closed skip any clicks on icons by just checking for span el type
-        if (shouldOpen && evt && evt.target.tagName.toLowerCase() !== 'span') return;
+            // when menu is closed skip any clicks on icons by just checking for span el type
+            if (shouldOpen && evt && evt.target.tagName.toLowerCase() !== 'span') return;
 
-        setOpen(shouldOpen);
-    }, [includeDropdown]);
+            setOpen(shouldOpen);
+        },
+        [includeDropdown]
+    );
 
     const _handleFilter = useCallback(
         (remove?: boolean) => {
@@ -94,7 +97,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     return (
         <>
-            <span onClick={(evt) => onToggleClick(!open, evt)}>
+            <span onClick={evt => onToggleClick(!open, evt)}>
                 {col.caption === '&nbsp;' ? '' : col.caption}
                 {gridColSortFilterEnabled && colFilters?.length > 0 && (
                     <span
@@ -139,17 +142,15 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                         onClick={
                                             colFilters?.length
                                                 ? () => {
-                                                    _handleFilter(true);
-                                                }
+                                                      _handleFilter(true);
+                                                  }
                                                 : undefined
                                         }
                                     >
                                         <span className="grid-panel__menu-icon-spacer" />
                                         &nbsp; Remove filter{colFilters?.length > 1 ? 's' : ''}
                                     </MenuItem>
-                                    {allowColSort && (
-                                        <MenuItem divider />
-                                    )}
+                                    {allowColSort && <MenuItem divider />}
                                 </>
                             )}
                             {allowColSort && (
@@ -159,8 +160,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                         onClick={
                                             !isSortAsc
                                                 ? () => {
-                                                    _handleSort('+');
-                                                }
+                                                      _handleSort('+');
+                                                  }
                                                 : undefined
                                         }
                                     >
@@ -172,8 +173,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                         onClick={
                                             !isSortDesc
                                                 ? () => {
-                                                    _handleSort('-');
-                                                }
+                                                      _handleSort('-');
+                                                  }
                                                 : undefined
                                         }
                                     >
@@ -187,8 +188,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                             onClick={
                                                 isSortDesc || isSortAsc
                                                     ? () => {
-                                                        _handleSort();
-                                                    }
+                                                          _handleSort();
+                                                      }
                                                     : undefined
                                             }
                                         >

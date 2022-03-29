@@ -248,7 +248,7 @@ describe('FilterFacetedSelector', () => {
                 {...DEFAULT_PROPS}
                 fieldFilters={[
                     Filter.create('stringField', 'ed;ned', Filter.Types.NOT_IN),
-                    Filter.create('stringField', 'bed', Filter.Types.GT)
+                    Filter.create('stringField', 'bed', Filter.Types.GT),
                 ]}
             />
         );

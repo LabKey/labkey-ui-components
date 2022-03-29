@@ -9,6 +9,7 @@ import { Alert } from '../../internal/components/base/Alert';
 import { QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
 import { NOT_ANY_FILTER_TYPE } from '../../internal/url/NotAnyFilterType';
 import { getFieldFiltersValidationResult, isValidFilterField } from '../../internal/components/search/utils';
+
 import { QueryModel } from './QueryModel';
 
 interface Props {

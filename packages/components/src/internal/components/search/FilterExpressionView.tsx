@@ -59,7 +59,18 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             isSecondValue?: boolean,
             clearBothValues?: boolean
         ) => {
-            onFieldFilterUpdate(getUpdatedFilters(field, activeFilters, filterIndex, newFilterType, newFilterValue, isSecondValue, clearBothValues), filterIndex);
+            onFieldFilterUpdate(
+                getUpdatedFilters(
+                    field,
+                    activeFilters,
+                    filterIndex,
+                    newFilterType,
+                    newFilterValue,
+                    isSecondValue,
+                    clearBothValues
+                ),
+                filterIndex
+            );
         },
         [field, activeFilters]
     );
@@ -99,17 +110,13 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
     const onFieldFilterTypeChange = useCallback(
         (fieldname: any, filterUrlSuffix: any, filterIndex: number) => {
-
             const newActiveFilterType = fieldFilterOptions?.find(option => option.value === filterUrlSuffix);
-            const { shouldClear, filterSelection} = getUpdatedFilterSelection(newActiveFilterType, activeFilters[filterIndex]);
-
-            updateFilter(
-                filterIndex,
+            const { shouldClear, filterSelection } = getUpdatedFilterSelection(
                 newActiveFilterType,
-                filterSelection.firstFilterValue,
-                false,
-                shouldClear
+                activeFilters[filterIndex]
             );
+
+            updateFilter(filterIndex, newActiveFilterType, filterSelection.firstFilterValue, false, shouldClear);
             updateActiveFilters(filterIndex, filterSelection);
         },
         [fieldFilterOptions, activeFilters]

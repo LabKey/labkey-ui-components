@@ -63,18 +63,21 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     // key is the parent query name
     const [dataTypeFilters, setDataTypeFilters] = useState<{ [key: string]: FieldFilter[] }>({});
 
-    const onEntityClick = useCallback(async (selectedQueryName: string) => {
-        try {
-            const queryInfo = await api.query.getQueryDetails({
-                schemaName: entityDataType.instanceSchemaName,
-                queryName: selectedQueryName,
-            });
-            setActiveQueryInfo(queryInfo);
-            setLoadingError(undefined);
-        } catch (error) {
-            setLoadingError(resolveErrorMessage(error, selectedQueryName, selectedQueryName, 'load'));
-        }
-    }, [api, entityDataType.instanceSchemaName]);
+    const onEntityClick = useCallback(
+        async (selectedQueryName: string) => {
+            try {
+                const queryInfo = await api.query.getQueryDetails({
+                    schemaName: entityDataType.instanceSchemaName,
+                    queryName: selectedQueryName,
+                });
+                setActiveQueryInfo(queryInfo);
+                setLoadingError(undefined);
+            } catch (error) {
+                setLoadingError(resolveErrorMessage(error, selectedQueryName, selectedQueryName, 'load'));
+            }
+        },
+        [api, entityDataType.instanceSchemaName]
+    );
 
     const activeQuery = useMemo(() => activeQueryInfo?.name.toLowerCase(), [activeQueryInfo]);
 

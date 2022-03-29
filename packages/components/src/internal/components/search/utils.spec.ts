@@ -505,7 +505,7 @@ describe('getFieldFiltersValidationResult', () => {
                 sampleType1: [anyValueFilter, badIntFilter],
                 sampleType2: [intEqFilter],
             })
-        ).toEqual('Missing filter values for: sampleType1: intField.');
+        ).toEqual('Missing filter values for: intField.');
     });
 
     test('missing value, with query label', () => {
@@ -525,7 +525,9 @@ describe('getFieldFiltersValidationResult', () => {
             getFieldFiltersValidationResult({
                 sampleType1: [anyValueFilter, badIntFilter],
                 sampleType2: [intEqFilter, badIntFilter, badBetweenFilter],
-            })
+            },
+                { sampleType1: 'sampleType1', sampleType2: 'sampleType2' }
+            )
         ).toEqual('Missing filter values for: sampleType1: intField; sampleType2: intField, doubleField.');
     });
 
@@ -533,8 +535,9 @@ describe('getFieldFiltersValidationResult', () => {
         expect(
             getFieldFiltersValidationResult({
                 sampleType1: [emptyStringLessThanFilter, emptyStringBetweenFilter],
-                sampleType2: [emptyStringBetweenFilter]
-            })
+                sampleType2: [emptyStringBetweenFilter],
+            },
+                { sampleType1: 'sampleType1', sampleType2: 'sampleType2' })
         ).toEqual('Missing filter values for: sampleType1: strField; sampleType2: strField.');
     });
 });

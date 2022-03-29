@@ -438,8 +438,8 @@ export function getFieldFiltersValidationResult(
     if (hasError) {
         const parentMsgs = [];
         Object.keys(parentFields).forEach(parent => {
-            const parentLabel = queryLabels?.[parent] ?? parent;
-            parentMsgs.push(parentLabel + ': ' + parentFields[parent].join(', '));
+            const parentLabel = queryLabels?.[parent];
+            parentMsgs.push((parentLabel ? (parentLabel + ': ') : '') + parentFields[parent].join(', '));
         });
         return 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
     }

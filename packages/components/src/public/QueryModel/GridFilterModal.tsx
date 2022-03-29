@@ -49,10 +49,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
     }, [filters]);
 
     const _onApply = useCallback(() => {
-        const filterErrors = getFieldFiltersValidationResult(
-            { [queryInfo.name.toLowerCase()]: filters },
-            { [queryInfo.name.toLowerCase()]: queryInfo.title }
-        );
+        const filterErrors = getFieldFiltersValidationResult({ [queryInfo.name.toLowerCase()]: filters });
         if (!filterErrors) {
             const validFilters = validFieldFilters.map(fieldFilter => fieldFilter.filter);
             onApply(validFilters);
@@ -91,20 +88,19 @@ export const GridFilterModal: FC<Props> = memo(props => {
             </Modal.Header>
             <Modal.Body>
                 <Alert>{filterError}</Alert>
-                <Row className="filter-modal__container">
-                    <QueryFilterPanel
-                        api={api}
-                        fieldKey={fieldKey}
-                        filters={{ [queryInfo.name.toLowerCase()]: filters }}
-                        fullWidth
-                        onFilterUpdate={onFilterUpdate}
-                        queryInfo={queryInfo}
-                        selectDistinctOptions={selectDistinctOptions}
-                        skipDefaultViewCheck={skipDefaultViewCheck}
-                        validFilterField={isValidFilterField}
-                        viewName={model.viewName}
-                    />
-                </Row>
+                <QueryFilterPanel
+                    asRow
+                    api={api}
+                    fieldKey={fieldKey}
+                    filters={{ [queryInfo.name.toLowerCase()]: filters }}
+                    fullWidth
+                    onFilterUpdate={onFilterUpdate}
+                    queryInfo={queryInfo}
+                    selectDistinctOptions={selectDistinctOptions}
+                    skipDefaultViewCheck={skipDefaultViewCheck}
+                    validFilterField={isValidFilterField}
+                    viewName={model.viewName}
+                />
             </Modal.Body>
             <Modal.Footer>
                 <div className="pull-left">

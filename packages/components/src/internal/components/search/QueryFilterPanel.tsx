@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col, Nav, NavItem, Tab } from 'react-bootstrap';
+import { Row, Col, Nav, NavItem, Tab } from 'react-bootstrap';
 import { fromJS, List } from 'immutable';
 
 import { Filter, Query } from '@labkey/api';
@@ -20,15 +20,16 @@ import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
 
-enum EntityFieldFilterTabs {
+enum FieldFilterTabs {
     Filter = 'Filter',
-    ChooseValues = 'Choose values',
+    ChooseValues = 'ChooseValues',
 }
 
 const DEFAULT_VIEW_NAME = ''; // always use default view for selection, if none provided
 const CHOOSE_VALUES_TAB_KEY = 'Choose values';
 
 interface Props {
+    asRow?: boolean;
     api?: ComponentsAPIWrapper;
     emptyMsg?: string;
     entityDataType?: EntityDataType; // used for Sample Finder use case
@@ -46,6 +47,7 @@ interface Props {
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
     const {
+        asRow,
         api,
         queryInfo,
         emptyMsg,
@@ -61,7 +63,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
-    const [activeTab, setActiveTab] = useState<EntityFieldFilterTabs>(undefined);
+    const [activeTab, setActiveTab] = useState<FieldFilterTabs>(undefined);
 
     const queryName = useMemo(() => queryInfo?.name.toLowerCase(), [queryInfo]);
     const viewName = useMemo(() => props.viewName ?? DEFAULT_VIEW_NAME, [props.viewName]);
@@ -75,9 +77,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
         Object.keys(filters).forEach(parent => {
             const filterFields = filters[parent];
-            filterFields.forEach(field => {
-                if (field.filter.getFilterType() !== NOT_ANY_FILTER_TYPE) {
-                    const key = parent + '-' + field.fieldKey;
+            filterFields.forEach(fieldFilter => {
+                if (fieldFilter.filter.getFilterType() !== NOT_ANY_FILTER_TYPE) {
+                    const key = parent + '-' + fieldFilter.fieldKey;
                     status[key] = true;
                 }
             });
@@ -88,7 +90,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const hasFilters = useCallback(
         (field: QueryColumn) => {
-            return filterStatus?.[queryName + '-' + field.fieldKey];
+            return filterStatus?.[queryName + '-' + field.resolveFieldKey()];
         },
         [filterStatus, queryName]
     );
@@ -96,20 +98,20 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     const getDefaultActiveTab = useCallback(
         (field: QueryColumn) => {
             if (!allowFaceting(field)) {
-                return EntityFieldFilterTabs.Filter;
+                return FieldFilterTabs.Filter;
             }
             if (!hasFilters(field)) {
-                return EntityFieldFilterTabs.ChooseValues;
+                return FieldFilterTabs.ChooseValues;
             }
             const currentFieldFilters = filters[queryName].filter(
-                filterField => filterField.fieldKey === field.fieldKey
+                filterField => filterField.fieldKey === field.resolveFieldKey()
             );
             if (currentFieldFilters.length > 1) {
-                return EntityFieldFilterTabs.Filter;
+                return FieldFilterTabs.Filter;
             }
             return isChooseValuesFilter(currentFieldFilters[0].filter)
-                ? EntityFieldFilterTabs.ChooseValues
-                : EntityFieldFilterTabs.Filter;
+                ? FieldFilterTabs.ChooseValues
+                : FieldFilterTabs.Filter;
         },
         [hasFilters, filters, queryName]
     );
@@ -185,7 +187,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         [api, metricFeatureArea]
     );
 
-    return (
+    const body = (
         <>
             <Col xs={fullWidth ? 12 : 6} sm={fullWidth ? 4 : 3} className="filter-modal__col filter-modal__col_fields">
                 <div className="filter-modal__col-title">Fields</div>
@@ -225,19 +227,19 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                         >
                             <div>
                                 <Nav bsStyle="tabs">
-                                    <NavItem eventKey={EntityFieldFilterTabs.Filter}>Filter</NavItem>
+                                    <NavItem eventKey={FieldFilterTabs.Filter}>Filter</NavItem>
                                     {allowFaceting(activeField) && (
-                                        <NavItem eventKey={EntityFieldFilterTabs.ChooseValues}>
+                                        <NavItem eventKey={FieldFilterTabs.ChooseValues}>
                                             {CHOOSE_VALUES_TAB_KEY}
                                         </NavItem>
                                     )}
                                 </Nav>
                                 <Tab.Content animation className="filter-modal__values-col-content">
-                                    <Tab.Pane eventKey={EntityFieldFilterTabs.Filter}>
+                                    <Tab.Pane eventKey={FieldFilterTabs.Filter}>
                                         <div className="filter-modal__col-sub-title">
                                             Find values for {activeField.caption}
                                         </div>
-                                        {activeTab === EntityFieldFilterTabs.Filter && (
+                                        {activeTab === FieldFilterTabs.Filter && (
                                             <FilterExpressionView
                                                 key={activeFieldKey}
                                                 field={activeField}
@@ -248,8 +250,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                             />
                                         )}
                                     </Tab.Pane>
-                                    {activeTab === EntityFieldFilterTabs.ChooseValues && allowFaceting(activeField) && (
-                                        <Tab.Pane eventKey={EntityFieldFilterTabs.ChooseValues}>
+                                    {activeTab === FieldFilterTabs.ChooseValues && allowFaceting(activeField) && (
+                                        <Tab.Pane eventKey={FieldFilterTabs.ChooseValues}>
                                             <div className="filter-modal__col-sub-title">
                                                 Find values for {activeField.caption}
                                             </div>
@@ -283,6 +285,12 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
             </Col>
         </>
     );
+
+    if (asRow) {
+        return <Row className="filter-modal__container">{body}</Row>;
+    } else {
+        return body;
+    }
 });
 
 QueryFilterPanel.defaultProps = {

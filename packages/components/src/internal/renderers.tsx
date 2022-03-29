@@ -49,8 +49,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const gridColSortFilterEnabled = isGridColSortFilterEnabled();
     const [open, setOpen] = useState<boolean>();
 
-    const allowColSort = handleSort !== undefined && col?.sortable;
-    const allowColFilter = handleFilter !== undefined && col?.filterable;
+    const allowColSort = handleSort && col?.sortable;
+    const allowColFilter = handleFilter && col?.filterable;
     const includeDropdown = allowColSort || allowColFilter;
 
     const onToggleClick = useCallback((shouldOpen: boolean, evt?: any) => {

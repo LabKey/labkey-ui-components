@@ -54,7 +54,8 @@ interface RendererProps {
     data: Map<string, any>;
 }
 
-const CustomPropertiesRenderer: FC<RendererProps> = memo(props => {
+// exported for jest testing
+export const CustomPropertiesRenderer: FC<RendererProps> = memo(props => {
     const { data } = props;
 
     return (
@@ -79,12 +80,8 @@ const CustomPropertiesRenderer: FC<RendererProps> = memo(props => {
 function _resolveDetailRenderer(column: QueryColumn) {
     let renderer = resolveDetailRenderer(column);
 
-    switch (column.fieldKey.toLowerCase()) {
-        case 'properties':
-            renderer = d => <CustomPropertiesRenderer data={d} />;
-            break;
-        default:
-            break;
+    if (column.fieldKey.toLowerCase() === 'properties') {
+        renderer = d => <CustomPropertiesRenderer data={d} />;
     }
 
     return renderer;

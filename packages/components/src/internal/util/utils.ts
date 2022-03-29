@@ -75,6 +75,40 @@ export function capitalizeFirstChar(value: string): string {
 }
 
 /**
+ * Returns a new string in which the first character of the given string is uncapitalized.  If
+ * the value is, empty, undefined, or not a string returns the value.
+ * @param value string to convert
+ */
+export function uncapitalizeFirstChar(value: string): string {
+    if (value && typeof value === 'string' && value.length > 1) {
+        return [value.substr(0, 1).toLowerCase(), value.substr(1)].join('');
+    }
+    return value;
+}
+
+/**
+ * Util to format the keys in a record
+ * Example: convert {capitalizedFirstKey: value} to {CapitalizedFirstKey: value} with capitalizeFirstChar fn
+ * @param obj the original object to transform
+ * @param keyTransformFn the transform function for keys
+ */
+export function withTransformedKeys(obj: Record<string, any>, keyTransformFn: (value) => string): Record<string, any> {
+    if (obj === undefined || obj === null) {
+        return obj;
+    }
+
+    const transformedObj = {};
+    for (const rawKey in obj) {
+        if (obj.hasOwnProperty(rawKey)) {
+            const key = keyTransformFn(rawKey);
+            transformedObj[key] = obj[rawKey];
+        }
+    }
+
+    return transformedObj;
+}
+
+/**
  * Returns a copy of List<string> and ensures that in copy all values are lower case strings.
  * @param a
  */

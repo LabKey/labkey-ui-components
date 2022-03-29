@@ -95,6 +95,7 @@ function inputCellFactory(
     hideCountCol: boolean,
     columnMetadata: EditableColumnMetadata,
     readonlyRows: List<any>,
+    lockedRows: List<any>,
     cellActions: CellActions
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
@@ -106,13 +107,16 @@ function inputCellFactory(
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
         let isReadonlyRow = false;
         let isReadonlyCell = false;
+        let isLockedRow = false;
 
-        if (!isReadonlyCol && (readonlyRows || columnMetadata?.isReadOnlyCell)) {
+        if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
             const keyCols = queryInfo.getPkCols();
             if (keyCols.size == 1) {
                 const key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+
                 if (readonlyRows) isReadonlyRow = key && readonlyRows.contains(key);
                 if (columnMetadata?.isReadOnlyCell) isReadonlyCell = columnMetadata.isReadOnlyCell(key);
+                if (lockedRows) isLockedRow = key && lockedRows.contains(key);
             } else {
                 console.warn(
                     'Setting readonly rows or cells for models with ' +
@@ -130,6 +134,7 @@ function inputCellFactory(
                 key={inputCellKey(c.raw, row)}
                 placeholder={columnMetadata ? columnMetadata.placeholder : undefined}
                 readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
+                locked={isLockedRow}
                 rowIdx={rn}
                 focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
                 message={editorModel ? editorModel.getMessage(colIdx, rn) : undefined}
@@ -199,6 +204,7 @@ export interface SharedEditableGridProps {
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: List<string>;
     readonlyRows?: List<any>; // list of key values for rows that are readonly.
+    lockedRows?: List<any>; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
     striped?: boolean;
@@ -548,6 +554,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             queryInfo,
             rowNumColumn,
             readonlyRows,
+            lockedRows,
         } = this.props;
         let gridColumns = List<GridColumn>();
 
@@ -583,6 +590,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         hideCountCol,
                         metadata,
                         readonlyRows,
+                        lockedRows,
                         this.cellActions
                     ),
                     index: qCol.fieldKey,

@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 44709: Update Unique ID confirmation modal so it remains open until update is complete
 * Add per-product metric for search usage
 
+### version 2.148.0
+*Released*: 29 March 2022
+* Item 9999: Shared freezers across containers - Storage View UI
+  * Support locked Cell state
+
 ### version 2.147.1
 *Released*: 29 March 2022
 * Issue 45126: Job start and due dates are not saved after being updated

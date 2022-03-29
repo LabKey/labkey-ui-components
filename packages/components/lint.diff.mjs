@@ -1,5 +1,4 @@
-
-const execa = require('execa');
+import { execa } from 'execa';
 
 const fileExtensions = ['.tsx', '.ts'];  // linted file types
 

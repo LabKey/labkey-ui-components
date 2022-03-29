@@ -5,6 +5,33 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Display custom (and standard) protocol application properties in the lineage graph
 
+### version 2.148.0
+*Released*: 29 March 2022
+* Item 9999: Shared freezers across containers - Storage View UI
+  * Support locked Cell state
+
+### version 2.147.1
+*Released*: 29 March 2022
+* Issue 45126: Job start and due dates are not saved after being updated
+
+### version 2.147.0
+*Released*: 28 March 2022
+* Item 10192: Support two filter clauses per field in the `FilterExpressionView` and `FilterCards`
+
+### version 2.146.0
+*Released*: 27 March 2022
+* Package updates for `devDependencies`.
+* Refactor builds to use `sass` instead of `node-sass`.
+* Utilize scss exports from dependent packages when possible.
+* Add `resolve-url-loader` for handling URLs in scss sources. Required for inclusion of certain packages (e.g. font-awesome).
+* Suppress logging of warnings when publishing in `@labkey/components`. Makes use of the [webpack "stats" property](https://webpack.js.org/configuration/stats/).
+* Move declaration of theme/index.scss include.
+
+### version 2.145.2
+*Released*: 24 March 2022
+* Support `containerPath` on `LookupSelectInput` and `withAssayModels`.
+* Add test utility `createMockWithRouteLeave`
+
 ### version 2.145.1
 *Released*: 24 March 2022
 * Fix issue where models with bindURl set to true could not have default sorts/filters/etc.

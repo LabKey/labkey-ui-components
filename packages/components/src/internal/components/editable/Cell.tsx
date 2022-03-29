@@ -43,6 +43,7 @@ interface Props {
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
+    locked?: boolean;
     rowIdx: number;
     focused?: boolean;
     message?: CellMessage;
@@ -123,7 +124,11 @@ export class Cell extends React.PureComponent<Props> {
     };
 
     isReadOnly = (): boolean => {
-        return this.props.readOnly || this.props.col.readOnly;
+        return this.props.readOnly || this.props.col.readOnly || this.props.locked;
+    };
+
+    isLocked = (): boolean => {
+        return this.props.locked;
     };
 
     handleDblClick = (): void => {
@@ -254,6 +259,7 @@ export class Cell extends React.PureComponent<Props> {
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),
+                    'cell-locked': this.isLocked(),
                     'cell-menu': showLookup,
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                 }),

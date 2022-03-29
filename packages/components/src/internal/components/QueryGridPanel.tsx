@@ -23,7 +23,6 @@ import { Utils } from '@labkey/api';
 import { gridInit } from '../actions';
 import { getQueryGridModel, GlobalAppState } from '../global';
 
-import '../../theme/index.scss';
 import { QueryGridModel, LoadingSpinner, Alert } from '../..';
 
 import { EXPORT_TYPES } from '../constants';

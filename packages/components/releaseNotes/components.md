@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 44709: Update Unique ID confirmation modal so it remains open until update is complete
+
 ### version 2.147.1
 *Released*: 29 March 2022
 * Issue 45126: Job start and due dates are not saved after being updated

@@ -22,7 +22,7 @@ export function searchUsingIndex(
     getCardDataFn?: GetCardDataFn,
     filterCategories?: string[]
 ): Promise<Record<string, any>> {
-    incrementClientSideMetricCount(getPrimaryAppProperties().productId + 'Search', 'terms');
+    incrementClientSideMetricCount(getPrimaryAppProperties().productId + 'Search', 'count');
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('search', 'json.api'),

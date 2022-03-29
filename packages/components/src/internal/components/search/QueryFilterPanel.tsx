@@ -262,8 +262,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                     schemaName: queryInfo.schemaName,
                                                     queryName,
                                                     viewName,
-                                                    // TODO this doesn't seem right for the cases like the SM source
-                                                    // samples grid which has a model filter for the source ID
+                                                    // Issue 45135: this doesn't seem right for the cases like the SM
+                                                    // source samples grid which has a model filter for the source ID
                                                     // which is getting overridden here. Try using
                                                     // selectDistinctOptions.filterArray from props in fieldDistinctValueFilters
                                                     filterArray: fieldDistinctValueFilters,

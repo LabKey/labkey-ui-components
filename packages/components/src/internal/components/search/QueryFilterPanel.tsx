@@ -1,7 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Row, Col, Nav, NavItem, Tab } from 'react-bootstrap';
 import { fromJS, List } from 'immutable';
-
 import { Filter, Query } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
@@ -11,14 +10,14 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 enum FieldFilterTabs {
     Filter = 'Filter',

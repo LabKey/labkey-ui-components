@@ -1,16 +1,16 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { Modal, Row } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { Filter, Query } from '@labkey/api';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
 import { FieldFilter } from '../../internal/components/search/models';
 import { QueryColumn } from '../QueryColumn';
+import { QueryModel } from './QueryModel';
 import { Alert } from '../../internal/components/base/Alert';
 import { QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
 import { NOT_ANY_FILTER_TYPE } from '../../internal/url/NotAnyFilterType';
 import { getFieldFiltersValidationResult, isValidFilterField } from '../../internal/components/search/utils';
 
-import { QueryModel } from './QueryModel';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
 
 interface Props {
     api?: ComponentsAPIWrapper;

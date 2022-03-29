@@ -5,14 +5,16 @@ import { Filter } from '@labkey/api';
 
 import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
-import { QueryColumn } from "../QueryColumn";
+import { QueryColumn } from '../QueryColumn';
 import { Alert } from '../../internal/components/base/Alert';
-import { GridFilterModal } from './GridFilterModal';
-import { QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
-import { makeTestQueryModel } from './testUtils';
 
-import { waitForLifecycle } from "../../internal/testHelpers";
+import { QueryFilterPanel } from '../../internal/components/search/QueryFilterPanel';
+
+import { waitForLifecycle } from '../../internal/testHelpers';
 import { getTestAPIWrapper } from '../../internal/APIWrapper';
+
+import { makeTestQueryModel } from './testUtils';
+import { GridFilterModal } from './GridFilterModal';
 
 describe('GridFilterModal', () => {
     const DEFAULT_PROPS = {

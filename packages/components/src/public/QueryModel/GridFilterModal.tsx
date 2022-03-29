@@ -114,7 +114,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
                         type="button"
                         className="btn btn-success"
                         onClick={_onApply}
-                        disabled={Object.keys(validFieldFilters).length === 0}
+                        disabled={validFieldFilters && Object.keys(validFieldFilters).length === 0}
                     >
                         Apply
                     </button>

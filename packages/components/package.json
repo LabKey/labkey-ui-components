@@ -19,10 +19,10 @@
     "watch": "npm run watch:build",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
-    "lint-precommit": "node lint.diff.js",
-    "lint-precommit-fix": "node lint.diff.js --fix",
-    "lint-branch": "node lint.diff.js --currentBranch",
-    "lint-branch-fix": "node lint.diff.js --currentBranch --fix"
+    "lint-precommit": "node lint.diff.mjs",
+    "lint-precommit-fix": "node lint.diff.mjs --fix",
+    "lint-branch": "node lint.diff.mjs --currentBranch",
+    "lint-branch-fix": "node lint.diff.mjs --currentBranch --fix"
   },
   "repository": {
     "type": "git",

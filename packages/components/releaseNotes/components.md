@@ -1,10 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX March 2022
+### version 2.148.0
+*Released*: 29 March 2022
 * Item 9999: Shared freezers across containers - Storage View UI
   * Support locked Cell state
+
+### version 2.147.1
+*Released*: 29 March 2022
+* Issue 45126: Job start and due dates are not saved after being updated
 
 ### version 2.147.0
 *Released*: 28 March 2022

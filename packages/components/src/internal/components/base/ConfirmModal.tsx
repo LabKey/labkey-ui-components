@@ -64,7 +64,7 @@ export class ConfirmModal extends React.PureComponent<Props> {
 
                 <Modal.Footer>
                     {onCancel && (
-                        <Button className={cancelBtnClass} onClick={onCancel}>
+                        <Button className={cancelBtnClass} onClick={onCancel} disabled={submitting}>
                             {cancelButtonText}
                         </Button>
                     )}

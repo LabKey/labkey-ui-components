@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import { LockIcon } from '../base/LockIcon';
+
 import { HorizontalBarLegendData } from './utils';
-import { LockIcon } from "../base/LockIcon";
 
 const CELL_EMPTY_COLOR = 'FFFFFF';
 
@@ -31,16 +32,8 @@ export class ItemsLegend extends React.PureComponent<Props> {
                         style={{ backgroundColor: legend.circleColor }}
                     />
                 );
-            }
-            else if (legend.locked) {
-                icon = (
-                    <LockIcon
-                        id={index + ''}
-                        title=""
-                        iconCls={'cell-legend-circle'}
-                        body=""
-                    />
-                );
+            } else if (legend.locked) {
+                icon = <LockIcon id={index + ''} title="" iconCls="cell-legend-circle" body="" />;
             }
 
             const key = 'cell-legend-' + index;

@@ -97,7 +97,7 @@ export function withTransformedKeys(obj: Record<string, any>, keyTransformFn: (v
         return obj;
     }
 
-    let transformedObj = {};
+    const transformedObj = {};
     for (const rawKey in obj) {
         if (obj.hasOwnProperty(rawKey)) {
             const key = keyTransformFn(rawKey);

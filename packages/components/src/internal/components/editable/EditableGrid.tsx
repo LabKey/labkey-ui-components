@@ -120,8 +120,8 @@ function inputCellFactory(
             } else {
                 console.warn(
                     'Setting readonly rows or cells for models with ' +
-                    keyCols.size +
-                    ' keys is not currently supported.'
+                        keyCols.size +
+                        ' keys is not currently supported.'
                 );
             }
         }

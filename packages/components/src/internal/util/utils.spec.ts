@@ -97,7 +97,7 @@ describe('capitalizeFirstChar', () => {
         const testStrings = {
             textACRONYM: 'TextACRONYM',
             camelCasedText: 'CamelCasedText',
-            CapsCasedText: 'CapsCasedText'
+            CapsCasedText: 'CapsCasedText',
         };
 
         for (const [key, value] of Object.entries(testStrings)) {
@@ -111,7 +111,7 @@ describe('uncapitalizeFirstChar', () => {
         const testStrings = {
             textACRONYM: 'textACRONYM',
             camelCasedText: 'camelCasedText',
-            CapsCasedText: 'capsCasedText'
+            CapsCasedText: 'capsCasedText',
         };
 
         for (const [key, value] of Object.entries(testStrings)) {
@@ -125,13 +125,13 @@ describe('withTransformedKeys', () => {
         const rawObj = {
             textACRONYM: 'val1',
             camelCasedText: 'val2',
-            CapsCasedText: 'val3'
+            CapsCasedText: 'val3',
         };
 
         expect(withTransformedKeys(rawObj, capitalizeFirstChar)).toEqual({
             TextACRONYM: 'val1',
             CamelCasedText: 'val2',
-            CapsCasedText: 'val3'
+            CapsCasedText: 'val3',
         });
     });
 
@@ -139,13 +139,13 @@ describe('withTransformedKeys', () => {
         const rawObj = {
             textACRONYM: 'val1',
             camelCasedText: 'val2',
-            CapsCasedText: 'val3'
+            CapsCasedText: 'val3',
         };
 
         expect(withTransformedKeys(rawObj, uncapitalizeFirstChar)).toEqual({
             textACRONYM: 'val1',
             camelCasedText: 'val2',
-            capsCasedText: 'val3'
+            capsCasedText: 'val3',
         });
     });
 });

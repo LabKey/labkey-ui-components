@@ -2193,7 +2193,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "62px",
+                      "minWidth": "77px",
                     }
                   }
                   title="Contains a reference to a user-editable comment about this row"
@@ -2280,7 +2280,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "94px",
+                      "minWidth": "109px",
                     }
                   }
                   title="The assay/experiment ID that uniquely identifies this assay run."
@@ -2351,7 +2351,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "86px",
+                      "minWidth": "101px",
                     }
                   }
                   title="Contains the time at which this run was created"
@@ -2422,7 +2422,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "110px",
+                      "minWidth": "125px",
                     }
                   }
                   title="Contains the user who created this run"
@@ -2493,7 +2493,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "110px",
+                      "minWidth": "125px",
                     }
                   }
                   title="Contains a unique id for this run"
@@ -2564,7 +2564,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "142px",
+                      "minWidth": "157px",
                     }
                   }
                 >
@@ -2634,7 +2634,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "230px",
+                      "minWidth": "245px",
                     }
                   }
                 >
@@ -2704,7 +2704,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "166px",
+                      "minWidth": "181px",
                     }
                   }
                 >
@@ -2774,7 +2774,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "166px",
+                      "minWidth": "181px",
                     }
                   }
                 >
@@ -2844,7 +2844,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "166px",
+                      "minWidth": "181px",
                     }
                   }
                 >
@@ -2914,7 +2914,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "214px",
+                      "minWidth": "229px",
                     }
                   }
                 >
@@ -2984,7 +2984,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   onClick={[Function]}
                   style={
                     Object {
-                      "minWidth": "70px",
+                      "minWidth": "85px",
                     }
                   }
                   title="Contains the associated batch or empty if this run is not part of a batch."

@@ -22,7 +22,12 @@ describe('QueryFilterPanel', () => {
         onFilterUpdate: jest.fn,
     };
 
-    function validate(wrapper: ReactWrapper, fieldItems: number, showFilterExpression = false, showChooseValues = false): void {
+    function validate(
+        wrapper: ReactWrapper,
+        fieldItems: number,
+        showFilterExpression = false,
+        showChooseValues = false
+    ): void {
         expect(wrapper.find('.filter-modal__col_fields').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.filter-modal__col_filter_exp').hostNodes()).toHaveLength(1);
         expect(wrapper.find(ChoicesListItem)).toHaveLength(fieldItems);

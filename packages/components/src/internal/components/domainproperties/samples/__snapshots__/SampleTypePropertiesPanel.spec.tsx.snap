@@ -193,11 +193,11 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
         >
           <input
             className="form-control"
-            defaultValue=""
             id="entity-nameExpression"
             onChange={[Function]}
             placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             type="text"
+            value=""
           />
         </div>
       </div>
@@ -510,11 +510,11 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
         >
           <input
             className="form-control"
-            defaultValue=""
             id="entity-nameExpression"
             onChange={[Function]}
             placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             type="text"
+            value=""
           />
         </div>
       </div>
@@ -763,11 +763,11 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
         >
           <input
             className="form-control"
-            defaultValue=""
             id="entity-nameExpression"
             onChange={[Function]}
             placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             type="text"
+            value=""
           />
         </div>
       </div>
@@ -1073,11 +1073,11 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
         >
           <input
             className="form-control"
-            defaultValue=""
             id="entity-nameExpression"
             onChange={[Function]}
             placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             type="text"
+            value=""
           />
         </div>
       </div>
@@ -1444,11 +1444,11 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
         >
           <input
             className="form-control"
-            defaultValue=""
             id="entity-nameExpression"
             onChange={[Function]}
             placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             type="text"
+            value=""
           />
         </div>
       </div>
@@ -1927,11 +1927,11 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
         >
           <input
             className="form-control"
-            defaultValue=""
             id="entity-nameExpression"
             onChange={[Function]}
             placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             type="text"
+            value=""
           />
         </div>
       </div>
@@ -2814,19 +2814,19 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                   bsClass="form-control"
                                   className=""
                                   componentClass="input"
-                                  defaultValue=""
                                   id="entity-nameExpression"
                                   onChange={[Function]}
                                   placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                   type="text"
+                                  value=""
                                 >
                                   <input
                                     className="form-control"
-                                    defaultValue=""
                                     id="entity-nameExpression"
                                     onChange={[Function]}
                                     placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                     type="text"
+                                    value=""
                                   />
                                 </FormControl>
                               </div>

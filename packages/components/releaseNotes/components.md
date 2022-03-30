@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.149.2
+*Released*: 30 March 2022
+* Fix issue where we could not add assay samples to picklist from the run details page.
+
 ### version 2.149.1
 *Released*: 30 March 2022
 * Issue 44865: Default naming pattern is not saved during source type creation

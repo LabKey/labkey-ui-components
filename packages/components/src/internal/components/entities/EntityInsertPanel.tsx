@@ -1070,7 +1070,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 originalQueryInfo,
                 file,
                 isMerge,
-                useAsync
+                useAsync,
+                entityDataType.importFileController
             );
 
             this.setSubmitting(false);

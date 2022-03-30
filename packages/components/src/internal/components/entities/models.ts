@@ -566,6 +566,7 @@ export interface EntityDataType {
     insertColumnNamePrefix: string; // when updating this value as an input, the name of that column (e.g, MaterialInputs)
     filterArray?: Filter.IFilter[]; // A list of filters to use when selecting the set of values
     editTypeAppUrlPrefix?: string; // the app url route prefix for the edit design page for the given data type
+    importFileController?: string; // the controller to use for file import for the given data type. 'experiment' if not provided
     importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
     isFromSharedContainer?: boolean; // if the data type is defined in /Shared project
     filterCardHeaderClass?: string; // css class to use for styling the header in the display of cards for Sample Finder

@@ -544,7 +544,8 @@ export function handleEntityFileImport(
     queryInfo: QueryInfo,
     file: File,
     isMerge: boolean,
-    useAsync: boolean
+    useAsync: boolean,
+    importFileController?: string
 ): Promise<any> {
     return new Promise((resolve, reject) => {
         const { schemaQuery } = queryInfo;
@@ -553,7 +554,7 @@ export function handleEntityFileImport(
             schemaName: schemaQuery.getSchema(),
             queryName: schemaQuery.getQuery(),
             file,
-            importUrl: ActionURL.buildURL('experiment', importAction, null, {
+            importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, null, {
                 ...importParameters,
                 schemaName: schemaQuery.getSchema(),
                 'query.queryName': schemaQuery.getQuery(),

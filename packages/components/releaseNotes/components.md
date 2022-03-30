@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.148.1
+*Released*: 30 March 2022
+* Issue 44709: Update Unique ID confirmation modal so it remains open until update is complete
+* Add per-product metric for search usage
+
 ### version 2.148.0
 *Released*: 29 March 2022
 * Item 9999: Shared freezers across containers - Storage View UI

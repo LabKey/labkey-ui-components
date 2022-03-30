@@ -109,7 +109,8 @@ export class GridHeader extends PureComponent<GridHeaderProps, any> {
                         let minWidth = width;
 
                         if (minWidth === undefined) {
-                            minWidth = calcWidths && title ? 30 + title.length * 8 : undefined;
+                            // the additional 45px is to account for the grid column header icons for sort/filter and the dropdown toggle
+                            minWidth = calcWidths && title ? 45 + title.length * 8 : undefined;
                         }
 
                         if (minWidth !== undefined) {

@@ -42,7 +42,7 @@ export interface GridMessage {
 
 export interface QueryConfig {
     /**
-     * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html)
+     * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
      * filters to be applied to the [[QueryModel]] data load. These base filters will be concatenated with URL filters,
      * the keyValue filter, and view filters when applicable.
      */
@@ -52,7 +52,7 @@ export interface QueryConfig {
      */
     bindURL?: boolean;
     /**
-     * One of the values of [Query.ContainerFilter](https://labkey.github.io/labkey-api-js/enums/_query_utils_.containerfilter.html)
+     * One of the values of [Query.ContainerFilter](https://labkey.github.io/labkey-api-js/enums/Query.ContainerFilter.html)
      * that sets the scope of this query. Defaults to ContainerFilter.current, and is interpreted relative to
      * config.containerPath.
      */
@@ -130,7 +130,7 @@ const DEFAULT_MAX_ROWS = 20;
 
 /**
  * This is the base model used to store all the data for a query. At a high level the QueryModel API is a wrapper around
- * the [selectRows](https://labkey.github.io/labkey-api-js/modules/_query_selectrows_.html#selectrows) API.
+ * the [selectRows](https://labkey.github.io/labkey-api-js/modules/Query.html#selectRows) API.
  * If you need to retrieve data from a LabKey table or query, so you can render it in a React
  * component, then the QueryModel API is most likely what you want.
  *
@@ -150,7 +150,7 @@ export class QueryModel {
     // Fields from QueryConfig
     // Some of the fields we have in common with QueryConfig are not optional because we give them default values.
     /**
-     * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html)
+     * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
      * filters to be applied to the QueryModel data load. These base filters will be concatenated with URL filters,
      * they keyValue filter, and view filters when applicable.
      */
@@ -160,7 +160,7 @@ export class QueryModel {
      */
     readonly bindURL: boolean;
     /**
-     * One of the values of [Query.ContainerFilter](https://labkey.github.io/labkey-api-js/enums/_query_utils_.containerfilter.html)
+     * One of the values of [Query.ContainerFilter](https://labkey.github.io/labkey-api-js/enums/Query.ContainerFilter.html)
      * that sets the scope of this query. Defaults to ContainerFilter.current, and is interpreted relative to
      * config.containerPath.
      */
@@ -234,7 +234,7 @@ export class QueryModel {
 
     // QueryModel only fields
     /**
-     * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html)
+     * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
      * filters to be applied to the QueryModel data load. These filters will be concatenated with base filters, URL filters,
      * they keyValue filter, and view filters when applicable.
      */
@@ -436,7 +436,7 @@ export class QueryModel {
     }
 
     /**
-     * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html) objects
+     * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html) objects
      * for the QueryModel. If a keyValue is provided, this will be a filter on the primary key column concatenated with
      * the detailFilters. Otherwise, this will be a concatenation of the baseFilters, filterArray, and [[QueryInfo]] view filters.
      */
@@ -845,24 +845,46 @@ export class QueryModel {
     /**
      * Returns the model attributes given a set of queryParams from the URL. Used for URL Binding.
      * @param queryParams: The query attribute from a ReactRouter Location object.
+     * @param useExistingValues: Set to true if you want to use the values on the model as the default values. Typically
+     * this should be false, because you want to treat the URL as the single source of truth, but when we initialize
+     * models we may programmatically want to set an initial value (e.g. a default sort).
      */
-    attributesForURLQueryParams(queryParams): QueryModelURLState {
+    attributesForURLQueryParams(queryParams: Record<string, string>, useExistingValues = false): QueryModelURLState {
         const prefix = this.urlPrefix;
-        const viewName = queryParams[`${prefix}.view`] ?? this.viewName;
-        let filterArray = Filter.getFiltersFromParameters(queryParams, prefix) || this.filterArray;
-        const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]);
+        const viewName = queryParams[`${prefix}.view`] ?? undefined;
+        const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]) ?? [];
+        const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix) || [];
+        let filterArray = columnFilters.concat(searchFilters);
+        let offset = offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? DEFAULT_OFFSET;
+        let schemaQuery = SchemaQuery.create(this.schemaName, this.queryName, viewName);
+        let selectedReportId = queryParams[`${prefix}.reportId`] ?? undefined;
+        let sorts = querySortsFromString(queryParams[`${prefix}.sort`]) ?? [];
 
-        if (searchFilters !== undefined) {
-            filterArray = filterArray.concat(searchFilters);
+        // If useExistingValues is true we'll assume any value not present on the URL can be overridden by the current
+        // model value. This behavior is really only wanted when we are initializing the model.
+        if (useExistingValues) {
+            if (filterArray.length === 0 && this.filterArray.length > 0) {
+                filterArray = this.filterArray;
+            }
+
+            if (offset === 0 && this.offset !== 0) {
+                offset = this.offset;
+            }
+
+            if (viewName === undefined && this.viewName !== undefined) {
+                schemaQuery = this.schemaQuery;
+            }
+
+            if (selectedReportId === undefined && this.selectedReportId) {
+                selectedReportId = this.selectedReportId;
+            }
+
+            if (sorts.length === 0 && this.sorts.length > 0) {
+                sorts = this.sorts;
+            }
         }
 
-        return {
-            filterArray,
-            offset: offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? this.offset,
-            schemaQuery: SchemaQuery.create(this.schemaName, this.queryName, viewName),
-            sorts: querySortsFromString(queryParams[`${prefix}.sort`]) ?? this.sorts,
-            selectedReportId: queryParams[`${prefix}.reportId`] ?? this.selectedReportId,
-        };
+        return { filterArray, offset, schemaQuery, selectedReportId, sorts };
     }
 
     /**

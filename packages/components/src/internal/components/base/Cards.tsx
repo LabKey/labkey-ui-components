@@ -32,7 +32,7 @@ const Card: FC<CardProps> = props => {
             <div className={'cards__block-center' + (disabled ? ' cards__block-disabled' : '')}>
                 <div className="cards__block-center-content">
                     {iconUrl && <img src={iconUrl} />}
-                    {iconSrc && <SVGIcon iconDir="_images" iconSrc={iconSrc} />}
+                    {iconSrc && <SVGIcon iconSrc={iconSrc} />}
                 </div>
             </div>
             <div className="cards__card-content">

@@ -14,7 +14,7 @@ interface Props {
     iconFaCls?: string;
     isExpandable: boolean;
     initExpanded?: boolean;
-    onClick?: (show: boolean) => any;
+    onClick?: (show: boolean) => void;
     iconClickOnly?: boolean;
     containerCls?: string;
 }
@@ -38,7 +38,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
         };
     }
 
-    handleClick = () => {
+    handleClick = (): void => {
         if (!this.props.isExpandable) {
             this.props.onClick?.(false);
             return;
@@ -54,11 +54,11 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
         );
     };
 
-    handleMouseEnter = () => {
+    handleMouseEnter = (): void => {
         this.setState(() => ({ isHover: true }));
     };
 
-    handleMouseLeave = () => {
+    handleMouseLeave = (): void => {
         this.setState(() => ({ isHover: false }));
     };
 
@@ -86,13 +86,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                         {iconFaCls ? (
                             <i style={{ padding: '5px' }} className={'fa fa-' + iconFaCls} />
                         ) : (
-                            <SVGIcon
-                                iconDir="_images"
-                                iconSrc={iconSrc}
-                                isActive={isHover}
-                                height="50px"
-                                width="50px"
-                            />
+                            <SVGIcon iconSrc={iconSrc} isActive={isHover} height="50px" width="50px" />
                         )}
                     </i>
                     <div

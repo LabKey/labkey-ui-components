@@ -48,6 +48,7 @@ export class SearchIdData {
 }
 
 export interface SearchResultCardData {
+    iconDir?: string;
     iconSrc?: string;
     altText?: string;
     title?: string;
@@ -81,4 +82,11 @@ export interface FieldFilterOption {
     valueRequired: boolean;
     multiValue: boolean;
     betweenOperator: boolean;
+    isSoleFilter: boolean;
+}
+
+export interface FilterSelection {
+    filterType: FieldFilterOption;
+    firstFilterValue?: any;
+    secondFilterValue?: any;
 }

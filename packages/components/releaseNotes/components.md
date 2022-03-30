@@ -5,6 +5,87 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XX March 2022
 * Issue 44865: Default naming pattern is not saved during source type creation
 
+### version 2.149.0
+*Released*: 30 March 2022
+* Item 10191: Add grid column header filter and sort behavior
+  * show grid column header icon indicator if a sort and/or filter is applied to that column
+  * add "Clear sort" option to colum header actions
+  * add "Remove filter(s)" option to colum header actions
+  * factor out QueryFilterPanel.tsx from EntityFieldFilterModal.tsx
+  * add "Filter..." option to column header to show GridFilterModal and apply filters
+  * account for model.viewName in QueryFilterPanel
+
+### version 2.148.1
+*Released*: 30 March 2022
+* Issue 44709: Update Unique ID confirmation modal so it remains open until update is complete
+* Add per-product metric for search usage
+
+### version 2.148.0
+*Released*: 29 March 2022
+* Item 9999: Shared freezers across containers - Storage View UI
+  * Support locked Cell state
+
+### version 2.147.1
+*Released*: 29 March 2022
+* Issue 45126: Job start and due dates are not saved after being updated
+
+### version 2.147.0
+*Released*: 28 March 2022
+* Item 10192: Support two filter clauses per field in the `FilterExpressionView` and `FilterCards`
+
+### version 2.146.0
+*Released*: 27 March 2022
+* Package updates for `devDependencies`.
+* Refactor builds to use `sass` instead of `node-sass`.
+* Utilize scss exports from dependent packages when possible.
+* Add `resolve-url-loader` for handling URLs in scss sources. Required for inclusion of certain packages (e.g. font-awesome).
+* Suppress logging of warnings when publishing in `@labkey/components`. Makes use of the [webpack "stats" property](https://webpack.js.org/configuration/stats/).
+* Move declaration of theme/index.scss include.
+
+### version 2.145.2
+*Released*: 24 March 2022
+* Support `containerPath` on `LookupSelectInput` and `withAssayModels`.
+* Add test utility `createMockWithRouteLeave`
+
+### version 2.145.1
+*Released*: 24 March 2022
+* Fix issue where models with bindURl set to true could not have default sorts/filters/etc.
+
+### version 2.145.0
+*Released*: 22 March 2022
+* Fix Issue 44859
+  * HeaderWrapper no longer scrolls to the top of the page during update
+  * Page component now scrolls to top of the page on mount
+* Remove circular dependency between Page and NotFound
+* Refactor NavigationBar to render HeaderWrapper and sticky class
+  * This eliminates duplicated code between our apps
+
+### version 2.144.2
+*Released*: 21 March 2022
+* add `exportConfig` parameter to `getSampleTypeTemplateUrl` for better behavior for media templates
+
+### version 2.144.1
+*Released*: 21 March 2022
+* Item 10071: Add experimental feature flag for Sample/Aliquot Selector grid button
+
+### version 2.144.0
+*Released*: 18 March 2022
+* Item 10165: Provide link to download the import template for types in more places
+  * Extract `TemplateDownloadButton` from `FileAttachmentForm`.
+  * refactor method for getting sampleTypeTemplateUrl for use in LKSM and LKB
+  * Add `SampleTypeTemplateDownloadRenderer` and `AssayResultTemplateDownloadRenderer` for showing download button in types grid
+
+### version 2.143.0
+*Released*: 16 March 2022
+* Add iconDir to SearchResultCardData
+  * This allows apps to render icons in search results that are in non-default directories
+* Make URLResolver.resolveSearchUsingIndex synchronous
+  * It was a promise, but it did nothing async
+* Convert SearchResultCard to FC
+* Refactor SearchResultCard tests
+  * no longer using snapshots
+  * add additional test cases
+
 ### version 2.142.0
 *Released*: 15 March 2022
 * Support In-App Admin across LKB and LKSM, adding admin & user settings page distinctions, as well as profile settings.

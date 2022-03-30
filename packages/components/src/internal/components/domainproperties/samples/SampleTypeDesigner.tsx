@@ -379,7 +379,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     onUniqueIdConfirm = (): void => {
         this.setState(
             () => ({
-                showUniqueIdConfirmation: false,
                 uniqueIdsConfirmed: true,
             }),
             () => this.onFinish()
@@ -476,7 +475,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 if (response.error) {
                     const updatedModel = model.set('exception', response.error) as SampleTypeModel;
                     setSubmitting(false, () => {
-                        this.setState(() => ({ model: updatedModel }));
+                        this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false, }));
                     });
                     return;
                 }
@@ -485,7 +484,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             console.error(error);
             const exception = resolveErrorMessage(error);
             setSubmitting(false, () => {
-                this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel }));
+                this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel, showUniqueIdConfirmation: false, }));
             });
             return;
         }
@@ -505,6 +504,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             model: updatedModel,
                             nameExpressionWarnings: response.warnings,
                             namePreviews: response.previews,
+                            showUniqueIdConfirmation: false,
                         }));
                     });
                     return;
@@ -514,7 +514,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             console.error(error);
             const exception = resolveErrorMessage(error);
             setSubmitting(false, () => {
-                this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel }));
+                this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel, showUniqueIdConfirmation: false, }));
             });
             return;
         }
@@ -535,7 +535,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                   }) as SampleTypeModel);
 
             setSubmitting(false, () => {
-                this.setState(() => ({ model: updatedModel }));
+                this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false, }));
             });
         }
     };
@@ -787,9 +787,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                         title={'Updating Sample Type with Unique ID field' + (numNewUniqueIdFields !== 1 ? 's' : '')}
                         onCancel={this.onUniqueIdCancel}
                         onConfirm={this.onUniqueIdConfirm}
-                        confirmButtonText="Finish Updating Sample Type"
+                        confirmButtonText={submitting ? "Finishing ..." : "Finish Updating Sample Type"}
                         confirmVariant="success"
                         cancelButtonText="Cancel"
+                        submitting={submitting}
                     >
                         {confirmModalMessage}
                     </ConfirmModal>

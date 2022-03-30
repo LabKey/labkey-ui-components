@@ -66,12 +66,13 @@ export function clearAssayDefinitionCache(): void {
     assayDefinitionCache = {};
 }
 
-export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
-    const key = type ?? 'undefined';
+export function fetchAllAssays(type?: string, containerPath?: string): Promise<List<AssayDefinitionModel>> {
+    const key = [type ?? 'undefined', containerPath ?? 'undefined'].join('|');
 
     if (!assayDefinitionCache[key]) {
         assayDefinitionCache[key] = new Promise((res, rej) => {
             Assay.getAll({
+                containerPath,
                 parameters: { type },
                 success: (rawModels: any[]) => {
                     const models = rawModels.reduce(

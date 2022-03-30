@@ -15,6 +15,8 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
+import './theme/index.scss';
+
 import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
@@ -50,6 +52,8 @@ import {
     applyDevTools,
     blurActiveElement,
     capitalizeFirstChar,
+    uncapitalizeFirstChar,
+    withTransformedKeys,
     caseInsensitive,
     debounce,
     devToolsActive,
@@ -106,6 +110,7 @@ import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { ContentGroup, ContentGroupLabel } from './internal/components/base/ContentGroup';
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
+import { TemplateDownloadButton } from './public/files/TemplateDownloadButton';
 import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
@@ -228,6 +233,10 @@ import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
+import {
+    AssayResultTemplateDownloadRenderer,
+    SampleTypeTemplateDownloadRenderer,
+} from './internal/renderers/TemplateDownloadRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
 import { AttachmentCard } from './internal/renderers/AttachmentCard';
 import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
@@ -341,6 +350,8 @@ import {
     getSampleSetMenuItem,
     getSampleStatus,
     getSampleStatusType,
+    getSampleTypeTemplateUrl,
+    downloadSampleTypeTemplate,
     isSampleOperationPermitted,
     isSamplesSchema,
     SamplesManageButtonSections,
@@ -405,7 +416,6 @@ import { LineageGrid, LineageGridFromLocation } from './internal/components/line
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
-import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
@@ -560,11 +570,12 @@ import {
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
+    SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
-import { createMockWithRouterProps } from './test/mockUtils';
+import { createMockWithRouteLeave, createMockWithRouterProps } from './test/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
 import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
@@ -604,6 +615,7 @@ import {
     isProjectContainer,
     isRequestsEnabled,
     isSampleManagerEnabled,
+    isSampleAliquotSelectorEnabled,
     isSampleStatusEnabled,
     isSubfolderDataEnabled,
     registerWebSocketListeners,
@@ -712,6 +724,7 @@ const App = {
     isSampleManagerEnabled,
     isBiologicsEnabled,
     isPremiumProductEnabled,
+    isSampleAliquotSelectorEnabled,
     isProjectContainer,
     sampleManagerIsPrimaryApp,
     isSampleStatusEnabled,
@@ -891,12 +904,14 @@ export {
     AttachmentCard,
     AliasRenderer,
     AppendUnits,
+    AssayResultTemplateDownloadRenderer,
     DefaultRenderer,
     FileColumnRenderer,
     LabelColorRenderer,
     MultiValueRenderer,
     StorageStatusRenderer,
     SampleStatusRenderer,
+    SampleTypeTemplateDownloadRenderer,
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
@@ -988,6 +1003,8 @@ export {
     getSampleDeleteMessage,
     getSampleStatus,
     getSampleStatusType,
+    getSampleTypeTemplateUrl,
+    downloadSampleTypeTemplate,
     DisableableMenuItem,
     SampleOperation,
     SampleStateType,
@@ -996,6 +1013,7 @@ export {
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
+    SAMPLE_STORAGE_COLUMNS,
     FIND_BY_IDS_QUERY_PARAM,
     UNIQUE_ID_FIND_FIELD,
     SAMPLE_DATA_EXPORT_CONFIG,
@@ -1155,7 +1173,6 @@ export {
     ProductMenuModel,
     MenuSectionModel,
     MenuItemModel,
-    HeaderWrapper,
     NavigationBar,
     ProductNavigationMenu,
     FindByIdsModal,
@@ -1235,6 +1252,7 @@ export {
     FileAttachmentEntry,
     FileAttachmentForm,
     FileTree,
+    TemplateDownloadButton,
     WebDavFile,
     getWebDavFiles,
     uploadWebDavFile,
@@ -1247,6 +1265,8 @@ export {
     blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,
+    uncapitalizeFirstChar,
+    withTransformedKeys,
     downloadAttachment,
     handleFileInputChange,
     handleRequestFailure,
@@ -1397,6 +1417,7 @@ export {
     getAssayImportNotificationMsg,
     // Test Helpers
     sleep,
+    createMockWithRouteLeave,
     createMockWithRouterProps,
     makeQueryInfo,
     mountWithAppServerContextOptions,

@@ -728,8 +728,8 @@ export function getExportParams(
     let params: any = {
         schemaName: schemaQuery.schemaName,
         'query.queryName': schemaQuery.queryName,
-        'query.showRows': options.showRows ? [options.showRows] : ['ALL'],
-        'query.selectionKey': options.selectionKey ? options.selectionKey : undefined,
+        'query.showRows': options?.showRows ? [options.showRows] : ['ALL'],
+        'query.selectionKey': options?.selectionKey ? options.selectionKey : undefined,
     };
 
     if (advancedOptions) params = { ...params, ...advancedOptions };
@@ -752,9 +752,22 @@ export function getExportParams(
 
     if (options) {
         if (options.columns) {
+            let columnsString = options.columns;
             if (advancedOptions && advancedOptions['includeColumn'])
-                params['query.columns'] = options.columns + ',' + advancedOptions['includeColumn'].join(',');
-            else params['query.columns'] = options.columns;
+                columnsString = columnsString + ',' + advancedOptions['includeColumn'].join(',');
+            if (advancedOptions && advancedOptions['excludeColumn']) {
+                const toExclude = advancedOptions['excludeColumn'];
+                const columns = [];
+                // FIXME comma-split case to consider
+                columnsString.split(',').forEach(col => {
+                    if (toExclude.indexOf(col) == -1 && toExclude.indexOf(col.toLowerCase()) == -1) {
+                        columns.push(col);
+                    }
+                });
+                params['query.columns'] = columns.join(',');
+            } else {
+                params['query.columns'] = columnsString;
+            }
         }
 
         if (options.filters) {

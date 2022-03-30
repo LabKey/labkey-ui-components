@@ -157,7 +157,7 @@ export class QueryGrid extends ReactN.Component<QueryGridProps, QueryGridState, 
             return headerSelectionCell(this.selectAll, model.selectedState, !model.isLoaded || model.totalRows === 0);
         }
 
-        return headerCell(this.sort, column, i, model.allowSelection, model.sortable, columnCount);
+        return headerCell(i, column, model.allowSelection, columnCount, model.sortable ? this.sort : undefined);
     };
 
     getColumns(): List<any> {

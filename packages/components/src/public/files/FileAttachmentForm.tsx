@@ -30,6 +30,7 @@ import { SimpleResponse } from '../../internal/components/files/models';
 import { FormSection, Progress, LoadingSpinner, InferDomainResponse, inferDomainFromFile } from '../..';
 
 import { FileSizeLimitProps, FileGridPreviewProps } from './models';
+import { TemplateDownloadButton } from './TemplateDownloadButton';
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -352,20 +353,6 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         return templateUrl?.length > 0 && !this.shouldShowPreviewGrid();
     }
 
-    renderTemplateButton(): ReactNode {
-        return (
-            <a
-                className="btn btn-info"
-                title="Download Template"
-                href={this.props.templateUrl}
-                rel="noopener noreferrer"
-                target="_blank"
-            >
-                <span className="fa fa-download" /> Template
-            </a>
-        );
-    }
-
     renderFooter(): ReactNode {
         if (!this.shouldRenderAcceptedFormats() && !this.shouldRenderTemplateButton()) {
             return;
@@ -375,7 +362,11 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             <div className="row">
                 <div className="col-md-9">{this.shouldRenderAcceptedFormats() && this.renderAcceptedFormats()}</div>
                 <div className="col-md-3">
-                    <div className="pull-right">{this.shouldRenderTemplateButton() && this.renderTemplateButton()}</div>
+                    <div className="pull-right">
+                        {this.shouldRenderTemplateButton() && (
+                            <TemplateDownloadButton templateUrl={this.props.templateUrl} />
+                        )}
+                    </div>
                 </div>
             </div>
         );

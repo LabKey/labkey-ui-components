@@ -19,7 +19,9 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_GRID_COL_HEADER_SORT_FILTER,
     EXPERIMENTAL_REQUESTS_MENU,
+    EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     EXPERIMENTAL_SAMPLE_FINDER,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
@@ -219,6 +221,22 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
 
 export function isRequestsEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
+}
+
+export function isSampleAliquotSelectorEnabled(moduleContext?: any): boolean {
+    return (
+        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[
+            EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR
+        ] === true
+    );
+}
+
+export function isGridColSortFilterEnabled(moduleContext?: any): boolean {
+    return (
+        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[
+            EXPERIMENTAL_GRID_COL_HEADER_SORT_FILTER
+        ] === true
+    );
 }
 
 export function hasModule(moduleName: string) {

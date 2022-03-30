@@ -20,12 +20,12 @@ import { LabelOverlay } from '../LabelOverlay';
 import {
     AliasRenderer,
     AppendUnits,
-    QueryDateInput,
     DatePickerInput,
     FileColumnRenderer,
     LabelColorRenderer,
     MultiValueRenderer,
     QueryColumn,
+    QueryDateInput,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
 } from '../../../..';

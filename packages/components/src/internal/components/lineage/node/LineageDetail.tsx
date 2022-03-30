@@ -2,7 +2,7 @@ import React, { FC, memo, useMemo } from 'react';
 import { Experiment, Filter } from '@labkey/api';
 import { Map } from 'immutable';
 
-import { DetailPanel, LoadingSpinner, QueryColumn, resolveDetailRenderer, SchemaQuery } from '../../../..';
+import { DetailPanel, LoadingSpinner, QueryColumn, resolveDetailRenderer, SchemaQuery, Alert } from '../../../..';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
 
@@ -15,6 +15,7 @@ export interface LineageDetailProps {
 const LineageDetailImpl: FC<LineageDetailProps & InjectedQueryModels> = memo(props => {
     const { actions, queryModels } = props;
     if (queryModels.model.isLoading) return <LoadingSpinner />;
+    if (queryModels.model.hasLoadErrors) return <Alert>{queryModels.model.loadErrors[0]}</Alert>;
 
     const additionalCols = queryModels.model.allColumns.filter(
         col => ADDITIONAL_DETAIL_FIELDS.indexOf(col.fieldKey?.toLowerCase()) > -1

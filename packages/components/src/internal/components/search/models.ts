@@ -82,4 +82,11 @@ export interface FieldFilterOption {
     valueRequired: boolean;
     multiValue: boolean;
     betweenOperator: boolean;
+    isSoleFilter: boolean;
+}
+
+export interface FilterSelection {
+    filterType: FieldFilterOption;
+    firstFilterValue?: any;
+    secondFilterValue?: any;
 }

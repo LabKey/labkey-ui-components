@@ -26,12 +26,7 @@ import { isSampleStatusEnabled } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
-import {
-    operationRestrictionMessage,
-    permittedOps,
-    SAMPLE_STATE_COLUMN_NAME,
-    SampleOperation,
-} from './constants';
+import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
 import { SampleStatus } from './models';
 

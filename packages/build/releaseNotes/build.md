@@ -1,5 +1,11 @@
 # @labkey/build
 
+### version 6.0.0
+*Released*: 27 March 2022
+* Package updates.
+* Refactor builds to use `sass` instead of `node-sass`.
+* Suppress logging of scss warnings in development builds. Continue to be logged in production builds.
+
 ### version 5.0.1
 *Released*: 21 March 2022
 * Bump node-sass to 7.0.1

@@ -16,8 +16,6 @@
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
 
-import { HeaderWrapper } from './HeaderWrapper';
-
 import { User } from '../../..';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
@@ -30,6 +28,8 @@ import { shouldShowProductNavigation } from '../productnavigation/utils';
 import { SearchBox } from '../search/SearchBox';
 
 import { FindAndSearchDropdown } from '../search/FindAndSearchDropdown';
+
+import { HeaderWrapper } from './HeaderWrapper';
 
 import { ProductMenu } from './ProductMenu';
 import { UserMenu, UserMenuProps } from './UserMenu';

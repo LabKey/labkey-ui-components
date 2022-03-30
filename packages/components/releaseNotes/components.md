@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.142.X
-*Released*: XX March 2022
+### version 2.149.1
+*Released*: 30 March 2022
 * Issue 44865: Default naming pattern is not saved during source type creation
 
 ### version 2.149.0

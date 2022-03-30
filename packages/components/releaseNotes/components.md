@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Fix issue where we could not add assay samples to picklist from the run details page.
 
+### version 2.149.1
+*Released*: 30 March 2022
+* Issue 44865: Default naming pattern is not saved during source type creation
+
 ### version 2.149.0
 *Released*: 30 March 2022
 * Item 10191: Add grid column header filter and sort behavior

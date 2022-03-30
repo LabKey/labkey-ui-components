@@ -223,11 +223,11 @@ Array [
             >
               <input
                 className="form-control"
-                defaultValue=""
                 id="entity-nameExpression"
                 onChange={[Function]}
                 placeholder="name expression placeholder test"
                 type="text"
+                value=""
               />
             </div>
           </div>
@@ -662,11 +662,11 @@ Array [
             >
               <input
                 className="form-control"
-                defaultValue=""
                 id="entity-nameExpression"
                 onChange={[Function]}
                 placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                 type="text"
+                value=""
               />
             </div>
           </div>
@@ -2686,19 +2686,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                 bsClass="form-control"
                                                 className=""
                                                 componentClass="input"
-                                                defaultValue=""
                                                 id="entity-nameExpression"
                                                 onChange={[Function]}
                                                 placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                                 type="text"
+                                                value=""
                                               >
                                                 <input
                                                   className="form-control"
-                                                  defaultValue=""
                                                   id="entity-nameExpression"
                                                   onChange={[Function]}
                                                   placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                                   type="text"
+                                                  value=""
                                                 />
                                               </FormControl>
                                             </div>

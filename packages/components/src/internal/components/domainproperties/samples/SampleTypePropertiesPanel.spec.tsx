@@ -100,7 +100,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
         expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME).prop('disabled')).toBeTruthy();
 
         // Check initial input values
-        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME_EXPRESSION).props().defaultValue).toBe(nameExpVal);
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME_EXPRESSION).props().value).toBe(nameExpVal);
         expect(wrapper.find('textarea#' + ENTITY_FORM_IDS.DESCRIPTION).props().value).toBe(descVal);
 
         // Add parent alias button should be visible

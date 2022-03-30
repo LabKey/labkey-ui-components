@@ -85,11 +85,14 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         if (this.state.model.isNew && isSampleManagerEnabled()) {
             const response = await this.props.loadNameExpressionOptions(this.state.model.containerPath);
 
-            this.setState(
-                produce((draft: Draft<State>) => {
-                    draft.model.nameExpression = response.prefix;
-                })
-            );
+            if (response.prefix) {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        draft.model.nameExpression = response.prefix + (draft.model.nameExpression ? draft.model.nameExpression : '');
+                    })
+                );
+            }
+
         }
     };
 

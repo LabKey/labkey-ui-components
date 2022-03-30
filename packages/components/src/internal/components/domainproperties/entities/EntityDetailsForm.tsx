@@ -137,7 +137,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                             type="text"
                             placeholder={nameExpressionPlaceholder}
                             onChange={onFormChange}
-                            defaultValue={getEntityNameExpressionValue(formValues, data)}
+                            value={getEntityNameExpressionValue(formValues, data)}
                         />
                     </Col>
                 </Row>

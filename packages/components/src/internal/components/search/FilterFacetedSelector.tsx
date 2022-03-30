@@ -1,16 +1,14 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-
 import { Filter, Query } from '@labkey/api';
 
 import { naturalSort } from '../../../public/sort';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
-import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -98,12 +96,12 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         <>
             {error && <Alert>{error}</Alert>}
             {!fieldDistinctValues && <LoadingSpinner />}
-            <div className="search-filter-values__panel">
+            <div className="filter-faceted__panel">
                 {fieldDistinctValues?.length > showSearchLength && (
                     <div>
                         <input
-                            id="find-filter-typeahead-input"
-                            className="form-control find-filter-typeahead-input"
+                            id="filter-faceted__typeahead-input"
+                            className="form-control filter-faceted__typeahead-input"
                             value={searchStr ?? ''}
                             onChange={onSearchStrChange}
                             type="text"
@@ -121,31 +119,31 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                 return (
                                     <li
                                         key={index}
-                                        className="search-filter-values__li"
+                                        className="filter-faceted__li"
                                         onClick={() => onChange(value, true, true)}
                                     >
                                         <div className="form-check">
                                             <input
-                                                className="form-check-input search-filter-values__checkbox"
+                                                className="form-check-input filter-faceted__checkbox"
                                                 type="checkbox"
                                                 name={'field-value-' + index}
                                                 onChange={event => onChange(value, event.target.checked)}
                                                 checked={checkedValues.indexOf(value) > -1}
                                             />
-                                            <div className="search-filter-values__value">{displayValue}</div>
+                                            <div className="filter-faceted__value">{displayValue}</div>
                                         </div>
                                     </li>
                                 );
                             })}
                             {searchStr && filteredFieldDistinctValues?.length === 0 && (
-                                <div className="parent-search-panel__empty-msg">No value matches '{searchStr}'.</div>
+                                <div className="filter-modal__empty-msg">No value matches '{searchStr}'.</div>
                             )}
                         </ul>
                     </Col>
                     {taggedValues?.length > 0 && (
                         <Col xs={6}>
-                            <div className="search-filter-tags__title">Selected</div>
-                            <ul className="nav nav-stacked labkey-wizard-pills search-filter-tags__div">
+                            <div className="filter-faceted__tags-title">Selected</div>
+                            <ul className="nav nav-stacked labkey-wizard-pills filter-faceted__tags-div">
                                 {taggedValues?.map((value, index) => {
                                     let displayValue = value;
 
@@ -153,7 +151,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 
                                     return (
                                         <li key={index} className="OmniBox--multi">
-                                            <div className="OmniBox-value search-filter-tags__value">
+                                            <div className="OmniBox-value filter-faceted__tags-value">
                                                 <i
                                                     className="symbol fa fa-close"
                                                     onClick={() => onChange(value, false)}

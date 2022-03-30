@@ -5445,6 +5445,170 @@
           "caption": "Boolean"
         }
       ]
+    },
+    {
+      "name": "TestView",
+      "label": "TestView",
+      "default": false,
+      "owner": "susanh",
+      "shared": true,
+      "inherit": false,
+      "session": false,
+      "editable": true,
+      "deletable": true,
+      "revertable": false,
+      "hidden": false,
+      "savable": true,
+      "containerPath": "\/Sample Management",
+      "containerFilter": null,
+      "viewDataUrl": "\/labkey\/Sample%20Management\/experiment-showMaterialSource.view?rowId=16",
+      "columns": [
+        {
+          "name": "Name",
+          "key": "Name",
+          "fieldKey": "Name"
+        },
+        {
+          "name": "Flag",
+          "key": "Flag",
+          "fieldKey": "Flag"
+        }
+      ],
+      "filter": [
+
+      ],
+      "sort": [
+
+      ],
+      "analyticsProviders": [
+
+      ],
+      "fields": [
+        {
+          "ext": {
+
+          },
+          "name": "Name",
+          "description": "Contains a short description for this sample",
+          "align": "left",
+          "friendlyType": "Text (String)",
+          "type": "Text (String)",
+          "jsonType": "string",
+          "sqlType": "varchar",
+          "defaultValue": null,
+          "fieldKey": "Name",
+          "fieldKeyArray": [
+            "Name"
+          ],
+          "fieldKeyPath": "Name",
+          "isAutoIncrement": false,
+          "autoIncrement": false,
+          "isHidden": false,
+          "hidden": false,
+          "isKeyField": false,
+          "keyField": false,
+          "isMvEnabled": false,
+          "mvEnabled": false,
+          "isNullable": false,
+          "nullable": false,
+          "required": true,
+          "isReadOnly": false,
+          "readOnly": false,
+          "isUserEditable": true,
+          "userEditable": true,
+          "calculated": false,
+          "isVersionField": false,
+          "versionField": false,
+          "isSelectable": true,
+          "selectable": true,
+          "shownInInsertView": true,
+          "shownInUpdateView": true,
+          "shownInDetailsView": true,
+          "dimension": false,
+          "measure": false,
+          "recommendedVariable": false,
+          "defaultScale": "LINEAR",
+          "phi": "NotPHI",
+          "excludeFromShifting": false,
+          "sortable": true,
+          "conceptURI": null,
+          "rangeURI": null,
+          "inputType": "text",
+          "shortCaption": "Name",
+          "facetingBehaviorType": "AUTOMATIC",
+          "caption": "Name"
+        },
+        {
+          "ext": {
+
+          },
+          "name": "Flag",
+          "description": "Contains a reference to a user-editable comment about this row",
+          "align": "left",
+          "friendlyType": "Text (String)",
+          "type": "Text (String)",
+          "jsonType": "string",
+          "sqlType": "lsidtype",
+          "defaultValue": null,
+          "fieldKey": "Flag",
+          "fieldKeyArray": [
+            "Flag"
+          ],
+          "fieldKeyPath": "Flag",
+          "isAutoIncrement": false,
+          "autoIncrement": false,
+          "isHidden": false,
+          "hidden": false,
+          "isKeyField": false,
+          "keyField": false,
+          "isMvEnabled": false,
+          "mvEnabled": false,
+          "isNullable": true,
+          "nullable": true,
+          "required": false,
+          "isReadOnly": false,
+          "readOnly": false,
+          "isUserEditable": true,
+          "userEditable": true,
+          "calculated": false,
+          "isVersionField": false,
+          "versionField": false,
+          "isSelectable": true,
+          "selectable": true,
+          "shownInInsertView": true,
+          "shownInUpdateView": true,
+          "shownInDetailsView": true,
+          "dimension": false,
+          "measure": false,
+          "recommendedVariable": false,
+          "defaultScale": "LINEAR",
+          "phi": "NotPHI",
+          "excludeFromShifting": false,
+          "sortable": true,
+          "conceptURI": "http:\/\/www.labkey.org\/exp\/xml#flag",
+          "rangeURI": null,
+          "displayField": "Flag\/Comment",
+          "displayFieldSqlType": "varchar",
+          "displayFieldJsonType": "string",
+          "importAliases": [
+            "comment"
+          ],
+          "inputType": "text",
+          "shortCaption": "Flag",
+          "facetingBehaviorType": "AUTOMATIC",
+          "caption": "Flag",
+          "lookup": {
+            "schema": "exp",
+            "keyColumn": null,
+            "public": false,
+            "displayColumn": "Comment",
+            "isPublic": false,
+            "queryName": "FlagComment",
+            "schemaName": "exp",
+            "table": "FlagComment"
+          }
+        }
+      ]
     }
   ]
 }

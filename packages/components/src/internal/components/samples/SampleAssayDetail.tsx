@@ -197,25 +197,15 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
 
     const { queryModelsWithData, tabOrder } = useMemo(() => {
         const models: Record<string, QueryModel> = {};
-        let targetQueryModels = Object.values(queryModels);
-        const isFilteredView =
-            showAliquotViewSelector &&
-            activeSampleAliquotType !== null &&
-            activeSampleAliquotType !== ALIQUOT_FILTER_MODE.all;
-        if (isFilteredView) {
-            targetQueryModels = [];
-            Object.values(queryModels).forEach(model => {
-                if (model.id?.indexOf(UNFILTERED_GRID_ID_PREFIX) === 0) targetQueryModels.push(model);
-            });
-        }
+        const targetQueryModels = [];
+        Object.values(queryModels).forEach(model => {
+            if (model.id?.indexOf(UNFILTERED_GRID_ID_PREFIX) === 0) targetQueryModels.push(model);
+        });
 
         targetQueryModels.forEach(model => {
-            let targetModel = model;
-            if (isFilteredView) {
-                targetModel = Object.values(queryModels).find(
-                    m => m.id === model.id.substring(UNFILTERED_PREFIX.length)
-                );
-            }
+            const targetModel = Object.values(queryModels).find(
+                m => m.id === model.id.substring(UNFILTERED_PREFIX.length)
+            );
             if (model.hasRows) {
                 models[targetModel.id] = targetModel;
             }
@@ -447,26 +437,22 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         }, {});
 
         // keep tab when "all" view has data, but filtered view is blank
-        const includeUnfilteredConfigs =
-            showAliquotViewSelector && activeSampleAliquotType && activeSampleAliquotType !== ALIQUOT_FILTER_MODE.all;
-        if (includeUnfilteredConfigs) {
-            const _unfilteredConfigs = getSampleAssayQueryConfigs(
-                assayModel,
-                allSampleIds,
-                queryGridSuffix,
-                UNFILTERED_GRID_ID_PREFIX,
-                false,
-                sampleSchemaQuery
-            );
+        const _unfilteredConfigs = getSampleAssayQueryConfigs(
+            assayModel,
+            allSampleIds,
+            queryGridSuffix,
+            UNFILTERED_GRID_ID_PREFIX,
+            false,
+            sampleSchemaQuery
+        );
 
-            const unfilteredConfigs = _unfilteredConfigs.reduce((_configs, config) => {
-                const modelId = config.id;
-                _configs[modelId] = config;
-                return _configs;
-            }, {});
+        const unfilteredConfigs = _unfilteredConfigs.reduce((_configs, config) => {
+            const modelId = config.id;
+            _configs[modelId] = config;
+            return _configs;
+        }, {});
 
-            configs = { ...configs, ...unfilteredConfigs };
-        }
+        configs = { ...configs, ...unfilteredConfigs };
 
         // add in the config objects for those module-defined sample assay result views (e.g. TargetedMS module),
         // note that the moduleName from the config must be active/enabled in the container
@@ -489,17 +475,15 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
                     baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
                 };
 
-                if (includeUnfilteredConfigs) {
-                    modelId = `${UNFILTERED_GRID_ID_PREFIX}:${config.title}:${sampleId}`;
-                    sampleFilterValues = allSampleRows.map(
-                        row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value
-                    );
-                    configs[modelId] = {
-                        ...baseConfig,
-                        id: modelId,
-                        baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
-                    };
-                }
+                modelId = `${UNFILTERED_GRID_ID_PREFIX}:${config.title}:${sampleId}`;
+                sampleFilterValues = allSampleRows.map(
+                    row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value
+                );
+                configs[modelId] = {
+                    ...baseConfig,
+                    id: modelId,
+                    baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
+                };
             }
         });
 

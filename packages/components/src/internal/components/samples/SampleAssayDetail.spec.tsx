@@ -251,15 +251,17 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
-                    id1: modelLoadedNoRows.mutate({ id: 'id1' }),
-                    id2: modelLoadedWithRow.mutate({ id: 'id2' }),
+                    'assay-detail:id1': modelLoadedNoRows.mutate({ id: 'assay-detail:id1' }),
+                    'unfiltered-assay-detail:id1': modelLoadedNoRows.mutate({ id: 'unfiltered-assay-detail:id1' }),
+                    'assay-detail:id2': modelLoadedWithRow.mutate({ id: 'assay-detail:id2' }),
+                    'unfiltered-assay-detail:id2': modelLoadedWithRow.mutate({ id: 'unfiltered-assay-detail:id2' }),
                 }}
             />
         );
         validate(wrapper, false, undefined, true);
         const modelKeys = Object.keys(wrapper.find(TabbedGridPanel).prop('queryModels'));
-        expect(modelKeys.indexOf('id1')).toBe(-1);
-        expect(modelKeys.indexOf('id2')).toBe(0);
+        expect(modelKeys.indexOf('assay-detail:id1')).toBe(-1);
+        expect(modelKeys.indexOf('assay-detail:id2')).toBe(0);
         wrapper.unmount();
     });
 
@@ -268,14 +270,17 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
-                    id1: modelLoadedNoRows.mutate({ id: 'id1', title: 'C' }),
-                    id2: modelLoadedWithRow.mutate({ id: 'id2', title: 'B' }),
-                    id3: modelLoadedWithRow.mutate({ id: 'id3', title: 'A' }),
+                    'assay-detail:id1': modelLoadedNoRows.mutate({ id: 'assay-detail:id1', title: 'C' }),
+                    'unfiltered-assay-detail:id1': modelLoadedNoRows.mutate({ id: 'unfiltered-assay-detail:id1', title: 'C' }),
+                    'assay-detail:id2': modelLoadedWithRow.mutate({ id: 'assay-detail:id2', title: 'B' }),
+                    'unfiltered-assay-detail:id2': modelLoadedWithRow.mutate({ id: 'unfiltered-assay-detail:id2', title: 'B' }),
+                    'assay-detail:id3': modelLoadedWithRow.mutate({ id: 'assay-detail:id3', title: 'A' }),
+                    'unfiltered-assay-detail:id3': modelLoadedWithRow.mutate({ id: 'unfiltered-assay-detail:id3', title: 'A' }),
                 }}
             />
         );
         validate(wrapper, false, undefined, true);
-        expect(wrapper.find(TabbedGridPanel).prop('tabOrder')).toStrictEqual(['id3', 'id2']);
+        expect(wrapper.find(TabbedGridPanel).prop('tabOrder')).toStrictEqual(['assay-detail:id3', 'assay-detail:id2']);
         wrapper.unmount();
     });
 });
@@ -343,9 +348,11 @@ describe('SampleAssayDetailImpl', () => {
         await waitForLifecycle(wrapper);
         const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
         const configKeys = Object.keys(configs);
-        expect(configKeys.length).toBe(1);
+        expect(configKeys.length).toBe(2);
         expect(configs[configKeys[0]].baseFilters[0].getColumnName()).toBe('filterKey');
         expect(configs[configKeys[0]].baseFilters[0].getValue()).toStrictEqual([1]); // RowId value of sample row
+        expect(configs[configKeys[1]].baseFilters[0].getColumnName()).toBe('filterKey');
+        expect(configs[configKeys[1]].baseFilters[0].getValue()).toStrictEqual([1]); // RowId value of sample row
         wrapper.unmount();
     });
 
@@ -371,9 +378,11 @@ describe('SampleAssayDetailImpl', () => {
         await waitForLifecycle(wrapper);
         const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
         const configKeys = Object.keys(configs);
-        expect(configKeys.length).toBe(1);
+        expect(configKeys.length).toBe(2);
         expect(configs[configKeys[0]].baseFilters[0].getColumnName()).toBe('filterKey');
         expect(configs[configKeys[0]].baseFilters[0].getValue()).toStrictEqual(['Name1']); // Name value of sample row
+        expect(configs[configKeys[1]].baseFilters[0].getColumnName()).toBe('filterKey');
+        expect(configs[configKeys[1]].baseFilters[0].getValue()).toStrictEqual(['Name1']); // Name value of sample row
         wrapper.unmount();
     });
 });

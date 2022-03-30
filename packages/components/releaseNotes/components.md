@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 45149: "Assay Results" tabbed grid can remove tabs if you filter a grid to zero rows
+
 ### version 2.149.0
 *Released*: 30 March 2022
 * Item 10191: Add grid column header filter and sort behavior

@@ -40,18 +40,40 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
             );
         };
 
+        if (hidden) return null;
+
+        const buttonBody = (
+            <>
+                {defaultView && viewMapper(defaultView)}
+                {privateViews.length > 0 && <MenuItem header>My Saved Views</MenuItem>}
+                {privateViews.length > 0 && privateViews.map(viewMapper)}
+                {publicViews.length > 0 && <MenuItem header>All Saved Views</MenuItem>}
+                {publicViews.length > 0 && publicViews.map(viewMapper)}
+            </>
+        );
+
         return (
-            !hidden && (
-                <div className="view-menu">
-                    <DropdownButton disabled={disabled} id={`view-menu-drop-${model.id}`} pullRight title="Grid Views">
-                        {defaultView && viewMapper(defaultView)}
-                        {privateViews.length > 0 && <MenuItem header>My Saved Views</MenuItem>}
-                        {privateViews.length > 0 && privateViews.map(viewMapper)}
-                        {publicViews.length > 0 && <MenuItem header>All Saved Views</MenuItem>}
-                        {publicViews.length > 0 && publicViews.map(viewMapper)}
-                    </DropdownButton>
-                </div>
-            )
+            <div className="view-menu">
+                <DropdownButton
+                    className="hidden-md hidden-sm hidden-xs"
+                    disabled={disabled}
+                    id={`view-menu-drop-${model.id}`}
+                    pullRight
+                    title="Grid Views"
+                >
+                    {buttonBody}
+                </DropdownButton>
+
+                <DropdownButton
+                    className="visible-md visible-sm visible-xs"
+                    disabled={disabled}
+                    id={`view-menu-drop-${model.id}`}
+                    pullRight
+                    title={<span className="fa fa-table" />}
+                >
+                    {buttonBody}
+                </DropdownButton>
+            </div>
         );
     }
 }

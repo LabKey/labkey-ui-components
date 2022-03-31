@@ -12,7 +12,7 @@ exports[`ViewMenu Render 2`] = `
     <button
       aria-expanded={false}
       aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
+      className="hidden-md hidden-sm hidden-xs dropdown-toggle btn btn-default"
       disabled={true}
       id="view-menu-drop-model"
       onClick={[Function]}
@@ -21,7 +21,35 @@ exports[`ViewMenu Render 2`] = `
       type="button"
     >
       Grid Views
-       
+
+      <span
+        className="caret"
+      />
+    </button>
+    <ul
+      aria-labelledby="view-menu-drop-model"
+      className="dropdown-menu dropdown-menu-right"
+      role="menu"
+    />
+  </div>
+  <div
+    className="dropdown disabled btn-group"
+  >
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="visible-md visible-sm visible-xs dropdown-toggle btn btn-default"
+      disabled={true}
+      id="view-menu-drop-model"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+      type="button"
+    >
+      <span
+        className="fa fa-table"
+      />
+
       <span
         className="caret"
       />
@@ -45,7 +73,7 @@ exports[`ViewMenu Render 3`] = `
     <button
       aria-expanded={false}
       aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
+      className="hidden-md hidden-sm hidden-xs dropdown-toggle btn btn-default"
       disabled={false}
       id="view-menu-drop-model"
       onClick={[Function]}
@@ -54,7 +82,7 @@ exports[`ViewMenu Render 3`] = `
       type="button"
     >
       Grid Views
-       
+
       <span
         className="caret"
       />
@@ -80,7 +108,83 @@ exports[`ViewMenu Render 3`] = `
       </li>
       <li
         className="dropdown-header"
-        onKeyDown={[Function]}
+        role="heading"
+      >
+        All Saved Views
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          No Extra Column
+        </a>
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          No Mixtures or Extra
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div
+    className="dropdown btn-group"
+  >
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="visible-md visible-sm visible-xs dropdown-toggle btn btn-default"
+      disabled={false}
+      id="view-menu-drop-model"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+      type="button"
+    >
+      <span
+        className="fa fa-table"
+      />
+
+      <span
+        className="caret"
+      />
+    </button>
+    <ul
+      aria-labelledby="view-menu-drop-model"
+      className="dropdown-menu dropdown-menu-right"
+      role="menu"
+    >
+      <li
+        className="active"
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          Default
+        </a>
+      </li>
+      <li
+        className="dropdown-header"
         role="heading"
       >
         All Saved Views
@@ -128,7 +232,7 @@ exports[`ViewMenu Render 4`] = `
     <button
       aria-expanded={false}
       aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
+      className="hidden-md hidden-sm hidden-xs dropdown-toggle btn btn-default"
       disabled={false}
       id="view-menu-drop-model"
       onClick={[Function]}
@@ -137,7 +241,7 @@ exports[`ViewMenu Render 4`] = `
       type="button"
     >
       Grid Views
-       
+
       <span
         className="caret"
       />
@@ -163,7 +267,69 @@ exports[`ViewMenu Render 4`] = `
       </li>
       <li
         className="dropdown-header"
-        onKeyDown={[Function]}
+        role="heading"
+      >
+        My Saved Views
+      </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          No Extra Column
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div
+    className="dropdown btn-group"
+  >
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="visible-md visible-sm visible-xs dropdown-toggle btn btn-default"
+      disabled={false}
+      id="view-menu-drop-model"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+      type="button"
+    >
+      <span
+        className="fa fa-table"
+      />
+
+      <span
+        className="caret"
+      />
+    </button>
+    <ul
+      aria-labelledby="view-menu-drop-model"
+      className="dropdown-menu dropdown-menu-right"
+      role="menu"
+    >
+      <li
+        className="active"
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          Default
+        </a>
+      </li>
+      <li
+        className="dropdown-header"
         role="heading"
       >
         My Saved Views
@@ -197,7 +363,7 @@ exports[`ViewMenu Render 5`] = `
     <button
       aria-expanded={false}
       aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
+      className="hidden-md hidden-sm hidden-xs dropdown-toggle btn btn-default"
       disabled={false}
       id="view-menu-drop-model"
       onClick={[Function]}
@@ -206,7 +372,7 @@ exports[`ViewMenu Render 5`] = `
       type="button"
     >
       Grid Views
-       
+
       <span
         className="caret"
       />
@@ -232,7 +398,69 @@ exports[`ViewMenu Render 5`] = `
       </li>
       <li
         className="dropdown-header"
-        onKeyDown={[Function]}
+        role="heading"
+      >
+        My Saved Views
+      </li>
+      <li
+        className="active"
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          No Extra Column
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div
+    className="dropdown btn-group"
+  >
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="visible-md visible-sm visible-xs dropdown-toggle btn btn-default"
+      disabled={false}
+      id="view-menu-drop-model"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+      type="button"
+    >
+      <span
+        className="fa fa-table"
+      />
+
+      <span
+        className="caret"
+      />
+    </button>
+    <ul
+      aria-labelledby="view-menu-drop-model"
+      className="dropdown-menu dropdown-menu-right"
+      role="menu"
+    >
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          Default
+        </a>
+      </li>
+      <li
+        className="dropdown-header"
         role="heading"
       >
         My Saved Views
@@ -266,7 +494,7 @@ exports[`ViewMenu Render 6`] = `
     <button
       aria-expanded={false}
       aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
+      className="hidden-md hidden-sm hidden-xs dropdown-toggle btn btn-default"
       disabled={true}
       id="view-menu-drop-model"
       onClick={[Function]}
@@ -275,7 +503,50 @@ exports[`ViewMenu Render 6`] = `
       type="button"
     >
       Grid Views
-       
+
+      <span
+        className="caret"
+      />
+    </button>
+    <ul
+      aria-labelledby="view-menu-drop-model"
+      className="dropdown-menu dropdown-menu-right"
+      role="menu"
+    >
+      <li
+        className="active"
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          Default
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div
+    className="dropdown disabled btn-group"
+  >
+    <button
+      aria-expanded={false}
+      aria-haspopup={true}
+      className="visible-md visible-sm visible-xs dropdown-toggle btn btn-default"
+      disabled={true}
+      id="view-menu-drop-model"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+      type="button"
+    >
+      <span
+        className="fa fa-table"
+      />
+
       <span
         className="caret"
       />

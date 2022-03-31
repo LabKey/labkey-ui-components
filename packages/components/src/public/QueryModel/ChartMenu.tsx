@@ -70,7 +70,6 @@ export class ChartMenu extends PureComponent<Props> {
         } = model;
         const privateCharts = hasCharts ? charts.filter(chart => !chart.shared) : [];
         const publicCharts = hasCharts ? charts.filter(chart => chart.shared) : [];
-        const title = isLoadingCharts ? <span className="fa fa-spinner fa-pulse" /> : 'Charts';
         const noCharts = hasCharts && charts.length === 0 && !showSampleComparisonReports;
         const hasError = queryInfoError !== undefined || rowsError !== undefined;
         const disabled = isLoading || isLoadingCharts || noCharts || hasError;
@@ -87,33 +86,57 @@ export class ChartMenu extends PureComponent<Props> {
             return null;
         }
 
+        const buttonBody = (
+            <>
+                {showSampleComparisonReports && (
+                    <MenuItem header key="new-charts">
+                        New Charts & Reports
+                    </MenuItem>
+                )}
+
+                {showSampleComparisonReports && (
+                    <MenuItem key="preview-scr" onSelect={this.onCreateClicked}>
+                        <i className="chart-menu-icon fa fa-table" />
+                        <span className="chart-menu-label">Preview Sample Comparison Report</span>
+                    </MenuItem>
+                )}
+
+                {chartsError !== undefined && <MenuItem>{chartsError}</MenuItem>}
+
+                {privateCharts.length > 0 && <MenuItem header>My Saved Charts</MenuItem>}
+
+                {privateCharts.length > 0 && privateCharts.map(this.chartMapper)}
+
+                {publicCharts.length > 0 && <MenuItem header>All Saved Charts</MenuItem>}
+
+                {publicCharts.length > 0 && publicCharts.map(this.chartMapper)}
+            </>
+        );
+
         return (
             <div className="chart-menu">
-                <DropdownButton id={`chart-menu-${id}`} disabled={disabled} title={title}>
-                    {showSampleComparisonReports && (
-                        <MenuItem header key="new-charts">
-                            New Charts & Reports
-                        </MenuItem>
-                    )}
-
-                    {showSampleComparisonReports && (
-                        <MenuItem key="preview-scr" onSelect={this.onCreateClicked}>
-                            <i className="chart-menu-icon fa fa-table" />
-                            <span className="chart-menu-label">Preview Sample Comparison Report</span>
-                        </MenuItem>
-                    )}
-
-                    {chartsError !== undefined && <MenuItem>{chartsError}</MenuItem>}
-
-                    {privateCharts.length > 0 && <MenuItem header>My Saved Charts</MenuItem>}
-
-                    {privateCharts.length > 0 && privateCharts.map(this.chartMapper)}
-
-                    {publicCharts.length > 0 && <MenuItem header>All Saved Charts</MenuItem>}
-
-                    {publicCharts.length > 0 && publicCharts.map(this.chartMapper)}
+                <DropdownButton
+                    className="hidden-md hidden-sm hidden-xs"
+                    id={`chart-menu-${id}`}
+                    disabled={disabled}
+                    title={isLoadingCharts ? <span className="fa fa-spinner fa-pulse" /> : 'Charts'}
+                >
+                    {buttonBody}
                 </DropdownButton>
-
+                <DropdownButton
+                    className="visible-md visible-sm visible-xs"
+                    id={`chart-menu-${id}`}
+                    disabled={disabled}
+                    title={
+                        isLoadingCharts ? (
+                            <span className="fa fa-spinner fa-pulse" />
+                        ) : (
+                            <span className="fa fa-area-chart" />
+                        )
+                    }
+                >
+                    {buttonBody}
+                </DropdownButton>
                 {showChartModal && (
                     <ChartModal selectedChart={selectedChart} filters={model.filters} onHide={this.clearChart} />
                 )}

@@ -83,8 +83,8 @@ const card = {
 };
 
 describe('EntityFieldFilterModal', () => {
-    function verifyOpeningCardWithFilters(wrapper, isQuerySelected?: boolean) {
-        const queriesContainer = wrapper.find('.parent-search-panel__col_queries');
+    function verifyOpeningCardWithFilters(wrapper, isQuerySelected?: boolean): void {
+        const queriesContainer = wrapper.find('.filter-modal__col_queries');
         const queries = queriesContainer.find(ChoicesListItem);
         expect(queries.length).toBe(2);
         expect(queries.at(0).props().label).toBe('SampleType_01');
@@ -95,10 +95,10 @@ describe('EntityFieldFilterModal', () => {
         expect(queries.at(1).props()['active']).toEqual(isQuerySelected);
     }
 
-    function verifyOpenedFieldsPanel(wrapper, isFieldSelected?: boolean) {
+    function verifyOpenedFieldsPanel(wrapper, isFieldSelected?: boolean): void {
         const fieldCount = 14;
 
-        const fieldsContainerBody = wrapper.find('.parent-search-panel__fields-col-content');
+        const fieldsContainerBody = wrapper.find('.filter-modal__fields-col-content');
         const fields = fieldsContainerBody.find(ChoicesListItem);
         expect(fields.length).toBe(fieldCount);
 
@@ -107,7 +107,7 @@ describe('EntityFieldFilterModal', () => {
             let hasFieldFilter = false;
             if (fieldName === 'Integer' || fieldName === 'Boolean') hasFieldFilter = true;
 
-            expect(fields.at(i).find('.search_field_dot')).toHaveLength(hasFieldFilter ? 1 : 0); // has filter indicator
+            expect(fields.at(i).find('.filter-modal__field_dot')).toHaveLength(hasFieldFilter ? 1 : 0); // has filter indicator
 
             if (fieldName === 'Integer') {
                 expect(fields.at(i).props()['active']).toEqual(!!isFieldSelected);
@@ -124,10 +124,10 @@ describe('EntityFieldFilterModal', () => {
 
         expect(wrapper.find('ModalTitle').text()).toBe('Select Sample Test Parent Properties');
 
-        const queriesContainer = wrapper.find('.parent-search-panel__col_queries');
-        const queriesContainerTitle = queriesContainer.find('.parent-search-panel__col-title');
+        const queriesContainer = wrapper.find('.filter-modal__col_queries');
+        const queriesContainerTitle = queriesContainer.find('.filter-modal__col-title');
 
-        const queriesContainerBody = queriesContainer.find('.parent-search-panel__col-content');
+        const queriesContainerBody = queriesContainer.find('.filter-modal__col-content');
         expect(queriesContainerTitle.text()).toBe('test Parents');
         const queries = queriesContainerBody.find(ChoicesListItem);
         expect(queries.length).toBe(2);
@@ -137,9 +137,9 @@ describe('EntityFieldFilterModal', () => {
         expect(queries.at(0).find('.component-right')).toHaveLength(0); // no filter indicator
         expect(queries.at(1).find('.component-right')).toHaveLength(0);
 
-        const fieldsContainerTitle = wrapper.find('.parent-search-panel__col_fields').at(0);
+        const fieldsContainerTitle = wrapper.find('.filter-modal__col_fields').at(0);
         expect(fieldsContainerTitle.text()).toContain('Fields');
-        const fieldsContainerEmptyBody = wrapper.find('.parent-search-panel__empty-msg').at(0);
+        const fieldsContainerEmptyBody = wrapper.find('.filter-modal__empty-msg').at(0);
         expect(fieldsContainerEmptyBody.text()).toContain('Select a test parent.');
 
         const findButton = wrapper.find('button.btn-success');
@@ -173,7 +173,7 @@ describe('EntityFieldFilterModal', () => {
 
         verifyOpenedFieldsPanel(wrapper);
 
-        expect(wrapper.find('.parent-search-panel__empty-msg').text()).toContain('Select a field.'); // filter panel empty
+        expect(wrapper.find('.filter-modal__empty-msg').text()).toContain('Select a field.'); // filter panel empty
 
         wrapper.unmount();
     });

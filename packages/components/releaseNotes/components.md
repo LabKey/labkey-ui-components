@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.149.3
+*Released*: 31 March 2022
+* Display custom (and standard) protocol application properties in the lineage graph
+
 ### version 2.149.2
 *Released*: 30 March 2022
 * Fix issue where we could not add assay samples to picklist from the run details page.

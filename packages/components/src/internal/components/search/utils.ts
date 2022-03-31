@@ -674,7 +674,7 @@ export function getUpdatedDataTypeFilters(
     // the filters on the parent type associated with this field.
     const thisFieldFilters =
         newFilters
-            ?.filter(newFilter => newFilter != null)
+            ?.filter(newFilter => newFilter !== null)
             .map(newFilter => {
                 return {
                     fieldKey: activeFieldKey,

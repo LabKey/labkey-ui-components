@@ -171,7 +171,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const { filterType, firstFilterValue, secondFilterValue } = activeFilters[filterIndex];
             if (!filterType || !filterType.valueRequired) return null;
 
-            const suffix = '-' + filterIndex + (isSecondInput ? 'second' : '');
+            const suffix = '-' + filterIndex + (isSecondInput ? '-second' : '');
             const valueRaw = isSecondInput ? secondFilterValue : firstFilterValue;
 
             const jsonType = field.getDisplayFieldJsonType();

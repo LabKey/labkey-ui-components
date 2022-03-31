@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.149.4
+*Released*: 31 March 2022
+* Fix issue with Between filter type second input
+
 ### version 2.149.3
 *Released*: 31 March 2022
 * Display custom (and standard) protocol application properties in the lineage graph

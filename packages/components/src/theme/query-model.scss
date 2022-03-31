@@ -49,3 +49,17 @@
     color: $light-gray;
     fontSize: 12px;
 }
+
+.grid-panel__search-form {
+    height: 34px;
+
+    .grid-panel__search-icon {
+        position: absolute;
+        margin: 8px 0 0 5px;
+        color: $gray-light;
+    }
+
+    .grid-panel__search-input {
+        padding: 7px 22px;
+    }
+}

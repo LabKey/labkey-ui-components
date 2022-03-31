@@ -33,6 +33,7 @@ import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
+import { SearchBox } from './SearchBox';
 
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
@@ -62,6 +63,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showOmniBox?: boolean;
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
+    showSearchInput?: boolean;
     showViewMenu?: boolean;
     showHeader?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
@@ -72,7 +74,8 @@ export interface GridPanelProps<ButtonsComponentProps> {
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
-    onViewSelect: (viewName) => void;
+    onViewSelect: (viewName: string) => void;
+    onSearch: (token: string) => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -113,12 +116,14 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             onChartClicked,
             onCreateReportClicked,
             onExport,
+            onSearch,
             onViewSelect,
             pageSizes,
             showChartMenu,
             showExport,
             showPagination,
             showSampleComparisonReports,
+            showSearchInput,
             showViewMenu,
             supportedExportTypes,
         } = this.props;
@@ -138,7 +143,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                         {ButtonsComponent !== undefined && (
                             <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
                         )}
-
                         {showChartMenu && (
                             <ChartMenu
                                 hideEmptyChartMenu={hideEmptyChartMenu}
@@ -149,6 +153,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 showSampleComparisonReports={showSampleComparisonReports}
                             />
                         )}
+                        {showSearchInput && <SearchBox onSearch={onSearch} />}
                     </div>
                 </div>
 
@@ -214,6 +219,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showExport: true,
         showOmniBox: true,
         showSampleComparisonReports: false,
+        showSearchInput: true,
         showViewMenu: true,
         showHeader: true,
     };
@@ -466,6 +472,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         );
     };
 
+    onSearch = (value: string): void => {
+        const actionValue = {
+            action: this.omniBoxActions.search,
+            value,
+            valueObject: Filter.create('*', value, Filter.Types.Q),
+        };
+        this.handleSearchChange(this.state.actionValues.concat(actionValue), { type: ChangeType.add });
+    };
+
     handleViewChange = (actionValues: ActionValue[], change: Change): void => {
         const { model, actions, allowSelections } = this.props;
         let updateViewCallback: () => void;
@@ -708,7 +723,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
                     <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
                         {showButtonBar && (
-                            <ButtonBar {...this.props} onViewSelect={this.onViewSelect} onExport={onExport} />
+                            <ButtonBar
+                                {...this.props}
+                                onSearch={this.onSearch}
+                                onViewSelect={this.onViewSelect}
+                                onExport={onExport}
+                            />
                         )}
 
                         {showOmniBox && (

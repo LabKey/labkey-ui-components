@@ -119,6 +119,7 @@ export class ChartMenu extends PureComponent<Props> {
                     className="hidden-md hidden-sm hidden-xs"
                     id={`chart-menu-${id}`}
                     disabled={disabled}
+                    pullRight
                     title={isLoadingCharts ? <span className="fa fa-spinner fa-pulse" /> : 'Charts'}
                 >
                     {buttonBody}

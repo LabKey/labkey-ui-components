@@ -54,6 +54,7 @@
 
 .grid-panel__search-form {
     height: 34px;
+    min-width: 85px;
 
     .grid-panel__search-icon {
         position: absolute;
@@ -62,7 +63,7 @@
     }
 
     .grid-panel__search-input {
-        padding: 7px 22px;
+        padding: 7px 4px 7px 22px;
     }
 }
 

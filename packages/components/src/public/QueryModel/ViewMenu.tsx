@@ -59,7 +59,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     disabled={disabled}
                     id={`view-menu-drop-${model.id}`}
                     pullRight
-                    title="Grid Views"
+                    title="Views"
                 >
                     {buttonBody}
                 </DropdownButton>

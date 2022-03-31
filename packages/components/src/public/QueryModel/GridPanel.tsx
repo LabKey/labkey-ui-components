@@ -37,6 +37,7 @@ import { SearchBox } from './SearchBox';
 
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
+import { FiltersButton } from './FiltersButton';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -60,6 +61,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showButtonBar?: boolean;
     showChartMenu?: boolean;
     showExport?: boolean;
+    showFiltersButton?: boolean;
     showOmniBox?: boolean;
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
@@ -76,6 +78,7 @@ type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 interface GridBarProps<T> extends Props<T> {
     onViewSelect: (viewName: string) => void;
     onSearch: (token: string) => void;
+    onFilter: () => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -116,11 +119,13 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             onChartClicked,
             onCreateReportClicked,
             onExport,
+            onFilter,
             onSearch,
             onViewSelect,
             pageSizes,
             showChartMenu,
             showExport,
+            showFiltersButton,
             showPagination,
             showSampleComparisonReports,
             showSearchInput,
@@ -153,6 +158,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 showSampleComparisonReports={showSampleComparisonReports}
                             />
                         )}
+                        {showFiltersButton && <FiltersButton onFilter={onFilter} />}
                         {showSearchInput && <SearchBox onSearch={onSearch} />}
                     </div>
                 </div>
@@ -217,6 +223,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showButtonBar: true,
         showChartMenu: true,
         showExport: true,
+        showFiltersButton: true,
         showOmniBox: true,
         showSampleComparisonReports: false,
         showSearchInput: true,
@@ -550,6 +557,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
     };
 
+    showFilterModal = (): void => {
+        const { model } = this.props;
+        const firstFieldKey = model.displayColumns.at(0)?.resolveFieldKey();
+        this.setState({ showFilterModalFieldKey: firstFieldKey });
+    };
+
     closeFilterModal = (): void => {
         this.setState({ showFilterModalFieldKey: undefined });
     };
@@ -725,9 +738,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         {showButtonBar && (
                             <ButtonBar
                                 {...this.props}
+                                onExport={onExport}
+                                onFilter={this.showFilterModal}
                                 onSearch={this.onSearch}
                                 onViewSelect={this.onViewSelect}
-                                onExport={onExport}
                             />
                         )}
 

@@ -55,11 +55,15 @@
 
     .grid-panel__search-icon {
         position: absolute;
-        margin: 8px 0 0 5px;
+        margin: 9px 0 0 5px;
         color: $gray-light;
     }
 
     .grid-panel__search-input {
         padding: 7px 22px;
     }
+}
+
+.grid-panel__button {
+    height: 34px;
 }

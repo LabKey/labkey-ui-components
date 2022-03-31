@@ -21,7 +21,7 @@ exports[`ViewMenu Render 2`] = `
       type="button"
     >
       Grid Views
-
+       
       <span
         className="caret"
       />
@@ -49,7 +49,7 @@ exports[`ViewMenu Render 2`] = `
       <span
         className="fa fa-table"
       />
-
+       
       <span
         className="caret"
       />
@@ -82,7 +82,7 @@ exports[`ViewMenu Render 3`] = `
       type="button"
     >
       Grid Views
-
+       
       <span
         className="caret"
       />
@@ -159,7 +159,7 @@ exports[`ViewMenu Render 3`] = `
       <span
         className="fa fa-table"
       />
-
+       
       <span
         className="caret"
       />
@@ -241,7 +241,7 @@ exports[`ViewMenu Render 4`] = `
       type="button"
     >
       Grid Views
-
+       
       <span
         className="caret"
       />
@@ -304,7 +304,7 @@ exports[`ViewMenu Render 4`] = `
       <span
         className="fa fa-table"
       />
-
+       
       <span
         className="caret"
       />
@@ -372,7 +372,7 @@ exports[`ViewMenu Render 5`] = `
       type="button"
     >
       Grid Views
-
+       
       <span
         className="caret"
       />
@@ -435,7 +435,7 @@ exports[`ViewMenu Render 5`] = `
       <span
         className="fa fa-table"
       />
-
+       
       <span
         className="caret"
       />
@@ -503,7 +503,7 @@ exports[`ViewMenu Render 6`] = `
       type="button"
     >
       Grid Views
-
+       
       <span
         className="caret"
       />
@@ -546,7 +546,7 @@ exports[`ViewMenu Render 6`] = `
       <span
         className="fa fa-table"
       />
-
+       
       <span
         className="caret"
       />

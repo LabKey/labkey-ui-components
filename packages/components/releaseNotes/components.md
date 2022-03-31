@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.149.3
+*Released*: 31 March 2022
 * Display custom (and standard) protocol application properties in the lineage graph
 
 ### version 2.149.2

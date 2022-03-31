@@ -11,9 +11,10 @@ import {
 } from '../../..';
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
+import { getPrimaryAppProperties } from '../../app/utils';
+
 import { SearchIdData, SearchResultCardData } from './models';
 import { SAMPLE_FINDER_VIEW_NAME } from './utils';
-import { getPrimaryAppProperties } from '../../app/utils';
 
 type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 

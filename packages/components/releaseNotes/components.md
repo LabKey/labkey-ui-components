@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.149.5
+*Released*: 31 March 2022
+* 45148: Handle data indices for single/multi-part fieldKeys
+* Add defensive check for presence of product
+
 ### version 2.149.4
 *Released*: 31 March 2022
 * Fix issue with Between filter type second input

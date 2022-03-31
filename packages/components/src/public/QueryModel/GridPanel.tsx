@@ -38,6 +38,7 @@ import { SearchBox } from './SearchBox';
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
+import { isGridColSortFilterEnabled } from '../../internal/app/utils';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -148,18 +149,8 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                         {ButtonsComponent !== undefined && (
                             <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
                         )}
-                        {showChartMenu && (
-                            <ChartMenu
-                                hideEmptyChartMenu={hideEmptyChartMenu}
-                                actions={actions}
-                                model={model}
-                                onChartClicked={onChartClicked}
-                                onCreateReportClicked={onCreateReportClicked}
-                                showSampleComparisonReports={showSampleComparisonReports}
-                            />
-                        )}
-                        {showFiltersButton && <FiltersButton onFilter={onFilter} />}
-                        {showSearchInput && <SearchBox onSearch={onSearch} />}
+                        {isGridColSortFilterEnabled() && showFiltersButton && <FiltersButton onFilter={onFilter} />}
+                        {isGridColSortFilterEnabled() && showSearchInput && <SearchBox onSearch={onSearch} />}
                     </div>
                 </div>
 
@@ -176,7 +167,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 setPageSize={this.setPageSize}
                             />
                         )}
-
                         {canExport && (
                             <ExportMenu
                                 model={model}
@@ -185,11 +175,19 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 onExport={onExport}
                             />
                         )}
-
+                        {showChartMenu && (
+                            <ChartMenu
+                                hideEmptyChartMenu={hideEmptyChartMenu}
+                                actions={actions}
+                                model={model}
+                                onChartClicked={onChartClicked}
+                                onCreateReportClicked={onCreateReportClicked}
+                                showSampleComparisonReports={showSampleComparisonReports}
+                            />
+                        )}
                         {canSelectView && (
                             <ViewMenu model={model} onViewSelect={onViewSelect} hideEmptyViewMenu={hideEmptyViewMenu} />
                         )}
-
                         {ButtonsComponentRight !== undefined && (
                             <ButtonsComponentRight {...buttonsComponentProps} model={model} actions={actions} />
                         )}

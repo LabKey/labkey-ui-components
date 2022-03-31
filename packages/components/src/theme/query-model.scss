@@ -17,6 +17,8 @@
 .grid-panel__info {
     min-height: 22px; /* Prevents grid from jumping when pages are loading */
     display: flex;
+    border-top: solid 1px $gray-border-light;
+    padding-top: 1em;
 }
 
 .pagination-info {

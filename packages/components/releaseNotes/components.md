@@ -1,6 +1,27 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.149.5
+*Released*: 31 March 2022
+* 45148: Handle data indices for single/multi-part fieldKeys
+* Add defensive check for presence of product
+
+### version 2.149.4
+*Released*: 31 March 2022
+* Fix issue with Between filter type second input
+
+### version 2.149.3
+*Released*: 31 March 2022
+* Display custom (and standard) protocol application properties in the lineage graph
+
+### version 2.149.2
+*Released*: 30 March 2022
+* Fix issue where we could not add assay samples to picklist from the run details page.
+
+### version 2.149.1
+*Released*: 30 March 2022
+* Issue 44865: Default naming pattern is not saved during source type creation
+
 ### version 2.149.0
 *Released*: 30 March 2022
 * Remove QueryGridPanel and related components and action/util functions

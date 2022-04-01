@@ -165,3 +165,12 @@
     max-height: 500px;
     overflow: auto;
 }
+
+.lineage-detail-prop-table {
+    width: 100%;
+
+    .lineage-detail-prop-cell {
+        padding: 2px;
+        border-top: solid 1px $gray-border;
+    }
+}

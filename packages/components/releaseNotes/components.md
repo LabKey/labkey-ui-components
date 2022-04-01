@@ -5,6 +5,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add AncestorRenderer for display of ancestor lookup columns
 
+### version 2.149.5
+*Released*: 31 March 2022
+* 45148: Handle data indices for single/multi-part fieldKeys
+* Add defensive check for presence of product
+
+### version 2.149.4
+*Released*: 31 March 2022
+* Fix issue with Between filter type second input
+
+### version 2.149.3
+*Released*: 31 March 2022
+* Display custom (and standard) protocol application properties in the lineage graph
+
 ### version 2.149.2
 *Released*: 30 March 2022
 * Fix issue where we could not add assay samples to picklist from the run details page.

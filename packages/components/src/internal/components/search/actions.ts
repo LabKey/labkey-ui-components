@@ -7,13 +7,14 @@ import {
     QueryModel,
     resolveErrorMessage,
     SchemaQuery,
-    URLResolver
+    URLResolver,
 } from '../../..';
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
+import { getPrimaryAppProperties } from '../../app/utils';
+
 import { SearchIdData, SearchResultCardData } from './models';
 import { SAMPLE_FINDER_VIEW_NAME } from './utils';
-import { getPrimaryAppProperties } from '../../app/utils';
 
 type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
@@ -22,7 +23,10 @@ export function searchUsingIndex(
     getCardDataFn?: GetCardDataFn,
     filterCategories?: string[]
 ): Promise<Record<string, any>> {
-    incrementClientSideMetricCount(getPrimaryAppProperties().productId + 'Search', 'count');
+    const appProps = getPrimaryAppProperties();
+    if (appProps?.productId) {
+        incrementClientSideMetricCount(appProps.productId + 'Search', 'count');
+    }
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('search', 'json.api'),

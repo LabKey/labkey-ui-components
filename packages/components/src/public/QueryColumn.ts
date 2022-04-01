@@ -206,6 +206,32 @@ export class QueryColumn extends Record({
     static MATERIAL_INPUTS = 'MaterialInputs';
     static ALIQUOTED_FROM = 'AliquotedFrom';
 
+    get index(): string {
+        // See Issues 41621, 45148
+        // The server provides data indices into row data from selectRows based on FieldKey. In the
+        // 17.1 SelectRowsResponse format these indices are constructed based off the associated column
+        // fieldKey as follows:
+        // 1. If the fieldKey is made up of multiple parts (e.g: "parent/someKey"), then the data index
+        //    is FieldKey encoded.
+        // 2. If the fieldKey is made up of one part (e.g: "someKey"), then the data index is not FieldKey encoded.
+
+        // "fieldKey" is expected to be FieldKey encoded so the presence of "/" indicates
+        // this is a multi-part fieldKey which means the data index will be FieldKey encoded as well.
+        if (this.fieldKey.indexOf('/') > -1) {
+            return this.fieldKey;
+        }
+
+        // This is a single-part fieldKey so the data index will NOT be FieldKey encoded.
+        if (this.fieldKeyArray.length === 1) {
+            return this.fieldKeyArray[0];
+        }
+
+        // We're in an unexpected state. The "fieldKey" is single-part but the
+        // "fieldKeyArray" is non-singular (made up of zero or two or more parts).
+        // Fallback to old behavior.
+        return this.fieldKeyArray.join('/');
+    }
+
     isExpInput(): boolean {
         return this.isDataInput() || this.isMaterialInput();
     }

@@ -34,9 +34,72 @@ describe('getLabKeySql', () => {
         );
     });
 
+    test('eq, string, with single quote in value', () => {
+        const value = "with 'quote'";
+        expect(getLabKeySql(Filter.create('StringField', value, Filter.Types.Equals), 'string')).toEqual(
+            '"StringField" = \'with \'\'quote\'\'\''
+        );
+    });
+
+    test('eq, string, with double quote in value', () => {
+        const value = 'with "quote"';
+        expect(getLabKeySql(Filter.create('StringField', value, Filter.Types.Equals), 'string')).toEqual(
+            '"StringField" = \'with \"quote\"\''
+        );
+    });
+
+    test('eq, string, with single quote in field name', () => {
+        const fieldName = "String'Field";
+        expect(getLabKeySql(Filter.create(fieldName, 'ABC', Filter.Types.Equals), 'string')).toEqual(
+            '"String\'Field" = \'ABC\''
+        );
+    });
+    test('eq, string, with double quote in field name', () => {
+        const fieldName = 'String"Field';
+        expect(getLabKeySql(Filter.create(fieldName, 'ABC', Filter.Types.Equals), 'string')).toEqual(
+            '"String\"\"Field" = \'ABC\''
+        );
+    });
+
     test('eq, string, multipart field keys', () => {
         expect(getLabKeySql(Filter.create('StringField/Name', 'ABC', Filter.Types.Equals), 'string')).toEqual(
             '"StringField"."Name" = \'ABC\''
+        );
+    });
+
+    test('startsWith', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.STARTS_WITH), 'string')).toEqual(
+            "(\"StringField\" IS NULL) OR (\"StringField\" NOT LIKE LOWER('%ABC%') ESCAPE '!')"
+        );
+    });
+
+    test('startsWith, contains quote', () => {
+        expect(getLabKeySql(Filter.create('StringField', "AB'C", Filter.Types.STARTS_WITH), 'string')).toEqual(
+            "(\"StringField\" IS NULL) OR (\"StringField\" NOT LIKE LOWER('%AB''C%') ESCAPE '!')"
+        );
+    });
+
+    test('not startsWith', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_START_WITH), 'string')).toEqual(
+            "(\"StringField\" IS NULL) OR (\"StringField\" NOT LIKE LOWER('ABC%') ESCAPE '!')"
+        );
+    });
+
+    test('contains', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.CONTAINS), 'string')).toEqual(
+            "\"StringField\" LIKE LOWER('%ABC%') ESCAPE '!'"
+        );
+    });
+
+    test('not contains', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_CONTAIN), 'string')).toEqual(
+            "(\"StringField\" IS NULL) OR (\"StringField\" NOT LIKE LOWER('%ABC%') ESCAPE '!')"
+        );
+    });
+
+    test('not contains, with quote', () => {
+        expect(getLabKeySql(Filter.create('StringField', "AB'C", Filter.Types.DOES_NOT_CONTAIN), 'string')).toEqual(
+            "(\"StringField\" IS NULL) OR (\"StringField\" NOT LIKE LOWER('%AB''C%') ESCAPE '!')"
         );
     });
 
@@ -138,6 +201,54 @@ describe('getLabKeySql', () => {
         );
     });
 
+    test('contains one of, values list', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'value1;value2;value3', Filter.Types.CONTAINS_ONE_OF), 'string')).toEqual(
+            "((\"StringField\" LIKE LOWER('%value1%') ESCAPE '!') OR (\"StringField\" LIKE LOWER('%value2%') ESCAPE '!') OR (\"StringField\" LIKE LOWER('%value3%') ESCAPE '!'))"
+        );
+    });
+
+    test('contains one of, single value', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'value1', Filter.Types.CONTAINS_ONE_OF), 'string')).toEqual(
+            "\"StringField\" LIKE LOWER('%value1%') ESCAPE '!'"
+        );
+    });
+
+    test('contains one of, single blank value', () => {
+        expect(getLabKeySql(Filter.create('StringField', '', Filter.Types.CONTAINS_ONE_OF), 'string')).toEqual(
+            "\"StringField\" IS NULL"
+        );
+    });
+
+    test('contains one of, values list, contains blank', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'value1;;values2', Filter.Types.CONTAINS_ONE_OF), 'string')).toEqual(
+            "((\"StringField\" LIKE LOWER('%value1%') ESCAPE '!') OR (\"StringField\" LIKE LOWER('%values2%') ESCAPE '!')) OR (\"StringField\" IS NULL)"
+        );
+    });
+
+    test('contains none of, values list', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'value1;value2;value3', Filter.Types.CONTAINS_NONE_OF), 'string')).toEqual(
+            "((\"StringField\" NOT LIKE LOWER('%value1%') ESCAPE '!') AND (\"StringField\" NOT LIKE LOWER('%value2%') ESCAPE '!') AND (\"StringField\" NOT LIKE LOWER('%value3%') ESCAPE '!')) OR (\"StringField\" IS NULL)"
+        );
+    });
+
+    test('contains none of, single value', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'value1', Filter.Types.CONTAINS_NONE_OF), 'string')).toEqual(
+            "(\"StringField\" IS NULL) OR (\"StringField\" NOT LIKE LOWER('%value1%') ESCAPE '!')"
+        );
+    });
+
+    test('contains none of, single blank value', () => {
+        expect(getLabKeySql(Filter.create('StringField', '', Filter.Types.CONTAINS_NONE_OF), 'string')).toEqual(
+            "\"StringField\" IS NOT NULL"
+        );
+    });
+
+    test('contains none of, values list, contains blank', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'value1;;values2', Filter.Types.CONTAINS_NONE_OF), 'string')).toEqual(
+            "((\"StringField\" NOT LIKE LOWER('%value1%') ESCAPE '!') AND (\"StringField\" NOT LIKE LOWER('%values2%') ESCAPE '!')) AND (\"StringField\" IS NOT NULL)"
+        );
+    });
+
     test('date filter, eq', () => {
         expect(getLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_EQUAL), 'date')).toEqual(
             "(\"DateField\" >= '2020-08-06' AND \"DateField\" < '2020-08-07')"
@@ -235,14 +346,6 @@ describe('getLabKeySql', () => {
     });
 
     test('filter types not supported', () => {
-        expect(getLabKeySql(Filter.create('StringField', 'abc', Filter.Types.STARTS_WITH), 'string')).toBeNull();
-        expect(
-            getLabKeySql(Filter.create('StringField', 'abc', Filter.Types.DOES_NOT_START_WITH), 'string')
-        ).toBeNull();
-        expect(getLabKeySql(Filter.create('StringField', 'abc', Filter.Types.CONTAINS), 'string')).toBeNull();
-        expect(getLabKeySql(Filter.create('StringField', 'abc', Filter.Types.DOES_NOT_CONTAIN), 'string')).toBeNull();
-        expect(getLabKeySql(Filter.create('StringField', 'a;b;c', Filter.Types.CONTAINS_ONE_OF), 'string')).toBeNull();
-        expect(getLabKeySql(Filter.create('StringField', 'a;b;c', Filter.Types.CONTAINS_NONE_OF), 'string')).toBeNull();
         expect(getLabKeySql(Filter.create('StringField', 'abc', Filter.Types.MEMBER_OF), 'string')).toBeNull();
     });
 });

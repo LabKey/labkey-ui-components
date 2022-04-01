@@ -151,6 +151,10 @@ export function isFreezerManagementEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.inventory !== undefined;
 }
 
+export function isOntologyEnabled(moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.ontology !== undefined;
+}
+
 export function isProductNavigationEnabled(productId: string): boolean {
     if (productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
         return isSampleManagerEnabled() && !isBiologicsEnabled();

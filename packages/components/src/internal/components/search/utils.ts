@@ -16,11 +16,12 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
 import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfFilterType';
-import { getLabKeySql } from '../../query/filter';
+import { CONCEPT_COLUMN_FILTER_TYPES, getLabKeySql } from '../../query/filter';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
+import { CONCEPT_CODE_CONCEPT_URI } from "../domainproperties/constants";
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -211,12 +212,6 @@ export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string
 
 export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [
     Filter.Types.HAS_ANY_VALUE.getURLSuffix(),
-    Filter.Types.CONTAINS.getURLSuffix(),
-    Filter.Types.DOES_NOT_CONTAIN.getURLSuffix(),
-    Filter.Types.DOES_NOT_START_WITH.getURLSuffix(),
-    Filter.Types.STARTS_WITH.getURLSuffix(),
-    Filter.Types.CONTAINS_ONE_OF.getURLSuffix(),
-    Filter.Types.CONTAINS_NONE_OF.getURLSuffix(),
 ];
 
 export const NEGATE_FILTERS = [
@@ -247,10 +242,19 @@ export function isBetweenOperator(urlSuffix: string): boolean {
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
 
-export function getSampleFinderFilterOptionsForType(jsonType: JsonType): FieldFilterOption[] {
-    const filterList = Filter.getFilterTypesForType(jsonType).filter(function (result) {
+export function getSampleFinderFilterOptionsForType(field: QueryColumn, supportsOntology?: boolean): FieldFilterOption[] {
+    if (!field)
+        return null;
+
+    const jsonType = field.getDisplayFieldJsonType() as JsonType;
+
+    const isConceptColumn = jsonType === 'string' && field.conceptURI === CONCEPT_CODE_CONCEPT_URI && supportsOntology;
+
+    const filterList = (isConceptColumn ? CONCEPT_COLUMN_FILTER_TYPES : Filter.getFilterTypesForType(jsonType))
+        .filter(function (result) {
         return SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE.indexOf(result.getURLSuffix()) === -1;
     });
+
     if (jsonType === 'date') {
         filterList.push(Filter.Types.BETWEEN);
         filterList.push(Filter.Types.NOT_BETWEEN);
@@ -279,15 +283,18 @@ export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilte
 }
 
 export function getFilterTypePlaceHolder(suffix: string, jsonType: string): string {
-    if (suffix !== 'in' && suffix !== 'notin') return null;
-
-    switch (jsonType) {
-        case 'float':
-            return 'Example: 1.0;2.2;3';
-        case 'int':
-            return 'Example: 1;2;3';
-        case 'string':
-            return 'Example: a;b;c';
+    if (suffix === 'in' || suffix === 'notin') {
+        switch (jsonType) {
+            case 'float':
+                return 'Example: 1.0;2.2;3';
+            case 'int':
+                return 'Example: 1;2;3';
+            case 'string':
+                return 'Example: a;b;c';
+        }
+    }
+    else if (suffix === 'containsoneof' || suffix === 'containsnoneof') {
+        return 'Example: a;b;c';
     }
 
     return null;

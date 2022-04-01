@@ -19,6 +19,18 @@ import { Filter } from '@labkey/api';
 import { JsonType } from '../components/domainproperties/PropDescType';
 import { getNextDateStr } from "../util/Date";
 
+export const CONCEPT_COLUMN_FILTER_TYPES =[
+    Filter.Types.HAS_ANY_VALUE,
+    Filter.Types.EQUAL,
+    Filter.Types.NEQ_OR_NULL,
+    Filter.Types.ISBLANK,
+    Filter.Types.NONBLANK,
+    Filter.Types.IN,
+    Filter.Types.NOT_IN,
+    Filter.Types.ONTOLOGY_IN_SUBTREE,
+    Filter.Types.ONTOLOGY_NOT_IN_SUBTREE
+];
+
 export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter>): boolean {
     if (first.size !== second.size) {
         return false;
@@ -56,16 +68,17 @@ function getColumnSelect(columnName: string): string {
     const formattedParts = [];
     columnNameParts.forEach(part => {
         if (part) {
-            formattedParts.push('"' + part.replace('"', '""') + '"');
+            formattedParts.push('"' + part.replace(/"/g, '""') + '"');
         }
     });
 
     return formattedParts.join('.');
 }
 
-function getLabKeySqlValue(value: any, jsonType: JsonType): any {
+function getLabKeySqlValue(value: any, jsonType: JsonType, suppressQuote?: boolean): any {
     if (jsonType === 'string' || jsonType === 'date') {
-        return "'" + value.toString().replace("'", "''") + "'";
+        const quote = suppressQuote ? "" : "'" ;
+        return quote + value.toString().replace(/'/g, "''") + quote;
     }
 
     if (jsonType === 'boolean')
@@ -141,6 +154,136 @@ export function getDateFieldLabKeySql(filter: Filter.IFilter): string {
     return null;
 }
 
+function getInClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType) : string {
+    const filterType = filter.getFilterType();
+    const columnNameSelect = getColumnSelect(filter.getColumnName());
+    let operatorSql = null;
+
+    const values = filterType.parseValue(filter.getValue());
+
+    const sqlValues = [];
+    const negate = filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix();
+    const includeNull = values.indexOf(null) > -1 || values.indexOf('') > -1;
+    values.forEach(val => {
+        sqlValues.push(getLabKeySqlValue(val, jsonType));
+    });
+
+    operatorSql = '(' + columnNameSelect + ' ' + (negate ? 'NOT ' : '') + 'IN (' + sqlValues.join(', ') + ')';
+
+    if (includeNull) {
+        if (negate) {
+            operatorSql = operatorSql + ' AND ' + columnNameSelect + ' IS NOT NULL)';
+        } else {
+            operatorSql = operatorSql + ' OR ' + columnNameSelect + ' IS NULL)';
+        }
+    } else {
+        if (negate) {
+            operatorSql = operatorSql + ' OR ' + columnNameSelect + ' IS NULL)';
+        } else {
+            operatorSql = operatorSql + ')';
+        }
+    }
+
+    return operatorSql;
+}
+
+const LABKEY_SQL_LIKE_CLAUSE_ESCAPE = " ESCAPE '!'"; // see LikeClause.sqlEscape
+
+function getLikeClause(sqlValue, isStart: boolean) : string {
+    if (!sqlValue || sqlValue === '')
+        return ' IS NULL';
+    return " LIKE LOWER('" + (isStart ? '' : '%') + sqlValue + "%')" + LABKEY_SQL_LIKE_CLAUSE_ESCAPE; // lower() might not be needed, but keeping it here to be consistent with server code
+}
+
+function getContainsClause(sqlValue) : string {
+    return getLikeClause(sqlValue, false);
+}
+
+function getNotLikeClause(sqlValue, isStart: boolean) : string {
+    if (!sqlValue || sqlValue === '')
+        return ' IS NOT NULL';
+
+    return " NOT LIKE LOWER('" + (isStart ? '' : '%') + sqlValue + "%')" + LABKEY_SQL_LIKE_CLAUSE_ESCAPE;
+}
+
+function getNotContainsClause(sqlValue) : string {
+    return getNotLikeClause(sqlValue, false);
+}
+
+function getLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStart: boolean) : string {
+    const columnNameSelect = getColumnSelect(filter.getColumnName());
+    const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
+    return columnNameSelect + getLikeClause(sqlValue, isStart);
+}
+
+function getContainsFullClause(filter: Filter.IFilter, jsonType: JsonType) : string {
+    return getLikeFullClause(filter, jsonType, false);
+}
+
+function getStartsWithFullClause(filter: Filter.IFilter, jsonType: JsonType) : string {
+    return getLikeFullClause(filter, jsonType, true);
+}
+
+function getNotLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStart: boolean) : string {
+    const columnNameSelect = getColumnSelect(filter.getColumnName());
+    const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
+    if (!sqlValue || sqlValue === '')
+        return columnNameSelect + ' IS NOT NULL';
+    return '(' + columnNameSelect + ' IS NULL) OR (' + columnNameSelect + getNotLikeClause(sqlValue, isStart) + ')';
+}
+
+function getNotContainsFullClause(filter: Filter.IFilter, jsonType: JsonType) : string {
+    return getNotLikeFullClause(filter, jsonType, false);
+}
+
+function getNotStartsWithFullClause(filter: Filter.IFilter, jsonType: JsonType) : string {
+    return getNotLikeFullClause(filter, jsonType, true);
+}
+
+function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType) : string {
+    const filterType = filter.getFilterType();
+    const columnNameSelect = getColumnSelect(filter.getColumnName());
+
+    const values = filterType.parseValue(filter.getValue());
+
+    const negate = filterType.getURLSuffix() === Filter.Types.CONTAINS_NONE_OF.getURLSuffix();
+
+    if (values.length === 0)
+        return '';
+
+    if (values.length === 1) {
+        const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
+        return negate ? getNotContainsFullClause(filter, jsonType) : getContainsFullClause(filter, jsonType);
+    }
+
+    const includeNull = values.indexOf(null) > -1 || values.indexOf('') > -1;
+
+    let clauses = [];
+    values.forEach(val => {
+        const sqlValue = getLabKeySqlValue(val, jsonType, true);
+        if (sqlValue) {
+            const operatorSql = negate ? getNotContainsClause(sqlValue) : getContainsClause(sqlValue);
+            clauses.push('(' + columnNameSelect + operatorSql + ')');
+        }
+    });
+    const likeClause = '(' + clauses.join(negate ? ' AND ' : ' OR ') + ')';
+
+    let nullClause = '';
+    if (includeNull) {
+        if (negate) {
+            nullClause = ' AND (' + columnNameSelect + ' IS NOT NULL)'
+        } else {
+            nullClause = ' OR (' + columnNameSelect + ' IS NULL)'
+        }
+    } else {
+        if (negate) {
+            nullClause = ' OR (' + columnNameSelect + ' IS NULL)'
+        }
+    }
+
+    return likeClause + nullClause;
+}
+
 /**
  * Note: this is an experimental API that may change unexpectedly in future releases.
  * From a filter and its column jsonType, return the LabKey sql operator clause
@@ -177,47 +320,37 @@ export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string
     if (filterType.getLabKeySqlOperator()) {
         if (!filterType.isDataValueRequired()) operatorSql = filterType.getLabKeySqlOperator();
         else operatorSql = filterType.getLabKeySqlOperator() + ' ' + getLabKeySqlValue(filter.getValue(), jsonType);
-    } else if (filterType.isMultiValued()) {
-        const values = filterType.parseValue(filter.getValue());
 
+        return columnNameSelect + ' ' + operatorSql
+    } else if (filterType.isMultiValued()) {
         if (
             filterType.getURLSuffix() === Filter.Types.IN.getURLSuffix() ||
             filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix()
         ) {
-            const sqlValues = [];
-            const negate = filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix();
-            const includeNull = values.indexOf(null) > -1 || values.indexOf('') > -1;
-            values.forEach(val => {
-                sqlValues.push(getLabKeySqlValue(val, jsonType));
-            });
 
-            operatorSql = '(' + columnNameSelect + ' ' + (negate ? 'NOT ' : '') + 'IN (' + sqlValues.join(', ') + ')';
+            return getInClauseLabKeySql(filter, jsonType);
 
-            if (includeNull) {
-                if (negate) {
-                    operatorSql = operatorSql + ' AND ' + columnNameSelect + ' IS NOT NULL)';
-                } else {
-                    operatorSql = operatorSql + ' OR ' + columnNameSelect + ' IS NULL)';
-                }
-            } else {
-                if (negate) {
-                    operatorSql = operatorSql + ' OR ' + columnNameSelect + ' IS NULL)';
-                } else {
-                    operatorSql = operatorSql + ')';
-                }
-            }
+        } else if (
+            filterType.getURLSuffix() === Filter.Types.CONTAINS_ONE_OF.getURLSuffix() ||
+            filterType.getURLSuffix() === Filter.Types.CONTAINS_NONE_OF.getURLSuffix()
+        ) {
 
-            return operatorSql;
+            return getInContainsClauseLabKeySql(filter, jsonType);
+
         } else if (
             filterType.getURLSuffix() === Filter.Types.BETWEEN.getURLSuffix() ||
             filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix()
         ) {
+            const values = filterType.parseValue(filter.getValue());
+
             operatorSql =
                 (filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix() ? 'NOT ' : '') +
                 'BETWEEN ' +
                 getLabKeySqlValue(values[0], jsonType) +
                 ' AND ' +
                 getLabKeySqlValue(values[1], jsonType);
+
+            return columnNameSelect + ' ' + operatorSql
         }
     } else if (filterType.getURLSuffix() === Filter.Types.NEQ_OR_NULL.getURLSuffix()) {
         return (
@@ -233,9 +366,21 @@ export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string
             getLabKeySqlValue(filter.getValue(), jsonType) +
             ')'
         );
+    } else if (filterType.getURLSuffix() === Filter.Types.CONTAINS.getURLSuffix()) {
+        return getContainsFullClause(filter, jsonType)
     }
-
-    if (operatorSql) return columnNameSelect + ' ' + operatorSql;
+    else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_CONTAIN.getURLSuffix()) {
+        return getNotContainsFullClause(filter, jsonType)
+    }
+    else if (filterType.getURLSuffix() === Filter.Types.STARTS_WITH.getURLSuffix()) {
+        return getNotContainsFullClause(filter, jsonType)
+    }
+    else if (filterType.getURLSuffix() === Filter.Types.STARTS_WITH.getURLSuffix()) {
+        return getStartsWithFullClause(filter, jsonType)
+    }
+    else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_START_WITH.getURLSuffix()) {
+        return getNotStartsWithFullClause(filter, jsonType)
+    }
 
     return null;
 }

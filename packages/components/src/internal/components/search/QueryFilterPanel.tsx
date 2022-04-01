@@ -217,7 +217,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 <div className="filter-modal__col-title">Values</div>
                 {queryName && !activeField && <div className="filter-modal__empty-msg">Select a field.</div>}
                 {queryName && activeField && (
-                    <div className="filter-modal__col-content">
+                    <div className="filter-modal__col-content filter-modal__values">
                         <Tab.Container
                             activeKey={activeTab}
                             className="filter-modal__tabs content-tabs"

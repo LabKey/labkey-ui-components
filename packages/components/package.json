@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.149.2-fb-gridHeaderWithoutOmni.3",
+  "version": "2.149.5",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -14,7 +14,7 @@
     "cleanAll": "nps cleanAll",
     "prepublishOnly": "yarn install && cross-env WEBPACK_STATS=errors-only yarn build",
     "test": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
-    "test-ci": "cross-env NODE_ENV=test jest --ci --runInBand --silent",
+    "test-ci": "cross-env NODE_ENV=test jest --ci --silent",
     "watch:build": "watch 'yarn build' ./src",
     "watch": "npm run watch:build",
     "lint": "eslint",

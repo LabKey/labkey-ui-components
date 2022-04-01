@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Remove QueryGridPanel and related components and action/util functions
+
 ### version 2.149.5
 *Released*: 31 March 2022
 * 45148: Handle data indices for single/multi-part fieldKeys
@@ -21,10 +25,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.149.1
 *Released*: 30 March 2022
 * Issue 44865: Default naming pattern is not saved during source type creation
-
-### version 2.149.0
-*Released*: 30 March 2022
-* Remove QueryGridPanel and related components and action/util functions
 
 ### version 2.149.0
 *Released*: 30 March 2022

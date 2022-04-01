@@ -575,7 +575,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                   0 // fall back to the first field if no match
               )
             : 0;
-        const fieldKey = displayColumns.at(colIndex)?.resolveFieldKey();
+        const fieldKey = displayColumns[colIndex]?.resolveFieldKey();
 
         this.setState({ showFilterModalFieldKey: fieldKey });
     };

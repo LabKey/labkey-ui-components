@@ -135,4 +135,12 @@
             }
         }
     }
+
+    .remove-all-filters {
+        display: inline-block;
+        vertical-align: top;
+        top: 0;
+        padding-top: 8px;
+        cursor: pointer;
+    }
 }

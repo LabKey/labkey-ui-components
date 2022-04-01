@@ -374,6 +374,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 newFilters = newFilters.filter(filter => !filtersEqual(filter, value));
             } else if (column) {
                 newFilters = newFilters.filter(filter => !isFilterColumnNameMatch(filter, column));
+            } else {
+                newFilters = []; // remove all searches and filters
             }
         }
 
@@ -544,7 +546,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const fieldKey = column.resolveFieldKey(); // resolveFieldKey because of Issue 34627
 
         if (remove) {
-            const newActionValues = this.state.actionValues.filter((actionValue, i) => {
+            const newActionValues = this.state.actionValues.filter(actionValue => {
                 return !(
                     actionValue.action === this.omniBoxActions.filter &&
                     isFilterColumnNameMatch(actionValue.valueObject, column)
@@ -555,6 +557,17 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         } else {
             this.setState({ showFilterModalFieldKey: fieldKey });
         }
+    };
+
+    removeAllFilters = (): void => {
+        const { actionValues } = this.state;
+        const newActionValues = actionValues.filter(actionValue => {
+            return !(
+                actionValue.action === this.omniBoxActions.filter || actionValue.action === this.omniBoxActions.search
+            );
+        });
+
+        this.handleFilterChange(newActionValues, { type: ChangeType.remove });
     };
 
     removeFilter = (index: number): void => {
@@ -789,6 +802,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                         actionValues={actionValues}
                                         onClick={this.showFilterModal}
                                         onRemove={this.removeFilter}
+                                        onRemoveAll={this.removeAllFilters}
                                     />
                                 )}
                             </div>

@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 10223: GridPanel updates for search input and filter display in grid header
+    * add SearchBox component and display in GridPanel header bar
+    * add Filters button to GridPanel header to open the GridFilterModal
+    * display the view, filter, and search grid action values in the grid info section (previously displayed in the OmniBox input)
+    * add "Remove all" option to the end of the filter pill display if > 1 present
+
 ### version 2.149.5
 *Released*: 31 March 2022
 * 45148: Handle data indices for single/multi-part fieldKeys
@@ -17,13 +25,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.149.2
 *Released*: 30 March 2022
 * Fix issue where we could not add assay samples to picklist from the run details page.
-
-### version TBD
-*Released*: TBD
-* Item 10223: GridPanel updates for search input and filter display in grid header
-  * add SearchBox component and display in GridPanel header bar
-  * add Filters button to GridPanel header to open the GridFilterModal
-  * display the view, filter, and search grid action values in the grid info section (previously displayed in the OmniBox input)
 
 ### version 2.149.1
 *Released*: 30 March 2022

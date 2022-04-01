@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 10223: GridPanel updates for search input and filter display in grid header
   * add SearchBox component and display in GridPanel header bar
   * add Filters button to GridPanel header to open the GridFilterModal
+  * display the view, filter, and search grid action values in the grid info section (previously displayed in the OmniBox input)
 
 ### version 2.149.1
 *Released*: 30 March 2022

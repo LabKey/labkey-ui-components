@@ -39,6 +39,8 @@ import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { isGridColSortFilterEnabled } from '../../internal/app/utils';
+import { FilterStatus } from './FilterStatus';
+import { removeActionValue } from '../../internal/components/omnibox/utils';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -555,10 +557,27 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
     };
 
-    showFilterModal = (): void => {
+    removeFilter = (index: number): void => {
+        const { actionValues } = this.state;
+        this.handleFilterChange(removeActionValue(actionValues, index), { type: ChangeType.remove, index });
+    };
+
+    showFilterModal = (actionValue?: ActionValue): void => {
         const { model } = this.props;
-        const firstFieldKey = model.displayColumns.at(0)?.resolveFieldKey();
-        this.setState({ showFilterModalFieldKey: firstFieldKey });
+        const displayColumns = model.displayColumns;
+
+        // if the user clicked to edit an existing filter, use that filter's column name when opening the modal
+        // else open modal with the first field selected
+        const columnName = actionValue?.valueObject?.getColumnName();
+        const colIndex = columnName
+            ? Math.max(
+                  displayColumns.findIndex(col => col.resolveFieldKey() === columnName),
+                  0 // fall back to the first field if no match
+              )
+            : 0;
+        const fieldKey = displayColumns.at(colIndex)?.resolveFieldKey();
+
+        this.setState({ showFilterModalFieldKey: fieldKey });
     };
 
     closeFilterModal = (): void => {
@@ -706,7 +725,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
-        const { showFilterModalFieldKey } = this.state;
+        const { showFilterModalFieldKey, actionValues } = this.state;
         const { hasData, id, isLoading, isLoadingSelections, rowsError, selectionsError, messages, queryInfoError } =
             model;
         const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
@@ -743,7 +762,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             />
                         )}
 
-                        {showOmniBox && (
+                        {!isGridColSortFilterEnabled() && showOmniBox && (
                             <div className="grid-panel__omnibox">
                                 <OmniBox
                                     actions={Object.values(this.omniBoxActions)}
@@ -752,15 +771,26 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                     getSelectDistinctOptions={this.getSelectDistinctOptions}
                                     mergeValues={false}
                                     onChange={this.omniBoxChange}
-                                    values={this.state.actionValues}
+                                    values={actionValues}
                                 />
                             </div>
                         )}
 
                         {(loadingMessage || allowSelections) && (
                             <div className="grid-panel__info">
-                                {loadingMessage && <LoadingSpinner msg={loadingMessage} />}
+                                {loadingMessage && (
+                                    <div className="grid-panel__loading">
+                                        <LoadingSpinner msg={loadingMessage} />
+                                    </div>
+                                )}
                                 {allowSelections && <SelectionStatus model={model} actions={actions} />}
+                                {isGridColSortFilterEnabled() && (
+                                    <FilterStatus
+                                        actionValues={actionValues}
+                                        onClick={this.showFilterModal}
+                                        onRemove={this.removeFilter}
+                                    />
+                                )}
                             </div>
                         )}
 

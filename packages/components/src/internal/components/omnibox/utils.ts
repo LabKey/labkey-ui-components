@@ -1,5 +1,6 @@
 import { List } from 'immutable';
 import { QueryColumn } from '../../..';
+import { ActionValue } from './actions/Action';
 
 /**
  * From the supplied columnName this method will determine which columns in the "columns" list
@@ -44,4 +45,19 @@ export function parseColumns(columns: List<QueryColumn>, columnName: string): Li
  */
 export function resolveFieldKey(columnName: string, column?: QueryColumn): string {
     return column?.resolveFieldKey() ?? columnName;
+}
+
+export function removeActionValue(actionValues: ActionValue[], indexToRemove: number): ActionValue[] {
+    if (indexToRemove < actionValues.length) {
+        const newActionValues = [];
+        for (let i = 0; i < actionValues.length; i++) {
+            if (i !== indexToRemove) {
+                newActionValues.push(actionValues[i]);
+            }
+        }
+
+        return newActionValues;
+    }
+
+    return actionValues;
 }

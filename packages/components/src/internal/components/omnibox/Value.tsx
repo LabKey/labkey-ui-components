@@ -17,12 +17,13 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { ActionValue } from './actions/Action';
+import { isGridColSortFilterEnabled } from '../../app/utils';
 
 interface ValueProps {
     actionValue: ActionValue;
     index: number;
-    onClick?: Function;
-    onRemove?: Function;
+    onClick?: (actionValue: ActionValue, event: any) => void;
+    onRemove?: (actionValueIndex: number, event: any) => void;
 }
 
 interface ValueState {
@@ -71,7 +72,12 @@ export class Value extends React.Component<ValueProps, ValueState> {
     }
 
     render() {
-        const { action, value, displayValue, isReadOnly, isRemovable } = this.props.actionValue;
+        const { actionValue } = this.props;
+        const { action, value, displayValue, isReadOnly, isRemovable } = actionValue;
+        const showRemoveIcon =
+            this.state.isActive &&
+            isRemovable !== false &&
+            (!isGridColSortFilterEnabled() || actionValue.action.keyword !== 'view');
 
         const className = classNames(valueClassName, {
             'is-active': this.state.isActive,
@@ -82,7 +88,7 @@ export class Value extends React.Component<ValueProps, ValueState> {
         const iconClassNames = classNames(
             'symbol',
             'fa',
-            this.state.isActive && isRemovable !== false ? 'fa-close' : action.iconCls ? 'fa-' + action.iconCls : ''
+            showRemoveIcon ? 'fa-close' : action.iconCls ? 'fa-' + action.iconCls : ''
         );
 
         return (

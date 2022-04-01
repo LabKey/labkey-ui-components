@@ -65,6 +65,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showChartMenu?: boolean;
     showExport?: boolean;
     showFiltersButton?: boolean;
+    showFilterStatus?: boolean;
     showOmniBox?: boolean;
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
@@ -224,6 +225,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showChartMenu: true,
         showExport: true,
         showFiltersButton: true,
+        showFilterStatus: true,
         showOmniBox: true,
         showSampleComparisonReports: false,
         showSearchInput: true,
@@ -734,6 +736,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             model,
             onExport,
             showButtonBar,
+            showFilterStatus,
             showOmniBox,
             showHeader,
             title,
@@ -797,7 +800,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                     </div>
                                 )}
                                 {allowSelections && <SelectionStatus model={model} actions={actions} />}
-                                {isGridColSortFilterEnabled() && (
+                                {isGridColSortFilterEnabled() && showFilterStatus && (
                                     <FilterStatus
                                         actionValues={actionValues}
                                         onClick={this.showFilterModal}

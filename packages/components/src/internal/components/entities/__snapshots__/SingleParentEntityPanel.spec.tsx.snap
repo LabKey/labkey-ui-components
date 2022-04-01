@@ -6208,7 +6208,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "setView": [Function],
               }
             }
-            allowFiltering={true}
+            allowFiltering={false}
             allowSelections={false}
             allowSorting={true}
             asPanel={false}
@@ -6288,6 +6288,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             showButtonBar={false}
             showChartMenu={false}
             showExport={false}
+            showFilterStatus={true}
             showFiltersButton={true}
             showHeader={true}
             showOmniBox={false}

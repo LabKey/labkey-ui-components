@@ -85,16 +85,16 @@ describe('FilterFacetedSelector', () => {
         allOptions?: string[],
         hasTypeAheadInput?: boolean
     ) {
-        expect(wrapper.find('.find-filter-typeahead-input')).toHaveLength(hasTypeAheadInput ? 1 : 0);
+        expect(wrapper.find('.filter-faceted__typeahead-input')).toHaveLength(hasTypeAheadInput ? 1 : 0);
 
         if (allOptions) {
-            const valuesDivs = wrapper.find('.search-filter-values__li');
+            const valuesDivs = wrapper.find('.filter-faceted__li');
 
             expect(valuesDivs.length).toBe(allOptions.length);
 
             for (let ind = 0; ind < allOptions.length; ind++) {
                 const valuesDiv = valuesDivs.at(ind);
-                const value = valuesDiv.find('.search-filter-values__value').text();
+                const value = valuesDiv.find('.filter-faceted__value').text();
                 expect(value).toEqual(allOptions[ind]);
 
                 const checkBox = valuesDiv.find('.form-check-input');
@@ -104,7 +104,7 @@ describe('FilterFacetedSelector', () => {
         }
 
         if (valueTags) {
-            const valuesTagDivs = wrapper.find('.search-filter-tags__value');
+            const valuesTagDivs = wrapper.find('.filter-faceted__tags-value');
             expect(valuesTagDivs.length).toBe(valueTags.length);
             for (let ind = 0; ind < valueTags.length; ind++) {
                 const tagDiv = valuesTagDivs.at(ind);
@@ -248,7 +248,7 @@ describe('FilterFacetedSelector', () => {
                 {...DEFAULT_PROPS}
                 fieldFilters={[
                     Filter.create('stringField', 'ed;ned', Filter.Types.NOT_IN),
-                    Filter.create('stringField', 'bed', Filter.Types.GT)
+                    Filter.create('stringField', 'bed', Filter.Types.GT),
                 ]}
             />
         );
@@ -308,7 +308,7 @@ describe('FilterFacetedSelector', () => {
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
         wrapper
-            .find('input#find-filter-typeahead-input')
+            .find('input#filter-faceted__typeahead-input')
             .simulate('focus')
             .simulate('change', {
                 target: {

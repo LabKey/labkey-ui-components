@@ -172,7 +172,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
             );
         }
 
-        return headerCell(this.sortColumn, column, index, false, true, columnCount);
+        return headerCell(index, column, false, columnCount, this.sortColumn);
     };
 
     render() {

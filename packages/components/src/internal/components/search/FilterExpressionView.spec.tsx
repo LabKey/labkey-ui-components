@@ -60,15 +60,17 @@ describe('FilterExpressionView', () => {
         wrapper: ReactWrapper,
         operators: string[],
         filterIndex: number,
-        numFilters: number = 1,
-        inputCount: number = 0,
-        inputOffset: number = 0,
-        selectedOp?: string, firstInputValue?: any, secondInputValue?: any) {
-
+        numFilters = 1,
+        inputCount = 0,
+        inputOffset = 0,
+        selectedOp?: string,
+        firstInputValue?: any,
+        secondInputValue?: any
+    ) {
         expect(wrapper.find(SelectInput)).toHaveLength(numFilters);
         validateFilterTypeDropdown(wrapper, operators, filterIndex, selectedOp);
 
-        const filterInputs = wrapper.find('input.search-filter__input');
+        const filterInputs = wrapper.find('input.filter-expression__input');
 
         expect(filterInputs.length).toEqual(inputCount);
 
@@ -77,11 +79,16 @@ describe('FilterExpressionView', () => {
         }
 
         if (secondInputValue) {
-            expect(filterInputs.at(inputOffset+1).props()['value']).toEqual(secondInputValue);
+            expect(filterInputs.at(inputOffset + 1).props()['value']).toEqual(secondInputValue);
         }
     }
 
-    function validateFilterTypeDropdown(wrapper: ReactWrapper, operators: string[], filterIndex: number, selectedOp?: string) {
+    function validateFilterTypeDropdown(
+        wrapper: ReactWrapper,
+        operators: string[],
+        filterIndex: number,
+        selectedOp?: string
+    ) {
         const selectInput = wrapper.find(SelectInput).at(filterIndex);
         const options = selectInput.props()['options'];
         const selectedFilter = selectInput.props()['value'];
@@ -171,7 +178,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test("not sole filter, without value", async () => {
+    test('not sole filter, without value', async () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={doubleField}
@@ -182,7 +189,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test("between filter missing all values", async () => {
+    test('between filter missing all values', async () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={intField}
@@ -194,45 +201,60 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test("between filter missing one value", async () => {
+    test('between filter missing one value', async () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={intField}
-                fieldFilters={[Filter.create('IntField', "1", Filter.Types.BETWEEN)]}
+                fieldFilters={[Filter.create('IntField', '1', Filter.Types.BETWEEN)]}
             />
         );
 
-        validate(wrapper, Ops, 0, 1, 2, 0, 'between', "1");
+        validate(wrapper, Ops, 0, 1, 2, 0, 'between', '1');
         wrapper.unmount();
     });
 
-    test("multiple filters with values", async () => {
+    test('multiple filters with values', async () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={doubleField}
                 fieldFilters={[
                     Filter.create('DoubleField', 3.4, Filter.Types.GT),
-                    Filter.create('DoubleField', 8.1, Filter.Types.LT)
+                    Filter.create('DoubleField', 8.1, Filter.Types.LT),
                 ]}
             />
         );
-        validate(wrapper, Ops.filter(op => op !== 'lt'), 0, 2, 2, 0, 'gt', 3.4);
+        validate(
+            wrapper,
+            Ops.filter(op => op !== 'lt'),
+            0,
+            2,
+            2,
+            0,
+            'gt',
+            3.4
+        );
         const excludedOps = ['gt', 'eq', 'isblank'];
-        validate(wrapper, Ops.filter(op => excludedOps.indexOf(op) === -1), 1, 2, 2, 1, 'lt', 8.1);
-        wrapper.unmount()
+        validate(
+            wrapper,
+            Ops.filter(op => excludedOps.indexOf(op) === -1),
+            1,
+            2,
+            2,
+            1,
+            'lt',
+            8.1
+        );
+        wrapper.unmount();
     });
 
-    test("multiple filters, no input required", async () => {
+    test('multiple filters, no input required', async () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={doubleField}
-                fieldFilters={[
-                    Filter.create('DoubleField', undefined, Filter.Types.NONBLANK),
-                ]}
+                fieldFilters={[Filter.create('DoubleField', undefined, Filter.Types.NONBLANK)]}
             />
         );
         validate(wrapper, Ops, 0, 2, 0, 0, 'isnonblank');
-        wrapper.unmount()
+        wrapper.unmount();
     });
-
 });

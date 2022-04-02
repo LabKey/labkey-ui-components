@@ -147,10 +147,10 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
     >
       <input
         className="form-control"
-        defaultValue=""
         id="entity-nameExpression"
         onChange={[MockFunction]}
         type="text"
+        value=""
       />
     </div>
   </div>
@@ -305,10 +305,10 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
     >
       <input
         className="form-control"
-        defaultValue="Test Name Expression"
         id="entity-nameExpression"
         onChange={[MockFunction]}
         type="text"
+        value="Test Name Expression"
       />
     </div>
   </div>
@@ -462,11 +462,11 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
     >
       <input
         className="form-control"
-        defaultValue=""
         id="entity-nameExpression"
         onChange={[MockFunction]}
         placeholder="Enter a name expression"
         type="text"
+        value=""
       />
     </div>
   </div>
@@ -620,10 +620,10 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
     >
       <input
         className="form-control"
-        defaultValue="Test Name Expression"
         id="entity-nameExpression"
         onChange={[MockFunction]}
         type="text"
+        value="Test Name Expression"
       />
     </div>
   </div>
@@ -1050,17 +1050,17 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
                 bsClass="form-control"
                 className=""
                 componentClass="input"
-                defaultValue="Test Name Expression"
                 id="entity-nameExpression"
                 onChange={[MockFunction]}
                 type="text"
+                value="Test Name Expression"
               >
                 <input
                   className="form-control"
-                  defaultValue="Test Name Expression"
                   id="entity-nameExpression"
                   onChange={[MockFunction]}
                   type="text"
+                  value="Test Name Expression"
                 />
               </FormControl>
             </div>

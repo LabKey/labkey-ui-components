@@ -218,11 +218,11 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
         >
           <input
             className="form-control"
-            defaultValue=""
             id="entity-nameExpression"
             onChange={[Function]}
             placeholder="name expression placeholder test"
             type="text"
+            value=""
           />
         </div>
       </div>
@@ -419,11 +419,11 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
         >
           <input
             className="form-control"
-            defaultValue=""
             id="entity-nameExpression"
             onChange={[Function]}
             placeholder="Enter a naming pattern (e.g., DC-\${now:date}-\${genId})"
             type="text"
+            value=""
           />
         </div>
       </div>

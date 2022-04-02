@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.147.0-fb-dataclass-import.1",
+  "version": "2.149.5-fb-dataclass-import.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -14,15 +14,15 @@
     "cleanAll": "nps cleanAll",
     "prepublishOnly": "yarn install && cross-env WEBPACK_STATS=errors-only yarn build",
     "test": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
-    "test-ci": "cross-env NODE_ENV=test jest --ci --runInBand --silent",
+    "test-ci": "cross-env NODE_ENV=test jest --ci --silent",
     "watch:build": "watch 'yarn build' ./src",
     "watch": "npm run watch:build",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
-    "lint-precommit": "node lint.diff.js",
-    "lint-precommit-fix": "node lint.diff.js --fix",
-    "lint-branch": "node lint.diff.js --currentBranch",
-    "lint-branch-fix": "node lint.diff.js --currentBranch --fix"
+    "lint-precommit": "node lint.diff.mjs",
+    "lint-precommit-fix": "node lint.diff.mjs --fix",
+    "lint-branch": "node lint.diff.mjs --currentBranch",
+    "lint-branch-fix": "node lint.diff.mjs --currentBranch --fix"
   },
   "repository": {
     "type": "git",

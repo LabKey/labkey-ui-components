@@ -27,10 +27,15 @@ export class DateInput extends PureComponent<ReactDatePickerProps> {
         this.input.current?.setFocus();
     };
 
+    onSelect = (): void => {
+        // focus the input so an onBlur action gets triggered after selection has been made
+        this.input.current?.setFocus()
+    }
+
     render(): ReactNode {
         return (
             <span className="input-group date-input">
-                <DatePicker {...this.props} ref={this.input} />
+                <DatePicker {...this.props} ref={this.input} onSelect={this.onSelect} />
                 <span className="input-group-addon" onClick={this.onIconClick}>
                     <i className="fa fa-calendar" />
                 </span>

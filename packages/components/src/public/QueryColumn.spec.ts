@@ -1,8 +1,10 @@
+import { FieldKey } from '@labkey/api';
+
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 
 import { insertColumnFilter, QueryColumn } from './QueryColumn';
 
-describe('QueryColumn: Sample Lookup', () => {
+describe('QueryColumn', () => {
     // prepare stuff we need
     const validColumn = QueryColumn.create({
         align: 'left',
@@ -134,6 +136,27 @@ describe('QueryColumn: Sample Lookup', () => {
         type: 'Text (String)',
         userEditable: true,
         removeFromViews: false,
+    });
+
+    test('index', () => {
+        const singlePartFieldKey = new FieldKey(null, 'This<Arro|?#$!Thing');
+
+        const singlePartFieldKeyColumn = QueryColumn.create({
+            fieldKey: singlePartFieldKey.toString(),
+            fieldKeyArray: singlePartFieldKey.getParts(),
+        });
+
+        expect(singlePartFieldKeyColumn.index).toEqual(singlePartFieldKey.name);
+
+        const parentFieldKey = new FieldKey(null, 'runApplicationOutput');
+        const multiPartFieldKey = new FieldKey(parentFieldKey, 'urn:recipe.labkey.org/#RecipeAmount');
+
+        const multiPartFieldKeyColumn = QueryColumn.create({
+            fieldKey: multiPartFieldKey.toString(),
+            fieldKeyArray: multiPartFieldKey.getParts(),
+        });
+
+        expect(multiPartFieldKeyColumn.index).toEqual(multiPartFieldKey.toString());
     });
 
     test('isSampleLookup', () => {

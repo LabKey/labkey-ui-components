@@ -6208,6 +6208,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "setView": [Function],
               }
             }
+            allowFiltering={true}
             allowSelections={false}
             allowSorting={true}
             asPanel={false}

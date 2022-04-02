@@ -116,7 +116,7 @@ export class QueryInfo extends Record({
      *
      * @param queryInfoJson
      */
-    static fromJSON(queryInfoJson: any): QueryInfo {
+    static fromJSON(queryInfoJson: any, includeViews = false): QueryInfo {
         let schemaQuery: SchemaQuery;
 
         if (queryInfoJson.schemaName && queryInfoJson.name) {
@@ -128,11 +128,19 @@ export class QueryInfo extends Record({
             columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn));
         });
 
+        let views = Map<string, ViewInfo>();
+        if (includeViews) {
+            queryInfoJson.views.forEach(view => {
+                const name = view.name === '' ? ViewInfo.DEFAULT_NAME.toLowerCase() : view.name.toLowerCase();
+                views = views.set(name, ViewInfo.create(view));
+            });
+        }
+
         return QueryInfo.create(
             Object.assign({}, queryInfoJson, {
                 columns,
                 schemaQuery,
-                views: Map<string, ViewInfo>(), // need views to be a Map to avoid 'get is not defined' errors
+                views,
             })
         );
     }

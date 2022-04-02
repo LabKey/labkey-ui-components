@@ -238,12 +238,12 @@ export function getSamplesNotInList(listName: string, selectionKey?: string, sam
     return new Promise((resolve, reject) => {
         getPicklistSamples(listName)
             .then(existingSamples => {
-                if (selectionKey) {
+                if (sampleIds) {
+                    resolve(sampleIds.filter(id => !existingSamples.has(id.toString())));
+                } else if (selectionKey) {
                     getSelected(selectionKey).then(response => {
                         resolve(response.selected.filter(id => !existingSamples.has(id.toString())));
                     });
-                } else if (sampleIds) {
-                    resolve(sampleIds.filter(id => !existingSamples.has(id.toString())));
                 } else {
                     resolve([]);
                 }

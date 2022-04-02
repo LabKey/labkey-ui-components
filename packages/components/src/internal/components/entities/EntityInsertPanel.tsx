@@ -59,7 +59,6 @@ import {
     SampleCreationType,
     SampleCreationTypeModel,
     SampleTypeDataType,
-    SampleTypeModel,
     SchemaQuery,
     SelectInput,
     User,
@@ -131,6 +130,7 @@ class EntityGridLoader implements IGridLoader {
 }
 
 interface OwnProps {
+    acceptedFormats?: string;
     api?: ComponentsAPIWrapper;
     asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
     auditBehavior?: AuditBehaviorTypes;
@@ -155,8 +155,11 @@ interface OwnProps {
     onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData;
     onCancel?: () => void;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
+    onFileChange?: (files: Array<string>) => void;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
+    onTargetChange?: (target: string) => void;
     parentDataTypes?: List<EntityDataType>;
+    selectedTarget?: string;  // controlling target from a parent component
 }
 
 interface FromLocationProps {
@@ -279,11 +282,15 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             selectionKey,
             target,
             isItemSamples,
+            selectedTarget
         } = this.props;
 
         const { creationType } = this.state;
 
         const allowParents = this.allowParents();
+
+        // Can be set from URL or parent component
+        const selected = target ?? selectedTarget;
 
         if (isSampleManagerEnabled()) {
             try {
@@ -303,7 +310,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (
             insertModel &&
-            insertModel.getTargetEntityTypeValue() === target &&
+            insertModel.getTargetEntityTypeValue() === selected &&
             insertModel.selectionKey === selectionKey &&
             (insertModel.originalParents === parents || !allowParents)
         ) {
@@ -315,7 +322,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             creationType,
             entityCount: 0,
             entityDataType,
-            initialEntityType: target,
+            initialEntityType: selected,
             numPerParent,
             originalParents: allowParents ? parents : undefined,
             selectionKey,
@@ -503,6 +510,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 this.gridInit(updatedModel);
             }
         );
+
+        this.props.onTargetChange?.(selectedOption.value);
     };
 
     addParent = (queryName: string): void => {
@@ -1027,6 +1036,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { asyncSize } = this.props;
 
         this.props.onDataChange?.(files.size > 0, IMPORT_DATA_FORM_TYPES.FILE);
+        this.props.onFileChange?.(files.keySeq().toArray());
 
         const fileSize = files.valueSeq().first().size;
         this.setState({
@@ -1234,8 +1244,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     render() {
-        const { canEditEntityTypeDetails, disableMerge, fileSizeLimits, importOnly, nounPlural, entityDataType, user } =
-            this.props;
+        const { acceptedFormats, canEditEntityTypeDetails, disableMerge, fileSizeLimits, importOnly, nounPlural,
+            entityDataType, user } = this.props;
         const { error, file, insertModel, isMerge, isSubmitting, originalQueryInfo } = this.state;
 
         if (!insertModel) {
@@ -1311,7 +1321,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     {entityTypeName && (
                                         <FileAttachmentForm
                                             showLabel={false}
-                                            acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
+                                            acceptedFormats={acceptedFormats ?? ".csv, .tsv, .txt, .xls, .xlsx"}
                                             allowMultiple={false}
                                             allowDirectories={false}
                                             previewGridProps={{

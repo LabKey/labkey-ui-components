@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     * add "Remove all" option to the end of the filter pill display if > 1 present
     * hide omnibox when experimental feature is enabled
 
+### version 2.149.6
+*Released*: 4 April 2022
+* Remove QueryGridPanel and related components and action/util functions
+
 ### version 2.149.5
 *Released*: 31 March 2022
 * 45148: Handle data indices for single/multi-part fieldKeys

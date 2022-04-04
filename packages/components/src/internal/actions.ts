@@ -24,26 +24,23 @@ import {
     GRID_CHECKBOX_OPTIONS,
     IGridResponse,
     insertColumnFilter,
-    naturalSort,
     QueryColumn,
     QueryConfig,
     QueryGridModel,
     QueryInfo,
     resolveKey,
     SchemaQuery,
-    ViewInfo,
 } from '..';
 
-import { getQueryDetails, searchRows, selectRows } from './query/api';
+import { getQueryDetails, selectRows } from './query/api';
 import { isEqual } from './query/filter';
-import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
+import { buildQueryString, getLocation, Location } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
     GRID_EDIT_INDEX,
-    LOOKUP_DEFAULT_SIZE,
 } from './constants';
 import { cancelEvent, getPasteValue, setCopyValue } from './events';
 import {
@@ -66,12 +63,11 @@ import {
     removeQueryGridModel,
     updateEditorModel,
     updateQueryGridModel,
-    updateSelections,
 } from './global';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { getSortFromUrl } from './url/ActionURL';
 
-import { intersect, not } from './util/utils';
+import { intersect } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 import { hasModule } from './app/utils';
 
@@ -151,24 +147,6 @@ export function gridInit(model: QueryGridModel, shouldLoadData = true, connected
     }
 }
 
-export function gridClearAll(
-    model: QueryGridModel,
-    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
-): void {
-    clearSelected(model.getId(), model.schema, model.query, model.getFilters(), model.containerPath)
-        .then(() => {
-            const updatedModel = updateQueryGridModel(model, QueryGridModel.EMPTY_SELECTION);
-
-            if (onSelectionChange) {
-                onSelectionChange(updatedModel, undefined, false);
-            }
-        })
-        .catch(err => {
-            const error = err ? err : { message: 'Something went wrong when clearing the selection from the grid.' };
-            gridShowError(model, error);
-        });
-}
-
 export function selectAll(
     key: string,
     schemaName: string,
@@ -197,154 +175,6 @@ export function selectAll(
             ),
         });
     });
-}
-
-export function gridSelectAll(
-    model: QueryGridModel,
-    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
-): void {
-    const id = model.getId();
-
-    selectAll(id, model.schema, model.query, model.getFilters(), model.containerPath).then(data => {
-        if (data && data.count > 0) {
-            return getSelected(
-                id,
-                model.schema,
-                model.query,
-                model.getFilters(),
-                model.containerPath,
-                model.queryParameters
-            )
-                .then(response => {
-                    const updatedModel = updateSelections(model, { selectedIds: List(response.selected) });
-
-                    if (onSelectionChange) {
-                        onSelectionChange(updatedModel, undefined, true);
-                    }
-                })
-                .catch(err => {
-                    const error = err ? err : { message: 'Something went wrong in selecting all items for this grid' };
-                    gridShowError(model, error);
-                });
-        }
-    });
-}
-
-export function sort(model: QueryGridModel, column: QueryColumn, dir: string): void {
-    const fieldKey = encodeURIComponent(column.resolveFieldKey());
-
-    if (model.bindURL) {
-        const urlDir = dir === '+' ? '' : '-';
-        replaceParameters(
-            getLocation(),
-            Map<string, any>({
-                [model.createParam('sort')]: `${urlDir}${fieldKey}`,
-            })
-        );
-    } else {
-        const newModel = updateQueryGridModel(model, {
-            sorts: dir + fieldKey, // TODO: Support multiple sorts
-        });
-
-        gridLoad(newModel);
-    }
-}
-
-// Handle single row select/deselect from the QueryGrid checkbox column
-export function toggleGridRowSelection(
-    model: QueryGridModel,
-    row: Map<string, any>,
-    checked: boolean,
-    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
-): void {
-    let pkValue;
-    const pkCols: List<QueryColumn> = model.queryInfo.getPkCols();
-
-    if (pkCols.size === 1) {
-        const pkCol: QueryColumn = pkCols.first();
-        pkValue = row.getIn([pkCol.name, 'value']);
-
-        setSelected(model.getId(), checked, pkValue, model.containerPath)
-            .then(() => {
-                const stringKey = pkValue !== undefined ? pkValue.toString() : pkValue;
-                const selected: List<string> = model.selectedIds;
-                let selectedState: GRID_CHECKBOX_OPTIONS;
-
-                if (checked) {
-                    // if one is checked, value cannot be 'NONE'
-                    const allSelected: boolean = model.data.every(d => {
-                        // compare if item is already 'checked' or will be 'checked' by this action
-                        const keyVal =
-                            d.getIn([pkCol.name, 'value']) !== undefined
-                                ? d.getIn([pkCol.name, 'value']).toString()
-                                : undefined;
-
-                        return keyVal === stringKey || selected.indexOf(keyVal) !== -1;
-                    });
-
-                    selectedState = allSelected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.SOME;
-                } else {
-                    // if unchecking, value cannot be 'ALL'
-                    const someSelected: boolean = model.data.some(d => {
-                        // compare if item is already 'checked' or will be 'unchecked' by this action
-                        const keyVal =
-                            d.getIn([pkCol.name, 'value']) !== undefined
-                                ? d.getIn([pkCol.name, 'value']).toString()
-                                : undefined;
-                        return keyVal !== stringKey && selected.indexOf(keyVal) !== -1;
-                    });
-
-                    selectedState = someSelected ? GRID_CHECKBOX_OPTIONS.SOME : GRID_CHECKBOX_OPTIONS.NONE;
-                }
-
-                const selectedIds = checked
-                    ? model.selectedIds.push(stringKey)
-                    : model.selectedIds.delete(model.selectedIds.findIndex(item => item === stringKey));
-
-                const updatedModel = updateQueryGridModel(model, {
-                    selectedState,
-                    selectedQuantity: selectedIds.size,
-                    selectedIds,
-                });
-
-                if (onSelectionChange) {
-                    onSelectionChange(updatedModel, row, checked);
-                }
-            })
-            .catch(reason => {
-                console.error(reason);
-                const error = reason
-                    ? reason
-                    : { message: 'There was a problem updating the selection for this grid.' };
-                gridShowError(model, error);
-            });
-    } else {
-        console.warn(
-            'Selection requires only one key be available. Unable to toggle selection for specific keyValue. Keys:',
-            pkCols.toJS()
-        );
-    }
-}
-
-export function toggleGridSelected(
-    model: QueryGridModel,
-    checked: boolean,
-    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
-): void {
-    if (checked) {
-        setGridSelected(model, checked, onSelectionChange);
-    } else {
-        setGridUnselected(model, onSelectionChange);
-    }
-}
-
-export function clearError(model: QueryGridModel): void {
-    if (model.isError) {
-        updateQueryGridModel(model, {
-            isError: false,
-            message: undefined,
-        });
-    }
 }
 
 export function schemaGridInvalidate(schemaName: string, remove = false): void {
@@ -409,86 +239,6 @@ export function gridInvalidate(
     }
 
     return newModel;
-}
-
-export function loadPage(model: QueryGridModel, pageNumber: number): void {
-    if (pageNumber !== model.pageNumber) {
-        if (model.bindURL) {
-            replaceParameters(
-                getLocation(),
-                Map<string, any>({
-                    [model.createParam('p')]: pageNumber > 1 ? pageNumber : undefined,
-                })
-            );
-        } else {
-            const newModel = updateQueryGridModel(model, { pageNumber: pageNumber > 1 ? pageNumber : 1 });
-            gridLoad(newModel);
-        }
-    }
-}
-
-export function setMaxRows(model: QueryGridModel, maxRows: number): void {
-    if (maxRows !== model.maxRows) {
-        // also make sure to reset page number to force grid back to first page
-        if (model.bindURL) {
-            replaceParameters(
-                getLocation(),
-                Map<string, any>({
-                    [model.createParam('p')]: undefined,
-                    [model.createParam('pageCount')]: maxRows,
-                })
-            );
-        } else {
-            const newModel = updateQueryGridModel(model, { pageNumber: 1, maxRows });
-            gridLoad(newModel);
-        }
-    }
-}
-
-export function setReportId(model: QueryGridModel, reportId: string) {
-    if (model.bindURL) {
-        replaceParameters(
-            getLocation(),
-            Map<string, any>({
-                [model.createParam('reportId')]: reportId,
-            })
-        );
-    }
-}
-
-export function gridRefresh(model: QueryGridModel, connectedComponent?: React.Component): void {
-    if (model.allowSelection) {
-        setGridUnselected(model);
-    }
-
-    gridLoad(model, connectedComponent);
-}
-
-// need to reload when the URL changes and also need to reload selections because one of the
-// reasons the URL may change is for the application of filters.
-export function reloadQueryGridModel(model: QueryGridModel): void {
-    const newModel = updateQueryGridModel(model, {
-        isLoading: true,
-        selectedLoaded: false,
-        ...QueryGridModel.EMPTY_SELECTION,
-        ...bindURLProps(model),
-    });
-    gridLoad(newModel);
-}
-
-export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>): void {
-    if (model.bindURL) {
-        replaceParameters(getLocation(), getFilterParameters(filters));
-    } else {
-        if (filters.count()) {
-            const newModel = updateQueryGridModel(model, {
-                selectedLoaded: false,
-                ...QueryGridModel.EMPTY_SELECTION,
-                filterArray: model.filterArray.merge(filters),
-            });
-            gridLoad(newModel);
-        }
-    }
 }
 
 export async function getLookupValueDescriptors(
@@ -819,30 +569,6 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     });
     $('body').append(form);
     form.trigger('submit');
-}
-
-export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): void {
-    const { allowSelection, selectedState } = model;
-    const showRows = allowSelection && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
-    const options: ExportOptions = {
-        filters: model.getFilters(),
-        columns: model.getExportColumnsString(),
-        sorts: model.getSorts(),
-        showRows,
-        selectionKey: model.getId(),
-    };
-    const exportParams = getExportParams(
-        type,
-        SchemaQuery.create(model.schema, model.query, model.view),
-        options,
-        advancedOptions
-    );
-    exportRows(type, exportParams);
-}
-
-export function gridSelectView(model: QueryGridModel, view: ViewInfo): void {
-    const viewName = view.isDefault ? undefined : view.name;
-    replaceParameter(getLocation(), model.createParam('view'), viewName);
 }
 
 // Complex comparator to determine if the location matches the models location-sensitive properties
@@ -1275,13 +1001,6 @@ function setGridSelected(
     });
 }
 
-function setGridUnselected(
-    model: QueryGridModel,
-    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
-): void {
-    setGridSelected(model, false, onSelectionChange);
-}
-
 export function unselectAll(model: QueryGridModel): void {
     clearSelected(model.getId(), undefined, undefined, undefined, model.containerPath)
         .then(() => {
@@ -1399,20 +1118,6 @@ export function getSelectedData(
                 reject(resolveErrorMessage(reason));
             })
     );
-}
-
-function getFilterParameters(filters: List<any>, remove = false): Map<string, string> {
-    const params = {};
-
-    filters.map(filter => {
-        if (remove) {
-            params[filter.getURLParameterName()] = undefined;
-        } else {
-            params[filter.getURLParameterName()] = filter.getURLParameterValue();
-        }
-    });
-
-    return Map<string, string>(params);
 }
 
 export function getVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
@@ -1593,19 +1298,6 @@ function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string 
     }
 
     return copyValue;
-}
-
-export function unfocusCellSelection(modelId: string): void {
-    updateEditorModel(getEditorModel(modelId), {
-        selectedColIdx: -1,
-        selectedRowIdx: -1,
-    });
-}
-
-function updateCellValues(model: EditorModel, cellKey: string, values: List<ValueDescriptor>): void {
-    updateEditorModel(model, {
-        cellValues: model.cellValues.set(cellKey, values),
-    });
 }
 
 const findLookupValues = async (
@@ -2278,11 +1970,6 @@ export async function addRows(
     dataKeys = dataChanges.dataKeys;
 
     return { editorModel: editorModelChanges, data, dataKeys };
-}
-
-export function addRowsToQueryGridModel(model: QueryGridModel, count: number, rowData?: Map<string, any>): void {
-    const { data, dataKeys } = addRowsToGridData(model.dataIds, model.data, count, rowData);
-    updateQueryGridModel(model, { data, dataIds: dataKeys, isError: false, message: undefined });
 }
 
 // Gets the non-blank values pasted for each column.  The values in the resulting lists may not align to the rows

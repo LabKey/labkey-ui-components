@@ -282,7 +282,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (isConceptColumn) {
                 const ontologyBrowserKey = filterIndex + '-' + (isSecondInput ? '2' : '1');
                 const expanded = expandedOntologyKey === ontologyBrowserKey;
-                // todo clear filter value on fitler type change
                 return (
                     <div>
                         {textInput}

@@ -20,8 +20,9 @@ import { CONCEPT_COLUMN_FILTER_TYPES, getLabKeySql } from '../../query/filter';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
+import { isOntologyEnabled } from '../../app/utils';
+
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
-import { isOntologyEnabled } from "../../app/utils";
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -246,17 +247,16 @@ export function isBetweenOperator(urlSuffix: string): boolean {
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
 
 export function getFilterOptionsForType(field: QueryColumn, filterTypesToExclude?: string[]): FieldFilterOption[] {
-    if (!field)
-        return null;
+    if (!field) return null;
 
     const jsonType = field.getDisplayFieldJsonType() as JsonType;
 
     const useConceptFilters = field.isConceptCodeColumn && isOntologyEnabled();
 
-    const filterList = (useConceptFilters ? CONCEPT_COLUMN_FILTER_TYPES : Filter.getFilterTypesForType(jsonType))
-        .filter(function (result) {
-        if (Filter.Types.HAS_ANY_VALUE.getURLSuffix() === result.getURLSuffix())
-            return false;
+    const filterList = (
+        useConceptFilters ? CONCEPT_COLUMN_FILTER_TYPES : Filter.getFilterTypesForType(jsonType)
+    ).filter(function (result) {
+        if (Filter.Types.HAS_ANY_VALUE.getURLSuffix() === result.getURLSuffix()) return false;
         return !filterTypesToExclude || filterTypesToExclude.indexOf(result.getURLSuffix()) === -1;
     });
 
@@ -297,8 +297,7 @@ export function getFilterTypePlaceHolder(suffix: string, jsonType: string): stri
             case 'string':
                 return 'Example: a;b;c';
         }
-    }
-    else if (suffix === 'containsoneof' || suffix === 'containsnoneof') {
+    } else if (suffix === 'containsoneof' || suffix === 'containsnoneof') {
         return 'Example: a;b;c';
     }
 

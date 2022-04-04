@@ -12,12 +12,12 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
-
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 enum FieldFilterTabs {
     Filter = 'Filter',
@@ -60,7 +60,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         metricFeatureArea,
         fullWidth,
         selectDistinctOptions,
-        filterTypesToExclude
+        filterTypesToExclude,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);

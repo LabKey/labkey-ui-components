@@ -25,7 +25,7 @@ import {
     getFieldFiltersValidationResult,
     getUpdatedDataTypeFilters,
     isValidFilterFieldExcludeLookups,
-    SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE
+    SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE,
 } from './utils';
 import { QueryFilterPanel } from './QueryFilterPanel';
 

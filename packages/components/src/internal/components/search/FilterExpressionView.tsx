@@ -6,14 +6,11 @@ import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
-import {
-    App,
-    formatDateTime,
-    OntologyBrowserFilterPanel,
-    parseDate
-} from '../../..';
+import { App, formatDateTime, OntologyBrowserFilterPanel, parseDate } from '../../..';
 
 import { formatDate, isDateTimeCol } from '../../util/Date';
+
+import { isOntologyEnabled } from '../../app/utils';
 
 import {
     getFilterSelections,
@@ -23,7 +20,6 @@ import {
     getUpdatedFilterSelection,
 } from './utils';
 import { FieldFilterOption, FilterSelection } from './models';
-import { isOntologyEnabled } from "../../app/utils";
 
 interface Props {
     field: QueryColumn;
@@ -174,27 +170,34 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         [activeFilters]
     );
 
-    const updateOntologyFieldValue = useCallback((filterIndex: number, newValue: string, isSecondInput?: boolean) => {
-        const update: Partial<FilterSelection> = {};
-        if (isSecondInput) {
-            update.secondFilterValue = newValue;
-        } else {
-            update.firstFilterValue = newValue;
-        }
+    const updateOntologyFieldValue = useCallback(
+        (filterIndex: number, newValue: string, isSecondInput?: boolean) => {
+            const update: Partial<FilterSelection> = {};
+            if (isSecondInput) {
+                update.secondFilterValue = newValue;
+            } else {
+                update.firstFilterValue = newValue;
+            }
 
-        updateFilter(filterIndex, activeFilters[filterIndex]?.filterType, newValue, isSecondInput);
-        updateActiveFilters(filterIndex, update);
-    }, [activeFilters]);
+            updateFilter(filterIndex, activeFilters[filterIndex]?.filterType, newValue, isSecondInput);
+            updateActiveFilters(filterIndex, update);
+        },
+        [activeFilters]
+    );
 
     const onOntologyFilterExpand = useCallback((ontologyBrowserKey: string, expand: boolean) => {
-        if (!expand)
-            setExpandedOntologyKey(undefined);
-        else
-            setExpandedOntologyKey(ontologyBrowserKey);
+        if (!expand) setExpandedOntologyKey(undefined);
+        else setExpandedOntologyKey(ontologyBrowserKey);
     }, []);
 
     const renderFilterInput = useCallback(
-        (placeholder: string, filterIndex: number, isMultiValueInput?: boolean, isSecondInput?: boolean, expandedOntologyKey?: string) => {
+        (
+            placeholder: string,
+            filterIndex: number,
+            isMultiValueInput?: boolean,
+            isSecondInput?: boolean,
+            expandedOntologyKey?: string
+        ) => {
             const { filterType, firstFilterValue, secondFilterValue } = activeFilters[filterIndex];
             if (!filterType || !filterType.valueRequired) return null;
 
@@ -294,7 +297,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                             open={expanded}
                         >
                             <Dropdown.Toggle useAnchor={true}>
-                                <span>{expanded ? 'Close Browser' : `Find ${field.caption} By Tree` }</span>
+                                <span>{expanded ? 'Close Browser' : `Find ${field.caption} By Tree`}</span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <OntologyBrowserFilterPanel
@@ -302,7 +305,9 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                     conceptSubtree={field.conceptSubtree}
                                     filterValue={valueRaw}
                                     filterType={Filter.getFilterTypeForURLSuffix(filterType.value)}
-                                    onFilterChange={(filterValue) => updateOntologyFieldValue(filterIndex, filterValue, isSecondInput)}
+                                    onFilterChange={filterValue =>
+                                        updateOntologyFieldValue(filterIndex, filterValue, isSecondInput)
+                                    }
                                 />
                             </Dropdown.Menu>
                         </Dropdown>
@@ -326,7 +331,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const isMultiValueInput = filterType.value === 'in' || filterType.value === 'notin';
             const placeholder = getFilterTypePlaceHolder(filterType.value, field.getDisplayFieldJsonType());
 
-            if (!isBetweenOperator) return renderFilterInput(placeholder, filterIndex, isMultiValueInput, false, expandedOntologyKey);
+            if (!isBetweenOperator)
+                return renderFilterInput(placeholder, filterIndex, isMultiValueInput, false, expandedOntologyKey);
 
             return (
                 <>

@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * add Filters button to GridPanel header to open the GridFilterModal
     * display the view, filter, and search grid action values in the grid info section (previously displayed in the OmniBox input)
     * add "Remove all" option to the end of the filter pill display if > 1 present
+    * hide omnibox when experimental feature is enabled
 
 ### version 2.149.5
 *Released*: 31 March 2022

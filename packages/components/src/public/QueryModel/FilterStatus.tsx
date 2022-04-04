@@ -12,16 +12,13 @@ interface Props {
 
 export const FilterStatus: FC<Props> = memo(props => {
     const { actionValues, onClick, onRemove, onRemoveAll } = props;
-    const showRemoveAll =
-        actionValues.filter(
-            actionValue => actionValue.action.keyword === 'filter' || actionValue.action.keyword === 'search'
-        ).length > 1;
+    const showRemoveAll = actionValues.filter(actionValue => actionValue.action.keyword === 'filter').length > 1;
 
     return (
         <div className="grid-panel__filter-status">
             {actionValues.map((actionValue, index) => {
-                // loop over all actionValues so that the index remains consistent, but don't show SortActions
-                if (actionValue.action.keyword === 'sort') {
+                // loop over all actionValues so that the index remains consistent, but don't show search or sort actions
+                if (!(actionValue.action.keyword === 'filter' || actionValue.action.keyword === 'view')) {
                     return null;
                 }
 

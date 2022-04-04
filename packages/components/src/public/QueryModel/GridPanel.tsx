@@ -40,7 +40,7 @@ import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { isGridColSortFilterEnabled } from '../../internal/app/utils';
 import { FilterStatus } from './FilterStatus';
-import { removeActionValue } from '../../internal/components/omnibox/utils';
+import { removeActionValue, replaceSearchValue } from '../../internal/components/omnibox/utils';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -80,6 +80,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
+    actionValues: ActionValue[];
     onViewSelect: (viewName: string) => void;
     onSearch: (token: string) => void;
     onFilter: () => void;
@@ -113,6 +114,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
     render(): ReactNode {
         const {
+            actionValues,
             model,
             actions,
             advancedExportOptions,
@@ -153,7 +155,9 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                             <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
                         )}
                         {isGridColSortFilterEnabled() && showFiltersButton && <FiltersButton onFilter={onFilter} />}
-                        {isGridColSortFilterEnabled() && showSearchInput && <SearchBox onSearch={onSearch} />}
+                        {isGridColSortFilterEnabled() && showSearchInput && (
+                            <SearchBox actionValues={actionValues} onSearch={onSearch} />
+                        )}
                     </div>
                 </div>
 
@@ -377,7 +381,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             } else if (column) {
                 newFilters = newFilters.filter(filter => !isFilterColumnNameMatch(filter, column));
             } else {
-                newFilters = []; // remove all searches and filters
+                // remove all filters, but keep the search
+                newFilters = newFilters.filter(filter => filter.getFilterType() === Filter.Types.Q);
             }
         }
 
@@ -484,12 +489,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     onSearch = (value: string): void => {
-        const actionValue = {
-            action: this.omniBoxActions.search,
-            value,
-            valueObject: Filter.create('*', value, Filter.Types.Q),
-        };
-        this.handleSearchChange(this.state.actionValues.concat(actionValue), { type: ChangeType.add });
+        const { actionValues, change } = replaceSearchValue(this.state.actionValues, value, this.omniBoxActions.search);
+        this.handleSearchChange(actionValues, change);
     };
 
     handleViewChange = (actionValues: ActionValue[], change: Change): void => {
@@ -564,9 +565,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     removeAllFilters = (): void => {
         const { actionValues } = this.state;
         const newActionValues = actionValues.filter(actionValue => {
-            return !(
-                actionValue.action === this.omniBoxActions.filter || actionValue.action === this.omniBoxActions.search
-            );
+            return actionValue.action === this.omniBoxActions.filter;
         });
 
         this.handleFilterChange(newActionValues, { type: ChangeType.remove });
@@ -771,6 +770,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         {showButtonBar && (
                             <ButtonBar
                                 {...this.props}
+                                actionValues={actionValues}
                                 onExport={onExport}
                                 onFilter={this.showFilterModal}
                                 onSearch={this.onSearch}

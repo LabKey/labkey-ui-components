@@ -1,6 +1,10 @@
 import { List } from 'immutable';
+import { Filter } from '@labkey/api';
+
 import { QueryColumn } from '../../..';
 import { ActionValue } from './actions/Action';
+import { Change, ChangeType } from './OmniBox';
+import { SearchAction } from './actions/Search';
 
 /**
  * From the supplied columnName this method will determine which columns in the "columns" list
@@ -60,4 +64,32 @@ export function removeActionValue(actionValues: ActionValue[], indexToRemove: nu
     }
 
     return actionValues;
+}
+
+export function replaceSearchValue(
+    actionValues: ActionValue[],
+    value: string,
+    searchAction: SearchAction
+): { actionValues: ActionValue[]; change: Change } {
+    const hasNewSearch = value?.length > 0;
+    const existingSearchIndex = actionValues.findIndex(actionValue => actionValue.action.keyword === 'search');
+    const newActionValues = actionValues.filter(actionValue => actionValue.action.keyword !== 'search');
+    if (hasNewSearch) {
+        newActionValues.push({
+            action: searchAction,
+            value,
+            valueObject: Filter.create('*', value, Filter.Types.Q),
+        });
+    }
+
+    let change = { type: ChangeType.add } as Change;
+    if (existingSearchIndex > -1) {
+        if (hasNewSearch) {
+            change = { type: ChangeType.modify, index: existingSearchIndex };
+        } else {
+            change = { type: ChangeType.remove, index: existingSearchIndex };
+        }
+    }
+
+    return { actionValues: newActionValues, change };
 }

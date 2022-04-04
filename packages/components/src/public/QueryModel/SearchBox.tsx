@@ -1,12 +1,19 @@
-import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useEffect, useState } from 'react';
+import { ActionValue } from '../../internal/components/omnibox/actions/Action';
 
 interface Props {
+    actionValues: ActionValue[];
     onSearch: (value: string) => void;
 }
 
 export const SearchBox: FC<Props> = memo(props => {
-    const { onSearch } = props;
+    const { actionValues, onSearch } = props;
     const [searchValue, setSearchValue] = useState('');
+
+    useEffect(() => {
+        const existingSearchValue = actionValues.find(actionValue => actionValue.action.keyword === 'search')?.value;
+        if (existingSearchValue) setSearchValue(existingSearchValue);
+    }, [actionValues]);
 
     const onChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {

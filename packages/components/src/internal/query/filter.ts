@@ -124,13 +124,10 @@ export function getDateFieldLabKeySql(filter: Filter.IFilter): string {
             return '(' + columnNameSelect + ' >= ' + startDateStart + ' AND ' + columnNameSelect + ' < ' + startDateEnd + ')';
         } else if (urlSuffix === Filter.Types.DATE_NOT_EQUAL.getURLSuffix()) {
             return '(' + columnNameSelect + ' < ' + startDateStart + ' OR ' + columnNameSelect + ' >= ' + startDateEnd + ')';
-            );
         } else if (urlSuffix === Filter.Types.BETWEEN.getURLSuffix()) {
             return '(' + columnNameSelect + ' >= ' + startDateStart + ' AND ' + columnNameSelect + ' < ' + endDateEnd + ')';
-            );
         } else if (urlSuffix === Filter.Types.NOT_BETWEEN.getURLSuffix()) {
             return '(' + columnNameSelect + ' < ' + startDateStart + ' OR ' + columnNameSelect + ' >= ' + endDateEnd + ')';
-            );
         } else if (urlSuffix === Filter.Types.DATE_GREATER_THAN.getURLSuffix()) {
             return '(' + columnNameSelect + ' >= ' + startDateEnd + ')';
         } else if (urlSuffix === Filter.Types.DATE_LESS_THAN.getURLSuffix()) {

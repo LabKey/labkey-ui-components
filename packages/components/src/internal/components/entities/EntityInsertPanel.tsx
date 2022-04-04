@@ -144,6 +144,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
     fileImportParameters: Record<string, any>;
+    filePreviewFormats?: string;
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
@@ -1245,7 +1246,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     render() {
         const { acceptedFormats, canEditEntityTypeDetails, disableMerge, fileSizeLimits, importOnly, nounPlural,
-            entityDataType, user } = this.props;
+            entityDataType, user, filePreviewFormats } = this.props;
         const { error, file, insertModel, isMerge, isSubmitting, originalQueryInfo } = this.state;
 
         if (!insertModel) {
@@ -1328,6 +1329,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                                 previewCount: 3,
                                                 onPreviewLoad: this.onPreviewLoad,
                                                 warningMsg: this.state.fieldsWarningMsg,
+                                                acceptedFormats: filePreviewFormats
                                             }}
                                             onFileChange={this.handleFileChange}
                                             onFileRemoval={this.handleFileRemoval}

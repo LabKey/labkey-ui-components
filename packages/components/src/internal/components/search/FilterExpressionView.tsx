@@ -18,7 +18,7 @@ import { formatDate, isDateTimeCol } from '../../util/Date';
 import {
     getFilterSelections,
     getFilterTypePlaceHolder,
-    getSampleFinderFilterOptionsForType,
+    getFilterOptionsForType,
     getUpdatedFilters,
     getUpdatedFilterSelection,
 } from './utils';
@@ -41,7 +41,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const [expandedOntologyKey, setExpandedOntologyKey] = useState<string>(undefined);
 
     useEffect(() => {
-        const filterOptions = getSampleFinderFilterOptionsForType(field, App.isOntologyEnabled(), filterTypesToExclude);
+        const filterOptions = getFilterOptionsForType(field, App.isOntologyEnabled(), filterTypesToExclude);
         setFieldFilterOptions(filterOptions);
         setActiveFilters(getFilterSelections(fieldFilters, filterOptions));
     }, [field]); // leave fieldFilters out of deps list, fieldFilters is used to init once

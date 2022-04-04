@@ -245,7 +245,7 @@ export function isBetweenOperator(urlSuffix: string): boolean {
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
 
-export function getSampleFinderFilterOptionsForType(field: QueryColumn, supportsOntology?: boolean, filterTypesToExclude?: string[]): FieldFilterOption[] {
+export function getFilterOptionsForType(field: QueryColumn, supportsOntology?: boolean, filterTypesToExclude?: string[]): FieldFilterOption[] {
     if (!field)
         return null;
 

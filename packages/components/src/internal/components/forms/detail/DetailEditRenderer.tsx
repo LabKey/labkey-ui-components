@@ -19,7 +19,6 @@ import { Checkbox, Input, Textarea } from 'formsy-react-components';
 import { LabelOverlay } from '../LabelOverlay';
 import {
     AliasRenderer,
-    AncestorRenderer,
     AppendUnits,
     DatePickerInput,
     FileColumnRenderer,
@@ -266,9 +265,6 @@ export function resolveDetailRenderer(column: QueryColumn): Renderer {
                 break;
             case 'samplestatusrenderer':
                 renderer = (d, r) => <SampleStatusRenderer row={r} />;
-                break;
-            case 'ancestorrenderer':
-                renderer = d => <AncestorRenderer data={d} />;
                 break;
             default:
                 break;

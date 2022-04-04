@@ -34,7 +34,7 @@ import {
 
 import { getQueryDetails, selectRows } from './query/api';
 import { isEqual } from './query/filter';
-import { buildQueryString, getLocation, Location, replaceParameters } from './util/URL';
+import { buildQueryString, getLocation, Location } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
     EXPORT_TYPES,

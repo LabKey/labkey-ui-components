@@ -11,7 +11,7 @@ import {
     formatDateTime,
     OntologyBrowserFilterPanel,
     parseDate
-} from '../../../index';
+} from '../../..';
 
 import { formatDate, isDateTimeCol } from '../../util/Date';
 
@@ -23,7 +23,7 @@ import {
     getUpdatedFilterSelection,
 } from './utils';
 import { FieldFilterOption, FilterSelection } from './models';
-import { CONCEPT_CODE_CONCEPT_URI } from "../domainproperties/constants";
+import { isOntologyEnabled } from "../../app/utils";
 
 interface Props {
     field: QueryColumn;
@@ -41,7 +41,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const [expandedOntologyKey, setExpandedOntologyKey] = useState<string>(undefined);
 
     useEffect(() => {
-        const filterOptions = getFilterOptionsForType(field, App.isOntologyEnabled(), filterTypesToExclude);
+        const filterOptions = getFilterOptionsForType(field, filterTypesToExclude);
         setFieldFilterOptions(filterOptions);
         setActiveFilters(getFilterSelections(fieldFilters, filterOptions));
     }, [field]); // leave fieldFilters out of deps list, fieldFilters is used to init once
@@ -202,7 +202,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const valueRaw = isSecondInput ? secondFilterValue : firstFilterValue;
 
             const jsonType = field.getDisplayFieldJsonType();
-            const isConceptColumn = jsonType === 'string' && field.conceptURI === CONCEPT_CODE_CONCEPT_URI && App.isOntologyEnabled();
+            const isConceptColumn = field.isConceptCodeColumn && isOntologyEnabled();
 
             if (jsonType === 'date') {
                 const showTimeStamp = isDateTimeCol(field);

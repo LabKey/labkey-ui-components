@@ -54,10 +54,18 @@ describe('getLabKeySql', () => {
             '"String\'Field" = \'ABC\''
         );
     });
+
     test('eq, string, with double quote in field name', () => {
         const fieldName = 'String"Field';
         expect(getLabKeySql(Filter.create(fieldName, 'ABC', Filter.Types.Equals), 'string')).toEqual(
             '"String\"\"Field" = \'ABC\''
+        );
+    });
+
+    test('eq, string, with multiple double quotes in field name', () => {
+        const fieldName = 'String"F"ield';
+        expect(getLabKeySql(Filter.create(fieldName, 'ABC', Filter.Types.Equals), 'string')).toEqual(
+            '"String\"\"F\"\"ield" = \'ABC\''
         );
     });
 

@@ -21,7 +21,7 @@ import { CONCEPT_COLUMN_FILTER_TYPES, getLabKeySql } from '../../query/filter';
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
-import { CONCEPT_CODE_CONCEPT_URI } from "../domainproperties/constants";
+import { isOntologyEnabled } from "../../app/utils";
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -245,15 +245,15 @@ export function isBetweenOperator(urlSuffix: string): boolean {
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
 
-export function getFilterOptionsForType(field: QueryColumn, supportsOntology?: boolean, filterTypesToExclude?: string[]): FieldFilterOption[] {
+export function getFilterOptionsForType(field: QueryColumn, filterTypesToExclude?: string[]): FieldFilterOption[] {
     if (!field)
         return null;
 
     const jsonType = field.getDisplayFieldJsonType() as JsonType;
 
-    const isConceptColumn = jsonType === 'string' && field.conceptURI === CONCEPT_CODE_CONCEPT_URI && supportsOntology;
+    const useConceptFilters = field.isConceptCodeColumn && isOntologyEnabled();
 
-    const filterList = (isConceptColumn ? CONCEPT_COLUMN_FILTER_TYPES : Filter.getFilterTypesForType(jsonType))
+    const filterList = (useConceptFilters ? CONCEPT_COLUMN_FILTER_TYPES : Filter.getFilterTypesForType(jsonType))
         .filter(function (result) {
         if (Filter.Types.HAS_ANY_VALUE.getURLSuffix() === result.getURLSuffix())
             return false;

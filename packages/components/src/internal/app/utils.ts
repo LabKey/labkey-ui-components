@@ -151,8 +151,8 @@ export function isFreezerManagementEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.inventory !== undefined;
 }
 
-export function isOntologyEnabled(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.ontology !== undefined;
+export function isOntologyEnabled(): boolean {
+    return hasModule('Ontology');
 }
 
 export function isProductNavigationEnabled(productId: string): boolean {

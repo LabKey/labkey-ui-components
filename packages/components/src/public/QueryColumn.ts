@@ -4,6 +4,7 @@ import { Record } from 'immutable';
 import { Query } from '@labkey/api';
 
 import {
+    CONCEPT_CODE_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from '../internal/components/domainproperties/constants';
@@ -306,6 +307,10 @@ export class QueryColumn extends Record({
 
     get isUniqueIdColumn(): boolean {
         return this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
+    }
+
+    get isConceptCodeColumn(): boolean {
+        return this.conceptURI === CONCEPT_CODE_CONCEPT_URI;
     }
 
     isImportColumn(importName: string): boolean {

@@ -58,7 +58,9 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
 
         if (
             filterUrlSuffix === Filter.Types.IN.getURLSuffix() ||
-            filterUrlSuffix === Filter.Types.NOT_IN.getURLSuffix()
+            filterUrlSuffix === Filter.Types.NOT_IN.getURLSuffix() ||
+            filterUrlSuffix === Filter.Types.CONTAINS_ONE_OF.getURLSuffix() ||
+            filterUrlSuffix === Filter.Types.CONTAINS_NONE_OF.getURLSuffix()
         ) {
             const values = getFilterValuesAsArray(filter);
             filterValueDisplay = (

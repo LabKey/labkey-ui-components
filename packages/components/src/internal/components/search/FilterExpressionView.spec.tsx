@@ -30,6 +30,27 @@ const Ops = [
     'notbetween',
 ];
 
+const StringOps = [
+    'eq',
+    'neqornull',
+    'isblank',
+    'isnonblank',
+    'gt',
+    'lt',
+    'gte',
+    'lte',
+    "contains",
+    "doesnotcontain",
+    "doesnotstartwith",
+    "startswith",
+    'in',
+    'notin',
+    "containsoneof",
+    "containsnoneof",
+    'between',
+    'notbetween',
+];
+
 const dateOps = [
     'dateeq',
     'dateneq',
@@ -103,7 +124,7 @@ describe('FilterExpressionView', () => {
     test('string field, no filter selected', () => {
         const wrapper = mount(<FilterExpressionView field={stringField} fieldFilters={null} />);
 
-        validateFilterTypeDropdown(wrapper, Ops, 0, null);
+        validateFilterTypeDropdown(wrapper, StringOps, 0, null);
 
         wrapper.unmount();
     });
@@ -116,7 +137,7 @@ describe('FilterExpressionView', () => {
             />
         );
 
-        validate(wrapper, Ops, 0, 1, 1, 0, 'eq', 'ABC');
+        validate(wrapper, StringOps, 0, 1, 1, 0, 'eq', 'ABC');
         wrapper.unmount();
     });
 

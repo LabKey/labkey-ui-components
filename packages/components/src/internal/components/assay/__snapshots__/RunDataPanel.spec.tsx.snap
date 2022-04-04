@@ -113,6 +113,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "dataid": Immutable.Record {
                 "align": "left",
@@ -180,6 +182,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "sampleid": Immutable.Record {
                 "align": "left",
@@ -247,6 +251,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "participantid": Immutable.Record {
                 "align": "left",
@@ -298,6 +304,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "visitid": Immutable.Record {
                 "align": "right",
@@ -349,6 +357,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "date": Immutable.Record {
                 "align": "left",
@@ -400,6 +410,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run": Immutable.Record {
                 "align": "left",
@@ -467,6 +479,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "flaggedasexcluded": Immutable.Record {
                 "align": "left",
@@ -518,6 +532,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "exclusioncomment": Immutable.Record {
                 "align": "left",
@@ -569,6 +585,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "folder": Immutable.Record {
                 "align": "left",
@@ -636,6 +654,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_text_field": Immutable.Record {
                 "align": "left",
@@ -688,6 +708,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_multi_field": Immutable.Record {
                 "align": "left",
@@ -740,6 +762,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_bool_field": Immutable.Record {
                 "align": "left",
@@ -792,6 +816,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_int_field": Immutable.Record {
                 "align": "right",
@@ -844,6 +870,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_dbl_field": Immutable.Record {
                 "align": "right",
@@ -896,6 +924,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_date_field": Immutable.Record {
                 "align": "left",
@@ -948,6 +978,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_text_field": Immutable.Record {
                 "align": "left",
@@ -1001,6 +1033,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_multi_field": Immutable.Record {
                 "align": "left",
@@ -1054,6 +1088,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_bool_field": Immutable.Record {
                 "align": "left",
@@ -1107,6 +1143,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_int_field": Immutable.Record {
                 "align": "right",
@@ -1160,6 +1198,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_dbl_field": Immutable.Record {
                 "align": "right",
@@ -1213,6 +1253,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_date_field": Immutable.Record {
                 "align": "left",
@@ -1266,6 +1308,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
             },
             "description": "Contains all of the results (and may contain raw data as well) for the GPAT 1 assay definition",
@@ -1404,6 +1448,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -1455,6 +1501,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "right",
@@ -1506,6 +1554,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -1557,6 +1607,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
               ],
               "GPAT 1 Batch Fields": Immutable.List [
@@ -1610,6 +1662,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -1661,6 +1715,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -1712,6 +1768,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "right",
@@ -1763,6 +1821,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "right",
@@ -1814,6 +1874,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -1865,6 +1927,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
               ],
               "GPAT 1 Run Fields": Immutable.List [
@@ -1918,6 +1982,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -1969,6 +2035,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -2020,6 +2088,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "right",
@@ -2071,6 +2141,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "right",
@@ -2122,6 +2194,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -2173,6 +2247,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
               ],
             },
@@ -2262,6 +2338,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "batch_multi_field": Immutable.Record {
               "align": "left",
@@ -2313,6 +2391,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "batch_bool_field": Immutable.Record {
               "align": "left",
@@ -2364,6 +2444,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "batch_int_field": Immutable.Record {
               "align": "right",
@@ -2415,6 +2497,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "batch_dbl_field": Immutable.Record {
               "align": "right",
@@ -2466,6 +2550,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "batch_date_field": Immutable.Record {
               "align": "left",
@@ -2517,6 +2603,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
           },
           "batchProperties": Immutable.Map {},
@@ -2572,6 +2660,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "run_multi_field": Immutable.Record {
               "align": "left",
@@ -2623,6 +2713,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "run_bool_field": Immutable.Record {
               "align": "left",
@@ -2674,6 +2766,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "run_int_field": Immutable.Record {
               "align": "right",
@@ -2725,6 +2819,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "run_dbl_field": Immutable.Record {
               "align": "right",
@@ -2776,6 +2872,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "run_date_field": Immutable.Record {
               "align": "left",
@@ -2827,6 +2925,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
           },
           "runId": undefined,
@@ -2886,6 +2986,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "dataid": Immutable.Record {
                 "align": "left",
@@ -2953,6 +3055,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "sampleid": Immutable.Record {
                 "align": "left",
@@ -3020,6 +3124,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "participantid": Immutable.Record {
                 "align": "left",
@@ -3071,6 +3177,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "visitid": Immutable.Record {
                 "align": "right",
@@ -3122,6 +3230,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "date": Immutable.Record {
                 "align": "left",
@@ -3173,6 +3283,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run": Immutable.Record {
                 "align": "left",
@@ -3240,6 +3352,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "flaggedasexcluded": Immutable.Record {
                 "align": "left",
@@ -3291,6 +3405,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "exclusioncomment": Immutable.Record {
                 "align": "left",
@@ -3342,6 +3458,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "folder": Immutable.Record {
                 "align": "left",
@@ -3409,6 +3527,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_text_field": Immutable.Record {
                 "align": "left",
@@ -3461,6 +3581,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_multi_field": Immutable.Record {
                 "align": "left",
@@ -3513,6 +3635,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_bool_field": Immutable.Record {
                 "align": "left",
@@ -3565,6 +3689,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_int_field": Immutable.Record {
                 "align": "right",
@@ -3617,6 +3743,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_dbl_field": Immutable.Record {
                 "align": "right",
@@ -3669,6 +3797,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_date_field": Immutable.Record {
                 "align": "left",
@@ -3721,6 +3851,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_text_field": Immutable.Record {
                 "align": "left",
@@ -3774,6 +3906,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_multi_field": Immutable.Record {
                 "align": "left",
@@ -3827,6 +3961,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_bool_field": Immutable.Record {
                 "align": "left",
@@ -3880,6 +4016,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_int_field": Immutable.Record {
                 "align": "right",
@@ -3933,6 +4071,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_dbl_field": Immutable.Record {
                 "align": "right",
@@ -3986,6 +4126,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_date_field": Immutable.Record {
                 "align": "left",
@@ -4039,6 +4181,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
             },
             "description": "Contains all of the results (and may contain raw data as well) for the GPAT 1 assay definition",
@@ -4796,6 +4940,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "dataid": Immutable.Record {
                               "align": "left",
@@ -4863,6 +5009,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "sampleid": Immutable.Record {
                               "align": "left",
@@ -4930,6 +5078,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "participantid": Immutable.Record {
                               "align": "left",
@@ -4981,6 +5131,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "visitid": Immutable.Record {
                               "align": "right",
@@ -5032,6 +5184,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "date": Immutable.Record {
                               "align": "left",
@@ -5083,6 +5237,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run": Immutable.Record {
                               "align": "left",
@@ -5150,6 +5306,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "flaggedasexcluded": Immutable.Record {
                               "align": "left",
@@ -5201,6 +5359,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "exclusioncomment": Immutable.Record {
                               "align": "left",
@@ -5252,6 +5412,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "folder": Immutable.Record {
                               "align": "left",
@@ -5319,6 +5481,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_text_field": Immutable.Record {
                               "align": "left",
@@ -5371,6 +5535,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_multi_field": Immutable.Record {
                               "align": "left",
@@ -5423,6 +5589,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_bool_field": Immutable.Record {
                               "align": "left",
@@ -5475,6 +5643,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_int_field": Immutable.Record {
                               "align": "right",
@@ -5527,6 +5697,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_dbl_field": Immutable.Record {
                               "align": "right",
@@ -5579,6 +5751,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_date_field": Immutable.Record {
                               "align": "left",
@@ -5631,6 +5805,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_text_field": Immutable.Record {
                               "align": "left",
@@ -5684,6 +5860,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_multi_field": Immutable.Record {
                               "align": "left",
@@ -5737,6 +5915,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_bool_field": Immutable.Record {
                               "align": "left",
@@ -5790,6 +5970,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_int_field": Immutable.Record {
                               "align": "right",
@@ -5843,6 +6025,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_dbl_field": Immutable.Record {
                               "align": "right",
@@ -5896,6 +6080,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_date_field": Immutable.Record {
                               "align": "left",
@@ -5949,6 +6135,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                           },
                           "description": "Contains all of the results (and may contain raw data as well) for the GPAT 1 assay definition",
@@ -6121,6 +6309,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "dataid": Immutable.Record {
                               "align": "left",
@@ -6188,6 +6378,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "sampleid": Immutable.Record {
                               "align": "left",
@@ -6255,6 +6447,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "participantid": Immutable.Record {
                               "align": "left",
@@ -6306,6 +6500,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "visitid": Immutable.Record {
                               "align": "right",
@@ -6357,6 +6553,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "date": Immutable.Record {
                               "align": "left",
@@ -6408,6 +6606,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run": Immutable.Record {
                               "align": "left",
@@ -6475,6 +6675,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "flaggedasexcluded": Immutable.Record {
                               "align": "left",
@@ -6526,6 +6728,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "exclusioncomment": Immutable.Record {
                               "align": "left",
@@ -6577,6 +6781,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "folder": Immutable.Record {
                               "align": "left",
@@ -6644,6 +6850,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_text_field": Immutable.Record {
                               "align": "left",
@@ -6696,6 +6904,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_multi_field": Immutable.Record {
                               "align": "left",
@@ -6748,6 +6958,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_bool_field": Immutable.Record {
                               "align": "left",
@@ -6800,6 +7012,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_int_field": Immutable.Record {
                               "align": "right",
@@ -6852,6 +7066,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_dbl_field": Immutable.Record {
                               "align": "right",
@@ -6904,6 +7120,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_date_field": Immutable.Record {
                               "align": "left",
@@ -6956,6 +7174,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_text_field": Immutable.Record {
                               "align": "left",
@@ -7009,6 +7229,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_multi_field": Immutable.Record {
                               "align": "left",
@@ -7062,6 +7284,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_bool_field": Immutable.Record {
                               "align": "left",
@@ -7115,6 +7339,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_int_field": Immutable.Record {
                               "align": "right",
@@ -7168,6 +7394,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_dbl_field": Immutable.Record {
                               "align": "right",
@@ -7221,6 +7449,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_date_field": Immutable.Record {
                               "align": "left",
@@ -7274,6 +7504,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                           },
                           "description": "Contains all of the results (and may contain raw data as well) for the GPAT 1 assay definition",
@@ -7541,6 +7773,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                     "sorts": undefined,
                                     "units": undefined,
                                     "derivationDataScope": undefined,
+                                    "sourceOntology": undefined,
+                                    "conceptSubtree": undefined,
                                   },
                                   "showHeader": true,
                                   "tableCell": false,
@@ -7605,6 +7839,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                     "sorts": undefined,
                                     "units": undefined,
                                     "derivationDataScope": undefined,
+                                    "sourceOntology": undefined,
+                                    "conceptSubtree": undefined,
                                   },
                                   "showHeader": true,
                                   "tableCell": false,
@@ -7669,6 +7905,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                     "sorts": undefined,
                                     "units": undefined,
                                     "derivationDataScope": undefined,
+                                    "sourceOntology": undefined,
+                                    "conceptSubtree": undefined,
                                   },
                                   "showHeader": true,
                                   "tableCell": false,
@@ -7733,6 +7971,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                     "sorts": undefined,
                                     "units": undefined,
                                     "derivationDataScope": undefined,
+                                    "sourceOntology": undefined,
+                                    "conceptSubtree": undefined,
                                   },
                                   "showHeader": true,
                                   "tableCell": false,
@@ -7875,6 +8115,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -7939,6 +8181,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -8003,6 +8247,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -8067,6 +8313,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -8270,6 +8518,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -8334,6 +8584,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -8398,6 +8650,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -8462,6 +8716,8 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -8623,6 +8879,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "dataid": Immutable.Record {
                 "align": "left",
@@ -8690,6 +8948,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "sampleid": Immutable.Record {
                 "align": "left",
@@ -8757,6 +9017,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "participantid": Immutable.Record {
                 "align": "left",
@@ -8808,6 +9070,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "visitid": Immutable.Record {
                 "align": "right",
@@ -8859,6 +9123,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "date": Immutable.Record {
                 "align": "left",
@@ -8910,6 +9176,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run": Immutable.Record {
                 "align": "left",
@@ -8977,6 +9245,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "flaggedasexcluded": Immutable.Record {
                 "align": "left",
@@ -9028,6 +9298,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "exclusioncomment": Immutable.Record {
                 "align": "left",
@@ -9079,6 +9351,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "folder": Immutable.Record {
                 "align": "left",
@@ -9146,6 +9420,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_text_field": Immutable.Record {
                 "align": "left",
@@ -9198,6 +9474,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_multi_field": Immutable.Record {
                 "align": "left",
@@ -9250,6 +9528,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_bool_field": Immutable.Record {
                 "align": "left",
@@ -9302,6 +9582,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_int_field": Immutable.Record {
                 "align": "right",
@@ -9354,6 +9636,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_dbl_field": Immutable.Record {
                 "align": "right",
@@ -9406,6 +9690,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_date_field": Immutable.Record {
                 "align": "left",
@@ -9458,6 +9744,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_text_field": Immutable.Record {
                 "align": "left",
@@ -9511,6 +9799,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_multi_field": Immutable.Record {
                 "align": "left",
@@ -9564,6 +9854,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_bool_field": Immutable.Record {
                 "align": "left",
@@ -9617,6 +9909,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_int_field": Immutable.Record {
                 "align": "right",
@@ -9670,6 +9964,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_dbl_field": Immutable.Record {
                 "align": "right",
@@ -9723,6 +10019,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_date_field": Immutable.Record {
                 "align": "left",
@@ -9776,6 +10074,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
             },
             "description": "Contains all of the results (and may contain raw data as well) for the GPAT 1 assay definition",
@@ -9914,6 +10214,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -9965,6 +10267,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "right",
@@ -10016,6 +10320,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -10067,6 +10373,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
               ],
               "GPAT 1 Batch Fields": Immutable.List [
@@ -10120,6 +10428,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -10171,6 +10481,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -10222,6 +10534,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "right",
@@ -10273,6 +10587,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "right",
@@ -10324,6 +10640,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -10375,6 +10693,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
               ],
               "GPAT 1 Run Fields": Immutable.List [
@@ -10428,6 +10748,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -10479,6 +10801,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -10530,6 +10854,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "right",
@@ -10581,6 +10907,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "right",
@@ -10632,6 +10960,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
                 Immutable.Record {
                   "align": "left",
@@ -10683,6 +11013,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                   "sorts": undefined,
                   "units": undefined,
                   "derivationDataScope": undefined,
+                  "sourceOntology": undefined,
+                  "conceptSubtree": undefined,
                 },
               ],
             },
@@ -10772,6 +11104,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "batch_multi_field": Immutable.Record {
               "align": "left",
@@ -10823,6 +11157,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "batch_bool_field": Immutable.Record {
               "align": "left",
@@ -10874,6 +11210,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "batch_int_field": Immutable.Record {
               "align": "right",
@@ -10925,6 +11263,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "batch_dbl_field": Immutable.Record {
               "align": "right",
@@ -10976,6 +11316,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "batch_date_field": Immutable.Record {
               "align": "left",
@@ -11027,6 +11369,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
           },
           "batchProperties": Immutable.Map {},
@@ -11082,6 +11426,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "run_multi_field": Immutable.Record {
               "align": "left",
@@ -11133,6 +11479,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "run_bool_field": Immutable.Record {
               "align": "left",
@@ -11184,6 +11532,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "run_int_field": Immutable.Record {
               "align": "right",
@@ -11235,6 +11585,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "run_dbl_field": Immutable.Record {
               "align": "right",
@@ -11286,6 +11638,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
             "run_date_field": Immutable.Record {
               "align": "left",
@@ -11337,6 +11691,8 @@ exports[`<RunDataPanel/> default props 1`] = `
               "sorts": undefined,
               "units": undefined,
               "derivationDataScope": undefined,
+              "sourceOntology": undefined,
+              "conceptSubtree": undefined,
             },
           },
           "runId": undefined,
@@ -11396,6 +11752,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "dataid": Immutable.Record {
                 "align": "left",
@@ -11463,6 +11821,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "sampleid": Immutable.Record {
                 "align": "left",
@@ -11530,6 +11890,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "participantid": Immutable.Record {
                 "align": "left",
@@ -11581,6 +11943,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "visitid": Immutable.Record {
                 "align": "right",
@@ -11632,6 +11996,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "date": Immutable.Record {
                 "align": "left",
@@ -11683,6 +12049,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run": Immutable.Record {
                 "align": "left",
@@ -11750,6 +12118,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "flaggedasexcluded": Immutable.Record {
                 "align": "left",
@@ -11801,6 +12171,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "exclusioncomment": Immutable.Record {
                 "align": "left",
@@ -11852,6 +12224,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "folder": Immutable.Record {
                 "align": "left",
@@ -11919,6 +12293,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_text_field": Immutable.Record {
                 "align": "left",
@@ -11971,6 +12347,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_multi_field": Immutable.Record {
                 "align": "left",
@@ -12023,6 +12401,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_bool_field": Immutable.Record {
                 "align": "left",
@@ -12075,6 +12455,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_int_field": Immutable.Record {
                 "align": "right",
@@ -12127,6 +12509,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_dbl_field": Immutable.Record {
                 "align": "right",
@@ -12179,6 +12563,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/run_date_field": Immutable.Record {
                 "align": "left",
@@ -12231,6 +12617,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_text_field": Immutable.Record {
                 "align": "left",
@@ -12284,6 +12672,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_multi_field": Immutable.Record {
                 "align": "left",
@@ -12337,6 +12727,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_bool_field": Immutable.Record {
                 "align": "left",
@@ -12390,6 +12782,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_int_field": Immutable.Record {
                 "align": "right",
@@ -12443,6 +12837,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_dbl_field": Immutable.Record {
                 "align": "right",
@@ -12496,6 +12892,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
               "run/batch/batch_date_field": Immutable.Record {
                 "align": "left",
@@ -12549,6 +12947,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                 "sorts": undefined,
                 "units": undefined,
                 "derivationDataScope": undefined,
+                "sourceOntology": undefined,
+                "conceptSubtree": undefined,
               },
             },
             "description": "Contains all of the results (and may contain raw data as well) for the GPAT 1 assay definition",
@@ -13306,6 +13706,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "dataid": Immutable.Record {
                               "align": "left",
@@ -13373,6 +13775,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "sampleid": Immutable.Record {
                               "align": "left",
@@ -13440,6 +13844,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "participantid": Immutable.Record {
                               "align": "left",
@@ -13491,6 +13897,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "visitid": Immutable.Record {
                               "align": "right",
@@ -13542,6 +13950,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "date": Immutable.Record {
                               "align": "left",
@@ -13593,6 +14003,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run": Immutable.Record {
                               "align": "left",
@@ -13660,6 +14072,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "flaggedasexcluded": Immutable.Record {
                               "align": "left",
@@ -13711,6 +14125,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "exclusioncomment": Immutable.Record {
                               "align": "left",
@@ -13762,6 +14178,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "folder": Immutable.Record {
                               "align": "left",
@@ -13829,6 +14247,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_text_field": Immutable.Record {
                               "align": "left",
@@ -13881,6 +14301,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_multi_field": Immutable.Record {
                               "align": "left",
@@ -13933,6 +14355,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_bool_field": Immutable.Record {
                               "align": "left",
@@ -13985,6 +14409,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_int_field": Immutable.Record {
                               "align": "right",
@@ -14037,6 +14463,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_dbl_field": Immutable.Record {
                               "align": "right",
@@ -14089,6 +14517,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_date_field": Immutable.Record {
                               "align": "left",
@@ -14141,6 +14571,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_text_field": Immutable.Record {
                               "align": "left",
@@ -14194,6 +14626,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_multi_field": Immutable.Record {
                               "align": "left",
@@ -14247,6 +14681,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_bool_field": Immutable.Record {
                               "align": "left",
@@ -14300,6 +14736,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_int_field": Immutable.Record {
                               "align": "right",
@@ -14353,6 +14791,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_dbl_field": Immutable.Record {
                               "align": "right",
@@ -14406,6 +14846,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_date_field": Immutable.Record {
                               "align": "left",
@@ -14459,6 +14901,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                           },
                           "description": "Contains all of the results (and may contain raw data as well) for the GPAT 1 assay definition",
@@ -14631,6 +15075,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "dataid": Immutable.Record {
                               "align": "left",
@@ -14698,6 +15144,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "sampleid": Immutable.Record {
                               "align": "left",
@@ -14765,6 +15213,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "participantid": Immutable.Record {
                               "align": "left",
@@ -14816,6 +15266,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "visitid": Immutable.Record {
                               "align": "right",
@@ -14867,6 +15319,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "date": Immutable.Record {
                               "align": "left",
@@ -14918,6 +15372,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run": Immutable.Record {
                               "align": "left",
@@ -14985,6 +15441,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "flaggedasexcluded": Immutable.Record {
                               "align": "left",
@@ -15036,6 +15494,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "exclusioncomment": Immutable.Record {
                               "align": "left",
@@ -15087,6 +15547,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "folder": Immutable.Record {
                               "align": "left",
@@ -15154,6 +15616,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_text_field": Immutable.Record {
                               "align": "left",
@@ -15206,6 +15670,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_multi_field": Immutable.Record {
                               "align": "left",
@@ -15258,6 +15724,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_bool_field": Immutable.Record {
                               "align": "left",
@@ -15310,6 +15778,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_int_field": Immutable.Record {
                               "align": "right",
@@ -15362,6 +15832,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_dbl_field": Immutable.Record {
                               "align": "right",
@@ -15414,6 +15886,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/run_date_field": Immutable.Record {
                               "align": "left",
@@ -15466,6 +15940,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_text_field": Immutable.Record {
                               "align": "left",
@@ -15519,6 +15995,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_multi_field": Immutable.Record {
                               "align": "left",
@@ -15572,6 +16050,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_bool_field": Immutable.Record {
                               "align": "left",
@@ -15625,6 +16105,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_int_field": Immutable.Record {
                               "align": "right",
@@ -15678,6 +16160,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_dbl_field": Immutable.Record {
                               "align": "right",
@@ -15731,6 +16215,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                             "run/batch/batch_date_field": Immutable.Record {
                               "align": "left",
@@ -15784,6 +16270,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "sorts": undefined,
                               "units": undefined,
                               "derivationDataScope": undefined,
+                              "sourceOntology": undefined,
+                              "conceptSubtree": undefined,
                             },
                           },
                           "description": "Contains all of the results (and may contain raw data as well) for the GPAT 1 assay definition",
@@ -16014,6 +16502,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                     "sorts": undefined,
                                     "units": undefined,
                                     "derivationDataScope": undefined,
+                                    "sourceOntology": undefined,
+                                    "conceptSubtree": undefined,
                                   },
                                   "showHeader": true,
                                   "tableCell": false,
@@ -16078,6 +16568,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                     "sorts": undefined,
                                     "units": undefined,
                                     "derivationDataScope": undefined,
+                                    "sourceOntology": undefined,
+                                    "conceptSubtree": undefined,
                                   },
                                   "showHeader": true,
                                   "tableCell": false,
@@ -16142,6 +16634,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                     "sorts": undefined,
                                     "units": undefined,
                                     "derivationDataScope": undefined,
+                                    "sourceOntology": undefined,
+                                    "conceptSubtree": undefined,
                                   },
                                   "showHeader": true,
                                   "tableCell": false,
@@ -16206,6 +16700,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                     "sorts": undefined,
                                     "units": undefined,
                                     "derivationDataScope": undefined,
+                                    "sourceOntology": undefined,
+                                    "conceptSubtree": undefined,
                                   },
                                   "showHeader": true,
                                   "tableCell": false,
@@ -16334,6 +16830,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -16398,6 +16896,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -16462,6 +16962,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -16526,6 +17028,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -16698,6 +17202,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -16762,6 +17268,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -16826,6 +17334,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,
@@ -16890,6 +17400,8 @@ exports[`<RunDataPanel/> default props 1`] = `
                                           "sorts": undefined,
                                           "units": undefined,
                                           "derivationDataScope": undefined,
+                                          "sourceOntology": undefined,
+                                          "conceptSubtree": undefined,
                                         },
                                         "showHeader": true,
                                         "tableCell": false,

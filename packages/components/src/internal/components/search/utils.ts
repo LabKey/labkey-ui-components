@@ -35,6 +35,7 @@ export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): str
 }
 
 export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQuery: SchemaQuery): string {
+    // return entityDataType.ancestorColumnName + "/" + schemaQuery.queryName;
     return entityDataType.inputColumnName.replace('First', schemaQuery.queryName);
 }
 

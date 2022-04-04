@@ -221,7 +221,6 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         queryInfo={activeQueryInfo}
                         skipDefaultViewCheck={skipDefaultViewCheck}
                         validFilterField={isValidFilterFieldExcludeLookups}
-                        disableConceptPicker={true}
                     />
                 </Row>
             </Modal.Body>

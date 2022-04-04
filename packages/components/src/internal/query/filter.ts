@@ -240,6 +240,23 @@ function getNotStartsWithFullClause(filter: Filter.IFilter, jsonType: JsonType) 
     return getNotLikeFullClause(filter, jsonType, true);
 }
 
+function getInSubTreeClause(filter: Filter.IFilter, jsonType: JsonType, not?: boolean) : string {
+    const columnNameSelect = getColumnSelect(filter.getColumnName());
+
+    const notFrag = not ? 'NOT ' : '';
+    // 'Path1/Path1-1/Path1-1-2' to Path1, Path1-1, Path1-1-2
+    const pathValue = filter.getValue();
+    if (!pathValue || pathValue === '')
+        return columnNameSelect + 'IS ' + notFrag + 'NULL';
+
+    const paths = pathValue.split('/').filter(p => !!p);
+    const sqlValue = paths.map(path => {
+        return getLabKeySqlValue(path, jsonType)
+    }).join(', ');
+
+    return notFrag + 'IsInSubtree(' + columnNameSelect + ', ConceptPath(' + sqlValue  + '))';
+}
+
 function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType) : string {
     const filterType = filter.getFilterType();
     const columnNameSelect = getColumnSelect(filter.getColumnName());
@@ -380,6 +397,12 @@ export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string
     }
     else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_START_WITH.getURLSuffix()) {
         return getNotStartsWithFullClause(filter, jsonType)
+    }
+    else if (filterType.getURLSuffix() === Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix()) {
+        return getInSubTreeClause(filter, jsonType)
+    }
+    else if (filterType.getURLSuffix() === Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix()) {
+        return "NOT " + getInSubTreeClause(filter, jsonType)
     }
 
     return null;

@@ -212,6 +212,10 @@ export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string
 
 export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [
     Filter.Types.HAS_ANY_VALUE.getURLSuffix(),
+    // Issue 45177: Lineage filter "IN EXPDESCENDANTSOF" not working when sub select contains ontology filter
+    // Hide ontology tree filter types until issue is fixed
+    Filter.Types.ONTOLOGY_IN_SUBTREE,
+    Filter.Types.ONTOLOGY_NOT_IN_SUBTREE,
 ];
 
 export const NEGATE_FILTERS = [

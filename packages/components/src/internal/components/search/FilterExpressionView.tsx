@@ -29,11 +29,10 @@ interface Props {
     field: QueryColumn;
     fieldFilters: Filter.IFilter[];
     onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index: number) => void;
-    disableConceptPicker?: boolean;
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { field, fieldFilters, onFieldFilterUpdate, disableConceptPicker } = props;
+    const { field, fieldFilters, onFieldFilterUpdate } = props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
     const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);
@@ -202,7 +201,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const valueRaw = isSecondInput ? secondFilterValue : firstFilterValue;
 
             const jsonType = field.getDisplayFieldJsonType();
-            const isConceptColumn = !disableConceptPicker && jsonType === 'string' && field.conceptURI === CONCEPT_CODE_CONCEPT_URI && App.isOntologyEnabled();
+            const isConceptColumn = jsonType === 'string' && field.conceptURI === CONCEPT_CODE_CONCEPT_URI && App.isOntologyEnabled();
 
             if (jsonType === 'date') {
                 const showTimeStamp = isDateTimeCol(field);

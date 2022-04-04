@@ -345,7 +345,33 @@ describe('getLabKeySql', () => {
         ).toEqual("\"DateField\" NOT BETWEEN '" + dateTimeStr + "' AND '" + dateTimeStr2 + "'");
     });
 
+    test('ontology subtree, single path', () => {
+        expect(
+            getLabKeySql(Filter.create('OntologyField', 'NCIT:ST1000027', Filter.Types.ONTOLOGY_IN_SUBTREE), 'string')
+        ).toEqual("IsInSubtree(\"OntologyField\", ConceptPath('NCIT:ST1000027'))");
+    });
+
+    test('ontology subtree, multi path', () => {
+        expect(
+            getLabKeySql(Filter.create('OntologyField', 'NCIT:ST1000027/NCIT:ST3527', Filter.Types.ONTOLOGY_IN_SUBTREE), 'string')
+        ).toEqual("IsInSubtree(\"OntologyField\", ConceptPath('NCIT:ST1000027', 'NCIT:ST3527'))");
+    });
+
+    test('ontology not in subtree, single path', () => {
+        expect(
+            getLabKeySql(Filter.create('OntologyField', 'NCIT:ST1000027', Filter.Types.ONTOLOGY_NOT_IN_SUBTREE), 'string')
+        ).toEqual("NOT IsInSubtree(\"OntologyField\", ConceptPath('NCIT:ST1000027'))");
+    });
+
+    test('ontology not in subtree, multi path', () => {
+        expect(
+            getLabKeySql(Filter.create('OntologyField', 'NCIT:ST1000027/NCIT:ST3527', Filter.Types.ONTOLOGY_NOT_IN_SUBTREE), 'string')
+        ).toEqual("NOT IsInSubtree(\"OntologyField\", ConceptPath('NCIT:ST1000027', 'NCIT:ST3527'))");
+    });
+
     test('filter types not supported', () => {
         expect(getLabKeySql(Filter.create('StringField', 'abc', Filter.Types.MEMBER_OF), 'string')).toBeNull();
     });
+
+
 });

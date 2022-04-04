@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useEffect, useState, useMemo } from 'react';
 import { ActionValue } from '../../internal/components/omnibox/actions/Action';
 
 interface Props {
@@ -9,11 +9,14 @@ interface Props {
 export const SearchBox: FC<Props> = memo(props => {
     const { actionValues, onSearch } = props;
     const [searchValue, setSearchValue] = useState('');
+    const appliedSearch = useMemo(
+        () => actionValues.find(actionValue => actionValue.action.keyword === 'search')?.value,
+        [actionValues]
+    );
 
     useEffect(() => {
-        const existingSearchValue = actionValues.find(actionValue => actionValue.action.keyword === 'search')?.value;
-        if (existingSearchValue) setSearchValue(existingSearchValue);
-    }, [actionValues]);
+        if (appliedSearch) setSearchValue(appliedSearch);
+    }, [appliedSearch]);
 
     const onChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
@@ -26,12 +29,14 @@ export const SearchBox: FC<Props> = memo(props => {
         (evt: FormEvent<HTMLFormElement>) => {
             evt.preventDefault();
             onSearch(searchValue);
-
-            // reset the input value after it is submitted
-            setSearchValue('');
         },
         [onSearch, searchValue]
     );
+
+    const removeSearch = useCallback(() => {
+        onSearch('');
+        setSearchValue('');
+    }, [onSearch]);
 
     return (
         <form className="grid-panel__search-form" onSubmit={onSubmit}>
@@ -46,6 +51,9 @@ export const SearchBox: FC<Props> = memo(props => {
                         type="text"
                         value={searchValue}
                     />
+                    {appliedSearch?.length > 0 && (
+                        <i className="fa fa-remove grid-panel__remove-icon" onClick={removeSearch} />
+                    )}
                 </span>
             </div>
         </form>

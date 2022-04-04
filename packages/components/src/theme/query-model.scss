@@ -69,8 +69,16 @@
         color: $gray-light;
     }
 
+    .grid-panel__remove-icon {
+        position: relative;
+        float: right;
+        top: -25px;
+        right: 5px;
+        cursor: pointer;
+    }
+
     .grid-panel__search-input {
-        padding: 7px 4px 7px 22px;
+        padding: 7px 22px;
     }
 }
 

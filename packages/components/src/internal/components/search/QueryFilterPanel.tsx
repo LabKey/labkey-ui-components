@@ -42,6 +42,7 @@ interface Props {
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
+    filterTypesToExclude?: string[];
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
@@ -58,7 +59,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         onFilterUpdate,
         metricFeatureArea,
         fullWidth,
-        selectDistinctOptions
+        selectDistinctOptions,
+        filterTypesToExclude
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
@@ -246,6 +248,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                 onFieldFilterUpdate={(newFilters, index) =>
                                                     onFilterUpdate(activeField, newFilters, index)
                                                 }
+                                                filterTypesToExclude={filterTypesToExclude}
                                             />
                                         )}
                                     </Tab.Pane>

@@ -210,12 +210,11 @@ export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string
     return columnNames;
 }
 
+// Issue 45177: Lineage filter "IN EXPDESCENDANTSOF" not working when sub select contains ontology filter
+// Hide ontology tree filter types until issue is fixed
 export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [
-    Filter.Types.HAS_ANY_VALUE.getURLSuffix(),
-    // Issue 45177: Lineage filter "IN EXPDESCENDANTSOF" not working when sub select contains ontology filter
-    // Hide ontology tree filter types until issue is fixed
-    Filter.Types.ONTOLOGY_IN_SUBTREE,
-    Filter.Types.ONTOLOGY_NOT_IN_SUBTREE,
+    Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix(),
+    Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix(),
 ];
 
 export const NEGATE_FILTERS = [
@@ -246,7 +245,7 @@ export function isBetweenOperator(urlSuffix: string): boolean {
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
 
-export function getSampleFinderFilterOptionsForType(field: QueryColumn, supportsOntology?: boolean): FieldFilterOption[] {
+export function getSampleFinderFilterOptionsForType(field: QueryColumn, supportsOntology?: boolean, filterTypesToExclude?: string[]): FieldFilterOption[] {
     if (!field)
         return null;
 
@@ -256,7 +255,9 @@ export function getSampleFinderFilterOptionsForType(field: QueryColumn, supports
 
     const filterList = (isConceptColumn ? CONCEPT_COLUMN_FILTER_TYPES : Filter.getFilterTypesForType(jsonType))
         .filter(function (result) {
-        return SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE.indexOf(result.getURLSuffix()) === -1;
+        if (Filter.Types.HAS_ANY_VALUE.getURLSuffix() === result.getURLSuffix())
+            return false;
+        return !filterTypesToExclude || filterTypesToExclude.indexOf(result.getURLSuffix()) === -1;
     });
 
     if (jsonType === 'date') {

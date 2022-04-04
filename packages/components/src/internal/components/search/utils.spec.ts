@@ -136,7 +136,7 @@ describe('getFinderViewColumnsConfig', () => {
 
 describe('getSampleFinderCommonConfigs', () => {
     test('No cards', () => {
-        expect(getSampleFinderCommonConfigs([])).toStrictEqual({
+        expect(getSampleFinderCommonConfigs([], true)).toStrictEqual({
             baseFilters: [],
             requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
         });
@@ -149,7 +149,7 @@ describe('getSampleFinderCommonConfigs', () => {
                     entityDataType: TestTypeDataType,
                     schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
                 },
-            ])
+            ], true)
         ).toStrictEqual({
             baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
@@ -175,7 +175,7 @@ describe('getSampleFinderCommonConfigs', () => {
                     schemaQuery: SchemaQuery.create('Samples', 'TestQuery2'),
                     filterArray: [cardFilter],
                 },
-            ])
+            ], true)
         ).toStrictEqual({
             baseFilters: [
                 Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),

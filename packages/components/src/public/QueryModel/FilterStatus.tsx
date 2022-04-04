@@ -22,10 +22,9 @@ export const FilterStatus: FC<Props> = memo(props => {
                     return null;
                 }
 
-                // only allow for FilterActions to be edited / clicked
+                // only allow for FilterActions to be edited / clicked and removed
                 const _onClick = actionValue.action.keyword === 'filter' ? onClick : undefined;
-                // don't allow for ViewActions to be removed
-                const _onRemove = actionValue.action.keyword === 'view' ? undefined : onRemove;
+                const _onRemove = actionValue.action.keyword === 'filter' ? onRemove : undefined;
 
                 return (
                     <Value

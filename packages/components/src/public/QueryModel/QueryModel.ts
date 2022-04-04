@@ -619,14 +619,14 @@ export class QueryModel {
             if (isLookup && queryColumn.isLookup()) {
                 return lowered.split('/')[0] === queryColumn.name.toLowerCase()
                     || queryColumn.name.toLowerCase() === lowered
-                    || queryColumn.displayField.toLowerCase() === lowered;
+                    || queryColumn.displayField?.toLowerCase() === lowered;
             }
 
             return queryColumn.name.toLowerCase() === lowered;
         });
 
         // Use exact match first, else first possible match
-        let column = columns.find(c => c.name.toLowerCase() === lowered);
+        let column = columns.find(c => c.name.toLowerCase() === lowered || c.displayField?.toLowerCase() === lowered);
         if (column === undefined && columns.length > 0) {
             column = columns[0];
         }

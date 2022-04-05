@@ -176,7 +176,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             });
             Object.keys(dataTypeFilters).forEach(queryName => {
                 newFilterCards.push({
-                    schemaQuery: SchemaQuery.create(schemaName, queryName),
+                    schemaQuery: SchemaQuery.create(schemaName, queryLabels[queryName]),
                     filterArray: dataTypeFilters[queryName],
                     entityDataType: chosenEntityType,
                     dataTypeDisplayName: queryLabels[queryName],

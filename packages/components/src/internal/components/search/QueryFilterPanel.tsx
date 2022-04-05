@@ -64,7 +64,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
     const [activeTab, setActiveTab] = useState<FieldFilterTabs>(undefined);
 
-    const queryName = useMemo(() => queryInfo?.name, [queryInfo]);
+    const queryName = useMemo(() => queryInfo?.name.toLowerCase(), [queryInfo]);
     const viewName = useMemo(() => props.viewName ?? DEFAULT_VIEW_NAME, [props.viewName]);
     const allowFaceting = (col: QueryColumn): boolean => {
         return col?.allowFaceting() && col?.getDisplayFieldJsonType() === 'string'; // current plan is to only support facet for string fields, to reduce scope

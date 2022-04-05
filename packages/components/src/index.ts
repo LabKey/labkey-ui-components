@@ -158,7 +158,6 @@ import {
     getSelectedData,
     getSelection,
     getSnapshotSelections,
-    gridExport,
     gridIdInvalidate,
     gridInit,
     gridInvalidate,
@@ -220,7 +219,6 @@ import {
     ListResolver,
     SamplesResolver,
 } from './internal/url/AppURLResolver';
-import { QueryGridPanel } from './internal/components/QueryGridPanel';
 import { loadEditorModelData } from './internal/components/editable/utils';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelDeprecated } from './internal/components/editable/EditableGridPanelDeprecated';
@@ -847,7 +845,6 @@ export {
     getSelectedData,
     getSelection,
     getQueryModelExportParams,
-    gridExport,
     gridInit,
     gridShowError,
     replaceSelected,
@@ -1380,7 +1377,6 @@ export {
     EXPORT_TYPES,
     // QueryGridModel
     QueryGridModel,
-    QueryGridPanel,
     GRID_CHECKBOX_OPTIONS,
     // QueryModel
     QueryModel,

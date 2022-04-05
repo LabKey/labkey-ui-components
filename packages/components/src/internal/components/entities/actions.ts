@@ -545,7 +545,8 @@ export function handleEntityFileImport(
     file: File,
     isMerge: boolean,
     useAsync: boolean,
-    importFileController?: string
+    importFileController?: string,
+    saveToPipeline?: boolean
 ): Promise<any> {
     return new Promise((resolve, reject) => {
         const { schemaQuery } = queryInfo;
@@ -562,6 +563,7 @@ export function handleEntityFileImport(
             importLookupByAlternateKey: true,
             useAsync,
             insertOption: InsertOptions[isMerge ? InsertOptions.MERGE : InsertOptions.IMPORT],
+            saveToPipeline
         })
             .then(response => {
                 if (response.success) {

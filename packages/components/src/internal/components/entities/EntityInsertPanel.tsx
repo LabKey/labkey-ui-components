@@ -134,7 +134,7 @@ interface OwnProps {
     api?: ComponentsAPIWrapper;
     asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
     auditBehavior?: AuditBehaviorTypes;
-    afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?) => void;
+    afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?, response?) => void;
     allowedNonDomainFields?: string[];
     canEditEntityTypeDetails?: boolean;
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
@@ -160,6 +160,7 @@ interface OwnProps {
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
     onTargetChange?: (target: string) => void;
     parentDataTypes?: List<EntityDataType>;
+    saveToPipeline?: boolean;
     selectedTarget?: string;  // controlling target from a parent component
 }
 
@@ -1068,6 +1069,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             onDataChange,
             onBackgroundJobStart,
             afterEntityCreation,
+            saveToPipeline
         } = this.props;
         const { insertModel, file, isMerge, originalQueryInfo, useAsync } = this.state;
 
@@ -1082,7 +1084,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 file,
                 isMerge,
                 useAsync,
-                entityDataType.importFileController
+                entityDataType.importFileController,
+                saveToPipeline
             );
 
             this.setSubmitting(false);
@@ -1100,7 +1103,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                     null,
                     response.rowCount,
                     'imported',
-                    response.transactionAuditId
+                    response.transactionAuditId,
+                    response
                 );
             }
         } catch (error) {

@@ -89,6 +89,10 @@ function getLabKeySqlValue(value: any, jsonType: JsonType, suppressQuote?: boole
     return value;
 }
 
+/**
+ * @returns [effectiveDate 00:00:00, effectiveDate+1 00:00:00]. end timestamp should be exclusive
+ * @param dateStr the timestamp of the effective date, can be anytime in the day
+ */
 function getDateStrRange(dateStr: string): string[] {
     let datePart: string;
     if (dateStr.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
@@ -121,13 +125,37 @@ export function getDateFieldLabKeySql(filter: Filter.IFilter): string {
         }
 
         if (urlSuffix === Filter.Types.DATE_EQUAL.getURLSuffix()) {
-            return '(' + columnNameSelect + ' >= ' + startDateStart + ' AND ' + columnNameSelect + ' < ' + startDateEnd + ')';
+            return (
+                '(' +
+                columnNameSelect +
+                ' >= ' +
+                startDateStart +
+                ' AND ' +
+                columnNameSelect +
+                ' < ' +
+                startDateEnd +
+                ')'
+            );
         } else if (urlSuffix === Filter.Types.DATE_NOT_EQUAL.getURLSuffix()) {
-            return '(' + columnNameSelect + ' < ' + startDateStart + ' OR ' + columnNameSelect + ' >= ' + startDateEnd + ')';
+            return (
+                '(' +
+                columnNameSelect +
+                ' < ' +
+                startDateStart +
+                ' OR ' +
+                columnNameSelect +
+                ' >= ' +
+                startDateEnd +
+                ')'
+            );
         } else if (urlSuffix === Filter.Types.BETWEEN.getURLSuffix()) {
-            return '(' + columnNameSelect + ' >= ' + startDateStart + ' AND ' + columnNameSelect + ' < ' + endDateEnd + ')';
+            return (
+                '(' + columnNameSelect + ' >= ' + startDateStart + ' AND ' + columnNameSelect + ' < ' + endDateEnd + ')'
+            );
         } else if (urlSuffix === Filter.Types.NOT_BETWEEN.getURLSuffix()) {
-            return '(' + columnNameSelect + ' < ' + startDateStart + ' OR ' + columnNameSelect + ' >= ' + endDateEnd + ')';
+            return (
+                '(' + columnNameSelect + ' < ' + startDateStart + ' OR ' + columnNameSelect + ' >= ' + endDateEnd + ')'
+            );
         } else if (urlSuffix === Filter.Types.DATE_GREATER_THAN.getURLSuffix()) {
             return '(' + columnNameSelect + ' >= ' + startDateEnd + ')';
         } else if (urlSuffix === Filter.Types.DATE_LESS_THAN.getURLSuffix()) {
@@ -193,7 +221,7 @@ function getContainsClause(sqlValue): string {
 function getNotLikeClause(sqlValue, isStart: boolean): string {
     if (!sqlValue || sqlValue === '') return ' IS NOT NULL';
 
-    return " NOT LIKE LOWER('" + (isStart ? '' : '%') + sqlValue + "%')" + LABKEY_SQL_LIKE_CLAUSE_ESCAPE;
+    return ' NOT' + getLikeClause(sqlValue, isStart);
 }
 
 function getNotContainsClause(sqlValue): string {
@@ -233,10 +261,10 @@ function getInSubTreeClause(filter: Filter.IFilter, jsonType: JsonType, not?: bo
     const columnNameSelect = getColumnSelect(filter.getColumnName());
 
     const notFrag = not ? 'NOT ' : '';
-    // 'Path1/Path1-1/Path1-1-2' to Path1, Path1-1, Path1-1-2
     const pathValue = filter.getValue();
     if (!pathValue || pathValue === '') return columnNameSelect + 'IS ' + notFrag + 'NULL';
 
+    // 'Path1/Path1-1/Path1-1-2' to 'Path1', 'Path1-1', 'Path1-1-2'
     const paths = pathValue.split('/').filter(p => !!p);
     const sqlValue = paths
         .map(path => {
@@ -373,15 +401,13 @@ export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string
     } else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_CONTAIN.getURLSuffix()) {
         return getNotContainsFullClause(filter, jsonType);
     } else if (filterType.getURLSuffix() === Filter.Types.STARTS_WITH.getURLSuffix()) {
-        return getNotContainsFullClause(filter, jsonType);
-    } else if (filterType.getURLSuffix() === Filter.Types.STARTS_WITH.getURLSuffix()) {
         return getStartsWithFullClause(filter, jsonType);
     } else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_START_WITH.getURLSuffix()) {
         return getNotStartsWithFullClause(filter, jsonType);
     } else if (filterType.getURLSuffix() === Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix()) {
         return getInSubTreeClause(filter, jsonType);
     } else if (filterType.getURLSuffix() === Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix()) {
-        return 'NOT ' + getInSubTreeClause(filter, jsonType)
+        return 'NOT ' + getInSubTreeClause(filter, jsonType);
     }
 
     return null;

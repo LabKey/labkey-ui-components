@@ -77,13 +77,13 @@ describe('getLabKeySql', () => {
 
     test('startsWith', () => {
         expect(getLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.STARTS_WITH), 'string')).toEqual(
-            '("StringField" IS NULL) OR ("StringField" NOT LIKE LOWER(\'%ABC%\') ESCAPE \'!\')'
+            "\"StringField\" LIKE LOWER('ABC%') ESCAPE '!'"
         );
     });
 
     test('startsWith, contains quote', () => {
         expect(getLabKeySql(Filter.create('StringField', "AB'C", Filter.Types.STARTS_WITH), 'string')).toEqual(
-            "(\"StringField\" IS NULL) OR (\"StringField\" NOT LIKE LOWER('%AB''C%') ESCAPE '!')"
+            "\"StringField\" LIKE LOWER('AB''C%') ESCAPE '!'"
         );
     });
 

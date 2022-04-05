@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add AncestorRenderer for display of ancestor lookup columns
+* Update SampleFinder to use Ancestor columns in results grids
+* Update logic in `QueryModel::getColumn` for finding matching lookup columns so it handles additional layers of lookups
 
 ### version 2.149.6
 *Released*: 4 April 2022

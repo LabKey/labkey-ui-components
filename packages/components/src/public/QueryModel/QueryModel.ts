@@ -617,8 +617,7 @@ export class QueryModel {
         // First find all possible matches by name/lookup
         const columns = allColumns.filter(queryColumn => {
             if (isLookup && queryColumn.isLookup()) {
-                return lowered.split('/')[0] === queryColumn.name.toLowerCase()
-                    || queryColumn.name.toLowerCase() === lowered
+                return queryColumn.name.toLowerCase() === lowered
                     || queryColumn.displayField?.toLowerCase() === lowered;
             }
 

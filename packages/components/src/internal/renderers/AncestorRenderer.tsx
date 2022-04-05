@@ -21,6 +21,8 @@ interface AncestorRendererProps {
     data: Map<any, any>;
 }
 
+export const ANCESTOR_LOOKUP_CONCEPT_URI = 'http://www.labkey.org/types#ancestorLookup';
+
 export class AncestorRenderer extends React.Component<AncestorRendererProps, any> {
     render() {
         const { data } = this.props;

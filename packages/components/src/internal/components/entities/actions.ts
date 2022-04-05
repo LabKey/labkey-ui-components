@@ -563,7 +563,7 @@ export function handleEntityFileImport(
             importLookupByAlternateKey: true,
             useAsync,
             insertOption: InsertOptions[isMerge ? InsertOptions.MERGE : InsertOptions.IMPORT],
-            saveToPipeline
+            saveToPipeline,
         })
             .then(response => {
                 if (response.success) {

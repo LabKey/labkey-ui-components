@@ -156,12 +156,12 @@ interface OwnProps {
     onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData;
     onCancel?: () => void;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
-    onFileChange?: (files: Array<string>) => void;
+    onFileChange?: (files: string[]) => void;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
     onTargetChange?: (target: string) => void;
     parentDataTypes?: List<EntityDataType>;
     saveToPipeline?: boolean;
-    selectedTarget?: string;  // controlling target from a parent component
+    selectedTarget?: string; // controlling target from a parent component
 }
 
 interface FromLocationProps {
@@ -284,7 +284,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             selectionKey,
             target,
             isItemSamples,
-            selectedTarget
+            selectedTarget,
         } = this.props;
 
         const { creationType } = this.state;
@@ -1069,7 +1069,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             onDataChange,
             onBackgroundJobStart,
             afterEntityCreation,
-            saveToPipeline
+            saveToPipeline,
         } = this.props;
         const { insertModel, file, isMerge, originalQueryInfo, useAsync } = this.state;
 
@@ -1249,8 +1249,17 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     render() {
-        const { acceptedFormats, canEditEntityTypeDetails, disableMerge, fileSizeLimits, importOnly, nounPlural,
-            entityDataType, user, filePreviewFormats } = this.props;
+        const {
+            acceptedFormats,
+            canEditEntityTypeDetails,
+            disableMerge,
+            fileSizeLimits,
+            importOnly,
+            nounPlural,
+            entityDataType,
+            user,
+            filePreviewFormats,
+        } = this.props;
         const { error, file, insertModel, isMerge, isSubmitting, originalQueryInfo } = this.state;
 
         if (!insertModel) {
@@ -1326,14 +1335,14 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     {entityTypeName && (
                                         <FileAttachmentForm
                                             showLabel={false}
-                                            acceptedFormats={acceptedFormats ?? ".csv, .tsv, .txt, .xls, .xlsx"}
+                                            acceptedFormats={acceptedFormats ?? '.csv, .tsv, .txt, .xls, .xlsx'}
                                             allowMultiple={false}
                                             allowDirectories={false}
                                             previewGridProps={{
                                                 previewCount: 3,
                                                 onPreviewLoad: this.onPreviewLoad,
                                                 warningMsg: this.state.fieldsWarningMsg,
-                                                acceptedFormats: filePreviewFormats
+                                                acceptedFormats: filePreviewFormats,
                                             }}
                                             onFileChange={this.handleFileChange}
                                             onFileRemoval={this.handleFileRemoval}

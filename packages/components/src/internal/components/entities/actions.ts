@@ -441,7 +441,7 @@ export function getEntityTypeOptions(
                     rows
                         .map(row => {
                             return {
-                                ...extractEntityTypeOptionFromRow(row, true, entityDataType),
+                                ...extractEntityTypeOptionFromRow(row, false, entityDataType),
                                 schema: instanceSchemaName, // e.g. "samples" or "dataclasses"
                             };
                         })

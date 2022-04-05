@@ -79,7 +79,12 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         [api, entityDataType.instanceSchemaName]
     );
 
-    const activeQuery = useMemo(() => activeQueryInfo?.name.toLowerCase(), [activeQueryInfo]);
+    // N.B. We do not want to use toLowerCase here. We use this in constructing the names of columns to be
+    // retrieved (requiredColumns).  In Grid.tsx::renderRow, extracting data from the rows for column rendering
+    // is case-sensitive and if a user has customized the grid to include an ancestor column,
+    // the name of that column used as the index for retrieving data will not be lowercase and therefore data
+    // will not be found to render.
+    const activeQuery = useMemo(() => activeQueryInfo?.name, [activeQueryInfo]);
 
     useEffect(() => {
         const activeDataTypeFilters = {};

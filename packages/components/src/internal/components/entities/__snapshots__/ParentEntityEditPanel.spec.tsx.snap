@@ -16,6 +16,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
   parentDataTypes={
     Array [
       Object {
+        "ancestorColumnName": "Ancestors/OtherData",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -120,6 +121,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                   onInitialParentValue={[Function]}
                   parentDataType={
                     Object {
+                      "ancestorColumnName": "Ancestors/OtherData",
                       "deleteHelpLinkTopic": "dataClass",
                       "dependencyText": "derived sample dependencies",
                       "descriptionPlural": "parent types",
@@ -161,6 +163,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                     onValueChange={[Function]}
                     parentDataType={
                       Object {
+                        "ancestorColumnName": "Ancestors/OtherData",
                         "deleteHelpLinkTopic": "dataClass",
                         "dependencyText": "derived sample dependencies",
                         "descriptionPlural": "parent types",
@@ -216,6 +219,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                       onValueChange={[Function]}
                       parentDataType={
                         Object {
+                          "ancestorColumnName": "Ancestors/OtherData",
                           "deleteHelpLinkTopic": "dataClass",
                           "dependencyText": "derived sample dependencies",
                           "descriptionPlural": "parent types",
@@ -285,6 +289,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
                         onValueChange={[Function]}
                         parentDataType={
                           Object {
+                            "ancestorColumnName": "Ancestors/OtherData",
                             "deleteHelpLinkTopic": "dataClass",
                             "dependencyText": "derived sample dependencies",
                             "descriptionPlural": "parent types",
@@ -4755,6 +4760,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
   parentDataTypes={
     Array [
       Object {
+        "ancestorColumnName": "Ancestors/OtherData",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -4870,6 +4876,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                   onInitialParentValue={[Function]}
                   parentDataType={
                     Object {
+                      "ancestorColumnName": "Ancestors/OtherData",
                       "deleteHelpLinkTopic": "dataClass",
                       "dependencyText": "derived sample dependencies",
                       "descriptionPlural": "parent types",
@@ -4911,6 +4918,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                     onValueChange={[Function]}
                     parentDataType={
                       Object {
+                        "ancestorColumnName": "Ancestors/OtherData",
                         "deleteHelpLinkTopic": "dataClass",
                         "dependencyText": "derived sample dependencies",
                         "descriptionPlural": "parent types",
@@ -4966,6 +4974,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                       onValueChange={[Function]}
                       parentDataType={
                         Object {
+                          "ancestorColumnName": "Ancestors/OtherData",
                           "deleteHelpLinkTopic": "dataClass",
                           "dependencyText": "derived sample dependencies",
                           "descriptionPlural": "parent types",
@@ -5035,6 +5044,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
                         onValueChange={[Function]}
                         parentDataType={
                           Object {
+                            "ancestorColumnName": "Ancestors/OtherData",
                             "deleteHelpLinkTopic": "dataClass",
                             "dependencyText": "derived sample dependencies",
                             "descriptionPlural": "parent types",
@@ -5135,6 +5145,7 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
   parentDataTypes={
     Array [
       Object {
+        "ancestorColumnName": "Ancestors/OtherData",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",

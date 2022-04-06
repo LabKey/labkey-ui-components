@@ -68,9 +68,7 @@ test('getFinderStartText', () => {
 });
 
 describe('getFinderViewColumnsConfig', () => {
-    const model = makeTestQueryModel(
-        SCHEMAS.SAMPLE_SETS.SAMPLES,
-        new QueryInfo({
+    const queryInfo = new QueryInfo({
             showInsertNewButton: true,
             importUrl: 'https://some/import',
             importUrlDisabled: false,
@@ -85,7 +83,7 @@ describe('getFinderViewColumnsConfig', () => {
                 }),
                 samplestate: QueryColumn.create({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
                 name: QueryColumn.create({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
-                extraField: QueryColumn.create({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
+                extrafield: QueryColumn.create({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
             }),
             views: Map({
                 '~~default~~': {
@@ -100,8 +98,23 @@ describe('getFinderViewColumnsConfig', () => {
                         },
                     ],
                 },
+                [SAMPLE_FINDER_VIEW_NAME.toLowerCase()]: {
+                    name: SAMPLE_FINDER_VIEW_NAME,
+                    label: SAMPLE_FINDER_VIEW_NAME,
+                    default: false,
+                    columns: [
+                        {
+                            name: 'Name',
+                            key: 'Name',
+                            fieldKey: 'Name',
+                        }
+                    ]
+                }
             }),
-        }),
+        });
+    const model = makeTestQueryModel(
+        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, "Test", SAMPLE_FINDER_VIEW_NAME),
+        queryInfo,
         {},
         [],
         0,
@@ -132,6 +145,76 @@ describe('getFinderViewColumnsConfig', () => {
             ],
         });
     });
+
+    test("view has all updates", () => {
+        const queryInfo = new QueryInfo({
+            showInsertNewButton: true,
+            importUrl: 'https://some/import',
+            importUrlDisabled: false,
+            appEditableTable: true,
+            pkCols: List(['RowId']),
+            columns: fromJS({
+                rowid: QueryColumn.create({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
+                description: QueryColumn.create({
+                    caption: 'Description',
+                    fieldKey: 'Description',
+                    inputType: 'textarea',
+                }),
+                samplestate: QueryColumn.create({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
+                name: QueryColumn.create({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
+                extrafield: QueryColumn.create({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
+            }),
+            views: Map({
+                '~~default~~': {
+                    name: '',
+                    label: 'default',
+                    default: true,
+                    columns: [
+                        {
+                            name: 'Name',
+                            key: 'Name',
+                            fieldKey: 'Name',
+                        },
+                    ],
+                },
+                [SAMPLE_FINDER_VIEW_NAME.toLowerCase()]: {
+                    name: SAMPLE_FINDER_VIEW_NAME,
+                    label: SAMPLE_FINDER_VIEW_NAME,
+                    default: false,
+                    columns: [
+                        {
+                            name: 'Name',
+                            key: 'Name',
+                            fieldKey: 'Name',
+                        },
+                        {
+                            name: 'Extra',
+                            fieldKey: 'ExtraField',
+                            key: 'Extra'
+                        }
+                    ]
+                }
+            }),
+        });
+        const model = makeTestQueryModel(
+            SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, "Test", SAMPLE_FINDER_VIEW_NAME),
+            queryInfo,
+            {},
+            [],
+            0,
+            'test-samples'
+        );
+        const modelUpdate = model.mutate({
+            requiredColumns: ['Name', 'ExtraField'],
+        });
+        expect(getFinderViewColumnsConfig(modelUpdate, { ExtraField: 'Extra Field Display' })).toStrictEqual({
+            hasUpdates: false,
+            columns: [
+                { fieldKey: 'Name', title: undefined },
+                { fieldKey: 'ExtraField', title: 'Extra Field Display' },
+            ],
+        });
+    });
 });
 
 describe('getSampleFinderCommonConfigs', () => {
@@ -142,7 +225,21 @@ describe('getSampleFinderCommonConfigs', () => {
         });
     });
 
-    test('Cards without filters', () => {
+    test('Cards without filters, not ancestors', () => {
+        expect(
+            getSampleFinderCommonConfigs([
+                {
+                    entityDataType: TestTypeDataType,
+                    schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
+                },
+            ], false)
+        ).toStrictEqual({
+            baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
+            requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
+        });
+    });
+
+    test('Cards without filters, with ancestors', () => {
         expect(
             getSampleFinderCommonConfigs([
                 {
@@ -151,8 +248,8 @@ describe('getSampleFinderCommonConfigs', () => {
                 },
             ], true)
         ).toStrictEqual({
-            baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
-            requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
+            baseFilters: [Filter.create('Ancestors/Samples/TestQuery/Name', null, Filter.Types.NONBLANK)],
+            requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
         });
     });
 
@@ -175,7 +272,7 @@ describe('getSampleFinderCommonConfigs', () => {
                     schemaQuery: SchemaQuery.create('Samples', 'TestQuery2'),
                     filterArray: [cardFilter],
                 },
-            ], true)
+            ], false)
         ).toStrictEqual({
             baseFilters: [
                 Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),
@@ -310,16 +407,16 @@ describe('getSampleFinderQueryConfigs', () => {
                 title: 'Sample Type 1',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
-                baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
-                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
+                baseFilters: [Filter.create('Ancestors/Samples/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
             },
             'uuid-1-testId|samples/Sample Type 2': {
                 id: 'uuid-1-testId|samples/Sample Type 2',
                 title: 'Sample Type 2',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
-                baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
-                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
+                baseFilters: [Filter.create('Ancestors/Samples/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
             },
         });
     });
@@ -399,7 +496,7 @@ const cardJSON =
     '{"filters":[{"entityDataType":{"typeListingSchemaQuery":{"schemaName":"TestListing","queryName":"query"},"listingSchemaQuery":{"schemaName":"Test","queryName":"query"},' +
     '"instanceSchemaName":"TestSchema","operationConfirmationActionName":"test-delete-confirmation.api","nounSingular":"test","nounPlural":"tests","nounAsParentSingular":"test Parent",' +
     '"nounAsParentPlural":"test Parents","typeNounSingular":"Test Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name",' +
-    '"dependencyText":"test data dependencies","deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","inputTypeValueField":"lsid",' +
+    '"dependencyText":"test data dependencies","deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","ancestorColumnName":"Ancestors/Samples","inputTypeValueField":"lsid",' +
     '"insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test","importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success"},' +
     '"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField",' +
     '"filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1}],"filterChangeCounter":5}';
@@ -416,7 +513,7 @@ const cardWithEntityTypeFilterJSON =
     '"instanceSchemaName":"TestSchema","operationConfirmationActionName":"test-delete-confirmation.api",' +
     '"nounSingular":"test","nounPlural":"tests","nounAsParentSingular":"test Parent","nounAsParentPlural":"test Parents",' +
     '"typeNounSingular":"Test Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name","dependencyText":"test data dependencies",' +
-    '"deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","inputTypeValueField":"lsid","insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test",' +
+    '"deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","ancestorColumnName":"Ancestors/Samples","inputTypeValueField":"lsid","insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test",' +
     '"importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success","filterArray":["query.Category~eq=Source"]},"filterArray":[{"fieldKey":"textField",' +
     '"fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema",' +
     '"queryName":"samples1"},"index":1}],"filterChangeCounter":5}';
@@ -1064,6 +1161,7 @@ describe('getSampleFinderColumnNames', () => {
             ])
         ).toStrictEqual({
             'Inputs/Materials/query': 'Test Samples ID',
+            'Ancestors/Samples/query': 'Test Samples ID',
         });
     });
 
@@ -1087,6 +1185,8 @@ describe('getSampleFinderColumnNames', () => {
         ).toStrictEqual({
             'Inputs/Materials/query': 'Test Samples ID',
             'Inputs/Materials/query/IntValue': 'Test Samples Integer',
+            'Ancestors/Samples/query': 'Test Samples ID',
+            'Ancestors/Samples/query/IntValue': 'Test Samples Integer',
         });
     });
 });

@@ -129,6 +129,13 @@ describe('QueryModel', () => {
             cols.get('extratestcolumn'),
         ];
         expect(model.displayColumns).toEqual(expectedDisplayCols);
+        // test that column retrieval is not case-sensitive
+        expect(model.getColumn("mixturetypeId")).toStrictEqual(cols.get('mixturetypeid'));
+        expect(model.getColumn("mixtureTypeId")).toStrictEqual(cols.get('mixturetypeid'));
+        // test that retrieval of lookup columns works
+        expect(model.getColumn("CreatedBy")).toStrictEqual(cols.get('createdby'));
+        expect(model.getColumn("DataClass")).toStrictEqual(cols.get('dataclass'));
+        expect(model.getColumn("DataClass/Name")).toStrictEqual(cols.get('dataclass'));
 
         // Change view to noExtraColumn which should change our expected columns.
         model = model.mutate({
@@ -217,4 +224,9 @@ describe('QueryModel', () => {
         expect(model.getSelectedIdsAsInts()[1]).toBe(3);
         expect(model.getSelectedIdsAsInts()[2]).toBe(2);
     });
+
+    // test("getColumn", () => {
+    //     let model = new QueryModel( {schemaQuery: SCHEMA_QUERY });
+    //     model.
+    // })
 });

@@ -417,9 +417,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     handleApplyFilters = (newFilters: Filter.IFilter[]): void => {
         const { model, actions, allowSelections } = this.props;
 
-        // remove all filter actionValues and replace them with the new set of filters via setFilters
-        const actionValues = this.state.actionValues.filter(({ action }) => action.keyword !== 'filter');
-        this.setState({ actionValues, showFilterModalFieldKey: undefined, headerClickCount: {} }, () =>
+        this.setState({
+            actionValues: this.state.actionValues,
+            showFilterModalFieldKey: undefined,
+            headerClickCount: {}
+        }, () =>
             actions.setFilters(model.id, newFilters, allowSelections)
         );
     };

@@ -52,8 +52,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
     const _onApply = useCallback(() => {
         const filterErrors = getFieldFiltersValidationResult({ [queryInfo.name.toLowerCase()]: filters });
         if (!filterErrors) {
-            const validFilters = validFieldFilters.map(fieldFilter => fieldFilter.filter);
-            onApply(validFilters);
+            onApply(validFieldFilters.map(fieldFilter => fieldFilter.filter));
         } else {
             setFilterError(filterErrors);
         }

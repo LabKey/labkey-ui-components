@@ -25,6 +25,7 @@ import { decodePart } from '../../../../public/SchemaQuery';
 import { JsonType } from '../../domainproperties/PropDescType';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
+import { isGridColSortFilterEnabled } from '../../../app/utils';
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances
@@ -478,7 +479,7 @@ export class FilterAction implements Action {
             // showing all the values or this would be preferred. See 28884.
             if (rawValue.length > 3) {
                 value = `(${rawValue.length} values)`;
-                isReadOnly = true;
+                isReadOnly = !isGridColSortFilterEnabled();
             } else {
                 value = rawValue.join(', ');
             }

@@ -53,13 +53,8 @@ export function resolveFieldKey(columnName: string, column?: QueryColumn): strin
 
 export function removeActionValue(actionValues: ActionValue[], indexToRemove: number): ActionValue[] {
     if (indexToRemove < actionValues.length) {
-        const newActionValues = [];
-        for (let i = 0; i < actionValues.length; i++) {
-            if (i !== indexToRemove) {
-                newActionValues.push(actionValues[i]);
-            }
-        }
-
+        const newActionValues = [...actionValues];
+        newActionValues.splice(indexToRemove, 1);
         return newActionValues;
     }
 
@@ -92,4 +87,8 @@ export function replaceSearchValue(
     }
 
     return { actionValues: newActionValues, change };
+}
+
+export function filterActionValuesByType(actionValues: ActionValue[], keyword: string): ActionValue[] {
+    return actionValues.filter(actionValue => actionValue.action.keyword === keyword);
 }

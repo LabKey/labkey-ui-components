@@ -100,7 +100,7 @@ export class Value extends React.Component<ValueProps, ValueState> {
             >
                 <i className={iconClassNames} onClick={this.onIconClick.bind(this)} />
                 {isReadOnly ? <i className="read-lock fa fa-lock" title="locked (read only)" /> : null}
-                <span>{displayValue ? displayValue : value}</span>
+                <span>{displayValue ?? value}</span>
             </div>
         );
     }

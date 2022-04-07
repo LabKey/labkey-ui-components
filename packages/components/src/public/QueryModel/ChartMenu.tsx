@@ -90,6 +90,7 @@ export class ChartMenu extends PureComponent<Props> {
             <div className="chart-menu">
                 <DropdownButton
                     id={`chart-menu-${id}`}
+                    className="chart-menu-button"
                     disabled={disabled}
                     pullRight
                     title={

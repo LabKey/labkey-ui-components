@@ -231,7 +231,9 @@ function getNotContainsClause(sqlValue): string {
 function getLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStart: boolean): string {
     const columnNameSelect = getColumnSelect(filter.getColumnName());
     const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
-    return columnNameSelect + getLikeClause(sqlValue, isStart);
+    if (!sqlValue || sqlValue === '')
+        return columnNameSelect + getLikeClause(sqlValue, isStart);
+    return "LOWER(" + columnNameSelect + ")" + getLikeClause(sqlValue, isStart);
 }
 
 function getContainsFullClause(filter: Filter.IFilter, jsonType: JsonType): string {
@@ -246,7 +248,7 @@ function getNotLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStar
     const columnNameSelect = getColumnSelect(filter.getColumnName());
     const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
     if (!sqlValue || sqlValue === '') return columnNameSelect + ' IS NOT NULL';
-    return '(' + columnNameSelect + ' IS NULL) OR (' + columnNameSelect + getNotLikeClause(sqlValue, isStart) + ')';
+    return '(' + columnNameSelect + ' IS NULL) OR (LOWER(' + columnNameSelect + ")" + getNotLikeClause(sqlValue, isStart) + ')';
 }
 
 function getNotContainsFullClause(filter: Filter.IFilter, jsonType: JsonType): string {
@@ -286,7 +288,6 @@ function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType
     if (values.length === 0) return '';
 
     if (values.length === 1) {
-        const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
         return negate ? getNotContainsFullClause(filter, jsonType) : getContainsFullClause(filter, jsonType);
     }
 
@@ -297,7 +298,7 @@ function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType
         const sqlValue = getLabKeySqlValue(val, jsonType, true);
         if (sqlValue) {
             const operatorSql = negate ? getNotContainsClause(sqlValue) : getContainsClause(sqlValue);
-            clauses.push('(' + columnNameSelect + operatorSql + ')');
+            clauses.push('(LOWER(' + columnNameSelect + ')' + operatorSql + ')');
         }
     });
     const likeClause = '(' + clauses.join(negate ? ' AND ' : ' OR ') + ')';

@@ -6220,7 +6220,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "setView": [Function],
               }
             }
-            allowFiltering={true}
+            allowFiltering={false}
             allowSelections={false}
             allowSorting={true}
             asPanel={false}
@@ -6300,10 +6300,13 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             showButtonBar={false}
             showChartMenu={false}
             showExport={false}
+            showFilterStatus={true}
+            showFiltersButton={true}
             showHeader={true}
             showOmniBox={false}
             showPagination={true}
             showSampleComparisonReports={false}
+            showSearchInput={true}
             showViewMenu={true}
           >
             <div
@@ -6315,21 +6318,25 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 <div
                   className="grid-panel__info"
                 >
-                  <LoadingSpinner
-                    msg="Loading data..."
-                    wrapperClassName=""
+                  <div
+                    className="grid-panel__loading"
                   >
-                    <span
-                      className=""
+                    <LoadingSpinner
+                      msg="Loading data..."
+                      wrapperClassName=""
                     >
-                      <i
-                        aria-hidden="true"
-                        className="fa fa-spinner fa-pulse"
-                      />
-                       
-                      Loading data...
-                    </span>
-                  </LoadingSpinner>
+                      <span
+                        className=""
+                      >
+                        <i
+                          aria-hidden="true"
+                          className="fa fa-spinner fa-pulse"
+                        />
+                         
+                        Loading data...
+                      </span>
+                    </LoadingSpinner>
+                  </div>
                 </div>
                 <div
                   className="grid-panel__grid"

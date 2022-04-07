@@ -27,15 +27,22 @@ import { SortAction } from '../../internal/components/omnibox/actions/Sort';
 import { ViewAction } from '../../internal/components/omnibox/actions/View';
 import { Change, ChangeType, OmniBox } from '../../internal/components/omnibox/OmniBox';
 
+import { isGridColSortFilterEnabled } from '../../internal/app/utils';
+
+import { removeActionValue, replaceSearchValue } from '../../internal/components/omnibox/utils';
+
 import { QueryModel, createQueryModelId } from './QueryModel';
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
+import { SearchBox } from './SearchBox';
 
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
+import { FiltersButton } from './FiltersButton';
+import { FilterStatus } from './FilterStatus';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -59,9 +66,12 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showButtonBar?: boolean;
     showChartMenu?: boolean;
     showExport?: boolean;
+    showFiltersButton?: boolean;
+    showFilterStatus?: boolean;
     showOmniBox?: boolean;
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
+    showSearchInput?: boolean;
     showViewMenu?: boolean;
     showHeader?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
@@ -72,7 +82,10 @@ export interface GridPanelProps<ButtonsComponentProps> {
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
-    onViewSelect: (viewName) => void;
+    actionValues: ActionValue[];
+    onViewSelect: (viewName: string) => void;
+    onSearch: (token: string) => void;
+    onFilter: () => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -103,6 +116,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
     render(): ReactNode {
         const {
+            actionValues,
             model,
             actions,
             advancedExportOptions,
@@ -113,12 +127,16 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             onChartClicked,
             onCreateReportClicked,
             onExport,
+            onFilter,
+            onSearch,
             onViewSelect,
             pageSizes,
             showChartMenu,
             showExport,
+            showFiltersButton,
             showPagination,
             showSampleComparisonReports,
+            showSearchInput,
             showViewMenu,
             supportedExportTypes,
         } = this.props;
@@ -138,16 +156,9 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                         {ButtonsComponent !== undefined && (
                             <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
                         )}
-
-                        {showChartMenu && (
-                            <ChartMenu
-                                hideEmptyChartMenu={hideEmptyChartMenu}
-                                actions={actions}
-                                model={model}
-                                onChartClicked={onChartClicked}
-                                onCreateReportClicked={onCreateReportClicked}
-                                showSampleComparisonReports={showSampleComparisonReports}
-                            />
+                        {isGridColSortFilterEnabled() && showFiltersButton && <FiltersButton onFilter={onFilter} />}
+                        {isGridColSortFilterEnabled() && showSearchInput && (
+                            <SearchBox actionValues={actionValues} onSearch={onSearch} />
                         )}
                     </div>
                 </div>
@@ -165,7 +176,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 setPageSize={this.setPageSize}
                             />
                         )}
-
                         {canExport && (
                             <ExportMenu
                                 model={model}
@@ -174,11 +184,19 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 onExport={onExport}
                             />
                         )}
-
+                        {showChartMenu && (
+                            <ChartMenu
+                                hideEmptyChartMenu={hideEmptyChartMenu}
+                                actions={actions}
+                                model={model}
+                                onChartClicked={onChartClicked}
+                                onCreateReportClicked={onCreateReportClicked}
+                                showSampleComparisonReports={showSampleComparisonReports}
+                            />
+                        )}
                         {canSelectView && (
                             <ViewMenu model={model} onViewSelect={onViewSelect} hideEmptyViewMenu={hideEmptyViewMenu} />
                         )}
-
                         {ButtonsComponentRight !== undefined && (
                             <ButtonsComponentRight {...buttonsComponentProps} model={model} actions={actions} />
                         )}
@@ -212,8 +230,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showButtonBar: true,
         showChartMenu: true,
         showExport: true,
+        showFiltersButton: true,
+        showFilterStatus: true,
         showOmniBox: true,
         showSampleComparisonReports: false,
+        showSearchInput: true,
         showViewMenu: true,
         showHeader: true,
     };
@@ -361,6 +382,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 newFilters = newFilters.filter(filter => !filtersEqual(filter, value));
             } else if (column) {
                 newFilters = newFilters.filter(filter => !isFilterColumnNameMatch(filter, column));
+            } else {
+                // remove all filters, but keep the search
+                newFilters = newFilters.filter(filter => filter.getFilterType() === Filter.Types.Q);
             }
         }
 
@@ -395,10 +419,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     handleApplyFilters = (newFilters: Filter.IFilter[]): void => {
         const { model, actions, allowSelections } = this.props;
 
-        // remove all filter actionValues and replace them with the new set of filters via setFilters
-        const actionValues = this.state.actionValues.filter(({ action }) => action.keyword !== 'filter');
-        this.setState({ actionValues, showFilterModalFieldKey: undefined, headerClickCount: {} }, () =>
-            actions.setFilters(model.id, newFilters, allowSelections)
+        this.setState(
+            {
+                actionValues: this.state.actionValues,
+                showFilterModalFieldKey: undefined,
+                headerClickCount: {},
+            },
+            () => actions.setFilters(model.id, newFilters, allowSelections)
         );
     };
 
@@ -466,6 +493,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         );
     };
 
+    onSearch = (value: string): void => {
+        const { actionValues, change } = replaceSearchValue(this.state.actionValues, value, this.omniBoxActions.search);
+        this.handleSearchChange(actionValues, change);
+    };
+
     handleViewChange = (actionValues: ActionValue[], change: Change): void => {
         const { model, actions, allowSelections } = this.props;
         let updateViewCallback: () => void;
@@ -522,7 +554,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const fieldKey = column.resolveFieldKey(); // resolveFieldKey because of Issue 34627
 
         if (remove) {
-            const newActionValues = this.state.actionValues.filter((actionValue, i) => {
+            const newActionValues = this.state.actionValues.filter(actionValue => {
                 return !(
                     actionValue.action === this.omniBoxActions.filter &&
                     isFilterColumnNameMatch(actionValue.valueObject, column)
@@ -533,6 +565,38 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         } else {
             this.setState({ showFilterModalFieldKey: fieldKey });
         }
+    };
+
+    removeAllFilters = (): void => {
+        const { actionValues } = this.state;
+        const newActionValues = actionValues.filter(actionValue => {
+            return actionValue.action === this.omniBoxActions.filter;
+        });
+
+        this.handleFilterChange(newActionValues, { type: ChangeType.remove });
+    };
+
+    removeFilter = (index: number): void => {
+        const { actionValues } = this.state;
+        this.handleFilterChange(removeActionValue(actionValues, index), { type: ChangeType.remove, index });
+    };
+
+    showFilterModal = (actionValue?: ActionValue): void => {
+        const { model } = this.props;
+        const displayColumns = model.displayColumns;
+
+        // if the user clicked to edit an existing filter, use that filter's column name when opening the modal
+        // else open modal with the first field selected
+        const columnName = actionValue?.valueObject?.getColumnName();
+        const colIndex = columnName
+            ? Math.max(
+                  displayColumns.findIndex(col => col.resolveFieldKey() === columnName),
+                  0 // fall back to the first field if no match
+              )
+            : 0;
+        const fieldKey = displayColumns[colIndex]?.resolveFieldKey();
+
+        this.setState({ showFilterModalFieldKey: fieldKey });
     };
 
     closeFilterModal = (): void => {
@@ -676,11 +740,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             model,
             onExport,
             showButtonBar,
+            showFilterStatus,
             showOmniBox,
             showHeader,
             title,
         } = this.props;
-        const { showFilterModalFieldKey } = this.state;
+        const { showFilterModalFieldKey, actionValues } = this.state;
         const { hasData, id, isLoading, isLoadingSelections, rowsError, selectionsError, messages, queryInfoError } =
             model;
         const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
@@ -708,10 +773,17 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
                     <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
                         {showButtonBar && (
-                            <ButtonBar {...this.props} onViewSelect={this.onViewSelect} onExport={onExport} />
+                            <ButtonBar
+                                {...this.props}
+                                actionValues={actionValues}
+                                onExport={onExport}
+                                onFilter={this.showFilterModal}
+                                onSearch={this.onSearch}
+                                onViewSelect={this.onViewSelect}
+                            />
                         )}
 
-                        {showOmniBox && (
+                        {!isGridColSortFilterEnabled() && showOmniBox && (
                             <div className="grid-panel__omnibox">
                                 <OmniBox
                                     actions={Object.values(this.omniBoxActions)}
@@ -720,15 +792,27 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                     getSelectDistinctOptions={this.getSelectDistinctOptions}
                                     mergeValues={false}
                                     onChange={this.omniBoxChange}
-                                    values={this.state.actionValues}
+                                    values={actionValues}
                                 />
                             </div>
                         )}
 
                         {(loadingMessage || allowSelections) && (
                             <div className="grid-panel__info">
-                                {loadingMessage && <LoadingSpinner msg={loadingMessage} />}
+                                {loadingMessage && (
+                                    <div className="grid-panel__loading">
+                                        <LoadingSpinner msg={loadingMessage} />
+                                    </div>
+                                )}
                                 {allowSelections && <SelectionStatus model={model} actions={actions} />}
+                                {isGridColSortFilterEnabled() && showFilterStatus && (
+                                    <FilterStatus
+                                        actionValues={actionValues}
+                                        onClick={this.showFilterModal}
+                                        onRemove={this.removeFilter}
+                                        onRemoveAll={this.removeAllFilters}
+                                    />
+                                )}
                             </div>
                         )}
 

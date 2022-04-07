@@ -25,7 +25,7 @@ import { cancelEvent, naturalSort, QueryColumn } from '../../..';
 import { Action, ActionOption, ActionValue, ActionValueCollection } from './actions/Action';
 import { Option } from './Option';
 import { Value, valueClassName } from './Value';
-import { parseColumns, resolveFieldKey } from './utils';
+import { parseColumns, removeActionValue, resolveFieldKey } from './utils';
 
 export enum ChangeType {
     add = 'add',
@@ -341,7 +341,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     };
 
     fetchDistinctValues = (columnName: string) => {
-        const {getColumns, getSelectDistinctOptions} = this.props;
+        const { getColumns, getSelectDistinctOptions } = this.props;
         const column = parseColumns(
             getColumns()
                 .filter(column => !column.multiValue)
@@ -795,17 +795,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         const { actionValues } = this.state;
 
         if (actionValueIndex < actionValues.length) {
-            const newActionValues = [];
-            for (let i = 0; i < actionValues.length; i++) {
-                if (i !== actionValueIndex) {
-                    newActionValues.push(actionValues[i]);
-                }
-            }
-
-            this.setState({
-                actionValues: newActionValues,
-            });
-
+            const newActionValues = removeActionValue(actionValues, actionValueIndex);
+            this.setState({ actionValues: newActionValues });
             this.fireOnChange(newActionValues, { type: ChangeType.remove, index: actionValueIndex });
         }
     };

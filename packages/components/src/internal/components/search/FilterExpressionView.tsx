@@ -319,6 +319,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                             onFieldFilterTypeChange(fieldname, filterUrlSuffix, 1)
                         }
                         options={unusedFilterOptions(1)}
+                        menuPosition="fixed"
                     />
                     {renderFilterTypeInputs(1)}
                 </>

@@ -2,8 +2,9 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 
-import { SearchBox } from './SearchBox';
 import { SearchAction } from '../../internal/components/omnibox/actions/Search';
+
+import { SearchBox } from './SearchBox';
 
 describe('SearchBox', () => {
     const ON_SEARCH = jest.fn();

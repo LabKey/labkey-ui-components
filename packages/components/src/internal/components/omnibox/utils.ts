@@ -2,6 +2,7 @@ import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../..';
+
 import { ActionValue } from './actions/Action';
 import { Change, ChangeType } from './OmniBox';
 import { SearchAction } from './actions/Search';
@@ -18,18 +19,20 @@ export function parseColumns(columns: List<QueryColumn>, columnName: string): Li
     const _columnName = columnName ? columnName.toLowerCase() : '';
 
     // First, attempt to match by column name/lookup
-    let nameMatches = columns.filter(c => {
-        if (_columnName.indexOf('/') > -1) {
-            if (c.isLookup()) {
-                const name = _columnName.split('/')[0];
-                return c.name.toLowerCase() === name;
+    const nameMatches = columns
+        .filter(c => {
+            if (_columnName.indexOf('/') > -1) {
+                if (c.isLookup()) {
+                    const name = _columnName.split('/')[0];
+                    return c.name.toLowerCase() === name;
+                }
+
+                return false;
             }
 
-            return false;
-        }
-
-        return c.name.toLowerCase() === _columnName;
-    }).toList();
+            return c.name.toLowerCase() === _columnName;
+        })
+        .toList();
 
     // Second, if there are no matches by column name/lookup, attempt to match by column shortCaption
     if (nameMatches.size === 0) {

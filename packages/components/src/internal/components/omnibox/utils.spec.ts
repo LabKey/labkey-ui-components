@@ -3,6 +3,7 @@ import { Filter } from '@labkey/api';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 import { QuerySort } from '../../../public/QuerySort';
+
 import { removeActionValue, replaceSearchValue } from './utils';
 import { FilterAction } from './actions/Filter';
 import { SearchAction } from './actions/Search';

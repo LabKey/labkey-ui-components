@@ -48,8 +48,7 @@ export const FilterStatus: FC<Props> = memo(props => {
                             onRemove={_onRemove}
                         />
                     );
-                })
-            }
+                })}
             {onRemoveAll && showRemoveAll && (
                 <a className="remove-all-filters" onClick={onRemoveAll}>
                     Remove all

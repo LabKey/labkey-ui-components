@@ -8,8 +8,9 @@ import { DataViewInfo } from '../../internal/models';
 import { ChartModal } from '../../internal/components/chart/ChartModal';
 import { blurActiveElement } from '../../internal/util/utils';
 
-import { RequiresModelAndActions } from './withQueryModels';
 import { getQueryMetadata } from '../../internal/global';
+
+import { RequiresModelAndActions } from './withQueryModels';
 
 interface Props extends RequiresModelAndActions {
     hideEmptyChartMenu: boolean;

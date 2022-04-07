@@ -8,6 +8,7 @@ import { SearchAction } from '../../internal/components/omnibox/actions/Search';
 import { ViewAction } from '../../internal/components/omnibox/actions/View';
 import { FilterAction } from '../../internal/components/omnibox/actions/Filter';
 import { QueryInfo } from '../QueryInfo';
+
 import { FilterStatus } from './FilterStatus';
 
 describe('FilterStatus', () => {

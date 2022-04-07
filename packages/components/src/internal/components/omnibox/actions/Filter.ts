@@ -24,8 +24,9 @@ import { decodePart } from '../../../../public/SchemaQuery';
 
 import { JsonType } from '../../domainproperties/PropDescType';
 
-import { Action, ActionOption, ActionValue, Value } from './Action';
 import { isGridColSortFilterEnabled } from '../../../app/utils';
+
+import { Action, ActionOption, ActionValue, Value } from './Action';
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances

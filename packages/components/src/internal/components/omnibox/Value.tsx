@@ -16,8 +16,9 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { ActionValue } from './actions/Action';
 import { isGridColSortFilterEnabled } from '../../app/utils';
+
+import { ActionValue } from './actions/Action';
 
 interface ValueProps {
     actionValue: ActionValue;

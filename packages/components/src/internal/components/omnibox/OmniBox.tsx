@@ -341,7 +341,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     };
 
     fetchDistinctValues = (columnName: string) => {
-        const {getColumns, getSelectDistinctOptions} = this.props;
+        const { getColumns, getSelectDistinctOptions } = this.props;
         const column = parseColumns(
             getColumns()
                 .filter(column => !column.multiValue)

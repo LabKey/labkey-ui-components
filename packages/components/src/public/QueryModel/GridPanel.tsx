@@ -27,6 +27,10 @@ import { SortAction } from '../../internal/components/omnibox/actions/Sort';
 import { ViewAction } from '../../internal/components/omnibox/actions/View';
 import { Change, ChangeType, OmniBox } from '../../internal/components/omnibox/OmniBox';
 
+import { isGridColSortFilterEnabled } from '../../internal/app/utils';
+
+import { removeActionValue, replaceSearchValue } from '../../internal/components/omnibox/utils';
+
 import { QueryModel, createQueryModelId } from './QueryModel';
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ViewMenu } from './ViewMenu';
@@ -38,9 +42,7 @@ import { SearchBox } from './SearchBox';
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
-import { isGridColSortFilterEnabled } from '../../internal/app/utils';
 import { FilterStatus } from './FilterStatus';
-import { removeActionValue, replaceSearchValue } from '../../internal/components/omnibox/utils';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -417,12 +419,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     handleApplyFilters = (newFilters: Filter.IFilter[]): void => {
         const { model, actions, allowSelections } = this.props;
 
-        this.setState({
-            actionValues: this.state.actionValues,
-            showFilterModalFieldKey: undefined,
-            headerClickCount: {}
-        }, () =>
-            actions.setFilters(model.id, newFilters, allowSelections)
+        this.setState(
+            {
+                actionValues: this.state.actionValues,
+                showFilterModalFieldKey: undefined,
+                headerClickCount: {},
+            },
+            () => actions.setFilters(model.id, newFilters, allowSelections)
         );
     };
 

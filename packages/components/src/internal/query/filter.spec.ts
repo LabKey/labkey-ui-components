@@ -89,7 +89,7 @@ describe('getLabKeySql', () => {
 
     test('not startsWith', () => {
         expect(getLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_START_WITH), 'string')).toEqual(
-            "(\"StringField\" IS NULL) OR (LOWER(\"StringField\") NOT LIKE LOWER('ABC%') ESCAPE '!')"
+            '("StringField" IS NULL) OR (LOWER("StringField") NOT LIKE LOWER(\'ABC%\') ESCAPE \'!\')'
         );
     });
 
@@ -101,7 +101,7 @@ describe('getLabKeySql', () => {
 
     test('not contains', () => {
         expect(getLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_CONTAIN), 'string')).toEqual(
-            "(\"StringField\" IS NULL) OR (LOWER(\"StringField\") NOT LIKE LOWER('%ABC%') ESCAPE '!')"
+            '("StringField" IS NULL) OR (LOWER("StringField") NOT LIKE LOWER(\'%ABC%\') ESCAPE \'!\')'
         );
     });
 
@@ -247,7 +247,7 @@ describe('getLabKeySql', () => {
 
     test('contains none of, single value', () => {
         expect(getLabKeySql(Filter.create('StringField', 'value1', Filter.Types.CONTAINS_NONE_OF), 'string')).toEqual(
-            "(\"StringField\" IS NULL) OR (LOWER(\"StringField\") NOT LIKE LOWER('%value1%') ESCAPE '!')"
+            '("StringField" IS NULL) OR (LOWER("StringField") NOT LIKE LOWER(\'%value1%\') ESCAPE \'!\')'
         );
     });
 

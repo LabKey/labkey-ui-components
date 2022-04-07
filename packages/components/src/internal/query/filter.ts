@@ -231,9 +231,8 @@ function getNotContainsClause(sqlValue): string {
 function getLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStart: boolean): string {
     const columnNameSelect = getColumnSelect(filter.getColumnName());
     const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
-    if (!sqlValue || sqlValue === '')
-        return columnNameSelect + getLikeClause(sqlValue, isStart);
-    return "LOWER(" + columnNameSelect + ")" + getLikeClause(sqlValue, isStart);
+    if (!sqlValue || sqlValue === '') return columnNameSelect + getLikeClause(sqlValue, isStart);
+    return 'LOWER(' + columnNameSelect + ')' + getLikeClause(sqlValue, isStart);
 }
 
 function getContainsFullClause(filter: Filter.IFilter, jsonType: JsonType): string {
@@ -248,7 +247,15 @@ function getNotLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStar
     const columnNameSelect = getColumnSelect(filter.getColumnName());
     const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
     if (!sqlValue || sqlValue === '') return columnNameSelect + ' IS NOT NULL';
-    return '(' + columnNameSelect + ' IS NULL) OR (LOWER(' + columnNameSelect + ")" + getNotLikeClause(sqlValue, isStart) + ')';
+    return (
+        '(' +
+        columnNameSelect +
+        ' IS NULL) OR (LOWER(' +
+        columnNameSelect +
+        ')' +
+        getNotLikeClause(sqlValue, isStart) +
+        ')'
+    );
 }
 
 function getNotContainsFullClause(filter: Filter.IFilter, jsonType: JsonType): string {

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ChangeEvent, ReactNode, FC, memo, useState, useCallback, useEffect } from 'react';
-import classNames from 'classnames';
+import React, { ChangeEvent, ReactNode, FC, memo, useState, useCallback, useEffect, useRef } from 'react';
+import $ from 'jquery';
 import { OrderedMap, Map } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
@@ -48,6 +48,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const col: QueryColumn = column.raw;
     const gridColSortFilterEnabled = isGridColSortFilterEnabled();
     const [open, setOpen] = useState<boolean>();
+    const wrapperEl = useRef();
 
     const allowColSort = handleSort && col?.sortable;
     const allowColFilter = handleFilter && col?.filterable;
@@ -86,6 +87,23 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         if (headerClickCount) setOpen(true);
     }, [headerClickCount]);
 
+    useEffect(() => {
+        if (open) {
+            // Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
+            // (see related SCSS in query-model.scss)
+            if (wrapperEl.current) {
+                const headerRect = (wrapperEl.current as Element).parentElement.getBoundingClientRect();
+                const menuEl = $(wrapperEl.current).find('.dropdown-menu');
+
+                if (menuEl) {
+                    const menuRect = menuEl[0].getBoundingClientRect();
+                    menuEl[0].style.top = headerRect.y + headerRect.height + 'px';
+                    menuEl[0].style.left = headerRect.x + headerRect.width - menuRect.width + 'px';
+                }
+            }
+        }
+    }, [open]);
+
     if (!col) return null;
 
     const isOnlyColumn =
@@ -118,15 +136,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 )}
             </span>
             {includeDropdown && (
-                <span className={classNames({ 'pull-right': (i === 0 && !selectable) || (selectable && i === 1) })}>
-                    <Dropdown
-                        id={`grid-menu-${i}`}
-                        className={classNames({
-                            'pull-right': isOnlyColumn || (i > 0 && !selectable) || i > 1,
-                        })}
-                        onToggle={onToggleClick}
-                        open={open}
-                    >
+                <span className="pull-right" ref={wrapperEl}>
+                    <Dropdown id={`grid-menu-${i}`} onToggle={onToggleClick} open={open}>
                         <CustomToggle bsRole="toggle">
                             <span className="fa fa-chevron-circle-down grid-panel__menu-toggle" />
                         </CustomToggle>

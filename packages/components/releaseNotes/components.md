@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD April 2022
+* Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
+* Issue 45135: grid filter modal Choose Values should include model/context filters (baseFilters or queryInfo filters)
+
 ### version 2.150.0
 *Released*: 7 April 2022
 * Item 10223: GridPanel updates for search input and filter display in grid header

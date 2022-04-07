@@ -680,8 +680,9 @@ export function getUpdatedDataTypeFilters(
     activeField: QueryColumn,
     newFilters: Filter.IFilter[]
 ): { [p: string]: FieldFilter[] } {
+    const lcActiveQuery = activeQuery.toLowerCase();
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
-    const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
+    const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[lcActiveQuery];
     const activeFieldKey = activeField.fieldKey;
     // the filters on the parent type that aren't associated with this field.
     const otherFieldFilters = activeParentFilters?.filter(filter => filter.fieldKey !== activeFieldKey) ?? [];
@@ -700,9 +701,9 @@ export function getUpdatedDataTypeFilters(
             }) ?? [];
 
     if (otherFieldFilters.length + thisFieldFilters.length > 0) {
-        dataTypeFiltersUpdated[activeQuery] = [...otherFieldFilters, ...thisFieldFilters];
+        dataTypeFiltersUpdated[lcActiveQuery] = [...otherFieldFilters, ...thisFieldFilters];
     } else {
-        delete dataTypeFiltersUpdated[activeQuery];
+        delete dataTypeFiltersUpdated[lcActiveQuery];
     }
     return dataTypeFiltersUpdated;
 }

@@ -78,7 +78,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
             const filterFields = filters[parent];
             filterFields.forEach(fieldFilter => {
                 if (fieldFilter.filter.getFilterType() !== NOT_ANY_FILTER_TYPE) {
-                    const key = parent + '-' + fieldFilter.fieldKey;
+                    const key = parent.toLowerCase() + '-' + fieldFilter.fieldKey;
                     status[key] = true;
                 }
             });
@@ -89,7 +89,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const hasFilters = useCallback(
         (field: QueryColumn) => {
-            return filterStatus?.[queryName + '-' + field.resolveFieldKey()];
+            return filterStatus?.[queryName.toLowerCase() + '-' + field.resolveFieldKey()];
         },
         [filterStatus, queryName]
     );

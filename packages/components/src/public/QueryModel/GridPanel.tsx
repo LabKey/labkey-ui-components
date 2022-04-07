@@ -357,7 +357,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     // Needed by OmniBox and GridFilterModal.
-    getSelectDistinctOptions = (column: string): Query.SelectDistinctOptions => {
+    getSelectDistinctOptions = (column: string, allFilters = true): Query.SelectDistinctOptions => {
         const { model } = this.props;
         return {
             column,
@@ -366,7 +366,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             schemaName: model.schemaName,
             queryName: model.queryName,
             viewName: model.viewName,
-            filterArray: model.filters,
+            filterArray: allFilters ? model.filters : model.modelFilters,
             parameters: model.queryParameters,
         };
     };
@@ -840,7 +840,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 {showFilterModalFieldKey && (
                     <GridFilterModal
                         fieldKey={showFilterModalFieldKey}
-                        selectDistinctOptions={this.getSelectDistinctOptions(undefined)}
+                        getSelectDistinctOptions={this.getSelectDistinctOptions}
                         initFilters={model.filterArray} // using filterArray to indicate user-defined filters only
                         model={model}
                         onApply={this.handleApplyFilters}

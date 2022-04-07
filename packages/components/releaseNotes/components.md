@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.150.0
+*Released*: 7 April 2022
 * Item 10223: GridPanel updates for search input and filter display in grid header
     * add SearchBox component and display in GridPanel header bar
     * add Filters button to GridPanel header to open the GridFilterModal

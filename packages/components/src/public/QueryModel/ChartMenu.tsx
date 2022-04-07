@@ -8,8 +8,9 @@ import { DataViewInfo } from '../../internal/models';
 import { ChartModal } from '../../internal/components/chart/ChartModal';
 import { blurActiveElement } from '../../internal/util/utils';
 
-import { RequiresModelAndActions } from './withQueryModels';
 import { getQueryMetadata } from '../../internal/global';
+
+import { RequiresModelAndActions } from './withQueryModels';
 
 interface Props extends RequiresModelAndActions {
     hideEmptyChartMenu: boolean;
@@ -70,7 +71,6 @@ export class ChartMenu extends PureComponent<Props> {
         } = model;
         const privateCharts = hasCharts ? charts.filter(chart => !chart.shared) : [];
         const publicCharts = hasCharts ? charts.filter(chart => chart.shared) : [];
-        const title = isLoadingCharts ? <span className="fa fa-spinner fa-pulse" /> : 'Charts';
         const noCharts = hasCharts && charts.length === 0 && !showSampleComparisonReports;
         const hasError = queryInfoError !== undefined || rowsError !== undefined;
         const disabled = isLoading || isLoadingCharts || noCharts || hasError;
@@ -89,7 +89,19 @@ export class ChartMenu extends PureComponent<Props> {
 
         return (
             <div className="chart-menu">
-                <DropdownButton id={`chart-menu-${id}`} disabled={disabled} title={title}>
+                <DropdownButton
+                    id={`chart-menu-${id}`}
+                    className="chart-menu-button"
+                    disabled={disabled}
+                    pullRight
+                    title={
+                        isLoadingCharts ? (
+                            <span className="fa fa-spinner fa-pulse" />
+                        ) : (
+                            <span className="fa fa-area-chart" />
+                        )
+                    }
+                >
                     {showSampleComparisonReports && (
                         <MenuItem header key="new-charts">
                             New Charts & Reports
@@ -113,7 +125,6 @@ export class ChartMenu extends PureComponent<Props> {
 
                     {publicCharts.length > 0 && publicCharts.map(this.chartMapper)}
                 </DropdownButton>
-
                 {showChartModal && (
                     <ChartModal selectedChart={selectedChart} filters={model.filters} onHide={this.clearChart} />
                 )}

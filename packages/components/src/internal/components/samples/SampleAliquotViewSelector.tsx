@@ -97,11 +97,9 @@ export class SampleAliquotViewSelector extends Component<Props> {
         const viewItems = this.createMenuItems(aliquotFilterMode);
 
         return (
-            <span className="gridbar-button-spacer">
-                <DropdownButton id={this.dropId} pullRight title={this.getTitle(aliquotFilterMode)}>
-                    {viewItems.toArray()}
-                </DropdownButton>
-            </span>
+            <DropdownButton id={this.dropId} pullRight title={this.getTitle(aliquotFilterMode)}>
+                {viewItems.toArray()}
+            </DropdownButton>
         );
     }
 }

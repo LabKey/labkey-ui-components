@@ -24,6 +24,8 @@ import { decodePart } from '../../../../public/SchemaQuery';
 
 import { JsonType } from '../../domainproperties/PropDescType';
 
+import { isGridColSortFilterEnabled } from '../../../app/utils';
+
 import { Action, ActionOption, ActionValue, Value } from './Action';
 
 /**
@@ -478,7 +480,7 @@ export class FilterAction implements Action {
             // showing all the values or this would be preferred. See 28884.
             if (rawValue.length > 3) {
                 value = `(${rawValue.length} values)`;
-                isReadOnly = true;
+                isReadOnly = !isGridColSortFilterEnabled();
             } else {
                 value = rawValue.join(', ');
             }

@@ -840,7 +840,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 {showFilterModalFieldKey && (
                     <GridFilterModal
                         fieldKey={showFilterModalFieldKey}
-                        getSelectDistinctOptions={this.getSelectDistinctOptions}
+                        selectDistinctOptions={this.getSelectDistinctOptions(undefined, false)}
                         initFilters={model.filterArray} // using filterArray to indicate user-defined filters only
                         model={model}
                         onApply={this.handleApplyFilters}

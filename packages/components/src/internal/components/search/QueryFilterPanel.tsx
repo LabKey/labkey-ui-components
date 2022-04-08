@@ -38,7 +38,7 @@ interface Props {
     metricFeatureArea?: string;
     onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
     queryInfo: QueryInfo;
-    getSelectDistinctOptions?: (column: string, allFilters?: boolean) => Query.SelectDistinctOptions;
+    selectDistinctOptions?: Query.SelectDistinctOptions;
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
@@ -59,7 +59,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         onFilterUpdate,
         metricFeatureArea,
         fullWidth,
-        getSelectDistinctOptions,
+        selectDistinctOptions,
         filterTypesToExclude,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
@@ -164,7 +164,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         if (!filters || !queryName || !activeField) return null;
 
         // Issue 45135: include any model filters (baseFilters or queryInfo filters)
-        const valueFilters = getSelectDistinctOptions?.(undefined, false).filterArray ?? [];
+        const valueFilters = selectDistinctOptions ? [...selectDistinctOptions.filterArray] : [];
 
         // use active filters to filter distinct values, but exclude filters on current field
         filters?.[queryName]?.forEach(field => {
@@ -172,7 +172,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         });
 
         return valueFilters;
-    }, [filters, queryName, activeField, activeFieldKey, getSelectDistinctOptions]);
+    }, [filters, queryName, activeField, activeFieldKey, selectDistinctOptions]);
 
     const onFieldClick = useCallback((queryColumn: QueryColumn) => {
         setActiveField(queryColumn);
@@ -260,7 +260,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                             </div>
                                             <FilterFacetedSelector
                                                 selectDistinctOptions={{
-                                                    ...getSelectDistinctOptions?.(undefined),
+                                                    ...selectDistinctOptions,
                                                     column: activeFieldKey,
                                                     schemaName: queryInfo.schemaName,
                                                     queryName,

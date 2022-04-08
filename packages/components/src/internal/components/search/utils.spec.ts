@@ -927,7 +927,7 @@ const notSupportedFilter = {
     fieldKey: 'String Field',
     fieldCaption: 'String Field',
     jsonType: 'string',
-    filter: Filter.create('String Field', null, Filter.Types.STARTS_WITH),
+    filter: Filter.create('String Field', null, Filter.Types.MEMBER_OF),
 } as FieldFilter;
 
 describe('getLabKeySqlWhere', () => {

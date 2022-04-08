@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.152.0
+*Released*: 8 April 2022
+* Item 10213: New grid filtering UX - Support other filter types
+  * Add LabKey sql util for other filter types
+  * Show OntologyBrowserFilterPanel in FilterExpressionView
+
 ### version 2.151.0
 *Released*: 8 April 2022
 * Improve SelectRows endpoint wrapper

@@ -43,7 +43,7 @@
 
     .filter-modal__col-sub-title {
         font-weight: bold;
-        padding: 25px 0 10px 0;
+        padding: 18px 0 10px 0;
     }
 
     .filter-modal__col {
@@ -90,6 +90,10 @@
             }
             height: 380px;
         }
+
+        &.filter-modal__values {
+            overflow: visible;
+        }
     }
 
     .filter-modal__col_filter_exp .filter-modal__col-content {
@@ -108,7 +112,7 @@
 
 .filter-expression__input-wrapper {
     width: 100%;
-    margin: 0 0 20px 0;
+    margin: 0 0 10px 0;
 }
 
 .filter-expression__and-op {
@@ -221,5 +225,17 @@
 .filter-faceted__tags-title {
     font-weight: bold;
     padding-bottom: 5px;
+}
+
+.filter-expression__panel {
+    height: 355px;
+}
+
+.ontology-browser__menu {
+    padding: 10px 0;
+
+    ul {
+        padding: 10px 10px;
+    }
 }
 

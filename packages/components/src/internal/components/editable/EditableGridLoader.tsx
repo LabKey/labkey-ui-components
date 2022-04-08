@@ -16,13 +16,13 @@
 import React from 'react';
 import { fromJS, List } from 'immutable';
 
-import { IGridLoader, IGridResponse, selectRows, QueryGridModel } from '../../..';
+import { IGridLoader, IGridResponse, selectRowsDeprecated, QueryGridModel } from '../../..';
 import { EditorModel } from '../../models';
 
 export class EditableGridLoader implements IGridLoader {
     fetch(gridModel: QueryGridModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
-            return selectRows({
+            return selectRowsDeprecated({
                 schemaName: gridModel.schema,
                 queryName: gridModel.query,
                 filterArray: gridModel.getFilters().toJS(),

@@ -16,7 +16,7 @@ import {
     naturalSort,
     SchemaQuery,
     SCHEMAS,
-    selectRows,
+    selectRowsDeprecated,
 } from '../../..';
 
 import {
@@ -106,7 +106,7 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
             const node = nodes.first();
             const { fieldKey } = node.pkFilters[0];
 
-            return selectRows({
+            return selectRowsDeprecated({
                 containerPath: node.container,
                 schemaName: schemaQuery.schemaName,
                 queryName: schemaQuery.queryName,
@@ -258,7 +258,7 @@ export function loadLineageResult(
 }
 
 export function loadSampleStats(lineageResult: LineageResult): Promise<any> {
-    return selectRows({
+    return selectRowsDeprecated({
         schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
         queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
         containerFilter: Query.containerFilter.currentPlusProjectAndShared,

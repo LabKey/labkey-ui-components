@@ -16,7 +16,7 @@ import {
     SampleTypeEmptyAlert,
     SchemaQuery,
     Section,
-    selectRows,
+    selectRowsDeprecated,
     Tip,
     User,
 } from '../../..';
@@ -25,11 +25,13 @@ import { getDateFormat, isSampleFinderEnabled } from '../../app/utils';
 
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 
+import { SAMPLE_FILTER_METRIC_AREA } from '../search/utils';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';
 import { ChartConfig, ChartData, ChartSelector } from './types';
-import { SAMPLE_FILTER_METRIC_AREA } from '../search/utils';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 function fetchItemCount(schemaQuery: SchemaQuery, filters?: Filter.IFilter[]): Promise<number> {
     return new Promise(resolve => {
@@ -93,7 +95,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 const itemCount = await fetchItemCount(itemCountSQ, itemCountFilters);
 
                 const { queryName, schemaName, sort } = this.getSelectedChartGroup();
-                const response = await selectRows({ schemaName, queryName, sort });
+                const response = await selectRowsDeprecated({ schemaName, queryName, sort });
 
                 this.setState(state => ({
                     itemCounts: { ...state.itemCounts, [currentGroup]: itemCount },
@@ -265,7 +267,7 @@ interface SampleButtonProps {
 }
 
 // export for jest testing
-export const SampleButtons: FC<SampleButtonProps> = memo((props) => {
+export const SampleButtons: FC<SampleButtonProps> = memo(props => {
     const { api } = props;
 
     const onSampleFinder = useCallback(() => {

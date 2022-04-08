@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { ChangeEvent, ReactNode, FC, memo, useState, useCallback, useEffect, useRef } from 'react';
-import $ from 'jquery';
 import { OrderedMap, Map } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
@@ -44,11 +43,11 @@ interface HeaderCellDropdownProps {
 
 // exported for jest testing
 export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
-    const { i, column, selectable, columnCount, handleSort, handleFilter, headerClickCount, model } = props;
+    const { i, column, handleSort, handleFilter, headerClickCount, model } = props;
     const col: QueryColumn = column.raw;
     const gridColSortFilterEnabled = isGridColSortFilterEnabled();
     const [open, setOpen] = useState<boolean>();
-    const wrapperEl = useRef();
+    const wrapperEl = useRef<HTMLSpanElement>();
 
     const allowColSort = handleSort && col?.sortable;
     const allowColFilter = handleFilter && col?.filterable;
@@ -92,13 +91,14 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
             // Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
             // (see related SCSS in query-model.scss)
             if (wrapperEl.current) {
-                const headerRect = (wrapperEl.current as Element).parentElement.getBoundingClientRect();
-                const menuEl = $(wrapperEl.current).find('.dropdown-menu');
-
+                const menuEl = wrapperEl.current.querySelector<HTMLElement>('.dropdown-menu');
                 if (menuEl) {
-                    const menuRect = menuEl[0].getBoundingClientRect();
-                    menuEl[0].style.top = headerRect.y + headerRect.height + 'px';
-                    menuEl[0].style.left = headerRect.x + headerRect.width - menuRect.width + 'px';
+                    const headerRect = wrapperEl.current.parentElement.getBoundingClientRect();
+                    const menuRect = menuEl.getBoundingClientRect();
+                    Object.assign(menuEl.style, {
+                        top: headerRect.y + headerRect.height + 'px',
+                        left: headerRect.x + headerRect.width - menuRect.width + 'px',
+                    });
                 }
             }
         }
@@ -106,8 +106,6 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     if (!col) return null;
 
-    const isOnlyColumn =
-        columnCount !== undefined && ((selectable && columnCount === 2) || (!selectable && columnCount === 1));
     const colQuerySortDir = model?.sorts?.find(sort => sort.get('fieldKey') === col.resolveFieldKey())?.get('dir');
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';

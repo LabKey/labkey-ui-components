@@ -16,7 +16,7 @@
 import React from 'react';
 import { fromJS, List } from 'immutable';
 
-import { selectRows, IGridLoader, IGridResponse, QueryGridModel } from '../..';
+import { selectRowsDeprecated, IGridLoader, IGridResponse, QueryGridModel } from '../..';
 import { getSelected } from '../actions';
 
 import { IGridSelectionResponse } from '../QueryGridModel';
@@ -24,7 +24,7 @@ import { IGridSelectionResponse } from '../QueryGridModel';
 class GridLoader implements IGridLoader {
     fetch(model: QueryGridModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
-            return selectRows({
+            return selectRowsDeprecated({
                 containerPath: model.containerPath,
                 containerFilter: model.containerFilter,
                 schemaName: model.schema,

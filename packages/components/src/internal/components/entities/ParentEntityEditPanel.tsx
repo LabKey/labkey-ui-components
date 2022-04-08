@@ -19,7 +19,7 @@ import {
     QueryInfo,
     resolveErrorMessage,
     SchemaQuery,
-    selectRows,
+    selectRowsDeprecated,
     updateRows,
 } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
@@ -99,7 +99,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
 
         if (childLSID) {
             try {
-                const { key, models, queries } = await selectRows({
+                const { key, models, queries } = await selectRowsDeprecated({
                     columns: ParentEntityRequiredColumns.toArray(),
                     containerPath: childContainerPath,
                     filterArray: [Filter.create('LSID', childLSID)],

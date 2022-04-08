@@ -15,7 +15,7 @@
  */
 import { ActionURL, Ajax, Filter, getServerContext, Utils } from '@labkey/api';
 
-import { App, buildURL, resolveErrorMessage, selectRows } from '../../..';
+import { App, buildURL, resolveErrorMessage, selectRowsDeprecated } from '../../..';
 
 import { NotificationItemModel, NotificationItemProps, ServerActivity, ServerActivityData } from './model';
 import { addNotification } from './global';
@@ -85,7 +85,7 @@ export function getServerNotifications(typeLabels?: string[], maxRows?: number):
 export function getRunningPipelineJobStatuses(filters?: Filter.IFilter[]): Promise<ServerActivity> {
     const statusFilter = Filter.create('Status', ['RUNNING', 'WAITING', 'SPLITWAITING'], Filter.Types.IN);
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             schemaName: 'pipeline',
             queryName: 'job',
             filterArray: [statusFilter].concat(filters ?? []),

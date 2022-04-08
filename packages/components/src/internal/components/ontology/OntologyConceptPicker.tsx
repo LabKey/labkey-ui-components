@@ -8,8 +8,8 @@ import { ConceptOverviewTooltip } from './ConceptOverviewPanel';
 interface Props {
     ontologyId: string;
     conceptSubtree: string;
-    fieldName: string;
     fieldLabel: string;
+    fieldName?: string;
     fieldValue?: string;
     onConceptSelection: (concept: ConceptModel) => void;
 }

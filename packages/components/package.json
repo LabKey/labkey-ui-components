@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.150.1-ancestorLookupsDisplay.11",
+  "version": "2.152.1-ancestorLookupsDisplay.12",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

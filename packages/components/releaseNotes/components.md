@@ -7,6 +7,25 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update SampleFinder to use Ancestor columns in results grids
 * Update logic in `QueryModel::getColumn` for finding matching lookup columns so it handles additional layers of lookups
 
+### version 2.152.0
+*Released*: 8 April 2022
+* Item 10213: New grid filtering UX - Support other filter types
+  * Add LabKey sql util for other filter types
+  * Show OntologyBrowserFilterPanel in FilterExpressionView
+
+### version 2.151.0
+*Released*: 8 April 2022
+* Improve SelectRows endpoint wrapper
+    * Options/arguments are now fully typed.
+    * Continues to retrieve the associated `QueryInfo` from `query-getQueryDetails.api`. Rejection/errors are now handled solely by `getQueryDetails()`.
+    * Continues to resolve application URLs via `URLResolver.resolveSelectRows()`.
+    * No longer wraps `Query.executeSql`.
+    * Requires a `schemaQuery: SchemaQuery` argument instead of separate `schemaName` and `queryName` arguments.
+    * Remove `caller` argument as paradigm is not necessary to support.
+    * The `containerFilter` argument defaults to value returned from `getContainerFilter()` (unchanged from `selectRowsDeprecated`).
+    * The `method` argument defaults to `POST` (unchanged from `selectRowsDeprecated`).
+    * The `columns` argument defaults to `'*'` (unchanged from `selectRowsDeprecated`).
+
 ### version 2.150.0
 *Released*: 7 April 2022
 * Item 10223: GridPanel updates for search input and filter display in grid header

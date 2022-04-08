@@ -2,7 +2,7 @@ import { Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
-import { deleteRows, insertRows, InsertRowsResponse, selectRows } from '../../query/api';
+import { deleteRows, insertRows, InsertRowsResponse, selectRowsDeprecated } from '../../query/api';
 import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
 import { getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
 import { PICKLIST, PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
@@ -22,7 +22,7 @@ import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './mode
 export function getPicklistsForInsert(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
         const { queryName, schemaName } = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS;
-        selectRows({
+        selectRowsDeprecated({
             containerFilter: isSubfolderDataEnabled() ? Query.ContainerFilter.current : undefined,
             schemaName,
             queryName,
@@ -147,7 +147,7 @@ export interface SampleTypeCount {
 export function getPicklistCountsBySampleType(listName: string): Promise<SampleTypeCount[]> {
     return new Promise(async (resolve, reject) => {
         try {
-            const { key, models, orderedModels } = await selectRows({
+            const { key, models, orderedModels } = await selectRowsDeprecated({
                 schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
                 queryName: listName,
                 sql: [
@@ -180,7 +180,7 @@ export function getPicklistCountsBySampleType(listName: string): Promise<SampleT
 export function getPicklistSamples(listName: string): Promise<Set<string>> {
     return new Promise((resolve, reject) => {
         const schemaName = SCHEMAS.PICKLIST_TABLES.SCHEMA;
-        selectRows({
+        selectRowsDeprecated({
             schemaName,
             queryName: listName,
         })
@@ -387,7 +387,7 @@ export const removeSamplesFromPicklist = async (picklist: Picklist, selectionMod
 
     // if the model is for the sample type, query to get the relevant list keys to delete.
     if (selectionModel.schemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) {
-        const listResponse = await selectRows({
+        const listResponse = await selectRowsDeprecated({
             schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
             queryName: picklist.name,
             filterArray: [Filter.create('SampleID', [...selectionModel.selections], Filter.Types.IN)],
@@ -428,7 +428,7 @@ export function getPicklistUrl(listId: number, picklistProductId?: string, curre
 }
 
 export const getPicklistFromId = async (listId: number, loadSampleTypes = true): Promise<Picklist> => {
-    const listData = await selectRows({
+    const listData = await selectRowsDeprecated({
         containerFilter: getPicklistListingContainerFilter(),
         schemaName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.schemaName,
         queryName: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS.queryName,
@@ -440,7 +440,7 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
     let picklist = Picklist.create(listRow);
 
     if (loadSampleTypes) {
-        const listSampleTypeData = await selectRows({
+        const listSampleTypeData = await selectRowsDeprecated({
             schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
             sql: `SELECT DISTINCT SampleID.SampleSet FROM "${picklist.name}" WHERE SampleID.SampleSet IS NOT NULL`,
         });

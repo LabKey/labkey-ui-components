@@ -4,6 +4,7 @@ import { Record } from 'immutable';
 import { Query } from '@labkey/api';
 
 import {
+    CONCEPT_CODE_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from '../internal/components/domainproperties/constants';
@@ -118,6 +119,9 @@ export class QueryColumn extends Record({
     sorts: undefined,
     units: undefined,
     derivationDataScope: undefined,
+
+    sourceOntology: undefined,
+    conceptSubtree: undefined,
 }) {
     declare align: string;
     // declare autoIncrement: boolean;
@@ -189,6 +193,9 @@ export class QueryColumn extends Record({
     declare removeFromViews: boolean; // strips this column from all ViewInfo definitions
     declare units: string;
     declare derivationDataScope: string;
+
+    declare sourceOntology: string;
+    declare conceptSubtree: string;
 
     static create(rawColumn): QueryColumn {
         if (rawColumn && rawColumn.lookup !== undefined) {
@@ -300,6 +307,10 @@ export class QueryColumn extends Record({
 
     get isUniqueIdColumn(): boolean {
         return this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
+    }
+
+    get isConceptCodeColumn(): boolean {
+        return this.conceptURI === CONCEPT_CODE_CONCEPT_URI;
     }
 
     isImportColumn(importName: string): boolean {

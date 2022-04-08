@@ -1,6 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.151.0
+*Released*: 8 April 2022
+* Improve SelectRows endpoint wrapper
+    * Options/arguments are now fully typed.
+    * Continues to retrieve the associated `QueryInfo` from `query-getQueryDetails.api`. Rejection/errors are now handled solely by `getQueryDetails()`.
+    * Continues to resolve application URLs via `URLResolver.resolveSelectRows()`.
+    * No longer wraps `Query.executeSql`.
+    * Requires a `schemaQuery: SchemaQuery` argument instead of separate `schemaName` and `queryName` arguments.
+    * Remove `caller` argument as paradigm is not necessary to support.
+    * The `containerFilter` argument defaults to value returned from `getContainerFilter()` (unchanged from `selectRowsDeprecated`).
+    * The `method` argument defaults to `POST` (unchanged from `selectRowsDeprecated`).
+    * The `columns` argument defaults to `'*'` (unchanged from `selectRowsDeprecated`).
+
 ### version 2.150.0
 *Released*: 7 April 2022
 * Item 10223: GridPanel updates for search input and filter display in grid header

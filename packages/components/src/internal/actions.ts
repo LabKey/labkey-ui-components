@@ -32,7 +32,7 @@ import {
     SchemaQuery,
 } from '..';
 
-import { getQueryDetails, selectRows } from './query/api';
+import { getQueryDetails, selectRowsDeprecated } from './query/api';
 import { isEqual } from './query/filter';
 import { buildQueryString, getLocation, Location } from './util/URL';
 import {
@@ -1095,7 +1095,7 @@ export function getSelectedData(
     filterArray.push(Filter.create(keyColumn, selections, Filter.Types.IN));
 
     return new Promise((resolve, reject) =>
-        selectRows({
+        selectRowsDeprecated({
             schemaName,
             queryName,
             filterArray,
@@ -1324,7 +1324,7 @@ const findLookupValues = async (
         selectRowsOptions.filterArray = [Filter.create(keyColumn, lookupKeyValues, Filter.Types.IN)];
     }
 
-    const result = await selectRows(selectRowsOptions);
+    const result = await selectRowsDeprecated(selectRowsOptions);
 
     const { key, models } = result;
 
@@ -2380,25 +2380,25 @@ export function createQueryConfigFilteredBySample(
 export function incrementClientSideMetricCount(featureArea: string, metricName: string): void {
     if (!featureArea || !metricName || getServerContext().user.isGuest) {
         return;
-    } else {
-        Ajax.request({
-            url: buildURL('core', 'incrementClientSideMetricCount.api'),
-            method: 'POST',
-            jsonData: {
-                featureArea,
-                metricName,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                // success, no-op
-            }),
-            failure: Utils.getCallbackWrapper(
-                response => {
-                    // log the error but don't prevent from proceeding
-                    console.error(response);
-                },
-                this,
-                true
-            ),
-        });
     }
+
+    Ajax.request({
+        url: buildURL('core', 'incrementClientSideMetricCount.api'),
+        method: 'POST',
+        jsonData: {
+            featureArea,
+            metricName,
+        },
+        success: Utils.getCallbackWrapper(response => {
+            // success, no-op
+        }),
+        failure: Utils.getCallbackWrapper(
+            response => {
+                // log the error but don't prevent from proceeding
+                console.error(response);
+            },
+            this,
+            true
+        ),
+    });
 }

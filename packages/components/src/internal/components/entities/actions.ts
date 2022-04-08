@@ -15,7 +15,7 @@ import {
     SampleCreationType,
     SampleOperation,
     SchemaQuery,
-    selectRows,
+    selectRowsDeprecated,
     SHARED_CONTAINER_PATH,
 } from '../../..';
 
@@ -119,7 +119,7 @@ function getSelectedParents(
         if (isSampleParent) {
             columns += ',SampleSet';
         }
-        return selectRows({
+        return selectRowsDeprecated({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             columns,
@@ -149,7 +149,7 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
                 if (opFilter) {
                     filterArray.push(opFilter);
                 }
-                return selectRows({
+                return selectRowsDeprecated({
                     schemaName: 'exp',
                     queryName: 'materials',
                     columns: 'LSID,Name,RowId,SampleSet',
@@ -425,7 +425,7 @@ export function getEntityTypeOptions(
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             containerPath,
             schemaName: typeListingSchemaQuery.schemaName,
             queryName: typeListingSchemaQuery.queryName,

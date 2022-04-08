@@ -2380,25 +2380,25 @@ export function createQueryConfigFilteredBySample(
 export function incrementClientSideMetricCount(featureArea: string, metricName: string): void {
     if (!featureArea || !metricName || getServerContext().user.isGuest) {
         return;
-    } else {
-        Ajax.request({
-            url: buildURL('core', 'incrementClientSideMetricCount.api'),
-            method: 'POST',
-            jsonData: {
-                featureArea,
-                metricName,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                // success, no-op
-            }),
-            failure: Utils.getCallbackWrapper(
-                response => {
-                    // log the error but don't prevent from proceeding
-                    console.error(response);
-                },
-                this,
-                true
-            ),
-        });
     }
+
+    Ajax.request({
+        url: buildURL('core', 'incrementClientSideMetricCount.api'),
+        method: 'POST',
+        jsonData: {
+            featureArea,
+            metricName,
+        },
+        success: Utils.getCallbackWrapper(response => {
+            // success, no-op
+        }),
+        failure: Utils.getCallbackWrapper(
+            response => {
+                // log the error but don't prevent from proceeding
+                console.error(response);
+            },
+            this,
+            true
+        ),
+    });
 }

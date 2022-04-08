@@ -1,6 +1,7 @@
 import { Query } from '@labkey/api';
 
 import { QueryInfo, SchemaQuery, URLResolver } from '../..';
+
 import { getContainerFilter, getQueryDetails } from './api';
 
 export interface SelectRowsOptions

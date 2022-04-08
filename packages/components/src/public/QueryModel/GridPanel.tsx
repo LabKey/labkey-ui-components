@@ -25,9 +25,7 @@ import { FilterAction } from '../../internal/components/omnibox/actions/Filter';
 import { SearchAction } from '../../internal/components/omnibox/actions/Search';
 import { SortAction } from '../../internal/components/omnibox/actions/Sort';
 import { ViewAction } from '../../internal/components/omnibox/actions/View';
-import { Change, ChangeType, OmniBox } from '../../internal/components/omnibox/OmniBox';
-
-import { isGridColSortFilterEnabled } from '../../internal/app/utils';
+import { Change, ChangeType } from '../../internal/components/omnibox/OmniBox';
 
 import { removeActionValue, replaceSearchValue } from '../../internal/components/omnibox/utils';
 
@@ -156,10 +154,8 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                         {ButtonsComponent !== undefined && (
                             <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
                         )}
-                        {isGridColSortFilterEnabled() && showFiltersButton && <FiltersButton onFilter={onFilter} />}
-                        {isGridColSortFilterEnabled() && showSearchInput && (
-                            <SearchBox actionValues={actionValues} onSearch={onSearch} />
-                        )}
+                        {showFiltersButton && <FiltersButton onFilter={onFilter} />}
+                        {showSearchInput && <SearchBox actionValues={actionValues} onSearch={onSearch} />}
                     </div>
                 </div>
 
@@ -783,19 +779,19 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             />
                         )}
 
-                        {!isGridColSortFilterEnabled() && showOmniBox && (
-                            <div className="grid-panel__omnibox">
-                                <OmniBox
-                                    actions={Object.values(this.omniBoxActions)}
-                                    disabled={hasError || isLoading}
-                                    getColumns={this.getColumns}
-                                    getSelectDistinctOptions={this.getSelectDistinctOptions}
-                                    mergeValues={false}
-                                    onChange={this.omniBoxChange}
-                                    values={actionValues}
-                                />
-                            </div>
-                        )}
+                        {/*{showOmniBox && (*/}
+                        {/*    <div className="grid-panel__omnibox">*/}
+                        {/*        <OmniBox*/}
+                        {/*            actions={Object.values(this.omniBoxActions)}*/}
+                        {/*            disabled={hasError || isLoading}*/}
+                        {/*            getColumns={this.getColumns}*/}
+                        {/*            getSelectDistinctOptions={this.getSelectDistinctOptions}*/}
+                        {/*            mergeValues={false}*/}
+                        {/*            onChange={this.omniBoxChange}*/}
+                        {/*            values={actionValues}*/}
+                        {/*        />*/}
+                        {/*    </div>*/}
+                        {/*)}*/}
 
                         {(loadingMessage || allowSelections) && (
                             <div className="grid-panel__info">
@@ -805,7 +801,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                     </div>
                                 )}
                                 {allowSelections && <SelectionStatus model={model} actions={actions} />}
-                                {isGridColSortFilterEnabled() && showFilterStatus && (
+                                {showFilterStatus && (
                                     <FilterStatus
                                         actionValues={actionValues}
                                         onClick={this.showFilterModal}

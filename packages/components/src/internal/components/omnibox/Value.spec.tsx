@@ -125,7 +125,6 @@ describe('Value', () => {
     });
 
     test('showRemoveIcon for filter action', () => {
-        LABKEY.moduleContext.samplemanagement = { 'experimental-grid-col-header-sort-filter': true };
         const wrapper = mount(<Value {...DEFAULT_PROPS} actionValue={filterAction} />);
         validate(wrapper, false, false, false);
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
@@ -135,7 +134,6 @@ describe('Value', () => {
     });
 
     test('do not showRemoveIcon for view action', () => {
-        LABKEY.moduleContext.samplemanagement = { 'experimental-grid-col-header-sort-filter': true };
         const wrapper = mount(<Value {...DEFAULT_PROPS} actionValue={viewAction} />);
         validate(wrapper, false, false, false);
         expect(wrapper.find('.fa-table')).toHaveLength(1);

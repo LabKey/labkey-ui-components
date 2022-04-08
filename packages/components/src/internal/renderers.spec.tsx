@@ -54,12 +54,6 @@ describe('isFilterColumnNameMatch', () => {
 });
 
 describe('HeaderCellDropdown', () => {
-    beforeEach(() => {
-        LABKEY.moduleContext.samplemanagement = {
-            'experimental-grid-col-header-sort-filter': true,
-        };
-    });
-
     const DEFAULT_PROPS = {
         i: 0,
         column: new GridColumn({
@@ -167,15 +161,6 @@ describe('HeaderCellDropdown', () => {
             <HeaderCellDropdown {...DEFAULT_PROPS} handleSort={undefined} handleFilter={undefined} />
         );
         validate(wrapper, 0, 0);
-        wrapper.unmount();
-    });
-
-    test('experimental-grid-col-header-sort-filter disabled', () => {
-        LABKEY.moduleContext.samplemanagement = {
-            'experimental-grid-col-header-sort-filter': false,
-        };
-        const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} />);
-        validate(wrapper, 0, 2);
         wrapper.unmount();
     });
 

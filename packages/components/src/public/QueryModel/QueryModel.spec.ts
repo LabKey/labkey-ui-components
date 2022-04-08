@@ -224,9 +224,4 @@ describe('QueryModel', () => {
         expect(model.getSelectedIdsAsInts()[1]).toBe(3);
         expect(model.getSelectedIdsAsInts()[2]).toBe(2);
     });
-
-    // test("getColumn", () => {
-    //     let model = new QueryModel( {schemaQuery: SCHEMA_QUERY });
-    //     model.
-    // })
 });

@@ -6291,7 +6291,6 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             showFilterStatus={true}
             showFiltersButton={true}
             showHeader={true}
-            showOmniBox={false}
             showPagination={true}
             showSampleComparisonReports={false}
             showSearchInput={true}

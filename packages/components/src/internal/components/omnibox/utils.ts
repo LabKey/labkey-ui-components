@@ -4,8 +4,19 @@ import { Filter } from '@labkey/api';
 import { QueryColumn } from '../../..';
 
 import { ActionValue } from './actions/Action';
-import { Change, ChangeType } from './OmniBox';
 import { SearchAction } from './actions/Search';
+
+export enum ChangeType {
+    add = 'add',
+    remove = 'remove',
+    modify = 'modify',
+    none = 'none',
+}
+
+export interface Change {
+    type: ChangeType;
+    index?: number;
+}
 
 /**
  * From the supplied columnName this method will determine which columns in the "columns" list

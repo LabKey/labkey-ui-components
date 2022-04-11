@@ -4,12 +4,11 @@ import { Filter } from '@labkey/api';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { QuerySort } from '../../../public/QuerySort';
 
-import { removeActionValue, replaceSearchValue } from './utils';
+import { removeActionValue, replaceSearchValue, ChangeType } from './utils';
 import { FilterAction } from './actions/Filter';
 import { SearchAction } from './actions/Search';
 import { ViewAction } from './actions/View';
 import { SortAction } from './actions/Sort';
-import { ChangeType } from './OmniBox';
 
 const filterAction = {
     action: new FilterAction(

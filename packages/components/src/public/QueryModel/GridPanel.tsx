@@ -529,17 +529,17 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
      * @param actionValues: ActionValue[]
      * @param change: Change
      */
-    omniBoxChange = (actionValues: ActionValue[], change: Change): void => {
-        let keyword;
-
-        if (change.type === ChangeType.add || change.type === ChangeType.modify) {
-            keyword = actionValues[actionValues.length - 1].action.keyword;
-        } else {
-            keyword = this.state.actionValues[change.index]?.action.keyword;
-        }
-
-        this.omniBoxChangeHandlers[keyword]?.(actionValues, change);
-    };
+    // omniBoxChange = (actionValues: ActionValue[], change: Change): void => {
+    //     let keyword;
+    //
+    //     if (change.type === ChangeType.add || change.type === ChangeType.modify) {
+    //         keyword = actionValues[actionValues.length - 1].action.keyword;
+    //     } else {
+    //         keyword = this.state.actionValues[change.index]?.action.keyword;
+    //     }
+    //
+    //     this.omniBoxChangeHandlers[keyword]?.(actionValues, change);
+    // };
 
     /**
      * Handler called when the user clicks a filter action from the column dropdown menu.

@@ -1,4 +1,5 @@
 import { Filter } from '@labkey/api';
+
 import { GRID_CHECKBOX_OPTIONS, LoadingState, makeTestQueryModel, QueryInfo, QuerySort, SchemaQuery } from '../..';
 import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';

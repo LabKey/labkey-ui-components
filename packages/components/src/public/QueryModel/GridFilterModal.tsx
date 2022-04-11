@@ -52,8 +52,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
     const _onApply = useCallback(() => {
         const filterErrors = getFieldFiltersValidationResult({ [queryInfo.name.toLowerCase()]: filters });
         if (!filterErrors) {
-            const validFilters = validFieldFilters.map(fieldFilter => fieldFilter.filter);
-            onApply(validFilters);
+            onApply(validFieldFilters.map(fieldFilter => fieldFilter.filter));
         } else {
             setFilterError(filterErrors);
         }
@@ -67,14 +66,16 @@ export const GridFilterModal: FC<Props> = memo(props => {
             const updatedFilters = filters?.filter(fieldFilter => fieldFilter.fieldKey !== activeFieldKey) ?? [];
 
             if (newFilters) {
-                newFilters.forEach(newFilter => {
-                    updatedFilters.push({
-                        fieldKey: activeFieldKey,
-                        fieldCaption: field.caption,
-                        filter: newFilter,
-                        jsonType: field.getDisplayFieldJsonType(),
-                    } as FieldFilter);
-                });
+                newFilters
+                    ?.filter(newFilter => newFilter !== null)
+                    .forEach(newFilter => {
+                        updatedFilters.push({
+                            fieldKey: activeFieldKey,
+                            fieldCaption: field.caption,
+                            filter: newFilter,
+                            jsonType: field.getDisplayFieldJsonType(),
+                        } as FieldFilter);
+                    });
             }
 
             setFilters(updatedFilters);

@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ChangeEvent, ReactNode, FC, memo, useState, useCallback, useEffect } from 'react';
-import classNames from 'classnames';
+import React, { ChangeEvent, ReactNode, FC, memo, useState, useCallback, useEffect, useRef } from 'react';
 import { OrderedMap, Map } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
@@ -44,10 +43,11 @@ interface HeaderCellDropdownProps {
 
 // exported for jest testing
 export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
-    const { i, column, selectable, columnCount, handleSort, handleFilter, headerClickCount, model } = props;
+    const { i, column, handleSort, handleFilter, headerClickCount, model } = props;
     const col: QueryColumn = column.raw;
     const gridColSortFilterEnabled = isGridColSortFilterEnabled();
     const [open, setOpen] = useState<boolean>();
+    const wrapperEl = useRef<HTMLSpanElement>();
 
     const allowColSort = handleSort && col?.sortable;
     const allowColFilter = handleFilter && col?.filterable;
@@ -86,10 +86,26 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         if (headerClickCount) setOpen(true);
     }, [headerClickCount]);
 
+    useEffect(() => {
+        if (open) {
+            // Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
+            // (see related SCSS in query-model.scss)
+            if (wrapperEl.current) {
+                const menuEl = wrapperEl.current.querySelector<HTMLElement>('.dropdown-menu');
+                if (menuEl) {
+                    const headerRect = wrapperEl.current.parentElement.getBoundingClientRect();
+                    const menuRect = menuEl.getBoundingClientRect();
+                    Object.assign(menuEl.style, {
+                        top: headerRect.y + headerRect.height + 'px',
+                        left: headerRect.x + headerRect.width - menuRect.width + 'px',
+                    });
+                }
+            }
+        }
+    }, [open]);
+
     if (!col) return null;
 
-    const isOnlyColumn =
-        columnCount !== undefined && ((selectable && columnCount === 2) || (!selectable && columnCount === 1));
     const colQuerySortDir = model?.sorts?.find(sort => sort.get('fieldKey') === col.resolveFieldKey())?.get('dir');
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
@@ -118,15 +134,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 )}
             </span>
             {includeDropdown && (
-                <span className={classNames({ 'pull-right': (i === 0 && !selectable) || (selectable && i === 1) })}>
-                    <Dropdown
-                        id={`grid-menu-${i}`}
-                        className={classNames({
-                            'pull-right': isOnlyColumn || (i > 0 && !selectable) || i > 1,
-                        })}
-                        onToggle={onToggleClick}
-                        open={open}
-                    >
+                <span className="pull-right" ref={wrapperEl}>
+                    <Dropdown id={`grid-menu-${i}`} onToggle={onToggleClick} open={open}>
                         <CustomToggle bsRole="toggle">
                             <span className="fa fa-chevron-circle-down grid-panel__menu-toggle" />
                         </CustomToggle>

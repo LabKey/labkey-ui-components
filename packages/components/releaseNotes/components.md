@@ -1,6 +1,39 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.152.1
+*Released*: 11 April 2022
+* Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
+* Issue 45135: grid filter modal Choose Values should include model/context filters (baseFilters or queryInfo filters)
+
+### version 2.152.0
+*Released*: 8 April 2022
+* Item 10213: New grid filtering UX - Support other filter types
+  * Add LabKey sql util for other filter types
+  * Show OntologyBrowserFilterPanel in FilterExpressionView
+
+### version 2.151.0
+*Released*: 8 April 2022
+* Improve SelectRows endpoint wrapper
+    * Options/arguments are now fully typed.
+    * Continues to retrieve the associated `QueryInfo` from `query-getQueryDetails.api`. Rejection/errors are now handled solely by `getQueryDetails()`.
+    * Continues to resolve application URLs via `URLResolver.resolveSelectRows()`.
+    * No longer wraps `Query.executeSql`.
+    * Requires a `schemaQuery: SchemaQuery` argument instead of separate `schemaName` and `queryName` arguments.
+    * Remove `caller` argument as paradigm is not necessary to support.
+    * The `containerFilter` argument defaults to value returned from `getContainerFilter()` (unchanged from `selectRowsDeprecated`).
+    * The `method` argument defaults to `POST` (unchanged from `selectRowsDeprecated`).
+    * The `columns` argument defaults to `'*'` (unchanged from `selectRowsDeprecated`).
+
+### version 2.150.0
+*Released*: 7 April 2022
+* Item 10223: GridPanel updates for search input and filter display in grid header
+    * add SearchBox component and display in GridPanel header bar
+    * add Filters button to GridPanel header to open the GridFilterModal
+    * display the view, filter, and search grid action values in the grid info section (previously displayed in the OmniBox input)
+    * add "Remove all" option to the end of the filter pill display if > 1 present
+    * hide omnibox when experimental feature is enabled
+
 ### version 2.149.6
 *Released*: 4 April 2022
 * Remove QueryGridPanel and related components and action/util functions

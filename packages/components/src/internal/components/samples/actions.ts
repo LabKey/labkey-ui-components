@@ -42,7 +42,7 @@ import {
     SampleTypeDataType,
     SchemaQuery,
     SCHEMAS,
-    selectRows,
+    selectRowsDeprecated,
     SHARED_CONTAINER_PATH,
     UNIQUE_ID_FIND_FIELD,
     updateRows,
@@ -70,7 +70,7 @@ export function initSampleSetSelects(
 
     // Get Sample Types
     promises.push(
-        selectRows({
+        selectRowsDeprecated({
             containerPath,
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
@@ -82,7 +82,7 @@ export function initSampleSetSelects(
     // Get Data Classes
     if (includeDataClasses) {
         promises.push(
-            selectRows({
+            selectRowsDeprecated({
                 containerPath,
                 schemaName: SCHEMAS.EXP_TABLES.DATA_CLASSES.schemaName,
                 queryName: SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName,
@@ -155,7 +155,7 @@ export function fetchSamples(
     displayValueKey: string,
     valueKey: string
 ): Promise<OrderedMap<any, any>> {
-    return selectRows({
+    return selectRowsDeprecated({
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,
         columns: ['RowId', displayValueKey, valueKey],
@@ -268,7 +268,7 @@ function getFilteredSampleSelection(
     }
 
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             queryName: sampleType,
             columns: 'RowId',
@@ -299,7 +299,7 @@ export function getSampleSelectionStorageData(selection: List<any>): Promise<Rec
     }
 
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             schemaName: 'inventory',
             queryName: 'ItemSamples',
             columns: 'RowId, SampleId, StoredAmount',
@@ -328,7 +328,7 @@ export function getSampleSelectionStorageData(selection: List<any>): Promise<Rec
 
 export function getSampleStorageId(sampleRowId: number): Promise<number> {
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             schemaName: 'inventory',
             queryName: 'ItemSamples',
             columns: 'RowId, SampleId',
@@ -357,7 +357,7 @@ export function getSampleSelectionLineageData(
     }
 
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             queryName: sampleType,
             columns: columns ?? List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
@@ -454,7 +454,7 @@ function getParentRowIdAndDataType(
     containerPath?: string
 ): Promise<Record<string, ParentIdData>> {
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             containerPath,
             schemaName: parentDataType.listingSchemaQuery.schemaName,
             queryName: parentDataType.listingSchemaQuery.queryName,
@@ -843,7 +843,7 @@ export function getSampleStatuses(): Promise<SampleState[]> {
 
 export function getSampleTypeRowId(name: string): Promise<number> {
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
             columns: 'RowId,Name',
@@ -863,7 +863,7 @@ export function getSampleTypeRowId(name: string): Promise<number> {
 
 export function getSampleTypes(): Promise<Array<{ id: number; label: string }>> {
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
             sort: 'Name',

@@ -11,12 +11,14 @@
 }
 
 .button-bar__section > *:not(:first-child) {
-    margin-left: 1em;
+    margin-left: 12px;
 }
 
 .grid-panel__info {
-    min-height: 22px; /* Prevents grid from jumping when pages are loading */
+    min-height: 49px; /* Prevents grid from jumping when pages are loading */
     display: flex;
+    border-top: solid 1px $gray-border-light;
+    padding-top: 12px;
 }
 
 .pagination-info {
@@ -26,13 +28,20 @@
 .grid-panel__info,
 .grid-panel__grid,
 .grid-panel__omnibox {
-    margin-top: 1em;
+    margin-top: 12px;
 }
 .export-menu-icon {
     margin-right: 0.5em;
 }
+.selection-status {
+    margin-top: 5px;
+}
 .selection-status > span {
-    margin-right: 1em;
+    margin-right: 8px;
+}
+.grid-panel__loading {
+    margin-top: 5px;
+    margin-right: 8px;
 }
 
 .grid-panel__col-header-icon {
@@ -48,4 +57,106 @@
 .grid-panel__menu-toggle {
     color: $light-gray;
     fontSize: 12px;
+}
+
+.grid-panel__search-form {
+    height: 34px;
+    min-width: 85px;
+
+    .grid-panel__search-icon {
+        position: absolute;
+        margin: 9px 0 0 5px;
+        color: $gray-light;
+    }
+
+    .grid-panel__remove-icon {
+        position: relative;
+        float: right;
+        top: -25px;
+        right: 5px;
+        cursor: pointer;
+    }
+
+    .grid-panel__search-input {
+        padding: 7px 22px;
+    }
+}
+
+.grid-panel__button {
+    height: 34px;
+}
+
+.grid-panel__filter-status {
+    .OmniBox-value {
+        display: inline-block;
+        white-space: pre;
+        max-width: 400px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        line-height: 16px;
+        margin-right: 8px;
+        padding: 8px 8px 8px 32px;
+        color: $omnibox-item-color;
+        background-color: $omnibox-item-bg;
+        border-radius: 2px;
+        border: 1px solid $omnibox-item-border-color;
+
+        i.read-lock {
+            padding-right: 6px;
+            vertical-align: middle;
+        }
+
+        i.symbol {
+            color: $omnibox-item-color;
+            width: 23px;
+            height: 14px;
+            margin-right: 8px;
+            margin-left: -25px;
+            border-right: solid 1px $omnibox-item-border-color;
+        }
+
+        &:hover,
+        &:focus {
+            background-color: $omnibox-item-hover-bg;
+        }
+        &:active {
+            background-color: $omnibox-item-border-color;
+        }
+
+        &.is-disabled {
+            background-color: $omnibox-item-disabled-bg;
+            border: 1px solid $omnibox-item-disabled-border-color;
+            color: $omnibox-item-disabled-color;
+
+            i.symbol {
+                color: $omnibox-item-disabled-color;
+                border-color: $omnibox-item-disabled-border-color;
+            }
+
+            &:hover,
+            &:focus {
+                background-color: $omnibox-item-disabled-bg;
+            }
+            &:active {
+                background-color: $omnibox-item-disabled-bg;
+            }
+        }
+    }
+
+    .remove-all-filters {
+        display: inline-block;
+        vertical-align: top;
+        top: 0;
+        padding-top: 8px;
+        cursor: pointer;
+    }
+}
+
+// Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
+.grid-panel .grid-header-cell .dropdown-menu {
+    position: fixed;
+    top: auto;
+    left: auto;
+    right: auto;
 }

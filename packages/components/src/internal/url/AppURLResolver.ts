@@ -88,47 +88,44 @@ export class AssayRunResolver implements AppRouteResolver {
         return /\/rd\/assayrun\/(\d+$|\d+\/)/.test(route);
     }
 
-    fetch(parts: any[]): Promise<AppURL | boolean> {
+    async fetch(parts: any[]): Promise<AppURL | boolean> {
         // ["rd", "assayrun", "543", ...]
         const assayRunIdIndex = 2;
         const assayRunId: number = parseInt(parts[assayRunIdIndex], 10);
 
         if (isNaN(assayRunId)) {
-            return Promise.resolve(true);
+            // skip it
+            return true;
         } else if (this.datas.has(assayRunId)) {
+            // resolve it
             const newParts = ['assays', this.datas.get(assayRunId), 'runs'];
-            return Promise.resolve(spliceURL(parts, newParts, 0, assayRunIdIndex));
-        } else {
-            return new Promise(resolve => {
-                return selectRows({
-                    schemaName: SCHEMAS.EXP_TABLES.ASSAY_RUNS.schemaName,
-                    queryName: SCHEMAS.EXP_TABLES.ASSAY_RUNS.queryName,
-                    columns: 'RowId,Protocol/RowId',
-                    filterArray: [Filter.create('RowId', assayRunId)],
-                })
-                    .then(result => {
-                        const entries = result.orderedModels[result.key];
-
-                        if (entries.size === 1) {
-                            const data = result.models[result.key][entries.first()];
-                            const assayProtocolId = data['Protocol/RowId']['value'];
-
-                            // cache
-                            this.datas.set(assayRunId, assayProtocolId);
-
-                            const newParts = ['assays', assayProtocolId, 'runs'];
-                            return resolve(spliceURL(parts, newParts, 0, assayRunIdIndex));
-                        }
-
-                        // skip it
-                        resolve(true);
-                    })
-                    .catch(() => {
-                        // skip it
-                        resolve(true);
-                    });
-            });
+            return spliceURL(parts, newParts, 0, assayRunIdIndex);
         }
+
+        // fetch it
+        try {
+            const result = await selectRows({
+                columns: 'RowId,Protocol/RowId',
+                filterArray: [Filter.create('RowId', assayRunId)],
+                schemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUNS,
+            });
+
+            if (result.rows.length === 1) {
+                const assayProtocolId = caseInsensitive(result.rows[0], 'Protocol/RowId').value;
+
+                // cache
+                this.datas.set(assayRunId, assayProtocolId);
+
+                // resolve it
+                const newParts = ['assays', assayProtocolId, 'runs'];
+                return spliceURL(parts, newParts, 0, assayRunIdIndex);
+            }
+        } catch (e) {
+            // skip it
+        }
+
+        // skip it
+        return true;
     }
 }
 
@@ -182,15 +179,14 @@ export class ListResolver implements AppRouteResolver {
         // fetch it
         try {
             const result = await selectRows({
-                schemaName: SCHEMAS.LIST_METADATA_TABLES.LIST_MANAGER.schemaName,
-                queryName: SCHEMAS.LIST_METADATA_TABLES.LIST_MANAGER.queryName,
+                schemaQuery: SCHEMAS.LIST_METADATA_TABLES.LIST_MANAGER,
                 columns: 'ListId,Name,Container/Path',
             });
 
             this.fetched = true;
 
             // fulfill local cache
-            this.lists = Object.values(result.models[result.key])
+            this.lists = result.rows
                 .reduce<Map<string, string>>((map, list) => {
                     const _containerPath = caseInsensitive(list, 'Container/Path').value.toLowerCase();
                     const _listId = caseInsensitive(list, 'ListId').value;
@@ -231,81 +227,63 @@ export class SamplesResolver implements AppRouteResolver {
         return /\/rd\/samples\/(\d+$|\d+\/)/.test(route);
     }
 
-    fetch(parts: any[]): Promise<AppURL | boolean> {
+    async fetch(parts: any[]): Promise<AppURL | boolean> {
         // ["rd", "samples", "118", ...]
         const sampleRowIdIndex = 2;
         const sampleRowId: number = parseInt(parts[sampleRowIdIndex], 10);
 
         if (isNaN(sampleRowId)) {
             // skip it
-            return Promise.resolve(true);
+            return true;
         } else if (this.samples.has(sampleRowId)) {
             // resolve it
             const newParts = this.samples.get(sampleRowId).toArray();
-            return Promise.resolve(spliceURL(parts, newParts, 0, 2));
-        } else {
-            // fetch it
-            return new Promise(resolve => {
-                return selectRows({
-                    schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
-                    queryName: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
-                    columns: 'RowId,SampleSet',
-                    filterArray: [Filter.create('RowId', sampleRowId)],
-                })
-                    .then(result => {
-                        const samples = result.models[result.key];
-
-                        if (samples && samples[sampleRowId]) {
-                            const sample = samples[sampleRowId],
-                                sampleSetName = sample['SampleSet'].displayValue.toLowerCase();
-
-                            return getQueryDetails({
-                                schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-                                queryName: sampleSetName,
-                            })
-                                .then(info => {
-                                    if (info) {
-                                        if (info.isMedia) {
-                                            // for supporting MIXTURE_BATCHES => mixturebatches
-                                            this.samples = this.samples.set(
-                                                sampleRowId,
-                                                List([
-                                                    'media',
-                                                    info.name.toLowerCase() ===
-                                                    SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase()
-                                                        ? 'mixturebatches'
-                                                        : info.name,
-                                                ])
-                                            );
-                                        } else {
-                                            this.samples = this.samples.set(
-                                                sampleRowId,
-                                                List([
-                                                    SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase(),
-                                                    encodeURIComponent(sampleSetName),
-                                                ])
-                                            );
-                                        }
-                                    }
-
-                                    if (this.samples.has(sampleRowId)) {
-                                        const newParts = this.samples.get(sampleRowId).toArray();
-                                        return resolve(spliceURL(parts, newParts, 0, 2));
-                                    }
-                                })
-                                .catch(() => {
-                                    resolve(true);
-                                });
-                        }
-
-                        // skip it
-                        return resolve(true);
-                    })
-                    .catch(() => {
-                        return resolve(true);
-                    });
-            });
+            return spliceURL(parts, newParts, 0, 2);
         }
+
+        // fetch it
+        try {
+            const result = await selectRows({
+                schemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
+                columns: 'RowId,SampleSet',
+                filterArray: [Filter.create('RowId', sampleRowId)],
+            });
+
+            if (result.rows.length === 1) {
+                const sampleTypeName = caseInsensitive(result.rows[0], 'SampleSet').displayValue.toLowerCase();
+
+                const info = await getQueryDetails({
+                    schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                    queryName: sampleTypeName,
+                });
+
+                // fulfill cache
+                let value: List<string>;
+                if (info?.isMedia) {
+                    // for supporting MIXTURE_BATCHES => mixturebatches
+                    const mediaTypeName =
+                        info.name.toLowerCase() === SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase()
+                            ? 'mixturebatches'
+                            : info.name;
+                    value = List(['media', encodeURIComponent(mediaTypeName)]);
+                } else {
+                    value = List([SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase(), encodeURIComponent(sampleTypeName)]);
+                }
+
+                this.samples = this.samples.set(sampleRowId, value);
+
+                if (this.samples.has(sampleRowId)) {
+                    // resolve it
+                    const newParts = this.samples.get(sampleRowId).toArray();
+                    return spliceURL(parts, newParts, 0, 2);
+                }
+            }
+        } catch (e) {
+            // skip it
+        }
+
+        // skip it
+        return true;
     }
 }
 
@@ -338,25 +316,26 @@ export class ExperimentRunResolver implements AppRouteResolver {
             return true;
         }
         if (this.jobs.has(rowId)) {
+            // resolve it
             return AppURL.create('workflow', rowId);
         }
         try {
             const result = await selectRows({
-                schemaName: SAMPLE_MANAGEMENT.JOBS.schemaName,
-                queryName: SAMPLE_MANAGEMENT.JOBS.queryName,
+                schemaQuery: SAMPLE_MANAGEMENT.JOBS,
                 filterArray: [Filter.create('RowId', rowId)],
                 columns: 'RowId',
             });
 
-            if (Object.keys(result.models[result.key]).length) {
+            if (result.rows.length > 0) {
+                // resolve it
                 this.jobs.add(rowId);
                 return AppURL.create('workflow', rowId);
             }
-            // skip it
         } catch (e) {
             // skip it
         }
 
+        // skip it
         return true;
     }
 

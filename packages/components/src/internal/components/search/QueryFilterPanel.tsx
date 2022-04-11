@@ -38,7 +38,7 @@ interface Props {
     metricFeatureArea?: string;
     onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
     queryInfo: QueryInfo;
-    selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
+    selectDistinctOptions?: Query.SelectDistinctOptions;
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
@@ -163,7 +163,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     const fieldDistinctValueFilters = useMemo(() => {
         if (!filters || !queryName || !activeField) return null;
 
-        const valueFilters = [];
+        // Issue 45135: include any model filters (baseFilters or queryInfo filters)
+        const valueFilters = selectDistinctOptions ? [...selectDistinctOptions.filterArray] : [];
 
         // use active filters to filter distinct values, but exclude filters on current field
         filters?.[queryName]?.forEach(field => {
@@ -171,7 +172,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         });
 
         return valueFilters;
-    }, [filters, queryName, activeField, activeFieldKey]);
+    }, [filters, queryName, activeField, activeFieldKey, selectDistinctOptions]);
 
     const onFieldClick = useCallback((queryColumn: QueryColumn) => {
         setActiveField(queryColumn);
@@ -264,10 +265,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                     schemaName: queryInfo.schemaName,
                                                     queryName,
                                                     viewName,
-                                                    // Issue 45135: this doesn't seem right for the cases like the SM
-                                                    // source samples grid which has a model filter for the source ID
-                                                    // which is getting overridden here. Try using
-                                                    // selectDistinctOptions.filterArray from props in fieldDistinctValueFilters
                                                     filterArray: fieldDistinctValueFilters,
                                                 }}
                                                 fieldFilters={currentFieldFilters?.map(filter => filter.filter)}

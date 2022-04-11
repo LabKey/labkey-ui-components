@@ -6325,6 +6325,16 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                       </span>
                     </LoadingSpinner>
                   </div>
+                  <Memo()
+                    actionValues={Array []}
+                    onClick={[Function]}
+                    onRemove={[Function]}
+                    onRemoveAll={[Function]}
+                  >
+                    <div
+                      className="grid-panel__filter-status"
+                    />
+                  </Memo()>
                 </div>
                 <div
                   className="grid-panel__grid"

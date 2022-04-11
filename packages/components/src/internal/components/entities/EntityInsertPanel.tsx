@@ -513,7 +513,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             }
         );
 
-        this.props.onTargetChange?.(selectedOption.value);
+        this.props.onTargetChange?.(selectedOption?.value);
     };
 
     addParent = (queryName: string): void => {

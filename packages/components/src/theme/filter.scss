@@ -126,6 +126,12 @@
 
 .filter-expression__input-select {
     width: 75%;
+
+    // Issue 45139
+    .select-input__menu-portal {
+        top: auto;
+        left: auto;
+    }
 }
 
 .filter-cards__card {

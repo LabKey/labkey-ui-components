@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD April 2022
 * Item 10253: Remove experimental feature to officially switch to new Grid Filtering UX changes
 
+### version 2.152.1
+*Released*: 11 April 2022
+* Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
+* Issue 45135: grid filter modal Choose Values should include model/context filters (baseFilters or queryInfo filters)
+
 ### version 2.152.0
 *Released*: 8 April 2022
 * Item 10213: New grid filtering UX - Support other filter types

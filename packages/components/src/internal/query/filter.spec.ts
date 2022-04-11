@@ -70,16 +70,16 @@ describe('getLabKeySql', () => {
     });
 
     test('eq, string, with comma in field name', () => {
-        const fieldName = "With$CCom$Cma";
+        const fieldName = 'With$CCom$Cma';
         expect(getLabKeySql(Filter.create(fieldName, 'ABC', Filter.Types.Equals), 'string')).toEqual(
-            "\"With,Com,ma\" = 'ABC'"
+            '"With,Com,ma" = \'ABC\''
         );
     });
 
     test('eq, string, with other special characters in field name', () => {
-        const fieldName = "Part$D1/Special$S$A$B$T$PChars";
+        const fieldName = 'Part$D1/Special$S$A$B$T$PChars';
         expect(getLabKeySql(Filter.create(fieldName, 'ABC', Filter.Types.Equals), 'string')).toEqual(
-            "\"Part$1\".\"Special/&}~.Chars\" = 'ABC'"
+            '"Part$1"."Special/&}~.Chars" = \'ABC\''
         );
     });
 

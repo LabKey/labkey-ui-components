@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD April 2022
 * Item 10253: Remove experimental feature to officially switch to new Grid Filtering UX changes
   * remove OmniBox.tsx and related tests, helpers, scss, etc. (moving the items still in use to GridPanel dir)
+  * remove react-input-autosize dependency
 
 ### version 2.152.1
 *Released*: 11 April 2022

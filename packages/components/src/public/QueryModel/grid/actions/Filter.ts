@@ -167,7 +167,7 @@ export class FilterAction implements Action {
         filterType: Filter.IFilterType,
         rawValue: string | string[]
     ): { displayValue: string; isReadOnly: boolean; inputValue: string } {
-        let isReadOnly = false;
+        const isReadOnly = false;
 
         let value: string, inputValue: string;
         const displayParts = [decodePart(columnName), resolveSymbol(filterType)];

@@ -3,11 +3,12 @@ import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
+import { QueryInfo } from '../QueryInfo';
+
 import { Value } from './grid/Value';
 import { SearchAction } from './grid/actions/Search';
 import { ViewAction } from './grid/actions/View';
 import { FilterAction } from './grid/actions/Filter';
-import { QueryInfo } from '../QueryInfo';
 
 import { FilterStatus } from './FilterStatus';
 

@@ -1,20 +1,21 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { FormControl } from 'react-bootstrap';
+import { Dropdown, FormControl } from 'react-bootstrap';
 
 import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
-import { App, formatDateTime, parseDate } from '../../../index';
+import { App, formatDateTime, OntologyBrowserFilterPanel, parseDate } from '../../..';
 
-import { JsonType } from '../domainproperties/PropDescType';
 import { formatDate, isDateTimeCol } from '../../util/Date';
+
+import { isOntologyEnabled } from '../../app/utils';
 
 import {
     getFilterSelections,
     getFilterTypePlaceHolder,
-    getSampleFinderFilterOptionsForType,
+    getFilterOptionsForType,
     getUpdatedFilters,
     getUpdatedFilterSelection,
 } from './utils';
@@ -24,17 +25,19 @@ interface Props {
     field: QueryColumn;
     fieldFilters: Filter.IFilter[];
     onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index: number) => void;
+    filterTypesToExclude?: string[];
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { field, fieldFilters, onFieldFilterUpdate } = props;
+    const { field, fieldFilters, onFieldFilterUpdate, filterTypesToExclude } = props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
     const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);
     const [removeFilterCount, setRemoveFilterCount] = useState<number>(0);
+    const [expandedOntologyKey, setExpandedOntologyKey] = useState<string>(undefined);
 
     useEffect(() => {
-        const filterOptions = getSampleFinderFilterOptionsForType(field?.getDisplayFieldJsonType() as JsonType);
+        const filterOptions = getFilterOptionsForType(field, filterTypesToExclude);
         setFieldFilterOptions(filterOptions);
         setActiveFilters(getFilterSelections(fieldFilters, filterOptions));
     }, [field]); // leave fieldFilters out of deps list, fieldFilters is used to init once
@@ -118,6 +121,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
             updateFilter(filterIndex, newActiveFilterType, filterSelection.firstFilterValue, false, shouldClear);
             updateActiveFilters(filterIndex, filterSelection);
+            setExpandedOntologyKey(undefined);
         },
         [fieldFilterOptions, activeFilters]
     );
@@ -166,8 +170,34 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         [activeFilters]
     );
 
+    const updateOntologyFieldValue = useCallback(
+        (filterIndex: number, newValue: string, isSecondInput?: boolean) => {
+            const update: Partial<FilterSelection> = {};
+            if (isSecondInput) {
+                update.secondFilterValue = newValue;
+            } else {
+                update.firstFilterValue = newValue;
+            }
+
+            updateFilter(filterIndex, activeFilters[filterIndex]?.filterType, newValue, isSecondInput);
+            updateActiveFilters(filterIndex, update);
+        },
+        [activeFilters]
+    );
+
+    const onOntologyFilterExpand = useCallback((ontologyBrowserKey: string, expand: boolean) => {
+        if (!expand) setExpandedOntologyKey(undefined);
+        else setExpandedOntologyKey(ontologyBrowserKey);
+    }, []);
+
     const renderFilterInput = useCallback(
-        (placeholder: string, filterIndex: number, isMultiValueInput?: boolean, isSecondInput?: boolean) => {
+        (
+            placeholder: string,
+            filterIndex: number,
+            isMultiValueInput?: boolean,
+            isSecondInput?: boolean,
+            expandedOntologyKey?: string
+        ) => {
             const { filterType, firstFilterValue, secondFilterValue } = activeFilters[filterIndex];
             if (!filterType || !filterType.valueRequired) return null;
 
@@ -175,6 +205,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const valueRaw = isSecondInput ? secondFilterValue : firstFilterValue;
 
             const jsonType = field.getDisplayFieldJsonType();
+            const isConceptColumn = field.isConceptCodeColumn && isOntologyEnabled();
+
             if (jsonType === 'date') {
                 const showTimeStamp = isDateTimeCol(field);
                 return (
@@ -239,7 +271,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 );
             }
 
-            return (
+            const textInput = (
                 <input
                     className="form-control filter-expression__input"
                     name={'field-value-text' + suffix}
@@ -250,6 +282,40 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     required
                 />
             );
+
+            if (isConceptColumn) {
+                const ontologyBrowserKey = filterIndex + '-' + (isSecondInput ? '2' : '1');
+                const expanded = expandedOntologyKey === ontologyBrowserKey;
+                return (
+                    <div>
+                        {textInput}
+                        <Dropdown
+                            className="ontology-browser__menu"
+                            componentClass="div"
+                            id="ontology-browser__menu"
+                            onToggle={() => onOntologyFilterExpand(ontologyBrowserKey, !expanded)}
+                            open={expanded}
+                        >
+                            <Dropdown.Toggle useAnchor={true}>
+                                <span>{expanded ? 'Close Browser' : `Find ${field.caption} By Tree`}</span>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <OntologyBrowserFilterPanel
+                                    ontologyId={field.sourceOntology}
+                                    conceptSubtree={field.conceptSubtree}
+                                    filterValue={valueRaw}
+                                    filterType={Filter.getFilterTypeForURLSuffix(filterType.value)}
+                                    onFilterChange={filterValue =>
+                                        updateOntologyFieldValue(filterIndex, filterValue, isSecondInput)
+                                    }
+                                />
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>
+                );
+            }
+
+            return textInput;
         },
         [field, activeFilters]
     );
@@ -265,17 +331,18 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const isMultiValueInput = filterType.value === 'in' || filterType.value === 'notin';
             const placeholder = getFilterTypePlaceHolder(filterType.value, field.getDisplayFieldJsonType());
 
-            if (!isBetweenOperator) return renderFilterInput(placeholder, filterIndex, isMultiValueInput);
+            if (!isBetweenOperator)
+                return renderFilterInput(placeholder, filterIndex, isMultiValueInput, false, expandedOntologyKey);
 
             return (
                 <>
-                    {renderFilterInput(placeholder, filterIndex, isMultiValueInput)}
+                    {renderFilterInput(placeholder, filterIndex, isMultiValueInput, false, expandedOntologyKey)}
                     <div className="filter-expression__and-op">and</div>
-                    {renderFilterInput(placeholder, filterIndex, isMultiValueInput, true)}
+                    {renderFilterInput(placeholder, filterIndex, isMultiValueInput, true, expandedOntologyKey)}
                 </>
             );
         },
-        [field, activeFilters]
+        [field, activeFilters, expandedOntologyKey]
     );
 
     const shouldShowSecondFilter = useCallback((): boolean => {
@@ -291,7 +358,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     }, [activeFilters]);
 
     return (
-        <>
+        <div className="filter-expression__panel">
             <SelectInput
                 key={'filter-expression-field-filter-type-' + removeFilterCount} // we need to recreate this component when a filter is removed
                 name="filter-expression-field-filter-type"
@@ -319,10 +386,11 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                             onFieldFilterTypeChange(fieldname, filterUrlSuffix, 1)
                         }
                         options={unusedFilterOptions(1)}
+                        menuPosition="fixed"
                     />
                     {renderFilterTypeInputs(1)}
                 </>
             )}
-        </>
+        </div>
     );
 });

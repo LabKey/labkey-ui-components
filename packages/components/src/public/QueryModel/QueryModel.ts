@@ -435,13 +435,8 @@ export class QueryModel {
         return this.baseFilters.filter(filter => filter.getColumnName().toLowerCase() === 'replaced');
     }
 
-    /**
-     * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html) objects
-     * for the QueryModel. If a keyValue is provided, this will be a filter on the primary key column concatenated with
-     * the detailFilters. Otherwise, this will be a concatenation of the baseFilters, filterArray, and [[QueryInfo]] view filters.
-     */
-    get filters(): Filter.IFilter[] {
-        const { baseFilters, filterArray, queryInfo, keyValue, viewName } = this;
+    get modelFilters(): Filter.IFilter[] {
+        const { baseFilters, queryInfo, keyValue, viewName } = this;
 
         if (!queryInfo) {
             // Throw an error because this method is only used when making an API request, and if we don't have a
@@ -464,7 +459,20 @@ export class QueryModel {
             return [...pkFilter, ...this.detailFilters];
         }
 
-        return [...baseFilters, ...filterArray, ...queryInfo.getFilters(viewName).toArray()];
+        return [...baseFilters, ...queryInfo.getFilters(viewName).toArray()];
+    }
+
+    /**
+     * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html) objects
+     * for the QueryModel. If a keyValue is provided, this will be a filter on the primary key column concatenated with
+     * the detailFilters. Otherwise, this will be a concatenation of the baseFilters, filterArray, and [[QueryInfo]] view filters.
+     */
+    get filters(): Filter.IFilter[] {
+        const modelFilters = this.modelFilters;
+
+        if (this.keyValue !== undefined) return modelFilters;
+
+        return [...modelFilters, ...this.filterArray];
     }
 
     /**
@@ -617,14 +625,15 @@ export class QueryModel {
         // First find all possible matches by name/lookup
         const columns = allColumns.filter(queryColumn => {
             if (isLookup && queryColumn.isLookup()) {
-                return lowered.split('/')[0] === queryColumn.name.toLowerCase();
+                return queryColumn.name.toLowerCase() === lowered
+                    || queryColumn.displayField?.toLowerCase() === lowered;
             }
 
             return queryColumn.name.toLowerCase() === lowered;
         });
 
         // Use exact match first, else first possible match
-        let column = columns.find(c => c.name.toLowerCase() === lowered);
+        let column = columns.find(c => c.name.toLowerCase() === lowered || c.displayField?.toLowerCase() === lowered);
         if (column === undefined && columns.length > 0) {
             column = columns[0];
         }

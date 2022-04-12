@@ -152,3 +152,11 @@
         cursor: pointer;
     }
 }
+
+// Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
+.grid-panel .grid-header-cell .dropdown-menu {
+    position: fixed;
+    top: auto;
+    left: auto;
+    right: auto;
+}

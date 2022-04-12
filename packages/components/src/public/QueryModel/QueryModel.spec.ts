@@ -1,4 +1,6 @@
-import { GRID_CHECKBOX_OPTIONS, LoadingState, QueryInfo, QuerySort, SchemaQuery } from '../..';
+import { Filter } from '@labkey/api';
+
+import { GRID_CHECKBOX_OPTIONS, LoadingState, makeTestQueryModel, QueryInfo, QuerySort, SchemaQuery } from '../..';
 import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 
@@ -129,6 +131,13 @@ describe('QueryModel', () => {
             cols.get('extratestcolumn'),
         ];
         expect(model.displayColumns).toEqual(expectedDisplayCols);
+        // test that column retrieval is not case-sensitive
+        expect(model.getColumn("mixturetypeId")).toStrictEqual(cols.get('mixturetypeid'));
+        expect(model.getColumn("mixtureTypeId")).toStrictEqual(cols.get('mixturetypeid'));
+        // test that retrieval of lookup columns works
+        expect(model.getColumn("CreatedBy")).toStrictEqual(cols.get('createdby'));
+        expect(model.getColumn("DataClass")).toStrictEqual(cols.get('dataclass'));
+        expect(model.getColumn("DataClass/Name")).toStrictEqual(cols.get('dataclass'));
 
         // Change view to noExtraColumn which should change our expected columns.
         model = model.mutate({
@@ -216,5 +225,27 @@ describe('QueryModel', () => {
         expect(model.getSelectedIdsAsInts()[0]).toBe(1);
         expect(model.getSelectedIdsAsInts()[1]).toBe(3);
         expect(model.getSelectedIdsAsInts()[2]).toBe(2);
+    });
+
+    test('filters', () => {
+        const model = makeTestQueryModel(SCHEMA_QUERY, new QueryInfo()).mutate({
+            baseFilters: [
+                Filter.create('a', null, Filter.Types.ISBLANK),
+                Filter.create('replaced', null, Filter.Types.ISBLANK),
+            ],
+            filterArray: [Filter.create('b', null, Filter.Types.ISBLANK)],
+        });
+
+        expect(model.filters).toHaveLength(3);
+        expect(model.filters[0].getColumnName()).toBe('a');
+        expect(model.filters[1].getColumnName()).toBe('replaced');
+        expect(model.filters[2].getColumnName()).toBe('b');
+
+        expect(model.modelFilters).toHaveLength(2);
+        expect(model.modelFilters[0].getColumnName()).toBe('a');
+        expect(model.modelFilters[1].getColumnName()).toBe('replaced');
+
+        expect(model.detailFilters).toHaveLength(1);
+        expect(model.detailFilters[0].getColumnName()).toBe('replaced');
     });
 });

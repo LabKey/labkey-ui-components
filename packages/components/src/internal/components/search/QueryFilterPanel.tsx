@@ -12,12 +12,12 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
-
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 enum FieldFilterTabs {
     Filter = 'Filter',
@@ -38,10 +38,11 @@ interface Props {
     metricFeatureArea?: string;
     onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
     queryInfo: QueryInfo;
-    selectDistinctOptions?: Partial<Query.SelectDistinctOptions>;
+    selectDistinctOptions?: Query.SelectDistinctOptions;
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
+    filterTypesToExclude?: string[];
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
@@ -59,6 +60,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         metricFeatureArea,
         fullWidth,
         selectDistinctOptions,
+        filterTypesToExclude,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
@@ -78,7 +80,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
             const filterFields = filters[parent];
             filterFields.forEach(fieldFilter => {
                 if (fieldFilter.filter.getFilterType() !== NOT_ANY_FILTER_TYPE) {
-                    const key = parent + '-' + fieldFilter.fieldKey;
+                    const key = parent.toLowerCase() + '-' + fieldFilter.fieldKey;
                     status[key] = true;
                 }
             });
@@ -89,7 +91,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const hasFilters = useCallback(
         (field: QueryColumn) => {
-            return filterStatus?.[queryName + '-' + field.resolveFieldKey()];
+            return filterStatus?.[queryName.toLowerCase() + '-' + field.resolveFieldKey()];
         },
         [filterStatus, queryName]
     );
@@ -161,7 +163,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     const fieldDistinctValueFilters = useMemo(() => {
         if (!filters || !queryName || !activeField) return null;
 
-        const valueFilters = [];
+        // Issue 45135: include any model filters (baseFilters or queryInfo filters)
+        const valueFilters = selectDistinctOptions ? [...selectDistinctOptions.filterArray] : [];
 
         // use active filters to filter distinct values, but exclude filters on current field
         filters?.[queryName]?.forEach(field => {
@@ -169,7 +172,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         });
 
         return valueFilters;
-    }, [filters, queryName, activeField, activeFieldKey]);
+    }, [filters, queryName, activeField, activeFieldKey, selectDistinctOptions]);
 
     const onFieldClick = useCallback((queryColumn: QueryColumn) => {
         setActiveField(queryColumn);
@@ -217,7 +220,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 <div className="filter-modal__col-title">Values</div>
                 {queryName && !activeField && <div className="filter-modal__empty-msg">Select a field.</div>}
                 {queryName && activeField && (
-                    <div className="filter-modal__col-content">
+                    <div className="filter-modal__col-content filter-modal__values">
                         <Tab.Container
                             activeKey={activeTab}
                             className="filter-modal__tabs content-tabs"
@@ -246,6 +249,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                 onFieldFilterUpdate={(newFilters, index) =>
                                                     onFilterUpdate(activeField, newFilters, index)
                                                 }
+                                                filterTypesToExclude={filterTypesToExclude}
                                             />
                                         )}
                                     </Tab.Pane>
@@ -261,10 +265,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                     schemaName: queryInfo.schemaName,
                                                     queryName,
                                                     viewName,
-                                                    // Issue 45135: this doesn't seem right for the cases like the SM
-                                                    // source samples grid which has a model filter for the source ID
-                                                    // which is getting overridden here. Try using
-                                                    // selectDistinctOptions.filterArray from props in fieldDistinctValueFilters
                                                     filterArray: fieldDistinctValueFilters,
                                                 }}
                                                 fieldFilters={currentFieldFilters?.map(filter => filter.filter)}

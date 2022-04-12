@@ -192,9 +192,10 @@ import {
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
     searchRows,
-    selectRows,
+    selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
+import { selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
     DataViewInfoTypes,
@@ -229,6 +230,7 @@ import { EditableGridLoaderFromSelection } from './internal/components/editable/
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
+import { AncestorRenderer, ANCESTOR_LOOKUP_CONCEPT_URI } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
 import {
@@ -856,6 +858,7 @@ export {
     InsertOptions,
     insertRows,
     selectRows,
+    selectRowsDeprecated,
     searchRows,
     updateRows,
     deleteRows,
@@ -900,6 +903,8 @@ export {
     // renderers
     AttachmentCard,
     AliasRenderer,
+    ANCESTOR_LOOKUP_CONCEPT_URI,
+    AncestorRenderer,
     AppendUnits,
     AssayResultTemplateDownloadRenderer,
     DefaultRenderer,
@@ -1503,6 +1508,7 @@ export type { AppRouteResolver } from './internal/url/AppURLResolver';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
+export type { SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
 export type { Location } from './internal/util/URL';
 export type {
     RoutingTableState,

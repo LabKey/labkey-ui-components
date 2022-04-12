@@ -91,7 +91,7 @@ export function replaceSearchValue(
         });
     }
 
-    let change = { type: ChangeType.add } as Change;
+    let change = hasNewSearch ? ({ type: ChangeType.add } as Change) : undefined;
     if (existingSearchIndex > -1) {
         if (hasNewSearch) {
             change = { type: ChangeType.modify, index: existingSearchIndex };

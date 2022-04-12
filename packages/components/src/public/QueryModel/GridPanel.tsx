@@ -457,6 +457,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { model, actions, allowSelections } = this.props;
         let newFilters = model.filterArray;
 
+        if (!change) return;
+
         if (change.type === ChangeType.modify || change.type === ChangeType.remove) {
             // Remove the filter with the value of oldValue
             const oldValue = this.state.actionValues[change.index].valueObject;

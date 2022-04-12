@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.153.1
+*Released*: 12 April 2022
+* Add a configuration option in the issue definition properties panel to select the default related issues folder.
+
 ### version 2.153.0
 *Released*: 12 April 2022
 * Add AncestorRenderer for display of ancestor lookup columns

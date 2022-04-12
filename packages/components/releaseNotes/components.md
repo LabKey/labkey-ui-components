@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.153.1
+*Released*: 12 April 2022
+* Add a configuration option in the issue definition properties panel to select the default related issues folder.
+
 ### version 2.153.0
 *Released*: 12 April 2022
 * Add AncestorRenderer for display of ancestor lookup columns
@@ -39,10 +43,6 @@ Components, models, actions, and utility functions for LabKey applications and p
     * display the view, filter, and search grid action values in the grid info section (previously displayed in the OmniBox input)
     * add "Remove all" option to the end of the filter pill display if > 1 present
     * hide omnibox when experimental feature is enabled
-
-### version TBD
-*Released*: TBD
-* Add a configuration option in the issue definition properties panel to select the default related issues folder.
 
 ### version 2.149.6
 *Released*: 4 April 2022

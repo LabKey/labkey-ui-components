@@ -72,7 +72,7 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
             const relatedFolders = await getRelatedFolders(this.props.model.issueDefName);
             this.setState({ coreGroups, relatedFolders });
         } catch (e) {
-            console.error('AssignmentOptions: failed to load initialize project groups', e);
+            console.error('AssignmentOptions: failed to load initialize project groups and related folders.', e);
         }
 
         await this.loadUsersForGroup(this.props.model.assignedToGroup);

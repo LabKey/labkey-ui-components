@@ -1282,8 +1282,8 @@ describe('isValidFilterField', () => {
     });
 });
 
-const PARENT_WITH_FILTERS = 'parentWithFilters';
-const PARENT_WITHOUT_FILTERS = 'parentWithoutFilters';
+const PARENT_WITH_FILTERS = 'parent_with_filters';
+const PARENT_WITHOUT_FILTERS = 'parent_without_filters';
 const DATA_TYPE_FILTERS = {
     [PARENT_WITH_FILTERS]: [stringEqualFilter, stringBetweenFilter, intEqFilter],
     [PARENT_WITHOUT_FILTERS]: [],

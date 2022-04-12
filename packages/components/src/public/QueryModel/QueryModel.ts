@@ -614,7 +614,7 @@ export class QueryModel {
     }
 
     /**
-     * Gets a column by name. Implementation adapted from parseColumns in components/omnibox/utils.ts.
+     * Gets a column by name. Implementation adapted from parseColumns in grid/utils.ts.
      * @param name: string
      */
     getColumn(name: string): QueryColumn {

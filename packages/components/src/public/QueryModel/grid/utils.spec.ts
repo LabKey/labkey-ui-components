@@ -1,8 +1,8 @@
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { QueryInfo } from '../../../public/QueryInfo';
-import { QuerySort } from '../../../public/QuerySort';
+import { QueryInfo } from '../../QueryInfo';
+import { QuerySort } from '../../QuerySort';
 
 import { removeActionValue, replaceSearchValue, ChangeType } from './utils';
 import { FilterAction } from './actions/Filter';

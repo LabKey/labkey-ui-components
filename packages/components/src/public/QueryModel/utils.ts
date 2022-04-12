@@ -8,7 +8,7 @@ import { Filter } from '@labkey/api';
 import { List } from 'immutable';
 
 import { EXPORT_TYPES, QueryColumn, QueryModel, QuerySort } from '../..';
-import { ActionValue } from '../../internal/components/omnibox/actions/Action';
+import { ActionValue } from './grid/actions/Action';
 import { ExportOptions, getExportParams } from '../../internal/actions';
 
 export function filterToString(filter: Filter.IFilter): string {

@@ -10,7 +10,7 @@ import { User } from '../base/models/User';
 import { getOmittedSampleTypeColumns, isSamplesSchema } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
-import { resolveFilterType } from '../omnibox/actions/Filter';
+import { resolveFilterType } from '../../../public/QueryModel/grid/actions/Filter';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';

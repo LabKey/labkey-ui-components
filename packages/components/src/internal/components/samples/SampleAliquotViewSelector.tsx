@@ -8,7 +8,7 @@ export enum ALIQUOT_FILTER_MODE {
     all = 'all',
     samples = 'samples',
     aliquots = 'aliquots',
-    none = 'none', // when using omni filter with 'is blank'
+    none = 'none', // when using grid filter with 'is blank'
 }
 
 interface Props {

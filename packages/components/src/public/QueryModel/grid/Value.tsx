@@ -30,7 +30,7 @@ interface ValueState {
     isDisabled?: boolean;
 }
 
-export const valueClassName = 'OmniBox-value';
+export const valueClassName = 'filter-status-value';
 
 export class Value extends React.Component<ValueProps, ValueState> {
     constructor(props: ValueProps) {

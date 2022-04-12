@@ -9,7 +9,7 @@ import { initUnitTests, makeQueryInfo, makeTestData } from '../../internal/testH
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 
-import { ActionValue } from '../../internal/components/omnibox/actions/Action';
+import { ActionValue } from './grid/actions/Action';
 
 import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';

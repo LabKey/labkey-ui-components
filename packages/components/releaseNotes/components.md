@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 45223: Wrap multiline text fields on line breaks
+
+
 ### version 2.154.0
 *Released*: 13 April 2022
 * Item 10253: Remove experimental feature to officially switch to new Grid Filtering UX changes

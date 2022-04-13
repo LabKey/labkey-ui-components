@@ -540,11 +540,11 @@ export function deleteEntityType(deleteActionName: string, rowId: number): Promi
 
 export function handleEntityFileImport(
     importAction: string,
-    importParameters: Record<string, any>,
     queryInfo: QueryInfo,
     file: File,
     isMerge: boolean,
     useAsync: boolean,
+    importParameters?: Record<string, any>,
     importFileController?: string,
     saveToPipeline?: boolean
 ): Promise<any> {

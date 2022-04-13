@@ -143,7 +143,7 @@ interface OwnProps {
     entityDataType: EntityDataType;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
-    fileImportParameters: Record<string, any>;
+    fileImportParameters?: Record<string, any>;
     filePreviewFormats?: string;
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
@@ -1073,17 +1073,15 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         } = this.props;
         const { insertModel, file, isMerge, originalQueryInfo, useAsync } = this.state;
 
-        if (!fileImportParameters) return;
-
         this.setSubmitting(true);
         try {
             const response = await handleEntityFileImport(
                 entityDataType.importFileAction,
-                fileImportParameters,
                 originalQueryInfo,
                 file,
                 isMerge,
                 useAsync,
+                fileImportParameters,
                 entityDataType.importFileController,
                 saveToPipeline
             );

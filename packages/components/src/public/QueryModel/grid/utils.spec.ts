@@ -4,7 +4,8 @@ import { Filter } from '@labkey/api';
 import { QueryInfo } from '../../QueryInfo';
 import { QuerySort } from '../../QuerySort';
 
-import { removeActionValue, replaceSearchValue, ChangeType } from './utils';
+import { removeActionValue, replaceSearchValue } from './utils';
+import { ChangeType } from './model';
 import { FilterAction } from './actions/Filter';
 import { SearchAction } from './actions/Search';
 import { ViewAction } from './actions/View';

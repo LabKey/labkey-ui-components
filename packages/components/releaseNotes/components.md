@@ -7,6 +7,16 @@ Components, models, actions, and utility functions for LabKey applications and p
   * remove OmniBox.tsx and related tests, helpers, scss, etc. (moving the items still in use to GridPanel dir)
   * remove react-input-autosize dependency
 
+### version 2.153.1
+*Released*: 12 April 2022
+* Add a configuration option in the issue definition properties panel to select the default related issues folder.
+
+### version 2.153.0
+*Released*: 12 April 2022
+* Add AncestorRenderer for display of ancestor lookup columns
+* Update SampleFinder to use Ancestor columns in results grids
+* Update logic in `QueryModel::getColumn` for finding matching lookup columns so it handles additional layers of lookups
+
 ### version 2.152.1
 *Released*: 11 April 2022
 * Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it

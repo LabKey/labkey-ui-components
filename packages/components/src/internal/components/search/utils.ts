@@ -36,8 +36,11 @@ export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): str
     return hintText + names + ' properties.';
 }
 
-export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQuery: SchemaQuery): string {
-    return entityDataType.inputColumnName.replace('First', schemaQuery.queryName);
+export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQuery: SchemaQuery, useAncestors: boolean): string {
+    if (useAncestors)
+        return entityDataType.ancestorColumnName + "/" + schemaQuery.queryName;
+    else
+        return entityDataType.inputColumnName.replace('First', schemaQuery.queryName);
 }
 
 const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
@@ -47,18 +50,18 @@ export function getFinderViewColumnsConfig(
     columnDisplayNames: { [key: string]: string }
 ): { hasUpdates: boolean; columns: any } {
     const defaultDisplayColumns = queryModel.queryInfo?.getDisplayColumns().toArray();
-    const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey);
+    const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey.toLowerCase());
     const columnKeys = [];
     FIRST_COLUMNS_IN_VIEW.forEach(fieldKey => {
-        if (displayColumnKeys.indexOf(fieldKey) >= 0) {
+        const lcFieldKey = fieldKey.toLowerCase();
+        if (displayColumnKeys.indexOf(lcFieldKey) >= 0) {
             columnKeys.push(fieldKey);
         }
     });
-    let hasUpdates = false;
     queryModel.requiredColumns.forEach(fieldKey => {
-        if (displayColumnKeys.indexOf(fieldKey) == -1 && SAMPLE_STATUS_REQUIRED_COLUMNS.indexOf(fieldKey) === -1) {
+        const lcFieldKey = fieldKey.toLowerCase();
+        if (displayColumnKeys.indexOf(lcFieldKey) == -1 && SAMPLE_STATUS_REQUIRED_COLUMNS.indexOf(fieldKey) === -1) {
             columnKeys.push(fieldKey);
-            hasUpdates = true;
         }
     });
     columnKeys.push(
@@ -66,7 +69,13 @@ export function getFinderViewColumnsConfig(
             .filter(col => FIRST_COLUMNS_IN_VIEW.indexOf(col.fieldKey) === -1)
             .map(col => col.fieldKey)
     );
-    return { hasUpdates, columns: columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] })) };
+    const viewDisplayFieldKeys = queryModel.queryInfo?.getDisplayColumns(queryModel.viewName)
+        .map(column => column.fieldKey)
+        .toArray().sort();
+    return {
+        hasUpdates: viewDisplayFieldKeys.join(",") !== [...columnKeys].sort().join(","),
+        columns: columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] }))
+    };
 }
 
 export const SAMPLE_FINDER_VIEW_NAME = 'Sample Finder';
@@ -121,11 +130,11 @@ export function getExpDescendantOfFilter(schemaQuery: SchemaQuery, fieldFilters:
 }
 
 // exported for jest testing
-export function getSampleFinderCommonConfigs(cards: FilterProps[]): Partial<QueryConfig> {
+export function getSampleFinderCommonConfigs(cards: FilterProps[], useAncestors: boolean): Partial<QueryConfig> {
     const baseFilters = [];
     const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
     cards.forEach(card => {
-        const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
+        const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery, useAncestors);
 
         requiredColumns.push(cardColumnName);
         if (card.filterArray?.length) {
@@ -164,7 +173,6 @@ export function getSampleFinderQueryConfigs(
     finderId: string
 ): { [key: string]: QueryConfig } {
     const omittedColumns = getOmittedSampleTypeColumns(user);
-    const commonConfig = getSampleFinderCommonConfigs(cards);
     const allSamplesKey = getSampleFinderConfigId(finderId, 'exp/materials');
     const configs: { [key: string]: QueryConfig } = {
         [allSamplesKey]: {
@@ -176,14 +184,16 @@ export function getSampleFinderQueryConfigs(
                 SAMPLE_FINDER_VIEW_NAME
             ),
             omittedColumns: [...omittedColumns, 'Run'],
-            ...commonConfig,
+            ...getSampleFinderCommonConfigs(cards, false),
         },
     };
 
+    const commonConfig = getSampleFinderCommonConfigs(cards, true);
     if (sampleTypeNames) {
         for (const name of sampleTypeNames) {
             const id = getSampleFinderConfigId(finderId, 'samples/' + name);
             const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
+
             configs[id] = {
                 id,
                 title: name,
@@ -199,14 +209,19 @@ export function getSampleFinderQueryConfigs(
 export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string]: string } {
     const columnNames = {};
     cards?.forEach(card => {
-        const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery);
+        const ancestorCardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery, true);
+        const parentCardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery, false);
         if (card.dataTypeDisplayName) {
-            columnNames[cardColumnName] = card.dataTypeDisplayName + ' ID';
+            columnNames[ancestorCardColumnName] = card.dataTypeDisplayName + ' ID';
+            columnNames[parentCardColumnName] = card.dataTypeDisplayName + ' ID';
             card.filterArray?.forEach(filter => {
-                columnNames[cardColumnName + '/' + filter.fieldKey] =
+                columnNames[ancestorCardColumnName + '/' + filter.fieldKey] =
+                    card.dataTypeDisplayName + ' ' + filter.fieldCaption;
+                columnNames[parentCardColumnName + '/' + filter.fieldKey] =
                     card.dataTypeDisplayName + ' ' + filter.fieldCaption;
             });
         }
+
     });
     return columnNames;
 }
@@ -676,8 +691,9 @@ export function getUpdatedDataTypeFilters(
     activeField: QueryColumn,
     newFilters: Filter.IFilter[]
 ): { [p: string]: FieldFilter[] } {
+    const lcActiveQuery = activeQuery.toLowerCase();
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
-    const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[activeQuery];
+    const activeParentFilters: FieldFilter[] = dataTypeFiltersUpdated[lcActiveQuery];
     const activeFieldKey = activeField.fieldKey;
     // the filters on the parent type that aren't associated with this field.
     const otherFieldFilters = activeParentFilters?.filter(filter => filter.fieldKey !== activeFieldKey) ?? [];
@@ -696,9 +712,9 @@ export function getUpdatedDataTypeFilters(
             }) ?? [];
 
     if (otherFieldFilters.length + thisFieldFilters.length > 0) {
-        dataTypeFiltersUpdated[activeQuery] = [...otherFieldFilters, ...thisFieldFilters];
+        dataTypeFiltersUpdated[lcActiveQuery] = [...otherFieldFilters, ...thisFieldFilters];
     } else {
-        delete dataTypeFiltersUpdated[activeQuery];
+        delete dataTypeFiltersUpdated[lcActiveQuery];
     }
     return dataTypeFiltersUpdated;
 }

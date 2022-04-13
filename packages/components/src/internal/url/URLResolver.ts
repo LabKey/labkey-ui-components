@@ -326,8 +326,10 @@ const DATA_CLASS_MAPPERS = [
         if (targetURL) {
             const params = ActionURL.getParameters(targetURL);
 
-            const url = ['rd', 'expdata', params.rowId];
-            return AppURL.create(...url);
+            if (params.rowId) {
+                const url = ['rd', 'expdata', params.rowId];
+                return AppURL.create(...url);
+            }
         }
     }),
 ];
@@ -366,10 +368,12 @@ const SAMPLE_TYPE_MAPPERS = [
             const params = ActionURL.getParameters(targetURL);
             const rowId = params.rowId;
 
-            const url = ['rd', 'samples', rowId];
-
             if (rowId !== undefined) {
+                const url = ['rd', 'samples', rowId];
                 return AppURL.create(...url);
+            }
+            else {
+                return false;
             }
         }
     }),

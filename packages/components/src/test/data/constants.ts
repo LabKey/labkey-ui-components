@@ -450,6 +450,7 @@ export const TestTypeDataType: EntityDataType = {
     dependencyText: 'test data dependencies',
     deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
     inputColumnName: 'Inputs/Materials/First',
+    ancestorColumnName: 'Ancestors/Samples',
     inputTypeValueField: 'lsid',
     insertColumnNamePrefix: 'MaterialInputs/',
     editTypeAppUrlPrefix: 'Test',

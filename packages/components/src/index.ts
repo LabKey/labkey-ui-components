@@ -230,6 +230,7 @@ import { EditableGridLoaderFromSelection } from './internal/components/editable/
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
+import { AncestorRenderer, ANCESTOR_LOOKUP_CONCEPT_URI } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
 import {
@@ -902,6 +903,8 @@ export {
     // renderers
     AttachmentCard,
     AliasRenderer,
+    ANCESTOR_LOOKUP_CONCEPT_URI,
+    AncestorRenderer,
     AppendUnits,
     AssayResultTemplateDownloadRenderer,
     DefaultRenderer,

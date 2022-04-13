@@ -8,14 +8,15 @@ import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { LoadingSpinner, Principal, SelectInput } from '../../../..';
 
-import { IssuesListDefModel } from './models';
+import { IssuesListDefModel, IssuesRelatedFolder } from './models';
 import {
     ISSUES_LIST_DEF_SORT_DIRECTION_TIP,
     ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP,
     ISSUES_LIST_GROUP_ASSIGN_TIP,
     ISSUES_LIST_USER_ASSIGN_TIP,
+    ISSUES_LIST_RELATED_FOLDER_TIP,
 } from './constants';
-import { getProjectGroups, getUsersForGroup } from './actions';
+import { getProjectGroups, getRelatedFolders, getUsersForGroup } from './actions';
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -31,6 +32,7 @@ interface AssignmentOptionsProps {
 interface AssignmentOptionsState {
     coreGroups?: List<Principal>;
     coreUsers?: List<Principal>;
+    relatedFolders?: List<IssuesRelatedFolder>;
 }
 
 // For AssignedToGroupInput & DefaultUserAssignmentInput components
@@ -40,6 +42,7 @@ interface AssignmentOptionsInputProps {
     coreGroups?: List<Principal>;
     coreUsers?: List<Principal>;
     onGroupChange?: (groupId: number) => any;
+    relatedFolders?: List<IssuesRelatedFolder>;
 }
 
 export class BasicPropertiesFields extends PureComponent<IssuesListDefBasicPropertiesInputsProps> {
@@ -60,14 +63,16 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
     state: Readonly<AssignmentOptionsState> = {
         coreGroups: undefined,
         coreUsers: undefined,
+        relatedFolders: undefined,
     };
 
     componentDidMount = async (): Promise<void> => {
         try {
             const coreGroups = await getProjectGroups();
-            this.setState({ coreGroups });
+            const relatedFolders = await getRelatedFolders(this.props.model.issueDefName);
+            this.setState({ coreGroups, relatedFolders });
         } catch (e) {
-            console.error('AssignmentOptions: failed to load initialize project groups', e);
+            console.error('AssignmentOptions: failed to load initialize project groups and related folders.', e);
         }
 
         await this.loadUsersForGroup(this.props.model.assignedToGroup);
@@ -84,7 +89,7 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
 
     render() {
         const { model, onSelect } = this.props;
-        const { coreUsers, coreGroups } = this.state;
+        const { coreUsers, coreGroups, relatedFolders } = this.state;
 
         return (
             <Col xs={12} md={6}>
@@ -96,6 +101,7 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
                     onGroupChange={this.loadUsersForGroup}
                 />
                 <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={onSelect} />
+                <DefaultRelatedFolderInput model={model} relatedFolders={relatedFolders} onSelect={onSelect} />
             </Col>
         );
     }
@@ -256,6 +262,44 @@ export class DefaultUserAssignmentInput extends PureComponent<AssignmentOptionsI
                             labelKey="displayName"
                             onChange={this.onChange}
                             value={model.assignedToUser}
+                        />
+                    )}
+                </Col>
+            </Row>
+        );
+    }
+}
+
+export class DefaultRelatedFolderInput extends PureComponent<AssignmentOptionsInputProps, any> {
+    onChange = (name: string, formValue: any, selected: IssuesRelatedFolder, ref: any): any => {
+        this.props.onSelect(name, selected ? selected.key : undefined);
+    };
+
+    render() {
+        const { model, relatedFolders } = this.props;
+
+        return (
+            <Row className="margin-top">
+                <Col xs={3} lg={4}>
+                    <DomainFieldLabel
+                        label="Default Related Issue Folder"
+                        helpTipBody={ISSUES_LIST_RELATED_FOLDER_TIP}
+                        required={false}
+                    />
+                </Col>
+                <Col xs={9} lg={8}>
+                    {!relatedFolders ? (
+                        <LoadingSpinner />
+                    ) : (
+                        <SelectInput
+                            name="relatedFolderName"
+                            options={relatedFolders?.toArray()}
+                            placeholder="Unassigned"
+                            inputClass="col-xs-12"
+                            valueKey="key"
+                            labelKey="displayName"
+                            onChange={this.onChange}
+                            value={model.relatedFolderName}
                         />
                     )}
                 </Col>

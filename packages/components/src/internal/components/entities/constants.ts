@@ -30,6 +30,7 @@ export const SampleTypeDataType: EntityDataType = {
     dependencyText: 'derived sample or assay data dependencies',
     deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
     inputColumnName: 'Inputs/Materials/First',
+    ancestorColumnName: 'Ancestors/Samples',
     inputTypeValueField: 'lsid',
     insertColumnNamePrefix: 'MaterialInputs/',
     editTypeAppUrlPrefix: SAMPLE_TYPE_KEY,
@@ -54,6 +55,7 @@ export const DataClassDataType: EntityDataType = {
     dependencyText: 'derived sample dependencies',
     deleteHelpLinkTopic: 'dataClass', // no topic specific to deleting data classes yet, so we refer to data classes in general
     inputColumnName: 'Inputs/Data/First',
+    ancestorColumnName: 'Ancestors/OtherData',
     inputTypeValueField: 'rowId',
     insertColumnNamePrefix: 'DataInputs/',
     importFileAction: 'importData',

@@ -124,13 +124,18 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
     saveDomain = async (hasConfirmedNameExpression?: boolean): Promise<void> => {
         const { api, beforeFinish, onComplete, setSubmitting, validateNameExpressions } = this.props;
         const { model } = this.state;
+        const { name, domain } = model;
 
         beforeFinish?.(model);
+
+        const domainDesign = domain.merge({
+            name, // This will be the Data Class Name
+        }) as DomainDesign;
 
         if (validateNameExpressions && !hasConfirmedNameExpression) {
             try {
                 const response = await api.domain.validateDomainNameExpressions(
-                    model.domain,
+                    domainDesign,
                     Domain.KINDS.DATA_CLASS,
                     model.options,
                     true
@@ -157,7 +162,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         }
 
         try {
-            const savedDomain = await saveDomain(model.domain, Domain.KINDS.DATA_CLASS, model.options, model.name);
+            const savedDomain = await saveDomain(domainDesign, Domain.KINDS.DATA_CLASS, model.options, model.name);
 
             setSubmitting(false, () => {
                 this.saveModel({ domain: savedDomain, exception: undefined }, () => {

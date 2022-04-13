@@ -141,6 +141,7 @@ interface OwnProps {
     creationTypeOptions?: SampleCreationTypeModel[];
     disableMerge?: boolean;
     entityDataType: EntityDataType;
+    errorNounPlural?: string;  // Used if you want a different noun in error messages than on the other components
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
     fileImportParameters?: Record<string, any>;
@@ -156,7 +157,7 @@ interface OwnProps {
     onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData;
     onCancel?: () => void;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
-    onFileChange?: (files: string[]) => void;
+    onFileChange?: (files?: string[]) => void;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
     onTargetChange?: (target: string) => void;
     parentDataTypes?: List<EntityDataType>;
@@ -1051,6 +1052,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     handleFileRemoval = (): void => {
         this.props.onDataChange?.(false, IMPORT_DATA_FORM_TYPES.FILE);
+        this.props.onFileChange?.();
 
         this.setState({
             error: undefined,
@@ -1065,6 +1067,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             api,
             fileImportParameters,
             nounPlural,
+            errorNounPlural,
             entityDataType,
             onDataChange,
             onBackgroundJobStart,
@@ -1107,7 +1110,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             }
         } catch (error) {
             this.setState({
-                error: resolveErrorMessage(error, nounPlural, nounPlural, 'importing'),
+                error: resolveErrorMessage(error, errorNounPlural ?? nounPlural, errorNounPlural ?? nounPlural, 'importing'),
                 isSubmitting: false,
             });
         }

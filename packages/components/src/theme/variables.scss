@@ -65,13 +65,13 @@ $blue-bkgrd-selected:   rgba(41, 128, 185, 0.1);
   border-top-left-radius: $radius;
 }
 
-$gridaction-item-color:                #0088cc; // pale blue
-$gridaction-item-bg:                   #f1f9fc;
-$gridaction-item-border-color:         #c9e6f2;
-$gridaction-item-hover-bg:             darken($gridaction-item-bg, 5%);
-$gridaction-item-disabled-color:       #333;
-$gridaction-item-disabled-bg:          #fcfcfc;
-$gridaction-item-disabled-border-color: darken($gridaction-item-disabled-bg, 10%);
+$grid-action-item-color:                #0088cc; // pale blue
+$grid-action-item-bg:                   #f1f9fc;
+$grid-action-item-border-color:         #c9e6f2;
+$grid-action-item-hover-bg:             darken($grid-action-item-bg, 5%);
+$grid-action-item-disabled-color:       #333;
+$grid-action-item-disabled-bg:          #fcfcfc;
+$grid-action-item-disabled-border-color: darken($grid-action-item-disabled-bg, 10%);
 
 
 // Navigation variables

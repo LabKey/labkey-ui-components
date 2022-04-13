@@ -16,7 +16,7 @@
 
 /**
  * The Action interface specifies the functionality that must be implemented for an Action to participate
- * in the grid panel action framework. Action's are considered stateless so a given instance of a type of Action
+ * in the grid panel action framework. Actions are considered stateless so a given instance of a type of Action
  * may be transient.
  */
 export interface Action {

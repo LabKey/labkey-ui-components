@@ -27,7 +27,8 @@ import { SearchAction } from './grid/actions/Search';
 import { SortAction } from './grid/actions/Sort';
 import { ViewAction } from './grid/actions/View';
 
-import { removeActionValue, replaceSearchValue, Change, ChangeType } from './grid/utils';
+import { removeActionValue, replaceSearchValue } from './grid/utils';
+import { Change, ChangeType } from './grid/model';
 
 import { QueryModel, createQueryModelId } from './QueryModel';
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';

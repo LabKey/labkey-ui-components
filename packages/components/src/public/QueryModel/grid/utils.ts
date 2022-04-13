@@ -5,18 +5,7 @@ import { QueryColumn } from '../../..';
 
 import { ActionValue } from './actions/Action';
 import { SearchAction } from './actions/Search';
-
-export enum ChangeType {
-    add = 'add',
-    remove = 'remove',
-    modify = 'modify',
-    none = 'none',
-}
-
-export interface Change {
-    type: ChangeType;
-    index?: number;
-}
+import { Change, ChangeType } from './model';
 
 /**
  * From the supplied columnName this method will determine which columns in the "columns" list

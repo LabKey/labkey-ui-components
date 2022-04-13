@@ -129,12 +129,12 @@ export function resolveFilterType(token: string, column: QueryColumn): Filter.IF
  * @returns {string}
  */
 function resolveSymbol(filterType: Filter.IFilterType): string {
-    const symbol = filterType.getDisplaySymbol();
+    const symbol = filterType?.getDisplaySymbol();
     if (symbol) {
         return symbol;
     }
 
-    const displayText = filterType.getDisplayText();
+    const displayText = filterType?.getDisplayText();
     if (displayText) {
         return displayText;
     }

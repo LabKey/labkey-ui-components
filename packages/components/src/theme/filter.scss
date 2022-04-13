@@ -183,22 +183,22 @@
         border-radius: 2px;
         margin-bottom: 8px;
         padding: 0 6px 0 20px;
-        background-color: $gridaction-item-bg;
-        border: 1px solid $gridaction-item-border-color;
+        background-color: $grid-action-item-bg;
+        border: 1px solid $grid-action-item-border-color;
         line-height: 22px;
         max-width: 100%;
         vertical-align: top;
 
         i.symbol {
             cursor: pointer;
-            color: $gridaction-item-color;
+            color: $grid-action-item-color;
             margin-left: -15px;
             padding-right: 4px;
         }
 
         &:hover,
         &:focus {
-            background-color: $gridaction-item-hover-bg;
+            background-color: $grid-action-item-hover-bg;
             white-space: normal;
         }
     }

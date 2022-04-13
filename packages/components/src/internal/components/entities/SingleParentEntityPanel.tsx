@@ -244,7 +244,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         showButtonBar={false}
                         showChartMenu={false}
                         showExport={false}
-                        showOmniBox={false}
                         allowFiltering={false}
                     />
                 )}

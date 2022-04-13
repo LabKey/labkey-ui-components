@@ -7,6 +7,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
   index={0}
   parentDataType={
     Object {
+      "ancestorColumnName": "Ancestors/OtherData",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
@@ -73,6 +74,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
     onValueChange={[Function]}
     parentDataType={
       Object {
+        "ancestorColumnName": "Ancestors/OtherData",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -153,6 +155,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       onValueChange={[Function]}
       parentDataType={
         Object {
+          "ancestorColumnName": "Ancestors/OtherData",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
@@ -247,6 +250,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         onValueChange={[Function]}
         parentDataType={
           Object {
+            "ancestorColumnName": "Ancestors/OtherData",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
@@ -5253,6 +5257,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
   index={0}
   parentDataType={
     Object {
+      "ancestorColumnName": "Ancestors/OtherData",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
@@ -5319,6 +5324,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
     onValueChange={[Function]}
     parentDataType={
       Object {
+        "ancestorColumnName": "Ancestors/OtherData",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
@@ -5399,6 +5405,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       onValueChange={[Function]}
       parentDataType={
         Object {
+          "ancestorColumnName": "Ancestors/OtherData",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
@@ -5493,6 +5500,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         onValueChange={[Function]}
         parentDataType={
           Object {
+            "ancestorColumnName": "Ancestors/OtherData",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
@@ -5605,6 +5613,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
   onRemoveParentType={[Function]}
   parentDataType={
     Object {
+      "ancestorColumnName": "Ancestors/OtherData",
       "appUrlPrefixParts": Array [
         "sources",
       ],
@@ -5700,6 +5709,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
     onValueChange={[Function]}
     parentDataType={
       Object {
+        "ancestorColumnName": "Ancestors/OtherData",
         "appUrlPrefixParts": Array [
           "sources",
         ],
@@ -5848,6 +5858,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       onValueChange={[Function]}
       parentDataType={
         Object {
+          "ancestorColumnName": "Ancestors/OtherData",
           "appUrlPrefixParts": Array [
             "sources",
           ],
@@ -6010,6 +6021,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         onValueChange={[Function]}
         parentDataType={
           Object {
+            "ancestorColumnName": "Ancestors/OtherData",
             "appUrlPrefixParts": Array [
               "sources",
             ],
@@ -6291,7 +6303,6 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             showFilterStatus={true}
             showFiltersButton={true}
             showHeader={true}
-            showOmniBox={false}
             showPagination={true}
             showSampleComparisonReports={false}
             showSearchInput={true}
@@ -6325,6 +6336,16 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                       </span>
                     </LoadingSpinner>
                   </div>
+                  <Memo()
+                    actionValues={Array []}
+                    onClick={[Function]}
+                    onRemove={[Function]}
+                    onRemoveAll={[Function]}
+                  >
+                    <div
+                      className="grid-panel__filter-status"
+                    />
+                  </Memo()>
                 </div>
                 <div
                   className="grid-panel__grid"

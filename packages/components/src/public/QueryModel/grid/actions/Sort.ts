@@ -19,13 +19,12 @@ import { parseColumns, resolveFieldKey } from '../utils';
 import { QueryColumn, QuerySort } from '../../../..';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
-import { decodePart } from '../../../../public/SchemaQuery';
+import { decodePart } from '../../../SchemaQuery';
 
 export class SortAction implements Action {
     iconCls = 'sort';
     param = 'sort';
     keyword = 'sort';
-    optionalLabel = 'columns';
     separator = ',';
     getColumns: (all?: boolean) => List<QueryColumn>;
 

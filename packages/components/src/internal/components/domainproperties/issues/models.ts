@@ -15,6 +15,8 @@
  */
 import { immerable } from 'immer';
 
+import { Record } from 'immutable';
+
 import { DomainDesign } from '../models';
 
 export interface IssuesListDefOptionsConfig {
@@ -25,6 +27,7 @@ export interface IssuesListDefOptionsConfig {
     commentSortDirection: string;
     assignedToGroup: number;
     assignedToUser: number;
+    relatedFolderName: string;
 }
 
 interface IssuesListDefModelConfig extends IssuesListDefOptionsConfig {
@@ -48,6 +51,7 @@ export class IssuesListDefModel implements IssuesListDefModelConfig {
     readonly assignedToGroup: number;
     readonly assignedToUser: number;
     readonly domainKindName: string;
+    readonly relatedFolderName: string;
 
     constructor(values?: Partial<IssuesListDefModelConfig>) {
         Object.assign(this, values);
@@ -84,6 +88,23 @@ export class IssuesListDefModel implements IssuesListDefModelConfig {
             commentSortDirection: this.commentSortDirection,
             assignedToGroup: this.assignedToGroup,
             assignedToUser: this.assignedToUser,
+            relatedFolderName: this.relatedFolderName,
         };
+    }
+}
+
+export class IssuesRelatedFolder extends Record({
+    issueDefName: undefined,
+    displayName: undefined,
+    containerPath: undefined,
+    key: undefined,
+}) {
+    declare issueDefName: string;
+    declare displayName: string;
+    declare containerPath: string;
+    declare key: string;
+
+    static create(raw: any): IssuesRelatedFolder {
+        return new IssuesRelatedFolder({ ...raw });
     }
 }

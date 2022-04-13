@@ -3,11 +3,12 @@ import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { Value } from '../../internal/components/omnibox/Value';
-import { SearchAction } from '../../internal/components/omnibox/actions/Search';
-import { ViewAction } from '../../internal/components/omnibox/actions/View';
-import { FilterAction } from '../../internal/components/omnibox/actions/Filter';
 import { QueryInfo } from '../QueryInfo';
+
+import { Value } from './grid/Value';
+import { SearchAction } from './grid/actions/Search';
+import { ViewAction } from './grid/actions/View';
+import { FilterAction } from './grid/actions/Filter';
 
 import { FilterStatus } from './FilterStatus';
 

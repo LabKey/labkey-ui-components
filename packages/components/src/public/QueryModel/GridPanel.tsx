@@ -20,16 +20,15 @@ import {
 import { GRID_SELECTION_INDEX } from '../../internal/constants';
 import { DataViewInfo } from '../../internal/models';
 import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
-import { ActionValue } from '../../internal/components/omnibox/actions/Action';
-import { FilterAction } from '../../internal/components/omnibox/actions/Filter';
-import { SearchAction } from '../../internal/components/omnibox/actions/Search';
-import { SortAction } from '../../internal/components/omnibox/actions/Sort';
-import { ViewAction } from '../../internal/components/omnibox/actions/View';
-import { Change, ChangeType, OmniBox } from '../../internal/components/omnibox/OmniBox';
 
-import { isGridColSortFilterEnabled } from '../../internal/app/utils';
+import { ActionValue } from './grid/actions/Action';
+import { FilterAction } from './grid/actions/Filter';
+import { SearchAction } from './grid/actions/Search';
+import { SortAction } from './grid/actions/Sort';
+import { ViewAction } from './grid/actions/View';
 
-import { removeActionValue, replaceSearchValue } from '../../internal/components/omnibox/utils';
+import { removeActionValue, replaceSearchValue } from './grid/utils';
+import { Change, ChangeType } from './grid/model';
 
 import { QueryModel, createQueryModelId } from './QueryModel';
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
@@ -68,7 +67,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showExport?: boolean;
     showFiltersButton?: boolean;
     showFilterStatus?: boolean;
-    showOmniBox?: boolean;
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
     showSearchInput?: boolean;
@@ -156,10 +154,8 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                         {ButtonsComponent !== undefined && (
                             <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
                         )}
-                        {isGridColSortFilterEnabled() && showFiltersButton && <FiltersButton onFilter={onFilter} />}
-                        {isGridColSortFilterEnabled() && showSearchInput && (
-                            <SearchBox actionValues={actionValues} onSearch={onSearch} />
-                        )}
+                        {showFiltersButton && <FiltersButton onFilter={onFilter} />}
+                        {showSearchInput && <SearchBox actionValues={actionValues} onSearch={onSearch} />}
                     </div>
                 </div>
 
@@ -232,7 +228,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showExport: true,
         showFiltersButton: true,
         showFilterStatus: true,
-        showOmniBox: true,
         showSampleComparisonReports: false,
         showSearchInput: true,
         showViewMenu: true,
@@ -243,18 +238,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         super(props);
         const { id } = props.model;
 
-        this.omniBoxActions = {
+        this.gridActions = {
             filter: new FilterAction(id, this.getColumns, null, props.getFilterDisplayValue),
             search: new SearchAction(id),
             sort: new SortAction(id, this.getColumns),
             view: new ViewAction(id, this.getColumns, this.getQueryInfo),
-        };
-
-        this.omniBoxChangeHandlers = {
-            filter: this.handleFilterChange,
-            search: this.handleSearchChange,
-            sort: this.handleSortChange,
-            view: this.handleViewChange,
         };
 
         this.state = {
@@ -273,20 +261,18 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     componentDidUpdate(prevProps: Readonly<Props<T>>): void {
         if (this.props.model.queryInfo !== undefined && this.props.model !== prevProps.model) {
-            this.populateOmnibox();
+            this.populateGridActions();
         }
     }
 
-    omniBoxActions: {
+    gridActions: {
         filter: FilterAction;
         search: SearchAction;
         sort: SortAction;
         view: ViewAction;
     };
 
-    omniBoxChangeHandlers: { [name: string]: (actionValues: ActionValue[], change: Change) => void };
-
-    createOmniboxValues = (): ActionValue[] => {
+    createGridActionValues = (): ActionValue[] => {
         const { model } = this.props;
         const { filterArray, queryInfo, sorts, viewName } = model;
         const actionValues = [];
@@ -294,22 +280,22 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (model.viewName) {
             const view = queryInfo.views.get(viewName.toLowerCase());
             const name = view?.label ?? viewName;
-            // Don't display hidden views in the OmniBox
-            if (!view?.hidden) actionValues.push(this.omniBoxActions.view.actionValueFromView(name));
+            // Don't display hidden views in the grid FilterStatus
+            if (!view?.hidden) actionValues.push(this.gridActions.view.actionValueFromView(name));
         }
 
         sorts.forEach((sort): void => {
             const column = model.getColumn(sort.fieldKey);
-            actionValues.push(this.omniBoxActions.sort.actionValueFromSort(sort, column?.shortCaption));
+            actionValues.push(this.gridActions.sort.actionValueFromSort(sort, column?.shortCaption));
         });
 
         filterArray.forEach((filter): void => {
             const column = model.getColumn(filter.getColumnName());
 
             if (filter.getColumnName() === '*') {
-                actionValues.push(this.omniBoxActions.search.actionValueFromFilter(filter));
+                actionValues.push(this.gridActions.search.actionValueFromFilter(filter));
             } else {
-                actionValues.push(this.omniBoxActions.filter.actionValueFromFilter(filter, column?.shortCaption));
+                actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column?.shortCaption));
             }
         });
 
@@ -317,17 +303,17 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     /**
-     * Populates the Omnibox with ActionValues based on the current model state. Requires that the model has a QueryInfo
+     * Populates the grid with ActionValues based on the current model state. Requires that the model has a QueryInfo
      * so we can properly render Column and View labels.
      */
-    populateOmnibox = (): void => {
-        const modelActionValues = this.createOmniboxValues();
+    populateGridActions = (): void => {
+        const modelActionValues = this.createGridActionValues();
         const modelActionValuesStr = actionValuesToString(modelActionValues);
         const currentActionValuesStr = actionValuesToString(this.state.actionValues);
 
         if (modelActionValuesStr !== currentActionValuesStr) {
             // The action values have changed due to external model changes (likely URL changes), so we need to
-            // update the Omnibox with the newest values.
+            // update the actionValues state with the newest values.
             this.setState({ actionValues: modelActionValues });
         }
     };
@@ -345,18 +331,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         actions.selectPage(model.id, checked);
     };
 
-    // Needed by OmniBox.
     getColumns = (all = false): List<QueryColumn> => {
         const { model } = this.props;
         return all ? List(model.allColumns) : List(model.displayColumns);
     };
 
-    // Needed by OmniBox.
     getQueryInfo = (): QueryInfo => {
         return this.props.model.queryInfo;
     };
 
-    // Needed by OmniBox and GridFilterModal.
     getSelectDistinctOptions = (column: string, allFilters = true): Query.SelectDistinctOptions => {
         const { model } = this.props;
         return {
@@ -410,7 +393,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             );
         }
 
-        // Defer model updates after localState is updated so we don't unnecessarily repopulate the omnibox.
+        // Defer model updates after localState is updated so we don't unnecessarily repopulate the grid actionValues
         this.setState({ actionValues, headerClickCount: {} }, () =>
             actions.setFilters(model.id, newFilters, allowSelections)
         );
@@ -467,13 +450,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             }
         }
 
-        // Defer sorts update to after setState is complete so we dont unnecessarily repopulate the omnibox.
+        // Defer sorts update to after setState is complete so we don't unnecessarily repopulate the grid actionValues
         this.setState({ actionValues, headerClickCount: {} }, updateSortsCallback);
     };
 
     handleSearchChange = (actionValues: ActionValue[], change: Change): void => {
         const { model, actions, allowSelections } = this.props;
         let newFilters = model.filterArray;
+
+        if (!change) return;
 
         if (change.type === ChangeType.modify || change.type === ChangeType.remove) {
             // Remove the filter with the value of oldValue
@@ -487,14 +472,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             newFilters = newFilters.concat(newValue);
         }
 
-        // Defer search update to after setState so we don't unnecessarily repopulate the omnibox.
+        // Defer search update to after setState so we don't unnecessarily repopulate the grid actionValues
         this.setState({ actionValues, headerClickCount: {} }, () =>
             actions.setFilters(model.id, newFilters, allowSelections)
         );
     };
 
     onSearch = (value: string): void => {
-        const { actionValues, change } = replaceSearchValue(this.state.actionValues, value, this.omniBoxActions.search);
+        const { actionValues, change } = replaceSearchValue(this.state.actionValues, value, this.gridActions.search);
         this.handleSearchChange(actionValues, change);
     };
 
@@ -507,18 +492,17 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         } else {
             const newActionValue = actionValues[actionValues.length - 1];
             const newValue = newActionValue.value;
-            // OmniBox only passes view name not label, so we need to extract the view label.
+            // actionValues only passes view name not label, so we need to extract the view label.
             const viewLabel = model.queryInfo.views.get(newValue.toLowerCase())?.label ?? newValue;
 
             if (newValue !== model.viewName) {
-                // Only trigger view change if the viewName has changed, OmniBox triggers modified event even if the
-                // user keeps the value the same.
+                // Only trigger view change if the viewName has changed
                 updateViewCallback = () => actions.setView(model.id, newValue, allowSelections);
             }
 
             actionValues = [...actionValues.slice(0, actionValues.length - 1), { ...newActionValue, value: viewLabel }];
         }
-        // Defer view update to after setState so we don't unnecessarily repopulate the omnibox.
+        // Defer view update to after setState so we don't unnecessarily repopulate the grid actionValues
         this.setState(
             {
                 actionValues,
@@ -526,23 +510,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             },
             updateViewCallback
         );
-    };
-
-    /**
-     * Change handler for OmniBox, GridPanel sets mergeValues to false, so this is a ValuesArrayHandler.
-     * @param actionValues: ActionValue[]
-     * @param change: Change
-     */
-    omniBoxChange = (actionValues: ActionValue[], change: Change): void => {
-        let keyword;
-
-        if (change.type === ChangeType.add || change.type === ChangeType.modify) {
-            keyword = actionValues[actionValues.length - 1].action.keyword;
-        } else {
-            keyword = this.state.actionValues[change.index]?.action.keyword;
-        }
-
-        this.omniBoxChangeHandlers[keyword]?.(actionValues, change);
     };
 
     /**
@@ -556,7 +523,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (remove) {
             const newActionValues = this.state.actionValues.filter(actionValue => {
                 return !(
-                    actionValue.action === this.omniBoxActions.filter &&
+                    actionValue.action === this.gridActions.filter &&
                     isFilterColumnNameMatch(actionValue.valueObject, column)
                 );
             });
@@ -570,7 +537,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     removeAllFilters = (): void => {
         const { actionValues } = this.state;
         const newActionValues = actionValues.filter(actionValue => {
-            return actionValue.action === this.omniBoxActions.filter;
+            return actionValue.action === this.gridActions.filter;
         });
 
         this.handleFilterChange(newActionValues, { type: ChangeType.remove });
@@ -604,8 +571,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     /**
-     * Handler called when the user clicks a sort action from a column dropdown menu. Creates an OmniBox style change
-     * event and triggers handleSortChange.
+     * Handler called when the user clicks a sort action from a column dropdown menu. Creates a grid actionValue style
+     * change event and triggers handleSortChange.
      * @param column: QueryColumn
      * @param direction: '+' or '-', use undefined for "clear sort" case
      */
@@ -619,7 +586,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 displayValue: column.shortCaption,
                 value: `${fieldKey} ${direction === '+' ? 'asc' : 'desc'}`,
                 valueObject: sort,
-                action: this.omniBoxActions.sort,
+                action: this.gridActions.sort,
             };
             const actionValues = this.state.actionValues.concat(actionValue);
 
@@ -627,7 +594,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         } else {
             let actionIndex = -1;
             const newActionValues = this.state.actionValues.filter((actionValue, i) => {
-                if (actionValue.action === this.omniBoxActions.sort && actionValue.valueObject.fieldKey === fieldKey) {
+                if (actionValue.action === this.gridActions.sort && actionValue.valueObject.fieldKey === fieldKey) {
                     actionIndex = i;
                     return false;
                 }
@@ -641,11 +608,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     /**
-     * Handler for the ViewSelectorComponent. Creates an OmniBox style change event and triggers handleViewChange.
+     * Handler for the ViewSelectorComponent. Creates a grid style change event and triggers handleViewChange.
      * @param viewName: the view name selected by the user.
      */
     onViewSelect = (viewName: string): void => {
-        const actionValue = { value: viewName, action: this.omniBoxActions.view };
+        const actionValue = { value: viewName, action: this.gridActions.view };
         let changeType = ChangeType.remove;
         let actionValues = this.state.actionValues.filter(av => av.action.keyword !== 'view');
 
@@ -741,7 +708,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             onExport,
             showButtonBar,
             showFilterStatus,
-            showOmniBox,
             showHeader,
             title,
         } = this.props;
@@ -783,20 +749,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             />
                         )}
 
-                        {!isGridColSortFilterEnabled() && showOmniBox && (
-                            <div className="grid-panel__omnibox">
-                                <OmniBox
-                                    actions={Object.values(this.omniBoxActions)}
-                                    disabled={hasError || isLoading}
-                                    getColumns={this.getColumns}
-                                    getSelectDistinctOptions={this.getSelectDistinctOptions}
-                                    mergeValues={false}
-                                    onChange={this.omniBoxChange}
-                                    values={actionValues}
-                                />
-                            </div>
-                        )}
-
                         {(loadingMessage || allowSelections) && (
                             <div className="grid-panel__info">
                                 {loadingMessage && (
@@ -805,7 +757,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                     </div>
                                 )}
                                 {allowSelections && <SelectionStatus model={model} actions={actions} />}
-                                {isGridColSortFilterEnabled() && showFilterStatus && (
+                                {showFilterStatus && (
                                     <FilterStatus
                                         actionValues={actionValues}
                                         onClick={this.showFilterModal}

@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { QueryInfo } from '../../../public/QueryInfo';
+import { QueryInfo } from '../../QueryInfo';
 
 import { Value } from './Value';
 import { FilterAction } from './actions/Filter';
@@ -55,7 +55,7 @@ describe('Value', () => {
     };
 
     function validate(wrapper: ReactWrapper, readOnly: boolean, active: boolean, canRemove: boolean): void {
-        expect(wrapper.find('.OmniBox-value')).toHaveLength(1);
+        expect(wrapper.find('.filter-status-value')).toHaveLength(1);
         expect(wrapper.find('.is-active')).toHaveLength(active ? 1 : 0);
         expect(wrapper.find('.is-disabled')).toHaveLength(0);
         expect(wrapper.find('.is-readonly')).toHaveLength(readOnly ? 1 : 0);
@@ -74,7 +74,7 @@ describe('Value', () => {
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
 
         expect(onClick).toHaveBeenCalledTimes(0);
-        wrapper.find('.OmniBox-value').simulate('click');
+        wrapper.find('.filter-status-value').simulate('click');
         expect(onClick).toHaveBeenCalledTimes(1);
 
         expect(onRemove).toHaveBeenCalledTimes(0);
@@ -94,7 +94,7 @@ describe('Value', () => {
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
 
         expect(onClick).toHaveBeenCalledTimes(0);
-        wrapper.find('.OmniBox-value').simulate('click');
+        wrapper.find('.filter-status-value').simulate('click');
         expect(onClick).toHaveBeenCalledTimes(0);
 
         expect(onRemove).toHaveBeenCalledTimes(0);
@@ -114,7 +114,7 @@ describe('Value', () => {
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
 
         expect(onClick).toHaveBeenCalledTimes(0);
-        wrapper.find('.OmniBox-value').simulate('click');
+        wrapper.find('.filter-status-value').simulate('click');
         expect(onClick).toHaveBeenCalledTimes(1);
 
         expect(onRemove).toHaveBeenCalledTimes(0);
@@ -125,21 +125,19 @@ describe('Value', () => {
     });
 
     test('showRemoveIcon for filter action', () => {
-        LABKEY.moduleContext.samplemanagement = { 'experimental-grid-col-header-sort-filter': true };
         const wrapper = mount(<Value {...DEFAULT_PROPS} actionValue={filterAction} />);
         validate(wrapper, false, false, false);
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
-        wrapper.find('.OmniBox-value').simulate('mouseenter');
+        wrapper.find('.filter-status-value').simulate('mouseenter');
         validate(wrapper, false, true, true);
         wrapper.unmount();
     });
 
     test('do not showRemoveIcon for view action', () => {
-        LABKEY.moduleContext.samplemanagement = { 'experimental-grid-col-header-sort-filter': true };
         const wrapper = mount(<Value {...DEFAULT_PROPS} actionValue={viewAction} />);
         validate(wrapper, false, false, false);
         expect(wrapper.find('.fa-table')).toHaveLength(1);
-        wrapper.find('.OmniBox-value').simulate('mouseenter');
+        wrapper.find('.filter-status-value').simulate('mouseenter');
         validate(wrapper, false, true, false);
         wrapper.unmount();
     });

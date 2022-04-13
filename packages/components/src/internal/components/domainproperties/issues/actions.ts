@@ -6,7 +6,7 @@ import { buildURL, Principal } from '../../../..';
 
 import { DuplicateFilesResponse } from '../../assay/actions';
 
-import { IssuesListDefModel, IssuesListDefOptionsConfig } from './models';
+import { IssuesListDefModel, IssuesListDefOptionsConfig, IssuesRelatedFolder } from './models';
 
 export function fetchIssuesListDefDesign(issueDefName?: string): Promise<IssuesListDefModel> {
     return new Promise((resolve, reject) => {
@@ -81,6 +81,28 @@ export function saveIssueListDefOptions(options: IssuesListDefOptionsConfig): Pr
             failure: Utils.getCallbackWrapper(response => {
                 console.error(response);
                 reject(response);
+            }),
+        });
+    });
+}
+
+export function getRelatedFolders(issueDefName?: string): Promise<List<IssuesRelatedFolder>> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('issues', 'getRelatedFolder.api'),
+            method: 'GET',
+            params: { issueDefName },
+            scope: this,
+            success: Utils.getCallbackWrapper(res => {
+                let folders = List<IssuesRelatedFolder>();
+                res.containers.forEach(container => {
+                    const folder = IssuesRelatedFolder.create(container);
+                    folders = folders.push(folder);
+                });
+                resolve(folders);
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                reject(error);
             }),
         });
     });

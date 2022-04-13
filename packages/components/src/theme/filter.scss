@@ -171,24 +171,35 @@
     }
 }
 
-.OmniBox--multi {
-    .OmniBox-value.filter-faceted__tags-value {
-        max-width: 100%;
+.filter-status__faceted {
+    .filter-status-value {
+        display: inline-block;
+        position: relative;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        margin: 3px 0;
-        padding: 0 6px 0 20px;
         word-break: break-all;
         color: $gray;
-
-        &:hover {
-            white-space: normal;
-        }
+        border-radius: 2px;
+        margin-bottom: 8px;
+        padding: 0 6px 0 20px;
+        background-color: $grid-action-item-bg;
+        border: 1px solid $grid-action-item-border-color;
+        line-height: 22px;
+        max-width: 100%;
+        vertical-align: top;
 
         i.symbol {
+            cursor: pointer;
+            color: $grid-action-item-color;
             margin-left: -15px;
             padding-right: 4px;
+        }
+
+        &:hover,
+        &:focus {
+            background-color: $grid-action-item-hover-bg;
+            white-space: normal;
         }
     }
 }

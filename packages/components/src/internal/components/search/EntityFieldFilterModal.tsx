@@ -91,7 +91,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
         cards?.forEach(card => {
             if (card.entityDataType.instanceSchemaName !== entityDataType.instanceSchemaName) return;
-            const parent = card.schemaQuery.queryName;
+            const parent = card.schemaQuery.queryName.toLowerCase();
             activeDataTypeFilters[parent] = card.filterArray;
         });
         setDataTypeFilters(activeDataTypeFilters);

@@ -8,3 +8,5 @@ export const ISSUES_LIST_GROUP_ASSIGN_TIP =
     "Select a specific group from the dropdown, both site and project level groups are available. If left blank, the 'Assigned To' field will display all users who are a) assigned the role of Editor or higher in the folder, and b) are members of at least one project-level security group.";
 export const ISSUES_LIST_USER_ASSIGN_TIP =
     'In some workflows it is useful to have a default user to whom all issues are assigned, such as for initial triage and balancing assignments across a group. If left blank, no user will be assigned by default.';
+export const ISSUES_LIST_RELATED_FOLDER_TIP =
+    'A related issue can be created in any issue list that the user can insert into. This setting controls the default folder selection in the related issue dialog box.';

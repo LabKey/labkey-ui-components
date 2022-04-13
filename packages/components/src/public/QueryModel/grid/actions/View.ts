@@ -24,10 +24,7 @@ export class ViewAction implements Action {
     iconCls = 'table';
     param = ViewAction.NAME;
     keyword = ViewAction.NAME;
-    oneWordLabel = ViewAction.NAME;
-    optionalLabel = 'name';
     getQueryInfo: () => QueryInfo;
-    singleton = true;
     urlPrefix: string;
 
     constructor(urlPrefix: string, getColumns: () => List<QueryColumn>, getQueryInfo: () => QueryInfo) {

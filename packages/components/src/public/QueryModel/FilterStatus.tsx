@@ -1,8 +1,8 @@
 import React, { FC, memo } from 'react';
 
-import { ActionValue } from '../../internal/components/omnibox/actions/Action';
-import { Value } from '../../internal/components/omnibox/Value';
-import { filterActionValuesByType } from '../../internal/components/omnibox/utils';
+import { ActionValue } from './grid/actions/Action';
+import { Value } from './grid/Value';
+import { filterActionValuesByType } from './grid/utils';
 
 interface Props {
     actionValues: ActionValue[];

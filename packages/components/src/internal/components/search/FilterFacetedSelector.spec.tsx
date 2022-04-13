@@ -104,7 +104,7 @@ describe('FilterFacetedSelector', () => {
         }
 
         if (valueTags) {
-            const valuesTagDivs = wrapper.find('.filter-faceted__tags-value');
+            const valuesTagDivs = wrapper.find('.filter-status-value');
             expect(valuesTagDivs.length).toBe(valueTags.length);
             for (let ind = 0; ind < valueTags.length; ind++) {
                 const tagDiv = valuesTagDivs.at(ind);

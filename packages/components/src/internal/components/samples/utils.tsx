@@ -237,7 +237,7 @@ export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
 export const getSampleTypeTemplateUrl = (
     queryInfo: QueryInfo,
     importAliases: Record<string, string>,
-    excludeColumns: string[] = ['flag'],
+    excludeColumns: string[] = ['flag', 'Ancestors'],
     exportConfig: any = SAMPLE_EXPORT_CONFIG
 ): string => {
     const { schemaQuery } = queryInfo;

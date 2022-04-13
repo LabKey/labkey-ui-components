@@ -561,6 +561,7 @@ export interface EntityDataType {
     dependencyText: string; // text describing the dependencies that may prevent the entity from being deleted (e.g., 'derived sample or assay data dependencies')
     deleteHelpLinkTopic: string; // help topic for finding out more about dependencies and deletion
     inputColumnName: string; // used for extracting or querying for the parents of this type
+    ancestorColumnName: string; // used for extracting or querying for the ancestores of this type
     inputTypeValueField: string;
     appUrlPrefixParts?: string[]; // the prefix used for creating links to this type in the application
     insertColumnNamePrefix: string; // when updating this value as an input, the name of that column (e.g, MaterialInputs)

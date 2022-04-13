@@ -150,8 +150,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                     if (value === null || value === undefined) displayValue = '[blank]';
 
                                     return (
-                                        <li key={index} className="OmniBox--multi">
-                                            <div className="OmniBox-value filter-faceted__tags-value">
+                                        <li key={index} className="filter-status__faceted">
+                                            <div className="filter-status-value">
                                                 <i
                                                     className="symbol fa fa-close"
                                                     onClick={() => onChange(value, false)}

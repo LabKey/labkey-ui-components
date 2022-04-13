@@ -10,7 +10,7 @@ import { User } from '../base/models/User';
 import { getOmittedSampleTypeColumns, isSamplesSchema } from '../samples/utils';
 import { SCHEMAS } from '../../schemas';
 
-import { resolveFilterType } from '../omnibox/actions/Filter';
+import { resolveFilterType } from '../../../public/QueryModel/grid/actions/Filter';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
@@ -36,11 +36,13 @@ export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): str
     return hintText + names + ' properties.';
 }
 
-export function getFilterCardColumnName(entityDataType: EntityDataType, schemaQuery: SchemaQuery, useAncestors: boolean): string {
-    if (useAncestors)
-        return entityDataType.ancestorColumnName + "/" + schemaQuery.queryName;
-    else
-        return entityDataType.inputColumnName.replace('First', schemaQuery.queryName);
+export function getFilterCardColumnName(
+    entityDataType: EntityDataType,
+    schemaQuery: SchemaQuery,
+    useAncestors: boolean
+): string {
+    if (useAncestors) return entityDataType.ancestorColumnName + '/' + schemaQuery.queryName;
+    else return entityDataType.inputColumnName.replace('First', schemaQuery.queryName);
 }
 
 const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
@@ -69,12 +71,14 @@ export function getFinderViewColumnsConfig(
             .filter(col => FIRST_COLUMNS_IN_VIEW.indexOf(col.fieldKey) === -1)
             .map(col => col.fieldKey)
     );
-    const viewDisplayFieldKeys = queryModel.queryInfo?.getDisplayColumns(queryModel.viewName)
+    const viewDisplayFieldKeys = queryModel.queryInfo
+        ?.getDisplayColumns(queryModel.viewName)
         .map(column => column.fieldKey)
-        .toArray().sort();
+        .toArray()
+        .sort();
     return {
-        hasUpdates: viewDisplayFieldKeys.join(",") !== [...columnKeys].sort().join(","),
-        columns: columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] }))
+        hasUpdates: viewDisplayFieldKeys.join(',') !== [...columnKeys].sort().join(','),
+        columns: columnKeys.map(fieldKey => ({ fieldKey, title: columnDisplayNames[fieldKey] })),
     };
 }
 
@@ -221,7 +225,6 @@ export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string
                     card.dataTypeDisplayName + ' ' + filter.fieldCaption;
             });
         }
-
     });
     return columnNames;
 }

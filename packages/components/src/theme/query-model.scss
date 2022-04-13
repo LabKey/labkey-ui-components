@@ -26,8 +26,7 @@
     vertical-align: middle;
 }
 .grid-panel__info,
-.grid-panel__grid,
-.grid-panel__omnibox {
+.grid-panel__grid {
     margin-top: 12px;
 }
 .export-menu-icon {
@@ -87,7 +86,7 @@
 }
 
 .grid-panel__filter-status {
-    .OmniBox-value {
+    .filter-status-value {
         display: inline-block;
         white-space: pre;
         max-width: 400px;
@@ -97,10 +96,10 @@
         line-height: 16px;
         margin-right: 8px;
         padding: 8px 8px 8px 32px;
-        color: $omnibox-item-color;
-        background-color: $omnibox-item-bg;
+        color: $grid-action-item-color;
+        background-color: $grid-action-item-bg;
         border-radius: 2px;
-        border: 1px solid $omnibox-item-border-color;
+        border: 1px solid $grid-action-item-border-color;
 
         i.read-lock {
             padding-right: 6px;
@@ -108,38 +107,38 @@
         }
 
         i.symbol {
-            color: $omnibox-item-color;
+            color: $grid-action-item-color;
             width: 23px;
             height: 14px;
             margin-right: 8px;
             margin-left: -25px;
-            border-right: solid 1px $omnibox-item-border-color;
+            border-right: solid 1px $grid-action-item-border-color;
         }
 
         &:hover,
         &:focus {
-            background-color: $omnibox-item-hover-bg;
+            background-color: $grid-action-item-hover-bg;
         }
         &:active {
-            background-color: $omnibox-item-border-color;
+            background-color: $grid-action-item-border-color;
         }
 
         &.is-disabled {
-            background-color: $omnibox-item-disabled-bg;
-            border: 1px solid $omnibox-item-disabled-border-color;
-            color: $omnibox-item-disabled-color;
+            background-color: $grid-action-item-disabled-bg;
+            border: 1px solid $grid-action-item-disabled-border-color;
+            color: $grid-action-item-disabled-color;
 
             i.symbol {
-                color: $omnibox-item-disabled-color;
-                border-color: $omnibox-item-disabled-border-color;
+                color: $grid-action-item-disabled-color;
+                border-color: $grid-action-item-disabled-border-color;
             }
 
             &:hover,
             &:focus {
-                background-color: $omnibox-item-disabled-bg;
+                background-color: $grid-action-item-disabled-bg;
             }
             &:active {
-                background-color: $omnibox-item-disabled-bg;
+                background-color: $grid-action-item-disabled-bg;
             }
         }
     }

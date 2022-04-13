@@ -4,8 +4,8 @@ import { Filter } from '@labkey/api';
 import { QueryColumn } from '../../..';
 
 import { ActionValue } from './actions/Action';
-import { Change, ChangeType } from './OmniBox';
 import { SearchAction } from './actions/Search';
+import { Change, ChangeType } from './model';
 
 /**
  * From the supplied columnName this method will determine which columns in the "columns" list
@@ -80,7 +80,7 @@ export function replaceSearchValue(
         });
     }
 
-    let change = { type: ChangeType.add } as Change;
+    let change = hasNewSearch ? ({ type: ChangeType.add } as Change) : undefined;
     if (existingSearchIndex > -1) {
         if (hasNewSearch) {
             change = { type: ChangeType.modify, index: existingSearchIndex };

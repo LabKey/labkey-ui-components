@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 
-import { SearchAction } from '../../internal/components/omnibox/actions/Search';
+import { SearchAction } from './grid/actions/Search';
 
 import { SearchBox } from './SearchBox';
 

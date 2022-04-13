@@ -8,8 +8,10 @@ import { Filter } from '@labkey/api';
 import { List } from 'immutable';
 
 import { EXPORT_TYPES, QueryColumn, QueryModel, QuerySort } from '../..';
-import { ActionValue } from '../../internal/components/omnibox/actions/Action';
+
 import { ExportOptions, getExportParams } from '../../internal/actions';
+
+import { ActionValue } from './grid/actions/Action';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;

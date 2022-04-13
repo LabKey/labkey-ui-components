@@ -25,8 +25,6 @@ export class SearchAction implements Action {
     iconCls = 'search';
     param = 'q';
     keyword = 'search';
-    oneWordLabel = 'search';
-    optionalLabel = 'keywords';
 
     constructor(urlPrefix: string) {
         if (urlPrefix !== undefined) {

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.153.1-fb-dataclass-import.1",
+  "version": "2.154.0-fb-dataclass-import.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -65,7 +65,6 @@
     "react-color": "2.19.3",
     "react-datepicker": "4.2.1",
     "react-dom": "16.14.0",
-    "react-input-autosize": "2.2.2",
     "react-redux": "5.1.0",
     "react-router": "3.2.6",
     "react-select": "4.3.1",

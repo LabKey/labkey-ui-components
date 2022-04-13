@@ -1,15 +1,12 @@
-import { FilterAction } from './Filter';
-import { Filter } from '@labkey/api';
-import { ActionValue, Value } from './Action';
-import { QueryInfo } from '../../../../public/QueryInfo';
+import { ActionValue } from './Action';
+import { QueryInfo } from '../../../QueryInfo';
 import { fromJS, List } from 'immutable';
-import { QueryColumn } from '../../../../public/QueryColumn';
-import { initUnitTests, makeQueryInfo, makeTestData } from '../../../testHelpers';
+import { QueryColumn } from '../../../QueryColumn';
+import { initUnitTests, makeQueryInfo, makeTestData } from '../../../../internal/testHelpers';
 import mixturesQuery from '../../../../test/data/mixtures-getQuery.json';
 import mixturesQueryInfo from '../../../../test/data/mixtures-getQueryDetails.json';
-import { QueryGridModel } from '../../../QueryGridModel';
+import { QueryGridModel } from '../../../../internal/QueryGridModel';
 import { SortAction } from './Sort';
-import { QuerySort } from '../../../../public/QuerySort';
 
 
 let queryInfo: QueryInfo;

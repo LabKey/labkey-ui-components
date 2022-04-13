@@ -9,8 +9,7 @@ import { initUnitTests, makeQueryInfo, makeTestData } from '../../internal/testH
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 
-import { ActionValue } from '../../internal/components/omnibox/actions/Action';
-import { Change, ChangeType } from '../../internal/components/omnibox/OmniBox';
+import { ActionValue } from './grid/actions/Action';
 
 import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';
@@ -43,7 +42,7 @@ const VIEW_MENU_SELECTOR = '.view-menu';
 const GRID_SELECTOR = '.grid-panel__grid .table-responsive';
 const GRID_INFO_SELECTOR = '.grid-panel__info';
 const EXPORT_MENU_SELECTOR = '.export-menu';
-const OMNIBOX_SELECTOR = '.grid-panel__omnibox OmniBox';
+const FILTER_STATUS_SELECTOR = '.grid-panel__filter-status';
 const DISABLED_BUTTON_CLASS = 'disabled-button-with-tooltip';
 const CLEAR_ALL_SELECTOR = '.selection-status__clear-all';
 const ERROR_SELECTOR = '.grid-panel__grid .alert-danger';
@@ -79,9 +78,7 @@ describe('GridPanel', () => {
         expectPaginationVisible(wrapper, false);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
         expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(false);
-        // OmniBox should be present, but disabled when we don't have a QueryInfo yet
-        expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
-        expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
+        expect(wrapper.find(FILTER_STATUS_SELECTOR).exists()).toEqual(true);
     };
 
     const expectNoRows = (wrapper: GridPanelWrapper): void => {
@@ -89,8 +86,7 @@ describe('GridPanel', () => {
         expectPaginationVisible(wrapper, false);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
         expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(true);
-        expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
-        expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
+        expect(wrapper.find(FILTER_STATUS_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(TestButtons).exists()).toEqual(expectedButtons);
     };
 
@@ -135,8 +131,7 @@ describe('GridPanel', () => {
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).text()).toEqual('1 - 20 of 661');
         expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
-        expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
-        expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(false);
+        expect(wrapper.find(FILTER_STATUS_SELECTOR).exists()).toEqual(true);
 
         wrapper.setProps({ showSampleComparisonReports: true });
         expectChartMenu(wrapper, false);
@@ -226,259 +221,6 @@ describe('GridPanel', () => {
         expectError(wrapper, selectionsError);
     });
 
-    const omniBoxTextMapper = (av): string => av.displayValue ?? av.value;
-
-    const expectFilterState = (
-        wrapper: GridPanelWrapper,
-        actionValue: ActionValue,
-        actionValues: ActionValue[],
-        expectedFilters: Filter.IFilter[]
-    ): void => {
-        const grid = wrapper.instance();
-        const { model } = grid.props;
-        const { valueObject } = actionValue;
-        const expectedOmniText = actionValues
-            .filter(
-                av => av.valueObject === valueObject || av.valueObject.getColumnName() !== valueObject.getColumnName()
-            )
-            .map(omniBoxTextMapper)
-            .join('');
-        expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
-        expect(actions.setFilters).toHaveBeenCalledWith(model.id, expectedFilters, grid.props.allowSelections);
-        // Set the filterArray to expectedFilters to emulate actual behavior, so we can more easily test realistic
-        // scenarios.
-        wrapper.setProps({ model: model.mutate({ filterArray: expectedFilters }) });
-    };
-
-    const expectSortsState = (
-        wrapper: GridPanelWrapper,
-        actionValue: ActionValue,
-        actionValues: ActionValue[],
-        expectedSorts: QuerySort[]
-    ): void => {
-        const grid = wrapper.instance();
-        const { model } = grid.props;
-        const { valueObject } = actionValue;
-        const expectedOmniText = actionValues
-            .filter(av => av.valueObject === valueObject || av.valueObject.fieldKey !== valueObject.fieldKey)
-            .map(omniBoxTextMapper)
-            .join('');
-        expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
-        expect(actions.setSorts).toHaveBeenCalledWith(model.id, expectedSorts);
-        // Set the sorts to expectedSorts to emulate actual behavior, so we can more easily test realistic scenarios.
-        wrapper.setProps({ model: model.mutate({ sorts: expectedSorts }) });
-    };
-
-    const testAddOmniBoxValue = (
-        wrapper: GridPanelWrapper,
-        actionValue: ActionValue,
-        expectedState: Filter.IFilter[] | QuerySort[]
-    ): void => {
-        const grid = wrapper.instance();
-        const values = grid.state.actionValues.concat(actionValue);
-        grid.omniBoxChange(values, { type: ChangeType.add });
-        if (actionValue.valueObject.fieldKey === undefined) {
-            // assume filter
-            expectFilterState(wrapper, actionValue, values, expectedState as Filter.IFilter[]);
-        } else {
-            expectSortsState(wrapper, actionValue, values, expectedState as QuerySort[]);
-        }
-    };
-
-    const testModifyOmniBoxValue = (
-        wrapper: GridPanelWrapper,
-        actionValue: ActionValue,
-        index: number,
-        expectedState: Filter.IFilter[] | QuerySort[]
-    ): void => {
-        const grid = wrapper.instance();
-        // OmniBox moves the modified action to the end of the actionValues array.
-        const values = grid.state.actionValues.filter((v, i) => i !== index).concat(actionValue);
-        grid.omniBoxChange(values, { type: ChangeType.modify, index });
-
-        if (actionValue.valueObject.fieldKey === undefined) {
-            // assume filter
-            expectFilterState(wrapper, actionValue, values, expectedState as Filter.IFilter[]);
-        } else {
-            expectSortsState(wrapper, actionValue, values, expectedState as QuerySort[]);
-        }
-    };
-
-    const testChangeSearch = (
-        wrapper: GridPanelWrapper,
-        actionValue: ActionValue,
-        expectedFilters: Filter.IFilter[],
-        index?: number
-    ): void => {
-        const grid = wrapper.instance();
-        let values = grid.state.actionValues.concat(actionValue);
-        let change: Change = { type: ChangeType.add };
-
-        if (index !== undefined) {
-            values = values.filter((av, i) => i !== index);
-            change = { type: ChangeType.modify, index };
-        }
-
-        grid.omniBoxChange(values, change);
-        const { model } = grid.props;
-        const expectedOmniText = values.map(av => av.value).join('');
-        expect(actions.setFilters).toHaveBeenCalledWith(model.id, expectedFilters, grid.props.allowSelections);
-        expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
-        wrapper.setProps({ model: model.mutate({ filterArray: expectedFilters }) });
-    };
-
-    // Triggers a remove event at index and checks expectedFilters were passed to setFilters. Works for removing
-    // filters and searches on OmniBox.
-    const testRemoveFilter = (wrapper: GridPanelWrapper, expectedFilters: Filter.IFilter[], index: number): void => {
-        const grid = wrapper.instance();
-        const values = grid.state.actionValues.filter((av, i) => i !== index);
-        grid.omniBoxChange(values, { type: ChangeType.remove, index });
-        const { model } = grid.props;
-        const expectedOmniText = values.map(av => av.value).join('');
-        expect(actions.setFilters).toHaveBeenCalledWith(model.id, expectedFilters, grid.props.allowSelections);
-        expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
-        wrapper.setProps({ model: model.mutate({ filterArray: expectedFilters }) });
-    };
-
-    const testSetView = (wrapper: GridPanelWrapper, viewName: string, viewLabel: string): void => {
-        const grid = wrapper.instance();
-        // Omnibox filters out existing view actions for us because they are singletons.
-        let values = grid.state.actionValues.filter(v => v.action.keyword !== 'view');
-        // GridPanel converts viewName to label
-        const expectedOmniText = values.map(v => v.displayValue ?? v.value).join('') + viewLabel;
-        values = values.concat([
-            {
-                action: grid.omniBoxActions.view,
-                value: viewName,
-            },
-        ]);
-        grid.omniBoxChange(values, { type: ChangeType.add });
-        expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
-        expect(actions.setView).toHaveBeenCalledWith('model', viewName, grid.props.allowSelections);
-    };
-
-    test('OmniBox', () => {
-        const { rows, orderedRows, rowCount } = DATA;
-        const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
-        const grid = wrapper.instance();
-
-        const filter1 = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
-        const filterAction1 = {
-            action: grid.omniBoxActions.filter,
-            value: '"Name" = DMXP',
-            valueObject: filter1,
-        };
-        const filter2 = Filter.create('expirationTime', '1', Filter.Types.EQUAL);
-        const filterAction2 = {
-            action: grid.omniBoxActions.filter,
-            value: '"Expiration Time" = 1',
-            valueObject: filter2,
-        };
-        const filter3 = Filter.create('expirationTime', '2', Filter.Types.EQUAL);
-        const filterAction3 = {
-            action: grid.omniBoxActions.filter,
-            value: '"Expiration Time" = 2',
-            valueObject: filter3,
-        };
-        const filter4 = Filter.create('expirationTime', '10', Filter.Types.EQUAL);
-        const filterAction4 = {
-            action: grid.omniBoxActions.filter,
-            value: '"Expiration Time" = 10',
-            valueObject: filter4,
-        };
-        const filter5 = Filter.create('Name', 'PBS', Filter.Types.EQUAL);
-        const filterAction5 = {
-            action: grid.omniBoxActions.filter,
-            value: '"Name" = PBS',
-            valueObject: filter5,
-        };
-        const search1 = Filter.create('*', 'foo', Filter.Types.Q);
-        const searchAction1 = {
-            action: grid.omniBoxActions.search,
-            value: 'foo',
-            valueObject: search1,
-        };
-        const search2 = Filter.create('*', 'bar', Filter.Types.Q);
-        const searchAction2 = {
-            action: grid.omniBoxActions.search,
-            value: 'bar',
-            valueObject: Filter.create('*', 'bar', Filter.Types.Q),
-        };
-        const search3 = Filter.create('*', 'foo2', Filter.Types.Q);
-        const searchAction3 = {
-            action: grid.omniBoxActions.search,
-            value: 'foo2',
-            valueObject: search3,
-        };
-        const sort1 = new QuerySort({ fieldKey: 'Name' });
-        const sortAction1 = {
-            action: grid.omniBoxActions.sort,
-            displayValue: 'Name',
-            value: 'Name ASC',
-            valueObject: sort1,
-        };
-        const sort2 = new QuerySort({ fieldKey: 'expirationTime' });
-        const sortAction2 = {
-            action: grid.omniBoxActions.sort,
-            displayValue: 'Expiration Time',
-            value: 'expirationTime ASC',
-            valueObject: sort2,
-        };
-        const sort3 = new QuerySort({ fieldKey: 'Name', dir: '-' });
-        const sortAction3 = {
-            action: grid.omniBoxActions.sort,
-            displayValue: 'Name',
-            value: 'Name DESC',
-            valueObject: sort3,
-        };
-
-        // You should be able to add multiple filters if they're on different columns.
-        testAddOmniBoxValue(wrapper, filterAction1, [filter1]);
-        testAddOmniBoxValue(wrapper, filterAction2, [filter1, filter2]);
-        // Adding another filter on the same column and sample filter type as the second should replace the second filter.
-        testAddOmniBoxValue(wrapper, filterAction3, [filter1, filter3]);
-        // Modifying the second filter should replace the filter on the model, and not touch the first filter.
-        testModifyOmniBoxValue(wrapper, filterAction4, 1, [filter1, filter4]);
-        // Modifying the second filter to have the same column as the first should replace the first and second filter.
-        testModifyOmniBoxValue(wrapper, filterAction5, 1, [filter5]);
-
-        // We should allow multiple searches (which are filters), and they should not conflict with other filters.
-        testChangeSearch(wrapper, searchAction1, [filter5, search1]);
-        testChangeSearch(wrapper, searchAction2, [filter5, search1, search2]);
-        // Modifying a search should remove it from the filters
-        testChangeSearch(wrapper, searchAction3, [filter5, search2, search3], 1);
-
-        // Removing filters in the OmniBox should result in setFilters being called without those filters.
-        testRemoveFilter(wrapper, [search2, search3], 0);
-        testRemoveFilter(wrapper, [search2], 1);
-
-        // Change allowSelections to false, this should cause setFilters to be called with loadSelections set to false.
-        wrapper.setProps({ allowSelections: false });
-        testAddOmniBoxValue(wrapper, filterAction1, [search2, filter1]);
-
-        // You should be able to add multiple sorts if they are on different columns.
-        testAddOmniBoxValue(wrapper, sortAction1, [sort1]);
-        testAddOmniBoxValue(wrapper, sortAction2, [sort1, sort2]);
-        // Test modifying existing sort.
-        // OmniBox Action values are [search2, filter1, sort1, sort2], so index of sort1 is 2
-        testModifyOmniBoxValue(wrapper, sortAction3, 2, [sort2, sort3]);
-        // Modifying an existing sort and changing the column should replace any pre-existing sorts with the same
-        // column and remove the modified sort.
-        testModifyOmniBoxValue(wrapper, sortAction1, 2, [sort1]);
-
-        // Setting a view for the first time adds it to the OmniBox values
-        testSetView(wrapper, 'noMixtures', 'No Mixtures or Extra');
-        // Setting it a second time modifies the existing value
-        testSetView(wrapper, 'noExtraColumn', 'No Extra Column');
-
-        // Emulate remove view
-        const values = grid.state.actionValues.filter(v => v.action.keyword !== 'view');
-        grid.omniBoxChange(values, { type: ChangeType.remove, index: grid.state.actionValues.length - 1 });
-        expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(values.map(omniBoxTextMapper).join(''));
-        expect(actions.setView).toHaveBeenCalledWith('model', undefined, false);
-    });
-
     const expectBoundState = (
         wrapper: GridPanelWrapper,
         attrs: Partial<QueryModel>,
@@ -495,8 +237,8 @@ describe('GridPanel', () => {
         });
     };
 
-    test('Omnibox Model Binding', () => {
-        // This test ensures that the Omnibox updates when there are exernal changes to the model, typically this
+    test('FilterStatus Model Binding', () => {
+        // This test ensures that the filter status updates when there are external changes to the model, typically this
         // happens when bindURL is true and there is a URL change.
         const { rows, orderedRows, rowCount } = DATA;
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);

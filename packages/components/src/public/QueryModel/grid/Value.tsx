@@ -16,8 +16,6 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { isGridColSortFilterEnabled } from '../../app/utils';
-
 import { ActionValue } from './actions/Action';
 
 interface ValueProps {
@@ -32,7 +30,7 @@ interface ValueState {
     isDisabled?: boolean;
 }
 
-export const valueClassName = 'OmniBox-value';
+export const valueClassName = 'filter-status-value';
 
 export class Value extends React.Component<ValueProps, ValueState> {
     constructor(props: ValueProps) {
@@ -75,10 +73,7 @@ export class Value extends React.Component<ValueProps, ValueState> {
     render() {
         const { actionValue } = this.props;
         const { action, value, displayValue, isReadOnly, isRemovable } = actionValue;
-        const showRemoveIcon =
-            this.state.isActive &&
-            isRemovable !== false &&
-            (!isGridColSortFilterEnabled() || actionValue.action.keyword !== 'view');
+        const showRemoveIcon = this.state.isActive && isRemovable !== false && actionValue.action.keyword !== 'view';
 
         const className = classNames(valueClassName, {
             'is-active': this.state.isActive,

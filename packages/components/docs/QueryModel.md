@@ -124,8 +124,9 @@ To render a "minimal" GridPanel, you could do this:
     model={myModel}
     actions={actions}
     asPanel={false}
-    showOmniBox={false}
     showButtonBar={false}
+    showFilterStatus={false}
+    allowFiltering={false}
     allowSelections={false}
 />
 ```

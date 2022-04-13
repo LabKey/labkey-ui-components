@@ -23,7 +23,6 @@ import { GridColumn, QueryColumn, GRID_CHECKBOX_OPTIONS, QueryModel, LabelHelpTi
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
 import { CustomToggle } from './components/base/CustomToggle';
-import { isGridColSortFilterEnabled } from './app/utils';
 import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
@@ -45,7 +44,6 @@ interface HeaderCellDropdownProps {
 export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const { i, column, handleSort, handleFilter, headerClickCount, model } = props;
     const col: QueryColumn = column.raw;
-    const gridColSortFilterEnabled = isGridColSortFilterEnabled();
     const [open, setOpen] = useState<boolean>();
     const wrapperEl = useRef<HTMLSpanElement>();
 
@@ -115,16 +113,16 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         <>
             <span onClick={evt => onToggleClick(!open, evt)}>
                 {col.caption === '&nbsp;' ? '' : col.caption}
-                {gridColSortFilterEnabled && colFilters?.length > 0 && (
+                {colFilters?.length > 0 && (
                     <span
                         className="fa fa-filter grid-panel__col-header-icon"
                         title={colFilters?.length + ' filter' + (colFilters?.length > 1 ? 's' : '') + ' applied'}
                     />
                 )}
-                {gridColSortFilterEnabled && isSortAsc && (
+                {isSortAsc && (
                     <span className="fa fa-sort-amount-asc grid-panel__col-header-icon" title="Sorted ascending" />
                 )}
-                {gridColSortFilterEnabled && isSortDesc && (
+                {isSortDesc && (
                     <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
                 )}
                 {column.helpTipRenderer && (
@@ -140,7 +138,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                             <span className="fa fa-chevron-circle-down grid-panel__menu-toggle" />
                         </CustomToggle>
                         <Dropdown.Menu>
-                            {gridColSortFilterEnabled && allowColFilter && (
+                            {allowColFilter && (
                                 <>
                                     <MenuItem onClick={() => _handleFilter()}>
                                         <span className="fa fa-filter grid-panel__menu-icon" />
@@ -191,7 +189,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                         &nbsp; Sort descending
                                     </MenuItem>
                                     {/* Clear sort only applies for the grids that are backed by QueryModel */}
-                                    {gridColSortFilterEnabled && model && (
+                                    {model && (
                                         <MenuItem
                                             disabled={!isSortDesc && !isSortAsc}
                                             onClick={

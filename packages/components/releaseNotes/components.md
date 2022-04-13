@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.154.1
+*Released*: 13 April 2022
+* Issue 45021: Sample Finder: Filtering on a field whose name contains special characters does not work
+
 ### version 2.154.0
 *Released*: 13 April 2022
 * Item 10253: Remove experimental feature to officially switch to new Grid Filtering UX changes

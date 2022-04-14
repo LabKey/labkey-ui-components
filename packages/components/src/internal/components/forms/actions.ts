@@ -26,6 +26,7 @@ import {
     QueryInfo,
     QueryModel,
     QuerySelectOwnProps,
+    resolveDetailFieldValue,
     searchRows,
     SelectInputOption,
     selectRows,
@@ -259,7 +260,8 @@ export function formatResults(model: QuerySelectModel, results: Map<string, any>
 
     return results
         .map(result => ({
-            label: result.getIn([model.displayColumn, 'value']) ?? result.getIn([model.valueColumn, 'value']),
+            label: (resolveDetailFieldValue(result.get(model.displayColumn)) ??
+                resolveDetailFieldValue(result.get(model.valueColumn))) as string,
             value: result.getIn([model.valueColumn, 'value']),
         }))
         .sortBy(item => item.label, similaritySortFactory(token))

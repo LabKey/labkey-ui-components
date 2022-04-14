@@ -19,7 +19,7 @@ import {
 import { User } from '../base/models/User';
 import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 
-import { SamplesManageButtonSections } from '../samples/utils';
+import { SamplesEditButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { Alert } from '../base/Alert';
@@ -316,7 +316,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 excludedCreateMenuKeys={List<string>(excludedCreateMenuKeys)}
                 gridButtons={gridButtons}
                 gridButtonProps={{
-                    excludedManageMenuKeys: [SamplesManageButtonSections.IMPORT],
+                    excludedManageMenuKeys: [SamplesEditButtonSections.IMPORT],
                     excludeStartJob: true,
                     metricFeatureArea: SAMPLE_FILTER_METRIC_AREA,
                 }}

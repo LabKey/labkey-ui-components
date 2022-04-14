@@ -202,17 +202,16 @@ export function getSampleSetMenuItem(menu: ProductMenuModel, key: string): MenuI
         : undefined;
 }
 
-export enum SamplesManageButtonSections {
+export enum SamplesEditButtonSections {
     DELETE = 'delete',
     EDIT = 'edit',
     IMPORT = 'import',
     LINKTOSTUDY = 'linktostudy',
-    PICKLIST = 'picklist',
 }
 
 export const shouldShowButtons = (
-    action: SamplesManageButtonSections,
-    hideButtons: SamplesManageButtonSections[]
+    action: SamplesEditButtonSections,
+    hideButtons: SamplesEditButtonSections[]
 ): boolean => {
     return hideButtons === undefined || hideButtons.indexOf(action) === -1;
 };

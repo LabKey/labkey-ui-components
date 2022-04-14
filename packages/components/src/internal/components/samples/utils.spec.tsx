@@ -19,7 +19,7 @@ import {
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
-    SamplesManageButtonSections,
+    SamplesEditButtonSections,
     SampleStateType,
     SchemaQuery,
     SCHEMAS,
@@ -368,17 +368,17 @@ describe('getOperationNotPermittedMessage', () => {
 describe('shouldShowButtons', () => {
     test('undefined hideButtons', () => {
         expect(shouldShowButtons(undefined, undefined)).toBeTruthy();
-        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, undefined)).toBeTruthy();
+        expect(shouldShowButtons(SamplesEditButtonSections.IMPORT, undefined)).toBeTruthy();
         expect(shouldShowButtons(undefined, [])).toBeTruthy();
-        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, [])).toBeTruthy();
+        expect(shouldShowButtons(SamplesEditButtonSections.IMPORT, [])).toBeTruthy();
     });
 
     test('with hideButtons', () => {
-        expect(shouldShowButtons(undefined, [SamplesManageButtonSections.IMPORT])).toBeTruthy();
+        expect(shouldShowButtons(undefined, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
         expect(
-            shouldShowButtons(SamplesManageButtonSections.DELETE, [SamplesManageButtonSections.IMPORT])
+            shouldShowButtons(SamplesEditButtonSections.DELETE, [SamplesEditButtonSections.IMPORT])
         ).toBeTruthy();
-        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, [SamplesManageButtonSections.IMPORT])).toBeFalsy();
+        expect(shouldShowButtons(SamplesEditButtonSections.IMPORT, [SamplesEditButtonSections.IMPORT])).toBeFalsy();
     });
 });
 

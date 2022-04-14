@@ -7,7 +7,7 @@ import { OperationConfirmationData, QueryModel, User } from '../../..';
 
 import { SampleStateType } from './constants';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
-import { SamplesManageButtonSections } from './utils';
+import { SamplesEditButtonSections } from './utils';
 
 export enum SampleCreationType {
     Independents = 'New samples',
@@ -162,8 +162,8 @@ export interface SampleGridButtonProps {
     createBtnParentKey?: string;
     createBtnParentType?: string;
     excludedCreateMenuKeys?: List<string>;
-    excludedManageMenuKeys?: SamplesManageButtonSections[];
-    hideButtons?: SamplesManageButtonSections[];
+    excludedManageMenuKeys?: SamplesEditButtonSections[];
+    hideButtons?: SamplesEditButtonSections[];
     excludeStartJob?: boolean;
     initAliquotMode?: ALIQUOT_FILTER_MODE;
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;

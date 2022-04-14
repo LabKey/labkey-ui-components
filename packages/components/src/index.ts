@@ -326,7 +326,7 @@ import {
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
-import { SamplesManageButton } from './internal/components/samples/SamplesManageButton';
+import { SamplesEditButton } from './internal/components/samples/SamplesEditButton';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
@@ -354,7 +354,7 @@ import {
     downloadSampleTypeTemplate,
     isSampleOperationPermitted,
     isSamplesSchema,
-    SamplesManageButtonSections,
+    SamplesEditButtonSections,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -1046,8 +1046,8 @@ export {
     SampleCreationType,
     SampleSetDeleteModal,
     SampleActionsButton,
-    SamplesManageButton,
-    SamplesManageButtonSections,
+    SamplesEditButton,
+    SamplesEditButtonSections,
     SamplesTabbedGridPanel,
     SampleLineageGraph,
     SampleDetailEditing,

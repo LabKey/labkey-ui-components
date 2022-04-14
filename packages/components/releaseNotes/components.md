@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD April 2022
+* Item 10230: App grid action updates to buttons/menus in header bar
+  * ...TODO
+
 ### version 2.154.0
 *Released*: 13 April 2022
 * Item 10253: Remove experimental feature to officially switch to new Grid Filtering UX changes

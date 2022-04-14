@@ -3,15 +3,13 @@ import { MenuItem } from 'react-bootstrap';
 import { ReactWrapper } from 'enzyme';
 
 import {
-    AddToPicklistMenuItem,
     DataClassDataType,
-    EntityLineageEditMenuItem,
     LoadingState,
     makeTestActions,
     makeTestQueryModel,
     ManageDropdownButton,
     QueryInfo,
-    SamplesManageButtonSections,
+    SamplesEditButtonSections,
     SampleTypeDataType,
     SchemaQuery,
     SelectionMenuItem,
@@ -25,10 +23,11 @@ import {
 } from '../../../test/data/users';
 import { mountWithServerContext } from '../../testHelpers';
 
-import { SamplesManageButton } from './SamplesManageButton';
+import { SamplesEditButton } from './SamplesEditButton';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
+import { EntityLineageEditMenuItem } from '../entities/EntityLineageEditMenuItem';
 
-describe('SamplesManageButton', () => {
+describe('SamplesEditButton', () => {
     const queryInfo = new QueryInfo({
         showInsertNewButton: true,
         importUrl: 'test',
@@ -42,15 +41,13 @@ describe('SamplesManageButton', () => {
         parentEntityItemCount = 2,
         selMenuItemCount = 6,
         menuItemCount = 7,
-        deleteItemCount = 1,
-        picklistItemCount = 1
+        deleteItemCount = 1
     ): void {
         expect(wrapper.find(ManageDropdownButton)).toHaveLength(show ? 1 : 0);
         if (show) {
             expect(wrapper.find(EntityLineageEditMenuItem)).toHaveLength(parentEntityItemCount);
             expect(wrapper.find(SelectionMenuItem)).toHaveLength(selMenuItemCount);
             expect(wrapper.find(SampleDeleteMenuItem)).toHaveLength(deleteItemCount);
-            expect(wrapper.find(AddToPicklistMenuItem)).toHaveLength(picklistItemCount);
             expect(wrapper.find(MenuItem)).toHaveLength(menuItemCount);
         }
     }
@@ -65,7 +62,7 @@ describe('SamplesManageButton', () => {
     };
 
     test('default props', () => {
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} />, { user: TEST_USER_EDITOR });
+        const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, { user: TEST_USER_EDITOR });
         validate(wrapper);
         expect(wrapper.find(MenuItem).first().prop('href')).toBe('#/samples/new?target=query&tab=2');
         wrapper.unmount();
@@ -73,7 +70,7 @@ describe('SamplesManageButton', () => {
 
     test('loading', () => {
         const wrapper = mountWithServerContext(
-            <SamplesManageButton
+            <SamplesEditButton
                 {...DEFAULT_PROPS}
                 model={makeTestQueryModel(SchemaQuery.create('schema', 'query'))}
             />,
@@ -84,7 +81,7 @@ describe('SamplesManageButton', () => {
     });
 
     test('combineParentTypes', () => {
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} combineParentTypes />, {
+        const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} combineParentTypes />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, true, 1, 5, 6);
@@ -92,7 +89,7 @@ describe('SamplesManageButton', () => {
     });
 
     test('author', () => {
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} />, {
+        const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_AUTHOR,
         });
         validate(wrapper, true, 0, 0, 1, 0, 0);
@@ -100,14 +97,14 @@ describe('SamplesManageButton', () => {
     });
 
     test('storage editor', () => {
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} />, {
+        const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_STORAGE_EDITOR,
         });
         validate(wrapper, true, 0, 2, 2, 0, 1);
     });
 
     test('reader', () => {
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} />, {
+        const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_READER,
         });
         validate(wrapper, false);
@@ -116,9 +113,9 @@ describe('SamplesManageButton', () => {
 
     test('children', () => {
         const wrapper = mountWithServerContext(
-            <SamplesManageButton {...DEFAULT_PROPS}>
+            <SamplesEditButton {...DEFAULT_PROPS}>
                 <div id="test-child-comp">test</div>
-            </SamplesManageButton>,
+            </SamplesEditButton>,
             { user: TEST_USER_EDITOR }
         );
         validate(wrapper);
@@ -133,7 +130,7 @@ describe('SamplesManageButton', () => {
             rowsLoadingState: LoadingState.LOADED,
         });
 
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} model={model} />, {
+        const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} model={model} />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, true, 2, 6, 6);
@@ -142,7 +139,7 @@ describe('SamplesManageButton', () => {
 
     test('showLinkToStudy with study module present', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['study'] } };
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} showLinkToStudy />, {
+        const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} showLinkToStudy />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, true, 2, 7, 8);
@@ -151,7 +148,7 @@ describe('SamplesManageButton', () => {
 
     test('showLinkToStudy without study module present', () => {
         LABKEY.moduleContext = { api: { moduleNames: [] } };
-        const wrapper = mountWithServerContext(<SamplesManageButton {...DEFAULT_PROPS} showLinkToStudy />, {
+        const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} showLinkToStudy />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper);
@@ -161,15 +158,14 @@ describe('SamplesManageButton', () => {
     test('hideButtons', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['study'] } };
         const wrapper = mountWithServerContext(
-            <SamplesManageButton
+            <SamplesEditButton
                 {...DEFAULT_PROPS}
                 showLinkToStudy
                 hideButtons={[
-                    SamplesManageButtonSections.IMPORT,
-                    SamplesManageButtonSections.DELETE,
-                    SamplesManageButtonSections.EDIT,
-                    SamplesManageButtonSections.LINKTOSTUDY,
-                    SamplesManageButtonSections.PICKLIST,
+                    SamplesEditButtonSections.IMPORT,
+                    SamplesEditButtonSections.DELETE,
+                    SamplesEditButtonSections.EDIT,
+                    SamplesEditButtonSections.LINKTOSTUDY,
                 ]}
             />,
             { user: TEST_USER_EDITOR }

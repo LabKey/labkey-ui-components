@@ -26,9 +26,9 @@ import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSes
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
-export function getFinderStartText(parentEntityDataTypes: EntityDataType[], disabledEntityTypes: string[]): string {
+export function getFinderStartText(parentEntityDataTypes: EntityDataType[], enabledEntityTypes: string[]): string {
     const hintText = 'Start by adding ';
-    let names = parentEntityDataTypes.filter(entityType => disabledEntityTypes?.indexOf(entityType.typeListingSchemaQuery.queryName) < 0).map(entityType => entityType.nounAsParentSingular).join(', ');
+    let names = parentEntityDataTypes.filter(entityType => enabledEntityTypes?.indexOf(entityType.typeListingSchemaQuery.queryName) >= 0).map(entityType => entityType.nounAsParentSingular).join(', ');
     if (names.length === 0) {
         return null;
     }

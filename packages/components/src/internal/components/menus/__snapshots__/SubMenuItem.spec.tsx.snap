@@ -218,24 +218,7 @@ exports[`<SubMenuItem /> disabled 1`] = `
 </li>
 `;
 
-exports[`<SubMenuItem /> no properties render 1`] = `
-<li
-  className="dropdown-submenu"
-  onMouseOut={[Function]}
-  role="presentation"
->
-  <a
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    role="menuitem"
-    tabIndex={-1}
-  />
-  <i
-    className="fa fa-chevron-down"
-    onClick={[Function]}
-  />
-</li>
-`;
+exports[`<SubMenuItem /> no properties render 1`] = `null`;
 
 exports[`<SubMenuItem /> onMouseOut 1`] = `
 <li

@@ -92,7 +92,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_AUTHOR,
         });
-        validate(wrapper, true, 0, 0, 1, 0, 0);
+        validate(wrapper, true, 0, 0, 1, 0);
         wrapper.unmount();
     });
 
@@ -100,7 +100,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_STORAGE_EDITOR,
         });
-        validate(wrapper, true, 0, 2, 2, 0, 1);
+        validate(wrapper, true, 0, 2, 2, 0);
     });
 
     test('reader', () => {
@@ -170,7 +170,7 @@ describe('SamplesEditButton', () => {
             />,
             { user: TEST_USER_EDITOR }
         );
-        validate(wrapper, true, 0, 0, 0, 0, 0);
+        validate(wrapper, true, 0, 0, 0, 0);
         wrapper.unmount();
     });
 });

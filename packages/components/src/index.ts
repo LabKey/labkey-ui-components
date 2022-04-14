@@ -145,7 +145,7 @@ import { ManageDropdownButton } from './internal/components/buttons/ManageDropdo
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
 import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
-import { getMenuItemsForSection } from './internal/components/buttons/utils';
+import { getMenuItemsForSection, getMenuItemForSectionKey } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 
@@ -289,7 +289,6 @@ import { addDateRangeFilter, last12Months, monthSort } from './internal/componen
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
-import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import {
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
@@ -1076,7 +1075,6 @@ export {
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,
-    EntityLineageEditMenuItem,
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
     GenerateEntityResponse,
@@ -1308,6 +1306,7 @@ export {
     PaginationButtons,
     ToggleButtons,
     getMenuItemsForSection,
+    getMenuItemForSectionKey,
     // application page related items
     LoadingPage,
     NotFound,

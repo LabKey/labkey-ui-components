@@ -13,6 +13,7 @@ import {
     QueryModel,
     SampleCreationType,
     SampleCreationTypeModal,
+    SampleCreationTypeModel,
     SchemaQuery,
     SubMenu,
 } from '../../..';
@@ -32,6 +33,7 @@ interface CreateSamplesSubMenuProps {
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     allowPooledSamples?: boolean;
     selectedItems?: Record<string, any>;
+    selectedType?: SampleCreationType;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -50,6 +52,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         getProductSampleWizardURL,
         isSelectingSamples,
         selectedItems,
+        selectedType,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -117,22 +120,37 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         [navigate, sampleCreationURL]
     );
 
-    const sampleOptions = [DERIVATIVE_CREATION];
-    if (allowPooledSamples) sampleOptions.push(POOLED_SAMPLE_CREATION);
-    if (selectedOption && selectedOption === menuCurrentChoice)
-        sampleOptions.push({ ...ALIQUOT_CREATION, selected: true });
+    const sampleOptions = [
+        {
+            ...DERIVATIVE_CREATION,
+            selected: selectedType === SampleCreationType.Derivatives,
+        } as SampleCreationTypeModel,
+    ];
+    if (selectedOption && selectedOption === menuCurrentChoice) {
+        if (allowPooledSamples) {
+            sampleOptions.push({
+                ...POOLED_SAMPLE_CREATION,
+                selected: selectedType === SampleCreationType.PooledSamples,
+            });
+        }
+        sampleOptions.push({
+            ...ALIQUOT_CREATION,
+            selected: !selectedType || selectedType === SampleCreationType.Aliquots,
+        });
+    }
 
     return (
         <>
             <SubMenu
                 currentMenuChoice={menuCurrentChoice}
+                extractCurrentMenuChoice={false}
                 key={App.SAMPLES_KEY}
                 options={
                     getOptions
                         ? getOptions(useOnClick, disabledMsg, disabledMsg ? undefined : onSampleCreationMenuSelect)
                         : undefined
                 }
-                text={menuText ?? 'Create Samples'}
+                text={menuText}
             />
             {sampleCreationURL && (
                 <SampleCreationTypeModal
@@ -152,4 +170,5 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
 CreateSamplesSubMenuBase.defaultProps = {
     allowPooledSamples: true,
+    menuText: 'Create Samples',
 };

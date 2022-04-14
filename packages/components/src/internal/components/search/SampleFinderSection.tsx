@@ -124,13 +124,17 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     useEffect(() => {
         const _enabledEntityTypes = [];
         (async () => {
-            const entityOptions = await getAllEntityTypeOptions(parentEntityDataTypes);
-            Object.keys(entityOptions).forEach(key => {
-                if (entityOptions[key].length) {
-                    _enabledEntityTypes.push(key);
-                }
-            });
-            setEnabledEntityTypes(_enabledEntityTypes);
+            try {
+                const entityOptions = await getAllEntityTypeOptions(parentEntityDataTypes);
+                Object.keys(entityOptions).forEach(key => {
+                    if (entityOptions[key].length) {
+                        _enabledEntityTypes.push(key);
+                    }
+                });
+                setEnabledEntityTypes(_enabledEntityTypes);
+            } catch {
+                setEnabledEntityTypes(_enabledEntityTypes);
+            }
         })();
 
     }, []);

@@ -43,6 +43,7 @@ describe('SampleFinderSection', () => {
         expect(buttons.at(0).prop("disabled")).toBe(false);
         expect(buttons.at(1).text()).toBe(' Other Parent Properties');
         expect(buttons.at(1).prop("disabled")).toBe(false);
+        wrapper.unmount();
     });
 
     test('SampleFinderHeaderButtons, nothing enabled', () => {
@@ -68,6 +69,7 @@ describe('SampleFinderSection', () => {
         expect(buttons.at(0).prop("disabled")).toBe(true);
         expect(buttons.at(1).text()).toBe(' Other Parent Properties');
         expect(buttons.at(1).prop("disabled")).toBe(true);
+        wrapper.unmount();
     });
 
     test('No cards', () => {
@@ -88,5 +90,6 @@ describe('SampleFinderSection', () => {
         expect(section.find('.filter-hint').exists()).toBeTruthy();
         const cards = wrapper.find(FilterCards);
         expect(cards.prop('className')).toBe('empty');
+        wrapper.unmount();
     });
 });

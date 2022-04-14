@@ -421,8 +421,12 @@ export function getAllEntityTypeOptions(entityDataTypes: EntityDataType[], conta
     let optionMap = {};
     return new Promise(async (resolve) => {
         for (const entityType of entityDataTypes) {
-           const entityOptions = await getEntityTypeOptions(entityType);
-           optionMap[entityType.typeListingSchemaQuery.queryName] = entityOptions.get(entityType.typeListingSchemaQuery.queryName).toArray();
+            try {
+               const entityOptions = await getEntityTypeOptions(entityType);
+               optionMap[entityType.typeListingSchemaQuery.queryName] = entityOptions.get(entityType.typeListingSchemaQuery.queryName).toArray();
+            } catch {
+                optionMap[entityType.typeListingSchemaQuery.queryName] = [];
+            }
         }
         resolve(optionMap)
     });
@@ -437,15 +441,16 @@ export function getEntityTypeOptions(
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
     return new Promise((resolve, reject) => {
-        selectRows({
+        selectRowsDeprecated({
             containerPath,
-            schemaQuery: typeListingSchemaQuery,
+            schemaName: typeListingSchemaQuery.schemaName,
+            queryName: typeListingSchemaQuery.queryName,
             columns: 'LSID,Name,RowId,Folder/Path',
             filterArray,
             containerFilter: entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(result => {
-                const rows = fromJS(result.rows);
+                const rows = fromJS(result.models[result.key]);
                 let optionMap = Map<string, List<IEntityTypeOption>>();
                 optionMap = optionMap.set(
                     typeListingSchemaQuery.queryName,

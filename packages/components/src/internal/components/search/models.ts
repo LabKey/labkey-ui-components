@@ -69,6 +69,7 @@ export interface FilterProps {
     schemaQuery?: SchemaQuery;
     dataTypeDisplayName?: string;
     index?: number;
+    disabled?: boolean;
 }
 
 export interface SearchSessionStorageProps {

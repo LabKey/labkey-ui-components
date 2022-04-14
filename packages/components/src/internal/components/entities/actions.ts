@@ -15,6 +15,7 @@ import {
     SampleCreationType,
     SampleOperation,
     SchemaQuery,
+    selectRows,
     selectRowsDeprecated,
     SHARED_CONTAINER_PATH,
 } from '../../..';
@@ -416,6 +417,19 @@ export function getChosenParentData(
     });
 }
 
+export function getAllEntityTypeOptions(entityDataTypes: EntityDataType[], containerPath?: string) : Promise<{[key: string]: IEntityTypeOption[]}> {
+    let optionMap = {};
+    return new Promise(async (resolve) => {
+        for (const entityType of entityDataTypes) {
+           const entityOptions = await getEntityTypeOptions(entityType);
+           if (entityOptions.get(entityType.typeListingSchemaQuery.queryName).size == 0) {
+               optionMap[entityType.typeListingSchemaQuery.queryName] = entityOptions.get(entityType.typeListingSchemaQuery.queryName).toArray();
+           }
+        }
+        resolve(optionMap)
+    });
+}
+
 // get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
 export function getEntityTypeOptions(
@@ -425,16 +439,15 @@ export function getEntityTypeOptions(
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
     return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
+        selectRows({
             containerPath,
-            schemaName: typeListingSchemaQuery.schemaName,
-            queryName: typeListingSchemaQuery.queryName,
+            schemaQuery: typeListingSchemaQuery,
             columns: 'LSID,Name,RowId,Folder/Path',
             filterArray,
             containerFilter: entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(result => {
-                const rows = fromJS(result.models[result.key]);
+                const rows = fromJS(result.rows);
                 let optionMap = Map<string, List<IEntityTypeOption>>();
                 optionMap = optionMap.set(
                     typeListingSchemaQuery.queryName,

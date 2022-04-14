@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 45223: Wrap multiline text fields on line breaks
-
+* Issue 45060: Update Sample Finder to disable buttons and cards if there are no sources / sample types defined
 
 ### version 2.154.0
 *Released*: 13 April 2022

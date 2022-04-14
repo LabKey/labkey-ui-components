@@ -44,6 +44,7 @@ import {
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 import { FieldFilter, FilterProps } from './models';
+import { getAllEntityTypeOptions } from '../entities/actions';
 
 const SAMPLE_FINDER_TITLE = 'Sample Finder';
 const SAMPLE_FINDER_CAPTION = 'Find all generations of samples that meet all the criteria defined below';
@@ -67,10 +68,11 @@ interface Props extends SampleFinderSamplesGridProps {
 interface SampleFinderHeaderProps {
     parentEntityDataTypes: EntityDataType[];
     onAddEntity: (entityType: EntityDataType) => void;
+    disabledEntityTypes: string[];
 }
 
 export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props => {
-    const { parentEntityDataTypes, onAddEntity } = props;
+    const { parentEntityDataTypes, onAddEntity, disabledEntityTypes } = props;
 
     return (
         <div>
@@ -82,6 +84,7 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
                     onClick={() => {
                         onAddEntity(parentEntityType);
                     }}
+                    disabled={!disabledEntityTypes || disabledEntityTypes.indexOf(parentEntityType.typeListingSchemaQuery.queryName) >= 0}
                 >
                     <i className="fa fa-plus-circle container--addition-icon" />{' '}
                     {capitalizeFirstChar(parentEntityType.nounAsParentSingular)} Properties
@@ -103,6 +106,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [filters, setFilters] = useState<FilterProps[]>([]);
     const [chosenQueryName, setChosenQueryName] = useState<string>(undefined);
     const [chosenField, setChosenField] = useState<string>(undefined);
+    const [disabledEntityTypes, setDisabledEntityTypes] = useState<string[]>(undefined);
 
     useEffect(() => {
         const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
@@ -115,6 +119,20 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 setFilterChangeCounter(finderSessionData.filterChangeCounter);
             }
         }
+    }, []);
+
+    useEffect(() => {
+        const _disabledEntityTypes = [];
+        (async () => {
+            const entityOptions = await getAllEntityTypeOptions(parentEntityDataTypes);
+            Object.keys(entityOptions).forEach(key => {
+                if (entityOptions[key].length === 0) {
+                    _disabledEntityTypes.push(key);
+                }
+            });
+            setDisabledEntityTypes(_disabledEntityTypes);
+        })();
+
     }, []);
 
     const getSelectionKeyPrefix = (): string => {
@@ -196,7 +214,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             title={SAMPLE_FINDER_TITLE}
             caption={SAMPLE_FINDER_CAPTION}
             context={
-                <SampleFinderHeaderButtons parentEntityDataTypes={parentEntityDataTypes} onAddEntity={onAddEntity} />
+                <SampleFinderHeaderButtons parentEntityDataTypes={parentEntityDataTypes} onAddEntity={onAddEntity} disabledEntityTypes={disabledEntityTypes} />
             }
         >
             {filters.length == 0 ? (
@@ -205,10 +223,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                         className="empty"
                         cards={parentEntityDataTypes.map(entityDataType => ({
                             entityDataType,
+                            disabled: !disabledEntityTypes || disabledEntityTypes.indexOf(entityDataType.typeListingSchemaQuery.queryName) >= 0
                         }))}
                         onAddEntity={onAddEntity}
                     />
-                    <div className="filter-hint">{getFinderStartText(parentEntityDataTypes)}</div>
+                    <div className="filter-hint">{getFinderStartText(parentEntityDataTypes, disabledEntityTypes)}</div>
                 </>
             ) : (
                 <>

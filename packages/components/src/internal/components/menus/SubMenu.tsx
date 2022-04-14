@@ -30,11 +30,16 @@ export interface MenuOption {
 
 interface SubMenuProps {
     currentMenuChoice?: string;
+    extractCurrentMenuChoice?: boolean;
     options: List<MenuOption>;
     text: string;
 }
 
-export class SubMenu extends React.Component<SubMenuProps, any> {
+export class SubMenu extends React.Component<SubMenuProps> {
+    static defaultProps = {
+        extractCurrentMenuChoice: true,
+    };
+
     constructor(props: SubMenuProps) {
         super(props);
 
@@ -58,11 +63,11 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
     }
 
     getItems(): ISubItem[] {
-        const { options } = this.props;
+        const { options, extractCurrentMenuChoice } = this.props;
 
         const items = [];
         options.forEach(option => {
-            if (!this.isCurrentMenuChoice(option)) {
+            if (!extractCurrentMenuChoice || !this.isCurrentMenuChoice(option)) {
                 items.push({
                     disabled: option.disabled,
                     disabledMsg: option.disabledMsg,
@@ -100,7 +105,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
     }
 
     render() {
-        const { currentMenuChoice, options, text } = this.props;
+        const { currentMenuChoice, extractCurrentMenuChoice, options, text } = this.props;
 
         const items = [];
         // if there are 2 items or fewer, just show the items as the menu
@@ -109,7 +114,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
                 items.push(SubMenu.renderMenuItem(option, i));
             });
         } else {
-            if (currentMenuChoice) {
+            if (extractCurrentMenuChoice && currentMenuChoice) {
                 items.push(this.getCurrentMenuChoiceItem());
             }
             const menuProps = {

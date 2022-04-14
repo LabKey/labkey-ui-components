@@ -422,9 +422,7 @@ export function getAllEntityTypeOptions(entityDataTypes: EntityDataType[], conta
     return new Promise(async (resolve) => {
         for (const entityType of entityDataTypes) {
            const entityOptions = await getEntityTypeOptions(entityType);
-           if (entityOptions.get(entityType.typeListingSchemaQuery.queryName).size == 0) {
-               optionMap[entityType.typeListingSchemaQuery.queryName] = entityOptions.get(entityType.typeListingSchemaQuery.queryName).toArray();
-           }
+           optionMap[entityType.typeListingSchemaQuery.queryName] = entityOptions.get(entityType.typeListingSchemaQuery.queryName).toArray();
         }
         resolve(optionMap)
     });

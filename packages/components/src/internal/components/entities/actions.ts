@@ -417,7 +417,7 @@ export function getChosenParentData(
     });
 }
 
-export function getAllEntityTypeOptions(entityDataTypes: EntityDataType[], containerPath?: string) : Promise<{[key: string]: IEntityTypeOption[]}> {
+export function getAllEntityTypeOptions(entityDataTypes: EntityDataType[]) : Promise<{ [p: string]: IEntityTypeOption[] }> {
     let optionMap = {};
     return new Promise(async (resolve) => {
         for (const entityType of entityDataTypes) {

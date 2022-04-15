@@ -7,9 +7,9 @@ import {
     AppURL,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
+    isSamplesSchema,
     MenuOption,
     POOLED_SAMPLE_CREATION,
-    QueryGridModel,
     QueryModel,
     SampleCreationType,
     SampleCreationTypeModal,
@@ -27,7 +27,6 @@ interface CreateSamplesSubMenuProps {
     menuText?: string;
     parentType?: string;
     parentKey?: string;
-    parentModel?: QueryGridModel;
     parentQueryModel?: QueryModel;
     sampleWizardURL?: (targetSampleType?: string, parent?: string) => AppURL;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
@@ -43,7 +42,6 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         menuText,
         parentType,
         parentKey,
-        parentModel,
         parentQueryModel,
         navigate,
         getOptions,
@@ -58,30 +56,26 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
     const [selectedOption, setSelectedOption] = useState<string>();
 
-    const selectedQuantity = parentModel?.selectedQuantity ?? parentQueryModel?.selections.size ?? 1;
-
-    const schemaQuery = parentModel?.schema
-        ? SchemaQuery.create(parentModel.schema.toLowerCase(), parentModel.query)
-        : parentQueryModel?.schemaQuery;
+    const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;
+    const schemaQuery = parentQueryModel?.schemaQuery;
 
     const selectingSampleParents = useMemo(() => {
         return isSelectingSamples(schemaQuery);
     }, [isSelectingSamples, schemaQuery]);
 
     let disabledMsg: string;
+    if (selectedQuantity === 0) {
+        disabledMsg = `Select one or more ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'}.`;
+    }
     if (selectedQuantity > maxParentPerSample) {
-        disabledMsg = `At most ${maxParentPerSample} ${selectingSampleParents ? 'samples' : 'items'} can be selected`;
+        disabledMsg = `At most ${maxParentPerSample} ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'} can be selected`;
     }
 
     const useOnClick = parentKey !== undefined || (selectingSampleParents && selectedQuantity > 0);
 
     const selectionKey = useMemo(() => {
-        let selectionKey: string = null;
-        if ((parentModel?.allowSelection && parentModel.selectedIds.size > 0) || parentQueryModel?.hasSelections) {
-            selectionKey = parentModel?.getId() || parentQueryModel?.id;
-        }
-        return selectionKey;
-    }, [parentModel, parentQueryModel]);
+        return parentQueryModel?.hasSelections ? parentQueryModel.id : null;
+    }, [parentQueryModel]);
 
     const onSampleCreationMenuSelect = useCallback(
         (key: string) => {

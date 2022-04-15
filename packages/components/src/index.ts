@@ -145,6 +145,7 @@ import { ManageDropdownButton } from './internal/components/buttons/ManageDropdo
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
 import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
+import { DisableableButton } from './internal/components/buttons/DisableableButton';
 import { getMenuItemsForSection, getMenuItemForSectionKey } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
@@ -590,7 +591,7 @@ import { PicklistOverview } from './internal/components/picklist/PicklistOvervie
 import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
-import { RemoveFromPicklistMenuItem } from './internal/components/picklist/RemoveFromPicklistMenuItem';
+import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveFromPicklistButton';
 import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
 
 import {
@@ -983,7 +984,7 @@ export {
     useUserProperties,
     // sample picklist items
     AddToPicklistMenuItem,
-    RemoveFromPicklistMenuItem,
+    RemoveFromPicklistButton,
     PicklistButton,
     PicklistCreationMenuItem,
     Picklist,
@@ -1305,6 +1306,7 @@ export {
     SplitButtonGroup,
     PaginationButtons,
     ToggleButtons,
+    DisableableButton,
     getMenuItemsForSection,
     getMenuItemForSectionKey,
     // application page related items

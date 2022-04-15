@@ -29,6 +29,7 @@ import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
+import { DisableableButton } from '../buttons/DisableableButton';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';
@@ -67,10 +68,14 @@ const PicklistGridButtons: FC<ButtonProps & RequiresModelAndActions> = memo(prop
 
     return (
         <RequiresPermission perms={PermissionTypes.ManagePicklists}>
-            <button className="btn btn-default" type="button" onClick={onClickDelete} disabled={!model.hasSelections}>
+            <DisableableButton
+                bsStyle="default"
+                onClick={onClickDelete}
+                disabledMsg={!model.hasSelections ? 'Select one or more picklists.' : undefined}
+            >
                 <span className="fa fa-trash" />
                 <span>&nbsp;Delete</span>
-            </button>
+            </DisableableButton>
         </RequiresPermission>
     );
 });

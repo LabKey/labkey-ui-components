@@ -14,7 +14,7 @@ export const DisableableButton: FC<Props> = memo(props => {
     return (
         <>
             {disabledMsg ? (
-                <OverlayTrigger placement="bottom" overlay={<Popover title={title}>{disabledMsg}</Popover>}>
+                <OverlayTrigger placement="bottom" overlay={<Popover id="disabled-button-popover" title={title}>{disabledMsg}</Popover>}>
                     <div className="disabled-button-with-tooltip">
                         <Button bsStyle={bsStyle} disabled>
                             {children}

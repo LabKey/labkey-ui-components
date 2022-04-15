@@ -39,7 +39,7 @@ describe('SamplesEditButton', () => {
         wrapper: ReactWrapper,
         show = true,
         parentEntityItemCount = 2,
-        selMenuItemCount = 6,
+        selMenuItemCount = 5,
         menuItemCount = 7,
         deleteItemCount = 1
     ): void {
@@ -84,7 +84,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} combineParentTypes />, {
             user: TEST_USER_EDITOR,
         });
-        validate(wrapper, true, 1, 5, 6);
+        validate(wrapper, true, 1, 4, 6);
         wrapper.unmount();
     });
 
@@ -100,7 +100,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_STORAGE_EDITOR,
         });
-        validate(wrapper, true, 0, 2, 2, 0);
+        validate(wrapper, true, 0, 1, 2, 0);
     });
 
     test('reader', () => {
@@ -133,7 +133,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} model={model} />, {
             user: TEST_USER_EDITOR,
         });
-        validate(wrapper, true, 2, 6, 6);
+        validate(wrapper, true, 2, 5, 7);
         wrapper.unmount();
     });
 
@@ -142,7 +142,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} showLinkToStudy />, {
             user: TEST_USER_EDITOR,
         });
-        validate(wrapper, true, 2, 7, 8);
+        validate(wrapper, true, 2, 6, 8);
         wrapper.unmount();
     });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
-import { ConfirmModal, makeTestQueryModel, Picklist, SchemaQuery, SelectionMenuItem } from '../../..';
+import { ConfirmModal, makeTestQueryModel, Picklist, SchemaQuery, DisableableButton } from '../../..';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
 
@@ -40,7 +40,7 @@ describe('RemoveFromPicklistButton', () => {
     };
 
     function validate(wrapper: ReactWrapper, hasPerm = true, showConfirm = false): void {
-        expect(wrapper.find(SelectionMenuItem)).toHaveLength(hasPerm ? 1 : 0);
+        expect(wrapper.find(DisableableButton)).toHaveLength(hasPerm ? 1 : 0);
         expect(wrapper.find(ConfirmModal)).toHaveLength(showConfirm ? 1 : 0);
     }
 
@@ -95,7 +95,7 @@ describe('RemoveFromPicklistButton', () => {
             { user: TEST_USER_EDITOR }
         );
         validate(wrapper);
-        wrapper.find(SelectionMenuItem).find('a').simulate('click');
+        wrapper.find(DisableableButton).simulate('click');
         validate(wrapper, true, true);
         const modal = wrapper.find(ConfirmModal);
         expect(modal.prop('confirmButtonText')).toBe('Yes, Remove 2 Samples');

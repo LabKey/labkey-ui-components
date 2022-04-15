@@ -197,7 +197,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
             });
         }
 
-        return null;
+        return this.props.children;
     }
 
     onMouseOut() {

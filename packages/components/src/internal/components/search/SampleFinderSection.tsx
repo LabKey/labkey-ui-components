@@ -53,7 +53,6 @@ interface SampleFinderSamplesGridProps {
     user: User;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
-    excludedCreateMenuKeys?: string[];
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     gridButtonProps?: any;
     sampleTypeNames: string[];
@@ -254,7 +253,7 @@ interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
 }
 
 export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
-    const { actions, columnDisplayNames, queryModels, gridButtons, excludedCreateMenuKeys } = props;
+    const { actions, columnDisplayNames, queryModels, gridButtons } = props;
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -313,11 +312,9 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 asPanel={false}
                 actions={actions}
                 queryModels={queryModels}
-                excludedCreateMenuKeys={List<string>(excludedCreateMenuKeys)}
                 gridButtons={gridButtons}
                 gridButtonProps={{
                     excludedManageMenuKeys: [SamplesEditButtonSections.IMPORT],
-                    excludeStartJob: true,
                     metricFeatureArea: SAMPLE_FILTER_METRIC_AREA,
                 }}
                 tabbedGridPanelProps={{

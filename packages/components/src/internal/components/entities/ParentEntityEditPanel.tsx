@@ -122,40 +122,37 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         let parentTypeOptions = List<IEntityTypeOption>();
         let originalParents = List<EntityChoice>();
 
-        try {
-            await Promise.all(
-                parentDataTypes.map(async parentDataType => {
-                    try {
-                        const typeData = await getParentTypeDataForSample(
+        await Promise.all(
+            parentDataTypes.map(async parentDataType => {
+                try {
+                    const typeData = await getParentTypeDataForSample(
+                        parentDataType,
+                        childData ? [childData] : [],
+                        childContainerPath
+                    );
+                    parentTypeOptions = parentTypeOptions.concat(typeData.parentTypeOptions) as List<IEntityTypeOption>;
+                    originalParents = originalParents.concat(
+                        getInitialParentChoices(
+                            typeData.parentTypeOptions,
                             parentDataType,
-                            childData ? [childData] : [],
-                            childContainerPath
-                        );
-                        parentTypeOptions = parentTypeOptions.concat(typeData.parentTypeOptions) as List<IEntityTypeOption>;
-                        originalParents = originalParents.concat(
-                            getInitialParentChoices(
-                                typeData.parentTypeOptions,
-                                parentDataType,
-                                childData ?? [],
-                                typeData.parentIdData
-                            )
-                        ) as List<EntityChoice>;
-                    }
-                    catch (reason) {
-                        console.error(reason);
-                        this.setState({
-                            error: getActionErrorMessage(
-                                'Unable to load ' + parentDataType.descriptionSingular + ' data.',
-                                parentDataType.descriptionPlural,
-                                true
-                            ),
-                        });
-                    }
-                })
-            );
-        } catch(reason) {
-            // do nothing; already logged
-        }
+                            childData ?? [],
+                            typeData.parentIdData
+                        )
+                    ) as List<EntityChoice>;
+                }
+                catch (reason) {
+                    console.error(reason);
+                    this.setState({
+                        error: getActionErrorMessage(
+                            'Unable to load ' + parentDataType.descriptionSingular + ' data.',
+                            parentDataType.descriptionPlural,
+                            true
+                        ),
+                    });
+                }
+            })
+        );
+
 
         this.setState({
             childData,

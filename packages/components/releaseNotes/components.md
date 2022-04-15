@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.154.2
+*Released*: 15 April 2022
 * Issue 45223: Wrap multiline text fields on line breaks
 * Issue 45060: Update Sample Finder to disable buttons and cards if there are no sources / sample types defined
 

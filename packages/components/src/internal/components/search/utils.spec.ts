@@ -51,19 +51,31 @@ import {
 import { FieldFilter } from './models';
 
 test('getFinderStartText', () => {
-    expect(getFinderStartText([])).toBe('Start by adding  properties.');
-    expect(getFinderStartText([TestTypeDataType])).toBe(
+    expect(getFinderStartText([], [])).toBeNull();
+    expect(getFinderStartText([TestTypeDataType], [])).toBeNull();
+    expect(getFinderStartText([TestTypeDataType], [TestTypeDataType.typeListingSchemaQuery.queryName])).toBe(
         'Start by adding ' + TestTypeDataType.nounAsParentSingular + ' properties.'
     );
-    expect(getFinderStartText([TestTypeDataType, { ...TestTypeDataType, nounAsParentSingular: 'Other Parents' }])).toBe(
+    expect(getFinderStartText([TestTypeDataType, {
+        ...TestTypeDataType,
+        typeListingSchemaQuery: SchemaQuery.create("TestClasses", "query2"),
+        nounAsParentSingular: 'Other Parents'
+    }], [TestTypeDataType.typeListingSchemaQuery.queryName, "query2"])).toBe(
         'Start by adding ' + TestTypeDataType.nounAsParentSingular + ' or Other Parents properties.'
+    );
+    expect(getFinderStartText([TestTypeDataType, {
+        ...TestTypeDataType,
+        typeListingSchemaQuery: SchemaQuery.create("TestClasses", "query2"),
+        nounAsParentSingular: 'Other Parents'
+    }], [TestTypeDataType.typeListingSchemaQuery.queryName])).toBe(
+        'Start by adding ' + TestTypeDataType.nounAsParentSingular + ' properties.'
     );
     expect(
         getFinderStartText([
             TestTypeDataType,
             { ...TestTypeDataType, nounAsParentSingular: 'Other Parents' },
             { ...TestTypeDataType, nounAsParentSingular: 'Third Parents' },
-        ])
+        ], [TestTypeDataType.typeListingSchemaQuery.queryName])
     ).toBe('Start by adding ' + TestTypeDataType.nounAsParentSingular + ', Other Parents or Third Parents properties.');
 });
 

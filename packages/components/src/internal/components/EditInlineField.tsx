@@ -1,15 +1,4 @@
-import React, {
-    FC,
-    FormEvent,
-    memo,
-    ReactNode,
-    useCallback,
-    useEffect,
-    useMemo,
-    useReducer,
-    useRef,
-    useState
-} from 'react';
+import React, { FC, FormEvent, memo, ReactNode, useCallback, useMemo, useReducer, useRef, useState } from 'react';
 import moment from 'moment';
 
 import { getDateFormat } from '../util/Date';
@@ -18,6 +7,7 @@ import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
 import { DateInput } from './DateInput';
 import { useServerContext } from './base/ServerContext';
+import classNames from 'classnames';
 
 interface Props {
     allowBlank?: boolean;
@@ -183,7 +173,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                         </span>
                     )}
                     <span
-                        className={allowEdit ? 'edit-inline-field__toggle' : ''}
+                        className={classNames({'edit-inline-field__toggle': allowEdit, 'ws-pre-wrap': isTextArea})}
                         onClick={toggleEdit}
                         onKeyDown={toggleKeyDown}
                         tabIndex={1}

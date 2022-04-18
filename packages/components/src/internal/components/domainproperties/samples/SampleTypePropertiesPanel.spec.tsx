@@ -95,9 +95,9 @@ describe('<SampleTypePropertiesPanel/>', () => {
 
         const wrapper = mount(component);
 
-        // Name input should be visible but disabled
+        // Name input should not be disabled
         expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME)).toHaveLength(1);
-        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME).prop('disabled')).toBeTruthy();
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME).prop('disabled')).toBeFalsy();
 
         // Check initial input values
         expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME_EXPRESSION).props().value).toBe(nameExpVal);
@@ -111,6 +111,28 @@ describe('<SampleTypePropertiesPanel/>', () => {
         expect(wrapper.text()).not.toContain('Linked Dataset Category');
 
         expect(wrapper.find(DomainFieldLabel)).toHaveLength(3);
+
+        wrapper.unmount();
+    });
+
+    test('Load SampleTypeModel with readonly name', () => {
+        const data = DomainDetails.create(
+            fromJS({
+                options: Map<string, any>({
+                    rowId: 1
+                }),
+                domainKindName: 'SampleType',
+                domainDesign: sampleTypeModel.get('domain'),
+                nameReadOnly: true
+            })
+        );
+
+        const component = <SampleTypePropertiesPanel {...BASE_PROPS} model={SampleTypeModel.create(data)} />;
+
+        const wrapper = mount(component);
+
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME)).toHaveLength(1);
+        expect(wrapper.find('input#' + ENTITY_FORM_IDS.NAME).prop('disabled')).toBeTruthy();
 
         wrapper.unmount();
     });

@@ -2532,7 +2532,6 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                 <FormControl
                                   bsClass="form-control"
                                   componentClass="input"
-                                  disabled={true}
                                   id="entity-name"
                                   onChange={[Function]}
                                   placeholder="Enter a name for this sample type"
@@ -2541,7 +2540,6 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                 >
                                   <input
                                     className="form-control"
-                                    disabled={true}
                                     id="entity-name"
                                     onChange={[Function]}
                                     placeholder="Enter a name for this sample type"

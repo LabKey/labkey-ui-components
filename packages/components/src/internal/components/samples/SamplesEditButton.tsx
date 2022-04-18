@@ -5,6 +5,7 @@ import { PermissionTypes } from '@labkey/api';
 import {
     App,
     buildURL,
+    hasAnyPermissions,
     ManageDropdownButton,
     MAX_EDITABLE_GRID_ROWS,
     RequiresPermission,
@@ -57,7 +58,9 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         }
     };
 
-    const showEdit = shouldShowButtons(SamplesEditButtonSections.EDIT, hideButtons);
+    const showEdit =
+        shouldShowButtons(SamplesEditButtonSections.EDIT, hideButtons) &&
+        hasAnyPermissions(user, [PermissionTypes.Update, PermissionTypes.EditStorageData]);
     const showDelete = shouldShowButtons(SamplesEditButtonSections.DELETE, hideButtons);
     const showStudy =
         showLinkToStudy &&

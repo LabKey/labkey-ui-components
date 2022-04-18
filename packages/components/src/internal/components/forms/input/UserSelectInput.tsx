@@ -2,11 +2,27 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useCallback } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 
 import { getUsersWithPermissions } from '../actions';
 
 import { SelectInput, SelectInputOption, SelectInputProps } from './SelectInput';
+import { naturalSort } from '../../../../public/sort';
+
+function generateKey(permissions?: string | string[], containerPath?: string): string {
+    let key = 'allPermissions';
+    if (permissions) {
+        if (Array.isArray(permissions)) {
+            key = permissions.sort(naturalSort).join(';');
+        } else {
+            key = permissions;
+        }
+    }
+    if (containerPath) {
+        key = [containerPath, key].join('|');
+    }
+    return key;
+}
 
 interface UserSelectInputProps extends Omit<SelectInputProps, 'delimiter' | 'loadOptions'> {
     containerPath?: string;
@@ -16,8 +32,9 @@ interface UserSelectInputProps extends Omit<SelectInputProps, 'delimiter' | 'loa
     useEmail?: boolean;
 }
 
-export const UserSelectInput: FC<UserSelectInputProps> = props => {
+export const UserSelectInput: FC<UserSelectInputProps> = memo(props => {
     const { clearCacheOnChange = false, containerPath, notifyList, permissions, useEmail, ...selectInputProps } = props;
+    const key = useMemo(() => generateKey(permissions, containerPath), [containerPath, permissions]);
 
     const loadOptions = useCallback(
         async (input: string) => {
@@ -52,10 +69,11 @@ export const UserSelectInput: FC<UserSelectInputProps> = props => {
             {...selectInputProps}
             clearCacheOnChange={clearCacheOnChange}
             delimiter={notifyList ? ';' : ','}
+            key={key}
             loadOptions={loadOptions}
         />
     );
-};
+});
 
 UserSelectInput.defaultProps = {
     notifyList: false,

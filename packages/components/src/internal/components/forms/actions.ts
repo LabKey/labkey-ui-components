@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 import { Filter, PermissionTypes, Security, User, Utils } from '@labkey/api';
-import { fromJS, List, Map } from 'immutable';
+import { fromJS, Map } from 'immutable';
 import { useCallback, useEffect, useState } from 'react';
 
 import {
-    caseInsensitive,
     getQueryDetails,
     ISelectRowsResult,
     LoadingState,
-    naturalSort,
+    naturalSortByProperty,
     QueryInfo,
     QueryModel,
     QuerySelectOwnProps,
@@ -31,8 +30,6 @@ import {
     selectRowsDeprecated,
     updateRows,
 } from '../../..';
-
-import { getUsers, setUsers } from '../../global';
 
 import { similaritySortFactory } from '../../util/similaritySortFactory';
 
@@ -365,34 +362,24 @@ export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
 export function getUsersWithPermissions(
     permissions: string | string[] = PermissionTypes.Read,
     containerPath?: string
-): Promise<List<User>> {
-    let cachedUsers = getUsers(permissions, containerPath);
-
-    if (!cachedUsers) {
-        cachedUsers = new Promise((resolve, reject) => {
-            return Security.getUsersWithPermissions({
-                containerPath,
-                permissions,
-                success: ({ users }) => {
-                    const sortedUsers = List<User>(users)
-                        .sortBy(u => u.displayName, naturalSort)
-                        .toList();
-                    resolve(sortedUsers);
-                },
-                failure: response => {
-                    console.error('There was a problem retrieving users with permissions ', permissions, response);
-                    reject('There was a problem retrieving users with the given permissions');
-                },
-            });
+): Promise<User[]> {
+    return new Promise((resolve, reject) => {
+        return Security.getUsersWithPermissions({
+            containerPath,
+            permissions,
+            success: ({ users }) => {
+                users.sort(naturalSortByProperty('displayName'));
+                resolve(users);
+            },
+            failure: response => {
+                console.error('There was a problem retrieving users with permissions ', permissions, response);
+                reject('There was a problem retrieving users with the given permissions');
+            },
         });
-
-        setUsers(cachedUsers, permissions, containerPath);
-    }
-
-    return cachedUsers;
+    });
 }
 
-export type UsersLoader = (permissions: string | string[], containerPath?: string) => Promise<List<User>>;
+export type UsersLoader = (permissions: string | string[], containerPath?: string) => Promise<User[]>;
 
 interface UsersState {
     error: string;
@@ -413,7 +400,7 @@ export function useUsersWithPermissions(
 
         try {
             const users_ = await loader(permissions, containerPath);
-            setUsers_(users_.toJS());
+            setUsers_(users_);
         } catch (e) {
             setError(e);
         } finally {

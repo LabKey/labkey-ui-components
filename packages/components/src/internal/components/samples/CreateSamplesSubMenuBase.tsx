@@ -33,6 +33,7 @@ interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
     selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
+    inlineItemsCount?: number;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -51,6 +52,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         isSelectingSamples,
         selectedItems,
         selectedType,
+        inlineItemsCount,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -145,6 +147,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                         : undefined
                 }
                 text={menuText}
+                inlineItemsCount={inlineItemsCount}
             />
             {sampleCreationURL && (
                 <SampleCreationTypeModal

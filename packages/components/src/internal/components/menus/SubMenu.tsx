@@ -33,11 +33,13 @@ interface SubMenuProps {
     extractCurrentMenuChoice?: boolean;
     options: List<MenuOption>;
     text: string;
+    inlineItemsCount?: number;
 }
 
 export class SubMenu extends React.Component<SubMenuProps> {
     static defaultProps = {
         extractCurrentMenuChoice: true,
+        inlineItemsCount: 2,
     };
 
     constructor(props: SubMenuProps) {
@@ -105,11 +107,11 @@ export class SubMenu extends React.Component<SubMenuProps> {
     }
 
     render() {
-        const { currentMenuChoice, extractCurrentMenuChoice, options, text } = this.props;
+        const { currentMenuChoice, extractCurrentMenuChoice, options, text, inlineItemsCount } = this.props;
 
         const items = [];
-        // if there are 2 items or fewer, just show the items as the menu
-        if (currentMenuChoice && options.size < 3) {
+        // if there are ${inlineItemsCount} items or fewer, just show the items as the menu
+        if (currentMenuChoice && options.size <= inlineItemsCount) {
             options.forEach((option, i) => {
                 items.push(SubMenu.renderMenuItem(option, i));
             });

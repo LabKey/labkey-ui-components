@@ -6,8 +6,9 @@ import React, { FC, memo, useCallback, useMemo } from 'react';
 
 import { getUsersWithPermissions } from '../actions';
 
-import { SelectInput, SelectInputOption, SelectInputProps } from './SelectInput';
 import { naturalSort } from '../../../../public/sort';
+
+import { SelectInput, SelectInputOption, SelectInputProps } from './SelectInput';
 
 function generateKey(permissions?: string | string[], containerPath?: string): string {
     let key = 'allPermissions';

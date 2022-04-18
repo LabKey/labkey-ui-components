@@ -57,6 +57,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         }
     };
 
+    const showEdit = shouldShowButtons(SamplesEditButtonSections.EDIT, hideButtons);
     const showDelete = shouldShowButtons(SamplesEditButtonSections.DELETE, hideButtons);
     const showStudy =
         showLinkToStudy &&
@@ -76,7 +77,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
             <ManageDropdownButton id="samples-manage-btn" title="Edit">
                 {/*TODO can this be removed after all usages updated?*/}
                 {props.children}
-                {shouldShowButtons(SamplesEditButtonSections.EDIT, hideButtons) && (
+                {showEdit && (
                     <RequiresPermission
                         perms={[PermissionTypes.Update, PermissionTypes.EditStorageData]}
                         permissionCheck="any"
@@ -122,7 +123,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                         )}
                     </RequiresPermission>
                 )}
-                {(showDelete || showStudy) && <MenuItem divider />}
+                {showEdit && (showDelete || showStudy) && <MenuItem divider />}
                 {showDelete && (
                     <RequiresPermission perms={PermissionTypes.Delete}>
                         <SampleDeleteMenuItem

@@ -6,7 +6,7 @@ import React, { FC, useCallback } from 'react';
 
 import { getUsersWithPermissions } from '../actions';
 
-import { SelectInput, SelectInputProps } from './SelectInput';
+import { SelectInput, SelectInputOption, SelectInputProps } from './SelectInput';
 
 interface UserSelectInputProps extends Omit<SelectInputProps, 'delimiter' | 'loadOptions'> {
     containerPath?: string;
@@ -17,11 +17,11 @@ interface UserSelectInputProps extends Omit<SelectInputProps, 'delimiter' | 'loa
 }
 
 export const UserSelectInput: FC<UserSelectInputProps> = props => {
-    const { containerPath, notifyList, permissions, useEmail, ...selectInputProps } = props;
+    const { clearCacheOnChange = false, containerPath, notifyList, permissions, useEmail, ...selectInputProps } = props;
 
     const loadOptions = useCallback(
         async (input: string) => {
-            let options;
+            let options: SelectInputOption[];
             const sanitizedInput = input?.trim().toLowerCase();
 
             try {
@@ -37,8 +37,7 @@ export const UserSelectInput: FC<UserSelectInputProps> = props => {
                     .map(v => ({
                         label: v.displayName,
                         value: notifyList ? v.displayName : useEmail ? v.email : v.userId,
-                    }))
-                    .toArray();
+                    }));
             } catch (error) {
                 console.error(error);
             }
@@ -48,7 +47,14 @@ export const UserSelectInput: FC<UserSelectInputProps> = props => {
         [containerPath, notifyList, permissions, useEmail]
     );
 
-    return <SelectInput {...selectInputProps} delimiter={notifyList ? ';' : ','} loadOptions={loadOptions} />;
+    return (
+        <SelectInput
+            {...selectInputProps}
+            clearCacheOnChange={clearCacheOnChange}
+            delimiter={notifyList ? ';' : ','}
+            loadOptions={loadOptions}
+        />
+    );
 };
 
 UserSelectInput.defaultProps = {

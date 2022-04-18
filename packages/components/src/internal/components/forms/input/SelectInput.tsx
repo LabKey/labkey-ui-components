@@ -321,6 +321,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     };
 
     loadOptions = async (input: string): Promise<SelectInputOption[]> => {
+        console.log(`loadOptions: "${input}"`);
         // We don't support the older callback-based variant
         const options = await this.props.loadOptions(input);
 

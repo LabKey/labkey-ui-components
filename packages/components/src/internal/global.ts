@@ -15,9 +15,8 @@
  */
 import { getGlobal, setGlobal } from 'reactn';
 import { List, Map } from 'immutable';
-import { User } from '@labkey/api';
 
-import { naturalSort, NotificationItemModel, QueryColumn, QueryGridModel, resolveSchemaQuery, SchemaQuery } from '..';
+import { NotificationItemModel, QueryGridModel, resolveSchemaQuery, SchemaQuery } from '..';
 
 import { initBrowserHistoryState } from './util/global';
 import { EditorModel } from './models';
@@ -29,7 +28,6 @@ export type GlobalAppState = {
     QueryGrid_metadata: Map<string, any>;
     QueryGrid_models: Map<string, QueryGridModel>;
     QueryGrid_columnrenderers: Map<string, any>;
-    QueryGrid_users: Map<string, List<User>>;
 
     // src/util/global.ts
     BrowserHistory: any; // TODO what type to use here?
@@ -76,7 +74,6 @@ export function resetQueryGridState(): void {
         QueryGrid_metadata: Map<string, any>(),
         QueryGrid_models: Map<string, QueryGridModel>(),
         QueryGrid_columnrenderers: Map<string, any>(),
-        QueryGrid_users: Map<string, List<User>>(),
     });
 }
 
@@ -287,47 +284,4 @@ export function updateEditorModel(model: EditorModel, updates: any, failIfNotFou
     });
 
     return updatedModel;
-}
-
-function getUsersCacheKey(permissions?: string | string[], containerPath?: string): string {
-    let key = 'allPermissions';
-    if (permissions) {
-        if (Array.isArray(permissions)) {
-            key = permissions.sort(naturalSort).join(';');
-        } else {
-            key = permissions;
-        }
-    }
-    if (containerPath) {
-        key = [containerPath, key].join('|');
-    }
-    return key;
-}
-
-/**
- * Get the users list from the global QueryGrid state
- */
-export function getUsers(permissions?: string | string[], containerPath?: string): Promise<List<User>> {
-    return getGlobalState('users').get(getUsersCacheKey(permissions, containerPath));
-}
-
-/**
- * Sets the users list to be used for this application in the global QueryGrid state
- * @param users List of users
- * @param permissions the PermissionType or array of PermissionType values that can be used to identify a list of users.
- * @param containerPath the containerPath
- */
-export function setUsers(users: Promise<List<User>>, permissions?: string | string[], containerPath?: string): void {
-    setGlobal({
-        QueryGrid_users: getGlobalState('users').set(getUsersCacheKey(permissions, containerPath), users),
-    });
-}
-
-/**
- * Invalidate the global state users list
- */
-export function invalidateUsers(): void {
-    setGlobal({
-        QueryGrid_users: Map<string, Promise<List<User>>>(),
-    });
 }

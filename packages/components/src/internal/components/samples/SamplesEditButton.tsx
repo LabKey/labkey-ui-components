@@ -78,8 +78,6 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
             ]}
         >
             <ManageDropdownButton id="samples-manage-btn" title="Edit">
-                {/*TODO can this be removed after all usages updated?*/}
-                {props.children}
                 {showEdit && (
                     <RequiresPermission
                         perms={[PermissionTypes.Update, PermissionTypes.EditStorageData]}

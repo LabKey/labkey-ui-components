@@ -48,7 +48,6 @@ interface Props extends InjectedQueryModels {
     canPrintLabels?: boolean;
     createBtnParentType?: string;
     createBtnParentKey?: string;
-    excludedCreateMenuKeys?: List<string>;
     initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
     onPrintLabel?: () => void;
     modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
@@ -71,7 +70,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         asPanel,
         canPrintLabels,
         onPrintLabel,
-        excludedCreateMenuKeys,
         afterSampleActionComplete,
         initialTabId,
         createBtnParentType,
@@ -268,7 +266,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         afterSampleActionComplete: _afterSampleActionComplete,
         createBtnParentType,
         createBtnParentKey,
-        excludedCreateMenuKeys,
         model: activeModel,
         showBulkUpdate: onShowBulkUpdate,
         toggleEditWithGridUpdate,
@@ -340,7 +337,6 @@ SamplesTabbedGridPanel.defaultProps = {
     asPanel: true,
     withTitle: true,
     canPrintLabels: false,
-    excludedCreateMenuKeys: List<string>(),
 };
 
 SamplesTabbedGridPanel.displayName = 'SamplesTabbedGridPanel';

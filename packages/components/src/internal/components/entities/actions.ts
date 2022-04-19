@@ -556,11 +556,13 @@ export function deleteEntityType(deleteActionName: string, rowId: number): Promi
 
 export function handleEntityFileImport(
     importAction: string,
-    importParameters: Record<string, any>,
     queryInfo: QueryInfo,
     file: File,
     isMerge: boolean,
-    useAsync: boolean
+    useAsync: boolean,
+    importParameters?: Record<string, any>,
+    importFileController?: string,
+    saveToPipeline?: boolean
 ): Promise<any> {
     return new Promise((resolve, reject) => {
         const { schemaQuery } = queryInfo;
@@ -569,7 +571,7 @@ export function handleEntityFileImport(
             schemaName: schemaQuery.getSchema(),
             queryName: schemaQuery.getQuery(),
             file,
-            importUrl: ActionURL.buildURL('experiment', importAction, null, {
+            importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, null, {
                 ...importParameters,
                 schemaName: schemaQuery.getSchema(),
                 'query.queryName': schemaQuery.getQuery(),
@@ -577,6 +579,7 @@ export function handleEntityFileImport(
             importLookupByAlternateKey: true,
             useAsync,
             insertOption: InsertOptions[isMerge ? InsertOptions.MERGE : InsertOptions.IMPORT],
+            saveToPipeline,
         })
             .then(response => {
                 if (response.success) {

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.155.1
+*Released*: 19 April 2022
+* Updates to EntityInsertPanel to support Biologics data class import.
+
 ### version 2.155.0
 *Released*: 18 April 2022
 * Remove "users" from `global` state cache and all associated methods.

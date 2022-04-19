@@ -26,12 +26,15 @@ import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSes
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
-export function getFinderStartText(parentEntityDataTypes: EntityDataType[]): string {
+export function getFinderStartText(parentEntityDataTypes: EntityDataType[], enabledEntityTypes: string[]): string {
     const hintText = 'Start by adding ';
-    let names = parentEntityDataTypes.map(entityType => entityType.nounAsParentSingular).join(', ');
+    let names = parentEntityDataTypes.filter(entityType => enabledEntityTypes?.indexOf(entityType.typeListingSchemaQuery.queryName) >= 0).map(entityType => entityType.nounAsParentSingular).join(', ');
+    if (names.length === 0) {
+        return null;
+    }
     const lastComma = names.lastIndexOf(',');
     if (lastComma >= 0) {
-        names = names.substr(0, lastComma) + ' or' + names.substr(lastComma + 1);
+        names = names.substring(0, lastComma) + ' or' + names.substring(lastComma + 1);
     }
     return hintText + names + ' properties.';
 }

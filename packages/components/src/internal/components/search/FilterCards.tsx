@@ -52,6 +52,7 @@ interface FilterEditProps extends FilterProps {
 // exported for jest testing
 export const FilterCard: FC<FilterEditProps> = memo(props => {
     const {
+        disabled,
         entityDataType,
         filterArray,
         index,
@@ -76,6 +77,20 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
     }, [onDelete, index]);
 
     if (!schemaQuery) {
+        if (disabled) {
+            return (
+                <>
+                    <div className="filter-cards__card disabled">
+                        <div className={'filter-card__header without-secondary ' + entityDataType.filterCardHeaderClass}>
+                            <div className="primary-text">
+                                {capitalizeFirstChar(entityDataType.nounAsParentSingular)} Properties
+                            </div>
+                        </div>
+                        <div className="filter-card__empty-content">No {entityDataType.nounAsParentSingular} Types defined.</div>
+                    </div>
+                </>
+            );
+        }
         return (
             <>
                 <div className="filter-cards__card filter-cards__popout" onClick={_onAdd}>

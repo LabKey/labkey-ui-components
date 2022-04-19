@@ -44,6 +44,7 @@ import {
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 import { FieldFilter, FilterProps } from './models';
+import { getAllEntityTypeOptions } from '../entities/actions';
 
 const SAMPLE_FINDER_TITLE = 'Sample Finder';
 const SAMPLE_FINDER_CAPTION = 'Find all generations of samples that meet all the criteria defined below';
@@ -66,10 +67,11 @@ interface Props extends SampleFinderSamplesGridProps {
 interface SampleFinderHeaderProps {
     parentEntityDataTypes: EntityDataType[];
     onAddEntity: (entityType: EntityDataType) => void;
+    enabledEntityTypes: string[];
 }
 
 export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props => {
-    const { parentEntityDataTypes, onAddEntity } = props;
+    const { parentEntityDataTypes, onAddEntity, enabledEntityTypes } = props;
 
     return (
         <div>
@@ -81,6 +83,7 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
                     onClick={() => {
                         onAddEntity(parentEntityType);
                     }}
+                    disabled={enabledEntityTypes.indexOf(parentEntityType.typeListingSchemaQuery.queryName) == -1}
                 >
                     <i className="fa fa-plus-circle container--addition-icon" />{' '}
                     {capitalizeFirstChar(parentEntityType.nounAsParentSingular)} Properties
@@ -102,6 +105,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [filters, setFilters] = useState<FilterProps[]>([]);
     const [chosenQueryName, setChosenQueryName] = useState<string>(undefined);
     const [chosenField, setChosenField] = useState<string>(undefined);
+    const [enabledEntityTypes, setEnabledEntityTypes] = useState<string[]>([]);
 
     useEffect(() => {
         const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
@@ -114,6 +118,24 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 setFilterChangeCounter(finderSessionData.filterChangeCounter);
             }
         }
+    }, []);
+
+    useEffect(() => {
+        const _enabledEntityTypes = [];
+        (async () => {
+            try {
+                const entityOptions = await getAllEntityTypeOptions(parentEntityDataTypes);
+                Object.keys(entityOptions).forEach(key => {
+                    if (entityOptions[key].length) {
+                        _enabledEntityTypes.push(key);
+                    }
+                });
+                setEnabledEntityTypes(_enabledEntityTypes);
+            } catch {
+                setEnabledEntityTypes(_enabledEntityTypes);
+            }
+        })();
+
     }, []);
 
     const getSelectionKeyPrefix = (): string => {
@@ -195,7 +217,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             title={SAMPLE_FINDER_TITLE}
             caption={SAMPLE_FINDER_CAPTION}
             context={
-                <SampleFinderHeaderButtons parentEntityDataTypes={parentEntityDataTypes} onAddEntity={onAddEntity} />
+                <SampleFinderHeaderButtons parentEntityDataTypes={parentEntityDataTypes} onAddEntity={onAddEntity} enabledEntityTypes={enabledEntityTypes} />
             }
         >
             {filters.length == 0 ? (
@@ -204,10 +226,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                         className="empty"
                         cards={parentEntityDataTypes.map(entityDataType => ({
                             entityDataType,
+                            disabled: enabledEntityTypes.indexOf(entityDataType.typeListingSchemaQuery.queryName) === -1
                         }))}
                         onAddEntity={onAddEntity}
                     />
-                    <div className="filter-hint">{getFinderStartText(parentEntityDataTypes)}</div>
+                    <div className="filter-hint">{getFinderStartText(parentEntityDataTypes, enabledEntityTypes)}</div>
                 </>
             ) : (
                 <>
@@ -266,18 +289,22 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                     promises.push(saveFinderGridView(queryModel.schemaQuery, columns));
                 }
             });
-            Promise.all(promises)
-                .then(schemaQueries => {
-                    // since we have updated views, we need to invalidate the details cache so we pick up the new views
-                    schemaQueries.forEach(schemaQuery => {
-                        invalidateQueryDetailsCache(schemaQuery);
+            try {
+                Promise.all(promises)
+                    .then(schemaQueries => {
+                        // since we have updated views, we need to invalidate the details cache so we pick up the new views
+                        schemaQueries.forEach(schemaQuery => {
+                            invalidateQueryDetailsCache(schemaQuery);
+                        });
+                        setIsLoading(false);
+                    })
+                    .catch(reason => {
+                        console.error('Error saving all finder views.', reason);
+                        setIsLoading(false);
                     });
-                    setIsLoading(false);
-                })
-                .catch(reason => {
-                    console.error('Error saving all finder views.', reason);
-                    setIsLoading(false);
-                });
+            } catch (error) {
+                // ignore: already logged
+            }
         }
     }, [queryModels]);
 

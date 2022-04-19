@@ -146,6 +146,7 @@ import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons
 import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
+import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
 import { getMenuItemsForSection, getMenuItemForSectionKey } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
@@ -326,6 +327,8 @@ import {
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
+import { SamplesAddButton } from './internal/components/samples/SamplesAddButton';
+import { SamplesAssayButton } from './internal/components/samples/SamplesAssayButton';
 import { SamplesEditButton } from './internal/components/samples/SamplesEditButton';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
@@ -351,6 +354,7 @@ import {
     getSampleStatus,
     getSampleStatusType,
     getSampleTypeTemplateUrl,
+    getSampleWizardURL,
     downloadSampleTypeTemplate,
     isSampleOperationPermitted,
     isSamplesSchema,
@@ -1006,6 +1010,7 @@ export {
     getSampleStatus,
     getSampleStatusType,
     getSampleTypeTemplateUrl,
+    getSampleWizardURL,
     downloadSampleTypeTemplate,
     DisableableMenuItem,
     SampleOperation,
@@ -1046,6 +1051,8 @@ export {
     SampleCreationType,
     SampleSetDeleteModal,
     SampleActionsButton,
+    SamplesAddButton,
+    SamplesAssayButton,
     SamplesEditButton,
     SamplesEditButtonSections,
     SamplesTabbedGridPanel,
@@ -1307,6 +1314,7 @@ export {
     PaginationButtons,
     ToggleButtons,
     DisableableButton,
+    ResponsiveMenuButtonGroup,
     getMenuItemsForSection,
     getMenuItemForSectionKey,
     // application page related items

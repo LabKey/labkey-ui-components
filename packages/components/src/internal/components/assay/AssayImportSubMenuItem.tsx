@@ -1,15 +1,9 @@
 import React, { FC, useMemo } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import {
-    InjectedAssayModel,
-    SubMenuItem,
-    SubMenuItemProps,
-    withAssayModels,
-    QueryModel,
-    DisableableMenuItem,
-} from '../../..';
+import { SubMenuItem, SubMenuItemProps, QueryModel, DisableableMenuItem } from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+import { InjectedAssayModel, withAssayModels } from './withAssayModels';
 
 import { getImportItemsForAssayDefinitions } from './actions';
 

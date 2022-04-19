@@ -1,20 +1,22 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { SharedSampleTypeAdminConfirmModal } from './SharedSampleTypeAdminConfirmModal';
+import { SharedEntityTypeAdminConfirmModal } from './SharedEntityTypeAdminConfirmModal';
+import { SampleTypeDataType } from './constants';
 
-describe('<SharedSampleTypeAdminConfirmModal/>', () => {
+describe('SharedEntityTypeAdminConfirmModal', () => {
     test('isEdit true', () => {
         const sampleTypeName = 'sharedType';
         const wrapper = mount(
-            <SharedSampleTypeAdminConfirmModal
-                sampleTypeId={100}
-                sampleTypeLabel={sampleTypeName}
+            <SharedEntityTypeAdminConfirmModal
+                typeId={100}
+                label={sampleTypeName}
                 onCancel={jest.fn()}
                 isEdit={true}
+                entityDataType={SampleTypeDataType}
             />
         );
-        expect(wrapper.find('ModalTitle').text()).toBe('You are about to leave the application, continue?');
+        expect(wrapper.find('ModalTitle').text()).toBe('You are about to leave the application. Continue?');
         expect(wrapper.find('.modal-body').text()).toBe(
             "Shared sample type '" + sampleTypeName + "' can only be modified in LabKey Server. Do you want to proceed?"
         );
@@ -24,14 +26,15 @@ describe('<SharedSampleTypeAdminConfirmModal/>', () => {
     test('isEdit false', () => {
         const sampleTypeName = 'sharedType-1';
         const wrapper = mount(
-            <SharedSampleTypeAdminConfirmModal
-                sampleTypeId={100}
-                sampleTypeLabel={sampleTypeName}
+            <SharedEntityTypeAdminConfirmModal
+                typeId={100}
+                label={sampleTypeName}
                 onCancel={jest.fn()}
                 isEdit={false}
+                entityDataType={SampleTypeDataType}
             />
         );
-        expect(wrapper.find('ModalTitle').text()).toBe('You are about to leave the application, continue?');
+        expect(wrapper.find('ModalTitle').text()).toBe('You are about to leave the application. Continue?');
         expect(wrapper.find('.modal-body').text()).toBe(
             "Shared sample type '" + sampleTypeName + "' can only be deleted in LabKey Server. Do you want to proceed?"
         );

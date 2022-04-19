@@ -125,10 +125,10 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                     <SelectInput
                         containerClass=""
                         inputClass="col-sm-6"
-                        label={parentDataType.typeNounSingular + ' ' + (index + 1)}
+                        label={parentDataType.typeNounAsParentSingular + ' ' + (index + 1)}
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label entity-insert--type-select"
                         name={'entityType' + index}
-                        placeholder={'Select a ' + parentDataType.typeNounSingular + ' ...'}
+                        placeholder={'Select a ' + parentDataType.typeNounAsParentSingular + ' ...'}
                         onChange={this.onChangeParentType}
                         options={parentTypeOptions?.toArray()}
                         required
@@ -138,7 +138,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                     {this.props.onRemoveParentType && (
                         <RemoveEntityButton
                             labelClass="entity-insert--remove-parent"
-                            entity={parentDataType.typeNounSingular}
+                            entity={parentDataType.typeNounAsParentSingular}
                             index={index + 1}
                             onClick={() => this.props.onRemoveParentType(index)}
                         />
@@ -187,7 +187,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                 <table className={DETAIL_TABLE_CLASSES}>
                     <tbody>
                         <tr key="type-name">
-                            <td>{parentDataType.typeNounSingular}</td>
+                            <td>{parentDataType.typeNounAsParentSingular}</td>
                             <td>
                                 {appUrlPrefixParts ? (
                                     <a href={AppURL.create(...appUrlPrefixParts, chosenType.label).toHref()}>
@@ -207,9 +207,9 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                 <table className={DETAIL_TABLE_CLASSES}>
                     <tbody>
                         <tr key="type-name">
-                            <td>{parentDataType.typeNounSingular}</td>
+                            <td>{parentDataType.typeNounAsParentSingular}</td>
                             <td>
-                                No {parentDataType.typeNounSingular.toLowerCase()} has been set for this {lcChildNoun}.
+                                No {parentDataType.typeNounAsParentSingular.toLowerCase()} has been set for this {lcChildNoun}.
                             </td>
                         </tr>
                         <tr key="parent-id">

@@ -361,7 +361,7 @@ import {
 } from './internal/components/samples/SampleAliquotViewSelector';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
 import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSamplesByIdHeaderPanel';
-import { SharedSampleTypeAdminConfirmModal } from './internal/components/samples/SharedSampleTypeAdminConfirmModal';
+import { SharedEntityTypeAdminConfirmModal } from './internal/components/entities/SharedEntityTypeAdminConfirmModal';
 import {
     AssayContextConsumer,
     assayPage,
@@ -1058,7 +1058,6 @@ export {
     ALIQUOT_FILTER_MODE,
     SampleAssayDetail,
     SampleAliquotsGridPanel,
-    SharedSampleTypeAdminConfirmModal,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
@@ -1081,6 +1080,7 @@ export {
     OperationConfirmationData,
     AddEntityButton,
     RemoveEntityButton,
+    SharedEntityTypeAdminConfirmModal,
     getSampleOperationConfirmationData,
     getDataDeleteConfirmationData,
     createEntityParentKey,

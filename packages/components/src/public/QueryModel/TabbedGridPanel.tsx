@@ -19,6 +19,12 @@ import classNames from 'classnames';
 import { QueryModel } from './QueryModel';
 import { InjectedQueryModels } from './withQueryModels';
 import { GridPanel, GridPanelProps } from './GridPanel';
+import { ExportModal } from '../../internal/components/gridbar/ExportModal';
+import { EXPORT_TYPES } from '../../internal/constants';
+import { ActionURL, Ajax } from '@labkey/api';
+import { SchemaQuery } from '../SchemaQuery';
+import { createNotification } from '../../internal/components/notifications/actions';
+import { exportTabsXlsx } from '../../internal/actions';
 
 interface GridTabProps {
     isActive: boolean;
@@ -101,9 +107,12 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         showRowCountOnTabs,
         title,
         tabOrder,
+        onExport,
         ...rest
     } = props;
     const [internalActiveId, setInternalActiveId] = useState<string>(activeModelId ?? tabOrder[0]);
+    const [showExportModal, setShowExportModal] = useState<boolean>(false);
+    const [canExport, setCanExport] = useState<boolean>(true);
     const onSelect = useCallback(
         (modelId: string) => {
             if (onTabSelect !== undefined) {
@@ -114,6 +123,37 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         },
         [onTabSelect]
     );
+
+    const exportHandler = useCallback(() => {
+        setShowExportModal(true);
+    }, []);
+
+    const exportTabs = useCallback(async (selectedTabs) => {
+        try {
+            // set exporting blocker
+            setCanExport(false);
+            let models = [];
+            selectedTabs.forEach(selected => models.push(queryModels[selected]?.schemaQuery));
+            const filename = queryModels[activeModelId].queryInfo.name;
+            await exportTabsXlsx(filename, models);
+            onExport?.[EXPORT_TYPES.EXCEL]?.();
+            createNotification({message: 'Successfully exported tabs to file.', alertClass: 'success'});
+        } catch (e) {
+            //Set export error
+            createNotification({message: 'Export failed: ' + e.getErrorMessage(), alertClass: 'danger'});
+        } finally {
+            // unset exporting blocker
+            setShowExportModal(false);
+            setCanExport(true);
+        }
+    }, [activeModelId, canExport, queryModels]);
+
+    const exportHandlers = { ...onExport, [EXPORT_TYPES.EXCEL]: exportHandler };
+
+    const closeExportModal = useCallback(() => {
+        setShowExportModal(false);
+    },[]);
+
     // If the component is passed onTabSelect we will only honor the activeModelId passed to this component.
     let activeId = onTabSelect === undefined ? internalActiveId : activeModelId;
 
@@ -148,8 +188,16 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                     </ul>
                 )}
 
-                <GridPanel key={activeId} actions={actions} asPanel={false} model={activeModel} {...rest} />
+                <GridPanel key={activeId} actions={actions} asPanel={false} model={activeModel} onExport={exportHandlers} {...rest} />
             </div>
+            {queryModels !=null && showExportModal &&
+                <ExportModal
+                    queryModels={queryModels}
+                    tabOrder={tabOrder}
+                    onClose={closeExportModal}
+                    onExport={exportTabs}
+                    canExport={canExport}
+                />}
         </div>
     );
 });

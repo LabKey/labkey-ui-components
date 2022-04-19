@@ -66,10 +66,11 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     }, [isSelectingSamples, schemaQuery]);
 
     let disabledMsg: string;
-    if (selectedQuantity === 0) {
+    if (selectedType === SampleCreationType.PooledSamples && selectedQuantity < 2) {
+        disabledMsg = `Select two or more ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'}.`;
+    } else if (selectedQuantity === 0) {
         disabledMsg = `Select one or more ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'}.`;
-    }
-    if (selectedQuantity > maxParentPerSample) {
+    } else if (selectedQuantity > maxParentPerSample) {
         disabledMsg = `At most ${maxParentPerSample} ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'} can be selected`;
     }
 

@@ -16,7 +16,7 @@ interface Props {
 
 export function getEditSharedEntityUrl(typeId: number, entityDataType: EntityDataType): string {
     return ActionURL.buildURL('experiment', entityDataType.editDomainActionName, SHARED_CONTAINER_PATH, {
-        RowId: typeId,
+        rowId: typeId,
         returnUrl: window.location.pathname + (window.location.hash ? window.location.hash : ''),
     }).toString();
 }

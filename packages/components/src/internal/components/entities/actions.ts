@@ -535,10 +535,10 @@ export function getEntityTypeData(
     });
 }
 
-export function deleteEntityType(deleteActionName: string, rowId: number): Promise<any> {
+export function deleteEntityType(deleteActionName: string, rowId: number, containerPath?: string): Promise<any> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('experiment', deleteActionName + '.api'),
+            url: buildURL('experiment', deleteActionName + '.api', undefined, {container: containerPath}),
             method: 'POST',
             params: {
                 singleObjectRowId: rowId,

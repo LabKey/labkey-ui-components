@@ -15,14 +15,13 @@
  */
 import { PermissionTypes } from '@labkey/api';
 import { mount } from 'enzyme';
-import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
 import React, { FC } from 'react';
 
 import { LoadingState } from '../../../public/LoadingState';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
 import { waitForLifecycle } from '../../testHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { User } from '../base/models/User';
 
 import { parseSelectedQuery, UsersLoader, useUsersWithPermissions } from './actions';
 
@@ -110,7 +109,7 @@ describe('useUsersWithPermissions', () => {
     test('state', async () => {
         const error = 'There was a problem retrieving users with the given permissions';
         const containerPath = '/';
-        const loader = jest.fn(async () => List<User>([TEST_USER_EDITOR, TEST_USER_READER]));
+        const loader = jest.fn().mockResolvedValue([TEST_USER_EDITOR, TEST_USER_READER]);
         const wrapper = mount(
             <TestComponent containerPath={containerPath} permissions={[PermissionTypes.Read]} loader={loader} />
         );
@@ -130,7 +129,7 @@ describe('useUsersWithPermissions', () => {
 
     test('reload permissions', async () => {
         const containerPath = '/';
-        const loader = jest.fn(async () => List<User>([TEST_USER_EDITOR, TEST_USER_READER]));
+        const loader = jest.fn().mockResolvedValue([TEST_USER_EDITOR, TEST_USER_READER]);
         const wrapper = mount(
             <TestComponent containerPath={containerPath} permissions={[PermissionTypes.Read]} loader={loader} />
         );

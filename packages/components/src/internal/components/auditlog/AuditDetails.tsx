@@ -7,7 +7,19 @@ import { List, Map } from 'immutable';
 import { Row, Col } from 'react-bootstrap';
 import { User as IUser } from '@labkey/api';
 
-import { AppURL, capitalizeFirstChar, getUsersWithPermissions, Grid, GridColumn, LoadingSpinner, User } from '../../..';
+import {
+    Alert,
+    AppURL,
+    capitalizeFirstChar,
+    getUsersWithPermissions,
+    Grid,
+    GridColumn,
+    isLoading,
+    LoadingSpinner,
+    LoadingState,
+    resolveErrorMessage,
+    User,
+} from '../../..';
 
 import { AuditDetailsModel } from './models';
 import { getEventDataValueDisplay } from './utils';
@@ -26,7 +38,9 @@ interface Props {
 }
 
 interface State {
-    users: List<IUser>;
+    users: IUser[];
+    usersError: string;
+    usersLoadingState: LoadingState;
 }
 
 export class AuditDetails extends Component<Props, State> {
@@ -43,7 +57,9 @@ export class AuditDetails extends Component<Props, State> {
         super(props);
 
         this.state = {
-            users: undefined,
+            users: [],
+            usersError: undefined,
+            usersLoadingState: LoadingState.INITIALIZED,
         };
     }
 
@@ -57,20 +73,29 @@ export class AuditDetails extends Component<Props, State> {
         }
     };
 
-    init = (): void => {
-        const { hasUserField, rowId, user } = this.props;
+    getUserById = (userId: number): IUser => {
+        return this.state.users.find(u => u.userId === userId);
+    };
+
+    init = async (): Promise<void> => {
+        const { hasUserField, rowId } = this.props;
 
         if (!rowId) return;
 
         if (hasUserField) {
-            getUsersWithPermissions()
-                .then(users => {
-                    this.setState({ users });
-                })
-                .catch(() => {
-                    console.error('Unable to retrieve user data for display.');
-                    this.setState(() => ({ users: List<IUser>() }));
+            this.setState({ usersError: undefined, usersLoadingState: LoadingState.LOADING });
+
+            try {
+                const users = await getUsersWithPermissions();
+                this.setState({ users });
+            } catch (e) {
+                this.setState({
+                    users: [],
+                    usersError: resolveErrorMessage(e) ?? 'Failed to load users',
                 });
+            }
+
+            this.setState({ usersLoadingState: LoadingState.LOADED });
         }
     };
 
@@ -105,9 +130,12 @@ export class AuditDetails extends Component<Props, State> {
         if (value == null || value === '') displayVal = 'NA';
 
         if (AuditDetails.isUserFieldLabel(field)) {
-            let targetUser: IUser = null;
+            let targetUser: IUser;
             if (users) {
-                targetUser = users.find(user => user.userId === parseInt(value));
+                const userId = parseInt(value, 10);
+                if (!isNaN(userId)) {
+                    targetUser = this.getUserById(userId);
+                }
             }
 
             if (targetUser) {
@@ -179,21 +207,21 @@ export class AuditDetails extends Component<Props, State> {
         );
     }
 
-    getUserDisplay(userId: number, showUserLink: boolean) {
-        const user = this.state.users?.find(u => u.userId === userId);
+    getUserDisplay = (userId: number, showUserLink: boolean): ReactNode => {
+        const user = this.getUserById(userId);
 
         if (user) {
             const link = AppURL.create('q', 'core', 'siteusers', userId).toHref();
             return showUserLink ? <a href={link}>{user.displayName}</a> : <span>{user.displayName}</span>;
-        } else {
-            // user may have been deleted
-            return (
-                <span className="empty-section" title="User deleted from server">
-                    {'<' + userId + '>'}
-                </span>
-            );
         }
-    }
+
+        // user may have been deleted
+        return (
+            <span className="empty-section" title="User deleted from server">
+                {'<' + userId + '>'}
+            </span>
+        );
+    };
 
     getGridColumns = (): List<GridColumn> => {
         const { user, gridColumnRenderer } = this.props;
@@ -222,13 +250,18 @@ export class AuditDetails extends Component<Props, State> {
 
     renderBody() {
         const { gridData, changeDetails, rowId, summary, hasUserField, emptyMsg } = this.props;
+        const { usersError, usersLoadingState } = this.state;
 
         if (!rowId) {
             return <div>{emptyMsg}</div>;
         }
 
-        if (hasUserField && !this.state.users) {
-            return <LoadingSpinner />;
+        if (hasUserField) {
+            if (usersError) {
+                return <Alert>{usersError}</Alert>;
+            } else if (isLoading(usersLoadingState)) {
+                return <LoadingSpinner />;
+            }
         }
 
         return (

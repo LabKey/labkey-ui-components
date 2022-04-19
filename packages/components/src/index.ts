@@ -175,7 +175,6 @@ import {
     getEditorModel,
     getQueryGridModel,
     initQueryGridState,
-    invalidateUsers,
     removeQueryGridModel,
     updateEditorModel,
 } from './internal/global';
@@ -833,7 +832,6 @@ export {
     getQueryGridModel,
     getEditorModel,
     removeQueryGridModel,
-    invalidateUsers,
     clearSelected,
     gridInvalidate,
     gridIdInvalidate,

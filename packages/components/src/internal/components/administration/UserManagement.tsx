@@ -15,7 +15,6 @@ import { fetchContainerSecurityPolicy } from '../permissions/actions';
 import { createNotification } from '../notifications/actions';
 import { queryGridInvalidate } from '../../actions';
 import { SCHEMAS } from '../../schemas';
-import { invalidateUsers } from '../../global';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { AppURL } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
@@ -240,7 +239,6 @@ export class UserManagement extends PureComponent<Props, State> {
 
     invalidateGlobal() {
         queryGridInvalidate(SCHEMAS.CORE_TABLES.USERS);
-        invalidateUsers();
     }
 
     renderButtons = () => {

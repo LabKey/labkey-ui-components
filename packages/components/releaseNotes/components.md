@@ -5,6 +5,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XX April 2022
 * Item 10203: Support sample type and data class renaming
 
+### version 2.155.1
+*Released*: 19 April 2022
+* Updates to EntityInsertPanel to support Biologics data class import.
+
+### version 2.155.0
+*Released*: 18 April 2022
+* Remove "users" from `global` state cache and all associated methods.
+* Change `getUsersWithPermissions` to return an `User[]` instead of `List<User>`.
+* Change `UserSelectInput` default to `clearCacheOnChange=false` and implement `generateKey` to handle path/perm changes.
+* Refactor how `AuditDetails` fetches user permissions.
+* Remove `invalidateUsers` and its usages.
+
 ### version 2.154.2
 *Released*: 15 April 2022
 * Issue 45223: Wrap multiline text fields on line breaks

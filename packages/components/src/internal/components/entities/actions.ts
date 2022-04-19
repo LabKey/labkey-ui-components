@@ -15,6 +15,7 @@ import {
     SampleCreationType,
     SampleOperation,
     SchemaQuery,
+    selectRows,
     selectRowsDeprecated,
     SHARED_CONTAINER_PATH,
 } from '../../..';
@@ -413,6 +414,21 @@ export function getChosenParentData(
                 entityCount: 0,
             });
         }
+    });
+}
+
+export function getAllEntityTypeOptions(entityDataTypes: EntityDataType[]) : Promise<{ [p: string]: IEntityTypeOption[] }> {
+    let optionMap = {};
+    return new Promise(async (resolve) => {
+        for (const entityType of entityDataTypes) {
+            try {
+               const entityOptions = await getEntityTypeOptions(entityType);
+               optionMap[entityType.typeListingSchemaQuery.queryName] = entityOptions.get(entityType.typeListingSchemaQuery.queryName).toArray();
+            } catch {
+                optionMap[entityType.typeListingSchemaQuery.queryName] = [];
+            }
+        }
+        resolve(optionMap)
     });
 }
 

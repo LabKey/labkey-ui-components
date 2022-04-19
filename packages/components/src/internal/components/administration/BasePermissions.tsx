@@ -11,7 +11,6 @@ import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
 import { fetchContainerSecurityPolicy } from '../permissions/actions';
 import { dismissNotifications } from '../notifications/global';
 import { createNotification } from '../notifications/actions';
-import { invalidateUsers } from '../../global';
 import { CreatedModified } from '../base/CreatedModified';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { ServerContextConsumer } from '../base/ServerContext';
@@ -78,7 +77,6 @@ class BasePermissionsImpl extends React.PureComponent<Props, State> {
         createNotification('Successfully updated roles and assignments.');
 
         this.loadSecurityPolicy();
-        invalidateUsers();
     };
 
     renderButtons = () => {

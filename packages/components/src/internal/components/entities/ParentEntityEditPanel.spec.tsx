@@ -17,7 +17,7 @@ beforeAll(() => {
     initUnitTestMocks();
 });
 
-describe('<ParentEntityEditPanel>', () => {
+describe('ParentEntityEditPanel', () => {
     const schemaQuery = SchemaQuery.create('samples', 'example');
     const queryInfo = QueryInfo.create({
         schemaName: schemaQuery.schemaName,

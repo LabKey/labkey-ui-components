@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ParentEntityEditPanel> editing, no data 1`] = `
+exports[`ParentEntityEditPanel editing, no data 1`] = `
 <ParentEntityEditPanel
   canUpdate={false}
   cancelText="Cancel"
@@ -4744,7 +4744,7 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
 </ParentEntityEditPanel>
 `;
 
-exports[`<ParentEntityEditPanel> error state 1`] = `
+exports[`ParentEntityEditPanel error state 1`] = `
 <ParentEntityEditPanel
   canUpdate={false}
   cancelText="Cancel"
@@ -5129,7 +5129,7 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
 </ParentEntityEditPanel>
 `;
 
-exports[`<ParentEntityEditPanel> loading state 1`] = `
+exports[`ParentEntityEditPanel loading state 1`] = `
 <ParentEntityEditPanel
   canUpdate={false}
   cancelText="Cancel"

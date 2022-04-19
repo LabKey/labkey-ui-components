@@ -1,6 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.155.0
+*Released*: 18 April 2022
+* Remove "users" from `global` state cache and all associated methods.
+* Change `getUsersWithPermissions` to return an `User[]` instead of `List<User>`.
+* Change `UserSelectInput` default to `clearCacheOnChange=false` and implement `generateKey` to handle path/perm changes.
+* Refactor how `AuditDetails` fetches user permissions.
+* Remove `invalidateUsers` and its usages.
+
+### version 2.154.2
+*Released*: 15 April 2022
+* Issue 45223: Wrap multiline text fields on line breaks
+* Issue 45060: Update Sample Finder to disable buttons and cards if there are no sources / sample types defined
+
 ### version 2.154.1
 *Released*: 13 April 2022
 * Issue 45021: Sample Finder: Filtering on a field whose name contains special characters does not work

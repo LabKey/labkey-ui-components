@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Adds ExportModal to enable exporting TabbedGrids
+* Adds ExportModal to enable exporting all tabs of a TabbedGrids
 
 ### version 2.155.1
 *Released*: 19 April 2022

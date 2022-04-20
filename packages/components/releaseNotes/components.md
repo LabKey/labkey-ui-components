@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX April 2022
+### version 2.156.0
+*Released*: 20 April 2022
 * Item 10203: Support sample type and data class renaming
 
 ### version 2.155.1

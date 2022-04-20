@@ -25,10 +25,11 @@ import { sleep } from '../../../testHelpers';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { initUnitTestMocks } from '../../../testHelperMocks';
+
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
-import { initUnitTestMocks } from '../../../testHelperMocks';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -119,11 +120,11 @@ describe('<SampleTypePropertiesPanel/>', () => {
         const data = DomainDetails.create(
             fromJS({
                 options: Map<string, any>({
-                    rowId: 1
+                    rowId: 1,
                 }),
                 domainKindName: 'SampleType',
                 domainDesign: sampleTypeModel.get('domain'),
-                nameReadOnly: true
+                nameReadOnly: true,
             })
         );
 

@@ -88,11 +88,11 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             if (response.prefix) {
                 this.setState(
                     produce((draft: Draft<State>) => {
-                        draft.model.nameExpression = response.prefix + (draft.model.nameExpression ? draft.model.nameExpression : '');
+                        draft.model.nameExpression =
+                            response.prefix + (draft.model.nameExpression ? draft.model.nameExpression : '');
                     })
                 );
             }
-
         }
     };
 

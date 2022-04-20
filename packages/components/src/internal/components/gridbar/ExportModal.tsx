@@ -6,7 +6,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 interface ExportModalProperties {
     queryModels: QueryModelMap;
     tabOrder: string[];
-    onExport: (tabs: Set<string>) => void;
+    onExport: (tabs: Set<string>) => Promise<void>;
     onClose?: () => void;
     canExport: boolean;
 }

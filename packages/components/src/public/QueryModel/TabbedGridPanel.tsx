@@ -21,8 +21,6 @@ import { InjectedQueryModels } from './withQueryModels';
 import { GridPanel, GridPanelProps } from './GridPanel';
 import { ExportModal } from '../../internal/components/gridbar/ExportModal';
 import { EXPORT_TYPES } from '../../internal/constants';
-import { ActionURL, Ajax } from '@labkey/api';
-import { SchemaQuery } from '../SchemaQuery';
 import { createNotification } from '../../internal/components/notifications/actions';
 import { exportTabsXlsx } from '../../internal/actions';
 
@@ -93,6 +91,10 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      * The title to render, only used if asPanel is true.
      */
     title?: string;
+    /**
+     * Optional value to use as the filename prefix for the exported file, otherwise will default to 'Data'
+     */
+    exportFilename?: string;
 }
 
 export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = memo(props => {
@@ -108,6 +110,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         title,
         tabOrder,
         onExport,
+        exportFilename,
         ...rest
     } = props;
     const [internalActiveId, setInternalActiveId] = useState<string>(activeModelId ?? tabOrder[0]);
@@ -124,17 +127,13 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         [onTabSelect]
     );
 
-    const exportHandler = useCallback(() => {
-        setShowExportModal(true);
-    }, []);
-
-    const exportTabs = useCallback(async (selectedTabs) => {
+    const exportTabs = useCallback(async (selectedTabs: string[]|Set<string>):Promise<void> => {
         try {
             // set exporting blocker
             setCanExport(false);
             let models = [];
             selectedTabs.forEach(selected => models.push(queryModels[selected]?.schemaQuery));
-            const filename = queryModels[activeModelId].queryInfo.name;
+            const filename = exportFilename ?? 'Data';
             await exportTabsXlsx(filename, models);
             onExport?.[EXPORT_TYPES.EXCEL]?.();
             createNotification({message: 'Successfully exported tabs to file.', alertClass: 'success'});
@@ -146,7 +145,16 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
             setShowExportModal(false);
             setCanExport(true);
         }
-    }, [activeModelId, canExport, queryModels]);
+    }, [exportFilename, canExport, queryModels]);
+
+    const exportHandler = useCallback(async () => {
+        if (Object.keys(queryModels).length > 1) {
+            setShowExportModal(true);
+            return;
+        }
+
+        exportTabs([internalActiveId]).then();
+    }, [exportTabs, internalActiveId]);
 
     const exportHandlers = { ...onExport, [EXPORT_TYPES.EXCEL]: exportHandler };
 

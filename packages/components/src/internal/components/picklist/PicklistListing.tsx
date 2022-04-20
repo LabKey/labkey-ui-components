@@ -37,6 +37,7 @@ interface OwnProps {
     user: User;
     initTab?: string;
     CreateButton?: ComponentType<PicklistCreateButtonProps>;
+    picklistName?: string;
 }
 
 interface PicklistGridProps {
@@ -147,6 +148,7 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
                     activeId: activeTabId,
                     queryModel: queryModels[activeTabId],
                 }}
+                exportFilename={'PickLists'}
             />
             {showDeleteModal && (
                 <PicklistDeleteConfirm

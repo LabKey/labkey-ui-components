@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Rename `SharedSampleTypeAdminConfirmModal` to `SharedEntityTypeAdminConfirmModal` for reuse with other entities
 * Update `EntityDataType` model with additional properties
-* Update `deleteDataClass` and `deleteEntityType` to take optional `containerPath`
+* Update `SampleSetDeletModal`, `deleteDataClass`, `deleteSampleSet`, and `deleteEntityType` to take optional `containerPath`
 
 ### version 2.155.1
 *Released*: 19 April 2022

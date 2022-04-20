@@ -14,10 +14,11 @@ interface Props {
     onCancel: () => void;
     rowId: number;
     numSamples: number;
+    containerPath?: string;
 }
 
 export const SampleSetDeleteModal: FC<Props> = props => {
-    const { beforeDelete, afterDelete, rowId, numSamples, onCancel } = props;
+    const { beforeDelete, afterDelete, rowId, numSamples, onCancel, containerPath } = props;
     const [showProgress, setShowProgress] = useState<boolean>();
 
     const onConfirm = useCallback(async () => {
@@ -25,7 +26,7 @@ export const SampleSetDeleteModal: FC<Props> = props => {
         setShowProgress(true);
 
         try {
-            await deleteSampleSet(rowId);
+            await deleteSampleSet(rowId, containerPath);
             afterDelete?.(true);
             createDeleteSuccessNotification(' sample type');
         } catch (error) {

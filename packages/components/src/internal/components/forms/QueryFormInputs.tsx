@@ -265,7 +265,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         onQSChange={this.onQSChange}
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
-                                        previewOptions={showQuerySelectPreviewOptions}
+                                        previewOptions={col.previewOptions === true || showQuerySelectPreviewOptions}
                                         renderFieldLabel={renderFieldLabel}
                                         required={col.required}
                                         schemaQuery={col.lookup.schemaQuery}

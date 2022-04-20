@@ -122,6 +122,7 @@ export function resolveDetailEditRenderer(
                         multiple={multiple}
                         name={col.name}
                         placeholder="Select or type to search..."
+                        previewOptions={col.previewOptions}
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
                         value={resolveDetailFieldValue(data, true)}

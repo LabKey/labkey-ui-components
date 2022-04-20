@@ -16,7 +16,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
     //     return () => window.removeEventListener('resize', handleResize);
     // });
 
-    //TODO for now, we will just always use the "More" submenu button, but in the future something like:
+    // TODO for now, we will just always use the "More" submenu button, but in the future something like:
     // const asSubMenu = useMemo(() => width < 1500, [width]);
     const asSubMenu = true;
 

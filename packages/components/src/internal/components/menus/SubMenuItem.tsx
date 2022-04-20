@@ -256,11 +256,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                     onClick={disabled ? emptyFn : this.onClick}
                     className={`fa fa-chevron-${expanded ? 'up' : 'down'}`}
                 />
-                {expanded && (
-                    <ul className={itemsCls}>
-                        {subMenuItems}
-                    </ul>
-                )}
+                {expanded && <ul className={itemsCls}>{subMenuItems}</ul>}
             </li>
         );
     }

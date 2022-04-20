@@ -5,8 +5,10 @@ import { PermissionTypes } from '@labkey/api';
 import { RequiresPermission } from '../../..';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { isSamplesSchema } from './utils';
+
 import { AssayImportSubMenuItem } from '../assay/AssayImportSubMenuItem';
+
+import { isSamplesSchema } from './utils';
 
 interface Props {
     model: QueryModel;

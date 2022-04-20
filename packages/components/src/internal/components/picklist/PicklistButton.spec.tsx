@@ -31,10 +31,9 @@ describe('PicklistButton', () => {
     test('with model and selections', () => {
         let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
         queryModel = queryModel.mutate({ selections: new Set(['1', '2']) });
-        const wrapper = mountWithServerContext(
-            <PicklistButton model={queryModel} user={TEST_USER_EDITOR} />,
-            { user: TEST_USER_EDITOR }
-        );
+        const wrapper = mountWithServerContext(<PicklistButton model={queryModel} user={TEST_USER_EDITOR} />, {
+            user: TEST_USER_EDITOR,
+        });
         const menuItem = wrapper.find(PicklistCreationMenuItem);
         expect(menuItem).toHaveLength(1);
         expect(menuItem.prop('selectionKey')).toBe(queryModel.id);

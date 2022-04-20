@@ -30,6 +30,8 @@ import { getPrimaryAppProperties } from '../../app/utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { getAllEntityTypeOptions } from '../entities/actions';
+
 import { removeFinderGridView, saveFinderGridView } from './actions';
 import { FilterCards } from './FilterCards';
 import {
@@ -44,7 +46,6 @@ import {
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 import { FieldFilter, FilterProps } from './models';
-import { getAllEntityTypeOptions } from '../entities/actions';
 
 const SAMPLE_FINDER_TITLE = 'Sample Finder';
 const SAMPLE_FINDER_CAPTION = 'Find all generations of samples that meet all the criteria defined below';
@@ -135,7 +136,6 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 setEnabledEntityTypes(_enabledEntityTypes);
             }
         })();
-
     }, []);
 
     const getSelectionKeyPrefix = (): string => {
@@ -217,7 +217,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             title={SAMPLE_FINDER_TITLE}
             caption={SAMPLE_FINDER_CAPTION}
             context={
-                <SampleFinderHeaderButtons parentEntityDataTypes={parentEntityDataTypes} onAddEntity={onAddEntity} enabledEntityTypes={enabledEntityTypes} />
+                <SampleFinderHeaderButtons
+                    parentEntityDataTypes={parentEntityDataTypes}
+                    onAddEntity={onAddEntity}
+                    enabledEntityTypes={enabledEntityTypes}
+                />
             }
         >
             {filters.length == 0 ? (
@@ -226,7 +230,8 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                         className="empty"
                         cards={parentEntityDataTypes.map(entityDataType => ({
                             entityDataType,
-                            disabled: enabledEntityTypes.indexOf(entityDataType.typeListingSchemaQuery.queryName) === -1
+                            disabled:
+                                enabledEntityTypes.indexOf(entityDataType.typeListingSchemaQuery.queryName) === -1,
                         }))}
                         onAddEntity={onAddEntity}
                     />

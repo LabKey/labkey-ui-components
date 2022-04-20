@@ -6,10 +6,12 @@ import { User } from '../base/models/User';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { RequiresPermission } from '../base/Permissions';
+
+import { SubMenuItem } from '../menus/SubMenuItem';
+
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
-import { RequiresPermission } from '../base/Permissions';
-import { SubMenuItem } from '../menus/SubMenuItem';
 
 interface Props {
     model: QueryModel;
@@ -36,7 +38,11 @@ export const PicklistButton: FC<Props> = memo(props => {
 
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.ManagePicklists}>
-            {!asSubMenu && <DropdownButton title="Picklists" id="samples-picklist-menu">{items}</DropdownButton>}
+            {!asSubMenu && (
+                <DropdownButton title="Picklists" id="samples-picklist-menu">
+                    {items}
+                </DropdownButton>
+            )}
             {asSubMenu && <SubMenuItem text="Picklists">{items}</SubMenuItem>}
         </RequiresPermission>
     );

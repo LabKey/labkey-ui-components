@@ -26,10 +26,11 @@ import {
 
 import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
+import { DisableableButton } from '../buttons/DisableableButton';
+
 import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
-import { DisableableButton } from '../buttons/DisableableButton';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';

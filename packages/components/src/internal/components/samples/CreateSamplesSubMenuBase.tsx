@@ -71,7 +71,9 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     } else if (selectedQuantity === 0) {
         disabledMsg = `Select one or more ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'}.`;
     } else if (selectedQuantity > maxParentPerSample) {
-        disabledMsg = `At most ${maxParentPerSample} ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'} can be selected`;
+        disabledMsg = `At most ${maxParentPerSample} ${
+            isSamplesSchema(schemaQuery) ? 'samples' : 'items'
+        } can be selected`;
     }
 
     const useOnClick = parentKey !== undefined || (selectingSampleParents && selectedQuantity > 0);

@@ -375,9 +375,7 @@ describe('shouldShowButtons', () => {
 
     test('with hideButtons', () => {
         expect(shouldShowButtons(undefined, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
-        expect(
-            shouldShowButtons(SamplesEditButtonSections.DELETE, [SamplesEditButtonSections.IMPORT])
-        ).toBeTruthy();
+        expect(shouldShowButtons(SamplesEditButtonSections.DELETE, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
         expect(shouldShowButtons(SamplesEditButtonSections.IMPORT, [SamplesEditButtonSections.IMPORT])).toBeFalsy();
     });
 });

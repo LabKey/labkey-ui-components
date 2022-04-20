@@ -166,6 +166,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     previewName={previewName}
                     onNameFieldHover={onNameFieldHover}
                     nameExpressionGenIdProps={nameExpressionGenIdProps}
+                    nameReadOnly={model.isBuiltIn}
                 />
                 {!appPropertiesOnly && (
                     <Row>

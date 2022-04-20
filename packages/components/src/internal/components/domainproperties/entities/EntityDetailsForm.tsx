@@ -79,7 +79,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                             placeholder={`Enter a name for this ${noun.toLowerCase()}`}
                             onChange={onFormChange}
                             value={getEntityNameValue(formValues, data)}
-                            disabled={isExistingEntity(formValues, data) || nameReadOnly}
+                            disabled={nameReadOnly}
                         />
                     </Col>
                 </Row>

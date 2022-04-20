@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `SampleSetDeletModal`, `deleteDataClass`, `deleteSampleSet`, and `deleteEntityType` to take optional `containerPath`
 * Issue 45290: Adjust height of search box on Safari
 
+### version 2.156.0
+*Released*: 20 April 2022
+* Item 10203: Support sample type and data class renaming
+
 ### version 2.155.1
 *Released*: 19 April 2022
 * Updates to EntityInsertPanel to support Biologics data class import.

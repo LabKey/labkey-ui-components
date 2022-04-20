@@ -202,7 +202,6 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
     >
       <input
         className="form-control"
-        disabled={true}
         id="entity-name"
         onChange={[MockFunction]}
         placeholder="Enter a name for this entity"
@@ -773,7 +772,6 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
-                disabled={true}
                 id="entity-name"
                 onChange={[MockFunction]}
                 placeholder="Enter a name for this entity"
@@ -782,7 +780,6 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
               >
                 <input
                   className="form-control"
-                  disabled={true}
                   id="entity-name"
                   onChange={[MockFunction]}
                   placeholder="Enter a name for this entity"

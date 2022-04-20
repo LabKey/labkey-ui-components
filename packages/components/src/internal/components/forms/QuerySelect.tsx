@@ -123,7 +123,6 @@ type InheritedSelectInputProps = Omit<
 >;
 
 export interface QuerySelectOwnProps extends InheritedSelectInputProps {
-    componentId: string;
     containerFilter?: Query.ContainerFilter;
     /** The path to the LK container that the queries should be scoped to. */
     containerPath?: string;
@@ -164,32 +163,8 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
 
     constructor(props: QuerySelectOwnProps) {
         super(props);
-        this.state = this.getInitialState(props);
-    }
 
-    componentDidMount(): void {
-        this.initModel();
-    }
-
-    componentDidUpdate(prevProps: QuerySelectOwnProps): void {
-        if (prevProps.componentId !== this.props.componentId) {
-            this.initModel();
-        }
-    }
-
-    initModel = async (): Promise<void> => {
-        this.setState(this.getInitialState(this.props));
-
-        try {
-            const model = await initSelect(this.props);
-            this.setState({ model });
-        } catch (error) {
-            this.setState({ error: resolveErrorMessage(error) ?? 'Failed to initialize.' });
-        }
-    };
-
-    getInitialState = (props: QuerySelectOwnProps): State => {
-        return {
+        this.state = {
             // See note in onFocus() regarding support for "loadOnFocus"
             defaultOptions: props.preLoad !== false ? true : props.loadOnFocus ? [] : true,
             error: undefined,
@@ -197,6 +172,19 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             loadOnFocusLock: false,
             model: undefined,
         };
+    }
+
+    componentDidMount(): void {
+        this.initModel();
+    }
+
+    initModel = async (): Promise<void> => {
+        try {
+            const model = await initSelect(this.props);
+            this.setState({ model });
+        } catch (error) {
+            this.setState({ error: resolveErrorMessage(error) ?? 'Failed to initialize.' });
+        }
     };
 
     componentWillUnmount(): void {
@@ -316,7 +304,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                 labelClass,
                 menuPosition,
                 multiple,
-                name: this.props.name || this.props.componentId + '-error',
+                name: this.props.name,
                 onToggleDisable,
                 openMenuOnFocus,
                 placeholder: `Error: ${error}`,
@@ -328,7 +316,6 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
         } else if (model?.isInit) {
             const inputProps = Object.assign(
                 {
-                    id: model.id,
                     label: label !== undefined ? label : model.queryInfo.title,
                 },
                 this.props,
@@ -368,7 +355,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                 labelClass,
                 menuPosition,
                 multiple,
-                name: this.props.name || this.props.componentId + '-loader',
+                name: this.props.name,
                 openMenuOnFocus,
                 onToggleDisable,
                 placeholder: 'Loading...',

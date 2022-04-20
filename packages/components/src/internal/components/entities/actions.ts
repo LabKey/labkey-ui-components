@@ -15,7 +15,6 @@ import {
     SampleCreationType,
     SampleOperation,
     SchemaQuery,
-    selectRows,
     selectRowsDeprecated,
     SHARED_CONTAINER_PATH,
 } from '../../..';
@@ -42,9 +41,7 @@ export function getOperationConfirmationData(
     extraParams?: Record<string, any>
 ): Promise<OperationConfirmationData> {
     if (!selectionKey && !rowIds?.length) {
-        return new Promise(resolve => {
-            resolve(new OperationConfirmationData());
-        });
+        return Promise.resolve(new OperationConfirmationData());
     }
 
     return new Promise((resolve, reject) => {

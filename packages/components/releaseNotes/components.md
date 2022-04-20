@@ -5,6 +5,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Adds ExportModal to enable exporting all tabs of a TabbedGrids
 
+### version 2.156.1
+*Released*: 20 April 2022
+* Merge release22.4-SNAPSHOT to develop
+    * Includes changes from version 2.149.7
+
+### version 2.156.0
+*Released*: 20 April 2022
+* Item 10203: Support sample type and data class renaming
+
 ### version 2.155.1
 *Released*: 19 April 2022
 * Updates to EntityInsertPanel to support Biologics data class import.
@@ -74,6 +83,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     * display the view, filter, and search grid action values in the grid info section (previously displayed in the OmniBox input)
     * add "Remove all" option to the end of the filter pill display if > 1 present
     * hide omnibox when experimental feature is enabled
+
+### version 2.149.7
+*Released*: 14 April 2022
+* Issue 45254: QueryColumn support for "previewOptions" in QuerySelect
+* Issue 45256: QuerySelect: Support "formattedValue" for display
 
 ### version 2.149.6
 *Released*: 4 April 2022

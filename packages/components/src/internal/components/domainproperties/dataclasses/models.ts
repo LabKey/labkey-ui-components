@@ -43,6 +43,7 @@ export class DataClassModel implements DataClassModelConfig {
     readonly nameExpression: string;
     readonly rowId: number;
     readonly sampleSet: number;
+    readonly isBuiltIn?: boolean;
 
     constructor(values?: Partial<DataClassModelConfig>) {
         Object.assign(this, values);

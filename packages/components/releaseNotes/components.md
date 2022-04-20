@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `EntityDataType` model with additional properties
 * Update `SampleSetDeletModal`, `deleteDataClass`, `deleteSampleSet`, and `deleteEntityType` to take optional `containerPath`
 * Issue 45290: Adjust height of search box on Safari
+* Issue 45269: If the state columns are present, don't look at a column named 'Label' for the sample status
 
 ### version 2.156.0
 *Released*: 20 April 2022

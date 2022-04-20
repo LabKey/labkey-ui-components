@@ -321,7 +321,6 @@ import {
     getSampleTypeDetails,
     getSampleTypes,
     getSelectedItemSamples,
-    getSelectedSampleTypes,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
@@ -1036,7 +1035,6 @@ export {
     getFieldLookupFromSelection,
     getSelectedItemSamples,
     getSampleTypes,
-    getSelectedSampleTypes,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,
     getDeleteSharedSampleTypeUrl,

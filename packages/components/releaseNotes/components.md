@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Rename `SharedSampleTypeAdminConfirmModal` to `SharedEntityTypeAdminConfirmModal` for reuse with other entities
 * Update `EntityDataType` model with additional properties
 * Update `SampleSetDeletModal`, `deleteDataClass`, `deleteSampleSet`, and `deleteEntityType` to take optional `containerPath`
+* Issue 45290: Adjust height of search box on Safari
 
 ### version 2.155.1
 *Released*: 19 April 2022

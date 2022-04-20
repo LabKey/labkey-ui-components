@@ -452,15 +452,6 @@ $nav-menu-btn-width: 85px;
     border-style: none;
   }
 
-    // Issue 43715.  Since that issue was opened, Firefox and Chrome both seem to behave well, but
-    // Safari has a pixel height difference.  This styling to adjust the height of the input
-    // applies only to Safari browsers.
-    @media not all and (min-resolution:.001dpcm) {
-        @supports (-webkit-appearance:none) {
-            .navbar__search-input { height: 33px; }
-        }
-    }
-
   .navbar__input-group {
       width: 300px;
   }

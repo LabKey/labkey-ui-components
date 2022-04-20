@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 10230: App grid action updates to buttons/menus in header bar
   * ...TODO
 
+### version 2.156.0
+*Released*: 20 April 2022
+* Item 10203: Support sample type and data class renaming
+
 ### version 2.155.1
 *Released*: 19 April 2022
 * Updates to EntityInsertPanel to support Biologics data class import.

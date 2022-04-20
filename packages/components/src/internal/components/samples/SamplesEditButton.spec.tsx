@@ -64,7 +64,6 @@ describe('SamplesEditButton', () => {
     test('default props', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, { user: TEST_USER_EDITOR });
         validate(wrapper);
-        expect(wrapper.find(MenuItem).first().prop('href')).toBe('#/samples/new?target=query&tab=2');
         wrapper.unmount();
     });
 
@@ -92,7 +91,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_AUTHOR,
         });
-        validate(wrapper, true, 0, 0, 1, 0);
+        validate(wrapper, true, 0, 0, 0, 0);
         wrapper.unmount();
     });
 
@@ -108,18 +107,6 @@ describe('SamplesEditButton', () => {
             user: TEST_USER_READER,
         });
         validate(wrapper, false);
-        wrapper.unmount();
-    });
-
-    test('children', () => {
-        const wrapper = mountWithServerContext(
-            <SamplesEditButton {...DEFAULT_PROPS}>
-                <div id="test-child-comp">test</div>
-            </SamplesEditButton>,
-            { user: TEST_USER_EDITOR }
-        );
-        validate(wrapper);
-        expect(wrapper.find('#test-child-comp')).toHaveLength(1);
         wrapper.unmount();
     });
 

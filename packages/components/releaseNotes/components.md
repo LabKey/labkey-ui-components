@@ -1,10 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.###.#
+### version 2.156.1
 *Released*: 20 April 2022
-* Issue 45254: QueryColumn support for "previewOptions" in QuerySelect
-* Issue 45256: QuerySelect: Support "formattedValue" for display
+* Merge release22.4-SNAPSHOT to develop
+    * Includes changes from version 2.149.7
 
 ### version 2.156.0
 *Released*: 20 April 2022

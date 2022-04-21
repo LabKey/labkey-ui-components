@@ -15,8 +15,6 @@ import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { fetchCohorts, getVisitDateColumns, getHelpTip, getStudySubjectProp } from './actions';
 import { SHOW_IN_OVERVIEW } from './constants';
 
-import '../../../../theme/dataset.scss';
-
 interface DatasetSettingsSelectProps {
     name: string;
     label: string;

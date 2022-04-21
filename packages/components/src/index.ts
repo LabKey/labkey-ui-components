@@ -361,7 +361,6 @@ import {
 } from './internal/components/samples/SampleAliquotViewSelector';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
 import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSamplesByIdHeaderPanel';
-import { SharedEntityTypeAdminConfirmModal } from './internal/components/entities/SharedEntityTypeAdminConfirmModal';
 import {
     AssayContextConsumer,
     assayPage,
@@ -1080,7 +1079,6 @@ export {
     OperationConfirmationData,
     AddEntityButton,
     RemoveEntityButton,
-    SharedEntityTypeAdminConfirmModal,
     getSampleOperationConfirmationData,
     getDataDeleteConfirmationData,
     createEntityParentKey,

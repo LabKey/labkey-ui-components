@@ -550,8 +550,6 @@ export interface EntityDataType {
     listingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
     instanceSchemaName: string; // (e.g., samples) Name of the schema associated with an individual instance that can be used in conjunction with a name returned from the typeListingSchemaQuery listing
     operationConfirmationActionName: string; // action in ExperimentController used to get the confirmation data for performing operations on entities
-    editDomainActionName: string; // action in ExperimentController used to edit the domain
-    deleteDomainActionName: string; // action in ExperimentContoller used to delete the domain
     nounSingular: string;
     nounAsParentSingular: string;
     nounAsParentPlural: string;

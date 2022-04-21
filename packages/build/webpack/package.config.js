@@ -7,50 +7,14 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const constants = require('./constants');
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const IgnorePlugin = require('webpack').IgnorePlugin;
 
 module.exports = {
     entry: './src/index.ts',
     target: 'web',
     mode: 'production',
     module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: ['css-loader'],
-            },
-            {
-                test: /\.s[ac]ss$/,
-                use: [
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
-                    },
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            implementation: require('sass'),
-                            sourceMap: true
-                        }
-                    }
-                ]
-            },
-            // TODO: remove this after we confirm that babel/fork-ts-checker produce compatible builds
-            // {
-            //     test: /\.tsx?$/,
-            //     use: {
-            //         loader: 'ts-loader',
-            //         options: {
-            //             // this flag and the test regex will make sure that test files do not get bundled
-            //             // see: https://github.com/TypeStrong/ts-loader/issues/267
-            //             onlyCompileBundledFiles: true,
-            //             configFile: constants.tsconfigPath,
-            //         },
-            //     },
-            //     exclude: /node_modules/
-            // }
-        ].concat(constants.loaders.TYPESCRIPT),
+        rules: constants.loaders.TYPESCRIPT,
     },
     resolve: {
         extensions: [ '.jsx', '.js', '.tsx', '.ts' ]
@@ -78,16 +42,37 @@ module.exports = {
                     to: 'assets/scss/theme'
                 }
             ]
-        })
+        }),
+        new IgnorePlugin({
+            resourceRegExp: /^\.\/locale$/,
+            contextRegExp: /moment$/,
+        }),
     ],
     externals: [
         '@labkey/api',
-        '@labkey/components',
+        'date-fns',
+        'font-awesome',
+        'formsy-react',
+        'formsy-react-components',
+        'history',
         'immutable',
         'jquery',
+        'lodash',
         'moment',
+        'moment-jdateformatparser',
+        'moment-timezone',
+        'numeral',
         'react',
+        'reactn',
+        'react-beautiful-dnd',
         'react-bootstrap',
+        'react-bootstrap-toggle',
+        'react-datepicker',
         'react-dom',
+        'react-redux',
+        'react-router',
+        'react-treebeard',
+        'redux-actions',
+        'xhr-mock',
     ]
 };

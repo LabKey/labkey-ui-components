@@ -29,8 +29,8 @@ export const SamplesAddButton: FC<Props> = memo(props => {
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
             <DropdownButton title="Add" id="samples-add-menu" bsStyle="success">
-                {showImportDataButton && <MenuItem href={createSampleHref}>Add Manually</MenuItem>}
-                {showInsertNewButton && !hideImport && <MenuItem href={importSampleHref}>Import from File</MenuItem>}
+                {showInsertNewButton && <MenuItem href={createSampleHref}>Add Manually</MenuItem>}
+                {showImportDataButton && !hideImport && <MenuItem href={importSampleHref}>Import from File</MenuItem>}
             </DropdownButton>
         </RequiresPermission>
     );

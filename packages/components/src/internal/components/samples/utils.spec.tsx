@@ -10,7 +10,7 @@ import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
-    getSampleDeleteMessage,
+    getSampleDeleteMessage, getSampleWizardURL,
     isSampleOperationPermitted,
     isSamplesSchema,
     LoadingSpinner,
@@ -486,5 +486,23 @@ describe('getSampleTypeTemplateUrl', () => {
         SAMPLE_STORAGE_COLUMNS.forEach(col => {
             expect(url.indexOf('includeColumn=' + col)).toBe(-1);
         });
+    });
+});
+
+describe('getSampleWizardURL', () => {
+    test('default props', () => {
+        expect(getSampleWizardURL().toHref()).toBe('#/samples/new');
+    });
+
+    test('targetSampleSet', () => {
+        expect(getSampleWizardURL('target1').toHref()).toBe('#/samples/new?target=target1');
+    });
+
+    test('parent', () => {
+        expect(getSampleWizardURL(undefined, 'parent1').toHref()).toBe('#/samples/new?parent=parent1');
+    });
+
+    test('targetSampleSet and parent', () => {
+        expect(getSampleWizardURL('target1', 'parent1').toHref()).toBe('#/samples/new?target=target1&parent=parent1');
     });
 });

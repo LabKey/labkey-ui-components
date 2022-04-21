@@ -9,6 +9,18 @@ const constants = require('./constants');
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const IgnorePlugin = require('webpack').IgnorePlugin;
 
+const tsCheckerConfig = {
+    ...constants.TS_CHECKER_CONFIG,
+    typescript: {
+        ...constants.TS_CHECKER_CONFIG.typescript,
+        mode: "write-dts",
+        configOverwrite: {
+            // excluding spec files shaves time off the build
+            exclude: ["node_modules", "**/*.spec.*"]
+        }
+    }
+}
+
 module.exports = {
     entry: './src/index.ts',
     target: 'web',
@@ -33,7 +45,7 @@ module.exports = {
         },
     },
     plugins: [
-        new ForkTsCheckerWebpackPlugin(constants.TS_CHECKER_CONFIG),
+        new ForkTsCheckerWebpackPlugin(tsCheckerConfig),
         new CopyWebpackPlugin({
             patterns: [
                 {

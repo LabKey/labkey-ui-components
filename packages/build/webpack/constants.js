@@ -66,12 +66,14 @@ const SASS_PLUGINS = [
         options: {
             importLoaders: 1
         }
-    },{
+    },
+    {
         loader: 'resolve-url-loader',
         options: {
             silent: !isProductionBuild
         }
-    },{
+    },
+    {
         loader: 'sass-loader',
         options: {
             implementation: require('sass'),
@@ -230,7 +232,7 @@ module.exports = {
     aliases: {
         LABKEY_PACKAGES: {
             '@labkey/components-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme',
-            '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss',
+            '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme/app',
             '@labkey/freezermanager-scss': freezerManagerPath + '/dist/assets/scss/theme',
             '@labkey/workflow-scss': workflowPath + '/dist/assets/scss/theme',
         },
@@ -243,7 +245,7 @@ module.exports = {
 
             // need to set the path based on the LINK var
             '@labkey/components-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
-            '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/internal/app/scss' : '/dist/assets/scss'),
+            '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme/app' : '/dist/assets/scss/theme/app'),
             '@labkey/freezermanager-scss': freezerManagerPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/workflow-scss': workflowPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
         },

@@ -1,11 +1,12 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import {
+    createDeleteErrorNotification,
+    createDeleteSuccessNotification,
     deleteSampleSet,
     EntityTypeDeleteConfirmModal,
     Progress,
-    createDeleteErrorNotification,
-    createDeleteSuccessNotification,
+    SHARED_CONTAINER_PATH,
 } from '../../..';
 
 interface Props {
@@ -20,6 +21,7 @@ interface Props {
 export const SampleSetDeleteModal: FC<Props> = props => {
     const { beforeDelete, afterDelete, rowId, numSamples, onCancel, containerPath } = props;
     const [showProgress, setShowProgress] = useState<boolean>();
+    const isShared = containerPath === SHARED_CONTAINER_PATH;
 
     const onConfirm = useCallback(async () => {
         beforeDelete?.();
@@ -44,6 +46,7 @@ export const SampleSetDeleteModal: FC<Props> = props => {
                     noun="sample"
                     onConfirm={onConfirm}
                     onCancel={onCancel}
+                    isShared={isShared}
                 />
             )}
             <Progress

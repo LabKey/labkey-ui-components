@@ -223,6 +223,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                             tabbedGridPanelProps={{
                                 advancedExportOptions: exportConfig,
                                 alwaysShowTabs: true,
+                                exportFilename: picklist.name + '_Samples'
                             }}
                         />
                     </div>

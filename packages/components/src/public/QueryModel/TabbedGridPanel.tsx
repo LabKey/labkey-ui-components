@@ -195,7 +195,6 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                         })}
                     </ul>
                 )}
-
                 <GridPanel key={activeId} actions={actions} asPanel={false} model={activeModel} onExport={exportHandlers} {...rest} />
             </div>
             {queryModels !=null && showExportModal &&

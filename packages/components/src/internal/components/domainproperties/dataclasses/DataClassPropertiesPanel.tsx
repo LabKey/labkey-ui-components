@@ -175,7 +175,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                         </Col>
                         <Col xs={10}>
                             <QuerySelect
-                                componentId={FORM_IDS.CATEGORY}
+                                key={FORM_IDS.CATEGORY}
                                 name={FORM_IDS.CATEGORY}
                                 schemaQuery={SCHEMAS.EXP_TABLES.DATA_CLASS_CATEGORY_TYPE}
                                 displayColumn="Value"
@@ -197,7 +197,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                         </Col>
                         <Col xs={10}>
                             <QuerySelect
-                                componentId={FORM_IDS.SAMPLE_TYPE_ID}
+                                key={FORM_IDS.SAMPLE_TYPE_ID}
                                 name={FORM_IDS.SAMPLE_TYPE_ID}
                                 schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SETS}
                                 onQSChange={this.onChange}

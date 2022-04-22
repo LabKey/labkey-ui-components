@@ -9,6 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 45290: Adjust height of search box on Safari
 * Issue 45269: If the state columns are present, don't look at a column named 'Label' for the sample status
 
+### version 2.157.0
+*Released*: 21 April 2022
+* Factor out `componentId` prop on `QuerySelect`.
+
 ### version 2.156.1
 *Released*: 20 April 2022
 * Merge release22.4-SNAPSHOT to develop

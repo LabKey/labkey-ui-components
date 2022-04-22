@@ -147,7 +147,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                 {chosenType && (
                     <>
                         <QuerySelect
-                            componentId={'parentEntityValue_' + chosenType.label} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
+                            key={'parentEntityValue_' + chosenType.label} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
                             containerClass="row"
                             containerPath={containerPath}
                             inputClass="col-sm-6"

@@ -86,20 +86,20 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     } = props;
     const onLabelExport = { [EXPORT_TYPES.LABEL]: onPrintLabel };
 
-    const onTabSelect = useCallback((tab: string) => {
-        setActiveTabId(tab);
-    }, []);
     const tabs = useMemo(() => {
         return modelId ? [modelId] : Object.keys(queryModels);
     }, [modelId, queryModels]);
     const [activeTabId, setActiveTabId] = useState<string>(initialTabId ?? tabs[0]);
-
+    const onTabSelect = useCallback((tab: string) => {
+        setActiveTabId(tab);
+    }, []);
     const activeModel = useMemo(() => queryModels[activeTabId], [activeTabId, queryModels]);
-    const hasSelection = useMemo(() => activeModel.hasSelections, [activeModel.selections]);
+    const { hasSelections, selections } = activeModel;
+    const selection = useMemo(() => List(Array.from(selections ?? [])), [selections]);
     const hasValidMaxSelection = useMemo(() => {
-        const selSize = activeModel.selections?.size ?? 0;
+        const selSize = selections?.size ?? 0;
         return selSize > 0 && selSize <= MAX_EDITABLE_GRID_ROWS;
-    }, [activeModel.selections]);
+    }, [selections]);
 
     const [isEditing, setIsEditing] = useState<boolean>();
     const [showBulkUpdate, setShowBulkUpdate] = useState<boolean>();
@@ -111,13 +111,13 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             editableGridUpdateData: any,
             editableGridDataForSelection: Map<string, any>,
             editableGridDataIdsForSelection: List<any>
-        ): Promise<any> => {
+        ): Promise<Map<string, any>> => {
             setEditableGridData({
                 updateData: editableGridUpdateData,
                 dataForSelection: editableGridDataForSelection,
                 idsForSelection: editableGridDataIdsForSelection,
             });
-            return new Promise<any>(resolve => resolve(editableGridDataForSelection));
+            return Promise.resolve(editableGridDataForSelection);
         },
         []
     );
@@ -155,11 +155,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     );
 
     const onShowBulkUpdate = useCallback(() => {
-        if (hasSelection) {
+        if (hasSelections) {
             dismissNotifications();
             setShowBulkUpdate(true);
         }
-    }, [hasSelection]);
+    }, [hasSelections]);
 
     const onBulkUpdateError = useCallback((message: string) => {
         withTimeout(() => {
@@ -174,17 +174,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             actions.loadModel(activeModel.id, true);
             afterSampleActionComplete?.();
         },
-        [actions, activeModel.id]
+        [actions, activeModel.id, afterSampleActionComplete]
     );
-
-    const toggleEditWithGridUpdate = useCallback(() => {
-        if (isEditing) {
-            resetState();
-        } else if (hasValidMaxSelection) {
-            dismissNotifications();
-            setIsEditing(true);
-        }
-    }, [isEditing, hasValidMaxSelection]);
 
     const resetState = useCallback(() => {
         setEditableGridData(undefined);
@@ -193,17 +184,26 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         setShowBulkUpdate(false);
     }, []);
 
+    const toggleEditWithGridUpdate = useCallback(() => {
+        if (isEditing) {
+            resetState();
+        } else if (hasValidMaxSelection) {
+            dismissNotifications();
+            setIsEditing(true);
+        }
+    }, [isEditing, hasValidMaxSelection, resetState]);
+
     const onGridEditComplete = useCallback(() => {
         afterSampleActionComplete?.();
         resetState();
-    }, [resetState]);
+    }, [afterSampleActionComplete, resetState]);
 
     const _afterSampleActionComplete = useCallback(() => {
         dismissNotifications();
         actions.loadModel(activeModel.id, true);
         afterSampleActionComplete?.();
         resetState();
-    }, [actions, activeModel.id]);
+    }, [actions, activeModel.id, afterSampleActionComplete, resetState]);
 
     const afterSampleDelete = useCallback(
         (rowsToKeep: any[]) => {
@@ -217,20 +217,21 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 
             _afterSampleActionComplete();
         },
-        [actions, activeModel]
+        [actions, activeModel, _afterSampleActionComplete]
     );
 
-    const onUpdateRows = useCallback((schemaQuery: SchemaQuery, rows: any[]): Promise<void> => {
-        if (rows.length === 0) {
-            return new Promise(resolve => {
+    const onUpdateRows = useCallback(
+        async (schemaQuery: SchemaQuery, rows: any[]): Promise<void> => {
+            if (rows.length === 0) {
                 dismissNotifications();
+
                 withTimeout(() => {
                     createNotification(NO_UPDATES_MESSAGE);
                 });
 
-                resolve();
-            });
-        } else {
+                return;
+            }
+
             return updateRows({
                 schemaQuery,
                 rows,
@@ -259,15 +260,16 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                         ),
                     });
                 });
-        }
-    }, []);
+        },
+        [getSampleAuditBehaviorType]
+    );
 
     const _gridButtonProps = {
         ...gridButtonProps,
         afterSampleDelete,
         afterSampleActionComplete: _afterSampleActionComplete,
-        createBtnParentType: hasSelection ? undefined : createBtnParentType,
-        createBtnParentKey: hasSelection ? undefined : createBtnParentKey,
+        createBtnParentType: hasSelections ? undefined : createBtnParentType,
+        createBtnParentKey: hasSelections ? undefined : createBtnParentKey,
         excludedCreateMenuKeys,
         model: activeModel,
         showBulkUpdate: onShowBulkUpdate,
@@ -280,7 +282,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         <>
             {isEditing || selectionData ? (
                 <SamplesEditableGrid
-                    {...samplesEditableGridProps}
+                    {...(samplesEditableGridProps as SamplesEditableGridProps)}
                     determineSampleData={user.canUpdate}
                     determineLineage={user.canUpdate}
                     determineStorage={App.userCanEditStorageData(user)}
@@ -290,10 +292,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     editableGridUpdateData={editableGridData?.updateData}
                     onGridEditCancel={resetState}
                     onGridEditComplete={onGridEditComplete}
-                    parentDataTypes={samplesEditableGridProps.parentDataTypes}
                     sampleSet={activeModel.schemaQuery.queryName}
-                    samplesGridRequiredColumns={samplesEditableGridProps.samplesGridRequiredColumns}
-                    selection={List(Array.from(activeModel.selections))}
+                    selection={selection}
                     selectionData={selectionData}
                     user={user}
                 />
@@ -318,11 +318,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             {showBulkUpdate && (
                 <SamplesBulkUpdateForm
                     determineSampleData
-                    selection={List(Array.from(activeModel.selections))}
+                    selection={selection}
                     sampleSet={activeModel.schemaQuery.queryName}
                     sampleSetLabel={activeModel.queryInfo.title}
                     queryModel={activeModel}
-                    hasValidMaxSelection={() => hasValidMaxSelection}
+                    hasValidMaxSelection={hasValidMaxSelection}
                     onCancel={resetState}
                     onBulkUpdateError={onBulkUpdateError}
                     onBulkUpdateComplete={onBulkUpdateComplete}

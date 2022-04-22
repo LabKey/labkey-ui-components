@@ -47,7 +47,7 @@ export const ExportModal: FC<ExportModalProperties> = memo((props) => {
                 <div className="excel-export-modal-body" >
                     <ul>
                         {tabOrder.map( modelId => {
-                            return <Checkbox checked={selected.has(modelId)} key={modelId} value={modelId} onChange={onChecked}>{queryModels[modelId].title}</Checkbox>
+                            return <Checkbox checked={selected.has(modelId)} className='export-modal-checkbox' key={modelId} value={modelId} onChange={onChecked}>{queryModels[modelId].title}</Checkbox>
                         })}
                     </ul>
                 </div>

@@ -148,13 +148,13 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     }, [exportFilename, canExport, queryModels]);
 
     const exportHandler = useCallback(async () => {
-        if (Object.keys(queryModels).length > 1) {
+        if (Object.keys(tabOrder).length > 1) {
             setShowExportModal(true);
             return;
         }
 
         exportTabs([internalActiveId]).then();
-    }, [exportTabs, internalActiveId]);
+    }, [tabOrder, exportTabs, internalActiveId]);
 
     const exportHandlers = { ...onExport, [EXPORT_TYPES.EXCEL]: exportHandler };
 

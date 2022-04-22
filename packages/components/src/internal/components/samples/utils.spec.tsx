@@ -27,7 +27,7 @@ import {
 } from '../../..';
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
-import { getSampleStatus, getSampleStatusType, getSampleTypeTemplateUrl, shouldShowButtons } from './utils';
+import { getSampleStatus, getSampleStatusType, getSampleTypeTemplateUrl, shouldIncludeMenuItem } from './utils';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
@@ -366,18 +366,18 @@ describe('getOperationNotPermittedMessage', () => {
     });
 });
 
-describe('shouldShowButtons', () => {
-    test('undefined hiddenButtons', () => {
-        expect(shouldShowButtons(undefined, undefined)).toBeTruthy();
-        expect(shouldShowButtons(SamplesEditButtonSections.IMPORT, undefined)).toBeTruthy();
-        expect(shouldShowButtons(undefined, [])).toBeTruthy();
-        expect(shouldShowButtons(SamplesEditButtonSections.IMPORT, [])).toBeTruthy();
+describe('shouldIncludeMenuItem', () => {
+    test('undefined excludedMenuKeys', () => {
+        expect(shouldIncludeMenuItem(undefined, undefined)).toBeTruthy();
+        expect(shouldIncludeMenuItem(SamplesEditButtonSections.IMPORT, undefined)).toBeTruthy();
+        expect(shouldIncludeMenuItem(undefined, [])).toBeTruthy();
+        expect(shouldIncludeMenuItem(SamplesEditButtonSections.IMPORT, [])).toBeTruthy();
     });
 
-    test('with hiddenButtons', () => {
-        expect(shouldShowButtons(undefined, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
-        expect(shouldShowButtons(SamplesEditButtonSections.DELETE, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
-        expect(shouldShowButtons(SamplesEditButtonSections.IMPORT, [SamplesEditButtonSections.IMPORT])).toBeFalsy();
+    test('with excludedMenuKeys', () => {
+        expect(shouldIncludeMenuItem(undefined, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
+        expect(shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
+        expect(shouldIncludeMenuItem(SamplesEditButtonSections.IMPORT, [SamplesEditButtonSections.IMPORT])).toBeFalsy();
     });
 });
 

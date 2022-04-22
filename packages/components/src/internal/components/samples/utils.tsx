@@ -210,11 +210,11 @@ export enum SamplesEditButtonSections {
     LINKTOSTUDY = 'linktostudy',
 }
 
-export const shouldShowButtons = (
+export const shouldIncludeMenuItem = (
     action: SamplesEditButtonSections,
-    hiddenButtons: SamplesEditButtonSections[]
+    excludedMenuKeys: SamplesEditButtonSections[]
 ): boolean => {
-    return hiddenButtons === undefined || hiddenButtons.indexOf(action) === -1;
+    return excludedMenuKeys === undefined || excludedMenuKeys.indexOf(action) === -1;
 };
 
 export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {

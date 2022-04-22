@@ -346,7 +346,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 queryModels={queryModels}
                 gridButtons={gridButtons}
                 gridButtonProps={{
-                    excludedManageMenuKeys: [SamplesEditButtonSections.IMPORT],
+                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT],
                     metricFeatureArea: SAMPLE_FILTER_METRIC_AREA,
                 }}
                 tabbedGridPanelProps={{

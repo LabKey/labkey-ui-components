@@ -142,13 +142,13 @@ describe('SamplesEditButton', () => {
         wrapper.unmount();
     });
 
-    test('hiddenButtons', () => {
+    test('excludedMenuKeys', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['study'] } };
         const wrapper = mountWithServerContext(
             <SamplesEditButton
                 {...DEFAULT_PROPS}
                 showLinkToStudy
-                hiddenButtons={[
+                excludedMenuKeys={[
                     SamplesEditButtonSections.IMPORT,
                     SamplesEditButtonSections.DELETE,
                     SamplesEditButtonSections.EDIT,

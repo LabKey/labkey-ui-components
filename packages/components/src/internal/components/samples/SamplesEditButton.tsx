@@ -20,7 +20,7 @@ import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryMod
 
 import { SampleGridButtonProps } from './models';
 import { getSampleTypeRowId } from './actions';
-import { SamplesEditButtonSections, shouldShowButtons } from './utils';
+import { SamplesEditButtonSections, shouldIncludeMenuItem } from './utils';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { EntityLineageEditMenuItem } from '../entities/EntityLineageEditMenuItem';
 
@@ -39,7 +39,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         parentEntityDataTypes,
         combineParentTypes,
         toggleEditWithGridUpdate,
-        hiddenButtons,
+        excludedMenuKeys,
         model,
         metricFeatureArea,
     } = props;
@@ -59,13 +59,13 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
     };
 
     const showEdit =
-        shouldShowButtons(SamplesEditButtonSections.EDIT, hiddenButtons) &&
+        shouldIncludeMenuItem(SamplesEditButtonSections.EDIT, excludedMenuKeys) &&
         hasAnyPermissions(user, [PermissionTypes.Update, PermissionTypes.EditStorageData]);
-    const showDelete = shouldShowButtons(SamplesEditButtonSections.DELETE, hiddenButtons);
+    const showDelete = shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, excludedMenuKeys);
     const showStudy =
         showLinkToStudy &&
         App.hasModule('study') &&
-        shouldShowButtons(SamplesEditButtonSections.LINKTOSTUDY, hiddenButtons);
+        shouldIncludeMenuItem(SamplesEditButtonSections.LINKTOSTUDY, excludedMenuKeys);
 
     return (
         <RequiresPermission

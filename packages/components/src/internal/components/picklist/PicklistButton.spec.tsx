@@ -5,11 +5,13 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { TEST_USER_EDITOR } from '../../../test/data/users';
 
+import { mountWithServerContext } from '../../testHelpers';
+
+import { SubMenuItem } from '../menus/SubMenuItem';
+
 import { PicklistButton } from './PicklistButton';
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
-import { mountWithServerContext } from '../../testHelpers';
-import { SubMenuItem } from '../menus/SubMenuItem';
 
 describe('PicklistButton', () => {
     test('with model no selections', () => {

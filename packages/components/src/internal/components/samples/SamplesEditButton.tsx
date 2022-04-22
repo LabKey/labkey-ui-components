@@ -39,7 +39,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         parentEntityDataTypes,
         combineParentTypes,
         toggleEditWithGridUpdate,
-        hideButtons,
+        hiddenButtons,
         model,
         metricFeatureArea,
     } = props;
@@ -59,13 +59,13 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
     };
 
     const showEdit =
-        shouldShowButtons(SamplesEditButtonSections.EDIT, hideButtons) &&
+        shouldShowButtons(SamplesEditButtonSections.EDIT, hiddenButtons) &&
         hasAnyPermissions(user, [PermissionTypes.Update, PermissionTypes.EditStorageData]);
-    const showDelete = shouldShowButtons(SamplesEditButtonSections.DELETE, hideButtons);
+    const showDelete = shouldShowButtons(SamplesEditButtonSections.DELETE, hiddenButtons);
     const showStudy =
         showLinkToStudy &&
         App.hasModule('study') &&
-        shouldShowButtons(SamplesEditButtonSections.LINKTOSTUDY, hideButtons);
+        shouldShowButtons(SamplesEditButtonSections.LINKTOSTUDY, hiddenButtons);
 
     return (
         <RequiresPermission

@@ -212,9 +212,9 @@ export enum SamplesEditButtonSections {
 
 export const shouldShowButtons = (
     action: SamplesEditButtonSections,
-    hideButtons: SamplesEditButtonSections[]
+    hiddenButtons: SamplesEditButtonSections[]
 ): boolean => {
-    return hideButtons === undefined || hideButtons.indexOf(action) === -1;
+    return hiddenButtons === undefined || hiddenButtons.indexOf(action) === -1;
 };
 
 export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {

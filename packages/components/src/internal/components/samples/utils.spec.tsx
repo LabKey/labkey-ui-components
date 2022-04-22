@@ -366,14 +366,14 @@ describe('getOperationNotPermittedMessage', () => {
 });
 
 describe('shouldShowButtons', () => {
-    test('undefined hideButtons', () => {
+    test('undefined hiddenButtons', () => {
         expect(shouldShowButtons(undefined, undefined)).toBeTruthy();
         expect(shouldShowButtons(SamplesEditButtonSections.IMPORT, undefined)).toBeTruthy();
         expect(shouldShowButtons(undefined, [])).toBeTruthy();
         expect(shouldShowButtons(SamplesEditButtonSections.IMPORT, [])).toBeTruthy();
     });
 
-    test('with hideButtons', () => {
+    test('with hiddenButtons', () => {
         expect(shouldShowButtons(undefined, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
         expect(shouldShowButtons(SamplesEditButtonSections.DELETE, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
         expect(shouldShowButtons(SamplesEditButtonSections.IMPORT, [SamplesEditButtonSections.IMPORT])).toBeFalsy();

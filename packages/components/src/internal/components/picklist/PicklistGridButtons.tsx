@@ -31,7 +31,7 @@ export const PicklistGridButtons: FC<GridButtonProps & RequiresModelAndActions> 
                         PermissionTypes.EditStorageData,
                     ]}
                 >
-                    <div className="btn-group gridbar-buttons">
+                    <div className="responsive-btn-group">
                         <AdditionalGridButtons {...buttonProps} />
                     </div>
                 </RequiresPermission>

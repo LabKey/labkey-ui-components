@@ -24,7 +24,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
         <>
             {!asSubMenu && items}
             {asSubMenu && (
-                <DropdownButton id="responsive-menu-button-group" title="More">
+                <DropdownButton id="responsive-menu-button-group" title="More" className="responsive-menu">
                     {items.map(item => React.cloneElement(item, { asSubMenu: true }))}
                 </DropdownButton>
             )}

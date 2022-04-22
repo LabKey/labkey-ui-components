@@ -33,7 +33,7 @@ export const SamplesAssayButton: FC<Props> = memo(props => {
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
             {!asSubMenu && (
-                <DropdownButton title="Assay" id="samples-assay-menu">
+                <DropdownButton title="Assay" id="samples-assay-menu" className="responsive-menu">
                     {items}
                 </DropdownButton>
             )}

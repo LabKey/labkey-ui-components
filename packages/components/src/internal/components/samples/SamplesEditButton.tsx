@@ -77,7 +77,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                 PermissionTypes.EditStorageData,
             ]}
         >
-            <ManageDropdownButton id="samples-manage-btn" title="Edit">
+            <ManageDropdownButton id="samples-manage-btn" title="Edit" className="responsive-menu">
                 {showEdit && (
                     <RequiresPermission
                         perms={[PermissionTypes.Update, PermissionTypes.EditStorageData]}

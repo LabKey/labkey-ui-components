@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Adds ExportModal to enable exporting all tabs of a TabbedGrids
 
+### version 2.157.0
+*Released*: 21 April 2022
+* Factor out `componentId` prop on `QuerySelect`.
+
 ### version 2.156.1
 *Released*: 20 April 2022
 * Merge release22.4-SNAPSHOT to develop

@@ -143,7 +143,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
             <QuerySelect
                 addLabelAsterisk={showAsteriskSymbol}
                 allowDisable={allowDisable}
-                componentId={col.fieldKey + key}
+                key={col.fieldKey + key}
                 containerFilter={col.lookup.containerFilter ?? containerFilter}
                 containerPath={col.lookup.containerPath ?? containerPath}
                 description={col.description}

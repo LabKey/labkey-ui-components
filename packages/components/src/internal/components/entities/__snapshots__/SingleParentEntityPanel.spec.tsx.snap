@@ -8,12 +8,10 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
   parentDataType={
     Object {
       "ancestorColumnName": "Ancestors/OtherData",
-      "deleteDomainActionName": "deleteDataClass",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
       "descriptionSingular": "parent type",
-      "editDomainActionName": "editDataClass",
       "filterCardHeaderClass": "filter-card__header-primary",
       "importFileAction": "importData",
       "inputColumnName": "Inputs/Data/First",
@@ -78,12 +76,10 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
     parentDataType={
       Object {
         "ancestorColumnName": "Ancestors/OtherData",
-        "deleteDomainActionName": "deleteDataClass",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
         "descriptionSingular": "parent type",
-        "editDomainActionName": "editDataClass",
         "filterCardHeaderClass": "filter-card__header-primary",
         "importFileAction": "importData",
         "inputColumnName": "Inputs/Data/First",
@@ -162,12 +158,10 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       parentDataType={
         Object {
           "ancestorColumnName": "Ancestors/OtherData",
-          "deleteDomainActionName": "deleteDataClass",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
           "descriptionSingular": "parent type",
-          "editDomainActionName": "editDataClass",
           "filterCardHeaderClass": "filter-card__header-primary",
           "importFileAction": "importData",
           "inputColumnName": "Inputs/Data/First",
@@ -260,12 +254,10 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         parentDataType={
           Object {
             "ancestorColumnName": "Ancestors/OtherData",
-            "deleteDomainActionName": "deleteDataClass",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
             "descriptionSingular": "parent type",
-            "editDomainActionName": "editDataClass",
             "filterCardHeaderClass": "filter-card__header-primary",
             "importFileAction": "importData",
             "inputColumnName": "Inputs/Data/First",
@@ -5270,12 +5262,10 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
   parentDataType={
     Object {
       "ancestorColumnName": "Ancestors/OtherData",
-      "deleteDomainActionName": "deleteDataClass",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
       "descriptionSingular": "parent type",
-      "editDomainActionName": "editDataClass",
       "filterCardHeaderClass": "filter-card__header-primary",
       "importFileAction": "importData",
       "inputColumnName": "Inputs/Data/First",
@@ -5340,12 +5330,10 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
     parentDataType={
       Object {
         "ancestorColumnName": "Ancestors/OtherData",
-        "deleteDomainActionName": "deleteDataClass",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
         "descriptionSingular": "parent type",
-        "editDomainActionName": "editDataClass",
         "filterCardHeaderClass": "filter-card__header-primary",
         "importFileAction": "importData",
         "inputColumnName": "Inputs/Data/First",
@@ -5424,12 +5412,10 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       parentDataType={
         Object {
           "ancestorColumnName": "Ancestors/OtherData",
-          "deleteDomainActionName": "deleteDataClass",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
           "descriptionSingular": "parent type",
-          "editDomainActionName": "editDataClass",
           "filterCardHeaderClass": "filter-card__header-primary",
           "importFileAction": "importData",
           "inputColumnName": "Inputs/Data/First",
@@ -5522,12 +5508,10 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         parentDataType={
           Object {
             "ancestorColumnName": "Ancestors/OtherData",
-            "deleteDomainActionName": "deleteDataClass",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
             "descriptionSingular": "parent type",
-            "editDomainActionName": "editDataClass",
             "filterCardHeaderClass": "filter-card__header-primary",
             "importFileAction": "importData",
             "inputColumnName": "Inputs/Data/First",
@@ -5641,12 +5625,10 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       "appUrlPrefixParts": Array [
         "sources",
       ],
-      "deleteDomainActionName": "deleteDataClass",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived sample dependencies",
       "descriptionPlural": "parent types",
       "descriptionSingular": "parent type",
-      "editDomainActionName": "editDataClass",
       "filterCardHeaderClass": "filter-card__header-primary",
       "importFileAction": "importData",
       "inputColumnName": "Inputs/Data/First",
@@ -5740,12 +5722,10 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         "appUrlPrefixParts": Array [
           "sources",
         ],
-        "deleteDomainActionName": "deleteDataClass",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived sample dependencies",
         "descriptionPlural": "parent types",
         "descriptionSingular": "parent type",
-        "editDomainActionName": "editDataClass",
         "filterCardHeaderClass": "filter-card__header-primary",
         "importFileAction": "importData",
         "inputColumnName": "Inputs/Data/First",
@@ -5892,12 +5872,10 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "appUrlPrefixParts": Array [
             "sources",
           ],
-          "deleteDomainActionName": "deleteDataClass",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived sample dependencies",
           "descriptionPlural": "parent types",
           "descriptionSingular": "parent type",
-          "editDomainActionName": "editDataClass",
           "filterCardHeaderClass": "filter-card__header-primary",
           "importFileAction": "importData",
           "inputColumnName": "Inputs/Data/First",
@@ -6058,12 +6036,10 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "appUrlPrefixParts": Array [
               "sources",
             ],
-            "deleteDomainActionName": "deleteDataClass",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived sample dependencies",
             "descriptionPlural": "parent types",
             "descriptionSingular": "parent type",
-            "editDomainActionName": "editDataClass",
             "filterCardHeaderClass": "filter-card__header-primary",
             "importFileAction": "importData",
             "inputColumnName": "Inputs/Data/First",

@@ -109,7 +109,7 @@ export function resolveDetailEditRenderer(
 
                 return (
                     <QuerySelect
-                        componentId={col.fieldKey}
+                        key={col.fieldKey}
                         containerFilter={col.lookup.containerFilter ?? options?.containerFilter}
                         containerPath={col.lookup.containerPath ?? options?.containerPath}
                         description={col.description}
@@ -122,6 +122,7 @@ export function resolveDetailEditRenderer(
                         multiple={multiple}
                         name={col.name}
                         placeholder="Select or type to search..."
+                        previewOptions={col.previewOptions}
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
                         value={resolveDetailFieldValue(data, true)}

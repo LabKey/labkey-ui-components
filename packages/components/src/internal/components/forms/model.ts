@@ -27,7 +27,6 @@ export interface QuerySelectModelProps {
     containerPath?: string;
     displayColumn: string;
     delimiter: string;
-    id: string;
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
@@ -49,7 +48,6 @@ export class QuerySelectModel
         containerPath: undefined,
         displayColumn: undefined,
         delimiter: DELIMITER,
-        id: undefined,
         isInit: false,
         maxRows: 20,
         multiple: false,
@@ -70,7 +68,6 @@ export class QuerySelectModel
     declare containerPath: string;
     declare displayColumn: string;
     declare delimiter: string;
-    declare id: string;
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;

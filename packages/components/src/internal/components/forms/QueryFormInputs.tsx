@@ -248,7 +248,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     <QuerySelect
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
-                                        componentId={id}
+                                        key={id}
                                         containerFilter={col.lookup.containerFilter ?? containerFilter}
                                         containerPath={col.lookup.containerPath}
                                         description={col.description}
@@ -265,7 +265,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         onQSChange={this.onQSChange}
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
-                                        previewOptions={showQuerySelectPreviewOptions}
+                                        previewOptions={col.previewOptions === true || showQuerySelectPreviewOptions}
                                         renderFieldLabel={renderFieldLabel}
                                         required={col.required}
                                         schemaQuery={col.lookup.schemaQuery}

@@ -25,6 +25,7 @@ import {
     QueryInfo,
     QueryModel,
     QuerySelectOwnProps,
+    resolveDetailFieldValue,
     searchRows,
     SelectInputOption,
     selectRowsDeprecated,
@@ -72,7 +73,7 @@ function getQueryColumnNames(model: QuerySelectModel): string[] {
 
 export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
     return new Promise((resolve, reject) => {
-        const { componentId, schemaQuery, containerFilter, containerPath } = props;
+        const { containerFilter, containerPath, schemaQuery } = props;
 
         if (schemaQuery) {
             const { queryName, schemaName } = schemaQuery;
@@ -85,7 +86,6 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                     let model = new QuerySelectModel({
                         ...props,
                         displayColumn,
-                        id: componentId,
                         isInit: true,
                         queryInfo,
                         valueColumn,
@@ -161,7 +161,6 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                 })
                 .catch(err => {
                     // TODO: Need better handling of errors
-                    console.warn(`QuerySelect failure -- componentId "${componentId}"`);
                     console.warn(err);
                     reject(err);
                 });
@@ -256,7 +255,8 @@ export function formatResults(model: QuerySelectModel, results: Map<string, any>
 
     return results
         .map(result => ({
-            label: result.getIn([model.displayColumn, 'value']) ?? result.getIn([model.valueColumn, 'value']),
+            label: (resolveDetailFieldValue(result.get(model.displayColumn)) ??
+                resolveDetailFieldValue(result.get(model.valueColumn))) as string,
             value: result.getIn([model.valueColumn, 'value']),
         }))
         .sortBy(item => item.label, similaritySortFactory(token))

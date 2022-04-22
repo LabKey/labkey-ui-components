@@ -38,9 +38,9 @@ interface CreateSamplesSubMenuProps {
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
     const {
-        allowPooledSamples,
+        allowPooledSamples = true,
         menuCurrentChoice,
-        menuText,
+        menuText = 'Create Samples',
         parentType,
         parentKey,
         parentQueryModel,
@@ -100,19 +100,19 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 return appURL;
             }
         },
-        [useOnClick, parentKey, selectionKey, setSampleCreationURL, setSelectedOption]
+        [sampleWizardURL, getProductSampleWizardURL, useOnClick, parentKey, selectionKey]
     );
 
     const onCancel = useCallback(() => {
         setSampleCreationURL(undefined);
         setSelectedOption(undefined);
-    }, [setSampleCreationURL, setSelectedOption]);
+    }, []);
 
     const onSampleCreationSubmit = useCallback(
         (creationType: SampleCreationType, numPerParent?: number) => {
-            if (sampleCreationURL instanceof AppURL)
+            if (sampleCreationURL instanceof AppURL) {
                 navigate(sampleCreationURL.addParams({ creationType, numPerParent }));
-            else {
+            } else {
                 window.location.href = sampleCreationURL + `&creationType=${creationType}&numPerParent=${numPerParent}`;
             }
         },
@@ -167,8 +167,3 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         </>
     );
 });
-
-CreateSamplesSubMenuBase.defaultProps = {
-    allowPooledSamples: true,
-    menuText: 'Create Samples',
-};

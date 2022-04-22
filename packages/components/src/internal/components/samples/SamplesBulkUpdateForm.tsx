@@ -30,7 +30,7 @@ import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from 
 interface OwnProps {
     queryModel: QueryModel;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<void>;
-    hasValidMaxSelection: () => boolean;
+    hasValidMaxSelection: boolean;
     sampleSetLabel: string;
     onCancel: () => void;
     onBulkUpdateError: (message: string) => void;
@@ -88,7 +88,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
     }
 
     getGridSelectionSize = (): number => {
-        return this.props.queryModel.selections.size;
+        return this.props.queryModel.selections?.size ?? 0;
     };
 
     getSelectedNoun = (): string => {
@@ -128,7 +128,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
         return originalQueryInfo.merge({ columns }) as QueryInfo;
     }
 
-    onComplete = (data: any, submitForEdit: boolean) => {
+    onComplete = (data: any, submitForEdit: boolean): void => {
         const { onBulkUpdateComplete, sampleItems } = this.props;
         const { shouldDiscard, discardComment } = this.state;
 
@@ -164,18 +164,23 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                     const errorMsg = resolveErrorMessage(error, 'sample', 'sample', 'discard');
                     createNotification({ message: errorMsg, alertClass: 'danger' });
                 });
-        } else onBulkUpdateComplete?.(data, submitForEdit);
+        } else {
+            onBulkUpdateComplete?.(data, submitForEdit);
+        }
     };
 
-    onDiscardConsumedPanelChange = (field: string, value: any) => {
+    onDiscardConsumedPanelChange = (field: string, value: any): boolean => {
         const { sampleItems, user } = this.props;
 
         if (!sampleItems || Object.keys(sampleItems).length === 0 || !userCanEditStorageData(user)) {
             return false; // if no samples are in storage or the user can't modify storage data, skip showing discard panel
         }
 
-        if (field === DISCARD_CONSUMED_CHECKBOX_FIELD) this.setState(() => ({ shouldDiscard: value }));
-        else if (field === DISCARD_CONSUMED_COMMENT_FIELD) this.setState(() => ({ discardComment: value }));
+        if (field === DISCARD_CONSUMED_CHECKBOX_FIELD) {
+            this.setState({ shouldDiscard: value });
+        } else if (field === DISCARD_CONSUMED_COMMENT_FIELD) {
+            this.setState({ discardComment: value });
+        }
 
         return true;
     };
@@ -192,15 +197,16 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
             editSelectionInGrid,
             editStatusData,
         } = this.props;
+        const selectedNoun = this.getSelectedNoun();
 
         return (
             <BulkUpdateForm
-                singularNoun={this.getSelectedNoun()}
-                pluralNoun={this.getSelectedNoun() + 's'}
+                singularNoun={selectedNoun}
+                pluralNoun={`${selectedNoun}s`}
                 itemLabel={sampleSetLabel}
                 queryInfo={this.getQueryInfo()}
                 selectedIds={[...queryModel.selections]}
-                canSubmitForEdit={hasValidMaxSelection()}
+                canSubmitForEdit={hasValidMaxSelection}
                 onCancel={onCancel}
                 onError={onBulkUpdateError}
                 onComplete={this.onComplete}
@@ -209,7 +215,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                 updateRows={updateRows}
                 header={
                     <SamplesBulkUpdateAlert
-                        numSelections={queryModel?.selections?.size || 0}
+                        numSelections={this.getGridSelectionSize()}
                         aliquots={aliquots}
                         editStatusData={editStatusData}
                     />

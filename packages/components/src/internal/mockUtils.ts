@@ -1,6 +1,6 @@
 import { InjectedRouter, WithRouterProps } from 'react-router';
 
-import { InjectedRouteLeaveProps } from '../internal/util/RouteLeave';
+import { InjectedRouteLeaveProps } from './util/RouteLeave';
 
 /**
  * Util function for creating an InjectedRouteLeaveProps object, useful for testing components

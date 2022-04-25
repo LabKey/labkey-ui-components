@@ -2,8 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { AssayPicker, AssayPickerTabs, initNotificationsState, sleep } from '../../..';
-import { initUnitTestMocks } from '../../testHelperMocks';
-import { initAssayPickerOptions } from '../../mock';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
+import { initAssayPickerOptions } from '../../../test/mock';
 
 beforeAll(() => {
     initNotificationsState();

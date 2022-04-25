@@ -20,7 +20,7 @@ import {
     TEST_USER_EDITOR,
     TEST_USER_READER,
     TEST_USER_STORAGE_EDITOR,
-} from '../../../test/data/users';
+} from '../../userFixtures';
 import { mountWithServerContext } from '../../testHelpers';
 
 import { SamplesEditButton } from './SamplesEditButton';

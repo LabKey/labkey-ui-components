@@ -14,7 +14,7 @@ import { getSamplesTestAPIWrapper } from '../../samples/APIWrapper';
 
 import { getTestAPIWrapper } from '../../../APIWrapper';
 
-import { TEST_USER_EDITOR, TEST_USER_STORAGE_EDITOR } from '../../../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_STORAGE_EDITOR } from '../../../userFixtures';
 import { QuerySelect } from '../QuerySelect';
 
 import { SampleStatusInput } from './SampleStatusInput';

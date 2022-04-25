@@ -2,9 +2,9 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Button } from 'react-bootstrap';
 
-import { TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_READER } from '../../userFixtures';
 import { getQueryDetails, FileInput, SCHEMAS, TextInput } from '../../..';
-import { initUnitTestMocks } from '../../testHelperMocks';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { UserProfile } from './UserProfile';
 

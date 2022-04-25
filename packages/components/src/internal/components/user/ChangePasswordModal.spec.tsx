@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 
-import { TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_READER } from '../../userFixtures';
 import { LabelHelpTip, Alert } from '../../..';
 
 import { ChangePasswordModel } from './models';

@@ -8,7 +8,7 @@ import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetai
 import DomainForm from '../DomainForm';
 
 import { sleep } from '../../../testHelpers';
-import { initUnitTestMocks } from '../../../testHelperMocks';
+import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';

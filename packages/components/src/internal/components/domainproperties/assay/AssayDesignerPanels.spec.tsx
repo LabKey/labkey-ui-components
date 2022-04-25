@@ -7,7 +7,7 @@ import { DomainDesign } from '../models';
 import { FileAttachmentForm } from '../../../..';
 
 import { sleep } from '../../../testHelpers';
-import { initUnitTestMocks } from '../../../testHelperMocks';
+import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';

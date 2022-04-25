@@ -4,7 +4,7 @@ import { List } from 'immutable';
 
 import { DomainField } from '../../..';
 import { sleep } from '../../testHelpers';
-import { initUnitTestMocks } from '../../testHelperMocks';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { SectionHeading } from '../domainproperties/SectionHeading';
 import { INTEGER_TYPE, ONTOLOGY_LOOKUP_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';

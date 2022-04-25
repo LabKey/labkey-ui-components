@@ -1,7 +1,7 @@
 import { List } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
-import { User } from '../../internal/components/base/models/User';
+import { User } from './components/base/models/User';
 
 export const TEST_USER_GUEST = new User({
     canDelete: false,

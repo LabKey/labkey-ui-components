@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { TemplateDownloadButton } from './TemplateDownloadButton';
-import { TEST_USER_EDITOR, TEST_USER_READER } from '../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../internal/userFixtures';
 import { mountWithServerContext } from '../../internal/testHelpers';
 
 describe("TemplateDownloadButton", () => {

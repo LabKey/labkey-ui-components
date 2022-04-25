@@ -1516,10 +1516,10 @@
   resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.10.0.tgz#fa7d4bf1f2f57692513f4b1cd2aca3c4dd85e860"
   integrity sha1-+n1L8fL1dpJRP0sc0qyjxN2F6GA=
 
-"@labkey/build@6.1.0-fb-package-build.5":
-  version "6.1.0-fb-package-build.5"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.0-fb-package-build.5.tgz#5861dd02a9375cc3e5ea28671c33c9645014afbc"
-  integrity sha1-WGHdAqk3XMPl6ihnHDPJZFAUr7w=
+"@labkey/build@6.1.0-fb-package-build.6":
+  version "6.1.0-fb-package-build.6"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.0-fb-package-build.6.tgz#ceac45039f2c954de5fc255824e00b6a8e32ee0a"
+  integrity sha1-zqxFA58slU3l/CVYJOALao4y7go=
   dependencies:
     "@babel/core" "7.17.8"
     "@babel/plugin-proposal-class-properties" "7.16.7"

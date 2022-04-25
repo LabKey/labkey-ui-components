@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MenuItem, Modal } from 'react-bootstrap';
 
-import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { PicklistEditModal } from './PicklistEditModal';

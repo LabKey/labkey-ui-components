@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.159.0
+*Released*: 26 April 2022
+* Use shared package build
+* Move exported test helpers to /internal
+* Move un-exported test helpers to /test
+
 ### version 2.158.1
 *Released*: 27 April 2022
 * Merge release22.3-SNAPSHOT to develop again

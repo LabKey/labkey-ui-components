@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { PermissionRoles } from '@labkey/api';
+import { LabKey, PermissionRoles } from '@labkey/api';
 
 import { initQueryGridState } from '../../global';
 import { initNotificationsState } from '../notifications/global';
@@ -11,14 +11,11 @@ import { Container } from '../base/models/Container';
 
 import { App } from '../../../index';
 
-import { getNewUserRoles, UserManagement } from './UserManagement';
+import { getNewUserRoles, UserManagement, UserManagementProps } from './UserManagement';
+import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
+import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 
-declare const LABKEY: import('@labkey/api').LabKey;
-
-const DEFAULT_PROPS = {
-    extraRoles: undefined,
-    user: App.TEST_USER_APP_ADMIN,
-};
+declare const LABKEY: LabKey;
 
 beforeAll(() => {
     initQueryGridState();
@@ -30,6 +27,16 @@ beforeEach(() => {
 });
 
 describe('UserManagement', () => {
+    function getDefaultProps(): UserManagementProps {
+        return {
+            api: getSecurityTestAPIWrapper(jest.fn),
+            container: TEST_PROJECT_CONTAINER,
+            extraRoles: undefined,
+            project: undefined,
+            user: App.TEST_USER_APP_ADMIN,
+        };
+    }
+
     function validate(wrapper: ReactWrapper, hasNewUserRoles = false, allowResetPassword = true): void {
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(1);
         expect(wrapper.find(UsersGridPanel)).toHaveLength(1);
@@ -40,20 +47,20 @@ describe('UserManagement', () => {
     }
 
     test('default props', () => {
-        const wrapper = mount(<UserManagement {...DEFAULT_PROPS} />);
+        const wrapper = mount(<UserManagement {...getDefaultProps()} />);
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('non-inherit security policy', () => {
-        const wrapper = mount(<UserManagement {...DEFAULT_PROPS} />);
+        const wrapper = mount(<UserManagement {...getDefaultProps()} />);
         wrapper.setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '1' }) });
         validate(wrapper, true);
         wrapper.unmount();
     });
 
     test('inherit security policy', () => {
-        const wrapper = mount(<UserManagement {...DEFAULT_PROPS} />);
+        const wrapper = mount(<UserManagement {...getDefaultProps()} />);
         wrapper.setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '2' }) });
         validate(wrapper);
         wrapper.unmount();
@@ -61,7 +68,7 @@ describe('UserManagement', () => {
 
     test('allowResetPassword false', () => {
         LABKEY.moduleContext.api = { AutoRedirectSSOAuthConfiguration: true };
-        const wrapper = mount(<UserManagement {...DEFAULT_PROPS} />);
+        const wrapper = mount(<UserManagement {...getDefaultProps()} />);
         validate(wrapper, false, false);
         wrapper.unmount();
     });

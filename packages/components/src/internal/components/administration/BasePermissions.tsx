@@ -2,125 +2,149 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { Map } from 'immutable';
 
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { resolveErrorMessage } from '../../util/messaging';
 import { PermissionsProviderProps, SecurityPolicy } from '../permissions/models';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
-import { fetchContainerSecurityPolicy } from '../permissions/actions';
 import { dismissNotifications } from '../notifications/global';
 import { createNotification } from '../notifications/actions';
 import { CreatedModified } from '../base/CreatedModified';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
-import { ServerContextConsumer } from '../base/ServerContext';
+import { useServerContext } from '../base/ServerContext';
 import { AppURL } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { PermissionsPageContextProvider } from '../permissions/PermissionsContextProvider';
 
-import { PermissionsPanel } from './PermissionsPanel';
+import { Alert } from '../base/Alert';
+import { PermissionAssignments } from '../permissions/PermissionAssignments';
+
+import { AppContext, useAppContext } from '../../AppContext';
+
+import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
 
 interface OwnProps {
+    containerId: string;
+    description?: ReactNode;
+    disableRemoveSelf: boolean;
+    hasPermission: boolean;
     pageTitle: string;
     panelTitle: string;
-    containerId: string;
     rolesMap: Map<string, string>;
-    hasPermission: boolean;
     showDetailsPanel: boolean;
-    disableRemoveSelf: boolean;
-    description?: ReactNode;
 }
 
-type Props = PermissionsProviderProps & OwnProps & InjectedRouteLeaveProps;
+// exported for testing
+export type BasePermissionsImplProps = PermissionsProviderProps & OwnProps & InjectedRouteLeaveProps;
 
-interface State {
-    policy: SecurityPolicy;
-    loading: boolean;
-    error: string;
-}
+// exported for testing
+export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
+    const {
+        children,
+        containerId,
+        description,
+        disableRemoveSelf,
+        hasPermission,
+        inactiveUsersById,
+        pageTitle,
+        panelTitle,
+        principalsById,
+        roles,
+        rolesMap,
+        setIsDirty,
+    } = props;
+    const [error, setError] = useState<string>();
+    const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
+    const [policy, setPolicy] = useState<SecurityPolicy>();
+    const { api } = useAppContext<AppContext>();
+    const { user } = useServerContext();
+    const loaded = !isLoading(loadingState);
 
-class BasePermissionsImpl extends React.PureComponent<Props, State> {
-    constructor(props: Props) {
-        super(props);
+    const loadPolicy = useCallback(async () => {
+        setError(undefined);
+        setIsDirty(false);
+        setLoadingState(LoadingState.LOADING);
 
-        this.state = {
-            policy: undefined,
-            loading: true,
-            error: undefined,
-        };
-    }
+        try {
+            const policy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
+            setPolicy(policy_);
+        } catch (e) {
+            setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
+        }
 
-    componentDidMount(): void {
-        this.loadSecurityPolicy();
-    }
+        setLoadingState(LoadingState.LOADED);
+    }, [api.security, containerId, inactiveUsersById, principalsById, setIsDirty]);
 
-    loadSecurityPolicy() {
-        this.props.setIsDirty(false);
-        this.setState(() => ({ loading: true }));
-        fetchContainerSecurityPolicy(this.props.containerId, this.props.principalsById, this.props.inactiveUsersById)
-            .then(policy => {
-                this.setState(() => ({ loading: false, policy }));
-            })
-            .catch(response => {
-                console.error(response);
-                this.setState(() => ({ loading: false, error: response.exception }));
-            });
-    }
+    useEffect(() => {
+        loadPolicy();
+    }, [loadPolicy]);
 
-    onChange = (policy: SecurityPolicy) => {
-        this.props.setIsDirty(true);
-        this.setState(() => ({ policy }));
-    };
+    const onChange = useCallback(
+        (policy_: SecurityPolicy) => {
+            setIsDirty(true);
+            setPolicy(policy_);
+        },
+        [setIsDirty]
+    );
 
-    onSuccess = () => {
+    const onSuccess = useCallback(() => {
         dismissNotifications();
         createNotification('Successfully updated roles and assignments.');
 
-        this.loadSecurityPolicy();
-    };
+        loadPolicy();
+    }, [loadPolicy]);
 
-    renderButtons = () => {
-        const row = this.state.policy ? { Modified: { value: this.state.policy.modified } } : {};
+    const renderButtons = useCallback(() => {
+        const row = policy ? { Modified: { value: policy.modified } } : {};
 
         return (
             <>
                 <CreatedModified row={row} />
-                <ManageDropdownButton id="admin-page-manage" pullRight={true} collapsed={true}>
+                <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
                     <MenuItem href={AppURL.create('audit', 'groupauditevent').toHref()}>View Audit History</MenuItem>
                 </ManageDropdownButton>
             </>
         );
-    };
+    }, [policy]);
 
-    render() {
-        const { pageTitle, hasPermission, panelTitle, description, children } = this.props;
+    const rolesProps = useMemo(
+        () => ({
+            roles: getUpdatedPolicyRoles(roles, rolesMap),
+            rolesByUniqueName: getUpdatedPolicyRolesByUniqueName(roles, rolesMap),
+            rolesToShow: rolesMap.keySeq().toList(),
+        }),
+        [roles, rolesMap]
+    );
 
-        return (
-            <ServerContextConsumer>
-                {context => {
-                    const { user } = context;
-                    return (
-                        <BasePermissionsCheckPage
-                            user={user}
-                            title={pageTitle}
-                            hasPermission={hasPermission}
-                            renderButtons={this.renderButtons}
-                            description={description}
-                        >
-                            <PermissionsPanel
-                                {...this.props}
-                                {...this.state}
-                                title={panelTitle}
-                                onChange={this.onChange}
-                                onSuccess={this.onSuccess}
-                            />
-                            {children}
-                        </BasePermissionsCheckPage>
-                    );
-                }}
-            </ServerContextConsumer>
-        );
-    }
-}
+    return (
+        <BasePermissionsCheckPage
+            description={description}
+            hasPermission={hasPermission}
+            renderButtons={renderButtons}
+            title={pageTitle}
+            user={user}
+        >
+            {!loaded && <LoadingSpinner />}
+            {!!error && <Alert>{error}</Alert>}
+            {loaded && !error && (
+                <PermissionAssignments
+                    {...props}
+                    {...rolesProps}
+                    disabledId={disableRemoveSelf ? user.id : undefined}
+                    onChange={onChange}
+                    onSuccess={onSuccess}
+                    policy={policy}
+                    title={panelTitle}
+                    typeToShow="u"
+                />
+            )}
+            {children}
+        </BasePermissionsCheckPage>
+    );
+});
 
 export const BasePermissions = withRouteLeave<OwnProps>(PermissionsPageContextProvider(BasePermissionsImpl));

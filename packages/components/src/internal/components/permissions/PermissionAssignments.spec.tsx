@@ -1,17 +1,33 @@
 import React from 'react';
 import { List, Map, fromJS } from 'immutable';
-import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
+import { act } from 'react-dom/test-utils';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
 
 import rolesJSON from '../../../test/data/security-getRoles.json';
 
-import { JEST_SITE_ADMIN_USER_ID, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from '../../../test/data/constants';
+import {
+    JEST_SITE_ADMIN_USER_ID,
+    SECURITY_ROLE_EDITOR,
+    SECURITY_ROLE_READER,
+    TEST_FOLDER_CONTAINER,
+    TEST_PROJECT,
+    TEST_PROJECT_CONTAINER,
+} from '../../../test/data/constants';
 
-import { PermissionAssignments } from './PermissionAssignments';
+import { PermissionAssignments, PermissionAssignmentsProps } from './PermissionAssignments';
 import { Principal, SecurityPolicy } from './models';
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
+import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { ServerContext } from '../base/ServerContext';
+import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN } from '../../../test/data/users';
+import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
+import { AppContext } from '../../AppContext';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { Alert } from '../base/Alert';
+import { PermissionsRole } from './PermissionsRole';
+import { UserDetailsPanel } from '../user/UserDetailsPanel';
+import { GroupDetailsPanel } from './GroupDetailsPanel';
 
 const GROUP = Principal.createFromSelectRow(
     fromJS({
@@ -30,115 +46,206 @@ const USER = Principal.createFromSelectRow(
     })
 );
 
-const POLICY = SecurityPolicy.updateAssignmentsData(
-    SecurityPolicy.create(policyJSON),
-    Map<number, Principal>([
-        [GROUP.userId, GROUP],
-        [USER.userId, USER],
-    ])
-);
+const PRINCIPALS = List<Principal>([GROUP, USER]);
+const PRINCIPALS_BY_ID = PRINCIPALS.reduce((map, principal) => {
+    return map.set(principal.userId, principal);
+}, Map<number, Principal>());
+
+const POLICY = SecurityPolicy.updateAssignmentsData(SecurityPolicy.create(policyJSON), PRINCIPALS_BY_ID);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
-describe('<PermissionAssignments/>', () => {
-    test('default props', () => {
-        const component = (
-            <PermissionAssignments
-                containerId="BOGUS"
-                policy={POLICY}
-                roles={ROLES}
-                rolesByUniqueName={ROLES_BY_NAME}
-                principals={List<Principal>()}
-                principalsById={Map<number, Principal>()}
-                inactiveUsersById={Map<number, Principal>()}
-                error={undefined}
-                onChange={jest.fn()}
-                onSuccess={jest.fn()}
-            />
+describe('PermissionAssignments', () => {
+    function getDefaultProps(): PermissionAssignmentsProps {
+        return {
+            containerId: TEST_PROJECT_CONTAINER.id,
+            error: undefined,
+            inactiveUsersById: Map<number, Principal>(),
+            onChange: jest.fn(),
+            onSuccess: jest.fn(),
+            policy: POLICY,
+            principals: PRINCIPALS,
+            principalsById: PRINCIPALS_BY_ID,
+            roles: ROLES,
+            rolesByUniqueName: ROLES_BY_NAME,
+        };
+    }
+
+    function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>): Partial<AppContext> {
+        return {
+            api: getTestAPIWrapper(jest.fn, {
+                security: getSecurityTestAPIWrapper(jest.fn, {
+                    fetchPolicy: jest.fn().mockResolvedValue(POLICY),
+                    ...overrides,
+                }),
+            }),
+        };
+    }
+
+    function getDefaultServerContext(overrides?: Partial<ServerContext>): Partial<ServerContext> {
+        return {
+            container: TEST_PROJECT_CONTAINER,
+            project: TEST_PROJECT,
+            user: TEST_USER_FOLDER_ADMIN,
+            ...overrides,
+        };
+    }
+
+    test('loads root policy', async () => {
+        const container = TEST_FOLDER_CONTAINER;
+        const fetchPolicy = jest.fn().mockResolvedValue(POLICY);
+        const defaultProps = getDefaultProps();
+
+        const wrapper = mountWithAppServerContext(
+            <PermissionAssignments {...defaultProps} containerId={container.id} />,
+            getDefaultAppContext({ fetchPolicy }),
+            getDefaultServerContext({
+                container,
+                user: TEST_USER_APP_ADMIN, // has "isRootAdmin" privileges
+            })
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        await waitForLifecycle(wrapper);
+
+        expect(fetchPolicy).toHaveBeenNthCalledWith(
+            1,
+            container.id,
+            defaultProps.principalsById,
+            defaultProps.inactiveUsersById
+        );
+
+        wrapper.unmount();
+    });
+
+    test('editable', () => {
+        const defaultProps = getDefaultProps();
+
+        const wrapper = mountWithAppServerContext(
+            <PermissionAssignments {...defaultProps} />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
+        );
+
+        expect(wrapper.find(Alert).exists()).toEqual(false);
+
+        // Displays save button
+        expect(wrapper.find('.permissions-assignment-save-btn').exists()).toEqual(true);
+        expect(wrapper.find(PermissionsRole).length).toEqual(defaultProps.policy.relevantRoles.size);
+
+        wrapper.unmount();
     });
 
     test('not editable', () => {
+        const defaultProps = getDefaultProps();
         const inheritPolicy = POLICY.set('containerId', 'NOT_RESOURCE_ID') as SecurityPolicy;
 
-        const component = (
-            <PermissionAssignments
-                containerId="BOGUS"
-                policy={inheritPolicy}
-                roles={ROLES}
-                rolesByUniqueName={ROLES_BY_NAME}
-                principals={List<Principal>()}
-                principalsById={Map<number, Principal>()}
-                inactiveUsersById={Map<number, Principal>()}
-                error={undefined}
-                onChange={jest.fn()}
-                onSuccess={jest.fn()}
-            />
+        const wrapper = mountWithAppServerContext(
+            <PermissionAssignments {...defaultProps} policy={inheritPolicy} />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(wrapper.find(Alert).text()).toContain(
+            'Permissions for this container are being inherited from its parent.'
+        );
+
+        // Removes save button
+        expect(wrapper.find('.permissions-assignment-save-btn').exists()).toEqual(false);
+        expect(wrapper.find(PermissionsRole).length).toEqual(defaultProps.policy.relevantRoles.size);
+
+        wrapper.unmount();
     });
 
-    test('custom props', () => {
-        const component = (
-            <PermissionAssignments
-                containerId="BOGUS"
-                policy={POLICY}
-                roles={ROLES}
-                rolesByUniqueName={ROLES_BY_NAME}
-                principals={List<Principal>()}
-                principalsById={Map<number, Principal>()}
-                inactiveUsersById={Map<number, Principal>()}
-                error={undefined}
-                onChange={jest.fn()}
-                onSuccess={jest.fn()}
-                title="Custom panel title"
-                rolesToShow={List<string>([SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER])}
-                typeToShow="u"
-                showDetailsPanel={false}
-                disabledId={USER.userId}
-            />
+    test('respects rolesToShow', async () => {
+        const defaultProps = getDefaultProps();
+        const rolesToShow = List<string>([SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER]);
+
+        const wrapper = mountWithAppServerContext(
+            <PermissionAssignments {...defaultProps} rolesToShow={rolesToShow} />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(wrapper.find(PermissionsRole).length).toEqual(rolesToShow.size);
+
+        wrapper.setProps({ rolesToShow: undefined });
+
+        expect(wrapper.find(PermissionsRole).length).toEqual(defaultProps.policy.relevantRoles.size);
+
+        wrapper.unmount();
     });
 
-    test('with state', () => {
-        const wrapper = mount(
-            <PermissionAssignments
-                containerId="BOGUS"
-                policy={POLICY}
-                roles={ROLES}
-                rolesByUniqueName={ROLES_BY_NAME}
-                principals={List<Principal>()}
-                principalsById={Map<number, Principal>()}
-                inactiveUsersById={Map<number, Principal>()}
-                error={undefined}
-                onChange={jest.fn()}
-                onSuccess={jest.fn()}
-                rolesToShow={List<string>([SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER])}
-            />
+    test('displays details', async () => {
+        const wrapper = mountWithAppServerContext(
+            <PermissionAssignments {...getDefaultProps()} />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
         );
 
-        expect(wrapper.find('Alert')).toHaveLength(0);
-        expect(wrapper.find('Button')).toHaveLength(1);
-        expect(wrapper.find('.panel-body').filterWhere(panel => panel.text() === 'No user selected.')).toHaveLength(1);
+        // The prop "showDetailsPanel" is expected to default to true
+        expect(wrapper.find(GroupDetailsPanel).exists()).toEqual(false);
+        expect(wrapper.find(UserDetailsPanel).exists()).toEqual(true);
 
-        wrapper.setState({
-            selectedUserId: USER.userId,
-            dirty: true,
-            submitting: true,
-            saveErrorMsg: 'Save error message',
+        wrapper.setProps({ showDetailsPanel: false });
+
+        expect(wrapper.find(GroupDetailsPanel).exists()).toEqual(false);
+        expect(wrapper.find(UserDetailsPanel).exists()).toEqual(false);
+
+        wrapper.setProps({ showDetailsPanel: true });
+
+        let onShowDetails = wrapper.find(PermissionsRole).at(0).prop('onClickAssignment');
+        act(() => {
+            onShowDetails(USER.userId);
         });
 
-        expect(wrapper.find('Alert')).toHaveLength(4); // dirty info alert and save error alert
-        expect(wrapper.find('Button')).toHaveLength(2);
-        expect(wrapper.find('.panel-body').filterWhere(panel => panel.text() === 'No user selected.')).toHaveLength(0);
+        await waitForLifecycle(wrapper);
+
+        expect(wrapper.find(GroupDetailsPanel).exists()).toEqual(false);
+        expect(wrapper.find(UserDetailsPanel).exists()).toEqual(true);
+        expect(wrapper.find(UserDetailsPanel).prop('userId')).toEqual(USER.userId);
+
+        onShowDetails = wrapper.find(PermissionsRole).at(0).prop('onClickAssignment');
+        act(() => {
+            onShowDetails(GROUP.userId);
+        });
+
+        await waitForLifecycle(wrapper);
+
+        expect(wrapper.find(GroupDetailsPanel).exists()).toEqual(true);
+        expect(wrapper.find(UserDetailsPanel).exists()).toEqual(false);
+        expect(wrapper.find(GroupDetailsPanel).prop('principal')).toEqual(GROUP);
+
+        wrapper.unmount();
+    });
+
+    test('add and remove assignment', async () => {
+        const onChange = jest.fn();
+        const firstRole = ROLES.get(0);
+
+        const wrapper = mountWithAppServerContext(
+            <PermissionAssignments {...getDefaultProps()} onChange={onChange} />,
+            getDefaultAppContext(),
+            getDefaultServerContext()
+        );
+
+        expect(wrapper.find(PermissionsRole).exists()).toEqual(true);
+
+        const onAddAssignment = wrapper.find(PermissionsRole).at(0).prop('onAddAssignment');
+        act(() => {
+            onAddAssignment(USER, firstRole);
+        });
+
+        await waitForLifecycle(wrapper);
+        expect(onChange).toHaveBeenCalledTimes(1);
+        expect(wrapper.find(Alert).text()).toContain('You have unsaved changes.');
+
+        const onRemoveAssignment = wrapper.find(PermissionsRole).at(0).prop('onRemoveAssignment');
+        act(() => {
+            onRemoveAssignment(USER.userId, firstRole);
+        });
+
+        await waitForLifecycle(wrapper);
+        expect(onChange).toHaveBeenCalledTimes(2);
 
         wrapper.unmount();
     });

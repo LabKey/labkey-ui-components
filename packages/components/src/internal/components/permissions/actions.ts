@@ -117,7 +117,10 @@ export function fetchContainerSecurityPolicy(
                 }
                 resolve(policy);
             },
-            failure: response => reject(response),
+            failure: error => {
+                console.error('Failed to fetch security policy', error);
+                reject(error);
+            },
         });
     });
 }

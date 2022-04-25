@@ -5,13 +5,12 @@
 import React, { FC, PureComponent } from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
-import { getServerContext, PermissionRoles, Utils } from '@labkey/api';
+import { PermissionRoles, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
 import { PermissionsProviderProps, SecurityPolicy } from '../permissions/models';
-import { fetchContainerSecurityPolicy } from '../permissions/actions';
 import { createNotification } from '../notifications/actions';
 import { queryGridInvalidate } from '../../actions';
 import { SCHEMAS } from '../../schemas';
@@ -24,8 +23,11 @@ import { useServerContext } from '../base/ServerContext';
 
 import { PermissionsPageContextProvider } from '../permissions/PermissionsContextProvider';
 
-import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
+import { AppContext, useAppContext } from '../../AppContext';
+import { SecurityAPIWrapper } from '../security/APIWrapper';
+
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
+import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 
 export function getNewUserRoles(
     user: User,
@@ -65,19 +67,23 @@ export function getNewUserRoles(
 }
 
 interface OwnProps {
+    api: SecurityAPIWrapper;
+    container: Container;
     extraRoles?: string[][];
+    project: any; // Project from @labkey/api
     user: User;
 }
 
-type Props = OwnProps & PermissionsProviderProps;
+// exported for jest testing
+export type UserManagementProps = OwnProps & PermissionsProviderProps;
 
 interface State {
     policy: SecurityPolicy;
 }
 
 // exported for jest testing
-export class UserManagement extends PureComponent<Props, State> {
-    constructor(props: Props) {
+export class UserManagement extends PureComponent<UserManagementProps, State> {
+    constructor(props: UserManagementProps) {
         super(props);
 
         this.state = {
@@ -91,23 +97,22 @@ export class UserManagement extends PureComponent<Props, State> {
         }
     }
 
-    loadSecurityPolicy() {
-        fetchContainerSecurityPolicy(getServerContext().container.id, this.props.principalsById)
-            .then(policy => {
-                this.setState(() => ({
-                    policy: SecurityPolicy.updateAssignmentsData(policy, this.props.principalsById),
-                }));
-            })
-            .catch(error => {
-                console.error(error);
-                createNotification({
-                    alertClass: 'danger',
-                    message: 'Unable to load permissions information. ' + (error.exception ? error.exception : ''),
-                });
+    loadSecurityPolicy = async (): Promise<void> => {
+        const { api, container, principalsById } = this.props;
+
+        try {
+            const policy = await api.fetchPolicy(container.id, principalsById);
+            this.setState({ policy: SecurityPolicy.updateAssignmentsData(policy, principalsById) });
+        } catch (error) {
+            createNotification({
+                alertClass: 'danger',
+                message: 'Unable to load permissions information. ' + (error.exception ? error.exception : ''),
             });
-    }
+        }
+    };
 
     onCreateComplete = (response: any, roleUniqueNames: string[]) => {
+        const { container, project } = this.props;
         this.invalidateGlobal();
 
         // split response to count new vs existing users separately
@@ -126,15 +131,11 @@ export class UserManagement extends PureComponent<Props, State> {
                 const promises = [];
                 // application admin role applies to the Site root container, others apply to current project container
                 if (roleUniqueNames.indexOf(PermissionRoles.ApplicationAdmin) >= 0) {
-                    promises.push(
-                        updateSecurityPolicy(getServerContext().project.rootId, newUsers, [
-                            PermissionRoles.ApplicationAdmin,
-                        ])
-                    );
+                    promises.push(updateSecurityPolicy(project.rootId, newUsers, [PermissionRoles.ApplicationAdmin]));
                 }
                 const nonAppAdmin = roleUniqueNames.filter(name => name !== PermissionRoles.ApplicationAdmin);
                 if (nonAppAdmin.length) {
-                    promises.push(updateSecurityPolicy(getServerContext().container.id, newUsers, nonAppAdmin));
+                    promises.push(updateSecurityPolicy(container.id, newUsers, nonAppAdmin));
                 }
                 Promise.all(promises)
                     .then(() => {
@@ -250,9 +251,8 @@ export class UserManagement extends PureComponent<Props, State> {
     };
 
     render() {
-        const { user, extraRoles } = this.props;
+        const { container, extraRoles, project, user } = this.props;
         const { policy } = this.state;
-        const { container, project } = getServerContext();
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
         const newUserRoleOptions =
@@ -285,9 +285,18 @@ interface UserManagementPageProps {
 
 const UserManagementPageImpl: FC<UserManagementPageProps> = props => {
     const { extraRoles } = props;
-    const { user } = useServerContext();
+    const { api } = useAppContext<AppContext>();
+    const { container, project, user } = useServerContext();
 
-    return <UserManagement extraRoles={extraRoles} user={user} />;
+    return (
+        <UserManagement
+            api={api.security}
+            container={container}
+            extraRoles={extraRoles}
+            project={project}
+            user={user}
+        />
+    );
 };
 
 export const UserManagementPage = PermissionsPageContextProvider<UserManagementPageProps>(UserManagementPageImpl);

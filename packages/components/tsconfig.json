@@ -1,3 +1,7 @@
 {
-  "extends": "node_modules/@labkey/build/webpack/tsconfig.json"
+  "extends": "./node_modules/@labkey/build/webpack/tsconfig.json",
+  // Note: The only reason we have this tsconfig file is to set include/exclude. We have to do this or the
+  // include/exclude directives will be local to node_modules/@labkey/build/webpack/ when running the tests.
+  "include": ["**/*"],
+  "exclude": ["node_modules"]
 }

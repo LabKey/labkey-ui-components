@@ -235,6 +235,7 @@ module.exports = {
             '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme/app',
             '@labkey/freezermanager-scss': freezerManagerPath + '/dist/assets/scss/theme',
             '@labkey/workflow-scss': workflowPath + '/dist/assets/scss/theme',
+            '@labkey/eln-scss': elnPath + '/dist/assets/scss/theme',
         },
         LABKEY_PACKAGES_DEV: {
             // Note that for modules that don't have these packages, the aliases are just ignored and don't
@@ -248,6 +249,7 @@ module.exports = {
             '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme/app' : '/dist/assets/scss/theme/app'),
             '@labkey/freezermanager-scss': freezerManagerPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/workflow-scss': workflowPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
+            '@labkey/eln-scss': elnPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
         },
     },
     outputPath: path.resolve('./resources/web/gen'),

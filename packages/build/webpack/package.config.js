@@ -15,8 +15,9 @@ const tsCheckerConfig = {
         ...constants.TS_CHECKER_CONFIG.typescript,
         mode: "write-dts",
         configOverwrite: {
+            compilerOptions: { outDir: 'dist/' },
             // excluding spec files shaves time off the build
-            exclude: ["node_modules", "**/*.spec.*"]
+            exclude: ["node_modules", "**/*.spec.*", "src/test/**/*"]
         }
     }
 }

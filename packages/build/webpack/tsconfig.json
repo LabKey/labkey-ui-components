@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
     "esModuleInterop": true,
     "jsx": "react",
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "target": "es6",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2015", "es2017", "dom"],
     "types": ["jest"],
-    "outDir": "dist"
   },
   "include": [
     "**/*"
@@ -19,6 +17,6 @@
   "exclude": [
     "node_modules",
     "resources",
-    "**packages",
+    "**packages"
   ]
 }

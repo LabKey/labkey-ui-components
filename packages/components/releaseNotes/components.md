@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 10276: Add, remove or modify grid actions for various grids
   * Update `PicklistCreateMenuItem` to require a selection (no longer create an empty picklist)
+  * Add forwarding `registerFilterType` function
 
 ### version TBD
 *Released*: TBD April 2022

@@ -11,12 +11,13 @@ import { LoadingSpinner, Alert, useServerContext, useAppContext, AppContext } fr
 
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
-import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './models';
+import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
+import { InjectedPermissionsPage } from './withPermissionsPage';
 
 // exported for testing
-export interface PermissionAssignmentsProps extends PermissionsProviderProps {
+export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
     containerId: string;
     /** UserId to disable to prevent removing assignments for that id */
     disabledId?: number;

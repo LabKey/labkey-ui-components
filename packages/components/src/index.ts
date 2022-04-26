@@ -446,7 +446,7 @@ import {
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
-import { PermissionsPageContextProvider } from './internal/components/permissions/PermissionsContextProvider';
+import { withPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 import { Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
 import { fetchContainerSecurityPolicy } from './internal/components/permissions/actions';
 import {
@@ -978,7 +978,7 @@ export {
     hasPermissions,
     fetchContainerSecurityPolicy,
     PermissionAssignments,
-    PermissionsPageContextProvider,
+    withPermissionsPage,
     SecurityPolicy,
     SecurityRole,
     Principal,
@@ -1499,7 +1499,7 @@ export type {
     MaterialOutput,
 } from './internal/components/entities/models';
 export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
-export type { PermissionsProviderProps } from './internal/components/permissions/models';
+export type { InjectedPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 export type { ISelectInitData } from './internal/components/forms/model';
 export type { QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
 export type {

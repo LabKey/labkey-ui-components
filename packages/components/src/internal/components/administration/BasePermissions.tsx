@@ -8,7 +8,7 @@ import { Map } from 'immutable';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { resolveErrorMessage } from '../../util/messaging';
-import { PermissionsProviderProps, SecurityPolicy } from '../permissions/models';
+import { SecurityPolicy } from '../permissions/models';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
 import { dismissNotifications } from '../notifications/global';
 import { createNotification } from '../notifications/actions';
@@ -18,7 +18,7 @@ import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { useServerContext } from '../base/ServerContext';
 import { AppURL } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
-import { PermissionsPageContextProvider } from '../permissions/PermissionsContextProvider';
+import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
 import { Alert } from '../base/Alert';
 import { PermissionAssignments } from '../permissions/PermissionAssignments';
@@ -39,7 +39,7 @@ interface OwnProps {
 }
 
 // exported for testing
-export type BasePermissionsImplProps = PermissionsProviderProps & OwnProps & InjectedRouteLeaveProps;
+export type BasePermissionsImplProps = OwnProps & InjectedRouteLeaveProps & InjectedPermissionsPage;
 
 // exported for testing
 export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
@@ -147,4 +147,4 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     );
 });
 
-export const BasePermissions = withRouteLeave<OwnProps>(PermissionsPageContextProvider(BasePermissionsImpl));
+export const BasePermissions = withRouteLeave<OwnProps>(withPermissionsPage(BasePermissionsImpl));

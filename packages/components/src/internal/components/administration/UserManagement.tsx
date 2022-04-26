@@ -10,7 +10,7 @@ import { PermissionRoles, Utils } from '@labkey/api';
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
-import { PermissionsProviderProps, SecurityPolicy } from '../permissions/models';
+import { SecurityPolicy } from '../permissions/models';
 import { createNotification } from '../notifications/actions';
 import { queryGridInvalidate } from '../../actions';
 import { SCHEMAS } from '../../schemas';
@@ -21,7 +21,7 @@ import { UsersGridPanel } from '../user/UsersGridPanel';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { PermissionsPageContextProvider } from '../permissions/PermissionsContextProvider';
+import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
 import { AppContext, useAppContext } from '../../AppContext';
 import { SecurityAPIWrapper } from '../security/APIWrapper';
@@ -75,7 +75,7 @@ interface OwnProps {
 }
 
 // exported for jest testing
-export type UserManagementProps = OwnProps & PermissionsProviderProps;
+export type UserManagementProps = OwnProps & InjectedPermissionsPage;
 
 interface State {
     policy: SecurityPolicy;
@@ -279,17 +279,18 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     }
 }
 
-interface UserManagementPageProps {
+interface UserManagementPageProps extends UserManagementProps {
     extraRoles?: string[][];
 }
 
 const UserManagementPageImpl: FC<UserManagementPageProps> = props => {
-    const { extraRoles } = props;
+    const { extraRoles, ...injectedProps } = props;
     const { api } = useAppContext<AppContext>();
     const { container, project, user } = useServerContext();
 
     return (
         <UserManagement
+            {...injectedProps}
             api={api.security}
             container={container}
             extraRoles={extraRoles}
@@ -299,4 +300,4 @@ const UserManagementPageImpl: FC<UserManagementPageProps> = props => {
     );
 };
 
-export const UserManagementPage = PermissionsPageContextProvider<UserManagementPageProps>(UserManagementPageImpl);
+export const UserManagementPage = withPermissionsPage<UserManagementPageProps>(UserManagementPageImpl);

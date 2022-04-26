@@ -10,7 +10,7 @@ import { ISelectRowsResult, selectRowsDeprecated } from '../../..';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 
-export function processGetRolesResponse(rawRoles: Security.Role[]): List<SecurityRole> {
+export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
     rawRoles.forEach(role => {
         roles = roles.push(SecurityRole.create(role));

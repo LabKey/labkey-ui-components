@@ -1,4 +1,5 @@
 import React from 'react';
+import { List, Map } from 'immutable';
 import { mount, ReactWrapper } from 'enzyme';
 import { LabKey, PermissionRoles } from '@labkey/api';
 
@@ -29,10 +30,16 @@ beforeEach(() => {
 describe('UserManagement', () => {
     function getDefaultProps(): UserManagementProps {
         return {
+            error: undefined,
             api: getSecurityTestAPIWrapper(jest.fn),
             container: TEST_PROJECT_CONTAINER,
             extraRoles: undefined,
+            inactiveUsersById: undefined,
+            principals: List(),
+            principalsById: Map(),
             project: undefined,
+            roles: List(),
+            rolesByUniqueName: Map(),
             user: App.TEST_USER_APP_ADMIN,
         };
     }

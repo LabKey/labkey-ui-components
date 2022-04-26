@@ -31,11 +31,11 @@ interface State extends InjectedPermissionsPage {
 }
 
 export function withPermissionsPage<Props>(
-    Component: ComponentType<Props>
-): ComponentType<Props & InjectedPermissionsPage> {
+    Component: ComponentType<Props & InjectedPermissionsPage>
+): ComponentType<Props> {
     type WrappedProps = Props & InjectedPermissionsPage;
 
-    class PermissionsProviderImpl extends PureComponent<WrappedProps, State> {
+    class ComponentWithPermissions extends PureComponent<WrappedProps, State> {
         constructor(props: WrappedProps) {
             super(props);
 
@@ -103,5 +103,5 @@ export function withPermissionsPage<Props>(
         }
     }
 
-    return PermissionsProviderImpl;
+    return ComponentWithPermissions;
 }

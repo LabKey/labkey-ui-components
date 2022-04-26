@@ -29,12 +29,17 @@ beforeAll(() => {
 describe('BasePermissions', () => {
     function getDefaultProps(): BasePermissionsImplProps {
         return {
+            error: undefined,
             containerId: TEST_PROJECT_CONTAINER.id,
             disableRemoveSelf: false,
             hasPermission: true,
+            inactiveUsersById: Map(),
             pageTitle: 'page title',
             panelTitle: 'panel title',
+            principals: List(),
+            principalsById: Map(),
             roles: List(),
+            rolesByUniqueName: Map(),
             rolesMap: Map(),
             showDetailsPanel: false,
             ...createMockWithRouteLeave(jest.fn),

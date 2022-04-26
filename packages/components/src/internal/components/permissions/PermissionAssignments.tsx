@@ -3,13 +3,15 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Button, Col, Panel, Row } from 'react-bootstrap';
+import { Button, Checkbox, Col, Panel, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
-import { LoadingSpinner, Alert, useServerContext, useAppContext, AppContext } from '../../..';
+import { Alert, useServerContext, useAppContext, AppContext, resolveErrorMessage } from '../../..';
 
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
+
+import { isProjectContainer } from '../../app/utils';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
@@ -51,17 +53,16 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         typeToShow,
     } = props;
     const [dirty, setDirty] = useState<boolean>();
+    const [inherited, setInherited] = useState<boolean>(() => policy.isInheritFromParent());
     const [rootPolicy, setRootPolicy] = useState<SecurityPolicy>();
-    const [saveErrorMsg, setSaveErrorMsg] = useState<number>();
+    const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
     const [selectedUserId, setSelectedUserId] = useState<number>();
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const { api } = useAppContext<AppContext>();
-    const { project, user } = useServerContext();
+    const { container, project, user } = useServerContext();
 
     const selectedPrincipal = principalsById?.get(selectedUserId);
-    const isLoading = (!policy || !roles || !principals) && !error;
-    const isEditable = policy && !policy.isInheritFromParent();
 
     useEffect(() => {
         if (containerId !== project.rootId && user.isRootAdmin) {
@@ -70,7 +71,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                     const rootPolicy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
                     setRootPolicy(rootPolicy_);
                 } catch (e) {
-                    // TODO: Handle error
+                    setSaveErrorMsg(resolveErrorMessage(e) ?? 'Failed to load policy');
                 }
             })();
         }
@@ -85,30 +86,78 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         [onChange, policy]
     );
 
+    const onInheritChange = useCallback(() => {
+        setDirty(true);
+        setInherited(!inherited);
+    }, [inherited]);
+
     const onSavePolicy = useCallback(() => {
+        const wasInherited = policy.isInheritFromParent();
+
+        // Policy remains inherited. Act as if it was a successful change.
+        if (inherited && wasInherited) {
+            onSuccess();
+            setDirty(false);
+            return;
+        }
+
         setSubmitting(true);
 
-        Security.savePolicy({
-            containerPath: containerId,
-            policy: { policy },
-            success: response => {
-                if (response.success) {
-                    onSuccess();
-                    setSelectedUserId(undefined);
-                    setDirty(false);
-                } else {
-                    // TODO when this is used in LKS, need to support response.needsConfirmation
-                    setSaveErrorMsg(response.message.replace('Are you sure that you want to continue?', ''));
-                }
+        // Policy has been switched to inherited. Delete the current policy.
+        if (inherited && !wasInherited) {
+            Security.deletePolicy({
+                containerPath: containerId,
+                resourceId: policy.resourceId,
+                success: response => {
+                    if (response.success) {
+                        onSuccess();
+                        setSelectedUserId(undefined);
+                        setDirty(false);
+                    } else {
+                        setSaveErrorMsg(resolveErrorMessage(response) ?? 'Failed to inherit policy');
+                    }
 
-                setSubmitting(false);
-            },
-            failure: response => {
-                setSaveErrorMsg(response.exception);
-                setSubmitting(false);
-            },
-        });
-    }, [containerId, onSuccess, policy]);
+                    setSubmitting(false);
+                },
+                failure: response => {
+                    setSaveErrorMsg(resolveErrorMessage(response) ?? 'Failed to inherit policy');
+                    setSubmitting(false);
+                },
+            });
+        } else {
+            // Policy has been switched to un-inherited. Update policy assignments.
+            const uninherited = !inherited && wasInherited;
+
+            Security.savePolicy({
+                containerPath: containerId,
+                policy: {
+                    policy: {
+                        assignments: policy.assignments
+                            .filter(a => !uninherited || policy.relevantRoles.contains(a.role))
+                            .map(a => ({ role: a.role, userId: a.userId }))
+                            .toArray(),
+                        resourceId: uninherited ? containerId : policy.resourceId,
+                    },
+                },
+                success: response => {
+                    if (response.success) {
+                        onSuccess();
+                        setSelectedUserId(undefined);
+                        setDirty(false);
+                    } else {
+                        // TODO when this is used in LKS, need to support response.needsConfirmation
+                        setSaveErrorMsg(response.message.replace('Are you sure that you want to continue?', ''));
+                    }
+
+                    setSubmitting(false);
+                },
+                failure: response => {
+                    setSaveErrorMsg(resolveErrorMessage(response) ?? 'Failed to save policy');
+                    setSubmitting(false);
+                },
+            });
+        }
+    }, [containerId, inherited, onSuccess, policy]);
 
     const removeAssignment = useCallback(
         (userId: number, role: SecurityRole) => {
@@ -123,15 +172,14 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         setSelectedUserId(selectedUserId_);
     }, []);
 
-    if (isLoading) {
-        return <LoadingSpinner />;
-    } else if (error) {
+    if (error) {
         return <Alert>{error}</Alert>;
     }
 
     // use the explicit set of role uniqueNames from the rolesToShow prop, if provided.
     // fall back to show all of the relevant roles for the policy, if the rolesToShow prop is undefined
     const visibleRoles = SecurityRole.filter(roles, policy, rolesToShow);
+    const isSubfolder = !isProjectContainer(container.path);
 
     const saveButton = (
         <Button
@@ -150,30 +198,46 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 <Panel>
                     <Panel.Heading>{title}</Panel.Heading>
                     <Panel.Body className="permissions-assignment-panel">
-                        {isEditable ? (
-                            dirty && (
-                                <div className="permissions-save-alert">
-                                    <Alert bsStyle="info">
-                                        You have unsaved changes.
-                                        {saveButton}
-                                    </Alert>
-                                </div>
-                            )
-                        ) : (
+                        {dirty && (
+                            <div className="permissions-save-alert">
+                                <Alert bsStyle="info">
+                                    You have unsaved changes.
+                                    {saveButton}
+                                </Alert>
+                            </div>
+                        )}
+
+                        {!dirty && inherited && (
                             <div className="permissions-save-alert">
                                 <Alert bsStyle="info">
                                     Permissions for this container are being inherited from its parent.
                                 </Alert>
                             </div>
                         )}
+
+                        {isSubfolder && (
+                            <div>
+                                <form>
+                                    <Checkbox
+                                        checked={inherited}
+                                        className="permissions-assignment-inherit"
+                                        onChange={onInheritChange}
+                                    >
+                                        Inherit permissions from parent
+                                    </Checkbox>
+                                </form>
+                                <hr />
+                            </div>
+                        )}
+
                         {visibleRoles.map(role => (
                             <PermissionsRole
                                 assignments={policy.assignmentsByRole.get(role.uniqueName)}
                                 disabledId={disabledId}
                                 key={role.uniqueName}
-                                onAddAssignment={isEditable ? addAssignment : undefined}
+                                onAddAssignment={inherited ? undefined : addAssignment}
                                 onClickAssignment={showDetails}
-                                onRemoveAssignment={isEditable ? removeAssignment : undefined}
+                                onRemoveAssignment={inherited ? undefined : removeAssignment}
                                 principals={principals}
                                 role={role}
                                 selectedUserId={selectedUserId}
@@ -182,7 +246,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                         ))}
                         <br />
                         {saveErrorMsg && <Alert>{saveErrorMsg}</Alert>}
-                        {isEditable && saveButton}
+                        {saveButton}
                     </Panel.Body>
                 </Panel>
             </Col>

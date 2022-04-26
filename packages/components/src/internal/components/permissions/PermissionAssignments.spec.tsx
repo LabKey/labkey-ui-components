@@ -117,7 +117,7 @@ describe('PermissionAssignments', () => {
         wrapper.unmount();
     });
 
-    test('editable', () => {
+    test('not inherited', () => {
         const defaultProps = getDefaultProps();
 
         const wrapper = mountWithAppServerContext(
@@ -126,31 +126,31 @@ describe('PermissionAssignments', () => {
             getDefaultServerContext()
         );
 
-        expect(wrapper.find(Alert).exists()).toEqual(false);
-
-        // Displays save button
-        expect(wrapper.find('.permissions-assignment-save-btn').exists()).toEqual(true);
+        // Does not display inherit checkbox
+        expect(wrapper.find('.permissions-assignment-inherit').exists()).toEqual(false);
         expect(wrapper.find(PermissionsRole).length).toEqual(defaultProps.policy.relevantRoles.size);
 
         wrapper.unmount();
     });
 
-    test('not editable', () => {
+    test('inherited', () => {
         const defaultProps = getDefaultProps();
         const inheritPolicy = POLICY.set('containerId', 'NOT_RESOURCE_ID') as SecurityPolicy;
 
         const wrapper = mountWithAppServerContext(
             <PermissionAssignments {...defaultProps} policy={inheritPolicy} />,
             getDefaultAppContext(),
-            getDefaultServerContext()
+            getDefaultServerContext({ container: TEST_FOLDER_CONTAINER })
         );
 
         expect(wrapper.find(Alert).text()).toContain(
             'Permissions for this container are being inherited from its parent.'
         );
 
-        // Removes save button
-        expect(wrapper.find('.permissions-assignment-save-btn').exists()).toEqual(false);
+        // Displays inherit checkbox
+        const inheritCheckbox = wrapper.find('.permissions-assignment-inherit');
+        expect(inheritCheckbox.exists()).toEqual(true);
+        expect(inheritCheckbox.at(0).prop('checked')).toEqual(true);
         expect(wrapper.find(PermissionsRole).length).toEqual(defaultProps.policy.relevantRoles.size);
 
         wrapper.unmount();

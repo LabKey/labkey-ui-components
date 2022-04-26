@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, PureComponent } from 'react';
+import React, { FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionRoles, Utils } from '@labkey/api';
@@ -242,9 +242,9 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         queryGridInvalidate(SCHEMAS.CORE_TABLES.USERS);
     }
 
-    renderButtons = () => {
+    renderButtons = (): ReactNode => {
         return (
-            <ManageDropdownButton id="user-management-page-manage" pullRight={true} collapsed={true}>
+            <ManageDropdownButton collapsed id="user-management-page-manage" pullRight>
                 <MenuItem href={AppURL.create('audit', 'userauditevent').toHref()}>View Audit History</MenuItem>
             </ManageDropdownButton>
         );
@@ -255,8 +255,8 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         const { policy } = this.state;
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
-        const newUserRoleOptions =
-            policy && !policy.isInheritFromParent() ? getNewUserRoles(user, container, project, extraRoles) : undefined;
+        const isEditable = policy && !policy.isInheritFromParent();
+        const newUserRoleOptions = isEditable ? getNewUserRoles(user, container, project, extraRoles) : undefined;
 
         return (
             <BasePermissionsCheckPage
@@ -279,11 +279,11 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     }
 }
 
-interface UserManagementPageProps extends UserManagementProps {
+interface UserManagementPageProps {
     extraRoles?: string[][];
 }
 
-const UserManagementPageImpl: FC<UserManagementPageProps> = props => {
+const UserManagementPageImpl: FC<UserManagementPageProps & InjectedPermissionsPage> = props => {
     const { extraRoles, ...injectedProps } = props;
     const { api } = useAppContext<AppContext>();
     const { container, project, user } = useServerContext();

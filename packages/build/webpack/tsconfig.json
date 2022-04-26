@@ -13,10 +13,5 @@
   },
   "include": [
     "**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "resources",
-    "**packages"
   ]
 }

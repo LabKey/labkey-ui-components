@@ -134,6 +134,10 @@ const BABEL_DEV_CONFIG = {
 const TS_CHECKER_CONFIG = {
     typescript: {
         configFile: tsconfigPath,
+        configOverwrite: {
+            // excluding spec files shaves time off the build
+            exclude: ["node_modules", "**/*.spec.*", "src/test/**/*", "resources", "**packages"],
+        },
         context: '.',
         diagnosticOptions: {
             semantic: true,

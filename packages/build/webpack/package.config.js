@@ -20,7 +20,7 @@ const tsCheckerConfig = {
             exclude: ["node_modules", "**/*.spec.*", "src/test/**/*"]
         }
     }
-}
+};
 
 module.exports = {
     entry: './src/index.ts',
@@ -62,7 +62,10 @@ module.exports = {
         }),
     ],
     externals: [
+        // Note: If there is a package (of our own, or 3rd party) that is a dependency of one of our packages AND one of
+        // our apps, then it should be in the list of externals.
         '@labkey/api',
+        '@labkey/components',
         'date-fns',
         'font-awesome',
         'formsy-react',

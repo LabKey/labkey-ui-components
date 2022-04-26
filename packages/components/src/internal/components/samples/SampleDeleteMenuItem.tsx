@@ -90,7 +90,7 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
 
 SampleDeleteMenuItem.defaultProps = {
     api: getDefaultAPIWrapper(),
-    itemText: 'Delete Samples',
+    itemText: 'Delete',
     verb: 'deleted and removed from storage',
     maxDeleteRows: MAX_SELECTED_SAMPLES,
     auditBehavior: AuditBehaviorTypes.DETAILED,

@@ -14,6 +14,7 @@ import { userCanManagePicklists } from '../../app/utils';
 
 import { removeSamplesFromPicklist } from './actions';
 import { Picklist } from './models';
+import { DisableableButton } from '../buttons/DisableableButton';
 
 interface Props {
     user: User;
@@ -22,7 +23,7 @@ interface Props {
     afterSampleActionComplete: () => void;
 }
 
-export const RemoveFromPicklistMenuItem: FC<Props> = memo(props => {
+export const RemoveFromPicklistButton: FC<Props> = memo(props => {
     const { picklist, model, afterSampleActionComplete, user } = props;
     const [showRemoveFromPicklistConfirm, setShowRemoveFromPicklistConfirm] = useState<boolean>();
 
@@ -62,13 +63,15 @@ export const RemoveFromPicklistMenuItem: FC<Props> = memo(props => {
     return (
         <RequiresPermission perms={PermissionTypes.ManagePicklists}>
             {picklist.canRemoveItems(user) && (
-                <SelectionMenuItem
-                    id="remove-samples-menu-item"
-                    text="Remove from Picklist"
+                <DisableableButton
+                    bsStyle="default"
                     onClick={onRemoveFromPicklist}
-                    queryModel={model}
-                    nounPlural={SampleTypeDataType.nounPlural}
-                />
+                    disabledMsg={
+                        !model.hasSelections ? 'Select one or more ' + SampleTypeDataType.nounPlural + '.' : undefined
+                    }
+                >
+                    Remove from Picklist
+                </DisableableButton>
             )}
             {showRemoveFromPicklistConfirm && (
                 <ConfirmModal

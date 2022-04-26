@@ -80,11 +80,37 @@ describe('<SubMenu />', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('several options, one chosen', () => {
+    test('two options, one chosen but inlineItemsCount 0', () => {
+        const tree = renderer
+            .create(
+                <SubMenu
+                    currentMenuChoice="option1"
+                    inlineItemsCount={0}
+                    options={List<MenuOption>([
+                        {
+                            href: 'go/to/option1',
+                            key: 'option1',
+                            name: 'first option',
+                        },
+                        {
+                            href: 'go/to/option2',
+                            key: 'option2',
+                            name: 'second option',
+                        },
+                    ])}
+                    text="Test with two options"
+                />
+            )
+            .toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
+    test('several options, one chosen without extractCurrentMenuChoice', () => {
         const tree = renderer
             .create(
                 <SubMenu
                     currentMenuChoice="option2"
+                    extractCurrentMenuChoice={false}
                     options={List<MenuOption>([
                         {
                             href: 'go/to/option1',

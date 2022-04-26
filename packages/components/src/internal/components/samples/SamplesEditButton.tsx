@@ -1,13 +1,11 @@
 import React, { FC, memo } from 'react';
 import { MenuItem } from 'react-bootstrap';
-
 import { PermissionTypes } from '@labkey/api';
 
 import {
-    AddToPicklistMenuItem,
     App,
     buildURL,
-    EntityLineageEditMenuItem,
+    hasAnyPermissions,
     ManageDropdownButton,
     MAX_EDITABLE_GRID_ROWS,
     RequiresPermission,
@@ -22,10 +20,9 @@ import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryMod
 
 import { SampleGridButtonProps } from './models';
 import { getSampleTypeRowId } from './actions';
-import { SamplesManageButtonSections, shouldShowButtons } from './utils';
+import { SamplesEditButtonSections, shouldIncludeMenuItem } from './utils';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
-
-const SAMPLE_IMPORT_TAB_ID = 2;
+import { EntityLineageEditMenuItem } from '../entities/EntityLineageEditMenuItem';
 
 interface OwnProps {
     showLinkToStudy?: boolean;
@@ -33,7 +30,7 @@ interface OwnProps {
     combineParentTypes?: boolean;
 }
 
-export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & RequiresModelAndActions> = memo(props => {
+export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresModelAndActions> = memo(props => {
     const {
         afterSampleDelete,
         afterSampleActionComplete,
@@ -42,16 +39,11 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
         parentEntityDataTypes,
         combineParentTypes,
         toggleEditWithGridUpdate,
-        hideButtons,
+        excludedMenuKeys,
         model,
         metricFeatureArea,
     } = props;
     const { user } = useServerContext();
-    const { showImportDataButton, queryInfo } = model;
-    const importSampleHref = App.NEW_SAMPLES_HREF.addParams({
-        target: queryInfo?.schemaQuery?.queryName,
-        tab: SAMPLE_IMPORT_TAB_ID,
-    }).toHref();
 
     if (!model || model.isLoading) return null;
 
@@ -66,6 +58,15 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
         }
     };
 
+    const showEdit =
+        shouldIncludeMenuItem(SamplesEditButtonSections.EDIT, excludedMenuKeys) &&
+        hasAnyPermissions(user, [PermissionTypes.Update, PermissionTypes.EditStorageData]);
+    const showDelete = shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, excludedMenuKeys);
+    const showStudy =
+        showLinkToStudy &&
+        App.hasModule('study') &&
+        shouldIncludeMenuItem(SamplesEditButtonSections.LINKTOSTUDY, excludedMenuKeys);
+
     return (
         <RequiresPermission
             permissionCheck="any"
@@ -76,35 +77,15 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                 PermissionTypes.EditStorageData,
             ]}
         >
-            <ManageDropdownButton id="samples-manage-btn">
-                {props.children}
-                {shouldShowButtons(SamplesManageButtonSections.IMPORT, hideButtons) && showImportDataButton && (
-                    <RequiresPermission perms={PermissionTypes.Insert}>
-                        <MenuItem href={importSampleHref}>Import Samples</MenuItem>
-                    </RequiresPermission>
-                )}
-                {shouldShowButtons(SamplesManageButtonSections.DELETE, hideButtons) && (
-                    <RequiresPermission perms={PermissionTypes.Delete}>
-                        <SampleDeleteMenuItem
-                            queryModel={model}
-                            afterSampleDelete={afterSampleDelete}
-                            metricFeatureArea={metricFeatureArea}
-                        />
-                    </RequiresPermission>
-                )}
-                {shouldShowButtons(SamplesManageButtonSections.PICKLIST, hideButtons) && (
-                    <RequiresPermission perms={PermissionTypes.ManagePicklists}>
-                        <AddToPicklistMenuItem queryModel={model} user={user} metricFeatureArea={metricFeatureArea} />
-                    </RequiresPermission>
-                )}
-                {shouldShowButtons(SamplesManageButtonSections.EDIT, hideButtons) && (
+            <ManageDropdownButton id="samples-manage-btn" title="Edit" className="responsive-menu">
+                {showEdit && (
                     <RequiresPermission
                         perms={[PermissionTypes.Update, PermissionTypes.EditStorageData]}
                         permissionCheck="any"
                     >
                         <SelectionMenuItem
                             id="update-samples-menu-item"
-                            text="Edit Selected Samples in Grid"
+                            text="Edit in Grid"
                             onClick={toggleEditWithGridUpdate}
                             maxSelection={MAX_EDITABLE_GRID_ROWS}
                             queryModel={model}
@@ -113,12 +94,13 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                         {user.canUpdate && (
                             <SelectionMenuItem
                                 id="bulk-update-samples-menu-item"
-                                text="Edit Selected Samples in Bulk"
+                                text="Edit in Bulk"
                                 onClick={showBulkUpdate}
                                 queryModel={model}
                                 nounPlural={SampleTypeDataType.nounPlural}
                             />
                         )}
+                        {user.canUpdate && <MenuItem divider />}
                         {!combineParentTypes &&
                             user.canUpdate &&
                             parentEntityDataTypes.map(parentEntityDataType => {
@@ -142,13 +124,21 @@ export const SamplesManageButton: FC<OwnProps & SampleGridButtonProps & Requires
                         )}
                     </RequiresPermission>
                 )}
-                {showLinkToStudy &&
-                    App.hasModule('study') &&
-                    shouldShowButtons(SamplesManageButtonSections.LINKTOSTUDY, hideButtons) && (
+                {showEdit && (showDelete || showStudy) && <MenuItem divider />}
+                {showDelete && (
+                    <RequiresPermission perms={PermissionTypes.Delete}>
+                        <SampleDeleteMenuItem
+                            queryModel={model}
+                            afterSampleDelete={afterSampleDelete}
+                            metricFeatureArea={metricFeatureArea}
+                        />
+                    </RequiresPermission>
+                )}
+                {showStudy && (
                         <RequiresPermission perms={PermissionTypes.Insert}>
                             <SelectionMenuItem
                                 id="link-to-study"
-                                text="Link to Study in LabKey Server"
+                                text="Link to LabKey Study"
                                 onClick={onLinkToStudy}
                                 queryModel={model}
                                 nounPlural={SampleTypeDataType.nounPlural}

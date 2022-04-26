@@ -1,14 +1,14 @@
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
-import { ConfirmModal, makeTestQueryModel, Picklist, SchemaQuery, SelectionMenuItem } from '../../..';
+import { ConfirmModal, makeTestQueryModel, Picklist, SchemaQuery, DisableableButton } from '../../..';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { mountWithServerContext } from '../../testHelpers';
 
-import { RemoveFromPicklistMenuItem } from './RemoveFromPicklistMenuItem';
+import { RemoveFromPicklistButton } from './RemoveFromPicklistButton';
 
 beforeAll(() => {
     LABKEY.moduleContext = {
@@ -16,7 +16,7 @@ beforeAll(() => {
     };
 });
 
-describe('RemoveFromPicklistMenuItem', () => {
+describe('RemoveFromPicklistButton', () => {
     const publicPicklist = new Picklist({
         CreatedBy: 1101, // test user is 1100
         Category: PUBLIC_PICKLIST_CATEGORY,
@@ -40,13 +40,13 @@ describe('RemoveFromPicklistMenuItem', () => {
     };
 
     function validate(wrapper: ReactWrapper, hasPerm = true, showConfirm = false): void {
-        expect(wrapper.find(SelectionMenuItem)).toHaveLength(hasPerm ? 1 : 0);
+        expect(wrapper.find(DisableableButton)).toHaveLength(hasPerm ? 1 : 0);
         expect(wrapper.find(ConfirmModal)).toHaveLength(showConfirm ? 1 : 0);
     }
 
     test('public picklist with remove perm', () => {
         const wrapper = mountWithServerContext(
-            <RemoveFromPicklistMenuItem {...DEFAULT_PROPS} picklist={publicPicklist} />,
+            <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={publicPicklist} />,
             { user: TEST_USER_EDITOR }
         );
         validate(wrapper);
@@ -55,7 +55,7 @@ describe('RemoveFromPicklistMenuItem', () => {
 
     test('public picklist without remove perm', () => {
         const wrapper = mountWithServerContext(
-            <RemoveFromPicklistMenuItem {...DEFAULT_PROPS} picklist={publicPicklist} user={TEST_USER_READER} />,
+            <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={publicPicklist} user={TEST_USER_READER} />,
             { user: TEST_USER_READER }
         );
         validate(wrapper, false);
@@ -64,7 +64,7 @@ describe('RemoveFromPicklistMenuItem', () => {
 
     test('private picklist not owner with remove perm', () => {
         const wrapper = mountWithServerContext(
-            <RemoveFromPicklistMenuItem {...DEFAULT_PROPS} picklist={privatePicklistNotOwner} />,
+            <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={privatePicklistNotOwner} />,
             { user: TEST_USER_EDITOR }
         );
         validate(wrapper, false);
@@ -73,7 +73,7 @@ describe('RemoveFromPicklistMenuItem', () => {
 
     test('private picklist as owner with remove perm', () => {
         const wrapper = mountWithServerContext(
-            <RemoveFromPicklistMenuItem {...DEFAULT_PROPS} picklist={privatePicklistIsOwner} />,
+            <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={privatePicklistIsOwner} />,
             { user: TEST_USER_EDITOR }
         );
         validate(wrapper);
@@ -82,7 +82,7 @@ describe('RemoveFromPicklistMenuItem', () => {
 
     test('private picklist as owner without remove perm', () => {
         const wrapper = mountWithServerContext(
-            <RemoveFromPicklistMenuItem {...DEFAULT_PROPS} picklist={privatePicklistIsOwner} user={TEST_USER_READER} />,
+            <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={privatePicklistIsOwner} user={TEST_USER_READER} />,
             { user: TEST_USER_READER }
         );
         validate(wrapper, false);
@@ -91,11 +91,11 @@ describe('RemoveFromPicklistMenuItem', () => {
 
     test('menu item click to show confirm modal', () => {
         const wrapper = mountWithServerContext(
-            <RemoveFromPicklistMenuItem {...DEFAULT_PROPS} picklist={publicPicklist} />,
+            <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={publicPicklist} />,
             { user: TEST_USER_EDITOR }
         );
         validate(wrapper);
-        wrapper.find(SelectionMenuItem).find('a').simulate('click');
+        wrapper.find(DisableableButton).simulate('click');
         validate(wrapper, true, true);
         const modal = wrapper.find(ConfirmModal);
         expect(modal.prop('confirmButtonText')).toBe('Yes, Remove 2 Samples');

@@ -886,29 +886,6 @@ export function getSampleTypes(): Promise<Array<{ id: number; label: string }>> 
     });
 }
 
-export async function getSelectedSampleTypes(model: QueryModel): Promise<string[]> {
-    const { queryInfo } = model;
-    return new Promise(async (resolve, reject) => {
-        const selectedSampleTypes = [];
-        try {
-            const { data } = await getSelectedData(
-                queryInfo.schemaName,
-                queryInfo.name,
-                Array.from(model.selections),
-                'RowId,SampleSet'
-            );
-            data.forEach(item => {
-                const sampleType = item.getIn(['SampleSet', 'displayValue']);
-                if (selectedSampleTypes.indexOf(sampleType) === -1) selectedSampleTypes.push(sampleType);
-            });
-            resolve(selectedSampleTypes);
-        } catch (reason) {
-            console.error('Problem getting selected data from model', queryInfo, model.selections);
-            reject(resolveErrorMessage(reason));
-        }
-    });
-}
-
 /**
  * Gets the Set of Ids from selected rowIds based on supplied fieldKey which should be a Lookup
  * @param schemaName of selected rows

@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.158.0
+*Released*: 26 April 2022
+* Item 10230: App grid action updates to buttons/menus in header bar
+  * Add new button components: ResponsiveMenuButtonGroup, SamplesAddButton, SamplesAssayButton
+  * Rename SamplesManageButton to SamplesEditButton
+  * SubMenu and SubMenuItem changes to support new button submenu cases
+
 ### version 2.157.0
 *Released*: 21 April 2022
 * Factor out `componentId` prop on `QuerySelect`.

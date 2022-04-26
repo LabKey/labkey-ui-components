@@ -7,7 +7,7 @@ import { User } from '../base/models/User';
 import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
 
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
-    itemText: string;
+    itemText?: string;
     onCreatePicklist?: () => void;
     user: User;
 }
@@ -41,6 +41,10 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
             )}
         </>
     );
+};
+
+PicklistCreationMenuItem.defaultProps = {
+    itemText: 'Create a New Picklist',
 };
 
 PicklistCreationMenuItem.displayName = 'PicklistCreationMenuItem';

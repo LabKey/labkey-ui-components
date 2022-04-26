@@ -5,6 +5,7 @@ import { ActionURL, Filter, Utils } from '@labkey/api';
 import { User } from '../base/models/User';
 import {
     App,
+    AppURL,
     caseInsensitive,
     downloadAttachment,
     getQueryDetails,
@@ -202,19 +203,18 @@ export function getSampleSetMenuItem(menu: ProductMenuModel, key: string): MenuI
         : undefined;
 }
 
-export enum SamplesManageButtonSections {
+export enum SamplesEditButtonSections {
     DELETE = 'delete',
     EDIT = 'edit',
     IMPORT = 'import',
     LINKTOSTUDY = 'linktostudy',
-    PICKLIST = 'picklist',
 }
 
-export const shouldShowButtons = (
-    action: SamplesManageButtonSections,
-    hideButtons: SamplesManageButtonSections[]
+export const shouldIncludeMenuItem = (
+    action: SamplesEditButtonSections,
+    excludedMenuKeys: SamplesEditButtonSections[]
 ): boolean => {
-    return hideButtons === undefined || hideButtons.indexOf(action) === -1;
+    return excludedMenuKeys === undefined || excludedMenuKeys.indexOf(action) === -1;
 };
 
 export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
@@ -258,6 +258,25 @@ export const getSampleTypeTemplateUrl = (
         includeColumn: extraColumns,
     });
 };
+
+/**
+ * Provides sample wizard URL for this application.
+ * @param targetSampleSet - Intended sample type of newly created samples.
+ * @param parent - Intended parent of derived samples. Format SCHEMA:QUERY:ID
+ */
+export function getSampleWizardURL(targetSampleSet?: string, parent?: string): AppURL {
+    let url = App.NEW_SAMPLES_HREF;
+
+    if (targetSampleSet) {
+        url = url.addParam('target', targetSampleSet);
+    }
+
+    if (parent) {
+        url = url.addParam('parent', parent);
+    }
+
+    return url;
+}
 
 export const downloadSampleTypeTemplate = (
     schemaQuery: SchemaQuery,

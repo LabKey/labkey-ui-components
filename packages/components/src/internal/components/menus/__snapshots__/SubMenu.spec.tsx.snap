@@ -2,41 +2,25 @@
 
 exports[`<SubMenu /> no options 1`] = `null`;
 
-exports[`<SubMenu /> several options, one chosen 1`] = `
-Array [
-  <li
-    className=""
-    role="presentation"
+exports[`<SubMenu /> several options, one chosen without extractCurrentMenuChoice 1`] = `
+<li
+  className="dropdown-submenu"
+  onMouseOut={[Function]}
+  role="presentation"
+>
+  <a
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    role="menuitem"
+    tabIndex={-1}
   >
-    <a
-      href="go/to/option2"
-      onClick={[Function]}
-      onKeyDown={[Function]}
-      role="menuitem"
-      tabIndex="-1"
-    >
-      second option
-    </a>
-  </li>,
-  <li
-    className="dropdown-submenu"
-    onMouseOut={[Function]}
-    role="presentation"
-  >
-    <a
-      onClick={[Function]}
-      onKeyDown={[Function]}
-      role="menuitem"
-      tabIndex={-1}
-    >
-      Test with several options
-    </a>
-    <i
-      className="fa fa-chevron-down"
-      onClick={[Function]}
-    />
-  </li>,
-]
+    Test with several options
+  </a>
+  <i
+    className="fa fa-chevron-down"
+    onClick={[Function]}
+  />
+</li>
 `;
 
 exports[`<SubMenu /> two options, one chosen 1`] = `
@@ -68,6 +52,43 @@ Array [
     >
       second option
     </a>
+  </li>,
+]
+`;
+
+exports[`<SubMenu /> two options, one chosen but inlineItemsCount 0 1`] = `
+Array [
+  <li
+    className=""
+    role="presentation"
+  >
+    <a
+      href="go/to/option1"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="menuitem"
+      tabIndex="-1"
+    >
+      first option
+    </a>
+  </li>,
+  <li
+    className="dropdown-submenu"
+    onMouseOut={[Function]}
+    role="presentation"
+  >
+    <a
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="menuitem"
+      tabIndex={-1}
+    >
+      Test with two options
+    </a>
+    <i
+      className="fa fa-chevron-down"
+      onClick={[Function]}
+    />
   </li>,
 ]
 `;

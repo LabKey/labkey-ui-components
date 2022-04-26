@@ -15,7 +15,7 @@ describe('SampleDeleteMenuItem', () => {
         const menuItem = wrapper.find(SelectionMenuItem);
 
         expect(menuItem).toHaveLength(1);
-        expect(menuItem.text()).toBe('Delete Samples');
+        expect(menuItem.text()).toBe('Delete');
 
         const menuItemComp = wrapper.find('MenuItem a');
         menuItemComp.simulate('click');

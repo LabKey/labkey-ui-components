@@ -146,59 +146,95 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
         const canSelectView = showViewMenu && queryInfo !== undefined;
         const buttonsComponentProps = this.props.buttonsComponentProps ?? ({} as T);
+        const hasLeftButtonsComp = ButtonsComponent !== undefined;
+
+        const paginationComp = (
+            <Pagination
+                {...model.paginationData}
+                loadNextPage={this.loadNextPage}
+                loadFirstPage={this.loadFirstPage}
+                loadPreviousPage={this.loadPreviousPage}
+                loadLastPage={this.loadLastPage}
+                pageSizes={pageSizes}
+                setPageSize={this.setPageSize}
+            />
+        );
 
         return (
-            <div className="grid-panel__button-bar">
-                <div className="grid-panel__button-bar-left">
-                    <div className="button-bar__section">
-                        {ButtonsComponent !== undefined && (
-                            <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
-                        )}
-                        {showFiltersButton && <FiltersButton onFilter={onFilter} />}
-                        {showSearchInput && <SearchBox actionValues={actionValues} onSearch={onSearch} />}
+            <>
+                <div className="grid-panel__button-bar">
+                    <div className="grid-panel__button-bar-left">
+                        <div className="button-bar__section">
+                            {hasLeftButtonsComp && (
+                                <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
+                            )}
+                            <span className={classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp })}>
+                                {showFiltersButton && <FiltersButton onFilter={onFilter} />}
+                            </span>
+                            <span className={classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp })}>
+                                {showSearchInput && <SearchBox actionValues={actionValues} onSearch={onSearch} />}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="grid-panel__button-bar-right">
+                        <div className="button-bar__section">
+                            <span className={classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp })}>
+                                {paginate && paginationComp}
+                            </span>
+                            {canExport && (
+                                <ExportMenu
+                                    model={model}
+                                    advancedOptions={advancedExportOptions}
+                                    supportedTypes={supportedExportTypes}
+                                    onExport={onExport}
+                                />
+                            )}
+                            {showChartMenu && (
+                                <ChartMenu
+                                    hideEmptyChartMenu={hideEmptyChartMenu}
+                                    actions={actions}
+                                    model={model}
+                                    onChartClicked={onChartClicked}
+                                    onCreateReportClicked={onCreateReportClicked}
+                                    showSampleComparisonReports={showSampleComparisonReports}
+                                />
+                            )}
+                            {canSelectView && (
+                                <ViewMenu
+                                    model={model}
+                                    onViewSelect={onViewSelect}
+                                    hideEmptyViewMenu={hideEmptyViewMenu}
+                                />
+                            )}
+                            {ButtonsComponentRight !== undefined && (
+                                <ButtonsComponentRight {...buttonsComponentProps} model={model} actions={actions} />
+                            )}
+                        </div>
                     </div>
                 </div>
 
-                <div className="grid-panel__button-bar-right">
-                    <div className="button-bar__section">
-                        {paginate && (
-                            <Pagination
-                                {...model.paginationData}
-                                loadNextPage={this.loadNextPage}
-                                loadFirstPage={this.loadFirstPage}
-                                loadPreviousPage={this.loadPreviousPage}
-                                loadLastPage={this.loadLastPage}
-                                pageSizes={pageSizes}
-                                setPageSize={this.setPageSize}
-                            />
-                        )}
-                        {canExport && (
-                            <ExportMenu
-                                model={model}
-                                advancedOptions={advancedExportOptions}
-                                supportedTypes={supportedExportTypes}
-                                onExport={onExport}
-                            />
-                        )}
-                        {showChartMenu && (
-                            <ChartMenu
-                                hideEmptyChartMenu={hideEmptyChartMenu}
-                                actions={actions}
-                                model={model}
-                                onChartClicked={onChartClicked}
-                                onCreateReportClicked={onCreateReportClicked}
-                                showSampleComparisonReports={showSampleComparisonReports}
-                            />
-                        )}
-                        {canSelectView && (
-                            <ViewMenu model={model} onViewSelect={onViewSelect} hideEmptyViewMenu={hideEmptyViewMenu} />
-                        )}
-                        {ButtonsComponentRight !== undefined && (
-                            <ButtonsComponentRight {...buttonsComponentProps} model={model} actions={actions} />
-                        )}
+                <span
+                    className={classNames({
+                        'visible-md visible-sm visible-xs': hasLeftButtonsComp,
+                        hidden: !hasLeftButtonsComp,
+                    })}
+                >
+                    <div className="grid-panel__button-bar margin-top">
+                        <div className="grid-panel__button-bar-left">
+                            <div className="button-bar__section">
+                                {showFiltersButton && <FiltersButton onFilter={onFilter} iconOnly />}
+                                {showSearchInput && <SearchBox actionValues={actionValues} onSearch={onSearch} />}
+                            </div>
+                        </div>
+                        <div className="grid-panel__button-bar-right">
+                            <div className="button-bar__section">
+                                {paginate && paginationComp}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </span>
+            </>
         );
     }
 }

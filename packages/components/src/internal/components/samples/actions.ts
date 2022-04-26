@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, AuditBehaviorTypes, Domain, Filter, Query, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
@@ -23,7 +23,6 @@ import {
     buildURL,
     caseInsensitive,
     createQueryConfigFilteredBySample,
-    DataClassDataType,
     DomainDetails,
     FindField,
     getContainerFilter,
@@ -39,13 +38,11 @@ import {
     resolveErrorMessage,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
-    SampleTypeDataType,
     SchemaQuery,
     SCHEMAS,
     selectRowsDeprecated,
     SHARED_CONTAINER_PATH,
     UNIQUE_ID_FIND_FIELD,
-    updateRows,
 } from '../../..';
 
 import { findMissingValues } from '../../util/utils';
@@ -375,31 +372,29 @@ export function getSampleSelectionLineageData(
 
 export const getOriginalParentsFromSampleLineage = async (
     sampleLineage: Record<string, any>,
-    containerPath?: string
-): Promise<{
-    originalParents: Record<string, List<EntityChoice>>;
-    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
-}> => {
+    parentDataTypes: EntityDataType[],
+    containerPath?: string,
+): Promise<{ originalParents: Record<string, List<EntityChoice>>; parentTypeOptions: Map<string, List<IEntityTypeOption>> }> => {
     const originalParents = {};
     let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
     const dataClassTypeData = await getParentTypeDataForSample(
-        DataClassDataType,
+        parentDataTypes.filter(dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName)[0],
         Object.values(sampleLineage),
         containerPath
     );
     const sampleTypeData = await getParentTypeDataForSample(
-        SampleTypeDataType,
+        parentDataTypes.filter(dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName)[0],
         Object.values(sampleLineage),
         containerPath
     );
 
     // iterate through both Data Classes and Sample Types for finding sample parents
-    [DataClassDataType, SampleTypeDataType].forEach(dataType => {
+    parentDataTypes.forEach(dataType => {
         const dataTypeOptions =
-            dataType === DataClassDataType ? dataClassTypeData.parentTypeOptions : sampleTypeData.parentTypeOptions;
+            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName ? dataClassTypeData.parentTypeOptions : sampleTypeData.parentTypeOptions;
 
         const parentIdData =
-            dataType === DataClassDataType ? dataClassTypeData.parentIdData : sampleTypeData.parentIdData;
+            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName ? dataClassTypeData.parentIdData : sampleTypeData.parentIdData;
         Object.keys(sampleLineage).forEach(sampleId => {
             if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
 
@@ -460,6 +455,7 @@ function getParentRowIdAndDataType(
             queryName: parentDataType.listingSchemaQuery.queryName,
             columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
             filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
+            containerFiler: parentDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(response => {
                 const { key, models } = response;

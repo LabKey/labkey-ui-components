@@ -1,5 +1,4 @@
 module.exports = {
-    // preset: 'ts-jest',
     globals: {
         LABKEY: {
             contextPath: '/labkey',

@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
-import { RequiresPermission } from '../../..';
+import {RequiresPermission, SubMenuItem} from '../../..';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
@@ -26,7 +26,7 @@ export const SamplesAssayButton: FC<Props> = memo(props => {
             queryModel={model?.hasSelections ? model : undefined}
             providerType={providerType}
             requireSelection={false}
-            text={asSubMenu ? 'Assay' : null} // using null will render the submenu items inline in this button
+            text={asSubMenu ? 'Import Assay Data' : null} // using null will render the submenu items inline in this button
         />
     );
 
@@ -37,7 +37,11 @@ export const SamplesAssayButton: FC<Props> = memo(props => {
                     {items}
                 </DropdownButton>
             )}
-            {asSubMenu && items}
+            {asSubMenu && (
+                <SubMenuItem text="Assay" inline>
+                    {items}
+                </SubMenuItem>
+            )}
         </RequiresPermission>
     );
 });

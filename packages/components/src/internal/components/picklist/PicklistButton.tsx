@@ -43,7 +43,11 @@ export const PicklistButton: FC<Props> = memo(props => {
                     {items}
                 </DropdownButton>
             )}
-            {asSubMenu && <SubMenuItem text="Picklists">{items}</SubMenuItem>}
+            {asSubMenu && (
+                <SubMenuItem text="Picklists" inline>
+                    {items}
+                </SubMenuItem>
+            )}
         </RequiresPermission>
     );
 });

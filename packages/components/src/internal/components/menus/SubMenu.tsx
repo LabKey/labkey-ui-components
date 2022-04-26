@@ -124,6 +124,7 @@ export class SubMenu extends React.Component<SubMenuProps> {
                 items: this.getItems(),
                 maxWithoutFilter: 10,
                 text,
+                inline: text === null,
             };
             items.push(<SubMenuItem {...menuProps} />);
         }

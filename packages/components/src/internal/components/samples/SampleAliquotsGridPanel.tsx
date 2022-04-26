@@ -40,7 +40,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
     const { afterAction, lineageUpdateAllowed, model, onDelete, StorageButtonsComponent, user } = props;
 
     return (
-        <div className="btn-group">
+        <div className="responsive-btn-group">
             <RequiresPermission perms={PermissionTypes.Delete}>
                 {lineageUpdateAllowed && (
                     <DisableableButton
@@ -54,6 +54,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
                 )}
                 {StorageButtonsComponent && (
                     <StorageButtonsComponent
+                        className="responsive-menu"
                         afterStorageUpdate={afterAction}
                         queryModel={model}
                         user={user}

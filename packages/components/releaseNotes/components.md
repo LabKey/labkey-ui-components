@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.138.8
 *Released*: 26 April 2022
-* Issue 45265: adjust List ActionMappers
+* Issue 45265: Handle "name" and "listId" for list ActionMappers
 
 ### version 2.138.7
 *Released*: 24 March 2022

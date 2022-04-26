@@ -37,7 +37,6 @@ beforeAll(() => {
 const CHART_MENU_SELECTOR = '.chart-menu';
 const PAGINATION_SELECTOR = '.pagination-button-group';
 const PAGINATION_INFO_SELECTOR = '.pagination-info';
-const PAGE_SIZE_SELECTOR = '.page-size-menu';
 const VIEW_MENU_SELECTOR = '.view-menu';
 const GRID_SELECTOR = '.grid-panel__grid .table-responsive';
 const GRID_INFO_SELECTOR = '.grid-panel__info';
@@ -71,7 +70,6 @@ describe('GridPanel', () => {
     const expectPaginationVisible = (wrapper: GridPanelWrapper, visible: boolean): void => {
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(visible);
         expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(visible);
-        expect(wrapper.find(PAGE_SIZE_SELECTOR).exists()).toEqual(visible);
     };
 
     const expectNoQueryInfo = (wrapper: GridPanelWrapper): void => {
@@ -170,9 +168,9 @@ describe('GridPanel', () => {
         expectPanelClasses(wrapper, false);
 
         // pageSizes should be different
-        expect(wrapper.find(PAGE_SIZE_SELECTOR).find('ul').text()).toEqual('Page Size2040100250400');
+        expect(wrapper.find(PAGINATION_SELECTOR).find('ul').text()).toEqual('Jump ToFirst PageLast Page...Page Size2040100250400');
         wrapper.setProps({ pageSizes: [5, 10, 15, 20] });
-        expect(wrapper.find(PAGE_SIZE_SELECTOR).find('ul').text()).toEqual('Page Size5101520');
+        expect(wrapper.find(PAGINATION_SELECTOR).find('ul').text()).toEqual('Jump ToFirst PageLast Page...Page Size5101520');
 
         // Pagination should not be present.
         wrapper.setProps({ showPagination: false });

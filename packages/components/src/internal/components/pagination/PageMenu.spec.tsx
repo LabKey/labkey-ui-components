@@ -1,4 +1,5 @@
 import React from 'react';
+import { MenuItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { PageMenu } from './PageMenu';
@@ -17,10 +18,14 @@ describe('PageMenu', () => {
             loadFirstPage: jest.fn(),
             loadLastPage: jest.fn(),
             pageCount: 34,
+            showPageSizeMenu: false,
+            pageSize: 20,
+            pageSizes: [20, 40, 100, 250, 400],
+            setPageSize: jest.fn(),
         };
     });
 
-    const expectMenuItems = (
+    const expectPageMenuItems = (
         wrapper: PageMenuWrapper,
         menuDisabled: boolean,
         firstDisabled: boolean,
@@ -39,16 +44,18 @@ describe('PageMenu', () => {
 
     test('render', () => {
         const wrapper = mount<PageMenu>(<PageMenu {...props} />);
-        expectMenuItems(wrapper, false, false, false, '2', '34 Total Pages');
+        expectPageMenuItems(wrapper, false, false, false, '2', '34 Total Pages');
 
         wrapper.setProps({ disabled: true });
-        expectMenuItems(wrapper, true, true, true, '2', '...');
+        expectPageMenuItems(wrapper, true, true, true, '2', '...');
 
         wrapper.setProps({ disabled: false, currentPage: 1, isFirstPage: true });
-        expectMenuItems(wrapper, false, true, false, '1', '34 Total Pages');
+        expectPageMenuItems(wrapper, false, true, false, '1', '34 Total Pages');
 
         wrapper.setProps({ disabled: false, currentPage: 34, isFirstPage: false, isLastPage: true });
-        expectMenuItems(wrapper, false, false, true, '34', '34 Total Pages');
+        expectPageMenuItems(wrapper, false, false, true, '34', '34 Total Pages');
+
+        wrapper.unmount();
     });
 
     test('interactions', () => {
@@ -57,5 +64,19 @@ describe('PageMenu', () => {
         expect(props.loadFirstPage).toHaveBeenCalled();
         wrapper.find('MenuItem').at(2).find('a').simulate('click');
         expect(props.loadLastPage).toHaveBeenCalled();
+        wrapper.unmount();
+    });
+
+    test('showPageSizeMenu', () => {
+        const wrapper = mount<PageMenu>(<PageMenu {...props} showPageSizeMenu />);
+        const menuItems = wrapper.find(MenuItem);
+        expect(menuItems).toHaveLength(11);
+        // page size menu items start with header at index 5
+        expect(menuItems.at(5).text()).toBe('Page Size');
+        expect(menuItems.at(6).text()).toBe('20');
+        expect(menuItems.at(6).prop('active')).toBeTruthy();
+        expect(menuItems.at(10).text()).toBe('400');
+        expect(menuItems.at(10).prop('active')).toBeFalsy();
+        wrapper.unmount();
     });
 });

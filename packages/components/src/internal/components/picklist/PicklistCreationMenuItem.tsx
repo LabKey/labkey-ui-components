@@ -5,6 +5,7 @@ import { userCanManagePicklists } from '../../app/utils';
 import { User } from '../base/models/User';
 
 import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
+import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
     itemText?: string;
@@ -13,7 +14,7 @@ interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | '
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const { itemText, user, onCreatePicklist, ...editModalProps } = props;
+    const { itemText, user, onCreatePicklist, queryModel, sampleIds, ...editModalProps } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onFinish = useCallback(() => {
@@ -26,8 +27,10 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
     }, []);
 
     const onClick = useCallback(() => {
-        setShowModal(true);
-    }, []);
+        if (queryModel?.hasSelections || sampleIds?.length) {
+            setShowModal(true);
+        }
+    }, [queryModel, sampleIds]);
 
     if (!userCanManagePicklists(user)) {
         return null;
@@ -35,9 +38,18 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
 
     return (
         <>
-            <MenuItem onClick={onClick}>{itemText}</MenuItem>
+            {queryModel && (
+                <SelectionMenuItem
+                    id={'create-picklist-menu-id'}
+                    text={itemText}
+                    onClick={onClick}
+                    queryModel={queryModel}
+                    nounPlural="samples"
+                />
+            )}
+            {!queryModel && (<MenuItem onClick={onClick}>{itemText}</MenuItem>)}
             {showModal && (
-                <PicklistEditModal {...editModalProps} showNotification onFinish={onFinish} onCancel={onCancel} />
+                <PicklistEditModal queryModel={queryModel} sampleIds={sampleIds} {...editModalProps} showNotification onFinish={onFinish} onCancel={onCancel} />
             )}
         </>
     );

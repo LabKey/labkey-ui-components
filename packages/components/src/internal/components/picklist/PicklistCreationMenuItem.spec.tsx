@@ -40,7 +40,7 @@ describe('PicklistCreationMenuItem', () => {
         const wrapper = mount(
             <PicklistCreationMenuItem
                 itemText={text}
-                selectionKey={selectionKey}
+                sampleIds={['1']}
                 selectedQuantity={selectedQuantity}
                 key={key}
                 user={TEST_USER_EDITOR}

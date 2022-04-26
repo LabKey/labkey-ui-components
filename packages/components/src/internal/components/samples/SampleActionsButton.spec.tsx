@@ -18,20 +18,7 @@ describe('SampleActionsButton', () => {
 
         const wrapper = mount(<SampleActionsButton user={TEST_USER_AUTHOR} model={model} />);
         expect(wrapper.find(PicklistCreationMenuItem)).toHaveLength(1);
-        expect(wrapper.find(PicklistCreationMenuItem).prop('disabled')).toBeFalsy();
         expect(wrapper.find(AddToPicklistMenuItem)).toHaveLength(1);
-        wrapper.unmount();
-    });
-
-    test('Active options', () => {
-        let model = makeTestQueryModel(SchemaQuery.create('test', 'query'));
-        model = model.mutate({ selections: new Set(['1', '2']) });
-
-        const wrapper = mount(<SampleActionsButton user={TEST_USER_AUTHOR} model={model} />);
-        expect(wrapper.find(PicklistCreationMenuItem)).toHaveLength(1);
-        expect(wrapper.find(PicklistCreationMenuItem).prop('disabled')).toBeFalsy();
-        expect(wrapper.find(AddToPicklistMenuItem)).toHaveLength(1);
-        expect(wrapper.find(AddToPicklistMenuItem).prop('disabled')).toBeFalsy();
         wrapper.unmount();
     });
 });

@@ -2,6 +2,11 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version TBD
+*Released*: TBD
+* Item 10276: Add, remove or modify grid actions for various grids
+  * Update `PicklistCreateMenuItem` to require a selection (no longer create an empty picklist)
+
+### version TBD
 *Released*: TBD April 2022
 * Item 10230: App grid action updates to buttons/menus in header bar
   * Add new button components: ResponsiveMenuButtonGroup, SamplesAddButton, SamplesAssayButton

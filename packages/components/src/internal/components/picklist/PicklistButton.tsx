@@ -28,6 +28,7 @@ export const PicklistButton: FC<Props> = memo(props => {
             <AddToPicklistMenuItem queryModel={model} user={user} metricFeatureArea={metricFeatureArea} />
             <PicklistCreationMenuItem
                 selectionKey={model?.id}
+                queryModel={model}
                 selectedQuantity={model?.selections?.size}
                 key="picklist"
                 user={user}

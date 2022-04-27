@@ -147,6 +147,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
         const canSelectView = showViewMenu && queryInfo !== undefined;
         const buttonsComponentProps = this.props.buttonsComponentProps ?? ({} as T);
         const hasLeftButtonsComp = ButtonsComponent !== undefined;
+        const hiddenWithLeftButtonsCls = classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp });
 
         const paginationComp = (
             <Pagination
@@ -168,10 +169,10 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                             {hasLeftButtonsComp && (
                                 <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
                             )}
-                            <span className={classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp })}>
+                            <span className={hiddenWithLeftButtonsCls}>
                                 {showFiltersButton && <FiltersButton onFilter={onFilter} />}
                             </span>
-                            <span className={classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp })}>
+                            <span className={hiddenWithLeftButtonsCls}>
                                 {showSearchInput && <SearchBox actionValues={actionValues} onSearch={onSearch} />}
                             </span>
                         </div>
@@ -179,7 +180,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
                     <div className="grid-panel__button-bar-right">
                         <div className="button-bar__section">
-                            <span className={classNames({ 'hidden-md hidden-sm hidden-xs': hasLeftButtonsComp })}>
+                            <span className={hiddenWithLeftButtonsCls}>
                                 {paginate && paginationComp}
                             </span>
                             {canExport && (
@@ -214,6 +215,10 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                     </div>
                 </div>
 
+                {/*
+                    This span is to show a 2nd grid button bar row in screen sizes < large which will display the
+                    filter/search and pagination information so that they is room for the buttons in the 1st button bar.
+                */}
                 <span
                     className={classNames({
                         'visible-md visible-sm visible-xs': hasLeftButtonsComp,

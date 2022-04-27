@@ -67,9 +67,9 @@ describe('<SubMenuItem />', () => {
         expect(menu).toMatchSnapshot();
     });
 
-    test('items without text', () => {
-        const menu = shallow(<SubMenuItem items={items} />);
-        expect(menu.find('ul')).toHaveLength(0);
+    test('inline', () => {
+        const menu = shallow(<SubMenuItem items={items} inline />);
+        expect(menu.find('ul')).toHaveLength(1);
         expect(menu.find(MenuItem)).toHaveLength(items.length);
     });
 
@@ -126,7 +126,7 @@ describe('<SubMenuItem />', () => {
     test('onMouseOver', () => {
         const mouseOverFn = jest.fn();
         const menu = shallow(<SubMenuItem onMouseOver={mouseOverFn} items={items} text="onMouseOver item" />);
-        menu.simulate('mouseover');
+        menu.find('li').simulate('mouseover');
         expect(mouseOverFn).toHaveBeenCalledTimes(1);
 
         expect(menu).toMatchSnapshot();
@@ -135,7 +135,7 @@ describe('<SubMenuItem />', () => {
     test('onMouseOut', () => {
         const mouseOutFn = jest.fn();
         const menu = shallow(<SubMenuItem onMouseOut={mouseOutFn} items={items} text="onMouseOut item" />);
-        menu.simulate('mouseout');
+        menu.find('li').simulate('mouseout');
         expect(mouseOutFn).toHaveBeenCalledTimes(1);
 
         expect(menu).toMatchSnapshot();

@@ -246,58 +246,62 @@ exports[`<SubMenuItem /> no properties render 1`] = `
 `;
 
 exports[`<SubMenuItem /> onMouseOut 1`] = `
-<li
-  className="dropdown-submenu"
-  onMouseOut={[Function]}
-  role="presentation"
->
-  <a
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    role="menuitem"
-    tabIndex={-1}
+<Fragment>
+  <li
+    className="dropdown-submenu"
+    onMouseOut={[Function]}
+    role="presentation"
   >
-    onMouseOut item
-  </a>
-  <i
-    className="fa fa-chevron-down"
-    onClick={[Function]}
-  />
-</li>
+    <a
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="menuitem"
+      tabIndex={-1}
+    >
+      onMouseOut item
+    </a>
+    <i
+      className="fa fa-chevron-down"
+      onClick={[Function]}
+    />
+  </li>
+</Fragment>
 `;
 
 exports[`<SubMenuItem /> onMouseOver 1`] = `
-<li
-  className="dropdown-submenu"
-  onMouseOut={[Function]}
-  onMouseOver={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": undefined,
-        },
-      ],
+<Fragment>
+  <li
+    className="dropdown-submenu"
+    onMouseOut={[Function]}
+    onMouseOver={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
     }
-  }
-  role="presentation"
->
-  <a
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    role="menuitem"
-    tabIndex={-1}
+    role="presentation"
   >
-    onMouseOver item
-  </a>
-  <i
-    className="fa fa-chevron-down"
-    onClick={[Function]}
-  />
-</li>
+    <a
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="menuitem"
+      tabIndex={-1}
+    >
+      onMouseOver item
+    </a>
+    <i
+      className="fa fa-chevron-down"
+      onClick={[Function]}
+    />
+  </li>
+</Fragment>
 `;
 
 exports[`<SubMenuItem /> with icon, text, and items 1`] = `

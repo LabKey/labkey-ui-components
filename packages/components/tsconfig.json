@@ -1,5 +1,8 @@
 {
-  // Note: This tsconfig is required even though we don't add anything to the base tsconfig. Without this config tests
-  // fail due to "Cannot find name 'LABKEY'"
-  "extends": "./node_modules/@labkey/build/webpack/tsconfig.json"
+  "extends": "./node_modules/@labkey/build/webpack/tsconfig.json",
+  "compilerOptions": {
+    "typeRoots": ["node_modules/@types", "src/typings"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
 }

@@ -159,6 +159,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                             onQSChange={this.onChangeParentValue}
                             schemaQuery={parentSchemaQuery}
                             queryFilters={queryFilters}
+                            containerFilter={parentDataType.containerFilter}
                             showLoading
                             value={value}
                             valueColumn="Name"
@@ -271,6 +272,7 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
                 bindURL: false,
                 containerPath,
                 schemaQuery: SchemaQuery.create(chosenType.schema, chosenType.query),
+                containerFilter: chosenType.entityDataType.containerFilter,
             },
         };
     }, [chosenType, containerPath, parentTypeOptions, parentLSIDs]);

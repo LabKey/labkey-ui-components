@@ -146,6 +146,7 @@ import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons
 import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
+import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMenuButton';
 import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
 import { getMenuItemsForSection, getMenuItemForSectionKey } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
@@ -1310,6 +1311,7 @@ export {
     PaginationButtons,
     ToggleButtons,
     DisableableButton,
+    ResponsiveMenuButton,
     ResponsiveMenuButtonGroup,
     getMenuItemsForSection,
     getMenuItemForSectionKey,

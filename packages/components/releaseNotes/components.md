@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Grid panel button bar update to show 2nd row of items in md/sm layout
   * Move page size menu into page number menu
   * Display ResponsiveMenuButtonGroup submenus inline with header and divider
+  * Add ResponsiveMenuButton as a simple wrapper for app buttons to use
 
 ### version 2.158.1
 *Released*: 27 April 2022

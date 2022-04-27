@@ -8,7 +8,7 @@ import PanelHeading from 'react-bootstrap/lib/PanelHeading';
 
 import { Alert, DataClassDataType, LoadingSpinner, QueryInfo, SchemaQuery } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
-import { initUnitTestMocks } from '../../testHelperMocks';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { EntityChoice } from './models';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';

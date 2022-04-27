@@ -25,7 +25,7 @@ import { sleep } from '../../../testHelpers';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
-import { initUnitTestMocks } from '../../../testHelperMocks';
+import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';

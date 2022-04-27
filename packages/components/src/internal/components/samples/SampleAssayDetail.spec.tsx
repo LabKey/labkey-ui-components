@@ -14,7 +14,7 @@ import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
-import { TEST_USER_AUTHOR, TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_AUTHOR, TEST_USER_READER } from '../../userFixtures';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from './SampleAliquotViewSelector';

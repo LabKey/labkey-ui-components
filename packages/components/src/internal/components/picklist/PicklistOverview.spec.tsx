@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
 import { LoadingPage } from '../base/LoadingPage';
 import { NotFound } from '../base/NotFound';

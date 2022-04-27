@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
@@ -43,11 +43,11 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         model,
         metricFeatureArea,
     } = props;
-    const { user } = useServerContext();
+    const { user, moduleContext } = useServerContext();
 
     if (!model || model.isLoading) return null;
 
-    const onLinkToStudy = async (): Promise<void> => {
+    const onLinkToStudy = useCallback(async (): Promise<void> => {
         if (model?.hasSelections) {
             const sampleTypeId = await getSampleTypeRowId(model.schemaQuery.queryName);
             window.location.href = buildURL('publish', 'sampleTypePublishStart.view', {
@@ -56,7 +56,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                 rowId: sampleTypeId,
             });
         }
-    };
+    }, [model?.hasSelections, model.id, model.schemaQuery.queryName]);
 
     const showEdit =
         shouldIncludeMenuItem(SamplesEditButtonSections.EDIT, excludedMenuKeys) &&
@@ -64,7 +64,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
     const showDelete = shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, excludedMenuKeys);
     const showStudy =
         showLinkToStudy &&
-        App.hasModule('study') &&
+        App.hasModule('study', moduleContext) &&
         shouldIncludeMenuItem(SamplesEditButtonSections.LINKTOSTUDY, excludedMenuKeys);
 
     return (
@@ -135,16 +135,16 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                     </RequiresPermission>
                 )}
                 {showStudy && (
-                        <RequiresPermission perms={PermissionTypes.Insert}>
-                            <SelectionMenuItem
-                                id="link-to-study"
-                                text="Link to LabKey Study"
-                                onClick={onLinkToStudy}
-                                queryModel={model}
-                                nounPlural={SampleTypeDataType.nounPlural}
-                            />
-                        </RequiresPermission>
-                    )}
+                    <RequiresPermission perms={PermissionTypes.Insert}>
+                        <SelectionMenuItem
+                            id="link-to-study"
+                            text="Link to LabKey Study"
+                            onClick={onLinkToStudy}
+                            queryModel={model}
+                            nounPlural={SampleTypeDataType.nounPlural}
+                        />
+                    </RequiresPermission>
+                )}
             </ManageDropdownButton>
         </RequiresPermission>
     );

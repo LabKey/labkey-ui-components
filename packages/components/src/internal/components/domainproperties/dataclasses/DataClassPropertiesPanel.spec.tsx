@@ -11,7 +11,7 @@ import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetai
 
 import { DataClassPropertiesPanel, DataClassPropertiesPanelImpl } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';
-import { initUnitTestMocks } from '../../../testHelperMocks';
+import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 beforeAll(() => {
     initUnitTestMocks();

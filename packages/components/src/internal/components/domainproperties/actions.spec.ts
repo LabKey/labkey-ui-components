@@ -19,7 +19,7 @@ import { Domain } from '@labkey/api';
 
 import { ConceptModel, IFieldChange, QueryColumn } from '../../..';
 
-import { initUnitTestMocks } from '../../testHelperMocks';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import {
     createFormInputId,

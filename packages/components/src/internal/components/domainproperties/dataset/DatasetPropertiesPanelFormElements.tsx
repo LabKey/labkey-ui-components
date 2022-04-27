@@ -32,7 +32,6 @@ import {
 } from './actions';
 import { DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 
-import '../../../../theme/dataset.scss';
 import { TIME_KEY_FIELD_KEY } from './constants';
 
 type Option = any;

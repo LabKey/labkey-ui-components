@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { TEST_USER_AUTHOR } from '../../../test/data/users';
+import { TEST_USER_AUTHOR } from '../../userFixtures';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { PicklistCreationMenuItem } from '../picklist/PicklistCreationMenuItem';

@@ -137,14 +137,13 @@ const TS_CHECKER_CONFIG = {
         configOverwrite: {
             include: ["src/client/**/*"],
             // excluding spec files shaves time off the build
-            exclude: ["node_modules", "**/*.spec.*", "src/test/**/*", "resources", "**packages"],
+            exclude: ["node_modules", "**/*.spec.*", "src/test", "resources", "packages"],
         },
         context: '.',
         diagnosticOptions: {
             semantic: true,
             syntactic: true,
         },
-        mode: "write-references",
     }
 };
 

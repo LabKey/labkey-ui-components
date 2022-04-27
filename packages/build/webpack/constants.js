@@ -135,6 +135,7 @@ const TS_CHECKER_CONFIG = {
     typescript: {
         configFile: tsconfigPath,
         configOverwrite: {
+            include: ["src/client/**/*"],
             // excluding spec files shaves time off the build
             exclude: ["node_modules", "**/*.spec.*", "src/test/**/*", "resources", "**packages"],
         },

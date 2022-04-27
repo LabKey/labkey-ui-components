@@ -3,7 +3,7 @@ import { DropdownButton } from 'react-bootstrap';
 import { ReactWrapper } from 'enzyme';
 
 import { PicklistButton } from '../picklist/PicklistButton';
-import { TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_READER } from '../../userFixtures';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';

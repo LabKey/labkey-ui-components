@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD April 2022
-* Item 10275: ...
+* Item 10275: Grid panel updates to make button/menu bar display responsive to screen width
   * Grid panel button bar update to show 2nd row of items in md/sm layout
   * Move page size menu into page number menu
   * Display ResponsiveMenuButtonGroup submenus inline with header and divider

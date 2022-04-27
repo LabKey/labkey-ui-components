@@ -7,12 +7,13 @@ import {
     AppURL,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
+    isSamplesSchema,
     MenuOption,
     POOLED_SAMPLE_CREATION,
-    QueryGridModel,
     QueryModel,
     SampleCreationType,
     SampleCreationTypeModal,
+    SampleCreationTypeModel,
     SchemaQuery,
     SubMenu,
 } from '../../..';
@@ -26,22 +27,22 @@ interface CreateSamplesSubMenuProps {
     menuText?: string;
     parentType?: string;
     parentKey?: string;
-    parentModel?: QueryGridModel;
     parentQueryModel?: QueryModel;
     sampleWizardURL?: (targetSampleType?: string, parent?: string) => AppURL;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     allowPooledSamples?: boolean;
     selectedItems?: Record<string, any>;
+    selectedType?: SampleCreationType;
+    inlineItemsCount?: number;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
     const {
         allowPooledSamples = true,
         menuCurrentChoice,
-        menuText,
+        menuText = 'Create Samples',
         parentType,
         parentKey,
-        parentModel,
         parentQueryModel,
         navigate,
         getOptions,
@@ -50,35 +51,36 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         getProductSampleWizardURL,
         isSelectingSamples,
         selectedItems,
+        selectedType,
+        inlineItemsCount,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
     const [selectedOption, setSelectedOption] = useState<string>();
 
-    const selectedQuantity = parentModel?.selectedQuantity ?? parentQueryModel?.selections.size ?? 1;
-
-    const schemaQuery = parentModel?.schema
-        ? SchemaQuery.create(parentModel.schema.toLowerCase(), parentModel.query)
-        : parentQueryModel?.schemaQuery;
+    const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;
+    const schemaQuery = parentQueryModel?.schemaQuery;
 
     const selectingSampleParents = useMemo(() => {
         return isSelectingSamples(schemaQuery);
     }, [isSelectingSamples, schemaQuery]);
 
     let disabledMsg: string;
-    if (selectedQuantity > maxParentPerSample) {
-        disabledMsg = `At most ${maxParentPerSample} ${selectingSampleParents ? 'samples' : 'items'} can be selected`;
+    if (selectedType === SampleCreationType.PooledSamples && selectedQuantity < 2) {
+        disabledMsg = `Select two or more ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'}.`;
+    } else if (selectedQuantity === 0) {
+        disabledMsg = `Select one or more ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'}.`;
+    } else if (selectedQuantity > maxParentPerSample) {
+        disabledMsg = `At most ${maxParentPerSample} ${
+            isSamplesSchema(schemaQuery) ? 'samples' : 'items'
+        } can be selected`;
     }
 
     const useOnClick = parentKey !== undefined || (selectingSampleParents && selectedQuantity > 0);
 
     const selectionKey = useMemo(() => {
-        let selectionKey_: string = null;
-        if ((parentModel?.allowSelection && parentModel.selectedIds.size > 0) || parentQueryModel?.hasSelections) {
-            selectionKey_ = parentModel?.getId() || parentQueryModel?.id;
-        }
-        return selectionKey_;
-    }, [parentModel, parentQueryModel]);
+        return parentQueryModel?.hasSelections ? parentQueryModel.id : null;
+    }, [parentQueryModel]);
 
     const onSampleCreationMenuSelect = useCallback(
         (key: string) => {
@@ -117,22 +119,38 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         [navigate, sampleCreationURL]
     );
 
-    const sampleOptions = [DERIVATIVE_CREATION];
-    if (allowPooledSamples) sampleOptions.push(POOLED_SAMPLE_CREATION);
-    if (selectedOption && selectedOption === menuCurrentChoice)
-        sampleOptions.push({ ...ALIQUOT_CREATION, selected: true });
+    const sampleOptions = [
+        {
+            ...DERIVATIVE_CREATION,
+            selected: selectedType === SampleCreationType.Derivatives,
+        } as SampleCreationTypeModel,
+    ];
+    if (selectedOption && selectedOption === menuCurrentChoice) {
+        if (allowPooledSamples) {
+            sampleOptions.push({
+                ...POOLED_SAMPLE_CREATION,
+                selected: selectedType === SampleCreationType.PooledSamples,
+            });
+        }
+        sampleOptions.push({
+            ...ALIQUOT_CREATION,
+            selected: !selectedType || selectedType === SampleCreationType.Aliquots,
+        });
+    }
 
     return (
         <>
             <SubMenu
                 currentMenuChoice={menuCurrentChoice}
+                extractCurrentMenuChoice={false}
                 key={App.SAMPLES_KEY}
                 options={
                     getOptions
                         ? getOptions(useOnClick, disabledMsg, disabledMsg ? undefined : onSampleCreationMenuSelect)
                         : undefined
                 }
-                text={menuText ?? 'Create Samples'}
+                text={menuText}
+                inlineItemsCount={inlineItemsCount}
             />
             {sampleCreationURL && (
                 <SampleCreationTypeModal

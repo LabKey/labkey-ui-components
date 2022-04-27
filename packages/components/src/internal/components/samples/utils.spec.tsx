@@ -11,6 +11,7 @@ import {
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     getSampleDeleteMessage,
+    getSampleWizardURL,
     isSampleOperationPermitted,
     isSamplesSchema,
     LoadingSpinner,
@@ -19,14 +20,14 @@ import {
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
-    SamplesManageButtonSections,
+    SamplesEditButtonSections,
     SampleStateType,
     SchemaQuery,
     SCHEMAS,
 } from '../../..';
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
-import { getSampleStatus, getSampleStatusType, getSampleTypeTemplateUrl, shouldShowButtons } from './utils';
+import { getSampleStatus, getSampleStatusType, getSampleTypeTemplateUrl, shouldIncludeMenuItem } from './utils';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
@@ -365,20 +366,20 @@ describe('getOperationNotPermittedMessage', () => {
     });
 });
 
-describe('shouldShowButtons', () => {
-    test('undefined hideButtons', () => {
-        expect(shouldShowButtons(undefined, undefined)).toBeTruthy();
-        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, undefined)).toBeTruthy();
-        expect(shouldShowButtons(undefined, [])).toBeTruthy();
-        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, [])).toBeTruthy();
+describe('shouldIncludeMenuItem', () => {
+    test('undefined excludedMenuKeys', () => {
+        expect(shouldIncludeMenuItem(undefined, undefined)).toBeTruthy();
+        expect(shouldIncludeMenuItem(SamplesEditButtonSections.IMPORT, undefined)).toBeTruthy();
+        expect(shouldIncludeMenuItem(undefined, [])).toBeTruthy();
+        expect(shouldIncludeMenuItem(SamplesEditButtonSections.IMPORT, [])).toBeTruthy();
     });
 
-    test('with hideButtons', () => {
-        expect(shouldShowButtons(undefined, [SamplesManageButtonSections.IMPORT])).toBeTruthy();
+    test('with excludedMenuKeys', () => {
+        expect(shouldIncludeMenuItem(undefined, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
         expect(
-            shouldShowButtons(SamplesManageButtonSections.DELETE, [SamplesManageButtonSections.IMPORT])
+            shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, [SamplesEditButtonSections.IMPORT])
         ).toBeTruthy();
-        expect(shouldShowButtons(SamplesManageButtonSections.IMPORT, [SamplesManageButtonSections.IMPORT])).toBeFalsy();
+        expect(shouldIncludeMenuItem(SamplesEditButtonSections.IMPORT, [SamplesEditButtonSections.IMPORT])).toBeFalsy();
     });
 });
 
@@ -488,5 +489,23 @@ describe('getSampleTypeTemplateUrl', () => {
         SAMPLE_STORAGE_COLUMNS.forEach(col => {
             expect(url.indexOf('includeColumn=' + col)).toBe(-1);
         });
+    });
+});
+
+describe('getSampleWizardURL', () => {
+    test('default props', () => {
+        expect(getSampleWizardURL().toHref()).toBe('#/samples/new');
+    });
+
+    test('targetSampleSet', () => {
+        expect(getSampleWizardURL('target1').toHref()).toBe('#/samples/new?target=target1');
+    });
+
+    test('parent', () => {
+        expect(getSampleWizardURL(undefined, 'parent1').toHref()).toBe('#/samples/new?parent=parent1');
+    });
+
+    test('targetSampleSet and parent', () => {
+        expect(getSampleWizardURL('target1', 'parent1').toHref()).toBe('#/samples/new?target=target1&parent=parent1');
     });
 });

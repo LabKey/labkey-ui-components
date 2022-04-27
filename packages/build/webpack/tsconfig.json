@@ -1,20 +1,16 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
     "esModuleInterop": true,
     "jsx": "react",
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
+    // sourceMap needs to be true in order for our tests have accurate stack traces, it does not noticeably impact
+    // compile times
     "sourceMap": true,
     "target": "es6",
     "lib": ["es2017", "dom"],
-    "types": ["jest"]
-  },
-  "exclude": [
-    "node_modules",
-    "resources",
-    "**packages",
-  ]
+    "types": ["jest"],
+  }
 }

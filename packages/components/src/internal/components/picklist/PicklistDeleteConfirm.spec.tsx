@@ -4,7 +4,7 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { Alert, LoadingSpinner, makeTestQueryModel, SchemaQuery } from '../../..';
 
-import { TEST_USER_EDITOR } from '../../../test/data/users';
+import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { ConfirmModal } from '../base/ConfirmModal';
 

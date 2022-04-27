@@ -15,7 +15,7 @@ import {
     TEST_USER_READER,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
-} from '../../test/data/users';
+} from '../userFixtures';
 
 import {
     addAssaysSectionConfig,

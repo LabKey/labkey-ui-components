@@ -4,7 +4,7 @@ import React from 'react';
 import { Filter } from '@labkey/api';
 
 import { mountWithServerContext } from '../../testHelpers';
-import { TEST_USER_EDITOR } from '../../../test/data/users';
+import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { StatusGrid, StatusGridWithModels } from './StatusGrid';
 

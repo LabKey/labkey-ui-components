@@ -94,8 +94,8 @@ describe('SamplesTabbedGridPanel', () => {
         );
         validate(wrapper);
         const buttonProps = wrapper.find(TabbedGridPanel).prop('buttonsComponentProps');
-        expect(buttonProps['createBtnParentType']).toBe(undefined);
-        expect(buttonProps['createBtnParentKey']).toBe(undefined);
+        expect(buttonProps['createBtnParentType']).toBe('testParentType');
+        expect(buttonProps['createBtnParentKey']).toBe('testParentKey');
         wrapper.unmount();
     });
 

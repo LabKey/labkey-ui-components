@@ -30,11 +30,18 @@ export interface MenuOption {
 
 interface SubMenuProps {
     currentMenuChoice?: string;
+    extractCurrentMenuChoice?: boolean;
     options: List<MenuOption>;
     text: string;
+    inlineItemsCount?: number;
 }
 
-export class SubMenu extends React.Component<SubMenuProps, any> {
+export class SubMenu extends React.Component<SubMenuProps> {
+    static defaultProps = {
+        extractCurrentMenuChoice: true,
+        inlineItemsCount: 2,
+    };
+
     constructor(props: SubMenuProps) {
         super(props);
 
@@ -58,11 +65,11 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
     }
 
     getItems(): ISubItem[] {
-        const { options } = this.props;
+        const { options, extractCurrentMenuChoice } = this.props;
 
         const items = [];
         options.forEach(option => {
-            if (!this.isCurrentMenuChoice(option)) {
+            if (!extractCurrentMenuChoice || !this.isCurrentMenuChoice(option)) {
                 items.push({
                     disabled: option.disabled,
                     disabledMsg: option.disabledMsg,
@@ -100,16 +107,16 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
     }
 
     render() {
-        const { currentMenuChoice, options, text } = this.props;
+        const { currentMenuChoice, extractCurrentMenuChoice, options, text, inlineItemsCount } = this.props;
 
         const items = [];
-        // if there are 2 items or fewer, just show the items as the menu
-        if (currentMenuChoice && options.size < 3) {
+        // if there are ${inlineItemsCount} items or fewer, just show the items as the menu
+        if (currentMenuChoice && options.size <= inlineItemsCount) {
             options.forEach((option, i) => {
                 items.push(SubMenu.renderMenuItem(option, i));
             });
         } else {
-            if (currentMenuChoice) {
+            if (extractCurrentMenuChoice && currentMenuChoice) {
                 items.push(this.getCurrentMenuChoiceItem());
             }
             const menuProps = {

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
+import { MenuItem } from 'react-bootstrap';
 import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 
@@ -64,6 +65,12 @@ describe('<SubMenuItem />', () => {
         menu.find({ role: 'menuitem' }).prop('onClick')();
         expect(menu.state()['expanded']).toBe(false);
         expect(menu).toMatchSnapshot();
+    });
+
+    test('items without text', () => {
+        const menu = shallow(<SubMenuItem items={items} />);
+        expect(menu.find('ul')).toHaveLength(0);
+        expect(menu.find(MenuItem)).toHaveLength(items.length);
     });
 
     test('allow filtering but not enough items', () => {

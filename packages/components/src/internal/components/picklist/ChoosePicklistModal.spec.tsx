@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 
 import { Button, ModalBody, ModalTitle, NavItem } from 'react-bootstrap';
 
-import { TEST_USER_EDITOR } from '../../../test/data/users';
+import { TEST_USER_EDITOR } from '../../userFixtures';
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';

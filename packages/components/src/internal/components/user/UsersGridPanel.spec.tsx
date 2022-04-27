@@ -20,7 +20,7 @@ import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/ac
 import { initQueryGridState } from '../../global';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
-import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../../test/data/users';
+import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
 
 import { SecurityPolicy } from '../permissions/models';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';

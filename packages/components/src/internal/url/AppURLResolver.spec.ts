@@ -21,7 +21,7 @@ import { initMockServerContext, registerDefaultURLMappers } from '../testHelpers
 
 import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './AppURLResolver';
 import { URLResolver } from './URLResolver';
-import {initUnitTestMocks} from "../testHelperMocks";
+import {initUnitTestMocks} from "../../test/testHelperMocks";
 
 beforeAll(() => {
     initUnitTestMocks();

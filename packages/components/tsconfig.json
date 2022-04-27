@@ -1,21 +1,8 @@
 {
+  "extends": "./node_modules/@labkey/build/webpack/tsconfig.json",
   "compilerOptions": {
-    "outDir": "staging",
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "target": "es6",
-    "lib": ["es2015", "es2017", "dom"],
-    "types": ["jest"]
+    "typeRoots": ["node_modules/@types", "src/typings"]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
 }

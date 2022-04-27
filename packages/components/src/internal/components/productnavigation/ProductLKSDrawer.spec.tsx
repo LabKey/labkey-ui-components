@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN } from '../../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
 
 import { getProjectBeginUrl, ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductClickableItem } from './ProductClickableItem';

@@ -8,7 +8,7 @@ import { AssayUploadTabs } from '../../constants';
 import { EditorModel } from '../../models';
 
 import { mountWithServerContext } from '../../testHelpers';
-import { TEST_USER_EDITOR } from '../../../test/data/users';
+import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { RunDataPanel } from './RunDataPanel';
 

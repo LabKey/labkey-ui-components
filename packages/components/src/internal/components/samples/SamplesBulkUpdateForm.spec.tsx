@@ -7,7 +7,7 @@ import { Alert, BulkUpdateForm, makeTestQueryModel, QueryColumn, QueryInfo, Sche
 
 import { OperationConfirmationData } from '../entities/models';
 
-import { TEST_USER_EDITOR } from '../../../test/data/users';
+import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { SamplesBulkUpdateAlert, SamplesBulkUpdateFormBase } from './SamplesBulkUpdateForm';
 import { getSamplesTestAPIWrapper } from './APIWrapper';

@@ -23,6 +23,7 @@ import { ExportModal } from '../../internal/components/gridbar/ExportModal';
 import { EXPORT_TYPES } from '../../internal/constants';
 import { createNotification } from '../../internal/components/notifications/actions';
 import { exportTabsXlsx } from '../../internal/actions';
+import { getQueryModelExportParams } from './utils';
 
 interface GridTabProps {
     isActive: boolean;
@@ -111,6 +112,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         tabOrder,
         onExport,
         exportFilename,
+        advancedExportOptions,
         ...rest
     } = props;
     const [internalActiveId, setInternalActiveId] = useState<string>(activeModelId ?? tabOrder[0]);
@@ -132,7 +134,10 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
             // set exporting blocker
             setCanExport(false);
             let models = [];
-            selectedTabs.forEach(selected => models.push(queryModels[selected]?.schemaQuery));
+            selectedTabs.forEach(selected => {
+                const tabForm = getQueryModelExportParams(queryModels[selected], EXPORT_TYPES.EXCEL, advancedExportOptions)
+                models.push(tabForm);
+            });
             const filename = exportFilename ?? 'Data';
             await exportTabsXlsx(filename, models);
             onExport?.[EXPORT_TYPES.EXCEL]?.();
@@ -195,7 +200,15 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                         })}
                     </ul>
                 )}
-                <GridPanel key={activeId} actions={actions} asPanel={false} model={activeModel} onExport={exportHandlers} {...rest} />
+                <GridPanel
+                    key={activeId}
+                    actions={actions}
+                    asPanel={false}
+                    model={activeModel}
+                    onExport={exportHandlers}
+                    advancedExportOptions={advancedExportOptions}
+                    {...rest}
+                />
             </div>
             {queryModels !=null && showExportModal &&
                 <ExportModal

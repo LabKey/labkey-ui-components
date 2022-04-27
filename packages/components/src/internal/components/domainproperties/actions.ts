@@ -65,6 +65,7 @@ import {
     PropDescType,
     UNIQUE_ID_TYPE,
     TEXT_CHOICE_TYPE,
+    SMILES_TYPE,
 } from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -280,6 +281,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === TEXT_CHOICE_TYPE && !domain.allowTextChoiceProperties) {
+        return false;
+    }
+
+    if (type === SMILES_TYPE) {
         return false;
     }
 

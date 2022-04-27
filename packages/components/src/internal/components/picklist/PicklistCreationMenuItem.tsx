@@ -28,7 +28,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
 
     const onClick = useCallback(() => {
         setShowModal(true);
-    }, [queryModel, sampleIds]);
+    }, []);
 
     if (!userCanManagePicklists(user)) {
         return null;

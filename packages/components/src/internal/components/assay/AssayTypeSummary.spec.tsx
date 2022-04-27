@@ -3,10 +3,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { AssayTypeSummary } from '../../..';
-import { initUnitTestMocks } from '../../testHelperMocks';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { selectOptionByText, SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
 import { mountWithServerContext } from '../../testHelpers';
-import { TEST_USER_EDITOR } from '../../../test/data/users';
+import { TEST_USER_EDITOR } from '../../userFixtures';
 
 beforeAll(() => {
     initUnitTestMocks();

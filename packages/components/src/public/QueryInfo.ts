@@ -57,7 +57,7 @@ export class QueryInfo extends Record({
     singular: undefined, // defaults to value of queryLabel
     plural: undefined, // defaults to value of queryLabel
 }) {
-    private appEditableTable: boolean; // use isAppEditable()
+    private declare appEditableTable: boolean; // use isAppEditable()
     // declare canEdit: boolean;
     // declare canEditSharedViews: boolean;
     declare columns: OrderedMap<string, QueryColumn>;

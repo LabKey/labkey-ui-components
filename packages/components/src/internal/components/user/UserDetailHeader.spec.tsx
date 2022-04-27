@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 
 import { Button } from 'react-bootstrap';
 
-import { TEST_USER_ASSAY_DESIGNER, TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_ASSAY_DESIGNER, TEST_USER_READER } from '../../userFixtures';
 
 import { UserDetailHeader } from './UserDetailHeader';
 

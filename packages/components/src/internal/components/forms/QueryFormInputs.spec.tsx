@@ -19,7 +19,7 @@ import { List } from 'immutable';
 
 import { mount } from 'enzyme';
 
-import { initUnitTestMocks } from '../../testHelperMocks';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { getQueryDetails, QueryColumn, SchemaQuery } from '../../..';
 

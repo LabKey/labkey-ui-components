@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { DomainDesign, DomainPanelStatus } from '../models';
 
-import { initUnitTestMocks } from '../../../testHelperMocks';
+import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
 import { AssayProtocolModel } from './models';
 

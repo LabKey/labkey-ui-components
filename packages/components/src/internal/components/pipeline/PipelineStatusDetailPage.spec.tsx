@@ -3,8 +3,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import { sleep } from '../../testHelpers';
-import { initUnitTestMocks } from '../../testHelperMocks';
-import { initPipelineStatusDetailsMocks } from '../../mock';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
+import { initPipelineStatusDetailsMocks } from '../../../test/mock';
 
 import { initNotificationsState } from '../../..';
 

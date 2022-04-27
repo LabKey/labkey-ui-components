@@ -11,7 +11,7 @@ import {
     TEST_USER_PROJECT_ADMIN,
     TEST_USER_GUEST,
     TEST_USER_READER,
-} from '../../../test/data/users';
+} from '../../userFixtures';
 
 import { getUserLastLogin, getUserPermissionsDisplay, getUserRoleDisplay } from './actions';
 

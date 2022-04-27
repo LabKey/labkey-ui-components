@@ -3,7 +3,7 @@ import { DropdownButton } from 'react-bootstrap';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { TEST_USER_EDITOR } from '../../../test/data/users';
+import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { mountWithServerContext } from '../../testHelpers';
 

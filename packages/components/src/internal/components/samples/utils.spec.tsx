@@ -376,7 +376,9 @@ describe('shouldIncludeMenuItem', () => {
 
     test('with excludedMenuKeys', () => {
         expect(shouldIncludeMenuItem(undefined, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
-        expect(shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, [SamplesEditButtonSections.IMPORT])).toBeTruthy();
+        expect(
+            shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, [SamplesEditButtonSections.IMPORT])
+        ).toBeTruthy();
         expect(shouldIncludeMenuItem(SamplesEditButtonSections.IMPORT, [SamplesEditButtonSections.IMPORT])).toBeFalsy();
     });
 });

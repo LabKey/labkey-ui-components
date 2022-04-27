@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.160.0
+*Released*: 27 April 2022
 * Item 10276: Add, remove or modify grid actions for various grids
   * Update `PicklistCreateMenuItem` to require a selection (no longer create an empty picklist)
   * Add forwarding `registerFilterType` function

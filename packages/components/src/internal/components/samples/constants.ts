@@ -153,6 +153,7 @@ export const DEFAULT_SAMPLE_FIELD_CONFIG = {
     lookupQuery: 'Materials',
     lookupType: { ...SAMPLE_TYPE },
     name: 'SampleID',
+    label: 'Sample ID'
 } as Partial<IDomainField>;
 
 export const ALIQUOTED_FROM_COL = 'AliquotedFrom';
@@ -187,7 +188,7 @@ export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
 export const SAMPLE_INSERT_EXTRA_COLUMNS = [...SAMPLE_STORAGE_COLUMNS, ALIQUOTED_FROM_COL];
 
 export const SAMPLE_EXPORT_CONFIG = {
-    'exportAlias.name': DEFAULT_SAMPLE_FIELD_CONFIG.name,
+    'exportAlias.name': DEFAULT_SAMPLE_FIELD_CONFIG.label,
     'exportAlias.aliquotedFromLSID': ALIQUOTED_FROM_COL,
     'exportAlias.sampleState': STATUS_COL,
 };

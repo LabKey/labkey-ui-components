@@ -284,8 +284,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         );
     }
 
-    const row = sampleModel.getRow();
-    const sampleName = caseInsensitive(row, 'Name')?.value;
+    const sampleName = sampleModel.getRowValue('Name');
 
     return (
         <TabbedGridPanel

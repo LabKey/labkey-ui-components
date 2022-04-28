@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-import { DropdownButton } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
 import { User } from '../base/models/User';
@@ -8,10 +7,9 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { RequiresPermission } from '../base/Permissions';
 
-import { SubMenuItem } from '../menus/SubMenuItem';
-
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
+import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
 interface Props {
     model: QueryModel;
@@ -39,16 +37,7 @@ export const PicklistButton: FC<Props> = memo(props => {
 
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.ManagePicklists}>
-            {!asSubMenu && (
-                <DropdownButton title="Picklists" id="samples-picklist-menu" className="responsive-menu">
-                    {items}
-                </DropdownButton>
-            )}
-            {asSubMenu && (
-                <SubMenuItem text="Picklists" inline>
-                    {items}
-                </SubMenuItem>
-            )}
+            <ResponsiveMenuButton id="samples-picklist-menu" items={items} text="Picklists" asSubMenu={asSubMenu} />
         </RequiresPermission>
     );
 });

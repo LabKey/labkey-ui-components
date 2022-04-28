@@ -1,8 +1,7 @@
 import React, { FC, memo } from 'react';
-import { DropdownButton } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
-import {RequiresPermission, SubMenuItem} from '../../..';
+import { RequiresPermission, ResponsiveMenuButton } from '../../..';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
@@ -32,16 +31,7 @@ export const SamplesAssayButton: FC<Props> = memo(props => {
 
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
-            {!asSubMenu && (
-                <DropdownButton title="Assay" id="samples-assay-menu" className="responsive-menu">
-                    {items}
-                </DropdownButton>
-            )}
-            {asSubMenu && (
-                <SubMenuItem text="Assay" inline>
-                    {items}
-                </SubMenuItem>
-            )}
+            <ResponsiveMenuButton id="samples-assay-menu" items={items} text="Assay" asSubMenu={asSubMenu} />
         </RequiresPermission>
     );
 });

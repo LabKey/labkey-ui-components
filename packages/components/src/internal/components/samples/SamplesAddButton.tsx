@@ -1,9 +1,9 @@
 import React, { FC, memo } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { App, RequiresPermission, SubMenuItem } from '../../..';
+import { App, RequiresPermission, ResponsiveMenuButton } from '../../..';
 
 const SAMPLE_IMPORT_TAB_ID = 2;
 
@@ -32,18 +32,11 @@ export const SamplesAddButton: FC<Props> = memo(props => {
             {showInsertNewButton && <MenuItem href={createSampleHref}>Add Manually</MenuItem>}
             {showImportDataButton && !hideImport && <MenuItem href={importSampleHref}>Import from File</MenuItem>}
         </>
-    )
+    );
+
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
-            {!asSubMenu && (
-            <DropdownButton title="Add" id="samples-add-menu" bsStyle="success">
-                {items}
-            </DropdownButton>
-            )}
-            {asSubMenu && (
-                <SubMenuItem text="Create Samples">{items}</SubMenuItem>
-            )}
+            <ResponsiveMenuButton id="samples-add-menu" items={items} text="Create Samples" asSubMenu={asSubMenu} />
         </RequiresPermission>
-
     );
 });

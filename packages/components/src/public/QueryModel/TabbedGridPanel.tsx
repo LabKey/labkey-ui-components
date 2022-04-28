@@ -144,11 +144,11 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
             createNotification({message: 'Successfully exported tabs to file.', alertClass: 'success'});
         } catch (e) {
             //Set export error
-            createNotification({message: 'Export failed: ' + e.getErrorMessage(), alertClass: 'danger'});
+            createNotification({message: 'Export failed: ' + e, alertClass: 'danger'});
         } finally {
             // unset exporting blocker
-            setShowExportModal(false);
             setCanExport(true);
+            setShowExportModal(false);
         }
     }, [exportFilename, canExport, queryModels]);
 

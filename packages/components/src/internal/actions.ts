@@ -539,7 +539,7 @@ export async function exportTabsXlsx(filename:string, models: SchemaQuery[]): Pr
 {
     return new Promise((resolve, reject) => {
         const controller = 'query';
-        const action = 'exportTabsXlsx.api';
+        const action = 'exportQueriesXLSX.api';
         const url = ActionURL.buildURL(controller, action);
 
         Ajax.request({
@@ -547,15 +547,14 @@ export async function exportTabsXlsx(filename:string, models: SchemaQuery[]): Pr
             method: 'POST',
             jsonData: {
                 filename,
-                tabModels: models,
+                queryForms: models,
             },
             downloadFile: true,
             success: () => {
                 resolve();
             },
-            failure: (response) => {
-                const resp = JSON.parse(response.responseText);
-                reject(resp?.exception ?? 'Unexpected error while exporting selected tabs.');
+            failure: (request) => {
+                reject(request?.response?.exception ?? 'Unexpected error while exporting selected tabs.');
             }
         });
     });

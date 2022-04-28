@@ -15,8 +15,6 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-import './theme/index.scss';
-
 import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
@@ -197,6 +195,7 @@ import {
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
+import { registerFilterType } from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
@@ -578,7 +577,7 @@ import {
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
-import { createMockWithRouteLeave, createMockWithRouterProps } from './test/mockUtils';
+import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
 import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
@@ -659,7 +658,7 @@ import {
     TEST_USER_READER,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
-} from './test/data/users';
+} from './internal/userFixtures';
 import {
     ASSAY_DESIGN_KEY,
     ASSAYS_KEY,
@@ -868,6 +867,7 @@ export {
     getQueryDetails,
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
+    registerFilterType,
     // editable grid related items
     loadEditorModelData,
     MAX_EDITABLE_GRID_ROWS,

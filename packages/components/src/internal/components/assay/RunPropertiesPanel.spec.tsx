@@ -10,7 +10,7 @@ import { CheckboxInput } from '../forms/input/CheckboxInput';
 
 import { AssayWizardModel } from './AssayWizardModel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
-import { initUnitTestMocks } from '../../testHelperMocks';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 beforeAll(() => {
     initUnitTestMocks();

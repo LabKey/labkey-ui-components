@@ -3,7 +3,7 @@ import { ReactWrapper } from 'enzyme';
 
 import { ConfirmModal, makeTestQueryModel, Picklist, SchemaQuery, DisableableButton } from '../../..';
 
-import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { mountWithServerContext } from '../../testHelpers';

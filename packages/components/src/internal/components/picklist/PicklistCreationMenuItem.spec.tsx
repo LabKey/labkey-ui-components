@@ -3,7 +3,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MenuItem, Modal } from 'react-bootstrap';
 
-import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { PicklistEditModal } from './PicklistEditModal';
@@ -40,7 +40,7 @@ describe('PicklistCreationMenuItem', () => {
         const wrapper = mount(
             <PicklistCreationMenuItem
                 itemText={text}
-                selectionKey={selectionKey}
+                sampleIds={['1']}
                 selectedQuantity={selectedQuantity}
                 key={key}
                 user={TEST_USER_EDITOR}
@@ -69,21 +69,23 @@ describe('PicklistCreationMenuItem', () => {
         wrapper.unmount();
     });
 
-    test('not enabled for Biologics', () => {
-        LABKEY.moduleContext = {
-            biologics: {},
-        };
 
+    test('create empty list', () => {
         const wrapper = mount(
             <PicklistCreationMenuItem
                 itemText={text}
-                selectionKey={selectionKey}
+                sampleIds={undefined}
                 selectedQuantity={selectedQuantity}
                 key={key}
-                user={TEST_USER_READER}
+                user={TEST_USER_EDITOR}
             />
         );
-        expect(wrapper.find('MenuItem')).toHaveLength(0);
+        const menuItem = wrapper.find('MenuItem a');
+        expect(menuItem).toHaveLength(1);
+        menuItem.simulate('click');
+        const modal = wrapper.find(Modal);
+        expect(modal).toHaveLength(1);
+        expect(modal.prop('show')).toBe(true);
         wrapper.unmount();
     });
 });

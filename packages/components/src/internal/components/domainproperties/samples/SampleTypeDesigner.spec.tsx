@@ -10,7 +10,7 @@ import DomainForm from '../DomainForm';
 import { DomainDetails } from '../models';
 
 import { sleep } from '../../../testHelpers';
-import { initUnitTestMocks } from '../../../testHelperMocks';
+import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner } from './SampleTypeDesigner';

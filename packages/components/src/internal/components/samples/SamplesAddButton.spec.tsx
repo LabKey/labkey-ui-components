@@ -6,9 +6,10 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { mountWithServerContext } from '../../testHelpers';
-import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
 import { SamplesAddButton } from './SamplesAddButton';
+import { SubMenuItem } from '../menus/SubMenuItem';
 
 describe('SamplesAddButton', () => {
     const DEFAULT_PROPS = {
@@ -74,5 +75,17 @@ describe('SamplesAddButton', () => {
         });
         validate(wrapper, true, false);
         wrapper.unmount();
+    });
+
+    test('asSubMenu', () => {
+        const model = makeTestQueryModel(
+            SchemaQuery.create('schema', 'query'),
+            QueryInfo.create({ importUrl: undefined, insertUrl: 'testinserturl' })
+        );
+        const wrapper = mountWithServerContext(<SamplesAddButton {...DEFAULT_PROPS} model={model} asSubMenu />, {
+            user: TEST_USER_EDITOR,
+        });
+        expect(wrapper.find(DropdownButton)).toHaveLength(0);
+        expect(wrapper.find(SubMenuItem)).toHaveLength(1);
     });
 });

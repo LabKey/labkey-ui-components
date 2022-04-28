@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.158.1-fb-smGridMoreLayout.1",
+  "version": "2.160.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -9,14 +9,12 @@
     "dist/"
   ],
   "scripts": {
-    "build": "nps build",
-    "clean": "nps clean",
-    "cleanAll": "nps cleanAll",
+    "build": "npm run clean && cross-env NODE_ENV=production webpack --config node_modules/@labkey/build/webpack/package.config.js --color --progress --profile",
+    "clean": "rimraf dist",
+    "cleanAll": "rimraf dist && rimraf node_modules",
     "prepublishOnly": "yarn install && cross-env WEBPACK_STATS=errors-only yarn build",
     "test": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
     "test-ci": "cross-env NODE_ENV=test jest --ci --silent",
-    "watch:build": "watch 'yarn build' ./src",
-    "watch": "npm run watch:build",
     "lint": "eslint",
     "lint-fix": "eslint --fix",
     "lint-precommit": "node lint.diff.mjs",
@@ -76,7 +74,7 @@
     "vis-network": "6.5.2"
   },
   "devDependencies": {
-    "@babel/core": "7.17.5",
+    "@labkey/build": "6.1.0",
     "@labkey/eslint-config-react": "0.0.11",
     "@types/enzyme": "3.10.11",
     "@types/history": "4.7.9",
@@ -91,11 +89,8 @@
     "@types/react-router": "3.0.24",
     "@types/react-select": "4.0.17",
     "@types/react-test-renderer": "16.9.5",
-    "babel-loader": "8.2.4",
     "bootstrap-sass": "3.4.3",
-    "copy-webpack-plugin": "10.2.4",
     "cross-env": "7.0.3",
-    "css-loader": "6.7.1",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.6",
     "enzyme-to-json": "3.6.2",
@@ -103,18 +98,8 @@
     "jest": "27.5.1",
     "jest-cli": "27.5.1",
     "jest-teamcity-reporter": "0.9.0",
-    "nps": "5.10.0",
-    "nps-utils": "1.7.0",
     "react-test-renderer": "16.14.0",
-    "resolve-url-loader": "5.0.0",
-    "sass": "1.49.9",
-    "sass-loader": "12.6.0",
     "ts-jest": "27.1.4",
-    "ts-loader": "9.2.8",
-    "typescript": "4.6.3",
-    "watch": "1.0.2",
-    "webpack": "5.70.0",
-    "webpack-cli": "4.9.2",
     "xhr-mock": "2.5.1"
   },
   "peerDependencies": {
@@ -124,56 +109,5 @@
     "react-bootstrap": "^0.33.1",
     "react-dom": "^16.0",
     "reactn": "^2.2.7"
-  },
-  "jest": {
-    "globals": {
-      "LABKEY": {
-        "contextPath": "/labkey",
-        "container": {
-          "path": ""
-        },
-        "project": {
-          "rootId": "ROOTID"
-        },
-        "user": {
-          "id": 1004
-        },
-        "helpLinkPrefix": "https://www.labkey.org/Documentation/wiki-page.view?name=",
-        "moduleContext": {
-          "study": {
-            "subject": {
-              "nounPlural": "Participants",
-              "tableName": "Participant",
-              "nounSingular": "Participant",
-              "columnName": "ParticipantId"
-            },
-            "timepointType": "VISIT"
-          }
-        }
-      }
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "moduleNameMapper": {
-      "\\.(scss)$": "<rootDir>./src/test/styleMock.ts"
-    },
-    "setupFilesAfterEnv": [
-      "<rootDir>./src/test/jest.setup.ts"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "testEnvironment": "jsdom",
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testRegex": "(\\.(test|spec))\\.(ts|tsx)$",
-    "testResultsProcessor": "jest-teamcity-reporter",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
   }
 }

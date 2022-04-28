@@ -19,9 +19,9 @@ import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
 import { CONCEPT_CACHE } from '../ontology/actions';
 
-import { initUnitTestMocks } from '../../testHelperMocks';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
-import { initOnotologyMocks } from '../../mock';
+import { initOnotologyMocks } from '../../../test/mock';
 
 import {
     ATTACHMENT_TYPE,

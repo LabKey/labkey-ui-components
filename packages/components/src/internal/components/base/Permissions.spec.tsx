@@ -6,7 +6,7 @@ import {
     TEST_USER_ASSAY_DESIGNER,
     TEST_USER_EDITOR,
     TEST_USER_READER,
-} from '../../../test/data/users';
+} from '../../userFixtures';
 import { mountWithServerContext } from '../../testHelpers';
 
 import { RequiresPermission } from './Permissions';

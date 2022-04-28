@@ -2,7 +2,7 @@ import { Filter } from '@labkey/api';
 
 import { fromJS, List, Map } from 'immutable';
 
-import { TEST_USER_EDITOR, TEST_USER_GUEST } from '../../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_GUEST } from '../../userFixtures';
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';

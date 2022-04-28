@@ -20,7 +20,7 @@ import { Principal, SecurityPolicy } from './models';
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { ServerContext } from '../base/ServerContext';
-import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN } from '../../../test/data/users';
+import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
 import { AppContext } from '../../AppContext';
 import { getTestAPIWrapper } from '../../APIWrapper';

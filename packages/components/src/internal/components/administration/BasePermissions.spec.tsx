@@ -2,10 +2,10 @@ import React from 'react';
 import { List, Map } from 'immutable';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
-import { createMockWithRouteLeave } from '../../../test/mockUtils';
+import { createMockWithRouteLeave } from '../../mockUtils';
 import { ServerContext } from '../base/ServerContext';
 import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
-import { TEST_USER_FOLDER_ADMIN } from '../../../test/data/users';
+import { TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
 

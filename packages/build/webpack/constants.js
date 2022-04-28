@@ -152,6 +152,8 @@ const TS_CHECKER_DEV_CONFIG = {
     typescript: {
         ...TS_CHECKER_CONFIG.typescript,
         configOverwrite: {
+            include: ["src/client/**/*"],
+            exclude: ["node_modules", "**/*.spec.*", "src/test", "resources", "packages"],
             compilerOptions: {
                 "paths": {
                     "@labkey/components": [labkeyUIComponentsPath],

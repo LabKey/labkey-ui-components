@@ -22,6 +22,8 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 
+// TODO reconcile these properties. Do we need both selectionKey and queryModel.
+// Is selectedQuantity needed if we always have either the sampleIds or the queryModel?
 export interface PicklistEditModalProps {
     selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
     selectedQuantity?: number;

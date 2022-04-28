@@ -109,7 +109,7 @@ describe('PermissionAssignments', () => {
 
         expect(fetchPolicy).toHaveBeenNthCalledWith(
             1,
-            container.id,
+            TEST_PROJECT.rootId,
             defaultProps.principalsById,
             defaultProps.inactiveUsersById
         );

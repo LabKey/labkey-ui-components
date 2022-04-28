@@ -11,11 +11,14 @@ interface Props {
     model: QueryModel;
     hideImport?: boolean;
     asSubMenu?: boolean;
+    text?: string;
+    bsStyle?: string;
 }
 
 export const SamplesAddButton: FC<Props> = memo(props => {
-    const { model, hideImport, asSubMenu } = props;
+    const { model, hideImport, asSubMenu, text = 'Create Samples', bsStyle = 'default' } = props;
     const { showInsertNewButton, showImportDataButton, queryInfo } = model;
+    const cls = bsStyle === 'default' ? 'responsive-menu' : '';
     const createSampleHref = App.NEW_SAMPLES_HREF.addParams({
         target: queryInfo?.schemaQuery?.queryName,
     }).toHref();
@@ -37,11 +40,11 @@ export const SamplesAddButton: FC<Props> = memo(props => {
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
             {!asSubMenu && (
-                <DropdownButton title="Add" id="samples-add-menu" bsStyle="success">
+                <DropdownButton title={text} id="samples-add-menu" bsStyle={bsStyle} className={cls}>
                     {items}
                 </DropdownButton>
             )}
-            {asSubMenu && <SubMenuItem text="Create Samples">{items}</SubMenuItem>}
+            {asSubMenu && <SubMenuItem text={text} inline>{items}</SubMenuItem>}
         </RequiresPermission>
     );
 });

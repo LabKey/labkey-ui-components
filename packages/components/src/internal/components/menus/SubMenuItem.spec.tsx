@@ -67,10 +67,26 @@ describe('<SubMenuItem />', () => {
         expect(menu).toMatchSnapshot();
     });
 
+    test('itemsCls', () => {
+        const menu = shallow(<SubMenuItem items={items} />);
+        menu.find({ role: 'menuitem' }).prop('onClick')(); // expanded
+        expect(menu.find('ul')).toHaveLength(1);
+        expect(menu.find('ul').prop('className')).toBe('well');
+        menu.setProps({ itemsCls: 'test-cls' });
+        expect(menu.find('ul').prop('className')).toBe('test-cls');
+    });
+
     test('inline', () => {
         const menu = shallow(<SubMenuItem items={items} inline />);
         expect(menu.find('ul')).toHaveLength(1);
+        expect(menu.find('ul').prop('className')).toBe('');
         expect(menu.find(MenuItem)).toHaveLength(items.length);
+    });
+
+    test('inline with text header', () => {
+        const menu = shallow(<SubMenuItem items={items} text="Test Header" inline />);
+        expect(menu.find('ul')).toHaveLength(1);
+        expect(menu.find(MenuItem)).toHaveLength(items.length + 1);
     });
 
     test('allow filtering but not enough items', () => {

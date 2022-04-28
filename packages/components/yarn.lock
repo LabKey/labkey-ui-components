@@ -1511,10 +1511,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@labkey/api@1.10.0":
-  version "1.10.0"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.10.0.tgz#fa7d4bf1f2f57692513f4b1cd2aca3c4dd85e860"
-  integrity sha1-+n1L8fL1dpJRP0sc0qyjxN2F6GA=
+"@labkey/api@1.10.0-fb-url-path-location.2":
+  version "1.10.0-fb-url-path-location.2"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.10.0-fb-url-path-location.2.tgz#b229f79584484ea63ef7fe262668bd5e123346ff"
+  integrity sha1-sin3lYRITqY+9/4mJmi9XhIzRv8=
 
 "@labkey/build@6.1.0":
   version "6.1.0"

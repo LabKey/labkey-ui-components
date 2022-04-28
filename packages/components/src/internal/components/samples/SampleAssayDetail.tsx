@@ -284,6 +284,9 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         );
     }
 
+    const row = sampleModel.getRow();
+    const sampleName = caseInsensitive(row, 'Name')?.value;
+
     return (
         <TabbedGridPanel
             actions={actions}
@@ -307,7 +310,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
             activeModelId={activeTabId}
             title="Assay Results"
             // exportFilename={sampleModel.name + '_assay_results'}
-            exportFilename={'_assay_results'}
+            exportFilename={sampleName + '_assay_results'}
         />
     );
 });

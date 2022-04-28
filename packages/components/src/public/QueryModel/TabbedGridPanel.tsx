@@ -210,7 +210,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                     {...rest}
                 />
             </div>
-            {queryModels !=null && showExportModal &&
+            {showExportModal && !!queryModels &&
                 <ExportModal
                     queryModels={queryModels}
                     tabOrder={tabOrder}

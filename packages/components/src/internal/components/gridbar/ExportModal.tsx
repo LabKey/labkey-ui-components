@@ -14,14 +14,14 @@ const DEFAULT_TITLE = 'Select the Tabs to Export';
 
 export const ExportModal: FC<ExportModalProperties> = memo((props) => {
     const {queryModels, tabOrder, onClose, onExport, canExport, title = DEFAULT_TITLE} = props;
-    const [selected, setSelected] = useState<Set<string>>(new Set(tabOrder));
+    const [selected, setSelected] = useState<Set<string>>(() => new Set(tabOrder));
 
     const closeHandler = useCallback(() => {
-        onClose?.();
+        onClose();
     }, [onClose]);
 
     const exportHandler = useCallback(() => {
-        onExport?.(selected);
+        onExport(selected);
     }, [onExport, selected]);
 
     const onChecked = useCallback((evt) => {
@@ -37,9 +37,9 @@ export const ExportModal: FC<ExportModalProperties> = memo((props) => {
     }, [selected]);
 
     if (queryModels == null)
-        return undefined;
+        return null;
 
-    return (<>
+    return (
         <Modal onHide={closeHandler} show={true}>
             <Modal.Header closeButton>
                 <Modal.Title>{title}</Modal.Title>
@@ -71,5 +71,5 @@ export const ExportModal: FC<ExportModalProperties> = memo((props) => {
                 </div>
             </Modal.Footer>
         </Modal>
-    </>);
+    );
 });

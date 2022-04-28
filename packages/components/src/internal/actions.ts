@@ -535,27 +535,25 @@ export function getExportParams(
     return params;
 }
 
-export async function exportTabsXlsx(filename:string, models: SchemaQuery[]): Promise<void>
-{
+export function exportTabsXlsx(filename: string, queryForms: SchemaQuery[]): Promise<void> {
     return new Promise((resolve, reject) => {
-        const controller = 'query';
-        const action = 'exportQueriesXLSX.api';
-        const url = ActionURL.buildURL(controller, action);
-
         Ajax.request({
-            url: url,
+            url: ActionURL.buildURL('query', 'exportQueriesXLSX.api'),
             method: 'POST',
             jsonData: {
                 filename,
-                queryForms: models,
+                queryForms,
             },
             downloadFile: true,
             success: () => {
                 resolve();
             },
-            failure: (request) => {
-                reject(request?.response?.exception ?? 'Unexpected error while exporting selected tabs.');
-            }
+            failure: Utils.getCallbackWrapper(
+                error => {
+                    console.error('Failed to export tabular data', error);
+                    reject(resolveErrorMessage(error) ?? 'Unexpected error while exporting selected tabs.');
+                }
+            ),
         });
     });
 }

@@ -68,7 +68,11 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         if (containerId !== project.rootId && user.isRootAdmin) {
             (async () => {
                 try {
-                    const rootPolicy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
+                    const rootPolicy_ = await api.security.fetchPolicy(
+                        project.rootId,
+                        principalsById,
+                        inactiveUsersById
+                    );
                     setRootPolicy(rootPolicy_);
                 } catch (e) {
                     setSaveErrorMsg(resolveErrorMessage(e) ?? 'Failed to load policy');

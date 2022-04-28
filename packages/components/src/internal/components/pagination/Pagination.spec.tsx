@@ -2,6 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { Pagination, PaginationProps } from './Pagination';
+import { PageMenu } from './PageMenu';
 
 describe('Pagination', () => {
     let props: PaginationProps;
@@ -44,12 +45,13 @@ describe('Pagination', () => {
         // PageSizeMenu is last button
         expect(wrapper.find('button.btn').last().props().disabled).toEqual(true);
 
-        // PageSizeMenu should be hidden.
+        // PageMenu should be hidden.
         wrapper.setProps({ disabled: false, rowCount: 5 });
-        expect(wrapper.find('.page-size-menu').exists()).toEqual(false);
+        expect(wrapper.find(PageMenu)).toHaveLength(0);
 
         wrapper.setProps({ rowCount: 661 });
         expect(wrapper.find('.pagination-info').text()).toEqual('1 - 20 of 661');
+        expect(wrapper.find(PageMenu).prop('showPageSizeMenu')).toEqual(true);
 
         wrapper.setProps({ pageSize: 40 });
         expect(wrapper.find('.pagination-info').text()).toEqual('1 - 40 of 661');

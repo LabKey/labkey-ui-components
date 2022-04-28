@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.161.0
+*Released*: 28 April 2022
+* Item 10275: Grid panel updates to make button/menu bar display responsive to screen width
+  * Grid panel button bar update to show 2nd row of items in md/sm layout
+  * Move page size menu into page number menu
+  * Display ResponsiveMenuButtonGroup submenus inline with header and divider
+  * Add ResponsiveMenuButton as a simple wrapper for app buttons to use
+
 ### version 2.160.0
 *Released*: 27 April 2022
 * Item 10276: Add, remove or modify grid actions for various grids

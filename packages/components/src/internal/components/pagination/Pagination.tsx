@@ -3,7 +3,6 @@ import { ButtonGroup } from 'react-bootstrap';
 
 import { PaginationButton } from './PaginationButton';
 import { PageMenu } from './PageMenu';
-import { PageSizeMenu } from './PageSizeMenu';
 import { PaginationInfo } from './PaginationInfo';
 
 export interface PaginationData {
@@ -71,13 +70,17 @@ export class Pagination extends PureComponent<PaginationProps> {
 
                         <PageMenu
                             currentPage={currentPage}
-                            disabled={disabled || (isFirstPage && isLastPage)}
+                            disabled={disabled}
                             id={id}
                             isFirstPage={isFirstPage}
                             isLastPage={isLastPage}
                             pageCount={pageCount}
                             loadFirstPage={loadFirstPage}
                             loadLastPage={loadLastPage}
+                            showPageSizeMenu={showPageSizeMenu}
+                            pageSize={pageSize}
+                            pageSizes={pageSizes}
+                            setPageSize={setPageSize}
                         />
 
                         <PaginationButton
@@ -88,16 +91,6 @@ export class Pagination extends PureComponent<PaginationProps> {
                             onClick={loadNextPage}
                         />
                     </ButtonGroup>
-                )}
-
-                {showPageSizeMenu && (
-                    <PageSizeMenu
-                        disabled={disabled}
-                        id={id}
-                        pageSize={pageSize}
-                        pageSizes={pageSizes}
-                        setPageSize={setPageSize}
-                    />
                 )}
             </div>
         );

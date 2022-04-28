@@ -194,6 +194,7 @@ import {
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
+import { registerFilterType } from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
@@ -865,6 +866,7 @@ export {
     getQueryDetails,
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
+    registerFilterType,
     // editable grid related items
     loadEditorModelData,
     MAX_EDITABLE_GRID_ROWS,

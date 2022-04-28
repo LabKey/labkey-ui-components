@@ -540,7 +540,7 @@ export async function exportTabsXlsx(filename:string, models: SchemaQuery[]): Pr
     return new Promise((resolve, reject) => {
         const controller = 'query';
         const action = 'exportTabsXlsx.api';
-        const url = ActionURL.buildURL(controller, action, undefined);
+        const url = ActionURL.buildURL(controller, action);
 
         Ajax.request({
             url: url,

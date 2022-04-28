@@ -1,37 +1,38 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Checkbox, Label, Modal } from 'react-bootstrap';
 import { QueryModelMap } from '../../../public/QueryModel/withQueryModels';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 interface ExportModalProperties {
     queryModels: QueryModelMap;
     tabOrder: string[];
     onExport: (tabs: Set<string>) => Promise<void>;
-    onClose?: () => void;
+    onClose: () => void;
     canExport: boolean;
+    title?: string;
 }
+const DEFAULT_TITLE = 'Select the Tabs to Export';
 
 export const ExportModal: FC<ExportModalProperties> = memo((props) => {
-    const {queryModels, tabOrder, onClose, onExport, canExport} = props;
+    const {queryModels, tabOrder, onClose, onExport, canExport, title = DEFAULT_TITLE} = props;
     const [selected, setSelected] = useState<Set<string>>(new Set(tabOrder));
 
     const closeHandler = useCallback(() => {
         onClose?.();
-    }, []);
+    }, [onClose]);
 
     const exportHandler = useCallback(() => {
         onExport?.(selected);
-    }, [selected]);
+    }, [onExport, selected]);
 
     const onChecked = useCallback((evt) => {
         const modelId = evt.target.value;
-        if (evt.target.checked)
-        {
-            setSelected(new Set(selected.add(modelId)));
+        const draftSelected = new Set(selected);
+        if (evt.target.checked) {
+            setSelected(draftSelected.add(modelId));
         }
         else {
-            selected.delete(modelId);
-            setSelected(new Set(selected));
+            draftSelected.delete(modelId);
+            setSelected(draftSelected);
         }
     }, [selected]);
 
@@ -41,10 +42,10 @@ export const ExportModal: FC<ExportModalProperties> = memo((props) => {
     return (<>
         <Modal onHide={closeHandler} show={true}>
             <Modal.Header closeButton>
-                <Modal.Title>Select the Tabs to Export to Excel</Modal.Title>
+                <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="excel-export-modal-body" >
+                <div className="export-modal-body" >
                     <ul>
                         {tabOrder.map( modelId => {
                             return <Checkbox checked={selected.has(modelId)} className='export-modal-checkbox' key={modelId} value={modelId} onChange={onChecked}>{queryModels[modelId].title}</Checkbox>

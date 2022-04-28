@@ -129,7 +129,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         [onTabSelect]
     );
 
-    const exportTabs = useCallback(async (selectedTabs: string[]|Set<string>):Promise<void> => {
+    const exportTabs = useCallback(async (selectedTabs: string[]|Set<string>)  => {
         try {
             // set exporting blocker
             setCanExport(false);
@@ -152,16 +152,16 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         }
     }, [exportFilename, canExport, queryModels]);
 
-    const exportHandler = useCallback(async () => {
+    const excelExportHandler = useCallback(async () => {
         if (Object.keys(tabOrder).length > 1) {
             setShowExportModal(true);
             return;
         }
 
-        exportTabs([internalActiveId]).then();
+        await exportTabs([internalActiveId]);
     }, [tabOrder, exportTabs, internalActiveId]);
 
-    const exportHandlers = { ...onExport, [EXPORT_TYPES.EXCEL]: exportHandler };
+    const exportHandlers = { ...onExport, [EXPORT_TYPES.EXCEL]: excelExportHandler };
 
     const closeExportModal = useCallback(() => {
         setShowExportModal(false);

@@ -428,3 +428,17 @@ export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string
 
     return null;
 }
+
+/**
+ * This method is a forwarding method for the version in @labkey/api. Calling the one from @labkey/api
+ * directly from another npm package registers with a different global urlMap (somehow), so essentially doesn't
+ * register the filter at all, just creates a new filter type for you.
+ *
+ */
+export function registerFilterType(
+    displayText: string, displaySymbol?: string, urlSuffix?: string,
+    dataValueRequired?: boolean, multiValueSeparator?: string, longDisplayText?: string,
+    minOccurs?: number, maxOccurs?: number, tableWise?: boolean, labkeySqlOperator?: string
+): Filter.IFilterType {
+    return Filter.registerFilterType(displayText, displaySymbol, urlSuffix, dataValueRequired, multiValueSeparator, longDisplayText, minOccurs, maxOccurs, tableWise, labkeySqlOperator);
+}

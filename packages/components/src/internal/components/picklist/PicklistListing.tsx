@@ -39,7 +39,6 @@ interface OwnProps {
     user: User;
     initTab?: string;
     CreateButton?: ComponentType<PicklistCreateButtonProps>;
-    picklistName?: string;
 }
 
 interface PicklistGridProps {

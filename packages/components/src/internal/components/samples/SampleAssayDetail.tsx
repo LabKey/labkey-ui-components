@@ -306,7 +306,8 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
             onTabSelect={onTabChange}
             activeModelId={activeTabId}
             title="Assay Results"
-            exportFilename={'Assay_Samples'} //TODO find name of assay
+            // exportFilename={sampleModel.name + '_assay_results'}
+            exportFilename={'_assay_results'}
         />
     );
 });

@@ -18,7 +18,7 @@ import renderer from 'react-test-renderer';
 import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { TEST_USER_APP_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_APP_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 import { ServerNotifications } from '../notifications/ServerNotifications';
 
 import { markAllNotificationsRead } from '../../../test/data/notificationData';

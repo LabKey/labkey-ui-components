@@ -197,7 +197,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
             });
         }
 
-        return null;
+        return this.props.children;
     }
 
     onMouseOut() {
@@ -220,6 +220,27 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
             role: 'presentation',
         };
 
+        const subMenuItems = (
+            <>
+                {filterActive && (
+                    <li role="presentation">
+                        <a role="menuitem">
+                            <input
+                                onChange={this.onFilterChange}
+                                onKeyDown={this.onKeyDownInput}
+                                placeholder={filterPlaceholder}
+                                ref="filter"
+                                type="text"
+                            />
+                        </a>
+                    </li>
+                )}
+                {this.renderItems(filterActive)}
+            </>
+        );
+
+        if (!text) return subMenuItems;
+
         return (
             <li {...menuItemProps}>
                 <a
@@ -235,24 +256,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                     onClick={disabled ? emptyFn : this.onClick}
                     className={`fa fa-chevron-${expanded ? 'up' : 'down'}`}
                 />
-                {expanded && (
-                    <ul className={itemsCls}>
-                        {filterActive && (
-                            <li role="presentation">
-                                <a role="menuitem">
-                                    <input
-                                        onChange={this.onFilterChange}
-                                        onKeyDown={this.onKeyDownInput}
-                                        placeholder={filterPlaceholder}
-                                        ref="filter"
-                                        type="text"
-                                    />
-                                </a>
-                            </li>
-                        )}
-                        {this.renderItems(filterActive)}
-                    </ul>
-                )}
+                {expanded && <ul className={itemsCls}>{subMenuItems}</ul>}
             </li>
         );
     }

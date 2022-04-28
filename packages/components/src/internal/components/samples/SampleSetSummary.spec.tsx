@@ -2,8 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { SampleSetSummary } from '../../..';
-import { initUnitTestMocks } from '../../testHelperMocks';
-import { TEST_USER_APP_ADMIN } from '../../../test/data/users';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
+import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 import { selectOptionByText, SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
 
 beforeAll(() => {

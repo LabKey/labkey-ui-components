@@ -21,7 +21,7 @@ import { Alert, FileAttachmentForm } from '../../..';
 import { ActionButton } from '../buttons/ActionButton';
 
 import { sleep } from '../../testHelpers';
-import { initUnitTestMocks } from '../../testHelperMocks';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { DomainDesign } from './models';
 import DomainForm, { DomainFormImpl } from './DomainForm';

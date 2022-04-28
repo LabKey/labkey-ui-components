@@ -10,6 +10,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const FREEZER_MANAGER_DIRS = ['inventory', 'packages', 'freezermanager', 'src'];
 const WORKFLOW_DIRS = ['sampleManagement', 'packages', 'workflow', 'src'];
+const ELN_DIRS = ['labbook', 'packages', 'eln', 'src'];
 const cwd = path.resolve('./').split(path.sep);
 const lkModule = cwd[cwd.length - 1];
 const isProductionBuild = process.env.NODE_ENV === 'production';
@@ -21,6 +22,7 @@ const isProductionBuild = process.env.NODE_ENV === 'production';
 let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
 let freezerManagerPath = path.resolve('./node_modules/@labkey/freezermanager');
 let workflowPath = path.resolve('./node_modules/@labkey/workflow');
+let elnPath = path.resolve('./node_modules/@labkey/eln');
 const tsconfigPath = path.resolve('./node_modules/@labkey/build/webpack/tsconfig.json');
 
 if (process.env.LINK) {
@@ -33,10 +35,12 @@ if (process.env.LINK) {
     const lkModulesPath = cwd.slice(0, cwd.lastIndexOf('modules') + 1);
     freezerManagerPath = lkModulesPath.concat(FREEZER_MANAGER_DIRS).join(path.sep);
     workflowPath = lkModulesPath.concat(WORKFLOW_DIRS).join(path.sep);
+    elnPath = lkModulesPath.concat(ELN_DIRS).join(path.sep);
 
     console.log('Using @labkey/components path:', labkeyUIComponentsPath);
     console.log('Using @labkey/freezermanager path:', freezerManagerPath);
     console.log('Using @labkey/workflow path:', workflowPath);
+    console.log('Using @labkey/eln path:', elnPath);
 }
 
 const watchPort = process.env.WATCH_PORT || 3001;
@@ -62,12 +66,14 @@ const SASS_PLUGINS = [
         options: {
             importLoaders: 1
         }
-    },{
+    },
+    {
         loader: 'resolve-url-loader',
         options: {
             silent: !isProductionBuild
         }
-    },{
+    },
+    {
         loader: 'sass-loader',
         options: {
             implementation: require('sass'),
@@ -128,12 +134,16 @@ const BABEL_DEV_CONFIG = {
 const TS_CHECKER_CONFIG = {
     typescript: {
         configFile: tsconfigPath,
+        configOverwrite: {
+            include: ["src/client/**/*"],
+            // excluding spec files shaves time off the build
+            exclude: ["node_modules", "**/*.spec.*", "src/test", "resources", "packages"],
+        },
         context: '.',
         diagnosticOptions: {
             semantic: true,
             syntactic: true,
         },
-        mode: "write-references",
     }
 };
 
@@ -146,7 +156,8 @@ const TS_CHECKER_DEV_CONFIG = {
                 "paths": {
                     "@labkey/components": [labkeyUIComponentsPath],
                     "@labkey/freezermanager": [freezerManagerPath],
-                    "@labkey/workflow": [workflowPath]
+                    "@labkey/workflow": [workflowPath],
+                    "@labkey/eln": [elnPath],
                 }
             }
         },
@@ -225,9 +236,10 @@ module.exports = {
     aliases: {
         LABKEY_PACKAGES: {
             '@labkey/components-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme',
-            '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss',
+            '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme/app',
             '@labkey/freezermanager-scss': freezerManagerPath + '/dist/assets/scss/theme',
             '@labkey/workflow-scss': workflowPath + '/dist/assets/scss/theme',
+            '@labkey/eln-scss': elnPath + '/dist/assets/scss/theme',
         },
         LABKEY_PACKAGES_DEV: {
             // Note that for modules that don't have these packages, the aliases are just ignored and don't
@@ -238,9 +250,10 @@ module.exports = {
 
             // need to set the path based on the LINK var
             '@labkey/components-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
-            '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/internal/app/scss' : '/dist/assets/scss'),
+            '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme/app' : '/dist/assets/scss/theme/app'),
             '@labkey/freezermanager-scss': freezerManagerPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/workflow-scss': workflowPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
+            '@labkey/eln-scss': elnPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
         },
     },
     outputPath: path.resolve('./resources/web/gen'),

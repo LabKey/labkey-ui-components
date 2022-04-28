@@ -15,8 +15,6 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-import './theme/index.scss';
-
 import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
@@ -145,7 +143,9 @@ import { ManageDropdownButton } from './internal/components/buttons/ManageDropdo
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
 import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
-import { getMenuItemsForSection } from './internal/components/buttons/utils';
+import { DisableableButton } from './internal/components/buttons/DisableableButton';
+import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
+import { getMenuItemsForSection, getMenuItemForSectionKey } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 
@@ -194,6 +194,7 @@ import {
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
+import { registerFilterType } from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
@@ -288,7 +289,6 @@ import { addDateRangeFilter, last12Months, monthSort } from './internal/componen
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
-import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import {
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
@@ -320,12 +320,13 @@ import {
     getSampleTypeDetails,
     getSampleTypes,
     getSelectedItemSamples,
-    getSelectedSampleTypes,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
-import { SamplesManageButton } from './internal/components/samples/SamplesManageButton';
+import { SamplesAddButton } from './internal/components/samples/SamplesAddButton';
+import { SamplesAssayButton } from './internal/components/samples/SamplesAssayButton';
+import { SamplesEditButton } from './internal/components/samples/SamplesEditButton';
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
@@ -350,10 +351,11 @@ import {
     getSampleStatus,
     getSampleStatusType,
     getSampleTypeTemplateUrl,
+    getSampleWizardURL,
     downloadSampleTypeTemplate,
     isSampleOperationPermitted,
     isSamplesSchema,
-    SamplesManageButtonSections,
+    SamplesEditButtonSections,
 } from './internal/components/samples/utils';
 import {
     ALIQUOT_FILTER_MODE,
@@ -573,7 +575,7 @@ import {
     SampleStateType,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
-import { createMockWithRouteLeave, createMockWithRouterProps } from './test/mockUtils';
+import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
 import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
@@ -589,7 +591,7 @@ import { PicklistOverview } from './internal/components/picklist/PicklistOvervie
 import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
-import { RemoveFromPicklistMenuItem } from './internal/components/picklist/RemoveFromPicklistMenuItem';
+import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveFromPicklistButton';
 import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
 
 import {
@@ -654,7 +656,7 @@ import {
     TEST_USER_READER,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
-} from './test/data/users';
+} from './internal/userFixtures';
 import {
     ASSAY_DESIGN_KEY,
     ASSAYS_KEY,
@@ -863,6 +865,7 @@ export {
     getQueryDetails,
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
+    registerFilterType,
     // editable grid related items
     loadEditorModelData,
     MAX_EDITABLE_GRID_ROWS,
@@ -981,7 +984,7 @@ export {
     useUserProperties,
     // sample picklist items
     AddToPicklistMenuItem,
-    RemoveFromPicklistMenuItem,
+    RemoveFromPicklistButton,
     PicklistButton,
     PicklistCreationMenuItem,
     Picklist,
@@ -1003,6 +1006,7 @@ export {
     getSampleStatus,
     getSampleStatusType,
     getSampleTypeTemplateUrl,
+    getSampleWizardURL,
     downloadSampleTypeTemplate,
     DisableableMenuItem,
     SampleOperation,
@@ -1030,7 +1034,6 @@ export {
     getFieldLookupFromSelection,
     getSelectedItemSamples,
     getSampleTypes,
-    getSelectedSampleTypes,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,
     getDeleteSharedSampleTypeUrl,
@@ -1043,8 +1046,10 @@ export {
     SampleCreationType,
     SampleSetDeleteModal,
     SampleActionsButton,
-    SamplesManageButton,
-    SamplesManageButtonSections,
+    SamplesAddButton,
+    SamplesAssayButton,
+    SamplesEditButton,
+    SamplesEditButtonSections,
     SamplesTabbedGridPanel,
     SampleLineageGraph,
     SampleDetailEditing,
@@ -1072,7 +1077,6 @@ export {
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,
-    EntityLineageEditMenuItem,
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
     GenerateEntityResponse,
@@ -1303,7 +1307,10 @@ export {
     SplitButtonGroup,
     PaginationButtons,
     ToggleButtons,
+    DisableableButton,
+    ResponsiveMenuButtonGroup,
     getMenuItemsForSection,
+    getMenuItemForSectionKey,
     // application page related items
     LoadingPage,
     NotFound,

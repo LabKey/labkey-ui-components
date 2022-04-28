@@ -7,7 +7,7 @@ import { LineageResult } from '../components/lineage/models';
 import { registerDefaultURLMappers } from '../testHelpers';
 
 import { parsePathName, URLResolver } from './URLResolver';
-import {initUnitTestMocks} from "../testHelperMocks";
+import {initUnitTestMocks} from "../../test/testHelperMocks";
 
 beforeAll(() => {
     initUnitTestMocks();

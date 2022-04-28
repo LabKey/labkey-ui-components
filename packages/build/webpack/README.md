@@ -14,7 +14,7 @@ module's `package.json` file at them.
 1. Add/update the `scripts` in your `package.json` to reference the relevant config file in
     `node_modules/@labkey/build/webpack`. See examples from the [experiment] module.
     1. use one of the three configuration files based on your script target: `prod.config.js`, `dev.config.js`,
-        or `watch.config.js`
+        `package.config.js`, or `watch.config.js`
     1. make sure to pass the following environment variables as part of your webpack command:
         1. `NODE_ENV` - development or production
         2. `PROD_SOURCE_MAP` - optional source map setting for the production webpack config to use,

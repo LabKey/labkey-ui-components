@@ -1,5 +1,11 @@
 # @labkey/build
 
+### version 6.1.0
+*Released*: 27 April 2002
+* Add shared package build (package.config.js)
+* Update tsconfig.json
+* Add eln path to shared app builds
+
 ### version 6.0.0
 *Released*: 27 March 2022
 * Package updates.

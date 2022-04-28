@@ -7,7 +7,7 @@ import { OperationConfirmationData, QueryModel, User } from '../../..';
 
 import { SampleStateType } from './constants';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
-import { SamplesManageButtonSections } from './utils';
+import { SamplesEditButtonSections } from './utils';
 
 export enum SampleCreationType {
     Independents = 'New samples',
@@ -124,6 +124,7 @@ export interface SampleStorageButtonsComponentProps {
     afterStorageUpdate?: () => void;
     queryModel?: QueryModel;
     isPicklist?: boolean;
+    nounPlural?: string;
 }
 
 export type SampleStorageButton = ComponentType<SampleStorageButtonsComponentProps>;
@@ -161,10 +162,7 @@ export interface SampleGridButtonProps {
     afterSampleDelete?: (rowsToKeep: any[]) => void;
     createBtnParentKey?: string;
     createBtnParentType?: string;
-    excludedCreateMenuKeys?: List<string>;
-    excludedManageMenuKeys?: SamplesManageButtonSections[];
-    hideButtons?: SamplesManageButtonSections[];
-    excludeStartJob?: boolean;
+    excludedMenuKeys?: SamplesEditButtonSections[];
     initAliquotMode?: ALIQUOT_FILTER_MODE;
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     showBulkUpdate?: () => void;

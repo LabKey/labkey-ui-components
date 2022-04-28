@@ -159,3 +159,16 @@
     left: auto;
     right: auto;
 }
+
+.responsive-btn-group {
+    margin-right: 10px;
+
+    .responsive-menu {
+        border-color: transparent;
+
+        &:hover {
+            border-color: $border-color;
+            background-color: transparent;
+        }
+    }
+}

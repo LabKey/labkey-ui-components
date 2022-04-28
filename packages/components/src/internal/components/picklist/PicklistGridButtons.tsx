@@ -1,7 +1,9 @@
 import React, { ComponentType, FC, memo } from 'react';
+import { PermissionTypes } from '@labkey/api';
 
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
+import { RequiresPermission } from '../base/Permissions';
 
 import { Picklist } from './models';
 
@@ -18,9 +20,21 @@ export const PicklistGridButtons: FC<GridButtonProps & RequiresModelAndActions> 
     return (
         <>
             {AdditionalGridButtons !== undefined && (
-                <div className="btn-group gridbar-buttons">
-                    <AdditionalGridButtons {...buttonProps} />
-                </div>
+                <RequiresPermission
+                    permissionCheck="any"
+                    perms={[
+                        PermissionTypes.Insert,
+                        PermissionTypes.Update,
+                        PermissionTypes.Delete,
+                        PermissionTypes.ManageSampleWorkflows,
+                        PermissionTypes.ManagePicklists,
+                        PermissionTypes.EditStorageData,
+                    ]}
+                >
+                    <div className="responsive-btn-group">
+                        <AdditionalGridButtons {...buttonProps} />
+                    </div>
+                </RequiresPermission>
             )}
         </>
     );

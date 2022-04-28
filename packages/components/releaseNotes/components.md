@@ -10,6 +10,30 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 45269: If the state columns are present, don't look at a column named 'Label' for the sample status
 * Update `SamplesEditableGrid` to account for custom parent types
 
+### version 2.160.0
+*Released*: 27 April 2022
+* Item 10276: Add, remove or modify grid actions for various grids
+  * Update `PicklistCreateMenuItem` to require a selection (no longer create an empty picklist)
+  * Add forwarding `registerFilterType` function
+
+### version 2.159.0
+*Released*: 27 April 2022
+* Use shared package build
+* Move exported test helpers to /internal
+* Move un-exported test helpers to /test
+
+### version 2.158.1
+*Released*: 27 April 2022
+* Merge release22.3-SNAPSHOT to develop again
+    * Includes changes from version 2.138.8
+
+### version 2.158.0
+*Released*: 26 April 2022
+* Item 10230: App grid action updates to buttons/menus in header bar
+  * Add new button components: ResponsiveMenuButtonGroup, SamplesAddButton, SamplesAssayButton
+  * Rename SamplesManageButton to SamplesEditButton
+  * SubMenu and SubMenuItem changes to support new button submenu cases
+
 ### version 2.157.0
 *Released*: 21 April 2022
 * Factor out `componentId` prop on `QuerySelect`.
@@ -243,6 +267,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   * AppURL switch back to hardcoded app.view
   * remove unused EditableGridModal
   * loadEditorModelData update to support raw value not being an object
+
+### version 2.138.8
+*Released*: 26 April 2022
+* Issue 45265: Handle "name" and "listId" for list ActionMappers
+
+### version 2.138.7
+*Released*: 24 March 2022
+* Issue 45093: Fix production navigation menu URl action for going from LKS to app
+    * Revert change from PR747 to createProductURL() so that we go back to always using app action
 
 ### version 2.138.6
 *Released*: 10 March 2022

@@ -21,6 +21,8 @@ interface Props {
     id: string;
     pullRight: boolean;
     collapsed: boolean;
+    title?: string;
+    className?: string;
 }
 
 export class ManageDropdownButton extends React.Component<Props, any> {
@@ -28,17 +30,16 @@ export class ManageDropdownButton extends React.Component<Props, any> {
         disabled: false,
         pullRight: false,
         collapsed: false,
+        title: 'Manage',
     };
 
     render() {
-        const { id, pullRight, collapsed, disabled } = this.props;
-        let title: any = 'Manage';
-        let bsStyle = 'primary';
+        const { id, pullRight, collapsed, disabled, title, className } = this.props;
+        let buttonLabel: any = title;
         let noCaret = false;
 
         if (collapsed) {
-            bsStyle = undefined;
-            title = (
+            buttonLabel = (
                 <span>
                     <i className="fa fa-bars" />
                 </span>
@@ -50,10 +51,10 @@ export class ManageDropdownButton extends React.Component<Props, any> {
             <DropdownButton
                 disabled={disabled}
                 id={`${id}-managebtn`}
-                bsStyle={bsStyle}
-                title={title}
+                title={buttonLabel}
                 noCaret={noCaret}
                 pullRight={pullRight}
+                className={className}
             >
                 {this.props.children}
             </DropdownButton>

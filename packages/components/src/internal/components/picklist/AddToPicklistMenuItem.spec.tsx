@@ -3,7 +3,7 @@ import React from 'react';
 import { ReactWrapper } from 'enzyme';
 import { Modal } from 'react-bootstrap';
 
-import { TEST_USER_EDITOR, TEST_USER_READER } from '../../../test/data/users';
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 import { mountWithAppServerContext } from '../../testHelpers';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';

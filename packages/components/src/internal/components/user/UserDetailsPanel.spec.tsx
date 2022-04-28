@@ -6,7 +6,7 @@ import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/ac
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
 import { sleep } from '../../testHelpers';
-import { initUnitTestMocks } from '../../testHelperMocks';
+import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { JEST_SITE_ADMIN_USER_ID } from '../../../test/data/constants';
 
 import { UserDetailsPanel } from './UserDetailsPanel';

@@ -10,7 +10,7 @@ import DomainForm from '../DomainForm';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 import { sleep } from '../../../testHelpers';
-import { initUnitTestMocks } from '../../../testHelperMocks';
+import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';

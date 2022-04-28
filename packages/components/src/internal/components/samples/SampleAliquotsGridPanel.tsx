@@ -5,16 +5,15 @@ import { PermissionTypes } from '@labkey/api';
 import { List } from 'immutable';
 
 import {
+    DisableableButton,
     EntityDeleteModal,
     getStateModelId,
     GridPanel,
-    ManageDropdownButton,
     QueryModel,
     RequiresPermission,
     SampleTypeDataType,
     SchemaQuery,
     SCHEMAS,
-    SelectionMenuItem,
     User,
 } from '../../..';
 
@@ -44,18 +43,22 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
         <div className="btn-group">
             <RequiresPermission perms={PermissionTypes.Delete}>
                 {lineageUpdateAllowed && (
-                    <ManageDropdownButton id="samplealiquotlisting">
-                        <SelectionMenuItem
-                            id="sample-aliquot-delete-menu-item"
-                            text="Delete Aliquots"
-                            onClick={onDelete}
-                            queryModel={model}
-                            nounPlural="aliquots"
-                        />
-                    </ManageDropdownButton>
+                    <DisableableButton
+                        bsStyle="default"
+                        onClick={onDelete}
+                        disabledMsg={!model.hasSelections ? 'Select one or more aliquots.' : undefined}
+                    >
+                        <span className="fa fa-trash" />
+                        <span>&nbsp;Delete</span>
+                    </DisableableButton>
                 )}
                 {StorageButtonsComponent && (
-                    <StorageButtonsComponent afterStorageUpdate={afterAction} queryModel={model} user={user} />
+                    <StorageButtonsComponent
+                        afterStorageUpdate={afterAction}
+                        queryModel={model}
+                        user={user}
+                        nounPlural="aliquots"
+                    />
                 )}
             </RequiresPermission>
         </div>

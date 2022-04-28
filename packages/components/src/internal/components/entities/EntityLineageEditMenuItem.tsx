@@ -19,12 +19,7 @@ interface Props {
 export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
     const { childEntityDataType, parentEntityDataTypes, queryModel, auditBehavior, onSuccess } = props;
     const parentNounPlural = parentEntityDataTypes[0].nounPlural;
-    const itemText =
-        'Edit ' +
-        parentNounPlural +
-        ' for Selected ' +
-        capitalizeFirstChar(childEntityDataType.nounPlural) +
-        ' in Bulk';
+    const itemText = 'Edit ' + parentNounPlural;
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
     const onClick = useCallback(() => {

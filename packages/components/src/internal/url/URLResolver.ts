@@ -385,10 +385,15 @@ const LIST_MAPPERS = [
             const params = ActionURL.getParameters(row.get('url'));
             const urlParts = parsePathName(row.get('url'));
 
-            if (params && urlParts?.containerPath) {
-                const resolverPath = ListResolver.encodeResolverPath(urlParts.containerPath);
-                const parts = ['q', 'lists', resolverPath, params.listId, params.pk];
-                return AppURL.create(...parts);
+            if (params?.pk) {
+                if (params.name) {
+                    const parts = ['q', 'lists', params.name, params.pk];
+                    return AppURL.create(...parts);
+                } else if (params.listId && urlParts?.containerPath) {
+                    const resolverPath = ListResolver.encodeResolverPath(urlParts.containerPath);
+                    const parts = ['q', 'lists', resolverPath, params.listId, params.pk];
+                    return AppURL.create(...parts);
+                }
             }
         }
     }),
@@ -398,10 +403,15 @@ const LIST_MAPPERS = [
             const params = ActionURL.getParameters(row.get('url'));
             const urlParts = parsePathName(row.get('url'));
 
-            if (params && urlParts?.containerPath) {
-                const resolverPath = ListResolver.encodeResolverPath(urlParts.containerPath);
-                const parts = ['q', 'lists', resolverPath, params.listId];
-                return AppURL.create(...parts);
+            if (params) {
+                if (params.name) {
+                    const parts = ['q', 'lists', params.name];
+                    return AppURL.create(...parts);
+                } else if (params.listId && urlParts?.containerPath) {
+                    const resolverPath = ListResolver.encodeResolverPath(urlParts.containerPath);
+                    const parts = ['q', 'lists', resolverPath, params.listId];
+                    return AppURL.create(...parts);
+                }
             }
         }
     }),

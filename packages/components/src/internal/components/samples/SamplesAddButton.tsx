@@ -44,7 +44,11 @@ export const SamplesAddButton: FC<Props> = memo(props => {
                     {items}
                 </DropdownButton>
             )}
-            {asSubMenu && <SubMenuItem text={text} inline>{items}</SubMenuItem>}
+            {asSubMenu && (
+                <SubMenuItem text={text} inline>
+                    {items}
+                </SubMenuItem>
+            )}
         </RequiresPermission>
     );
 });

@@ -168,9 +168,13 @@ describe('GridPanel', () => {
         expectPanelClasses(wrapper, false);
 
         // pageSizes should be different
-        expect(wrapper.find(PAGINATION_SELECTOR).first().find('ul').text()).toEqual('Jump ToFirst PageLast Page...Page Size2040100250400');
+        expect(wrapper.find(PAGINATION_SELECTOR).first().find('ul').text()).toEqual(
+            'Jump ToFirst PageLast Page...Page Size2040100250400'
+        );
         wrapper.setProps({ pageSizes: [5, 10, 15, 20] });
-        expect(wrapper.find(PAGINATION_SELECTOR).first().find('ul').text()).toEqual('Jump ToFirst PageLast Page...Page Size5101520');
+        expect(wrapper.find(PAGINATION_SELECTOR).first().find('ul').text()).toEqual(
+            'Jump ToFirst PageLast Page...Page Size5101520'
+        );
 
         // Pagination should not be present.
         wrapper.setProps({ showPagination: false });

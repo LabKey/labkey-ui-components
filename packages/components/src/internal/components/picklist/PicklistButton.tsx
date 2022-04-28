@@ -7,9 +7,10 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { RequiresPermission } from '../base/Permissions';
 
+import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
+
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
-import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
 interface Props {
     model: QueryModel;

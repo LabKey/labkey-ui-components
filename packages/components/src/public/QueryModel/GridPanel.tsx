@@ -180,9 +180,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
                     <div className="grid-panel__button-bar-right">
                         <div className="button-bar__section">
-                            <span className={hiddenWithLeftButtonsCls}>
-                                {paginate && paginationComp}
-                            </span>
+                            <span className={hiddenWithLeftButtonsCls}>{paginate && paginationComp}</span>
                             {canExport && (
                                 <ExportMenu
                                     model={model}
@@ -233,9 +231,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                             </div>
                         </div>
                         <div className="grid-panel__button-bar-right">
-                            <div className="button-bar__section">
-                                {paginate && paginationComp}
-                            </div>
+                            <div className="button-bar__section">{paginate && paginationComp}</div>
                         </div>
                     </div>
                 </span>

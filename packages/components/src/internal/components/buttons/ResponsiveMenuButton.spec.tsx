@@ -9,8 +9,9 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { mountWithServerContext } from '../../testHelpers';
 
-import { ResponsiveMenuButton } from './ResponsiveMenuButton';
 import { SubMenuItem } from '../menus/SubMenuItem';
+
+import { ResponsiveMenuButton } from './ResponsiveMenuButton';
 
 describe('ResponsiveMenuButton', () => {
     const items = <PicklistButton model={makeTestQueryModel(SchemaQuery.create('s', 'q'))} user={TEST_USER_READER} />;

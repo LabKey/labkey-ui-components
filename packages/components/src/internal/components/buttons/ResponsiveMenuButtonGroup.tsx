@@ -12,7 +12,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
         function handleResize() {
             setWidth(window.innerWidth);
         }
-        window.addEventListener('resize', handleResize)
+        window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     });
 

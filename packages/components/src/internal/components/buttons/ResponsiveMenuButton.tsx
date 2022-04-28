@@ -1,5 +1,6 @@
 import React, { ReactElement, FC, memo } from 'react';
 import { DropdownButton } from 'react-bootstrap';
+
 import { SubMenuItem } from '../menus/SubMenuItem';
 
 interface Props {

@@ -38,7 +38,7 @@ import {
     genCellKey,
     parseCellKey,
     getExportParams,
-    quoteEncodedValue
+    quoteEncodedValue,
 } from './actions';
 import { CellMessage, ValueDescriptor } from './models';
 import { resetQueryGridState, updateQueryGridModel } from './global';
@@ -504,14 +504,20 @@ describe('quoteEncodedValue', () => {
 
     test('without double quote', () => {
         expect(quoteEncodedValue(["hello' world"])).toEqual(["hello' world"]);
-        expect(quoteEncodedValue(["hello' world", "a second value"])).toEqual(["hello' world", "a second value"]);
+        expect(quoteEncodedValue(["hello' world", 'a second value'])).toEqual(["hello' world", 'a second value']);
         expect(quoteEncodedValue("hello' world")).toEqual("hello' world");
     });
 
     test('with double quote(s)', () => {
-        expect(quoteEncodedValue(["hello\" world"])).toEqual(["hello&quot; world"]);
-        expect(quoteEncodedValue(["hello \"world\"", "a second value"])).toEqual(["hello &quot;world&quot;", "a second value"]);
-        expect(quoteEncodedValue(["hello' world", "a second \"value\""])).toEqual(["hello' world", "a second &quot;value&quot;"]);
-        expect(quoteEncodedValue("hello \"world\"")).toEqual("hello &quot;world&quot;");
+        expect(quoteEncodedValue(['hello" world'])).toEqual(['hello&quot; world']);
+        expect(quoteEncodedValue(['hello "world"', 'a second value'])).toEqual([
+            'hello &quot;world&quot;',
+            'a second value',
+        ]);
+        expect(quoteEncodedValue(["hello' world", 'a second "value"'])).toEqual([
+            "hello' world",
+            'a second &quot;value&quot;',
+        ]);
+        expect(quoteEncodedValue('hello "world"')).toEqual('hello &quot;world&quot;');
     });
 });

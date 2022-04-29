@@ -583,9 +583,7 @@ export function quoteEncodedValue(rawValue: any) {
         rawValue.forEach(rawVal => {
             safeValue.push(_quoteEncodedValue(rawVal));
         });
-    }
-    else
-        safeValue = _quoteEncodedValue(rawValue);
+    } else safeValue = _quoteEncodedValue(rawValue);
 
     return safeValue;
 }
@@ -595,7 +593,7 @@ function _quoteEncodedValue(rawValue: any) {
     if (typeof rawValue === 'string' && rawValue.indexOf('"') > -1) {
         safeValue = rawValue.replace(QUOTE_REGEX, QUOTE_ENTITY);
     }
-    return safeValue
+    return safeValue;
 }
 
 // Complex comparator to determine if the location matches the models location-sensitive properties

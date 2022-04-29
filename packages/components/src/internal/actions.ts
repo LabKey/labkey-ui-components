@@ -565,10 +565,25 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     // POST a form
     const form = $(`<form method="POST" action="${url}">`);
     $.each(params, function (k, v) {
-        form.append($(`<input type="hidden" name="${k.toString()}" value="${v}">`));
+        form.append($(`<input type="hidden" name="${k.toString()}" value="${quoteEncodedValue(v)}">`));
     });
     $('body').append(form);
     form.trigger('submit');
+}
+
+const QUOTE_REGEX = new RegExp("\"", 'g');
+const QUOTE_ENTITY = "&quot;";
+
+// Issue 45366: form value containing unescaped quotes gets truncated
+function quoteEncodedValue(rawValue: any) {
+    let safeValue = rawValue;
+
+    let flattenedValue = rawValue instanceof Array ? rawValue[0] : rawValue;
+    if (typeof flattenedValue == 'string' && flattenedValue.indexOf('"') > -1) {
+        safeValue = flattenedValue.replace(QUOTE_REGEX, QUOTE_ENTITY);
+    }
+
+    return safeValue;
 }
 
 // Complex comparator to determine if the location matches the models location-sensitive properties

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.162.1
+*Released*: 29 April 2022
+* Issue 45366: Export of Sample Finder results produces empty files
+  * Escape quote characters in export form
+
 ### version 2.162.0
 *Released*: 29 April 2022
 * Issue 45304: Add inherit permissions control to permissions page

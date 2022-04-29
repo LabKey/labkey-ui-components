@@ -63,7 +63,7 @@ describe('AssayImportSubMenuItem', () => {
 
         const menuitem = wrapper.find(MenuItem);
         expect(menuitem).toHaveLength(1);
-        expect(menuitem.text()).toBe('Upload Assay Data');
+        expect(menuitem.text()).toBe('Import Assay Data');
         expect(menuitem.props().disabled).toBeTruthy();
         const trigger = wrapper.find(OverlayTrigger);
         expect(trigger).toHaveLength(1);

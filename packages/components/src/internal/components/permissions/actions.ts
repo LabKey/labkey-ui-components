@@ -10,9 +10,9 @@ import { ISelectRowsResult, selectRowsDeprecated } from '../../..';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 
-export function processGetRolesResponse(response: any): List<SecurityRole> {
+export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
-    response.forEach(role => {
+    rawRoles.forEach(role => {
         roles = roles.push(SecurityRole.create(role));
     });
     return roles;
@@ -117,7 +117,10 @@ export function fetchContainerSecurityPolicy(
                 }
                 resolve(policy);
             },
-            failure: response => reject(response),
+            failure: error => {
+                console.error('Failed to fetch security policy', error);
+                reject(error);
+            },
         });
     });
 }

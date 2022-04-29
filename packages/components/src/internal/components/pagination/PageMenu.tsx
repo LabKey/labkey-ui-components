@@ -13,6 +13,10 @@ interface Props {
     loadFirstPage: () => void;
     loadLastPage: () => void;
     pageCount: number;
+    showPageSizeMenu: boolean;
+    pageSize: number;
+    pageSizes: number[];
+    setPageSize: (size: number) => void;
 }
 
 export class PageMenu extends PureComponent<Props> {
@@ -26,8 +30,14 @@ export class PageMenu extends PureComponent<Props> {
         blurActiveElement();
     };
 
+    setPageSize = (size: number): void => {
+        this.props.setPageSize(size);
+        blurActiveElement();
+    };
+
     render(): ReactNode {
-        const { currentPage, disabled, id, isFirstPage, isLastPage, pageCount } = this.props;
+        const { currentPage, disabled, id, isFirstPage, isLastPage, pageCount, showPageSizeMenu, pageSize, pageSizes } =
+            this.props;
 
         return (
             <Tip caption="Current Page" trigger={['hover']}>
@@ -39,16 +49,24 @@ export class PageMenu extends PureComponent<Props> {
                     title={currentPage}
                 >
                     <MenuItem header>Jump To</MenuItem>
-
                     <MenuItem disabled={disabled || isFirstPage} onClick={this.loadFirstPage}>
                         First Page
                     </MenuItem>
-
                     <MenuItem disabled={disabled || isLastPage} onClick={this.loadLastPage}>
                         Last Page
                     </MenuItem>
-
                     <MenuItem header>{disabled ? '...' : `${pageCount} Total Pages`}</MenuItem>
+                    {showPageSizeMenu && (
+                        <>
+                            <MenuItem divider />
+                            <MenuItem header>Page Size</MenuItem>
+                            {pageSizes?.map(size => (
+                                <MenuItem key={size} active={size === pageSize} onClick={() => this.setPageSize(size)}>
+                                    {size}
+                                </MenuItem>
+                            ))}
+                        </>
+                    )}
                 </DropdownButton>
             </Tip>
         );

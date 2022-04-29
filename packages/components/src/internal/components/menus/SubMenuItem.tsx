@@ -38,6 +38,7 @@ export interface SubMenuItemProps {
     onMouseOut?: any;
     onMouseOver?: any;
     text?: string;
+    inline?: boolean;
 }
 
 interface SubMenuItemState {
@@ -50,7 +51,6 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
     static defaultProps = {
         allowFilter: true,
         filterPlaceholder: 'Filter...',
-        itemsCls: 'well',
         maxWithoutFilter: 5,
     };
 
@@ -69,7 +69,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
         this.onMouseOut = this.onMouseOut.bind(this);
 
         this.state = {
-            activeIdx: 0,
+            activeIdx: props.inline ? undefined : 0,
             expanded: false,
         };
     }
@@ -209,9 +209,11 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
     }
 
     render() {
-        const { allowFilter, disabled, filterPlaceholder, icon, items, itemsCls, maxWithoutFilter, text } = this.props;
+        const { allowFilter, disabled, filterPlaceholder, icon, items, itemsCls, maxWithoutFilter, text, inline } =
+            this.props;
         const { expanded } = this.state;
         const filterActive = allowFilter && items && items.length > maxWithoutFilter;
+        const _itemsCls = itemsCls ?? (!inline ? 'well' : '');
 
         const menuItemProps = {
             className: classNames('dropdown-submenu', { disabled }),
@@ -239,25 +241,30 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
             </>
         );
 
-        if (!text) return subMenuItems;
-
         return (
-            <li {...menuItemProps}>
-                <a
-                    onClick={disabled ? emptyFn : this.onClick}
-                    onKeyDown={disabled ? emptyFn : this.onKeyDown}
-                    role="menuitem"
-                    tabIndex={-1}
-                >
-                    {icon && <span className={`fa fa-${icon}`}>&nbsp;</span>}
-                    {text}
-                </a>
-                <i
-                    onClick={disabled ? emptyFn : this.onClick}
-                    className={`fa fa-chevron-${expanded ? 'up' : 'down'}`}
-                />
-                {expanded && <ul className={itemsCls}>{subMenuItems}</ul>}
-            </li>
+            <>
+                {inline && text && <MenuItem header>{text}</MenuItem>}
+                <li {...menuItemProps}>
+                    {!inline && (
+                        <>
+                            <a
+                                onClick={disabled ? emptyFn : this.onClick}
+                                onKeyDown={disabled ? emptyFn : this.onKeyDown}
+                                role="menuitem"
+                                tabIndex={-1}
+                            >
+                                {icon && <span className={`fa fa-${icon}`}>&nbsp;</span>}
+                                {text}
+                            </a>
+                            <i
+                                onClick={disabled ? emptyFn : this.onClick}
+                                className={`fa fa-chevron-${expanded ? 'up' : 'down'}`}
+                            />
+                        </>
+                    )}
+                    {(expanded || inline) && <ul className={_itemsCls}>{subMenuItems}</ul>}
+                </li>
+            </>
         );
     }
 }

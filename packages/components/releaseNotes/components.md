@@ -10,6 +10,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 45269: If the state columns are present, don't look at a column named 'Label' for the sample status
 * Update `SamplesEditableGrid` to account for custom parent types
 
+### version 2.162.0
+*Released*: 29 April 2022
+* Issue 45304: Add inherit permissions control to permissions page
+  * Add inherit checkbox and wire up action to delete policy or save policy as expected.
+  * Rename `PermissionsPageContextProvider` to `withPermissionsPage` to align with our expected pattern.
+  * Remove the Permissions context.
+  * Add `fetchPolicy` to `SecurityAPIWrapper` and utilize this API from context in permission components.
+
+### version 2.161.0
+*Released*: 28 April 2022
+* Item 10275: Grid panel updates to make button/menu bar display responsive to screen width
+  * Grid panel button bar update to show 2nd row of items in md/sm layout
+  * Move page size menu into page number menu
+  * Display ResponsiveMenuButtonGroup submenus inline with header and divider
+  * Add ResponsiveMenuButton as a simple wrapper for app buttons to use
+
 ### version 2.160.0
 *Released*: 27 April 2022
 * Item 10276: Add, remove or modify grid actions for various grids

@@ -66,9 +66,10 @@ describe('FilterAction::actionValueFromFilter', () => {
         expect(value.value).toBe('"U mg$SL" = 10');
     });
 
-    test('with label', () => {
+    test('with label from QueryColumn', () => {
+        const col = QueryColumn.create({ shortCaption: 'otherLabel' });
         const filter = Filter.create('U mgS$L', 'x', Filter.Types.EQUAL);
-        const value: ActionValue = action.actionValueFromFilter(filter, 'otherLabel');
+        const value: ActionValue = action.actionValueFromFilter(filter, col);
         expect(value.displayValue).toBe('otherLabel = x');
         expect(value.value).toBe('"otherLabel" = x');
     });

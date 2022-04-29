@@ -9,8 +9,9 @@ import { BIOLOGICS_APP_PROPERTIES } from '../../app/constants';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
-import { FolderMenu } from './FolderMenu';
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
+
+import { FolderMenu } from './FolderMenu';
 
 describe('FolderMenu', () => {
     function getDefaultProps() {

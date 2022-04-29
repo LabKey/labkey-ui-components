@@ -12,9 +12,10 @@ import { Container } from '../base/models/Container';
 
 import { App } from '../../../index';
 
-import { getNewUserRoles, UserManagement, UserManagementProps } from './UserManagement';
 import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
 import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+
+import { getNewUserRoles, UserManagement, UserManagementProps } from './UserManagement';
 
 declare const LABKEY: LabKey;
 

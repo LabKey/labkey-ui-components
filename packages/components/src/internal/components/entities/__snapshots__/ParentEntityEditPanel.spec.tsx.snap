@@ -42,6 +42,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
           "queryName": "DataClasses",
           "viewName": undefined,
         },
+        "typeNounAsParentSingular": "Data Type",
         "typeNounSingular": "Data Type",
         "uniqueFieldKey": "Name",
       },
@@ -147,6 +148,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                         "queryName": "DataClasses",
                         "viewName": undefined,
                       },
+                      "typeNounAsParentSingular": "Data Type",
                       "typeNounSingular": "Data Type",
                       "uniqueFieldKey": "Name",
                     }
@@ -189,6 +191,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                           "queryName": "DataClasses",
                           "viewName": undefined,
                         },
+                        "typeNounAsParentSingular": "Data Type",
                         "typeNounSingular": "Data Type",
                         "uniqueFieldKey": "Name",
                       }
@@ -245,6 +248,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                             "queryName": "DataClasses",
                             "viewName": undefined,
                           },
+                          "typeNounAsParentSingular": "Data Type",
                           "typeNounSingular": "Data Type",
                           "uniqueFieldKey": "Name",
                         }
@@ -315,6 +319,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                               "queryName": "DataClasses",
                               "viewName": undefined,
                             },
+                            "typeNounAsParentSingular": "Data Type",
                             "typeNounSingular": "Data Type",
                             "uniqueFieldKey": "Name",
                           }
@@ -4786,6 +4791,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
           "queryName": "DataClasses",
           "viewName": undefined,
         },
+        "typeNounAsParentSingular": "Data Type",
         "typeNounSingular": "Data Type",
         "uniqueFieldKey": "Name",
       },
@@ -4902,6 +4908,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                         "queryName": "DataClasses",
                         "viewName": undefined,
                       },
+                      "typeNounAsParentSingular": "Data Type",
                       "typeNounSingular": "Data Type",
                       "uniqueFieldKey": "Name",
                     }
@@ -4944,6 +4951,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                           "queryName": "DataClasses",
                           "viewName": undefined,
                         },
+                        "typeNounAsParentSingular": "Data Type",
                         "typeNounSingular": "Data Type",
                         "uniqueFieldKey": "Name",
                       }
@@ -5000,6 +5008,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                             "queryName": "DataClasses",
                             "viewName": undefined,
                           },
+                          "typeNounAsParentSingular": "Data Type",
                           "typeNounSingular": "Data Type",
                           "uniqueFieldKey": "Name",
                         }
@@ -5070,6 +5079,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                               "queryName": "DataClasses",
                               "viewName": undefined,
                             },
+                            "typeNounAsParentSingular": "Data Type",
                             "typeNounSingular": "Data Type",
                             "uniqueFieldKey": "Name",
                           }
@@ -5171,6 +5181,7 @@ exports[`ParentEntityEditPanel loading state 1`] = `
           "queryName": "DataClasses",
           "viewName": undefined,
         },
+        "typeNounAsParentSingular": "Data Type",
         "typeNounSingular": "Data Type",
         "uniqueFieldKey": "Name",
       },

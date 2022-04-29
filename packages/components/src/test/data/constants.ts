@@ -430,6 +430,7 @@ export const TestTypeDataType: EntityDataType = {
     nounAsParentSingular: 'test Parent',
     nounAsParentPlural: 'test Parents',
     typeNounSingular: 'Test Type',
+    typeNounAsParentSingular: 'Test Parent Type',
     descriptionSingular: 'parent test type',
     descriptionPlural: 'parent test types',
     uniqueFieldKey: 'Name',

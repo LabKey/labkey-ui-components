@@ -1,14 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.163.0
+*Released*: 29 April 2022
 * Remove `SharedSampleTypeAdminConfirmModal`
 * Update `EntityDataType` model with additional properties
 * Update `SampleSetDeletModal`, `deleteDataClass`, `deleteSampleSet`, and `deleteEntityType` to take optional `containerPath`
 * Issue 45290: Adjust height of search box on Safari
 * Issue 45269: If the state columns are present, don't look at a column named 'Label' for the sample status
 * Update `SamplesEditableGrid` to account for custom parent types
+
+### version 2.162.1
+*Released*: 29 April 2022
+* Issue 45366: Export of Sample Finder results produces empty files
+  * Escape quote characters in export form
 
 ### version 2.162.0
 *Released*: 29 April 2022

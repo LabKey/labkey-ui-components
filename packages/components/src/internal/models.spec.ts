@@ -18,7 +18,7 @@ import { fromJS, List, Map, Set } from 'immutable';
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import { QueryInfo, QueryGridModel, SchemaQuery, QueryColumn } from '..';
 
-import { CellMessage, EditorModel, ValueDescriptor } from './models';
+import { CellMessage, EditorModel, getPkData, ValueDescriptor } from './models';
 import { resetQueryGridState } from './global';
 
 const schemaQ = new SchemaQuery({
@@ -859,5 +859,44 @@ describe('EditorModel', () => {
             });
             expect(model.hasData()).toBeTruthy();
         });
+    });
+});
+
+describe('getPkData', () => {
+    const queryInfo = new QueryInfo({
+        appEditableTable: true,
+        pkCols: List(['RowId']),
+        columns: fromJS({
+            rowid: QueryColumn.create({
+                caption: 'Row Id',
+                fieldKey: 'RowId',
+                inputType: 'number',
+            }),
+            description: QueryColumn.create({
+                caption: 'Description',
+                fieldKey: 'Description',
+                inputType: 'textarea',
+            }),
+        }),
+    });
+
+    test('as value', () => {
+        expect(getPkData(queryInfo, Map.of('RowId', 1))).toStrictEqual({ RowId: 1 });
+    });
+
+    test('as object', () => {
+        expect(getPkData(queryInfo, Map.of('RowId', { value: 1, displayValue: '1' }))).toStrictEqual({ RowId: 1 });
+    });
+
+    test('as array', () => {
+        expect(getPkData(queryInfo, Map.of('RowId', [1]))).toStrictEqual({ RowId: 1 });
+    });
+
+    test('as array of objects', () => {
+        expect(getPkData(queryInfo, Map.of('RowId', [{ value: 1, displayValue: '1' }]))).toStrictEqual({ RowId: 1 });
+    });
+
+    test('as list of maps', () => {
+        expect(getPkData(queryInfo, Map.of('RowId', List.of(Map.of('value', 1))))).toStrictEqual({ RowId: 1 });
     });
 });

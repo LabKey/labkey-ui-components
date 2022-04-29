@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Iterable, List, Map, OrderedMap, Record, Set } from 'immutable';
+import { Iterable, List, Map, Record, Set } from 'immutable';
 
 import {
     AppURL,
@@ -306,15 +306,19 @@ export interface EditorModelProps {
 }
 
 // This is a model agnostic form of QueryGridModel.getPkData
-function getPkData(queryInfo: QueryInfo, row: Map<string, any>) {
+export function getPkData(queryInfo: QueryInfo, row: Map<string, any>) {
     const data = {};
     queryInfo.getPkCols().forEach(pkCol => {
-        const pkVal = row.getIn([pkCol.fieldKey]);
+        let pkVal = row.getIn([pkCol.fieldKey]);
+        if (Array.isArray(pkVal)) pkVal = pkVal[0];
+        if (List.isList(pkVal)) pkVal = pkVal.get(0);
 
         if (pkVal !== undefined && pkVal !== null) {
             // when backing an editable grid, the data is a simple value, but when
             // backing a grid, it is a Map, which has type 'object'.
-            data[pkCol.fieldKey] = typeof pkVal === 'object' ? pkVal.get('value') : pkVal;
+            if (Map.isMap(pkVal)) pkVal = pkVal.toJS();
+
+            data[pkCol.fieldKey] = typeof pkVal === 'object' ? pkVal.value : pkVal;
         } else {
             console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
         }

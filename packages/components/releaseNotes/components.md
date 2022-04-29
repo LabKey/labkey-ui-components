@@ -6,7 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 45140: Better support for date formats (especially dd/MM/yyy) in the apps
   * Use QueryColumn date format for filter modal input date picker (via DatePickerInput)
   * Use QueryColumn date format for GridPanel filter status display
-  * Fix for EditableDetailPanel use case to use QueryColumn date format in DatePickerInput
+  * Fix for QueryInfoForm, QueryFormInputs and EditableGridPanelForUpdate use case to use QueryColumn date format in parseDate()
 
 ### version 2.161.0
 *Released*: 28 April 2022

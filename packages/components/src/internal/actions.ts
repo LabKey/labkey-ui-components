@@ -571,15 +571,15 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     form.trigger('submit');
 }
 
-const QUOTE_REGEX = new RegExp("\"", 'g');
-const QUOTE_ENTITY = "&quot;";
+const QUOTE_REGEX = new RegExp('"', 'g');
+const QUOTE_ENTITY = '&quot;';
 
 // Issue 45366: form value containing unescaped quotes gets truncated
 function quoteEncodedValue(rawValue: any) {
     let safeValue = rawValue;
 
-    let flattenedValue = rawValue instanceof Array ? rawValue[0] : rawValue;
-    if (typeof flattenedValue == 'string' && flattenedValue.indexOf('"') > -1) {
+    const flattenedValue = rawValue instanceof Array ? rawValue[0] : rawValue;
+    if (typeof flattenedValue === 'string' && flattenedValue.indexOf('"') > -1) {
         safeValue = flattenedValue.replace(QUOTE_REGEX, QUOTE_ENTITY);
     }
 

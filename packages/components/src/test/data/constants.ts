@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
-import { Filter, PermissionRoles } from '@labkey/api';
+import { Filter, PermissionRoles, Project } from '@labkey/api';
 
 import {
     AssayDefinitionModel,
@@ -399,7 +399,7 @@ export const TEST_PROJECT_CONTAINER = new Container({
     type: 'project',
 });
 
-export const TEST_PROJECT = {
+export const TEST_PROJECT: Project = {
     id: TEST_PROJECT_CONTAINER.id,
     name: TEST_PROJECT_CONTAINER.name,
     path: TEST_PROJECT_CONTAINER.path,

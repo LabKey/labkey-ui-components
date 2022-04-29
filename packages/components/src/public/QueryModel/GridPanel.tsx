@@ -332,7 +332,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             if (filter.getColumnName() === '*') {
                 actionValues.push(this.gridActions.search.actionValueFromFilter(filter));
             } else {
-                actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column?.shortCaption));
+                actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
             }
         });
 

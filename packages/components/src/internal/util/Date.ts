@@ -57,6 +57,26 @@ export function isDateTimeCol(col: QueryColumn): boolean {
     return false;
 }
 
+export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string): string {
+    let rawFormat = dateFormat || queryColumn.format || datePlaceholder(queryColumn);
+
+    // Issue 44011: account for the shortcut values (i.e. "Date", "DateTime", and "Time")
+    if (rawFormat === 'Date') rawFormat = getDateFormat();
+    if (rawFormat === 'DateTime') rawFormat = getDateTimeFormat();
+    if (rawFormat === 'Time') rawFormat = getTimeFormat();
+
+    // Moment.js and react datepicker date format is different
+    // https://github.com/Hacker0x01/react-datepicker/issues/1609
+    return rawFormat.replace('YYYY', 'yyyy').replace('DD', 'dd');
+}
+
+export function getColFormattedDateValue(column: QueryColumn, value: string): string {
+    const dateFormat = getColDateFormat(column);
+    return isDateTimeCol(column)
+        ? formatDateTime(new Date(value), null, dateFormat)
+        : formatDate(new Date(value), null, dateFormat);
+}
+
 // 30834: get look and feel display formats
 export function getDateFormat(container?: Partial<Container>): string {
     return moment().toMomentFormatString((container ?? getServerContext().container).formats.dateFormat);
@@ -74,7 +94,11 @@ export function getTimeFormat(): string {
 export function parseDate(dateStr: string, dateFormat?: string): Date {
     if (!dateStr) return null;
 
-    const date = moment(dateStr, dateFormat);
+    // Moment.js and react datepicker date format is different
+    // https://github.com/Hacker0x01/react-datepicker/issues/1609
+    const _dateFormat = dateFormat?.replace('yyyy', 'YYYY').replace('dd', 'DD');
+
+    const date = moment(dateStr, _dateFormat);
     if (date && date.isValid()) {
         return date.toDate();
     }

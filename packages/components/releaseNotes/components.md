@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.162.0
+*Released*: 29 April 2022
+* Issue 45304: Add inherit permissions control to permissions page
+  * Add inherit checkbox and wire up action to delete policy or save policy as expected.
+  * Rename `PermissionsPageContextProvider` to `withPermissionsPage` to align with our expected pattern.
+  * Remove the Permissions context.
+  * Add `fetchPolicy` to `SecurityAPIWrapper` and utilize this API from context in permission components.
+
 ### version 2.161.0
 *Released*: 28 April 2022
 * Item 10275: Grid panel updates to make button/menu bar display responsive to screen width

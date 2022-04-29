@@ -523,8 +523,7 @@ export function getExportParams(
         if (options.filters) {
             options.filters.forEach(f => {
                 if (f) {
-                    if (!params[f.getURLParameterName()])
-                        params[f.getURLParameterName()] = [];
+                    if (!params[f.getURLParameterName()]) params[f.getURLParameterName()] = [];
                     params[f.getURLParameterName()].push(f.getURLParameterValue());
                 }
             });
@@ -571,11 +570,8 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
         if (safeValue instanceof Array) {
             safeValue.forEach(val => {
                 form.append($(`<input type="hidden" name="${k.toString()}" value="${val}">`));
-            })
-        }
-        else
-            form.append($(`<input type="hidden" name="${k.toString()}" value="${safeValue}">`));
-
+            });
+        } else form.append($(`<input type="hidden" name="${k.toString()}" value="${safeValue}">`));
     });
     $('body').append(form);
     form.trigger('submit');

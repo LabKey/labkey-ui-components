@@ -578,12 +578,24 @@ const QUOTE_ENTITY = '&quot;';
 export function quoteEncodedValue(rawValue: any) {
     let safeValue = rawValue;
 
-    const flattenedValue = rawValue instanceof Array ? rawValue[0] : rawValue;
-    if (typeof flattenedValue === 'string' && flattenedValue.indexOf('"') > -1) {
-        safeValue = flattenedValue.replace(QUOTE_REGEX, QUOTE_ENTITY);
+    if (rawValue instanceof Array) {
+        safeValue = [];
+        rawValue.forEach(rawVal => {
+            safeValue.push(_quoteEncodedValue(rawVal));
+        });
     }
+    else
+        safeValue = _quoteEncodedValue(rawValue);
 
     return safeValue;
+}
+
+function _quoteEncodedValue(rawValue: any) {
+    let safeValue = rawValue;
+    if (typeof rawValue === 'string' && rawValue.indexOf('"') > -1) {
+        safeValue = rawValue.replace(QUOTE_REGEX, QUOTE_ENTITY);
+    }
+    return safeValue
 }
 
 // Complex comparator to determine if the location matches the models location-sensitive properties

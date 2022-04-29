@@ -425,16 +425,19 @@ export const getParentTypeDataForSample = async (
     parentTypeOptions: List<IEntityTypeOption>;
     parentIdData: Record<string, ParentIdData>;
 }> => {
-    const options = await getEntityTypeOptions(parentDataType, containerPath);
-    const parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
+    let parentTypeOptions = List<IEntityTypeOption>();
+    let parentIdData: {};
+    if (parentDataType) {
+        const options = await getEntityTypeOptions(parentDataType, containerPath);
+        parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
 
-    // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
-    const parentIDs = [];
-    samplesData.forEach(sampleData => {
-        parentIDs.push(...sampleData[parentDataType.inputColumnName].map(row => row.value));
-    });
-    const parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs, containerPath);
-
+        // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
+        const parentIDs = [];
+        samplesData.forEach(sampleData => {
+            parentIDs.push(...sampleData[parentDataType.inputColumnName].map(row => row.value));
+        });
+        parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs, containerPath);
+    }
     return { parentTypeOptions, parentIdData };
 };
 
@@ -455,7 +458,6 @@ function getParentRowIdAndDataType(
             queryName: parentDataType.listingSchemaQuery.queryName,
             columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
             filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
-            containerFiler: parentDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(response => {
                 const { key, models } = response;

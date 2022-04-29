@@ -122,7 +122,6 @@ function getSelectedParents(
             queryName: schemaQuery.queryName,
             columns,
             filterArray,
-            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(response => {
                 if (isSampleParent) {
@@ -152,7 +151,6 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
                     queryName: 'materials',
                     columns: 'LSID,Name,RowId,SampleSet',
                     filterArray,
-                    containerFilter: Query.containerFilter.currentPlusProjectAndShared,
                 })
                     .then(response => {
                         resolve(resolveSampleParentTypes(response, isAliquotParent));

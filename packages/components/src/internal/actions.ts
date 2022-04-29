@@ -575,7 +575,7 @@ const QUOTE_REGEX = new RegExp('"', 'g');
 const QUOTE_ENTITY = '&quot;';
 
 // Issue 45366: form value containing unescaped quotes gets truncated
-function quoteEncodedValue(rawValue: any) {
+export function quoteEncodedValue(rawValue: any) {
     let safeValue = rawValue;
 
     const flattenedValue = rawValue instanceof Array ? rawValue[0] : rawValue;

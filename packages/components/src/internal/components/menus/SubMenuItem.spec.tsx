@@ -67,10 +67,26 @@ describe('<SubMenuItem />', () => {
         expect(menu).toMatchSnapshot();
     });
 
-    test('items without text', () => {
+    test('itemsCls', () => {
         const menu = shallow(<SubMenuItem items={items} />);
-        expect(menu.find('ul')).toHaveLength(0);
+        menu.find({ role: 'menuitem' }).prop('onClick')(); // expanded
+        expect(menu.find('ul')).toHaveLength(1);
+        expect(menu.find('ul').prop('className')).toBe('well');
+        menu.setProps({ itemsCls: 'test-cls' });
+        expect(menu.find('ul').prop('className')).toBe('test-cls');
+    });
+
+    test('inline', () => {
+        const menu = shallow(<SubMenuItem items={items} inline />);
+        expect(menu.find('ul')).toHaveLength(1);
+        expect(menu.find('ul').prop('className')).toBe('');
         expect(menu.find(MenuItem)).toHaveLength(items.length);
+    });
+
+    test('inline with text header', () => {
+        const menu = shallow(<SubMenuItem items={items} text="Test Header" inline />);
+        expect(menu.find('ul')).toHaveLength(1);
+        expect(menu.find(MenuItem)).toHaveLength(items.length + 1);
     });
 
     test('allow filtering but not enough items', () => {
@@ -126,7 +142,7 @@ describe('<SubMenuItem />', () => {
     test('onMouseOver', () => {
         const mouseOverFn = jest.fn();
         const menu = shallow(<SubMenuItem onMouseOver={mouseOverFn} items={items} text="onMouseOver item" />);
-        menu.simulate('mouseover');
+        menu.find('li').simulate('mouseover');
         expect(mouseOverFn).toHaveBeenCalledTimes(1);
 
         expect(menu).toMatchSnapshot();
@@ -135,7 +151,7 @@ describe('<SubMenuItem />', () => {
     test('onMouseOut', () => {
         const mouseOutFn = jest.fn();
         const menu = shallow(<SubMenuItem onMouseOut={mouseOutFn} items={items} text="onMouseOut item" />);
-        menu.simulate('mouseout');
+        menu.find('li').simulate('mouseout');
         expect(mouseOutFn).toHaveBeenCalledTimes(1);
 
         expect(menu).toMatchSnapshot();

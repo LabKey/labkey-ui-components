@@ -107,44 +107,6 @@ export namespace URLService {
     }
 }
 
-// TODO: This is copied from LABKEY.ActionURL -- make public?
-export function parsePathName(path: string) {
-    const qMarkIdx = path.indexOf('?');
-    if (qMarkIdx > -1) {
-        path = path.substring(0, qMarkIdx);
-    }
-    const start = ActionURL.getContextPath().length;
-    const end = path.lastIndexOf('/');
-    let action = path.substring(end + 1);
-    path = path.substring(start, end);
-
-    let controller = null;
-
-    const dash = action.lastIndexOf('-');
-    if (dash > 0) {
-        controller = action.substring(0, dash);
-        action = action.substring(dash + 1);
-    } else {
-        const slash = path.indexOf('/', 1);
-        if (slash < 0)
-            // 21945: e.g. '/admin'
-            controller = path.substring(1);
-        else controller = path.substring(1, slash);
-        path = path.substring(slash);
-    }
-
-    const dot = action.indexOf('.');
-    if (dot > 0) {
-        action = action.substring(0, dot);
-    }
-
-    return {
-        controller: decodeURIComponent(controller).toLowerCase(),
-        action: decodeURIComponent(action).toLowerCase(),
-        containerPath: decodeURI(path),
-    };
-}
-
 export class ActionMapper implements URLMapper {
     controller: string;
     action: string;
@@ -169,9 +131,9 @@ export class ActionMapper implements URLMapper {
 
     resolve(url, row, column, schema, query): AppURL | string | boolean {
         if (url) {
-            const parsed = parsePathName(url);
+            const parsed = ActionURL.getPathFromLocation(url);
 
-            if (parsed.action === this.action && parsed.controller === this.controller) {
+            if (parsed.action.toLowerCase() === this.action && parsed.controller.toLowerCase() === this.controller) {
                 const resolvedUrl = this.resolver(row, column, schema, query);
                 return resolvedUrl instanceof AppURL ? this.getProductUrl(resolvedUrl) : resolvedUrl;
             }
@@ -383,7 +345,7 @@ const LIST_MAPPERS = [
     new ActionMapper('list', 'details', (row, column) => {
         if (!column.has('lookup')) {
             const params = ActionURL.getParameters(row.get('url'));
-            const urlParts = parsePathName(row.get('url'));
+            const urlParts = ActionURL.getPathFromLocation(row.get('url'));
 
             if (params?.pk) {
                 if (params.name) {
@@ -401,7 +363,7 @@ const LIST_MAPPERS = [
     new ActionMapper('list', 'grid', (row, column) => {
         if (!column.has('lookup')) {
             const params = ActionURL.getParameters(row.get('url'));
-            const urlParts = parsePathName(row.get('url'));
+            const urlParts = ActionURL.getPathFromLocation(row.get('url'));
 
             if (params) {
                 if (params.name) {
@@ -527,17 +489,20 @@ export const URL_MAPPERS = {
 
 export class URLResolver {
     private mapURL = (mapper: MapURLOptions): string => {
-
         // Don't override URLs if the URL has a different container than the current container and is not in the folder
         // tree of the current container. This scopes the apps to their current container and container tree, and supports
         // adding FKs from other containers and preserving the URL from the server.
         if (mapper.url) {
-            const urlContainerPath = parsePathName(mapper.url).containerPath;
-            if (urlContainerPath && urlContainerPath !== ActionURL.getContainer()   // not current container
-                && urlContainerPath.indexOf(ActionURL.getContainer() + '/') === -1  // not sub-container
-                && ActionURL.getContainer().indexOf(urlContainerPath + '/') === -1  // not super-container
-            )
+            const currentContainerPath = ActionURL.getContainer();
+            const urlContainerPath = ActionURL.getPathFromLocation(mapper.url).containerPath;
+            if (
+                urlContainerPath &&
+                urlContainerPath !== currentContainerPath && // not current container
+                urlContainerPath.indexOf(currentContainerPath + '/') === -1 && // not sub-container
+                currentContainerPath.indexOf(urlContainerPath + '/') === -1 // not super-container
+            ) {
                 return mapper.url;
+            }
         }
 
         const _url = URLService.getUrlMappers()

@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 6.1.1
+*Released:* 28 April 2022
+* Exclude test files from dev build
+
 ### version 6.1.0
 *Released*: 27 April 2002
 * Add shared package build (package.config.js)

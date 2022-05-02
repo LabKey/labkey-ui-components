@@ -27,7 +27,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         providerType,
         queryModel,
         requireSelection,
-        text = 'Upload Assay Data',
+        text = 'Import Assay Data',
     } = props;
 
     const items = useMemo(() => {
@@ -73,6 +73,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         items,
         queryModel: undefined,
         text,
+        inline: text === null,
     });
 
     if (menuProps.disabled) {

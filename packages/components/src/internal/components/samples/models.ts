@@ -125,6 +125,7 @@ export interface SampleStorageButtonsComponentProps {
     queryModel?: QueryModel;
     isPicklist?: boolean;
     nounPlural?: string;
+    className?: string;
 }
 
 export type SampleStorageButton = ComponentType<SampleStorageButtonsComponentProps>;

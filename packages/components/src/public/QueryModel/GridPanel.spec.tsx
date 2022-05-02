@@ -37,7 +37,6 @@ beforeAll(() => {
 const CHART_MENU_SELECTOR = '.chart-menu';
 const PAGINATION_SELECTOR = '.pagination-button-group';
 const PAGINATION_INFO_SELECTOR = '.pagination-info';
-const PAGE_SIZE_SELECTOR = '.page-size-menu';
 const VIEW_MENU_SELECTOR = '.view-menu';
 const GRID_SELECTOR = '.grid-panel__grid .table-responsive';
 const GRID_INFO_SELECTOR = '.grid-panel__info';
@@ -69,9 +68,8 @@ describe('GridPanel', () => {
     };
 
     const expectPaginationVisible = (wrapper: GridPanelWrapper, visible: boolean): void => {
-        expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(visible);
-        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(visible);
-        expect(wrapper.find(PAGE_SIZE_SELECTOR).exists()).toEqual(visible);
+        expect(wrapper.find(PAGINATION_INFO_SELECTOR).first().exists()).toEqual(visible);
+        expect(wrapper.find(PAGINATION_SELECTOR).first().exists()).toEqual(visible);
     };
 
     const expectNoQueryInfo = (wrapper: GridPanelWrapper): void => {
@@ -128,8 +126,8 @@ describe('GridPanel', () => {
 
         // Chart menu should be disabled if no charts are present and showSampleComparisonReports is false.
         expectChartMenu(wrapper, true);
-        expect(wrapper.find(PAGINATION_INFO_SELECTOR).text()).toEqual('1 - 20 of 661');
-        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(PAGINATION_INFO_SELECTOR).first().text()).toEqual('1 - 20 of 661');
+        expect(wrapper.find(PAGINATION_SELECTOR).first().exists()).toEqual(true);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(FILTER_STATUS_SELECTOR).exists()).toEqual(true);
 
@@ -137,7 +135,7 @@ describe('GridPanel', () => {
         expectChartMenu(wrapper, false);
 
         // Previous, Page Menu, Next buttons should be present.
-        let paginationButtons = wrapper.find(PAGINATION_SELECTOR).find('button');
+        let paginationButtons = wrapper.find(PAGINATION_SELECTOR).first().find('button');
         expect(paginationButtons.length).toEqual(3);
 
         // Previous button should be disabled.
@@ -155,7 +153,7 @@ describe('GridPanel', () => {
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(true);
         expectPaginationVisible(wrapper, true);
-        paginationButtons = wrapper.find(PAGINATION_SELECTOR).find('button');
+        paginationButtons = wrapper.find(PAGINATION_SELECTOR).first().find('button');
         expect(paginationButtons.first().hasClass(DISABLED_BUTTON_CLASS)).toEqual(true);
         expect(paginationButtons.last().hasClass(DISABLED_BUTTON_CLASS)).toEqual(true);
         expect(wrapper.find(GRID_INFO_SELECTOR).text()).toContain('Loading data...');
@@ -170,9 +168,13 @@ describe('GridPanel', () => {
         expectPanelClasses(wrapper, false);
 
         // pageSizes should be different
-        expect(wrapper.find(PAGE_SIZE_SELECTOR).find('ul').text()).toEqual('Page Size2040100250400');
+        expect(wrapper.find(PAGINATION_SELECTOR).first().find('ul').text()).toEqual(
+            'Jump ToFirst PageLast Page...Page Size2040100250400'
+        );
         wrapper.setProps({ pageSizes: [5, 10, 15, 20] });
-        expect(wrapper.find(PAGE_SIZE_SELECTOR).find('ul').text()).toEqual('Page Size5101520');
+        expect(wrapper.find(PAGINATION_SELECTOR).first().find('ul').text()).toEqual(
+            'Jump ToFirst PageLast Page...Page Size5101520'
+        );
 
         // Pagination should not be present.
         wrapper.setProps({ showPagination: false });

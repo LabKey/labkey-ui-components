@@ -8,12 +8,11 @@ import { initNotificationsState } from '../notifications/global';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { UsersGridPanel } from '../user/UsersGridPanel';
 import { SecurityPolicy } from '../permissions/models';
-import { Container } from '../base/models/Container';
 
 import { App } from '../../../index';
 
 import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
-import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 
 import { getNewUserRoles, UserManagement, UserManagementProps } from './UserManagement';
 
@@ -83,9 +82,6 @@ describe('UserManagement', () => {
 });
 
 describe('getNewUsersRoles', () => {
-    const CONTAINER = new Container({ parentId: 'projectid' });
-    const PROJECT_CONTAINER = new Container({ parentId: 'rootid' });
-    const PROJECT = { rootId: 'rootid' };
     // Copied from freezermanager/src/constants.ts
     const STORAGE_ROLES = [
         ['org.labkey.api.inventory.security.StorageDesignerRole', 'Storage Designer'],
@@ -93,14 +89,14 @@ describe('getNewUsersRoles', () => {
     ];
 
     test('non premium, non project, app admin', () => {
-        const roles = getNewUserRoles(App.TEST_USER_APP_ADMIN, CONTAINER, PROJECT, STORAGE_ROLES);
+        const roles = getNewUserRoles(App.TEST_USER_APP_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
         expect(roles.length).toBe(5);
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeDefined();
     });
 
     test('premium, non project, app admin', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(App.TEST_USER_APP_ADMIN, CONTAINER, PROJECT, STORAGE_ROLES);
+        const roles = getNewUserRoles(App.TEST_USER_APP_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
         expect(roles.length).toBe(6);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeDefined();
@@ -108,7 +104,7 @@ describe('getNewUsersRoles', () => {
 
     test('premium, project, app admin', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(App.TEST_USER_APP_ADMIN, PROJECT_CONTAINER, PROJECT, STORAGE_ROLES);
+        const roles = getNewUserRoles(App.TEST_USER_APP_ADMIN, TEST_PROJECT_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
         expect(roles.length).toBe(7);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ProjectAdmin)).toBeDefined();
@@ -116,14 +112,14 @@ describe('getNewUsersRoles', () => {
     });
 
     test('non premium, non project, non app admin', () => {
-        const roles = getNewUserRoles(App.TEST_USER_PROJECT_ADMIN, CONTAINER, PROJECT, STORAGE_ROLES);
+        const roles = getNewUserRoles(App.TEST_USER_PROJECT_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
         expect(roles.length).toBe(4);
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeUndefined();
     });
 
     test('premium, non project, non app admin', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(App.TEST_USER_PROJECT_ADMIN, CONTAINER, PROJECT, STORAGE_ROLES);
+        const roles = getNewUserRoles(App.TEST_USER_PROJECT_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
         expect(roles.length).toBe(5);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeUndefined();
@@ -131,7 +127,7 @@ describe('getNewUsersRoles', () => {
 
     test('premium, project, non app admin', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(App.TEST_USER_PROJECT_ADMIN, PROJECT_CONTAINER, PROJECT, STORAGE_ROLES);
+        const roles = getNewUserRoles(App.TEST_USER_PROJECT_ADMIN, TEST_PROJECT_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
         expect(roles.length).toBe(6);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ProjectAdmin)).toBeDefined();

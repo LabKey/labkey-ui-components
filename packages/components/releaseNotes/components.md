@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD May 2022
+* SamplesAssayButton update to handle case where no assay designs are defined
+
 ### version 2.164.1
 *Released*: 2 May 2022
 * Replace usages of `parsePathName` with `ActionURL.getPathFromLocation()` from `@labkey/api`.

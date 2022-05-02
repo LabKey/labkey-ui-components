@@ -555,6 +555,7 @@ export interface EntityDataType {
     nounAsParentPlural: string;
     nounPlural: string;
     typeNounSingular: string;
+    typeNounAsParentSingular: string;
     descriptionSingular: string; // (e.g., parent sample type) used in EntityInsertPanel for a message about how many of these types are available
     descriptionPlural: string;
     uniqueFieldKey: string;

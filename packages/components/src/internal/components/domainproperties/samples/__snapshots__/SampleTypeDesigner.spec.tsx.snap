@@ -1113,6 +1113,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         },
         "security": ServerSecurityAPIWrapper {
           "fetchContainers": [Function],
+          "fetchPolicy": [Function],
         },
       }
     }

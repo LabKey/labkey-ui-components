@@ -2,16 +2,15 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, PureComponent } from 'react';
+import React, { FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
-import { getServerContext, PermissionRoles, Utils } from '@labkey/api';
+import { PermissionRoles, Project, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
-import { PermissionsProviderProps, SecurityPolicy } from '../permissions/models';
-import { fetchContainerSecurityPolicy } from '../permissions/actions';
+import { SecurityPolicy } from '../permissions/models';
 import { createNotification } from '../notifications/actions';
 import { queryGridInvalidate } from '../../actions';
 import { SCHEMAS } from '../../schemas';
@@ -22,15 +21,18 @@ import { UsersGridPanel } from '../user/UsersGridPanel';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { PermissionsPageContextProvider } from '../permissions/PermissionsContextProvider';
+import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
-import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
+import { AppContext, useAppContext } from '../../AppContext';
+import { SecurityAPIWrapper } from '../security/APIWrapper';
+
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
+import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 
 export function getNewUserRoles(
     user: User,
     container: Partial<Container>,
-    project: any,
+    project: Project,
     extraRoles?: string[][]
 ): Array<Record<string, any>> {
     const roles = [
@@ -65,19 +67,23 @@ export function getNewUserRoles(
 }
 
 interface OwnProps {
+    api: SecurityAPIWrapper;
+    container: Container;
     extraRoles?: string[][];
+    project: Project;
     user: User;
 }
 
-type Props = OwnProps & PermissionsProviderProps;
+// exported for jest testing
+export type UserManagementProps = OwnProps & InjectedPermissionsPage;
 
 interface State {
     policy: SecurityPolicy;
 }
 
 // exported for jest testing
-export class UserManagement extends PureComponent<Props, State> {
-    constructor(props: Props) {
+export class UserManagement extends PureComponent<UserManagementProps, State> {
+    constructor(props: UserManagementProps) {
         super(props);
 
         this.state = {
@@ -91,23 +97,22 @@ export class UserManagement extends PureComponent<Props, State> {
         }
     }
 
-    loadSecurityPolicy() {
-        fetchContainerSecurityPolicy(getServerContext().container.id, this.props.principalsById)
-            .then(policy => {
-                this.setState(() => ({
-                    policy: SecurityPolicy.updateAssignmentsData(policy, this.props.principalsById),
-                }));
-            })
-            .catch(error => {
-                console.error(error);
-                createNotification({
-                    alertClass: 'danger',
-                    message: 'Unable to load permissions information. ' + (error.exception ? error.exception : ''),
-                });
+    loadSecurityPolicy = async (): Promise<void> => {
+        const { api, container, principalsById } = this.props;
+
+        try {
+            const policy = await api.fetchPolicy(container.id, principalsById);
+            this.setState({ policy: SecurityPolicy.updateAssignmentsData(policy, principalsById) });
+        } catch (error) {
+            createNotification({
+                alertClass: 'danger',
+                message: 'Unable to load permissions information. ' + (error.exception ? error.exception : ''),
             });
-    }
+        }
+    };
 
     onCreateComplete = (response: any, roleUniqueNames: string[]) => {
+        const { container, project } = this.props;
         this.invalidateGlobal();
 
         // split response to count new vs existing users separately
@@ -126,15 +131,11 @@ export class UserManagement extends PureComponent<Props, State> {
                 const promises = [];
                 // application admin role applies to the Site root container, others apply to current project container
                 if (roleUniqueNames.indexOf(PermissionRoles.ApplicationAdmin) >= 0) {
-                    promises.push(
-                        updateSecurityPolicy(getServerContext().project.rootId, newUsers, [
-                            PermissionRoles.ApplicationAdmin,
-                        ])
-                    );
+                    promises.push(updateSecurityPolicy(project.rootId, newUsers, [PermissionRoles.ApplicationAdmin]));
                 }
                 const nonAppAdmin = roleUniqueNames.filter(name => name !== PermissionRoles.ApplicationAdmin);
                 if (nonAppAdmin.length) {
-                    promises.push(updateSecurityPolicy(getServerContext().container.id, newUsers, nonAppAdmin));
+                    promises.push(updateSecurityPolicy(container.id, newUsers, nonAppAdmin));
                 }
                 Promise.all(promises)
                     .then(() => {
@@ -241,22 +242,21 @@ export class UserManagement extends PureComponent<Props, State> {
         queryGridInvalidate(SCHEMAS.CORE_TABLES.USERS);
     }
 
-    renderButtons = () => {
+    renderButtons = (): ReactNode => {
         return (
-            <ManageDropdownButton id="user-management-page-manage" pullRight={true} collapsed={true}>
+            <ManageDropdownButton collapsed id="user-management-page-manage" pullRight>
                 <MenuItem href={AppURL.create('audit', 'userauditevent').toHref()}>View Audit History</MenuItem>
             </ManageDropdownButton>
         );
     };
 
     render() {
-        const { user, extraRoles } = this.props;
+        const { container, extraRoles, project, user } = this.props;
         const { policy } = this.state;
-        const { container, project } = getServerContext();
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
-        const newUserRoleOptions =
-            policy && !policy.isInheritFromParent() ? getNewUserRoles(user, container, project, extraRoles) : undefined;
+        const isEditable = policy && !policy.isInheritFromParent();
+        const newUserRoleOptions = isEditable ? getNewUserRoles(user, container, project, extraRoles) : undefined;
 
         return (
             <BasePermissionsCheckPage
@@ -283,11 +283,21 @@ interface UserManagementPageProps {
     extraRoles?: string[][];
 }
 
-const UserManagementPageImpl: FC<UserManagementPageProps> = props => {
-    const { extraRoles } = props;
-    const { user } = useServerContext();
+const UserManagementPageImpl: FC<UserManagementPageProps & InjectedPermissionsPage> = props => {
+    const { extraRoles, ...injectedProps } = props;
+    const { api } = useAppContext<AppContext>();
+    const { container, project, user } = useServerContext();
 
-    return <UserManagement extraRoles={extraRoles} user={user} />;
+    return (
+        <UserManagement
+            {...injectedProps}
+            api={api.security}
+            container={container}
+            extraRoles={extraRoles}
+            project={project}
+            user={user}
+        />
+    );
 };
 
-export const UserManagementPage = PermissionsPageContextProvider<UserManagementPageProps>(UserManagementPageImpl);
+export const UserManagementPage = withPermissionsPage<UserManagementPageProps>(UserManagementPageImpl);

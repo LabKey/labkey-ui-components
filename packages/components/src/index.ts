@@ -144,6 +144,7 @@ import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons
 import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
+import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMenuButton';
 import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
 import { getMenuItemsForSection, getMenuItemForSectionKey } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
@@ -363,7 +364,6 @@ import {
 } from './internal/components/samples/SampleAliquotViewSelector';
 import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
 import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSamplesByIdHeaderPanel';
-import { SharedSampleTypeAdminConfirmModal } from './internal/components/samples/SharedSampleTypeAdminConfirmModal';
 import {
     AssayContextConsumer,
     assayPage,
@@ -445,7 +445,7 @@ import {
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
-import { PermissionsPageContextProvider } from './internal/components/permissions/PermissionsContextProvider';
+import { withPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 import { Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
 import { fetchContainerSecurityPolicy } from './internal/components/permissions/actions';
 import {
@@ -977,7 +977,7 @@ export {
     hasPermissions,
     fetchContainerSecurityPolicy,
     PermissionAssignments,
-    PermissionsPageContextProvider,
+    withPermissionsPage,
     SecurityPolicy,
     SecurityRole,
     Principal,
@@ -1063,7 +1063,6 @@ export {
     ALIQUOT_FILTER_MODE,
     SampleAssayDetail,
     SampleAliquotsGridPanel,
-    SharedSampleTypeAdminConfirmModal,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
@@ -1310,6 +1309,7 @@ export {
     PaginationButtons,
     ToggleButtons,
     DisableableButton,
+    ResponsiveMenuButton,
     ResponsiveMenuButtonGroup,
     getMenuItemsForSection,
     getMenuItemForSectionKey,
@@ -1497,7 +1497,7 @@ export type {
     MaterialOutput,
 } from './internal/components/entities/models';
 export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
-export type { PermissionsProviderProps } from './internal/components/permissions/models';
+export type { InjectedPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 export type { ISelectInitData } from './internal/components/forms/model';
 export type { QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
 export type {

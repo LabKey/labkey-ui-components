@@ -101,7 +101,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const onConfirm = async (): Promise<void> => {
         setSubmitting(true);
 
-        const { originalParents } = await getOriginalParentsFromSampleLineage(allowedForUpdate);
+        const { originalParents } = await getOriginalParentsFromSampleLineage(allowedForUpdate, parentEntityDataTypes);
         const rows = getUpdatedLineageRowsForBulkEdit(
             allowedForUpdate,
             selectedParents,

@@ -77,6 +77,7 @@ export function updateSecurityPolicy(
                 });
             },
             failure: error => {
+                console.error('Failed to update security policy', error);
                 reject(error);
             },
         });

@@ -1511,10 +1511,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@labkey/api@1.10.0-fb-downloadError.0":
-  version "1.10.0-fb-downloadError.0"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.10.0-fb-downloadError.0.tgz#b8eea2edd297bd808a584775d0ff766d64a8cc32"
-  integrity sha1-uO6i7dKXvYCKWEd10P92bWSozDI=
+"@labkey/api@1.11.0-fb-downloadError.0":
+  version "1.11.0-fb-downloadError.0"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.11.0-fb-downloadError.0.tgz#945e4ab06c2119f5cacf024b69c453be704ce1f7"
+  integrity sha1-lF5KsGwhGfXKzwJLacRTvnBM4fc=
 
 "@labkey/build@6.1.0":
   version "6.1.0"

@@ -274,7 +274,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
                         SampleOperation.AddAssayData
                     ) && (
                         <>
-                            To upload assay data, use the <b>Upload Assay Data</b> option from the &nbsp;
+                            To import assay data, use the <b>Import Assay Data</b> option from the &nbsp;
                             <i className="fa fa-bars" />
                             &nbsp; menu above.
                         </>

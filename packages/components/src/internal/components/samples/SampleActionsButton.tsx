@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { FC, memo, useMemo } from 'react';
-import { DropdownButton } from 'react-bootstrap';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
 import { hasAnyPermissions, User } from '../base/models/User';
@@ -55,6 +55,7 @@ export const SampleActionsButton: FC<Props> = memo(props => {
             {!!children && hasPerms && <hr className="divider" />}
             {hasPerms && (
                 <>
+                    <MenuItem header>Picklists</MenuItem>
                     <AddToPicklistMenuItem
                         user={user}
                         queryModel={model}

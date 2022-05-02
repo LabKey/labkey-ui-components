@@ -98,9 +98,17 @@ export function parseDate(dateStr: string, dateFormat?: string): Date {
     // https://github.com/Hacker0x01/react-datepicker/issues/1609
     const _dateFormat = dateFormat?.replace('yyyy', 'YYYY').replace('dd', 'DD');
 
-    const date = moment(dateStr, _dateFormat);
+    let date = moment(dateStr, _dateFormat);
     if (date && date.isValid()) {
         return date.toDate();
+    }
+
+    // Issue 45140: if a dateFormat was provided here and the date didn't parse, try the default container format
+    if (dateFormat) {
+        date = moment(dateStr, getDateTimeFormat());
+        if (date && date.isValid()) {
+            return date.toDate();
+        }
     }
 
     return null;

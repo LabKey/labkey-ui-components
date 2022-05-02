@@ -34,7 +34,7 @@ import { getQueryColumnRenderers, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
 import { GRID_EDIT_INDEX } from './constants';
 import { IQueryGridModel } from './QueryGridModel';
-import { getDateTimeFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
+import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
@@ -467,10 +467,7 @@ export class EditorModel
                     let dateVal;
                     if (values.size === 1) {
                         dateVal = values.first().raw;
-                        dateVal = parseDate(dateVal);
-                        if (!dateVal) {
-                            dateVal = parseDate(values.first().raw, getDateTimeFormat());
-                        }
+                        dateVal = parseDate(dateVal, getColDateFormat(col));
                     }
 
                     // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update

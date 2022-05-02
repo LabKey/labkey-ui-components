@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Use QueryColumn date format for filter modal input date picker (via DatePickerInput)
   * Use QueryColumn date format for GridPanel filter status display
   * Fix for QueryInfoForm, QueryFormInputs and EditableGridPanelForUpdate use case to use QueryColumn date format in parseDate()
+  * Fix for EditorModel getRawDataFromGridData() to use QueryColumn date format for parseDate()
 
 ### version 2.164.0
 *Released*: 2 May 2022

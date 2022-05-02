@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.164.0
+*Released*: 2 May 2022
+* Issue 45374: LKSM issues when site "default display format for numbers" is set
+  * fix for getPkData() function when value is an array or List of objects/Maps
+
 ### version 2.163.0
 *Released*: 29 April 2022
 * Remove `SharedSampleTypeAdminConfirmModal`

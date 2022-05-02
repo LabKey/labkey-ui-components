@@ -402,13 +402,9 @@ describe('EditorModel', () => {
             expect(uniqueKeyViolations.has('Name')).toBe(true);
             expect(uniqueKeyViolations.get('Name').size).toBe(2);
             expect(uniqueKeyViolations.get('Name').has('s-2')).toBe(true);
-            expect(uniqueKeyViolations.get('Name').get('s-2')).toEqual(
-                List<number>([1, 2])
-            );
+            expect(uniqueKeyViolations.get('Name').get('s-2')).toEqual(List<number>([1, 2]));
             expect(uniqueKeyViolations.get('Name').has('s-4')).toBe(true);
-            expect(uniqueKeyViolations.get('Name').get('s-4')).toEqual(
-                List<number>([4, 5])
-            );
+            expect(uniqueKeyViolations.get('Name').get('s-4')).toEqual(List<number>([4, 5]));
             const errors = editorModel.getValidationErrors(queryGridModel, 'Name');
             expect(errors).toHaveLength(2);
             expect(errors[0].indexOf('Duplicate')).toBeGreaterThanOrEqual(0);
@@ -417,14 +413,10 @@ describe('EditorModel', () => {
             const ciUniqueKeyViolations = editorModel.validateData(queryGridModel, 'Description').uniqueKeyViolations;
             // Check whitespace trimmed when detecting duplicates
             expect(ciUniqueKeyViolations.get('Description').has('spacedupe')).toBe(true);
-            expect(ciUniqueKeyViolations.get('Description').get('spacedupe')).toEqual(
-                List<number>([2, 3])
-            );
+            expect(ciUniqueKeyViolations.get('Description').get('spacedupe')).toEqual(List<number>([2, 3]));
             // check case insensitivity when detecting duplicates
             expect(ciUniqueKeyViolations.get('Description').has('caseinsensitive')).toBe(true);
-            expect(ciUniqueKeyViolations.get('Description').get('caseinsensitive')).toEqual(
-                List<number>([4, 5])
-            );
+            expect(ciUniqueKeyViolations.get('Description').get('caseinsensitive')).toEqual(List<number>([4, 5]));
             const ciErrors = editorModel.getValidationErrors(queryGridModel, 'Description');
             expect(ciErrors[0].indexOf('Duplicate')).toBeGreaterThanOrEqual(0);
             expect(ciErrors[1].indexOf('Duplicate')).toBeGreaterThanOrEqual(0);
@@ -527,13 +519,9 @@ describe('EditorModel', () => {
             expect(uniqueKeyViolations.has('Name')).toBe(true);
             expect(uniqueKeyViolations.get('Name').size).toBe(2);
             expect(uniqueKeyViolations.get('Name').has('s-2')).toBe(true);
-            expect(uniqueKeyViolations.get('Name').get('s-2')).toEqual(
-                List<number>([1, 2])
-            );
+            expect(uniqueKeyViolations.get('Name').get('s-2')).toEqual(List<number>([1, 2]));
             expect(uniqueKeyViolations.get('Name').has('s-4')).toBe(true);
-            expect(uniqueKeyViolations.get('Name').get('s-4')).toEqual(
-                List<number>([4, 5])
-            );
+            expect(uniqueKeyViolations.get('Name').get('s-4')).toEqual(List<number>([4, 5]));
             const errors = editorModel.getValidationErrors(queryGridModel, 'Name');
             expect(errors).toHaveLength(3);
         });
@@ -604,7 +592,7 @@ describe('EditorModel', () => {
             });
             const updates = Map<any, any>({
                 withValue: 'purple',
-                'withDisplay$SValue': 'teal',
+                withDisplay$SValue: 'teal',
             });
             expect(EditorModel.convertQueryDataToEditorData(queryData, updates)).toStrictEqual(
                 Map<string, any>({

@@ -135,7 +135,8 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
             setCanExport(false);
             let models = [];
             selectedTabs.forEach(selected => {
-                const tabForm = getQueryModelExportParams(queryModels[selected], EXPORT_TYPES.EXCEL, advancedExportOptions)
+                const selectedModel = queryModels[selected];
+                const tabForm = getQueryModelExportParams(selectedModel, EXPORT_TYPES.EXCEL, {...advancedExportOptions, sheetName: selectedModel.title })
                 models.push(tabForm);
             });
             const filename = exportFilename ?? 'Data';

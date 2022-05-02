@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.164.1
+*Released*: 2 May 2022
+* Replace usages of `parsePathName` with `ActionURL.getPathFromLocation()` from `@labkey/api`.
+
 ### version 2.164.0
 *Released*: 2 May 2022
 * Issue 45374: LKSM issues when site "default display format for numbers" is set

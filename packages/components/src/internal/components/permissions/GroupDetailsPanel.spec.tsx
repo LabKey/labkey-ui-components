@@ -1,7 +1,6 @@
 import React from 'react';
 import { fromJS } from 'immutable';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
 

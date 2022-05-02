@@ -1,13 +1,15 @@
 import React from 'react';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
-import { Alert, LoadingSpinner } from '../../..';
+import { Alert, AppContext, LoadingSpinner } from '../../..';
 
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { BIOLOGICS_APP_PROPERTIES } from '../../app/constants';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
+
+import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
 
 import { FolderMenu } from './FolderMenu';
 
@@ -18,13 +20,13 @@ describe('FolderMenu', () => {
         };
     }
 
-    function getDefaultAppContext(fetchContainers?: any) {
+    function getDefaultAppContext(overrides?: Partial<SecurityAPIWrapper>): Partial<AppContext> {
         return {
             api: getTestAPIWrapper(jest.fn, {
-                security: {
-                    fetchContainers:
-                        fetchContainers ?? jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
-                },
+                security: getSecurityTestAPIWrapper(jest.fn, {
+                    fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
+                    ...overrides,
+                }),
             }),
         };
     }
@@ -37,11 +39,12 @@ describe('FolderMenu', () => {
 
     it('displays loading and errors', async () => {
         const expectedError = 'This is a failure.';
-        const failFetchContainers = jest.fn().mockRejectedValue(expectedError);
 
         const wrapper = mountWithAppServerContext(
             <FolderMenu {...getDefaultProps()} />,
-            getDefaultAppContext(failFetchContainers),
+            getDefaultAppContext({
+                fetchContainers: jest.fn().mockRejectedValue(expectedError),
+            }),
             getDefaultServerContext()
         );
 

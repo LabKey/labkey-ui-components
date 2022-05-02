@@ -523,7 +523,8 @@ export function getExportParams(
         if (options.filters) {
             options.filters.forEach(f => {
                 if (f) {
-                    params[f.getURLParameterName()] = [f.getURLParameterValue()];
+                    if (!params[f.getURLParameterName()]) params[f.getURLParameterName()] = [];
+                    params[f.getURLParameterName()].push(f.getURLParameterValue());
                 }
             });
         }
@@ -565,10 +566,40 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     // POST a form
     const form = $(`<form method="POST" action="${url}">`);
     $.each(params, function (k, v) {
-        form.append($(`<input type="hidden" name="${k.toString()}" value="${v}">`));
+        const safeValue = quoteEncodedValue(v);
+        if (safeValue instanceof Array) {
+            safeValue.forEach(val => {
+                form.append($(`<input type="hidden" name="${k.toString()}" value="${val}">`));
+            });
+        } else form.append($(`<input type="hidden" name="${k.toString()}" value="${safeValue}">`));
     });
     $('body').append(form);
     form.trigger('submit');
+}
+
+const QUOTE_REGEX = new RegExp('"', 'g');
+const QUOTE_ENTITY = '&quot;';
+
+// Issue 45366: form value containing unescaped quotes gets truncated
+export function quoteEncodedValue(rawValue: any) {
+    let safeValue = rawValue;
+
+    if (rawValue instanceof Array) {
+        safeValue = [];
+        rawValue.forEach(rawVal => {
+            safeValue.push(_quoteEncodedValue(rawVal));
+        });
+    } else safeValue = _quoteEncodedValue(rawValue);
+
+    return safeValue;
+}
+
+function _quoteEncodedValue(rawValue: any) {
+    let safeValue = rawValue;
+    if (typeof rawValue === 'string' && rawValue.indexOf('"') > -1) {
+        safeValue = rawValue.replace(QUOTE_REGEX, QUOTE_ENTITY);
+    }
+    return safeValue;
 }
 
 // Complex comparator to determine if the location matches the models location-sensitive properties

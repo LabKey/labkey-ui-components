@@ -31,7 +31,15 @@ import {
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 
-import { addColumns, changeColumn, removeColumn, genCellKey, parseCellKey, getExportParams } from './actions';
+import {
+    addColumns,
+    changeColumn,
+    removeColumn,
+    genCellKey,
+    parseCellKey,
+    getExportParams,
+    quoteEncodedValue,
+} from './actions';
 import { CellMessage, ValueDescriptor } from './models';
 import { resetQueryGridState, updateQueryGridModel } from './global';
 // FIXME, when the editableGridWithData file is read in, the objects are automatically
@@ -485,5 +493,31 @@ describe('getExportParams', () => {
             includeColumn: ['extra1', 'extra2'],
             excludeColumn: ['Field3', 'extra2'],
         });
+    });
+});
+
+describe('quoteEncodedValue', () => {
+    test('non string type', () => {
+        expect(quoteEncodedValue(1)).toEqual(1);
+        expect(quoteEncodedValue(false)).toEqual(false);
+    });
+
+    test('without double quote', () => {
+        expect(quoteEncodedValue(["hello' world"])).toEqual(["hello' world"]);
+        expect(quoteEncodedValue(["hello' world", 'a second value'])).toEqual(["hello' world", 'a second value']);
+        expect(quoteEncodedValue("hello' world")).toEqual("hello' world");
+    });
+
+    test('with double quote(s)', () => {
+        expect(quoteEncodedValue(['hello" world'])).toEqual(['hello&quot; world']);
+        expect(quoteEncodedValue(['hello "world"', 'a second value'])).toEqual([
+            'hello &quot;world&quot;',
+            'a second value',
+        ]);
+        expect(quoteEncodedValue(["hello' world", 'a second "value"'])).toEqual([
+            "hello' world",
+            'a second &quot;value&quot;',
+        ]);
+        expect(quoteEncodedValue('hello "world"')).toEqual('hello &quot;world&quot;');
     });
 });

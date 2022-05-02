@@ -355,11 +355,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     initLineageEditableGrid = async (): Promise<void> => {
-        const { determineLineage } = this.props;
+        const { determineLineage, parentDataTypes } = this.props;
         if (determineLineage) {
-            const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(
-                this.props.sampleLineage
-            );
+            const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(this.props.sampleLineage, parentDataTypes.toArray());
             this.setState(
                 () => ({ originalParents, parentTypeOptions }),
                 () => {
@@ -716,7 +714,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
     getTabHeader = (tabInd: number): ReactNode => {
         const { parentDataTypes, combineParentTypes } = this.props;
-        const { parentTypeOptions, entityParentsMap, includedTabs } = this.state;
+        const { parentTypeOptions, entityParentsMap } = this.state;
 
         const currentTab = this.getCurrentTab(tabInd);
 

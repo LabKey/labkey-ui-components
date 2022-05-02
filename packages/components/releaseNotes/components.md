@@ -8,6 +8,33 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Use QueryColumn date format for GridPanel filter status display
   * Fix for QueryInfoForm, QueryFormInputs and EditableGridPanelForUpdate use case to use QueryColumn date format in parseDate()
 
+### version 2.164.0
+*Released*: 2 May 2022
+* Issue 45374: LKSM issues when site "default display format for numbers" is set
+  * fix for getPkData() function when value is an array or List of objects/Maps
+
+### version 2.163.0
+*Released*: 29 April 2022
+* Remove `SharedSampleTypeAdminConfirmModal`
+* Update `EntityDataType` model with additional properties
+* Update `SampleSetDeletModal`, `deleteDataClass`, `deleteSampleSet`, and `deleteEntityType` to take optional `containerPath`
+* Issue 45290: Adjust height of search box on Safari
+* Issue 45269: If the state columns are present, don't look at a column named 'Label' for the sample status
+* Update `SamplesEditableGrid` to account for custom parent types
+
+### version 2.162.1
+*Released*: 29 April 2022
+* Issue 45366: Export of Sample Finder results produces empty files
+  * Escape quote characters in export form
+
+### version 2.162.0
+*Released*: 29 April 2022
+* Issue 45304: Add inherit permissions control to permissions page
+  * Add inherit checkbox and wire up action to delete policy or save policy as expected.
+  * Rename `PermissionsPageContextProvider` to `withPermissionsPage` to align with our expected pattern.
+  * Remove the Permissions context.
+  * Add `fetchPolicy` to `SecurityAPIWrapper` and utilize this API from context in permission components.
+
 ### version 2.161.0
 *Released*: 28 April 2022
 * Item 10275: Grid panel updates to make button/menu bar display responsive to screen width

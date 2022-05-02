@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 import { Filter, PermissionRoles } from '@labkey/api';
 
 import {
@@ -33,28 +33,6 @@ import { AssayWizardModel } from '../../internal/components/assay/AssayWizardMod
 import { DELETE_SAMPLES_TOPIC } from '../../internal/util/helpLinks';
 
 import assayWizardJSON from './assayWizardModel.json';
-
-export const GRID_DATA = Map<any, Map<string, any>>({
-    '1': Map<string, any>({
-        GRID_EDIT_INDEX: 1,
-        rowid: '1',
-        Name: 'name one',
-        Description: 'first description',
-    }),
-    '2': Map<any, Map<string, any>>({
-        GRID_EDIT_INDEX: 2,
-        rowid: '2',
-        Name: 'name two',
-        Description: 'second description',
-    }),
-    '3': Map<any, Map<string, any>>({
-        GRID_EDIT_INDEX: 3,
-        rowid: '3',
-        Name: 'name three',
-        Description: 'three description',
-        mixtureTypeId: 'not in db',
-    }),
-});
 
 export const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
 export const ASSAY_WIZARD_MODEL = new AssayWizardModel({
@@ -421,6 +399,14 @@ export const TEST_PROJECT_CONTAINER = new Container({
     type: 'project',
 });
 
+export const TEST_PROJECT = {
+    id: TEST_PROJECT_CONTAINER.id,
+    name: TEST_PROJECT_CONTAINER.name,
+    path: TEST_PROJECT_CONTAINER.path,
+    rootId: TEST_PROJECT_CONTAINER.parentId,
+    title: TEST_PROJECT_CONTAINER.title,
+};
+
 export const TEST_FOLDER_CONTAINER = new Container({
     activeModules: ['a', 'b', 'c'],
     id: 'b685712f-0800-103a-9286-0131958dcf60',
@@ -444,6 +430,7 @@ export const TestTypeDataType: EntityDataType = {
     nounAsParentSingular: 'test Parent',
     nounAsParentPlural: 'test Parents',
     typeNounSingular: 'Test Type',
+    typeNounAsParentSingular: 'Test Parent Type',
     descriptionSingular: 'parent test type',
     descriptionPlural: 'parent test types',
     uniqueFieldKey: 'Name',

@@ -153,7 +153,7 @@ export const DEFAULT_SAMPLE_FIELD_CONFIG = {
     lookupQuery: 'Materials',
     lookupType: { ...SAMPLE_TYPE },
     name: 'SampleID',
-    label: 'Sample ID'
+    label: 'Sample ID',
 } as Partial<IDomainField>;
 
 export const ALIQUOTED_FROM_COL = 'AliquotedFrom';

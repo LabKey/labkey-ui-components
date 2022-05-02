@@ -1131,6 +1131,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
         },
+        "label": "Sample ID",
         "lookupQuery": "Materials",
         "lookupSchema": "exp",
         "lookupType": Object {

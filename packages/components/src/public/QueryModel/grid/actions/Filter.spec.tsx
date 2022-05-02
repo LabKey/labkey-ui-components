@@ -73,4 +73,25 @@ describe('FilterAction::actionValueFromFilter', () => {
         expect(value.displayValue).toBe('otherLabel = x');
         expect(value.value).toBe('"otherLabel" = x');
     });
+
+    test('date formatting, date and time', () => {
+        const col = QueryColumn.create({ shortCaption: 'DateCol', jsonType: 'date', format: 'dd/MM/yyyy HH:mm' });
+        const filter = Filter.create('DateCol', '2022-04-19 01:02', Filter.Types.EQUAL);
+        const value: ActionValue = action.actionValueFromFilter(filter, col);
+        expect(value.displayValue).toBe('DateCol = 19/04/2022 01:02');
+    });
+
+    test('date formatting, date only', () => {
+        const col = QueryColumn.create({ shortCaption: 'DateCol', jsonType: 'date', format: 'dd/MM/yyyy' });
+        const filter = Filter.create('DateCol', '2022-04-19 01:02', Filter.Types.EQUAL);
+        const value: ActionValue = action.actionValueFromFilter(filter, col);
+        expect(value.displayValue).toBe('DateCol = 19/04/2022');
+    });
+
+    test('date formatting, time only', () => {
+        const col = QueryColumn.create({ shortCaption: 'DateCol', jsonType: 'date', format: 'HH:mm:ss' });
+        const filter = Filter.create('DateCol', '2022-04-19 01:02', Filter.Types.EQUAL);
+        const value: ActionValue = action.actionValueFromFilter(filter, col);
+        expect(value.displayValue).toBe('DateCol = 01:02:00');
+    });
 });

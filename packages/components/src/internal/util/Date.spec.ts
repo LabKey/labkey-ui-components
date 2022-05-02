@@ -15,7 +15,18 @@
  */
 import { initUnitTests } from '../testHelpers';
 
-import { formatDate, formatDateTime, generateNameWithTimestamp, getJsonDateTimeFormatString } from './Date';
+import { QueryColumn } from '../../public/QueryColumn';
+import { DATE_TYPE, DATETIME_TYPE } from '../components/domainproperties/PropDescType';
+
+import {
+    formatDate,
+    formatDateTime,
+    generateNameWithTimestamp,
+    getColDateFormat,
+    getColFormattedDateValue,
+    getJsonDateTimeFormatString,
+    parseDate,
+} from './Date';
 
 beforeAll(() => {
     initUnitTests();
@@ -84,5 +95,81 @@ describe('getJsonDateTimeFormatString', () => {
     test('with date', () => {
         expect(getJsonDateTimeFormatString(new Date('2021-12-03 00:00'))).toBe('2021-12-03 00:00:00');
         expect(getJsonDateTimeFormatString(new Date('2021-12-03 23:59'))).toBe('2021-12-03 23:59:00');
+    });
+});
+
+describe('getColDateFormat', () => {
+    test('datePlaceholder', () => {
+        const col = QueryColumn.create({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
+        expect(getColDateFormat(col)).toBe('yyyy-MM-dd HH:mm');
+    });
+
+    test('queryColumn.format', () => {
+        const col = QueryColumn.create({
+            shortCaption: 'DateCol',
+            rangeURI: DATETIME_TYPE.rangeURI,
+            format: 'dd/MM/yyyy HH:mm',
+        });
+        expect(getColDateFormat(col)).toBe('dd/MM/yyyy HH:mm');
+    });
+
+    test('provided dateFormat', () => {
+        const col = QueryColumn.create({
+            shortCaption: 'DateCol',
+            rangeURI: DATETIME_TYPE.rangeURI,
+            format: 'dd/MM/yyyy HH:mm',
+        });
+        expect(getColDateFormat(col, 'yyyy-MM HH')).toBe('yyyy-MM HH');
+    });
+
+    test('moment.js replacement', () => {
+        const col = QueryColumn.create({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
+        expect(getColDateFormat(col, 'YYYY-MM-DD')).toBe('yyyy-MM-dd');
+    });
+
+    test('shortcut formats', () => {
+        const col = QueryColumn.create({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
+        expect(getColDateFormat(col, 'Date')).toBe('yyyy-MM-dd');
+        expect(getColDateFormat(col, 'DateTime')).toBe('yyyy-MM-dd HH:mm');
+        expect(getColDateFormat(col, 'Time')).toBe('HH:mm:ss');
+    });
+});
+
+describe('getColFormattedDateValue', () => {
+    test('formatDateTime with QueryColumn format', () => {
+        const col = QueryColumn.create({
+            shortCaption: 'DateCol',
+            rangeURI: DATETIME_TYPE.rangeURI,
+            format: 'dd/MM/yyyy HH:mm',
+        });
+        expect(getColFormattedDateValue(col, '2022-04-19 01:02')).toBe('19/04/2022 01:02');
+    });
+
+    test('formatDateTime without QueryColumn format', () => {
+        const col = QueryColumn.create({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
+        expect(getColFormattedDateValue(col, '2022-04-19 01:02')).toBe('2022-04-19 01:02');
+    });
+
+    test('formatDate with QueryColumn format', () => {
+        const col = QueryColumn.create({ shortCaption: 'DateCol', rangeURI: DATE_TYPE.rangeURI, format: 'dd/MM/yyyy' });
+        expect(getColFormattedDateValue(col, '2022-04-19 01:02')).toBe('19/04/2022');
+    });
+
+    test('formatDate without QueryColumn format', () => {
+        const col = QueryColumn.create({ shortCaption: 'DateCol', rangeURI: DATE_TYPE.rangeURI });
+        expect(getColFormattedDateValue(col, '2022-04-19 01:02')).toBe('2022-04-19');
+    });
+});
+
+describe('parseDate', () => {
+    test('no dateStr', () => {
+        expect(parseDate(undefined)).toBe(null);
+        expect(parseDate(null)).toBe(null);
+        expect(parseDate('')).toBe(null);
+    });
+
+    test('invalid date', () => {
+        expect(parseDate('test')).toBe(null);
+        expect(parseDate('test', 'yyyy-MM-dd')).toBe(null);
     });
 });

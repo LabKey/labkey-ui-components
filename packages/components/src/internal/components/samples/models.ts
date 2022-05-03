@@ -119,16 +119,24 @@ export interface SampleStatus {
     description?: string;
 }
 
-export interface SampleStorageButtonsComponentProps {
+interface SampleStorageButtonComponentProps {
     user: User;
     afterStorageUpdate?: () => void;
-    queryModel?: QueryModel;
+    queryModel: QueryModel;
     isPicklist?: boolean;
     nounPlural?: string;
-    className?: string;
+    metricFeatureArea?: string;
 }
 
-export type SampleStorageButton = ComponentType<SampleStorageButtonsComponentProps>;
+export type SampleStorageButton = ComponentType<SampleStorageButtonComponentProps>;
+
+interface JobsButtonsComponentProps {
+    user: User;
+    model: QueryModel;
+    metricFeatureArea?: string;
+}
+
+export type JobsButton = ComponentType<JobsButtonsComponentProps>;
 
 export class SampleState {
     [immerable] = true;

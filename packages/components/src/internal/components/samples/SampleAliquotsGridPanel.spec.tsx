@@ -7,6 +7,7 @@ import {
     LoadingState,
     ManageDropdownButton,
     QueryInfo,
+    ResponsiveMenuButtonGroup,
     SampleAliquotsGridPanel,
     SchemaQuery,
     SCHEMAS,
@@ -16,6 +17,7 @@ import { mountWithServerContext } from '../../testHelpers';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
+import { TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
 
 describe('SampleAliquotsGridPanel', () => {
     const SCHEMA_QUERY = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');
@@ -32,14 +34,23 @@ describe('SampleAliquotsGridPanel', () => {
         user: App.TEST_USER_READER,
     };
 
-    test('with storageButton node', () => {
-        const DummyButton = () => <div className="dummyButton"> foo </div>;
+    test('check buttons', () => {
+        const DummyButton1 = () => <div className="storage-button-test"> foo </div>;
+        const DummyButton2 = () => <div className="jobs-button-test"> bar </div>;
 
         const wrapper = mountWithServerContext(
-            <SampleAliquotsGridPanelImpl storageButton={DummyButton} {...DEFAULT_PROPS} lineageUpdateAllowed={true} />,
-            DEFAULT_CONTEXT
+            <SampleAliquotsGridPanelImpl
+                {...DEFAULT_PROPS}
+                user={TEST_USER_STORAGE_EDITOR}
+                lineageUpdateAllowed
+                storageButton={DummyButton1}
+                jobsButton={DummyButton2}
+            />,
+            { user: TEST_USER_STORAGE_EDITOR }
         );
-        expect(wrapper.find(DummyButton).exists()).toEqual(true);
+        expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(1);
+        const items = wrapper.find(ResponsiveMenuButtonGroup).prop('items');
+        expect(items.length).toBe(4);
         wrapper.unmount();
     });
 

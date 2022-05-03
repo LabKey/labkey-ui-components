@@ -27,7 +27,7 @@ export function datePlaceholder(col: QueryColumn): string {
     let placeholder;
 
     if (col) {
-        const rangeURI = col.rangeURI.toLowerCase();
+        const rangeURI = col.rangeURI?.toLowerCase() ?? 'datetime';
 
         // attempt to use the rangeURI to figure out if we are working with a dateTime or date object
         // note Created and Modified columns do not include the rangeURI information

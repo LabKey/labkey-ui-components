@@ -137,6 +137,7 @@ interface OwnProps {
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?, response?) => void;
     allowedNonDomainFields?: string[];
     canEditEntityTypeDetails?: boolean;
+    columnCaptionTransform?: (col: QueryColumn) => string;  // Allows re-labeling columns in grid and bulk display
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     creationTypeOptions?: SampleCreationTypeModel[];
     disableMerge?: boolean;
@@ -146,6 +147,7 @@ interface OwnProps {
     getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
     fileImportParameters?: Record<string, any>;
     filePreviewFormats?: string;
+    hideParentEntityButtons?: boolean;  // Used if you have an initial parent but don't want to enable ability to change it
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
@@ -156,6 +158,7 @@ interface OwnProps {
     onBackgroundJobStart?: (entityTypeName, filename, jobId) => void;
     onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData;
     onCancel?: () => void;
+    onChangeInsertOption?: (isMerge: boolean) => void;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
     onFileChange?: (files?: string[]) => void;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
@@ -293,7 +296,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const allowParents = this.allowParents();
 
         // Can be set from URL or parent component
-        const selected = target ?? selectedTarget;
+        const selected = selectedTarget ?? target;
 
         if (isSampleManagerEnabled()) {
             try {
@@ -458,7 +461,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     getGridQueryInfo = (): QueryInfo => {
         const { insertModel, originalQueryInfo, creationType } = this.state;
-        const { entityDataType } = this.props;
+        const { entityDataType, columnCaptionTransform } = this.props;
 
         if (originalQueryInfo) {
             const nameIndex = Math.max(
@@ -473,6 +476,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 insertModel.getParentColumns(entityDataType.uniqueFieldKey)
             );
             if (creationType === SampleCreationType.Aliquots) columns = this.getAliquotCreationColumns(columns);
+
+            if (columnCaptionTransform) {
+                columns = columns.map((col) => {
+                    return col.merge({caption: columnCaptionTransform(col)})
+                }).toMap() as OrderedMap<string, QueryColumn>;
+            }
 
             return originalQueryInfo.merge({ columns }) as QueryInfo;
         }
@@ -579,12 +588,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderParentTypesAndButtons = (): ReactNode => {
         const { insertModel } = this.state;
-        const { parentDataTypes, combineParentTypes } = this.props;
+        const { parentDataTypes, combineParentTypes, hideParentEntityButtons } = this.props;
 
         if (insertModel) {
             const { isInit, targetEntityType } = insertModel;
 
-            if (isInit && targetEntityType && parentDataTypes) {
+            if (!hideParentEntityButtons && isInit && targetEntityType && parentDataTypes) {
                 return (
                     <EntityParentTypeSelectors
                         parentDataTypes={parentDataTypes}
@@ -1032,6 +1041,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     toggleInsertOptionChange = (): void => {
+        const { onChangeInsertOption } = this.props;
+
+        if (onChangeInsertOption)
+            onChangeInsertOption(!this.state.isMerge);
+
         this.setState(state => ({ isMerge: !state.isMerge }));
     };
 

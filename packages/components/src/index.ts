@@ -422,6 +422,7 @@ import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { SubNav } from './internal/components/navigation/SubNav';
+import { useSubNavContext, SubNavWithContext } from './internal/components/navigation/SubNavWithContext';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
@@ -663,6 +664,7 @@ import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
+    ELN_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
     FIND_SAMPLES_BY_FILTER_HREF,
     FIND_SAMPLES_BY_FILTER_KEY,
@@ -675,9 +677,11 @@ import {
     NEW_SAMPLE_TYPE_HREF,
     NEW_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
+    MEDIA_KEY,
     NOTIFICATION_TIMEOUT,
     PICKLIST_HOME_HREF,
     PICKLIST_KEY,
+    REGISTRY_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLE_TYPE_KEY,
     SAMPLES_KEY,
@@ -708,6 +712,7 @@ import { Discussions } from './internal/announcements/Discussions';
 import { Thread } from './internal/announcements/Thread';
 import { ThreadBlock } from './internal/announcements/ThreadBlock';
 import { ThreadEditor } from './internal/announcements/ThreadEditor';
+import { useNotAuthorized, useNotFound } from './internal/hooks';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -806,6 +811,9 @@ const App = {
     TEST_USER_APP_ADMIN,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    MEDIA_KEY,
+    REGISTRY_KEY,
+    ELN_KEY,
 };
 
 const Hooks = {
@@ -1444,6 +1452,12 @@ export {
     Thread,
     ThreadBlock,
     ThreadEditor,
+    // hooks
+    useNotAuthorized,
+    useNotFound,
+    // SubNavWithContext
+    useSubNavContext,
+    SubNavWithContext,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

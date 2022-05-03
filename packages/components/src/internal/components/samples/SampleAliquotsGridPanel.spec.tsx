@@ -17,7 +17,7 @@ import { mountWithServerContext } from '../../testHelpers';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
-import { TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
+import { TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
 
 describe('SampleAliquotsGridPanel', () => {
     const SCHEMA_QUERY = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');
@@ -34,7 +34,7 @@ describe('SampleAliquotsGridPanel', () => {
         user: App.TEST_USER_READER,
     };
 
-    test('check buttons', () => {
+    test('check buttons with permissions', () => {
         const DummyButton1 = () => <div className="storage-button-test"> foo </div>;
         const DummyButton2 = () => <div className="jobs-button-test"> bar </div>;
 
@@ -51,6 +51,24 @@ describe('SampleAliquotsGridPanel', () => {
         expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(1);
         const items = wrapper.find(ResponsiveMenuButtonGroup).prop('items');
         expect(items.length).toBe(4);
+        wrapper.unmount();
+    });
+
+    test('check buttons without permissions', () => {
+        const DummyButton1 = () => <div className="storage-button-test"> foo </div>;
+        const DummyButton2 = () => <div className="jobs-button-test"> bar </div>;
+
+        const wrapper = mountWithServerContext(
+            <SampleAliquotsGridPanelImpl
+                {...DEFAULT_PROPS}
+                user={TEST_USER_READER}
+                lineageUpdateAllowed
+                storageButton={DummyButton1}
+                jobsButton={DummyButton2}
+            />,
+            { user: TEST_USER_READER }
+        );
+        expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(0);
         wrapper.unmount();
     });
 

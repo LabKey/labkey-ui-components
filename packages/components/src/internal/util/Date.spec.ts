@@ -177,4 +177,15 @@ describe('parseDate', () => {
         expect(parseDate('test')).toBe(null);
         expect(parseDate('test', 'yyyy-MM-dd')).toBe(null);
     });
+
+    test('valid date without dateFormat', () => {
+        expect(parseDate('2022-04-19 01:02').toString()).toContain('Apr 19 2022');
+        expect(parseDate('2022-04-19').toString()).toContain('Apr 19 2022');
+        expect(parseDate('04/19/2022').toString()).toContain('Apr 19 2022');
+    });
+
+    test('valid date with dateFormat', () => {
+        expect(parseDate('01:02 2022-04-19', 'HH:mm yyyy-MM-dd').toString()).toContain('Apr 19 2022');
+        expect(parseDate('19/04/2022', 'dd/MM/yyyy').toString()).toContain('Apr 19 2022');
+    });
 });

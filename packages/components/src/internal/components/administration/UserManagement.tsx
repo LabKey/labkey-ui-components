@@ -5,7 +5,7 @@
 import React, { FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
-import { PermissionRoles, Utils } from '@labkey/api';
+import { PermissionRoles, Project, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
@@ -32,7 +32,7 @@ import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 export function getNewUserRoles(
     user: User,
     container: Partial<Container>,
-    project: any,
+    project: Project,
     extraRoles?: string[][]
 ): Array<Record<string, any>> {
     const roles = [
@@ -70,7 +70,7 @@ interface OwnProps {
     api: SecurityAPIWrapper;
     container: Container;
     extraRoles?: string[][];
-    project: any; // Project from @labkey/api
+    project: Project;
     user: User;
 }
 

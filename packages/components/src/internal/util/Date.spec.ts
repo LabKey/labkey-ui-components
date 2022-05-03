@@ -104,6 +104,11 @@ describe('getColDateFormat', () => {
         expect(getColDateFormat(col)).toBe('yyyy-MM-dd HH:mm');
     });
 
+    test('datePlaceholder without col.rangeURI', () => {
+        const col = QueryColumn.create({ shortCaption: 'DateCol', rangeURI: undefined });
+        expect(getColDateFormat(col)).toBe('yyyy-MM-dd HH:mm');
+    });
+
     test('queryColumn.format', () => {
         const col = QueryColumn.create({
             shortCaption: 'DateCol',

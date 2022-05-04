@@ -56,76 +56,91 @@ test('getFinderStartText', () => {
     expect(getFinderStartText([TestTypeDataType], [TestTypeDataType.typeListingSchemaQuery.queryName])).toBe(
         'Start by adding ' + TestTypeDataType.nounAsParentSingular + ' properties.'
     );
-    expect(getFinderStartText([TestTypeDataType, {
-        ...TestTypeDataType,
-        typeListingSchemaQuery: SchemaQuery.create("TestClasses", "query2"),
-        nounAsParentSingular: 'Other Parents'
-    }], [TestTypeDataType.typeListingSchemaQuery.queryName, "query2"])).toBe(
-        'Start by adding ' + TestTypeDataType.nounAsParentSingular + ' or Other Parents properties.'
-    );
-    expect(getFinderStartText([TestTypeDataType, {
-        ...TestTypeDataType,
-        typeListingSchemaQuery: SchemaQuery.create("TestClasses", "query2"),
-        nounAsParentSingular: 'Other Parents'
-    }], [TestTypeDataType.typeListingSchemaQuery.queryName])).toBe(
-        'Start by adding ' + TestTypeDataType.nounAsParentSingular + ' properties.'
-    );
     expect(
-        getFinderStartText([
-            TestTypeDataType,
-            { ...TestTypeDataType, nounAsParentSingular: 'Other Parents' },
-            { ...TestTypeDataType, nounAsParentSingular: 'Third Parents' },
-        ], [TestTypeDataType.typeListingSchemaQuery.queryName])
+        getFinderStartText(
+            [
+                TestTypeDataType,
+                {
+                    ...TestTypeDataType,
+                    typeListingSchemaQuery: SchemaQuery.create('TestClasses', 'query2'),
+                    nounAsParentSingular: 'Other Parents',
+                },
+            ],
+            [TestTypeDataType.typeListingSchemaQuery.queryName, 'query2']
+        )
+    ).toBe('Start by adding ' + TestTypeDataType.nounAsParentSingular + ' or Other Parents properties.');
+    expect(
+        getFinderStartText(
+            [
+                TestTypeDataType,
+                {
+                    ...TestTypeDataType,
+                    typeListingSchemaQuery: SchemaQuery.create('TestClasses', 'query2'),
+                    nounAsParentSingular: 'Other Parents',
+                },
+            ],
+            [TestTypeDataType.typeListingSchemaQuery.queryName]
+        )
+    ).toBe('Start by adding ' + TestTypeDataType.nounAsParentSingular + ' properties.');
+    expect(
+        getFinderStartText(
+            [
+                TestTypeDataType,
+                { ...TestTypeDataType, nounAsParentSingular: 'Other Parents' },
+                { ...TestTypeDataType, nounAsParentSingular: 'Third Parents' },
+            ],
+            [TestTypeDataType.typeListingSchemaQuery.queryName]
+        )
     ).toBe('Start by adding ' + TestTypeDataType.nounAsParentSingular + ', Other Parents or Third Parents properties.');
 });
 
 describe('getFinderViewColumnsConfig', () => {
     const queryInfo = new QueryInfo({
-            showInsertNewButton: true,
-            importUrl: 'https://some/import',
-            importUrlDisabled: false,
-            appEditableTable: true,
-            pkCols: List(['RowId']),
-            columns: fromJS({
-                rowid: QueryColumn.create({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
-                description: QueryColumn.create({
-                    caption: 'Description',
-                    fieldKey: 'Description',
-                    inputType: 'textarea',
-                }),
-                samplestate: QueryColumn.create({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
-                name: QueryColumn.create({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
-                extrafield: QueryColumn.create({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
+        showInsertNewButton: true,
+        importUrl: 'https://some/import',
+        importUrlDisabled: false,
+        appEditableTable: true,
+        pkCols: List(['RowId']),
+        columns: fromJS({
+            rowid: QueryColumn.create({ caption: 'Row Id', fieldKey: 'RowId', inputType: 'number' }),
+            description: QueryColumn.create({
+                caption: 'Description',
+                fieldKey: 'Description',
+                inputType: 'textarea',
             }),
-            views: Map({
-                '~~default~~': {
-                    name: '',
-                    label: 'default',
-                    default: true,
-                    columns: [
-                        {
-                            name: 'Name',
-                            key: 'Name',
-                            fieldKey: 'Name',
-                        },
-                    ],
-                },
-                [SAMPLE_FINDER_VIEW_NAME.toLowerCase()]: {
-                    name: SAMPLE_FINDER_VIEW_NAME,
-                    label: SAMPLE_FINDER_VIEW_NAME,
-                    default: false,
-                    columns: [
-                        {
-                            name: 'Name',
-                            key: 'Name',
-                            fieldKey: 'Name',
-                        }
-                    ]
-                }
-            }),
-        });
+            samplestate: QueryColumn.create({ caption: 'SampleState', fieldKey: 'SampleState', inputType: 'text' }),
+            name: QueryColumn.create({ caption: 'Name', fieldKey: 'Name', inputType: 'text' }),
+            extrafield: QueryColumn.create({ caption: 'Extra', fieldKey: 'ExtraField', inputType: 'text' }),
+        }),
+        views: Map({
+            '~~default~~': {
+                name: '',
+                label: 'default',
+                default: true,
+                columns: [
+                    {
+                        name: 'Name',
+                        key: 'Name',
+                        fieldKey: 'Name',
+                    },
+                ],
+            },
+            [SAMPLE_FINDER_VIEW_NAME.toLowerCase()]: {
+                name: SAMPLE_FINDER_VIEW_NAME,
+                label: SAMPLE_FINDER_VIEW_NAME,
+                default: false,
+                columns: [
+                    {
+                        name: 'Name',
+                        key: 'Name',
+                        fieldKey: 'Name',
+                    },
+                ],
+            },
+        }),
+    });
     const model = makeTestQueryModel(
-        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, "Test", SAMPLE_FINDER_VIEW_NAME),
+        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Test', SAMPLE_FINDER_VIEW_NAME),
         queryInfo,
         {},
         [],
@@ -158,7 +173,7 @@ describe('getFinderViewColumnsConfig', () => {
         });
     });
 
-    test("view has all updates", () => {
+    test('view has all updates', () => {
         const queryInfo = new QueryInfo({
             showInsertNewButton: true,
             importUrl: 'https://some/import',
@@ -202,14 +217,14 @@ describe('getFinderViewColumnsConfig', () => {
                         {
                             name: 'Extra',
                             fieldKey: 'ExtraField',
-                            key: 'Extra'
-                        }
-                    ]
-                }
+                            key: 'Extra',
+                        },
+                    ],
+                },
             }),
         });
         const model = makeTestQueryModel(
-            SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, "Test", SAMPLE_FINDER_VIEW_NAME),
+            SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Test', SAMPLE_FINDER_VIEW_NAME),
             queryInfo,
             {},
             [],
@@ -239,12 +254,15 @@ describe('getSampleFinderCommonConfigs', () => {
 
     test('Cards without filters, not ancestors', () => {
         expect(
-            getSampleFinderCommonConfigs([
-                {
-                    entityDataType: TestTypeDataType,
-                    schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
-                },
-            ], false)
+            getSampleFinderCommonConfigs(
+                [
+                    {
+                        entityDataType: TestTypeDataType,
+                        schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
+                    },
+                ],
+                false
+            )
         ).toStrictEqual({
             baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
@@ -253,12 +271,15 @@ describe('getSampleFinderCommonConfigs', () => {
 
     test('Cards without filters, with ancestors', () => {
         expect(
-            getSampleFinderCommonConfigs([
-                {
-                    entityDataType: TestTypeDataType,
-                    schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
-                },
-            ], true)
+            getSampleFinderCommonConfigs(
+                [
+                    {
+                        entityDataType: TestTypeDataType,
+                        schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
+                    },
+                ],
+                true
+            )
         ).toStrictEqual({
             baseFilters: [Filter.create('Ancestors/Samples/TestQuery/Name', null, Filter.Types.NONBLANK)],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
@@ -274,17 +295,20 @@ describe('getSampleFinderCommonConfigs', () => {
         } as FieldFilter;
 
         expect(
-            getSampleFinderCommonConfigs([
-                {
-                    entityDataType: TestTypeDataType,
-                    schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
-                },
-                {
-                    entityDataType: TestTypeDataType,
-                    schemaQuery: SchemaQuery.create('Samples', 'TestQuery2'),
-                    filterArray: [cardFilter],
-                },
-            ], false)
+            getSampleFinderCommonConfigs(
+                [
+                    {
+                        entityDataType: TestTypeDataType,
+                        schemaQuery: SchemaQuery.create('Samples', 'TestQuery'),
+                    },
+                    {
+                        entityDataType: TestTypeDataType,
+                        schemaQuery: SchemaQuery.create('Samples', 'TestQuery2'),
+                        filterArray: [cardFilter],
+                    },
+                ],
+                false
+            )
         ).toStrictEqual({
             baseFilters: [
                 Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),

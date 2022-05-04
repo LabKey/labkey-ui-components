@@ -20,8 +20,16 @@ export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
     };
 
     render() {
-        const { isShared, isSample, onConfirm, onCancel, showDependenciesLink, rowId, deleteConfirmationActionName, noun } =
-            this.props;
+        const {
+            isShared,
+            isSample,
+            onConfirm,
+            onCancel,
+            showDependenciesLink,
+            rowId,
+            deleteConfirmationActionName,
+            noun,
+        } = this.props;
 
         let dependencies = <>dependencies</>;
         if (showDependenciesLink && deleteConfirmationActionName) {
@@ -46,11 +54,13 @@ export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {
             >
                 <span>
                     The {noun.toLowerCase()} type and all of its {dependencies} will be permanently deleted.
-                    {isShared &&
-                        <> Because this is a <strong>shared</strong> {noun.toLowerCase()} type, you
-                        may be affecting other folders.
+                    {isShared && (
+                        <>
+                            {' '}
+                            Because this is a <strong>shared</strong> {noun.toLowerCase()} type, you may be affecting
+                            other folders.
                         </>
-                    }
+                    )}
                     <p className="top-spacing">
                         <strong>Deletion cannot be undone.</strong> Do you want to proceed?
                     </p>

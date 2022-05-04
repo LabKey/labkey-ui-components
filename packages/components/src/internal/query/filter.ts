@@ -436,9 +436,27 @@ export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string
  *
  */
 export function registerFilterType(
-    displayText: string, displaySymbol?: string, urlSuffix?: string,
-    dataValueRequired?: boolean, multiValueSeparator?: string, longDisplayText?: string,
-    minOccurs?: number, maxOccurs?: number, tableWise?: boolean, labkeySqlOperator?: string
+    displayText: string,
+    displaySymbol?: string,
+    urlSuffix?: string,
+    dataValueRequired?: boolean,
+    multiValueSeparator?: string,
+    longDisplayText?: string,
+    minOccurs?: number,
+    maxOccurs?: number,
+    tableWise?: boolean,
+    labkeySqlOperator?: string
 ): Filter.IFilterType {
-    return Filter.registerFilterType(displayText, displaySymbol, urlSuffix, dataValueRequired, multiValueSeparator, longDisplayText, minOccurs, maxOccurs, tableWise, labkeySqlOperator);
+    return Filter.registerFilterType(
+        displayText,
+        displaySymbol,
+        urlSuffix,
+        dataValueRequired,
+        multiValueSeparator,
+        longDisplayText,
+        minOccurs,
+        maxOccurs,
+        tableWise,
+        labkeySqlOperator
+    );
 }

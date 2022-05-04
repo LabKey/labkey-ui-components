@@ -16,6 +16,7 @@ import {
 } from './EntityParentTypeSelectors';
 import { EntityDataType, EntityParentType, IParentOption } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
+import {SCHEMAS} from "../../schemas";
 
 const DATA_TYPES = List.of(SampleTypeDataType, {
     ...DataClassDataType,
@@ -197,7 +198,8 @@ describe('getUpdatedEntityParentType', () => {
             2,
             'DataClasses',
             'LSID',
-            undefined
+            undefined,
+            SCHEMAS.DATA_CLASSES.SCHEMA
         );
 
         expect(parentColumnName).toBe('MaterialInputs/Test2');
@@ -214,7 +216,8 @@ describe('getUpdatedEntityParentType', () => {
             2,
             'DataClasses',
             'LSID',
-            { schema: 'a', query: 'test1' }
+            { schema: 'a', query: 'test1' },
+            'a'
         );
 
         expect(parentColumnName).toBe(undefined);
@@ -231,7 +234,8 @@ describe('getUpdatedEntityParentType', () => {
             2,
             'DataClasses',
             'LSID',
-            { schema: 'a', query: 'test2' }
+            { schema: 'a', query: 'test2' },
+            'a'
         );
 
         expect(parentColumnName).toBe(undefined);

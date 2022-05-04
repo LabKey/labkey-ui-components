@@ -383,18 +383,22 @@ export async function getChosenParentData(
     };
 }
 
-export function getAllEntityTypeOptions(entityDataTypes: EntityDataType[]) : Promise<{ [p: string]: IEntityTypeOption[] }> {
-    let optionMap = {};
-    return new Promise(async (resolve) => {
+export function getAllEntityTypeOptions(
+    entityDataTypes: EntityDataType[]
+): Promise<{ [p: string]: IEntityTypeOption[] }> {
+    const optionMap = {};
+    return new Promise(async resolve => {
         for (const entityType of entityDataTypes) {
             try {
-               const entityOptions = await getEntityTypeOptions(entityType);
-               optionMap[entityType.typeListingSchemaQuery.queryName] = entityOptions.get(entityType.typeListingSchemaQuery.queryName).toArray();
+                const entityOptions = await getEntityTypeOptions(entityType);
+                optionMap[entityType.typeListingSchemaQuery.queryName] = entityOptions
+                    .get(entityType.typeListingSchemaQuery.queryName)
+                    .toArray();
             } catch {
                 optionMap[entityType.typeListingSchemaQuery.queryName] = [];
             }
         }
-        resolve(optionMap)
+        resolve(optionMap);
     });
 }
 
@@ -503,7 +507,7 @@ export function getEntityTypeData(
 export function deleteEntityType(deleteActionName: string, rowId: number, containerPath?: string): Promise<any> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('experiment', deleteActionName + '.api', undefined, {container: containerPath}),
+            url: buildURL('experiment', deleteActionName + '.api', undefined, { container: containerPath }),
             method: 'POST',
             params: {
                 singleObjectRowId: rowId,

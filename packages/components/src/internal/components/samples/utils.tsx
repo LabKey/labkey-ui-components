@@ -86,7 +86,7 @@ export function getSampleStatusType(row: any): SampleStateType {
 export function getSampleStatus(row: any): SampleStatus {
     let label;
     // Issue 45269. If the state columns are present, don't look at a column named 'Label'
-    let field = caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME)
+    let field = caseInsensitive(row, SAMPLE_STATE_COLUMN_NAME);
     if (field) {
         label = field.displayValue;
     } else {

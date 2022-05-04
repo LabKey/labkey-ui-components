@@ -1,8 +1,6 @@
-import React, {FC, PureComponent} from 'react';
-
-import {PermissionTypes} from '@labkey/api';
-
-import {List} from 'immutable';
+import React, { FC, PureComponent } from 'react';
+import { List } from 'immutable';
+import { PermissionTypes } from '@labkey/api';
 
 import {
     DisableableButton,
@@ -18,7 +16,6 @@ import {
     SchemaQuery,
     SCHEMAS,
     User,
-    hasPermissions,
 } from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
@@ -54,39 +51,50 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
         assayProviderType,
     } = props;
     const metricFeatureArea = 'sampleAliquots';
-    const showStorageButton = hasPermissions(user, [PermissionTypes.EditStorageData], false);
 
     const moreItems = [];
-    moreItems.push(<SamplesAssayButton model={model} providerType={assayProviderType} />);
-    moreItems.push(<PicklistButton model={model} user={user} metricFeatureArea={metricFeatureArea} />);
+    moreItems.push({
+        button: <SamplesAssayButton model={model} providerType={assayProviderType} />,
+        perm: PermissionTypes.Insert,
+    });
+    moreItems.push({
+        button: <PicklistButton model={model} user={user} metricFeatureArea={metricFeatureArea} />,
+        perm: PermissionTypes.ManagePicklists,
+    });
     if (JobsButtonComponent) {
-        moreItems.push(<JobsButtonComponent model={model} user={user} metricFeatureArea={metricFeatureArea} />);
+        moreItems.push({
+            button: <JobsButtonComponent model={model} user={user} metricFeatureArea={metricFeatureArea} />,
+            perm: PermissionTypes.ManageSampleWorkflows,
+        });
     }
-    if (StorageButtonComponent && showStorageButton) {
-        moreItems.push(
-            <StorageButtonComponent
-                afterStorageUpdate={afterAction}
-                queryModel={model}
-                user={user}
-                nounPlural="aliquots"
-                metricFeatureArea={metricFeatureArea}
-            />
-        );
+    if (StorageButtonComponent) {
+        moreItems.push({
+            button: (
+                <StorageButtonComponent
+                    afterStorageUpdate={afterAction}
+                    queryModel={model}
+                    user={user}
+                    nounPlural="aliquots"
+                    metricFeatureArea={metricFeatureArea}
+                />
+            ),
+            perm: PermissionTypes.EditStorageData
+        });
     }
 
     return (
-        <div className="responsive-btn-group">
-            <RequiresPermission
-                permissionCheck="any"
-                perms={[
-                    PermissionTypes.Insert,
-                    PermissionTypes.Update,
-                    PermissionTypes.Delete,
-                    PermissionTypes.ManagePicklists,
-                    PermissionTypes.ManageSampleWorkflows,
-                    PermissionTypes.EditStorageData,
-                ]}
-            >
+        <RequiresPermission
+            permissionCheck="any"
+            perms={[
+                PermissionTypes.Insert,
+                PermissionTypes.Update,
+                PermissionTypes.Delete,
+                PermissionTypes.ManagePicklists,
+                PermissionTypes.ManageSampleWorkflows,
+                PermissionTypes.EditStorageData,
+            ]}
+        >
+            <div className="responsive-btn-group">
                 {lineageUpdateAllowed && (
                     <RequiresPermission perms={PermissionTypes.Delete}>
                         <DisableableButton
@@ -99,9 +107,9 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
                         </DisableableButton>
                     </RequiresPermission>
                 )}
-                <ResponsiveMenuButtonGroup items={moreItems} />
-            </RequiresPermission>
-        </div>
+                <ResponsiveMenuButtonGroup user={user} items={moreItems} />
+            </div>
+        </RequiresPermission>
     );
 };
 

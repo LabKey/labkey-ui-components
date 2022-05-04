@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add SubNavWithContext, SubNavContextProvider, useSubNavContext
 * Add useNotAuthorized, useNotFound hooks
 * Add notAuthorized prop to Page
+* Refactor Notifications
+  * Notification renamed to Notifications
+  * Notifications no longer require any props
+    * notificationHeader was not used anywhere
+    * user is not needed, we now use useServerContext to get the user
 
 ### version 2.167.1
 *Released*: 9 May 2022

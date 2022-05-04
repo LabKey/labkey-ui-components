@@ -15,15 +15,12 @@
  */
 import React from 'react';
 import moment from 'moment';
-import renderer from 'react-test-renderer';
-
-import { mount, shallow } from 'enzyme';
-
-import { User } from '../../..';
 
 import { notificationInit } from '../../../test/setupUtils';
+import { mountWithServerContext } from '../../testHelpers';
+import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 
-import { Notification } from './Notification';
+import { Notifications } from './Notifications';
 import { createNotification } from './actions';
 import { NotificationItemModel } from './model';
 import { NotificationItem } from './NotificationItem';
@@ -34,84 +31,66 @@ beforeEach(() => {
 
 describe('<Notification/>', () => {
     test('no notifications', () => {
-        const tree = renderer.create(<Notification user={new User()} />).toJSON();
-        expect(tree).toMatchSnapshot();
-    });
-
-    test('no notification with header', () => {
-        const tree = renderer.create(<Notification notificationHeader="Header message" user={new User()} />).toJSON();
-        expect(tree).toMatchSnapshot();
+        const notifications = mountWithServerContext(<Notifications />, { user: TEST_USER_READER });
+        expect(notifications.find(NotificationItem)).toHaveLength(0);
     });
 
     test('one notification', () => {
-        createNotification(
-            new NotificationItemModel({
-                alertClass: 'success',
-                id: 'one_notification',
-                message: 'one is the loneliest number',
-            })
-        );
-        const notification = shallow(<Notification user={new User()} />);
-        expect(notification.find(NotificationItem)).toHaveLength(1);
-        expect(notification).toMatchSnapshot();
+        const alertClass = 'success';
+        const message = 'one is the loneliest number';
+        createNotification(new NotificationItemModel({ alertClass, id: 'one_notification', message }));
+        const notifications = mountWithServerContext(<Notifications />, { user: TEST_USER_READER });
+        expect(notifications.find(NotificationItem)).toHaveLength(1);
+        expect(notifications.find('.alert-success')).toHaveLength(1);
+        expect(notifications.find(NotificationItem).at(0).text()).toEqual(message);
     });
 
     test('multiple notification classes', () => {
-        createNotification(
-            new NotificationItemModel({
-                alertClass: 'info',
-                id: 'info1',
-                message: 'info message 1',
-            })
-        );
-        createNotification(
-            new NotificationItemModel({
-                alertClass: 'info',
-                id: 'info2',
-                message: 'info message 2',
-            })
-        );
-        createNotification('default message class');
-        createNotification(
-            new NotificationItemModel({
-                alertClass: 'danger',
-                id: 'danger1',
-                message: 'Danger, Will Robinson!',
-            })
-        );
-        const notifications = shallow(<Notification user={new User()} />);
+        const models = [
+            new NotificationItemModel({ alertClass: 'info', id: 'info1', message: 'info message 1' }),
+            new NotificationItemModel({ alertClass: 'info', id: 'info2', message: 'info message 2' }),
+            new NotificationItemModel({ id: 'default1', message: 'default message class' }),
+            new NotificationItemModel({ alertClass: 'danger', id: 'danger1', message: 'Danger, Will Robinson!' }),
+        ];
+        models.forEach(model => createNotification(model));
+        const notifications = mountWithServerContext(<Notifications />, { user: TEST_USER_READER });
         expect(notifications.find(NotificationItem)).toHaveLength(4);
         expect(notifications.find('.notification-container')).toHaveLength(3);
-        expect(notifications).toMatchSnapshot();
+        expect(notifications.find('.alert-success').exists()).toEqual(true);
+        expect(notifications.find('.alert-info').exists()).toEqual(true);
+        expect(notifications.find('.alert-danger').exists()).toEqual(true);
+        models.forEach((model, idx) => {
+            expect(notifications.find(NotificationItem).at(idx).text()).toEqual(model.message);
+        });
     });
 
     test('with trial notification for non-admin', () => {
-        LABKEY.moduleContext = {
+        const moduleContext = {
             trialservices: {
                 trialEndDate: moment().add(1, 'days').format('YYYY-MM-DD'),
                 upgradeLink: 'your/link/to/the/future',
                 upgradeLinkText: 'Upgrade now',
             },
         };
-        const notifications = mount(<Notification user={new User()} />);
+        const notifications = mountWithServerContext(<Notifications />, { user: TEST_USER_READER, moduleContext });
         expect(notifications.find(NotificationItem)).toHaveLength(1);
         expect(notifications.find('a')).toHaveLength(0);
-        expect(notifications).toMatchSnapshot();
-        notifications.unmount();
+        expect(notifications.find(NotificationItem).at(0).text()).toContain('This LabKey trial site will expire in ');
     });
 
     test('with trial notification for admin', () => {
-        LABKEY.moduleContext = {
+        const moduleContext = {
             trialservices: {
                 trialEndDate: moment().add(1, 'days').format('YYYY-MM-DD'),
                 upgradeLink: 'your/link/to/the/future',
                 upgradeLinkText: 'Upgrade now',
             },
         };
-        const notifications = mount(<Notification user={new User({ isAdmin: true })} />);
+        const notifications = mountWithServerContext(<Notifications />, { user: TEST_USER_APP_ADMIN, moduleContext });
         expect(notifications.find(NotificationItem)).toHaveLength(1);
+        expect(notifications.find(NotificationItem).at(0).text()).toContain('This LabKey trial site will expire in ');
         expect(notifications.find('a')).toHaveLength(1);
-        expect(notifications).toMatchSnapshot();
-        notifications.unmount();
+        expect(notifications.find('a').text()).toEqual(moduleContext.trialservices.upgradeLinkText);
+        expect(notifications.find('a').props().href).toEqual(moduleContext.trialservices.upgradeLink);
     });
 });

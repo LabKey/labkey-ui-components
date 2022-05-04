@@ -15,7 +15,7 @@ import { Page } from '../base/Page';
 
 import { Section } from '../base/Section';
 
-import { Notification } from '../notifications/Notification';
+import { Notifications } from '../notifications/Notifications';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -99,7 +99,7 @@ export const ProfilePage: FC<Props> = props => {
                     allowChangePassword ? <Button onClick={toggleChangePassword}>Change Password</Button> : null
                 }
             />
-            <Notification user={user} />
+            <Notifications />
             <Section>
                 <UserProfile userProperties={userProperties} user={user} onCancel={onCancel} onSuccess={navigate} />
             </Section>

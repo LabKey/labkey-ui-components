@@ -115,7 +115,7 @@ import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
 import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
-import { Notification } from './internal/components/notifications/Notification';
+import { Notifications } from './internal/components/notifications/Notifications';
 import {
     createNotification,
     getPipelineActivityData,
@@ -1198,7 +1198,7 @@ export {
     PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     SHARED_CONTAINER_PATH,
     NotificationItemModel,
-    Notification,
+    Notifications,
     ServerNotificationModel,
     ServerActivityData,
     Persistence,

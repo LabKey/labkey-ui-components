@@ -15,7 +15,7 @@
  */
 import React, { Component } from 'react';
 
-import { Notification } from '../../..';
+import { Notifications } from '../../..';
 
 import { User } from './models/User';
 
@@ -41,7 +41,7 @@ export class PageHeader extends Component<PageHeaderProps> {
                     {iconCls ? <span className={iconCls}>&nbsp;</span> : null}
                     {title}
                 </h2>
-                {showNotifications && <Notification user={user} />}
+                {showNotifications && <Notifications />}
             </div>
         );
     }

@@ -16,8 +16,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { EntityTypeDeleteConfirmModal } from './EntityTypeDeleteConfirmModal';
 import { ConfirmModal } from '../base/ConfirmModal';
+
+import { EntityTypeDeleteConfirmModal } from './EntityTypeDeleteConfirmModal';
 
 describe('EntityTypeDeleteConfirmModal', () => {
     test('showDependenciesLink prop, not shared type', () => {
@@ -34,11 +35,11 @@ describe('EntityTypeDeleteConfirmModal', () => {
 
         const wrapper = mount(component);
         expect(wrapper.find('.modal-body').find('a')).toHaveLength(1);
-        expect(wrapper.find(ConfirmModal).prop("title")).toBe("Permanently delete sample type?");
+        expect(wrapper.find(ConfirmModal).prop('title')).toBe('Permanently delete sample type?');
         wrapper.unmount();
     });
 
-    test("Shared type", () => {
+    test('Shared type', () => {
         const component = (
             <EntityTypeDeleteConfirmModal
                 rowId={0}
@@ -51,7 +52,7 @@ describe('EntityTypeDeleteConfirmModal', () => {
         );
 
         const wrapper = mount(component);
-        expect(wrapper.find(ConfirmModal).prop("title")).toBe("Permanently delete shared sample type?");
+        expect(wrapper.find(ConfirmModal).prop('title')).toBe('Permanently delete shared sample type?');
         wrapper.unmount();
     });
 

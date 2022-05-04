@@ -357,7 +357,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     initLineageEditableGrid = async (): Promise<void> => {
         const { determineLineage, parentDataTypes } = this.props;
         if (determineLineage) {
-            const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(this.props.sampleLineage, parentDataTypes.toArray());
+            const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(
+                this.props.sampleLineage,
+                parentDataTypes.toArray()
+            );
             this.setState(
                 () => ({ originalParents, parentTypeOptions }),
                 () => {

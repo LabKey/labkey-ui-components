@@ -8,8 +8,9 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { mountWithServerContext } from '../../testHelpers';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
-import { SamplesAddButton } from './SamplesAddButton';
 import { SubMenuItem } from '../menus/SubMenuItem';
+
+import { SamplesAddButton } from './SamplesAddButton';
 
 describe('SamplesAddButton', () => {
     const DEFAULT_PROPS = {

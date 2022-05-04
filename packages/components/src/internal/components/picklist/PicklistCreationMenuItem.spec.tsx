@@ -69,7 +69,6 @@ describe('PicklistCreationMenuItem', () => {
         wrapper.unmount();
     });
 
-
     test('create empty list', () => {
         const wrapper = mount(
             <PicklistCreationMenuItem

@@ -16,9 +16,15 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import classNames from 'classnames';
 
-import { QueryModel } from './QueryModel';
-import { InjectedQueryModels } from './withQueryModels';
+import { ExportModal } from '../../internal/components/gridbar/ExportModal';
+import { EXPORT_TYPES } from '../../internal/constants';
+import { createNotification } from '../../internal/components/notifications/actions';
+import { exportTabsXlsx } from '../../internal/actions';
+
 import { GridPanel, GridPanelProps } from './GridPanel';
+import { InjectedQueryModels } from './withQueryModels';
+import { QueryModel } from './QueryModel';
+import { getQueryModelExportParams } from './utils';
 
 interface GridTabProps {
     isActive: boolean;
@@ -87,6 +93,10 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      * The title to render, only used if asPanel is true.
      */
     title?: string;
+    /**
+     * Optional value to use as the filename prefix for the exported file, otherwise will default to 'Data'
+     */
+    exportFilename?: string;
 }
 
 export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = memo(props => {
@@ -101,9 +111,14 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         showRowCountOnTabs,
         title,
         tabOrder,
+        onExport,
+        exportFilename,
+        advancedExportOptions,
         ...rest
     } = props;
     const [internalActiveId, setInternalActiveId] = useState<string>(activeModelId ?? tabOrder[0]);
+    const [showExportModal, setShowExportModal] = useState<boolean>(false);
+    const [canExport, setCanExport] = useState<boolean>(true);
     const onSelect = useCallback(
         (modelId: string) => {
             if (onTabSelect !== undefined) {
@@ -114,6 +129,52 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         },
         [onTabSelect]
     );
+
+    const exportTabs = useCallback(
+        async (selectedTabs: string[] | Set<string>) => {
+            try {
+                // set exporting blocker
+                setCanExport(false);
+                const models = [];
+                selectedTabs.forEach(selected => {
+                    const selectedModel = queryModels[selected];
+                    const tabForm = getQueryModelExportParams(selectedModel, EXPORT_TYPES.EXCEL, {
+                        ...advancedExportOptions,
+                        sheetName: selectedModel.title,
+                    });
+                    models.push(tabForm);
+                });
+                const filename = exportFilename ?? 'Data';
+                await exportTabsXlsx(filename, models);
+                onExport?.[EXPORT_TYPES.EXCEL]?.();
+                createNotification({ message: 'Successfully exported tabs to file.', alertClass: 'success' });
+            } catch (e) {
+                // Set export error
+                createNotification({ message: 'Export failed: ' + e, alertClass: 'danger' });
+            } finally {
+                // unset exporting blocker
+                setCanExport(true);
+                setShowExportModal(false);
+            }
+        },
+        [exportFilename, canExport, queryModels]
+    );
+
+    const excelExportHandler = useCallback(async () => {
+        if (Object.keys(tabOrder).length > 1) {
+            setShowExportModal(true);
+            return;
+        }
+
+        await exportTabs([internalActiveId]);
+    }, [tabOrder, exportTabs, internalActiveId]);
+
+    const exportHandlers = { ...onExport, [EXPORT_TYPES.EXCEL]: excelExportHandler };
+
+    const closeExportModal = useCallback(() => {
+        setShowExportModal(false);
+    }, []);
+
     // If the component is passed onTabSelect we will only honor the activeModelId passed to this component.
     let activeId = onTabSelect === undefined ? internalActiveId : activeModelId;
 
@@ -147,9 +208,25 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                         })}
                     </ul>
                 )}
-
-                <GridPanel key={activeId} actions={actions} asPanel={false} model={activeModel} {...rest} />
+                <GridPanel
+                    key={activeId}
+                    actions={actions}
+                    asPanel={false}
+                    model={activeModel}
+                    onExport={exportHandlers}
+                    advancedExportOptions={advancedExportOptions}
+                    {...rest}
+                />
             </div>
+            {showExportModal && !!queryModels && (
+                <ExportModal
+                    queryModels={queryModels}
+                    tabOrder={tabOrder}
+                    onClose={closeExportModal}
+                    onExport={exportTabs}
+                    canExport={canExport}
+                />
+            )}
         </div>
     );
 });

@@ -357,7 +357,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     initLineageEditableGrid = async (): Promise<void> => {
         const { determineLineage, parentDataTypes } = this.props;
         if (determineLineage) {
-            const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(this.props.sampleLineage, parentDataTypes.toArray());
+            const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(
+                this.props.sampleLineage,
+                parentDataTypes.toArray()
+            );
             this.setState(
                 () => ({ originalParents, parentTypeOptions }),
                 () => {
@@ -926,7 +929,8 @@ export function getLineageEditorUpdateColumns(
         sampleParents.forEach(sampleParent => {
             const { schema, query } = sampleParent.type;
             const parentCol = EntityParentType.create({ index: parentColIndex, schema, query }).generateColumn(
-                sampleParent.type.entityDataType.uniqueFieldKey, displayQueryModel.schemaName
+                sampleParent.type.entityDataType.uniqueFieldKey,
+                displayQueryModel.schemaName
             );
 
             if (!parentColumns[parentCol.fieldKey]) {

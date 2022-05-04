@@ -141,12 +141,12 @@ interface OwnProps {
     creationTypeOptions?: SampleCreationTypeModel[];
     disableMerge?: boolean;
     entityDataType: EntityDataType;
-    errorNounPlural?: string;  // Used if you want a different noun in error messages than on the other components
+    errorNounPlural?: string; // Used if you want a different noun in error messages than on the other components
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
     fileImportParameters?: Record<string, any>;
     filePreviewFormats?: string;
-    hideParentEntityButtons?: boolean;  // Used if you have an initial parent but don't want to enable ability to change it
+    hideParentEntityButtons?: boolean; // Used if you have an initial parent but don't want to enable ability to change it
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
@@ -165,7 +165,7 @@ interface OwnProps {
     parentDataTypes?: List<EntityDataType>;
     saveToPipeline?: boolean;
     selectedTarget?: string; // controlling target from a parent component
-    selectedParents?: Array<string>
+    selectedParents?: string[];
 }
 
 interface FromLocationProps {
@@ -250,7 +250,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     }
 
     componentDidUpdate(prevProps: Readonly<Props>): void {
-        if (prevProps.entityDataType !== this.props.entityDataType || prevProps.selectedParents !== this.props.selectedParents) {
+        if (
+            prevProps.entityDataType !== this.props.entityDataType ||
+            prevProps.selectedParents !== this.props.selectedParents
+        ) {
             this.init();
         }
     }
@@ -289,7 +292,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             target,
             isItemSamples,
             selectedTarget,
-            selectedParents
+            selectedParents,
         } = this.props;
 
         const { creationType } = this.state;
@@ -319,7 +322,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             insertModel &&
             insertModel.getTargetEntityTypeValue() === selected &&
             insertModel.selectionKey === selectionKey &&
-            (insertModel.originalParents === parents || insertModel.originalParents === selectedParents || !allowParents)
+            (insertModel.originalParents === parents ||
+                insertModel.originalParents === selectedParents ||
+                !allowParents)
         ) {
             return;
         }
@@ -1040,8 +1045,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     toggleInsertOptionChange = (): void => {
         const { onChangeInsertOption } = this.props;
 
-        if (onChangeInsertOption)
-            onChangeInsertOption(!this.state.isMerge);
+        if (onChangeInsertOption) onChangeInsertOption(!this.state.isMerge);
 
         this.setState(state => ({ isMerge: !state.isMerge }));
     };
@@ -1121,7 +1125,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             }
         } catch (error) {
             this.setState({
-                error: resolveErrorMessage(error, errorNounPlural ?? nounPlural, errorNounPlural ?? nounPlural, 'importing'),
+                error: resolveErrorMessage(
+                    error,
+                    errorNounPlural ?? nounPlural,
+                    errorNounPlural ?? nounPlural,
+                    'importing'
+                ),
                 isSubmitting: false,
             });
         }

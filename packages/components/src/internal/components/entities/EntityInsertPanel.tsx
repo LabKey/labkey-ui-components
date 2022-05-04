@@ -137,7 +137,6 @@ interface OwnProps {
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?, response?) => void;
     allowedNonDomainFields?: string[];
     canEditEntityTypeDetails?: boolean;
-    columnCaptionTransform?: (col: QueryColumn) => string;  // Allows re-labeling columns in grid and bulk display
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     creationTypeOptions?: SampleCreationTypeModel[];
     disableMerge?: boolean;
@@ -166,6 +165,7 @@ interface OwnProps {
     parentDataTypes?: List<EntityDataType>;
     saveToPipeline?: boolean;
     selectedTarget?: string; // controlling target from a parent component
+    selectedParents?: Array<string>
 }
 
 interface FromLocationProps {
@@ -250,7 +250,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     }
 
     componentDidUpdate(prevProps: Readonly<Props>): void {
-        if (prevProps.entityDataType !== this.props.entityDataType) {
+        if (prevProps.entityDataType !== this.props.entityDataType || prevProps.selectedParents !== this.props.selectedParents) {
             this.init();
         }
     }
@@ -289,6 +289,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             target,
             isItemSamples,
             selectedTarget,
+            selectedParents
         } = this.props;
 
         const { creationType } = this.state;
@@ -318,10 +319,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             insertModel &&
             insertModel.getTargetEntityTypeValue() === selected &&
             insertModel.selectionKey === selectionKey &&
-            (insertModel.originalParents === parents || !allowParents)
+            (insertModel.originalParents === parents || insertModel.originalParents === selectedParents || !allowParents)
         ) {
             return;
         }
+
+        this.removeQueryGridModel();
 
         insertModel = new EntityIdCreationModel({
             auditBehavior,
@@ -330,7 +333,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             entityDataType,
             initialEntityType: selected,
             numPerParent,
-            originalParents: allowParents ? parents : undefined,
+            originalParents: allowParents ? parents ?? selectedParents : undefined,
             selectionKey,
         });
 
@@ -461,7 +464,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     getGridQueryInfo = (): QueryInfo => {
         const { insertModel, originalQueryInfo, creationType } = this.state;
-        const { entityDataType, columnCaptionTransform } = this.props;
+        const { entityDataType } = this.props;
 
         if (originalQueryInfo) {
             const nameIndex = Math.max(
@@ -476,12 +479,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 insertModel.getParentColumns(entityDataType.uniqueFieldKey)
             );
             if (creationType === SampleCreationType.Aliquots) columns = this.getAliquotCreationColumns(columns);
-
-            if (columnCaptionTransform) {
-                columns = columns.map((col) => {
-                    return col.merge({caption: columnCaptionTransform(col)})
-                }).toMap() as OrderedMap<string, QueryColumn>;
-            }
 
             return originalQueryInfo.merge({ columns }) as QueryInfo;
         }

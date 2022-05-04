@@ -926,7 +926,7 @@ export function getLineageEditorUpdateColumns(
         sampleParents.forEach(sampleParent => {
             const { schema, query } = sampleParent.type;
             const parentCol = EntityParentType.create({ index: parentColIndex, schema, query }).generateColumn(
-                sampleParent.type.entityDataType.uniqueFieldKey
+                sampleParent.type.entityDataType.uniqueFieldKey, displayQueryModel.schemaName
             );
 
             if (!parentColumns[parentCol.fieldKey]) {

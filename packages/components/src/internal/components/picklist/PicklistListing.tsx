@@ -153,7 +153,7 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
                     activeId: activeTabId,
                     queryModel: queryModels[activeTabId],
                 }}
-                exportFilename={'PickLists'}
+                exportFilename="PickLists"
             />
             {showDeleteModal && (
                 <PicklistDeleteConfirm

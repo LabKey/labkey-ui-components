@@ -549,12 +549,10 @@ export function exportTabsXlsx(filename: string, queryForms: SchemaQuery[]): Pro
             success: () => {
                 resolve();
             },
-            failure: Utils.getCallbackWrapper(
-                error => {
-                    console.error('Failed to export tabular data', error);
-                    reject(resolveErrorMessage(error) ?? 'Unexpected error while exporting selected tabs.');
-                }
-            ),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error('Failed to export tabular data', error);
+                reject(resolveErrorMessage(error) ?? 'Unexpected error while exporting selected tabs.');
+            }),
         });
     });
 }

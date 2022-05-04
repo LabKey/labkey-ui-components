@@ -373,17 +373,24 @@ export function getSampleSelectionLineageData(
 export const getOriginalParentsFromSampleLineage = async (
     sampleLineage: Record<string, any>,
     parentDataTypes: EntityDataType[],
-    containerPath?: string,
-): Promise<{ originalParents: Record<string, List<EntityChoice>>; parentTypeOptions: Map<string, List<IEntityTypeOption>> }> => {
+    containerPath?: string
+): Promise<{
+    originalParents: Record<string, List<EntityChoice>>;
+    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+}> => {
     const originalParents = {};
     let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
     const dataClassTypeData = await getParentTypeDataForSample(
-        parentDataTypes.filter(dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName)[0],
+        parentDataTypes.filter(
+            dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+        )[0],
         Object.values(sampleLineage),
         containerPath
     );
     const sampleTypeData = await getParentTypeDataForSample(
-        parentDataTypes.filter(dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName)[0],
+        parentDataTypes.filter(
+            dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
+        )[0],
         Object.values(sampleLineage),
         containerPath
     );
@@ -391,10 +398,14 @@ export const getOriginalParentsFromSampleLineage = async (
     // iterate through both Data Classes and Sample Types for finding sample parents
     parentDataTypes.forEach(dataType => {
         const dataTypeOptions =
-            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName ? dataClassTypeData.parentTypeOptions : sampleTypeData.parentTypeOptions;
+            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+                ? dataClassTypeData.parentTypeOptions
+                : sampleTypeData.parentTypeOptions;
 
         const parentIdData =
-            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName ? dataClassTypeData.parentIdData : sampleTypeData.parentIdData;
+            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+                ? dataClassTypeData.parentIdData
+                : sampleTypeData.parentIdData;
         Object.keys(sampleLineage).forEach(sampleId => {
             if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
 

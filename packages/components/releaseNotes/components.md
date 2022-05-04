@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX May 2022
+* Item 10305: Small Molecule Registry Type (SMILES)
+  * New SMILES domain property type
+
 ### version 2.165.0
 *Released*: 4 May 2022
 * Adds ExportModal to enable exporting all tabs of a TabbedGrids

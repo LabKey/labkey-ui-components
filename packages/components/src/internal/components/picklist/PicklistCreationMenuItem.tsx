@@ -4,8 +4,9 @@ import { MenuItem } from 'react-bootstrap';
 import { userCanManagePicklists } from '../../app/utils';
 import { User } from '../base/models/User';
 
-import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+
+import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
 
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
     itemText?: string;
@@ -38,16 +39,23 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
         <>
             {queryModel && (
                 <SelectionMenuItem
-                    id={'create-picklist-menu-id'}
+                    id="create-picklist-menu-id"
                     text={itemText}
                     onClick={onClick}
                     queryModel={queryModel}
                     nounPlural="samples"
                 />
             )}
-            {!queryModel && (<MenuItem onClick={onClick}>{itemText}</MenuItem>)}
+            {!queryModel && <MenuItem onClick={onClick}>{itemText}</MenuItem>}
             {showModal && (
-                <PicklistEditModal queryModel={queryModel} sampleIds={sampleIds} {...editModalProps} showNotification onFinish={onFinish} onCancel={onCancel} />
+                <PicklistEditModal
+                    queryModel={queryModel}
+                    sampleIds={sampleIds}
+                    {...editModalProps}
+                    showNotification
+                    onFinish={onFinish}
+                    onCancel={onCancel}
+                />
             )}
         </>
     );

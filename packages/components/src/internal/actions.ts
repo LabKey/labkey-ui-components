@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
-import { Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import $ from 'jquery';
 
 import {
@@ -534,6 +534,27 @@ export function getExportParams(
         }
     }
     return params;
+}
+
+export function exportTabsXlsx(filename: string, queryForms: SchemaQuery[]): Promise<void> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('query', 'exportQueriesXLSX.api'),
+            method: 'POST',
+            jsonData: {
+                filename,
+                queryForms,
+            },
+            downloadFile: true,
+            success: () => {
+                resolve();
+            },
+            failure: Utils.getCallbackWrapper(error => {
+                console.error('Failed to export tabular data', error);
+                reject(resolveErrorMessage(error) ?? 'Unexpected error while exporting selected tabs.');
+            }),
+        });
+    });
 }
 
 export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>): void {

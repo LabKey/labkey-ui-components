@@ -333,8 +333,7 @@ const SAMPLE_TYPE_MAPPERS = [
             if (rowId !== undefined) {
                 const url = ['rd', 'samples', rowId];
                 return AppURL.create(...url);
-            }
-            else {
+            } else {
                 return false;
             }
         }

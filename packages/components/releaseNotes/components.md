@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.165.0
+*Released*: 4 May 2022
 * Adds ExportModal to enable exporting all tabs of a TabbedGrids
 
 ### version 2.164.1

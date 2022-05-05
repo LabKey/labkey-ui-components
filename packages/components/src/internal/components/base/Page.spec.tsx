@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 
 import { notificationInit } from '../../../test/setupUtils';
@@ -64,11 +63,8 @@ describe('<Page /> document title', () => {
 
 describe('<Page />', () => {
     test('page not found', () => {
-        const wrapper = shallow(<Page notFound={true} />);
+        const wrapper = shallow(<Page notFound={true} hasHeader={true} />);
         expect(wrapper.find('h1').text()).toEqual('Not Found');
-
-        const tree = renderer.create(<Page notFound={true} />).toJSON();
-        expect(tree).toMatchSnapshot();
     });
 
     test('hasHeader', () => {
@@ -93,12 +89,5 @@ describe('<Page />', () => {
         );
         // should add in a page header
         expect(wrapper.find(PageHeader)).toHaveLength(1);
-
-        const tree = renderer.create(
-            <Page>
-                <div>The page contents</div>
-            </Page>
-        );
-        expect(tree).toMatchSnapshot();
     });
 });

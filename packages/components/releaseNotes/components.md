@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.166.0
+*Released*: 5 May 2022
 * Issue 45140: Better support for date formats (especially dd/MM/yyy) in the apps
   * Use QueryColumn date format for filter modal input date picker (via DatePickerInput)
   * Use QueryColumn date format for GridPanel filter status display

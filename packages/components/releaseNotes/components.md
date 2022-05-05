@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD May 2022
+### version 2.167.0
+*Released*: 5 May 2022
 * SamplesAssayButton update to handle case where no assay designs are defined
 * Issue 45328: Add the 'More' grid menu (Assays, Picklists, Jobs, Storage) to the sample aliquots grid
 

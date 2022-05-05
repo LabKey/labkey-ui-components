@@ -13,36 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { Component } from 'react';
+import React, { FC } from 'react';
 
 import { Notifications } from '../../..';
-
-import { User } from './models/User';
 
 export interface PageHeaderProps {
     iconCls?: string;
     showNotifications?: boolean;
     title?: string;
-    user?: User;
 }
 
-export class PageHeader extends Component<PageHeaderProps> {
-    static defaultProps = {
-        showNotifications: true,
-    };
+export const PageHeader: FC<PageHeaderProps> = ({ children, iconCls, showNotifications = true, title }) => (
+    <div className="page-header">
+        {children}
 
-    render() {
-        const { iconCls, showNotifications, title, user } = this.props;
+        <h2 className="text-capitalize no-margin-top">
+            {iconCls ? <span className={'page-header-icon ' + iconCls}>&nbsp;</span> : null}
+            {title}
+        </h2>
 
-        return (
-            <div className="page-header">
-                {this.props.children}
-                <h2 className="text-capitalize no-margin-top">
-                    {iconCls ? <span className={iconCls}>&nbsp;</span> : null}
-                    {title}
-                </h2>
-                {showNotifications && <Notifications />}
-            </div>
-        );
-    }
-}
+        {showNotifications && <Notifications />}
+    </div>
+);

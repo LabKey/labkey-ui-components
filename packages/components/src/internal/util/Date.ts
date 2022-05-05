@@ -20,8 +20,8 @@ import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../..';
 
-const CREATED_CONCEPT_URI = "http://www.labkey.org/types#createdTimestamp";    // JbcType.TIMESTAMP
-const MODIFIED_CONCEPT_URI = "http://www.labkey.org/types#modifiedTimestamp";   // JbcType.TIMESTAMP
+const CREATED_CONCEPT_URI = 'http://www.labkey.org/types#createdTimestamp'; // JbcType.TIMESTAMP
+const MODIFIED_CONCEPT_URI = 'http://www.labkey.org/types#modifiedTimestamp'; // JbcType.TIMESTAMP
 
 export function datePlaceholder(col: QueryColumn): string {
     let placeholder;
@@ -160,10 +160,10 @@ function twoDigit(num: number): string {
 
 // From a current date string, get the next date string
 // example, from "2022-02-02", return "2022-02-03"
-export function getNextDateStr(currentDateStr: string) : string {
+export function getNextDateStr(currentDateStr: string): string {
     let nextDate = new Date(new Date(currentDateStr).getTime() + 60 * 60 * 24 * 1000); // add 24 hours
 
-    const userTimezoneOffset = nextDate.getTimezoneOffset() * 60*1000;
+    const userTimezoneOffset = nextDate.getTimezoneOffset() * 60 * 1000;
     nextDate = new Date(nextDate.getTime() + userTimezoneOffset);
 
     const year = nextDate.getFullYear();

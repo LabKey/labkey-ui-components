@@ -22,8 +22,9 @@ import { decodePart } from '../../../SchemaQuery';
 
 import { JsonType } from '../../../../internal/components/domainproperties/PropDescType';
 
-import { Action, ActionValue } from './Action';
 import { getColFormattedDateValue } from '../../../../internal/util/Date';
+
+import { Action, ActionValue } from './Action';
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances

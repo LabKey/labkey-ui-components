@@ -14,7 +14,7 @@ interface Props extends Omit<QueryInfoFormProps, 'fieldValues'> {
     selectedRowIndexes: List<number>;
 }
 
-export const BulkAddUpdateForm: FC<Props> = (props) => {
+export const BulkAddUpdateForm: FC<Props> = props => {
     const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, ...queryInfoFormProps } = props;
     const {
         pluralNoun,

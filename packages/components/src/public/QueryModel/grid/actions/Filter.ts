@@ -22,6 +22,8 @@ import { decodePart } from '../../../SchemaQuery';
 
 import { JsonType } from '../../../../internal/components/domainproperties/PropDescType';
 
+import { getColFormattedDateValue } from '../../../../internal/util/Date';
+
 import { Action, ActionValue } from './Action';
 
 /**
@@ -221,11 +223,18 @@ export class FilterAction implements Action {
         };
     }
 
-    actionValueFromFilter(filter: Filter.IFilter, label: string): ActionValue {
+    actionValueFromFilter(filter: Filter.IFilter, column: QueryColumn): ActionValue {
+        const label = column?.shortCaption;
         const columnName = filter.getColumnName();
         const filterType = filter.getFilterType();
-        const value = filter.getValue();
         const operator = resolveSymbol(filter.getFilterType());
+        let value = filter.getValue();
+
+        // Issue 45140: match date display format in grid filter status pill display
+        if (column?.getDisplayFieldJsonType() === 'date') {
+            value = getColFormattedDateValue(column, value);
+        }
+
         const { displayValue, isReadOnly, inputValue } = this.getDisplayValue(label ?? columnName, filterType, value);
 
         return {

@@ -1,20 +1,20 @@
 import React from 'react';
 import { List, Map } from 'immutable';
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 import { LabKey, PermissionRoles } from '@labkey/api';
 
 import { initQueryGridState } from '../../global';
+import { mountWithAppServerContext } from '../../testHelpers';
 import { initNotificationsState } from '../notifications/global';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { UsersGridPanel } from '../user/UsersGridPanel';
 import { SecurityPolicy } from '../permissions/models';
 
-import { App } from '../../../index';
+import { App, InjectedPermissionsPage } from '../../../index';
 
-import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 
-import { getNewUserRoles, UserManagement, UserManagementProps } from './UserManagement';
+import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 
 declare const LABKEY: LabKey;
 
@@ -28,19 +28,14 @@ beforeEach(() => {
 });
 
 describe('UserManagement', () => {
-    function getDefaultProps(): UserManagementProps {
+    function getDefaultProps(): InjectedPermissionsPage {
         return {
             error: undefined,
-            api: getSecurityTestAPIWrapper(jest.fn),
-            container: TEST_PROJECT_CONTAINER,
-            extraRoles: undefined,
             inactiveUsersById: undefined,
             principals: List(),
             principalsById: Map(),
-            project: undefined,
             roles: List(),
             rolesByUniqueName: Map(),
-            user: App.TEST_USER_APP_ADMIN,
         };
     }
 
@@ -54,30 +49,34 @@ describe('UserManagement', () => {
     }
 
     test('default props', () => {
-        const wrapper = mount(<UserManagement {...getDefaultProps()} />);
+        const wrapper = mountWithAppServerContext(<UserManagementPageImpl {...getDefaultProps()} />, undefined, {
+            user: App.TEST_USER_APP_ADMIN,
+        });
         validate(wrapper);
-        wrapper.unmount();
     });
 
     test('non-inherit security policy', () => {
-        const wrapper = mount(<UserManagement {...getDefaultProps()} />);
-        wrapper.setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '1' }) });
+        const wrapper = mountWithAppServerContext(<UserManagementPageImpl {...getDefaultProps()} />, undefined, {
+            user: App.TEST_USER_APP_ADMIN,
+        });
+        wrapper.find('UserManagement').setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '1' }) });
         validate(wrapper, true);
-        wrapper.unmount();
     });
 
     test('inherit security policy', () => {
-        const wrapper = mount(<UserManagement {...getDefaultProps()} />);
-        wrapper.setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '2' }) });
+        const wrapper = mountWithAppServerContext(<UserManagementPageImpl {...getDefaultProps()} />, undefined, {
+            user: App.TEST_USER_APP_ADMIN,
+        });
+        wrapper.find('UserManagement').setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '2' }) });
         validate(wrapper);
-        wrapper.unmount();
     });
 
     test('allowResetPassword false', () => {
-        LABKEY.moduleContext.api = { AutoRedirectSSOAuthConfiguration: true };
-        const wrapper = mount(<UserManagement {...getDefaultProps()} />);
+        const wrapper = mountWithAppServerContext(<UserManagementPageImpl {...getDefaultProps()} />, undefined, {
+            user: App.TEST_USER_APP_ADMIN,
+            moduleContext: { api: { AutoRedirectSSOAuthConfiguration: true } },
+        });
         validate(wrapper, false, false);
-        wrapper.unmount();
     });
 });
 

@@ -67,6 +67,7 @@ export function getNewUserRoles(
 }
 
 interface OwnProps {
+    allowResetPassword: boolean;
     api: SecurityAPIWrapper;
     container: Container;
     extraRoles?: string[][];
@@ -199,20 +200,13 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
 
         createNotification({
             message: () => {
+                const href = getUserGridFilterURL(updatedUserIds, urlPrefix).addParam('usersView', urlPrefix).toHref();
                 return (
                     <>
                         <span>
                             Successfully {action} {Utils.pluralBasic(updatedUserIds.size, 'user')}.&nbsp;
                         </span>
-                        {!response.delete && (
-                            <a
-                                href={getUserGridFilterURL(updatedUserIds, urlPrefix)
-                                    .addParam('usersView', urlPrefix)
-                                    .toHref()}
-                            >
-                                view
-                            </a>
-                        )}
+                        {!response.delete && <a href={href}>view</a>}
                     </>
                 );
             },
@@ -251,7 +245,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     };
 
     render() {
-        const { container, extraRoles, project, user } = this.props;
+        const { allowResetPassword, container, extraRoles, project, user } = this.props;
         const { policy } = this.state;
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
@@ -271,7 +265,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                     onUsersStateChangeComplete={this.onUsersStateChangeComplete}
                     newUserRoleOptions={newUserRoleOptions}
                     policy={policy}
-                    allowResetPassword={!isLoginAutoRedirectEnabled()}
+                    allowResetPassword={allowResetPassword}
                     showDetailsPanel={user.hasManageUsersPermission()}
                 />
             </BasePermissionsCheckPage>
@@ -283,14 +277,15 @@ interface UserManagementPageProps {
     extraRoles?: string[][];
 }
 
-const UserManagementPageImpl: FC<UserManagementPageProps & InjectedPermissionsPage> = props => {
+export const UserManagementPageImpl: FC<UserManagementPageProps & InjectedPermissionsPage> = props => {
     const { extraRoles, ...injectedProps } = props;
     const { api } = useAppContext<AppContext>();
-    const { container, project, user } = useServerContext();
+    const { container, moduleContext, project, user } = useServerContext();
 
     return (
         <UserManagement
             {...injectedProps}
+            allowResetPassword={!isLoginAutoRedirectEnabled(moduleContext)}
             api={api.security}
             container={container}
             extraRoles={extraRoles}

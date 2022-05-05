@@ -39,7 +39,7 @@ const TITLE = 'User Profile';
 
 export const ProfilePage: FC<Props> = props => {
     const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
-    const { user } = useServerContext();
+    const { moduleContext, user } = useServerContext();
     const userProperties = useUserProperties(user);
 
     if (!user.isSignedIn) {
@@ -85,7 +85,7 @@ export const ProfilePage: FC<Props> = props => {
         setShowChangePassword(!showChangePassword);
     };
 
-    const allowChangePassword = !isLoginAutoRedirectEnabled();
+    const allowChangePassword = !isLoginAutoRedirectEnabled(moduleContext);
 
     return (
         <Page title={TITLE} hasHeader>

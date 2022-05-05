@@ -20,14 +20,14 @@ import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../..';
 
-const CREATED_CONCEPT_URI = "http://www.labkey.org/types#createdTimestamp";    // JbcType.TIMESTAMP
-const MODIFIED_CONCEPT_URI = "http://www.labkey.org/types#modifiedTimestamp";   // JbcType.TIMESTAMP
+const CREATED_CONCEPT_URI = 'http://www.labkey.org/types#createdTimestamp'; // JbcType.TIMESTAMP
+const MODIFIED_CONCEPT_URI = 'http://www.labkey.org/types#modifiedTimestamp'; // JbcType.TIMESTAMP
 
 export function datePlaceholder(col: QueryColumn): string {
     let placeholder;
 
     if (col) {
-        const rangeURI = col.rangeURI.toLowerCase();
+        const rangeURI = col.rangeURI?.toLowerCase() ?? 'datetime';
 
         // attempt to use the rangeURI to figure out if we are working with a dateTime or date object
         // note Created and Modified columns do not include the rangeURI information
@@ -57,6 +57,26 @@ export function isDateTimeCol(col: QueryColumn): boolean {
     return false;
 }
 
+export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string): string {
+    let rawFormat = dateFormat || queryColumn.format || datePlaceholder(queryColumn);
+
+    // Issue 44011: account for the shortcut values (i.e. "Date", "DateTime", and "Time")
+    if (rawFormat === 'Date') rawFormat = getDateFormat();
+    if (rawFormat === 'DateTime') rawFormat = getDateTimeFormat();
+    if (rawFormat === 'Time') rawFormat = getTimeFormat();
+
+    // Moment.js and react datepicker date format is different
+    // https://github.com/Hacker0x01/react-datepicker/issues/1609
+    return rawFormat.replace('YYYY', 'yyyy').replace('DD', 'dd');
+}
+
+export function getColFormattedDateValue(column: QueryColumn, value: string): string {
+    const dateFormat = getColDateFormat(column);
+    return isDateTimeCol(column)
+        ? formatDateTime(new Date(value), null, dateFormat)
+        : formatDate(new Date(value), null, dateFormat);
+}
+
 // 30834: get look and feel display formats
 export function getDateFormat(container?: Partial<Container>): string {
     return moment().toMomentFormatString((container ?? getServerContext().container).formats.dateFormat);
@@ -74,7 +94,24 @@ export function getTimeFormat(): string {
 export function parseDate(dateStr: string, dateFormat?: string): Date {
     if (!dateStr) return null;
 
-    const date = moment(dateStr, dateFormat);
+    // Moment.js and react datepicker date format is different
+    // https://github.com/Hacker0x01/react-datepicker/issues/1609
+    const _dateFormat = dateFormat?.replace('yyyy', 'YYYY').replace('dd', 'DD');
+
+    if (_dateFormat) {
+        const date = moment(dateStr, _dateFormat, true);
+        if (date && date.isValid()) {
+            return date.toDate();
+        }
+    }
+
+    // Issue 45140: if a dateFormat was provided here and the date didn't parse, try the default container format and no format
+    let date = moment(dateStr, getDateTimeFormat(), true);
+    if (date && date.isValid()) {
+        return date.toDate();
+    }
+
+    date = moment(dateStr);
     if (date && date.isValid()) {
         return date.toDate();
     }
@@ -123,10 +160,10 @@ function twoDigit(num: number): string {
 
 // From a current date string, get the next date string
 // example, from "2022-02-02", return "2022-02-03"
-export function getNextDateStr(currentDateStr: string) : string {
+export function getNextDateStr(currentDateStr: string): string {
     let nextDate = new Date(new Date(currentDateStr).getTime() + 60 * 60 * 24 * 1000); // add 24 hours
 
-    const userTimezoneOffset = nextDate.getTimezoneOffset() * 60*1000;
+    const userTimezoneOffset = nextDate.getTimezoneOffset() * 60 * 1000;
     nextDate = new Date(nextDate.getTime() + userTimezoneOffset);
 
     const year = nextDate.getFullYear();

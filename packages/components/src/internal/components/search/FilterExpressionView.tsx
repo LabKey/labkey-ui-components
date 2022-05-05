@@ -1,14 +1,13 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import DatePicker from 'react-datepicker';
 import { Dropdown, FormControl } from 'react-bootstrap';
 
 import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
-import { App, formatDateTime, OntologyBrowserFilterPanel, parseDate } from '../../..';
+import { DatePickerInput, OntologyBrowserFilterPanel } from '../../..';
 
-import { formatDate, isDateTimeCol } from '../../util/Date';
+import { isDateTimeCol } from '../../util/Date';
 
 import { isOntologyEnabled } from '../../app/utils';
 
@@ -156,15 +155,14 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
     const updateDateFilterFieldValue = useCallback(
         (filterIndex: number, newValue: any, isTime: boolean, isSecondInput?: boolean) => {
-            const newDate = newValue ? (isTime ? formatDateTime(newValue) : formatDate(newValue)) : null;
             const update: Partial<FilterSelection> = {};
             if (isSecondInput) {
-                update.secondFilterValue = newDate;
+                update.secondFilterValue = newValue;
             } else {
-                update.firstFilterValue = newDate;
+                update.firstFilterValue = newValue;
             }
 
-            updateFilter(filterIndex, activeFilters[filterIndex]?.filterType, newDate, isSecondInput);
+            updateFilter(filterIndex, activeFilters[filterIndex]?.filterType, newValue, isSecondInput);
             updateActiveFilters(filterIndex, update);
         },
         [activeFilters]
@@ -210,20 +208,20 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (jsonType === 'date') {
                 const showTimeStamp = isDateTimeCol(field);
                 return (
-                    <DatePicker
-                        autoComplete="off"
-                        className="form-control filter-expression__input"
-                        wrapperClassName="form-group filter-expression__input-wrapper"
-                        selectsEnd
-                        isClearable
-                        required
-                        selected={valueRaw ? parseDate(valueRaw) : undefined}
+                    <DatePickerInput
+                        formsy={false}
+                        inputClassName="form-control filter-expression__input"
+                        wrapperClassName="form-group col-sm-12 filter-expression__input-wrapper"
+                        queryColumn={field}
                         name={'field-value-date' + suffix}
+                        value={valueRaw}
+                        initValueFormatted={false}
+                        showLabel={false}
+                        isClearable
+                        showTime={showTimeStamp}
                         onChange={newDate =>
                             updateDateFilterFieldValue(filterIndex, newDate, showTimeStamp, isSecondInput)
                         }
-                        dateFormat={showTimeStamp ? App.getDateTimeFormat() : App.getDateFormat()}
-                        showTimeSelect={showTimeStamp}
                     />
                 );
             } else if (jsonType === 'boolean') {

@@ -22,7 +22,7 @@ import { QueryInfo } from '../../public/QueryInfo';
 
 import { encodePart } from '../../public/SchemaQuery';
 
-import { getJsonDateTimeFormatString, parseDate } from './Date';
+import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './Date';
 
 const emptyList = List<string>();
 
@@ -379,7 +379,8 @@ export function getUpdatedDataFromGrid(
         if (originalRow) {
             const row = editedRow.reduce((row, value, key) => {
                 let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
-                const isDate = queryInfo.getColumn(key)?.jsonType === 'date';
+                const col = queryInfo.getColumn(key);
+                const isDate = col?.jsonType === 'date';
                 // Convert empty cell to null
                 if (value === '') value = null;
 
@@ -412,7 +413,10 @@ export function getUpdatedDataFromGrid(
                 else if (List.isList(originalValue) && !Array.isArray(value)) {
                     if (originalValue.get(0).value !== value) {
                         // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-                        row[key] = (isDate ? getJsonDateTimeFormatString(parseDate(value)) : value) ?? null;
+                        // Issue 45140: use QueryColumn date format for parseDate()
+                        row[key] =
+                            (isDate ? getJsonDateTimeFormatString(parseDate(value, getColDateFormat(col))) : value) ??
+                            null;
                     }
                 } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {
                     // - only update if the value has changed
@@ -420,7 +424,9 @@ export function getUpdatedDataFromGrid(
                     // erase an existing value we set the value to null in our update data
 
                     // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-                    row[key] = (isDate ? getJsonDateTimeFormatString(parseDate(value)) : value) ?? null;
+                    // Issue 45140: use QueryColumn date format for parseDate()
+                    row[key] =
+                        (isDate ? getJsonDateTimeFormatString(parseDate(value, getColDateFormat(col))) : value) ?? null;
                 }
                 return row;
             }, {});

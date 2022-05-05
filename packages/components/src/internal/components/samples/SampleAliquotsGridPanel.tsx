@@ -1,16 +1,17 @@
 import React, { FC, PureComponent } from 'react';
-
-import { PermissionTypes } from '@labkey/api';
-
 import { List } from 'immutable';
+import { PermissionTypes } from '@labkey/api';
 
 import {
     DisableableButton,
     EntityDeleteModal,
     getStateModelId,
     GridPanel,
+    PicklistButton,
     QueryModel,
     RequiresPermission,
+    ResponsiveMenuButtonGroup,
+    SamplesAssayButton,
     SampleTypeDataType,
     SchemaQuery,
     SCHEMAS,
@@ -26,51 +27,99 @@ import {
 
 import { getOmittedSampleTypeColumns } from './utils';
 import { getSampleAliquotsQueryConfig } from './actions';
-import { SampleStorageButton } from './models';
+import { JobsButton, SampleStorageButton } from './models';
 
 interface AliquotGridButtonsProps {
     afterAction: () => void;
     onDelete: () => void;
-    StorageButtonsComponent?: SampleStorageButton;
+    StorageButtonComponent?: SampleStorageButton;
+    JobsButtonComponent?: JobsButton;
     user: User;
     lineageUpdateAllowed: boolean;
+    assayProviderType?: string;
 }
 
 const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> = props => {
-    const { afterAction, lineageUpdateAllowed, model, onDelete, StorageButtonsComponent, user } = props;
+    const {
+        afterAction,
+        lineageUpdateAllowed,
+        model,
+        onDelete,
+        StorageButtonComponent,
+        JobsButtonComponent,
+        user,
+        assayProviderType,
+    } = props;
+    const metricFeatureArea = 'sampleAliquots';
+
+    const moreItems = [];
+    moreItems.push({
+        button: <SamplesAssayButton model={model} providerType={assayProviderType} />,
+        perm: PermissionTypes.Insert,
+    });
+    moreItems.push({
+        button: <PicklistButton model={model} user={user} metricFeatureArea={metricFeatureArea} />,
+        perm: PermissionTypes.ManagePicklists,
+    });
+    if (JobsButtonComponent) {
+        moreItems.push({
+            button: <JobsButtonComponent model={model} user={user} metricFeatureArea={metricFeatureArea} />,
+            perm: PermissionTypes.ManageSampleWorkflows,
+        });
+    }
+    if (StorageButtonComponent) {
+        moreItems.push({
+            button: (
+                <StorageButtonComponent
+                    afterStorageUpdate={afterAction}
+                    queryModel={model}
+                    user={user}
+                    nounPlural="aliquots"
+                    metricFeatureArea={metricFeatureArea}
+                />
+            ),
+            perm: PermissionTypes.EditStorageData,
+        });
+    }
 
     return (
-        <div className="responsive-btn-group">
-            <RequiresPermission perms={PermissionTypes.Delete}>
+        <RequiresPermission
+            permissionCheck="any"
+            perms={[
+                PermissionTypes.Insert,
+                PermissionTypes.Update,
+                PermissionTypes.Delete,
+                PermissionTypes.ManagePicklists,
+                PermissionTypes.ManageSampleWorkflows,
+                PermissionTypes.EditStorageData,
+            ]}
+        >
+            <div className="responsive-btn-group">
                 {lineageUpdateAllowed && (
-                    <DisableableButton
-                        bsStyle="default"
-                        onClick={onDelete}
-                        disabledMsg={!model.hasSelections ? 'Select one or more aliquots.' : undefined}
-                    >
-                        <span className="fa fa-trash" />
-                        <span>&nbsp;Delete</span>
-                    </DisableableButton>
+                    <RequiresPermission perms={PermissionTypes.Delete}>
+                        <DisableableButton
+                            bsStyle="default"
+                            onClick={onDelete}
+                            disabledMsg={!model.hasSelections ? 'Select one or more aliquots.' : undefined}
+                        >
+                            <span className="fa fa-trash" />
+                            <span>&nbsp;Delete</span>
+                        </DisableableButton>
+                    </RequiresPermission>
                 )}
-                {StorageButtonsComponent && (
-                    <StorageButtonsComponent
-                        className="responsive-menu"
-                        afterStorageUpdate={afterAction}
-                        queryModel={model}
-                        user={user}
-                        nounPlural="aliquots"
-                    />
-                )}
-            </RequiresPermission>
-        </div>
+                <ResponsiveMenuButtonGroup user={user} items={moreItems} />
+            </div>
+        </RequiresPermission>
     );
 };
 
 interface Props {
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
     storageButton?: SampleStorageButton;
+    jobsButton?: JobsButton;
     user: User;
     lineageUpdateAllowed: boolean;
+    assayProviderType?: string;
 }
 
 interface State {
@@ -110,7 +159,7 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
     }
 
     render() {
-        const { actions, storageButton, user, lineageUpdateAllowed } = this.props;
+        const { actions, storageButton, jobsButton, ...buttonProps } = this.props;
         const queryModel = this.getQueryModel();
 
         return (
@@ -119,11 +168,11 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
                     actions={actions}
                     ButtonsComponent={AliquotGridButtons}
                     buttonsComponentProps={{
+                        ...buttonProps,
                         afterAction: this.afterAction,
                         onDelete: this.onDelete,
-                        StorageButtonsComponent: storageButton,
-                        user,
-                        lineageUpdateAllowed,
+                        StorageButtonComponent: storageButton,
+                        JobsButtonComponent: jobsButton,
                     }}
                     model={queryModel}
                     showViewMenu={false}

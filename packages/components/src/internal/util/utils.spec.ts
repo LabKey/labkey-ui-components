@@ -15,7 +15,9 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { capitalizeFirstChar, QueryColumn, QueryInfo, uncapitalizeFirstChar, withTransformedKeys } from '../../index';
+import { capitalizeFirstChar, QueryColumn, QueryInfo, uncapitalizeFirstChar, withTransformedKeys } from '../..';
+
+import { BOOLEAN_TYPE, DATE_TYPE, INTEGER_TYPE, TEXT_TYPE } from '../components/domainproperties/PropDescType';
 
 import {
     camelCaseToTitleCase,
@@ -40,6 +42,16 @@ import {
 } from './utils';
 
 const emptyList = List<string>();
+
+beforeAll(() => {
+    LABKEY.container = {
+        formats: {
+            dateFormat: 'yyyy-MM-dd',
+            dateTimeFormat: 'yyyy-MM-dd HH:mm',
+            numberFormat: '#.##',
+        },
+    };
+});
 
 describe('intersect', () => {
     test('with matches', () => {
@@ -701,15 +713,15 @@ describe('getUpdatedData', () => {
 describe('getUpdatedDataFromGrid', () => {
     const queryInfo = QueryInfo.create({
         columns: Map<string, QueryColumn>({
-            rowid: new QueryColumn({ name: 'RowId' }),
-            value: new QueryColumn({ name: 'Value' }),
-            data: new QueryColumn({ name: 'Data' }),
-            andagain: new QueryColumn({ name: 'AndAgain' }),
-            name: new QueryColumn({ name: 'Name' }),
-            other: new QueryColumn({ name: 'Other' }),
-            bool: new QueryColumn({ name: 'Bool' }),
-            int: new QueryColumn({ name: 'Int' }),
-            date: new QueryColumn({ name: 'Date', jsonType: 'date' }),
+            rowid: new QueryColumn({ name: 'RowId', rangeURI: INTEGER_TYPE.rangeURI }),
+            value: new QueryColumn({ name: 'Value', rangeURI: INTEGER_TYPE.rangeURI }),
+            data: new QueryColumn({ name: 'Data', rangeURI: TEXT_TYPE.rangeURI }),
+            andagain: new QueryColumn({ name: 'AndAgain', rangeURI: TEXT_TYPE.rangeURI }),
+            name: new QueryColumn({ name: 'Name', rangeURI: TEXT_TYPE.rangeURI }),
+            other: new QueryColumn({ name: 'Other', rangeURI: TEXT_TYPE.rangeURI }),
+            bool: new QueryColumn({ name: 'Bool', rangeURI: BOOLEAN_TYPE.rangeURI }),
+            int: new QueryColumn({ name: 'Int', rangeURI: INTEGER_TYPE.rangeURI }),
+            date: new QueryColumn({ name: 'Date', rangeURI: DATE_TYPE.rangeURI }),
         }),
     });
     const originalData = fromJS({
@@ -979,7 +991,7 @@ describe('getUpdatedDataFromGrid', () => {
             Int: null,
             Bool: null,
             Data: null,
-            Date: '2021-12-23 14:34:00',
+            Date: '2021-12-23 14:34',
             RowId: '448',
         });
         expect(updatedData[1]).toStrictEqual({

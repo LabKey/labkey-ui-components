@@ -9,11 +9,36 @@ import { SelectInput } from '../forms/input/SelectInput';
 
 import { FilterExpressionView } from './FilterExpressionView';
 
-const stringField = QueryColumn.create({ name: 'StringField', rangeURI: TEXT_TYPE.rangeURI, jsonType: 'string' });
-const doubleField = QueryColumn.create({ name: 'DoubleField', rangeURI: DOUBLE_TYPE.rangeURI, jsonType: 'float' });
-const intField = QueryColumn.create({ name: 'IntField', rangeURI: INTEGER_TYPE.rangeURI, jsonType: 'int' });
-const booleanField = QueryColumn.create({ name: 'BooleanField', rangeURI: BOOLEAN_TYPE.rangeURI, jsonType: 'boolean' });
-const dateField = QueryColumn.create({ name: 'DateField', rangeURI: DATE_TYPE.rangeURI, jsonType: 'date' });
+const stringField = QueryColumn.create({
+    name: 'StringField',
+    caption: 'StringField',
+    rangeURI: TEXT_TYPE.rangeURI,
+    jsonType: 'string',
+});
+const doubleField = QueryColumn.create({
+    name: 'DoubleField',
+    caption: 'DoubleField',
+    rangeURI: DOUBLE_TYPE.rangeURI,
+    jsonType: 'float',
+});
+const intField = QueryColumn.create({
+    name: 'IntField',
+    caption: 'IntField',
+    rangeURI: INTEGER_TYPE.rangeURI,
+    jsonType: 'int',
+});
+const booleanField = QueryColumn.create({
+    name: 'BooleanField',
+    caption: 'BooleanField',
+    rangeURI: BOOLEAN_TYPE.rangeURI,
+    jsonType: 'boolean',
+});
+const dateField = QueryColumn.create({
+    name: 'DateField',
+    caption: 'DateField',
+    rangeURI: DATE_TYPE.rangeURI,
+    jsonType: 'date',
+});
 
 const Ops = [
     'eq',

@@ -14,7 +14,7 @@ interface Props extends Omit<QueryInfoFormProps, 'fieldValues'> {
     selectedRowIndexes: List<number>;
 }
 
-export const BulkAddUpdateForm: FC<Props> = (props) => {
+export const BulkAddUpdateForm: FC<Props> = props => {
     const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, ...queryInfoFormProps } = props;
     const {
         pluralNoun,
@@ -25,7 +25,7 @@ export const BulkAddUpdateForm: FC<Props> = (props) => {
 
     const fieldValues = useMemo(() => {
         const editorData = editorModel
-            .getRawDataFromGridData(data, dataKeys, queryInfo)
+            .getRawDataFromGridData(data, dataKeys, queryInfo, false)
             .filter((val, index) => selectedRowIndexes.contains(index))
             .toMap();
         return getCommonDataValues(editorData);

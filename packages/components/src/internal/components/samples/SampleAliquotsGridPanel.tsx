@@ -78,7 +78,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
                     metricFeatureArea={metricFeatureArea}
                 />
             ),
-            perm: PermissionTypes.EditStorageData
+            perm: PermissionTypes.EditStorageData,
         });
     }
 

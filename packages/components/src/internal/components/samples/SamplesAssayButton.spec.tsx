@@ -12,8 +12,9 @@ import { AssayImportSubMenuItem } from '../assay/AssayImportSubMenuItem';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../assay/actions';
 
-import { SamplesAssayButtonImpl } from './SamplesAssayButton';
 import { TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
+
+import { SamplesAssayButtonImpl } from './SamplesAssayButton';
 
 describe('SamplesAssayButton', () => {
     const DEFAULT_PROPS = {

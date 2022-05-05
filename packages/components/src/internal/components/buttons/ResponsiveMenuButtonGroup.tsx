@@ -1,6 +1,7 @@
 import React, { ReactElement, FC, memo, useMemo, useState, useEffect } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
-import {hasPermissions, User} from '../base/models/User';
+
+import { hasPermissions, User } from '../base/models/User';
 
 interface ResponsiveMenuItem {
     button: ReactElement;

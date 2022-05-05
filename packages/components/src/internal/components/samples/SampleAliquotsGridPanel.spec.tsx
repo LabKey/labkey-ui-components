@@ -16,8 +16,9 @@ import {
 import { mountWithServerContext } from '../../testHelpers';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
-import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
 import { TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
+
+import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
 
 describe('SampleAliquotsGridPanel', () => {
     const SCHEMA_QUERY = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');

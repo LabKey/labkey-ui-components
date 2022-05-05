@@ -40,6 +40,7 @@ interface Props {
     showAliquotViewSelector?: boolean;
     sampleAliquotType?: ALIQUOT_FILTER_MODE;
     sourceId?: number | string;
+    exportPrefix?: string;
     sourceSampleRows?: Array<Record<string, any>>;
     sourceAliquotRows?: Array<Record<string, any>>;
     emptyAssayDefDisplay?: ReactNode;
@@ -187,6 +188,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         onTabChange,
         activeTabId,
         user,
+        exportPrefix,
     } = props;
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
@@ -306,6 +308,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
             onTabSelect={onTabChange}
             activeModelId={activeTabId}
             title="Assay Results"
+            exportFilename={exportPrefix && exportPrefix + '_assay_results'}
         />
     );
 });

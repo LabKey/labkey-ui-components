@@ -11,6 +11,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Notifications no longer require any props
     * notificationHeader was not used anywhere
     * user is not needed, we now use useServerContext to get the user
+* isLoginAutoRedirectEnabled
+  * Add moduleContext argument so tests no longer need to manually override the LABKEY object
+  * No longer export from ui-components
+* Refactor UserManagementPage to use moduleContext from useServerContext
+* Refactor PipelineStatusDetailPage to use components instead of render methods
 
 ### version 2.167.1
 *Released*: 9 May 2022

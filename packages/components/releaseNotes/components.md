@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.166.0
-*Released*: ?? May 2022
+### version 2.168.0
+*Released*: 9 May 2022
 * Add SubNavWithContext, SubNavContextProvider, useSubNavContext
 * Add useNotAuthorized, useNotFound hooks
 * Add notAuthorized prop to Page

@@ -10,7 +10,7 @@ import { User } from '../components/base/models/User';
 
 const user = new User({
     ...getServerContext().user,
-    permissionsList: List(getServerContext().container.effectivePermissions ?? []),
+    permissionsList: List(getServerContext().container?.effectivePermissions ?? []),
 });
 
 export enum LogoutReason {

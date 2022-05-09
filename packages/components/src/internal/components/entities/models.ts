@@ -122,14 +122,15 @@ export class EntityParentType extends Record({
     }
 
     // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
-    generateColumn(displayColumn: string): QueryColumn {
+    generateColumn(displayColumn: string, targetSchema: string): QueryColumn {
         const parentInputType = this.getInputType();
         const formattedQueryName = capitalizeFirstChar(this.query);
         const parentColName = this.generateFieldKey();
 
         // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use
-        // the "Parents" suffix in the editable grid header
-        const captionSuffix = this.schema !== SCHEMAS.DATA_CLASSES.SCHEMA ? ' Parents' : '';
+        // the "Parents" suffix in the editable grid header.
+        // To make this work with Biologics, only add Parents if target and parent are the same type (sample or data class)
+        const captionSuffix = this.schema === targetSchema ? ' Parents' : '';
 
         // 32671: Sample import and edit grid key ingredients on scientific name
         if (
@@ -313,10 +314,11 @@ export class EntityIdCreationModel extends Record({
 
     getParentColumns(uniqueFieldKey: string): OrderedMap<string, QueryColumn> {
         let columns = OrderedMap<string, QueryColumn>();
+        const targetSchema = this.getSchemaQuery().schemaName;
         this.entityParents.forEach(parentList => {
             parentList.forEach(parent => {
                 if (parent.schema && parent.query) {
-                    const column = parent.generateColumn(uniqueFieldKey);
+                    const column = parent.generateColumn(uniqueFieldKey, targetSchema);
                     // Issue 33653: query name is case-sensitive for some data inputs (parents)
                     columns = columns.set(column.name.toLowerCase(), column);
                 }

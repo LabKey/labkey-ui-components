@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.167.1
+*Released*: 9 May 2022
+* Updates to EntityInsertPanel to accommodate Registry Data Class editing
+  * Add props to allow wrapping component to control parents
+  * Add prop to hide parent controls
+  * Update 'Parents' suffix in grid and bulk fields to only apply to data types of same type
+
 ### version 2.167.0
 *Released*: 5 May 2022
 * SamplesAssayButton update to handle case where no assay designs are defined

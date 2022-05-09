@@ -16,7 +16,7 @@ import {
 } from './EntityParentTypeSelectors';
 import { EntityDataType, EntityParentType, IParentOption } from './models';
 import { DataClassDataType, SampleTypeDataType } from './constants';
-import {SCHEMAS} from "../../schemas";
+import { SCHEMAS } from "../../schemas";
 
 const DATA_TYPES = List.of(SampleTypeDataType, {
     ...DataClassDataType,

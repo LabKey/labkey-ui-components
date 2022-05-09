@@ -12,10 +12,16 @@ import { AssayImportSubMenuItem } from '../assay/AssayImportSubMenuItem';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../assay/actions';
 
-import { SamplesAssayButton } from './SamplesAssayButton';
+import { TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
+
+import { SamplesAssayButtonImpl } from './SamplesAssayButton';
 
 describe('SamplesAssayButton', () => {
     const DEFAULT_PROPS = {
+        assayModel: TEST_ASSAY_STATE_MODEL,
+        reloadAssays: jest.fn,
+        assayDefinition: undefined,
+        assayProtocol: undefined,
         model: makeTestQueryModel(
             SCHEMAS.SAMPLE_SETS.SAMPLES,
             QueryInfo.create({ importUrl: 'testimporturl', insertUrl: 'testinserturl' })
@@ -28,7 +34,9 @@ describe('SamplesAssayButton', () => {
     }
 
     test('default props', () => {
-        const wrapper = mountWithServerContext(<SamplesAssayButton {...DEFAULT_PROPS} />, { user: TEST_USER_EDITOR });
+        const wrapper = mountWithServerContext(<SamplesAssayButtonImpl {...DEFAULT_PROPS} />, {
+            user: TEST_USER_EDITOR,
+        });
         validate(wrapper);
         expect(wrapper.find(AssayImportSubMenuItem).prop('providerType')).toBe(undefined);
         wrapper.unmount();
@@ -36,7 +44,7 @@ describe('SamplesAssayButton', () => {
 
     test('providerType', () => {
         const wrapper = mountWithServerContext(
-            <SamplesAssayButton {...DEFAULT_PROPS} providerType={GENERAL_ASSAY_PROVIDER_NAME} />,
+            <SamplesAssayButtonImpl {...DEFAULT_PROPS} providerType={GENERAL_ASSAY_PROVIDER_NAME} />,
             { user: TEST_USER_EDITOR }
         );
         validate(wrapper);
@@ -49,7 +57,7 @@ describe('SamplesAssayButton', () => {
             SchemaQuery.create('schema', 'query'),
             QueryInfo.create({ importUrl: 'testimporturl', insertUrl: 'testinserturl' })
         ).mutate({ selections: new Set(['1']) });
-        const wrapper = mountWithServerContext(<SamplesAssayButton {...DEFAULT_PROPS} model={model} />, {
+        const wrapper = mountWithServerContext(<SamplesAssayButtonImpl {...DEFAULT_PROPS} model={model} />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, false);
@@ -57,13 +65,15 @@ describe('SamplesAssayButton', () => {
     });
 
     test('reader', () => {
-        const wrapper = mountWithServerContext(<SamplesAssayButton {...DEFAULT_PROPS} />, { user: TEST_USER_READER });
+        const wrapper = mountWithServerContext(<SamplesAssayButtonImpl {...DEFAULT_PROPS} />, {
+            user: TEST_USER_READER,
+        });
         validate(wrapper, false);
         wrapper.unmount();
     });
 
     test('asSubMenu', () => {
-        const wrapper = mountWithServerContext(<SamplesAssayButton {...DEFAULT_PROPS} asSubMenu />, {
+        const wrapper = mountWithServerContext(<SamplesAssayButtonImpl {...DEFAULT_PROPS} asSubMenu />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, true, true);

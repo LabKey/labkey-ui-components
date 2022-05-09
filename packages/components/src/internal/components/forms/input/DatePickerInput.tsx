@@ -21,15 +21,7 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 import { QueryColumn } from '../../../..';
-import {
-    datePlaceholder,
-    getDateFormat,
-    getDateTimeFormat,
-    getJsonDateTimeFormatString,
-    getTimeFormat,
-    isDateTimeCol,
-    parseDate,
-} from '../../../util/Date';
+import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate } from '../../../util/Date';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -52,6 +44,7 @@ export interface DatePickerInputProps extends DisableableInputProps {
     value?: any;
     addLabelAsterisk?: boolean;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    initValueFormatted?: boolean;
 
     // from formsy-react
     getErrorMessage?: Function;
@@ -75,6 +68,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         inputWrapperClassName: 'block',
         showLabel: true,
         addLabelAsterisk: false,
+        initValueFormatted: true,
     };
 
     constructor(props: DatePickerInputProps) {
@@ -82,13 +76,18 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
         this.toggleDisabled = this.toggleDisabled.bind(this);
 
+        // Issue 45140: formsy values will hold on to the initial formatted value until onChange.
+        // We instead need to make sure that the unformatted Date value is passed to setValue if there is an init value.
+        const initDate = this.getInitDate(props);
+        if (props.formsy && Utils.isFunction(props.setValue)) props.setValue(initDate);
+
         this.state = {
             isDisabled: props.initiallyDisabled,
-            selectedDate: this.getInitDate(props),
+            selectedDate: initDate,
         };
     }
 
-    toggleDisabled = () => {
+    toggleDisabled = (): void => {
         const { selectedDate } = this.state;
 
         this.setState(
@@ -107,7 +106,10 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
     };
 
     getInitDate(props: DatePickerInputProps): Date {
-        return props.value ? parseDate(props.value) : undefined;
+        // Issue 45140: props.value is the original formatted date, so pass the date format
+        // to parseDate when getting the initial value.
+        const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
+        return props.value ? parseDate(props.value, dateFormat) : undefined;
     }
 
     onChange = (date: Date): void => {
@@ -126,16 +128,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
     getDateFormat(): string {
         const { dateFormat, queryColumn } = this.props;
-        let rawFormat = dateFormat || queryColumn.format || datePlaceholder(queryColumn);
-
-        // Issue 44011: account for the shortcut values (i.e. "Date", "DateTime", and "Time")
-        if (rawFormat === 'Date') rawFormat = getDateFormat();
-        if (rawFormat === 'DateTime') rawFormat = getDateTimeFormat();
-        if (rawFormat === 'Time') rawFormat = getTimeFormat();
-
-        // Moment.js and react datepicker date format is different
-        // https://github.com/Hacker0x01/react-datepicker/issues/1609
-        return rawFormat.replace('YYYY', 'yyyy').replace('DD', 'dd');
+        return getColDateFormat(queryColumn, dateFormat);
     }
 
     shouldShowTime(): boolean {

@@ -1,6 +1,19 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.167.0
+*Released*: 5 May 2022
+* SamplesAssayButton update to handle case where no assay designs are defined
+* Issue 45328: Add the 'More' grid menu (Assays, Picklists, Jobs, Storage) to the sample aliquots grid
+
+### version 2.166.0
+*Released*: 5 May 2022
+* Issue 45140: Better support for date formats (especially dd/MM/yyy) in the apps
+  * Use QueryColumn date format for filter modal input date picker (via DatePickerInput)
+  * Use QueryColumn date format for GridPanel filter status display
+  * Fix for QueryInfoForm, QueryFormInputs and EditableGridPanelForUpdate use case to use QueryColumn date format in parseDate()
+  * Fix for EditorModel getRawDataFromGridData() to use QueryColumn date format for parseDate()
+
 ### version 2.165.0
 *Released*: 4 May 2022
 * Adds ExportModal to enable exporting all tabs of a TabbedGrids

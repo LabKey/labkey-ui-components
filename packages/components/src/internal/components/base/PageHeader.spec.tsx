@@ -14,43 +14,40 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
-
-import { notificationInit } from '../../../test/setupUtils';
+import { shallow } from 'enzyme';
 
 import { PageHeader } from './PageHeader';
 
-beforeEach(() => {
-    notificationInit();
-});
-
 describe('<PageHeader />', () => {
     test('render without properties', () => {
-        const tree = renderer.create(<PageHeader />).toJSON();
-        expect(tree).toMatchSnapshot();
+        const wrapper = shallow(<PageHeader showNotifications={false} />);
+        expect(wrapper.find('h2').text()).toEqual('');
     });
 
     test('render with icon', () => {
-        const tree = renderer.create(<PageHeader iconCls="spinner" />).toJSON();
-        expect(tree).toMatchSnapshot();
+        const wrapper = shallow(<PageHeader showNotifications={false} iconCls="spinner" />);
+        expect(wrapper.find('span.spinner').exists()).toEqual(true);
+        expect(wrapper.find('h2').text()).toEqual(' ');
     });
 
     test('render with title no icon', () => {
-        const tree = renderer.create(<PageHeader title="Page title" />).toJSON();
-        expect(tree).toMatchSnapshot();
+        const wrapper = shallow(<PageHeader showNotifications={false} title="Page title" />);
+        expect(wrapper.find('.page-header-icon').exists()).toEqual(false);
+        expect(wrapper.find('h2').text()).toEqual('Page title');
     });
 
     test('render with icon and title', () => {
-        const tree = renderer.create(<PageHeader title="Page title" iconCls="fa fa-star" />).toJSON();
-        expect(tree).toMatchSnapshot();
+        const wrapper = shallow(<PageHeader showNotifications={false} title="Page title" iconCls="fa fa-star" />);
+        expect(wrapper.find('span.fa-star').exists()).toEqual(true);
+        expect(wrapper.find('h2').text()).toEqual(' Page title');
     });
 
     test('render with children', () => {
-        const tree = renderer.create(
-            <PageHeader title="render with children">
-                <div>Header text in the header</div>;
+        const wrapper = shallow(
+            <PageHeader showNotifications={false} title="render with children">
+                <div className="child">Header text in the header</div>;
             </PageHeader>
         );
-        expect(tree).toMatchSnapshot();
+        expect(wrapper.find('div.child').exists()).toEqual(true);
     });
 });

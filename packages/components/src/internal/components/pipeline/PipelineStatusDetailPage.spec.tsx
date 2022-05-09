@@ -1,8 +1,6 @@
 import React from 'react';
 
-import renderer from 'react-test-renderer';
-
-import { sleep } from '../../testHelpers';
+import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { initPipelineStatusDetailsMocks } from '../../../test/mock';
 
@@ -17,26 +15,21 @@ beforeAll(() => {
 
 describe('<PipelineStatusDetailPage>', () => {
     test('Completed job, no warn, no error', async () => {
-        const wrapper = renderer.create(<PipelineStatusDetailPage rowId={1} />);
-        await sleep();
-
-        expect(wrapper).toMatchSnapshot();
-        wrapper.unmount();
+        const wrapper = mountWithServerContext(<PipelineStatusDetailPage rowId={1} />, undefined);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.debug({ verbose: false })).toMatchSnapshot();
     });
 
     test('Failed job, with error', async () => {
-        const wrapper = renderer.create(<PipelineStatusDetailPage rowId={2} />);
-        await sleep();
-
-        expect(wrapper).toMatchSnapshot();
-        wrapper.unmount();
+        const wrapper = mountWithServerContext(<PipelineStatusDetailPage rowId={2} />, undefined);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.debug({ verbose: false })).toMatchSnapshot();
     });
 
     test('Running job, with warning', async () => {
-        const wrapper = renderer.create(<PipelineStatusDetailPage rowId={3} />);
-        await sleep();
+        const wrapper = mountWithServerContext(<PipelineStatusDetailPage rowId={3} />, undefined);
+        await waitForLifecycle(wrapper);
 
-        expect(wrapper).toMatchSnapshot();
-        wrapper.unmount();
+        expect(wrapper.debug({ verbose: false })).toMatchSnapshot();
     });
 });

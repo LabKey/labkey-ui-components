@@ -1,6 +1,22 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.168.0
+*Released*: 9 May 2022
+* Add SubNavWithContext, SubNavContextProvider, useSubNavContext
+* Add useNotAuthorized, useNotFound hooks
+* Add notAuthorized prop to Page
+* Refactor Notifications
+  * Notification renamed to Notifications
+  * Notifications no longer require any props
+    * notificationHeader was not used anywhere
+    * user is not needed, we now use useServerContext to get the user
+* isLoginAutoRedirectEnabled
+  * Add moduleContext argument so tests no longer need to manually override the LABKEY object
+  * No longer export from ui-components
+* Refactor UserManagementPage to use moduleContext from useServerContext
+* Refactor PipelineStatusDetailPage to use components instead of render methods
+
 ### version 2.167.1
 *Released*: 9 May 2022
 * Updates to EntityInsertPanel to accommodate Registry Data Class editing

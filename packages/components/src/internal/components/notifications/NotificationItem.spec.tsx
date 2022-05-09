@@ -15,15 +15,12 @@
  */
 import React from 'react';
 
-import { shallow } from 'enzyme';
-
-import { User } from '../../..';
+import { createNotification, initNotificationsState } from '../../..';
+import { mountWithServerContext } from '../../testHelpers';
+import { TEST_USER_READER } from '../../userFixtures';
 
 import { NotificationItemModel } from './model';
 import { NotificationItem } from './NotificationItem';
-
-import { initNotificationsState } from './global';
-import { createNotification } from './actions';
 
 describe('<NotificationItem />', () => {
     test('not dismissible item', () => {
@@ -32,9 +29,9 @@ describe('<NotificationItem />', () => {
             id: 'not_dismissible_item',
             isDismissible: false,
         });
-        const tree = shallow(<NotificationItem item={item} user={new User()} />);
-        expect(tree.find('.fa-times-circle')).toHaveLength(0);
-        expect(tree).toMatchSnapshot();
+        const wrapper = mountWithServerContext(<NotificationItem item={item} />, { user: TEST_USER_READER });
+        expect(wrapper.find('.fa-times-circle')).toHaveLength(0);
+        expect(wrapper.text()).toEqual(item.message);
     });
 
     test('dismissible item', () => {
@@ -47,24 +44,24 @@ describe('<NotificationItem />', () => {
             onDismiss,
         });
         createNotification(item);
-        const tree = shallow(<NotificationItem item={item} user={new User()} />);
-        const dismissIcon = tree.find('.fa-times-circle');
+        const wrapper = mountWithServerContext(<NotificationItem item={item} />, { user: TEST_USER_READER });
+        const dismissIcon = wrapper.find('.fa-times-circle');
         expect(dismissIcon).toHaveLength(1);
         dismissIcon.simulate('click');
         expect(onDismiss).toHaveBeenCalledTimes(1);
-        expect(tree).toMatchSnapshot();
+        expect(wrapper.text()).toEqual(item.message);
     });
 
     test('with message function', () => {
-        const messageFn = jest.fn();
+        const message = 'message from function';
+        const messageFn = (): string => message;
         const item = new NotificationItemModel({
             message: messageFn,
             id: 'with_message_function',
             isDismissible: true,
         });
-        const tree = shallow(<NotificationItem item={item} user={new User()} />);
-        expect(tree.find('.fa-times-circle')).toHaveLength(1);
-        expect(messageFn).toHaveBeenCalledTimes(1);
-        expect(tree).toMatchSnapshot();
+        const wrapper = mountWithServerContext(<NotificationItem item={item} />, { user: TEST_USER_READER });
+        expect(wrapper.find('.fa-times-circle')).toHaveLength(1);
+        expect(wrapper.text()).toEqual(message);
     });
 });

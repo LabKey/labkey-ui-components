@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, Map } from 'immutable';
+import { Map } from 'immutable';
 import { handleActions } from 'redux-actions';
 
 import { ServerNotificationModel, ProductMenuModel } from '../..';
@@ -17,8 +17,6 @@ import {
     SET_RELOAD_REQUIRED,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
-    USER_PERMISSIONS_REQUEST,
-    USER_PERMISSIONS_SUCCESS,
     ADD_TABLE_ROUTE,
     MENU_INVALIDATE,
     MENU_LOADING_START,
@@ -48,17 +46,6 @@ export const AppReducers = handleActions<AppReducerState, any>(
         [UPDATE_USER_DISPLAY_NAME]: (state: AppReducerState, action: any) => {
             return state.merge({
                 user: state.user.set('displayName', action.displayName),
-            });
-        },
-
-        [USER_PERMISSIONS_REQUEST]: (state: AppReducerState) => state.set('requestPermissions', false),
-
-        [USER_PERMISSIONS_SUCCESS]: (state: AppReducerState, action: any) => {
-            const { response } = action;
-            const { container } = response;
-
-            return state.merge({
-                user: state.user.set('permissionsList', fromJS(container.effectivePermissions)),
             });
         },
 

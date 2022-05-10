@@ -3,7 +3,10 @@ import { Ajax, Query, Utils } from '@labkey/api';
 
 import {
     buildURL,
+    DataViewInfoTypes,
+    IDataViewInfo,
     incrementClientSideMetricCount,
+    loadReports,
     QueryModel,
     resolveErrorMessage,
     SchemaQuery,
@@ -15,6 +18,7 @@ import { getPrimaryAppProperties } from '../../app/utils';
 
 import { SearchIdData, SearchResultCardData } from './models';
 import { SAMPLE_FINDER_VIEW_NAME } from './utils';
+import { SAMPLE_MANAGER_APP_PROPERTIES } from "../../app/constants";
 
 type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
@@ -181,6 +185,57 @@ export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Prom
                 console.error(response);
                 reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(response));
             },
+        });
+    });
+}
+
+export function saveFinderSearch(reportName: string, cardsJson: string, reportId?: string) : Promise<any> {
+    const reportConfig = {
+        name:   reportName,
+        reportId    : reportId,
+        jsonData    : cardsJson,
+        public: false
+    };
+
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'saveSampleFinderSearch.api'),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            jsonData: reportConfig,
+            success: Utils.getCallbackWrapper(json => {
+                resolve({ json });
+            }),
+            failure: Utils.getCallbackWrapper(json => reject(json), null, false)
+        });
+    });
+}
+
+export function loadFinderSearches() : Promise<any> {
+    return new Promise((resolve, reject) => {
+        loadReports()
+            .then((reports: IDataViewInfo[]) => {
+                resolve(reports.filter(report => report.type === DataViewInfoTypes.SampleFinderSavedSearch));
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    })
+}
+
+export function loadFinderSearch(name: string) : Promise<any> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleFinderSearch.api'),
+            method: 'GET',
+            params: { name },
+            success: Utils.getCallbackWrapper(json => {
+                resolve({ json });
+            }),
+            failure: Utils.getCallbackWrapper(json => reject(json), null, false)
         });
     });
 }

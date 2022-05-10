@@ -169,7 +169,7 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[], useAncestors:
     });
     return {
         requiredColumns,
-        baseFilters,
+        baseFilters
     };
 }
 
@@ -337,7 +337,7 @@ export function filterFromJson(filterStr: string): Filter.IFilter {
     return Filter.getFiltersFromUrl(filterStr, 'query')?.[0];
 }
 
-export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCounter: number): string {
+export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
     const filterPropsObj = [];
 
     filterProps.forEach(filterProp => {
@@ -367,17 +367,18 @@ export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCoun
         filterPropsObj.push(filterPropObj);
     });
 
+    return filterPropsObj;
+}
+
+export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCounter: number): string {
     return JSON.stringify({
-        filters: filterPropsObj,
+        filters: getSearchFilterObjs(filterProps),
         filterChangeCounter,
     });
 }
 
-export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStorageProps {
+export function getSearchFiltersFromObjs(filterPropsObj: any[]): FilterProps[] {
     const filters: FilterProps[] = [];
-    const obj = JSON.parse(filterPropsStr);
-    const filterPropsObj: any[] = obj['filters'];
-    const filterChangeCounter: number = obj['filterChangeCounter'];
     filterPropsObj.forEach(filterPropObj => {
         const filterArray = [];
         filterPropObj['filterArray']?.forEach(field => {
@@ -402,8 +403,16 @@ export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStor
         filters.push(filterPropObj as FilterProps);
     });
 
+    return filters;
+}
+
+export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStorageProps {
+    const obj = JSON.parse(filterPropsStr);
+    const filterPropsObj: any[] = obj['filters'];
+    const filterChangeCounter: number = obj['filterChangeCounter'];
+
     return {
-        filters,
+        filters: getSearchFiltersFromObjs(filterPropsObj),
         filterChangeCounter,
     };
 }

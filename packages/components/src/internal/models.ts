@@ -115,6 +115,7 @@ type DataViewInfoType =
     | DataViewInfoTypes.Query
     | DataViewInfoTypes.RReport
     | DataViewInfoTypes.SampleComparison
+    | DataViewInfoTypes.SampleFinderSavedSearch
     | DataViewInfoTypes.TimeChart
     | DataViewInfoTypes.XYScatterPlot
     | DataViewInfoTypes.XYSeriesLinePlot;

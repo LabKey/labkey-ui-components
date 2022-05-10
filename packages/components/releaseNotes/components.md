@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD May 2022
+Item 10353: Convert EditableGridPanelForUpdate to QueryModel based EditableGridPanel
+- remove unused EditableGridLoader
+- update EditableGridPanelForUpdate to initialize the dataModel and editorModel
+- update EditableGridLoaderFromSelection.tsx and related components/models for QueryModel
+- update EditableGridPanel.tsx for tabbed panel with multiple models
+
 ### version 2.167.0
 *Released*: 5 May 2022
 * SamplesAssayButton update to handle case where no assay designs are defined

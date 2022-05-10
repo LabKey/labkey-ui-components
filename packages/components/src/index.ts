@@ -64,6 +64,8 @@ import {
     isIntegerInRange,
     isNonNegativeFloat,
     isNonNegativeInteger,
+    parseCsvString,
+    quoteValueWithDelimiters,
     toggleDevTools,
     valueIsEmpty,
 } from './internal/util/utils';
@@ -1299,6 +1301,8 @@ export {
     applyDevTools,
     devToolsActive,
     toggleDevTools,
+    parseCsvString,
+    quoteValueWithDelimiters,
     // buttons and menus
     MultiMenuButton,
     SubMenu,

@@ -35,7 +35,7 @@ import { DefaultGridLoader } from './components/GridLoader';
 import { GRID_EDIT_INDEX } from './constants';
 import { IQueryGridModel } from './QueryGridModel';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
-import { encodeStringWithDelimiters } from './util/utils';
+import { quoteValueWithDelimiters } from './util/utils';
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
@@ -443,7 +443,7 @@ export class EditorModel
                             col.name,
                             values.reduce((str, vd) => {
                                 if (vd.display !== undefined && vd.display !== null) {
-                                    str += sep + encodeStringWithDelimiters(vd.display, ',');
+                                    str += sep + quoteValueWithDelimiters(vd.display, ',');
                                     sep = ', ';
                                 }
                                 return str;
@@ -460,7 +460,7 @@ export class EditorModel
                             }, [])
                         );
                     } else if (col.lookup.displayColumn == col.lookup.keyColumn) {
-                        row = row.set(col.name, values.size === 1 ? encodeStringWithDelimiters(values.first().display, ',') : undefined);
+                        row = row.set(col.name, values.size === 1 ? quoteValueWithDelimiters(values.first().display, ',') : undefined);
                     } else {
                         row = row.set(col.name, values.size === 1 ? values.first()?.raw : undefined);
                     }

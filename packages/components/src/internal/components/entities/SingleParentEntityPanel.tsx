@@ -30,7 +30,7 @@ import { getFilterForSampleOperation } from '../samples/utils';
 
 import { IEntityTypeOption } from './models';
 import { isSampleEntity } from './utils';
-import { encodeStringWithDelimiters } from '../../util/utils';
+import { quoteValueWithDelimiters } from '../../util/utils';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -108,7 +108,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
         let value = chosenValue ?? undefined;
         if (!value && model?.hasData && parentLSIDs?.length > 0) {
             value = Object.values(model.rows)
-                .map(row => encodeStringWithDelimiters(caseInsensitive(row, 'Name').value, DELIMITER))
+                .map(row => quoteValueWithDelimiters(caseInsensitive(row, 'Name').value, DELIMITER))
                 .join(DELIMITER);
         }
         let queryFilters = List<Filter.IFilter>();

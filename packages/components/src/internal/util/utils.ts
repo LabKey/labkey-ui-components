@@ -769,7 +769,7 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
     return parsedValues;
 }
 
-export function encodeStringWithDelimiters(value: any, delimiter: string) {
+export function quoteValueWithDelimiters(value: any, delimiter: string) {
     if (!value || !Utils.isString(value)) {
         return value;
     }

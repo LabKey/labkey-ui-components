@@ -22,7 +22,7 @@ import { BOOLEAN_TYPE, DATE_TYPE, INTEGER_TYPE, TEXT_TYPE } from '../components/
 import {
     camelCaseToTitleCase,
     caseInsensitive,
-    encodeStringWithDelimiters,
+    quoteValueWithDelimiters,
     findMissingValues,
     formatBytes,
     getCommonDataValues,
@@ -1474,39 +1474,39 @@ describe('parseCsvString', () => {
     });
 });
 
-describe('encodeStringForCsv', () => {
+describe('quoteValueWithDelimiters', () => {
     test('no value', () => {
-        expect(encodeStringWithDelimiters(undefined, ",")).toBeUndefined();
-        expect(encodeStringWithDelimiters(null, ';')).toBeNull();
-        expect(encodeStringWithDelimiters('', ' ')).toBe('');
+        expect(quoteValueWithDelimiters(undefined, ",")).toBeUndefined();
+        expect(quoteValueWithDelimiters(null, ';')).toBeNull();
+        expect(quoteValueWithDelimiters('', ' ')).toBe('');
     });
 
     test("non-string value", () => {
-        expect(encodeStringWithDelimiters(4, ',')).toBe(4);
-        expect(encodeStringWithDelimiters(4, undefined)).toBe(4);
-        expect(encodeStringWithDelimiters({value: "4,5"}, undefined)).toStrictEqual({value: "4,5"});
-        expect(encodeStringWithDelimiters([4, 5, 6], ',')).toStrictEqual([4, 5, 6]);
+        expect(quoteValueWithDelimiters(4, ',')).toBe(4);
+        expect(quoteValueWithDelimiters(4, undefined)).toBe(4);
+        expect(quoteValueWithDelimiters({value: "4,5"}, undefined)).toStrictEqual({value: "4,5"});
+        expect(quoteValueWithDelimiters([4, 5, 6], ',')).toStrictEqual([4, 5, 6]);
     })
 
     test('invalid delimiter', () => {
-        expect(() => encodeStringWithDelimiters("value", undefined)).toThrow("Delimiter is required.")
-        expect(() => encodeStringWithDelimiters("value", null)).toThrow("Delimiter is required.")
-        expect(() => encodeStringWithDelimiters("value", '')).toThrow("Delimiter is required.")
+        expect(() => quoteValueWithDelimiters("value", undefined)).toThrow("Delimiter is required.")
+        expect(() => quoteValueWithDelimiters("value", null)).toThrow("Delimiter is required.")
+        expect(() => quoteValueWithDelimiters("value", '')).toThrow("Delimiter is required.")
     });
 
     test('without delimiter in value', () => {
-        expect(encodeStringWithDelimiters('abc d', ',')).toBe('abc d');
-        expect(encodeStringWithDelimiters('a', ';')).toBe('a');
+        expect(quoteValueWithDelimiters('abc d', ',')).toBe('abc d');
+        expect(quoteValueWithDelimiters('a', ';')).toBe('a');
     });
 
     test('with delimiter', () => {
-        expect(encodeStringWithDelimiters('abc,d', ',')).toBe('"abc,d"');
-        expect(encodeStringWithDelimiters('ab "cd,e"', ',')).toBe('"ab ""cd,e"""');
+        expect(quoteValueWithDelimiters('abc,d', ',')).toBe('"abc,d"');
+        expect(quoteValueWithDelimiters('ab "cd,e"', ',')).toBe('"ab ""cd,e"""');
     });
 
     test("round trip", () => {
         const initialString = 'ab "cd,e"';
-        expect(parseCsvString(encodeStringWithDelimiters(initialString, ','), ',', true)).toStrictEqual([initialString]);
+        expect(parseCsvString(quoteValueWithDelimiters(initialString, ','), ',', true)).toStrictEqual([initialString]);
     })
 })
 

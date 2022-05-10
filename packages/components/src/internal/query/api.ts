@@ -31,7 +31,7 @@ import {
     URLResolver,
     ViewInfo,
 } from '../..';
-import { encodeStringWithDelimiters } from '../util/utils';
+import { quoteValueWithDelimiters } from '../util/utils';
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 
@@ -574,7 +574,7 @@ export function encodeResultsForCsv(selectRowsResult: ISelectRowsResult, valueCo
             Object.assign(rowMap[key],
                 {
                     [valueColumn]: {
-                        value: encodeStringWithDelimiters(rowMap[key][valueColumn].value, delimiter),
+                        value: quoteValueWithDelimiters(rowMap[key][valueColumn].value, delimiter),
                         displayValue: rowMap[key][valueColumn].value,
                         url: rowMap[key][valueColumn].url
                     }

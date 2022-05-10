@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 import React from 'react';
+import { InsufficientPermissionsAlert } from '../permissions/InsufficientPermissionsAlert';
 
 import { PageHeader } from './PageHeader';
 
 export interface PageProps {
-    notFound?: boolean;
     hasHeader?: boolean;
-    title?: string;
+    notAuthorized?: boolean;
+    notFound?: boolean;
     productName?: string;
     showNotifications?: boolean;
+    title?: string;
 }
 
 export class Page extends React.Component<PageProps, any> {
@@ -62,9 +64,22 @@ export class Page extends React.Component<PageProps, any> {
     };
 
     render() {
-        const { notFound, showNotifications } = this.props;
+        const { notAuthorized, notFound, showNotifications } = this.props;
         let { hasHeader } = this.props;
-        const children = notFound ? <h1>Not Found</h1> : this.props.children;
+        let children;
+
+        // Note: you might be tempted to render <NotFound /> or <InsufficientPermissionsPage /> below, but doing that
+        // creates a circular dependency between those components and the Page component, so don't do that.
+        if (notFound) {
+            children = <h1>Not Found</h1>;
+        } else if (notAuthorized) {
+            children = [
+                <PageHeader key="header" title={this.props.title} />,
+                <InsufficientPermissionsAlert key="alert" />,
+            ];
+        } else {
+            children = this.props.children;
+        }
 
         if (children) {
             if (!hasHeader) {

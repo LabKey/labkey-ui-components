@@ -67,6 +67,7 @@ module.exports = {
         // our apps, then it should be in the list of externals.
         '@labkey/api',
         '@labkey/components',
+        '@remirror/pm',
         'date-fns',
         'font-awesome',
         'formsy-react',
@@ -89,7 +90,9 @@ module.exports = {
         'react-redux',
         'react-router',
         'react-treebeard',
+        'redux',
         'redux-actions',
+        'remirror',
         'xhr-mock',
     ]
 };

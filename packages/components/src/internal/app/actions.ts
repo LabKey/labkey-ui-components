@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List } from 'immutable';
-import { Security } from '@labkey/api';
 
 import { User } from '../components/base/models/User';
 import { ServerActivity } from '../components/notifications/model';
@@ -17,8 +16,6 @@ import {
     SET_RELOAD_REQUIRED,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
-    USER_PERMISSIONS_REQUEST,
-    USER_PERMISSIONS_SUCCESS,
     SERVER_NOTIFICATIONS_LOADING_START,
     SERVER_NOTIFICATIONS_LOADING_END,
     SERVER_NOTIFICATIONS_LOADING_ERROR,
@@ -26,36 +23,6 @@ import {
     RESET_QUERY_GRID_STATE,
 } from './constants';
 import { getAppProductIds } from './utils';
-
-function fetchUserPermissions() {
-    return new Promise((resolve, reject) => {
-        Security.getUserPermissions({
-            success: data => {
-                resolve(data);
-            },
-            failure: error => {
-                reject(error);
-            },
-        });
-    });
-}
-
-export function getUserPermissions() {
-    return dispatch => {
-        dispatch({ type: USER_PERMISSIONS_REQUEST });
-
-        return fetchUserPermissions()
-            .then(response => {
-                dispatch({
-                    type: USER_PERMISSIONS_SUCCESS,
-                    response,
-                });
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    };
-}
 
 export const updateUser = (userProps: Partial<User>) => ({ type: UPDATE_USER, userProps });
 

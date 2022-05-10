@@ -2,13 +2,16 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Record } from 'immutable';
+import { List, Record } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
 import { Container } from '../components/base/models/Container';
 import { User } from '../components/base/models/User';
 
-const user = new User(getServerContext().user);
+const user = new User({
+    ...getServerContext().user,
+    permissionsList: List(getServerContext().container?.effectivePermissions ?? []),
+});
 
 export enum LogoutReason {
     SERVER_LOGOUT,
@@ -22,7 +25,6 @@ export class AppModel extends Record({
     initialUserId: user.id,
     logoutReason: undefined,
     reloadRequired: false,
-    requestPermissions: true,
     user,
     needsInvalidateQueryGrid: false,
 }) {
@@ -31,7 +33,6 @@ export class AppModel extends Record({
     declare initialUserId: number;
     declare logoutReason: LogoutReason;
     declare reloadRequired: boolean;
-    declare requestPermissions: boolean;
     declare user: User;
     declare needsInvalidateQueryGrid: boolean; // separate query grid invalidate from menu reload, allow grid to invalidate on route change, to avoid invalid query grid state
 

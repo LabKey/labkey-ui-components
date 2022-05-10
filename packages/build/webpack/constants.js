@@ -249,6 +249,7 @@ module.exports = {
             '@labkey/components': labkeyUIComponentsPath,
             '@labkey/freezermanager': freezerManagerPath,
             '@labkey/workflow': workflowPath,
+            '@labkey/eln': elnPath,
 
             // need to set the path based on the LINK var
             '@labkey/components-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),

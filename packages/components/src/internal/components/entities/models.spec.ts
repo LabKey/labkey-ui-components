@@ -27,31 +27,31 @@ import {
 
 describe('EntityParentType', () => {
     test('generateColumn captionSuffix', () => {
-        let col = EntityParentType.create({ query: 'dataclass' }).generateColumn('Display Column');
+        let col = EntityParentType.create({ schema: SCHEMAS.DATA_CLASSES.SCHEMA, query: 'dataclass' }).generateColumn('Display Column', SCHEMAS.DATA_CLASSES.SCHEMA);
         expect(col.caption).toBe('Dataclass Parents');
 
         col = EntityParentType.create({ schema: SCHEMAS.DATA_CLASSES.SCHEMA, query: 'dataclass' }).generateColumn(
-            'Display Column'
+            'Display Column', SCHEMAS.SAMPLE_SETS.SCHEMA
         );
         expect(col.caption).toBe('Dataclass');
 
-        col = EntityParentType.create({ query: 'sampletype' }).generateColumn('Display Column');
+        col = EntityParentType.create({ schema: SCHEMAS.SAMPLE_SETS.SCHEMA, query: 'sampletype' }).generateColumn('Display Column', SCHEMAS.SAMPLE_SETS.SCHEMA);
         expect(col.caption).toBe('Sampletype Parents');
 
         col = EntityParentType.create({ schema: SCHEMAS.SAMPLE_SETS.SCHEMA, query: 'sampletype' }).generateColumn(
-            'Display Column'
+            'Display Column', SCHEMAS.SAMPLE_SETS.SCHEMA
         );
         expect(col.caption).toBe('Sampletype Parents');
     });
 
     test('generateColumn isAliquotParent', () => {
-        let col = EntityParentType.create({ query: 'sampletype' }).generateColumn('Display Column');
+        let col = EntityParentType.create({ query: 'sampletype' }).generateColumn('Display Column', SCHEMAS.SAMPLE_SETS.SCHEMA);
         expect(col.caption).not.toBe('AliquotedFrom');
         expect(col.description).not.toBe('The parent sample of the aliquot');
         expect(col.lookup.multiValued).toBe('junction');
         expect(col.required).toBe(false);
 
-        col = EntityParentType.create({ query: 'sampletype', isAliquotParent: true }).generateColumn('Display Column');
+        col = EntityParentType.create({ query: 'sampletype', isAliquotParent: true }).generateColumn('Display Column', SCHEMAS.SAMPLE_SETS.SCHEMA);
         expect(col.caption).toBe('AliquotedFrom');
         expect(col.description).toBe('The parent sample of the aliquot');
         expect(col.lookup.multiValued).toBe(undefined);
@@ -59,25 +59,25 @@ describe('EntityParentType', () => {
     });
 
     test('generateColumn parentColName', () => {
-        let col = EntityParentType.create({ query: 'sampletype' }).generateColumn('Display Column');
+        let col = EntityParentType.create({ query: 'sampletype' }).generateColumn('Display Column', SCHEMAS.SAMPLE_SETS.SCHEMA);
         expect(col.name).toBe('MaterialInputs/Sampletype');
         expect(col.fieldKey).toBe('MaterialInputs/Sampletype');
         expect(col.fieldKeyArray[0]).toBe('MaterialInputs/Sampletype');
 
-        col = EntityParentType.create({ query: 'sampletype', isAliquotParent: true }).generateColumn('Display Column');
+        col = EntityParentType.create({ query: 'sampletype', isAliquotParent: true }).generateColumn('Display Column', SCHEMAS.SAMPLE_SETS.SCHEMA);
         expect(col.name).toBe('AliquotedFrom');
         expect(col.fieldKey).toBe('AliquotedFrom');
         expect(col.fieldKeyArray[0]).toBe('AliquotedFrom');
     });
 
     test('generateColumn displayColumn', () => {
-        let col = EntityParentType.create({ query: 'sampletype' }).generateColumn('Display Column');
+        let col = EntityParentType.create({ query: 'sampletype' }).generateColumn('Display Column', SCHEMAS.DATA_CLASSES.SCHEMA);
         expect(col.lookup.displayColumn).toBe('Display Column');
 
         col = EntityParentType.create({
             schema: SCHEMAS.DATA_CLASSES.INGREDIENTS.schemaName,
             query: SCHEMAS.DATA_CLASSES.INGREDIENTS.queryName,
-        }).generateColumn('Display Column');
+        }).generateColumn('Display Column', SCHEMAS.DATA_CLASSES.SCHEMA);
         expect(col.lookup.displayColumn).toBe('scientificName');
     });
 

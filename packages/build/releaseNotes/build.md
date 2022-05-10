@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 6.1.2
+*Released*: 9 May 2022
+* Add remirror and redux dependencies to package build excludes
+* Add eln to aliases in dev build
+
 ### version 6.1.1
 *Released:* 28 April 2022
 * Exclude test files from dev build

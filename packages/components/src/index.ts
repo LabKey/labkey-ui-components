@@ -637,7 +637,6 @@ import {
 } from './internal/app/utils';
 import {
     doResetQueryGridState,
-    getUserPermissions,
     menuInit,
     menuInvalidate,
     menuReload,
@@ -697,8 +696,6 @@ import {
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     USER_KEY,
-    USER_PERMISSIONS_REQUEST,
-    USER_PERMISSIONS_SUCCESS,
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './internal/app/constants';
@@ -742,7 +739,6 @@ const App = {
     getDateFormat: getAppDateFormat,
     getDateTimeFormat: getAppDateTimeFormat,
     useMenuSectionConfigs,
-    getUserPermissions,
     doResetQueryGridState,
     menuInit,
     menuInvalidate,
@@ -767,8 +763,6 @@ const App = {
     SECURITY_SERVER_UNAVAILABLE,
     SECURITY_SESSION_TIMEOUT,
     SET_RELOAD_REQUIRED,
-    USER_PERMISSIONS_SUCCESS,
-    USER_PERMISSIONS_REQUEST,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     BIOLOGICS: BIOLOGICS_APP_PROPERTIES,

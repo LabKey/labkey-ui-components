@@ -1,11 +1,11 @@
 import { List, Map, OrderedSet, Record } from 'immutable';
 import { Filter, getServerContext, Query, Utils } from '@labkey/api';
 
-import { QueryColumn, QueryInfo, resolveKey, SchemaQuery, ViewInfo } from '..';
+import { QueryColumn, QueryInfo, QueryModel, resolveKey, SchemaQuery, ViewInfo } from '..';
 
 import { intersect, toLowerSafe } from './util/utils';
 
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
+import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from './constants';
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -64,8 +64,16 @@ export interface IQueryGridModel {
 }
 
 export interface IGridLoader {
-    fetch: (model: QueryGridModel) => Promise<IGridResponse>;
-    fetchSelection?: (model: QueryGridModel) => Promise<IGridSelectionResponse>;
+    fetch: (model: QueryGridModel | QueryModel) => Promise<IGridResponse>;
+    fetchSelection?: (model: QueryGridModel | QueryModel) => Promise<IGridSelectionResponse>;
+}
+
+export interface IEditableGridLoader extends IGridLoader {
+    id: string;
+    queryInfo: QueryInfo;
+    requiredColumns?: string[];
+    omittedColumns?: string[];
+    updateColumns?: List<QueryColumn>;
 }
 
 export interface IGridResponse {

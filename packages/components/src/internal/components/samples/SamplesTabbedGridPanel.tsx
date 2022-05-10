@@ -1,5 +1,5 @@
 import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from 'react';
-import { Set, List, Map } from 'immutable';
+import { Set, List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
@@ -35,12 +35,6 @@ import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SampleGridButtonProps } from './models';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
-
-type EditableGridData = {
-    updateData: any;
-    dataForSelection: Map<string, any>;
-    idsForSelection: List<any>;
-};
 
 interface Props extends InjectedQueryModels {
     asPanel?: boolean;
@@ -102,19 +96,14 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const [isEditing, setIsEditing] = useState<boolean>();
     const [showBulkUpdate, setShowBulkUpdate] = useState<boolean>();
     const [selectionData, setSelectionData] = useState<Map<string, any>>();
+    const [editableGridUpdateData, setEditableGridUpdateData] = useState<OrderedMap<string, any>>();
 
-    const [editableGridData, setEditableGridData] = useState<EditableGridData>();
     const onEditSelectionInGrid = useCallback(
         (
-            editableGridUpdateData: any,
+            editableGridUpdateData: OrderedMap<string, any>,
             editableGridDataForSelection: Map<string, any>,
-            editableGridDataIdsForSelection: List<any>
         ): Promise<Map<string, any>> => {
-            setEditableGridData({
-                updateData: editableGridUpdateData,
-                dataForSelection: editableGridDataForSelection,
-                idsForSelection: editableGridDataIdsForSelection,
-            });
+            setEditableGridUpdateData(editableGridUpdateData);
             return Promise.resolve(editableGridDataForSelection);
         },
         []
@@ -176,7 +165,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     );
 
     const resetState = useCallback(() => {
-        setEditableGridData(undefined);
+        setEditableGridUpdateData(undefined);
         setSelectionData(undefined);
         setIsEditing(false);
         setShowBulkUpdate(false);
@@ -284,9 +273,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     determineLineage={user.canUpdate}
                     determineStorage={App.userCanEditStorageData(user)}
                     displayQueryModel={activeModel}
-                    editableGridDataForSelection={editableGridData?.dataForSelection}
-                    editableGridDataIdsForSelection={editableGridData?.idsForSelection}
-                    editableGridUpdateData={editableGridData?.updateData}
+                    editableGridUpdateData={editableGridUpdateData}
                     onGridEditCancel={resetState}
                     onGridEditComplete={onGridEditComplete}
                     sampleSet={activeModel.schemaQuery.queryName}

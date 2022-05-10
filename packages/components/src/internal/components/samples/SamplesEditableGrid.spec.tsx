@@ -1,6 +1,5 @@
 import { List, fromJS } from 'immutable';
 
-import { QueryGridModel } from '../../QueryGridModel';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -41,7 +40,6 @@ DATA = DATA.setIn(
         }
     )
 );
-const ORIGINAL_MODEL = new QueryGridModel({ data: DATA });
 
 describe('getUpdatedLineageRows', () => {
     test('no changes', () => {
@@ -50,7 +48,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': 'A', 'MaterialInputs/Two': 'B, C' },
                 { RowId: 2, 'MaterialInputs/One': '', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             []
         );
         expect(updatedRows.length).toBe(0);
@@ -62,7 +60,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': 'A', 'MaterialInputs/Two': 'B, C, D' },
                 { RowId: 2, 'MaterialInputs/One': '', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             []
         );
         expect(updatedRows.length).toBe(1);
@@ -77,7 +75,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': 'D', 'MaterialInputs/Two': 'B, C' },
                 { RowId: 2, 'MaterialInputs/One': '', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             []
         );
         expect(updatedRows.length).toBe(1);
@@ -92,7 +90,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': '', 'MaterialInputs/Two': 'B, C' },
                 { RowId: 2, 'MaterialInputs/One': '', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             []
         );
         expect(updatedRows.length).toBe(1);
@@ -107,7 +105,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': 'A', 'MaterialInputs/Two': 'B, C' },
                 { RowId: 2, 'MaterialInputs/One': 'A, B', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             []
         );
         expect(updatedRows.length).toBe(1);
@@ -122,7 +120,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': 'A, B', 'MaterialInputs/Two': 'B, C' },
                 { RowId: 2, 'MaterialInputs/One': 'A, B', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             [1, 2]
         );
         expect(updatedRows.length).toBe(0);
@@ -138,7 +136,7 @@ describe('getLineageEditorUpdateColumns', () => {
     );
 
     test('no parent types', () => {
-        const cols = getLineageEditorUpdateColumns(MODEL, {});
+        const cols = getLineageEditorUpdateColumns(MODEL, {}).queryInfoColumns;
         expect(cols.size).toBe(2);
         expect(cols.get('rowid')).toBeDefined();
         expect(cols.get('name')).toBeDefined();
@@ -170,7 +168,7 @@ describe('getLineageEditorUpdateColumns', () => {
                 value: '',
             } as EntityChoice),
             s3: List.of(),
-        });
+        }).queryInfoColumns;
         expect(cols.size).toBe(4);
         expect(cols.get('rowid')).toBeDefined();
         expect(cols.get('name')).toBeDefined();

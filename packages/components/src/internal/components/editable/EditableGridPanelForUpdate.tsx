@@ -1,18 +1,28 @@
 import React, { ReactNode } from 'react';
-import { List, Map } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 
-import { getEditorModel } from '../../global';
-
-import { EditableColumnMetadata, QueryColumn, QueryGridModel, SchemaQuery, WizardNavButtons } from '../../..';
+import {
+    EditableColumnMetadata,
+    EditableGridLoaderFromSelection,
+    EditableGridPanel,
+    EditorModel,
+    EditorModelProps,
+    loadEditorModelData,
+    LoadingSpinner,
+    LoadingState,
+    QueryColumn,
+    QueryModel,
+    SchemaQuery,
+    WizardNavButtons,
+} from '../../..';
 import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 
-import { EditableGridPanelDeprecated } from './EditableGridPanelDeprecated';
-
 interface Props {
-    model: QueryGridModel | List<QueryGridModel>;
-    selectionData: Map<string, any>;
+    queryModel: QueryModel;
+    selectionData?: Map<string, any>;
+    loaders: EditableGridLoaderFromSelection[];
     onCancel: () => any;
     onComplete: () => any;
     updateRows?: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
@@ -27,16 +37,15 @@ interface Props {
     activeTab?: number;
     getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
     getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
-    getSelectionData?: (tabId?: number) => Map<string, any>;
-    getReadOnlyColumns?: (tabId?: number) => List<string>;
     getReadOnlyRows?: (tabId?: number) => List<any>;
-    getIdField?: (tabId?: number) => string;
     getTabTitle?: (tabId?: number) => string;
     getTabHeader?: (tabId?: number) => ReactNode;
 }
 
 interface State {
     isSubmitting: boolean;
+    dataModels: QueryModel[];
+    editorModels: EditorModel[];
 }
 
 export class EditableGridPanelForUpdate extends React.Component<Props, State> {
@@ -48,27 +57,90 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     constructor(props) {
         super(props);
 
+        const dataModels = [];
+        const editorModels = [];
+        props.loaders.forEach(loader => {
+            dataModels.push(new QueryModel({ id: loader.id, schemaQuery: props.queryModel.schemaQuery }));
+            editorModels.push(new EditorModel({ id: loader.id }));
+        });
+
         this.state = {
             isSubmitting: false,
+            dataModels,
+            editorModels,
         };
     }
 
-    getModelsAsList(props: Props): List<QueryGridModel> {
-        const { model } = props;
-        return List.isList(model) ? List(model.toArray()) : List<QueryGridModel>([model]);
+    componentDidMount() {
+        this.initEditorModel();
     }
 
-    getModel = () => {
-        const models = this.getModelsAsList(this.props);
+    initEditorModel = async (): Promise<void> => {
+        const { queryModel, loaders } = this.props;
+        const { dataModels, editorModels } = this.state;
 
-        return models.get(0);
+        const updatedDataModels = [];
+        const updatedEditorModels = [];
+        for (const loader of loaders) {
+            const index = loaders.indexOf(loader);
+            const response = await loader.fetch(queryModel);
+            const gridData = {
+                rows: response.data.toJS(),
+                orderedRows: response.dataIds.toArray(),
+                queryInfo: loader.queryInfo,
+            };
+            const editorModelData = await loadEditorModelData(gridData, loader.updateColumns);
+
+            updatedDataModels.push(
+                dataModels[index].mutate({
+                    ...gridData,
+                    rowsLoadingState: LoadingState.LOADED,
+                    queryInfoLoadingState: LoadingState.LOADED,
+                })
+            );
+            updatedEditorModels.push(editorModels[index].merge(editorModelData) as EditorModel);
+        }
+
+        this.setState(() => ({
+            dataModels: updatedDataModels,
+            editorModels: updatedEditorModels,
+        }));
+    };
+
+    onGridChange = (
+        editorModelChanges: Partial<EditorModelProps>,
+        dataKeys?: List<any>,
+        data?: Map<any, Map<string, any>>,
+        index = 0
+    ): void => {
+        this.setState(state => {
+            const { dataModels, editorModels } = state;
+
+            const updatedEditorModels = [...editorModels];
+            const editorModel = editorModels[index].merge(editorModelChanges) as EditorModel;
+            updatedEditorModels.splice(index, 1, editorModel);
+
+            const updatedDataModels = [...dataModels];
+            const orderedRows = dataKeys?.toJS();
+            const rows = data?.toJS();
+            if (orderedRows !== undefined && rows !== undefined) {
+                const dataModel = dataModels[index].mutate({ orderedRows, rows });
+                updatedDataModels.splice(index, 1, dataModel);
+            }
+
+            return {
+                dataModels: updatedDataModels,
+                editorModels: updatedEditorModels,
+            };
+        });
     };
 
     updateDataFromGrid = () => {
         const { onComplete, updateRows, updateAllTabRows } = this.props;
+        const { dataModels } = this.state;
 
         const gridDataAllTabs = [];
-        this.getModelsAsList(this.props).forEach((model, ind) => {
+        dataModels.forEach((model, ind) => {
             const gridData = this.getUpdateDataFromGrid(ind);
             if (gridData) {
                 gridDataAllTabs.push(gridData);
@@ -101,17 +173,11 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     };
 
     getUpdateDataFromGrid = (tabIndex: number) => {
-        const models = this.getModelsAsList(this.props);
-        const model = models.get(tabIndex ? tabIndex : 0);
-        const idField = this.props.getIdField ? this.props.getIdField(tabIndex) : this.props.idField;
-        const readOnlyColumns = this.props.getReadOnlyColumns
-            ? this.props.getReadOnlyColumns(tabIndex)
-            : this.props.readOnlyColumns;
-        const selectionData = this.props.getSelectionData
-            ? this.props.getSelectionData(tabIndex)
-            : this.props.selectionData;
+        const { idField, readOnlyColumns, selectionData } = this.props;
+        const { dataModels, editorModels } = this.state;
+        const model = dataModels[tabIndex ?? 0];
+        const editorModel = editorModels[tabIndex ?? 0];
 
-        const editorModel = getEditorModel(model?.getId());
         if (!editorModel) {
             console.error('Grid does not expose an editor. Ensure the grid is properly initialized for editing.');
             return null;
@@ -119,63 +185,57 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used
             // to populate the queryInfoForm.  If we don't have this data, we came directly to the editable grid
             // using values from the display grid to initialize the editable grid model, so we use that.
-            const initData = selectionData ? selectionData : model.data;
-            const editorData = editorModel.getRawData(model, true, true, readOnlyColumns).toArray();
+            const initData = selectionData ?? fromJS(model.rows);
+            const editorData = editorModel
+                .getRawDataFromGridData(
+                    fromJS(model.rows),
+                    fromJS(model.orderedRows),
+                    model.queryInfo,
+                    true,
+                    true,
+                    readOnlyColumns
+                )
+                .toArray();
             const updatedRows = getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo);
 
             return {
                 schemaQuery: model.queryInfo.schemaQuery,
                 updatedRows,
+                originalRows: model.rows,
                 tabIndex,
             };
         }
     };
 
     render() {
-        const {
-            model,
-            readOnlyColumns,
-            readOnlyRows,
-            activeTab,
-            onCancel,
-            singularNoun,
-            pluralNoun,
-            columnMetadata,
-            getUpdateColumns,
-            getColumnMetadata,
-            getReadOnlyRows,
-            getReadOnlyColumns,
-            getTabTitle,
-            getTabHeader,
-        } = this.props;
-        const { isSubmitting } = this.state;
+        const { onCancel, singularNoun, pluralNoun, columnMetadata, getColumnMetadata, ...editableGridProps } =
+            this.props;
+        const { isSubmitting, dataModels, editorModels } = this.state;
 
-        const firstModel = this.getModel();
+        const firstModel = dataModels[0];
         let cMetadata = columnMetadata;
         if (!cMetadata && !getColumnMetadata) cMetadata = getUniqueIdColumnMetadata(firstModel.queryInfo);
 
+        if (!dataModels.every(dataModel => !dataModel.isLoading)) {
+            return <LoadingSpinner />;
+        }
+
         return (
             <>
-                <EditableGridPanelDeprecated
-                    title={`Edit selected ${pluralNoun}`}
-                    bsStyle="info"
-                    models={model}
-                    model={firstModel}
-                    readOnlyColumns={readOnlyColumns}
-                    readonlyRows={readOnlyRows}
+                <EditableGridPanel
+                    {...editableGridProps}
                     allowAdd={false}
                     allowRemove={false}
-                    bordered={true}
-                    striped={true}
-                    forUpdate={true}
+                    bordered
+                    bsStyle="info"
                     columnMetadata={cMetadata}
-                    getUpdateColumns={getUpdateColumns}
-                    activeTab={activeTab}
                     getColumnMetadata={getColumnMetadata}
-                    getReadOnlyColumns={getReadOnlyColumns}
-                    getReadOnlyRows={getReadOnlyRows}
-                    getTabTitle={getTabTitle}
-                    getTabHeader={getTabHeader}
+                    editorModel={editorModels}
+                    forUpdate
+                    model={dataModels}
+                    onChange={this.onGridChange}
+                    striped
+                    title={`Edit selected ${pluralNoun}`}
                 />
                 <WizardNavButtons
                     cancel={onCancel}
@@ -186,9 +246,9 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                     isFinishedText="Finished Updating"
                     finishText={
                         'Finish Updating ' +
-                        firstModel.data.size +
+                        firstModel.orderedRows.length +
                         ' ' +
-                        (firstModel.data.size === 1
+                        (firstModel.orderedRows.length === 1
                             ? capitalizeFirstChar(singularNoun)
                             : capitalizeFirstChar(pluralNoun))
                     }

@@ -177,6 +177,18 @@ export interface BulkAddData {
     validationMsg?: ReactNode;
 }
 
+export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
+    activeTab?: number;
+    bsStyle?: any;
+    className?: string;
+    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
+    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
+    getReadOnlyRows?: (tabId?: number) => List<any>;
+    getTabTitle?: (tabId?: number) => string;
+    getTabHeader?: (tabId?: number) => ReactNode;
+    title?: string;
+}
+
 export interface SharedEditableGridProps {
     addControlProps?: Partial<AddRowsControlProps>;
     allowAdd?: boolean;

@@ -45,7 +45,8 @@ export const getUpdatedEntityParentType = (
     index: number,
     queryName: string,
     uniqueFieldKey: string,
-    parent: IParentOption
+    parent: IParentOption,
+    targetSchema: string
 ): {
     updatedEntityParents: Map<string, List<EntityParentType>>;
     column: QueryColumn;
@@ -81,7 +82,7 @@ export const getUpdatedEntityParentType = (
             schema: parent.schema,
         });
         updatedEntityParents = entityParentsMap.mergeIn([queryName, existingParentKey], parentType);
-        column = parentType.generateColumn(uniqueFieldKey);
+        column = parentType.generateColumn(uniqueFieldKey, targetSchema);
     } else {
         const parentToResetKey = entityParents.findKey(parent => parent.get('index') === index);
         const existingParent = entityParents.get(parentToResetKey);
@@ -118,7 +119,8 @@ export const changeEntityParentTypeDeprecated = (
             index,
             queryName,
             entityDataType.uniqueFieldKey,
-            parent
+            parent,
+            queryGridModel.schema
         );
 
         // no updated model if nothing has changed, so we can just stop

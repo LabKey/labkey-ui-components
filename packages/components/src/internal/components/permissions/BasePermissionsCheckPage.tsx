@@ -4,7 +4,7 @@
  */
 import React, { FC, memo, ReactNode } from 'react';
 
-import { InsufficientPermissionsPage, LoadingSpinner, Page, PageDetailHeader, Notification, User } from '../../..';
+import { InsufficientPermissionsPage, LoadingSpinner, Page, PageDetailHeader, Notifications, User } from '../../..';
 
 interface Props {
     user: User;
@@ -32,7 +32,7 @@ export const BasePermissionsCheckPage: FC<Props> = memo(props => {
             <PageDetailHeader title={title} subTitle={subTitle} description={description}>
                 {renderButtons?.()}
             </PageDetailHeader>
-            <Notification user={user} />
+            <Notifications />
             {body || children}
         </Page>
     );

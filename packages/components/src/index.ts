@@ -115,7 +115,7 @@ import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
 import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
-import { Notification } from './internal/components/notifications/Notification';
+import { Notifications } from './internal/components/notifications/Notifications';
 import {
     createNotification,
     getPipelineActivityData,
@@ -302,7 +302,7 @@ import { loadNameExpressionOptions } from './internal/components/settings/action
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { BasePermissions } from './internal/components/administration/BasePermissions';
-import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './internal/components/administration/utils';
+import { showPremiumFeatures } from './internal/components/administration/utils';
 import {
     SECURITY_ROLE_DESCRIPTIONS,
     HOSTED_APPLICATION_SECURITY_ROLES,
@@ -421,6 +421,7 @@ import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { SubNav } from './internal/components/navigation/SubNav';
+import { useSubNavContext, SubNavWithContext } from './internal/components/navigation/SubNavWithContext';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
@@ -635,7 +636,6 @@ import {
 } from './internal/app/utils';
 import {
     doResetQueryGridState,
-    getUserPermissions,
     menuInit,
     menuInvalidate,
     menuReload,
@@ -662,6 +662,7 @@ import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
+    ELN_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
     FIND_SAMPLES_BY_FILTER_HREF,
     FIND_SAMPLES_BY_FILTER_KEY,
@@ -674,9 +675,11 @@ import {
     NEW_SAMPLE_TYPE_HREF,
     NEW_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
+    MEDIA_KEY,
     NOTIFICATION_TIMEOUT,
     PICKLIST_HOME_HREF,
     PICKLIST_KEY,
+    REGISTRY_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLE_TYPE_KEY,
     SAMPLES_KEY,
@@ -692,8 +695,6 @@ import {
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     USER_KEY,
-    USER_PERMISSIONS_REQUEST,
-    USER_PERMISSIONS_SUCCESS,
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
 } from './internal/app/constants';
@@ -707,6 +708,7 @@ import { Discussions } from './internal/announcements/Discussions';
 import { Thread } from './internal/announcements/Thread';
 import { ThreadBlock } from './internal/announcements/ThreadBlock';
 import { ThreadEditor } from './internal/announcements/ThreadEditor';
+import { useNotAuthorized, useNotFound } from './internal/hooks';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -736,7 +738,6 @@ const App = {
     getDateFormat: getAppDateFormat,
     getDateTimeFormat: getAppDateTimeFormat,
     useMenuSectionConfigs,
-    getUserPermissions,
     doResetQueryGridState,
     menuInit,
     menuInvalidate,
@@ -761,8 +762,6 @@ const App = {
     SECURITY_SERVER_UNAVAILABLE,
     SECURITY_SESSION_TIMEOUT,
     SET_RELOAD_REQUIRED,
-    USER_PERMISSIONS_SUCCESS,
-    USER_PERMISSIONS_REQUEST,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     BIOLOGICS: BIOLOGICS_APP_PROPERTIES,
@@ -805,6 +804,9 @@ const App = {
     TEST_USER_APP_ADMIN,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    MEDIA_KEY,
+    REGISTRY_KEY,
+    ELN_KEY,
 };
 
 const Hooks = {
@@ -1099,7 +1101,6 @@ export {
     AdministrationSubNav,
     UserManagementPage,
     BasePermissions,
-    isLoginAutoRedirectEnabled,
     SECURITY_ROLE_DESCRIPTIONS,
     HOSTED_APPLICATION_SECURITY_ROLES,
     showPremiumFeatures,
@@ -1188,7 +1189,7 @@ export {
     PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     SHARED_CONTAINER_PATH,
     NotificationItemModel,
-    Notification,
+    Notifications,
     ServerNotificationModel,
     ServerActivityData,
     Persistence,
@@ -1442,6 +1443,12 @@ export {
     Thread,
     ThreadBlock,
     ThreadEditor,
+    // hooks
+    useNotAuthorized,
+    useNotFound,
+    // SubNavWithContext
+    useSubNavContext,
+    SubNavWithContext,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

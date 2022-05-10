@@ -15,7 +15,7 @@ import { Page } from '../base/Page';
 
 import { Section } from '../base/Section';
 
-import { Notification } from '../notifications/Notification';
+import { Notifications } from '../notifications/Notifications';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -39,7 +39,7 @@ const TITLE = 'User Profile';
 
 export const ProfilePage: FC<Props> = props => {
     const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
-    const { user } = useServerContext();
+    const { moduleContext, user } = useServerContext();
     const userProperties = useUserProperties(user);
 
     if (!user.isSignedIn) {
@@ -85,7 +85,7 @@ export const ProfilePage: FC<Props> = props => {
         setShowChangePassword(!showChangePassword);
     };
 
-    const allowChangePassword = !isLoginAutoRedirectEnabled();
+    const allowChangePassword = !isLoginAutoRedirectEnabled(moduleContext);
 
     return (
         <Page title={TITLE} hasHeader>
@@ -99,7 +99,7 @@ export const ProfilePage: FC<Props> = props => {
                     allowChangePassword ? <Button onClick={toggleChangePassword}>Change Password</Button> : null
                 }
             />
-            <Notification user={user} />
+            <Notifications />
             <Section>
                 <UserProfile userProperties={userProperties} user={user} onCancel={onCancel} onSuccess={navigate} />
             </Section>

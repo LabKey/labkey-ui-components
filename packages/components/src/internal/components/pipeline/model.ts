@@ -1,11 +1,11 @@
-import {Draft, immerable, produce} from "immer";
+import { Draft, immerable, produce } from 'immer';
 
 export interface PipelineLogEntry {
-    dateTime: string
-    level: string
-    lines: string
-    multiline: boolean
-    stackTrace: boolean
+    dateTime: string;
+    level: string;
+    lines: string;
+    multiline: boolean;
+    stackTrace: boolean;
 }
 
 export class PipelineStatusDetailModel {
@@ -25,7 +25,7 @@ export class PipelineStatusDetailModel {
     readonly isLoading: boolean;
 
     constructor(values?: Partial<PipelineStatusDetailModel>) {
-        Object.assign(this, {isLoaded: false, isLoading: false, fetchCount: 1, nextOffset: 0}, values);
+        Object.assign(this, { isLoaded: false, isLoading: false, fetchCount: 1, nextOffset: 0 }, values);
     }
 
     static loadResult(data?: any) {
@@ -40,8 +40,8 @@ export class PipelineStatusDetailModel {
             nextOffset: data['nextOffset'],
             logEntries: data['log'] ? data['log']['records'] : [],
             isLoaded: true,
-            isLoading: false
-        })
+            isLoading: false,
+        });
     }
 
     mutate(props: Partial<PipelineStatusDetailModel>): PipelineStatusDetailModel {
@@ -49,6 +49,4 @@ export class PipelineStatusDetailModel {
             Object.assign(draft, props);
         });
     }
-
-
 }

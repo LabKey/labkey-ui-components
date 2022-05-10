@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { Alert } from "../../..";
+import React, { FC } from 'react';
 
-export function InsufficientPermissionsAlert(props: any) {
-    return <Alert>You do not have permissions for this action.</Alert>;
-}
+import { Alert } from '../../..';
+
+export const InsufficientPermissionsAlert: FC = () => <Alert>You do not have permissions for this action.</Alert>;

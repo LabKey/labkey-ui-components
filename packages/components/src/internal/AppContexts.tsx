@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { AppContextProvider, ExtendableAppContext } from './AppContext';
 import { ServerContextProvider, withAppUser } from './components/base/ServerContext';
+import { SubNavContextProvider } from './components/navigation/SubNavWithContext';
 
 interface Props<T = {}> {
     initialAppContext?: ExtendableAppContext<T>;
@@ -22,9 +23,11 @@ export const AppContexts: FC<Props> = (props) => {
     return (
         <ServerContextProvider initialContext={initialServerContext}>
             <AppContextProvider initialContext={initialAppContext}>
-                <Provider store={store}>
-                    <Router history={history}>{children}</Router>
-                </Provider>
+                <SubNavContextProvider>
+                    <Provider store={store}>
+                        <Router history={history}>{children}</Router>
+                    </Provider>
+                </SubNavContextProvider>
             </AppContextProvider>
         </ServerContextProvider>
     );

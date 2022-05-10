@@ -31,6 +31,7 @@ import {
     URLResolver,
     ViewInfo,
 } from '../..';
+import { encodeStringWithDelimiters } from '../util/utils';
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 
@@ -565,7 +566,26 @@ export function handleSelectRowsResponse(json): any {
     };
 }
 
-export function searchRows(selectRowsConfig, token: any, exactColumn?: string): Promise<ISelectRowsResult> {
+// exported for jest testing
+export function encodeResultsForCsv(selectRowsResult: ISelectRowsResult, valueColumn: string, delimiter: string): ISelectRowsResult {
+    const rowMap = selectRowsResult.models[selectRowsResult.key];
+    Object.keys(rowMap).forEach(key => {
+        if (rowMap[key][valueColumn]) {
+            Object.assign(rowMap[key],
+                {
+                    [valueColumn]: {
+                        value: encodeStringWithDelimiters(rowMap[key][valueColumn].value, delimiter),
+                        displayValue: rowMap[key][valueColumn].value,
+                        url: rowMap[key][valueColumn].url
+                    }
+                }
+            );
+        }
+    });
+    return selectRowsResult;
+}
+
+export function searchRows(selectRowsConfig, token: any, valueColumn: string, delimiter: string, exactColumn?: string): Promise<ISelectRowsResult> {
     return new Promise((resolve, reject) => {
         let exactFilters, qFilters;
         const baseFilters = selectRowsConfig.filterArray ? selectRowsConfig.filterArray : [];
@@ -603,7 +623,7 @@ export function searchRows(selectRowsConfig, token: any, exactColumn?: string): 
             .then(allResults => {
                 const [queryResults, exactResults] = allResults;
 
-                let finalResults;
+                let finalResults : ISelectRowsResult;
                 if (exactResults && exactResults.totalRows > 0) {
                     finalResults = exactResults;
 
@@ -631,7 +651,7 @@ export function searchRows(selectRowsConfig, token: any, exactColumn?: string): 
                     finalResults = queryResults;
                 }
 
-                resolve(finalResults);
+                resolve(encodeResultsForCsv(finalResults, valueColumn, delimiter));
             })
             .catch(reason => {
                 reject(reason);

@@ -30,6 +30,7 @@ import { getFilterForSampleOperation } from '../samples/utils';
 
 import { IEntityTypeOption } from './models';
 import { isSampleEntity } from './utils';
+import { encodeStringWithDelimiters } from '../../util/utils';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -81,10 +82,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
         onChangeParentType?.(fieldName, chosenType, selectedOption, index);
     };
 
-    removeParent = (): void => {
-        this.props.onRemoveParentType?.(this.props.index);
-    };
-
     onChangeParentValue = (name: string, chosenValue: string | any[]): void => {
         this.props.onValueChange(chosenValue);
         this.props.onChangeParentValue?.(name, chosenValue, this.props.index);
@@ -111,7 +108,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
         let value = chosenValue ?? undefined;
         if (!value && model?.hasData && parentLSIDs?.length > 0) {
             value = Object.values(model.rows)
-                .map(row => caseInsensitive(row, 'Name').value)
+                .map(row => encodeStringWithDelimiters(caseInsensitive(row, 'Name').value, DELIMITER))
                 .join(DELIMITER);
         }
         let queryFilters = List<Filter.IFilter>();

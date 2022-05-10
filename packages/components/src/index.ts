@@ -191,7 +191,7 @@ import {
     InsertRowsResponse,
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
-    searchRows,
+
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
@@ -867,7 +867,6 @@ export {
     insertRows,
     selectRows,
     selectRowsDeprecated,
-    searchRows,
     updateRows,
     deleteRows,
     importData,

@@ -8,6 +8,7 @@ Item 10353: Convert EditableGridPanelForUpdate to QueryModel based EditableGridP
 - update EditableGridPanelForUpdate to initialize the dataModel and editorModel
 - update EditableGridLoaderFromSelection.tsx and related components/models for QueryModel
 - update EditableGridPanel.tsx for tabbed panel with multiple models
+- update SampleEditableGrid actions from EntityParentTypeSelector to work with QueryModel
 
 ### version 2.167.0
 *Released*: 5 May 2022

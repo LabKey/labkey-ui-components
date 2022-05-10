@@ -21,6 +21,7 @@ import {
     AssayDefinitionModel,
     buildURL,
     caseInsensitive,
+    EditorModelProps,
     GRID_CHECKBOX_OPTIONS,
     IGridResponse,
     insertColumnFilter,
@@ -1709,17 +1710,36 @@ function parsePaste(value: string): IParsePastePayload {
     };
 }
 
-export function changeColumn(
+export function changeColumnForQueryGridModel(
     model: QueryGridModel,
     existingFieldKey: string,
     newQueryColumn: QueryColumn
 ): EditorModel {
-    let editorModel = getEditorModel(model.getId());
+    const originalEditorModel = getEditorModel(model.getId());
+    const { editorModelChanges, data, queryInfo } = changeColumn(
+        originalEditorModel,
+        model.queryInfo,
+        model.data,
+        existingFieldKey,
+        newQueryColumn
+    );
 
-    const colIndex = model.queryInfo.getInsertColumns().findIndex(column => column.fieldKey === existingFieldKey);
+    const updatedEditorModel = updateEditorModel(originalEditorModel, editorModelChanges);
+    updateQueryGridModel(model, { data, queryInfo });
+    return updatedEditorModel;
+}
+
+export function changeColumn(
+    editorModel: EditorModel,
+    queryInfo: QueryInfo,
+    originalData: Map<any, Map<string, any>>,
+    existingFieldKey: string,
+    newQueryColumn: QueryColumn
+): EditorModelUpdates {
+    const colIndex = queryInfo.getInsertColumns().findIndex(column => column.fieldKey === existingFieldKey);
 
     // nothing to do if there is no such column
-    if (colIndex === -1) return editorModel;
+    if (colIndex === -1) return {};
 
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
@@ -1744,7 +1764,7 @@ export function changeColumn(
         return newCellValues;
     }, Map<string, List<ValueDescriptor>>());
 
-    editorModel = updateEditorModel(editorModel, {
+    const editorUpdates = {
         focusColIdx: -1,
         focusRowIdx: -1,
         selectedColIdx: -1,
@@ -1752,12 +1772,12 @@ export function changeColumn(
         selectionCells: Set<string>(),
         cellMessages: newCellMessages,
         cellValues: newCellValues,
-    });
+    };
 
-    const currentCol = model.queryInfo.getColumn(existingFieldKey);
+    const currentCol = queryInfo.getColumn(existingFieldKey);
 
     // remove existing column and set new column in data
-    let data = model.data;
+    let data = originalData;
     data = data
         .map(rowData => {
             rowData = rowData.remove(currentCol.fieldKey);
@@ -1766,7 +1786,7 @@ export function changeColumn(
         .toMap();
 
     let columns = OrderedMap<string, QueryColumn>();
-    model.queryInfo.columns.forEach((column, key) => {
+    queryInfo.columns.forEach((column, key) => {
         if (column.fieldKey === currentCol.fieldKey) {
             columns = columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
         } else {
@@ -1774,39 +1794,143 @@ export function changeColumn(
         }
     });
 
-    updateQueryGridModel(model, {
+    return {
+        editorModelChanges: editorUpdates,
         data,
-        queryInfo: model.queryInfo.merge({ columns }) as QueryInfo,
-    });
+        queryInfo: queryInfo.merge({ columns }) as QueryInfo,
+    };
+}
 
-    return editorModel;
+
+export function removeColumnForQueryGridModel(model: QueryGridModel, fieldKey: string): EditorModel {
+    const originalEditorModel = getEditorModel(model.getId());
+    const { editorModelChanges, data, queryInfo } = removeColumn(
+        originalEditorModel,
+        model.queryInfo,
+        model.data,
+        fieldKey
+    );
+
+    const updatedEditorModel = updateEditorModel(originalEditorModel, editorModelChanges);
+    updateQueryGridModel(model, { data, queryInfo });
+    return updatedEditorModel;
+}
+
+export function removeColumn(
+    editorModel: EditorModel,
+    queryInfo: QueryInfo,
+    originalData: Map<any, Map<string, any>>,
+    fieldKey: string
+): EditorModelUpdates {
+    const deleteIndex = queryInfo.getInsertColumnIndex(fieldKey);
+    // nothing to do if there is no such column
+    if (deleteIndex === -1) return {};
+
+    let newCellMessages = editorModel.cellMessages;
+    let newCellValues = editorModel.cellValues;
+
+    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
+        if (oldColIdx > deleteIndex) {
+            return newCellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
+        } else if (oldColIdx < deleteIndex) {
+            return newCellMessages.set(cellKey, message);
+        }
+
+        return newCellMessages;
+    }, Map<string, CellMessage>());
+
+    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
+
+        if (oldColIdx > deleteIndex) {
+            return newCellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
+        } else if (oldColIdx < deleteIndex) {
+            return newCellValues.set(cellKey, value);
+        }
+
+        return newCellValues;
+    }, Map<string, List<ValueDescriptor>>());
+
+    const editorUpdates = {
+        colCount: editorModel.colCount - 1,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: Set<string>(),
+        cellMessages: newCellMessages,
+        cellValues: newCellValues,
+    };
+
+    // remove column from all rows in queryGridModel.data
+    let data = originalData;
+    data = data
+        .map(rowData => {
+            return rowData.remove(fieldKey);
+        })
+        .toMap();
+
+    const columns = queryInfo.columns.remove(fieldKey.toLowerCase());
+
+    return {
+        editorModelChanges: editorUpdates,
+        data,
+        queryInfo: queryInfo.merge({ columns }) as QueryInfo,
+    };
+}
+
+interface GridData {
+    data: Map<any, Map<string, any>>;
+    dataKeys: List<any>;
+}
+
+export function addColumnsForQueryGridModel(
+    model: QueryGridModel,
+    queryColumns: OrderedMap<string, QueryColumn>,
+    fieldKey?: string
+): EditorModel {
+    const originalEditorModel = getEditorModel(model.getId());
+    const { editorModelChanges, data, queryInfo } = addColumns(
+        originalEditorModel,
+        model.queryInfo,
+        model.data,
+        queryColumns,
+        fieldKey
+    );
+
+    const updatedEditorModel = updateEditorModel(originalEditorModel, editorModelChanges);
+    updateQueryGridModel(model, { data, queryInfo });
+    return updatedEditorModel;
+}
+
+export interface EditorModelUpdates {
+    editorModelChanges?: Partial<EditorModelProps>;
+    data?: Map<any, Map<string, any>>;
+    queryInfo?: QueryInfo;
 }
 
 /**
- * Adds columns to the editor model and the underlying QueryGridModel
- * @param model the model to be updated
+ * Adds columns to the editor model and the underlying model's data
  * @param queryColumns the ordered map of columns to be added
  * @param fieldKey the fieldKey of the existing column after which the new columns should be inserted.  If undefined
  * or the column is not found, columns will be added at the beginning.
  */
 export function addColumns(
-    model: QueryGridModel,
+    editorModel: EditorModel,
+    queryInfo: QueryInfo,
+    originalData: Map<any, Map<string, any>>,
     queryColumns: OrderedMap<string, QueryColumn>,
     fieldKey?: string
-): EditorModel {
-    let editorModel = getEditorModel(model.getId());
-
-    if (queryColumns.size === 0) return editorModel;
-
-    let editorColIndex;
-    let queryColIndex;
+): EditorModelUpdates {
+    if (queryColumns.size === 0) return {};
 
     // add one to these because we insert after the given field (or at the
     // beginning if there is no such field)
-    editorColIndex = model.getInsertColumnIndex(fieldKey) + 1;
-    queryColIndex = model.getColumnIndex(fieldKey) + 1;
+    const editorColIndex = queryInfo.getInsertColumnIndex(fieldKey) + 1;
+    const queryColIndex = queryInfo.getColumnIndex(fieldKey) + 1;
 
-    if (editorColIndex < 0 || editorColIndex > model.queryInfo.columns.size) return editorModel;
+    if (editorColIndex < 0 || editorColIndex > queryInfo.columns.size) return {};
 
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
@@ -1839,7 +1963,7 @@ export function addColumns(
         }
     }
 
-    editorModel = updateEditorModel(editorModel, {
+    const editorUpdates = {
         colCount: editorModel.colCount + queryColumns.size,
         focusColIdx: -1,
         focusRowIdx: -1,
@@ -1848,9 +1972,9 @@ export function addColumns(
         selectionCells: Set<string>(),
         cellMessages: newCellMessages,
         cellValues: newCellValues,
-    });
+    };
 
-    let data = model.data;
+    let data = originalData;
     data = data
         .map(rowData => {
             queryColumns.forEach(column => {
@@ -1860,81 +1984,13 @@ export function addColumns(
         })
         .toMap();
 
-    const columns = model.queryInfo.insertColumns(queryColIndex, queryColumns);
+    const columns = queryInfo.insertColumns(queryColIndex, queryColumns);
 
-    updateQueryGridModel(model, {
+    return {
+        editorModelChanges: editorUpdates,
         data,
-        queryInfo: model.queryInfo.merge({ columns }) as QueryInfo,
-    });
-
-    return editorModel;
-}
-
-export function removeColumn(model: QueryGridModel, fieldKey: string): EditorModel {
-    let editorModel = getEditorModel(model.getId());
-
-    const deleteIndex = model.getInsertColumnIndex(fieldKey);
-    // nothing to do if there is no such column
-    if (deleteIndex === -1) return editorModel;
-
-    let newCellMessages = editorModel.cellMessages;
-    let newCellValues = editorModel.cellValues;
-
-    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-        if (oldColIdx > deleteIndex) {
-            return newCellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
-        } else if (oldColIdx < deleteIndex) {
-            return newCellMessages.set(cellKey, message);
-        }
-
-        return newCellMessages;
-    }, Map<string, CellMessage>());
-
-    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-
-        if (oldColIdx > deleteIndex) {
-            return newCellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
-        } else if (oldColIdx < deleteIndex) {
-            return newCellValues.set(cellKey, value);
-        }
-
-        return newCellValues;
-    }, Map<string, List<ValueDescriptor>>());
-
-    editorModel = updateEditorModel(editorModel, {
-        colCount: editorModel.colCount - 1,
-        focusColIdx: -1,
-        focusRowIdx: -1,
-        selectedColIdx: -1,
-        selectedRowIdx: -1,
-        selectionCells: Set<string>(),
-        cellMessages: newCellMessages,
-        cellValues: newCellValues,
-    });
-
-    // remove column from all rows in queryGridModel.data
-    let data = model.data;
-    data = data
-        .map(rowData => {
-            return rowData.remove(fieldKey);
-        })
-        .toMap();
-
-    const columns = model.queryInfo.columns.remove(fieldKey.toLowerCase());
-
-    updateQueryGridModel(model, {
-        data,
-        queryInfo: model.queryInfo.merge({ columns }) as QueryInfo,
-    });
-
-    return editorModel;
-}
-
-interface GridData {
-    data: Map<any, Map<string, any>>;
-    dataKeys: List<any>;
+        queryInfo: queryInfo.merge({ columns }) as QueryInfo,
+    };
 }
 
 interface EditorModelAndGridData extends GridData {

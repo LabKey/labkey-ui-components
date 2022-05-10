@@ -258,13 +258,6 @@ export class QueryGridModel
         return this.queryInfo?.getUpdateDisplayColumns(ViewInfo.UPDATE_NAME, this.omittedColumns) || emptyColumns;
     }
 
-    getColumnIndex(fieldKey: string): number {
-        if (!fieldKey) return -1;
-
-        const lcFieldKey = fieldKey.toLowerCase();
-        return this.queryInfo.columns.keySeq().findIndex(column => column.toLowerCase() === lcFieldKey);
-    }
-
     getAllColumns(): List<QueryColumn> {
         return this.queryInfo?.getAllColumns(this.view, this.omittedColumns) || emptyColumns;
     }
@@ -381,13 +374,6 @@ export class QueryGridModel
 
     getId(): string {
         return this.id;
-    }
-
-    getInsertColumnIndex(fieldKey): number {
-        if (!fieldKey) return -1;
-
-        const lcFieldKey = fieldKey.toLowerCase();
-        return this.getInsertColumns().findIndex(column => column.fieldKey.toLowerCase() === lcFieldKey);
     }
 
     getInsertColumns(): List<QueryColumn> {

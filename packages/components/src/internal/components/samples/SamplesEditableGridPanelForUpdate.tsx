@@ -7,48 +7,71 @@ import {
     EditableGridPanel,
     EditorModel,
     EditorModelProps,
-    loadEditorModelData,
+    EntityDataType,
+    GroupedSampleFields,
+    IEntityTypeOption,
+    IParentOption,
     LoadingSpinner,
-    LoadingState,
     QueryColumn,
     QueryModel,
-    SchemaQuery,
+    SAMPLE_STATE_COLUMN_NAME,
+    SampleTypeDataType,
     WizardNavButtons,
 } from '../../..';
-import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
+import { capitalizeFirstChar } from '../../util/utils';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
+import {
+    applyEditableGridChangesToModels,
+    getUpdatedDataFromEditableGrid,
+    initEditableGridModels,
+} from '../editable/EditableGridPanelForUpdate';
+import {
+    addEntityParentType,
+    changeEntityParentType,
+    EntityParentTypeSelectors,
+    removeEntityParentType,
+} from '../entities/EntityParentTypeSelectors';
+import { SampleStatusLegend } from './SampleStatusLegend';
+import { EntityParentType } from '../entities/models';
+
+export enum GridTab {
+    Samples,
+    Storage,
+    Lineage,
+}
 
 interface Props {
     queryModel: QueryModel;
-    selectionData?: Map<string, any>;
     loaders: EditableGridLoaderFromSelection[];
+    selectionData?: Map<string, any>;
+    updateAllTabRows: (updateData: any[]) => Promise<any>;
     onCancel: () => any;
     onComplete: () => any;
-    updateRows?: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
-    updateAllTabRows?: (updateData: any[]) => Promise<any>;
     idField: string;
-    readOnlyColumns?: List<string>;
-    readOnlyRows?: List<any>;
     singularNoun?: string;
     pluralNoun?: string;
-    columnMetadata?: Map<string, EditableColumnMetadata>;
-
-    activeTab?: number;
+    readOnlyColumns?: List<string>;
     getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
-    getReadOnlyRows?: (tabId?: number) => List<any>;
-    getTabTitle?: (tabId?: number) => string;
-    getTabHeader?: (tabId?: number) => ReactNode;
+    includedTabs: GridTab[];
+
+    // passed through from SampleEditableGrid
+    parentDataTypes: List<EntityDataType>;
+    combineParentTypes?: boolean;
+    aliquots: any[];
+    noStorageSamples: any[];
+    sampleTypeDomainFields: GroupedSampleFields;
+    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
 }
 
 interface State {
     isSubmitting: boolean;
     dataModels: QueryModel[];
     editorModels: EditorModel[];
+    entityParentsMap: Map<string, List<EntityParentType>>;
 }
 
-export class EditableGridPanelForUpdate extends React.Component<Props, State> {
+export class SamplesEditableGridPanelForUpdate extends React.Component<Props, State> {
     static defaultProps = {
         singularNoun: 'row',
         pluralNoun: 'rows',
@@ -68,6 +91,12 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             isSubmitting: false,
             dataModels,
             editorModels,
+            entityParentsMap: fromJS(
+                props.parentDataTypes.reduce((map, dataType) => {
+                    map[dataType.typeListingSchemaQuery.queryName] = [];
+                    return map;
+                }, {})
+            ),
         };
     }
 
@@ -98,6 +127,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                 dataModels,
                 editorModels,
                 editorModelChanges,
+                undefined,
                 dataKeys,
                 data,
                 index
@@ -106,7 +136,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     };
 
     onSubmit = (): void => {
-        const { onComplete, updateRows, updateAllTabRows, idField, readOnlyColumns, selectionData } = this.props;
+        const { onComplete, updateAllTabRows, idField, readOnlyColumns, selectionData } = this.props;
         const { dataModels, editorModels } = this.state;
 
         const gridDataAllTabs = [];
@@ -126,37 +156,205 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
 
         if (gridDataAllTabs.length > 0) {
             this.setState(() => ({ isSubmitting: true }));
-            if (updateAllTabRows) {
-                updateAllTabRows(gridDataAllTabs).then(result => {
-                    this.setState(
-                        () => ({ isSubmitting: false }),
-                        () => {
-                            if (result !== false) {
-                                onComplete();
-                            }
+            updateAllTabRows(gridDataAllTabs).then(result => {
+                this.setState(
+                    () => ({ isSubmitting: false }),
+                    () => {
+                        if (result !== false) {
+                            onComplete();
                         }
-                    );
-                });
-            } else if (updateRows) {
-                const updatePromises = [];
-                gridDataAllTabs.forEach(data => updatePromises.push(updateRows(data.schemaQuery, data.updatedRows)));
-                Promise.all(updatePromises).then(() => {
-                    this.setState(() => ({ isSubmitting: false }), onComplete());
-                });
-            }
+                    }
+                );
+            });
         } else {
             this.setState(() => ({ isSubmitting: false }), onComplete());
         }
     };
 
+    hasAliquots = (): boolean => {
+        const { aliquots } = this.props;
+        return aliquots && aliquots.length > 0;
+    };
+
+    getCurrentTab = (tabInd: number): number => {
+        const { includedTabs } = this.props;
+        return tabInd === undefined ? includedTabs[0] : includedTabs[tabInd];
+    };
+
+    getTabTitle = (tabInd: number): string => {
+        const { includedTabs } = this.props;
+
+        if (includedTabs[tabInd] === GridTab.Storage) return 'Storage Details';
+        if (includedTabs[tabInd] === GridTab.Lineage) return 'Lineage Details';
+        return 'Sample Data';
+    };
+
+    getTabHeader = (tabInd: number): ReactNode => {
+        const { parentDataTypes, combineParentTypes, parentTypeOptions } = this.props;
+        const { entityParentsMap } = this.state;
+
+        const currentTab = this.getCurrentTab(tabInd);
+
+        if (currentTab === GridTab.Lineage) {
+            return (
+                <>
+                    <div className="top-spacing">
+                        <EntityParentTypeSelectors
+                            parentDataTypes={parentDataTypes}
+                            parentOptionsMap={parentTypeOptions}
+                            entityParentsMap={entityParentsMap}
+                            combineParentTypes={combineParentTypes}
+                            onAdd={this.addParentType}
+                            onChange={this.changeParentType}
+                            onRemove={this.removeParentType}
+                        />
+                    </div>
+                    <div className="sample-status-warning">Lineage for aliquots cannot be changed.</div>
+                    <hr />
+                </>
+            );
+        } else if (currentTab === GridTab.Storage) {
+            return (
+                <div className="top-spacing sample-status-warning">
+                    Samples that are not currently in storage are not editable here.
+                </div>
+            );
+        } else {
+            return (
+                <div className="top-spacing sample-status-warning">
+                    Aliquot data inherited from the original sample cannot be updated here.
+                </div>
+            );
+        }
+    };
+
+    addParentType = (queryName: string): void => {
+        const { entityParentsMap, editorModels } = this.state;
+        this.setState({
+            editorModels: [...editorModels], // copy models to force re-render
+            entityParentsMap: addEntityParentType(queryName, entityParentsMap)
+        });
+    };
+
+    removeParentType = (index: number, queryName: string): void => {
+        const { includedTabs } = this.props;
+        const { entityParentsMap, dataModels, editorModels } = this.state;
+        const tabIndex = includedTabs.indexOf(GridTab.Lineage);
+
+        const { editorModelChanges, data, queryInfo, entityParents } = removeEntityParentType(
+            index,
+            queryName,
+            entityParentsMap,
+            editorModels[tabIndex],
+            dataModels[tabIndex].queryInfo,
+            fromJS(dataModels[tabIndex].rows)
+        );
+
+        const updatedModels = applyEditableGridChangesToModels(
+            dataModels,
+            editorModels,
+            editorModelChanges,
+            queryInfo,
+            List(dataModels[tabIndex].orderedRows),
+            data,
+            tabIndex
+        );
+
+        this.setState({
+            ...updatedModels,
+            entityParentsMap: entityParents,
+        });
+    };
+
+    changeParentType = (
+        index: number,
+        queryName: string,
+        fieldName: string,
+        formValue: any,
+        parent: IParentOption
+    ): void => {
+        const { combineParentTypes, includedTabs } = this.props;
+        const { entityParentsMap, dataModels, editorModels } = this.state;
+        const tabIndex = includedTabs.indexOf(GridTab.Lineage);
+
+        const { editorModelChanges, data, queryInfo, entityParents } = changeEntityParentType(
+            index,
+            queryName,
+            parent,
+            editorModels[tabIndex],
+            dataModels[tabIndex],
+            entityParentsMap,
+            SampleTypeDataType,
+            combineParentTypes
+        );
+
+        const updatedModels = applyEditableGridChangesToModels(
+            dataModels,
+            editorModels,
+            editorModelChanges,
+            queryInfo,
+            List(dataModels[tabIndex].orderedRows),
+            data,
+            tabIndex
+        );
+
+        this.setState({
+            ...updatedModels,
+            entityParentsMap: entityParents,
+        });
+    };
+
+    getReadOnlyRows = (tabInd: number): List<string> => {
+        const { aliquots, noStorageSamples, includedTabs } = this.props;
+
+        if (includedTabs[tabInd] === GridTab.Storage) {
+            return List<string>(noStorageSamples);
+        } else if (includedTabs[tabInd] === GridTab.Lineage) {
+            return List<string>(aliquots);
+        } else {
+            return undefined;
+        }
+    };
+
+    getSamplesColumnMetadata = (tabInd: number): Map<string, EditableColumnMetadata> => {
+        if (this.getCurrentTab(tabInd) !== GridTab.Samples) return undefined;
+
+        const { aliquots, sampleTypeDomainFields, queryModel } = this.props;
+        let columnMetadata = getUniqueIdColumnMetadata(queryModel.queryInfo);
+        columnMetadata = columnMetadata.set(SAMPLE_STATE_COLUMN_NAME, {
+            hideTitleTooltip: true,
+            toolTip: <SampleStatusLegend />,
+            popoverClassName: 'label-help-arrow-left',
+        });
+
+        const allSamples = !aliquots || aliquots.length === 0;
+        if (allSamples) return columnMetadata.asImmutable();
+
+        const allAliquots = this.hasAliquots() && aliquots.length === queryModel.selections.size;
+        sampleTypeDomainFields.aliquotFields.forEach(field => {
+            columnMetadata = columnMetadata.set(field, {
+                isReadOnlyCell: key => {
+                    return aliquots.indexOf(key) === -1;
+                },
+            });
+        });
+
+        sampleTypeDomainFields.metaFields.forEach(field => {
+            columnMetadata = columnMetadata.set(field, {
+                isReadOnlyCell: key => {
+                    return allAliquots || aliquots.indexOf(key) > -1;
+                },
+            });
+        });
+
+        return columnMetadata.asImmutable();
+    };
+
     render() {
-        const { onCancel, singularNoun, pluralNoun, columnMetadata, getColumnMetadata, ...editableGridProps } =
+        const { onCancel, singularNoun, pluralNoun, ...editableGridProps } =
             this.props;
         const { isSubmitting, dataModels, editorModels } = this.state;
-
         const firstModel = dataModels[0];
-        let cMetadata = columnMetadata;
-        if (!cMetadata && !getColumnMetadata) cMetadata = getUniqueIdColumnMetadata(firstModel.queryInfo);
 
         if (!dataModels.every(dataModel => !dataModel.isLoading)) {
             return <LoadingSpinner />;
@@ -170,14 +368,16 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                     allowRemove={false}
                     bordered
                     bsStyle="info"
-                    columnMetadata={cMetadata}
-                    getColumnMetadata={getColumnMetadata}
+                    getColumnMetadata={this.getSamplesColumnMetadata}
                     editorModel={editorModels}
                     forUpdate
                     model={dataModels}
                     onChange={this.onGridChange}
                     striped
                     title={`Edit selected ${pluralNoun}`}
+                    getTabTitle={this.getTabTitle}
+                    getTabHeader={this.getTabHeader}
+                    getReadOnlyRows={this.getReadOnlyRows}
                 />
                 <WizardNavButtons
                     cancel={onCancel}
@@ -199,109 +399,3 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         );
     }
 }
-
-export const initEditableGridModels = async (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
-    queryModel: QueryModel,
-    loaders: EditableGridLoaderFromSelection[]
-): Promise<{
-    dataModels: QueryModel[];
-    editorModels: EditorModel[];
-}> => {
-    const updatedDataModels = [];
-    const updatedEditorModels = [];
-    for (const loader of loaders) {
-        const index = loaders.indexOf(loader);
-        const response = await loader.fetch(queryModel);
-        const gridData = {
-            rows: response.data.toJS(),
-            orderedRows: response.dataIds.toArray(),
-            queryInfo: loader.queryInfo,
-        };
-        const editorModelData = await loadEditorModelData(gridData, loader.updateColumns);
-
-        updatedDataModels.push(
-            dataModels[index].mutate({
-                ...gridData,
-                rowsLoadingState: LoadingState.LOADED,
-                queryInfoLoadingState: LoadingState.LOADED,
-            })
-        );
-        updatedEditorModels.push(editorModels[index].merge(editorModelData) as EditorModel);
-    }
-
-    return {
-        dataModels: updatedDataModels,
-        editorModels: updatedEditorModels,
-    };
-};
-
-export const applyEditableGridChangesToModels = (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
-    editorModelChanges: Partial<EditorModelProps>,
-    dataKeys?: List<any>,
-    data?: Map<string, Map<string, any>>,
-    index = 0
-): {
-    dataModels: QueryModel[];
-    editorModels: EditorModel[];
-} => {
-    const updatedEditorModels = [...editorModels];
-    const editorModel = editorModels[index].merge(editorModelChanges) as EditorModel;
-    updatedEditorModels.splice(index, 1, editorModel);
-
-    const updatedDataModels = [...dataModels];
-    const orderedRows = dataKeys?.toJS();
-    const rows = data?.toJS();
-    if (orderedRows !== undefined && rows !== undefined) {
-        const dataModel = dataModels[index].mutate({ orderedRows, rows });
-        updatedDataModels.splice(index, 1, dataModel);
-    }
-
-    return {
-        dataModels: updatedDataModels,
-        editorModels: updatedEditorModels,
-    };
-};
-
-export const getUpdatedDataFromEditableGrid = (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
-    tabIndex = 0,
-    idField: string,
-    readOnlyColumns?: List<string>,
-    selectionData?: Map<string, any>
-): Record<string, any> => {
-    const model = dataModels[tabIndex];
-    const editorModel = editorModels[tabIndex];
-
-    if (!editorModel) {
-        console.error('Grid does not expose an editor. Ensure the grid is properly initialized for editing.');
-        return null;
-    } else {
-        // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used
-        // to populate the queryInfoForm.  If we don't have this data, we came directly to the editable grid
-        // using values from the display grid to initialize the editable grid model, so we use that.
-        const initData = selectionData ?? fromJS(model.rows);
-        const editorData = editorModel
-            .getRawDataFromGridData(
-                fromJS(model.rows),
-                fromJS(model.orderedRows),
-                model.queryInfo,
-                true,
-                true,
-                readOnlyColumns
-            )
-            .toArray();
-        const updatedRows = getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo);
-
-        return {
-            schemaQuery: model.queryInfo.schemaQuery,
-            updatedRows,
-            originalRows: model.rows,
-            tabIndex,
-        };
-    }
-};

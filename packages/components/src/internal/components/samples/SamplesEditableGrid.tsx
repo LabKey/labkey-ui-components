@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 
 import { AuditBehaviorTypes, Query, Utils } from '@labkey/api';
@@ -9,17 +9,13 @@ import {
     createNotification,
     deleteRows,
     dismissNotifications,
-    EditableColumnMetadata,
     EditableGridLoaderFromSelection,
-    EditableGridPanelForUpdate,
     EditorModel,
     EntityDataType,
     getSelectedData,
-    getUniqueIdColumnMetadata,
     IEntityTypeOption,
     IGridResponse,
     invalidateLineageResults,
-    IParentOption,
     LoadingSpinner,
     naturalSort,
     NO_UPDATES_MESSAGE,
@@ -29,7 +25,6 @@ import {
     QueryModel,
     resolveErrorMessage,
     SampleStateType,
-    SampleTypeDataType,
     SchemaQuery,
     SCHEMAS,
     User,
@@ -37,22 +32,14 @@ import {
 
 import { DisplayObject, EntityChoice, EntityParentType } from '../entities/models';
 
-import {
-    addEntityParentType,
-    changeEntityParentType,
-    EntityParentTypeSelectors,
-    removeEntityParentType,
-} from '../entities/EntityParentTypeSelectors';
-
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromSampleLineage } from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
-import { SAMPLE_STATE_COLUMN_NAME } from './constants';
-import { SampleStatusLegend } from './SampleStatusLegend';
 import { IEditableGridLoader } from '../../QueryGridModel';
+import { GridTab, SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;
@@ -85,16 +72,9 @@ const SAMPLES_LINEAGE_EDIT_GRID_ID = 'update-samples-lineage-grid';
 
 const INVENTORY_ITEM_QS = SchemaQuery.create('inventory', 'item');
 
-enum GridTab {
-    Samples,
-    Storage,
-    Lineage,
-}
-
 interface State {
     originalParents: Record<string, List<EntityChoice>>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
-    entityParentsMap: Map<string, List<EntityParentType>>;
     pendingUpdateDataRows: any[];
     showDiscardDialog: boolean;
     discardConsumed: boolean;
@@ -126,12 +106,6 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         this.state = {
             originalParents: undefined,
             parentTypeOptions: undefined,
-            entityParentsMap: fromJS(
-                props.parentDataTypes.reduce((map, dataType) => {
-                    map[dataType.typeListingSchemaQuery.queryName] = [];
-                    return map;
-                }, {})
-            ),
             pendingUpdateDataRows: undefined,
             showDiscardDialog: false,
             discardConsumed: true,
@@ -431,40 +405,6 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         return aliquots && aliquots.length > 0;
     };
 
-    getSamplesColumnMetadata = (tabInd: number): Map<string, EditableColumnMetadata> => {
-        if (this.getCurrentTab(tabInd) !== GridTab.Samples) return undefined;
-
-        const { aliquots, sampleTypeDomainFields, displayQueryModel } = this.props;
-        let columnMetadata = getUniqueIdColumnMetadata(displayQueryModel.queryInfo);
-        columnMetadata = columnMetadata.set(SAMPLE_STATE_COLUMN_NAME, {
-            hideTitleTooltip: true,
-            toolTip: <SampleStatusLegend />,
-            popoverClassName: 'label-help-arrow-left',
-        });
-
-        const allSamples = !aliquots || aliquots.length === 0;
-        if (allSamples) return columnMetadata.asImmutable();
-
-        const allAliquots = this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
-        sampleTypeDomainFields.aliquotFields.forEach(field => {
-            columnMetadata = columnMetadata.set(field, {
-                isReadOnlyCell: key => {
-                    return aliquots.indexOf(key) === -1;
-                },
-            });
-        });
-
-        sampleTypeDomainFields.metaFields.forEach(field => {
-            columnMetadata = columnMetadata.set(field, {
-                isReadOnlyCell: key => {
-                    return allAliquots || aliquots.indexOf(key) > -1;
-                },
-            });
-        });
-
-        return columnMetadata.asImmutable();
-    };
-
     getSamplesUpdateColumns = (tabInd: number): List<QueryColumn> => {
         if (this.getCurrentTab(tabInd) !== GridTab.Samples) return undefined;
 
@@ -490,111 +430,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         return allAliquots ? 'aliquot' : 'sample';
     };
 
-    getReadOnlyRows = (tabInd: number): List<string> => {
-        const { aliquots, noStorageSamples } = this.props;
-        const { includedTabs } = this.state;
-
-        if (includedTabs[tabInd] === GridTab.Storage) {
-            return List<string>(noStorageSamples);
-        } else if (includedTabs[tabInd] === GridTab.Lineage) {
-            return List<string>(aliquots);
-        } else {
-            return undefined;
-        }
-    };
-
-    getTabTitle = (tabInd: number): string => {
-        const { includedTabs } = this.state;
-
-        if (includedTabs[tabInd] === GridTab.Storage) return 'Storage Details';
-        if (includedTabs[tabInd] === GridTab.Lineage) return 'Lineage Details';
-        return 'Sample Data';
-    };
-
-    addParentType = (queryName: string): void => {
-        const { entityParentsMap } = this.state;
-        console.log("TODO addParentType");
-        // this.setState({ entityParentsMap: addEntityParentType(queryName, entityParentsMap) });
-    };
-
-    removeParentType = (index: number, queryName: string): void => {
-        const { entityParentsMap } = this.state;
-        console.log("TODO removeParentType");
-        // this.setState({
-        //     entityParentsMap: removeEntityParentType(
-        //         index,
-        //         queryName,
-        //         entityParentsMap,
-        //         this.getLineageEditorQueryGridModel()
-        //     ),
-        // });
-    };
-
-    changeParentType = (
-        index: number,
-        queryName: string,
-        fieldName: string,
-        formValue: any,
-        parent: IParentOption
-    ): void => {
-        const { entityParentsMap } = this.state;
-        const { combineParentTypes } = this.props;
-        console.log("TODO changeParentType");
-        // this.setState({
-        //     entityParentsMap: changeEntityParentType(
-        //         index,
-        //         queryName,
-        //         parent,
-        //         this.getLineageEditorQueryGridModel(),
-        //         entityParentsMap,
-        //         SampleTypeDataType,
-        //         combineParentTypes
-        //     ),
-        // });
-    };
-
     getCurrentTab = (tabInd: number): number => {
         const { includedTabs } = this.state;
         return tabInd === undefined ? includedTabs[0] : includedTabs[tabInd];
-    };
-
-    getTabHeader = (tabInd: number): ReactNode => {
-        const { parentDataTypes, combineParentTypes } = this.props;
-        const { parentTypeOptions, entityParentsMap } = this.state;
-
-        const currentTab = this.getCurrentTab(tabInd);
-
-        if (currentTab === GridTab.Lineage) {
-            return (
-                <>
-                    <div className="top-spacing">
-                        <EntityParentTypeSelectors
-                            parentDataTypes={parentDataTypes}
-                            parentOptionsMap={parentTypeOptions}
-                            entityParentsMap={entityParentsMap}
-                            combineParentTypes={combineParentTypes}
-                            onAdd={this.addParentType}
-                            onChange={this.changeParentType}
-                            onRemove={this.removeParentType}
-                        />
-                    </div>
-                    <div className="sample-status-warning">Lineage for aliquots cannot be changed.</div>
-                    <hr />
-                </>
-            );
-        } else if (currentTab === GridTab.Storage) {
-            return (
-                <div className="top-spacing sample-status-warning">
-                    Samples that are not currently in storage are not editable here.
-                </div>
-            );
-        } else {
-            return (
-                <div className="top-spacing sample-status-warning">
-                    Aliquot data inherited from the original sample cannot be updated here.
-                </div>
-            );
-        }
     };
 
     onConfirmConsumedSamplesDialog = (shouldDiscard: boolean, comment: string): any => {
@@ -631,8 +469,18 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             samplesGridOmittedColumns,
             sampleLineageKeys,
             sampleLineage,
+            parentDataTypes,
+            combineParentTypes,
+            noStorageSamples,
         } = this.props;
-        const { discardSamplesCount, totalEditCount, showDiscardDialog, originalParents } = this.state;
+        const {
+            discardSamplesCount,
+            totalEditCount,
+            showDiscardDialog,
+            originalParents,
+            includedTabs,
+            parentTypeOptions,
+        } = this.state;
         const allAliquots = this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
 
         if (determineLineage && !originalParents) return <LoadingSpinner />;
@@ -714,7 +562,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                         onCancel={this.onDismissConsumedSamplesDialog}
                     />
                 )}
-                <EditableGridPanelForUpdate
+                <SamplesEditableGridPanelForUpdate
                     queryModel={displayQueryModel}
                     loaders={loaders}
                     selectionData={selectionData}
@@ -725,11 +573,14 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     singularNoun={this.getSelectedSamplesNoun()}
                     pluralNoun={this.getSelectedSamplesNoun() + 's'}
                     readOnlyColumns={this.getReadOnlyColumns()}
-                    getReadOnlyRows={this.getReadOnlyRows}
-                    getTabTitle={this.getTabTitle}
-                    getColumnMetadata={this.getSamplesColumnMetadata}
                     getUpdateColumns={this.getSamplesUpdateColumns}
-                    getTabHeader={this.getTabHeader}
+                    includedTabs={includedTabs}
+                    parentDataTypes={parentDataTypes}
+                    combineParentTypes={combineParentTypes}
+                    aliquots={aliquots}
+                    noStorageSamples={noStorageSamples}
+                    sampleTypeDomainFields={sampleTypeDomainFields}
+                    parentTypeOptions={parentTypeOptions}
                 />
             </>
         );

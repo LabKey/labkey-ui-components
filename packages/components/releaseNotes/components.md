@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX May 2022
+### version 2.169.1
+*Released*: 10 May 2022
 * Item 10305: Compound Registry Type (SMILES)
   * New SMILES domain property type
 

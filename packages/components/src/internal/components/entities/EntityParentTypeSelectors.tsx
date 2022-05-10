@@ -177,7 +177,8 @@ export const changeEntityParentType = (
             index,
             queryName,
             entityDataType.uniqueFieldKey,
-            parent
+            parent,
+            dataModel.schemaName
         );
 
         // no updated model if nothing has changed, so we can just stop

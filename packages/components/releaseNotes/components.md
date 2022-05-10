@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.169.1
+*Released*: 10 May 2022
+* Item 10305: Compound Registry Type (SMILES)
+  * New SMILES domain property type
+
+### version 2.169.0
+*Released*: 10 May 2022
+* Initialize application user's `permissionsList` directly from page context via `getServerContext().container.effectivePermissions`.
+* Remove `getUserPermissions` and associated redux functionality.
+* Remove `requestPermissions` bit from application model.
+
 ### version 2.168.0
 *Released*: 9 May 2022
 * Add SubNavWithContext, SubNavContextProvider, useSubNavContext

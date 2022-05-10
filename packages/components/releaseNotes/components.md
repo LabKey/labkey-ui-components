@@ -6,7 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add support for names containing commas
   * Update QuerySelect initialization to escape values that contain delimiters
   * Update SingleParenEntityPanel to encode parent names containing delimiters
-  *
+  * Update parsing of values pasted into editable grid and processing of values to be saved from the editable grid
 
 ### version 2.168.0
 *Released*: 9 May 2022

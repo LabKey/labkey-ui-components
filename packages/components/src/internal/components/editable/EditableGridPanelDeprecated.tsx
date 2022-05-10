@@ -95,7 +95,7 @@ export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, 
     ): void => {
         const { onCellModify, onRowCountChange } = this.props;
         const editorModel = this.getEditorModel();
-        const newRowCount = Math.abs(editorModelChanges.rowCount - editorModel.rowCount);
+        const newRowCount = Math.abs(editorModelChanges?.rowCount - editorModel.rowCount);
 
         updateEditorModel(editorModel, editorModelChanges);
 
@@ -109,7 +109,7 @@ export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, 
             onRowCountChange?.();
         }
 
-        if (newRowCount > 0 || editorModelChanges.cellValues !== undefined) {
+        if (newRowCount > 0 || editorModelChanges?.cellValues !== undefined) {
             onCellModify?.();
         }
     };

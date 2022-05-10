@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Update SingleParenEntityPanel to encode parent names containing delimiters
   * Update parsing of values pasted into editable grid and processing of values to be saved from the editable grid
 
+### version 2.169.1
+*Released*: 10 May 2022
+* Item 10305: Compound Registry Type (SMILES)
+  * New SMILES domain property type
+
 ### version 2.169.0
 *Released*: 10 May 2022
 * Initialize application user's `permissionsList` directly from page context via `getServerContext().container.effectivePermissions`.

@@ -34,7 +34,7 @@ import {
 import { similaritySortFactory } from '../../util/similaritySortFactory';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
-import { encodeResultsForCsv, searchRows } from '../../query/api';
+import { quoteValueColumnWithDelimiters, searchRows } from '../../query/api';
 import { parseCsvString } from '../../util/utils';
 
 const emptyMap = Map<string, any>();
@@ -121,7 +121,7 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                             queryName,
                             filterArray: [filter],
                         }).then(data => {
-                            const selectedItems = fromJS(encodeResultsForCsv(data, props.valueColumn, props.delimiter).models[data.key]);
+                            const selectedItems = fromJS(quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]);
 
                             model = model.merge({
                                 rawSelectedValue: props.value,

@@ -567,7 +567,7 @@ export function handleSelectRowsResponse(json): any {
 }
 
 // exported for jest testing
-export function encodeResultsForCsv(selectRowsResult: ISelectRowsResult, valueColumn: string, delimiter: string): ISelectRowsResult {
+export function quoteValueColumnWithDelimiters(selectRowsResult: ISelectRowsResult, valueColumn: string, delimiter: string): ISelectRowsResult {
     const rowMap = selectRowsResult.models[selectRowsResult.key];
     Object.keys(rowMap).forEach(key => {
         if (rowMap[key][valueColumn]) {
@@ -651,7 +651,7 @@ export function searchRows(selectRowsConfig, token: any, valueColumn: string, de
                     finalResults = queryResults;
                 }
 
-                resolve(encodeResultsForCsv(finalResults, valueColumn, delimiter));
+                resolve(quoteValueColumnWithDelimiters(finalResults, valueColumn, delimiter));
             })
             .catch(reason => {
                 reject(reason);

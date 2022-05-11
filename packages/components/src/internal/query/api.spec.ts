@@ -1,7 +1,7 @@
-import { encodeResultsForCsv } from "./api";
+import { quoteValueColumnWithDelimiters } from "./api";
 import { List } from 'immutable';
 
-describe('encodeResultsForCsv', () => {
+describe('quoteValueColumnWithDelimiters', () => {
     const results = {
         key: 'test',
         models: {
@@ -17,7 +17,7 @@ describe('encodeResultsForCsv', () => {
         totalRows: 4,
     };
     test('encode', () => {
-        expect(encodeResultsForCsv(results, 'Name', ',')).toStrictEqual(
+        expect(quoteValueColumnWithDelimiters(results, 'Name', ',')).toStrictEqual(
         {
             key: 'test',
             models: {

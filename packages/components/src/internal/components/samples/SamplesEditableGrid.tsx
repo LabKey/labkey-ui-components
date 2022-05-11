@@ -611,7 +611,7 @@ export function getUpdatedLineageRows(
                     ? row[key].split(', ').sort(naturalSort).join(', ')
                     : row[key];
                 let originalVal = originalRows[rowId][key];
-                if (List.isList(originalVal)) {
+                if (List.isList(originalVal) || Array.isArray(originalVal)) {
                     originalVal = originalVal
                         ?.map(parentRow => parentRow.displayValue)
                         .sort(naturalSort)

@@ -39,6 +39,9 @@ import {
     parseCellKey,
     getExportParams,
     quoteEncodedValue,
+    changeColumnForQueryGridModel,
+    addColumnsForQueryGridModel,
+    removeColumnForQueryGridModel,
 } from './actions';
 import { CellMessage, ValueDescriptor } from './models';
 import { resetQueryGridState, updateQueryGridModel } from './global';
@@ -167,7 +170,7 @@ describe('changeColumn', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
         updateEditorModel(editor, editableGridWithData, false);
         const editorModel = getEditorModel(queryGridModel.getId());
-        changeColumn(queryGridModel, 'Nonesuch', queryColumn);
+        changeColumnForQueryGridModel(queryGridModel, 'Nonesuch', queryColumn);
         const updatedModel = getEditorModel(queryGridModel.getId());
         expect(updatedModel).toBe(editorModel);
     });
@@ -177,7 +180,7 @@ describe('changeColumn', () => {
         updateEditorModel(editor, editableGridWithData, false);
         const editorModel = getEditorModel(queryGridModel.getId());
         expect(editorModel.cellMessages.size).toBe(1);
-        changeColumn(queryGridModel, 'Description', queryColumn);
+        changeColumnForQueryGridModel(queryGridModel, 'Description', queryColumn);
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.cellMessages.size).toBe(0);
         expect(updatedEditor.cellValues.get('1-0')).toBeFalsy();
@@ -201,7 +204,7 @@ describe('addColumns', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
         updateEditorModel(editor, editableGridWithData, false);
         const editorModel = getEditorModel(queryGridModel.getId());
-        addColumns(queryGridModel, OrderedMap<string, QueryColumn>());
+        addColumnsForQueryGridModel(queryGridModel, OrderedMap<string, QueryColumn>());
         const updatedModel = getEditorModel(queryGridModel.getId());
         expect(updatedModel).toBe(editorModel);
     });
@@ -209,7 +212,7 @@ describe('addColumns', () => {
     test('add at beginning', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
         updateEditorModel(editor, editableGridWithData, false);
-        addColumns(queryGridModel, OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]));
+        addColumnsForQueryGridModel(queryGridModel, OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]));
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.cellMessages.size).toBe(1);
         expect(updatedEditor.cellMessages.has('2-0')).toBe(true);
@@ -219,8 +222,8 @@ describe('addColumns', () => {
         expect(updatedEditor.cellValues.get('1-1').get(0).display).toBe('S-2');
         expect(updatedEditor.cellValues.get('2-1').get(0).display).toBe('Description 2');
         const updatedGridModel = getQueryGridModel(queryGridModel.getId());
-        expect(updatedGridModel.getColumnIndex('Description')).toBe(queryGridModel.getColumnIndex('Description') + 1);
-        expect(updatedGridModel.getColumnIndex(queryColumn.fieldKey)).toBe(0);
+        expect(updatedGridModel.queryInfo.getColumnIndex('Description')).toBe(queryGridModel.queryInfo.getColumnIndex('Description') + 1);
+        expect(updatedGridModel.queryInfo.getColumnIndex(queryColumn.fieldKey)).toBe(0);
         expect(updatedGridModel.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
     });
 
@@ -228,7 +231,7 @@ describe('addColumns', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
         updateEditorModel(editor, editableGridWithData, false);
         const lastInsertColKey = queryGridModel.getInsertColumns().last().fieldKey;
-        addColumns(
+        addColumnsForQueryGridModel(
             queryGridModel,
             OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]),
             lastInsertColKey
@@ -241,18 +244,18 @@ describe('addColumns', () => {
         expect(updatedEditor.cellValues.get('0-1').get(0).display).toBe('S-2');
         expect(updatedEditor.cellValues.get('1-1').get(0).display).toBe('Description 2');
         const updatedGridModel = getQueryGridModel(queryGridModel.getId());
-        expect(updatedGridModel.getColumnIndex('description')).toBe(queryGridModel.getColumnIndex('description'));
-        expect(updatedGridModel.getColumnIndex(queryColumn.fieldKey)).toBe(
-            queryGridModel.getColumnIndex(lastInsertColKey) + 1
+        expect(updatedGridModel.queryInfo.getColumnIndex('description')).toBe(queryGridModel.queryInfo.getColumnIndex('description'));
+        expect(updatedGridModel.queryInfo.getColumnIndex(queryColumn.fieldKey)).toBe(
+            queryGridModel.queryInfo.getColumnIndex(lastInsertColKey) + 1
         );
         expect(updatedGridModel.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
     });
 
     test('add in the middle', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
-        const nameColIndex = queryGridModel.getColumnIndex('name');
+        const nameColIndex = queryGridModel.queryInfo.getColumnIndex('name');
         updateEditorModel(editor, editableGridWithData, false);
-        addColumns(queryGridModel, OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]), 'Name');
+        addColumnsForQueryGridModel(queryGridModel, OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]), 'Name');
         const updatedEditor = getEditorModel(queryGridModel.getId());
 
         expect(updatedEditor.cellMessages.size).toBe(1);
@@ -263,9 +266,9 @@ describe('addColumns', () => {
         expect(updatedEditor.cellValues.get('2-1').get(0).display).toBe('Description 2');
         const updatedGridModel = getQueryGridModel(queryGridModel.getId());
 
-        expect(updatedGridModel.getColumnIndex('name')).toBe(nameColIndex);
-        expect(updatedGridModel.getColumnIndex('description')).toBe(queryGridModel.getColumnIndex('description') + 1);
-        expect(updatedGridModel.getColumnIndex(queryColumn.fieldKey)).toBe(nameColIndex + 1);
+        expect(updatedGridModel.queryInfo.getColumnIndex('name')).toBe(nameColIndex);
+        expect(updatedGridModel.queryInfo.getColumnIndex('description')).toBe(queryGridModel.queryInfo.getColumnIndex('description') + 1);
+        expect(updatedGridModel.queryInfo.getColumnIndex(queryColumn.fieldKey)).toBe(nameColIndex + 1);
         expect(updatedGridModel.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
     });
 });
@@ -275,7 +278,7 @@ describe('removeColumn', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
         updateEditorModel(editor, editableGridWithData, false);
         const originalEditor = getEditorModel(queryGridModel.getId());
-        removeColumn(queryGridModel, 'Modified'); // not an insert column, so cannot be removed
+        removeColumnForQueryGridModel(queryGridModel, 'Modified'); // not an insert column, so cannot be removed
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor).toBe(originalEditor);
     });
@@ -284,7 +287,7 @@ describe('removeColumn', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
         updateEditorModel(editor, editableGridWithData, false);
         const firstInputColumn = queryGridModel.getInsertColumns().first();
-        removeColumn(queryGridModel, firstInputColumn.fieldKey);
+        removeColumnForQueryGridModel(queryGridModel, firstInputColumn.fieldKey);
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.cellMessages.size).toBe(1);
         expect(updatedEditor.cellValues.get('0-0').get(0).display).toBe('Description 1');
@@ -297,7 +300,7 @@ describe('removeColumn', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
         updateEditorModel(editor, editableGridWithData, false);
         const lastInputColumn = queryGridModel.getInsertColumns().last();
-        removeColumn(queryGridModel, lastInputColumn.fieldKey);
+        removeColumnForQueryGridModel(queryGridModel, lastInputColumn.fieldKey);
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.cellMessages.size).toBe(1);
         expect(updatedEditor.cellValues.get('0-0').get(0).display).toBe('S-1');
@@ -310,7 +313,7 @@ describe('removeColumn', () => {
     test('middle column', () => {
         updateQueryGridModel(queryGridModel, {}, undefined, false);
         updateEditorModel(editor, editableGridWithData, false);
-        removeColumn(queryGridModel, 'Description');
+        removeColumnForQueryGridModel(queryGridModel, 'Description');
         const updatedEditor = getEditorModel(queryGridModel.getId());
         expect(updatedEditor.cellMessages.size).toBe(0);
         expect(updatedEditor.cellValues.get('0-0').get(0).display).toBe('S-1');

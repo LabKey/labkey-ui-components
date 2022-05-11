@@ -388,13 +388,7 @@ export function getUpdatedDataFromGrid(
                 if (value === '') value = null;
 
                 // Lookup columns store a list but grid only holds a single value
-                let originalDisplayValue;
                 if (List.isList(originalValue) && !Array.isArray(value)) {
-                    // account for lineage values which are lists of parent value/displayValue maps
-                    originalDisplayValue = originalValue.map(o => {
-                        return Map.isMap(o) ? o.get('displayValue') : o.displayValue;
-                    }).join(', ');
-
                     originalValue = Map.isMap(originalValue.get(0))
                         ? originalValue.get(0).get('value')
                         : originalValue.get(0).value;
@@ -424,11 +418,7 @@ export function getUpdatedDataFromGrid(
                     ) {
                         row[key] = value;
                     }
-                } else if (
-                    !(originalValue == undefined && value == undefined) &&
-                    originalValue !== value &&
-                    originalDisplayValue !== value
-                ) {
+                } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {
                     // - only update if the value has changed
                     // - if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value we set the value to null in our update data

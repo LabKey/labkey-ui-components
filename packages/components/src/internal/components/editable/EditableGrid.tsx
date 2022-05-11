@@ -112,7 +112,9 @@ function inputCellFactory(
         if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
             const keyCols = queryInfo.getPkCols();
             if (keyCols.size == 1) {
-                const key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+                let key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+                if (Array.isArray(key)) key = key[0];
+                if (typeof key === 'object') key = key.value;
 
                 if (readonlyRows) isReadonlyRow = key && readonlyRows.contains(key);
                 if (columnMetadata?.isReadOnlyCell) isReadonlyCell = columnMetadata.isReadOnlyCell(key);

@@ -19,6 +19,7 @@ import {
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
+    SMILES_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
@@ -306,6 +307,13 @@ export const TEXT_CHOICE_TYPE = new PropDescType({
     conceptURI: TEXT_CHOICE_CONCEPT_URI,
 });
 
+export const SMILES_TYPE = new PropDescType({
+    name: 'smiles',
+    display: 'SMILES',
+    rangeURI: STRING_RANGE_URI,
+    conceptURI: SMILES_CONCEPT_URI,
+});
+
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
     MULTILINE_TYPE,
@@ -320,6 +328,7 @@ export const PROP_DESC_TYPES = List([
     PARTICIPANT_TYPE,
     LOOKUP_TYPE,
     SAMPLE_TYPE,
+    SMILES_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,

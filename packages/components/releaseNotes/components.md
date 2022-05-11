@@ -10,6 +10,11 @@ Item 10353: Convert EditableGridPanelForUpdate to QueryModel based EditableGridP
 - update EditableGridPanel.tsx for tabbed panel with multiple models
 - update SampleEditableGrid actions from EntityParentTypeSelector to work with QueryModel
 
+### version 2.169.1
+*Released*: 10 May 2022
+* Item 10305: Compound Registry Type (SMILES)
+  * New SMILES domain property type
+
 ### version 2.169.0
 *Released*: 10 May 2022
 * Initialize application user's `permissionsList` directly from page context via `getServerContext().container.effectivePermissions`.

@@ -50,6 +50,7 @@ import {
     SAMPLE_TYPE_CONCEPT_URI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
+    SMILES_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     STRING_CONVERT_URIS,
     STRING_RANGE_URI,
@@ -70,6 +71,7 @@ import {
     PropDescType,
     READONLY_DESC_TYPES,
     SAMPLE_TYPE,
+    SMILES_TYPE,
     STUDY_PROPERTY_TYPES,
     TEXT_TYPE,
     USERS_TYPE,
@@ -1426,6 +1428,8 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
 
     if (!isFieldNew(rawField) || rawField.rangeURI !== undefined) {
         if (rawField.conceptURI === SAMPLE_TYPE_CONCEPT_URI) return SAMPLE_TYPE;
+
+        if (rawField.conceptURI === SMILES_CONCEPT_URI) return SMILES_TYPE;
 
         if (rawField.dataType) {
             return rawField.dataType;

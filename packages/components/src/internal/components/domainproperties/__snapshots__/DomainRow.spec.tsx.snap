@@ -218,6 +218,16 @@ exports[`DomainRow Sample Field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#smiles",
+                      "display": "SMILES",
+                      "name": "smiles",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#conceptCode",
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
@@ -2493,6 +2503,16 @@ exports[`DomainRow client side warning on field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#smiles",
+                      "display": "SMILES",
+                      "name": "smiles",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#conceptCode",
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
@@ -3231,6 +3251,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 value="sample"
                                               >
                                                 Sample
+                                              </option>
+                                              <option
+                                                key="smiles"
+                                                value="smiles"
+                                              >
+                                                SMILES
                                               </option>
                                               <option
                                                 key="ParticipantId"
@@ -4714,6 +4740,16 @@ exports[`DomainRow date time field 1`] = `
                       "display": "Sample",
                       "name": "sample",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#smiles",
+                      "display": "SMILES",
+                      "name": "smiles",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -7086,6 +7122,16 @@ exports[`DomainRow decimal field 1`] = `
                       "display": "Sample",
                       "name": "sample",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#smiles",
+                      "display": "SMILES",
+                      "name": "smiles",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -9508,6 +9554,16 @@ exports[`DomainRow participant id field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#smiles",
+                      "display": "SMILES",
+                      "name": "smiles",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#conceptCode",
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
@@ -10192,6 +10248,12 @@ exports[`DomainRow participant id field 1`] = `
                                                 value="ontologyLookup"
                                               >
                                                 Ontology Lookup
+                                              </option>
+                                              <option
+                                                key="smiles"
+                                                value="smiles"
+                                              >
+                                                SMILES
                                               </option>
                                               <option
                                                 key="ParticipantId"
@@ -11669,6 +11731,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#smiles",
+                      "display": "SMILES",
+                      "name": "smiles",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#conceptCode",
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
@@ -12407,6 +12479,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 value="sample"
                                               >
                                                 Sample
+                                              </option>
+                                              <option
+                                                key="smiles"
+                                                value="smiles"
+                                              >
+                                                SMILES
                                               </option>
                                               <option
                                                 key="ParticipantId"
@@ -13784,6 +13862,16 @@ exports[`DomainRow string field test 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#smiles",
+                      "display": "SMILES",
+                      "name": "smiles",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#conceptCode",
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
@@ -14468,6 +14556,12 @@ exports[`DomainRow string field test 1`] = `
                                                 value="ontologyLookup"
                                               >
                                                 Ontology Lookup
+                                              </option>
+                                              <option
+                                                key="smiles"
+                                                value="smiles"
+                                              >
+                                                SMILES
                                               </option>
                                               <option
                                                 key="ParticipantId"
@@ -16265,6 +16359,16 @@ exports[`DomainRow with empty domain form 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#smiles",
+                      "display": "SMILES",
+                      "name": "smiles",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#conceptCode",
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
@@ -16990,6 +17094,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 value="sample"
                                               >
                                                 Sample
+                                              </option>
+                                              <option
+                                                key="smiles"
+                                                value="smiles"
+                                              >
+                                                SMILES
                                               </option>
                                               <option
                                                 key="ParticipantId"

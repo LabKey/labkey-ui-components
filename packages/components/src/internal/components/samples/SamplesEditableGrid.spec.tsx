@@ -131,16 +131,22 @@ describe('getLineageEditorUpdateColumns', () => {
     const MODEL = makeTestQueryModel(
         SchemaQuery.create('schema', 'query'),
         new QueryInfo({
-            columns: fromJS({ rowid: {}, name: {}, other: {} }),
+            columns: fromJS({
+                rowid: { fieldKey: 'rowid' },
+                name: { fieldKey: 'name' },
+                other: { fieldKey: 'other' }
+            }),
         })
     );
 
     test('no parent types', () => {
-        const cols = getLineageEditorUpdateColumns(MODEL, {}).queryInfoColumns;
-        expect(cols.size).toBe(2);
-        expect(cols.get('rowid')).toBeDefined();
-        expect(cols.get('name')).toBeDefined();
-        expect(cols.get('other')).toBeUndefined();
+        const cols = getLineageEditorUpdateColumns(MODEL, {});
+        expect(cols.queryInfoColumns.size).toBe(2);
+        expect(cols.queryInfoColumns.get('rowid')).toBeDefined();
+        expect(cols.queryInfoColumns.get('name')).toBeDefined();
+        expect(cols.queryInfoColumns.get('other')).toBeUndefined();
+        expect(cols.updateColumns.size).toBe(1);
+        expect(cols.updateColumns.get(0).get('fieldKey')).toBe('name');
     });
 
     test('with parent types', () => {
@@ -168,12 +174,16 @@ describe('getLineageEditorUpdateColumns', () => {
                 value: '',
             } as EntityChoice),
             s3: List.of(),
-        }).queryInfoColumns;
-        expect(cols.size).toBe(4);
-        expect(cols.get('rowid')).toBeDefined();
-        expect(cols.get('name')).toBeDefined();
-        expect(cols.get('other')).toBeUndefined();
-        expect(cols.get('MaterialInputs/Test1')).toBeDefined();
-        expect(cols.get('DataInputs/Test2')).toBeDefined();
+        });
+        expect(cols.queryInfoColumns.size).toBe(4);
+        expect(cols.queryInfoColumns.get('rowid')).toBeDefined();
+        expect(cols.queryInfoColumns.get('name')).toBeDefined();
+        expect(cols.queryInfoColumns.get('other')).toBeUndefined();
+        expect(cols.queryInfoColumns.get('MaterialInputs/Test1')).toBeDefined();
+        expect(cols.queryInfoColumns.get('DataInputs/Test2')).toBeDefined();
+        expect(cols.updateColumns.size).toBe(3);
+        expect(cols.updateColumns.get(0).get('fieldKey')).toBe('name');
+        expect(cols.updateColumns.get(1).get('fieldKey')).toBe('DataInputs/Test2');
+        expect(cols.updateColumns.get(2).get('fieldKey')).toBe('MaterialInputs/Test1');
     });
 });

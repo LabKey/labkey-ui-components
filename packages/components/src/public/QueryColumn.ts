@@ -249,7 +249,7 @@ export class QueryColumn extends Record({
         return (
             this.name &&
             this.name.toLowerCase().indexOf(QueryColumn.DATA_INPUTS.toLowerCase()) !== -1 &&
-            (!checkLookup && this.isLookup())
+            (!checkLookup || this.isLookup())
         );
     }
 

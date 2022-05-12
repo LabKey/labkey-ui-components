@@ -1,6 +1,5 @@
 import { List, fromJS } from 'immutable';
 
-import { QueryGridModel } from '../../QueryGridModel';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -41,7 +40,6 @@ DATA = DATA.setIn(
         }
     )
 );
-const ORIGINAL_MODEL = new QueryGridModel({ data: DATA });
 
 describe('getUpdatedLineageRows', () => {
     test('no changes', () => {
@@ -50,7 +48,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': 'A', 'MaterialInputs/Two': 'B, C' },
                 { RowId: 2, 'MaterialInputs/One': '', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             []
         );
         expect(updatedRows.length).toBe(0);
@@ -62,7 +60,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': 'A', 'MaterialInputs/Two': 'B, C, D' },
                 { RowId: 2, 'MaterialInputs/One': '', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             []
         );
         expect(updatedRows.length).toBe(1);
@@ -77,7 +75,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': 'D', 'MaterialInputs/Two': 'B, C' },
                 { RowId: 2, 'MaterialInputs/One': '', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             []
         );
         expect(updatedRows.length).toBe(1);
@@ -92,7 +90,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': '', 'MaterialInputs/Two': 'B, C' },
                 { RowId: 2, 'MaterialInputs/One': '', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             []
         );
         expect(updatedRows.length).toBe(1);
@@ -107,7 +105,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': 'A', 'MaterialInputs/Two': 'B, C' },
                 { RowId: 2, 'MaterialInputs/One': 'A, B', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             []
         );
         expect(updatedRows.length).toBe(1);
@@ -122,7 +120,7 @@ describe('getUpdatedLineageRows', () => {
                 { RowId: 1, 'MaterialInputs/One': 'A, B', 'MaterialInputs/Two': 'B, C' },
                 { RowId: 2, 'MaterialInputs/One': 'A, B', 'MaterialInputs/Two': '' },
             ],
-            ORIGINAL_MODEL,
+            DATA.toJS(),
             [1, 2]
         );
         expect(updatedRows.length).toBe(0);
@@ -133,16 +131,22 @@ describe('getLineageEditorUpdateColumns', () => {
     const MODEL = makeTestQueryModel(
         SchemaQuery.create('schema', 'query'),
         new QueryInfo({
-            columns: fromJS({ rowid: {}, name: {}, other: {} }),
+            columns: fromJS({
+                rowid: { fieldKey: 'rowid' },
+                name: { fieldKey: 'name' },
+                other: { fieldKey: 'other' },
+            }),
         })
     );
 
     test('no parent types', () => {
         const cols = getLineageEditorUpdateColumns(MODEL, {});
-        expect(cols.size).toBe(2);
-        expect(cols.get('rowid')).toBeDefined();
-        expect(cols.get('name')).toBeDefined();
-        expect(cols.get('other')).toBeUndefined();
+        expect(cols.queryInfoColumns.size).toBe(2);
+        expect(cols.queryInfoColumns.get('rowid')).toBeDefined();
+        expect(cols.queryInfoColumns.get('name')).toBeDefined();
+        expect(cols.queryInfoColumns.get('other')).toBeUndefined();
+        expect(cols.updateColumns.size).toBe(1);
+        expect(cols.updateColumns.get(0).get('fieldKey')).toBe('name');
     });
 
     test('with parent types', () => {
@@ -171,11 +175,15 @@ describe('getLineageEditorUpdateColumns', () => {
             } as EntityChoice),
             s3: List.of(),
         });
-        expect(cols.size).toBe(4);
-        expect(cols.get('rowid')).toBeDefined();
-        expect(cols.get('name')).toBeDefined();
-        expect(cols.get('other')).toBeUndefined();
-        expect(cols.get('MaterialInputs/Test1')).toBeDefined();
-        expect(cols.get('DataInputs/Test2')).toBeDefined();
+        expect(cols.queryInfoColumns.size).toBe(4);
+        expect(cols.queryInfoColumns.get('rowid')).toBeDefined();
+        expect(cols.queryInfoColumns.get('name')).toBeDefined();
+        expect(cols.queryInfoColumns.get('other')).toBeUndefined();
+        expect(cols.queryInfoColumns.get('MaterialInputs/Test1')).toBeDefined();
+        expect(cols.queryInfoColumns.get('DataInputs/Test2')).toBeDefined();
+        expect(cols.updateColumns.size).toBe(3);
+        expect(cols.updateColumns.get(0).get('fieldKey')).toBe('name');
+        expect(cols.updateColumns.get(1).get('fieldKey')).toBe('DataInputs/Test2');
+        expect(cols.updateColumns.get(2).get('fieldKey')).toBe('MaterialInputs/Test1');
     });
 });

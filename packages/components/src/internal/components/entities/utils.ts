@@ -1,6 +1,14 @@
 import { List, Map, Set } from 'immutable';
 
-import { caseInsensitive, EditableColumnMetadata, naturalSort, QueryInfo, SchemaQuery, SCHEMAS } from '../../..';
+import {
+    caseInsensitive,
+    EditableColumnMetadata,
+    naturalSort,
+    parseCsvString,
+    QueryInfo,
+    SchemaQuery,
+    SCHEMAS
+} from '../../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
 import { getCurrentProductName } from '../../app/utils';
@@ -22,8 +30,8 @@ export function parentValuesDiffer(
         if (current.type && original.type.rowId !== current.type.rowId) {
             return true;
         }
-        const originalValues = original.value ? original.value.split(DELIMITER).sort(naturalSort).join(DELIMITER) : '';
-        const currentValues = current.value ? current.value.split(DELIMITER).sort(naturalSort).join(DELIMITER) : '';
+        const originalValues = original.value ? parseCsvString(original.value, DELIMITER).sort(naturalSort).join(DELIMITER) : '';
+        const currentValues = current.value ? parseCsvString(current.value, DELIMITER).sort(naturalSort).join(DELIMITER) : '';
         if (originalValues !== currentValues) {
             return true;
         }
@@ -186,7 +194,7 @@ export function getUpdatedLineageRowsForBulkEdit(
                         .sort(naturalSort)
                         .join(',');
                 }
-                const selValue = selected.value ? selected.value.split(',').sort(naturalSort).join(',') : null;
+                const selValue = selected.value ? parseCsvString(selected.value,',', false).sort(naturalSort).join(',') : null;
                 if (originalValue !== selValue) {
                     updatedValues[selected.type.entityDataType.insertColumnNamePrefix + selected.type.label] = selValue;
                     haveUpdate = true;

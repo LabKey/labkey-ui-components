@@ -13,42 +13,59 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
 import { List, Map } from 'immutable';
 
 import { getSelectedData } from '../../actions';
 import { EditorModel } from '../../models';
-import { IGridLoader, IGridResponse, QueryGridModel } from '../../..';
+import { IGridResponse, QueryColumn, QueryInfo, QueryModel } from '../../..';
+import { IEditableGridLoader } from '../../QueryGridModel';
 
-export class EditableGridLoaderFromSelection implements IGridLoader {
-    updateData: any;
-    dataForSelection: Map<string, any>;
-    dataIdsForSelection: List<any>;
-    model: QueryGridModel;
+export class EditableGridLoaderFromSelection implements IEditableGridLoader {
+    id: string;
     idsNotToUpdate: number[];
     fieldsNotToUpdate: string[];
+    model: QueryModel;
+    omittedColumns: string[];
+    queryInfo: QueryInfo;
+    requiredColumns: string[];
+    updateColumns: List<QueryColumn>;
+    updateData: any;
 
     constructor(
+        id: string,
+        queryInfo: QueryInfo,
         updateData,
-        dataForSelection: Map<string, any>,
-        dataIdsForSelection: List<any>,
+        requiredColumns?: string[],
+        omittedColumns?: string[],
+        updateColumns?: List<QueryColumn>,
         idsNotToUpdate?: any[],
         fieldsNotToUpdate?: string[]
     ) {
+        this.id = id;
+        this.queryInfo = queryInfo;
         this.updateData = updateData || {};
-        this.dataForSelection = dataForSelection;
-        this.dataIdsForSelection = dataIdsForSelection;
+        this.requiredColumns = requiredColumns || [];
+        this.omittedColumns = omittedColumns || [];
+        this.updateColumns = updateColumns;
         this.idsNotToUpdate = idsNotToUpdate || [];
         this.fieldsNotToUpdate = fieldsNotToUpdate || [];
     }
 
-    selectAndFetch(gridModel: QueryGridModel): Promise<IGridResponse> {
+    selectAndFetch(gridModel: QueryModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
-            const { schema, query, queryParameters } = gridModel;
-            const columnString = gridModel.getRequestColumnsString();
-            const sorts = gridModel.getSorts();
-            const selectedIds = this.dataIdsForSelection.toArray();
-            return getSelectedData(schema, query, selectedIds, columnString, sorts, queryParameters)
+            const { queryParameters, schemaQuery } = gridModel;
+            const columnString = gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns);
+            const sorts = gridModel.sortString;
+            const selectedIds = [...gridModel.selections];
+
+            return getSelectedData(
+                schemaQuery.schemaName,
+                schemaQuery.queryName,
+                selectedIds,
+                columnString,
+                sorts,
+                queryParameters
+            )
                 .then(response => {
                     const { data, dataIds, totalRows } = response;
                     resolve({
@@ -71,28 +88,7 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
         });
     }
 
-    fetchFromData(): Promise<IGridResponse> {
-        return new Promise(resolve => {
-            const data = EditorModel.convertQueryDataToEditorData(
-                this.dataForSelection,
-                Map<any, any>(this.updateData),
-                this.idsNotToUpdate,
-                this.fieldsNotToUpdate
-            );
-
-            resolve({
-                data,
-                dataIds: this.dataIdsForSelection,
-                totalRows: data.size,
-            });
-        });
-    }
-
-    fetch(gridModel: QueryGridModel): Promise<IGridResponse> {
-        if (this.dataForSelection) {
-            return this.fetchFromData();
-        } else {
-            return this.selectAndFetch(gridModel);
-        }
+    fetch(gridModel: QueryModel): Promise<IGridResponse> {
+        return this.selectAndFetch(gridModel);
     }
 }

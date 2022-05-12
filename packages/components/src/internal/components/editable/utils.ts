@@ -2,12 +2,16 @@ import { fromJS, List, Map, Set } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryColumn } from '../../../public/QueryColumn';
 import { EditorModel, ValueDescriptor } from '../../models';
 import { genCellKey, getLookupValueDescriptors } from '../../actions';
 
-export const loadEditorModelData = async (queryModelData: Partial<QueryModel>): Promise<Partial<EditorModel>> => {
+export const loadEditorModelData = async (
+    queryModelData: Partial<QueryModel>,
+    editorColumns?: List<QueryColumn>
+): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
-    const columns = queryInfo.getInsertColumns();
+    const columns = editorColumns ?? queryInfo.getInsertColumns();
     const lookupValueDescriptors = await getLookupValueDescriptors(
         columns.toArray(),
         fromJS(rows),

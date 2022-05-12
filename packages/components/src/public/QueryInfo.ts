@@ -242,6 +242,13 @@ export class QueryInfo extends Record({
         return this.columns.filter(col => insertColumnFilter(col, false)).toList();
     }
 
+    getInsertColumnIndex(fieldKey: string): number {
+        if (!fieldKey) return -1;
+
+        const lcFieldKey = fieldKey.toLowerCase();
+        return this.getInsertColumns().findIndex(column => column.fieldKey.toLowerCase() === lcFieldKey);
+    }
+
     getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
         const lowerReadOnlyColumnsList = readOnlyColumns?.reduce((lowerReadOnlyColumnsList, value) => {
             return lowerReadOnlyColumnsList.push(value.toLowerCase());
@@ -386,6 +393,13 @@ export class QueryInfo extends Record({
         }
 
         return [];
+    }
+
+    getColumnIndex(fieldKey: string): number {
+        if (!fieldKey) return -1;
+
+        const lcFieldKey = fieldKey.toLowerCase();
+        return this.columns.keySeq().findIndex(column => column.toLowerCase() === lcFieldKey);
     }
 
     getShowImportDataButton(): boolean {

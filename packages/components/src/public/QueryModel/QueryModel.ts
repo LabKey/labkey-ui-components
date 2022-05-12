@@ -418,6 +418,10 @@ export class QueryModel {
         return this.queryInfo?.getPkCols().toArray();
     }
 
+    get uniqueIdColumns(): QueryColumn[] {
+        return this.allColumns.filter(column => column.isUniqueIdColumn);
+    }
+
     /**
      * @hidden
      *
@@ -480,7 +484,7 @@ export class QueryModel {
      * omittedColumns will be removed from this list.
      */
     get columnString(): string {
-        const { queryInfo, requiredColumns, omittedColumns } = this;
+        const { queryInfo } = this;
 
         if (!queryInfo) {
             // Throw an error because this method is only used when making an API request, and if we don't have a
@@ -488,14 +492,22 @@ export class QueryModel {
             throw new Error('Cannot construct column string, no QueryInfo available');
         }
 
+        return this.getRequestColumnsString();
+    }
+
+    getRequestColumnsString(requiredColumns?: string[], omittedColumns?: string[]): string {
+        const _requiredColumns = requiredColumns ?? this.requiredColumns;
+        const _omittedColumns = omittedColumns ?? this.omittedColumns;
+
         // Note: ES6 Set is being used here, not Immutable Set
-        const uniqueFieldKeys = new Set(requiredColumns);
+        const uniqueFieldKeys = new Set(_requiredColumns);
         this.keyColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
         this.displayColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
+        this.uniqueIdColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
         let fieldKeys = Array.from(uniqueFieldKeys);
 
-        if (omittedColumns.length) {
-            const lowerOmit = new Set(omittedColumns.map(c => c.toLowerCase()));
+        if (_omittedColumns.length) {
+            const lowerOmit = new Set(_omittedColumns.map(c => c.toLowerCase()));
             fieldKeys = fieldKeys.filter(fieldKey => !lowerOmit.has(fieldKey.toLowerCase()));
         }
 
@@ -677,7 +689,7 @@ export class QueryModel {
     }
 
     /**
-     * Get the total page count for the results rows in this QueryModel based on the total row count and the
+     * Get the total page count for the results rows in this QueryModel-based on the total row count and the
      * max rows per page value.
      */
     get pageCount(): number {

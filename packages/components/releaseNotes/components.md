@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.170.0
+*Released*: 12 May 2022
 * Add support for names containing commas
   * Update QuerySelect initialization to escape values that contain delimiters
   * Update SingleParenEntityPanel to encode parent names containing delimiters

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD May 2022
+### version 2.171.0
+*Released*: 12 May 2022
 Item 10353: Convert EditableGridPanelForUpdate to QueryModel based EditableGridPanel
 - remove unused EditableGridLoader
 - update EditableGridPanelForUpdate to initialize the dataModel and editorModel

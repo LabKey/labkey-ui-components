@@ -508,7 +508,6 @@ export function getExportParams(
             if (advancedOptions && advancedOptions['excludeColumn']) {
                 const toExclude = advancedOptions['excludeColumn'];
                 const columns = [];
-                // FIXME comma-split case to consider
                 columnsString.split(',').forEach(col => {
                     if (toExclude.indexOf(col) == -1 && toExclude.indexOf(col.toLowerCase()) == -1) {
                         columns.push(col);

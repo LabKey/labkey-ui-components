@@ -1502,6 +1502,7 @@ describe('quoteValueWithDelimiters', () => {
     test('with delimiter', () => {
         expect(quoteValueWithDelimiters('abc,d', ',')).toBe('"abc,d"');
         expect(quoteValueWithDelimiters('ab "cd,e"', ',')).toBe('"ab ""cd,e"""');
+        expect(quoteValueWithDelimiters('ab, "cd,e"', ',')).toBe('"ab, ""cd,e"""');
     });
 
     test("round trip", () => {

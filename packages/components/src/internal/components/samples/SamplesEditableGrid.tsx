@@ -32,6 +32,7 @@ import {
     QueryGridModel,
     QueryInfo,
     QueryModel,
+    quoteValueWithDelimiters,
     resolveErrorMessage,
     SampleStateType,
     SampleTypeDataType,
@@ -854,9 +855,11 @@ export function getUpdatedLineageRows(
                 let originalVal = originalModel.data.get('' + rowId).get(key);
                 if (List.isList(originalVal)) {
                     originalVal = originalVal
-                        ?.map(parentRow => parentRow.displayValue)
+                        ?.map(parentRow => quoteValueWithDelimiters(parentRow.displayValue, ','))
                         .sort(naturalSort)
                         .join(', ');
+                } else {
+                    originalVal = quoteValueWithDelimiters(originalVal, ',');
                 }
 
                 if (originalVal !== updatedVal) {

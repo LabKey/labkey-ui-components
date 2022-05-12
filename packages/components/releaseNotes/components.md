@@ -10,6 +10,13 @@ Item 10353: Convert EditableGridPanelForUpdate to QueryModel based EditableGridP
 - update EditableGridPanel.tsx for tabbed panel with multiple models
 - update SampleEditableGrid actions from EntityParentTypeSelector to work with QueryModel
 
+### version 2.170.0
+*Released*: 12 May 2022
+* Add support for names containing commas
+  * Update QuerySelect initialization to escape values that contain delimiters
+  * Update SingleParenEntityPanel to encode parent names containing delimiters
+  * Update parsing of values pasted into editable grid and processing of values to be saved from the editable grid
+
 ### version 2.169.1
 *Released*: 10 May 2022
 * Item 10305: Compound Registry Type (SMILES)

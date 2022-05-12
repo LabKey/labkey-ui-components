@@ -68,7 +68,7 @@ import {
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { getSortFromUrl } from './url/ActionURL';
 
-import { intersect } from './util/utils';
+import { intersect, parseCsvString } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 import { hasModule } from './app/utils';
 
@@ -509,7 +509,6 @@ export function getExportParams(
             if (advancedOptions && advancedOptions['excludeColumn']) {
                 const toExclude = advancedOptions['excludeColumn'];
                 const columns = [];
-                // FIXME comma-split case to consider
                 columnsString.split(',').forEach(col => {
                     if (toExclude.indexOf(col) == -1 && toExclude.indexOf(col.toLowerCase()) == -1) {
                         columns.push(col);
@@ -2091,7 +2090,9 @@ function getPasteValuesByColumn(paste: IPasteModel): List<List<string>> {
     }
     data.forEach(row => {
         row.forEach((value, index) => {
-            value.split(',').forEach(v => {
+            // if values contain commas, users will need to paste the values enclosed in quotes
+            // but we don't want to retain these quotes for purposes of selecting values in the grid
+            parseCsvString(value, ',', true).forEach(v => {
                 if (v.trim().length > 0) valuesByColumn.get(index).push(v.trim());
             });
         });
@@ -2295,8 +2296,9 @@ function parsePasteCellLookup(column: QueryColumn, descriptors: ValueDescriptor[
     let message: CellMessage;
     const unmatched: string[] = [];
 
-    const values = value
-        .split(',')
+    // parse pasted strings to split properly around quoted values.
+    // Remove the quotes for storing the actual values in the grid.
+    const values = parseCsvString(value, ',', true)
         .map(v => {
             const vt = v.trim();
             if (vt.length > 0) {

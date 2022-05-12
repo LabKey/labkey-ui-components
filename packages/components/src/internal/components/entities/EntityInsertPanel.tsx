@@ -1204,7 +1204,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         inferred.fields.forEach(field => {
             const lcName = field.name.toLowerCase();
 
-            if (!field.isExpInput() && allowedFields.indexOf(lcName) < 0) {
+            if (!field.isExpInput(false) && allowedFields.indexOf(lcName) < 0) {
                 const aliasField = domainDesign.fields.find(
                     domainField => domainField.importAliases?.toLowerCase().indexOf(lcName) >= 0
                 );

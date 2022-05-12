@@ -575,7 +575,7 @@ export function quoteValueColumnWithDelimiters(selectRowsResult: ISelectRowsResu
                 {
                     [valueColumn]: {
                         value: quoteValueWithDelimiters(rowMap[key][valueColumn].value, delimiter),
-                        displayValue: rowMap[key][valueColumn].value,
+                        displayValue: rowMap[key][valueColumn].displayValue ?? rowMap[key][valueColumn].value,
                         url: rowMap[key][valueColumn].url
                     }
                 }

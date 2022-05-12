@@ -9,12 +9,13 @@ describe('quoteValueColumnWithDelimiters', () => {
                 1: { Name: { value: 'one', url: "http://one/test"}},
                 2: { Name: { value: 'with, comma', url: "http://with, comma/test"}},
                 4: { Name: { value: 'with "quotes", and comma'}},
-                3: { NoName: { value: 'nonesuch', url: "http://with, comma/test"}}
+                3: { NoName: { value: 'nonesuch', url: "http://with, comma/test"}},
+                5: { Name: { value: ', comma first', displayValue: ',', url: "http://with, comma/test"}}
             }
         },
-        orderedModels: List([1, 2, 3, 4]),
+        orderedModels: List([1, 2, 3, 4, 5]),
         queries: {},
-        totalRows: 4,
+        totalRows: 5,
     };
     test('encode', () => {
         expect(quoteValueColumnWithDelimiters(results, 'Name', ',')).toStrictEqual(
@@ -25,20 +26,13 @@ describe('quoteValueColumnWithDelimiters', () => {
                     1: { Name: { value: 'one', url: "http://one/test", displayValue: 'one'}},
                     2: { Name: { value: '"with, comma"', url: 'http://with, comma/test', displayValue: 'with, comma'}},
                     4: { Name: { value: '"with ""quotes"", and comma"', url: undefined, displayValue:  'with "quotes", and comma'}},
-                    3: { NoName: { value: 'nonesuch', url: "http://with, comma/test" }}
+                    3: { NoName: { value: 'nonesuch', url: "http://with, comma/test" }},
+                    5: { Name: { value: '", comma first"', displayValue: ',', url: "http://with, comma/test"}}
                 }
             },
-            orderedModels: List([1, 2, 3, 4]),
+            orderedModels: List([1, 2, 3, 4, 5]),
                 queries: {},
-            totalRows: 4,
+            totalRows: 5,
         });
-    });
-
-    test('with delimiter', () => {
-
-    });
-
-    test('missing field', () => {
-
     });
 });

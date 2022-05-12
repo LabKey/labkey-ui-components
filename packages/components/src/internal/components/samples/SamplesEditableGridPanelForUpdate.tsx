@@ -232,7 +232,7 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props, St
         const { entityParentsMap, editorModels } = this.state;
         this.setState({
             editorModels: [...editorModels], // copy models to force re-render
-            entityParentsMap: addEntityParentType(queryName, entityParentsMap)
+            entityParentsMap: addEntityParentType(queryName, entityParentsMap),
         });
     };
 
@@ -351,8 +351,7 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props, St
     };
 
     render() {
-        const { onCancel, singularNoun, pluralNoun, ...editableGridProps } =
-            this.props;
+        const { onCancel, singularNoun, pluralNoun, ...editableGridProps } = this.props;
         const { isSubmitting, dataModels, editorModels } = this.state;
         const firstModel = dataModels[0];
 

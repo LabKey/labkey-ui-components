@@ -1800,7 +1800,6 @@ export function changeColumn(
     };
 }
 
-
 export function removeColumnForQueryGridModel(model: QueryGridModel, fieldKey: string): EditorModel {
     const originalEditorModel = getEditorModel(model.getId());
     const { editorModelChanges, data, queryInfo } = removeColumn(

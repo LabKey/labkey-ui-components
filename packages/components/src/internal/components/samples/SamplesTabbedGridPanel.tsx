@@ -101,7 +101,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const onEditSelectionInGrid = useCallback(
         (
             editableGridUpdateData: OrderedMap<string, any>,
-            editableGridDataForSelection: Map<string, any>,
+            editableGridDataForSelection: Map<string, any>
         ): Promise<Map<string, any>> => {
             setEditableGridUpdateData(editableGridUpdateData);
             return Promise.resolve(editableGridDataForSelection);

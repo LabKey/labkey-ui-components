@@ -123,8 +123,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     };
 
     render() {
-        const { onCancel, singularNoun, pluralNoun, ...editableGridProps } =
-            this.props;
+        const { onCancel, singularNoun, pluralNoun, ...editableGridProps } = this.props;
         const { isSubmitting, dataModels, editorModels } = this.state;
         const firstModel = dataModels[0];
         const columnMetadata = getUniqueIdColumnMetadata(firstModel.queryInfo);

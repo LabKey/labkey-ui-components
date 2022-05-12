@@ -147,7 +147,11 @@ export const changeEntityParentTypeDeprecated = (
                         fieldKey = prevParent ? prevParent.createColumnName() : entityDataType.uniqueFieldKey;
                     }
                 }
-                addColumnsForQueryGridModel(queryGridModel, columnMap.set(column.fieldKey.toLowerCase(), column), fieldKey);
+                addColumnsForQueryGridModel(
+                    queryGridModel,
+                    columnMap.set(column.fieldKey.toLowerCase(), column),
+                    fieldKey
+                );
             }
         } else {
             removeColumnForQueryGridModel(queryGridModel, parentColumnName);

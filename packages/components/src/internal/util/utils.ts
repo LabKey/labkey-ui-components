@@ -717,52 +717,49 @@ export const handleFileInputChange = (
     };
 };
 
+export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean): string[] {
+    if (delimiter === '"') throw 'Unsupported delimiter: ' + delimiter;
 
-export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean) : string[]
-{
-    if (delimiter === '"')
-        throw "Unsupported delimiter: " + delimiter;
+    if (!delimiter) return undefined;
 
-    if (!delimiter)
-        return undefined;
-
-    if (value == null)
-        return undefined;
+    if (value == null) return undefined;
 
     let start = 0;
-    let parsedValues = [];
+    const parsedValues = [];
     while (start < value.length) {
         let end;
-        let ch = value[start];
-        if (ch === delimiter) { // empty string case
+        const ch = value[start];
+        if (ch === delimiter) {
+            // empty string case
             end = start;
-            parsedValues.push("");
-        } else if (ch === '"') { // starting a quoted value
+            parsedValues.push('');
+        } else if (ch === '"') {
+            // starting a quoted value
             end = start;
-            while (true) { // find the end of the quoted value
-                end = value.indexOf('"', end+1);
-                if (end === -1) { // no ending quote
+            while (true) {
+                // find the end of the quoted value
+                end = value.indexOf('"', end + 1);
+                if (end === -1) {
+                    // no ending quote
                     end = value.length;
                     break;
                 }
-                if (end === value.length -1 || value[end + 1] !== '"') { // end quote at end of string or without double quote
+                if (end === value.length - 1 || value[end + 1] !== '"') {
+                    // end quote at end of string or without double quote
                     break;
                 }
                 end++; // skip double ""
             }
-            let parsedValue = removeQuotes ?  value.substring(start+1, end) : value.substring(start, end+1) ; // start is at the quote
+            let parsedValue = removeQuotes ? value.substring(start + 1, end) : value.substring(start, end + 1); // start is at the quote
             if (removeQuotes && parsedValue.indexOf('""') !== -1) {
                 parsedValue = parsedValue.replace(/""/g, '"');
             }
             parsedValues.push(parsedValue);
             end++; // get past the last "
-        }
-        else {
+        } else {
             end = value.indexOf(delimiter, start);
-            if (end === -1)
-                end = value.length;
-            parsedValues.push(value.substring(start, end))
-
+            if (end === -1) end = value.length;
+            parsedValues.push(value.substring(start, end));
         }
         start = end + delimiter.length;
     }
@@ -774,10 +771,9 @@ export function quoteValueWithDelimiters(value: any, delimiter: string) {
         return value;
     }
     if (!delimiter) {
-        throw "Delimiter is required.";
+        throw 'Delimiter is required.';
     }
-    if (value.indexOf(delimiter) === -1)
-        return value; // nothing to do for a string that doesn't contain the delimiter
+    if (value.indexOf(delimiter) === -1) return value; // nothing to do for a string that doesn't contain the delimiter
     if (value.indexOf('"') !== -1) {
         value = value.replace(/"/g, '""');
     }

@@ -134,7 +134,7 @@ describe('getLineageEditorUpdateColumns', () => {
             columns: fromJS({
                 rowid: { fieldKey: 'rowid' },
                 name: { fieldKey: 'name' },
-                other: { fieldKey: 'other' }
+                other: { fieldKey: 'other' },
             }),
         })
     );

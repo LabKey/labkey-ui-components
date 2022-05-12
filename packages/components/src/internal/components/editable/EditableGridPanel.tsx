@@ -51,11 +51,9 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     const activeEditorModel = editorModels[activeTab];
     const hasTabs = models.length > 1;
 
-    const _onChange = useCallback((
-        editorModelChanges: Partial<EditorModelProps>,
-        dataKeys?: List<any>,
-        data?: Map<any, Map<string, any>>
-    ) => onChange(editorModelChanges, dataKeys, data, activeTab),
+    const _onChange = useCallback(
+        (editorModelChanges: Partial<EditorModelProps>, dataKeys?: List<any>, data?: Map<any, Map<string, any>>) =>
+            onChange(editorModelChanges, dataKeys, data, activeTab),
         [activeTab, onChange]
     );
 
@@ -66,7 +64,9 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     const { orderedRows, queryInfo, rows } = activeModel;
     const data = useMemo(() => fromJS(rows), [rows]);
     const dataKeys = useMemo(() => fromJS(orderedRows), [orderedRows]);
-    const error = activeModel.hasLoadErrors ? activeModel.loadErrors[0] ?? 'Something went wrong loading the data.' : undefined;
+    const error = activeModel.hasLoadErrors
+        ? activeModel.loadErrors[0] ?? 'Something went wrong loading the data.'
+        : undefined;
 
     let activeColumnMetadata = columnMetadata;
     if (!activeColumnMetadata && getColumnMetadata) activeColumnMetadata = getColumnMetadata(activeTab);

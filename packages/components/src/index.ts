@@ -193,7 +193,6 @@ import {
     InsertRowsResponse,
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
-
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';

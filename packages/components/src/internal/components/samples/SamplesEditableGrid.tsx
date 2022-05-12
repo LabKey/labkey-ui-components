@@ -536,7 +536,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         }
 
         if (determineLineage) {
-            const { queryInfoColumns, updateColumns } = getLineageEditorUpdateColumns(displayQueryModel, originalParents);
+            const { queryInfoColumns, updateColumns } = getLineageEditorUpdateColumns(
+                displayQueryModel,
+                originalParents
+            );
             const lineageQueryInfo = displayQueryModel.queryInfo.merge({ columns: queryInfoColumns }) as QueryInfo;
 
             loaders.push(
@@ -637,7 +640,7 @@ export function getUpdatedLineageRows(
 export function getLineageEditorUpdateColumns(
     displayQueryModel: QueryModel,
     originalParents: Record<string, List<EntityChoice>>
-): { queryInfoColumns: OrderedMap<string, QueryColumn>, updateColumns: List<QueryColumn> } {
+): { queryInfoColumns: OrderedMap<string, QueryColumn>; updateColumns: List<QueryColumn> } {
     // model columns should include RowId, Name, and one column for each distinct existing parent (source and/or
     // sample type) of the selected samples.
     let queryInfoColumns = OrderedMap<string, QueryColumn>();

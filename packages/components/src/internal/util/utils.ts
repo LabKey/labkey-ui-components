@@ -378,11 +378,21 @@ export function getUpdatedDataFromGrid(
         const originalRow = originalGridData.get(id.toString());
         if (originalRow) {
             const row = editedRow.reduce((row, value, key) => {
+                // We can skip the idField for the diff check, that will be added to the updated rows later
+                if (key === idField) return row;
+
                 let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
                 const col = queryInfo.getColumn(key);
                 const isDate = col?.jsonType === 'date';
                 // Convert empty cell to null
                 if (value === '') value = null;
+
+                // Lookup columns store a list but grid only holds a single value
+                if (List.isList(originalValue) && !Array.isArray(value)) {
+                    originalValue = Map.isMap(originalValue.get(0))
+                        ? originalValue.get(0).get('value')
+                        : originalValue.get(0).value;
+                }
 
                 // EditableGrid passes in strings for single values. Attempt this conversion here to help check for
                 // updated values. This is not the final type check.
@@ -407,16 +417,6 @@ export function getUpdatedDataFromGrid(
                             ) !== -1)
                     ) {
                         row[key] = value;
-                    }
-                }
-                // Lookup columns store a list but grid only holds a single value
-                else if (List.isList(originalValue) && !Array.isArray(value)) {
-                    if (originalValue.get(0).value !== value) {
-                        // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-                        // Issue 45140: use QueryColumn date format for parseDate()
-                        row[key] =
-                            (isDate ? getJsonDateTimeFormatString(parseDate(value, getColDateFormat(col))) : value) ??
-                            null;
                     }
                 } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {
                     // - only update if the value has changed
@@ -717,52 +717,49 @@ export const handleFileInputChange = (
     };
 };
 
+export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean): string[] {
+    if (delimiter === '"') throw 'Unsupported delimiter: ' + delimiter;
 
-export function parseCsvString(value: string, delimiter: string, removeQuotes?: boolean) : string[]
-{
-    if (delimiter === '"')
-        throw "Unsupported delimiter: " + delimiter;
+    if (!delimiter) return undefined;
 
-    if (!delimiter)
-        return undefined;
-
-    if (value == null)
-        return undefined;
+    if (value == null) return undefined;
 
     let start = 0;
-    let parsedValues = [];
+    const parsedValues = [];
     while (start < value.length) {
         let end;
-        let ch = value[start];
-        if (ch === delimiter) { // empty string case
+        const ch = value[start];
+        if (ch === delimiter) {
+            // empty string case
             end = start;
-            parsedValues.push("");
-        } else if (ch === '"') { // starting a quoted value
+            parsedValues.push('');
+        } else if (ch === '"') {
+            // starting a quoted value
             end = start;
-            while (true) { // find the end of the quoted value
-                end = value.indexOf('"', end+1);
-                if (end === -1) { // no ending quote
+            while (true) {
+                // find the end of the quoted value
+                end = value.indexOf('"', end + 1);
+                if (end === -1) {
+                    // no ending quote
                     end = value.length;
                     break;
                 }
-                if (end === value.length -1 || value[end + 1] !== '"') { // end quote at end of string or without double quote
+                if (end === value.length - 1 || value[end + 1] !== '"') {
+                    // end quote at end of string or without double quote
                     break;
                 }
                 end++; // skip double ""
             }
-            let parsedValue = removeQuotes ?  value.substring(start+1, end) : value.substring(start, end+1) ; // start is at the quote
+            let parsedValue = removeQuotes ? value.substring(start + 1, end) : value.substring(start, end + 1); // start is at the quote
             if (removeQuotes && parsedValue.indexOf('""') !== -1) {
                 parsedValue = parsedValue.replace(/""/g, '"');
             }
             parsedValues.push(parsedValue);
             end++; // get past the last "
-        }
-        else {
+        } else {
             end = value.indexOf(delimiter, start);
-            if (end === -1)
-                end = value.length;
-            parsedValues.push(value.substring(start, end))
-
+            if (end === -1) end = value.length;
+            parsedValues.push(value.substring(start, end));
         }
         start = end + delimiter.length;
     }
@@ -774,10 +771,9 @@ export function quoteValueWithDelimiters(value: any, delimiter: string) {
         return value;
     }
     if (!delimiter) {
-        throw "Delimiter is required.";
+        throw 'Delimiter is required.';
     }
-    if (value.indexOf(delimiter) === -1)
-        return value; // nothing to do for a string that doesn't contain the delimiter
+    if (value.indexOf(delimiter) === -1) return value; // nothing to do for a string that doesn't contain the delimiter
     if (value.indexOf('"') !== -1) {
         value = value.replace(/"/g, '""');
     }

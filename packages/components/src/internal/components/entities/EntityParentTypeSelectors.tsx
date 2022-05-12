@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
-import { List, Map, OrderedMap } from 'immutable';
+import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { AddEntityButton } from '../buttons/AddEntityButton';
@@ -7,11 +7,22 @@ import { capitalizeFirstChar } from '../../util/utils';
 import { SelectInput } from '../forms/input/SelectInput';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { addColumns, changeColumn, removeColumn } from '../../actions';
+import { QueryInfo } from '../../../public/QueryInfo';
+import {
+    addColumns,
+    addColumnsForQueryGridModel,
+    changeColumn,
+    changeColumnForQueryGridModel,
+    EditorModelUpdates,
+    removeColumn,
+    removeColumnForQueryGridModel,
+} from '../../actions';
 import { QueryGridModel } from '../../QueryGridModel';
 
 import { EntityDataType, EntityParentType, getParentEntities, getParentOptions, IParentOption } from './models';
 import { getEntityDescription } from './utils';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { EditorModel } from '../../models';
 
 // exported for jest testing
 export const getAddEntityButtonTitle = (
@@ -93,7 +104,7 @@ export const getUpdatedEntityParentType = (
     };
 };
 
-export const changeEntityParentType = (
+export const changeEntityParentTypeDeprecated = (
     index: number,
     queryName: string,
     parent: IParentOption,
@@ -117,7 +128,7 @@ export const changeEntityParentType = (
 
         if (column && existingParent) {
             if (existingParent.query !== undefined) {
-                changeColumn(queryGridModel, existingParent.createColumnName(), column);
+                changeColumnForQueryGridModel(queryGridModel, existingParent.createColumnName(), column);
             } else {
                 const columnMap = OrderedMap<string, QueryColumn>();
                 let fieldKey;
@@ -136,17 +147,95 @@ export const changeEntityParentType = (
                         fieldKey = prevParent ? prevParent.createColumnName() : entityDataType.uniqueFieldKey;
                     }
                 }
-                addColumns(queryGridModel, columnMap.set(column.fieldKey.toLowerCase(), column), fieldKey);
+                addColumnsForQueryGridModel(
+                    queryGridModel,
+                    columnMap.set(column.fieldKey.toLowerCase(), column),
+                    fieldKey
+                );
             }
         } else {
-            removeColumn(queryGridModel, parentColumnName);
+            removeColumnForQueryGridModel(queryGridModel, parentColumnName);
         }
 
         return updatedEntityParents;
     }
 };
 
-export const removeEntityParentType = (
+interface EditorModelUpdatesWithParents extends EditorModelUpdates {
+    entityParents: Map<string, List<EntityParentType>>;
+}
+
+export const changeEntityParentType = (
+    index: number,
+    queryName: string,
+    parent: IParentOption,
+    editorModel: EditorModel,
+    dataModel: QueryModel,
+    entityParents: Map<string, List<EntityParentType>>,
+    entityDataType: EntityDataType,
+    combineParentTypes: boolean
+): EditorModelUpdatesWithParents => {
+    if (editorModel && dataModel) {
+        const { updatedEntityParents, column, existingParent, parentColumnName } = getUpdatedEntityParentType(
+            entityParents,
+            index,
+            queryName,
+            entityDataType.uniqueFieldKey,
+            parent,
+            dataModel.schemaName
+        );
+
+        // no updated model if nothing has changed, so we can just stop
+        if (!updatedEntityParents) return undefined;
+
+        let updates;
+        if (column && existingParent) {
+            if (existingParent.query !== undefined) {
+                updates = changeColumn(
+                    editorModel,
+                    dataModel.queryInfo,
+                    fromJS(dataModel.rows),
+                    existingParent.createColumnName(),
+                    column
+                );
+            } else {
+                const columnMap = OrderedMap<string, QueryColumn>();
+                let fieldKey;
+                if (existingParent.index === 1) {
+                    fieldKey = entityDataType.uniqueFieldKey;
+                } else {
+                    const definedParents = getParentEntities(
+                        updatedEntityParents,
+                        combineParentTypes,
+                        queryName
+                    ).filter(parent => parent.query !== undefined);
+                    if (definedParents.size === 0) fieldKey = entityDataType.uniqueFieldKey;
+                    else {
+                        // want the first defined parent before the new parent's index
+                        const prevParent = definedParents.findLast(parent => parent.index < existingParent.index);
+                        fieldKey = prevParent ? prevParent.createColumnName() : entityDataType.uniqueFieldKey;
+                    }
+                }
+                updates = addColumns(
+                    editorModel,
+                    dataModel.queryInfo,
+                    fromJS(dataModel.rows),
+                    columnMap.set(column.fieldKey.toLowerCase(), column),
+                    fieldKey
+                );
+            }
+        } else {
+            updates = removeColumn(editorModel, dataModel.queryInfo, fromJS(dataModel.rows), parentColumnName);
+        }
+
+        return {
+            ...updates,
+            entityParents: updatedEntityParents,
+        };
+    }
+};
+
+export const removeEntityParentTypeDeprecated = (
     index: number,
     queryName: string,
     entityParents: Map<string, List<EntityParentType>>,
@@ -161,9 +250,34 @@ export const removeEntityParentType = (
     const updatedEntityParents = entityParents.set(queryName, updatedParents);
 
     const parentColumnName = currentParents.get(parentToResetKey).createColumnName();
-    removeColumn(queryGridModel, parentColumnName);
+    removeColumnForQueryGridModel(queryGridModel, parentColumnName);
 
     return updatedEntityParents;
+};
+
+export const removeEntityParentType = (
+    index: number,
+    queryName: string,
+    entityParents: Map<string, List<EntityParentType>>,
+    editorModel: EditorModel,
+    queryInfo: QueryInfo,
+    originalData: Map<any, Map<string, any>>
+): EditorModelUpdatesWithParents => {
+    const currentParents = entityParents.get(queryName);
+    const parentToResetKey = currentParents.findKey(parent => parent.get('index') === index);
+    const updatedParents = currentParents
+        .filter(parent => parent.index !== index)
+        .map((parent, key) => parent.set('index', key + 1) as EntityParentType)
+        .toList();
+    const updatedEntityParents = entityParents.set(queryName, updatedParents);
+
+    const parentColumnName = currentParents.get(parentToResetKey).createColumnName();
+    const updates = removeColumn(editorModel, queryInfo, originalData, parentColumnName);
+
+    return {
+        ...updates,
+        entityParents: updatedEntityParents,
+    };
 };
 
 export const addEntityParentType = (

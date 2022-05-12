@@ -112,7 +112,9 @@ function inputCellFactory(
         if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
             const keyCols = queryInfo.getPkCols();
             if (keyCols.size == 1) {
-                const key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+                let key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+                if (Array.isArray(key)) key = key[0];
+                if (typeof key === 'object') key = key.value;
 
                 if (readonlyRows) isReadonlyRow = key && readonlyRows.contains(key);
                 if (columnMetadata?.isReadOnlyCell) isReadonlyCell = columnMetadata.isReadOnlyCell(key);
@@ -175,6 +177,18 @@ export interface BulkAddData {
     pivotValues?: string[];
     totalItems?: number;
     validationMsg?: ReactNode;
+}
+
+export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
+    activeTab?: number;
+    bsStyle?: any;
+    className?: string;
+    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
+    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
+    getReadOnlyRows?: (tabId?: number) => List<any>;
+    getTabTitle?: (tabId?: number) => string;
+    getTabHeader?: (tabId?: number) => ReactNode;
+    title?: string;
 }
 
 export interface SharedEditableGridProps {

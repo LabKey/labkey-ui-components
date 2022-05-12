@@ -21,34 +21,15 @@ import classNames from 'classnames';
 
 import { addRows, gridInit } from '../../actions';
 
-import {
-    EditableColumnMetadata,
-    EditorModel,
-    getUniqueIdColumnMetadata,
-    LoadingSpinner,
-    QueryColumn,
-    QueryGridModel,
-} from '../../..';
+import { EditorModel, getUniqueIdColumnMetadata, LoadingSpinner, QueryColumn, QueryGridModel } from '../../..';
 
 import { GlobalAppState, updateEditorModel, updateQueryGridModel } from '../../global';
 
-import { EditableGrid, SharedEditableGridProps } from './EditableGrid';
+import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 
-interface Props extends SharedEditableGridProps {
+interface Props extends SharedEditableGridPanelProps {
     model: QueryGridModel;
     models?: QueryGridModel | List<QueryGridModel>;
-    title?: string;
-    bsStyle?: any;
-    className?: string;
-    activeTab?: number;
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
-    getSelectionData?: (tabId?: number) => Map<string, any>;
-    getReadOnlyColumns?: (tabId?: number) => List<string>;
-    getReadOnlyRows?: (tabId?: number) => List<any>;
-    getIdField?: (tabId?: number) => string;
-    getTabTitle?: (tabId?: number) => string;
-    getTabHeader?: (tabId?: number) => ReactNode;
     initialEmptyRowCount?: number;
     onCellModify?: () => void;
     onRowCountChange?: (rowCount?: number) => any;
@@ -218,7 +199,6 @@ export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, 
             columnMetadata,
             getColumnMetadata,
             getReadOnlyRows,
-            getReadOnlyColumns,
             getTabHeader,
             getUpdateColumns,
             processBulkData,
@@ -239,9 +219,6 @@ export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, 
         let activeReadOnlyRows = readonlyRows;
         if (getReadOnlyRows) activeReadOnlyRows = getReadOnlyRows(activeTab);
 
-        let activeReadOnlyColumns = readOnlyColumns;
-        if (getReadOnlyColumns) activeReadOnlyColumns = getReadOnlyColumns(activeTab);
-
         const updateColumns = getUpdateColumns ? this.getUpdateColumns() : undefined;
 
         const editableGrid = (
@@ -255,7 +232,7 @@ export class EditableGridPanelDeprecated extends ReactN.Component<Props, State, 
                 processBulkData={processBulkData}
                 onChange={this.updateModels}
                 queryInfo={model.queryInfo}
-                readOnlyColumns={activeReadOnlyColumns}
+                readOnlyColumns={readOnlyColumns}
                 readonlyRows={activeReadOnlyRows}
                 updateColumns={updateColumns}
             />

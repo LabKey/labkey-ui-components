@@ -103,9 +103,9 @@ import { getEntityTypeData, handleEntityFileImport } from './actions';
 import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
 import {
     addEntityParentType,
-    changeEntityParentType,
+    changeEntityParentTypeDeprecated,
+    removeEntityParentTypeDeprecated,
     EntityParentTypeSelectors,
-    removeEntityParentType,
 } from './EntityParentTypeSelectors';
 import { ENTITY_CREATION_METRIC } from './constants';
 
@@ -546,7 +546,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { insertModel } = this.state;
         const { entityDataType, combineParentTypes } = this.props;
 
-        const updatedEntityParents = changeEntityParentType(
+        const updatedEntityParents = changeEntityParentTypeDeprecated(
             index,
             queryName,
             parent,
@@ -563,7 +563,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     removeParent = (index: number, queryName: string): void => {
         const { insertModel } = this.state;
-        const updatedEntityParents = removeEntityParentType(
+        const updatedEntityParents = removeEntityParentTypeDeprecated(
             index,
             queryName,
             insertModel.entityParents,

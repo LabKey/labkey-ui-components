@@ -6349,7 +6349,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       isSubmitting={false}
                       maxRows={1000}
                       notDeletable={Immutable.List []}
-                      onChange={[MockFunction]}
+                      onChange={[Function]}
                       queryInfo={
                         Immutable.Record {
                           "columns": Immutable.OrderedMap {
@@ -15243,7 +15243,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                       isSubmitting={false}
                       maxRows={1000}
                       notDeletable={Immutable.List []}
-                      onChange={[MockFunction]}
+                      onChange={[Function]}
                       queryInfo={
                         Immutable.Record {
                           "columns": Immutable.OrderedMap {

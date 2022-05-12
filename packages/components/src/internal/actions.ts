@@ -2036,7 +2036,7 @@ function getPasteValuesByColumn(paste: IPasteModel): List<List<string>> {
     data.forEach(row => {
         row.forEach((value, index) => {
             // if values contain commas, users will need to paste the values enclosed in quotes
-            // but we don't want to retain hese quotes for purposes of selecting values in the grid
+            // but we don't want to retain these quotes for purposes of selecting values in the grid
             parseCsvString(value, ',', true).forEach(v => {
                 if (v.trim().length > 0) valuesByColumn.get(index).push(v.trim());
             });

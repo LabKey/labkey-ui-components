@@ -226,7 +226,7 @@ export const applyEditableGridChangesToModels = (
     const updatedDataModels = [...dataModels];
     const orderedRows = dataKeys?.toJS();
     const rows = data?.toJS();
-    if (orderedRows !== undefined && rows !== undefined) {
+    if (orderedRows && rows) {
         let dataModel = dataModels[index].mutate({ orderedRows, rows });
         if (queryInfo) dataModel = dataModels[index].mutate({ queryInfo });
         updatedDataModels.splice(index, 1, dataModel);

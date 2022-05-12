@@ -66,17 +66,17 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     const { orderedRows, queryInfo, rows } = activeModel;
     const data = useMemo(() => fromJS(rows), [rows]);
     const dataKeys = useMemo(() => fromJS(orderedRows), [orderedRows]);
-    const error = activeModel.hasLoadErrors ? activeModel.loadErrors[0] ?? 'Something went wrong' : undefined;
+    const error = activeModel.hasLoadErrors ? activeModel.loadErrors[0] ?? 'Something went wrong loading the data.' : undefined;
 
     let activeColumnMetadata = columnMetadata;
     if (!activeColumnMetadata && getColumnMetadata) activeColumnMetadata = getColumnMetadata(activeTab);
     if (!activeColumnMetadata) activeColumnMetadata = getUniqueIdColumnMetadata(queryInfo);
 
     let activeReadOnlyRows = readonlyRows;
-    if (getReadOnlyRows) activeReadOnlyRows = getReadOnlyRows(activeTab);
+    if (!activeReadOnlyRows && getReadOnlyRows) activeReadOnlyRows = getReadOnlyRows(activeTab);
 
     let activeUpdateColumns = updateColumns;
-    if (getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
+    if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
 
     const editableGrid = (
         <EditableGrid

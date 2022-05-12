@@ -22,8 +22,6 @@ import { IEditableGridLoader } from '../../QueryGridModel';
 
 export class EditableGridLoaderFromSelection implements IEditableGridLoader {
     id: string;
-    dataForSelection: Map<string, any>;
-    dataIdsForSelection: List<any>;
     idsNotToUpdate: number[];
     fieldsNotToUpdate: string[];
     model: QueryModel;
@@ -40,8 +38,6 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
         requiredColumns?: string[],
         omittedColumns?: string[],
         updateColumns?: List<QueryColumn>,
-        dataForSelection?: Map<string, any>,
-        dataIdsForSelection?: List<any>,
         idsNotToUpdate?: any[],
         fieldsNotToUpdate?: string[]
     ) {
@@ -51,8 +47,6 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
         this.requiredColumns = requiredColumns || [];
         this.omittedColumns = omittedColumns || [];
         this.updateColumns = updateColumns;
-        this.dataForSelection = dataForSelection;
-        this.dataIdsForSelection = dataIdsForSelection;
         this.idsNotToUpdate = idsNotToUpdate || [];
         this.fieldsNotToUpdate = fieldsNotToUpdate || [];
     }
@@ -62,7 +56,7 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
             const { queryParameters, schemaQuery } = gridModel;
             const columnString = gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns);
             const sorts = gridModel.sortString;
-            const selectedIds = this.dataIdsForSelection?.toArray() ?? [...gridModel.selections];
+            const selectedIds = [...gridModel.selections];
 
             return getSelectedData(
                 schemaQuery.schemaName,
@@ -94,28 +88,7 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
         });
     }
 
-    fetchFromData(): Promise<IGridResponse> {
-        return new Promise(resolve => {
-            const data = EditorModel.convertQueryDataToEditorData(
-                this.dataForSelection,
-                Map<any, any>(this.updateData),
-                this.idsNotToUpdate,
-                this.fieldsNotToUpdate
-            );
-
-            resolve({
-                data,
-                dataIds: this.dataIdsForSelection,
-                totalRows: data.size,
-            });
-        });
-    }
-
     fetch(gridModel: QueryModel): Promise<IGridResponse> {
-        if (this.dataForSelection) {
-            return this.fetchFromData();
-        } else {
-            return this.selectAndFetch(gridModel);
-        }
+        return this.selectAndFetch(gridModel);
     }
 }

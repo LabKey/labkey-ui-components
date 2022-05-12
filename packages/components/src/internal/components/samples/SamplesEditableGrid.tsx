@@ -495,8 +495,6 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     this.getSamplesGridRequiredColumns(),
                     samplesGridOmittedColumns ? samplesGridOmittedColumns.toArray() : [],
                     this.getSamplesUpdateColumns(0),
-                    undefined,
-                    undefined,
                     allAliquots ? [] : aliquots,
                     allAliquots ? undefined : sampleTypeDomainFields.metaFields
                 )
@@ -507,9 +505,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             let updateColumns = List<QueryColumn>();
             let queryInfoCols = OrderedMap<string, QueryColumn>();
             displayQueryModel.queryInfo.columns.forEach((column, key) => {
-                if (key === 'rowid') {
+                if (key?.toLowerCase() === 'rowid') {
                     queryInfoCols = queryInfoCols.set(key, column);
-                } else if (key === 'name') {
+                } else if (key?.toLowerCase() === 'name') {
                     queryInfoCols = queryInfoCols.set(key, column);
                     updateColumns = updateColumns.push(column);
                 } else if (STORAGE_UPDATE_FIELDS.indexOf(column.fieldKey) > -1) {

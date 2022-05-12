@@ -689,7 +689,7 @@ export class QueryModel {
     }
 
     /**
-     * Get the total page count for the results rows in this QueryModel based on the total row count and the
+     * Get the total page count for the results rows in this QueryModel-based on the total row count and the
      * max rows per page value.
      */
     get pageCount(): number {

@@ -26,7 +26,6 @@ import {
     QueryModel,
     QuerySelectOwnProps,
     resolveDetailFieldValue,
-    searchRows,
     SelectInputOption,
     selectRowsDeprecated,
     updateRows,
@@ -35,6 +34,8 @@ import {
 import { similaritySortFactory } from '../../util/similaritySortFactory';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
+import { quoteValueColumnWithDelimiters, searchRows } from '../../query/api';
+import { parseCsvString } from '../../util/utils';
 
 const emptyMap = Map<string, any>();
 
@@ -102,7 +103,7 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                                 // This requires updating the filter and the string
                                 filter = Filter.create(
                                     valueColumn,
-                                    props.value.split(props.delimiter),
+                                    parseCsvString(props.value, props.delimiter, true),
                                     Filter.Types.IN
                                 );
                             }
@@ -120,7 +121,7 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                             queryName,
                             filterArray: [filter],
                         }).then(data => {
-                            const selectedItems = fromJS(data.models[data.key]);
+                            const selectedItems = fromJS(quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]);
 
                             model = model.merge({
                                 rawSelectedValue: props.value,
@@ -221,21 +222,17 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
     }
 
     // 35112: Explicitly request exact matches -- can be disabled via QuerySelectModel.addExactFilter = false
-    return searchRows(
-        {
-            containerFilter: model.containerFilter,
-            containerPath: model.containerPath,
-            schemaName: schemaQuery.getSchema(),
-            queryName: schemaQuery.getQuery(),
-            columns: getQueryColumnNames(model),
-            filterArray: allFilters,
-            sort: displayColumn,
-            maxRows,
-            includeTotalCount: 'f',
-        },
-        filterVal,
-        addExactFilter ? displayColumn : undefined
-    );
+    return searchRows({
+        containerFilter: model.containerFilter,
+        containerPath: model.containerPath,
+        schemaName: schemaQuery.getSchema(),
+        queryName: schemaQuery.getQuery(),
+        columns: getQueryColumnNames(model),
+        filterArray: allFilters,
+        sort: displayColumn,
+        maxRows,
+        includeTotalCount: 'f',
+    }, filterVal, model.valueColumn, model.delimiter, addExactFilter ? displayColumn : undefined);
 }
 
 export function saveSearchResults(
@@ -298,7 +295,7 @@ function getSelectedOptions(model: QuerySelectModel, value: any): Map<string, an
 
     // multi-value case
     if (model.multiple === true) {
-        const values = value.toString().split(model.delimiter);
+        const values = parseCsvString(value.toString(), model.delimiter);
         return sources
             .filter(result => {
                 const resultValue = result.getIn(keyPath);

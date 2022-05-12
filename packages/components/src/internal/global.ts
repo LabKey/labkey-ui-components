@@ -273,6 +273,9 @@ export function getEditorModel(modelId: string): EditorModel {
  * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
  */
 export function updateEditorModel(model: EditorModel, updates: any, failIfNotFound = true): EditorModel {
+    if (!model)
+        return model;
+
     if (failIfNotFound && !getGlobalState('editors').has(model.id)) {
         throw new Error('Unable to find EditorModel for modelId: ' + model.id);
     }

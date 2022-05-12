@@ -22,6 +22,7 @@ import { BOOLEAN_TYPE, DATE_TYPE, INTEGER_TYPE, TEXT_TYPE } from '../components/
 import {
     camelCaseToTitleCase,
     caseInsensitive,
+    quoteValueWithDelimiters,
     findMissingValues,
     formatBytes,
     getCommonDataValues,
@@ -36,9 +37,10 @@ import {
     isIntegerInRange,
     isNonNegativeFloat,
     isNonNegativeInteger,
+    parseCsvString,
     parseScientificInt,
     toLowerSafe,
-    unorderedEqual,
+    unorderedEqual
 } from './utils';
 
 const emptyList = List<string>();
@@ -1426,3 +1428,86 @@ describe('findMissingValues', () => {
         expect(findMissingValues([3], ['a', 'b', 'c', 'd', 'e', 'f'])).toStrictEqual(['a', 'b', 'd', 'e', 'f']);
     });
 });
+
+describe('parseCsvString', () => {
+    test('no value', () => {
+        expect(parseCsvString(null, ',')).toBeUndefined();
+        expect(parseCsvString(undefined, ';')).toBeUndefined();
+        expect(parseCsvString('', undefined)).toBeUndefined();
+        expect(parseCsvString(null, undefined)).toBeUndefined();
+    });
+
+    test('no quotes', () => {
+        expect(parseCsvString('', '\t')).toStrictEqual([]);
+        expect(parseCsvString('abcd', ' ')).toStrictEqual(['abcd']);
+        expect(parseCsvString('a,b,c', ',')).toStrictEqual(['a', 'b', 'c']);
+        expect(parseCsvString(',b,c,', ',')).toStrictEqual(['', 'b', 'c']);
+        expect(parseCsvString('a,,c', ',')).toStrictEqual(['a', '', 'c']);
+        expect(parseCsvString('a\tb\tc', '\t')).toStrictEqual(['a', 'b', 'c']);
+    });
+
+    test("quote as delimiter", () => {
+        expect(() => parseCsvString('a"b"c"', '"')).toThrow('Unsupported delimiter: "');
+    })
+
+    test("quoted values", () => {
+        expect(parseCsvString('a,"b","c,d"', ',')).toStrictEqual(['a', '"b"', '"c,d"']);
+        expect(parseCsvString(',"b","c,d"', ',')).toStrictEqual(['', '"b"', '"c,d"']);
+        expect(parseCsvString('a,"b","c', ',')).toStrictEqual(['a', '"b"', '"c']);
+        expect(parseCsvString('a,"b",c"', ',')).toStrictEqual(['a', '"b"', 'c"']);
+        expect(parseCsvString('"b"', ',')).toStrictEqual(['"b"']);
+    });
+
+    test("double quotes", () => {
+        expect(parseCsvString('a,"b\"\"b2","c,d"', ',')).toStrictEqual(['a', '"b\"\"b2"', '"c,d"']);
+        expect(parseCsvString('"b\"\"b2\"\"b3\"\""', ',')).toStrictEqual(['"b\"\"b2\"\"b3\"\""']);
+    });
+
+    test("remove quotes", () => {
+        expect(parseCsvString('a,"b","c,d"', ',', true)).toStrictEqual(['a', 'b', 'c,d']);
+        expect(parseCsvString(',"b","c,d"', ',', true)).toStrictEqual(['', 'b', 'c,d']);
+        expect(parseCsvString('a,"b","c', ',', true)).toStrictEqual(['a', 'b', 'c']);
+        expect(parseCsvString('a,"b",c"', ',', true)).toStrictEqual(['a', 'b', 'c"']);
+        expect(parseCsvString('"b"', ',', true)).toStrictEqual(['b']);
+        expect(parseCsvString('a,"b\"\"b2","c,d"',',', true)).toStrictEqual(['a', 'b"b2', 'c,d']);
+        expect(parseCsvString('"b\"\"b2\"\"b3\"\""',',', true)).toStrictEqual(['b"b2"b3"']);
+    });
+});
+
+describe('quoteValueWithDelimiters', () => {
+    test('no value', () => {
+        expect(quoteValueWithDelimiters(undefined, ",")).toBeUndefined();
+        expect(quoteValueWithDelimiters(null, ';')).toBeNull();
+        expect(quoteValueWithDelimiters('', ' ')).toBe('');
+    });
+
+    test("non-string value", () => {
+        expect(quoteValueWithDelimiters(4, ',')).toBe(4);
+        expect(quoteValueWithDelimiters(4, undefined)).toBe(4);
+        expect(quoteValueWithDelimiters({value: "4,5"}, undefined)).toStrictEqual({value: "4,5"});
+        expect(quoteValueWithDelimiters([4, 5, 6], ',')).toStrictEqual([4, 5, 6]);
+    })
+
+    test('invalid delimiter', () => {
+        expect(() => quoteValueWithDelimiters("value", undefined)).toThrow("Delimiter is required.")
+        expect(() => quoteValueWithDelimiters("value", null)).toThrow("Delimiter is required.")
+        expect(() => quoteValueWithDelimiters("value", '')).toThrow("Delimiter is required.")
+    });
+
+    test('without delimiter in value', () => {
+        expect(quoteValueWithDelimiters('abc d', ',')).toBe('abc d');
+        expect(quoteValueWithDelimiters('a', ';')).toBe('a');
+    });
+
+    test('with delimiter', () => {
+        expect(quoteValueWithDelimiters('abc,d', ',')).toBe('"abc,d"');
+        expect(quoteValueWithDelimiters('ab "cd,e"', ',')).toBe('"ab ""cd,e"""');
+        expect(quoteValueWithDelimiters('ab, "cd,e"', ',')).toBe('"ab, ""cd,e"""');
+    });
+
+    test("round trip", () => {
+        const initialString = 'ab "cd,e"';
+        expect(parseCsvString(quoteValueWithDelimiters(initialString, ','), ',', true)).toStrictEqual([initialString]);
+    })
+})
+

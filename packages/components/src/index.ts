@@ -64,6 +64,8 @@ import {
     isIntegerInRange,
     isNonNegativeFloat,
     isNonNegativeInteger,
+    parseCsvString,
+    quoteValueWithDelimiters,
     toggleDevTools,
     valueIsEmpty,
 } from './internal/util/utils';
@@ -191,7 +193,7 @@ import {
     InsertRowsResponse,
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
-    searchRows,
+
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
@@ -861,7 +863,6 @@ export {
     insertRows,
     selectRows,
     selectRowsDeprecated,
-    searchRows,
     updateRows,
     deleteRows,
     importData,
@@ -1300,6 +1301,8 @@ export {
     applyDevTools,
     devToolsActive,
     toggleDevTools,
+    parseCsvString,
+    quoteValueWithDelimiters,
     // buttons and menus
     MultiMenuButton,
     SubMenu,

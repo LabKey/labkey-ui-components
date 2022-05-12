@@ -241,15 +241,15 @@ export class QueryColumn extends Record({
         return this.fieldKeyArray.join('/');
     }
 
-    isExpInput(): boolean {
-        return this.isDataInput() || this.isMaterialInput();
+    isExpInput(checkLookup: boolean = true): boolean {
+        return this.isDataInput(checkLookup) || this.isMaterialInput(checkLookup);
     }
 
-    isDataInput(): boolean {
+    isDataInput(checkLookup: boolean = true): boolean {
         return (
             this.name &&
             this.name.toLowerCase().indexOf(QueryColumn.DATA_INPUTS.toLowerCase()) !== -1 &&
-            this.isLookup()
+            (!checkLookup || this.isLookup())
         );
     }
 
@@ -291,11 +291,11 @@ export class QueryColumn extends Record({
         return SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ) || lookupSQ.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA);
     }
 
-    isMaterialInput(): boolean {
+    isMaterialInput(checkLookup: boolean = true): boolean {
         return (
             this.name &&
             this.name.toLowerCase().indexOf(QueryColumn.MATERIAL_INPUTS.toLowerCase()) !== -1 &&
-            this.isLookup()
+            (!checkLookup || this.isLookup())
         );
     }
 

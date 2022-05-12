@@ -16,7 +16,7 @@ import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
 import { getPrimaryAppProperties } from '../../app/utils';
 
-import { SearchIdData, SearchResultCardData } from './models';
+import {FinderReport, SearchIdData, SearchResultCardData} from './models';
 import { SAMPLE_FINDER_VIEW_NAME } from './utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from "../../app/constants";
 
@@ -189,12 +189,13 @@ export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Prom
     });
 }
 
-export function saveFinderSearch(reportName: string, cardsJson: string, reportId?: string) : Promise<any> {
+export function saveFinderSearch(report: FinderReport, cardsJson: string, replace?: boolean) : Promise<FinderReport> {
     const reportConfig = {
-        name:   reportName,
-        reportId    : reportId,
-        jsonData    : cardsJson,
-        public: false
+        name: report.reportName,
+        reportId: replace ? report.reportId : null,
+        config: cardsJson,
+        public: false,
+        replace
     };
 
     return new Promise((resolve, reject) => {
@@ -206,18 +207,32 @@ export function saveFinderSearch(reportName: string, cardsJson: string, reportId
             },
             jsonData: reportConfig,
             success: Utils.getCallbackWrapper(json => {
-                resolve({ json });
+                resolve({
+                    reportName: json["reportName"],
+                    reportId: json["reportId"],
+                    entityId: json["id"],
+                });
             }),
             failure: Utils.getCallbackWrapper(json => reject(json), null, false)
         });
     });
 }
 
-export function loadFinderSearches() : Promise<any> {
+export function loadFinderSearches() : Promise<FinderReport[]> {
     return new Promise((resolve, reject) => {
         loadReports()
             .then((reports: IDataViewInfo[]) => {
-                resolve(reports.filter(report => report.type === DataViewInfoTypes.SampleFinderSavedSearch));
+                const views = reports
+                    .filter(report => report.type === DataViewInfoTypes.SampleFinderSavedSearch)
+                    .map(report => {
+                        return {
+                            reportId: report.reportId,
+                            reportName: report.name,
+                            entityId: report.id,
+                            isSession: false,
+                        }
+                    });
+                resolve(views);
             })
             .catch(reason => {
                 console.error(reason);
@@ -226,14 +241,14 @@ export function loadFinderSearches() : Promise<any> {
     })
 }
 
-export function loadFinderSearch(name: string) : Promise<any> {
+export function loadFinderSearch(view: FinderReport) : Promise<any> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleFinderSearch.api'),
             method: 'GET',
-            params: { name },
+            params: { reportId: view.reportId, name: view.reportName },
             success: Utils.getCallbackWrapper(json => {
-                resolve({ json });
+                resolve(json["config"]);
             }),
             failure: Utils.getCallbackWrapper(json => reject(json), null, false)
         });

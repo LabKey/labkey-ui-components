@@ -1,4 +1,4 @@
-import { Filter, getServerContext, Utils } from '@labkey/api';
+import {ActionURL, Filter, getServerContext, Utils} from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { JsonType } from '../domainproperties/PropDescType';
@@ -20,9 +20,10 @@ import { CONCEPT_COLUMN_FILTER_TYPES, getLabKeySql } from '../../query/filter';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { isOntologyEnabled } from '../../app/utils';
+import {getPrimaryAppProperties, isOntologyEnabled} from '../../app/utils';
 
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
+import {formatDateTime} from "../../util/Date";
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -374,6 +375,7 @@ export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCoun
     return JSON.stringify({
         filters: getSearchFilterObjs(filterProps),
         filterChangeCounter,
+        filterTimestamp: "Searched " + formatDateTime(new Date())
     });
 }
 
@@ -410,10 +412,12 @@ export function searchFiltersFromJson(filterPropsStr: string): SearchSessionStor
     const obj = JSON.parse(filterPropsStr);
     const filterPropsObj: any[] = obj['filters'];
     const filterChangeCounter: number = obj['filterChangeCounter'];
+    const filterTimestamp: string = obj['filterTimestamp'];
 
     return {
         filters: getSearchFiltersFromObjs(filterPropsObj),
         filterChangeCounter,
+        filterTimestamp,
     };
 }
 
@@ -832,4 +836,8 @@ export function getUpdatedFilterSelection(
             secondFilterValue: shouldClear ? undefined : activeFilter?.secondFilterValue,
         },
     };
+}
+
+export function getLocalStorageKey(): string {
+    return getPrimaryAppProperties().productId + ActionURL.getContainer() + '-SampleFinder';
 }

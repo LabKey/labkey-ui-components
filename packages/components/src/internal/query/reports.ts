@@ -2,6 +2,7 @@ import { Ajax, Utils } from '@labkey/api';
 
 import { IDataViewInfo } from '../models';
 import { AppURL, buildURL } from '../..';
+import {SAMPLE_MANAGER_APP_PROPERTIES} from "../app/constants";
 
 export type ReportURLMapper = (report: IDataViewInfo) => AppURL;
 
@@ -47,3 +48,45 @@ export function loadReports(urlMapper?: ReportURLMapper): Promise<IDataViewInfo[
         });
     });
 }
+
+export function deleteReport(reportId: string, reportType?: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL("reports", 'deleteViews.api'),
+            method: 'POST',
+            jsonData: {
+                views: [{
+                    id: reportId,
+                    dataType: reportType ?? 'reports'
+                    }]
+            },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                reject(response);
+            }),
+        });
+    });
+}
+
+export function renameReport(reportId: string, newName: string, reportType?: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL("reports", 'editView.api'),
+            method: 'POST',
+            params: {
+                id: reportId,
+                dataType: reportType ?? 'reports',
+                viewName: newName,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                reject(response);
+            }),
+        });
+    });
+}
+

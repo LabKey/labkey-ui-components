@@ -5,6 +5,7 @@ import { capitalizeFirstChar } from '../../util/utils';
 
 import { FieldFilter, FilterProps } from './models';
 import { FilterValueDisplay } from './FilterValueDisplay';
+import classNames from "classnames";
 
 interface GroupedFilterProps {
     cardIndex: number;
@@ -23,11 +24,11 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
         groupedFilters[filter.fieldKey].push(filter);
     });
     const rows = [];
-    Object.keys(groupedFilters).forEach(key => {
+    Object.keys(groupedFilters).forEach((key, ind) => {
         groupedFilters[key].forEach((fieldFilter, index) => {
             rows.push(
-                <tr key={key + '-' + index} className="filter-display__row">
-                    {index === 0 && <td className="filter-display__field-label">{fieldFilter.fieldCaption}:</td>}
+                <tr key={key + '-' + index} className={classNames('filter-display__row', { 'filter-row-divider': ind > 0 })}>
+                    {index === 0 && <td className="filter-display__field-label">{fieldFilter.fieldCaption}</td>}
                     {index !== 0 && <td className="filter-display__field-boolean">and</td>}
                     <td className="filter-display__filter-content">
                         <FilterValueDisplay
@@ -108,7 +109,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
     const dataTypeName = dataTypeDisplayName ?? schemaQuery.queryName;
     return (
         <>
-            <div className="filter-cards__card">
+            <div className="filter-cards__card flex-card-height">
                 <div className={'filter-card__header ' + entityDataType.filterCardHeaderClass}>
                     <div className="pull-left">
                         <div className="secondary-text">{capitalizeFirstChar(entityDataType.nounAsParentSingular)}</div>

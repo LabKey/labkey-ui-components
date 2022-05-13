@@ -3,12 +3,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.171.0
 *Released*: 12 May 2022
-Item 10353: Convert EditableGridPanelForUpdate to QueryModel-based EditableGridPanel
-- remove unused EditableGridLoader
-- update EditableGridPanelForUpdate to initialize the dataModel and editorModel
-- update EditableGridLoaderFromSelection.tsx and related components/models for QueryModel
-- update EditableGridPanel.tsx for tabbed panel with multiple models
-- update SampleEditableGrid actions from EntityParentTypeSelector to work with QueryModel
+* Issue 45222: Editable grid doesn't automatically expand width of dropdowns to show long values
+
+### version 2.171.0
+*Released*: 12 May 2022
+* Item 10353: Convert EditableGridPanelForUpdate to QueryModel-based EditableGridPanel
+  * remove unused EditableGridLoader
+  * update EditableGridPanelForUpdate to initialize the dataModel and editorModel
+  * update EditableGridLoaderFromSelection.tsx and related components/models for QueryModel
+  * update EditableGridPanel.tsx for tabbed panel with multiple models
+  * update SampleEditableGrid actions from EntityParentTypeSelector to work with QueryModel
 
 ### version 2.170.0
 *Released*: 12 May 2022

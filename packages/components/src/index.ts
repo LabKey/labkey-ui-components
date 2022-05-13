@@ -224,7 +224,6 @@ import {
 } from './internal/url/AppURLResolver';
 import { loadEditorModelData } from './internal/components/editable/utils';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
-import { EditableGridPanelDeprecated } from './internal/components/editable/EditableGridPanelDeprecated';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -873,7 +872,6 @@ export {
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
-    EditableGridPanelDeprecated,
     EditableGridPanelForUpdate,
     EditorModel,
     cancelEvent,

@@ -33,7 +33,7 @@ export const SampleFinderSaveViewModal: FC<Props> = memo(props => {
         setIsSubmitting(true);
 
         try {
-            const isCurrentView = viewName.toLowerCase() === currentView.reportName.toLowerCase();
+            const isCurrentView = viewName.toLowerCase() === currentView?.reportName?.toLowerCase();
             const savedView = await saveFinderSearch({reportName: viewName, reportId: currentView?.reportId}, cardsJson, isCurrentView);
             setIsSubmitting(false);
             onSuccess(savedView);
@@ -42,8 +42,6 @@ export const SampleFinderSaveViewModal: FC<Props> = memo(props => {
             setIsSubmitting(false);
             return;
         }
-
-        // TODO metric
 
     }, [viewName]);
 

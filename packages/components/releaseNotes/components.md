@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.171.0
-*Released*: 12 May 2022
+### version TBD
+*Released*: TBD May 2022
 * Issue 45222: Editable grid doesn't automatically expand width of dropdowns to show long values
 
 ### version 2.171.0

@@ -29,7 +29,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
             const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
             if (finderSessionDataStr) {
                 const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
-                if (finderSessionData.filterTimestamp) {
+                if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
                     setUnsavedSessionViewName(finderSessionData.filterTimestamp);
                 }
             }

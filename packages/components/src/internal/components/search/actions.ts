@@ -190,7 +190,6 @@ export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Prom
 }
 
 export function saveFinderSearch(report: FinderReport, cardsJson: string, replace?: boolean) : Promise<FinderReport> {
-    console.log(report);
     const reportConfig = {
         name: report.reportName,
         reportId: replace ? report.reportId : null,

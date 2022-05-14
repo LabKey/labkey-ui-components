@@ -99,6 +99,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const { api, sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
+    const [savedViewChangeCounter, setSavedViewChangeCounter] = useState<number>(0);
     const [currentView, setCurrentView] = useState<FinderReport>(undefined);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
     const [filters, setFilters] = useState<FilterProps[]>([]);
@@ -131,10 +132,12 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         return 'sampleFinder-' + filterChangeCounter;
     };
 
-    const updateFilters = (filterChangeCounter: number, filters: FilterProps[]) => {
+    const updateFilters = (filterChangeCounter: number, filters: FilterProps[], updateSession: boolean, isViewDirty: boolean) => {
         setFilters(filters);
-        sessionStorage.setItem(getLocalStorageKey(), searchFiltersToJson(filters, filterChangeCounter));
         setFilterChangeCounter(filterChangeCounter);
+        setViewDirty(isViewDirty);
+        if (updateSession)
+            sessionStorage.setItem(getLocalStorageKey(), searchFiltersToJson(filters, filterChangeCounter));
     };
 
     const onAddEntity = useCallback((entityType: EntityDataType) => {
@@ -164,9 +167,14 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         (index: number) => {
             const newFilterCards = [...filters];
             newFilterCards.splice(index, 1);
-            updateFilters(filterChangeCounter + 1, newFilterCards);
+            if (currentView && newFilterCards?.length === 0) {
+                updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, false);
+                setCurrentView(undefined);
+            }
+            else
+                updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
         },
-        [filters, filterChangeCounter]
+        [filters, filterChangeCounter, currentView]
     );
 
     const onFilterClose = () => {
@@ -199,43 +207,32 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 });
             });
 
-            setViewDirty(true)
             onFilterClose();
-            updateFilters(filterChangeCounter + 1, newFilterCards);
+            updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
 
             api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'filterModalApply');
         },
-        [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType, cardDirty]
+        [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType, cardDirty, currentView]
     );
 
     const loadSearch = useCallback(async (view: FinderReport) => {
+            let cardJson = null;
+
             if (view.isSession)
-            {
-                const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
-                if (finderSessionDataStr)
-                {
-                    const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
-                    if (finderSessionData.filters)
-                    {
-                        setFilters(finderSessionData.filters);
-                    }
-                }
-            }
+                cardJson = sessionStorage.getItem(getLocalStorageKey());
             else if (view.reportId)
-            {
-                const cardJson = await loadFinderSearch(view);
-                const finderSessionData = searchFiltersFromJson(cardJson);
-                if (finderSessionData.filters)
-                {
-                    setFilters(finderSessionData.filters);
-                }
-            }
+                cardJson = await loadFinderSearch(view);
+            if (!cardJson)
+                return;
 
-            setViewDirty(false);
+            const finderSessionData = searchFiltersFromJson(cardJson);
+            const newFilters = finderSessionData.filters;
+            if (!newFilters)
+                return;
+
+            updateFilters(filterChangeCounter + 1, newFilters, false, view.isSession)
             setShowSaveViewDialog(false);
-            setFilterChangeCounter(filterChangeCounter + 1);
             setCurrentView(view);
-
         },
         [filterChangeCounter]
     );
@@ -270,10 +267,10 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const onManageSearchesDone = useCallback((hasChange: boolean) => {
             setShowManageViewsDialog(false);
             if (hasChange) {
-                setFilterChangeCounter(filterChangeCounter + 1);
+                setSavedViewChangeCounter(savedViewChangeCounter + 1);
             }
         },
-        [filterChangeCounter]
+        [savedViewChangeCounter]
     );
 
     return (
@@ -285,7 +282,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     manageSearches={manageSearches}
                     currentView={currentView}
                     hasUnsavedChanges={viewDirty}
-                    key={filterChangeCounter}
+                    key={filterChangeCounter + '-' + savedViewChangeCounter}
                 />
             }
             context={

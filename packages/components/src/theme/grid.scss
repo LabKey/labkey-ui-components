@@ -241,11 +241,6 @@ $table-cell-selection-bg-color: #EDF3FF;
       height: 30px;
       white-space: nowrap;
 
-      &.size-limited {
-        max-width: 200px;
-        text-overflow: ellipsis;
-      }
-
       &.cell-selection {
         border: $table-cell-border-width solid $table-cell-selection-bg-color;
         background-color: $table-cell-selection-bg-color;
@@ -263,6 +258,7 @@ $table-cell-selection-bg-color: #EDF3FF;
       outline: none;
       padding: 6px 2px;
       width: 100%;
+      min-width: 200px;
 
       &:focus {
         border: $table-cell-selected-border;
@@ -293,12 +289,10 @@ $table-cell-selection-bg-color: #EDF3FF;
     .cell-menu {
         position: relative;
         min-height: 30px;
-        width: 200px;
     }
 
     .cell-menu-value {
-        width: 170px;
-        text-overflow: ellipsis;
+        min-width: 200px;
     }
 
     .cell-menu-selector {
@@ -349,15 +343,11 @@ $table-cell-selection-bg-color: #EDF3FF;
   }
 }
 
-
-.select-input-cell {
-    width: 200px;
-}
-
 .select-input-cell .select-input__control {
     border-style: none;
     min-height: 30px;
-    width: 200px;
+    width: 100%;
+    min-width: 200px;
 }
 
 .select-input-cell-container {

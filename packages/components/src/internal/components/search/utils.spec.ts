@@ -50,6 +50,16 @@ import {
 } from './utils';
 import { FieldFilter } from './models';
 
+beforeAll(() => {
+    LABKEY.container = {
+        formats: {
+            dateFormat: 'yyyy-MM-dd',
+            dateTimeFormat: 'yyyy-MM-dd HH:mm',
+            numberFormat: null,
+        },
+    };
+});
+
 test('getFinderStartText', () => {
     expect(getFinderStartText([], [])).toBeNull();
     expect(getFinderStartText([TestTypeDataType], [])).toBeNull();
@@ -536,7 +546,7 @@ const cardJSON =
     '"dependencyText":"test data dependencies","deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","ancestorColumnName":"Ancestors/Samples","inputTypeValueField":"lsid",' +
     '"insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test","importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success"},' +
     '"filterArray":[{"fieldKey":"textField","fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField",' +
-    '"filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1}],"filterChangeCounter":5}';
+    '"filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema","queryName":"samples1"},"index":1}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
 
 const cardWithEntityTypeFilter = {
     entityDataType: TestTypeDataTypeWithEntityFilter,
@@ -553,12 +563,12 @@ const cardWithEntityTypeFilterJSON =
     '"deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","ancestorColumnName":"Ancestors/Samples","inputTypeValueField":"lsid","insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test",' +
     '"importFileAction":"importSamples","filterCardHeaderClass":"filter-card__header-success","filterArray":["query.Category~eq=Source"]},"filterArray":[{"fieldKey":"textField",' +
     '"fieldCaption":"textField","filter":"query.textField~=","jsonType":"string"},{"fieldKey":"strField","fieldCaption":"strField","filter":"query.strField~between=1%2C5","jsonType":"string"}],"schemaQuery":{"schemaName":"TestSchema",' +
-    '"queryName":"samples1"},"index":1}],"filterChangeCounter":5}';
+    '"queryName":"samples1"},"index":1}],"filterChangeCounter":5,"filterTimestamp":"Searched 2020-08-06 14:44"}';
 
 describe('searchFiltersToJson', () => {
     test('searchFiltersToJson', () => {
-        expect(searchFiltersToJson([card], 5)).toEqual(cardJSON);
-        expect(searchFiltersToJson([cardWithEntityTypeFilter], 5)).toEqual(cardWithEntityTypeFilterJSON);
+        expect(searchFiltersToJson([card], 5, testDate)).toEqual(cardJSON);
+        expect(searchFiltersToJson([cardWithEntityTypeFilter], 5, testDate)).toEqual(cardWithEntityTypeFilterJSON);
     });
 });
 

@@ -86,7 +86,7 @@ describe('FilterCard', () => {
         expect(content.exists()).toBeTruthy();
 
         expect(content.find('.filter-display__row').length).toBe(2);
-        expect(content.text()).toBe('Field1:1Field2:2');
+        expect(content.text()).toBe('Field11Field22');
         wrapper.unmount();
     });
 });
@@ -123,7 +123,7 @@ describe('GroupedFilterValues', () => {
         );
         const rows = wrapper.find('tr');
         expect(rows).toHaveLength(1);
-        validateRow(rows, 0, 'Test:', 'a');
+        validateRow(rows, 0, 'Test', 'a');
     });
 
     test('one filter per field', () => {
@@ -149,8 +149,8 @@ describe('GroupedFilterValues', () => {
         );
         const rows = wrapper.find('tr');
         expect(rows).toHaveLength(2);
-        validateRow(rows, 0, 'Test:', '≠ a');
-        validateRow(rows, 1, 'Other:', '> b');
+        validateRow(rows, 0, 'Test', '≠ a');
+        validateRow(rows, 1, 'Other', '> b');
     });
 
     test('multiple filters per field', () => {
@@ -188,9 +188,9 @@ describe('GroupedFilterValues', () => {
         );
         const rows = wrapper.find('tr');
         expect(rows).toHaveLength(4);
-        validateRow(rows, 0, 'Test:', '≥ a');
+        validateRow(rows, 0, 'Test', '≥ a');
         validateRow(rows, 1, 'and', '≤ zebra');
-        validateRow(rows, 2, 'Other:', '> alice');
+        validateRow(rows, 2, 'Other', '> alice');
         validateRow(rows, 3, 'and', 'jackjillbob');
     });
 });

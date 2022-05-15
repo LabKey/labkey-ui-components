@@ -371,11 +371,11 @@ export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
     return filterPropsObj;
 }
 
-export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCounter: number): string {
+export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCounter: number, time?: Date): string {
     return JSON.stringify({
         filters: getSearchFilterObjs(filterProps),
         filterChangeCounter,
-        filterTimestamp: "Searched " + formatDateTime(new Date())
+        filterTimestamp: "Searched " + formatDateTime(time ?? new Date())
     });
 }
 

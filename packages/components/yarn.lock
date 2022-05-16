@@ -5776,11 +5776,6 @@ mkdirp@^0.5.5:
   dependencies:
     minimist "^1.2.6"
 
-moment-jdateformatparser@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/moment-jdateformatparser/-/moment-jdateformatparser-1.2.1.tgz#336c41ef7a6db8021d7ca086385a35fb8a648456"
-  integrity sha512-lpUeQtMaxmpK+pPPHGWMnqzgsB/nunbAGPg72mzvRNbxxeQ2uBurdq9EJmvJtOiYB6k/4T9kuvQFbb+8Tirn4A==
-
 moment-timezone@0.5.34:
   version "0.5.34"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.34.tgz#a75938f7476b88f155d3504a9343f7519d9a405c"

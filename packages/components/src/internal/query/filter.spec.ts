@@ -4,17 +4,17 @@ import { formatDate } from '../util/Date';
 
 import { getLabKeySql } from './filter';
 
-const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/PST
+const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Los_Angeles
 const testDate = new Date(datePOSIX);
 
 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-const dateStr = formatDate(testDate, 'America/PST', 'YYYY-MM-dd');
+const dateStr = formatDate(testDate, 'America/Los_Angeles', 'YYYY-MM-dd');
 const dateTimeStr = formatDate(testDate, timezone, 'YYYY-MM-dd HH:mm');
 
-const date2POSIX = 1597182283812; // Aug 11, 2020 14:44 America/PST
+const date2POSIX = 1597182283812; // Aug 11, 2020 14:44 America/Los_Angeles
 const testDate2 = new Date(date2POSIX);
-const dateStr2 = formatDate(testDate2, 'America/PST', 'YYYY-MM-dd');
+const dateStr2 = formatDate(testDate2, 'America/Los_Angeles', 'YYYY-MM-dd');
 const dateTimeStr2 = formatDate(testDate2, timezone, 'YYYY-MM-dd HH:mm');
 
 describe('getLabKeySql', () => {

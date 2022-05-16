@@ -287,6 +287,7 @@ import { SchemaListingPage } from './internal/components/listing/pages/SchemaLis
 import { HeatMap } from './internal/components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './internal/components/heatmap/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
+import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
 import {
@@ -1076,6 +1077,7 @@ export {
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,
+    EntityLineageEditMenuItem,
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
     GenerateEntityResponse,

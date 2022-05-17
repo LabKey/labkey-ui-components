@@ -1,4 +1,4 @@
-import { Security } from '@labkey/api';
+import {ActionURL, Ajax, Security, Utils} from '@labkey/api';
 import { Map } from 'immutable';
 
 import { Container } from '../base/models/Container';
@@ -7,7 +7,17 @@ import { Principal, SecurityPolicy } from '../permissions/models';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 
+export type UserLimitSettings = {
+    activeUsers: number;
+    messageHtml: string;
+    remainingUsers: number;
+    success: boolean;
+    userLimitLevel: number;
+    userLimit: boolean;
+};
+
 export interface SecurityAPIWrapper {
+    getUserLimitSettings: () => Promise<UserLimitSettings>;
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
     fetchPolicy: (
         containerId: string,
@@ -17,6 +27,22 @@ export interface SecurityAPIWrapper {
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
+    getUserLimitSettings = (): Promise<UserLimitSettings> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: ActionURL.buildURL('user', 'getuserLimitSettings.api'),
+                method: 'GET',
+                scope: this,
+                success: Utils.getCallbackWrapper(settings => {
+                    resolve(settings as UserLimitSettings);
+                }),
+                failure: Utils.getCallbackWrapper(error => {
+                    console.error(error);
+                    reject(error);
+                }),
+            });
+        });
+    };
     fetchContainers = (options: FetchContainerOptions): Promise<Container[]> => {
         return new Promise((resolve, reject) => {
             Security.getContainers({
@@ -49,6 +75,7 @@ export function getSecurityTestAPIWrapper(
     overrides: Partial<SecurityAPIWrapper> = {}
 ): SecurityAPIWrapper {
     return {
+        getUserLimitSettings: mockFn(),
         fetchContainers: mockFn(),
         fetchPolicy: mockFn(),
         ...overrides,

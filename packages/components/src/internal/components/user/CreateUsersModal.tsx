@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Checkbox, FormControl, Modal } from 'react-bootstrap';
 import { Security } from '@labkey/api';
 
 import { WizardNavButtons, Alert, SelectInput } from '../../..';
+import { UserLimitSettings } from '../security/APIWrapper';
 
 interface Props {
     onCancel: () => void;
     onComplete: (response: any, roles: string[]) => void;
     show: boolean;
+    userLimitSettings?: UserLimitSettings;
 
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onComplete
@@ -39,17 +41,17 @@ export class CreateUsersModal extends React.Component<Props, State> {
         this.state = DEFAULT_STATE;
     }
 
-    handleEmail = (evt: any) => {
+    handleEmail = (evt: any): void => {
         const emailText = evt.target.value;
         this.setState(() => ({ emailText }));
     };
 
-    handleOptionalMessage = (evt: any) => {
+    handleOptionalMessage = (evt: any): void => {
         const optionalMessage = evt.target.value;
         this.setState(() => ({ optionalMessage }));
     };
 
-    handleSendEmail = (evt: any) => {
+    handleSendEmail = (evt: any): void => {
         const sendEmail = evt.target.checked;
         this.setState(state => ({
             sendEmail,
@@ -58,12 +60,12 @@ export class CreateUsersModal extends React.Component<Props, State> {
         }));
     };
 
-    handleRoles = (name, formValue, selectedOptions: Array<{ id: string; label: string }>) => {
+    handleRoles = (name, formValue, selectedOptions: Array<{ id: string; label: string }>): void => {
         const roles = selectedOptions ? selectedOptions.map(option => option.id) : undefined;
         this.setState({ roles });
     };
 
-    createUsers = () => {
+    createUsers = (): void => {
         const { emailText, sendEmail, optionalMessage } = this.state;
         this.setState(() => ({ isSubmitting: true, error: undefined }));
 
@@ -93,7 +95,8 @@ export class CreateUsersModal extends React.Component<Props, State> {
         return this.hasRoleOptions() ? this.state.roles || [this.props.roleOptions[0].id] : undefined;
     }
 
-    renderForm() {
+    renderForm(): ReactNode {
+        const { userLimitSettings } = this.props;
         const { emailText, sendEmail, optionalMessage } = this.state;
 
         return (
@@ -109,6 +112,9 @@ export class CreateUsersModal extends React.Component<Props, State> {
                     value={emailText || ''}
                     onChange={this.handleEmail}
                 />
+                {userLimitSettings?.userLimit && (
+                    <div>Number of users that can be added: {userLimitSettings.remainingUsers}</div>
+                )}
                 {this.hasRoleOptions() && (
                     <>
                         <div className="create-users-label-top create-users-label-bottom">Roles:</div>
@@ -150,7 +156,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
         );
     }
 
-    renderButtons() {
+    renderButtons(): ReactNode {
         return (
             <WizardNavButtons
                 containerClassName=""
@@ -164,7 +170,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
         );
     }
 
-    render() {
+    render(): ReactNode {
         const { show, onCancel } = this.props;
         const { error } = this.state;
 

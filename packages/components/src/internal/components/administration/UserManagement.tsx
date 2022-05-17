@@ -24,10 +24,11 @@ import { useServerContext } from '../base/ServerContext';
 import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
 import { AppContext, useAppContext } from '../../AppContext';
-import { SecurityAPIWrapper } from '../security/APIWrapper';
+import { SecurityAPIWrapper, UserLimitSettings } from '../security/APIWrapper';
 
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
+import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
 
 export function getNewUserRoles(
     user: User,
@@ -80,6 +81,7 @@ export type UserManagementProps = OwnProps & InjectedPermissionsPage;
 
 interface State {
     policy: SecurityPolicy;
+    userLimitSettings: UserLimitSettings;
 }
 
 // exported for jest testing
@@ -89,17 +91,33 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
 
         this.state = {
             policy: undefined,
+            userLimitSettings: undefined,
         };
     }
 
     componentDidMount(): void {
-        if (this.props.user.isAdmin) {
-            this.loadSecurityPolicy();
-        }
+        this.loadSecurityPolicy();
+        this.loadUserLimitSettings();
     }
 
+    loadUserLimitSettings = async (): Promise<void> => {
+        const { api, user } = this.props;
+        if (!user.hasAddUsersPermission()) return;
+
+        try {
+            const userLimitSettings = await api.getUserLimitSettings();
+            this.setState({ userLimitSettings });
+        } catch (error) {
+            createNotification({
+                alertClass: 'danger',
+                message: 'Unable to load user limit settings. ' + (error.exception ? error.exception : ''),
+            });
+        }
+    };
+
     loadSecurityPolicy = async (): Promise<void> => {
-        const { api, container, principalsById } = this.props;
+        const { api, container, principalsById, user } = this.props;
+        if (!user.isAdmin) return;
 
         try {
             const policy = await api.fetchPolicy(container.id, principalsById);
@@ -211,6 +229,8 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                 );
             },
         });
+
+        this.loadUserLimitSettings();
     };
 
     afterCreateComplete(newUsers: List<number>, permissionsSet: boolean) {
@@ -245,8 +265,8 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     };
 
     render() {
-        const { allowResetPassword, container, extraRoles, project, user } = this.props;
-        const { policy } = this.state;
+        const { allowResetPassword, container, extraRoles, project, user, api } = this.props;
+        const { policy, userLimitSettings } = this.state;
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
         const isEditable = policy && !policy.isInheritFromParent();
@@ -259,6 +279,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                 hasPermission={user.isAdmin}
                 renderButtons={this.renderButtons}
             >
+                <ActiveUserLimitMessage settings={userLimitSettings} />
                 <UsersGridPanel
                     user={user}
                     onCreateComplete={this.onCreateComplete}
@@ -267,6 +288,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                     policy={policy}
                     allowResetPassword={allowResetPassword}
                     showDetailsPanel={user.hasManageUsersPermission()}
+                    userLimitSettings={userLimitSettings}
                 />
             </BasePermissionsCheckPage>
         );

@@ -114,14 +114,14 @@ describe('FilterValueDisplay', () => {
     });
 
     test('date filter', () => {
-        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/PST
+        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Los_Angeles
         const testDate = new Date(datePOSIX);
 
         const wrapper = mount(
             <FilterValueDisplay
                 filter={Filter.create(
                     'DateField',
-                    formatDate(testDate, 'America/PST', 'YYYY-MM-dd'),
+                    formatDate(testDate, 'America/Los_Angeles', 'YYYY-MM-dd'),
                     Filter.Types.Equals
                 )}
             />

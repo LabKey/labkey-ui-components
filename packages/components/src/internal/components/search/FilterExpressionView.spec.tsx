@@ -191,7 +191,7 @@ describe('FilterExpressionView', () => {
     });
 
     test('date field, not equal', async () => {
-        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/PST
+        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Los_Angeles
         const testDate = new Date(datePOSIX);
 
         const wrapper = mount(

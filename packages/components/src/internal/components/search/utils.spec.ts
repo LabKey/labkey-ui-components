@@ -567,8 +567,8 @@ const cardWithEntityTypeFilterJSON =
 
 describe('searchFiltersToJson', () => {
     test('searchFiltersToJson', () => {
-        expect(searchFiltersToJson([card], 5, testDate, 'America/PST')).toEqual(cardJSON);
-        expect(searchFiltersToJson([cardWithEntityTypeFilter], 5, testDate, 'America/PST')).toEqual(cardWithEntityTypeFilterJSON);
+        expect(searchFiltersToJson([card], 5, testDate, 'America/Los_Angeles')).toEqual(cardJSON);
+        expect(searchFiltersToJson([cardWithEntityTypeFilter], 5, testDate, 'America/Los_Angeles')).toEqual(cardWithEntityTypeFilterJSON);
     });
 });
 

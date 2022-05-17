@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX.0
+*Released*: XX May 2022
+* Item 10299: Sample Finder Saving Queries
+  * Add SampleFinderManageViewsModal, SampleFinderSaveViewModal and SampleFinderSavedViewsMenu components
+  * Utils for saveFinderSearch, loadFinderSearches, loadFinderSearch, renameReport and deleteReport
+  * Update SampleFinderSection to show saved views and not load from session to default
+
 ### version 2.171.1
 *Released*: 13 May 2022
 * Issue 45222: Editable grid doesn't automatically expand width of dropdowns to show long values

@@ -1,38 +1,31 @@
 import React, {FC, memo, useState, useEffect, useMemo} from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 
+import {LoadingSpinner} from "../base/LoadingSpinner";
 import { SubMenuItem } from "../menus/SubMenuItem";
-import { loadFinderSearches } from "./actions";
 import { FinderReport } from "./models";
-import { getLocalStorageKey, searchFiltersFromJson } from "./utils";
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from "../../APIWrapper";
 
 interface Props {
+    api?: ComponentsAPIWrapper;
     loadSearch: (view: FinderReport) => any
     saveSearch: (saveCurrentName?: boolean) => any
     manageSearches: () => any
     currentView?: FinderReport
     hasUnsavedChanges?: boolean
+    sessionViewName?: string
     key: any
 }
 
 export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
-    const { loadSearch, manageSearches, saveSearch, currentView, hasUnsavedChanges, key } = props;
+    const { api, loadSearch, manageSearches, saveSearch, currentView, hasUnsavedChanges, sessionViewName, key } = props;
 
-    const [unsavedSessionViewName, setUnsavedSessionViewName] = useState<string>(undefined);
-    const [savedSearches, setSavedSearches] = useState<FinderReport[]>([]);
+    const [savedSearches, setSavedSearches] = useState<FinderReport[]>(undefined);
 
     useEffect(() => {
         (async () => {
-            const views = await loadFinderSearches();
+            const views = await api.samples.loadFinderSearches();
             setSavedSearches(views);
-
-            const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
-            if (finderSessionDataStr) {
-                const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
-                if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
-                    setUnsavedSessionViewName(finderSessionData.filterTimestamp);
-                }
-            }
         })();
 
     }, [key]);
@@ -54,16 +47,17 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
         <>
             <DropdownButton id="samplefinder-savedsearch-menu" title={menuTitle} className={'button-right-spacing'}>
                 {
-                    unsavedSessionViewName &&
+                    sessionViewName &&
                     <>
                         <SubMenuItem text="MOST RECENT SEARCH" inline>
-                            <MenuItem onClick={() => loadSearch({isSession: true, reportName: unsavedSessionViewName})}>{unsavedSessionViewName}</MenuItem>
+                            <MenuItem onClick={() => loadSearch({isSession: true, reportName: sessionViewName})}>{sessionViewName}</MenuItem>
                         </SubMenuItem>
                         <MenuItem divider />
                     </>
                 }
+                {!savedSearches && <LoadingSpinner/>}
                 {
-                    hasSavedView &&
+                    (savedSearches?.length > 0) &&
                     <>
                         {savedSearches.map((savedSearch) => {
                             return (
@@ -73,7 +67,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                     </>
                 }
                 {
-                    !hasSavedView &&
+                    (savedSearches?.length === 0) &&
                     <SubMenuItem text="NO SAVED SEARCH" inline/>
                 }
                 <MenuItem divider />
@@ -97,3 +91,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
 
     );
 });
+
+SampleFinderSavedViewsMenu.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};

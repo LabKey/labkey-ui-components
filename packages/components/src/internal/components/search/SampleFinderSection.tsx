@@ -48,6 +48,7 @@ import {FieldFilter, FilterProps, FinderReport} from './models';
 import {SampleFinderSavedViewsMenu} from "./SampleFinderSavedViewsMenu";
 import {SampleFinderSaveViewModal} from "./SampleFinderSaveViewModal";
 import {SampleFinderManageViewsModal} from "./SampleFinderManageViewsModal";
+import {formatDateTime} from "../../util/Date";
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -110,6 +111,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [viewDirty, setViewDirty] = useState<boolean>(false); // Find is clicked
     const [showSaveViewDialog, setShowSaveViewDialog] = useState<boolean>(false);
     const [showManageViewsDialog, setShowManageViewsDialog] = useState<boolean>(false);
+    const [unsavedSessionViewName, setUnsavedSessionViewName] = useState<string>(undefined);
 
     useEffect(() => {
         const _enabledEntityTypes = [];
@@ -126,6 +128,13 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 setEnabledEntityTypes(_enabledEntityTypes);
             }
         })();
+        const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
+        if (finderSessionDataStr) {
+            const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
+            if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
+                setUnsavedSessionViewName(finderSessionData.filterTimestamp);
+            }
+        }
     }, []);
 
     const getSelectionKeyPrefix = (): string => {
@@ -136,8 +145,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         setFilters(filters);
         setFilterChangeCounter(filterChangeCounter);
         setViewDirty(isViewDirty);
-        if (updateSession)
-            sessionStorage.setItem(getLocalStorageKey(), searchFiltersToJson(filters, filterChangeCounter));
+        if (updateSession) {
+            const currentTimestamp = new Date();
+            sessionStorage.setItem(getLocalStorageKey(), searchFiltersToJson(filters, filterChangeCounter, currentTimestamp));
+            setUnsavedSessionViewName("Searched " + formatDateTime(currentTimestamp));
+        }
     };
 
     const onAddEntity = useCallback((entityType: EntityDataType) => {
@@ -282,6 +294,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     manageSearches={manageSearches}
                     currentView={currentView}
                     hasUnsavedChanges={viewDirty}
+                    sessionViewName={unsavedSessionViewName}
                     key={filterChangeCounter + '-' + savedViewChangeCounter}
                 />
             }

@@ -87,6 +87,7 @@ describe('FilterCard', () => {
 
         expect(content.find('.filter-display__row').length).toBe(2);
         expect(content.text()).toBe('Field11Field22');
+        expect(content.find('.filter-row-divider').length).toBe(1);
         wrapper.unmount();
     });
 });

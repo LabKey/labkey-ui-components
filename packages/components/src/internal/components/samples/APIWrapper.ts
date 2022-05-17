@@ -17,6 +17,8 @@ import {
 } from './actions';
 import { SampleState } from './models';
 import { SampleOperation } from './constants';
+import { FinderReport } from "../search/models";
+import { loadFinderSearches}  from "../search/actions";
 
 export interface SamplesAPIWrapper {
     getSampleAliquotRows: (sampleId: number | string) => Promise<Array<Record<string, any>>>;
@@ -45,6 +47,8 @@ export interface SamplesAPIWrapper {
         selected: any[],
         fieldKey: string
     ) => Promise<string[]>;
+
+    loadFinderSearches: () => Promise<FinderReport[]>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
@@ -55,6 +59,7 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
     getSampleStorageId = getSampleStorageId;
     getFieldLookupFromSelection = getFieldLookupFromSelection;
+    loadFinderSearches = loadFinderSearches;
 }
 
 /**
@@ -72,6 +77,7 @@ export function getSamplesTestAPIWrapper(
         getSampleOperationConfirmationData: mockFn(),
         getSampleStorageId: mockFn,
         getFieldLookupFromSelection: mockFn(),
+        loadFinderSearches: mockFn,
         ...overrides,
     };
 }

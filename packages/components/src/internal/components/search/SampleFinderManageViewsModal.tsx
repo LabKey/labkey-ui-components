@@ -1,23 +1,22 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
 import {Col, Modal, Row} from 'react-bootstrap';
-import { loadFinderSearches } from "./actions";
 import { resolveErrorMessage } from "../../util/messaging";
 import { FinderReport } from "./models";
 import { Alert } from "../base/Alert";
 import { deleteReport, renameReport } from "../../query/reports";
+import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../APIWrapper";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 export interface Props {
+    api?: ComponentsAPIWrapper;
     onDone: (hasChange?: boolean) => void;
     currentView?: FinderReport;
 }
 
 export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
-    const {
-        onDone,
-        currentView
-    } = props;
+    const { api, onDone, currentView } = props;
 
-    const [savedSearches, setSavedSearches] = useState<FinderReport[]>([]);
+    const [savedSearches, setSavedSearches] = useState<FinderReport[]>(undefined);
     const [selectedSearch, setSelectedSearch] = useState<FinderReport>(undefined);
     const [errorMessage, setErrorMessage] = useState<string>();
     const [newName, setNewName] = useState<string>();
@@ -26,7 +25,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
 
     useEffect(() => {
         (async () => {
-            const views = await loadFinderSearches();
+            const views = await api.samples.loadFinderSearches();
             setSavedSearches(views);
         })();
 
@@ -40,7 +39,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         try {
             await deleteReport(entityId);
             setIsSubmitting(false);
-            setSavedSearches(await loadFinderSearches());
+            setSavedSearches(await api.samples.loadFinderSearches());
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
             setIsSubmitting(false);
@@ -66,7 +65,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
 
         try {
             await renameReport(selectedSearch.entityId, newName);
-            setSavedSearches(await loadFinderSearches());
+            setSavedSearches(await api.samples.loadFinderSearches());
             setIsSubmitting(false);
             setSelectedSearch(undefined);
         } catch (error) {
@@ -86,7 +85,8 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
             </Modal.Header>
             <Modal.Body>
                 <Alert>{errorMessage}</Alert>
-                    {savedSearches.map((savedSearch) => {
+                {!savedSearches && <LoadingSpinner/>}
+                {savedSearches && savedSearches.map((savedSearch) => {
                         const isLocked = savedSearch.entityId === currentView?.entityId
                         return (
                             <Row className="small-margin-bottom">
@@ -151,3 +151,8 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         </Modal>
     );
 });
+
+
+SampleFinderManageViewsModal.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};

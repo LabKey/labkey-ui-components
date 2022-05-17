@@ -47,7 +47,7 @@ describe('SampleFinderManageViewsModal', () => {
         wrapper.unmount();
     });
 
-    test('one saved views', async () => {
+    test('one saved view', async () => {
         const wrapper = mount(
             <SampleFinderManageViewsModal api={getSampleFinderAPI([SAVED_VIEW2])} onDone={jest.fn()} />
         );

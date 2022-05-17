@@ -19,6 +19,7 @@ import numeral from 'numeral';
 import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../..';
+
 import { formatWithJDF, toMomentFormatString } from './jDateFormatParser';
 
 export function datePlaceholder(col: QueryColumn): string {

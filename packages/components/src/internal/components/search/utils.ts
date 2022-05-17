@@ -1,4 +1,4 @@
-import {ActionURL, Filter, getServerContext, Utils} from '@labkey/api';
+import { ActionURL, Filter, getServerContext, Utils } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { JsonType } from '../domainproperties/PropDescType';
@@ -20,16 +20,20 @@ import { CONCEPT_COLUMN_FILTER_TYPES, getLabKeySql } from '../../query/filter';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import {getPrimaryAppProperties, isOntologyEnabled} from '../../app/utils';
+import { getPrimaryAppProperties, isOntologyEnabled } from '../../app/utils';
+
+import { formatDateTime } from '../../util/Date';
 
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
-import {formatDateTime} from "../../util/Date";
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[], enabledEntityTypes: string[]): string {
     const hintText = 'Start by adding ';
-    let names = parentEntityDataTypes.filter(entityType => enabledEntityTypes?.indexOf(entityType.typeListingSchemaQuery.queryName) >= 0).map(entityType => entityType.nounAsParentSingular).join(', ');
+    let names = parentEntityDataTypes
+        .filter(entityType => enabledEntityTypes?.indexOf(entityType.typeListingSchemaQuery.queryName) >= 0)
+        .map(entityType => entityType.nounAsParentSingular)
+        .join(', ');
     if (names.length === 0) {
         return null;
     }
@@ -170,7 +174,7 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[], useAncestors:
     });
     return {
         requiredColumns,
-        baseFilters
+        baseFilters,
     };
 }
 
@@ -371,11 +375,11 @@ export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
     return filterPropsObj;
 }
 
-export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCounter: number, time?: Date): string {
+export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCounter: number, time?: Date, timezone?: string): string {
     return JSON.stringify({
         filters: getSearchFilterObjs(filterProps),
         filterChangeCounter,
-        filterTimestamp: "Searched " + formatDateTime(time ?? new Date())
+        filterTimestamp: 'Searched ' + formatDateTime(time ?? new Date(), timezone),
     });
 }
 

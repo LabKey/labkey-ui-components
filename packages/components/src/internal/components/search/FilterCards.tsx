@@ -1,11 +1,12 @@
 import React, { FC, memo, useCallback } from 'react';
 
+import classNames from 'classnames';
+
 import { EntityDataType } from '../entities/models';
 import { capitalizeFirstChar } from '../../util/utils';
 
 import { FieldFilter, FilterProps } from './models';
 import { FilterValueDisplay } from './FilterValueDisplay';
-import classNames from "classnames";
 
 interface GroupedFilterProps {
     cardIndex: number;
@@ -27,7 +28,10 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
     Object.keys(groupedFilters).forEach((key, ind) => {
         groupedFilters[key].forEach((fieldFilter, index) => {
             rows.push(
-                <tr key={key + '-' + index} className={classNames('filter-display__row', { 'filter-row-divider': ind > 0 })}>
+                <tr
+                    key={key + '-' + index}
+                    className={classNames('filter-display__row', { 'filter-row-divider': ind > 0 })}
+                >
                     {index === 0 && <td className="filter-display__field-label">{fieldFilter.fieldCaption}</td>}
                     {index !== 0 && <td className="filter-display__field-boolean">and</td>}
                     <td className="filter-display__filter-content">
@@ -82,12 +86,16 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
             return (
                 <>
                     <div className="filter-cards__card disabled">
-                        <div className={'filter-card__header without-secondary ' + entityDataType.filterCardHeaderClass}>
+                        <div
+                            className={'filter-card__header without-secondary ' + entityDataType.filterCardHeaderClass}
+                        >
                             <div className="primary-text">
                                 {capitalizeFirstChar(entityDataType.nounAsParentSingular)} Properties
                             </div>
                         </div>
-                        <div className="filter-card__empty-content">No {entityDataType.nounAsParentSingular} Types defined.</div>
+                        <div className="filter-card__empty-content">
+                            No {entityDataType.nounAsParentSingular} Types defined.
+                        </div>
                     </div>
                 </>
             );

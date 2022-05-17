@@ -2,7 +2,7 @@ import { Ajax, Utils } from '@labkey/api';
 
 import { IDataViewInfo } from '../models';
 import { AppURL, buildURL } from '../..';
-import {SAMPLE_MANAGER_APP_PROPERTIES} from "../app/constants";
+import { SAMPLE_MANAGER_APP_PROPERTIES } from '../app/constants';
 
 export type ReportURLMapper = (report: IDataViewInfo) => AppURL;
 
@@ -42,9 +42,13 @@ export function loadReports(urlMapper?: ReportURLMapper): Promise<IDataViewInfo[
                 const reports = flattenBrowseDataTreeResponse(JSON.parse(request.responseText), urlMapper);
                 resolve(reports);
             },
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }, this, true),
+            failure: Utils.getCallbackWrapper(
+                error => {
+                    reject(error);
+                },
+                this,
+                true
+            ),
         });
     });
 }
@@ -52,13 +56,15 @@ export function loadReports(urlMapper?: ReportURLMapper): Promise<IDataViewInfo[
 export function deleteReport(reportId: string, reportType?: string): Promise<any> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL("reports", 'deleteViews.api'),
+            url: buildURL('reports', 'deleteViews.api'),
             method: 'POST',
             jsonData: {
-                views: [{
-                    id: reportId,
-                    dataType: reportType ?? 'reports'
-                    }]
+                views: [
+                    {
+                        id: reportId,
+                        dataType: reportType ?? 'reports',
+                    },
+                ],
             },
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
@@ -73,7 +79,7 @@ export function deleteReport(reportId: string, reportType?: string): Promise<any
 export function renameReport(reportId: string, newName: string, reportType?: string): Promise<any> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL("reports", 'editView.api'),
+            url: buildURL('reports', 'editView.api'),
             method: 'POST',
             params: {
                 id: reportId,
@@ -89,4 +95,3 @@ export function renameReport(reportId: string, newName: string, reportType?: str
         });
     });
 }
-

@@ -3,43 +3,39 @@ import { mount } from 'enzyme';
 
 import { waitForLifecycle } from '../../testHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { SampleFinderManageViewsModal } from "./SampleFinderManageViewsModal";
-import { FinderReport } from "./models";
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
-import { getSamplesTestAPIWrapper } from "../samples/APIWrapper";
+import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
 
-export const SAVED_VIEW1 : FinderReport = {
-    "reportId": "db:292",
-    "reportName": "Text1",
-    "entityId": "bb03caaf-b76e-103a-a843-0cff0bac6533",
-    "isSession": false
+import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
+import { FinderReport } from './models';
+
+export const SAVED_VIEW1: FinderReport = {
+    reportId: 'db:292',
+    reportName: 'Text1',
+    entityId: 'bb03caaf-b76e-103a-a843-0cff0bac6533',
+    isSession: false,
 };
 
-export const SAVED_VIEW2 : FinderReport = {
-    "reportId": "db:293",
-    "reportName": "source2",
-    "entityId": "bb03cc46-b76e-103a-a843-0cff0bac6533",
-    "isSession": false
+export const SAVED_VIEW2: FinderReport = {
+    reportId: 'db:293',
+    reportName: 'source2',
+    entityId: 'bb03cc46-b76e-103a-a843-0cff0bac6533',
+    isSession: false,
 };
 
 export const getSampleFinderAPI = (savedViews: FinderReport[]) => {
     return getTestAPIWrapper(jest.fn, {
         samples: getSamplesTestAPIWrapper(jest.fn, {
-            loadFinderSearches: () => Promise.resolve(savedViews)
+            loadFinderSearches: () => Promise.resolve(savedViews),
         }),
     });
-}
+};
 
 describe('SampleFinderManageViewsModal', () => {
-
     test('no saved views', async () => {
-        const wrapper = mount(
-            <SampleFinderManageViewsModal
-                api={getSampleFinderAPI([])}
-                onDone={jest.fn()}
-            />);
+        const wrapper = mount(<SampleFinderManageViewsModal api={getSampleFinderAPI([])} onDone={jest.fn()} />);
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -53,10 +49,8 @@ describe('SampleFinderManageViewsModal', () => {
 
     test('one saved views', async () => {
         const wrapper = mount(
-            <SampleFinderManageViewsModal
-                api={getSampleFinderAPI([SAVED_VIEW2])}
-                onDone={jest.fn()}
-            />);
+            <SampleFinderManageViewsModal api={getSampleFinderAPI([SAVED_VIEW2])} onDone={jest.fn()} />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -69,7 +63,7 @@ describe('SampleFinderManageViewsModal', () => {
         expect(wrapper.find('.fa-trash-o').length).toBe(1);
 
         const findButton = wrapper.find('button.btn-default');
-        expect(findButton.text()).toEqual("Done editing")
+        expect(findButton.text()).toEqual('Done editing');
 
         wrapper.unmount();
     });
@@ -80,7 +74,8 @@ describe('SampleFinderManageViewsModal', () => {
                 api={getSampleFinderAPI([SAVED_VIEW2])}
                 currentView={SAVED_VIEW2}
                 onDone={jest.fn()}
-            />);
+            />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -96,10 +91,11 @@ describe('SampleFinderManageViewsModal', () => {
     test('multiple saved views, with locked view', async () => {
         const wrapper = mount(
             <SampleFinderManageViewsModal
-            api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])}
-            currentView={SAVED_VIEW2}
-            onDone={jest.fn()}
-        />);
+                api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])}
+                currentView={SAVED_VIEW2}
+                onDone={jest.fn()}
+            />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -117,17 +113,15 @@ describe('SampleFinderManageViewsModal', () => {
         expect(rows.at(1).find('.fa-trash-o').length).toBe(0);
 
         const findButton = wrapper.find('button.btn-default');
-        expect(findButton.text()).toEqual("Done editing")
+        expect(findButton.text()).toEqual('Done editing');
 
         wrapper.unmount();
     });
 
     test('multiple saved views', async () => {
         const wrapper = mount(
-            <SampleFinderManageViewsModal
-                api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])}
-                onDone={jest.fn()}
-            />);
+            <SampleFinderManageViewsModal api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])} onDone={jest.fn()} />
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -144,6 +138,4 @@ describe('SampleFinderManageViewsModal', () => {
 
         wrapper.unmount();
     });
-
-
 });

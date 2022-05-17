@@ -75,7 +75,7 @@ export interface FilterProps {
 export interface SearchSessionStorageProps {
     filters: FilterProps[];
     filterChangeCounter: number;
-    filterTimestamp: string
+    filterTimestamp: string;
 }
 
 export interface FieldFilterOption {

@@ -1,11 +1,14 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
-import {Col, Modal, Row} from 'react-bootstrap';
-import { resolveErrorMessage } from "../../util/messaging";
-import { FinderReport } from "./models";
-import { Alert } from "../base/Alert";
-import { deleteReport, renameReport } from "../../query/reports";
-import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../APIWrapper";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { Col, Modal, Row } from 'react-bootstrap';
+
+import { resolveErrorMessage } from '../../util/messaging';
+
+import { Alert } from '../base/Alert';
+import { deleteReport, renameReport } from '../../query/reports';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { FinderReport } from './models';
 
 export interface Props {
     api?: ComponentsAPIWrapper;
@@ -28,10 +31,9 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
             const views = await api.samples.loadFinderSearches();
             setSavedSearches(views);
         })();
-
     }, []);
 
-    const deleteView = useCallback(async (entityId) => {
+    const deleteView = useCallback(async entityId => {
         setErrorMessage(undefined);
         setIsSubmitting(true);
         setHasChange(true);
@@ -43,9 +45,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
             setIsSubmitting(false);
-            return;
         }
-
     }, []);
 
     const renameView = useCallback(async () => {
@@ -71,9 +71,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
             setIsSubmitting(false);
-            return;
         }
-
     }, [selectedSearch, newName]);
 
     const onNewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setNewName(evt.target.value), []);
@@ -85,13 +83,14 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
             </Modal.Header>
             <Modal.Body>
                 <Alert>{errorMessage}</Alert>
-                {!savedSearches && <LoadingSpinner/>}
-                {savedSearches && savedSearches.map((savedSearch) => {
-                        const isLocked = savedSearch.entityId === currentView?.entityId
+                {!savedSearches && <LoadingSpinner />}
+                {savedSearches &&
+                    savedSearches.map(savedSearch => {
+                        const isLocked = savedSearch.entityId === currentView?.entityId;
                         return (
                             <Row className="small-margin-bottom">
                                 <Col xs={5}>
-                                    {(selectedSearch?.reportId === savedSearch.reportId) ?
+                                    {selectedSearch?.reportId === savedSearch.reportId ? (
                                         <input
                                             autoFocus
                                             placeholder={selectedSearch.reportName}
@@ -100,42 +99,47 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
                                             onBlur={renameView}
                                             onChange={onNewNameChange}
                                             type="text"
-                                        /> : savedSearch.reportName
-                                    }
+                                        />
+                                    ) : (
+                                        savedSearch.reportName
+                                    )}
                                 </Col>
-                                {
-                                    !selectedSearch && !isLocked && (
-                                        <>
-                                            <Col xs={1}>
-                                                {!selectedSearch && !isLocked && (
-                                                    <span
-                                                        className="edit-inline-field__toggle"
-                                                        onClick={() => setSelectedSearch(savedSearch)}
-                                                    >
-                                                        <i className="fa fa-pencil"/>
-                                                    </span>)
-                                                }
-                                                {isLocked && <span className="edit-inline-field__toggle"><i
-                                                        className="fa fa-lock"/></span>
-                                                }
-                                            </Col>
-                                            <Col xs={1}>
-                                                {!selectedSearch && !isLocked && (
-                                                    <span
-                                                        className="edit-inline-field__toggle"
-                                                        onClick={() => deleteView(savedSearch.entityId)}
-                                                    >
-                                                        <i className="fa fa-trash-o"/>
-                                                    </span>)
-                                                }
-                                            </Col>
-                                        </>
+                                {!selectedSearch && !isLocked && (
+                                    <>
+                                        <Col xs={1}>
+                                            {!selectedSearch && !isLocked && (
+                                                <span
+                                                    className="edit-inline-field__toggle"
+                                                    onClick={() => setSelectedSearch(savedSearch)}
+                                                >
+                                                    <i className="fa fa-pencil" />
+                                                </span>
+                                            )}
+                                            {isLocked && (
+                                                <span className="edit-inline-field__toggle">
+                                                    <i className="fa fa-lock" />
+                                                </span>
+                                            )}
+                                        </Col>
+                                        <Col xs={1}>
+                                            {!selectedSearch && !isLocked && (
+                                                <span
+                                                    className="edit-inline-field__toggle"
+                                                    onClick={() => deleteView(savedSearch.entityId)}
+                                                >
+                                                    <i className="fa fa-trash-o" />
+                                                </span>
+                                            )}
+                                        </Col>
+                                    </>
                                 )}
                                 {isLocked && (
                                     <>
-                                        <Col xs={1}/>
+                                        <Col xs={1} />
                                         <Col xs={1}>
-                                            <span><i className="fa fa-lock" /></span>
+                                            <span>
+                                                <i className="fa fa-lock" />
+                                            </span>
                                         </Col>
                                     </>
                                 )}
@@ -144,14 +148,17 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
                     })}
             </Modal.Body>
             <Modal.Footer>
-                <button disabled={isSubmitting} onClick={() => onDone(hasChange)} className="btn btn-default pull-right">
+                <button
+                    disabled={isSubmitting}
+                    onClick={() => onDone(hasChange)}
+                    className="btn btn-default pull-right"
+                >
                     Done editing
                 </button>
             </Modal.Footer>
         </Modal>
     );
 });
-
 
 SampleFinderManageViewsModal.defaultProps = {
     api: getDefaultAPIWrapper(),

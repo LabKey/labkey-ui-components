@@ -43,7 +43,7 @@ interface Props {
     cards?: FilterProps[];
     skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
     metricFeatureArea?: string;
-    setCardDirty?: (dirty: boolean) => any
+    setCardDirty?: (dirty: boolean) => any;
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {

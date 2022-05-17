@@ -6,6 +6,10 @@ import { getSampleOperationConfirmationData } from '../entities/actions';
 
 import { OperationConfirmationData } from '../entities/models';
 
+import { FinderReport } from '../search/models';
+
+import { loadFinderSearches } from '../search/actions';
+
 import {
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
@@ -17,8 +21,6 @@ import {
 } from './actions';
 import { SampleState } from './models';
 import { SampleOperation } from './constants';
-import { FinderReport } from "../search/models";
-import { loadFinderSearches}  from "../search/actions";
 
 export interface SamplesAPIWrapper {
     getSampleAliquotRows: (sampleId: number | string) => Promise<Array<Record<string, any>>>;

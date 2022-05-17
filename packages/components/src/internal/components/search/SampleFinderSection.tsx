@@ -1,4 +1,4 @@
-import React, {ComponentType, FC, memo, useCallback, useEffect, useMemo, useState} from 'react';
+import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
@@ -29,7 +29,9 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getAllEntityTypeOptions } from '../entities/actions';
 
-import {loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch} from './actions';
+import { formatDateTime } from '../../util/Date';
+
+import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';
 import {
     getFinderStartText,
@@ -44,11 +46,10 @@ import {
 } from './utils';
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
-import {FieldFilter, FilterProps, FinderReport} from './models';
-import {SampleFinderSavedViewsMenu} from "./SampleFinderSavedViewsMenu";
-import {SampleFinderSaveViewModal} from "./SampleFinderSaveViewModal";
-import {SampleFinderManageViewsModal} from "./SampleFinderManageViewsModal";
-import {formatDateTime} from "../../util/Date";
+import { FieldFilter, FilterProps, FinderReport } from './models';
+import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
+import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
+import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -93,8 +94,6 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
         </div>
     );
 });
-
-
 
 export const SampleFinderSection: FC<Props> = memo(props => {
     const { api, sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
@@ -141,14 +140,22 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         return 'sampleFinder-' + filterChangeCounter;
     };
 
-    const updateFilters = (filterChangeCounter: number, filters: FilterProps[], updateSession: boolean, isViewDirty: boolean) => {
+    const updateFilters = (
+        filterChangeCounter: number,
+        filters: FilterProps[],
+        updateSession: boolean,
+        isViewDirty: boolean
+    ) => {
         setFilters(filters);
         setFilterChangeCounter(filterChangeCounter);
         setViewDirty(isViewDirty);
         if (updateSession) {
             const currentTimestamp = new Date();
-            sessionStorage.setItem(getLocalStorageKey(), searchFiltersToJson(filters, filterChangeCounter, currentTimestamp));
-            setUnsavedSessionViewName("Searched " + formatDateTime(currentTimestamp));
+            sessionStorage.setItem(
+                getLocalStorageKey(),
+                searchFiltersToJson(filters, filterChangeCounter, currentTimestamp)
+            );
+            setUnsavedSessionViewName('Searched ' + formatDateTime(currentTimestamp));
         }
     };
 
@@ -182,9 +189,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             if (currentView && newFilterCards?.length === 0) {
                 updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, false);
                 setCurrentView(undefined);
-            }
-            else
-                updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
+            } else updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
         },
         [filters, filterChangeCounter, currentView]
     );
@@ -227,56 +232,50 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType, cardDirty, currentView]
     );
 
-    const loadSearch = useCallback(async (view: FinderReport) => {
+    const loadSearch = useCallback(
+        async (view: FinderReport) => {
             let cardJson = null;
 
-            if (view.isSession)
-                cardJson = sessionStorage.getItem(getLocalStorageKey());
-            else if (view.reportId)
-                cardJson = await loadFinderSearch(view);
-            if (!cardJson)
-                return;
+            if (view.isSession) cardJson = sessionStorage.getItem(getLocalStorageKey());
+            else if (view.reportId) cardJson = await loadFinderSearch(view);
+            if (!cardJson) return;
 
             const finderSessionData = searchFiltersFromJson(cardJson);
             const newFilters = finderSessionData.filters;
-            if (!newFilters)
-                return;
+            if (!newFilters) return;
 
-            updateFilters(filterChangeCounter + 1, newFilters, false, view.isSession)
+            updateFilters(filterChangeCounter + 1, newFilters, false, view.isSession);
             setShowSaveViewDialog(false);
             setCurrentView(view);
         },
         [filterChangeCounter]
     );
 
-    const saveSearch = useCallback(async (saveCurrentName?: boolean) => {
-            if (saveCurrentName)
-            {
-                const viewJson = JSON.stringify({filters: getSearchFilterObjs(filters)});
+    const saveSearch = useCallback(
+        async (saveCurrentName?: boolean) => {
+            if (saveCurrentName) {
+                const viewJson = JSON.stringify({ filters: getSearchFilterObjs(filters) });
                 await saveFinderSearch(currentView, viewJson, saveCurrentName);
                 setViewDirty(false);
-            }
-            else
-            {
+            } else {
                 setShowSaveViewDialog(true);
             }
-        }, [currentView, filters]
+        },
+        [currentView, filters]
     );
 
     const searchViewJson = useMemo(() => {
         return JSON.stringify({
-            filters: getSearchFilterObjs(filters)
+            filters: getSearchFilterObjs(filters),
         });
     }, [showSaveViewDialog, filters]);
 
-
     const manageSearches = useCallback(() => {
-            setShowManageViewsDialog(true);
-        },
-        []
-    );
+        setShowManageViewsDialog(true);
+    }, []);
 
-    const onManageSearchesDone = useCallback((hasChange: boolean) => {
+    const onManageSearchesDone = useCallback(
+        (hasChange: boolean) => {
             setShowManageViewsDialog(false);
             if (hasChange) {
                 setSavedViewChangeCounter(savedViewChangeCounter + 1);
@@ -358,10 +357,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 />
             )}
             {showManageViewsDialog && (
-                <SampleFinderManageViewsModal
-                    onDone={onManageSearchesDone}
-                    currentView={currentView}
-                />
+                <SampleFinderManageViewsModal onDone={onManageSearchesDone} currentView={currentView} />
             )}
         </Section>
     );

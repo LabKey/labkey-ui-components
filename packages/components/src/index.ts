@@ -226,6 +226,7 @@ import { loadEditorModelData } from './internal/components/editable/utils';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridPanelForUpdateWithLineage } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
+import { UpdateGridTab } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
@@ -322,6 +323,8 @@ import {
     getSampleTypeDetails,
     getSampleTypes,
     getSelectedItemSamples,
+    getSelectionLineageData,
+    getOriginalParentsFromLineage
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
@@ -876,6 +879,7 @@ export {
     EditableGridPanel,
     EditableGridPanelForUpdate,
     EditableGridPanelForUpdateWithLineage,
+    UpdateGridTab,
     EditorModel,
     cancelEvent,
     // url and location related items
@@ -1035,6 +1039,8 @@ export {
     createQueryConfigFilteredBySample,
     getFieldLookupFromSelection,
     getSelectedItemSamples,
+    getSelectionLineageData,
+    getOriginalParentsFromLineage,
     getSampleTypes,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,

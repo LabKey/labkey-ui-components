@@ -15,13 +15,10 @@ import {
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 import { SampleStatusLegend } from './SampleStatusLegend';
-import { EditableGridPanelForUpdateWithLineage } from "../editable/EditableGridPanelForUpdateWithLineage";
-
-export enum GridTab {
-    Samples,
-    Storage,
-    Lineage,
-}
+import {
+    EditableGridPanelForUpdateWithLineage,
+    UpdateGridTab
+} from "../editable/EditableGridPanelForUpdateWithLineage";
 
 interface Props {
     queryModel: QueryModel;
@@ -34,8 +31,7 @@ interface Props {
     singularNoun?: string;
     pluralNoun?: string;
     readOnlyColumns?: List<string>;
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    includedTabs: GridTab[];
+    includedTabs: UpdateGridTab[];
 
     // passed through from SampleEditableGrid
     parentDataTypes: List<EntityDataType>;
@@ -61,8 +57,8 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
     getTabTitle = (tabInd: number): string => {
         const { includedTabs } = this.props;
 
-        if (includedTabs[tabInd] === GridTab.Storage) return 'Storage Details';
-        if (includedTabs[tabInd] === GridTab.Lineage) return 'Lineage Details';
+        if (includedTabs[tabInd] === UpdateGridTab.Storage) return 'Storage Details';
+        if (includedTabs[tabInd] === UpdateGridTab.Lineage) return 'Lineage Details';
         return 'Sample Data';
     };
 
@@ -71,7 +67,7 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
     }
 
     getAdditionalTabs = (tab: number): ReactNode => {
-        if (tab === GridTab.Storage) {
+        if (tab === UpdateGridTab.Storage) {
             return (
                 <div className="top-spacing sample-status-warning">
                     Samples that are not currently in storage are not editable here.
@@ -89,9 +85,9 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
     getReadOnlyRows = (tabInd: number): List<string> => {
         const { aliquots, noStorageSamples, includedTabs } = this.props;
 
-        if (includedTabs[tabInd] === GridTab.Storage) {
+        if (includedTabs[tabInd] === UpdateGridTab.Storage) {
             return List<string>(noStorageSamples);
-        } else if (includedTabs[tabInd] === GridTab.Lineage) {
+        } else if (includedTabs[tabInd] === UpdateGridTab.Lineage) {
             return List<string>(aliquots);
         } else {
             return undefined;
@@ -99,7 +95,7 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
     };
 
     getSamplesColumnMetadata = (tabInd: number): Map<string, EditableColumnMetadata> => {
-        if (this.getCurrentTab(tabInd) !== GridTab.Samples) return undefined;
+        if (this.getCurrentTab(tabInd) !== UpdateGridTab.Samples) return undefined;
 
         const { aliquots, sampleTypeDomainFields, queryModel } = this.props;
         let columnMetadata = getUniqueIdColumnMetadata(queryModel.queryInfo);

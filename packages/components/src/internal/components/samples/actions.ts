@@ -257,7 +257,7 @@ function getFilteredSampleSelection(
     sampleType: string,
     filters: Filter.IFilter[]
 ): Promise<any[]> {
-    const sampleRowIds = getSampleRowIdsFromSelection(selection);
+    const sampleRowIds = getRowIdsFromSelection(selection);
     if (sampleRowIds.length === 0) {
         return new Promise((resolve, reject) => {
             reject('No data is selected');
@@ -288,7 +288,7 @@ function getFilteredSampleSelection(
 }
 
 export function getSampleSelectionStorageData(selection: List<any>): Promise<Record<string, any>> {
-    const sampleRowIds = getSampleRowIdsFromSelection(selection);
+    const sampleRowIds = getRowIdsFromSelection(selection);
     if (sampleRowIds.length === 0) {
         return new Promise((resolve, reject) => {
             reject('No data is selected');
@@ -343,22 +343,24 @@ export function getSampleStorageId(sampleRowId: number): Promise<number> {
     });
 }
 
-export function getSampleSelectionLineageData(
+// Used for samples and dataclasses
+export function getSelectionLineageData(
     selection: List<any>,
-    sampleType: string,
+    schema: string,
+    query: string,
     columns?: string[]
 ): Promise<ISelectRowsResult> {
-    const sampleRowIds = getSampleRowIdsFromSelection(selection);
-    if (sampleRowIds.length === 0) {
+    const rowIds = getRowIdsFromSelection(selection);
+    if (rowIds.length === 0) {
         return Promise.reject('No data is selected');
     }
 
     return new Promise((resolve, reject) => {
         selectRowsDeprecated({
-            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
-            queryName: sampleType,
+            schemaName: schema,
+            queryName: query,
             columns: columns ?? List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
-            filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN)],
+            filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
         })
             .then(response => {
                 resolve(response);
@@ -370,8 +372,8 @@ export function getSampleSelectionLineageData(
     });
 }
 
-export const getOriginalParentsFromSampleLineage = async (
-    sampleLineage: Record<string, any>,
+export const getOriginalParentsFromLineage = async (
+    lineage: Record<string, any>,
     parentDataTypes: EntityDataType[],
     containerPath?: string
 ): Promise<{
@@ -380,18 +382,18 @@ export const getOriginalParentsFromSampleLineage = async (
 }> => {
     const originalParents = {};
     let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
-    const dataClassTypeData = await getParentTypeDataForSample(
+    const dataClassTypeData = await getParentTypeDataForLineage(
         parentDataTypes.filter(
             dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
         )[0],
-        Object.values(sampleLineage),
+        Object.values(lineage),
         containerPath
     );
-    const sampleTypeData = await getParentTypeDataForSample(
+    const sampleTypeData = await getParentTypeDataForLineage(
         parentDataTypes.filter(
             dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
         )[0],
-        Object.values(sampleLineage),
+        Object.values(lineage),
         containerPath
     );
 
@@ -406,11 +408,11 @@ export const getOriginalParentsFromSampleLineage = async (
             dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
                 ? dataClassTypeData.parentIdData
                 : sampleTypeData.parentIdData;
-        Object.keys(sampleLineage).forEach(sampleId => {
+        Object.keys(lineage).forEach(sampleId => {
             if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
 
             originalParents[sampleId] = originalParents[sampleId].concat(
-                getInitialParentChoices(dataTypeOptions, dataType, sampleLineage[sampleId], parentIdData)
+                getInitialParentChoices(dataTypeOptions, dataType, lineage[sampleId], parentIdData)
             );
         });
 
@@ -428,9 +430,9 @@ export const getOriginalParentsFromSampleLineage = async (
     return { originalParents, parentTypeOptions };
 };
 
-export const getParentTypeDataForSample = async (
+export const getParentTypeDataForLineage = async (
     parentDataType: EntityDataType,
-    samplesData: any[],
+    data: any[],
     containerPath?: string
 ): Promise<{
     parentTypeOptions: List<IEntityTypeOption>;
@@ -444,8 +446,8 @@ export const getParentTypeDataForSample = async (
 
         // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
         const parentIDs = [];
-        samplesData.forEach(sampleData => {
-            parentIDs.push(...sampleData[parentDataType.inputColumnName].map(row => row.value));
+        data.forEach(datum => {
+            parentIDs.push(...datum[parentDataType.inputColumnName].map(row => row.value));
         });
         parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs, containerPath);
     }
@@ -457,7 +459,7 @@ export type ParentIdData = {
     rowId: number;
 };
 
-function getParentRowIdAndDataType(
+export function getParentRowIdAndDataType(
     parentDataType: EntityDataType,
     parentIDs: string[],
     containerPath?: string
@@ -492,12 +494,12 @@ function getParentRowIdAndDataType(
 }
 
 // exported for jest testing
-export function getSampleRowIdsFromSelection(selection: List<any>): number[] {
-    const sampleRowIds = [];
+export function getRowIdsFromSelection(selection: List<any>): number[] {
+    const rowIds = [];
     if (selection && !selection.isEmpty()) {
-        selection.forEach(sel => sampleRowIds.push(parseInt(sel, 10)));
+        selection.forEach(sel => rowIds.push(parseInt(sel, 10)));
     }
-    return sampleRowIds;
+    return rowIds;
 }
 
 export interface GroupedSampleDisplayColumns {

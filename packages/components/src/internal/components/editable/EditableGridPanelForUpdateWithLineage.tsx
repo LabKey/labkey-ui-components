@@ -31,8 +31,9 @@ import {
 } from '../entities/EntityParentTypeSelectors';
 import { EntityParentType } from '../entities/models';
 
-export enum GridTab {
+export enum UpdateGridTab {
     Samples,
+    DataClasses,
     Storage,
     Lineage,
 }
@@ -52,7 +53,7 @@ interface Props {
     pluralNoun?: string;
     readOnlyColumns?: List<string>;
     getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    includedTabs: GridTab[];
+    includedTabs: UpdateGridTab[];
     getColumnMetadata: (tabInd: number) => Map<string, EditableColumnMetadata>;
     getTabTitle: (tabInd: number) => string;
     getAdditionalTabs?: (tab: number) => ReactNode
@@ -63,9 +64,6 @@ interface Props {
     // passed through from SampleEditableGrid
     parentDataTypes: List<EntityDataType>;
     combineParentTypes?: boolean;
-    aliquots: any[];
-    noStorageSamples: any[];
-    sampleTypeDomainFields: GroupedSampleFields;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
 }
 
@@ -186,7 +184,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
     }, [includedTabs]);
 
     const removeParentType = useCallback((index: number, queryName: string): void => {
-        const tabIndex = includedTabs.indexOf(GridTab.Lineage);
+        const tabIndex = includedTabs.indexOf(UpdateGridTab.Lineage);
 
         const { editorModelChanges, data, queryInfo, entityParents } = removeEntityParentType(
             index,
@@ -220,7 +218,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
         formValue: any,
         parent: IParentOption
     ): void => {
-        const tabIndex = includedTabs.indexOf(GridTab.Lineage);
+        const tabIndex = includedTabs.indexOf(UpdateGridTab.Lineage);
 
         const { editorModelChanges, data, queryInfo, entityParents } = changeEntityParentType(
             index,
@@ -251,7 +249,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
     const getTabHeader = useCallback((tabInd: number): ReactNode => {
         const currentTab = getCurrentTab(tabInd);
 
-        if (currentTab === GridTab.Lineage) {
+        if (currentTab === UpdateGridTab.Lineage) {
             return (
                 <>
                     <div className="top-spacing">

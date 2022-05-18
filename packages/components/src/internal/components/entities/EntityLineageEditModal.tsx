@@ -20,7 +20,7 @@ import {
     updateRows,
 } from '../../..';
 
-import { getOriginalParentsFromSampleLineage } from '../samples/actions';
+import { getOriginalParentsFromLineage } from '../samples/actions';
 
 import { IS_ALIQUOT_COL } from '../samples/constants';
 
@@ -64,8 +64,9 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                     SampleOperation.EditLineage,
                     queryModel.id
                 );
-                const sampleData = await api.samples.getSampleSelectionLineageData(
+                const sampleData = await api.samples.getSelectionLineageData(
                     List.of(...queryModel.selections),
+                    queryModel.schemaName,
                     queryModel.queryName,
                     List.of('RowId', 'Name', 'LSID', IS_ALIQUOT_COL).concat(ParentEntityLineageColumns).toArray()
                 );
@@ -101,7 +102,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const onConfirm = async (): Promise<void> => {
         setSubmitting(true);
 
-        const { originalParents } = await getOriginalParentsFromSampleLineage(allowedForUpdate, parentEntityDataTypes);
+        const { originalParents } = await getOriginalParentsFromLineage(allowedForUpdate, parentEntityDataTypes);
         const rows = getUpdatedLineageRowsForBulkEdit(
             allowedForUpdate,
             selectedParents,

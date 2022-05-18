@@ -4,7 +4,7 @@
  */
 import React, { ComponentType, ReactNode } from 'react';
 
-import { LoadingSpinner, SampleOperation } from '../../..';
+import {LoadingSpinner, SampleOperation, SCHEMAS} from '../../..';
 
 import { getSampleOperationConfirmationData } from '../entities/actions';
 
@@ -13,8 +13,8 @@ import {
     getAliquotSampleIds,
     getGroupedSampleDomainFields,
     getNotInStorageSampleIds,
-    getSampleSelectionLineageData,
     getSampleSelectionStorageData,
+    getSelectionLineageData,
 } from './actions';
 
 const Context = React.createContext<SamplesSelectionResultProps>(undefined);
@@ -136,7 +136,7 @@ export function SamplesSelectionProvider<T>(
         loadLineageData(): void {
             const { selection, sampleSet, determineLineage } = this.props;
             if (determineLineage && selection && selection.size > 0) {
-                getSampleSelectionLineageData(selection, sampleSet)
+                getSelectionLineageData(selection, SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)
                     .then(response => {
                         const { key, models, orderedModels } = response;
                         this.setState(() => ({

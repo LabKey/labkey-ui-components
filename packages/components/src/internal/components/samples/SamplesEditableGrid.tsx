@@ -36,11 +36,12 @@ import { DisplayObject, EntityChoice, EntityParentType } from '../entities/model
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
-import { getOriginalParentsFromSampleLineage } from './actions';
+import { getOriginalParentsFromLineage } from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { IEditableGridLoader } from '../../QueryGridModel';
-import { GridTab, SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
+import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
+import { UpdateGridTab } from "../editable/EditableGridPanelForUpdateWithLineage";
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;
@@ -83,7 +84,7 @@ interface State {
     discardSamplesCount: number;
     totalEditCount: number;
     consumedStatusIds: number[];
-    includedTabs: GridTab[];
+    includedTabs: UpdateGridTab[];
 }
 
 class SamplesEditableGridBase extends React.Component<Props, State> {
@@ -101,9 +102,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         this._hasError = false;
 
         const includedTabs = [];
-        if (props.determineSampleData) includedTabs.push(GridTab.Samples);
-        if (props.determineStorage) includedTabs.push(GridTab.Storage);
-        if (props.determineLineage) includedTabs.push(GridTab.Lineage);
+        if (props.determineSampleData) includedTabs.push(UpdateGridTab.Samples);
+        if (props.determineStorage) includedTabs.push(UpdateGridTab.Storage);
+        if (props.determineLineage) includedTabs.push(UpdateGridTab.Lineage);
         this.state = {
             originalParents: undefined,
             parentTypeOptions: undefined,
@@ -186,7 +187,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     initLineageEditableGrid = async (): Promise<void> => {
         const { determineLineage, parentDataTypes } = this.props;
         if (determineLineage) {
-            const { originalParents, parentTypeOptions } = await getOriginalParentsFromSampleLineage(
+            const { originalParents, parentTypeOptions } = await getOriginalParentsFromLineage(
                 this.props.sampleLineage,
                 parentDataTypes.toArray()
             );
@@ -205,10 +206,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             discardStorageRows: any[] = [];
         updateDataRows.forEach(data => {
             const tabIndex = data.tabIndex;
-            if (includedTabs[tabIndex] === GridTab.Storage) {
+            if (includedTabs[tabIndex] === UpdateGridTab.Storage) {
                 storageRows = data.updatedRows;
                 sampleSchemaQuery = data.schemaQuery;
-            } else if (includedTabs[tabIndex] === GridTab.Lineage) {
+            } else if (includedTabs[tabIndex] === UpdateGridTab.Lineage) {
                 lineageRows = getUpdatedLineageRows(data.updatedRows, data.originalRows, aliquots);
                 sampleSchemaQuery = data.schemaQuery;
             } else {
@@ -407,7 +408,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     };
 
     getSamplesUpdateColumns = (tabInd: number): List<QueryColumn> => {
-        if (this.getCurrentTab(tabInd) !== GridTab.Samples) return undefined;
+        if (this.getCurrentTab(tabInd) !== UpdateGridTab.Samples) return undefined;
 
         const { displayQueryModel, sampleTypeDomainFields } = this.props;
         const allColumns = displayQueryModel.queryInfo.getUpdateColumns(this.getReadOnlyColumns());
@@ -575,7 +576,6 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     singularNoun={this.getSelectedSamplesNoun()}
                     pluralNoun={this.getSelectedSamplesNoun() + 's'}
                     readOnlyColumns={this.getReadOnlyColumns()}
-                    getUpdateColumns={this.getSamplesUpdateColumns}
                     includedTabs={includedTabs}
                     parentDataTypes={parentDataTypes}
                     combineParentTypes={combineParentTypes}

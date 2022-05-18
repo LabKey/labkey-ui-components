@@ -77,7 +77,6 @@ module.exports = {
         'jquery',
         'lodash',
         'moment',
-        'moment-jdateformatparser',
         'moment-timezone',
         'numeral',
         'react',

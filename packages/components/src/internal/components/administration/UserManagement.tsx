@@ -196,10 +196,10 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
             });
         }
 
-        if (response.errors?.length > 0) {
+        if (response.htmlErrors?.length > 0) {
             createNotification({
                 alertClass: 'danger',
-                message: response.errors.join(' '),
+                message: response.htmlErrors.join(' '),
             });
         }
 

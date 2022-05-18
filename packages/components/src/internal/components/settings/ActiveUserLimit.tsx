@@ -1,4 +1,5 @@
 import React, { FC, memo, useEffect, useState } from 'react';
+import { Utils } from '@labkey/api';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { AppContext, useAppContext } from '../../AppContext';
@@ -6,7 +7,7 @@ import { Alert } from '../base/Alert';
 import { useServerContext } from '../base/ServerContext';
 import { UserLimitSettings } from '../permissions/actions';
 
-const TITLE = 'Active User Limit';
+const TITLE = 'Active Users';
 
 interface Props {
     titleCls?: string;
@@ -45,9 +46,10 @@ export const ActiveUserLimit: FC<Props> = memo(props => {
                 {settings && (
                     <>
                         <ActiveUserLimitMessage settings={settings} />
-                        <div>Current user count: {settings.activeUsers}</div>
-                        <div>User limit: {settings.userLimitLevel}</div>
-                        <div>Number of users that can be added or reactivated: {settings.remainingUsers}</div>
+                        <div>
+                            Active user limit is {settings.userLimitLevel}. You can add or reactivate{' '}
+                            {Utils.pluralBasic(settings.remainingUsers, 'more user')}.
+                        </div>
                         <br />
                         <div>Contact your LabKey Account Manager to upgrade the number of allowed users.</div>
                     </>

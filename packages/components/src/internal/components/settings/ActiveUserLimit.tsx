@@ -35,7 +35,7 @@ export const ActiveUserLimit: FC<Props> = memo(props => {
     }, [api, user]);
 
     if (!user.hasAddUsersPermission()) return null;
-    if (!error && (!settings || !settings.userLimit)) return null;
+    if (!error && !settings?.userLimit) return null;
 
     return (
         <div className="active-user-limit-panel panel panel-default">

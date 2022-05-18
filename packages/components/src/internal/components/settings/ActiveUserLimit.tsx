@@ -46,7 +46,7 @@ export const ActiveUserLimit: FC<Props> = memo(props => {
                 {settings && (
                     <>
                         <ActiveUserLimitMessage settings={settings} />
-                        <div>
+                        <div className="active-user-limit-message">
                             Active user limit is {settings.userLimitLevel}. You can add or reactivate{' '}
                             {Utils.pluralBasic(settings.remainingUsers, 'more user')}.
                         </div>

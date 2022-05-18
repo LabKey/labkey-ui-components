@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 6.1.3
+*Released*: 17 May 2022
+* Remove `moment-jdateformatparser` from external dependency list.
+
 ### version 6.1.2
 *Released*: 9 May 2022
 * Add remirror and redux dependencies to package build excludes

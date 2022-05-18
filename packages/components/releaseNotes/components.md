@@ -9,6 +9,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Handle user creation with and without limit errors in User Management page alerts
   * Display user limit settings on Admin Settings page
 
+### version 2.172.0
+*Released*: 17 May 2022
+* Internalize `moment-jdateformatparser` logic into a collection of utility methods in `jDateFormatParser.ts`.
+* Update versions of `moment` and `moment-timezone`.
+
 ### version 2.171.1
 *Released*: 13 May 2022
 * Issue 45222: Editable grid doesn't automatically expand width of dropdowns to show long values

@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import moment from 'moment-jdateformatparser';
+import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import numeral from 'numeral';
 import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../..';
 
-const CREATED_CONCEPT_URI = 'http://www.labkey.org/types#createdTimestamp'; // JbcType.TIMESTAMP
-const MODIFIED_CONCEPT_URI = 'http://www.labkey.org/types#modifiedTimestamp'; // JbcType.TIMESTAMP
+import { formatWithJDF, toMomentFormatString } from './jDateFormatParser';
 
 export function datePlaceholder(col: QueryColumn): string {
     let placeholder;
@@ -79,16 +78,16 @@ export function getColFormattedDateValue(column: QueryColumn, value: string): st
 
 // 30834: get look and feel display formats
 export function getDateFormat(container?: Partial<Container>): string {
-    return moment().toMomentFormatString((container ?? getServerContext().container).formats.dateFormat);
+    return toMomentFormatString((container ?? getServerContext().container).formats.dateFormat);
 }
 
 export function getDateTimeFormat(container?: Partial<Container>): string {
-    return moment().toMomentFormatString((container ?? getServerContext().container).formats.dateTimeFormat);
+    return toMomentFormatString((container ?? getServerContext().container).formats.dateTimeFormat);
 }
 
 // hard-coded value, see docs: https://www.labkey.org/Documentation/Archive/21.7/wiki-page.view?name=studyDateNumber#short
 export function getTimeFormat(): string {
-    return moment().toMomentFormatString('HH:mm:ss');
+    return toMomentFormatString('HH:mm:ss');
 }
 
 export function parseDate(dateStr: string, dateFormat?: string): Date {
@@ -121,8 +120,15 @@ export function parseDate(dateStr: string, dateFormat?: string): Date {
 
 function _formatDate(date: Date | number, dateFormat: string, timezone?: string): string {
     if (!date) return undefined;
-    const _date = moment(timezone ? momentTZ(date).tz(timezone) : date);
-    return _date.formatWithJDF(dateFormat);
+    let _date: moment.Moment;
+    if (timezone) {
+        // Unfortunately, the typings for moment-timezone are not great and as a result there
+        // are collisions with the expected type of moment.Moment.
+        _date = momentTZ(date).tz(timezone) as never;
+    } else {
+        _date = moment(date);
+    }
+    return formatWithJDF(_date, dateFormat);
 }
 
 export function formatDate(date: Date | number, timezone?: string, dateFormat?: string): string {

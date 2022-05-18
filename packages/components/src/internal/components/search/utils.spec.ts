@@ -1005,11 +1005,11 @@ describe('getUpdatedChooseValuesFilter', () => {
     });
 });
 
-const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/PST
+const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Los_Angeles
 const testDate = new Date(datePOSIX);
 const dateStr = formatDate(testDate, 'America/Los_Angeles', 'YYYY-MM-dd');
 
-const date2POSIX = 1597182283812; // Aug 11, 2020 14:44 America/PST
+const date2POSIX = 1597182283812; // Aug 11, 2020 14:44 America/Los_Angeles
 const testDate2 = new Date(date2POSIX);
 const dateStr2 = formatDate(testDate2, 'America/Los_Angeles', 'YYYY-MM-dd');
 

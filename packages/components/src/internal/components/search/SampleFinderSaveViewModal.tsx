@@ -53,7 +53,7 @@ export const SampleFinderSaveViewModal: FC<Props> = memo(props => {
             </Modal.Header>
             <Modal.Body>
                 <Alert>{errorMessage}</Alert>
-                <form>
+                <form onSubmit={saveView}>
                     <div className="form-group">
                         <label className="control-label">Name *</label>
 

@@ -225,6 +225,7 @@ import {
 import { loadEditorModelData } from './internal/components/editable/utils';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
+import { EditableGridPanelForUpdateWithLineage } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
@@ -874,6 +875,7 @@ export {
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditableGridPanelForUpdate,
+    EditableGridPanelForUpdateWithLineage,
     EditorModel,
     cancelEvent,
     // url and location related items

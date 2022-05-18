@@ -113,7 +113,9 @@ export class CreateUsersModal extends React.Component<Props, State> {
                     onChange={this.handleEmail}
                 />
                 {userLimitSettings?.userLimit && (
-                    <div>Number of users that can be added: {userLimitSettings.remainingUsers}</div>
+                    <div className="create-users-limit-message">
+                        Number of users that can be added: {userLimitSettings.remainingUsers}
+                    </div>
                 )}
                 {this.hasRoleOptions() && (
                     <>

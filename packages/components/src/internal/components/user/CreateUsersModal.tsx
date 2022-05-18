@@ -3,7 +3,7 @@ import { Checkbox, FormControl, Modal } from 'react-bootstrap';
 import { Security } from '@labkey/api';
 
 import { WizardNavButtons, Alert, SelectInput } from '../../..';
-import { UserLimitSettings } from '../security/APIWrapper';
+import { UserLimitSettings } from '../permissions/actions';
 
 interface Props {
     onCancel: () => void;

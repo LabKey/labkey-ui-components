@@ -2,9 +2,9 @@ import React, { FC, memo, useEffect, useState } from 'react';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { AppContext, useAppContext } from '../../AppContext';
-import { UserLimitSettings } from '../security/APIWrapper';
 import { Alert } from '../base/Alert';
 import { useServerContext } from '../base/ServerContext';
+import { UserLimitSettings } from '../permissions/actions';
 
 const TITLE = 'Active User Limit';
 

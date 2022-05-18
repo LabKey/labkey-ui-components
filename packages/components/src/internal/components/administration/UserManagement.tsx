@@ -24,11 +24,12 @@ import { useServerContext } from '../base/ServerContext';
 import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
 import { AppContext, useAppContext } from '../../AppContext';
-import { SecurityAPIWrapper, UserLimitSettings } from '../security/APIWrapper';
+import { SecurityAPIWrapper } from '../security/APIWrapper';
 
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
+import { UserLimitSettings } from '../permissions/actions';
 
 export function getNewUserRoles(
     user: User,
@@ -130,7 +131,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         }
     };
 
-    onCreateComplete = (response: any, roleUniqueNames: string[]) => {
+    onCreateComplete = (response: any, roleUniqueNames: string[]): void => {
         const { container, project } = this.props;
         this.invalidateGlobal();
 
@@ -194,6 +195,15 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                 },
             });
         }
+
+        if (response.errors?.length > 0) {
+            createNotification({
+                alertClass: 'danger',
+                message: response.errors.join(' '),
+            });
+        }
+
+        this.loadUserLimitSettings();
     };
 
     onUsersStateChangeComplete = (response: any) => {

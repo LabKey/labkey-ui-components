@@ -35,7 +35,7 @@ import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserDetailsPanel } from './UserDetailsPanel';
 import { CreateUsersModal } from './CreateUsersModal';
-import { UserLimitSettings } from '../security/APIWrapper';
+import { UserLimitSettings } from '../permissions/actions';
 
 const OMITTED_COLUMNS = [
     'phone',

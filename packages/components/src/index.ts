@@ -448,7 +448,7 @@ import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
 import { withPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 import { Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
-import { fetchContainerSecurityPolicy } from './internal/components/permissions/actions';
+import { fetchContainerSecurityPolicy, getUserLimitSettings } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,
     getDataDeleteConfirmationData,
@@ -975,6 +975,7 @@ export {
     hasAnyPermissions,
     hasPermissions,
     fetchContainerSecurityPolicy,
+    getUserLimitSettings,
     PermissionAssignments,
     withPermissionsPage,
     SecurityPolicy,

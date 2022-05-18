@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 10386: Active user limit app messaging
   * Add API to get user limit settings
   * Display user limit message on User Management page and disable create/reactivate accordingly
+  * Handle user creation with and without limit errors in User Management page alerts
   * Display user limit settings on Admin Settings page
 
 ### version 2.171.1

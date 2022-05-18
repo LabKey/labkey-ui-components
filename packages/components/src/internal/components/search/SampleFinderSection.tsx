@@ -251,6 +251,15 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         [filterChangeCounter]
     );
 
+    const onSaveComplete = useCallback((view: FinderReport) => {
+            setShowSaveViewDialog(false);
+            setViewDirty(false);
+            setCurrentView(view);
+            setSavedViewChangeCounter(savedViewChangeCounter + 1)
+        },
+        [savedViewChangeCounter]
+    );
+
     const saveSearch = useCallback(
         async (saveCurrentName?: boolean) => {
             if (saveCurrentName) {
@@ -352,7 +361,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 <SampleFinderSaveViewModal
                     cardsJson={searchViewJson}
                     onCancel={() => setShowSaveViewDialog(false)}
-                    onSuccess={loadSearch}
+                    onSuccess={onSaveComplete}
                     currentView={currentView}
                 />
             )}

@@ -1107,9 +1107,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "getSampleAliquotRows": [Function],
           "getSampleAssayResultViewConfigs": [Function],
           "getSampleOperationConfirmationData": [Function],
-          "getSampleSelectionLineageData": [Function],
           "getSampleStatuses": [Function],
           "getSampleStorageId": [Function],
+          "getSelectionLineageData": [Function],
         },
         "security": ServerSecurityAPIWrapper {
           "fetchContainers": [Function],

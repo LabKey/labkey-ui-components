@@ -50,6 +50,7 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
+import { createNotification } from "../notifications/actions";
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -243,6 +244,10 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     cardJson = await loadFinderSearch(view);
                 } catch (error) {
                     console.error(error);
+                    createNotification({
+                        alertClass: 'danger',
+                        message: "Unable to load saved view '" + view.reportName + "'. " + (error.exception ? error.exception : ''),
+                    });
                     return;
                 }
             }
@@ -286,6 +291,10 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 }
             } catch (error) {
                 console.error(error);
+                createNotification({
+                    alertClass: 'danger',
+                    message: 'Unable to save view. ' + (error.exception ? error.exception : ''),
+                });
             }
         },
         [currentView, filters, searchViewJson]

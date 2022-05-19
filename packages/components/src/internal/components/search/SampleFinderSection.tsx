@@ -29,6 +29,8 @@ import { getAllEntityTypeOptions } from '../entities/actions';
 
 import { formatDateTime } from '../../util/Date';
 
+import { useAppContext } from '../../AppContext';
+
 import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';
 import {
@@ -48,7 +50,6 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
-import {useAppContext} from "../../AppContext";
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -238,7 +239,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
             if (view.isSession) cardJson = sessionStorage.getItem(getLocalStorageKey());
             else if (view.reportId) {
-                try{
+                try {
                     cardJson = await loadFinderSearch(view);
                 } catch (error) {
                     console.error(error);
@@ -258,15 +259,15 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         [filterChangeCounter]
     );
 
-    const onSaveComplete = useCallback((view: FinderReport) => {
+    const onSaveComplete = useCallback(
+        (view: FinderReport) => {
             setShowSaveViewDialog(false);
             setViewDirty(false);
             setCurrentView(view);
-            setSavedViewChangeCounter(savedViewChangeCounter + 1)
+            setSavedViewChangeCounter(savedViewChangeCounter + 1);
         },
         [savedViewChangeCounter]
     );
-
 
     const searchViewJson = useMemo(() => {
         return JSON.stringify({
@@ -286,7 +287,6 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             } catch (error) {
                 console.error(error);
             }
-
         },
         [currentView, filters, searchViewJson]
     );

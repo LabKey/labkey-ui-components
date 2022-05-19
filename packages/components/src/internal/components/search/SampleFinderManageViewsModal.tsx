@@ -7,8 +7,9 @@ import { Alert } from '../base/Alert';
 import { deleteReport, renameReport } from '../../query/reports';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { useAppContext } from '../../AppContext';
+
 import { FinderReport } from './models';
-import {useAppContext} from "../../AppContext";
 
 export interface Props {
     onDone: (hasChange?: boolean) => void;
@@ -48,8 +49,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
             setSavedSearches(await api.samples.loadFinderSearches());
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
-        }
-        finally {
+        } finally {
             setIsSubmitting(false);
         }
     }, []);
@@ -75,8 +75,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
             setSelectedSearch(undefined);
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
-        }
-        finally {
+        } finally {
             setIsSubmitting(false);
         }
     }, [selectedSearch, newName]);
@@ -118,16 +117,16 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
                                                 className="edit-inline-field__toggle"
                                                 onClick={() => setSelectedSearch(savedSearch)}
                                             >
-                                                    <i className="fa fa-pencil" />
-                                                </span>
+                                                <i className="fa fa-pencil" />
+                                            </span>
                                         </Col>
                                         <Col xs={1}>
                                             <span
                                                 className="edit-inline-field__toggle"
                                                 onClick={() => deleteView(savedSearch.entityId)}
                                             >
-                                                    <i className="fa fa-trash-o" />
-                                                </span>
+                                                <i className="fa fa-trash-o" />
+                                            </span>
                                         </Col>
                                     </>
                                 )}

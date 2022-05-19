@@ -12,9 +12,10 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+import { mountWithAppServerContext } from '../../testHelpers';
+
 import { FilterCards } from './FilterCards';
 import { SampleFinderHeaderButtons, SampleFinderSection } from './SampleFinderSection';
-import { mountWithAppServerContext } from "../../testHelpers";
 
 describe('SampleFinderSection', () => {
     LABKEY.moduleContext = {
@@ -84,7 +85,8 @@ describe('SampleFinderSection', () => {
                 samplesEditableGridProps={{}}
                 parentEntityDataTypes={[TestTypeDataType]}
                 sampleTypeNames={[]}
-            />);
+            />
+        );
         const section = wrapper.find(Section);
         expect(section.find('.filter-hint').exists()).toBeTruthy();
         const cards = wrapper.find(FilterCards);

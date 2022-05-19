@@ -3,8 +3,9 @@ import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { useAppContext } from '../../AppContext';
+
 import { FinderReport } from './models';
-import { useAppContext } from "../../AppContext";
 
 interface Props {
     loadSearch: (view: FinderReport) => any;
@@ -50,10 +51,12 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
             <DropdownButton id="samplefinder-savedsearch-menu" title={menuTitle} className="button-right-spacing">
                 {sessionViewName && (
                     <>
-                        <MenuItem className="submenu-header" header>Most Recent Search</MenuItem>
-                            <MenuItem onClick={() => loadSearch({ isSession: true, reportName: sessionViewName })}>
-                                {sessionViewName}
-                            </MenuItem>
+                        <MenuItem className="submenu-header" header>
+                            Most Recent Search
+                        </MenuItem>
+                        <MenuItem onClick={() => loadSearch({ isSession: true, reportName: sessionViewName })}>
+                            {sessionViewName}
+                        </MenuItem>
 
                         <MenuItem divider />
                     </>
@@ -63,12 +66,18 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                     <>
                         {savedSearches.map((savedSearch, ind) => {
                             return (
-                                <MenuItem key={ind} onClick={() => loadSearch(savedSearch)}>{savedSearch.reportName}</MenuItem>
+                                <MenuItem key={ind} onClick={() => loadSearch(savedSearch)}>
+                                    {savedSearch.reportName}
+                                </MenuItem>
                             );
                         })}
                     </>
                 )}
-                {savedSearches?.length === 0 && <MenuItem className="submenu-header" header>No Saved Search</MenuItem>}
+                {savedSearches?.length === 0 && (
+                    <MenuItem className="submenu-header" header>
+                        No Saved Search
+                    </MenuItem>
+                )}
                 <MenuItem divider />
                 <MenuItem onClick={manageSearches} disabled={!hasSavedView}>
                     Manage saved searches

@@ -375,7 +375,12 @@ export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
     return filterPropsObj;
 }
 
-export function searchFiltersToJson(filterProps: FilterProps[], filterChangeCounter: number, time?: Date, timezone?: string): string {
+export function searchFiltersToJson(
+    filterProps: FilterProps[],
+    filterChangeCounter: number,
+    time?: Date,
+    timezone?: string
+): string {
     return JSON.stringify({
         filters: getSearchFilterObjs(filterProps),
         filterChangeCounter,

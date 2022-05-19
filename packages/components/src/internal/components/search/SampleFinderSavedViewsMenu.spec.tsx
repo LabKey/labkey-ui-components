@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import {mountWithAppServerContext, waitForLifecycle} from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
@@ -93,9 +93,12 @@ describe('SampleFinderSavedViewsMenu', () => {
     });
 
     test('without view, without saved view', async () => {
-        const wrapper = mountWithAppServerContext(<SampleFinderSavedViewsMenu {...DEFAULT_PROPS} sessionViewName="Searched today" />, {
-            api: getSampleFinderAPI([]),
-        });
+        const wrapper = mountWithAppServerContext(
+            <SampleFinderSavedViewsMenu {...DEFAULT_PROPS} sessionViewName="Searched today" />,
+            {
+                api: getSampleFinderAPI([]),
+            }
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -123,9 +126,12 @@ describe('SampleFinderSavedViewsMenu', () => {
     });
 
     test('with session view, with saved views', async () => {
-        const wrapper = mountWithAppServerContext(<SampleFinderSavedViewsMenu {...DEFAULT_PROPS} sessionViewName="Searched today" />, {
-            api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
-        });
+        const wrapper = mountWithAppServerContext(
+            <SampleFinderSavedViewsMenu {...DEFAULT_PROPS} sessionViewName="Searched today" />,
+            {
+                api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
+            }
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -147,9 +153,11 @@ describe('SampleFinderSavedViewsMenu', () => {
                     isSession: true,
                 }}
                 hasUnsavedChanges={true}
-            />, {
-            api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
-        });
+            />,
+            {
+                api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
+            }
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -168,9 +176,11 @@ describe('SampleFinderSavedViewsMenu', () => {
                 sessionViewName="Searched today"
                 currentView={SAVED_VIEW1}
                 hasUnsavedChanges={false}
-            />, {
+            />,
+            {
                 api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
-            });
+            }
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -189,9 +199,11 @@ describe('SampleFinderSavedViewsMenu', () => {
                 sessionViewName="Searched today"
                 currentView={SAVED_VIEW1}
                 hasUnsavedChanges={true}
-            />, {
+            />,
+            {
                 api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
-            });
+            }
+        );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);

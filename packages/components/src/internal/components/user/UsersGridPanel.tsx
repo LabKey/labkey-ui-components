@@ -4,11 +4,12 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
-import { Button, Col, MenuItem, Row } from 'react-bootstrap';
+import { Col, MenuItem, Row } from 'react-bootstrap';
 import { ActionURL, Filter } from '@labkey/api';
 
 import {
     capitalizeFirstChar,
+    DisableableButton,
     GridPanel,
     isLoading,
     LoadingSpinner,
@@ -29,6 +30,8 @@ import { getSelected } from '../../actions';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
+import { UserLimitSettings } from '../permissions/actions';
 
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
@@ -55,6 +58,7 @@ interface OwnProps {
     policy: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
     showDetailsPanel?: boolean;
+    userLimitSettings?: UserLimitSettings;
 
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
@@ -246,6 +250,11 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         }
     }
 
+    getUserLimitRemainingUsers(): number {
+        const { userLimitSettings } = this.props;
+        return userLimitSettings?.userLimit ? userLimitSettings.remainingUsers : undefined;
+    }
+
     renderButtons = () => {
         const { user } = this.props;
         const { usersView } = this.state;
@@ -254,9 +263,15 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         return (
             <div className="btn-group">
                 {user.hasAddUsersPermission() && (
-                    <Button bsStyle="success" onClick={() => this.toggleDialog('create')}>
+                    <DisableableButton
+                        bsStyle="success"
+                        onClick={() => this.toggleDialog('create')}
+                        disabledMsg={
+                            this.getUserLimitRemainingUsers() === 0 ? 'User limit has been reached' : undefined
+                        }
+                    >
                         Create
-                    </Button>
+                    </DisableableButton>
                 )}
                 <ManageDropdownButton id="users-manage-btn">
                     {user.hasManageUsersPermission() && usersView === 'active' && (
@@ -281,6 +296,10 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                         <SelectionMenuItem
                             id="reactivate-users-menu-item"
                             text="Reactivate Users"
+                            maxSelection={this.getUserLimitRemainingUsers()}
+                            maxSelectionDisabledMsg={
+                                this.getUserLimitRemainingUsers() === 0 ? 'User limit has been reached' : undefined
+                            }
                             onClick={() => this.toggleDialog('reactivate', true)}
                             queryModel={model}
                             nounPlural="users"
@@ -307,7 +326,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     };
 
     render(): ReactNode {
-        const { newUserRoleOptions, user, showDetailsPanel, actions } = this.props;
+        const { newUserRoleOptions, user, showDetailsPanel, actions, userLimitSettings } = this.props;
         const { selectedUserId, showDialog, usersView } = this.state;
         const model = this.getUsersModel();
 
@@ -339,6 +358,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                 </Row>
                 <CreateUsersModal
                     show={user.hasAddUsersPermission() && showDialog === 'create'}
+                    userLimitSettings={userLimitSettings}
                     roleOptions={newUserRoleOptions}
                     onComplete={this.onCreateComplete}
                     onCancel={this.closeDialog}

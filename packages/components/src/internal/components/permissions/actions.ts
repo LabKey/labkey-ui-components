@@ -4,7 +4,7 @@
  */
 import { List, Map, fromJS } from 'immutable';
 
-import { Filter, Security } from '@labkey/api';
+import { ActionURL, Ajax, Filter, Security, Utils } from '@labkey/api';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../..';
 
@@ -121,6 +121,32 @@ export function fetchContainerSecurityPolicy(
                 console.error('Failed to fetch security policy', error);
                 reject(error);
             },
+        });
+    });
+}
+
+export type UserLimitSettings = {
+    activeUsers: number;
+    messageHtml: string;
+    remainingUsers: number;
+    success: boolean;
+    userLimitLevel: number;
+    userLimit: boolean;
+};
+
+export function getUserLimitSettings(): Promise<UserLimitSettings> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('user', 'getuserLimitSettings.api'),
+            method: 'GET',
+            scope: this,
+            success: Utils.getCallbackWrapper(settings => {
+                resolve(settings as UserLimitSettings);
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(error);
+                reject(error);
+            }),
         });
     });
 }

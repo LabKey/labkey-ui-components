@@ -226,7 +226,7 @@ import { loadEditorModelData } from './internal/components/editable/utils';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridPanelForUpdateWithLineage } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import { LineageEditableGridLoaderFromSelection, getLineageEditorUpdateColumns } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 import { UpdateGridTab } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -326,7 +326,8 @@ import {
     getSelectedItemSamples,
     getSelectionLineageData,
     getUpdatedLineageRows,
-    getOriginalParentsFromLineage
+    getOriginalParentsFromLineage,
+    getLineageEditorUpdateColumns
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
@@ -882,7 +883,6 @@ export {
     EditableGridPanelForUpdate,
     EditableGridPanelForUpdateWithLineage,
     LineageEditableGridLoaderFromSelection,
-    getLineageEditorUpdateColumns,
     UpdateGridTab,
     EditorModel,
     cancelEvent,
@@ -1046,6 +1046,7 @@ export {
     getSelectionLineageData,
     getUpdatedLineageRows,
     getOriginalParentsFromLineage,
+    getLineageEditorUpdateColumns,
     getSampleTypes,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,

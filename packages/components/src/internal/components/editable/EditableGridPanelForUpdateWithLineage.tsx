@@ -56,7 +56,7 @@ interface Props {
     includedTabs: UpdateGridTab[];
     getColumnMetadata: (tabInd: number) => Map<string, EditableColumnMetadata>;
     getTabTitle: (tabInd: number) => string;
-    getAdditionalTabs?: (tab: number) => ReactNode
+    getAdditionalTabInfo?: (tab: number) => ReactNode
     targetEntityDataType: EntityDataType
     getParentTypeWarning?: () => ReactNode
     getReadOnlyRows?: (tabInd: number) => List<string>
@@ -72,7 +72,7 @@ let editableGridUpdateAggregate: Partial<EditorModelProps> = undefined;
 
 export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
     const { loaders, queryModel, parentDataTypes, onComplete, updateAllTabRows, idField, readOnlyColumns, selectionData,
-        getColumnMetadata, includedTabs, getTabTitle, combineParentTypes, parentTypeOptions, getAdditionalTabs, targetEntityDataType,
+        getColumnMetadata, includedTabs, getTabTitle, combineParentTypes, parentTypeOptions, getAdditionalTabInfo, targetEntityDataType,
         getParentTypeWarning, pluralNoun, singularNoun, getReadOnlyRows, onCancel } = props;
 
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -267,16 +267,10 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
                     <hr />
                 </>
             );
-        } else if (getAdditionalTabs) {
-            return getAdditionalTabs(currentTab);
-        } else {
-            return (
-                <div className="top-spacing parent-status-warning">
-                    Tab not recognized.
-                </div>
-            );
+        } else if (getAdditionalTabInfo) {
+            return getAdditionalTabInfo(currentTab);
         }
-    }, [parentDataTypes, combineParentTypes, parentTypeOptions, entityParentsMap, getCurrentTab, getAdditionalTabs, changeParentType, removeParentType]);
+    }, [parentDataTypes, combineParentTypes, parentTypeOptions, entityParentsMap, getCurrentTab, getAdditionalTabInfo, changeParentType, removeParentType]);
 
     const addParentType = useCallback((queryName: string): void => {
         setEntityParentsMap(addEntityParentType(queryName, entityParentsMap));

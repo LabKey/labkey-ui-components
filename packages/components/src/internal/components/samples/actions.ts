@@ -30,11 +30,11 @@ import {
     getSelection,
     getStateModelId,
     ISelectRowsResult,
-    Location,
+    Location, naturalSort,
     naturalSortByProperty,
     QueryColumn,
     QueryConfig,
-    QueryModel,
+    QueryModel, quoteValueWithDelimiters,
     resolveErrorMessage,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -453,6 +453,48 @@ export const getParentTypeDataForLineage = async (
     }
     return { parentTypeOptions, parentIdData };
 };
+
+export function getUpdatedLineageRows(
+    lineageRows: Array<Record<string, any>>,
+    originalRows: Array<Record<string, any>>,
+    aliquots: any[]
+): Array<Record<string, any>> {
+    const updatedLineageRows = [];
+
+    // iterate through all of the lineage rows to find the ones that have any edit from the initial data row,
+    // also remove the aliquot rows from the lineageRows array
+    lineageRows?.forEach(row => {
+        const rowId = caseInsensitive(row, 'RowId');
+        if (aliquots.indexOf(rowId) === -1) {
+            // compare each row value looking for any that are different from the original value
+            let hasUpdate = false;
+            Object.keys(row).every(key => {
+                const updatedVal = Utils.isString(row[key])
+                    ? row[key].split(', ').sort(naturalSort).join(', ')
+                    : row[key];
+                let originalVal = originalRows[rowId][key];
+                if (List.isList(originalVal) || Array.isArray(originalVal)) {
+                    originalVal = originalVal
+                        ?.map(parentRow => quoteValueWithDelimiters(parentRow.displayValue, ','))
+                        .sort(naturalSort)
+                        .join(', ');
+                } else {
+                    originalVal = quoteValueWithDelimiters(originalVal, ',');
+                }
+
+                if (originalVal !== updatedVal) {
+                    hasUpdate = true;
+                    return false;
+                }
+                return true;
+            });
+
+            if (hasUpdate) updatedLineageRows.push(row);
+        }
+    });
+
+    return updatedLineageRows;
+}
 
 export type ParentIdData = {
     parentId: string | number;

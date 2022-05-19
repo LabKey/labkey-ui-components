@@ -66,7 +66,7 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
         return <div className="sample-status-warning">Lineage for aliquots cannot be changed.</div>
     }
 
-    getAdditionalTabs = (tab: number): ReactNode => {
+    getAdditionalTabInfo = (tab: number): ReactNode => {
         if (tab === UpdateGridTab.Storage) {
             return (
                 <div className="top-spacing sample-status-warning">
@@ -138,7 +138,7 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
                     getColumnMetadata={this.getSamplesColumnMetadata}
                     getTabTitle={this.getTabTitle}
                     getReadOnlyRows={this.getReadOnlyRows}
-                    getAdditionalTabs={this.getAdditionalTabs}
+                    getAdditionalTabInfo={this.getAdditionalTabInfo}
                     targetEntityDataType={SampleTypeDataType}
                     getParentTypeWarning={this.getParentTypeWarning}
                 />

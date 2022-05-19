@@ -226,6 +226,7 @@ import { loadEditorModelData } from './internal/components/editable/utils';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridPanelForUpdateWithLineage } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
+import { LineageEditableGridLoaderFromSelection, getLineageEditorUpdateColumns } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 import { UpdateGridTab } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -324,6 +325,7 @@ import {
     getSampleTypes,
     getSelectedItemSamples,
     getSelectionLineageData,
+    getUpdatedLineageRows,
     getOriginalParentsFromLineage
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
@@ -879,6 +881,8 @@ export {
     EditableGridPanel,
     EditableGridPanelForUpdate,
     EditableGridPanelForUpdateWithLineage,
+    LineageEditableGridLoaderFromSelection,
+    getLineageEditorUpdateColumns,
     UpdateGridTab,
     EditorModel,
     cancelEvent,
@@ -1040,6 +1044,7 @@ export {
     getFieldLookupFromSelection,
     getSelectedItemSamples,
     getSelectionLineageData,
+    getUpdatedLineageRows,
     getOriginalParentsFromLineage,
     getSampleTypes,
     FindSamplesByIdHeaderPanel,
@@ -1510,6 +1515,7 @@ export type {
     IEntityTypeOption,
     IParentOption,
     MaterialOutput,
+    EntityChoice,
 } from './internal/components/entities/models';
 export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
 export type { InjectedPermissionsPage } from './internal/components/permissions/withPermissionsPage';

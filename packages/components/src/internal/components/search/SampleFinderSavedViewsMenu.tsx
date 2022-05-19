@@ -1,4 +1,4 @@
-import React, { FC, memo, useState, useEffect, useMemo } from 'react';
+import React, { FC, memo, useState, useEffect, useMemo, useCallback } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -46,6 +46,23 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
         );
     }, [currentView, hasUnsavedChanges]);
 
+    const onLoadSavedSearch = useCallback((e) => {
+        const view = savedSearches.find(search => search.reportId === e.target.name);
+        loadSearch(view);
+    }, [savedSearches]);
+
+    const onLoadSessionSearch = useCallback(() => {
+        loadSearch({ isSession: true, reportName: sessionViewName })
+    }, [sessionViewName]);
+
+    const onSaveCurrentView = useCallback((e) => {
+        saveSearch(true);
+    }, []);
+
+    const onSaveNewView = useCallback((e) => {
+        saveSearch(false);
+    }, []);
+
     return (
         <>
             <DropdownButton id="samplefinder-savedsearch-menu" title={menuTitle} className="button-right-spacing">
@@ -54,7 +71,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                         <MenuItem className="submenu-header" header>
                             Most Recent Search
                         </MenuItem>
-                        <MenuItem onClick={() => loadSearch({ isSession: true, reportName: sessionViewName })}>
+                        <MenuItem onClick={onLoadSessionSearch}>
                             {sessionViewName}
                         </MenuItem>
 
@@ -66,7 +83,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                     <>
                         {savedSearches.map((savedSearch, ind) => {
                             return (
-                                <MenuItem key={ind} onClick={() => loadSearch(savedSearch)}>
+                                <MenuItem key={ind} onClick={onLoadSavedSearch} name={savedSearch.reportId}>
                                     {savedSearch.reportName}
                                 </MenuItem>
                             );
@@ -82,18 +99,18 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 <MenuItem onClick={manageSearches} disabled={!hasSavedView}>
                     Manage saved searches
                 </MenuItem>
-                <MenuItem onClick={() => saveSearch(false)} disabled={!currentView && !hasUnsavedChanges}>
+                <MenuItem onClick={onSaveNewView} disabled={!currentView && !hasUnsavedChanges}>
                     Save as custom search
                 </MenuItem>
             </DropdownButton>
             {hasUnsavedChanges && currentView?.reportId && (
                 <DropdownButton id="save-finderview-dropdown" title="Save Search" bsStyle="success">
-                    <MenuItem onClick={() => saveSearch(true)}>Save this search</MenuItem>
-                    <MenuItem onClick={() => saveSearch(false)}>Save as a new search</MenuItem>
+                    <MenuItem onClick={onSaveCurrentView}>Save this search</MenuItem>
+                    <MenuItem onClick={onSaveNewView}>Save as a new search</MenuItem>
                 </DropdownButton>
             )}
             {hasUnsavedChanges && currentView && !currentView.reportId && (
-                <Button bsStyle="success" onClick={() => saveSearch(false)} className="margin-left">
+                <Button bsStyle="success" onClick={onSaveNewView} className="margin-left">
                     Save Search
                 </Button>
             )}

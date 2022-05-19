@@ -8,9 +8,9 @@ import { useAppContext } from '../../AppContext';
 import { FinderReport } from './models';
 
 interface Props {
-    loadSearch: (view: FinderReport) => any;
-    saveSearch: (saveCurrentName?: boolean) => any;
-    manageSearches: () => any;
+    loadSearch: (view: FinderReport) => void;
+    saveSearch: (saveCurrentName?: boolean) => void;
+    manageSearches: () => void;
     currentView?: FinderReport;
     hasUnsavedChanges?: boolean;
     sessionViewName?: string;

@@ -36,10 +36,10 @@ export const SampleFinderSaveViewModal: FC<Props> = memo(props => {
                 cardsJson,
                 isCurrentView
             );
-            setIsSubmitting(false);
             onSuccess(savedView);
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
+        } finally {
             setIsSubmitting(false);
         }
     }, [viewName]);

@@ -25,8 +25,6 @@ import { SampleGridButtonProps } from '../samples/models';
 import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { invalidateQueryDetailsCache } from '../../query/api';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { getAllEntityTypeOptions } from '../entities/actions';
 
 import { formatDateTime } from '../../util/Date';
@@ -50,6 +48,7 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
+import {useAppContext} from "../../AppContext";
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -62,7 +61,6 @@ interface SampleFinderSamplesGridProps {
 }
 
 interface Props extends SampleFinderSamplesGridProps {
-    api?: ComponentsAPIWrapper;
     parentEntityDataTypes: EntityDataType[];
 }
 
@@ -96,7 +94,7 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
 });
 
 export const SampleFinderSection: FC<Props> = memo(props => {
-    const { api, sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
+    const { sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [savedViewChangeCounter, setSavedViewChangeCounter] = useState<number>(0);
@@ -111,6 +109,8 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [showSaveViewDialog, setShowSaveViewDialog] = useState<boolean>(false);
     const [showManageViewsDialog, setShowManageViewsDialog] = useState<boolean>(false);
     const [unsavedSessionViewName, setUnsavedSessionViewName] = useState<string>(undefined);
+
+    const { api } = useAppContext();
 
     useEffect(() => {
         const _enabledEntityTypes = [];
@@ -237,7 +237,14 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             let cardJson = null;
 
             if (view.isSession) cardJson = sessionStorage.getItem(getLocalStorageKey());
-            else if (view.reportId) cardJson = await loadFinderSearch(view);
+            else if (view.reportId) {
+                try{
+                    cardJson = await loadFinderSearch(view);
+                } catch (error) {
+                    console.error(error);
+                    return;
+                }
+            }
             if (!cardJson) return;
 
             const finderSessionData = searchFiltersFromJson(cardJson);
@@ -260,24 +267,29 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         [savedViewChangeCounter]
     );
 
-    const saveSearch = useCallback(
-        async (saveCurrentName?: boolean) => {
-            if (saveCurrentName) {
-                const viewJson = JSON.stringify({ filters: getSearchFilterObjs(filters) });
-                await saveFinderSearch(currentView, viewJson, saveCurrentName);
-                setViewDirty(false);
-            } else {
-                setShowSaveViewDialog(true);
-            }
-        },
-        [currentView, filters]
-    );
 
     const searchViewJson = useMemo(() => {
         return JSON.stringify({
             filters: getSearchFilterObjs(filters),
         });
-    }, [showSaveViewDialog, filters]);
+    }, [filters]);
+
+    const saveSearch = useCallback(
+        async (saveCurrentName?: boolean) => {
+            try {
+                if (saveCurrentName) {
+                    await saveFinderSearch(currentView, searchViewJson, saveCurrentName);
+                    setViewDirty(false);
+                } else {
+                    setShowSaveViewDialog(true);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+
+        },
+        [currentView, filters, searchViewJson]
+    );
 
     const manageSearches = useCallback(() => {
         setShowManageViewsDialog(true);
@@ -371,10 +383,6 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         </Section>
     );
 });
-
-SampleFinderSection.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
 
 interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
     cards: FilterProps[];

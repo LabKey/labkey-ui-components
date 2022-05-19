@@ -5,19 +5,18 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { Alert } from '../base/Alert';
 import { deleteReport, renameReport } from '../../query/reports';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { FinderReport } from './models';
+import {useAppContext} from "../../AppContext";
 
 export interface Props {
-    api?: ComponentsAPIWrapper;
     onDone: (hasChange?: boolean) => void;
     currentView?: FinderReport;
 }
 
 export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
-    const { api, onDone, currentView } = props;
+    const { onDone, currentView } = props;
 
     const [savedSearches, setSavedSearches] = useState<FinderReport[]>(undefined);
     const [selectedSearch, setSelectedSearch] = useState<FinderReport>(undefined);
@@ -26,10 +25,16 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
     const [hasChange, setHasChange] = useState<boolean>();
 
+    const { api } = useAppContext();
+
     useEffect(() => {
         (async () => {
-            const views = await api.samples.loadFinderSearches();
-            setSavedSearches(views);
+            try {
+                const views = await api.samples.loadFinderSearches();
+                setSavedSearches(views);
+            } catch (error) {
+                setErrorMessage(resolveErrorMessage(error));
+            }
         })();
     }, []);
 
@@ -40,10 +45,11 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
 
         try {
             await deleteReport(entityId);
-            setIsSubmitting(false);
             setSavedSearches(await api.samples.loadFinderSearches());
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
+        }
+        finally {
             setIsSubmitting(false);
         }
     }, []);
@@ -66,10 +72,11 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         try {
             await renameReport(selectedSearch.entityId, newName);
             setSavedSearches(await api.samples.loadFinderSearches());
-            setIsSubmitting(false);
             setSelectedSearch(undefined);
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
+        }
+        finally {
             setIsSubmitting(false);
         }
     }, [selectedSearch, newName]);
@@ -107,29 +114,20 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
                                 {!selectedSearch && !isLocked && (
                                     <>
                                         <Col xs={1}>
-                                            {!selectedSearch && !isLocked && (
-                                                <span
-                                                    className="edit-inline-field__toggle"
-                                                    onClick={() => setSelectedSearch(savedSearch)}
-                                                >
+                                            <span
+                                                className="edit-inline-field__toggle"
+                                                onClick={() => setSelectedSearch(savedSearch)}
+                                            >
                                                     <i className="fa fa-pencil" />
                                                 </span>
-                                            )}
-                                            {isLocked && (
-                                                <span className="edit-inline-field__toggle">
-                                                    <i className="fa fa-lock" />
-                                                </span>
-                                            )}
                                         </Col>
                                         <Col xs={1}>
-                                            {!selectedSearch && !isLocked && (
-                                                <span
-                                                    className="edit-inline-field__toggle"
-                                                    onClick={() => deleteView(savedSearch.entityId)}
-                                                >
+                                            <span
+                                                className="edit-inline-field__toggle"
+                                                onClick={() => deleteView(savedSearch.entityId)}
+                                            >
                                                     <i className="fa fa-trash-o" />
                                                 </span>
-                                            )}
                                         </Col>
                                     </>
                                 )}
@@ -159,7 +157,3 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         </Modal>
     );
 });
-
-SampleFinderManageViewsModal.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};

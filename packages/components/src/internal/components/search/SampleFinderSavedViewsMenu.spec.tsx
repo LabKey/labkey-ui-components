@@ -1,8 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { waitForLifecycle } from '../../testHelpers';
+import {mountWithAppServerContext, waitForLifecycle} from '../../testHelpers';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
@@ -41,7 +40,7 @@ describe('SampleFinderSavedViewsMenu', () => {
         let menuCount = 0;
 
         if (sessionView) {
-            expect(menuOptions.at(0).text()).toBe('MOST RECENT SEARCH');
+            expect(menuOptions.at(0).text()).toBe('Most Recent Search');
             expect(menuOptions.at(1).text()).toBe(sessionView);
             menuCount += 3; // include divider
         }
@@ -51,7 +50,7 @@ describe('SampleFinderSavedViewsMenu', () => {
                 expect(menuOptions.at(menuCount++).text()).toBe(savedView);
             });
         } else {
-            expect(menuOptions.at(menuCount++).text()).toBe('NO SAVED SEARCH');
+            expect(menuOptions.at(menuCount++).text()).toBe('No Saved Search');
         }
 
         menuCount++; // include divider
@@ -78,7 +77,9 @@ describe('SampleFinderSavedViewsMenu', () => {
     }
 
     test('without session view, without saved view', async () => {
-        const wrapper = mount(<SampleFinderSavedViewsMenu {...DEFAULT_PROPS} api={getSampleFinderAPI([])} />);
+        const wrapper = mountWithAppServerContext(<SampleFinderSavedViewsMenu {...DEFAULT_PROPS} />, {
+            api: getSampleFinderAPI([]),
+        });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -92,13 +93,9 @@ describe('SampleFinderSavedViewsMenu', () => {
     });
 
     test('without view, without saved view', async () => {
-        const wrapper = mount(
-            <SampleFinderSavedViewsMenu
-                {...DEFAULT_PROPS}
-                api={getSampleFinderAPI([])}
-                sessionViewName="Searched today"
-            />
-        );
+        const wrapper = mountWithAppServerContext(<SampleFinderSavedViewsMenu {...DEFAULT_PROPS} sessionViewName="Searched today" />, {
+            api: getSampleFinderAPI([]),
+        });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -111,9 +108,9 @@ describe('SampleFinderSavedViewsMenu', () => {
     });
 
     test('without session view, with saved views', async () => {
-        const wrapper = mount(
-            <SampleFinderSavedViewsMenu {...DEFAULT_PROPS} api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])} />
-        );
+        const wrapper = mountWithAppServerContext(<SampleFinderSavedViewsMenu {...DEFAULT_PROPS} />, {
+            api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
+        });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -126,13 +123,9 @@ describe('SampleFinderSavedViewsMenu', () => {
     });
 
     test('with session view, with saved views', async () => {
-        const wrapper = mount(
-            <SampleFinderSavedViewsMenu
-                {...DEFAULT_PROPS}
-                api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])}
-                sessionViewName="Searched today"
-            />
-        );
+        const wrapper = mountWithAppServerContext(<SampleFinderSavedViewsMenu {...DEFAULT_PROPS} sessionViewName="Searched today" />, {
+            api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
+        });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -145,18 +138,18 @@ describe('SampleFinderSavedViewsMenu', () => {
     });
 
     test('current view is session view', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleFinderSavedViewsMenu
                 {...DEFAULT_PROPS}
-                api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])}
                 sessionViewName="Searched today"
                 currentView={{
                     reportName: 'Searched today',
                     isSession: true,
                 }}
                 hasUnsavedChanges={true}
-            />
-        );
+            />, {
+            api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
+        });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -169,15 +162,15 @@ describe('SampleFinderSavedViewsMenu', () => {
     });
 
     test('current view is saved view, without edit', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleFinderSavedViewsMenu
                 {...DEFAULT_PROPS}
-                api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])}
                 sessionViewName="Searched today"
                 currentView={SAVED_VIEW1}
                 hasUnsavedChanges={false}
-            />
-        );
+            />, {
+                api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
+            });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -190,15 +183,15 @@ describe('SampleFinderSavedViewsMenu', () => {
     });
 
     test('current view is saved view, with edit', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleFinderSavedViewsMenu
                 {...DEFAULT_PROPS}
-                api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])}
                 sessionViewName="Searched today"
                 currentView={SAVED_VIEW1}
                 hasUnsavedChanges={true}
-            />
-        );
+            />, {
+                api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
+            });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);

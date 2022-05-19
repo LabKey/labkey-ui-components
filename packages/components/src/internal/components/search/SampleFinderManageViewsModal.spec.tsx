@@ -1,7 +1,6 @@
 import React from 'react';
-import { mount } from 'enzyme';
 
-import { waitForLifecycle } from '../../testHelpers';
+import {mountWithAppServerContext, waitForLifecycle} from '../../testHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
@@ -28,14 +27,16 @@ export const SAVED_VIEW2: FinderReport = {
 export const getSampleFinderAPI = (savedViews: FinderReport[]) => {
     return getTestAPIWrapper(jest.fn, {
         samples: getSamplesTestAPIWrapper(jest.fn, {
-            loadFinderSearches: () => Promise.resolve(savedViews),
+            loadFinderSearches: jest.fn().mockResolvedValue(savedViews),
         }),
     });
 };
 
 describe('SampleFinderManageViewsModal', () => {
     test('no saved views', async () => {
-        const wrapper = mount(<SampleFinderManageViewsModal api={getSampleFinderAPI([])} onDone={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(<SampleFinderManageViewsModal onDone={jest.fn()} />, {
+            api: getSampleFinderAPI([]),
+        });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -48,9 +49,9 @@ describe('SampleFinderManageViewsModal', () => {
     });
 
     test('one saved view', async () => {
-        const wrapper = mount(
-            <SampleFinderManageViewsModal api={getSampleFinderAPI([SAVED_VIEW2])} onDone={jest.fn()} />
-        );
+        const wrapper = mountWithAppServerContext(<SampleFinderManageViewsModal onDone={jest.fn()} />, {
+            api: getSampleFinderAPI([SAVED_VIEW2]),
+        });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -69,13 +70,9 @@ describe('SampleFinderManageViewsModal', () => {
     });
 
     test('one saved view, locked (currently viewing)', async () => {
-        const wrapper = mount(
-            <SampleFinderManageViewsModal
-                api={getSampleFinderAPI([SAVED_VIEW2])}
-                currentView={SAVED_VIEW2}
-                onDone={jest.fn()}
-            />
-        );
+        const wrapper = mountWithAppServerContext(<SampleFinderManageViewsModal currentView={SAVED_VIEW2} onDone={jest.fn()} />, {
+            api: getSampleFinderAPI([SAVED_VIEW2]),
+        });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -89,13 +86,9 @@ describe('SampleFinderManageViewsModal', () => {
     });
 
     test('multiple saved views, with locked view', async () => {
-        const wrapper = mount(
-            <SampleFinderManageViewsModal
-                api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])}
-                currentView={SAVED_VIEW2}
-                onDone={jest.fn()}
-            />
-        );
+        const wrapper = mountWithAppServerContext(<SampleFinderManageViewsModal currentView={SAVED_VIEW2} onDone={jest.fn()} />, {
+            api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
+        });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);
@@ -119,9 +112,9 @@ describe('SampleFinderManageViewsModal', () => {
     });
 
     test('multiple saved views', async () => {
-        const wrapper = mount(
-            <SampleFinderManageViewsModal api={getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2])} onDone={jest.fn()} />
-        );
+        const wrapper = mountWithAppServerContext(<SampleFinderManageViewsModal onDone={jest.fn()} />, {
+            api: getSampleFinderAPI([SAVED_VIEW1, SAVED_VIEW2]),
+        });
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
         await waitForLifecycle(wrapper);

@@ -164,7 +164,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const onFilterUpdate = useCallback(
         (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => {
-            setCardDirty(true);
+            setCardDirty?.(true);
             setFilterError(undefined);
             setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, field, newFilters));
         },

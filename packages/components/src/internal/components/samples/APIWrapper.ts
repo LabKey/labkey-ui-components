@@ -77,9 +77,9 @@ export function getSamplesTestAPIWrapper(
         getSampleSelectionLineageData: mockFn(),
         getSampleStatuses: mockFn(),
         getSampleOperationConfirmationData: mockFn(),
-        getSampleStorageId: mockFn,
+        getSampleStorageId: mockFn(),
         getFieldLookupFromSelection: mockFn(),
-        loadFinderSearches: mockFn,
+        loadFinderSearches: mockFn(),
         ...overrides,
     };
 }

@@ -2,34 +2,36 @@ import React, { FC, memo, useState, useEffect, useMemo } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { SubMenuItem } from '../menus/SubMenuItem';
-
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { FinderReport } from './models';
+import { useAppContext } from "../../AppContext";
 
 interface Props {
-    api?: ComponentsAPIWrapper;
     loadSearch: (view: FinderReport) => any;
     saveSearch: (saveCurrentName?: boolean) => any;
     manageSearches: () => any;
     currentView?: FinderReport;
     hasUnsavedChanges?: boolean;
     sessionViewName?: string;
-    key: any;
 }
 
 export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
-    const { api, loadSearch, manageSearches, saveSearch, currentView, hasUnsavedChanges, sessionViewName, key } = props;
+    const { loadSearch, manageSearches, saveSearch, currentView, hasUnsavedChanges, sessionViewName } = props;
 
     const [savedSearches, setSavedSearches] = useState<FinderReport[]>(undefined);
 
+    const { api } = useAppContext();
+
     useEffect(() => {
         (async () => {
-            const views = await api.samples.loadFinderSearches();
-            setSavedSearches(views);
+            try {
+                const views = await api.samples.loadFinderSearches();
+                setSavedSearches(views);
+            } catch (error) {
+                // do nothing, already logged
+            }
         })();
-    }, [key]);
+    }, []);
 
     const hasSavedView = savedSearches?.length > 0;
 
@@ -48,25 +50,25 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
             <DropdownButton id="samplefinder-savedsearch-menu" title={menuTitle} className="button-right-spacing">
                 {sessionViewName && (
                     <>
-                        <SubMenuItem text="MOST RECENT SEARCH" inline>
+                        <MenuItem className="submenu-header" header>Most Recent Search</MenuItem>
                             <MenuItem onClick={() => loadSearch({ isSession: true, reportName: sessionViewName })}>
                                 {sessionViewName}
                             </MenuItem>
-                        </SubMenuItem>
+
                         <MenuItem divider />
                     </>
                 )}
                 {!savedSearches && <LoadingSpinner />}
                 {savedSearches?.length > 0 && (
                     <>
-                        {savedSearches.map(savedSearch => {
+                        {savedSearches.map((savedSearch, ind) => {
                             return (
-                                <MenuItem onClick={() => loadSearch(savedSearch)}>{savedSearch.reportName}</MenuItem>
+                                <MenuItem key={ind} onClick={() => loadSearch(savedSearch)}>{savedSearch.reportName}</MenuItem>
                             );
                         })}
                     </>
                 )}
-                {savedSearches?.length === 0 && <SubMenuItem text="NO SAVED SEARCH" inline />}
+                {savedSearches?.length === 0 && <MenuItem className="submenu-header" header>No Saved Search</MenuItem>}
                 <MenuItem divider />
                 <MenuItem onClick={manageSearches} disabled={!hasSavedView}>
                     Manage saved searches
@@ -76,12 +78,10 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 </MenuItem>
             </DropdownButton>
             {hasUnsavedChanges && currentView?.reportId && (
-                <>
-                    <DropdownButton id="save-finderview-dropdown" title="Save Search" bsStyle="success">
-                        <MenuItem onClick={() => saveSearch(true)}>Save this search</MenuItem>
-                        <MenuItem onClick={() => saveSearch(false)}>Save as a new search</MenuItem>
-                    </DropdownButton>
-                </>
+                <DropdownButton id="save-finderview-dropdown" title="Save Search" bsStyle="success">
+                    <MenuItem onClick={() => saveSearch(true)}>Save this search</MenuItem>
+                    <MenuItem onClick={() => saveSearch(false)}>Save as a new search</MenuItem>
+                </DropdownButton>
             )}
             {hasUnsavedChanges && currentView && !currentView.reportId && (
                 <Button bsStyle="success" onClick={() => saveSearch(false)} className="margin-left">
@@ -91,7 +91,3 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
         </>
     );
 });
-
-SampleFinderSavedViewsMenu.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};

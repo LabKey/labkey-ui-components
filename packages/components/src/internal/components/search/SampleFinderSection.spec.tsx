@@ -14,6 +14,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { FilterCards } from './FilterCards';
 import { SampleFinderHeaderButtons, SampleFinderSection } from './SampleFinderSection';
+import { mountWithAppServerContext } from "../../testHelpers";
 
 describe('SampleFinderSection', () => {
     LABKEY.moduleContext = {
@@ -76,15 +77,14 @@ describe('SampleFinderSection', () => {
     });
 
     test('No cards', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleFinderSection
                 user={TEST_USER_EDITOR}
                 getSampleAuditBehaviorType={jest.fn()}
                 samplesEditableGridProps={{}}
                 parentEntityDataTypes={[TestTypeDataType]}
                 sampleTypeNames={[]}
-            />
-        );
+            />);
         const section = wrapper.find(Section);
         expect(section.find('.filter-hint').exists()).toBeTruthy();
         const cards = wrapper.find(FilterCards);

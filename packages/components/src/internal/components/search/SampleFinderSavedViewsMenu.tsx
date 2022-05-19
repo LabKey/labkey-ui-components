@@ -46,20 +46,23 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
         );
     }, [currentView, hasUnsavedChanges]);
 
-    const onLoadSavedSearch = useCallback((e) => {
-        const view = savedSearches.find(search => search.reportId === e.target.name);
-        loadSearch(view);
-    }, [savedSearches]);
+    const onLoadSavedSearch = useCallback(
+        e => {
+            const view = savedSearches.find(search => search.reportId === e.target.name);
+            loadSearch(view);
+        },
+        [savedSearches]
+    );
 
     const onLoadSessionSearch = useCallback(() => {
-        loadSearch({ isSession: true, reportName: sessionViewName })
+        loadSearch({ isSession: true, reportName: sessionViewName });
     }, [sessionViewName]);
 
-    const onSaveCurrentView = useCallback((e) => {
+    const onSaveCurrentView = useCallback(e => {
         saveSearch(true);
     }, []);
 
-    const onSaveNewView = useCallback((e) => {
+    const onSaveNewView = useCallback(e => {
         saveSearch(false);
     }, []);
 
@@ -71,9 +74,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                         <MenuItem className="submenu-header" header>
                             Most Recent Search
                         </MenuItem>
-                        <MenuItem onClick={onLoadSessionSearch}>
-                            {sessionViewName}
-                        </MenuItem>
+                        <MenuItem onClick={onLoadSessionSearch}>{sessionViewName}</MenuItem>
 
                         <MenuItem divider />
                     </>

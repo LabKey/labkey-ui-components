@@ -31,6 +31,8 @@ import { formatDateTime } from '../../util/Date';
 
 import { useAppContext } from '../../AppContext';
 
+import { createNotification } from '../notifications/actions';
+
 import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';
 import {
@@ -50,7 +52,6 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
-import { createNotification } from "../notifications/actions";
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -246,7 +247,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     console.error(error);
                     createNotification({
                         alertClass: 'danger',
-                        message: "Unable to load saved view '" + view.reportName + "'. " + (error.exception ? error.exception : ''),
+                        message:
+                            "Unable to load saved view '" +
+                            view.reportName +
+                            "'. " +
+                            (error.exception ? error.exception : ''),
                     });
                     return;
                 }

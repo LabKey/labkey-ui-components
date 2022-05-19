@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.173.0
+*Released*: 19 May 2022
+* Item 10386: Active user limit app messaging
+  * Add API to get user limit settings
+  * Display user limit message on User Management page and disable create/reactivate accordingly
+  * Handle user creation with and without limit errors in User Management page alerts
+  * Display user limit settings on Admin Settings page
+
 ### version 2.172.0
 *Released*: 17 May 2022
 * Internalize `moment-jdateformatparser` logic into a collection of utility methods in `jDateFormatParser.ts`.

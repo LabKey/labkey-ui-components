@@ -14,6 +14,8 @@ import { App, InjectedPermissionsPage } from '../../../index';
 
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 
+import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
+
 import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 
 declare const LABKEY: LabKey;
@@ -41,6 +43,7 @@ describe('UserManagement', () => {
 
     function validate(wrapper: ReactWrapper, hasNewUserRoles = false, allowResetPassword = true): void {
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(1);
+        expect(wrapper.find(ActiveUserLimitMessage)).toHaveLength(1);
         expect(wrapper.find(UsersGridPanel)).toHaveLength(1);
         expect(wrapper.find(UsersGridPanel).prop('allowResetPassword')).toBe(allowResetPassword);
 
@@ -53,6 +56,7 @@ describe('UserManagement', () => {
             user: App.TEST_USER_APP_ADMIN,
         });
         validate(wrapper);
+        wrapper.unmount();
     });
 
     test('non-inherit security policy', () => {
@@ -61,6 +65,7 @@ describe('UserManagement', () => {
         });
         wrapper.find('UserManagement').setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '1' }) });
         validate(wrapper, true);
+        wrapper.unmount();
     });
 
     test('inherit security policy', () => {
@@ -69,6 +74,7 @@ describe('UserManagement', () => {
         });
         wrapper.find('UserManagement').setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '2' }) });
         validate(wrapper);
+        wrapper.unmount();
     });
 
     test('allowResetPassword false', () => {
@@ -77,6 +83,7 @@ describe('UserManagement', () => {
             moduleContext: { api: { AutoRedirectSSOAuthConfiguration: true } },
         });
         validate(wrapper, false, false);
+        wrapper.unmount();
     });
 });
 

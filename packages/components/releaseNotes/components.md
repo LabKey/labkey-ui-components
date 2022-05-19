@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 10374: Begin adding support for customizing views in our application
+
+
 ### version 2.173.0
 *Released*: 19 May 2022
 * Item 10386: Active user limit app messaging

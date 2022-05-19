@@ -26,10 +26,12 @@ import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/wit
 import { AppContext, useAppContext } from '../../AppContext';
 import { SecurityAPIWrapper } from '../security/APIWrapper';
 
+import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
+
+import { UserLimitSettings } from '../permissions/actions';
+
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
-import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
-import { UserLimitSettings } from '../permissions/actions';
 
 export function getNewUserRoles(
     user: User,

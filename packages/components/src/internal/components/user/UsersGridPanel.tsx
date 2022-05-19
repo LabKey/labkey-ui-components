@@ -31,11 +31,12 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
+import { UserLimitSettings } from '../permissions/actions';
+
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserDetailsPanel } from './UserDetailsPanel';
 import { CreateUsersModal } from './CreateUsersModal';
-import { UserLimitSettings } from '../permissions/actions';
 
 const OMITTED_COLUMNS = [
     'phone',

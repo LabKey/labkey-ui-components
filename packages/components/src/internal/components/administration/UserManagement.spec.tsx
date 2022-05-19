@@ -14,8 +14,9 @@ import { App, InjectedPermissionsPage } from '../../../index';
 
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 
-import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
+
+import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 
 declare const LABKEY: LabKey;
 

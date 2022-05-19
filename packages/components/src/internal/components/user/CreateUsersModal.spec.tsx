@@ -18,8 +18,9 @@ import { mount } from 'enzyme';
 
 import { SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from '../../../test/data/constants';
 
+import { UserLimitSettings } from '../permissions/actions';
+
 import { CreateUsersModal } from './CreateUsersModal';
-import {UserLimitSettings} from "../permissions/actions";
 
 const ROLE_OPTIONS = [
     { id: SECURITY_ROLE_READER, label: 'Reader (default)' },

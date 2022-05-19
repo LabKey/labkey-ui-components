@@ -7,7 +7,7 @@ import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
-import {ActiveUserLimit, ActiveUserLimitMessage} from './ActiveUserLimit';
+import { ActiveUserLimit, ActiveUserLimitMessage } from './ActiveUserLimit';
 import {getSecurityTestAPIWrapper} from "../security/APIWrapper";
 
 describe('ActiveUserLimitMessage', () => {

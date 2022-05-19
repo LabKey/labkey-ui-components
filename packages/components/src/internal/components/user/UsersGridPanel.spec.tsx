@@ -27,8 +27,9 @@ import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/
 import { SCHEMAS } from '../../schemas';
 import { QueryInfo } from '../../../public/QueryInfo';
 
+import { DisableableButton } from '../buttons/DisableableButton';
+
 import { UsersGridPanelImpl } from './UsersGridPanel';
-import {DisableableButton} from "../buttons/DisableableButton";
 
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);

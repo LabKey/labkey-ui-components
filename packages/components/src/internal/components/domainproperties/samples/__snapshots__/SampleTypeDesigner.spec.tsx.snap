@@ -1090,6 +1090,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "setGenId": [Function],
           "validateDomainNameExpressions": [Function],
         },
+        "entity": EntityServerAPIWrapper {
+          "getDataOperationConfirmationData": [Function],
+        },
         "picklist": PicklistServerAPIWrapper {
           "getPicklistCountsBySampleType": [Function],
           "getPicklistDeleteData": [Function],

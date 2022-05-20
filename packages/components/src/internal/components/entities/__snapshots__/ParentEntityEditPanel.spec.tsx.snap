@@ -36,7 +36,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
-        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -142,7 +142,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                       "nounAsParentSingular": "Parent",
                       "nounPlural": "data",
                       "nounSingular": "data",
-                      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+                      "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                       "typeListingSchemaQuery": Immutable.Record {
                         "schemaName": "exp",
                         "queryName": "DataClasses",
@@ -185,7 +185,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                         "nounAsParentSingular": "Parent",
                         "nounPlural": "data",
                         "nounSingular": "data",
-                        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+                        "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                         "typeListingSchemaQuery": Immutable.Record {
                           "schemaName": "exp",
                           "queryName": "DataClasses",
@@ -242,7 +242,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                           "nounAsParentSingular": "Parent",
                           "nounPlural": "data",
                           "nounSingular": "data",
-                          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+                          "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                           "typeListingSchemaQuery": Immutable.Record {
                             "schemaName": "exp",
                             "queryName": "DataClasses",
@@ -313,7 +313,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                             "nounAsParentSingular": "Parent",
                             "nounPlural": "data",
                             "nounSingular": "data",
-                            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+                            "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                             "typeListingSchemaQuery": Immutable.Record {
                               "schemaName": "exp",
                               "queryName": "DataClasses",
@@ -827,7 +827,6 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                       </style>
                                                     </head>,
                                                     "ctr": 15,
-                                                    "insertionPoint": undefined,
                                                     "isSpeedy": false,
                                                     "key": "css",
                                                     "nonce": undefined,
@@ -1220,7 +1219,6 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                               </style>
                                                             </head>,
                                                             "ctr": 15,
-                                                            "insertionPoint": undefined,
                                                             "isSpeedy": false,
                                                             "key": "css",
                                                             "nonce": undefined,
@@ -1632,7 +1630,6 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                             </style>
                                                           </head>,
                                                           "ctr": 15,
-                                                          "insertionPoint": undefined,
                                                           "isSpeedy": false,
                                                           "key": "css",
                                                           "nonce": undefined,
@@ -2019,7 +2016,6 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                   </style>
                                                                 </head>,
                                                                 "ctr": 15,
-                                                                "insertionPoint": undefined,
                                                                 "isSpeedy": false,
                                                                 "key": "css",
                                                                 "nonce": undefined,
@@ -2405,7 +2401,6 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                         </style>
                                                                       </head>,
                                                                       "ctr": 15,
-                                                                      "insertionPoint": undefined,
                                                                       "isSpeedy": false,
                                                                       "key": "css",
                                                                       "nonce": undefined,
@@ -2926,7 +2921,6 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                           </style>
                                                                         </head>,
                                                                         "ctr": 15,
-                                                                        "insertionPoint": undefined,
                                                                         "isSpeedy": false,
                                                                         "key": "css",
                                                                         "nonce": undefined,
@@ -3399,7 +3393,6 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                   </style>
                                                                 </head>,
                                                                 "ctr": 15,
-                                                                "insertionPoint": undefined,
                                                                 "isSpeedy": false,
                                                                 "key": "css",
                                                                 "nonce": undefined,
@@ -3783,7 +3776,6 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                         </style>
                                                                       </head>,
                                                                       "ctr": 15,
-                                                                      "insertionPoint": undefined,
                                                                       "isSpeedy": false,
                                                                       "key": "css",
                                                                       "nonce": undefined,
@@ -4181,7 +4173,6 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                         </style>
                                                                       </head>,
                                                                       "ctr": 15,
-                                                                      "insertionPoint": undefined,
                                                                       "isSpeedy": false,
                                                                       "key": "css",
                                                                       "nonce": undefined,
@@ -4464,7 +4455,6 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                                 </style>
                                                                               </head>,
                                                                               "ctr": 15,
-                                                                              "insertionPoint": undefined,
                                                                               "isSpeedy": false,
                                                                               "key": "css",
                                                                               "nonce": undefined,
@@ -4785,7 +4775,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
-        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -4902,7 +4892,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                       "nounAsParentSingular": "Parent",
                       "nounPlural": "data",
                       "nounSingular": "data",
-                      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+                      "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                       "typeListingSchemaQuery": Immutable.Record {
                         "schemaName": "exp",
                         "queryName": "DataClasses",
@@ -4945,7 +4935,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                         "nounAsParentSingular": "Parent",
                         "nounPlural": "data",
                         "nounSingular": "data",
-                        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+                        "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                         "typeListingSchemaQuery": Immutable.Record {
                           "schemaName": "exp",
                           "queryName": "DataClasses",
@@ -5002,7 +4992,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                           "nounAsParentSingular": "Parent",
                           "nounPlural": "data",
                           "nounSingular": "data",
-                          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+                          "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                           "typeListingSchemaQuery": Immutable.Record {
                             "schemaName": "exp",
                             "queryName": "DataClasses",
@@ -5073,7 +5063,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                             "nounAsParentSingular": "Parent",
                             "nounPlural": "data",
                             "nounSingular": "data",
-                            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+                            "operationConfirmationActionName": "getDataOperationConfirmationData.api",
                             "typeListingSchemaQuery": Immutable.Record {
                               "schemaName": "exp",
                               "queryName": "DataClasses",
@@ -5175,7 +5165,7 @@ exports[`ParentEntityEditPanel loading state 1`] = `
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
-        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",

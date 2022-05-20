@@ -75,6 +75,7 @@ export interface FilterProps {
 export interface SearchSessionStorageProps {
     filters: FilterProps[];
     filterChangeCounter: number;
+    filterTimestamp: string;
 }
 
 export interface FieldFilterOption {
@@ -90,4 +91,11 @@ export interface FilterSelection {
     filterType: FieldFilterOption;
     firstFilterValue?: any;
     secondFilterValue?: any;
+}
+
+export interface FinderReport {
+    reportId?: string;
+    reportName?: string;
+    isSession?: boolean;
+    entityId?: string;
 }

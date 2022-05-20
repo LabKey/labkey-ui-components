@@ -372,7 +372,7 @@ function getWorkflowSectionConfig(appBase: string): MenuSectionConfig {
 
 function getNotebooksSectionConfig(appBase: string): MenuSectionConfig {
     return new MenuSectionConfig({
-        iconURL: imageURL('biologics/images', 'notebook_blue.svg'),
+        iconURL: imageURL('labbook/images', 'notebook_blue.svg'),
         seeAllURL: appBase + AppURL.create(NOTEBOOKS_KEY).toHref(),
     });
 }
@@ -459,12 +459,12 @@ export function getMenuSectionConfigs(
         if (storageConfig) {
             sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
         }
-        sectionConfigs = sectionConfigs.push(
-            Map({
-                [WORKFLOW_KEY]: workflowConfig,
-                [USER_KEY]: USER_SECTION_CONFIG,
-            })
-        );
+
+        let configs = Map({ [WORKFLOW_KEY]: workflowConfig });
+        if (userCanReadNotebooks(user)) {
+            configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
+        }
+        sectionConfigs = sectionConfigs.push(configs);
     } else if (isBioPrimary) {
         if (isRequestsEnabled(moduleContext)) {
             // When "Requests" are enabled render as two columns

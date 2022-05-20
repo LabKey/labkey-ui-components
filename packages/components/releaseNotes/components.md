@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD May 2022
+* Item 10394: LKSM menu update to add Notebooks section config
+
 ### version 2.174.0
 *Released*: 19 May 2022
 * Item 10299: Sample Finder Saving Queries

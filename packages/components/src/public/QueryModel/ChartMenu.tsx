@@ -103,7 +103,7 @@ export class ChartMenu extends PureComponent<Props> {
                     }
                 >
                     {showSampleComparisonReports && (
-                        <MenuItem header key="new-charts">
+                        <MenuItem className="submenu-header" header key="new-charts">
                             New Charts & Reports
                         </MenuItem>
                     )}

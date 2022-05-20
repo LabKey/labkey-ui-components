@@ -6,6 +6,10 @@ import { getSampleOperationConfirmationData } from '../entities/actions';
 
 import { OperationConfirmationData } from '../entities/models';
 
+import { FinderReport } from '../search/models';
+
+import { loadFinderSearches } from '../search/actions';
+
 import {
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
@@ -46,6 +50,8 @@ export interface SamplesAPIWrapper {
         selected: any[],
         fieldKey: string
     ) => Promise<string[]>;
+
+    loadFinderSearches: () => Promise<FinderReport[]>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
@@ -56,6 +62,7 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
     getSampleStorageId = getSampleStorageId;
     getFieldLookupFromSelection = getFieldLookupFromSelection;
+    loadFinderSearches = loadFinderSearches;
 }
 
 /**
@@ -71,8 +78,9 @@ export function getSamplesTestAPIWrapper(
         getSelectionLineageData: mockFn(),
         getSampleStatuses: mockFn(),
         getSampleOperationConfirmationData: mockFn(),
-        getSampleStorageId: mockFn,
+        getSampleStorageId: mockFn(),
         getFieldLookupFromSelection: mockFn(),
+        loadFinderSearches: mockFn(),
         ...overrides,
     };
 }

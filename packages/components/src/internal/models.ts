@@ -116,6 +116,7 @@ type DataViewInfoType =
     | DataViewInfoTypes.Query
     | DataViewInfoTypes.RReport
     | DataViewInfoTypes.SampleComparison
+    | DataViewInfoTypes.SampleFinderSavedSearch
     | DataViewInfoTypes.TimeChart
     | DataViewInfoTypes.XYScatterPlot
     | DataViewInfoTypes.XYSeriesLinePlot;
@@ -460,7 +461,10 @@ export class EditorModel
                             }, [])
                         );
                     } else if (col.lookup.displayColumn == col.lookup.keyColumn) {
-                        row = row.set(col.name, values.size === 1 ? quoteValueWithDelimiters(values.first().display, ',') : undefined);
+                        row = row.set(
+                            col.name,
+                            values.size === 1 ? quoteValueWithDelimiters(values.first().display, ',') : undefined
+                        );
                     } else {
                         row = row.set(col.name, values.size === 1 ? values.first()?.raw : undefined);
                     }

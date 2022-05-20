@@ -3,7 +3,10 @@ import { Ajax, Query, Utils } from '@labkey/api';
 
 import {
     buildURL,
+    DataViewInfoTypes,
+    IDataViewInfo,
     incrementClientSideMetricCount,
+    loadReports,
     QueryModel,
     resolveErrorMessage,
     SchemaQuery,
@@ -13,7 +16,9 @@ import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
 import { getPrimaryAppProperties } from '../../app/utils';
 
-import { SearchIdData, SearchResultCardData } from './models';
+import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
+
+import { FinderReport, SearchIdData, SearchResultCardData } from './models';
 import { SAMPLE_FINDER_VIEW_NAME } from './utils';
 
 type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
@@ -181,6 +186,72 @@ export function saveFinderGridView(schemaQuery: SchemaQuery, columns: any): Prom
                 console.error(response);
                 reject('There was a problem creating the view for the data grid. ' + resolveErrorMessage(response));
             },
+        });
+    });
+}
+
+export function saveFinderSearch(report: FinderReport, cardsJson: string, replace?: boolean): Promise<FinderReport> {
+    const reportConfig = {
+        name: report.reportName,
+        reportId: replace ? report.reportId : null,
+        config: cardsJson,
+        public: false,
+        replace,
+    };
+
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'saveSampleFinderSearch.api'),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            jsonData: reportConfig,
+            success: Utils.getCallbackWrapper(json => {
+                resolve({
+                    reportName: json['reportName'],
+                    reportId: json['reportId'],
+                    entityId: json['id'],
+                });
+            }),
+            failure: Utils.getCallbackWrapper(json => reject(json), null, false),
+        });
+    });
+}
+
+export function loadFinderSearches(): Promise<FinderReport[]> {
+    return new Promise((resolve, reject) => {
+        loadReports()
+            .then((reports: IDataViewInfo[]) => {
+                const views = reports
+                    .filter(report => report.type === DataViewInfoTypes.SampleFinderSavedSearch)
+                    .map(report => {
+                        return {
+                            reportId: report.reportId,
+                            reportName: report.name,
+                            entityId: report.id,
+                            isSession: false,
+                        };
+                    });
+                resolve(views);
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export function loadFinderSearch(view: FinderReport): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getSampleFinderSearch.api'),
+            method: 'GET',
+            params: { reportId: view.reportId, name: view.reportName },
+            success: Utils.getCallbackWrapper(json => {
+                resolve(json['config']);
+            }),
+            failure: Utils.getCallbackWrapper(json => reject(json), null, false),
         });
     });
 }

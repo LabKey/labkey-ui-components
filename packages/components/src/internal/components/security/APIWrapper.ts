@@ -2,7 +2,7 @@ import { Security } from '@labkey/api';
 import { Map } from 'immutable';
 
 import { Container } from '../base/models/Container';
-import { fetchContainerSecurityPolicy } from '../permissions/actions';
+import { fetchContainerSecurityPolicy, UserLimitSettings, getUserLimitSettings } from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
@@ -14,6 +14,7 @@ export interface SecurityAPIWrapper {
         principalsById: Map<number, Principal>,
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
+    getUserLimitSettings: () => Promise<UserLimitSettings>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
@@ -32,6 +33,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
     fetchPolicy = fetchContainerSecurityPolicy;
+    getUserLimitSettings = getUserLimitSettings;
 }
 
 function recurseContainerHierarchy(data: Security.ContainerHierarchy, container: Container): Container[] {
@@ -51,6 +53,7 @@ export function getSecurityTestAPIWrapper(
     return {
         fetchContainers: mockFn(),
         fetchPolicy: mockFn(),
+        getUserLimitSettings: mockFn(),
         ...overrides,
     };
 }

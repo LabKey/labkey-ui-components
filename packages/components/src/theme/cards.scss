@@ -168,11 +168,21 @@ $circle-size: 12 * $scale;
         }
     }
 
+    &.flex-card-height {
+        min-height: 0;
+    }
+
     .filter-display__row {
+
+        &.filter-row-divider {
+            margin-top: 8px;
+            border-top: solid 1px $gray-border-light;
+        }
+
         .filter-display__field-label {
             font-weight: bold;
             vertical-align: top;
-            padding-top: 10px;
+            padding: 10px 0;
             text-transform: uppercase;
         }
 
@@ -278,3 +288,7 @@ $circle-size: 12 * $scale;
     margin-bottom: 100px;
 }
 
+.finder-view-edit-alert {
+    padding: 4px 10px;
+    margin-right: 10px;
+}

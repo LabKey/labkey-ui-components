@@ -43,6 +43,7 @@ interface Props {
     cards?: FilterProps[];
     skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
     metricFeatureArea?: string;
+    setCardDirty?: (dirty: boolean) => any;
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
@@ -54,6 +55,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         cards,
         queryName,
         fieldKey,
+        setCardDirty,
         skipDefaultViewCheck,
         metricFeatureArea,
     } = props;
@@ -162,6 +164,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const onFilterUpdate = useCallback(
         (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => {
+            setCardDirty?.(true);
             setFilterError(undefined);
             setDataTypeFilters(getUpdatedDataTypeFilters(dataTypeFilters, activeQuery, field, newFilters));
         },

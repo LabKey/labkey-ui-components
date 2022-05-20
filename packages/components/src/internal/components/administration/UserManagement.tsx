@@ -26,6 +26,10 @@ import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/wit
 import { AppContext, useAppContext } from '../../AppContext';
 import { SecurityAPIWrapper } from '../security/APIWrapper';
 
+import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
+
+import { UserLimitSettings } from '../permissions/actions';
+
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 
@@ -80,6 +84,7 @@ export type UserManagementProps = OwnProps & InjectedPermissionsPage;
 
 interface State {
     policy: SecurityPolicy;
+    userLimitSettings: UserLimitSettings;
 }
 
 // exported for jest testing
@@ -89,17 +94,33 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
 
         this.state = {
             policy: undefined,
+            userLimitSettings: undefined,
         };
     }
 
     componentDidMount(): void {
-        if (this.props.user.isAdmin) {
-            this.loadSecurityPolicy();
-        }
+        this.loadSecurityPolicy();
+        this.loadUserLimitSettings();
     }
 
+    loadUserLimitSettings = async (): Promise<void> => {
+        const { api, user } = this.props;
+        if (!user.hasAddUsersPermission()) return;
+
+        try {
+            const userLimitSettings = await api.getUserLimitSettings();
+            this.setState({ userLimitSettings });
+        } catch (error) {
+            createNotification({
+                alertClass: 'danger',
+                message: 'Unable to load user limit settings. ' + (error.exception ? error.exception : ''),
+            });
+        }
+    };
+
     loadSecurityPolicy = async (): Promise<void> => {
-        const { api, container, principalsById } = this.props;
+        const { api, container, principalsById, user } = this.props;
+        if (!user.isAdmin) return;
 
         try {
             const policy = await api.fetchPolicy(container.id, principalsById);
@@ -112,7 +133,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         }
     };
 
-    onCreateComplete = (response: any, roleUniqueNames: string[]) => {
+    onCreateComplete = (response: any, roleUniqueNames: string[]): void => {
         const { container, project } = this.props;
         this.invalidateGlobal();
 
@@ -176,6 +197,15 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                 },
             });
         }
+
+        if (response.htmlErrors?.length > 0) {
+            createNotification({
+                alertClass: 'danger',
+                message: response.htmlErrors.join(' '),
+            });
+        }
+
+        this.loadUserLimitSettings();
     };
 
     onUsersStateChangeComplete = (response: any) => {
@@ -211,6 +241,8 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                 );
             },
         });
+
+        this.loadUserLimitSettings();
     };
 
     afterCreateComplete(newUsers: List<number>, permissionsSet: boolean) {
@@ -245,8 +277,8 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     };
 
     render() {
-        const { allowResetPassword, container, extraRoles, project, user } = this.props;
-        const { policy } = this.state;
+        const { allowResetPassword, container, extraRoles, project, user, api } = this.props;
+        const { policy, userLimitSettings } = this.state;
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
         const isEditable = policy && !policy.isInheritFromParent();
@@ -259,6 +291,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                 hasPermission={user.isAdmin}
                 renderButtons={this.renderButtons}
             >
+                <ActiveUserLimitMessage settings={userLimitSettings} />
                 <UsersGridPanel
                     user={user}
                     onCreateComplete={this.onCreateComplete}
@@ -267,6 +300,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                     policy={policy}
                     allowResetPassword={allowResetPassword}
                     showDetailsPanel={user.hasManageUsersPermission()}
+                    userLimitSettings={userLimitSettings}
                 />
             </BasePermissionsCheckPage>
         );

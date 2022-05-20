@@ -48,7 +48,9 @@ export class PageMenu extends PureComponent<Props> {
                     pullRight
                     title={currentPage}
                 >
-                    <MenuItem header>Jump To</MenuItem>
+                    <MenuItem className="submenu-header" header>
+                        Jump To
+                    </MenuItem>
                     <MenuItem disabled={disabled || isFirstPage} onClick={this.loadFirstPage}>
                         First Page
                     </MenuItem>
@@ -59,7 +61,9 @@ export class PageMenu extends PureComponent<Props> {
                     {showPageSizeMenu && (
                         <>
                             <MenuItem divider />
-                            <MenuItem header>Page Size</MenuItem>
+                            <MenuItem className="submenu-header" header>
+                                Page Size
+                            </MenuItem>
                             {pageSizes?.map(size => (
                                 <MenuItem key={size} active={size === pageSize} onClick={() => this.setPageSize(size)}>
                                     {size}

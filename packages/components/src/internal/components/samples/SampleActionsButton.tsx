@@ -55,7 +55,7 @@ export const SampleActionsButton: FC<Props> = memo(props => {
             {!!children && hasPerms && <hr className="divider" />}
             {hasPerms && (
                 <>
-                    <MenuItem header>Picklists</MenuItem>
+                    <MenuItem className="submenu-header" header>Picklists</MenuItem>
                     <AddToPicklistMenuItem
                         user={user}
                         queryModel={model}

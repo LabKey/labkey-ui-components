@@ -65,7 +65,7 @@ export class SampleAliquotViewSelector extends Component<Props> {
 
         const items = List<ReactNode>().asMutable();
         items.push(
-            <MenuItem header key="aliquot-selector-header">
+            <MenuItem header className="submenu-header" key="aliquot-selector-header">
                 {headerLabel}
             </MenuItem>
         );

@@ -90,7 +90,6 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import {
     EntityDataType,
     EntityIdCreationModel,
-    EntityInsertPanelTabs,
     EntityParentType,
     EntityTypeOption,
     IEntityTypeOption,
@@ -195,6 +194,11 @@ interface StateProps {
     allowUserSpecifiedNames: boolean;
     previewName: string;
     previewAliquotName: string;
+}
+
+enum EntityInsertPanelTabs {
+    First = 1,
+    Second = 2,
 }
 
 export class EntityInsertPanelImpl extends Component<Props, StateProps> {

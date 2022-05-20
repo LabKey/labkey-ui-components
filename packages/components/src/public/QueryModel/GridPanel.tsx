@@ -807,9 +807,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         const gridEmptyText = getEmptyText?.(model) ?? emptyText;
 
-        console.log("asPanel", asPanel);
-        console.log('hasHeader', hasHeader);
-
         return (
             <>
                 <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>

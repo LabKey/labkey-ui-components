@@ -71,7 +71,7 @@ exports[`UserMenu user logged in dev mode 1`] = `
       role="separator"
     />
     <li
-      className="dropdown-header"
+      className="submenu-header dropdown-header"
       role="heading"
     >
       Dev Tools
@@ -197,7 +197,7 @@ exports[`UserMenu user logged in extra dev mode items 1`] = `
       role="separator"
     />
     <li
-      className="dropdown-header"
+      className="submenu-header dropdown-header"
       role="heading"
     >
       Dev Tools
@@ -329,7 +329,7 @@ exports[`UserMenu user logged in extra items 1`] = `
       role="separator"
     />
     <li
-      className="dropdown-header"
+      className="submenu-header dropdown-header"
       role="heading"
     >
       Dev Tools

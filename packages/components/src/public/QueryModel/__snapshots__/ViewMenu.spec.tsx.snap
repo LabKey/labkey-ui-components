@@ -83,8 +83,11 @@ exports[`ViewMenu Render 3`] = `
         </a>
       </li>
       <li
-        className="dropdown-header"
-        onKeyDown={[Function]}
+        className="divider"
+        role="separator"
+      />
+      <li
+        className="submenu-header dropdown-header"
         role="heading"
       >
         All Saved Views
@@ -168,8 +171,11 @@ exports[`ViewMenu Render 4`] = `
         </a>
       </li>
       <li
-        className="dropdown-header"
-        onKeyDown={[Function]}
+        className="divider"
+        role="separator"
+      />
+      <li
+        className="submenu-header dropdown-header"
         role="heading"
       >
         My Saved Views
@@ -239,8 +245,11 @@ exports[`ViewMenu Render 5`] = `
         </a>
       </li>
       <li
-        className="dropdown-header"
-        onKeyDown={[Function]}
+        className="divider"
+        role="separator"
+      />
+      <li
+        className="submenu-header dropdown-header"
         role="heading"
       >
         My Saved Views

@@ -7,6 +7,10 @@ import { EditorModel, EditorModelProps } from '../../models';
 
 import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 import { getUniqueIdColumnMetadata } from '../entities/utils';
+import { ExportMenu } from '../../../public/QueryModel/ExportMenu';
+import { EXPORT_TYPES } from '../../constants';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { UtilsDOM } from '@labkey/api';
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
@@ -18,6 +22,70 @@ interface Props extends SharedEditableGridPanelProps {
         index?: number
     ) => void;
 }
+
+// const headers = [...updateColumns.map(col => col.caption)];
+function formatExportData(editorData: Array<Map<string, any>>, updateColumns: List<QueryColumn>): Array<Array<any>> {
+    const headers = updateColumns.map(col => col.caption).toArray();
+    const editedRows = editorData.flatMap(row => {
+        const vals = [];
+        updateColumns.forEach( (c) => {
+            vals.push(row.get(c.fieldKey));
+        });
+        return [vals];
+    });
+
+    return [headers, ...editedRows];
+}
+
+const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>): UtilsDOM.TextTableForm => {
+    const config = {
+        rows: exportData,
+        fileNamePrefix: filename,
+    } as UtilsDOM.TextTableForm;
+
+    switch (exportType) {
+        case EXPORT_TYPES.TSV:
+            config.delim = UtilsDOM.DelimiterType.TAB;
+            break;
+        case EXPORT_TYPES.CSV:
+        default:
+            config.delim = UtilsDOM.DelimiterType.COMMA;
+            break;
+    }
+
+    return config;
+};
+
+function exportEditedData(exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>): void {
+    if (EXPORT_TYPES.EXCEL === exportType) {
+        const data = {
+            fileName: filename + '.xlsx',
+                sheets: [{name: 'data', data: exportData }]
+        };
+        UtilsDOM.convertToExcel(data);
+        return;
+    }
+
+    const config = getTableExportConfig(exportType, filename, exportData);
+    UtilsDOM.convertToTable(config);
+}
+
+// Should this be coming from the props (higher components)?
+const exportHandler = (exportType: EXPORT_TYPES, activeModel: QueryModel, activeEditorModel: EditorModel, readOnlyColumns: List<string>, updateColumns: List<QueryColumn> ): void => {
+    const editorData = activeEditorModel
+        .getRawDataFromGridData(
+            fromJS(activeModel.rows),
+            fromJS(activeModel.orderedRows),
+            activeModel.queryInfo,
+            true,
+            true,
+            readOnlyColumns
+        )
+        .toArray();
+
+    const exportData = formatExportData(editorData, updateColumns);
+    exportEditedData(exportType, 'TODO', exportData);
+};
 
 /**
  * Note that there are some cases which will call the onChange callback prop back to back (i.e. see LookupCell.onInputChange)
@@ -42,8 +110,10 @@ export const EditableGridPanel: FC<Props> = memo(props => {
         getUpdateColumns,
         getTabHeader,
         getTabTitle,
+        readOnlyColumns,
         ...gridProps
     } = props;
+
     const [activeTab, setActiveTab] = useState<number>(props.activeTab ?? 0);
     const models = Array.isArray(model) ? model : [model];
     const activeModel = models[activeTab];
@@ -56,8 +126,6 @@ export const EditableGridPanel: FC<Props> = memo(props => {
             onChange(editorModelChanges, dataKeys, data, activeTab),
         [activeTab, onChange]
     );
-
-    const onTabClick = useCallback(setActiveTab, []);
 
     // TODO: When EditableGridPanelDeprecated is removed we should be able to just pass model.rows and model.orderedRows
     //  to the EditableGrid.
@@ -78,6 +146,26 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     let activeUpdateColumns = updateColumns;
     if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
 
+    const csvExportHandlerCallback = useCallback(() => {
+        exportHandler(EXPORT_TYPES.CSV, activeModel, activeEditorModel, readOnlyColumns, activeUpdateColumns);
+    }, [models, activeModel, activeEditorModel, readOnlyColumns, activeUpdateColumns]);
+
+    const tsvExportHandlerCallback = useCallback(() => {
+        exportHandler(EXPORT_TYPES.TSV, activeModel, activeEditorModel, readOnlyColumns, activeUpdateColumns);
+    }, [models, activeModel, activeEditorModel, readOnlyColumns, activeUpdateColumns]);
+
+    const excelExportHandlerCallback = useCallback(() => {
+        exportHandler(EXPORT_TYPES.EXCEL, activeModel, activeEditorModel, readOnlyColumns, activeUpdateColumns);
+    }, [activeTab, activeModel, activeEditorModel, readOnlyColumns, activeUpdateColumns]);
+
+    const onExport = {
+        [EXPORT_TYPES.CSV]: csvExportHandlerCallback,
+        [EXPORT_TYPES.TSV]: tsvExportHandlerCallback,
+        [EXPORT_TYPES.EXCEL]: excelExportHandlerCallback,
+    };
+
+    const onTabClick = useCallback(setActiveTab, []);
+
     const editableGrid = (
         <EditableGrid
             {...gridProps}
@@ -89,6 +177,7 @@ export const EditableGridPanel: FC<Props> = memo(props => {
             onChange={_onChange}
             queryInfo={queryInfo}
             readonlyRows={activeReadOnlyRows}
+            readOnlyColumns={readOnlyColumns}
             updateColumns={activeUpdateColumns}
         />
     );
@@ -123,6 +212,12 @@ export const EditableGridPanel: FC<Props> = memo(props => {
                     </ul>
                 )}
                 {getTabHeader?.(activeTab)}
+                <div className={'pull-right'}>
+                    <ExportMenu
+                        model={activeModel}
+                        onExport={onExport}
+                    />
+                </div>
                 {editableGrid}
             </div>
         </div>

@@ -3,9 +3,9 @@ import { List, Map, Set } from 'immutable';
 import {
     caseInsensitive,
     EditableColumnMetadata,
-    naturalSort,
+    naturalSort, OperationConfirmationData,
     parseCsvString,
-    QueryInfo,
+    QueryInfo, SampleOperation,
     SchemaQuery,
     SCHEMAS
 } from '../../..';
@@ -16,6 +16,8 @@ import { getCurrentProductName } from '../../app/utils';
 import { ParentIdData } from '../samples/actions';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
+import {DataOperation} from "./constants";
+import {operationRestrictionMessage} from "../samples/constants";
 
 export function parentValuesDiffer(
     sortedOriginalParents: List<EntityChoice>,

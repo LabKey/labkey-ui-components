@@ -14,6 +14,7 @@ import {
     getDomainPropertiesTestAPIWrapper,
 } from './components/domainproperties/APIWrapper';
 import { getQueryTestAPIWrapper, QueryAPIWrapper, QueryServerAPIWrapper } from './query/APIWrapper';
+import {EntityAPIWrapper, EntityServerAPIWrapper, getEntityTestAPIWrapper} from "./components/entities/APIWrapper";
 
 export interface ComponentsAPIWrapper {
     picklist: PicklistAPIWrapper;
@@ -21,6 +22,7 @@ export interface ComponentsAPIWrapper {
     security: SecurityAPIWrapper;
     domain: DomainPropertiesAPIWrapper;
     query: QueryAPIWrapper;
+    entity: EntityAPIWrapper;
 }
 
 export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
@@ -30,6 +32,7 @@ export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
         security: new ServerSecurityAPIWrapper(),
         domain: new DomainPropertiesAPIWrapper(),
         query: new QueryServerAPIWrapper(),
+        entity: new EntityServerAPIWrapper()
     };
 }
 
@@ -46,6 +49,7 @@ export function getTestAPIWrapper(
         security: getSecurityTestAPIWrapper(mockFn, overrides.security),
         domain: getDomainPropertiesTestAPIWrapper(mockFn, overrides.domain),
         query: getQueryTestAPIWrapper(mockFn, overrides.query),
+        entity: getEntityTestAPIWrapper(mockFn, overrides.entity),
         ...overrides,
     };
 }

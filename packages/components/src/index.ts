@@ -458,6 +458,7 @@ import { Principal, SecurityPolicy, SecurityRole } from './internal/components/p
 import { fetchContainerSecurityPolicy } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,
+    getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
@@ -1099,6 +1100,7 @@ export {
     AddEntityButton,
     RemoveEntityButton,
     getSampleOperationConfirmationData,
+    getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     createEntityParentKey,
     getUniqueIdColumnMetadata,

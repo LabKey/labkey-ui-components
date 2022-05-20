@@ -27,9 +27,9 @@ import { IS_ALIQUOT_COL } from '../samples/constants';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { EntityChoice, EntityDataType, OperationConfirmationData } from './models';
-import { getEntityNoun, getUpdatedLineageRowsForBulkEdit } from './utils';
+import {getEntityNoun, getUpdatedLineageRowsForBulkEdit, isSampleEntity} from './utils';
 
-import { ParentEntityLineageColumns } from './constants';
+import {DataOperation, ParentEntityLineageColumns} from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
 interface Props {
@@ -40,6 +40,29 @@ interface Props {
     childEntityDataType: EntityDataType;
     auditBehavior?: AuditBehaviorTypes;
     parentEntityDataTypes: EntityDataType[];
+}
+
+export function restrictedDataOperationMsg(confirmationData: OperationConfirmationData, entityDataType: EntityDataType) {
+
+    let notAllowedMsg = null;
+
+    if (confirmationData) {
+        if (confirmationData.totalCount === 0) {
+            return null;
+        }
+
+        if (confirmationData.noneAllowed) {
+            return `All selected ${entityDataType.nounPlural} have a status that prevents updating of their lineage.`;
+        }
+
+        let notAllowed = confirmationData.notAllowed;
+        if (notAllowed?.length > 0) {
+            notAllowedMsg = `The current status of ${notAllowed.length} selected ${notAllowed.length > 1 ? entityDataType.nounPlural : entityDataType.nounSingular}
+            prevents updating of ${notAllowed.length > 1 ? "their" : "it's"} lineage.`;
+        }
+    }
+
+    return notAllowedMsg;
 }
 
 export const EntityLineageEditModal: FC<Props> = memo(props => {
@@ -60,23 +83,35 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
         (async () => {
             try {
-                const confirmationData = await api.samples.getSampleOperationConfirmationData(
-                    SampleOperation.EditLineage,
-                    queryModel.id
-                );
-                const sampleData = await api.samples.getSelectionLineageData(
+                let confirmationData;
+                if (isSampleEntity(childEntityDataType)) {
+                    confirmationData = await api.samples.getSampleOperationConfirmationData(
+                        SampleOperation.EditLineage,
+                        queryModel.id
+                    );
+                }
+                else {
+                    confirmationData = await api.entity.getDataOperationConfirmationData(
+                        DataOperation.EditLineage,
+                        queryModel.id
+                    );
+                }
+
+                // This API will retrieve lineage data for samples or dataclasses
+                const lineageData = await api.samples.getSelectionLineageData(
                     List.of(...queryModel.selections),
                     queryModel.schemaName,
                     queryModel.queryName,
                     List.of('RowId', 'Name', 'LSID', IS_ALIQUOT_COL).concat(ParentEntityLineageColumns).toArray()
                 );
 
-                const { key, models } = sampleData;
+                const { key, models } = lineageData;
                 const allowedForUpdate = {};
                 const aIds = [];
                 Object.keys(models[key]).forEach(id => {
                     const d = models[key][id];
-                    if (caseInsensitive(d, IS_ALIQUOT_COL)['value']) {
+                    const isAliq = caseInsensitive(d, IS_ALIQUOT_COL);
+                    if (isAliq && isAliq['value']) {
                         aIds.push(id);
                     } else {
                         if (confirmationData.isIdAllowed(id)) {
@@ -160,11 +195,19 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
                 <Modal.Body>
                     <div>
-                        {numAliquots === statusData.totalCount && (
-                            <>The {lcParentNounPlural} for aliquots cannot be changed. </>
-                        )}
-                        {aliquotsMsg}
-                        {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
+                        {isSampleEntity(childEntityDataType) ?
+                            <>
+                                {numAliquots === statusData.totalCount && (
+                                    <>The {lcParentNounPlural} for aliquots cannot be changed. </>
+                                )}
+                                {aliquotsMsg}
+                                {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
+                            </>
+                            :
+                            <>
+                                {restrictedDataOperationMsg(statusData, childEntityDataType)}
+                            </>
+                        }
                     </div>
                 </Modal.Body>
 
@@ -206,7 +249,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                         {(numAliquots > 0 || statusData.notAllowed.length > 0) && !submitting && (
                             <Alert bsStyle="warning" className="has-aliquots-alert">
                                 {aliquotsMsg}
-                                {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
+                                {isSampleEntity(childEntityDataType) ? getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData) : restrictedDataOperationMsg(statusData, childEntityDataType)}
                             </Alert>
                         )}
                         <Alert bsStyle="danger">{errorMessage}</Alert>

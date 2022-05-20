@@ -30,6 +30,7 @@ import { OperationConfirmationData } from '../entities/models';
 import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
 import { SampleStatus } from './models';
+import {DataOperation} from "../entities/constants";
 
 export function getOmittedSampleTypeColumns(user: User): string[] {
     let cols: string[] = [];

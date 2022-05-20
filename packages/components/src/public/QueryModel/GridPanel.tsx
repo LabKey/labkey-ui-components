@@ -242,20 +242,25 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 }
 
 interface GridTitleProps {
-    asPanel?: boolean;
-    dirty?: boolean;
+    asPanel?: boolean,
+    dirty?: boolean,
     title?: string,
-    viewName?: string,
+    model: QueryModel,
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
-    const {viewName, title, asPanel, dirty} = props;
+    const {title, asPanel, dirty, model} = props;
+    const { queryInfo, viewName } = model;
 
     if (!title && !viewName) return null;
 
     let displayTitle = title;
     if (viewName) {
-        displayTitle = displayTitle ? displayTitle + " - " + viewName : viewName;
+        const view = queryInfo.views.get(viewName.toLowerCase());
+        if (!view?.hidden) {
+            const label = view.label ?? viewName;
+            displayTitle = displayTitle ? displayTitle + " - " + label : label;
+        }
     }
 
     if (!displayTitle && !asPanel)
@@ -352,15 +357,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     createGridActionValues = (): ActionValue[] => {
         const { model } = this.props;
-        const { filterArray, queryInfo, sorts, viewName } = model;
+        const { filterArray, sorts } = model;
         const actionValues = [];
-
-        if (model.viewName) {
-            const view = queryInfo.views.get(viewName.toLowerCase());
-            const name = view?.label ?? viewName;
-            // Don't display hidden views in the grid FilterStatus
-            if (!view?.hidden) actionValues.push(this.gridActions.view.actionValueFromView(name));
-        }
 
         sorts.forEach((sort): void => {
             const column = model.getColumn(sort.fieldKey);
@@ -810,7 +808,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return (
             <>
                 <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-                    {!hasHeader && <GridTitle viewName={model.viewName} asPanel={asPanel} title={title}/>}
+                    {!hasHeader && <GridTitle model={model} asPanel={asPanel} title={title}/>}
 
                     <div className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-spacing': !hasHeader })}>
                         {showButtonBar && (

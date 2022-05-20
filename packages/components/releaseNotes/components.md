@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 10374: Begin adding support for customizing views in our application
+  * Move display of custom view name into panel header
 
 
 ### version 2.174.0

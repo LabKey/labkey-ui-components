@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD May 2022
 * Apply MenuItem "submenu-header" class to applicable grid menu headers
+* Issue 45222: Editable grid fix for lookup cell margin-right to account for selector
 
 ### version 2.174.0
 *Released*: 19 May 2022

@@ -429,10 +429,19 @@ $table-cell-selection-bg-color: #EDF3FF;
 }
 
 .tabbed-grid-panel .nav-tabs {
-    margin-bottom: 30px;
-
-
     & > li.no-data {
         opacity: 0.5;
     }
+}
+
+.view-header {
+    background-color: $gray-shadow;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.view-edit-alert {
+    padding: 4px 10px;
+    margin-right: 10px;
+    text-transform: uppercase;
 }

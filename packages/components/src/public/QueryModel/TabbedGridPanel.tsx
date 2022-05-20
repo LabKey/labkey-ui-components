@@ -21,7 +21,7 @@ import { EXPORT_TYPES } from '../../internal/constants';
 import { createNotification } from '../../internal/components/notifications/actions';
 import { exportTabsXlsx } from '../../internal/actions';
 
-import { GridPanel, GridPanelProps } from './GridPanel';
+import { GridPanel, GridPanelProps, GridTitle } from './GridPanel';
 import { InjectedQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
@@ -147,11 +147,13 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 const filename = exportFilename ?? 'Data';
                 await exportTabsXlsx(filename, models);
                 onExport?.[EXPORT_TYPES.EXCEL]?.();
-                createNotification({ message: 'Successfully exported tabs to file.', alertClass: 'success' });
-            } catch (e) {
+                createNotification({message: 'Successfully exported tabs to file.', alertClass: 'success'});
+            }
+            catch (e) {
                 // Set export error
-                createNotification({ message: 'Export failed: ' + e, alertClass: 'danger' });
-            } finally {
+                createNotification({message: 'Export failed: ' + e, alertClass: 'danger'});
+            }
+            finally {
                 // unset exporting blocker
                 setCanExport(true);
                 setShowExportModal(false);
@@ -169,7 +171,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         await exportTabs([internalActiveId]);
     }, [tabOrder, exportTabs, internalActiveId]);
 
-    const exportHandlers = { ...onExport, [EXPORT_TYPES.EXCEL]: excelExportHandler };
+    const exportHandlers = {...onExport, [EXPORT_TYPES.EXCEL]: excelExportHandler};
 
     const closeExportModal = useCallback(() => {
         setShowExportModal(false);
@@ -185,8 +187,9 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
 
     return (
         <div className={classNames('tabbed-grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-            {title !== undefined && asPanel && <div className="tabbed-grid-panel__title panel-heading">{title}</div>}
-
+            {tabOrder.length === 1 && !alwaysShowTabs && (
+                <GridTitle asPanel={asPanel} dirty={true} title={title} viewName={queryModels[activeId].viewName} />
+            )}
             <div className={classNames('tabbed-grid-panel__body', { 'panel-body': asPanel })}>
                 {(tabOrder.length > 1 || alwaysShowTabs) && (
                     <ul className="nav nav-tabs">
@@ -211,6 +214,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 <GridPanel
                     key={activeId}
                     actions={actions}
+                    hasHeader={tabOrder.length === 1 && !alwaysShowTabs }
                     asPanel={false}
                     model={activeModel}
                     onExport={exportHandlers}

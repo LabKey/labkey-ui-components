@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, memo, PureComponent, ReactNode, useMemo } from 'react';
+import React, { ComponentType, FC, memo, PureComponent, ReactNode, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Set } from 'immutable';
 import { Filter, Query } from '@labkey/api';
@@ -54,6 +54,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponentRight?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     emptyText?: string;
     getEmptyText?: (model: QueryModel) => string;
+    hasHeader?: boolean;
     hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
     loadOnMount?: boolean;
@@ -240,10 +241,49 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
     }
 }
 
+interface GridTitleProps {
+    asPanel?: boolean;
+    dirty?: boolean;
+    title?: string,
+    viewName?: string,
+}
+
+export const GridTitle: FC<GridTitleProps> = memo(props => {
+    const {viewName, title, asPanel, dirty} = props;
+
+    if (!title && !viewName) return null;
+
+    let displayTitle = title;
+    if (viewName) {
+        displayTitle = displayTitle ? displayTitle + " - " + viewName : viewName;
+    }
+
+    if (!displayTitle && !asPanel)
+        return null;
+
+    const revertViewEdit = useCallback(() => {
+        console.log("TODO");
+    }, [viewName]);
+
+    return (
+       <div className="view-header">
+           {dirty && <span className="alert-info view-edit-alert">Edited</span>}
+           {displayTitle}
+           {dirty && <button className="button-left-spacing" onClick={revertViewEdit}>Undo</button>}
+       </div>
+   );
+});
+
+interface ViewStatus {
+    name: string,
+    dirty: boolean,
+}
+
 interface State {
     actionValues: ActionValue[];
     showFilterModalFieldKey: string;
     headerClickCount: { [key: string]: number };
+    chosenView: ViewStatus
 }
 
 /**
@@ -286,6 +326,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             actionValues: [],
             showFilterModalFieldKey: undefined,
             headerClickCount: {},
+            chosenView: { name: undefined, dirty: false }
         };
     }
 
@@ -738,6 +779,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const {
             actions,
             allowSelections,
+            hasHeader,
             asPanel,
             emptyText,
             getEmptyText,
@@ -765,16 +807,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         const gridEmptyText = getEmptyText?.(model) ?? emptyText;
 
+        console.log("asPanel", asPanel);
+        console.log('hasHeader', hasHeader);
+
         return (
             <>
                 <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-                    {title !== undefined && asPanel && (
-                        <div className="grid-panel__title panel-heading">
-                            <span>{title}</span>
-                        </div>
-                    )}
+                    {!hasHeader && <GridTitle viewName={model.viewName} asPanel={asPanel} title={title}/>}
 
-                    <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
+                    <div className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-spacing': !hasHeader })}>
                         {showButtonBar && (
                             <ButtonBar
                                 {...this.props}

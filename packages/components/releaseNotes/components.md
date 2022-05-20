@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.174.0
+*Released*: 19 May 2022
+* Item 10299: Sample Finder Saving Queries
+  * Add SampleFinderManageViewsModal, SampleFinderSaveViewModal and SampleFinderSavedViewsMenu components
+  * Utils for saveFinderSearch, loadFinderSearches, loadFinderSearch, renameReport and deleteReport
+  * Update SampleFinderSection to show saved views and not load from session to default
+
 ### version 2.173.0
 *Released*: 19 May 2022
 * Item 10386: Active user limit app messaging

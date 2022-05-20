@@ -1,8 +1,6 @@
-import React, { ComponentType, FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ActionURL, AuditBehaviorTypes } from '@labkey/api';
-
-import { List } from 'immutable';
+import { AuditBehaviorTypes } from '@labkey/api';
 
 import { capitalizeFirstChar } from '../../util/utils';
 import { EntityDataType } from '../entities/models';
@@ -26,29 +24,34 @@ import { Alert } from '../base/Alert';
 import { SampleGridButtonProps } from '../samples/models';
 import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { invalidateQueryDetailsCache } from '../../query/api';
-import { getPrimaryAppProperties } from '../../app/utils';
-
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getAllEntityTypeOptions } from '../entities/actions';
 
-import { removeFinderGridView, saveFinderGridView } from './actions';
+import { formatDateTime } from '../../util/Date';
+
+import { useAppContext } from '../../AppContext';
+
+import { createNotification } from '../notifications/actions';
+
+import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';
 import {
     getFinderStartText,
     getFinderViewColumnsConfig,
+    getLocalStorageKey,
     getSampleFinderColumnNames,
     getSampleFinderQueryConfigs,
+    getSearchFilterObjs,
     SAMPLE_FILTER_METRIC_AREA,
     searchFiltersFromJson,
     searchFiltersToJson,
 } from './utils';
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
-import { FieldFilter, FilterProps } from './models';
-
-const SAMPLE_FINDER_TITLE = 'Sample Finder';
-const SAMPLE_FINDER_CAPTION = 'Find all generations of samples that meet all the criteria defined below';
+import { FieldFilter, FilterProps, FinderReport } from './models';
+import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
+import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
+import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -61,7 +64,6 @@ interface SampleFinderSamplesGridProps {
 }
 
 interface Props extends SampleFinderSamplesGridProps {
-    api?: ComponentsAPIWrapper;
     parentEntityDataTypes: EntityDataType[];
 }
 
@@ -94,32 +96,24 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
     );
 });
 
-function getLocalStorageKey(): string {
-    return getPrimaryAppProperties().productId + ActionURL.getContainer() + '-SampleFinder';
-}
-
 export const SampleFinderSection: FC<Props> = memo(props => {
-    const { api, sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
+    const { sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
+    const [savedViewChangeCounter, setSavedViewChangeCounter] = useState<number>(0);
+    const [currentView, setCurrentView] = useState<FinderReport>(undefined);
     const [chosenEntityType, setChosenEntityType] = useState<EntityDataType>(undefined);
     const [filters, setFilters] = useState<FilterProps[]>([]);
     const [chosenQueryName, setChosenQueryName] = useState<string>(undefined);
     const [chosenField, setChosenField] = useState<string>(undefined);
     const [enabledEntityTypes, setEnabledEntityTypes] = useState<string[]>([]);
+    const [cardDirty, setCardDirty] = useState<boolean>(false); // EntityFieldModal dirty, but Find is not yet clicked
+    const [viewDirty, setViewDirty] = useState<boolean>(false); // Find is clicked
+    const [showSaveViewDialog, setShowSaveViewDialog] = useState<boolean>(false);
+    const [showManageViewsDialog, setShowManageViewsDialog] = useState<boolean>(false);
+    const [unsavedSessionViewName, setUnsavedSessionViewName] = useState<string>(undefined);
 
-    useEffect(() => {
-        const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
-        if (finderSessionDataStr) {
-            const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
-            if (finderSessionData.filters) {
-                setFilters(finderSessionData.filters);
-            }
-            if (finderSessionData.filterChangeCounter !== undefined) {
-                setFilterChangeCounter(finderSessionData.filterChangeCounter);
-            }
-        }
-    }, []);
+    const { api } = useAppContext();
 
     useEffect(() => {
         const _enabledEntityTypes = [];
@@ -136,16 +130,36 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 setEnabledEntityTypes(_enabledEntityTypes);
             }
         })();
+        const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
+        if (finderSessionDataStr) {
+            const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
+            if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
+                setUnsavedSessionViewName(finderSessionData.filterTimestamp);
+            }
+        }
     }, []);
 
     const getSelectionKeyPrefix = (): string => {
         return 'sampleFinder-' + filterChangeCounter;
     };
 
-    const updateFilters = (filterChangeCounter: number, filters: FilterProps[]) => {
+    const updateFilters = (
+        filterChangeCounter: number,
+        filters: FilterProps[],
+        updateSession: boolean,
+        isViewDirty: boolean
+    ) => {
         setFilters(filters);
         setFilterChangeCounter(filterChangeCounter);
-        sessionStorage.setItem(getLocalStorageKey(), searchFiltersToJson(filters, filterChangeCounter));
+        setViewDirty(isViewDirty);
+        if (updateSession) {
+            const currentTimestamp = new Date();
+            sessionStorage.setItem(
+                getLocalStorageKey(),
+                searchFiltersToJson(filters, filterChangeCounter, currentTimestamp)
+            );
+            setUnsavedSessionViewName('Searched ' + formatDateTime(currentTimestamp));
+        }
     };
 
     const onAddEntity = useCallback((entityType: EntityDataType) => {
@@ -175,15 +189,19 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         (index: number) => {
             const newFilterCards = [...filters];
             newFilterCards.splice(index, 1);
-            updateFilters(filterChangeCounter + 1, newFilterCards);
+            if (currentView && newFilterCards?.length === 0) {
+                updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, false);
+                setCurrentView(undefined);
+            } else updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
         },
-        [filters, filterChangeCounter]
+        [filters, filterChangeCounter, currentView]
     );
 
     const onFilterClose = () => {
         setChosenEntityType(undefined);
         setChosenQueryName(undefined);
         setChosenField(undefined);
+        setCardDirty(false);
     };
 
     const onFind = useCallback(
@@ -192,6 +210,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             dataTypeFilters: { [key: string]: FieldFilter[] },
             queryLabels: { [key: string]: string }
         ) => {
+            if (!cardDirty) {
+                onFilterClose();
+                return;
+            }
+
             const newFilterCards = [...filters].filter(filter => {
                 return filter.entityDataType.instanceSchemaName !== chosenEntityType.instanceSchemaName;
             });
@@ -205,17 +228,110 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             });
 
             onFilterClose();
-            updateFilters(filterChangeCounter + 1, newFilterCards);
+            updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
 
             api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'filterModalApply');
         },
-        [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType]
+        [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType, cardDirty, currentView]
+    );
+
+    const loadSearch = useCallback(
+        async (view: FinderReport) => {
+            let cardJson = null;
+
+            if (view.isSession) cardJson = sessionStorage.getItem(getLocalStorageKey());
+            else if (view.reportId) {
+                try {
+                    cardJson = await loadFinderSearch(view);
+                } catch (error) {
+                    console.error(error);
+                    createNotification({
+                        alertClass: 'danger',
+                        message:
+                            "Unable to load saved view '" +
+                            view.reportName +
+                            "'. " +
+                            (error.exception ? error.exception : ''),
+                    });
+                    return;
+                }
+            }
+            if (!cardJson) return;
+
+            const finderSessionData = searchFiltersFromJson(cardJson);
+            const newFilters = finderSessionData.filters;
+            if (!newFilters) return;
+
+            updateFilters(filterChangeCounter + 1, newFilters, false, view.isSession);
+            setShowSaveViewDialog(false);
+            setCurrentView(view);
+        },
+        [filterChangeCounter]
+    );
+
+    const onSaveComplete = useCallback(
+        (view: FinderReport) => {
+            setShowSaveViewDialog(false);
+            setViewDirty(false);
+            setCurrentView(view);
+            setSavedViewChangeCounter(savedViewChangeCounter + 1);
+        },
+        [savedViewChangeCounter]
+    );
+
+    const searchViewJson = useMemo(() => {
+        return JSON.stringify({
+            filters: getSearchFilterObjs(filters),
+        });
+    }, [filters]);
+
+    const saveSearch = useCallback(
+        async (saveCurrentName?: boolean) => {
+            try {
+                if (saveCurrentName) {
+                    await saveFinderSearch(currentView, searchViewJson, saveCurrentName);
+                    setViewDirty(false);
+                } else {
+                    setShowSaveViewDialog(true);
+                }
+            } catch (error) {
+                console.error(error);
+                createNotification({
+                    alertClass: 'danger',
+                    message: 'Unable to save view. ' + (error.exception ? error.exception : ''),
+                });
+            }
+        },
+        [currentView, filters, searchViewJson]
+    );
+
+    const manageSearches = useCallback(() => {
+        setShowManageViewsDialog(true);
+    }, []);
+
+    const onManageSearchesDone = useCallback(
+        (hasChange: boolean) => {
+            setShowManageViewsDialog(false);
+            if (hasChange) {
+                setSavedViewChangeCounter(savedViewChangeCounter + 1);
+            }
+        },
+        [savedViewChangeCounter]
     );
 
     return (
         <Section
-            title={SAMPLE_FINDER_TITLE}
-            caption={SAMPLE_FINDER_CAPTION}
+            title={
+                <SampleFinderSavedViewsMenu
+                    loadSearch={loadSearch}
+                    saveSearch={saveSearch}
+                    manageSearches={manageSearches}
+                    currentView={currentView}
+                    hasUnsavedChanges={viewDirty}
+                    sessionViewName={unsavedSessionViewName}
+                    key={filterChangeCounter + '-' + savedViewChangeCounter}
+                />
+            }
             context={
                 <SampleFinderHeaderButtons
                     parentEntityDataTypes={parentEntityDataTypes}
@@ -264,15 +380,23 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     queryName={chosenQueryName}
                     fieldKey={chosenField}
                     metricFeatureArea={SAMPLE_FILTER_METRIC_AREA}
+                    setCardDirty={setCardDirty}
                 />
+            )}
+            {showSaveViewDialog && (
+                <SampleFinderSaveViewModal
+                    cardsJson={searchViewJson}
+                    onCancel={() => setShowSaveViewDialog(false)}
+                    onSuccess={onSaveComplete}
+                    currentView={currentView}
+                />
+            )}
+            {showManageViewsDialog && (
+                <SampleFinderManageViewsModal onDone={onManageSearchesDone} currentView={currentView} />
             )}
         </Section>
     );
 });
-
-SampleFinderSection.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
 
 interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
     cards: FilterProps[];

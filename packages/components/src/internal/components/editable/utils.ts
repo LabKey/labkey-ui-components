@@ -46,7 +46,7 @@ export const loadEditorModelData = async (
                                 }
                             }
 
-                            return list.push({display: v.displayValue, raw: v.value});
+                            return list.push({display: v.displayValue ?? v, raw: v.value ?? v});
                         },
                         List<ValueDescriptor>()
                     )

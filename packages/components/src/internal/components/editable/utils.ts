@@ -35,7 +35,19 @@ export const loadEditorModelData = async (
                 cellValues = cellValues.set(
                     cellKey,
                     value.reduce(
-                        (list, v) => list.push({ display: v.displayValue, raw: v.value }),
+                        (list, v) => {
+                            if (col.isLookup() && Utils.isNumber(v)) {
+                                const descriptors = lookupValueDescriptors[col.lookupKey];
+                                if (descriptors) {
+                                    const desc = descriptors.filter(descriptor => descriptor.raw === v)
+                                    if (desc) {
+                                        return list.push(...desc);
+                                    }
+                                }
+                            }
+
+                            return list.push({display: v.displayValue, raw: v.value});
+                        },
                         List<ValueDescriptor>()
                     )
                 );

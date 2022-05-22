@@ -8,7 +8,6 @@ import {
     EditorModel,
     EditorModelProps,
     EntityDataType,
-    GroupedSampleFields,
     IEntityTypeOption,
     IParentOption,
     LoadingSpinner,
@@ -60,8 +59,6 @@ interface Props {
     targetEntityDataType: EntityDataType
     getParentTypeWarning?: () => ReactNode
     getReadOnlyRows?: (tabInd: number) => List<string>
-
-    // passed through from SampleEditableGrid
     parentDataTypes: List<EntityDataType>;
     combineParentTypes?: boolean;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
@@ -129,7 +126,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
     ): void => {
 
         // For some cell types, editable grid fires multiple onChange events with different parameters for a given browser event.
-        // This doesn't allow state to be set between onChange events for a single browser event, thus this goes outside
+        // This doesn't allow state to be set between onChange calls for a single browser event, thus this goes outside
         // the normal functional component life-cycle to aggregate the onChange events between renders.
         editableGridUpdateAggregate = {...editableGridUpdateAggregate, ...editorModelChanges};
 

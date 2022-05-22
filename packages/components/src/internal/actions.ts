@@ -260,6 +260,11 @@ export async function getLookupValueDescriptors(
                 if (Utils.isNumber(value)) {
                     values = values.add(value);
                 }
+                else if (List.isList(value)) {
+                    value.forEach(val => {
+                        values = values.add(val);
+                    })
+                }
             });
             if (!values.isEmpty()) {
                 const { descriptors } = await findLookupValues(col, values.toArray());
@@ -1352,13 +1357,26 @@ function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string 
     return copyValue;
 }
 
+const resolveDisplayColumn = (column: QueryColumn): string => {
+
+    // Handle MVFK
+    if (column.multiValue && column.lookup?.['multiValued'] === 'junction') {
+        const parts = column.displayField.split('$S');
+        if (parts.length > 1)
+            return parts[1];
+    }
+
+    return column.lookup.displayColumn;
+}
+
 const findLookupValues = async (
     column: QueryColumn,
     lookupKeyValues?: any[],
     lookupValues?: any[]
 ): Promise<{ column: QueryColumn; descriptors: ValueDescriptor[] }> => {
     const lookup = column.lookup;
-    const { displayColumn, keyColumn } = column.lookup;
+    const { keyColumn } = column.lookup;
+    const displayColumn = resolveDisplayColumn(column);
     const selectRowsOptions: any = {
         schemaName: lookup.schemaName,
         queryName: lookup.queryName,

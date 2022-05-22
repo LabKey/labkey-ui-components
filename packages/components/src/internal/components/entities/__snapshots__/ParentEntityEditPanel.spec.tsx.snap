@@ -827,6 +827,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                       </style>
                                                     </head>,
                                                     "ctr": 15,
+                                                    "insertionPoint": undefined,
                                                     "isSpeedy": false,
                                                     "key": "css",
                                                     "nonce": undefined,
@@ -1219,6 +1220,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                               </style>
                                                             </head>,
                                                             "ctr": 15,
+                                                            "insertionPoint": undefined,
                                                             "isSpeedy": false,
                                                             "key": "css",
                                                             "nonce": undefined,
@@ -1630,6 +1632,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                             </style>
                                                           </head>,
                                                           "ctr": 15,
+                                                          "insertionPoint": undefined,
                                                           "isSpeedy": false,
                                                           "key": "css",
                                                           "nonce": undefined,
@@ -2016,6 +2019,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                   </style>
                                                                 </head>,
                                                                 "ctr": 15,
+                                                                "insertionPoint": undefined,
                                                                 "isSpeedy": false,
                                                                 "key": "css",
                                                                 "nonce": undefined,
@@ -2401,6 +2405,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                         </style>
                                                                       </head>,
                                                                       "ctr": 15,
+                                                                      "insertionPoint": undefined,
                                                                       "isSpeedy": false,
                                                                       "key": "css",
                                                                       "nonce": undefined,
@@ -2921,6 +2926,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                           </style>
                                                                         </head>,
                                                                         "ctr": 15,
+                                                                        "insertionPoint": undefined,
                                                                         "isSpeedy": false,
                                                                         "key": "css",
                                                                         "nonce": undefined,
@@ -3393,6 +3399,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                   </style>
                                                                 </head>,
                                                                 "ctr": 15,
+                                                                "insertionPoint": undefined,
                                                                 "isSpeedy": false,
                                                                 "key": "css",
                                                                 "nonce": undefined,
@@ -3776,6 +3783,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                         </style>
                                                                       </head>,
                                                                       "ctr": 15,
+                                                                      "insertionPoint": undefined,
                                                                       "isSpeedy": false,
                                                                       "key": "css",
                                                                       "nonce": undefined,
@@ -4173,6 +4181,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                         </style>
                                                                       </head>,
                                                                       "ctr": 15,
+                                                                      "insertionPoint": undefined,
                                                                       "isSpeedy": false,
                                                                       "key": "css",
                                                                       "nonce": undefined,
@@ -4455,6 +4464,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                                 </style>
                                                                               </head>,
                                                                               "ctr": 15,
+                                                                              "insertionPoint": undefined,
                                                                               "isSpeedy": false,
                                                                               "key": "css",
                                                                               "nonce": undefined,

@@ -259,11 +259,10 @@ export async function getLookupValueDescriptors(
                 const value = row.get(col.fieldKey);
                 if (Utils.isNumber(value)) {
                     values = values.add(value);
-                }
-                else if (List.isList(value)) {
+                } else if (List.isList(value)) {
                     value.forEach(val => {
                         values = values.add(val);
-                    })
+                    });
                 }
             });
             if (!values.isEmpty()) {
@@ -1358,16 +1357,14 @@ function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string 
 }
 
 const resolveDisplayColumn = (column: QueryColumn): string => {
-
     // Handle MVFK
     if (column.multiValue && column.lookup?.['multiValued'] === 'junction') {
         const parts = column.displayField.split('$S');
-        if (parts.length > 1)
-            return parts[1];
+        if (parts.length > 1) return parts[1];
     }
 
     return column.lookup.displayColumn;
-}
+};
 
 const findLookupValues = async (
     column: QueryColumn,

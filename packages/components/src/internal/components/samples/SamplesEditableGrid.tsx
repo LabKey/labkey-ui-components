@@ -37,13 +37,15 @@ import { EntityChoice } from '../entities/models';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { IEditableGridLoader } from '../../QueryGridModel';
+
+import { UpdateGridTab } from '../editable/EditableGridPanelForUpdateWithLineage';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
-import {getOriginalParentsFromLineage, getUpdatedLineageRows} from './actions';
+import { getOriginalParentsFromLineage, getUpdatedLineageRows } from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
-import { IEditableGridLoader } from '../../QueryGridModel';
 import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
-import { UpdateGridTab } from "../editable/EditableGridPanelForUpdateWithLineage";
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;

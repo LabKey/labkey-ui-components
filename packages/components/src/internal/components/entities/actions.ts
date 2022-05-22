@@ -1,5 +1,5 @@
-import {ActionURL, Ajax, Filter, Query, Utils} from '@labkey/api';
-import {fromJS, List, Map} from 'immutable';
+import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
+import { fromJS, List, Map } from 'immutable';
 
 import {
     buildURL,
@@ -19,7 +19,7 @@ import {
     SHARED_CONTAINER_PATH,
 } from '../../..';
 
-import {getSelectedItemSamples} from '../samples/actions';
+import { getSelectedItemSamples } from '../samples/actions';
 
 import {
     DisplayObject,
@@ -31,8 +31,8 @@ import {
     IParentOption,
     OperationConfirmationData,
 } from './models';
-import {DataClassDataType, DataOperation, SampleTypeDataType} from './constants';
-import {isSampleEntity} from './utils';
+import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
+import { isSampleEntity } from './utils';
 
 export function getOperationConfirmationData(
     selectionKey: string,

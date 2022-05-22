@@ -14,7 +14,8 @@ import {
 import { capitalizeFirstChar } from '../../util/utils';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
-import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from "./utils";
+
+import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
 
 interface Props {
     queryModel: QueryModel;
@@ -166,9 +167,3 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         );
     }
 }
-
-
-
-
-
-

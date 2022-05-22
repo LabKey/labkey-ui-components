@@ -87,6 +87,8 @@ import { SampleStatusLegend } from '../samples/SampleStatusLegend';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { EditableGridPanelDeprecated } from '../editable/EditableGridPanelDeprecated';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -106,7 +108,6 @@ import {
     EntityParentTypeSelectors,
 } from './EntityParentTypeSelectors';
 import { ENTITY_CREATION_METRIC } from './constants';
-import { EditableGridPanelDeprecated } from '../editable/EditableGridPanelDeprecated';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';

@@ -5,10 +5,12 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { EditorModel, EditorModelProps, ValueDescriptor } from '../../models';
 import { genCellKey, getLookupValueDescriptors } from '../../actions';
-import { EditableGridLoaderFromSelection } from "./EditableGridLoaderFromSelection";
-import { LoadingState } from "../../../public/LoadingState";
-import { QueryInfo } from "../../../public/QueryInfo";
-import { getUpdatedDataFromGrid } from "../../util/utils";
+
+import { LoadingState } from '../../../public/LoadingState';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { getUpdatedDataFromGrid } from '../../util/utils';
+
+import { EditableGridLoaderFromSelection } from './EditableGridLoaderFromSelection';
 
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
@@ -34,22 +36,19 @@ export const loadEditorModelData = async (
                 // assume to be list of {displayValue, value} objects
                 cellValues = cellValues.set(
                     cellKey,
-                    value.reduce(
-                        (list, v) => {
-                            if (col.isLookup() && Utils.isNumber(v)) {
-                                const descriptors = lookupValueDescriptors[col.lookupKey];
-                                if (descriptors) {
-                                    const desc = descriptors.filter(descriptor => descriptor.raw === v)
-                                    if (desc) {
-                                        return list.push(...desc);
-                                    }
+                    value.reduce((list, v) => {
+                        if (col.isLookup() && Utils.isNumber(v)) {
+                            const descriptors = lookupValueDescriptors[col.lookupKey];
+                            if (descriptors) {
+                                const desc = descriptors.filter(descriptor => descriptor.raw === v);
+                                if (desc) {
+                                    return list.push(...desc);
                                 }
                             }
+                        }
 
-                            return list.push({display: v.displayValue ?? v, raw: v.value ?? v});
-                        },
-                        List<ValueDescriptor>()
-                    )
+                        return list.push({ display: v.displayValue ?? v, raw: v.value ?? v });
+                    }, List<ValueDescriptor>())
                 );
             } else {
                 // assume to be a {displayValue, value} object but fall back on value not being an object

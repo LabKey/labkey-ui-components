@@ -4,7 +4,7 @@
  */
 import React, { ComponentType, ReactNode } from 'react';
 
-import {LoadingSpinner, SampleOperation, SCHEMAS} from '../../..';
+import { LoadingSpinner, SampleOperation, SCHEMAS } from '../../..';
 
 import { getSampleOperationConfirmationData } from '../entities/actions';
 

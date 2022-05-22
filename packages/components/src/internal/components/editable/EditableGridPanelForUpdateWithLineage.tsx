@@ -1,4 +1,4 @@
-import React, {FC, memo, ReactNode, useCallback, useEffect, useState} from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 import { fromJS, List, Map } from 'immutable';
 
 import {
@@ -18,17 +18,14 @@ import {
 import { capitalizeFirstChar } from '../../util/utils';
 
 import {
-    applyEditableGridChangesToModels,
-    getUpdatedDataFromEditableGrid,
-    initEditableGridModels,
-} from './utils';
-import {
     addEntityParentType,
     changeEntityParentType,
     EntityParentTypeSelectors,
     removeEntityParentType,
 } from '../entities/EntityParentTypeSelectors';
 import { EntityParentType } from '../entities/models';
+
+import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
 
 export enum UpdateGridTab {
     Samples,
@@ -55,27 +52,46 @@ interface Props {
     includedTabs: UpdateGridTab[];
     getColumnMetadata: (tabInd: number) => Map<string, EditableColumnMetadata>;
     getTabTitle: (tabInd: number) => string;
-    getAdditionalTabInfo?: (tab: number) => ReactNode
-    targetEntityDataType: EntityDataType
-    getParentTypeWarning?: () => ReactNode
-    getReadOnlyRows?: (tabInd: number) => List<string>
+    getAdditionalTabInfo?: (tab: number) => ReactNode;
+    targetEntityDataType: EntityDataType;
+    getParentTypeWarning?: () => ReactNode;
+    getReadOnlyRows?: (tabInd: number) => List<string>;
     parentDataTypes: List<EntityDataType>;
     combineParentTypes?: boolean;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
 }
 
 // See note in onGridChange
-let editableGridUpdateAggregate: Partial<EditorModelProps> = undefined;
+let editableGridUpdateAggregate: Partial<EditorModelProps>;
 
 export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
-    const { loaders, queryModel, parentDataTypes, onComplete, updateAllTabRows, idField, readOnlyColumns, selectionData,
-        getColumnMetadata, includedTabs, getTabTitle, combineParentTypes, parentTypeOptions, getAdditionalTabInfo, targetEntityDataType,
-        getParentTypeWarning, pluralNoun, singularNoun, getReadOnlyRows, onCancel } = props;
+    const {
+        loaders,
+        queryModel,
+        parentDataTypes,
+        onComplete,
+        updateAllTabRows,
+        idField,
+        readOnlyColumns,
+        selectionData,
+        getColumnMetadata,
+        includedTabs,
+        getTabTitle,
+        combineParentTypes,
+        parentTypeOptions,
+        getAdditionalTabInfo,
+        targetEntityDataType,
+        getParentTypeWarning,
+        pluralNoun,
+        singularNoun,
+        getReadOnlyRows,
+        onCancel,
+    } = props;
 
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-    const [dataModels, setDataModels] = useState<QueryModel[]>()
-    const [editorModels, setEditorModels] = useState<EditorModel[]>()
-    const [entityParentsMap, setEntityParentsMap] = useState<Map<string, List<EntityParentType>>>()
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [dataModels, setDataModels] = useState<QueryModel[]>();
+    const [editorModels, setEditorModels] = useState<EditorModel[]>();
+    const [entityParentsMap, setEntityParentsMap] = useState<Map<string, List<EntityParentType>>>();
 
     useEffect(() => {
         const dataModels = [];
@@ -88,29 +104,25 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
         setIsSubmitting(false);
         setDataModels(dataModels);
         setEditorModels(editorModels);
-        setEntityParentsMap(fromJS(
-            parentDataTypes.reduce((map, dataType) => {
-                map[dataType.typeListingSchemaQuery.queryName] = [];
-                return map;
-            }, {})));
-
+        setEntityParentsMap(
+            fromJS(
+                parentDataTypes.reduce((map, dataType) => {
+                    map[dataType.typeListingSchemaQuery.queryName] = [];
+                    return map;
+                }, {})
+            )
+        );
     }, [loaders, parentDataTypes]); // TODO: empty dependencies?
 
     const initEditorModel = useCallback(async (): Promise<void> => {
-        const models = await initEditableGridModels(
-            dataModels,
-            editorModels,
-            queryModel,
-            loaders
-        );
+        const models = await initEditableGridModels(dataModels, editorModels, queryModel, loaders);
 
         setDataModels(models.dataModels);
         setEditorModels(models.editorModels);
-    },[dataModels, editorModels]);
+    }, [dataModels, editorModels]);
 
     useEffect(() => {
-        if (loaders && dataModels?.find(dataModel => dataModel.isLoading))
-            initEditorModel().then();
+        if (loaders && dataModels?.find(dataModel => dataModel.isLoading)) initEditorModel().then();
     }, [loaders, dataModels]);
 
     // Intentionally fires with every render, see note in onGridChange
@@ -124,11 +136,10 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
         data?: Map<string, Map<string, any>>,
         index?: number
     ): void => {
-
         // For some cell types, editable grid fires multiple onChange events with different parameters for a given browser event.
         // This doesn't allow state to be set between onChange calls for a single browser event, thus this goes outside
         // the normal functional component life-cycle to aggregate the onChange events between renders.
-        editableGridUpdateAggregate = {...editableGridUpdateAggregate, ...editorModelChanges};
+        editableGridUpdateAggregate = { ...editableGridUpdateAggregate, ...editorModelChanges };
 
         const models = applyEditableGridChangesToModels(
             dataModels,
@@ -142,11 +153,9 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
 
         setEditorModels(models.editorModels);
         setDataModels(models.dataModels);
-
     };
 
     const onSubmit = useCallback((): void => {
-
         const gridDataAllTabs = [];
         dataModels.forEach((model, ind) => {
             const gridData = getUpdatedDataFromEditableGrid(
@@ -176,102 +185,119 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
         }
     }, [dataModels, editorModels, onComplete]);
 
-    const getCurrentTab = useCallback((tabInd: number): number => {
-        return tabInd === undefined ? includedTabs[0] : includedTabs[tabInd];
-    }, [includedTabs]);
+    const getCurrentTab = useCallback(
+        (tabInd: number): number => {
+            return tabInd === undefined ? includedTabs[0] : includedTabs[tabInd];
+        },
+        [includedTabs]
+    );
 
-    const removeParentType = useCallback((index: number, queryName: string): void => {
-        const tabIndex = includedTabs.indexOf(UpdateGridTab.Lineage);
+    const removeParentType = useCallback(
+        (index: number, queryName: string): void => {
+            const tabIndex = includedTabs.indexOf(UpdateGridTab.Lineage);
 
-        const { editorModelChanges, data, queryInfo, entityParents } = removeEntityParentType(
-            index,
-            queryName,
-            entityParentsMap,
-            editorModels[tabIndex],
-            dataModels[tabIndex].queryInfo,
-            fromJS(dataModels[tabIndex].rows)
-        );
-
-        const updatedModels = applyEditableGridChangesToModels(
-            dataModels,
-            editorModels,
-            editorModelChanges,
-            queryInfo,
-            List(dataModels[tabIndex].orderedRows),
-            data,
-            tabIndex
-        );
-
-        setEditorModels(updatedModels.editorModels);
-        setDataModels(updatedModels.dataModels);
-        setEntityParentsMap(entityParents);
-
-    }, [includedTabs, entityParentsMap, dataModels, editorModels]);
-
-    const changeParentType = useCallback((
-        index: number,
-        queryName: string,
-        fieldName: string,
-        formValue: any,
-        parent: IParentOption
-    ): void => {
-        const tabIndex = includedTabs.indexOf(UpdateGridTab.Lineage);
-
-        const { editorModelChanges, data, queryInfo, entityParents } = changeEntityParentType(
-            index,
-            queryName,
-            parent,
-            editorModels[tabIndex],
-            dataModels[tabIndex],
-            entityParentsMap,
-            targetEntityDataType,
-            combineParentTypes
-        );
-
-        const updatedModels = applyEditableGridChangesToModels(
-            dataModels,
-            editorModels,
-            editorModelChanges,
-            queryInfo,
-            List(dataModels[tabIndex].orderedRows),
-            data,
-            tabIndex
-        );
-
-        setEditorModels(updatedModels.editorModels);
-        setDataModels(updatedModels.dataModels);
-        setEntityParentsMap(entityParents);
-    }, [targetEntityDataType, combineParentTypes, includedTabs, entityParentsMap, editorModels, dataModels]);
-
-    const getTabHeader = useCallback((tabInd: number): ReactNode => {
-        const currentTab = getCurrentTab(tabInd);
-
-        if (currentTab === UpdateGridTab.Lineage) {
-            return (
-                <>
-                    <div className="top-spacing">
-                        <EntityParentTypeSelectors
-                            parentDataTypes={parentDataTypes}
-                            parentOptionsMap={parentTypeOptions}
-                            entityParentsMap={entityParentsMap}
-                            combineParentTypes={combineParentTypes}
-                            onAdd={addParentType}
-                            onChange={changeParentType}
-                            onRemove={removeParentType}
-                        />
-                    </div>
-                    {getParentTypeWarning?.()}
-                    <hr />
-                </>
+            const { editorModelChanges, data, queryInfo, entityParents } = removeEntityParentType(
+                index,
+                queryName,
+                entityParentsMap,
+                editorModels[tabIndex],
+                dataModels[tabIndex].queryInfo,
+                fromJS(dataModels[tabIndex].rows)
             );
-        } else if (getAdditionalTabInfo) {
-            return getAdditionalTabInfo(currentTab);
-        }
-    }, [parentDataTypes, combineParentTypes, parentTypeOptions, entityParentsMap, getCurrentTab, getAdditionalTabInfo, changeParentType, removeParentType]);
 
-    const addParentType = useCallback((queryName: string): void => {
-        setEntityParentsMap(addEntityParentType(queryName, entityParentsMap));
-    }, [entityParentsMap]);
+            const updatedModels = applyEditableGridChangesToModels(
+                dataModels,
+                editorModels,
+                editorModelChanges,
+                queryInfo,
+                List(dataModels[tabIndex].orderedRows),
+                data,
+                tabIndex
+            );
+
+            setEditorModels(updatedModels.editorModels);
+            setDataModels(updatedModels.dataModels);
+            setEntityParentsMap(entityParents);
+        },
+        [includedTabs, entityParentsMap, dataModels, editorModels]
+    );
+
+    const changeParentType = useCallback(
+        (index: number, queryName: string, fieldName: string, formValue: any, parent: IParentOption): void => {
+            const tabIndex = includedTabs.indexOf(UpdateGridTab.Lineage);
+
+            const { editorModelChanges, data, queryInfo, entityParents } = changeEntityParentType(
+                index,
+                queryName,
+                parent,
+                editorModels[tabIndex],
+                dataModels[tabIndex],
+                entityParentsMap,
+                targetEntityDataType,
+                combineParentTypes
+            );
+
+            const updatedModels = applyEditableGridChangesToModels(
+                dataModels,
+                editorModels,
+                editorModelChanges,
+                queryInfo,
+                List(dataModels[tabIndex].orderedRows),
+                data,
+                tabIndex
+            );
+
+            setEditorModels(updatedModels.editorModels);
+            setDataModels(updatedModels.dataModels);
+            setEntityParentsMap(entityParents);
+        },
+        [targetEntityDataType, combineParentTypes, includedTabs, entityParentsMap, editorModels, dataModels]
+    );
+
+    const getTabHeader = useCallback(
+        (tabInd: number): ReactNode => {
+            const currentTab = getCurrentTab(tabInd);
+
+            if (currentTab === UpdateGridTab.Lineage) {
+                return (
+                    <>
+                        <div className="top-spacing">
+                            <EntityParentTypeSelectors
+                                parentDataTypes={parentDataTypes}
+                                parentOptionsMap={parentTypeOptions}
+                                entityParentsMap={entityParentsMap}
+                                combineParentTypes={combineParentTypes}
+                                onAdd={addParentType}
+                                onChange={changeParentType}
+                                onRemove={removeParentType}
+                            />
+                        </div>
+                        {getParentTypeWarning?.()}
+                        <hr />
+                    </>
+                );
+            } else if (getAdditionalTabInfo) {
+                return getAdditionalTabInfo(currentTab);
+            }
+        },
+        [
+            parentDataTypes,
+            combineParentTypes,
+            parentTypeOptions,
+            entityParentsMap,
+            getCurrentTab,
+            getAdditionalTabInfo,
+            changeParentType,
+            removeParentType,
+        ]
+    );
+
+    const addParentType = useCallback(
+        (queryName: string): void => {
+            setEntityParentsMap(addEntityParentType(queryName, entityParentsMap));
+        },
+        [entityParentsMap]
+    );
 
     if (!dataModels || dataModels.length < 1 || !dataModels.every(dataModel => !dataModel.isLoading)) {
         return <LoadingSpinner />;

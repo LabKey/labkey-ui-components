@@ -231,8 +231,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
 
     onChange = (name: string, value: any, selectedOptions): void => {
         this.setState(
-            state =>
-                ({ model: state.model.setSelection(value) }),
+            state => ({ model: state.model.setSelection(value) }),
             () => {
                 this.props.onQSChange?.(name, value, selectedOptions, this.state.model.selectedItems);
             }

@@ -14,11 +14,13 @@ import {
 } from '../../..';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
-import { SampleStatusLegend } from './SampleStatusLegend';
+
 import {
     EditableGridPanelForUpdateWithLineage,
-    UpdateGridTab
-} from "../editable/EditableGridPanelForUpdateWithLineage";
+    UpdateGridTab,
+} from '../editable/EditableGridPanelForUpdateWithLineage';
+
+import { SampleStatusLegend } from './SampleStatusLegend';
 
 interface Props {
     queryModel: QueryModel;
@@ -43,7 +45,6 @@ interface Props {
 }
 
 export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
-
     hasAliquots = (): boolean => {
         const { aliquots } = this.props;
         return aliquots && aliquots.length > 0;
@@ -63,8 +64,8 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
     };
 
     getParentTypeWarning = (): ReactNode => {
-        return <div className="sample-status-warning">Lineage for aliquots cannot be changed.</div>
-    }
+        return <div className="sample-status-warning">Lineage for aliquots cannot be changed.</div>;
+    };
 
     getAdditionalTabInfo = (tab: number): ReactNode => {
         if (tab === UpdateGridTab.Storage) {
@@ -80,7 +81,7 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
                 </div>
             );
         }
-    }
+    };
 
     getReadOnlyRows = (tabInd: number): List<string> => {
         const { aliquots, noStorageSamples, includedTabs } = this.props;

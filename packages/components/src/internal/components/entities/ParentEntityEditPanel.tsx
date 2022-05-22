@@ -139,8 +139,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                             typeData.parentIdData
                         )
                     ) as List<EntityChoice>;
-                }
-                catch (reason) {
+                } catch (reason) {
                     console.error(reason);
                     this.setState({
                         error: getActionErrorMessage(
@@ -152,7 +151,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                 }
             })
         );
-
 
         this.setState({
             childData,

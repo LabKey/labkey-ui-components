@@ -1,10 +1,11 @@
-import {IEditableGridLoader, IGridResponse} from "../../QueryGridModel";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {fromJS, List, OrderedMap} from "immutable";
-import {QueryColumn} from "../../../public/QueryColumn";
-import {DisplayObject, EntityChoice, EntityParentType} from "../entities/models";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {EditorModel} from "../../models";
+import { fromJS, List, OrderedMap } from 'immutable';
+
+import { IEditableGridLoader, IGridResponse } from '../../QueryGridModel';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { DisplayObject, EntityChoice, EntityParentType } from '../entities/models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { EditorModel } from '../../models';
 
 export class LineageEditableGridLoaderFromSelection implements IEditableGridLoader {
     id: string;

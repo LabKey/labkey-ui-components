@@ -1,9 +1,6 @@
-
-import {
-    getDataOperationConfirmationData,
-} from './actions';
-import {DataOperation} from "./constants";
-import {OperationConfirmationData} from "./models";
+import { getDataOperationConfirmationData } from './actions';
+import { DataOperation } from './constants';
+import { OperationConfirmationData } from './models';
 
 export interface EntityAPIWrapper {
     getDataOperationConfirmationData(

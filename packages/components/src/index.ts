@@ -225,9 +225,12 @@ import {
 import { loadEditorModelData } from './internal/components/editable/utils';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
-import { EditableGridPanelForUpdateWithLineage } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
+import {
+    EditableGridPanelForUpdateWithLineage,
+    UpdateGridTab,
+} from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
 import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
-import { UpdateGridTab } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
+
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
@@ -328,7 +331,7 @@ import {
     getSelectionLineageData,
     getUpdatedLineageRows,
     getOriginalParentsFromLineage,
-    getLineageEditorUpdateColumns
+    getLineageEditorUpdateColumns,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';

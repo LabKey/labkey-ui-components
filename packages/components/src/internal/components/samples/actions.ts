@@ -21,7 +21,7 @@ import {
     EntityDataType,
     EntityParentType,
     IEntityTypeDetails,
-    IEntityTypeOption
+    IEntityTypeOption,
 } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
 import {
@@ -36,11 +36,13 @@ import {
     getSelection,
     getStateModelId,
     ISelectRowsResult,
-    Location, naturalSort,
+    Location,
+    naturalSort,
     naturalSortByProperty,
     QueryColumn,
     QueryConfig,
-    QueryModel, quoteValueWithDelimiters,
+    QueryModel,
+    quoteValueWithDelimiters,
     resolveErrorMessage,
     SAMPLE_ID_FIND_FIELD,
     SAMPLE_STATUS_REQUIRED_COLUMNS,

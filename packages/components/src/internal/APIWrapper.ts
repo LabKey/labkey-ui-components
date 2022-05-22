@@ -14,7 +14,7 @@ import {
     getDomainPropertiesTestAPIWrapper,
 } from './components/domainproperties/APIWrapper';
 import { getQueryTestAPIWrapper, QueryAPIWrapper, QueryServerAPIWrapper } from './query/APIWrapper';
-import {EntityAPIWrapper, EntityServerAPIWrapper, getEntityTestAPIWrapper} from "./components/entities/APIWrapper";
+import { EntityAPIWrapper, EntityServerAPIWrapper, getEntityTestAPIWrapper } from './components/entities/APIWrapper';
 
 export interface ComponentsAPIWrapper {
     picklist: PicklistAPIWrapper;
@@ -32,7 +32,7 @@ export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
         security: new ServerSecurityAPIWrapper(),
         domain: new DomainPropertiesAPIWrapper(),
         query: new QueryServerAPIWrapper(),
-        entity: new EntityServerAPIWrapper()
+        entity: new EntityServerAPIWrapper(),
     };
 }
 

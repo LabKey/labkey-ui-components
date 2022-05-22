@@ -27,9 +27,9 @@ import { IS_ALIQUOT_COL } from '../samples/constants';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { EntityChoice, EntityDataType, OperationConfirmationData } from './models';
-import {getEntityNoun, getUpdatedLineageRowsForBulkEdit, isSampleEntity} from './utils';
+import { getEntityNoun, getUpdatedLineageRowsForBulkEdit, isSampleEntity } from './utils';
 
-import {DataOperation, ParentEntityLineageColumns} from './constants';
+import { DataOperation, ParentEntityLineageColumns } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
 interface Props {
@@ -42,8 +42,10 @@ interface Props {
     parentEntityDataTypes: EntityDataType[];
 }
 
-export function restrictedDataOperationMsg(confirmationData: OperationConfirmationData, entityDataType: EntityDataType) {
-
+export function restrictedDataOperationMsg(
+    confirmationData: OperationConfirmationData,
+    entityDataType: EntityDataType
+) {
     let notAllowedMsg = null;
 
     if (confirmationData) {
@@ -55,10 +57,12 @@ export function restrictedDataOperationMsg(confirmationData: OperationConfirmati
             return `All selected ${entityDataType.nounPlural} have a status that prevents updating of their lineage.`;
         }
 
-        let notAllowed = confirmationData.notAllowed;
+        const notAllowed = confirmationData.notAllowed;
         if (notAllowed?.length > 0) {
-            notAllowedMsg = `The current status of ${notAllowed.length} selected ${notAllowed.length > 1 ? entityDataType.nounPlural : entityDataType.nounSingular}
-            prevents updating of ${notAllowed.length > 1 ? "their" : "it's"} lineage.`;
+            notAllowedMsg = `The current status of ${notAllowed.length} selected ${
+                notAllowed.length > 1 ? entityDataType.nounPlural : entityDataType.nounSingular
+            }
+            prevents updating of ${notAllowed.length > 1 ? 'their' : "it's"} lineage.`;
         }
     }
 
@@ -89,8 +93,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                         SampleOperation.EditLineage,
                         queryModel.id
                     );
-                }
-                else {
+                } else {
                     confirmationData = await api.entity.getDataOperationConfirmationData(
                         DataOperation.EditLineage,
                         queryModel.id
@@ -195,7 +198,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
 
                 <Modal.Body>
                     <div>
-                        {isSampleEntity(childEntityDataType) ?
+                        {isSampleEntity(childEntityDataType) ? (
                             <>
                                 {numAliquots === statusData.totalCount && (
                                     <>The {lcParentNounPlural} for aliquots cannot be changed. </>
@@ -203,11 +206,9 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                                 {aliquotsMsg}
                                 {getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)}
                             </>
-                            :
-                            <>
-                                {restrictedDataOperationMsg(statusData, childEntityDataType)}
-                            </>
-                        }
+                        ) : (
+                            <>{restrictedDataOperationMsg(statusData, childEntityDataType)}</>
+                        )}
                     </div>
                 </Modal.Body>
 
@@ -249,7 +250,9 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                         {(numAliquots > 0 || statusData.notAllowed.length > 0) && !submitting && (
                             <Alert bsStyle="warning" className="has-aliquots-alert">
                                 {aliquotsMsg}
-                                {isSampleEntity(childEntityDataType) ? getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData) : restrictedDataOperationMsg(statusData, childEntityDataType)}
+                                {isSampleEntity(childEntityDataType)
+                                    ? getOperationNotPermittedMessage(SampleOperation.EditLineage, statusData)
+                                    : restrictedDataOperationMsg(statusData, childEntityDataType)}
                             </Alert>
                         )}
                         <Alert bsStyle="danger">{errorMessage}</Alert>

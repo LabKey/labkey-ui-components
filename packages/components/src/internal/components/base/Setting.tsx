@@ -15,7 +15,13 @@ interface SettingState {
     enabled: boolean;
 }
 
-const useSetting = (getUrl: string, setUrl: string, name: string, enabledValue: any, disabledValue: any): SettingState => {
+const useSetting = (
+    getUrl: string,
+    setUrl: string,
+    name: string,
+    enabledValue: any,
+    disabledValue: any
+): SettingState => {
     const [state, setState] = useState<Omit<SettingState, 'save'>>({
         error: undefined,
         loading: true,
@@ -27,9 +33,10 @@ const useSetting = (getUrl: string, setUrl: string, name: string, enabledValue: 
         Ajax.request({
             url: getUrl,
             success: Utils.getCallbackWrapper(response => {
+                const value = response.data?.[name] ?? response[name];
                 setState(currentState => ({
                     ...currentState,
-                    enabled: response.data?.[name] ?? response[name] === enabledValue,
+                    enabled: value !== disabledValue,
                     loading: false,
                 }));
             }),

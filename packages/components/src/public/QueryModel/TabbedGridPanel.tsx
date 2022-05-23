@@ -193,7 +193,13 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     return (
         <div className={classNames('tabbed-grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
             {tabOrder.length === 1 && !alwaysShowTabs && (
-                <GridTitle title={title} model={queryModels[activeId]} actions={actions} allowSelections={rest.allowSelections}/>
+                <GridTitle
+                    title={title}
+                    model={queryModels[activeId]}
+                    actions={actions}
+                    allowSelections={rest.allowSelections}
+                    allowViewCustomization={allowViewCustomization}
+                />
             )}
             <div className={classNames('tabbed-grid-panel__body', { 'panel-body': asPanel })}>
                 {(tabOrder.length > 1 || alwaysShowTabs) && (

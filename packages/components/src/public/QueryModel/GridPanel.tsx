@@ -11,7 +11,6 @@ import {
     Grid,
     GRID_CHECKBOX_OPTIONS,
     GridColumn,
-    invalidateQueryDetailsCache,
     LoadingSpinner,
     Pagination,
     QueryColumn,
@@ -251,11 +250,12 @@ interface GridTitleProps {
     model: QueryModel,
     actions: Actions,
     allowSelections: boolean,
+    allowViewCustomization: boolean,
     onRevertView?: () => void,
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
-    const {title, model, onRevertView, actions, allowSelections } = props;
+    const {title, model, onRevertView, actions, allowSelections, allowViewCustomization } = props;
     const { queryInfo, viewName } = model;
 
     let displayTitle = title;
@@ -270,8 +270,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         view = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
     }
     const isEdited = view?.session;
-    const showSave = isEdited && view?.savable;
-    const showRevert = isEdited && view?.revertable;
+    const showSave = allowViewCustomization && isEdited && view?.savable;
+    const showRevert = allowViewCustomization && isEdited && view?.revertable;
 
     if (!displayTitle && !showSave && !isEdited) {
         return null;
@@ -279,7 +279,6 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 
     const _revertViewEdit = useCallback(async () => {
         await revertViewEdit(model.schemaQuery, model.containerPath);
-        invalidateQueryDetailsCache(model.schemaQuery, model.containerPath);
         await actions.loadModel(model.id, allowSelections);
         onRevertView?.();
     }, [view]);
@@ -290,8 +289,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 
     return (
        <div className="view-header">
-           {isEdited && <span className="alert-info view-edit-alert">Edited{displayTitle ? '' : ' View'}</span>}
-           {displayTitle}
+           {isEdited && <span className="alert-info view-edit-alert">Edited</span>}
+           {displayTitle ?? "Default View"}
            {showRevert && <button className="btn btn-default button-left-spacing" onClick={_revertViewEdit}>Undo</button>}
            {/*{showSave && <button className="btn btn-success button-left-spacing" onClick={onSaveView}>Save</button>}*/}
        </div>
@@ -360,6 +359,22 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     componentDidUpdate(prevProps: Readonly<Props<T>>): void {
         if (this.props.model.queryInfo !== undefined && this.props.model !== prevProps.model) {
             this.populateGridActions();
+        }
+    }
+
+    componentWillUnmount() {
+        // when we leave this page, remove the session view so the edited view doesn't show up unexpectedly on other pages.
+        const { containerPath, queryInfo, viewName, schemaQuery } = this.props.model;
+        let view;
+        if (viewName) {
+            view = queryInfo.views.get(viewName.toLowerCase());
+        } else {
+            view = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
+        }
+        if (view?.session) {
+            (async () => {
+                await revertViewEdit(schemaQuery, containerPath);
+            })();
         }
     }
 
@@ -707,8 +722,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { actions, model, allowSelections } = this.props;
 
         const columns = model.displayColumns.filter(column => column.index !== columnToHide.index);
-        saveSessionGridView(model.schemaQuery, columns, model.containerPath).then(() => {
-            invalidateQueryDetailsCache(model.schemaQuery, model.containerPath);
+        saveSessionGridView(model.schemaQuery, columns, model.containerPath, model.viewName).then(() => {
             actions.loadModel(model.id,  allowSelections);
             this.setState({
                 headerClickCount: {},
@@ -813,6 +827,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const {
             actions,
             allowSelections,
+            allowViewCustomization,
             hasHeader,
             asPanel,
             emptyText,
@@ -844,7 +859,16 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return (
             <>
                 <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-                    {!hasHeader && <GridTitle model={model} title={title} actions={actions} allowSelections={allowSelections} onRevertView={this.onRevertView} />}
+                    {!hasHeader && (
+                        <GridTitle
+                            model={model}
+                            title={title}
+                            actions={actions}
+                            allowSelections={allowSelections}
+                            allowViewCustomization={allowViewCustomization}
+                            onRevertView={this.onRevertView}
+                        />
+                    )}
 
                     <div className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-spacing': !hasHeader })}>
                         {showButtonBar && (

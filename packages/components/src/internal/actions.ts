@@ -25,6 +25,7 @@ import {
     GRID_CHECKBOX_OPTIONS,
     IGridResponse,
     insertColumnFilter,
+    invalidateQueryDetailsCache,
     QueryColumn,
     QueryConfig,
     QueryGridModel,
@@ -2512,14 +2513,15 @@ export function incrementClientSideMetricCount(featureArea: string, metricName: 
     });
 }
 
-export function saveSessionGridView(schemaQuery: SchemaQuery, columns: any, containerPath: string): Promise<void> {
+export function saveSessionGridView(schemaQuery: SchemaQuery, columns: any, containerPath: string, name: string): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.saveQueryViews({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             containerPath,
-            views: [{ columns, session: true }],
+            views: [{ name, columns, session: true }],
             success: () => {
+                invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();
             },
             failure: response => {
@@ -2538,6 +2540,7 @@ export function revertViewEdit(schemaQuery: SchemaQuery, containerPath: string) 
             containerPath,
             revert: true,
             success: () => {
+                invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();
             },
             failure: response => {

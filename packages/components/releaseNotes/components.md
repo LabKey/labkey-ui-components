@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 10394: Updates for incorporating ELN in LKSM
   * LKSM menu update to add Notebooks section config
   * URLResolver update for handling notebooks in search result hits
+  * Refactor Setting.tsx component from LKB to ui-components
 
 ### version 2.174.0
 *Released*: 19 May 2022

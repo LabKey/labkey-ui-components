@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ChangeEvent, ReactNode, FC, memo, useState, useCallback, useEffect, useRef } from 'react';
-import { OrderedMap, Map } from 'immutable';
+import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { Map, OrderedMap } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
-import { GridColumn, QueryColumn, GRID_CHECKBOX_OPTIONS, QueryModel, LabelHelpTip } from '..';
+import { GRID_CHECKBOX_OPTIONS, GridColumn, LabelHelpTip, QueryColumn, QueryModel } from '..';
 
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
 import { CustomToggle } from './components/base/CustomToggle';
 import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
+import { isCustomizeViewsInAppEnabled } from './app/utils';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -36,20 +37,22 @@ interface HeaderCellDropdownProps {
     columnCount?: number;
     handleSort?: (column: QueryColumn, dir?: string) => void;
     handleFilter?: (column: QueryColumn, remove?: boolean) => void;
+    handleHideColumn?: (column: QueryColumn) => void;
     headerClickCount?: number;
     model?: QueryModel;
 }
 
 // exported for jest testing
 export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
-    const { i, column, handleSort, handleFilter, headerClickCount, model } = props;
+    const { i, column, handleSort, handleFilter, handleHideColumn, headerClickCount, model } = props;
     const col: QueryColumn = column.raw;
     const [open, setOpen] = useState<boolean>();
     const wrapperEl = useRef<HTMLSpanElement>();
 
     const allowColSort = handleSort && col?.sortable;
     const allowColFilter = handleFilter && col?.filterable;
-    const includeDropdown = allowColSort || allowColFilter;
+    const allowCustomizeGrid = handleHideColumn && model && isCustomizeViewsInAppEnabled();
+    const includeDropdown = allowColSort || allowColFilter || allowCustomizeGrid;
 
     const onToggleClick = useCallback(
         (shouldOpen: boolean, evt?: any) => {
@@ -77,6 +80,14 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
             setOpen(false);
         },
         [col, handleSort]
+    );
+
+    const _handleHideColumn = useCallback(
+        () => {
+            handleHideColumn(col);
+            setOpen(false);
+        },
+        [col]
     );
 
     // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
@@ -206,6 +217,15 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                     )}
                                 </>
                             )}
+                            {allowCustomizeGrid && (
+                                <>
+                                    {(allowColSort || allowColFilter) && <MenuItem divider />}
+                                    <MenuItem onClick={() => _handleHideColumn()}>
+                                        <span className="fa fa-eye-slash grid-panel__menu-icon" />
+                                        &nbsp; Hide Column
+                                    </MenuItem>
+                                </>
+                            )}
                         </Dropdown.Menu>
                     </Dropdown>
                 </span>
@@ -221,6 +241,7 @@ export function headerCell(
     columnCount?: number,
     handleSort?: (column: QueryColumn, dir?: string) => void,
     handleFilter?: (column: QueryColumn, remove?: boolean) => void,
+    handleHideColumn?: (column: QueryColumn) => void,
     model?: QueryModel,
     headerClickCount?: number
 ): ReactNode {
@@ -232,6 +253,7 @@ export function headerCell(
             columnCount={columnCount}
             handleSort={handleSort}
             handleFilter={handleFilter}
+            handleHideColumn={handleHideColumn}
             headerClickCount={headerClickCount}
             model={model}
         />

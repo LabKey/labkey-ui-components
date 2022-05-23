@@ -2511,3 +2511,37 @@ export function incrementClientSideMetricCount(featureArea: string, metricName: 
         ),
     });
 }
+
+export function saveSessionGridView(schemaQuery: SchemaQuery, columns: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+        Query.saveQueryViews({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            views: [{ columns, session: true }],
+            success: () => {
+                resolve();
+            },
+            failure: response => {
+                console.error(response);
+                reject('There was a problem saving the view for the data grid. ' + resolveErrorMessage(response));
+            },
+        });
+    });
+}
+
+export function revertViewEdit(schemaQuery: SchemaQuery) : Promise<void> {
+    return new Promise((resolve, reject) => {
+        Query.deleteQueryView({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            revert: true,
+            success: () => {
+                resolve();
+            },
+            failure: response => {
+                console.error(response);
+                reject('There was a problem updating the view for the data grid. ' + resolveErrorMessage(response));
+            },
+        });
+    });
+}

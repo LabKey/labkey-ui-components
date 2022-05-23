@@ -55,9 +55,9 @@ export class ViewInfo extends Record({
     isDefault: false,
     label: undefined,
     name: undefined,
-    // revertable: false,
-    // savable: false,
-    // session: false,
+    revertable: false,
+    savable: false,
+    session: false,
     shared: false,
     sorts: List<QuerySort>(),
 }) {
@@ -72,9 +72,9 @@ export class ViewInfo extends Record({
     declare isDefault: boolean; // 'default' is a JavaScript keyword
     declare label: string;
     declare name: string;
-    // declare revertable: boolean;
-    // declare savable: boolean;
-    // declare session: boolean;
+    declare revertable: boolean;
+    declare savable: boolean;
+    declare session: boolean;
     declare shared: boolean;
     declare sorts: List<QuerySort>;
 

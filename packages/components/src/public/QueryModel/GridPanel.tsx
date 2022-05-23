@@ -250,11 +250,12 @@ interface GridTitleProps {
     title?: string,
     model: QueryModel,
     actions: Actions,
-    allowSelections: boolean
+    allowSelections: boolean,
+    onRevertView?: () => void,
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
-    const {title, model, actions, allowSelections} = props;
+    const {title, model, onRevertView, actions, allowSelections } = props;
     const { queryInfo, viewName } = model;
 
     let displayTitle = title;
@@ -276,10 +277,11 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         return null;
     }
 
-    const revertEdit = useCallback(async () => {
+    const _revertViewEdit = useCallback(async () => {
         await revertViewEdit(model.schemaQuery, model.containerPath);
         invalidateQueryDetailsCache(model.schemaQuery, model.containerPath);
         await actions.loadModel(model.id, allowSelections);
+        onRevertView?.();
     }, [view]);
 
     const saveView = useCallback(() => {
@@ -288,18 +290,13 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 
     return (
        <div className="view-header">
-           {isEdited && <span className="alert-info view-edit-alert">Edited</span>}
+           {isEdited && <span className="alert-info view-edit-alert">Edited{displayTitle ? '' : ' View'}</span>}
            {displayTitle}
-           {showRevert && <button className="btn btn-default button-left-spacing" onClick={revertEdit}>Undo</button>}
-           {/*{showSave && <button className="btn btn-success button-left-spacing" onClick={saveView}>Save</button>}*/}
+           {showRevert && <button className="btn btn-default button-left-spacing" onClick={_revertViewEdit}>Undo</button>}
+           {/*{showSave && <button className="btn btn-success button-left-spacing" onClick={onSaveView}>Save</button>}*/}
        </div>
    );
 });
-
-interface ViewStatus {
-    name: string,
-    dirty: boolean,
-}
 
 interface State {
     actionValues: ActionValue[];
@@ -408,7 +405,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (modelActionValuesStr !== currentActionValuesStr) {
             // The action values have changed due to external model changes (likely URL changes), so we need to
             // update the actionValues state with the newest values.
-            this.setState({ actionValues: modelActionValues });
+            this.setState({ actionValues: modelActionValues, errorMsg: undefined });
         }
     };
 
@@ -606,6 +603,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         );
     };
 
+
+    onRevertView = () => {
+        this.setState({errorMsg: undefined});
+    };
+
     /**
      * Handler called when the user clicks a filter action from the column dropdown menu.
      * @param column: QueryColumn
@@ -703,11 +705,17 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     hideColumn = (columnToHide: QueryColumn): void => {
         const { actions, model, allowSelections } = this.props;
+
         const columns = model.displayColumns.filter(column => column.index !== columnToHide.index);
         saveSessionGridView(model.schemaQuery, columns, model.containerPath).then(() => {
             invalidateQueryDetailsCache(model.schemaQuery, model.containerPath);
             actions.loadModel(model.id,  allowSelections);
+            this.setState({
+                headerClickCount: {},
+                errorMsg: undefined
+            });
         }).catch(errorMsg => { this.setState({errorMsg})});
+
     }
 
     /**
@@ -836,7 +844,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return (
             <>
                 <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-                    {!hasHeader && <GridTitle model={model} title={title} actions={actions} allowSelections={allowSelections} />}
+                    {!hasHeader && <GridTitle model={model} title={title} actions={actions} allowSelections={allowSelections} onRevertView={this.onRevertView} />}
 
                     <div className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-spacing': !hasHeader })}>
                         {showButtonBar && (

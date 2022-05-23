@@ -32,6 +32,7 @@ export const StatusGridImpl: FC<InjectedQueryModels> = memo(props => {
 
     return (
         <TabbedGridPanel
+            allowViewCustomization={false}
             tabOrder={[ACTIVE_GRID_ID, ALL_GRID_ID]}
             actions={actions}
             queryModels={queryModels}

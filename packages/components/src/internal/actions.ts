@@ -2512,11 +2512,12 @@ export function incrementClientSideMetricCount(featureArea: string, metricName: 
     });
 }
 
-export function saveSessionGridView(schemaQuery: SchemaQuery, columns: any): Promise<void> {
+export function saveSessionGridView(schemaQuery: SchemaQuery, columns: any, containerPath: string): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.saveQueryViews({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
+            containerPath,
             views: [{ columns, session: true }],
             success: () => {
                 resolve();
@@ -2529,11 +2530,12 @@ export function saveSessionGridView(schemaQuery: SchemaQuery, columns: any): Pro
     });
 }
 
-export function revertViewEdit(schemaQuery: SchemaQuery) : Promise<void> {
+export function revertViewEdit(schemaQuery: SchemaQuery, containerPath: string) : Promise<void> {
     return new Promise((resolve, reject) => {
         Query.deleteQueryView({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
+            containerPath,
             revert: true,
             success: () => {
                 resolve();

@@ -5,7 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 10374: Begin adding support for customizing views in our application
   * Move display of custom view name into panel header
-
+  * Add header action for hiding a column and saving a new session view
+  * Add buttons for reverting session grid customization in panel header
 
 ### version 2.174.0
 *Released*: 19 May 2022

@@ -51,6 +51,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
     allowSorting?: boolean;
     allowFiltering?: boolean;
+    allowViewCustomization?: boolean;
     asPanel?: boolean;
     advancedExportOptions?: { [key: string]: any };
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -276,8 +277,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }
 
     const revertEdit = useCallback(async () => {
-        await revertViewEdit(model.schemaQuery);
-        invalidateQueryDetailsCache(model.schemaQuery);
+        await revertViewEdit(model.schemaQuery, model.containerPath);
+        invalidateQueryDetailsCache(model.schemaQuery, model.containerPath);
         await actions.loadModel(model.id, allowSelections);
     }, [view]);
 
@@ -315,6 +316,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         allowSelections: true,
         allowSorting: true,
         allowFiltering: true,
+        allowViewCustomization: true,
         asPanel: true,
         hideEmptyChartMenu: true,
         hideEmptyViewMenu: true,
@@ -702,8 +704,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     hideColumn = (columnToHide: QueryColumn): void => {
         const { actions, model, allowSelections } = this.props;
         const columns = model.displayColumns.filter(column => column.index !== columnToHide.index);
-        saveSessionGridView(model.schemaQuery, columns).then(() => {
-            invalidateQueryDetailsCache(model.schemaQuery);
+        saveSessionGridView(model.schemaQuery, columns, model.containerPath).then(() => {
+            invalidateQueryDetailsCache(model.schemaQuery, model.containerPath);
             actions.loadModel(model.id,  allowSelections);
         }).catch(errorMsg => { this.setState({errorMsg})});
     }
@@ -770,7 +772,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
         const { headerClickCount } = this.state;
-        const { allowSelections, allowSorting, allowFiltering, model } = this.props;
+        const { allowSelections, allowSorting, allowFiltering, allowViewCustomization, model } = this.props;
         const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
         const disabled = isLoadingSelections || isLoading || (hasRows && rowCount === 0);
 
@@ -785,7 +787,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             columnCount,
             allowSorting ? this.sortColumn : undefined,
             allowFiltering ? this.filterColumn : undefined,
-            this.hideColumn,
+            allowViewCustomization? this.hideColumn : undefined,
             model,
             headerClickCount[column.index]
         );

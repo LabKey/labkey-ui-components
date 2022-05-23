@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD May 2022
-* Item 10394: LKSM menu update to add Notebooks section config
+* Item 10394: Updates for incorporating ELN in LKSM
+  * LKSM menu update to add Notebooks section config
+  * URLResolver update for handling notebooks in search result hits
 
 ### version 2.174.0
 *Released*: 19 May 2022

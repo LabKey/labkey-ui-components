@@ -77,13 +77,20 @@ function parseSearchIdToData(idString): SearchIdData {
     return idData;
 }
 
-function resolveTypeName(data: any) {
+function resolveTypeName(data: any, category: string) {
     let typeName;
     if (data) {
         if (data.dataClass?.name) {
             typeName = data.dataClass.name;
         } else if (data.sampleSet?.name) {
             typeName = data.sampleSet.name;
+        }
+    }
+    if (!typeName && category) {
+        if (category === 'notebook') {
+            typeName = 'Notebook';
+        } else if (category === 'notebookTemplate') {
+            typeName = 'Notebook Template';
         }
     }
     return typeName;
@@ -111,15 +118,32 @@ function resolveIconSrc(data: any, category: string): string {
         if (category === 'material') {
             iconSrc = 'samples';
         }
+        if (category === 'workflowJob') {
+            iconSrc = 'workflow';
+        }
+        if (category === 'notebook' || category === 'notebookTemplate') {
+            iconSrc = 'notebook_blue';
+        }
     }
     return iconSrc;
+}
+
+function resolveIconDir(category: string): string {
+    let iconDir;
+    if (category) {
+        if (category === 'notebook' || category === 'notebookTemplate') {
+            iconDir = 'labbook/images';
+        }
+    }
+    return iconDir;
 }
 
 export function getSearchResultCardData(data: any, category: string, title: string): SearchResultCardData {
     return {
         title,
+        iconDir: resolveIconDir(category),
         iconSrc: resolveIconSrc(data, category),
-        typeName: resolveTypeName(data),
+        typeName: resolveTypeName(data, category),
     };
 }
 
@@ -140,7 +164,7 @@ function getCardData(
 export function getProcessedSearchHits(
     hits: any[],
     getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
-    filterCategories = ['data', 'material', 'workflowJob', 'file workflowJob']
+    filterCategories = ['data', 'material', 'workflowJob', 'file workflowJob', 'notebook', 'notebookTemplate']
 ): any[] {
     return hits
         ?.filter(result => {

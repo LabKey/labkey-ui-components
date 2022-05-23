@@ -87,7 +87,7 @@ exports[`ViewMenu Render 3`] = `
         role="separator"
       />
       <li
-        className="submenu-header dropdown-header"
+        className="dropdown-header"
         role="heading"
       >
         All Saved Views
@@ -175,7 +175,7 @@ exports[`ViewMenu Render 4`] = `
         role="separator"
       />
       <li
-        className="submenu-header dropdown-header"
+        className="dropdown-header"
         role="heading"
       >
         My Saved Views
@@ -249,7 +249,7 @@ exports[`ViewMenu Render 5`] = `
         role="separator"
       />
       <li
-        className="submenu-header dropdown-header"
+        className="dropdown-header"
         role="heading"
       >
         My Saved Views

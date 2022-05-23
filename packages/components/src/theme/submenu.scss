@@ -62,6 +62,9 @@
   }
 }
 
-.dropdown-header.submenu-header {
+.dropdown-header {
     text-transform: uppercase;
+}
+.dropdown-header.submenu-footer {
+    text-transform: unset;
 }

@@ -54,18 +54,14 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {privateViews.length > 0 && (
                         <>
                             <MenuItem divider />
-                            <MenuItem className="submenu-header" header>
-                                My Saved Views
-                            </MenuItem>
+                            <MenuItem header>My Saved Views</MenuItem>
                             {privateViews.map(viewMapper)}
                         </>
                     )}
                     {publicViews.length > 0 && (
                         <>
                             <MenuItem divider />
-                            <MenuItem className="submenu-header" header>
-                                All Saved Views
-                            </MenuItem>
+                            <MenuItem header>All Saved Views</MenuItem>
                             {publicViews.map(viewMapper)}
                         </>
                     )}

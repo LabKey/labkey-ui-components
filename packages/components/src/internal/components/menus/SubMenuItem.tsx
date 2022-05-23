@@ -243,11 +243,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
 
         return (
             <>
-                {inline && text && (
-                    <MenuItem className="submenu-header" header>
-                        {text}
-                    </MenuItem>
-                )}
+                {inline && text && <MenuItem header>{text}</MenuItem>}
                 <li {...menuItemProps}>
                     {!inline && (
                         <>

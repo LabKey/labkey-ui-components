@@ -51,7 +51,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                             pullRight
                             title={<span className="fa fa-download" />}
                         >
-                            <MenuItem key="export_header" className="submenu-header" header>
+                            <MenuItem key="export_header" header>
                                 Export
                                 {hasSelections ? ' Selected' : ''}
                             </MenuItem>
@@ -63,7 +63,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                                     return (
                                         <React.Fragment key={option.type}>
                                             <MenuItem divider />
-                                            <MenuItem className="submenu-header" header>
+                                            <MenuItem header>
                                                 Export and Print {model.selections?.size > 0 ? 'Selected' : ''}
                                             </MenuItem>
                                             <MenuItem onClick={() => this.export(option)}>

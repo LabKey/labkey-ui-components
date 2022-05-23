@@ -79,9 +79,7 @@ export const UserMenu: FC<UserMenuProps> = props => {
                 {getServerContext().devMode && (
                     <>
                         <MenuItem divider />
-                        <MenuItem className="submenu-header" header>
-                            Dev Tools
-                        </MenuItem>
+                        <MenuItem header>Dev Tools</MenuItem>
                         <MenuItem onClick={toggleDevTools}>
                             {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
                         </MenuItem>

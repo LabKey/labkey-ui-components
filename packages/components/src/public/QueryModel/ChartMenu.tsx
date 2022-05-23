@@ -103,7 +103,7 @@ export class ChartMenu extends PureComponent<Props> {
                     }
                 >
                     {showSampleComparisonReports && (
-                        <MenuItem className="submenu-header" header key="new-charts">
+                        <MenuItem header key="new-charts">
                             New Charts & Reports
                         </MenuItem>
                     )}
@@ -117,21 +117,13 @@ export class ChartMenu extends PureComponent<Props> {
 
                     {chartsError !== undefined && <MenuItem>{chartsError}</MenuItem>}
 
-                    {privateCharts.length > 0 && (
-                        <MenuItem className="submenu-header" header>
-                            My Saved Charts
-                        </MenuItem>
-                    )}
+                    {privateCharts.length > 0 && <MenuItem header>My Saved Charts</MenuItem>}
 
                     {privateCharts.length > 0 && privateCharts.map(this.chartMapper)}
 
                     {privateCharts.length > 0 && publicCharts.length > 0 && <MenuItem divider />}
 
-                    {publicCharts.length > 0 && (
-                        <MenuItem className="submenu-header" header>
-                            All Saved Charts
-                        </MenuItem>
-                    )}
+                    {publicCharts.length > 0 && <MenuItem header>All Saved Charts</MenuItem>}
 
                     {publicCharts.length > 0 && publicCharts.map(this.chartMapper)}
                 </DropdownButton>

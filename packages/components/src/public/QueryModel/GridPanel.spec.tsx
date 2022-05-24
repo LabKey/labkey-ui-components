@@ -249,19 +249,17 @@ describe('GridPanel', () => {
         const nameFilter = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
         const expirFilter = Filter.create('expirationTime', '1', Filter.Types.EQUAL);
         const viewName = 'noMixtures';
-        const viewLabel = 'No Mixtures or Extra';
-        const noMixtursSQ = SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, viewName);
+        const noMixturesSQ = SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, viewName);
         const search = Filter.create('*', 'foobar', Filter.Types.Q);
 
         expectBoundState(wrapper, {}, 0, []);
         expectBoundState(wrapper, { sorts: [nameSort] }, 1, [nameSort]);
         expectBoundState(wrapper, { filterArray: [nameFilter] }, 2, [nameSort, nameFilter]);
         expectBoundState(wrapper, { filterArray: [expirFilter] }, 2, [nameSort, expirFilter]);
-        expectBoundState(wrapper, { schemaQuery: noMixtursSQ }, 3, [nameSort, expirFilter, viewLabel]);
-        expectBoundState(wrapper, { filterArray: [expirFilter, search] }, 4, [
+        expectBoundState(wrapper, { schemaQuery: noMixturesSQ }, 2, [nameSort, expirFilter]);
+        expectBoundState(wrapper, { filterArray: [expirFilter, search] }, 3, [
             nameSort,
             expirFilter,
-            viewLabel,
             search,
         ]);
         expectBoundState(wrapper, { sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY }, 0, []);

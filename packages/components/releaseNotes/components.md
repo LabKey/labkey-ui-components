@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * URLResolver update for handling notebooks in search result hits
   * Refactor Setting.tsx component from LKB to ui-components
 
+### version 2.174.1
+*Released*: 24 May 2022
+* Apply MenuItem "submenu-header" class to applicable grid menu headers
+* Issue 45222: Editable grid fix for lookup cell margin-right to account for selector
+
 ### version 2.174.0
 *Released*: 19 May 2022
 * Item 10299: Sample Finder Saving Queries

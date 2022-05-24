@@ -82,7 +82,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([3, 'workflow'])).toBeTruthy();
         expect(configs.getIn([3, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
 
-        expect(configs.hasIn([3, 'user'])).toBeTruthy();
+        expect(configs.hasIn([3, 'user'])).toBeFalsy();
     });
 
     test('freezerManager enabled', () => {
@@ -130,7 +130,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
         expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
 
-        expect(configs.hasIn([4, 'user'])).toBeTruthy();
+        expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
     test('SM and FM enabled, FM current app', () => {
@@ -167,7 +167,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
         expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/workflow');
 
-        expect(configs.hasIn([4, 'user'])).toBeTruthy();
+        expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
     test('SM and FM enabled, SM current app, storage editor', () => {
@@ -194,7 +194,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([2, 'workflow'])).toBeTruthy();
         expect(configs.getIn([2, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
 
-        expect(configs.hasIn([2, 'user'])).toBeTruthy();
+        expect(configs.hasIn([2, 'user'])).toBeFalsy();
     });
 });
 
@@ -776,7 +776,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
         expect(configs.getIn([3, FREEZERS_KEY])).toBeDefined();
         expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([4, USER_KEY])).toBeDefined();
+        expect(configs.getIn([4, USER_KEY])).toBeUndefined();
     });
 
     test('Biologics primary, in Sample Manager', () => {
@@ -797,7 +797,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
         expect(configs.getIn([3, FREEZERS_KEY])).toBeDefined();
         expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([4, USER_KEY])).toBeDefined();
+        expect(configs.getIn([4, USER_KEY])).toBeUndefined();
     });
 
     test('Biologics', () => {

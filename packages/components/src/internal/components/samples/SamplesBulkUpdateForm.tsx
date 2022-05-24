@@ -121,7 +121,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
             // if contains samples, skip aliquot fields
             originalQueryInfo.columns.forEach((column, key) => {
                 const fieldKey = column.fieldKey.toLowerCase();
-                if (sampleTypeDomainFields.aliquotFields.indexOf(fieldKey) === -1 && 'name' !== fieldKey)
+                if (sampleTypeDomainFields.aliquotFields.indexOf(fieldKey) === -1 && fieldKey !== 'name')
                     columns = columns.set(key, column);
             });
         }

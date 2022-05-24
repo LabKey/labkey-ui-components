@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX May 2022
+* Item 10201: Sample renaming
+  * Remove "Name" field from SampleBulkUpdateForm
+
 ### version 2.174.1
 *Released*: 24 May 2022
 * Apply MenuItem "submenu-header" class to applicable grid menu headers

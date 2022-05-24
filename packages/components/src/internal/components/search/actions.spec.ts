@@ -13,6 +13,7 @@ describe('getSearchResultCardData', () => {
         const resultCardData = getSearchResultCardData(data, 'dataClass', 'my title');
         expect(resultCardData).toStrictEqual({
             title: 'my title',
+            iconDir: undefined,
             iconSrc: 'test source',
             typeName: 'Test Source',
         });
@@ -29,6 +30,7 @@ describe('getSearchResultCardData', () => {
         const resultCardData = getSearchResultCardData(data, 'material', undefined);
         expect(resultCardData).toStrictEqual({
             title: undefined,
+            iconDir: undefined,
             iconSrc: 'samples',
             typeName: 'Test Sample Set',
         });
@@ -43,6 +45,7 @@ describe('getSearchResultCardData', () => {
         const resultCardData = getSearchResultCardData(data, 'dataClass', 'my title');
         expect(resultCardData).toStrictEqual({
             title: 'my title',
+            iconDir: undefined,
             iconSrc: 'default',
             typeName: undefined,
         });
@@ -57,6 +60,7 @@ describe('getSearchResultCardData', () => {
         const resultCardData = getSearchResultCardData(data, 'materialSource', undefined);
         expect(resultCardData).toStrictEqual({
             title: undefined,
+            iconDir: undefined,
             iconSrc: 'sample_set',
             typeName: undefined,
         });
@@ -73,6 +77,7 @@ describe('getSearchResultCardData', () => {
         const resultCardData = getSearchResultCardData(data, 'material', undefined);
         expect(resultCardData).toStrictEqual({
             title: undefined,
+            iconDir: undefined,
             iconSrc: 'samples',
             typeName: 'RawMaterials',
         });
@@ -89,6 +94,7 @@ describe('getSearchResultCardData', () => {
         const resultCardData = getSearchResultCardData(data, 'material', undefined);
         expect(resultCardData).toStrictEqual({
             title: undefined,
+            iconDir: undefined,
             iconSrc: 'samples',
             typeName: 'MixtureBatches',
         });
@@ -100,6 +106,7 @@ describe('getSearchResultCardData', () => {
         const resultCardData = getSearchResultCardData(data, 'material', undefined);
         expect(resultCardData).toStrictEqual({
             title: undefined,
+            iconDir: undefined,
             iconSrc: 'samples',
             typeName: undefined,
         });

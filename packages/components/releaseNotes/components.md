@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD May 2022
+### version 2.174.1
+*Released*: 24 May 2022
 * Apply MenuItem "submenu-header" class to applicable grid menu headers
 * Issue 45222: Editable grid fix for lookup cell margin-right to account for selector
 

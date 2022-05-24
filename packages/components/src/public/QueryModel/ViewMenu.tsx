@@ -51,10 +51,20 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     title={<span ><i className="fa fa-table"/> <span className="spacer-left">Views</span></span>}
                 >
                     {defaultView && viewMapper(defaultView)}
-                    {privateViews.length > 0 && <MenuItem header>My Saved Views</MenuItem>}
-                    {privateViews.length > 0 && privateViews.map(viewMapper)}
-                    {publicViews.length > 0 && <MenuItem header>All Saved Views</MenuItem>}
-                    {publicViews.length > 0 && publicViews.map(viewMapper)}
+                    {privateViews.length > 0 && (
+                        <>
+                            <MenuItem divider />
+                            <MenuItem header>My Saved Views</MenuItem>
+                            {privateViews.map(viewMapper)}
+                        </>
+                    )}
+                    {publicViews.length > 0 && (
+                        <>
+                            <MenuItem divider />
+                            <MenuItem header>All Saved Views</MenuItem>
+                            {publicViews.map(viewMapper)}
+                        </>
+                    )}
                 </DropdownButton>
             </div>
         );

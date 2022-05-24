@@ -121,6 +121,8 @@ export class ChartMenu extends PureComponent<Props> {
 
                     {privateCharts.length > 0 && privateCharts.map(this.chartMapper)}
 
+                    {privateCharts.length > 0 && publicCharts.length > 0 && <MenuItem divider />}
+
                     {publicCharts.length > 0 && <MenuItem header>All Saved Charts</MenuItem>}
 
                     {publicCharts.length > 0 && publicCharts.map(this.chartMapper)}

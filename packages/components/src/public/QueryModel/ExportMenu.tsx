@@ -62,6 +62,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                                 if (option.type === EXPORT_TYPES.LABEL) {
                                     return (
                                         <React.Fragment key={option.type}>
+                                            <MenuItem divider />
                                             <MenuItem header>
                                                 Export and Print {model.selections?.size > 0 ? 'Selected' : ''}
                                             </MenuItem>

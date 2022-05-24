@@ -19,6 +19,7 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_LKSM_ELN,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     EXPERIMENTAL_SAMPLE_FINDER,
@@ -220,6 +221,10 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
     } else {
         return undefined;
     }
+}
+
+export function isELNEnabledInLKSM(moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_LKSM_ELN] === true;
 }
 
 export function isRequestsEnabled(moduleContext?: any): boolean {
@@ -461,7 +466,7 @@ export function getMenuSectionConfigs(
         }
 
         let configs = Map({ [WORKFLOW_KEY]: workflowConfig });
-        if (userCanReadNotebooks(user)) {
+        if (userCanReadNotebooks(user) && isELNEnabledInLKSM(moduleContext)) {
             configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
         }
         sectionConfigs = sectionConfigs.push(configs);

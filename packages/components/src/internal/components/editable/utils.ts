@@ -93,15 +93,31 @@ export const initEditableGridModels = async (
 }> => {
     const updatedDataModels = [];
     const updatedEditorModels = [];
-    for (const loader of loaders) {
-        const index = loaders.indexOf(loader);
-        const response = await loader.fetch(queryModel);
-        const gridData = {
-            rows: response.data.toJS(),
-            orderedRows: response.dataIds.toArray(),
-            queryInfo: loader.queryInfo,
-        };
-        const editorModelData = await loadEditorModelData(gridData, loader.updateColumns);
+
+    const results = await Promise.all(
+        loaders.map(
+            loader =>
+                new Promise<{ editorModelData: Partial<EditorModel>; gridData: Record<string, any> }>(resolve => {
+                    let gridData;
+                    loader
+                        .fetch(queryModel)
+                        .then(response => {
+                            gridData = {
+                                rows: response.data.toJS(),
+                                orderedRows: response.dataIds.toArray(),
+                                queryInfo: loader.queryInfo,
+                            };
+                            return loadEditorModelData(gridData, loader.updateColumns);
+                        })
+                        .then(editorModelData => {
+                            resolve({ editorModelData, gridData });
+                        });
+                })
+        )
+    );
+
+    results.forEach((result, index) => {
+        const { editorModelData, gridData } = result;
 
         updatedDataModels.push(
             dataModels[index].mutate({
@@ -111,7 +127,7 @@ export const initEditableGridModels = async (
             })
         );
         updatedEditorModels.push(editorModels[index].merge(editorModelData) as EditorModel);
-    }
+    });
 
     return {
         dataModels: updatedDataModels,

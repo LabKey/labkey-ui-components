@@ -1358,7 +1358,7 @@ function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string 
 
 const resolveDisplayColumn = (column: QueryColumn): string => {
     // Handle MVFK
-    if (column.multiValue && column.lookup?.['multiValued'] === 'junction') {
+    if (column.multiValue && column.isJunctionLookup()) {
         const parts = column.displayField.split('$S');
         if (parts.length > 1) return parts[1];
     }

@@ -42,10 +42,10 @@ interface Props {
     parentEntityDataTypes: EntityDataType[];
 }
 
-export function restrictedDataOperationMsg(
+export const restrictedDataOperationMsg = (
     confirmationData: OperationConfirmationData,
     entityDataType: EntityDataType
-) {
+): string => {
     let notAllowedMsg = null;
 
     if (confirmationData) {

@@ -2,6 +2,7 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 're
 import { fromJS, List, Map } from 'immutable';
 
 import {
+    createNotification,
     EditableColumnMetadata,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
@@ -26,6 +27,7 @@ import {
 import { EntityParentType } from '../entities/models';
 
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
+import {SharedEditableGridPanelProps} from "./EditableGrid";
 
 export enum UpdateGridTab {
     Samples,
@@ -37,55 +39,48 @@ export enum UpdateGridTab {
 const DEFAULT_SINGULAR_NOUN = 'row';
 const DEFAULT_PLURAL_NOUN = 'rows';
 
-interface Props {
-    queryModel: QueryModel;
-    loaders: EditableGridLoaderFromSelection[];
-    selectionData?: Map<string, any>;
-    updateAllTabRows: (updateData: any[]) => Promise<any>;
-    onCancel: () => any;
-    onComplete: () => any;
-    idField: string;
-    singularNoun?: string;
-    pluralNoun?: string;
-    readOnlyColumns?: List<string>;
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    includedTabs: UpdateGridTab[];
-    getColumnMetadata: (tabInd: number) => Map<string, EditableColumnMetadata>;
-    getTabTitle: (tabInd: number) => string;
-    getAdditionalTabInfo?: (tab: number) => ReactNode;
-    targetEntityDataType: EntityDataType;
-    getParentTypeWarning?: () => ReactNode;
-    getReadOnlyRows?: (tabInd: number) => List<string>;
-    parentDataTypes: List<EntityDataType>;
+export interface EditableGridPanelForUpdateWithLineageProps
+    extends Omit<SharedEditableGridPanelProps, 'allowAdd' | 'allowRemove' | 'forUpdate'> {
     combineParentTypes?: boolean;
+    getParentTypeWarning?: () => ReactNode;
+    idField: string;
+    includedTabs: UpdateGridTab[];
+    loaders: EditableGridLoaderFromSelection[];
+    onCancel: () => void;
+    onComplete: () => void;
+    parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+    pluralNoun?: string;
+    queryModel: QueryModel;
+    selectionData?: Map<string, any>;
+    singularNoun?: string;
+    targetEntityDataType: EntityDataType;
+    updateAllTabRows: (updateData: any[]) => Promise<boolean>;
 }
 
 // See note in onGridChange
 let editableGridUpdateAggregate: Partial<EditorModelProps>;
 
-export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
+export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {
     const {
-        loaders,
-        queryModel,
-        parentDataTypes,
-        onComplete,
-        updateAllTabRows,
+        combineParentTypes,
+        getParentTypeWarning,
+        getTabHeader,
         idField,
+        includedTabs,
+        loaders,
+        onCancel,
+        onComplete,
+        parentDataTypes,
+        parentTypeOptions,
+        pluralNoun = DEFAULT_PLURAL_NOUN,
+        queryModel,
         readOnlyColumns,
         selectionData,
-        getColumnMetadata,
-        includedTabs,
-        getTabTitle,
-        combineParentTypes,
-        parentTypeOptions,
-        getAdditionalTabInfo,
+        singularNoun = DEFAULT_SINGULAR_NOUN,
         targetEntityDataType,
-        getParentTypeWarning,
-        pluralNoun,
-        singularNoun,
-        getReadOnlyRows,
-        onCancel,
+        updateAllTabRows,
+        ...gridProps
     } = props;
 
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -112,18 +107,28 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
                 }, {})
             )
         );
-    }, [loaders, parentDataTypes]); // TODO: empty dependencies?
-
-    const initEditorModel = useCallback(async (): Promise<void> => {
-        const models = await initEditableGridModels(dataModels, editorModels, queryModel, loaders);
-
-        setDataModels(models.dataModels);
-        setEditorModels(models.editorModels);
-    }, [dataModels, editorModels]);
+    }, [loaders, parentDataTypes]);
 
     useEffect(() => {
-        if (loaders && dataModels?.find(dataModel => dataModel.isLoading)) initEditorModel().then();
-    }, [loaders, dataModels]);
+        const initEditorModel = async (): Promise<{
+            dataModels: QueryModel[];
+            editorModels: EditorModel[];
+        }> => {
+            return await initEditableGridModels(dataModels, editorModels, queryModel, loaders);
+        };
+
+        if (loaders && dataModels?.find(dataModel => dataModel.isLoading)) {
+            initEditorModel().then(models => {
+                setDataModels(models.dataModels);
+                setEditorModels(models.editorModels);
+            }).catch(error => {
+                createNotification({
+                    message: error,
+                    alertClass: "danger"
+                })
+            })
+        }
+    }, [loaders, dataModels, editorModels]);
 
     // Intentionally fires with every render, see note in onGridChange
     useEffect(() => {
@@ -176,12 +181,12 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
             updateAllTabRows(gridDataAllTabs).then(result => {
                 setIsSubmitting(false);
                 if (result !== false) {
-                    onComplete(); // TODO: add isSubmitting param?
+                    onComplete();
                 }
             });
         } else {
             setIsSubmitting(false);
-            onComplete(); // TODO: add isSubmitting param?
+            onComplete();
         }
     }, [dataModels, editorModels, onComplete]);
 
@@ -254,7 +259,14 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
         [targetEntityDataType, combineParentTypes, includedTabs, entityParentsMap, editorModels, dataModels]
     );
 
-    const getTabHeader = useCallback(
+    const addParentType = useCallback(
+        (queryName: string): void => {
+            setEntityParentsMap(addEntityParentType(queryName, entityParentsMap));
+        },
+        [entityParentsMap]
+    );
+
+    const _getTabHeader = useCallback(
         (tabInd: number): ReactNode => {
             const currentTab = getCurrentTab(tabInd);
 
@@ -276,27 +288,22 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
                         <hr />
                     </>
                 );
-            } else if (getAdditionalTabInfo) {
-                return getAdditionalTabInfo(currentTab);
             }
+
+            return getTabHeader?.(currentTab);
         },
         [
+            getCurrentTab,
+            getTabHeader,
             parentDataTypes,
-            combineParentTypes,
             parentTypeOptions,
             entityParentsMap,
-            getCurrentTab,
-            getAdditionalTabInfo,
+            combineParentTypes,
+            addParentType,
             changeParentType,
             removeParentType,
+            getParentTypeWarning,
         ]
-    );
-
-    const addParentType = useCallback(
-        (queryName: string): void => {
-            setEntityParentsMap(addEntityParentType(queryName, entityParentsMap));
-        },
-        [entityParentsMap]
     );
 
     if (!dataModels || dataModels.length < 1 || !dataModels.every(dataModel => !dataModel.isLoading)) {
@@ -306,21 +313,19 @@ export const EditableGridPanelForUpdateWithLineage: FC<Props> = memo(props => {
     return (
         <>
             <EditableGridPanel
-                {...props}
-                allowAdd={false}
-                allowRemove={false}
                 bordered
                 bsStyle="info"
-                getColumnMetadata={getColumnMetadata}
-                editorModel={editorModels}
-                forUpdate
-                model={dataModels}
-                onChange={onGridChange}
                 striped
                 title={`Edit selected ${pluralNoun}`}
-                getTabTitle={getTabTitle}
-                getTabHeader={getTabHeader}
-                getReadOnlyRows={getReadOnlyRows}
+                {...gridProps}
+                allowAdd={false}
+                allowRemove={false}
+                editorModel={editorModels}
+                forUpdate
+                getTabHeader={_getTabHeader}
+                model={dataModels}
+                onChange={onGridChange}
+                readOnlyColumns={readOnlyColumns}
             />
             <WizardNavButtons
                 cancel={onCancel}

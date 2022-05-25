@@ -32,7 +32,13 @@ export class LineageEditableGridLoaderFromSelection implements IEditableGridLoad
     }
 
     fetch(queryModel: QueryModel): Promise<IGridResponse> {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
+            if (!this.lineage)
+                reject('Lineage not defined');
+
+            if (!this.originalParents)
+                reject('Original parents not defined');
+
             let data = EditorModel.convertQueryDataToEditorData(fromJS(this.lineage));
             Object.keys(this.originalParents).forEach(rowId => {
                 this.originalParents[rowId].forEach(parent => {

@@ -82,15 +82,17 @@ export const loadEditorModelData = async (
     };
 };
 
+export interface EditableGridModels {
+    dataModels: QueryModel[];
+    editorModels: EditorModel[];
+}
+
 export const initEditableGridModels = async (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
     queryModel: QueryModel,
     loaders: EditableGridLoaderFromSelection[]
-): Promise<{
-    dataModels: QueryModel[];
-    editorModels: EditorModel[];
-}> => {
+): Promise<EditableGridModels> => {
     const updatedDataModels = [];
     const updatedEditorModels = [];
 
@@ -143,10 +145,7 @@ export const applyEditableGridChangesToModels = (
     dataKeys?: List<any>,
     data?: Map<string, Map<string, any>>,
     index?: number
-): {
-    dataModels: QueryModel[];
-    editorModels: EditorModel[];
-} => {
+): EditableGridModels => {
     const tabIndex = index ?? 0;
     const updatedEditorModels = [...editorModels];
     const editorModel = editorModels[tabIndex].merge(editorModelChanges) as EditorModel;

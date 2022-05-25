@@ -26,7 +26,12 @@ import {
 } from '../entities/EntityParentTypeSelectors';
 import { EntityParentType } from '../entities/models';
 
-import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
+import {
+    applyEditableGridChangesToModels,
+    EditableGridModels,
+    getUpdatedDataFromEditableGrid,
+    initEditableGridModels
+} from './utils';
 import {SharedEditableGridPanelProps} from "./EditableGrid";
 
 export enum UpdateGridTab {
@@ -58,9 +63,6 @@ export interface EditableGridPanelForUpdateWithLineageProps
     updateAllTabRows: (updateData: any[]) => Promise<boolean>;
 }
 
-// See note in onGridChange
-let editableGridUpdateAggregate: Partial<EditorModelProps>;
-
 export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {
     const {
         combineParentTypes,
@@ -84,8 +86,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
     } = props;
 
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [dataModels, setDataModels] = useState<QueryModel[]>();
-    const [editorModels, setEditorModels] = useState<EditorModel[]>();
+    const [editableGridModels, setEditableGridModels] = useState<EditableGridModels>();
     const [entityParentsMap, setEntityParentsMap] = useState<Map<string, List<EntityParentType>>>();
 
     useEffect(() => {
@@ -97,8 +98,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         });
 
         setIsSubmitting(false);
-        setDataModels(dataModels);
-        setEditorModels(editorModels);
+        setEditableGridModels({dataModels, editorModels})
         setEntityParentsMap(
             fromJS(
                 parentDataTypes.reduce((map, dataType) => {
@@ -114,13 +114,12 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             dataModels: QueryModel[];
             editorModels: EditorModel[];
         }> => {
-            return await initEditableGridModels(dataModels, editorModels, queryModel, loaders);
+            return await initEditableGridModels(editableGridModels.dataModels, editableGridModels.editorModels, queryModel, loaders);
         };
 
-        if (loaders && dataModels?.find(dataModel => dataModel.isLoading)) {
+        if (loaders && editableGridModels?.dataModels?.find(dataModel => dataModel.isLoading)) {
             initEditorModel().then(models => {
-                setDataModels(models.dataModels);
-                setEditorModels(models.editorModels);
+                setEditableGridModels(models)
             }).catch(error => {
                 createNotification({
                     message: error,
@@ -128,12 +127,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 })
             })
         }
-    }, [loaders, dataModels, editorModels]);
-
-    // Intentionally fires with every render, see note in onGridChange
-    useEffect(() => {
-        editableGridUpdateAggregate = undefined;
-    });
+    }, [loaders, editableGridModels]);
 
     const onGridChange = (
         editorModelChanges: Partial<EditorModelProps>,
@@ -141,31 +135,25 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         data?: Map<string, Map<string, any>>,
         index?: number
     ): void => {
-        // For some cell types, editable grid fires multiple onChange events with different parameters for a given browser event.
-        // This doesn't allow state to be set between onChange calls for a single browser event, thus this goes outside
-        // the normal functional component life-cycle to aggregate the onChange events between renders.
-        editableGridUpdateAggregate = { ...editableGridUpdateAggregate, ...editorModelChanges };
-
-        const models = applyEditableGridChangesToModels(
-            dataModels,
-            editorModels,
-            editableGridUpdateAggregate,
-            undefined,
-            dataKeys,
-            data,
-            index ?? 0
-        );
-
-        setEditorModels(models.editorModels);
-        setDataModels(models.dataModels);
-    };
+        setEditableGridModels(_models => {
+            return applyEditableGridChangesToModels(
+                _models.dataModels,
+                _models.editorModels,
+                editorModelChanges,
+                undefined,
+                dataKeys,
+                data,
+                index ?? 0
+            )
+        })
+    }
 
     const onSubmit = useCallback((): void => {
         const gridDataAllTabs = [];
-        dataModels.forEach((model, ind) => {
+        editableGridModels.dataModels.forEach((model, ind) => {
             const gridData = getUpdatedDataFromEditableGrid(
-                dataModels,
-                editorModels,
+                editableGridModels.dataModels,
+                editableGridModels.editorModels,
                 idField,
                 readOnlyColumns,
                 selectionData,
@@ -188,7 +176,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             setIsSubmitting(false);
             onComplete();
         }
-    }, [dataModels, editorModels, onComplete]);
+    }, [editableGridModels, onComplete]);
 
     const getCurrentTab = useCallback(
         (tabInd: number): number => {
@@ -205,26 +193,25 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 index,
                 queryName,
                 entityParentsMap,
-                editorModels[tabIndex],
-                dataModels[tabIndex].queryInfo,
-                fromJS(dataModels[tabIndex].rows)
+                editableGridModels.editorModels[tabIndex],
+                editableGridModels.dataModels[tabIndex].queryInfo,
+                fromJS(editableGridModels.dataModels[tabIndex].rows)
             );
 
             const updatedModels = applyEditableGridChangesToModels(
-                dataModels,
-                editorModels,
+                editableGridModels.dataModels,
+                editableGridModels.editorModels,
                 editorModelChanges,
                 queryInfo,
-                List(dataModels[tabIndex].orderedRows),
+                List(editableGridModels.dataModels[tabIndex].orderedRows),
                 data,
                 tabIndex
             );
 
-            setEditorModels(updatedModels.editorModels);
-            setDataModels(updatedModels.dataModels);
+            setEditableGridModels(updatedModels);
             setEntityParentsMap(entityParents);
         },
-        [includedTabs, entityParentsMap, dataModels, editorModels]
+        [includedTabs, entityParentsMap, editableGridModels]
     );
 
     const changeParentType = useCallback(
@@ -235,28 +222,27 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 index,
                 queryName,
                 parent,
-                editorModels[tabIndex],
-                dataModels[tabIndex],
+                editableGridModels.editorModels[tabIndex],
+                editableGridModels.dataModels[tabIndex],
                 entityParentsMap,
                 targetEntityDataType,
                 combineParentTypes
             );
 
             const updatedModels = applyEditableGridChangesToModels(
-                dataModels,
-                editorModels,
+                editableGridModels.dataModels,
+                editableGridModels.editorModels,
                 editorModelChanges,
                 queryInfo,
-                List(dataModels[tabIndex].orderedRows),
+                List(editableGridModels.dataModels[tabIndex].orderedRows),
                 data,
                 tabIndex
             );
 
-            setEditorModels(updatedModels.editorModels);
-            setDataModels(updatedModels.dataModels);
+            setEditableGridModels(updatedModels);
             setEntityParentsMap(entityParents);
         },
-        [targetEntityDataType, combineParentTypes, includedTabs, entityParentsMap, editorModels, dataModels]
+        [targetEntityDataType, combineParentTypes, includedTabs, entityParentsMap, editableGridModels]
     );
 
     const addParentType = useCallback(
@@ -306,7 +292,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         ]
     );
 
-    if (!dataModels || dataModels.length < 1 || !dataModels.every(dataModel => !dataModel.isLoading)) {
+    if (!editableGridModels || !editableGridModels.dataModels || editableGridModels.dataModels.length < 1 || !editableGridModels.dataModels.every(dataModel => !dataModel.isLoading)) {
         return <LoadingSpinner />;
     }
 
@@ -320,10 +306,10 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 {...gridProps}
                 allowAdd={false}
                 allowRemove={false}
-                editorModel={editorModels}
+                editorModel={editableGridModels.editorModels}
                 forUpdate
                 getTabHeader={_getTabHeader}
-                model={dataModels}
+                model={editableGridModels.dataModels}
                 onChange={onGridChange}
                 readOnlyColumns={readOnlyColumns}
             />
@@ -336,9 +322,9 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 isFinishedText="Finished Updating"
                 finishText={
                     'Finish Updating ' +
-                    dataModels[0].orderedRows.length +
+                    editableGridModels.dataModels[0].orderedRows.length +
                     ' ' +
-                    (dataModels[0].orderedRows.length === 1
+                    (editableGridModels.dataModels[0].orderedRows.length === 1
                         ? capitalizeFirstChar(singularNoun ?? DEFAULT_SINGULAR_NOUN)
                         : capitalizeFirstChar(pluralNoun ?? DEFAULT_PLURAL_NOUN))
                 }

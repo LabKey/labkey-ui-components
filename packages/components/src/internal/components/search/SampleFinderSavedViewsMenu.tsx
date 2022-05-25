@@ -71,9 +71,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
             <DropdownButton id="samplefinder-savedsearch-menu" title={menuTitle} className="button-right-spacing">
                 {sessionViewName && (
                     <>
-                        <MenuItem className="submenu-header" header>
-                            Most Recent Search
-                        </MenuItem>
+                        <MenuItem header>Most Recent Search</MenuItem>
                         <MenuItem onClick={onLoadSessionSearch}>{sessionViewName}</MenuItem>
 
                         <MenuItem divider />
@@ -91,11 +89,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                         })}
                     </>
                 )}
-                {savedSearches?.length === 0 && (
-                    <MenuItem className="submenu-header" header>
-                        No Saved Search
-                    </MenuItem>
-                )}
+                {savedSearches?.length === 0 && <MenuItem header>No Saved Search</MenuItem>}
                 <MenuItem divider />
                 <MenuItem onClick={manageSearches} disabled={!hasSavedView}>
                     Manage saved searches

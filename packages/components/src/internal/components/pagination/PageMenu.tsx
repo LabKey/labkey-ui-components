@@ -55,7 +55,9 @@ export class PageMenu extends PureComponent<Props> {
                     <MenuItem disabled={disabled || isLastPage} onClick={this.loadLastPage}>
                         Last Page
                     </MenuItem>
-                    <MenuItem header>{disabled ? '...' : `${pageCount} Total Pages`}</MenuItem>
+                    <MenuItem header className="submenu-footer">
+                        {disabled ? '...' : `${pageCount} Total Pages`}
+                    </MenuItem>
                     {showPageSizeMenu && (
                         <>
                             <MenuItem divider />

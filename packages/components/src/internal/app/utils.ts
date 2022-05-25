@@ -224,7 +224,10 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
 }
 
 export function isELNEnabledInLKSM(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_LKSM_ELN] === true;
+    return (
+        hasModule('LabBook', moduleContext) &&
+        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_LKSM_ELN] === true
+    );
 }
 
 export function isRequestsEnabled(moduleContext?: any): boolean {

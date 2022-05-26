@@ -514,8 +514,7 @@ export function getGroupedSampleDisplayColumns(
     allDisplayColumns: QueryColumn[],
     allUpdateColumns: QueryColumn[],
     sampleTypeDomainFields: GroupedSampleFields,
-    isAliquot: boolean,
-    disableNameEdit: boolean
+    isAliquot: boolean
 ): GroupedSampleDisplayColumns {
     const editColumns = [];
     const displayColumns = [];
@@ -541,9 +540,6 @@ export function getGroupedSampleDisplayColumns(
 
     allUpdateColumns.forEach(col => {
         const colName = col.name.toLowerCase();
-        if (disableNameEdit && colName === 'name')
-            return;
-
         if (isAliquot) {
             if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
                 editColumns.push(col);

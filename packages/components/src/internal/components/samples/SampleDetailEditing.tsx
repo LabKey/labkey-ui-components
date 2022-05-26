@@ -33,7 +33,6 @@ import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from 
 interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
     sampleSet: string;
-    disableNameEdit?: boolean;
 }
 
 interface State {
@@ -95,10 +94,9 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     getUpdateDisplayColumns = (isAliquot: boolean): GroupedSampleDisplayColumns => {
         const {
             model: { detailColumns, updateColumns },
-            disableNameEdit
         } = this.props;
         const { sampleTypeDomainFields } = this.state;
-        return getGroupedSampleDisplayColumns(detailColumns, updateColumns, sampleTypeDomainFields, isAliquot, disableNameEdit);
+        return getGroupedSampleDisplayColumns(detailColumns, updateColumns, sampleTypeDomainFields, isAliquot);
     };
 
     getAliquotRootSampleQueryConfig = (): QueryConfig => {

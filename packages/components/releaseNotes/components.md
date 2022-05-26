@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XX May 2022
 * Item 10201: Sample renaming
   * Remove "Name" field from SampleBulkUpdateForm
+  * Enable "Name" edit for aliquot details panel
 
 ### version 2.175.0
 *Released*: 26 May 2022

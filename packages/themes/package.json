@@ -7,9 +7,9 @@
   ],
   "scripts": {
     "setup": "yarn install --frozen-lockfile",
-    "build": "nps build",
-    "clean": "nps clean",
-    "cleanAll": "nps cleanAll",
+    "build": "npm run clean && node src/buildThemes.js",
+    "clean": "rimraf dist",
+    "cleanAll": "rimraf dist && rimraf node_modules",
     "prepublishOnly": "yarn build"
   },
   "repository": {
@@ -27,22 +27,15 @@
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {},
   "devDependencies": {
-    "bootstrap-sass": "3.4.1",
-    "css-loader": "4.3.0",
-    "file-loader": "6.1.1",
+    "bootstrap-sass": "3.4.3",
+    "css-loader": "6.7.1",
     "font-awesome": "4.7.0",
-    "mini-css-extract-plugin": "0.11.3",
-    "node-sass": "4.14.1",
-    "nps": "5.10.0",
-    "nps-utils": "1.7.0",
-    "optimize-css-assets-webpack-plugin": "5.0.8",
-    "postcss-loader": "3.0.0",
-    "resolve-url-loader": "3.1.4",
+    "mini-css-extract-plugin": "2.6.0",
+    "resolve-url-loader": "5.0.0",
     "rimraf": "3.0.2",
-    "sass-loader": "10.0.5",
-    "uglifyjs-webpack-plugin": "2.2.0",
-    "url-loader": "4.1.1",
-    "webpack": "4.44.2",
-    "webpack-cli": "3.3.12"
+    "sass": "1.52.1",
+    "sass-loader": "13.0.0",
+    "webpack": "5.72.1",
+    "webpack-cli": "4.9.2"
   }
 }

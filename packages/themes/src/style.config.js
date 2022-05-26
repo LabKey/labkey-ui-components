@@ -1,17 +1,38 @@
 /*
- * Copyright (c) 2017-2020 LabKey Corporation
+ * Copyright (c) 2017-2022 LabKey Corporation
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const baseJsDir = './styles/js/';
 const styleJs = baseJsDir + 'style.js';
 const ext4Js = baseJsDir + 'ext4.js';
 const ext3Js = baseJsDir + 'ext3.js';
+
+function sassLoaders(cssLoaderUrl) {
+    return [
+        MiniCssExtractPlugin.loader,
+        {
+            loader: 'css-loader',
+            options: {
+                url: cssLoaderUrl,
+            }
+        },
+        {
+            loader: 'resolve-url-loader',
+        },
+        {
+            loader: 'sass-loader',
+            options: {
+                implementation: require('sass'),
+                // "sourceMap" must be set to true when resolve-url-loader is used downstream
+                sourceMap: true,
+            }
+        }
+    ];
+}
 
 module.exports = function(env) {
     const entry = {};
@@ -35,11 +56,7 @@ module.exports = function(env) {
 
         devtool: false,
 
-        performance: {
-            hints: false
-        },
-
-        entry: entry,
+        entry,
 
         output: {
             path: path.resolve(__dirname, '../dist'),
@@ -59,81 +76,40 @@ module.exports = function(env) {
             jQuery: 'jQuery'
         },
 
-        optimization: {
-            minimizer: [
-                new UglifyJsPlugin({
-                    cache: false,
-                    parallel: true,
-                    sourceMap: false,
-                }),
-                new OptimizeCSSAssetsPlugin({})
-            ],
-        },
-
         module: {
             rules: [
                 {
                     // labkey scss
-                    test: /\.scss$/,
-                    use: [
-                        MiniCssExtractPlugin.loader,
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                sourceMap: false,
-                                url: false
-                                // TODO: Consider passing a function and only processing font awesome relative URLs
-                                // This wasn't working as expected with css-loader
-                                // see https://github.com/webpack-contrib/css-loader#url
-                            }
-                        },
-                        {
-                            loader: 'postcss-loader'
-                        },
-                        {
-                            loader: 'sass-loader',
-                            options: {
-                                sourceMap: false
-                            }
-                        }
-                    ],
-                    exclude: [/node_modules/]
+                    test: /\.s[ac]ss$/i,
+                    exclude: [/node_modules/],
+                    use: sassLoaders(false),
                 },
                 {
-                    // Duplicate configuration with alternate css-loader "url" property set
-                    // See https://github.com/webpack/webpack/issues/5433#issuecomment-357489401
-                    // labkey scss
-                    test: /\.scss$/,
-                    use: [
-                        MiniCssExtractPlugin.loader,
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                sourceMap: false,
-                                url: true
-                            }
-                        },
-                        {
-                            loader: 'postcss-loader'
-                        },
-                        {
-                            loader: 'sass-loader',
-                            options: {
-                                sourceMap: false
-                            }
-                        }
-                    ],
-                    include: [/node_modules/]
+                    // node_modules scss
+                    test: /\.s[ac]ss$/i,
+                    include: [/node_modules/],
+                    use: sassLoaders(true),
                 },
                 {
-                    test: /\.(png|jpg|gif)$/,
-                    loader: 'url-loader?limit=25000'
+                    test: /\.(woff|woff2)$/,
+                    type: 'asset',
                 },
-                { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-                { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-                { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
-                { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
-                { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
+                {
+                    test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                    type: 'asset',
+                },
+                {
+                    test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                    type: 'asset/resource',
+                },
+                {
+                    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                    type: 'asset',
+                },
+                {
+                    test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
+                    type: 'asset',
+                }
             ]
         }
     }

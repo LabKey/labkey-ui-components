@@ -51,8 +51,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const allowColSort = handleSort && col?.sortable;
     const allowColFilter = handleFilter && col?.filterable;
-    const allowCustomizeGrid = handleHideColumn && model && isCustomizeViewsInAppEnabled();
-    const includeDropdown = allowColSort || allowColFilter || allowCustomizeGrid;
+    const allowColumnViewChange = handleHideColumn && model && isCustomizeViewsInAppEnabled() && !col.addToDisplayView;
+    const includeDropdown = allowColSort || allowColFilter || allowColumnViewChange;
 
     const onToggleClick = useCallback(
         (shouldOpen: boolean, evt?: any) => {
@@ -219,7 +219,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                     )}
                                 </>
                             )}
-                            {allowCustomizeGrid && (
+                            {allowColumnViewChange && (
                                 <>
                                     {(allowColSort || allowColFilter) && <MenuItem divider />}
                                     <MenuItem onClick={() => _handleHideColumn()}>

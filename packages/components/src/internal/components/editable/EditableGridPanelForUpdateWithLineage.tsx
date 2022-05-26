@@ -129,24 +129,27 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         }
     }, [loaders, editableGridModels]);
 
-    const onGridChange = (
-        editorModelChanges: Partial<EditorModelProps>,
-        dataKeys?: List<any>,
-        data?: Map<string, Map<string, any>>,
-        index?: number
-    ): void => {
-        setEditableGridModels(_models => {
-            return applyEditableGridChangesToModels(
-                _models.dataModels,
-                _models.editorModels,
-                editorModelChanges,
-                undefined,
-                dataKeys,
-                data,
-                index ?? 0
-            )
-        })
-    }
+    const onGridChange = useCallback(
+        (
+            editorModelChanges: Partial<EditorModelProps>,
+            dataKeys?: List<any>,
+            data?: Map<string, Map<string, any>>,
+            index?: number
+        ): void => {
+            setEditableGridModels(_models =>
+                applyEditableGridChangesToModels(
+                    _models.dataModels,
+                    _models.editorModels,
+                    editorModelChanges,
+                    undefined,
+                    dataKeys,
+                    data,
+                    index ?? 0
+                )
+            );
+        },
+        []
+    );
 
     const onSubmit = useCallback((): void => {
         const gridDataAllTabs = [];

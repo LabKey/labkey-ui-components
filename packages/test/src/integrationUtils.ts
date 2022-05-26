@@ -172,8 +172,13 @@ const createUser = async (ctx: ServerContext, email: string, password: string): 
         sendEmail: false,
     }).expect(successfulResponse);
 
+    const { users, htmlErrors } = createUserResponse.body;
+
+    if (htmlErrors?.length > 0) {
+        throw new Error(`Failed to create user. ${htmlErrors.join(' ')}`);
+    }
+
     // Expect to create only one user
-    const { users } = createUserResponse.body;
     if (users.length !== 1) {
         throw new Error(`Failed to create user. Unexpected number of users returned after creating account for "${email}".`);
     }

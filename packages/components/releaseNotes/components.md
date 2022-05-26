@@ -8,6 +8,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add header action for hiding a column and saving a new session view
   * Add buttons for reverting session grid customization in panel header
 
+### version 2.175.0
+*Released*: 26 May 2022
+* Item 10394: Updates for incorporating ELN in LKSM
+  * Experimental feature to toggle inclusion of ELN menu section and routes in LKSM
+  * LKSM menu update to add Notebooks section config
+  * URLResolver update for handling notebooks in search result hits
+  * Refactor Setting.tsx component from LKB to ui-components
+
 ### version 2.174.1
 *Released*: 24 May 2022
 * Apply MenuItem "submenu-header" class to applicable grid menu headers

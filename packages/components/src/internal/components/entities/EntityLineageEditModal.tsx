@@ -247,7 +247,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                                 "Manage" menu.
                             </p>
                         </div>
-                        {(numAliquots > 0 || statusData.notAllowed.length > 0) && !submitting && (
+                        {(numAliquots > 0 || statusData.notAllowed.length > 0) && (
                             <Alert bsStyle="warning" className="has-aliquots-alert">
                                 {aliquotsMsg}
                                 {isSampleEntity(childEntityDataType)
@@ -258,22 +258,20 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                         <Alert bsStyle="danger">{errorMessage}</Alert>
 
                         <Progress modal={false} estimate={numAllowed * 10} toggle={submitting} />
-                        {!submitting && (
-                            <ParentEntityEditPanel
-                                auditBehavior={auditBehavior}
-                                canUpdate={true}
-                                childSchemaQuery={queryModel.schemaQuery}
-                                parentDataTypes={parentEntityDataTypes}
-                                childNounSingular={childEntityDataType.nounSingular}
-                                key={`parent${parentNounPlural}-${queryModel.id}`}
-                                onUpdate={onConfirm}
-                                editOnly
-                                hideButtons
-                                submitText={'Update ' + parentNounPlural}
-                                includePanelHeader={false}
-                                onChangeParent={onParentChange}
-                            />
-                        )}
+                        <ParentEntityEditPanel
+                            auditBehavior={auditBehavior}
+                            canUpdate={true}
+                            childSchemaQuery={queryModel.schemaQuery}
+                            parentDataTypes={parentEntityDataTypes}
+                            childNounSingular={childEntityDataType.nounSingular}
+                            key={`parent${parentNounPlural}-${queryModel.id}`}
+                            onUpdate={onConfirm}
+                            editOnly
+                            hideButtons
+                            submitText={'Update ' + parentNounPlural}
+                            includePanelHeader={false}
+                            onChangeParent={onParentChange}
+                        />
                     </>
                 )}
             </Modal.Body>

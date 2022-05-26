@@ -269,11 +269,11 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     } else {
         view = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
     }
-    const isEdited = view?.session;
+    const isEdited = view?.session && !view.hidden;
     const showSave = allowViewCustomization && isEdited && view?.savable;
     const showRevert = allowViewCustomization && isEdited && view?.revertable;
 
-    if (!displayTitle && !showSave && !isEdited) {
+    if (!displayTitle && !isEdited) {
         return null;
     }
 

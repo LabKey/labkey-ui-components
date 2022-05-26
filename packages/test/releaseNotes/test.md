@@ -1,6 +1,10 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.1.1
+*Released*: 26 May 2022
+* handle htmlErrors response from CreateNewUsersAction
+
 ### version 1.1.0
 *Released*: 24 March 2022
 * support JSESSIONID cookie for same session requests

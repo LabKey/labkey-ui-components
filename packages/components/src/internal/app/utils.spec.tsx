@@ -40,10 +40,13 @@ import {
     userCanDesignLocations,
     userCanDesignSourceTypes,
     userCanEditStorageData,
+    isELNEnabledInLKSM,
 } from './utils';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_LKSM_ELN,
+    EXPERIMENTAL_REQUESTS_MENU,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     MEDIA_KEY,
@@ -82,7 +85,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([3, 'workflow'])).toBeTruthy();
         expect(configs.getIn([3, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
 
-        expect(configs.hasIn([3, 'user'])).toBeTruthy();
+        expect(configs.hasIn([3, 'user'])).toBeFalsy();
     });
 
     test('freezerManager enabled', () => {
@@ -130,7 +133,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
         expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
 
-        expect(configs.hasIn([4, 'user'])).toBeTruthy();
+        expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
     test('SM and FM enabled, FM current app', () => {
@@ -167,7 +170,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
         expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/workflow');
 
-        expect(configs.hasIn([4, 'user'])).toBeTruthy();
+        expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
     test('SM and FM enabled, SM current app, storage editor', () => {
@@ -194,7 +197,7 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([2, 'workflow'])).toBeTruthy();
         expect(configs.getIn([2, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
 
-        expect(configs.hasIn([2, 'user'])).toBeTruthy();
+        expect(configs.hasIn([2, 'user'])).toBeFalsy();
     });
 });
 
@@ -240,6 +243,19 @@ describe('utils', () => {
         expect(userCanEditStorageData(TEST_USER_APP_ADMIN)).toBeFalsy();
         expect(userCanEditStorageData(TEST_USER_STORAGE_DESIGNER)).toBeFalsy();
         expect(userCanEditStorageData(TEST_USER_STORAGE_EDITOR)).toBeTruthy();
+    });
+
+    test('isELNEnabledInLKSM', () => {
+        LABKEY.moduleContext = {
+            api: { moduleNames: [] },
+            samplemanagement: { [EXPERIMENTAL_LKSM_ELN]: true },
+        };
+        expect(isELNEnabledInLKSM()).toBeFalsy();
+        LABKEY.moduleContext = {
+            api: { moduleNames: ['labbook'] },
+            samplemanagement: { [EXPERIMENTAL_LKSM_ELN]: true },
+        };
+        expect(isELNEnabledInLKSM()).toBeTruthy();
     });
 
     test('isSampleManagerEnabled', () => {
@@ -767,8 +783,9 @@ describe('getMenuSectionConfigs', () => {
             }
         );
         const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+            api: { moduleNames: ['labbook'] },
             inventory: {},
-            samplemanagement: {},
+            samplemanagement: { [EXPERIMENTAL_LKSM_ELN]: true },
         });
         expect(configs.size).toBe(5);
         expect(configs.getIn([0, SOURCES_KEY])).toBeDefined();
@@ -776,7 +793,30 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
         expect(configs.getIn([3, FREEZERS_KEY])).toBeDefined();
         expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([4, USER_KEY])).toBeDefined();
+        expect(configs.getIn([4, NOTEBOOKS_KEY])).toBeDefined();
+        expect(configs.getIn([4, USER_KEY])).toBeUndefined();
+    });
+
+    test('Sample Manager, without ELN', () => {
+        window.location = Object.assign(
+            { ...location },
+            {
+                pathname: 'labkey/Samples/sampleManager-app.view#',
+            }
+        );
+        const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+            api: { moduleNames: [] },
+            inventory: {},
+            samplemanagement: { [EXPERIMENTAL_LKSM_ELN]: true },
+        });
+        expect(configs.size).toBe(5);
+        expect(configs.getIn([0, SOURCES_KEY])).toBeDefined();
+        expect(configs.getIn([1, SAMPLES_KEY])).toBeDefined();
+        expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
+        expect(configs.getIn([3, FREEZERS_KEY])).toBeDefined();
+        expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
+        expect(configs.getIn([4, NOTEBOOKS_KEY])).toBeUndefined();
+        expect(configs.getIn([4, USER_KEY])).toBeUndefined();
     });
 
     test('Biologics primary, in Sample Manager', () => {
@@ -787,8 +827,9 @@ describe('getMenuSectionConfigs', () => {
             }
         );
         const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
+            api: { moduleNames: ['labbook'] },
             inventory: {},
-            samplemanagement: {},
+            samplemanagement: { [EXPERIMENTAL_LKSM_ELN]: true },
             biologics: {},
         });
         expect(configs.size).toBe(5);
@@ -797,7 +838,8 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
         expect(configs.getIn([3, FREEZERS_KEY])).toBeDefined();
         expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([4, USER_KEY])).toBeDefined();
+        expect(configs.getIn([4, NOTEBOOKS_KEY])).toBeDefined();
+        expect(configs.getIn([4, USER_KEY])).toBeUndefined();
     });
 
     test('Biologics', () => {
@@ -832,7 +874,7 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             inventory: {},
             samplemanagement: {},
-            biologics: { 'experimental-biologics-requests-menu': true },
+            biologics: { [EXPERIMENTAL_REQUESTS_MENU]: true },
         });
         expect(configs.size).toBe(5);
         expect(configs.getIn([0, REGISTRY_KEY])).toBeDefined();

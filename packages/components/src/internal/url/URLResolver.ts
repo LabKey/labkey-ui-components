@@ -668,6 +668,8 @@ export class URLResolver {
                         return row.set('url', this.mapURL({ url, row, column }));
                     } else if (url.indexOf('samplemanager-downloadAttachments') >= 0) {
                         return row.set('url', this.mapURL({ url, row, column }));
+                    } else if (url.indexOf('notebook') >= 0) {
+                        return row.set('url', this.mapURL({ url, row, column }));
                     }
                 }
                 return row;

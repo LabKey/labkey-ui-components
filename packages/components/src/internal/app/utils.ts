@@ -19,6 +19,7 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_LKSM_ELN,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     EXPERIMENTAL_SAMPLE_FINDER,
@@ -222,6 +223,13 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
     }
 }
 
+export function isELNEnabledInLKSM(moduleContext?: any): boolean {
+    return (
+        hasModule('LabBook', moduleContext) &&
+        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_LKSM_ELN] === true
+    );
+}
+
 export function isRequestsEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
 }
@@ -372,7 +380,7 @@ function getWorkflowSectionConfig(appBase: string): MenuSectionConfig {
 
 function getNotebooksSectionConfig(appBase: string): MenuSectionConfig {
     return new MenuSectionConfig({
-        iconURL: imageURL('biologics/images', 'notebook_blue.svg'),
+        iconURL: imageURL('labbook/images', 'notebook_blue.svg'),
         seeAllURL: appBase + AppURL.create(NOTEBOOKS_KEY).toHref(),
     });
 }
@@ -459,12 +467,12 @@ export function getMenuSectionConfigs(
         if (storageConfig) {
             sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
         }
-        sectionConfigs = sectionConfigs.push(
-            Map({
-                [WORKFLOW_KEY]: workflowConfig,
-                [USER_KEY]: USER_SECTION_CONFIG,
-            })
-        );
+
+        let configs = Map({ [WORKFLOW_KEY]: workflowConfig });
+        if (userCanReadNotebooks(user) && isELNEnabledInLKSM(moduleContext)) {
+            configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
+        }
+        sectionConfigs = sectionConfigs.push(configs);
     } else if (isBioPrimary) {
         if (isRequestsEnabled(moduleContext)) {
             // When "Requests" are enabled render as two columns

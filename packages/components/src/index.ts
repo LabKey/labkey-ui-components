@@ -151,6 +151,7 @@ import { ResponsiveMenuButtonGroup } from './internal/components/buttons/Respons
 import { getMenuItemsForSection, getMenuItemForSectionKey } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
+import { Setting } from './internal/components/base/Setting';
 
 import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal/models';
 import {
@@ -612,6 +613,7 @@ import {
     hasModule,
     hasPremiumModule,
     isBiologicsEnabled,
+    isELNEnabledInLKSM,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
     isProjectContainer,
@@ -722,6 +724,7 @@ const App = {
     ServerNotificationReducers,
     CloseEventCode,
     registerWebSocketListeners,
+    isELNEnabledInLKSM,
     isFreezerManagementEnabled,
     isRequestsEnabled,
     isSampleManagerEnabled,
@@ -1358,6 +1361,7 @@ export {
     ExpandableFilterToggle,
     SelectView,
     SelectViewInput,
+    Setting,
     // base models, enums, constants
     Container,
     User,

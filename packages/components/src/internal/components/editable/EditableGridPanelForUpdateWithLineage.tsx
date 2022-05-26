@@ -93,7 +93,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         const dataModels = [];
         const editorModels = [];
         loaders.forEach(loader => {
-            dataModels.push(new QueryModel({ id: loader.id, schemaQuery: props.queryModel.schemaQuery }));
+            dataModels.push(new QueryModel({ id: loader.id, schemaQuery: queryModel.schemaQuery }));
             editorModels.push(new EditorModel({ id: loader.id }));
         });
 
@@ -107,7 +107,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 }, {})
             )
         );
-    }, [loaders, parentDataTypes]);
+    }, [loaders, parentDataTypes, queryModel.schemaQuery]);
 
     useEffect(() => {
         const initEditorModel = async (): Promise<{
@@ -127,7 +127,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 })
             })
         }
-    }, [loaders, editableGridModels]);
+    }, [loaders, queryModel, editableGridModels]);
 
     const onGridChange = useCallback(
         (
@@ -179,7 +179,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             setIsSubmitting(false);
             onComplete();
         }
-    }, [editableGridModels, onComplete]);
+    }, [editableGridModels, idField, onComplete, readOnlyColumns, selectionData, updateAllTabRows]);
 
     const getCurrentTab = useCallback(
         (tabInd: number): number => {

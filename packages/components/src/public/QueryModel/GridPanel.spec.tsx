@@ -14,6 +14,8 @@ import { ActionValue } from './grid/actions/Action';
 import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';
 import { makeTestActions, makeTestQueryModel } from './testUtils';
+import { GridTitle } from './GridPanel';
+import renderer from 'react-test-renderer';
 
 // The wrapper's return type for mount<GridPanel>(<GridPanel ... />)
 type GridPanelWrapper = ReactWrapper<Readonly<GridPanel['props']>, Readonly<GridPanel['state']>, GridPanel>;
@@ -67,6 +69,14 @@ describe('GridPanel', () => {
         expect(wrapper.find('.grid-panel').hasClass('panel-default')).toEqual(classesExist);
     };
 
+    const expectGridTitle = (wrapper: GridPanelWrapper, visible?: boolean, title?: string): void => {
+        const gridTitle = wrapper.find(GridTitle);
+        expect(gridTitle).toHaveLength(visible ? 1 : 0);
+        if (title && visible) {
+            expect(gridTitle.prop("title")).toBe(title);
+        }
+    }
+
     const expectPaginationVisible = (wrapper: GridPanelWrapper, visible: boolean): void => {
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).first().exists()).toEqual(visible);
         expect(wrapper.find(PAGINATION_SELECTOR).first().exists()).toEqual(visible);
@@ -112,6 +122,11 @@ describe('GridPanel', () => {
         wrapper.setProps({ model });
         expectNoRows(wrapper);
         expectChartMenuVisible(wrapper, false);
+        expectGridTitle(wrapper, true);
+        wrapper.setProps({ title: "Test title" });
+        expectGridTitle(wrapper, true, 'Test title');
+        wrapper.setProps({ hasHeader: true, title: "Test title" });
+        expectGridTitle(wrapper, false);
 
         // Loaded rows and QueryInfo. Should render grid, pagination, ViewMenu, ChartMenu
         model = model.mutate({
@@ -403,4 +418,193 @@ describe('GridPanel', () => {
         testSelectAll(wrapper);
         testClearAll(wrapper);
     });
+});
+
+describe("GridTitle", () => {
+    const actions = makeTestActions(jest.fn);
+    const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO);
+    const testTitle = "Test title";
+
+    function validate(wrapper: ReactWrapper, expectedTitle: string, isEdited: boolean, allowCustomization: boolean): void {
+        expect(wrapper.text()).toContain(expectedTitle);
+        if (isEdited) {
+            const editedTag = wrapper.find('.view-edit-alert');
+            expect(editedTag.exists()).toBe(true);
+            expect(editedTag.text()).toBe("Edited");
+            const buttons = wrapper.find('button');
+            expect(buttons).toHaveLength(allowCustomization ? 1 : 0);
+        }
+    }
+
+    test ("no title, no view", () => {
+        const tree = renderer.create(
+            <GridTitle model={model} actions={actions} allowSelections={true} allowViewCustomization={false}/>
+        ).toJSON();
+        expect(tree).toBeNull();
+    });
+
+    test("title, no view", () => {
+        const wrapper = mount(
+            <GridTitle
+                title={testTitle}
+                model={model}
+                actions={actions}
+                allowSelections={true}
+                allowViewCustomization={false}
+            />
+        );
+        validate(wrapper, testTitle, false, false);
+        wrapper.unmount();
+    });
+
+    test("view, no title", () => {
+        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', "noExtraColumn");
+        const modelWithView = makeTestQueryModel(viewSchemaQuery, QUERY_INFO);
+        const wrapper = mount(
+            <GridTitle
+                model={modelWithView}
+                actions={actions}
+                allowSelections={true}
+                allowViewCustomization={false}
+            />
+        );
+        validate(wrapper, "No Extra Column", false, false);
+        wrapper.unmount();
+    });
+
+    test("title and view", () => {
+        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', "noExtraColumn");
+        const modelWithView = makeTestQueryModel(viewSchemaQuery, QUERY_INFO);
+        const wrapper = mount(
+            <GridTitle
+                title={testTitle}
+                model={modelWithView}
+                actions={actions}
+                allowSelections={true}
+                allowViewCustomization={false}
+            />
+        );
+        validate(wrapper, testTitle + " - No Extra Column", false, false);
+        wrapper.unmount();
+    });
+
+    test("updated default view, with title", () => {
+        const sessionQueryInfo = QUERY_INFO
+            .setIn(['views', '~~default~~', 'session'], true)
+            .setIn(['views', '~~default~~', 'revertable'], true) as QueryInfo;
+        const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
+        const wrapper = mount(
+            <GridTitle
+                title={testTitle}
+                model={model}
+                actions={actions}
+                allowSelections={true}
+                allowViewCustomization={true}
+            />
+        );
+        validate(wrapper, testTitle, true, true);
+        wrapper.unmount();
+    });
+
+    test("updated default view, with title, not customizable", () => {
+
+        const sessionQueryInfo = QUERY_INFO
+            .setIn(['views', '~~default~~', 'session'], true)
+            .setIn(['views', '~~default~~', 'revertable'], true) as QueryInfo;
+        const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
+
+        const wrapper = mount(
+            <GridTitle
+                title={testTitle}
+                model={model}
+                actions={actions}
+                allowSelections={true}
+                allowViewCustomization={false}
+            />
+        );
+        validate(wrapper, testTitle, true, false);
+        wrapper.unmount();
+    });
+
+    test("updated named view, no title, customizable", () => {
+        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', "noExtraColumn");
+        const sessionQueryInfo = QUERY_INFO
+            .setIn(['views', 'noextracolumn', 'session'], true)
+            .setIn(['views', 'noextracolumn', 'revertable'], true) as QueryInfo;
+        const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
+        const wrapper = mount(
+            <GridTitle
+                model={model}
+                actions={actions}
+                allowSelections={true}
+                allowViewCustomization={true}
+            />
+        );
+        validate(wrapper, "No Extra Column", true, true);
+        wrapper.unmount();
+    });
+
+    test("updated named view with title", () => {
+        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', "noExtraColumn");
+        const sessionQueryInfo = QUERY_INFO
+            .setIn(['views', 'noextracolumn', 'session'], true)
+            .setIn(['views', 'noextracolumn', 'revertable'], true) as QueryInfo;
+        const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
+        const wrapper = mount(
+            <GridTitle
+                title={testTitle}
+                model={model}
+                actions={actions}
+                allowSelections={true}
+                allowViewCustomization={true}
+            />
+        );
+        validate(wrapper, testTitle + " - No Extra Column", true, true);
+        wrapper.unmount();
+    });
+
+    test("hidden view, edited", () => {
+        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', "noExtraColumn");
+        const sessionQueryInfo = QUERY_INFO
+            .setIn(['views', 'noextracolumn', 'session'], true)
+            .setIn(['views', 'noextracolumn', 'revertable'], true)
+            .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
+        const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
+        const wrapper = mount(
+            <GridTitle
+                title={testTitle}
+                model={model}
+                actions={actions}
+                allowSelections={true}
+                allowViewCustomization={true}
+            />
+        );
+        validate(wrapper, testTitle, false, false);
+        wrapper.unmount();
+    });
+
+    test("hidden view, edited, no title", () => {
+        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', "noExtraColumn");
+        const sessionQueryInfo = QUERY_INFO
+            .setIn(['views', 'noextracolumn', 'session'], true)
+            .setIn(['views', 'noextracolumn', 'revertable'], true)
+            .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
+        const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
+        const tree = renderer.create(
+            <GridTitle model={model} actions={actions} allowSelections={true} allowViewCustomization={false}/>
+        ).toJSON();
+        expect(tree).toBeNull();
+    });
+
+    test("hidden view, not edited, no title", () => {
+        const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', "noExtraColumn");
+        const sessionQueryInfo = QUERY_INFO
+            .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
+        const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
+        const tree = renderer.create(
+            <GridTitle model={model} actions={actions} allowSelections={true} allowViewCustomization={false}/>
+        ).toJSON();
+        expect(tree).toBeNull();
+    });
+
 });

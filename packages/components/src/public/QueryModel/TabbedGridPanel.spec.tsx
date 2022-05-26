@@ -116,14 +116,14 @@ describe('TabbedGridPanel', () => {
             <TabbedGridPanel tabOrder={tabOrder} title={title} queryModels={queryModels} actions={actions} />
         );
 
-        // When asPanel is true we should render the title
+        // When asPanel is true, we use appropriate styling classes
         expect(wrapper.find('.tabbed-grid-panel.panel-default').exists()).toEqual(true);
-        expect(wrapper.find('.tabbed-grid-panel__title').text()).toEqual(title);
+        expect(wrapper.find('.tabbed-grid-panel.panel').exists()).toEqual(true);
 
-        // When asPanel is false we should not render the title
+        // When asPanel is false we don't use those classes
         wrapper.setProps({ asPanel: false });
         expect(wrapper.find('.tabbed-grid-panel.panel-default').exists()).toEqual(false);
-        expect(wrapper.find('.tabbed-grid-panel__title').exists()).toEqual(false);
+        expect(wrapper.find('.tabbed-grid-panel.panel').exists()).toEqual(false);
     });
 
     test('single model', () => {

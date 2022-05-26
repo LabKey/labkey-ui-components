@@ -122,6 +122,29 @@ describe('HeaderCellDropdown', () => {
         wrapper.unmount();
     });
 
+    test('column not sortable or filterable but customizable', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true
+            },
+        };
+        const wrapper = mount(
+            <HeaderCellDropdown
+                {...DEFAULT_PROPS}
+                column={
+                    new GridColumn({
+                        index: 'column',
+                        title: 'Column',
+                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: false }),
+                    })
+                }
+                handleHideColumn={jest.fn}
+            />
+        );
+        validate(wrapper, 0, 1);
+        wrapper.unmount();
+    });
+
     test('column sortable, not filterable', () => {
         const wrapper = mount(
             <HeaderCellDropdown
@@ -139,6 +162,29 @@ describe('HeaderCellDropdown', () => {
         wrapper.unmount();
     });
 
+    test('column sortable, not filterable, customizable', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true
+            },
+        };
+        const wrapper = mount(
+            <HeaderCellDropdown
+                {...DEFAULT_PROPS}
+                column={
+                    new GridColumn({
+                        index: 'column',
+                        title: 'Column',
+                        raw: QueryColumn.create({ fieldKey: 'column', sortable: true, filterable: false }),
+                    })
+                }
+                handleHideColumn={jest.fn}
+            />
+        );
+        validate(wrapper, 0, 5);
+        wrapper.unmount();
+    });
+
     test('column filterable, not sortable', () => {
         const wrapper = mount(
             <HeaderCellDropdown
@@ -153,6 +199,29 @@ describe('HeaderCellDropdown', () => {
             />
         );
         validate(wrapper, 0, 2);
+        wrapper.unmount();
+    });
+
+    test('column filterable, not sortable, but customizable', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true
+            },
+        };
+        const wrapper = mount(
+            <HeaderCellDropdown
+                {...DEFAULT_PROPS}
+                column={
+                    new GridColumn({
+                        index: 'column',
+                        title: 'Column',
+                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: true }),
+                    })
+                }
+                handleHideColumn={jest.fn}
+            />
+        );
+        validate(wrapper, 0, 4);
         wrapper.unmount();
     });
 
@@ -237,5 +306,9 @@ describe('HeaderCellDropdown', () => {
         expect(removeFilterItem.text()).toBe('  Remove filters');
         expect(removeFilterItem.prop('disabled')).toBe(false);
         wrapper.unmount();
+    });
+
+    test('can customize view', () => {
+
     });
 });

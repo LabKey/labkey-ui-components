@@ -2532,11 +2532,12 @@ export function saveSessionGridView(schemaQuery: SchemaQuery, columns: any, cont
     });
 }
 
-export function revertViewEdit(schemaQuery: SchemaQuery, containerPath: string) : Promise<void> {
+export function revertViewEdit(schemaQuery: SchemaQuery, containerPath: string, viewName?: string) : Promise<void> {
     return new Promise((resolve, reject) => {
         Query.deleteQueryView({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
+            viewName,
             containerPath,
             revert: true,
             success: () => {

@@ -278,7 +278,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }
 
     const _revertViewEdit = useCallback(async () => {
-        await revertViewEdit(model.schemaQuery, model.containerPath);
+        await revertViewEdit(model.schemaQuery, model.containerPath, model.viewName);
         await actions.loadModel(model.id, allowSelections);
         onRevertView?.();
     }, [view]);
@@ -359,22 +359,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     componentDidUpdate(prevProps: Readonly<Props<T>>): void {
         if (this.props.model.queryInfo !== undefined && this.props.model !== prevProps.model) {
             this.populateGridActions();
-        }
-    }
-
-    componentWillUnmount() {
-        // when we leave this page, remove the session view so the edited view doesn't show up unexpectedly on other pages.
-        const { containerPath, queryInfo, viewName, schemaQuery } = this.props.model;
-        let view;
-        if (viewName) {
-            view = queryInfo.views.get(viewName.toLowerCase());
-        } else {
-            view = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
-        }
-        if (view?.session) {
-            (async () => {
-                await revertViewEdit(schemaQuery, containerPath);
-            })();
         }
     }
 

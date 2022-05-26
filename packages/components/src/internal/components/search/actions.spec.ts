@@ -1,4 +1,10 @@
-import { getProcessedSearchHits, getSearchResultCardData } from './actions';
+import {
+    getProcessedSearchHits,
+    getSearchResultCardData,
+    resolveIconSrc,
+    resolveTypeName,
+    resolveIconDir,
+} from './actions';
 
 describe('getSearchResultCardData', () => {
     test('data class object', () => {
@@ -167,5 +173,57 @@ describe('getProcessedSearchHits', () => {
         filteredHits = getProcessedSearchHits(SEARCH_RESULTS, undefined, []);
         expect(filteredHits).toHaveLength(1);
         expect(filteredHits[0].title).toBe(SEARCH_RESULTS[5].title);
+    });
+});
+
+describe('resolveTypeName', () => {
+    test('data undefined', () => {
+        expect(resolveTypeName(undefined, undefined)).toBe(undefined);
+        expect(resolveTypeName(undefined, null)).toBe(undefined);
+        expect(resolveTypeName(undefined, 'test')).toBe(undefined);
+        expect(resolveTypeName(undefined, 'notebook')).toBe('Notebook');
+        expect(resolveTypeName(undefined, 'notebookTemplate')).toBe('Notebook Template');
+    });
+
+    test('data defined', () => {
+        expect(resolveTypeName({}, undefined)).toBe(undefined);
+        expect(resolveTypeName({ dataClass: { name: undefined } }, undefined)).toBe(undefined);
+        expect(resolveTypeName({ dataClass: { name: 'testDataClass' } }, undefined)).toBe('testDataClass');
+        expect(resolveTypeName({ sampleSet: { name: undefined } }, undefined)).toBe(undefined);
+        expect(resolveTypeName({ sampleSet: { name: 'testSampleSet' } }, undefined)).toBe('testSampleSet');
+        expect(resolveTypeName({ sampleSet: { name: 'testSampleSet' } }, 'notebook')).toBe('testSampleSet');
+        expect(resolveTypeName({ sampleSet: { name: undefined } }, 'notebook')).toBe('Notebook');
+    });
+});
+
+describe('resolveIconSrc', () => {
+    test('data undefined', () => {
+        expect(resolveIconSrc(undefined, undefined)).toBe('');
+        expect(resolveIconSrc(undefined, 'test')).toBe('');
+        expect(resolveIconSrc(undefined, 'material')).toBe('samples');
+        expect(resolveIconSrc(undefined, 'workflowJob')).toBe('workflow');
+        expect(resolveIconSrc(undefined, 'notebook')).toBe('notebook_blue');
+        expect(resolveIconSrc(undefined, 'notebookTemplate')).toBe('notebook_blue');
+    });
+
+    test('data defined', () => {
+        expect(resolveIconSrc({}, undefined)).toBe('');
+        expect(resolveIconSrc({ dataClass: { name: undefined } }, undefined)).toBe('');
+        expect(resolveIconSrc({ dataClass: { name: 'testDataClass' } }, undefined)).toBe('testdataclass');
+        expect(resolveIconSrc({ sampleSet: { name: undefined } }, undefined)).toBe('');
+        expect(resolveIconSrc({ sampleSet: { name: 'testSampleSet' } }, undefined)).toBe('samples');
+        expect(resolveIconSrc({ type: undefined }, undefined)).toBe('');
+        expect(resolveIconSrc({ type: 'sampleSet' }, undefined)).toBe('sample_set');
+        expect(resolveIconSrc({ type: 'dataClassTest' }, undefined)).toBe('default');
+        expect(resolveIconSrc({ type: 'test' }, undefined)).toBe('test');
+    });
+});
+
+describe('resolveIconDir', () => {
+    test('category', () => {
+        expect(resolveIconDir(undefined)).toBe(undefined);
+        expect(resolveIconDir('test')).toBe(undefined);
+        expect(resolveIconDir('notebook')).toBe('labbook/images');
+        expect(resolveIconDir('notebookTemplate')).toBe('labbook/images');
     });
 });

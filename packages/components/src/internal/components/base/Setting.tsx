@@ -19,8 +19,8 @@ const useSetting = (
     getUrl: string,
     setUrl: string,
     name: string,
-    enabledValue: any,
-    disabledValue: any
+    enabledValue: boolean | string | number,
+    disabledValue: boolean | string | number
 ): SettingState => {
     const [state, setState] = useState<Omit<SettingState, 'save'>>({
         error: undefined,

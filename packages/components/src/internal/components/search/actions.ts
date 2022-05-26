@@ -77,7 +77,8 @@ function parseSearchIdToData(idString): SearchIdData {
     return idData;
 }
 
-function resolveTypeName(data: any, category: string) {
+// exported for jest testing
+export function resolveTypeName(data: any, category: string) {
     let typeName;
     if (data) {
         if (data.dataClass?.name) {
@@ -96,7 +97,8 @@ function resolveTypeName(data: any, category: string) {
     return typeName;
 }
 
-function resolveIconSrc(data: any, category: string): string {
+// exported for jest testing
+export function resolveIconSrc(data: any, category: string): string {
     let iconSrc = '';
     if (data) {
         if (data.dataClass?.name) {
@@ -128,7 +130,8 @@ function resolveIconSrc(data: any, category: string): string {
     return iconSrc;
 }
 
-function resolveIconDir(category: string): string {
+// exported for jest testing
+export function resolveIconDir(category: string): string {
     let iconDir;
     if (category) {
         if (category === 'notebook' || category === 'notebookTemplate') {

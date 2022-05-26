@@ -11,29 +11,6 @@ const styleJs = baseJsDir + 'style.js';
 const ext4Js = baseJsDir + 'ext4.js';
 const ext3Js = baseJsDir + 'ext3.js';
 
-function sassLoaders(cssLoaderUrl) {
-    return [
-        MiniCssExtractPlugin.loader,
-        {
-            loader: 'css-loader',
-            options: {
-                url: cssLoaderUrl,
-            }
-        },
-        {
-            loader: 'resolve-url-loader',
-        },
-        {
-            loader: 'sass-loader',
-            options: {
-                implementation: require('sass'),
-                // "sourceMap" must be set to true when resolve-url-loader is used downstream
-                sourceMap: true,
-            }
-        }
-    ];
-}
-
 module.exports = function(env) {
     const entry = {};
     if (env && env.buildDependency) {
@@ -82,13 +59,43 @@ module.exports = function(env) {
                     // labkey scss
                     test: /\.s[ac]ss$/i,
                     exclude: [/node_modules/],
-                    use: sassLoaders(false),
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                url: false
+                            }
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                implementation: require('sass'),
+                            }
+                        }
+                    ],
                 },
                 {
                     // node_modules scss
                     test: /\.s[ac]ss$/i,
                     include: [/node_modules/],
-                    use: sassLoaders(true),
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        {
+                            loader: 'css-loader',
+                        },
+                        {
+                            loader: 'resolve-url-loader',
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                implementation: require('sass'),
+                                // "sourceMap" must be set to true when resolve-url-loader is used downstream
+                                sourceMap: true,
+                            }
+                        }
+                    ],
                 },
                 {
                     test: /\.(woff|woff2)$/,

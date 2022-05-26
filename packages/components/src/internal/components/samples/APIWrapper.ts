@@ -14,7 +14,7 @@ import {
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
     getFieldLookupFromSelection,
-    getSampleSelectionLineageData,
+    getSelectionLineageData,
     getSampleStatuses,
     getSampleStorageId,
     SampleAssayResultViewConfig,
@@ -27,9 +27,10 @@ export interface SamplesAPIWrapper {
 
     getSampleAssayResultViewConfigs: () => Promise<SampleAssayResultViewConfig[]>;
 
-    getSampleSelectionLineageData: (
+    getSelectionLineageData: (
         selection: List<any>,
-        sampleType: string,
+        schema: string,
+        query: string,
         columns?: string[]
     ) => Promise<ISelectRowsResult>;
 
@@ -56,7 +57,7 @@ export interface SamplesAPIWrapper {
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleAliquotRows = getSampleAliquotRows;
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
-    getSampleSelectionLineageData = getSampleSelectionLineageData;
+    getSelectionLineageData = getSelectionLineageData;
     getSampleStatuses = getSampleStatuses;
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
     getSampleStorageId = getSampleStorageId;
@@ -74,7 +75,7 @@ export function getSamplesTestAPIWrapper(
     return {
         getSampleAliquotRows: mockFn(),
         getSampleAssayResultViewConfigs: mockFn(),
-        getSampleSelectionLineageData: mockFn(),
+        getSelectionLineageData: mockFn(),
         getSampleStatuses: mockFn(),
         getSampleOperationConfirmationData: mockFn(),
         getSampleStorageId: mockFn(),

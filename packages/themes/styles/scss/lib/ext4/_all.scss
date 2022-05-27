@@ -9306,7 +9306,9 @@ a.x4-datepicker-date:hover {
 .x4-monthpicker-item-inner {
   margin: 0 5px 0 5px;
   color: #15428b;
-  border: 1px solid white;
+  border-color: white;
+  border-style: solid;
+  border-width: 1px;
   line-height: 16px;
   cursor: pointer;
 }
@@ -9319,7 +9321,8 @@ a.x4-monthpicker-item-inner:hover {
 /* line 258, ../../../ext-theme-neutral/sass/src/picker/Date.scss */
 .x4-monthpicker-selected {
   background-color: #dae5f3;
-  border: solid #8db2e3;
+  border-color: #8db2e3;
+  border-style: solid;
 }
 
 /* line 264, ../../../ext-theme-neutral/sass/src/picker/Date.scss */

@@ -27,7 +27,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       "nounAsParentSingular": "Parent",
       "nounPlural": "data",
       "nounSingular": "data",
-      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+      "operationConfirmationActionName": "getDataOperationConfirmationData.api",
       "typeListingSchemaQuery": Immutable.Record {
         "schemaName": "exp",
         "queryName": "DataClasses",
@@ -95,7 +95,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
-        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -177,7 +177,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
           "nounAsParentSingular": "Parent",
           "nounPlural": "data",
           "nounSingular": "data",
-          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "operationConfirmationActionName": "getDataOperationConfirmationData.api",
           "typeListingSchemaQuery": Immutable.Record {
             "schemaName": "exp",
             "queryName": "DataClasses",
@@ -273,7 +273,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
             "nounAsParentSingular": "Parent",
             "nounPlural": "data",
             "nounSingular": "data",
-            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "operationConfirmationActionName": "getDataOperationConfirmationData.api",
             "typeListingSchemaQuery": Immutable.Record {
               "schemaName": "exp",
               "queryName": "DataClasses",
@@ -5281,7 +5281,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       "nounAsParentSingular": "Parent",
       "nounPlural": "data",
       "nounSingular": "data",
-      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+      "operationConfirmationActionName": "getDataOperationConfirmationData.api",
       "typeListingSchemaQuery": Immutable.Record {
         "schemaName": "exp",
         "queryName": "DataClasses",
@@ -5349,7 +5349,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
-        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -5431,7 +5431,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
           "nounAsParentSingular": "Parent",
           "nounPlural": "data",
           "nounSingular": "data",
-          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "operationConfirmationActionName": "getDataOperationConfirmationData.api",
           "typeListingSchemaQuery": Immutable.Record {
             "schemaName": "exp",
             "queryName": "DataClasses",
@@ -5527,7 +5527,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
             "nounAsParentSingular": "Parent",
             "nounPlural": "data",
             "nounSingular": "data",
-            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "operationConfirmationActionName": "getDataOperationConfirmationData.api",
             "typeListingSchemaQuery": Immutable.Record {
               "schemaName": "exp",
               "queryName": "DataClasses",
@@ -5644,7 +5644,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       "nounAsParentSingular": "Parent",
       "nounPlural": "data",
       "nounSingular": "data",
-      "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+      "operationConfirmationActionName": "getDataOperationConfirmationData.api",
       "typeListingSchemaQuery": Immutable.Record {
         "schemaName": "exp",
         "queryName": "DataClasses",
@@ -5741,7 +5741,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         "nounAsParentSingular": "Parent",
         "nounPlural": "data",
         "nounSingular": "data",
-        "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "operationConfirmationActionName": "getDataOperationConfirmationData.api",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -5891,7 +5891,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "nounAsParentSingular": "Parent",
           "nounPlural": "data",
           "nounSingular": "data",
-          "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "operationConfirmationActionName": "getDataOperationConfirmationData.api",
           "typeListingSchemaQuery": Immutable.Record {
             "schemaName": "exp",
             "queryName": "DataClasses",
@@ -6055,7 +6055,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "nounAsParentSingular": "Parent",
             "nounPlural": "data",
             "nounSingular": "data",
-            "operationConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "operationConfirmationActionName": "getDataOperationConfirmationData.api",
             "typeListingSchemaQuery": Immutable.Record {
               "schemaName": "exp",
               "queryName": "DataClasses",

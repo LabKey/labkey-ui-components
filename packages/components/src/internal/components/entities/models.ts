@@ -542,11 +542,6 @@ export interface IEntityTypeDetails extends IEntityDetails {
     importAliasValues?: string[];
 }
 
-export enum EntityInsertPanelTabs {
-    First = 1,
-    Second = 2,
-}
-
 export interface EntityDataType {
     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
     listingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available

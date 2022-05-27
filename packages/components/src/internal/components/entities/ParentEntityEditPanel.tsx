@@ -26,7 +26,7 @@ import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 
 import { DELIMITER } from '../forms/input/SelectInput';
 
-import { getParentTypeDataForSample } from '../samples/actions';
+import { getParentTypeDataForLineage } from '../samples/actions';
 
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
@@ -125,7 +125,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         await Promise.all(
             parentDataTypes.map(async parentDataType => {
                 try {
-                    const typeData = await getParentTypeDataForSample(
+                    const typeData = await getParentTypeDataForLineage(
                         parentDataType,
                         childData ? [childData] : [],
                         childContainerPath
@@ -139,8 +139,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                             typeData.parentIdData
                         )
                     ) as List<EntityChoice>;
-                }
-                catch (reason) {
+                } catch (reason) {
                     console.error(reason);
                     this.setState({
                         error: getActionErrorMessage(
@@ -152,7 +151,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                 }
             })
         );
-
 
         this.setState({
             childData,

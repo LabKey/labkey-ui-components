@@ -31,7 +31,7 @@ import {
     IParentOption,
     OperationConfirmationData,
 } from './models';
-import { DataClassDataType, SampleTypeDataType } from './constants';
+import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
 import { isSampleEntity } from './utils';
 
 export function getOperationConfirmationData(
@@ -97,13 +97,6 @@ export function getSampleOperationConfirmationData(
     return getOperationConfirmationData(selectionKey, SampleTypeDataType, rowIds, {
         sampleOperation: SampleOperation[operation],
     });
-}
-
-export function getDataDeleteConfirmationData(
-    selectionKey: string,
-    rowIds?: string[] | number[]
-): Promise<OperationConfirmationData> {
-    return getDeleteConfirmationData(selectionKey, DataClassDataType, rowIds);
 }
 
 function getSelectedParents(
@@ -561,5 +554,22 @@ export function handleEntityFileImport(
                 console.error(error);
                 reject({ msg: error.exception });
             });
+    });
+}
+
+export function getDataDeleteConfirmationData(
+    selectionKey: string,
+    rowIds?: string[] | number[]
+): Promise<OperationConfirmationData> {
+    return getDataOperationConfirmationData(DataOperation.Delete, selectionKey, rowIds);
+}
+
+export function getDataOperationConfirmationData(
+    operation: DataOperation,
+    selectionKey: string,
+    rowIds?: string[] | number[]
+): Promise<OperationConfirmationData> {
+    return getOperationConfirmationData(selectionKey, DataClassDataType, rowIds, {
+        dataOperation: DataOperation[operation],
     });
 }

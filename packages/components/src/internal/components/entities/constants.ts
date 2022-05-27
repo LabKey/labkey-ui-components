@@ -10,8 +10,8 @@ import { SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from '../samples/constants
 
 import { EntityDataType } from './models';
 
-export const DATA_DELETE_CONFIRMATION_ACTION = 'getDataDeleteConfirmationData.api';
-export const SAMPLE_DELETE_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
+export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
+export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
 export const ENTITY_CREATION_METRIC = 'entityCreation';
 
 export const SampleTypeDataType: EntityDataType = {
@@ -19,7 +19,7 @@ export const SampleTypeDataType: EntityDataType = {
     listingSchemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
     instanceSchemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
     appUrlPrefixParts: ['samples'],
-    operationConfirmationActionName: SAMPLE_DELETE_CONFIRMATION_ACTION,
+    operationConfirmationActionName: SAMPLE_OPERATION_CONFIRMATION_ACTION,
     nounSingular: 'sample',
     nounPlural: 'samples',
     nounAsParentSingular: 'Parent',
@@ -45,7 +45,7 @@ export const DataClassDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
     listingSchemaQuery: SCHEMAS.EXP_TABLES.DATA,
     instanceSchemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
-    operationConfirmationActionName: DATA_DELETE_CONFIRMATION_ACTION,
+    operationConfirmationActionName: DATA_OPERATION_CONFIRMATION_ACTION,
     nounSingular: 'data',
     nounPlural: 'data',
     typeNounSingular: 'Data Type',
@@ -78,3 +78,8 @@ export const ParentEntityRequiredColumns = SCHEMAS.CBMB.concat(
     'RootMaterialLSID/Name',
     'RootMaterialLSID/Description'
 ).concat(ParentEntityLineageColumns);
+
+export enum DataOperation {
+    EditLineage,
+    Delete,
+}

@@ -8,6 +8,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add header action for hiding a column and saving a new session view
   * Add buttons for reverting session grid customization in panel header
 
+### version 2.176.0
+*Released*: 26 May 2022
+* Factor EditableGridPanelForUpdateWithLineage component out of SamplesEditableGridPanelForUpdate
+* Move some entity editable grid related functions to entities/utils
+* Various updates to handle Biologics lookups and MVFKs
+* Add EntityAPIWrapper for data operation confirm API
+* EntityLineageEditModal text and message updates for dataclasses
+* Move some lineage functions to samples/actions
+
 ### version 2.175.0
 *Released*: 26 May 2022
 * Item 10394: Updates for incorporating ELN in LKSM

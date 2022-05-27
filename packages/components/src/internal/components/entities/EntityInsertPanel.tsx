@@ -87,10 +87,11 @@ import { SampleStatusLegend } from '../samples/SampleStatusLegend';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { EditableGridPanelDeprecated } from '../editable/EditableGridPanelDeprecated';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
-    EntityInsertPanelTabs,
     EntityParentType,
     EntityTypeOption,
     IEntityTypeOption,
@@ -107,7 +108,6 @@ import {
     EntityParentTypeSelectors,
 } from './EntityParentTypeSelectors';
 import { ENTITY_CREATION_METRIC } from './constants';
-import { EditableGridPanelDeprecated } from '../editable/EditableGridPanelDeprecated';
 
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
@@ -195,6 +195,11 @@ interface StateProps {
     allowUserSpecifiedNames: boolean;
     previewName: string;
     previewAliquotName: string;
+}
+
+enum EntityInsertPanelTabs {
+    First = 1,
+    Second = 2,
 }
 
 export class EntityInsertPanelImpl extends Component<Props, StateProps> {

@@ -226,6 +226,12 @@ import {
 import { loadEditorModelData } from './internal/components/editable/utils';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
+import {
+    EditableGridPanelForUpdateWithLineage,
+    UpdateGridTab,
+} from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
+import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
@@ -288,6 +294,7 @@ import { SchemaListingPage } from './internal/components/listing/pages/SchemaLis
 import { HeatMap } from './internal/components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './internal/components/heatmap/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
+import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
 import {
@@ -322,6 +329,10 @@ import {
     getSampleTypeDetails,
     getSampleTypes,
     getSelectedItemSamples,
+    getSelectionLineageData,
+    getUpdatedLineageRows,
+    getOriginalParentsFromLineage,
+    getLineageEditorUpdateColumns,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
@@ -452,6 +463,7 @@ import { Principal, SecurityPolicy, SecurityRole } from './internal/components/p
 import { fetchContainerSecurityPolicy, getUserLimitSettings } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,
+    getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
@@ -877,6 +889,9 @@ export {
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditableGridPanelForUpdate,
+    EditableGridPanelForUpdateWithLineage,
+    LineageEditableGridLoaderFromSelection,
+    UpdateGridTab,
     EditorModel,
     cancelEvent,
     // url and location related items
@@ -1037,6 +1052,10 @@ export {
     createQueryConfigFilteredBySample,
     getFieldLookupFromSelection,
     getSelectedItemSamples,
+    getSelectionLineageData,
+    getUpdatedLineageRows,
+    getOriginalParentsFromLineage,
+    getLineageEditorUpdateColumns,
     getSampleTypes,
     FindSamplesByIdHeaderPanel,
     getEditSharedSampleTypeUrl,
@@ -1081,6 +1100,7 @@ export {
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,
+    EntityLineageEditMenuItem,
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
     GenerateEntityResponse,
@@ -1088,6 +1108,7 @@ export {
     AddEntityButton,
     RemoveEntityButton,
     getSampleOperationConfirmationData,
+    getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     createEntityParentKey,
     getUniqueIdColumnMetadata,
@@ -1507,6 +1528,7 @@ export type {
     IEntityTypeOption,
     IParentOption,
     MaterialOutput,
+    EntityChoice,
 } from './internal/components/entities/models';
 export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
 export type { InjectedPermissionsPage } from './internal/components/permissions/withPermissionsPage';

@@ -1,22 +1,21 @@
 import React from 'react';
-import { fromJS, List, Map } from 'immutable';
+import { List, Map } from 'immutable';
 
 import {
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditorModel,
     EditorModelProps,
-    loadEditorModelData,
     LoadingSpinner,
-    LoadingState,
-    QueryInfo,
     QueryModel,
     SchemaQuery,
     WizardNavButtons,
 } from '../../..';
-import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
+import { capitalizeFirstChar } from '../../util/utils';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
+
+import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
 
 interface Props {
     queryModel: QueryModel;
@@ -100,10 +99,10 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             const gridData = getUpdatedDataFromEditableGrid(
                 dataModels,
                 editorModels,
-                ind,
                 idField,
                 undefined,
-                selectionData
+                selectionData,
+                ind
             );
             if (gridData) {
                 gridDataAllTabs.push(gridData);
@@ -168,111 +167,3 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         );
     }
 }
-
-export const initEditableGridModels = async (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
-    queryModel: QueryModel,
-    loaders: EditableGridLoaderFromSelection[]
-): Promise<{
-    dataModels: QueryModel[];
-    editorModels: EditorModel[];
-}> => {
-    const updatedDataModels = [];
-    const updatedEditorModels = [];
-    for (const loader of loaders) {
-        const index = loaders.indexOf(loader);
-        const response = await loader.fetch(queryModel);
-        const gridData = {
-            rows: response.data.toJS(),
-            orderedRows: response.dataIds.toArray(),
-            queryInfo: loader.queryInfo,
-        };
-        const editorModelData = await loadEditorModelData(gridData, loader.updateColumns);
-
-        updatedDataModels.push(
-            dataModels[index].mutate({
-                ...gridData,
-                rowsLoadingState: LoadingState.LOADED,
-                queryInfoLoadingState: LoadingState.LOADED,
-            })
-        );
-        updatedEditorModels.push(editorModels[index].merge(editorModelData) as EditorModel);
-    }
-
-    return {
-        dataModels: updatedDataModels,
-        editorModels: updatedEditorModels,
-    };
-};
-
-export const applyEditableGridChangesToModels = (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
-    editorModelChanges: Partial<EditorModelProps>,
-    queryInfo?: QueryInfo,
-    dataKeys?: List<any>,
-    data?: Map<string, Map<string, any>>,
-    index = 0
-): {
-    dataModels: QueryModel[];
-    editorModels: EditorModel[];
-} => {
-    const updatedEditorModels = [...editorModels];
-    const editorModel = editorModels[index].merge(editorModelChanges) as EditorModel;
-    updatedEditorModels.splice(index, 1, editorModel);
-
-    const updatedDataModels = [...dataModels];
-    const orderedRows = dataKeys?.toJS();
-    const rows = data?.toJS();
-    if (orderedRows && rows) {
-        let dataModel = dataModels[index].mutate({ orderedRows, rows });
-        if (queryInfo) dataModel = dataModels[index].mutate({ queryInfo });
-        updatedDataModels.splice(index, 1, dataModel);
-    }
-
-    return {
-        dataModels: updatedDataModels,
-        editorModels: updatedEditorModels,
-    };
-};
-
-export const getUpdatedDataFromEditableGrid = (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
-    tabIndex = 0,
-    idField: string,
-    readOnlyColumns?: List<string>,
-    selectionData?: Map<string, any>
-): Record<string, any> => {
-    const model = dataModels[tabIndex];
-    const editorModel = editorModels[tabIndex];
-
-    if (!editorModel) {
-        console.error('Grid does not expose an editor. Ensure the grid is properly initialized for editing.');
-        return null;
-    } else {
-        // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used
-        // to populate the queryInfoForm.  If we don't have this data, we came directly to the editable grid
-        // using values from the display grid to initialize the editable grid model, so we use that.
-        const initData = selectionData ?? fromJS(model.rows);
-        const editorData = editorModel
-            .getRawDataFromGridData(
-                fromJS(model.rows),
-                fromJS(model.orderedRows),
-                model.queryInfo,
-                true,
-                true,
-                readOnlyColumns
-            )
-            .toArray();
-        const updatedRows = getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo);
-
-        return {
-            schemaQuery: model.queryInfo.schemaQuery,
-            updatedRows,
-            originalRows: model.rows,
-            tabIndex,
-        };
-    }
-};

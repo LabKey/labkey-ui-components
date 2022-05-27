@@ -99,7 +99,6 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
     exportFilename?: string;
 
     getAdvancedExportOptions?: (tabId: string) => { [key: string]: any };
-
 }
 
 export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = memo(props => {
@@ -142,9 +141,8 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 const models = [];
                 selectedTabs.forEach(selected => {
                     const selectedModel = queryModels[selected];
-                    let exportOptions = {...advancedExportOptions};
-                    if (getAdvancedExportOptions)
-                        exportOptions = {...getAdvancedExportOptions(selected)}
+                    let exportOptions = { ...advancedExportOptions };
+                    if (getAdvancedExportOptions) exportOptions = { ...getAdvancedExportOptions(selected) };
                     const tabForm = getQueryModelExportParams(selectedModel, EXPORT_TYPES.EXCEL, {
                         ...exportOptions,
                         sheetName: selectedModel.title,
@@ -221,7 +219,9 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                     asPanel={false}
                     model={activeModel}
                     onExport={exportHandlers}
-                    advancedExportOptions={getAdvancedExportOptions ? getAdvancedExportOptions(activeId) : advancedExportOptions}
+                    advancedExportOptions={
+                        getAdvancedExportOptions ? getAdvancedExportOptions(activeId) : advancedExportOptions
+                    }
                     {...rest}
                 />
             </div>

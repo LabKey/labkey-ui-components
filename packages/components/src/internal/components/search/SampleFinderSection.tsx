@@ -457,16 +457,19 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
         actions.loadAllModels();
     }, [actions]);
 
-    const getAdvancedExportOptions = useCallback((tabId: string): { [key: string]: any } => {
-        const columnLabels = queryModels[tabId]?.queryInfo?.getView('sample finder')?.columns;
-        let advancedExportOptions = {...SAMPLE_DATA_EXPORT_CONFIG, 'exportAlias.SampleSet': 'Sample Type'};
-        if (columnLabels)
-            columnLabels.forEach(columnLabel => {
-                if (columnLabel.title)
-                    advancedExportOptions['exportAlias.' + columnLabel.fieldKey] = columnLabel.title;
-            })
-        return advancedExportOptions;
-    }, [queryModels]);
+    const getAdvancedExportOptions = useCallback(
+        (tabId: string): { [key: string]: any } => {
+            const columnLabels = queryModels[tabId]?.queryInfo?.getView('sample finder')?.columns;
+            const advancedExportOptions = { ...SAMPLE_DATA_EXPORT_CONFIG, 'exportAlias.SampleSet': 'Sample Type' };
+            if (columnLabels)
+                columnLabels.forEach(columnLabel => {
+                    if (columnLabel.title)
+                        advancedExportOptions['exportAlias.' + columnLabel.fieldKey] = columnLabel.title;
+                });
+            return advancedExportOptions;
+        },
+        [queryModels]
+    );
 
     if (isLoading) return <LoadingSpinner />;
 
@@ -486,7 +489,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 }}
                 tabbedGridPanelProps={{
                     alwaysShowTabs: true,
-                    getAdvancedExportOptions: getAdvancedExportOptions,
+                    getAdvancedExportOptions,
                     exportFilename: 'Samples',
                 }}
             />

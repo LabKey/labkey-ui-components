@@ -264,7 +264,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     if (viewName) {
         view = queryInfo.views.get(viewName.toLowerCase());
         if (!view?.hidden) {
-            const label = view.label ?? viewName;
+            const label = view?.label ?? viewName;
             displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
         }
     } else {
@@ -282,11 +282,11 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         await revertViewEdit(model.schemaQuery, model.containerPath, model.viewName);
         await actions.loadModel(model.id, allowSelections);
         onRevertView?.();
-    }, [view]);
+    }, [model, onRevertView, actions, allowSelections]);
 
     const saveView = useCallback(() => {
         console.log('TODO');
-    }, [view]);
+    }, []);
 
     return (
         <div className="panel-heading view-header">

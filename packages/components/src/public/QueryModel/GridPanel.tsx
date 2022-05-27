@@ -288,7 +288,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }, [view])
 
     return (
-       <div className="view-header">
+       <div className="panel-heading view-header">
            {isEdited && <span className="alert-info view-edit-alert">Edited</span>}
            {displayTitle ?? "Default View"}
            {showRevert && <button className="btn btn-default button-left-spacing" onClick={_revertViewEdit}>Undo</button>}

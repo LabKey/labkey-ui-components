@@ -71,6 +71,7 @@ module.exports = function(env) {
                             loader: 'sass-loader',
                             options: {
                                 implementation: require('sass'),
+                                warnRuleAsWarning: true,
                             }
                         }
                     ],
@@ -93,6 +94,7 @@ module.exports = function(env) {
                                 implementation: require('sass'),
                                 // "sourceMap" must be set to true when resolve-url-loader is used downstream
                                 sourceMap: true,
+                                warnRuleAsWarning: true,
                             }
                         }
                     ],

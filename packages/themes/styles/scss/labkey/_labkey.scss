@@ -759,7 +759,7 @@ td.labkey-crumb-trail {
 }
 
 .labkey-page-section-header {
-  padding-bottom: (($line-height-computed / 2) - 1);
+  padding-bottom: (calc($line-height-computed / 2) - 1);
   margin: 0 0 $line-height-computed;
   border-bottom: 1px solid $page-header-border-color;
 }

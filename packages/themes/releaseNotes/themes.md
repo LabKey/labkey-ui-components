@@ -1,6 +1,13 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.2.2
+*Released*: 27 May 2022
+* Issue 45170: fix date picker month selection borders
+* Package updates
+* Update webpack configuration to work with the latest versions.
+* Fix for a warning of using divide natively in sass. Use `calc()` instead.
+
 ### version 1.2.1
 *Released*: 1 September 2021
 * Dependabot package updates

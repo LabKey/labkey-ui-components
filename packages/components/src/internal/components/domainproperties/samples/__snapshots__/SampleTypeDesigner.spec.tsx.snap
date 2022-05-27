@@ -1090,6 +1090,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "setGenId": [Function],
           "validateDomainNameExpressions": [Function],
         },
+        "entity": EntityServerAPIWrapper {
+          "getDataOperationConfirmationData": [Function],
+        },
         "picklist": PicklistServerAPIWrapper {
           "getPicklistCountsBySampleType": [Function],
           "getPicklistDeleteData": [Function],
@@ -1107,9 +1110,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "getSampleAliquotRows": [Function],
           "getSampleAssayResultViewConfigs": [Function],
           "getSampleOperationConfirmationData": [Function],
-          "getSampleSelectionLineageData": [Function],
           "getSampleStatuses": [Function],
           "getSampleStorageId": [Function],
+          "getSelectionLineageData": [Function],
           "loadFinderSearches": [Function],
         },
         "security": ServerSecurityAPIWrapper {

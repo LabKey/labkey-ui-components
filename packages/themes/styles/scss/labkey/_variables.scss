@@ -354,7 +354,7 @@ $lk-webpart-nested-title-color-hover: $lk-webpart-nested-title-color !default;
 $lk-portal-content-left-flex: 8 !default;
 $lk-portal-content-right-flex: 4 !default;
 $lk-portal-content-right-min-width: 240px !default;
-$lk-portal-gutter-width: floor(($lk-grid-gutter-width / 2));
+$lk-portal-gutter-width: floor(calc($lk-grid-gutter-width / 2));
 $lk-portal-panel-border-top: 3px solid $lk-webpart-accent-color;
 
 //== Tables

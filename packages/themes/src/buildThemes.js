@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2020 LabKey Corporation
+ * Copyright (c) 2017-2022 LabKey Corporation
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
@@ -21,7 +21,7 @@ if (!fs.existsSync(TARGET_THEME_DIR)) {
     fs.mkdirSync(TARGET_THEME_DIR);
 }
 
-let cmd = BASE_BUILD_CMD + ' --env.buildDependency=true';
+let cmd = BASE_BUILD_CMD + ' --env buildDependency=true';
 console.log('\n\nBuilding core resources');
 execSync(cmd, { stdio: [0,1,2] }); // use option {stdio:[0,1,2]} to print stdout
 
@@ -35,7 +35,7 @@ for (let i=0; i < themeDirs.length; i++) {
     console.log('\n\nBuilding theme: ' + themeDir);
     fs.writeFileSync(TARGET_THEME_DIR + TEMP_VARIABLE_FILE, fs.readFileSync(themeVarFullPath));
 
-    cmd = BASE_BUILD_CMD + ' --env.theme=' + themeDir;
+    cmd = BASE_BUILD_CMD + ' --env theme=' + themeDir;
     execSync(cmd, { stdio: [0,1,2] }); // use option {stdio:[0,1,2]} to print stdout
 }
 

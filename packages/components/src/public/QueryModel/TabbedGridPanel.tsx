@@ -152,13 +152,11 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 const filename = exportFilename ?? 'Data';
                 await exportTabsXlsx(filename, models);
                 onExport?.[EXPORT_TYPES.EXCEL]?.();
-                createNotification({message: 'Successfully exported tabs to file.', alertClass: 'success'});
-            }
-            catch (e) {
+                createNotification({ message: 'Successfully exported tabs to file.', alertClass: 'success' });
+            } catch (e) {
                 // Set export error
-                createNotification({message: 'Export failed: ' + e, alertClass: 'danger'});
-            }
-            finally {
+                createNotification({ message: 'Export failed: ' + e, alertClass: 'danger' });
+            } finally {
                 // unset exporting blocker
                 setCanExport(true);
                 setShowExportModal(false);
@@ -176,7 +174,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         await exportTabs([internalActiveId]);
     }, [tabOrder, exportTabs, internalActiveId]);
 
-    const exportHandlers = {...onExport, [EXPORT_TYPES.EXCEL]: excelExportHandler};
+    const exportHandlers = { ...onExport, [EXPORT_TYPES.EXCEL]: excelExportHandler };
 
     const closeExportModal = useCallback(() => {
         setShowExportModal(false);

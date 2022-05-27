@@ -48,7 +48,11 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     disabled={disabled}
                     id={`view-menu-drop-${model.id}`}
                     pullRight
-                    title={<span ><i className="fa fa-table"/> <span className="spacer-left">Views</span></span>}
+                    title={
+                        <span>
+                            <i className="fa fa-table" /> <span className="spacer-left">Views</span>
+                        </span>
+                    }
                 >
                     {defaultView && viewMapper(defaultView)}
                     {privateViews.length > 0 && (

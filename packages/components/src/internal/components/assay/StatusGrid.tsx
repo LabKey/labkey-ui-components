@@ -37,7 +37,7 @@ export const StatusGridImpl: FC<InjectedQueryModels> = memo(props => {
             actions={actions}
             queryModels={queryModels}
             asPanel={false}
-            advancedExportOptions={{excludeColumn: ['LSID']}}
+            advancedExportOptions={{ excludeColumn: ['LSID'] }}
         />
     );
 });

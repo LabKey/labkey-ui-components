@@ -125,7 +125,7 @@ describe('HeaderCellDropdown', () => {
     test('column not sortable or filterable but customizable', () => {
         LABKEY.moduleContext = {
             query: {
-                canCustomizeViewsFromApp: true
+                canCustomizeViewsFromApp: true,
             },
         };
         const wrapper = mount(
@@ -165,7 +165,7 @@ describe('HeaderCellDropdown', () => {
     test('column sortable, not filterable, customizable', () => {
         LABKEY.moduleContext = {
             query: {
-                canCustomizeViewsFromApp: true
+                canCustomizeViewsFromApp: true,
             },
         };
         const wrapper = mount(
@@ -205,7 +205,7 @@ describe('HeaderCellDropdown', () => {
     test('column filterable, not sortable, but customizable', () => {
         LABKEY.moduleContext = {
             query: {
-                canCustomizeViewsFromApp: true
+                canCustomizeViewsFromApp: true,
             },
         };
         const wrapper = mount(
@@ -306,9 +306,5 @@ describe('HeaderCellDropdown', () => {
         expect(removeFilterItem.text()).toBe('  Remove filters');
         expect(removeFilterItem.prop('disabled')).toBe(false);
         wrapper.unmount();
-    });
-
-    test('can customize view', () => {
-
     });
 });

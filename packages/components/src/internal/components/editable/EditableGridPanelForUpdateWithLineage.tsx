@@ -30,9 +30,9 @@ import {
     applyEditableGridChangesToModels,
     EditableGridModels,
     getUpdatedDataFromEditableGrid,
-    initEditableGridModels
+    initEditableGridModels,
 } from './utils';
-import {SharedEditableGridPanelProps} from "./EditableGrid";
+import { SharedEditableGridPanelProps } from './EditableGrid';
 
 export enum UpdateGridTab {
     Samples,
@@ -98,7 +98,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         });
 
         setIsSubmitting(false);
-        setEditableGridModels({dataModels, editorModels})
+        setEditableGridModels({ dataModels, editorModels });
         setEntityParentsMap(
             fromJS(
                 parentDataTypes.reduce((map, dataType) => {
@@ -114,18 +114,25 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             dataModels: QueryModel[];
             editorModels: EditorModel[];
         }> => {
-            return await initEditableGridModels(editableGridModels.dataModels, editableGridModels.editorModels, queryModel, loaders);
+            return await initEditableGridModels(
+                editableGridModels.dataModels,
+                editableGridModels.editorModels,
+                queryModel,
+                loaders
+            );
         };
 
         if (loaders && editableGridModels?.dataModels?.find(dataModel => dataModel.isLoading)) {
-            initEditorModel().then(models => {
-                setEditableGridModels(models)
-            }).catch(error => {
-                createNotification({
-                    message: error,
-                    alertClass: "danger"
+            initEditorModel()
+                .then(models => {
+                    setEditableGridModels(models);
                 })
-            })
+                .catch(error => {
+                    createNotification({
+                        message: error,
+                        alertClass: 'danger',
+                    });
+                });
         }
     }, [loaders, queryModel, editableGridModels]);
 
@@ -295,7 +302,12 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         ]
     );
 
-    if (!editableGridModels || !editableGridModels.dataModels || editableGridModels.dataModels.length < 1 || !editableGridModels.dataModels.every(dataModel => !dataModel.isLoading)) {
+    if (
+        !editableGridModels ||
+        !editableGridModels.dataModels ||
+        editableGridModels.dataModels.length < 1 ||
+        !editableGridModels.dataModels.every(dataModel => !dataModel.isLoading)
+    ) {
         return <LoadingSpinner />;
     }
 

@@ -23,6 +23,8 @@ import { GRID_SELECTION_INDEX } from '../../internal/constants';
 import { DataViewInfo } from '../../internal/models';
 import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
+import { revertViewEdit, saveSessionGridView } from '../../internal/actions';
+
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
 import { SearchAction } from './grid/actions/Search';
@@ -44,7 +46,6 @@ import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
-import { revertViewEdit, saveSessionGridView } from '../../internal/actions';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -246,16 +247,16 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 }
 
 interface GridTitleProps {
-    title?: string,
-    model: QueryModel,
-    actions: Actions,
-    allowSelections: boolean,
-    allowViewCustomization: boolean,
-    onRevertView?: () => void,
+    title?: string;
+    model: QueryModel;
+    actions: Actions;
+    allowSelections: boolean;
+    allowViewCustomization: boolean;
+    onRevertView?: () => void;
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
-    const {title, model, onRevertView, actions, allowSelections, allowViewCustomization } = props;
+    const { title, model, onRevertView, actions, allowSelections, allowViewCustomization } = props;
     const { queryInfo, viewName } = model;
 
     let displayTitle = title;
@@ -264,7 +265,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         view = queryInfo.views.get(viewName.toLowerCase());
         if (!view?.hidden) {
             const label = view.label ?? viewName;
-            displayTitle = displayTitle ? displayTitle + " - " + label : label;
+            displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
         }
     } else {
         view = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
@@ -284,17 +285,21 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }, [view]);
 
     const saveView = useCallback(() => {
-        console.log("TODO");
-    }, [view])
+        console.log('TODO');
+    }, [view]);
 
     return (
-       <div className="panel-heading view-header">
-           {isEdited && <span className="alert-info view-edit-alert">Edited</span>}
-           {displayTitle ?? "Default View"}
-           {showRevert && <button className="btn btn-default button-left-spacing" onClick={_revertViewEdit}>Undo</button>}
-           {/*{showSave && <button className="btn btn-success button-left-spacing" onClick={onSaveView}>Save</button>}*/}
-       </div>
-   );
+        <div className="panel-heading view-header">
+            {isEdited && <span className="alert-info view-edit-alert">Edited</span>}
+            {displayTitle ?? 'Default View'}
+            {showRevert && (
+                <button className="btn btn-default button-left-spacing" onClick={_revertViewEdit}>
+                    Undo
+                </button>
+            )}
+            {/* {showSave && <button className="btn btn-success button-left-spacing" onClick={onSaveView}>Save</button>}*/}
+        </div>
+    );
 });
 
 interface State {
@@ -602,9 +607,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         );
     };
 
-
     onRevertView = () => {
-        this.setState({errorMsg: undefined});
+        this.setState({ errorMsg: undefined });
     };
 
     /**
@@ -706,15 +710,18 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { actions, model, allowSelections } = this.props;
 
         const columns = model.displayColumns.filter(column => column.index !== columnToHide.index);
-        saveSessionGridView(model.schemaQuery, columns, model.containerPath, model.viewName).then(() => {
-            actions.loadModel(model.id,  allowSelections);
-            this.setState({
-                headerClickCount: {},
-                errorMsg: undefined
+        saveSessionGridView(model.schemaQuery, columns, model.containerPath, model.viewName)
+            .then(() => {
+                actions.loadModel(model.id, allowSelections);
+                this.setState({
+                    headerClickCount: {},
+                    errorMsg: undefined,
+                });
+            })
+            .catch(errorMsg => {
+                this.setState({ errorMsg });
             });
-        }).catch(errorMsg => { this.setState({errorMsg})});
-
-    }
+    };
 
     /**
      * Handler for the ViewSelectorComponent. Creates a grid style change event and triggers handleViewChange.
@@ -793,7 +800,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             columnCount,
             allowSorting ? this.sortColumn : undefined,
             allowFiltering ? this.filterColumn : undefined,
-            allowViewCustomization? this.hideColumn : undefined,
+            allowViewCustomization ? this.hideColumn : undefined,
             model,
             headerClickCount[column.index]
         );
@@ -854,7 +861,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         />
                     )}
 
-                    <div className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-spacing': !hasHeader })}>
+                    <div
+                        className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-spacing': !hasHeader })}
+                    >
                         {showButtonBar && (
                             <ButtonBar
                                 {...this.props}

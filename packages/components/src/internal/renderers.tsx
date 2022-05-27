@@ -82,13 +82,10 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         [col, handleSort]
     );
 
-    const _handleHideColumn = useCallback(
-        () => {
-            setOpen(false);
-            handleHideColumn(col);
-        },
-        [col]
-    );
+    const _handleHideColumn = useCallback(() => {
+        setOpen(false);
+        handleHideColumn(col);
+    }, [col]);
 
     // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
     useEffect(() => {

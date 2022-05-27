@@ -97,6 +97,9 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      * Optional value to use as the filename prefix for the exported file, otherwise will default to 'Data'
      */
     exportFilename?: string;
+
+    getAdvancedExportOptions?: (tabId: string) => { [key: string]: any };
+
 }
 
 export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = memo(props => {
@@ -114,6 +117,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         onExport,
         exportFilename,
         advancedExportOptions,
+        getAdvancedExportOptions,
         ...rest
     } = props;
     const [internalActiveId, setInternalActiveId] = useState<string>(activeModelId ?? tabOrder[0]);
@@ -138,8 +142,11 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 const models = [];
                 selectedTabs.forEach(selected => {
                     const selectedModel = queryModels[selected];
+                    let exportOptions = {...advancedExportOptions};
+                    if (getAdvancedExportOptions)
+                        exportOptions = {...getAdvancedExportOptions(selected)}
                     const tabForm = getQueryModelExportParams(selectedModel, EXPORT_TYPES.EXCEL, {
-                        ...advancedExportOptions,
+                        ...exportOptions,
                         sheetName: selectedModel.title,
                     });
                     models.push(tabForm);
@@ -157,7 +164,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 setShowExportModal(false);
             }
         },
-        [exportFilename, canExport, queryModels]
+        [exportFilename, canExport, queryModels, advancedExportOptions, getAdvancedExportOptions]
     );
 
     const excelExportHandler = useCallback(async () => {
@@ -214,7 +221,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                     asPanel={false}
                     model={activeModel}
                     onExport={exportHandlers}
-                    advancedExportOptions={advancedExportOptions}
+                    advancedExportOptions={getAdvancedExportOptions ? getAdvancedExportOptions(activeId) : advancedExportOptions}
                     {...rest}
                 />
             </div>

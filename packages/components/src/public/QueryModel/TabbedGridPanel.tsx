@@ -21,7 +21,7 @@ import { EXPORT_TYPES } from '../../internal/constants';
 import { createNotification } from '../../internal/components/notifications/actions';
 import { exportTabsXlsx } from '../../internal/actions';
 
-import { GridPanel, GridPanelProps } from './GridPanel';
+import { GridPanel, GridPanelProps, GridTitle } from './GridPanel';
 import { InjectedQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
@@ -60,7 +60,11 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      */
     activeModelId?: string;
     /**
-     * By default if there is only one model, the tabs will not be shown.  Setting this to true will show the tab
+     * Defaults to true. Determines if we allow the grid view to be customized (e.g., columns added, removed, or relabeled)
+     */
+    allowViewCustomization?: boolean;
+    /**
+     * By default, if there is only one model, the tabs will not be shown.  Setting this to true will show the tab
      * even if there is only one model.
      */
     alwaysShowTabs?: boolean;
@@ -103,6 +107,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     const {
         activeModelId,
         actions,
+        allowViewCustomization = true,
         alwaysShowTabs,
         asPanel = true,
         onTabSelect,
@@ -182,13 +187,21 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     activeId = tabOrder.indexOf(activeId) === -1 ? tabOrder[0] : activeId;
 
     const activeModel = queryModels[activeId];
+    const hasTabs = tabOrder.length > 1 || alwaysShowTabs;
 
     return (
         <div className={classNames('tabbed-grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-            {title !== undefined && asPanel && <div className="tabbed-grid-panel__title panel-heading">{title}</div>}
-
+            {!hasTabs && (
+                <GridTitle
+                    title={title}
+                    model={queryModels[activeId]}
+                    actions={actions}
+                    allowSelections={rest.allowSelections}
+                    allowViewCustomization={allowViewCustomization}
+                />
+            )}
             <div className={classNames('tabbed-grid-panel__body', { 'panel-body': asPanel })}>
-                {(tabOrder.length > 1 || alwaysShowTabs) && (
+                {hasTabs && (
                     <ul className="nav nav-tabs">
                         {tabOrder.map(modelId => {
                             if (queryModels[modelId]) {
@@ -209,8 +222,10 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                     </ul>
                 )}
                 <GridPanel
+                    allowViewCustomization={allowViewCustomization}
                     key={activeId}
                     actions={actions}
+                    hasHeader={!hasTabs}
                     asPanel={false}
                     model={activeModel}
                     onExport={exportHandlers}

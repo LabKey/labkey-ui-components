@@ -81,7 +81,7 @@ describe('<UsersGridPanel/>', () => {
         const wrapper = mount(component);
         expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').first().text()).toBe('Active Users');
+        expect(wrapper.find('.view-header').first().text()).toBe('Active Users');
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
         expect(wrapper.find(DisableableButton).prop('disabledMsg')).toBe(undefined);
         expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
@@ -101,7 +101,7 @@ describe('<UsersGridPanel/>', () => {
         const wrapper = mount(component);
         expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').first().text()).toBe('Active Users');
+        expect(wrapper.find('.view-header').first().text()).toBe('Active Users');
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
         expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
         wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
@@ -120,7 +120,7 @@ describe('<UsersGridPanel/>', () => {
         const wrapper = mount(component);
         expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').first().text()).toBe('Active Users');
+        expect(wrapper.find('.view-header').first().text()).toBe('Active Users');
         expect(wrapper.find(DisableableButton)).toHaveLength(0); // create button
         expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
         wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
@@ -141,7 +141,7 @@ describe('<UsersGridPanel/>', () => {
 
         expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').first().text()).toBe('Inactive Users');
+        expect(wrapper.find('.view-header').first().text()).toBe('Inactive Users');
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
         expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
         wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
@@ -162,7 +162,7 @@ describe('<UsersGridPanel/>', () => {
 
         expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').first().text()).toBe('All Users');
+        expect(wrapper.find('.view-header').first().text()).toBe('All Users');
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
         expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
         wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');

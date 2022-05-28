@@ -40,7 +40,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
         if (!currentView?.reportId) return 'Saved Searches';
         return (
             <>
-                {hasUnsavedChanges && <span className="alert-info finder-view-edit-alert">EDITED</span>}
+                {hasUnsavedChanges && <span className="alert-info view-edit-alert">Edited</span>}
                 {currentView.reportName}
             </>
         );

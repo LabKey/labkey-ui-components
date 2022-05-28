@@ -62,6 +62,7 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
             {selectedView === SelectView.Cards && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
             {selectedView === SelectView.Grid && (
                 <GridPanelWithModel
+                    allowViewCustomization={false}
                     advancedExportOptions={{ excludeColumn: ['lsid'] }}
                     queryConfig={queryConfig}
                     asPanel={false}

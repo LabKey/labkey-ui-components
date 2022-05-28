@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.177.0
+*Released*: 27 May 2022
 * Item 10374: Begin adding support for customizing views in our application
   * Move display of custom view name into panel header
   * Add header action for hiding a column and saving a new session view

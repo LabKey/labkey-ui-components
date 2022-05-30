@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 45529: Adjust width of `.container` to use more of the screen
+* Issue 45290: Adjust width of items in NavBar for better display (with lots of notifications) in medium media
 
 ### version 2.177.0
 *Released*: 27 May 2022

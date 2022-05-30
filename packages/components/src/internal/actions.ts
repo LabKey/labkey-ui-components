@@ -25,6 +25,7 @@ import {
     GRID_CHECKBOX_OPTIONS,
     IGridResponse,
     insertColumnFilter,
+    invalidateQueryDetailsCache,
     QueryColumn,
     QueryConfig,
     QueryGridModel,
@@ -2524,5 +2525,49 @@ export function incrementClientSideMetricCount(featureArea: string, metricName: 
             this,
             true
         ),
+    });
+}
+
+export function saveSessionGridView(
+    schemaQuery: SchemaQuery,
+    columns: any,
+    containerPath: string,
+    name: string
+): Promise<void> {
+    return new Promise((resolve, reject) => {
+        Query.saveQueryViews({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            containerPath,
+            views: [{ name, columns, session: true }],
+            success: () => {
+                invalidateQueryDetailsCache(schemaQuery, containerPath);
+                resolve();
+            },
+            failure: response => {
+                console.error(response);
+                reject('There was a problem saving the view for the data grid. ' + resolveErrorMessage(response));
+            },
+        });
+    });
+}
+
+export function revertViewEdit(schemaQuery: SchemaQuery, containerPath: string, viewName?: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        Query.deleteQueryView({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            viewName,
+            containerPath,
+            revert: true,
+            success: () => {
+                invalidateQueryDetailsCache(schemaQuery, containerPath);
+                resolve();
+            },
+            failure: response => {
+                console.error(response);
+                reject('There was a problem updating the view for the data grid. ' + resolveErrorMessage(response));
+            },
+        });
     });
 }

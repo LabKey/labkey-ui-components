@@ -20,9 +20,17 @@ exports[`ViewMenu Render 2`] = `
       role="button"
       type="button"
     >
-      <span
-        className="fa fa-table"
-      />
+      <span>
+        <i
+          className="fa fa-table"
+        />
+         
+        <span
+          className="spacer-left"
+        >
+          Views
+        </span>
+      </span>
        
       <span
         className="caret"
@@ -55,9 +63,17 @@ exports[`ViewMenu Render 3`] = `
       role="button"
       type="button"
     >
-      <span
-        className="fa fa-table"
-      />
+      <span>
+        <i
+          className="fa fa-table"
+        />
+         
+        <span
+          className="spacer-left"
+        >
+          Views
+        </span>
+      </span>
        
       <span
         className="caret"
@@ -143,9 +159,17 @@ exports[`ViewMenu Render 4`] = `
       role="button"
       type="button"
     >
-      <span
-        className="fa fa-table"
-      />
+      <span>
+        <i
+          className="fa fa-table"
+        />
+         
+        <span
+          className="spacer-left"
+        >
+          Views
+        </span>
+      </span>
        
       <span
         className="caret"
@@ -217,9 +241,17 @@ exports[`ViewMenu Render 5`] = `
       role="button"
       type="button"
     >
-      <span
-        className="fa fa-table"
-      />
+      <span>
+        <i
+          className="fa fa-table"
+        />
+         
+        <span
+          className="spacer-left"
+        >
+          Views
+        </span>
+      </span>
        
       <span
         className="caret"
@@ -291,9 +323,17 @@ exports[`ViewMenu Render 6`] = `
       role="button"
       type="button"
     >
-      <span
-        className="fa fa-table"
-      />
+      <span>
+        <i
+          className="fa fa-table"
+        />
+         
+        <span
+          className="spacer-left"
+        >
+          Views
+        </span>
+      </span>
        
       <span
         className="caret"

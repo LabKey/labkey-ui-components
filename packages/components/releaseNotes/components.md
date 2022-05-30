@@ -7,6 +7,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Remove "Name" field from SampleBulkUpdateForm
   * Enable "Name" edit for aliquot details panel
 
+### version 2.177.0
+*Released*: 27 May 2022
+* Item 10374: Begin adding support for customizing views in our application
+  * Move display of custom view name into panel header
+  * Add header action for hiding a column and saving a new session view
+  * Add buttons for reverting session grid customization in panel header
+
 ### version 2.176.0
 *Released*: 26 May 2022
 * Factor EditableGridPanelForUpdateWithLineage component out of SamplesEditableGridPanelForUpdate

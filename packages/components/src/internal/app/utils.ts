@@ -19,6 +19,7 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_CUSTOMIZE_VIEWS_IN_APPS,
     EXPERIMENTAL_LKSM_ELN,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
@@ -191,6 +192,10 @@ export function biologicsIsPrimaryApp(moduleContext?: any): boolean {
 
 export function isSampleStatusEnabled(): boolean {
     return hasModule('SampleManagement');
+}
+
+export function isCustomizeViewsInAppEnabled(moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.query?.[EXPERIMENTAL_CUSTOMIZE_VIEWS_IN_APPS] === true;
 }
 
 export function isSampleFinderEnabled(moduleContext?: any): boolean {

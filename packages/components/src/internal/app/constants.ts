@@ -87,6 +87,7 @@ export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu'
 export const EXPERIMENTAL_SAMPLE_FINDER = 'experimental-biologics-sample-finder';
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
 export const EXPERIMENTAL_LKSM_ELN = 'experimental-lksm-eln';
+export const EXPERIMENTAL_CUSTOMIZE_VIEWS_IN_APPS = 'canCustomizeViewsFromApp';
 
 export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     productId: BIOLOGICS_PRODUCT_ID,

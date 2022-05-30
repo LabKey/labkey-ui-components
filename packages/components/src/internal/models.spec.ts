@@ -16,7 +16,7 @@
 import { fromJS, List, Map, Set } from 'immutable';
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
-import { QueryInfo, QueryGridModel, SchemaQuery, QueryColumn } from '..';
+import { QueryInfo, SchemaQuery, QueryColumn, makeTestQueryModel } from '..';
 
 import { CellMessage, EditorModel, getPkData, ValueDescriptor } from './models';
 import { resetQueryGridState } from './global';
@@ -99,17 +99,11 @@ describe('EditorModel', () => {
                 selectionCells: [],
             };
             const editorModel = new EditorModel(emptyEditorGridData);
-            const emptyQueryGridModel = new QueryGridModel({
-                schema: schemaQ.schemaName,
-                query: schemaQ.queryName,
-                id: 'insert-samples|samples/sample set 2',
-                queryInfo: QueryInfo.fromJSON(sampleSet2QueryInfo),
-                editable: true,
-            });
-            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(emptyQueryGridModel, 'Name');
+            const emptyDataModel = makeTestQueryModel(schemaQ, QueryInfo.fromJSON(sampleSet2QueryInfo), {}, [], 0);
+            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(emptyDataModel, 'Name');
             expect(uniqueKeyViolations.isEmpty()).toBe(true);
             expect(missingRequired.isEmpty()).toBe(true);
-            const errors = editorModel.getValidationErrors(emptyQueryGridModel, 'Name');
+            const errors = editorModel.getValidationErrors(emptyDataModel, 'Name');
             expect(errors).toHaveLength(0);
         });
 
@@ -168,26 +162,22 @@ describe('EditorModel', () => {
                 selectionCells: [],
             };
             const editorModel = new EditorModel(editableGridData);
-            const queryGridModel = new QueryGridModel({
-                schema: schemaQ.schemaName,
-                query: schemaQ.queryName,
-                id: 'insert-samples|samples/sample set 2',
-                queryInfo: QueryInfo.fromJSON(sampleSet2QueryInfo),
-                editable: true,
-                data: Map<any, Map<string, any>>({
-                    '1': Map<string, any>({
+            const dataModel = makeTestQueryModel(
+                schemaQ,
+                QueryInfo.fromJSON(sampleSet2QueryInfo),
+                {
+                    '1': {
                         RequiredData: 'Grid Requirement 1',
-                    }),
-                    '2': Map<string, any>({
+                    },
+                    '2': {
                         Description: 'grid S-2 Description',
-                    }),
-                }),
-                dataIds: List<any>(['1']),
-            });
-            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(queryGridModel, 'Name');
+                    },
+                },
+                ['1']);
+            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(dataModel, 'Name');
             expect(uniqueKeyViolations.isEmpty()).toBe(true);
             expect(missingRequired.isEmpty()).toBe(true);
-            const errors = editorModel.getValidationErrors(queryGridModel, 'Name');
+            const errors = editorModel.getValidationErrors(dataModel, 'Name');
             expect(errors).toHaveLength(0);
         });
 
@@ -246,26 +236,23 @@ describe('EditorModel', () => {
                 selectionCells: [],
             };
             const editorModel = new EditorModel(editableGridData);
-            const queryGridModel = new QueryGridModel({
-                schema: schemaQ.schemaName,
-                query: schemaQ.queryName,
-                id: 'insert-samples|samples/sample set 2',
-                queryInfo: QueryInfo.fromJSON(sampleSet2QueryInfo),
-                editable: true,
-                data: Map<any, Map<string, any>>({
-                    '1': Map<string, any>({
+            const dataModel = makeTestQueryModel(
+                schemaQ,
+                QueryInfo.fromJSON(sampleSet2QueryInfo),
+                {
+                    '1': {
                         Description: 'grid S-1 Description',
-                    }),
-                    '2': Map<string, any>({
+                    },
+                    '2': {
                         Description: 'grid S-2 Description',
-                    }),
-                    '3': Map<string, any>({
+                    },
+                    '3': {
                         Description: 'grid S-3 Description',
-                    }),
-                }),
-                dataIds: List<any>(['1', '2', '3']),
-            });
-            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(queryGridModel, 'Name');
+                    },
+                },
+                ['1', '2', '3']
+            );
+            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(dataModel, 'Name');
             expect(uniqueKeyViolations.isEmpty()).toBe(true);
             expect(missingRequired.size).toBe(2);
             expect(missingRequired.has('Name')).toBe(true);
@@ -274,7 +261,7 @@ describe('EditorModel', () => {
             expect(missingRequired.get('Name').contains(3)).toBe(true);
             expect(missingRequired.get('Required Data').contains(2)).toBe(true); // Check whitespace trimmed
             expect(missingRequired.get('Required Data').contains(3)).toBe(false); // Check integer
-            const errors = editorModel.getValidationErrors(queryGridModel, 'Name');
+            const errors = editorModel.getValidationErrors(dataModel, 'Name');
             expect(errors).toHaveLength(1);
         });
 
@@ -381,22 +368,19 @@ describe('EditorModel', () => {
                 selectionCells: [],
             };
             const editorModel = new EditorModel(editableGridData);
-            const queryGridModel = new QueryGridModel({
-                schema: schemaQ.schemaName,
-                query: schemaQ.queryName,
-                id: 'insert-samples|samples/sample set 2',
-                queryInfo: QueryInfo.fromJSON(sampleSet2QueryInfo),
-                editable: true,
-                data: Map<any, Map<string, any>>({
-                    '1': Map<string, any>(),
-                    '2': Map<string, any>(),
-                    '3': Map<string, any>(),
-                    '4': Map<string, any>(),
-                    '5': Map<string, any>(),
-                }),
-                dataIds: List<any>(['1', '2', '3', '4', '5']),
-            });
-            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(queryGridModel, 'Name');
+            const dataModel = makeTestQueryModel(
+                schemaQ,
+                QueryInfo.fromJSON(sampleSet2QueryInfo),
+                {
+                    '1': {},
+                    '2': {},
+                    '3': {},
+                    '4': {},
+                    '5': {},
+                },
+                ['1', '2', '3', '4', '5']
+            );
+            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(dataModel, 'Name');
             expect(missingRequired.isEmpty()).toBe(true);
             expect(uniqueKeyViolations.size).toBe(1);
             expect(uniqueKeyViolations.has('Name')).toBe(true);
@@ -405,19 +389,19 @@ describe('EditorModel', () => {
             expect(uniqueKeyViolations.get('Name').get('s-2')).toEqual(List<number>([1, 2]));
             expect(uniqueKeyViolations.get('Name').has('s-4')).toBe(true);
             expect(uniqueKeyViolations.get('Name').get('s-4')).toEqual(List<number>([4, 5]));
-            const errors = editorModel.getValidationErrors(queryGridModel, 'Name');
+            const errors = editorModel.getValidationErrors(dataModel, 'Name');
             expect(errors).toHaveLength(2);
             expect(errors[0].indexOf('Duplicate')).toBeGreaterThanOrEqual(0);
             expect(errors[1].indexOf('Duplicate')).toBeGreaterThanOrEqual(0);
 
-            const ciUniqueKeyViolations = editorModel.validateData(queryGridModel, 'Description').uniqueKeyViolations;
+            const ciUniqueKeyViolations = editorModel.validateData(dataModel, 'Description').uniqueKeyViolations;
             // Check whitespace trimmed when detecting duplicates
             expect(ciUniqueKeyViolations.get('Description').has('spacedupe')).toBe(true);
             expect(ciUniqueKeyViolations.get('Description').get('spacedupe')).toEqual(List<number>([2, 3]));
             // check case insensitivity when detecting duplicates
             expect(ciUniqueKeyViolations.get('Description').has('caseinsensitive')).toBe(true);
             expect(ciUniqueKeyViolations.get('Description').get('caseinsensitive')).toEqual(List<number>([4, 5]));
-            const ciErrors = editorModel.getValidationErrors(queryGridModel, 'Description');
+            const ciErrors = editorModel.getValidationErrors(dataModel, 'Description');
             expect(ciErrors[0].indexOf('Duplicate')).toBeGreaterThanOrEqual(0);
             expect(ciErrors[1].indexOf('Duplicate')).toBeGreaterThanOrEqual(0);
         });
@@ -491,22 +475,19 @@ describe('EditorModel', () => {
                 selectionCells: [],
             };
             const editorModel = new EditorModel(editableGridData);
-            const queryGridModel = new QueryGridModel({
-                schema: schemaQ.schemaName,
-                query: schemaQ.queryName,
-                id: 'insert-samples|samples/sample set 2',
-                queryInfo: QueryInfo.fromJSON(sampleSet2QueryInfo),
-                editable: true,
-                data: Map<any, Map<string, any>>({
-                    '1': Map<string, any>(),
-                    '2': Map<string, any>(),
-                    '3': Map<string, any>(),
-                    '4': Map<string, any>(),
-                    '5': Map<string, any>(),
-                }),
-                dataIds: List<any>(['1', '2', '3', '4', '5']),
-            });
-            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(queryGridModel, 'Name');
+            const dataModel = makeTestQueryModel(
+                schemaQ,
+                QueryInfo.fromJSON(sampleSet2QueryInfo),
+                {
+                    '1': {},
+                    '2': {},
+                    '3': {},
+                    '4': {},
+                    '5': {},
+                },
+                ['1', '2', '3', '4', '5']
+            );
+            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(dataModel, 'Name');
             expect(missingRequired.size).toBe(2);
             expect(missingRequired.has('Name')).toBe(true);
             expect(missingRequired.get('Name').size).toBe(1);
@@ -522,7 +503,7 @@ describe('EditorModel', () => {
             expect(uniqueKeyViolations.get('Name').get('s-2')).toEqual(List<number>([1, 2]));
             expect(uniqueKeyViolations.get('Name').has('s-4')).toBe(true);
             expect(uniqueKeyViolations.get('Name').get('s-4')).toEqual(List<number>([4, 5]));
-            const errors = editorModel.getValidationErrors(queryGridModel, 'Name');
+            const errors = editorModel.getValidationErrors(dataModel, 'Name');
             expect(errors).toHaveLength(3);
         });
 

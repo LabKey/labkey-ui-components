@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 import { AuditBehaviorTypes, Filter, Query, Utils } from '@labkey/api';
-import { List, Map, OrderedMap, Record } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
 
 import { immerable } from 'immer';
 
-import { getEditorModel } from '../../global';
-import { gridShowError } from '../../actions';
 import {
     capitalizeFirstChar,
     caseInsensitive,
+    EditorModel,
     generateId,
     insertRows,
     InsertRowsResponse,
     QueryColumn,
-    QueryGridModel,
     QueryInfo,
+    QueryModel,
     SampleCreationType,
     SchemaQuery,
     SCHEMAS,
@@ -404,17 +403,9 @@ export class EntityIdCreationModel extends Record({
         return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 
-    postEntityGrid(queryGridModel: QueryGridModel, extraColumnsToInclude?: QueryColumn[]): Promise<InsertRowsResponse> {
-        const editorModel = getEditorModel(queryGridModel.getId());
-        if (!editorModel) {
-            gridShowError(queryGridModel, {
-                message: 'Grid does not expose an editor. Ensure the grid is properly initialized for editing.',
-            });
-            return;
-        }
-
+    postEntityGrid(dataModel: QueryModel, editorModel: EditorModel, extraColumnsToInclude?: QueryColumn[]): Promise<InsertRowsResponse> {
         const rows = editorModel
-            .getRawData(queryGridModel, false)
+            .getRawDataFromGridData(fromJS(dataModel.rows), fromJS(dataModel.orderedRows), dataModel.queryInfo, false)
             .valueSeq()
             .reduce((rows, row) => {
                 let map = row.toMap();

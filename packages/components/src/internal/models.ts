@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Iterable, List, Map, Record, Set } from 'immutable';
+import { fromJS, Iterable, List, Map, Record, Set } from 'immutable';
 
 import {
     AppURL,
@@ -22,6 +22,7 @@ import {
     QueryColumn,
     QueryGridModel,
     QueryInfo,
+    QueryModel,
     resolveSchemaQuery,
     SchemaQuery,
     ViewInfo,
@@ -52,7 +53,6 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
 
 export type PropsInitializer = () => IQueryGridModel;
 
-// TODO: Move to QueryGridModel.ts
 /**
  * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
  * @param gridId
@@ -493,44 +493,29 @@ export class EditorModel
         return rawData;
     }
 
-    getRawData(
-        model: QueryGridModel,
-        displayValues = true,
-        forUpdate = false,
-        readOnlyColumns?: List<string>
-    ): List<Map<string, any>> {
-        return this.getRawDataFromGridData(
-            model.data,
-            model.dataIds,
-            model.queryInfo,
-            displayValues,
-            forUpdate,
-            readOnlyColumns
-        );
-    }
-
     /**
      * Determines which rows in the grid have missing required fields, which sets of rows have combinations
      * of key fields that are duplicated, and, optionally, which sets of rows have duplicated values for a
      * given field key.
      *
-     * @param queryGridModel the model whose data we are validating
+     * @param queryModel the model whose data we are validating
      * @param uniqueFieldKey optional (non-key) field that should be unique.
      */
     validateData(
-        queryGridModel: QueryGridModel,
+        queryModel: QueryModel,
         uniqueFieldKey?: string
     ): {
         uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
         missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
     } {
-        const columns = queryGridModel.getInsertColumns();
+        const data = fromJS(queryModel.rows);
+        const columns = queryModel.queryInfo.getInsertColumns();
         let uniqueFieldCol;
         const keyColumns = columns.filter(column => column.isKeyField);
         let keyValues = Map<number, List<string>>(); // map from row number to list of key values on that row
         let uniqueKeyMap = Map<string, List<number>>(); // map from value to rows with that value
         let missingRequired = Map<string, List<number>>(); // map from column caption to list of rows missing a value for that column
-        for (let rn = 0; rn < queryGridModel.data.size; rn++) {
+        for (let rn = 0; rn < data.size; rn++) {
             columns.forEach((col, cn) => {
                 const values = this.getValue(cn, rn);
                 if (col.required) {
@@ -607,8 +592,8 @@ export class EditorModel
         };
     }
 
-    getValidationErrors(queryGridModel: QueryGridModel, uniqueFieldKey?: string): string[] {
-        const { uniqueKeyViolations, missingRequired } = this.validateData(queryGridModel, uniqueFieldKey);
+    getValidationErrors(queryModel: QueryModel, uniqueFieldKey?: string): string[] {
+        const { uniqueKeyViolations, missingRequired } = this.validateData(queryModel, uniqueFieldKey);
         let errors = [];
         if (!uniqueKeyViolations.isEmpty()) {
             const messages = uniqueKeyViolations.reduce((keyMessages, valueMap, fieldNames) => {
@@ -759,27 +744,5 @@ export class EditorModel
 
     isRowEmpty(editedRow: Map<string, any>): boolean {
         return editedRow.find(value => value !== undefined) === undefined;
-    }
-
-    getModifiedData(
-        model: QueryGridModel,
-        readOnlyColumns?: List<string>
-    ): { newRows: List<Map<string, any>>; updatedRows: List<Map<string, any>> } {
-        // find all the rows where the dataId has a prefix of GRID_EDIT_INDEX
-        const rawData: List<Map<string, any>> = this.getRawData(model, true, false, readOnlyColumns);
-        let updatedRows = List<Map<string, any>>();
-        let newRows = List<Map<string, any>>();
-        model.dataIds.forEach((id, index) => {
-            const editedRow = rawData.get(index);
-            if (id.toString().indexOf(GRID_EDIT_INDEX) === 0) {
-                if (!this.isRowEmpty(editedRow)) newRows = newRows.push(editedRow);
-            } else if (this.isModified(editedRow, model.data.get(id))) {
-                updatedRows = updatedRows.push(editedRow.merge(model.getPkData(id)));
-            }
-        });
-        return {
-            newRows,
-            updatedRows,
-        };
     }
 }

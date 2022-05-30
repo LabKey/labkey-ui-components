@@ -51,7 +51,6 @@ import {
     CellValues,
     DataViewInfo,
     EditorModel,
-    getStateQueryGridModel,
     ValueDescriptor,
     VisualizationConfigModel,
 } from './models';
@@ -257,7 +256,7 @@ export async function getLookupValueDescriptors(
         if (col.isPublicLookup()) {
             ids.forEach(id => {
                 const row = rows.get(id);
-                const value = row.get(col.fieldKey);
+                const value = row?.get(col.fieldKey);
                 if (Utils.isNumber(value)) {
                     values = values.add(value);
                 } else if (List.isList(value)) {
@@ -1016,63 +1015,6 @@ function removeAll(selected: List<string>, toDelete: List<string>): List<string>
     return selected;
 }
 
-/**
- * Selects all the items on the current page of the grid.
- */
-function setGridSelected(
-    model: QueryGridModel,
-    checked: boolean,
-    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
-): void {
-    const { dataIds } = model;
-    const modelId = model.getId();
-
-    let ids: string[];
-    if (dataIds && dataIds.size) {
-        ids = dataIds.toArray();
-    }
-
-    setSelected(modelId, checked, ids, model.containerPath).then(response => {
-        const dataIds = model.dataIds;
-        let selected = model.selectedIds;
-
-        if (checked) {
-            dataIds.forEach(id => {
-                if (selected.indexOf(id) < 0) {
-                    selected = selected.push(id);
-                }
-            });
-        } else {
-            selected = removeAll(selected, dataIds);
-        }
-
-        const updatedModel = updateQueryGridModel(model, {
-            selectedIds: selected,
-            selectedQuantity: selected.size,
-            selectedState: checked ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE,
-        });
-
-        if (onSelectionChange) {
-            onSelectionChange(updatedModel, undefined, checked);
-        }
-    });
-}
-
-export function unselectAll(model: QueryGridModel): void {
-    clearSelected(model.getId(), undefined, undefined, undefined, model.containerPath)
-        .then(() => {
-            updateQueryGridModel(model, {
-                selectedIds: List<string>(),
-                selectedQuantity: 0,
-                selectedState: GRID_CHECKBOX_OPTIONS.NONE,
-            });
-        })
-        .catch(err => {
-            const error = err ? err : { message: 'Something went wrong' };
-            gridShowError(model, error);
-        });
-}
-
 interface ISelectionResponse {
     resolved: boolean;
     schemaQuery?: SchemaQuery;
@@ -1725,25 +1667,6 @@ function parsePaste(value: string): IParsePastePayload {
     };
 }
 
-export function changeColumnForQueryGridModel(
-    model: QueryGridModel,
-    existingFieldKey: string,
-    newQueryColumn: QueryColumn
-): EditorModel {
-    const originalEditorModel = getEditorModel(model.getId());
-    const { editorModelChanges, data, queryInfo } = changeColumn(
-        originalEditorModel,
-        model.queryInfo,
-        model.data,
-        existingFieldKey,
-        newQueryColumn
-    );
-
-    const updatedEditorModel = updateEditorModel(originalEditorModel, editorModelChanges);
-    updateQueryGridModel(model, { data, queryInfo });
-    return updatedEditorModel;
-}
-
 export function changeColumn(
     editorModel: EditorModel,
     queryInfo: QueryInfo,
@@ -1816,20 +1739,6 @@ export function changeColumn(
     };
 }
 
-export function removeColumnForQueryGridModel(model: QueryGridModel, fieldKey: string): EditorModel {
-    const originalEditorModel = getEditorModel(model.getId());
-    const { editorModelChanges, data, queryInfo } = removeColumn(
-        originalEditorModel,
-        model.queryInfo,
-        model.data,
-        fieldKey
-    );
-
-    const updatedEditorModel = updateEditorModel(originalEditorModel, editorModelChanges);
-    updateQueryGridModel(model, { data, queryInfo });
-    return updatedEditorModel;
-}
-
 export function removeColumn(
     editorModel: EditorModel,
     queryInfo: QueryInfo,
@@ -1897,25 +1806,6 @@ export function removeColumn(
 interface GridData {
     data: Map<any, Map<string, any>>;
     dataKeys: List<any>;
-}
-
-export function addColumnsForQueryGridModel(
-    model: QueryGridModel,
-    queryColumns: OrderedMap<string, QueryColumn>,
-    fieldKey?: string
-): EditorModel {
-    const originalEditorModel = getEditorModel(model.getId());
-    const { editorModelChanges, data, queryInfo } = addColumns(
-        originalEditorModel,
-        model.queryInfo,
-        model.data,
-        queryColumns,
-        fieldKey
-    );
-
-    const updatedEditorModel = updateEditorModel(originalEditorModel, editorModelChanges);
-    updateQueryGridModel(model, { data, queryInfo });
-    return updatedEditorModel;
 }
 
 export interface EditorModelUpdates {
@@ -2415,58 +2305,11 @@ async function prepareUpdateRowDataFromBulkForm(
 }
 
 /**
- * Create a QueryGridModel for this assay's Data grid, filtered to samples for the provided `value`
- * iff the assay design has one or more sample lookup columns.
- *
- * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
- * provide a filter for the sample column or columns defined in the assay design.
- *
- * If you're using a QueryModel see "createQueryConfigFilteredBySample()".
- */
-export function createQueryGridModelFilteredBySample(
-    model: AssayDefinitionModel,
-    gridId: string,
-    value,
-    singleFilter: Filter.IFilterType,
-    whereClausePart: (fieldKey, value) => string,
-    useLsid?: boolean,
-    omitSampleCols?: boolean,
-    singleFilterValue?: any
-): QueryGridModel {
-    const sampleColumns = model.getSampleColumnFieldKeys();
-
-    if (sampleColumns.isEmpty()) {
-        return undefined;
-    }
-
-    return getStateQueryGridModel(gridId, SchemaQuery.create(model.protocolSchemaName, 'Data'), () => {
-        const filter = model.createSampleFilter(
-            sampleColumns,
-            value,
-            singleFilter,
-            whereClausePart,
-            useLsid,
-            singleFilterValue
-        );
-
-        return {
-            baseFilters: List([filter]),
-            isPaged: true,
-            omittedColumns: omitSampleCols ? sampleColumns : List<string>(),
-            title: model.name,
-            urlPrefix: model.name,
-        };
-    });
-}
-
-/**
  * Create a QueryConfig for this assay's Data grid, filtered to samples for the provided `value`
  * iff the assay design has one or more sample lookup columns.
  *
  * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
  * provide a filter for the sample column or columns defined in the assay design.
- *
- * If you're using a QueryGridModel see "createQueryGridModelFilteredBySample()".
  */
 export function createQueryConfigFilteredBySample(
     model: AssayDefinitionModel,

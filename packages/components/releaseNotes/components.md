@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* EntityInsertPanel refactor to use QueryModel based EditableGridPanel
+
 ### version 2.177.0
 *Released*: 27 May 2022
 * Item 10374: Begin adding support for customizing views in our application

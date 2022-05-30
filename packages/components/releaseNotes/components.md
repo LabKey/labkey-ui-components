@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 45451: Issue 45451: Grid drop down menu (page size, views) does not retract after selection
+
 ### version 2.177.0
 *Released*: 27 May 2022
 * Item 10374: Begin adding support for customizing views in our application

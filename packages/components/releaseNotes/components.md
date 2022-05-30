@@ -1,6 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+* Issue 45270: Show settings page to all admins
+
 ### version 2.177.0
 *Released*: 27 May 2022
 * Item 10374: Begin adding support for customizing views in our application

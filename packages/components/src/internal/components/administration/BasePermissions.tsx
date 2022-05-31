@@ -67,17 +67,20 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const loadPolicy = useCallback(async () => {
         setError(undefined);
         setIsDirty(false);
-        setLoadingState(LoadingState.LOADING);
+        if (user.isAppAdmin()) {
+            setLoadingState(LoadingState.LOADING);
 
-        try {
-            const policy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
-            setPolicy(policy_);
-        } catch (e) {
-            setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
+            try {
+                const policy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
+                setPolicy(policy_);
+            }
+            catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
+            }
         }
 
         setLoadingState(LoadingState.LOADED);
-    }, [api.security, containerId, inactiveUsersById, principalsById, setIsDirty]);
+    }, [api.security, containerId, inactiveUsersById, principalsById, setIsDirty, user]);
 
     useEffect(() => {
         loadPolicy();
@@ -130,7 +133,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
         >
             {!loaded && <LoadingSpinner />}
             {!!error && <Alert>{error}</Alert>}
-            {loaded && !error && (
+            {loaded && !error && user.isAppAdmin() && (
                 <PermissionAssignments
                     {...props}
                     {...rolesProps}

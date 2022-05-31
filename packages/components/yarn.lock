@@ -1511,10 +1511,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@labkey/api@1.12.1":
-  version "1.12.1"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.12.1.tgz#78dc000911278966e6e652218b71bb50218c5ab2"
-  integrity sha1-eNwACREniWbm5lIhi3G7UCGMWrI=
+"@labkey/api@1.12.2-settingsForAllAdmins.0":
+  version "1.12.2-settingsForAllAdmins.0"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.12.2-settingsForAllAdmins.0.tgz#85de831fe6021c3a548cd1ac78750c83b06d1cda"
+  integrity sha1-hd6DH+YCHDpUjNGseHUMg7BtHNo=
 
 "@labkey/build@6.1.3":
   version "6.1.3"

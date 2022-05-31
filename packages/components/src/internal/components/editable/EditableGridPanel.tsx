@@ -23,33 +23,14 @@ interface Props extends SharedEditableGridPanelProps {
     ) => void;
 }
 
-// // const headers = [...updateColumns.map(col => col.caption)];
-// function formatExportData(data: Array<Array<Map<string, any>>>, readOnlyColumns: List<QueryColumn>): Array<Array<any>> {
-//     let headers = [];
-//     const editedRows = Map<string, Array<any>>();
-//     for (let i=0; i < data.length; i++) {
-//         const columns = ;
-//         headers = [...headers, ...columns?.map(col => col.caption).toArray()];
-//         data[i].flatMap(row => {
-//             const rowId = row.get('RowId');
-//             const vals = editedRows[rowId] ?? [];
-//             columns.forEach( (c) => {
-//                 vals.push(row.get(c.fieldKey));
-//             });
-//
-//             editedRows[rowId] = vals;
-//         });
-//     }
-//
-//     const v = []; //[...editedRows];
-//
-//     return [headers, v];
-// }
-
-const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>): UtilsDOM.TextTableForm => {
+const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>, activeModel: QueryModel): UtilsDOM.TextTableForm => {
     const config = {
         rows: exportData,
         fileNamePrefix: filename,
+        queryinfo: {
+            schema: activeModel.schemaName,
+            query: activeModel.queryName,
+        },
     } as UtilsDOM.TextTableForm;
 
     switch (exportType) {
@@ -65,27 +46,30 @@ const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, export
     return config;
 };
 
-function exportEditedData(exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>): void {
+function exportEditedData(exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>, activeModel: QueryModel): void {
     if (EXPORT_TYPES.EXCEL === exportType) {
         const data = {
             fileName: filename + '.xlsx',
-                sheets: [{name: 'data', data: exportData }]
+            sheets: [{name: 'data', data: exportData }],
+            queryinfo: {
+                schema: activeModel.schemaName,
+                query: activeModel.queryName,
+            },
         };
         UtilsDOM.convertToExcel(data);
         return;
     }
 
-    const config = getTableExportConfig(exportType, filename, exportData);
+    const config = getTableExportConfig(exportType, filename, exportData, activeModel);
     UtilsDOM.convertToTable(config);
 }
 
 // Should this be coming from the props (higher components)?
-const exportHandler = (exportType: EXPORT_TYPES, models: Array<QueryModel>, editorModels: Array<EditorModel>, readOnlyColumns: List<string>, getUpdateColumns: (tabId?: number) => List<QueryColumn> ): void => {
-    let headings = Map<string, string>().asMutable();
-    let editorData = Map<string, Map<string,any>>();
-    for (let i=0; i < models.length; i++) {
-        const queryModel = models[i];
-        const tabData = editorModels[i]
+const exportHandler = (exportType: EXPORT_TYPES, models: Array<QueryModel>, editorModels: Array<EditorModel>, readOnlyColumns: List<string>, getUpdateColumns: (tabId?: number) => List<QueryColumn>, activeTab: number ): void => {
+    const headings = Map<string, string>().asMutable();
+    const editorData = Map<string, Map<string,any>>().asMutable();
+    models.forEach((queryModel, idx) => {
+        const tabData = editorModels[idx]
             .getRawDataFromGridData(
                 fromJS(queryModel.rows),
                 fromJS(queryModel.orderedRows),
@@ -101,20 +85,20 @@ const exportHandler = (exportType: EXPORT_TYPES, models: Array<QueryModel>, edit
 
         tabData.forEach((row) => {
             const rowId = row.get('RowId');
-            let draftRow = editorData.get(rowId) ?? Map<string, any>();
+            const draftRow = editorData.get(rowId) ?? Map<string, any>().asMutable();
             updateColumns.forEach(col => {
-                draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
+                draftRow.set(col.fieldKey, row.get(col.fieldKey));
             });
 
-            editorData = editorData.set(rowId, draftRow);
+            editorData.set(rowId, draftRow);
         });
-    }
+    });
 
     const rows = [];
     editorData.forEach(rowMap => rows.push([...rowMap.toArray().values()]));
     const exportData = [headings.toArray(), ...rows];
 
-    exportEditedData(exportType, 'data', exportData);
+    exportEditedData(exportType, 'data', exportData, models[activeTab]);
 };
 
 /**
@@ -177,15 +161,15 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
 
     const csvExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.CSV, models, editorModels, readOnlyColumns, getUpdateColumns);
-    }, [models, editorModels, activeModel, activeEditorModel, readOnlyColumns, getUpdateColumns]);
+        exportHandler(EXPORT_TYPES.CSV, models, editorModels, readOnlyColumns, getUpdateColumns, activeTab);
+    }, [models, editorModels, activeTab, activeEditorModel, readOnlyColumns, getUpdateColumns]);
 
     const tsvExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.TSV, models, editorModels, readOnlyColumns, getUpdateColumns);
-    }, [models, editorModels, activeModel, activeEditorModel, readOnlyColumns, getUpdateColumns]);
+        exportHandler(EXPORT_TYPES.TSV, models, editorModels, readOnlyColumns, getUpdateColumns, activeTab);
+    }, [models, editorModels, activeTab, activeEditorModel, readOnlyColumns, getUpdateColumns]);
 
     const excelExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.EXCEL, models, editorModels, readOnlyColumns, getUpdateColumns);
+        exportHandler(EXPORT_TYPES.EXCEL, models, editorModels, readOnlyColumns, getUpdateColumns, activeTab);
     }, [models, editorModels, activeTab, activeModel, activeEditorModel, readOnlyColumns, getUpdateColumns]);
 
     const onExport = {

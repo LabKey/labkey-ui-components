@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * EntityInsertPanel refactor to use QueryModel based EditableGridPanel
 
+### version 2.177.1
+*Released*: 31 May 2022
+* Issue 45451: Grid drop down menu (page size, views) does not retract after selection
+
 ### version 2.177.0
 *Released*: 27 May 2022
 * Item 10374: Begin adding support for customizing views in our application

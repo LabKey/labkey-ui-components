@@ -69,7 +69,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         onFindByIds,
         onSignIn,
         onSignOut,
-        searchPlaceholder,
+        searchPlaceholder = 'Search for samples, assays, ...',
         showFolderMenu,
         showNavMenu,
         showNotifications,
@@ -92,7 +92,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                 <nav className="navbar navbar-container test-loc-nav-header">
                     <div className="container">
                         <div className="row">
-                            <div className="navbar-left col-xs-8 col-md-6">
+                            <div className="navbar-left col-xs-8 col-md-7">
                                 <span className="navbar-item pull-left">{brand}</span>
                                 {showFolderMenu && (
                                     <span className="navbar-item">
@@ -105,7 +105,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     </span>
                                 )}
                             </div>
-                            <div className="navbar-right col-xs-4 col-md-6">
+                            <div className="navbar-right col-xs-4 col-md-5">
                                 {!!user && (
                                     <div className="navbar-item pull-right">
                                         <UserMenu

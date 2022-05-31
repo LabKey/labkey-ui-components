@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.177.2
+*Released*: 31 May 2022
+* Issue 44707
+  * Don't override background-color or text shadow in print styles
+
 ### version 2.177.1
 *Released*: 31 May 2022
 * Issue 45451: Grid drop down menu (page size, views) does not retract after selection

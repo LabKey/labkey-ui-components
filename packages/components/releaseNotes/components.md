@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.177.3
+*Released*: 31 May 2022
 * Issue 45529: Adjust width of `.container` to use more of the screen
 * Issue 45290: Adjust width of search box in NavBar for better display (with lots of notifications) in medium media
 * Issue 45290: Use relative positioning for search-icon

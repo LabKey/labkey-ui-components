@@ -4,8 +4,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 45529: Adjust width of `.container` to use more of the screen
-* Issue 45290: Adjust width of items in NavBar for better display (with lots of notifications) in medium media
+* Issue 45290: Adjust width of search box in NavBar for better display (with lots of notifications) in medium media
 * Issue 45290: Use relative positioning for search-icon
+
+### version 2.177.2
+*Released*: 31 May 2022
+* Issue 44707
+  * Don't override background-color or text shadow in print styles
+
+### version 2.177.1
+*Released*: 31 May 2022
+* Issue 45451: Grid drop down menu (page size, views) does not retract after selection
 
 ### version 2.177.0
 *Released*: 27 May 2022

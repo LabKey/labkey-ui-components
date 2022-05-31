@@ -58,17 +58,14 @@ export class PageMenu extends PureComponent<Props> {
                     <MenuItem header className="submenu-footer">
                         {disabled ? '...' : `${pageCount} Total Pages`}
                     </MenuItem>
-                    {showPageSizeMenu && (
-                        <>
-                            <MenuItem divider />
-                            <MenuItem header>Page Size</MenuItem>
-                            {pageSizes?.map(size => (
-                                <MenuItem key={size} active={size === pageSize} onClick={() => this.setPageSize(size)}>
-                                    {size}
-                                </MenuItem>
-                            ))}
-                        </>
-                    )}
+                    {showPageSizeMenu && <MenuItem divider />}
+                    {showPageSizeMenu && <MenuItem header>Page Size</MenuItem>}
+                    {showPageSizeMenu &&
+                        pageSizes?.map(size => (
+                            <MenuItem key={size} active={size === pageSize} onClick={() => this.setPageSize(size)}>
+                                {size}
+                            </MenuItem>
+                        ))}
                 </DropdownButton>
             </Tip>
         );

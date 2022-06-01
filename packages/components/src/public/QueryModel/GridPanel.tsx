@@ -19,6 +19,7 @@ import {
     QueryConfig,
     QueryInfo,
     QuerySort,
+    useServerContext,
     ViewInfo,
 } from '../..';
 import { GRID_SELECTION_INDEX } from '../../internal/constants';
@@ -55,7 +56,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     allowSorting?: boolean;
     allowFiltering?: boolean;
     allowViewCustomization?: boolean;
-    allowSavingDefaultView?: boolean;
     asPanel?: boolean;
     advancedExportOptions?: { [key: string]: any };
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -254,21 +254,20 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 }
 
 interface GridTitleProps {
-    displayTitle?: string;
+    title?: string;
     model: QueryModel;
-    view: ViewInfo;
     actions: Actions;
     allowSelections: boolean;
     allowViewCustomization: boolean;
-    allowSavingDefaultView?: boolean;
     onRevertView?: () => void;
     onSaveView?: () => void;
     onSaveNewView?: () => void;
+    view?: ViewInfo;
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
     const {
-        displayTitle,
+        title,
         view,
         model,
         onRevertView,
@@ -276,15 +275,34 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         onSaveNewView,
         actions,
         allowSelections,
-        allowViewCustomization,
-        allowSavingDefaultView,
+        allowViewCustomization
     } = props;
-    const { viewName } = model;
+    const { queryInfo, viewName } = model;
 
-    const isEdited = view?.session && !view?.hidden;
-    const showSave = allowViewCustomization && isEdited && view?.savable;
-    const showRevert = allowViewCustomization && isEdited && view?.revertable;
-    const canSaveCurrent = (!viewName && allowSavingDefaultView) || !!viewName;
+    let displayTitle = title;
+    let currentView = view;
+
+    if (!currentView) {
+        if (viewName) {
+            currentView = queryInfo.views.get(viewName.toLowerCase());
+            if (!currentView?.hidden) {
+                const label = currentView?.label ?? viewName;
+                displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
+            }
+        }
+        else {
+            currentView = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
+        }
+    }
+
+    const isEdited = currentView?.session && !currentView?.hidden;
+    const showSave = allowViewCustomization && isEdited && currentView?.savable;
+    const showRevert = allowViewCustomization && isEdited && currentView?.revertable;
+    let canSaveCurrent = false;
+    if (!!viewName)
+        canSaveCurrent = true;
+    else if (isEdited)
+        canSaveCurrent = useServerContext().user.hasAdminPermission();
 
     if (!displayTitle && !isEdited) {
         return null;
@@ -916,16 +934,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
 
         const gridEmptyText = getEmptyText?.(model) ?? emptyText;
-        let displayTitle = title;
         let view;
         if (model.viewName) {
             view = queryInfo.views.get(model.viewName.toLowerCase());
-            if (!view?.hidden) {
-                const label = view?.label ?? model.viewName;
-                displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
-            }
         } else {
-            view = queryInfo.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
+            view = queryInfo?.views?.get(ViewInfo.DEFAULT_NAME.toLowerCase());
         }
 
         return (
@@ -934,7 +947,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     <GridTitle
                         model={model}
                         view={view}
-                        displayTitle={displayTitle}
+                        title={title}
                         actions={actions}
                         allowSelections={allowSelections}
                         allowViewCustomization={allowViewCustomization}

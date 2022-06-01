@@ -13,18 +13,18 @@ import { isSubfolderDataEnabled } from '../../internal/app/utils';
 
 export interface Props {
     currentView: ViewInfo;
+    gridLabel: string;
     onCancel: () => void;
-    onConfirmSave?: (viewName, canInherit, replace) => Promise<any>;
-    afterSave?: (viewName: string) => void;
-    viewLabel?: string;
+    onConfirmSave: (viewName, canInherit, replace) => Promise<any>;
+    afterSave: (viewName: string) => void;
 }
 
 export const SaveViewModal: FC<Props> = memo(props => {
-    const { onConfirmSave, currentView, onCancel, afterSave, viewLabel } = props;
+    const { onConfirmSave, currentView, onCancel, afterSave, gridLabel } = props;
 
-    const [viewName, setViewName] = useState<string>(currentView?.name);
-    const [isDefaultView, setIsDefaultView] = useState<boolean>();
-    const [canInherit, setCanInherit] = useState<boolean>();
+    const [viewName, setViewName] = useState<string>(currentView?.isDefault ? '' : currentView?.name);
+    const [isDefaultView, setIsDefaultView] = useState<boolean>(currentView?.isDefault);
+    const [canInherit, setCanInherit] = useState<boolean>(currentView?.inherit);
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
 
@@ -35,8 +35,8 @@ export const SaveViewModal: FC<Props> = memo(props => {
         setIsSubmitting(true);
 
         try {
-            const isCurrentView = viewName?.toLowerCase() === currentView?.name?.toLowerCase();
-            const name = isDefaultView ? '' : viewName;
+            const name = isDefaultView ? '' : viewName.trim();
+            const isCurrentView = name?.toLowerCase() === currentView?.name?.toLowerCase();
             await onConfirmSave(name, canInherit, isCurrentView);
             afterSave(name);
         } catch (error) {
@@ -65,12 +65,13 @@ export const SaveViewModal: FC<Props> = memo(props => {
                     <div className="form-group">
                         <div className="bottom-spacing">
                             Sort order and filters are not saved as part of custom grid views. Once saved, this view
-                            will be available on {viewLabel ?? currentView.name} grids throughout the application. Learn
+                            will be available for all {gridLabel} grids throughout the application. Learn
                             more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                         </div>
                         <div className="bottom-spacing">
                             <input
-                                placeholder="Give this search a name"
+                                name="gridViewName"
+                                placeholder="Grid View Name"
                                 className="form-control"
                                 value={viewName}
                                 onChange={onViewNameChange}
@@ -83,7 +84,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 <input
                                     className="form-check-input"
                                     type="checkbox"
-                                    id="setDefaultView"
+                                    name="setDefaultView"
                                     onChange={toggleDefaultView}
                                     checked={isDefaultView}
                                 />
@@ -95,7 +96,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 <input
                                     className="form-check-input"
                                     type="checkbox"
-                                    id="setInherit"
+                                    name="setInherit"
                                     onChange={toggleInherit}
                                     checked={canInherit}
                                 />

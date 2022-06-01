@@ -925,7 +925,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
             }
         } else {
-            view = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
+            view = queryInfo.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
         }
 
         return (
@@ -1010,7 +1010,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 )}
                 {showSaveViewModal && (
                     <SaveViewModal
-                        viewLabel={displayTitle}
+                        gridLabel={queryInfo?.schemaQuery?.queryName}
                         currentView={view}
                         onCancel={this.closeSaveViewModal}
                         onConfirmSave={this.onSaveView}

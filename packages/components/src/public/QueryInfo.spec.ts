@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, OrderedMap } from 'immutable';
+import { fromJS, List, OrderedMap } from 'immutable';
 
 import sampleSetQueryInfo from '../test/data/sampleSet-getQueryDetails.json';
 import sampleSet3QueryColumn from '../test/data/SampleSet3Parent-QueryColumn.json';
@@ -21,6 +21,7 @@ import nameExpSetQueryColumn from '../test/data/NameExprParent-QueryColumn.json'
 
 import { QueryInfo } from './QueryInfo';
 import { QueryColumn } from './QueryColumn';
+import { ViewInfo } from '../internal/ViewInfo';
 
 describe('getColumnFieldKeys', () => {
     test('missing params', () => {
@@ -227,5 +228,46 @@ describe('QueryInfo', () => {
             expect((qi.set('insertUrlDisabled', true) as QueryInfo).getShowInsertNewButton()).toBe(false);
             expect((qi.set('showInsertNewButton', false) as QueryInfo).getShowInsertNewButton()).toBe(false);
         });
+    });
+
+    describe('getView', () => {
+        let queryInfo = QueryInfo.create({
+            views: fromJS({
+                [ViewInfo.DEFAULT_NAME.toLowerCase()]: ViewInfo.create({ name: 'default' }),
+                [ViewInfo.DETAIL_NAME.toLowerCase()]: ViewInfo.create({ name: 'detail' }),
+                view1: ViewInfo.create({ name: 'view1' }),
+                view2: ViewInfo.create({ name: 'view2' }),
+            }),
+        });
+
+        expect(queryInfo.getView(undefined)?.name).toBe(undefined);
+        expect(queryInfo.getView(undefined, true)?.name).toBe('default');
+        expect(queryInfo.getView('')?.name).toBe(undefined);
+        expect(queryInfo.getView('', true)?.name).toBe('default');
+
+        expect(queryInfo.getView('bogus')?.name).toBe(undefined);
+        expect(queryInfo.getView('bogus', false)?.name).toBe(undefined);
+        expect(queryInfo.getView('bogus', true)?.name).toBe('default');
+
+        expect(queryInfo.getView('view1')?.name).toBe('view1');
+        expect(queryInfo.getView('view2')?.name).toBe('view2');
+        expect(queryInfo.getView('view2', true)?.name).toBe('view2');
+
+        expect(queryInfo.getView(ViewInfo.DEFAULT_NAME)?.name).toBe('default');
+        expect(queryInfo.getView('~~default~~')?.name).toBe('default');
+
+        expect(queryInfo.getView(ViewInfo.DETAIL_NAME)?.name).toBe('detail');
+        expect(queryInfo.getView('~~details~~')?.name).toBe('detail');
+
+        queryInfo = QueryInfo.create({
+            views: fromJS({
+                [ViewInfo.DEFAULT_NAME.toLowerCase()]: ViewInfo.create({ name: 'default' }),
+                [ViewInfo.DETAIL_NAME.toLowerCase()]: ViewInfo.create({ name: 'detail' }),
+                [ViewInfo.BIO_DETAIL_NAME.toLowerCase()]: ViewInfo.create({ name: 'LKB detail' }),
+            }),
+        });
+        expect(queryInfo.getView(ViewInfo.BIO_DETAIL_NAME)?.name).toBe('LKB detail');
+        expect(queryInfo.getView(ViewInfo.DETAIL_NAME)?.name).toBe('LKB detail');
+        expect(queryInfo.getView('~~details~~')?.name).toBe('LKB detail');
     });
 });

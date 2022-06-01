@@ -1,17 +1,20 @@
 import React from 'react';
 
+import { ModalBody } from 'react-bootstrap';
+
+import { ViewInfo } from '../../internal/ViewInfo';
+
+import { mountWithServerContext } from '../../internal/testHelpers';
+import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../internal/userFixtures';
+
 import { SaveViewModal } from './SaveViewModal';
-import { ViewInfo } from "../../internal/ViewInfo";
-import {mountWithServerContext} from "../../internal/testHelpers";
-import {TEST_USER_APP_ADMIN, TEST_USER_EDITOR} from "../../internal/userFixtures";
-import {ModalBody} from "react-bootstrap";
 
 beforeAll(() => {
     LABKEY.moduleContext = {
         query: {
-            isSubfolderDataEnabled: true
-        }
-    }
+            isSubfolderDataEnabled: true,
+        },
+    };
 });
 
 describe('SaveViewModal', () => {
@@ -19,7 +22,7 @@ describe('SaveViewModal', () => {
         gridLabel: 'Blood Samples',
         onCancel: jest.fn(),
         onConfirmSave: jest.fn(),
-        afterSave: jest.fn()
+        afterSave: jest.fn(),
     };
 
     const DEFAULT_VIEW = ViewInfo.create({
@@ -27,7 +30,7 @@ describe('SaveViewModal', () => {
         filters: [],
         default: true,
         name: '',
-        inherit: true
+        inherit: true,
     });
 
     const VIEW_1 = ViewInfo.create({
@@ -36,7 +39,7 @@ describe('SaveViewModal', () => {
         default: false,
         label: 'View 1',
         name: 'View1',
-        inherit: false
+        inherit: false,
     });
 
     const VIEW_2 = ViewInfo.create({
@@ -45,22 +48,20 @@ describe('SaveViewModal', () => {
         default: false,
         label: 'View 2',
         name: 'View2',
-        inherit: true
+        inherit: true,
     });
 
     const moduleContext = {
         query: {
-            isSubfolderDataEnabled: true
+            isSubfolderDataEnabled: true,
         },
     };
 
     test('current view is default', async () => {
-        const wrapper = mountWithServerContext(
-            <SaveViewModal
-                {...DEFAULT_PROPS}
-                currentView={DEFAULT_VIEW}
-            />, { user: TEST_USER_APP_ADMIN, moduleContext }
-        );
+        const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={DEFAULT_VIEW} />, {
+            user: TEST_USER_APP_ADMIN,
+            moduleContext,
+        });
 
         expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
         expect(wrapper.find(ModalBody).text()).toContain(
@@ -74,12 +75,10 @@ describe('SaveViewModal', () => {
     });
 
     test('current view is a customized view', async () => {
-        const wrapper = mountWithServerContext(
-            <SaveViewModal
-                {...DEFAULT_PROPS}
-                currentView={VIEW_1}
-            />, { user: TEST_USER_APP_ADMIN, moduleContext }
-        );
+        const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={VIEW_1} />, {
+            user: TEST_USER_APP_ADMIN,
+            moduleContext,
+        });
 
         expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
         expect(wrapper.find(ModalBody).text()).toContain(
@@ -93,12 +92,10 @@ describe('SaveViewModal', () => {
     });
 
     test('no admin perm', async () => {
-        const wrapper = mountWithServerContext(
-            <SaveViewModal
-                {...DEFAULT_PROPS}
-                currentView={VIEW_2}
-            />, { user: TEST_USER_EDITOR, moduleContext }
-        );
+        const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={VIEW_2} />, {
+            user: TEST_USER_EDITOR,
+            moduleContext,
+        });
 
         expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
         expect(wrapper.find(ModalBody).text()).toContain(
@@ -110,5 +107,4 @@ describe('SaveViewModal', () => {
 
         wrapper.unmount();
     });
-
 });

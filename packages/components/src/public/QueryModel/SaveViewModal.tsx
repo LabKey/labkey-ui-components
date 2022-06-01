@@ -65,8 +65,8 @@ export const SaveViewModal: FC<Props> = memo(props => {
                     <div className="form-group">
                         <div className="bottom-spacing">
                             Sort order and filters are not saved as part of custom grid views. Once saved, this view
-                            will be available for all {gridLabel} grids throughout the application. Learn
-                            more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
+                            will be available for all {gridLabel} grids throughout the application. Learn more about{' '}
+                            <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                         </div>
                         <div className="bottom-spacing">
                             <input

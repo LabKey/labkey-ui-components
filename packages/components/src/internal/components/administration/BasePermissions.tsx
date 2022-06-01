@@ -26,6 +26,7 @@ import { PermissionAssignments } from '../permissions/PermissionAssignments';
 import { AppContext, useAppContext } from '../../AppContext';
 
 import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
+import { getServerContext } from '@labkey/api';
 
 interface OwnProps {
     containerId: string;
@@ -63,11 +64,14 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const { api } = useAppContext<AppContext>();
     const { user } = useServerContext();
     const loaded = !isLoading(loadingState);
+    const isRoot = getServerContext().project.rootId === containerId;
+    const showAssignments = (!isRoot && user.isAdmin) || user.isRootAdmin;
 
     const loadPolicy = useCallback(async () => {
         setError(undefined);
         setIsDirty(false);
-        if (user.isAppAdmin()) {
+
+        if (showAssignments) {
             setLoadingState(LoadingState.LOADING);
 
             try {
@@ -133,7 +137,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
         >
             {!loaded && <LoadingSpinner />}
             {!!error && <Alert>{error}</Alert>}
-            {loaded && !error && user.isAppAdmin() && (
+            {loaded && !error && showAssignments && (
                 <PermissionAssignments
                     {...props}
                     {...rolesProps}

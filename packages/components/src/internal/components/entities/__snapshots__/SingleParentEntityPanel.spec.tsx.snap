@@ -6423,6 +6423,8 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                   }
                 }
                 onRevertView={[Function]}
+                onSaveNewView={[Function]}
+                onSaveView={[Function]}
               />
               <div
                 className="grid-panel__body top-spacing"

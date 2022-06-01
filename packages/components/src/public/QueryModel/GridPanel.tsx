@@ -448,16 +448,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return this.props.model.queryInfo;
     };
 
-    getSelectDistinctOptions = (column: string, allFilters = true): Query.SelectDistinctOptions => {
+    getSelectDistinctOptions = (): Query.SelectDistinctOptions => {
         const { model } = this.props;
         return {
-            column,
+            column: undefined,
             containerFilter: model.containerFilter,
             containerPath: model.containerPath,
             schemaName: model.schemaName,
             queryName: model.queryName,
-            viewName: model.viewName,
-            filterArray: allFilters ? model.filters : model.modelFilters,
+            filterArray: model.modelFilters,
             parameters: model.queryParameters,
         };
     };
@@ -760,7 +759,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return List<number>([model.orderedRows.indexOf(lastSelectedId)]);
     }
 
-    render (): ReactNode {
+    render(): ReactNode {
         const {
             actions,
             allowSelections,
@@ -864,7 +863,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 {showFilterModalFieldKey && (
                     <GridFilterModal
                         fieldKey={showFilterModalFieldKey}
-                        selectDistinctOptions={this.getSelectDistinctOptions(undefined, false)}
+                        selectDistinctOptions={this.getSelectDistinctOptions()}
                         initFilters={model.filterArray} // using filterArray to indicate user-defined filters only
                         model={model}
                         onApply={this.handleApplyFilters}

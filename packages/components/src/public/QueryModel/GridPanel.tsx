@@ -23,7 +23,7 @@ import { GRID_SELECTION_INDEX } from '../../internal/constants';
 import { DataViewInfo } from '../../internal/models';
 import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
-import { revertViewEdit, saveSessionGridView } from '../../internal/actions';
+import {revertViewEdit, saveGridView, saveSessionGridView} from '../../internal/actions';
 
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
@@ -46,12 +46,15 @@ import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
+import { MenuItem, SplitButton } from "react-bootstrap";
+import { SaveViewModal } from "./SaveViewModal";
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
     allowSorting?: boolean;
     allowFiltering?: boolean;
     allowViewCustomization?: boolean;
+    allowSavingDefaultView?: boolean;
     asPanel?: boolean;
     advancedExportOptions?: { [key: string]: any };
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -90,6 +93,7 @@ interface GridBarProps<T> extends Props<T> {
     onViewSelect: (viewName: string) => void;
     onSearch: (token: string) => void;
     onFilter: () => void;
+    onSaveView: () => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -133,6 +137,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             onExport,
             onFilter,
             onSearch,
+            onSaveView,
             onViewSelect,
             pageSizes,
             showChartMenu,
@@ -209,6 +214,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 <ViewMenu
                                     model={model}
                                     onViewSelect={onViewSelect}
+                                    onSaveView={onSaveView}
                                     hideEmptyViewMenu={hideEmptyViewMenu}
                                 />
                             )}
@@ -247,32 +253,26 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 }
 
 interface GridTitleProps {
-    title?: string;
+    displayTitle?: string;
     model: QueryModel;
+    view: ViewInfo;
     actions: Actions;
     allowSelections: boolean;
     allowViewCustomization: boolean;
+    allowSavingDefaultView?: boolean;
     onRevertView?: () => void;
+    onSaveView?: () => void;
+    onSaveNewView?: () => void;
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
-    const { title, model, onRevertView, actions, allowSelections, allowViewCustomization } = props;
-    const { queryInfo, viewName } = model;
+    const { displayTitle, view, model, onRevertView, onSaveView, onSaveNewView, actions, allowSelections, allowViewCustomization, allowSavingDefaultView } = props;
+    const { viewName } = model;
 
-    let displayTitle = title;
-    let view;
-    if (viewName) {
-        view = queryInfo.views.get(viewName.toLowerCase());
-        if (!view?.hidden) {
-            const label = view?.label ?? viewName;
-            displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
-        }
-    } else {
-        view = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
-    }
     const isEdited = view?.session && !view?.hidden;
     const showSave = allowViewCustomization && isEdited && view?.savable;
     const showRevert = allowViewCustomization && isEdited && view?.revertable;
+    const canSaveCurrent = (!viewName && allowSavingDefaultView) || !!viewName;
 
     if (!displayTitle && !isEdited) {
         return null;
@@ -284,10 +284,6 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         onRevertView?.();
     }, [model, onRevertView, actions, allowSelections]);
 
-    const saveView = useCallback(() => {
-        console.log('TODO');
-    }, []);
-
     return (
         <div className="panel-heading view-header">
             {isEdited && <span className="alert-info view-edit-alert">Edited</span>}
@@ -297,7 +293,23 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
                     Undo
                 </button>
             )}
-            {/* {showSave && <button className="btn btn-success button-left-spacing" onClick={onSaveView}>Save</button>}*/}
+            {showSave && !canSaveCurrent && <button className="btn btn-success button-left-spacing" onClick={onSaveView}>Save</button>}
+            {showSave && canSaveCurrent &&
+                <SplitButton
+                    id="saveViewDropdown"
+                    bsStyle="success"
+                    onClick={onSaveView}
+                    title="Save"
+                >
+                    <MenuItem
+                        title="Save as new view"
+                        onClick={onSaveNewView}
+                        key="saveNewGridView"
+                    >
+                        Save as a new
+                    </MenuItem>
+                </SplitButton>
+            }
         </div>
     );
 });
@@ -305,6 +317,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 interface State {
     actionValues: ActionValue[];
     showFilterModalFieldKey: string;
+    showSaveViewModal: boolean;
     headerClickCount: { [key: string]: number };
     errorMsg: React.ReactNode;
 }
@@ -349,6 +362,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.state = {
             actionValues: [],
             showFilterModalFieldKey: undefined,
+            showSaveViewModal: false,
             headerClickCount: {},
             errorMsg: undefined,
         };
@@ -501,6 +515,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             {
                 actionValues: this.state.actionValues,
                 showFilterModalFieldKey: undefined,
+                showSaveViewModal: false,
                 headerClickCount: {},
             },
             () => actions.setFilters(model.id, newFilters, allowSelections)
@@ -723,6 +738,45 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             });
     };
 
+    onSaveCurrentView = (): void => {
+        const { actions, model, allowSelections } = this.props;
+        saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, model.viewName)
+            .then(() => {
+                actions.loadModel(model.id, allowSelections);
+            })
+            .catch(errorMsg => {
+                this.setState({ errorMsg });
+            });
+    };
+
+    onSaveNewView = (): void => {
+        this.setState({ showSaveViewModal: true });
+    };
+
+    onSaveView = (name: string, inherit: boolean, replace: boolean): Promise<any> => {
+        const { model, actions, allowSelections } = this.props;
+
+        return new Promise((resolve, reject) => {
+            saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, name, false, inherit, replace)
+                .then((response) => {
+                    actions.loadModel(model.id, allowSelections);
+                    resolve(response);
+                })
+                .catch(errorMsg => {
+                    reject(errorMsg)
+                });
+        });
+    };
+
+    onSaveNewViewComplete = (viewName: string): void => {
+        this.closeSaveViewModal();
+        this.onViewSelect(viewName);
+    };
+
+    closeSaveViewModal = (): void => {
+        this.setState({ showSaveViewModal: false });
+    };
+
     /**
      * Handler for the ViewSelectorComponent. Creates a grid style change event and triggers handleViewChange.
      * @param viewName: the view name selected by the user.
@@ -830,8 +884,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
-        const { showFilterModalFieldKey, actionValues, errorMsg } = this.state;
-        const { hasData, id, isLoading, isLoadingSelections, rowsError, selectionsError, messages, queryInfoError } =
+        const { showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg } = this.state;
+        const { hasData, id, isLoading, isLoadingSelections, rowsError, selectionsError, messages, queryInfoError, queryInfo } =
             model;
         const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
         const hasError = hasGridError || selectionsError !== undefined || errorMsg;
@@ -846,20 +900,32 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
 
         const gridEmptyText = getEmptyText?.(model) ?? emptyText;
+        let displayTitle = title;
+        let view;
+        if (model.viewName) {
+            view = queryInfo.views.get(model.viewName.toLowerCase());
+            if (!view?.hidden) {
+                const label = view?.label ?? model.viewName;
+                displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
+            }
+        } else {
+            view = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
+        }
 
         return (
             <>
                 <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-                    {!hasHeader && (
-                        <GridTitle
-                            model={model}
-                            title={title}
-                            actions={actions}
-                            allowSelections={allowSelections}
-                            allowViewCustomization={allowViewCustomization}
-                            onRevertView={this.onRevertView}
-                        />
-                    )}
+                    <GridTitle
+                        model={model}
+                        view={view}
+                        displayTitle={displayTitle}
+                        actions={actions}
+                        allowSelections={allowSelections}
+                        allowViewCustomization={allowViewCustomization}
+                        onRevertView={this.onRevertView}
+                        onSaveView={this.onSaveCurrentView}
+                        onSaveNewView={this.onSaveNewView}
+                    />
 
                     <div
                         className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-spacing': !hasHeader })}
@@ -872,6 +938,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                 onFilter={this.showFilterModal}
                                 onSearch={this.onSearch}
                                 onViewSelect={this.onViewSelect}
+                                onSaveView={this.onSaveNewView}
                             />
                         )}
 
@@ -923,6 +990,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         model={model}
                         onApply={this.handleApplyFilters}
                         onCancel={this.closeFilterModal}
+                    />
+                )}
+                {showSaveViewModal && (
+                    <SaveViewModal
+                        viewLabel={displayTitle}
+                        currentView={view}
+                        onCancel={this.closeSaveViewModal}
+                        onConfirmSave={this.onSaveView}
+                        afterSave={this.onSaveNewViewComplete}
                     />
                 )}
             </>

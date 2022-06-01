@@ -2534,12 +2534,24 @@ export function saveSessionGridView(
     containerPath: string,
     name: string
 ): Promise<void> {
+    return saveGridView(schemaQuery, columns, containerPath, name, true);
+}
+
+export function saveGridView(
+    schemaQuery: SchemaQuery,
+    columns: any,
+    containerPath: string,
+    name: string,
+    session?: boolean,
+    inherit?: boolean,
+    replace : boolean = true
+): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.saveQueryViews({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             containerPath,
-            views: [{ name, columns, session: true }],
+            views: [{ name, columns, session, inherit, replace }],
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();

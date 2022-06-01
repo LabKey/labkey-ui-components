@@ -4,16 +4,18 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { QueryModel, ViewInfo } from '../..';
 import { blurActiveElement } from '../../internal/util/utils';
 import { getQueryMetadata } from '../../internal/global';
+import { isCustomizeViewsInAppEnabled } from "../../internal/app/utils";
 
 interface ViewMenuProps {
     hideEmptyViewMenu: boolean;
     model: QueryModel;
     onViewSelect: (viewName: string) => void;
+    onSaveView: () => void;
 }
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {
     render(): ReactNode {
-        const { model, hideEmptyViewMenu, onViewSelect } = this.props;
+        const { model, hideEmptyViewMenu, onViewSelect, onSaveView } = this.props;
         const { isLoading, views, viewName, visibleViews } = model;
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
@@ -61,6 +63,14 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {publicViews.length > 0 && <MenuItem divider />}
                     {publicViews.length > 0 && <MenuItem header>All Saved Views</MenuItem>}
                     {publicViews.length > 0 && publicViews.map(viewMapper)}
+                    {isCustomizeViewsInAppEnabled() && (
+                        <>
+                            <MenuItem divider />
+                            <MenuItem onSelect={onSaveView}>
+                                Save as custom view
+                            </MenuItem>
+                        </>
+                    )}
                 </DropdownButton>
             </div>
         );

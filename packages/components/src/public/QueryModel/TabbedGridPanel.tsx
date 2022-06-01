@@ -189,50 +189,53 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     const activeModel = queryModels[activeId];
     const hasTabs = tabOrder.length > 1 || alwaysShowTabs;
 
+    const gridDisplay = (
+        <GridPanel
+            allowViewCustomization={allowViewCustomization}
+            key={activeId}
+            actions={actions}
+            hasHeader={!hasTabs}
+            asPanel={!hasTabs}
+            model={activeModel}
+            onExport={exportHandlers}
+            advancedExportOptions={advancedExportOptions}
+            {...rest}
+        />
+    );
+
     return (
-        <div className={classNames('tabbed-grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-            {!hasTabs && (
-                <GridTitle
-                    title={title}
-                    model={queryModels[activeId]}
-                    actions={actions}
-                    allowSelections={rest.allowSelections}
-                    allowViewCustomization={allowViewCustomization}
-                />
-            )}
-            <div className={classNames('tabbed-grid-panel__body', { 'panel-body': asPanel })}>
-                {hasTabs && (
-                    <ul className="nav nav-tabs">
-                        {tabOrder.map(modelId => {
-                            if (queryModels[modelId]) {
-                                return (
-                                    <GridTab
-                                        key={modelId}
-                                        model={queryModels[modelId]}
-                                        isActive={activeId === modelId}
-                                        onSelect={onSelect}
-                                        pullRight={rightTabs.indexOf(modelId) > -1}
-                                        showRowCount={showRowCountOnTabs}
-                                    />
-                                );
-                            } else {
-                                return null;
-                            }
-                        })}
-                    </ul>
-                )}
-                <GridPanel
-                    allowViewCustomization={allowViewCustomization}
-                    key={activeId}
-                    actions={actions}
-                    hasHeader={!hasTabs}
-                    asPanel={false}
-                    model={activeModel}
-                    onExport={exportHandlers}
-                    advancedExportOptions={advancedExportOptions}
-                    {...rest}
-                />
-            </div>
+        <>
+            {hasTabs &&
+                <div className={classNames('tabbed-grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
+                    <div className={classNames('tabbed-grid-panel__body', {'panel-body': asPanel})}>
+                        {hasTabs && (
+                            <ul className="nav nav-tabs">
+                                {tabOrder.map(modelId => {
+                                    if (queryModels[modelId])
+                                    {
+                                        return (
+                                            <GridTab
+                                                key={modelId}
+                                                model={queryModels[modelId]}
+                                                isActive={activeId === modelId}
+                                                onSelect={onSelect}
+                                                pullRight={rightTabs.indexOf(modelId) > -1}
+                                                showRowCount={showRowCountOnTabs}
+                                            />
+                                        );
+                                    }
+                                    else
+                                    {
+                                        return null;
+                                    }
+                                })}
+                            </ul>
+                        )}
+                        {gridDisplay}
+                    </div>
+                </div>
+            }
+            {!hasTabs && <>{gridDisplay}</>}
             {showExportModal && !!queryModels && (
                 <ExportModal
                     queryModels={queryModels}
@@ -242,6 +245,6 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                     canExport={canExport}
                 />
             )}
-        </div>
+        </>
     );
 });

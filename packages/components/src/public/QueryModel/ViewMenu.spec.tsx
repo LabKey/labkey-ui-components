@@ -11,8 +11,6 @@ import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import { ViewMenu } from './ViewMenu';
 import { makeTestQueryModel } from './testUtils';
 
-import { MenuItem } from ' react-bootstrap ';
-
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO_NO_VIEWS: QueryInfo;
 let QUERY_INFO_PUBLIC_VIEWS: QueryInfo;
@@ -97,7 +95,7 @@ describe('ViewMenu', () => {
         };
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
         const wrapper = mount(<ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} />);
-        const items = wrapper.find(MenuItem);
+        const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(3);
         expect(items.at(2).text()).toBe('Save as custom view');
 

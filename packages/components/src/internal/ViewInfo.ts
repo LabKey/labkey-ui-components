@@ -112,6 +112,10 @@ export class ViewInfo extends Record({
     static serialize(viewInfo: ViewInfo): any {
         const json = viewInfo.toJS();
 
+        if (json.name === this.DEFAULT_NAME) {
+            json.name = '';
+        }
+
         json.filter = viewInfo.filters.map(filter => {
             return {
                 fieldKey: filter.getColumnName(),

@@ -391,7 +391,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (view && view.filters.size) {
             view.filters.forEach((filter): void => {
                 const column = model.getColumn(filter.getColumnName());
-                actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column, true));
+                actionValues.push(
+                    this.gridActions.filter.actionValueFromFilter(filter, column, 'Locked (saved with view)')
+                );
             });
         }
 

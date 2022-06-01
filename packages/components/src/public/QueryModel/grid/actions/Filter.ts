@@ -217,7 +217,7 @@ export class FilterAction implements Action {
         return { displayValue: displayParts.join(' '), inputValue };
     }
 
-    actionValueFromFilter(filter: Filter.IFilter, column: QueryColumn, isReadOnly = false): ActionValue {
+    actionValueFromFilter(filter: Filter.IFilter, column: QueryColumn, isReadOnly?: string): ActionValue {
         const label = column?.shortCaption;
         const columnName = filter.getColumnName();
         const filterType = filter.getFilterType();

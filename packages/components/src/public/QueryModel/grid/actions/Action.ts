@@ -43,7 +43,7 @@ export interface Value {
     value: string;
     valueObject?: any;
     displayValue?: string;
-    isReadOnly?: boolean;
+    isReadOnly?: string;
     isRemovable?: boolean;
     isValid?: boolean;
     param?: any;

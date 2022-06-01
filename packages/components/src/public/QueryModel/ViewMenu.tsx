@@ -4,7 +4,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { QueryModel, ViewInfo } from '../..';
 import { blurActiveElement } from '../../internal/util/utils';
 import { getQueryMetadata } from '../../internal/global';
-import { isCustomizeViewsInAppEnabled } from "../../internal/app/utils";
+import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
 
 interface ViewMenuProps {
     hideEmptyViewMenu: boolean;
@@ -66,9 +66,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {isCustomizeViewsInAppEnabled() && (
                         <>
                             <MenuItem divider />
-                            <MenuItem onSelect={onSaveView}>
-                                Save as custom view
-                            </MenuItem>
+                            <MenuItem onSelect={onSaveView}>Save as custom view</MenuItem>
                         </>
                     )}
                 </DropdownButton>

@@ -205,14 +205,13 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
 
     return (
         <>
-            {hasTabs &&
+            {hasTabs && (
                 <div className={classNames('tabbed-grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-                    <div className={classNames('tabbed-grid-panel__body', {'panel-body': asPanel})}>
+                    <div className={classNames('tabbed-grid-panel__body', { 'panel-body': asPanel })}>
                         {hasTabs && (
                             <ul className="nav nav-tabs">
                                 {tabOrder.map(modelId => {
-                                    if (queryModels[modelId])
-                                    {
+                                    if (queryModels[modelId]) {
                                         return (
                                             <GridTab
                                                 key={modelId}
@@ -223,9 +222,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                                                 showRowCount={showRowCountOnTabs}
                                             />
                                         );
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         return null;
                                     }
                                 })}
@@ -234,7 +231,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                         {gridDisplay}
                     </div>
                 </div>
-            }
+            )}
             {!hasTabs && <>{gridDisplay}</>}
             {showExportModal && !!queryModels && (
                 <ExportModal

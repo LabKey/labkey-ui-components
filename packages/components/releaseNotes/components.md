@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX 2022
+* Item 10375: Save Grid Views - Save view dialog
+  * TODO
+
 ### version 2.178.0
 *Released*: 31 May 2022
 * Issue 45270: Show settings page to all admins

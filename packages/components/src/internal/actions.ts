@@ -2544,7 +2544,7 @@ export function saveGridView(
     name: string,
     session?: boolean,
     inherit?: boolean,
-    replace : boolean = true
+    replace = true
 ): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.saveQueryViews({

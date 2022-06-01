@@ -1,15 +1,15 @@
 import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
-import {PermissionTypes} from "@labkey/api";
+import { PermissionTypes } from '@labkey/api';
 
 import { WizardNavButtons } from '../../internal/components/buttons/WizardNavButtons';
-import { ViewInfo } from "../../internal/ViewInfo";
-import { Alert } from "../../internal/components/base/Alert";
-import {resolveErrorMessage} from "../../internal/util/messaging";
-import {CUSTOM_VIEW,HelpLink} from "../../internal/util/helpLinks";
-import {RequiresPermission} from "../../internal/components/base/Permissions";
-import {isSubfolderDataEnabled} from "../../internal/app/utils";
+import { ViewInfo } from '../../internal/ViewInfo';
+import { Alert } from '../../internal/components/base/Alert';
+import { resolveErrorMessage } from '../../internal/util/messaging';
+import { CUSTOM_VIEW, HelpLink } from '../../internal/util/helpLinks';
+import { RequiresPermission } from '../../internal/components/base/Permissions';
+import { isSubfolderDataEnabled } from '../../internal/app/utils';
 
 export interface Props {
     currentView: ViewInfo;
@@ -49,7 +49,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
     const onViewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setViewName(evt.target.value), []);
 
     const toggleDefaultView = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-        setIsDefaultView(evt.target.checked)
+        setIsDefaultView(evt.target.checked);
     }, []);
 
     const toggleInherit = useCallback((evt: ChangeEvent<HTMLInputElement>) => setCanInherit(evt.target.checked), []);
@@ -64,8 +64,9 @@ export const SaveViewModal: FC<Props> = memo(props => {
                 <form onSubmit={saveView}>
                     <div className="form-group">
                         <div className="bottom-spacing">
-                            Sort order and filters are not saved as part of custom grid views. Once saved, this view will be available on {viewLabel ?? currentView.name} grids throughout the application.
-                            Learn more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
+                            Sort order and filters are not saved as part of custom grid views. Once saved, this view
+                            will be available on {viewLabel ?? currentView.name} grids throughout the application. Learn
+                            more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                         </div>
                         <div className="bottom-spacing">
                             <input
@@ -79,16 +80,28 @@ export const SaveViewModal: FC<Props> = memo(props => {
                         </div>
                         <RequiresPermission perms={PermissionTypes.Admin}>
                             <div className="form-check bottom-spacing">
-                                <input className="form-check-input" type="checkbox" id="setDefaultView" onChange={toggleDefaultView} checked={isDefaultView}/>
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="setDefaultView"
+                                    onChange={toggleDefaultView}
+                                    checked={isDefaultView}
+                                />
                                 <span className="margin-left">Make this the default grid view</span>
                             </div>
                         </RequiresPermission>
-                        {isSubfolderDataEnabled() &&
+                        {isSubfolderDataEnabled() && (
                             <div className="form-check">
-                                <input className="form-check-input" type="checkbox" id="setInherit" onChange={toggleInherit} checked={canInherit}/>
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="setInherit"
+                                    onChange={toggleInherit}
+                                    checked={canInherit}
+                                />
                                 <span className="margin-left">Make this grid view available in child folders</span>
                             </div>
-                        }
+                        )}
                     </div>
                 </form>
             </Modal.Body>

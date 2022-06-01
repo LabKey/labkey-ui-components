@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import { fromJS, List, Set } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
+import { MenuItem, SplitButton } from 'react-bootstrap';
+
 import {
     Actions,
     Alert,
@@ -23,7 +25,7 @@ import { GRID_SELECTION_INDEX } from '../../internal/constants';
 import { DataViewInfo } from '../../internal/models';
 import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
-import {revertViewEdit, saveGridView, saveSessionGridView} from '../../internal/actions';
+import { revertViewEdit, saveGridView, saveSessionGridView } from '../../internal/actions';
 
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
@@ -46,8 +48,7 @@ import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
-import { MenuItem, SplitButton } from "react-bootstrap";
-import { SaveViewModal } from "./SaveViewModal";
+import { SaveViewModal } from './SaveViewModal';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -266,7 +267,18 @@ interface GridTitleProps {
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
-    const { displayTitle, view, model, onRevertView, onSaveView, onSaveNewView, actions, allowSelections, allowViewCustomization, allowSavingDefaultView } = props;
+    const {
+        displayTitle,
+        view,
+        model,
+        onRevertView,
+        onSaveView,
+        onSaveNewView,
+        actions,
+        allowSelections,
+        allowViewCustomization,
+        allowSavingDefaultView,
+    } = props;
     const { viewName } = model;
 
     const isEdited = view?.session && !view?.hidden;
@@ -293,23 +305,18 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
                     Undo
                 </button>
             )}
-            {showSave && !canSaveCurrent && <button className="btn btn-success button-left-spacing" onClick={onSaveView}>Save</button>}
-            {showSave && canSaveCurrent &&
-                <SplitButton
-                    id="saveViewDropdown"
-                    bsStyle="success"
-                    onClick={onSaveView}
-                    title="Save"
-                >
-                    <MenuItem
-                        title="Save as new view"
-                        onClick={onSaveNewView}
-                        key="saveNewGridView"
-                    >
+            {showSave && !canSaveCurrent && (
+                <button className="btn btn-success button-left-spacing" onClick={onSaveView}>
+                    Save
+                </button>
+            )}
+            {showSave && canSaveCurrent && (
+                <SplitButton id="saveViewDropdown" bsStyle="success" onClick={onSaveView} title="Save">
+                    <MenuItem title="Save as new view" onClick={onSaveNewView} key="saveNewGridView">
                         Save as a new
                     </MenuItem>
                 </SplitButton>
-            }
+            )}
         </div>
     );
 });
@@ -758,12 +765,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         return new Promise((resolve, reject) => {
             saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, name, false, inherit, replace)
-                .then((response) => {
+                .then(response => {
                     actions.loadModel(model.id, allowSelections);
                     resolve(response);
                 })
                 .catch(errorMsg => {
-                    reject(errorMsg)
+                    reject(errorMsg);
                 });
         });
     };
@@ -885,8 +892,17 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             title,
         } = this.props;
         const { showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg } = this.state;
-        const { hasData, id, isLoading, isLoadingSelections, rowsError, selectionsError, messages, queryInfoError, queryInfo } =
-            model;
+        const {
+            hasData,
+            id,
+            isLoading,
+            isLoadingSelections,
+            rowsError,
+            selectionsError,
+            messages,
+            queryInfoError,
+            queryInfo,
+        } = model;
         const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
         const hasError = hasGridError || selectionsError !== undefined || errorMsg;
         let loadingMessage;

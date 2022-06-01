@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { Map, OrderedMap } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
@@ -48,6 +48,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const col: QueryColumn = column.raw;
     const [open, setOpen] = useState<boolean>();
     const wrapperEl = useRef<HTMLSpanElement>();
+    const view = useMemo(() => model?.queryInfo?.getView(model?.viewName, true), [model?.queryInfo, model?.viewName]);
 
     const allowColSort = handleSort && col?.sortable;
     const allowColFilter = handleFilter && col?.filterable;
@@ -114,10 +115,18 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     if (!col) return null;
 
-    const colQuerySortDir = model?.sorts?.find(sort => sort.get('fieldKey') === col.resolveFieldKey())?.get('dir');
-    const isSortAsc = col.sorts === '+' || colQuerySortDir === '';
+    // using filterArray to indicate user-defined filters only and concatenating with any view filters
+    let colFilters = model?.filterArray.filter(filter => isFilterColumnNameMatch(filter, col));
+    const viewColFilters = view?.filters.toArray().filter(filter => isFilterColumnNameMatch(filter, col));
+    if (viewColFilters?.length) colFilters = colFilters.concat(viewColFilters);
+
+    // first check the model users (user-defined) and then fall back to the view sorts
+    const colQuerySortDir =
+        model?.sorts?.find(sort => sort.get('fieldKey') === col.resolveFieldKey())?.get('dir') ??
+        view?.sorts?.find(sort => sort.get('fieldKey') === col.resolveFieldKey())?.get('dir');
+
+    const isSortAsc = col.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
-    const colFilters = model?.filterArray.filter(filter => isFilterColumnNameMatch(filter, col)); // using filterArray to indicate user-defined filters only
 
     return (
         <>

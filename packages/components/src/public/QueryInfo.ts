@@ -332,19 +332,23 @@ export class QueryInfo extends Record({
             .toArray();
     }
 
-    getView(view: string): ViewInfo {
-        const _view = view.toLowerCase();
+    getView(viewName: string, defaultToDefault = false): ViewInfo {
+        if (viewName) {
+            const _viewName = viewName.toLowerCase();
 
-        // see if there is a specific detail view override
-        if (_view === ViewInfo.DETAIL_NAME.toLowerCase()) {
-            const details = this.views.get(ViewInfo.BIO_DETAIL_NAME.toLowerCase());
-
-            if (details) {
-                return details;
+            // see if there is a specific detail view override
+            if (_viewName === ViewInfo.DETAIL_NAME.toLowerCase()) {
+                const details = this.views.get(ViewInfo.BIO_DETAIL_NAME.toLowerCase());
+                if (details) {
+                    return details;
+                }
             }
+
+            const view = this.views.get(_viewName);
+            if (view) return view;
         }
 
-        return this.views.get(_view);
+        return defaultToDefault ? this.views.get(ViewInfo.DEFAULT_NAME.toLowerCase()) : undefined;
     }
 
     /**

@@ -32,6 +32,7 @@ import {
     QueryInfo,
     resolveKey,
     SchemaQuery,
+    ViewInfo,
 } from '..';
 
 import { getQueryDetails, selectRowsDeprecated } from './query/api';
@@ -2530,16 +2531,16 @@ export function incrementClientSideMetricCount(featureArea: string, metricName: 
 
 export function saveSessionGridView(
     schemaQuery: SchemaQuery,
-    columns: any,
     containerPath: string,
-    name: string
+    viewInfo: ViewInfo
 ): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.saveQueryViews({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             containerPath,
-            views: [{ name, columns, session: true }],
+            // See DataRegion.js _updateSessionCustomView(), this set of hard coded booleans matches that set
+            views: [{ ...ViewInfo.serialize(viewInfo), shared: false, inherit: false, session: true }],
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();

@@ -109,6 +109,29 @@ export class ViewInfo extends Record({
         );
     }
 
+    static serialize(viewInfo: ViewInfo): any {
+        const json = viewInfo.toJS();
+
+        json.filter = viewInfo.filters.map(filter => {
+            return {
+                fieldKey: filter.getColumnName(),
+                value: filter.getValue(),
+                op: filter.getFilterType().getURLSuffix(),
+            };
+        });
+        delete json.filters;
+
+        json.sort = viewInfo.sorts.map(sort => {
+            return {
+                fieldKey: sort.fieldKey,
+                dir: sort.dir,
+            };
+        });
+        delete json.sorts;
+
+        return json;
+    }
+
     get isVisible(): boolean {
         // Issue 42628: Hide Biologics details view override in view menu
         return (

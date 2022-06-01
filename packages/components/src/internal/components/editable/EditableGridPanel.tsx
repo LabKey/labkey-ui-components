@@ -23,7 +23,7 @@ interface Props extends SharedEditableGridPanelProps {
     ) => void;
 }
 
-const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>, activeModel: QueryModel): UtilsDOM.TextTableForm => {
+const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>, activeModel: QueryModel): UtilsDOM.ConvertToTableOptions => {
     const config = {
         rows: exportData,
         fileNamePrefix: filename,
@@ -31,7 +31,7 @@ const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, export
             schema: activeModel.schemaName,
             query: activeModel.queryName,
         },
-    } as UtilsDOM.TextTableForm;
+    } as UtilsDOM.ConvertToTableOptions;
 
     switch (exportType) {
         case EXPORT_TYPES.TSV:

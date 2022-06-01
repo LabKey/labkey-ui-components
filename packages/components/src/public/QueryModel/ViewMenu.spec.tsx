@@ -2,8 +2,6 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import {MenuItem} from " react-bootstrap ";
-
 import { QueryInfo, SchemaQuery } from '../..';
 
 import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
@@ -12,6 +10,8 @@ import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 
 import { ViewMenu } from './ViewMenu';
 import { makeTestQueryModel } from './testUtils';
+
+import { MenuItem } from ' react-bootstrap ';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO_NO_VIEWS: QueryInfo;
@@ -102,7 +102,6 @@ describe('ViewMenu', () => {
         expect(items.at(2).text()).toBe('Save as custom view');
 
         wrapper.unmount();
-
     });
 
     test('Interactivity', () => {

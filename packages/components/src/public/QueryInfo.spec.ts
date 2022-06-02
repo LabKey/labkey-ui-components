@@ -242,7 +242,7 @@ describe('QueryInfo', () => {
 
         expect(queryInfo.getView(undefined)?.name).toBe(undefined);
         expect(queryInfo.getView(undefined, true)?.name).toBe('default');
-        expect(queryInfo.getView('')?.name).toBe(undefined);
+        expect(queryInfo.getView('')?.name).toBe('default');
         expect(queryInfo.getView('', true)?.name).toBe('default');
 
         expect(queryInfo.getView('bogus')?.name).toBe(undefined);

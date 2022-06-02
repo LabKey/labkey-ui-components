@@ -333,9 +333,10 @@ export class QueryInfo extends Record({
     }
 
     getView(viewName: string, defaultToDefault = false): ViewInfo {
-        if (viewName) {
-            const _viewName = viewName.toLowerCase();
+        let _viewName = viewName?.toLowerCase();
+        if (_viewName === '') _viewName = ViewInfo.DEFAULT_NAME.toLowerCase();
 
+        if (_viewName) {
             // see if there is a specific detail view override
             if (_viewName === ViewInfo.DETAIL_NAME.toLowerCase()) {
                 const details = this.views.get(ViewInfo.BIO_DETAIL_NAME.toLowerCase());

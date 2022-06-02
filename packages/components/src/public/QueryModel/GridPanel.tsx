@@ -384,16 +384,20 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const _sorts = view ? sorts.concat(view.sorts.toArray()) : sorts;
         _sorts.forEach((sort): void => {
             const column = model.getColumn(sort.fieldKey);
-            actionValues.push(this.gridActions.sort.actionValueFromSort(sort, column?.shortCaption));
+            if (column) {
+                actionValues.push(this.gridActions.sort.actionValueFromSort(sort, column?.shortCaption));
+            }
         });
 
         // handle the view's saved filters (which will be shown as read only)
         if (view && view.filters.size) {
             view.filters.forEach((filter): void => {
                 const column = model.getColumn(filter.getColumnName());
-                actionValues.push(
-                    this.gridActions.filter.actionValueFromFilter(filter, column, 'Locked (saved with view)')
-                );
+                if (column) {
+                    actionValues.push(
+                        this.gridActions.filter.actionValueFromFilter(filter, column, 'Locked (saved with view)')
+                    );
+                }
             });
         }
 
@@ -403,7 +407,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 actionValues.push(this.gridActions.search.actionValueFromFilter(filter));
             } else {
                 const column = model.getColumn(filter.getColumnName());
-                actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
+                if (column) {
+                    actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
+                }
             }
         });
 

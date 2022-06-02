@@ -18,9 +18,6 @@ export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
     if (user.isAdmin) {
         tabs = tabs.push('Users');
         tabs = tabs.push('Permissions');
-    }
-    // Settings tab to be implemented in story 2 of In-App Admin
-    if (user.isAppAdmin()) {
         tabs = tabs.push('Settings');
     }
 

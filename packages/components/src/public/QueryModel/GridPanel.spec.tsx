@@ -295,7 +295,10 @@ describe('GridPanel', () => {
             filter: [nameFilter, expirFilter],
             sort: [nameSort],
         });
-        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
+        const queryInfo = QueryInfo.create({
+            columns: QUERY_INFO.columns,
+            views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+        });
         const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, {}, [], 0);
         const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
 
@@ -305,8 +308,8 @@ describe('GridPanel', () => {
             'Name ASC',
             'expirationTime DESC',
             '"Name" = DMXP',
-            '"expirationTime" = 1',
-            '"expirationTime" = 2',
+            '"Expiration Time" = 1',
+            '"Expiration Time" = 2',
         ]);
 
         // verify that the view based filters are locked and model filters are not

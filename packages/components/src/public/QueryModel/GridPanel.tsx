@@ -263,6 +263,7 @@ interface GridTitleProps {
     onSaveView?: () => void;
     onSaveNewView?: () => void;
     view?: ViewInfo;
+    isUpdated?: boolean
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
@@ -275,7 +276,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         onSaveNewView,
         actions,
         allowSelections,
-        allowViewCustomization
+        allowViewCustomization,
+        isUpdated
     } = props;
     const { queryInfo, viewName } = model;
 
@@ -285,14 +287,14 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     if (!currentView) {
         if (viewName) {
             currentView = queryInfo.views.get(viewName.toLowerCase());
-            if (!currentView?.hidden) {
-                const label = currentView?.label ?? viewName;
-                displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
-            }
         }
         else {
             currentView = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
         }
+    }
+    if (!currentView?.hidden && viewName) {
+        const label = currentView?.label ?? viewName;
+        displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
     }
 
     const isEdited = currentView?.session && !currentView?.hidden;
@@ -304,7 +306,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     else if (isEdited)
         canSaveCurrent = useServerContext().user.hasAdminPermission();
 
-    if (!displayTitle && !isEdited) {
+    if (!displayTitle && !isEdited && !isUpdated) {
         return null;
     }
 
@@ -317,6 +319,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     return (
         <div className="panel-heading view-header">
             {isEdited && <span className="alert-info view-edit-alert">Edited</span>}
+            {isUpdated && <span className="alert-info view-edit-alert">Updated</span>}
             {displayTitle ?? 'Default View'}
             {showRevert && (
                 <button className="btn btn-default button-left-spacing" onClick={_revertViewEdit}>
@@ -345,6 +348,7 @@ interface State {
     showSaveViewModal: boolean;
     headerClickCount: { [key: string]: number };
     errorMsg: React.ReactNode;
+    isViewSaved?: boolean
 }
 
 /**
@@ -370,7 +374,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showSampleComparisonReports: false,
         showSearchInput: true,
         showViewMenu: true,
-        showHeader: true,
+        showHeader: true
     };
 
     constructor(props) {
@@ -390,6 +394,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showSaveViewModal: false,
             headerClickCount: {},
             errorMsg: undefined,
+            isViewSaved: false
         };
     }
 
@@ -768,6 +773,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, model.viewName)
             .then(() => {
                 actions.loadModel(model.id, allowSelections);
+                this.showViewSavedIndicator();
             })
             .catch(errorMsg => {
                 this.setState({ errorMsg });
@@ -796,6 +802,20 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     onSaveNewViewComplete = (viewName: string): void => {
         this.closeSaveViewModal();
         this.onViewSelect(viewName);
+        this.showViewSavedIndicator();
+    };
+
+    showViewSavedIndicator = (): void => {
+        this.setState({
+            isViewSaved: true
+        });
+
+        setTimeout(() => {
+            this.setState({
+                isViewSaved: false
+            });
+        }, 5000);
+
     };
 
     closeSaveViewModal = (): void => {
@@ -909,7 +929,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
-        const { showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg } = this.state;
+        const { showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
         const {
             hasData,
             id,
@@ -954,6 +974,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         onRevertView={this.onRevertView}
                         onSaveView={this.onSaveCurrentView}
                         onSaveNewView={this.onSaveNewView}
+                        isUpdated={isViewSaved}
                     />
 
                     <div

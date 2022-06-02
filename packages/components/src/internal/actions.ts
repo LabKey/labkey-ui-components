@@ -2544,14 +2544,15 @@ export function saveGridView(
     name: string,
     session?: boolean,
     inherit?: boolean,
-    replace = true
+    replace = true,
+    shared?: boolean
 ): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.saveQueryViews({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             containerPath,
-            views: [{ name, columns, session, inherit, replace }],
+            views: [{ name, columns, session, inherit, replace, shared }],
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();

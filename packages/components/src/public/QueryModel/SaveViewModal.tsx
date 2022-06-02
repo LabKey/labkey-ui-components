@@ -15,7 +15,7 @@ export interface Props {
     currentView: ViewInfo;
     gridLabel: string;
     onCancel: () => void;
-    onConfirmSave: (viewName, canInherit, replace) => Promise<any>;
+    onConfirmSave: (viewName, canInherit, replace, shared) => Promise<any>;
     afterSave: (viewName: string) => void;
 }
 
@@ -37,7 +37,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
         try {
             const name = isDefaultView ? '' : viewName.trim();
             const isCurrentView = name?.toLowerCase() === currentView?.name?.toLowerCase();
-            await onConfirmSave(name, canInherit, isCurrentView);
+            await onConfirmSave(name, canInherit, isCurrentView, isDefaultView);
             afterSave(name);
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
@@ -88,7 +88,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                     onChange={toggleDefaultView}
                                     checked={isDefaultView}
                                 />
-                                <span className="margin-left">Make this the default grid view</span>
+                                <span className="margin-left">Make default view for all users</span>
                             </div>
                         </RequiresPermission>
                         {isSubfolderDataEnabled() && (

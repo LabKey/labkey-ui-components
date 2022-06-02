@@ -334,7 +334,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
             {showSave && canSaveCurrent && (
                 <SplitButton id="saveViewDropdown" bsStyle="success" onClick={onSaveView} title="Save">
                     <MenuItem title="Save as new view" onClick={onSaveNewView} key="saveNewGridView">
-                        Save as a new
+                        Save as
                     </MenuItem>
                 </SplitButton>
             )}
@@ -784,11 +784,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState({ showSaveViewModal: true });
     };
 
-    onSaveView = (name: string, inherit: boolean, replace: boolean): Promise<any> => {
+    onSaveView = (name: string, inherit: boolean, replace: boolean, shared: boolean): Promise<any> => {
         const { model, actions, allowSelections } = this.props;
 
         return new Promise((resolve, reject) => {
-            saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, name, false, inherit, replace)
+            saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, name, false, inherit, replace, shared)
                 .then(response => {
                     actions.loadModel(model.id, allowSelections);
                     resolve(response);

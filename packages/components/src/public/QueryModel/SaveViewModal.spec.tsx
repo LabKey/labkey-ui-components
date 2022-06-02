@@ -22,7 +22,6 @@ describe('SaveViewModal', () => {
         gridLabel: 'Blood Samples',
         onCancel: jest.fn(),
         onConfirmSave: jest.fn(),
-        afterSave: jest.fn(),
     };
 
     const DEFAULT_VIEW = ViewInfo.create({

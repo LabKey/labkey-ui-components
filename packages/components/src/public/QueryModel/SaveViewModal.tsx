@@ -16,11 +16,10 @@ export interface Props {
     gridLabel: string;
     onCancel: () => void;
     onConfirmSave: (viewName, canInherit, replace, shared) => Promise<any>;
-    afterSave: (viewName: string) => void;
 }
 
 export const SaveViewModal: FC<Props> = memo(props => {
-    const { onConfirmSave, currentView, onCancel, afterSave, gridLabel } = props;
+    const { onConfirmSave, currentView, onCancel, gridLabel } = props;
 
     const [viewName, setViewName] = useState<string>(currentView?.isDefault ? '' : currentView?.name);
     const [isDefaultView, setIsDefaultView] = useState<boolean>(currentView?.isDefault);
@@ -38,13 +37,12 @@ export const SaveViewModal: FC<Props> = memo(props => {
             const name = isDefaultView ? '' : viewName.trim();
             const isCurrentView = name?.toLowerCase() === currentView?.name?.toLowerCase();
             await onConfirmSave(name, canInherit, isCurrentView, isDefaultView);
-            afterSave(name);
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
         } finally {
             setIsSubmitting(false);
         }
-    }, [viewName]);
+    }, [viewName, isDefaultView, canInherit]);
 
     const onViewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setViewName(evt.target.value), []);
 
@@ -79,7 +77,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 type="text"
                             />
                         </div>
-                        <RequiresPermission perms={PermissionTypes.Admin}>
+                        <RequiresPermission perms={PermissionTypes.Admin}> {/* Only allow admins to create custom default views in app. Note this is different from LKS*/}
                             <div className="form-check bottom-spacing">
                                 <input
                                     className="form-check-input"

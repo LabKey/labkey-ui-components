@@ -10,7 +10,7 @@ interface ViewMenuProps {
     hideEmptyViewMenu: boolean;
     model: QueryModel;
     onViewSelect: (viewName: string) => void;
-    onSaveView?: () => void;
+    onSaveView: () => void;
 }
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {

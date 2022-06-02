@@ -303,11 +303,9 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     let canSaveCurrent = false;
     if (!!viewName)
         canSaveCurrent = true;
-    else if (isEdited)
-        canSaveCurrent = useServerContext().user.hasAdminPermission();
-
-    if (!displayTitle && !isEdited && !isUpdated) {
-        return null;
+    else if (isEdited) {
+        const user = useServerContext().user; // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
+        canSaveCurrent = user.hasAdminPermission() && !user.isGuest;
     }
 
     const _revertViewEdit = useCallback(async () => {
@@ -316,18 +314,22 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         onRevertView?.();
     }, [model, onRevertView, actions, allowSelections]);
 
+    if (!displayTitle && !isEdited && !isUpdated) {
+        return null;
+    }
+
     return (
         <div className="panel-heading view-header">
             {isEdited && <span className="alert-info view-edit-alert">Edited</span>}
-            {isUpdated && <span className="alert-info view-edit-alert">Updated</span>}
+            {isUpdated && <span className="alert-success view-edit-alert">Updated</span>}
             {displayTitle ?? 'Default View'}
             {showRevert && (
-                <button className="btn btn-default button-left-spacing" onClick={_revertViewEdit}>
+                <button className="btn btn-default button-left-spacing button-right-spacing" onClick={_revertViewEdit}>
                     Undo
                 </button>
             )}
             {showSave && !canSaveCurrent && (
-                <button className="btn btn-success button-left-spacing" onClick={onSaveView}>
+                <button className="btn btn-success" onClick={onSaveNewView}>
                     Save
                 </button>
             )}
@@ -768,16 +770,18 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             });
     };
 
-    onSaveCurrentView = (): void => {
-        const { actions, model, allowSelections } = this.props;
-        saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, model.viewName)
-            .then(() => {
-                actions.loadModel(model.id, allowSelections);
-                this.showViewSavedIndicator();
-            })
-            .catch(errorMsg => {
-                this.setState({ errorMsg });
-            });
+    onSaveCurrentView = async () => {
+        const {model} = this.props;
+        const {queryInfo, viewName} = model;
+
+        const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
+
+        try {
+            await this.onSaveView(viewName, view.inherit, true, view.shared);
+        }
+        catch (errorMsg) {
+            this.setState({ errorMsg });
+        }
     };
 
     onSaveNewView = (): void => {
@@ -786,23 +790,25 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     onSaveView = (name: string, inherit: boolean, replace: boolean, shared: boolean): Promise<any> => {
         const { model, actions, allowSelections } = this.props;
+        const { showSaveViewModal } = this.state;
 
         return new Promise((resolve, reject) => {
             saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, name, false, inherit, replace, shared)
                 .then(response => {
                     actions.loadModel(model.id, allowSelections);
+
+                    if (showSaveViewModal) {
+                        this.closeSaveViewModal();
+                        this.onViewSelect(name);
+                    }
+
+                    this.showViewSavedIndicator();
                     resolve(response);
                 })
                 .catch(errorMsg => {
                     reject(errorMsg);
                 });
         });
-    };
-
-    onSaveNewViewComplete = (viewName: string): void => {
-        this.closeSaveViewModal();
-        this.onViewSelect(viewName);
-        this.showViewSavedIndicator();
     };
 
     showViewSavedIndicator = (): void => {
@@ -1048,7 +1054,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         currentView={view}
                         onCancel={this.closeSaveViewModal}
                         onConfirmSave={this.onSaveView}
-                        afterSave={this.onSaveNewViewComplete}
                     />
                 )}
             </>

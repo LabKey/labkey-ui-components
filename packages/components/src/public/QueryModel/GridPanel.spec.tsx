@@ -1,11 +1,19 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-
+import { fromJS } from 'immutable';
 import { Filter } from '@labkey/api';
-
 import renderer from 'react-test-renderer';
 
-import { GRID_CHECKBOX_OPTIONS, GridPanel, LoadingState, QueryInfo, QueryModel, QuerySort, SchemaQuery } from '../..';
+import {
+    GRID_CHECKBOX_OPTIONS,
+    GridPanel,
+    LoadingState,
+    QueryInfo,
+    QueryModel,
+    QuerySort,
+    SchemaQuery,
+    ViewInfo,
+} from '../..';
 
 import { initUnitTests, makeQueryInfo, makeTestData } from '../../internal/testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
@@ -247,11 +255,11 @@ describe('GridPanel', () => {
     ): void => {
         const model = wrapper.props().model;
         wrapper.setProps({ model: model.mutate(attrs) });
-        expect(wrapper.state().actionValues.length).toEqual(expectedLen);
+        expect(wrapper.state('actionValues').length).toEqual(expectedLen);
 
         expectedValues.forEach((value): void => {
             const findByValue = (av: ActionValue): boolean => av.valueObject === value || av.value === value;
-            expect(wrapper.state().actionValues.find(findByValue)).not.toEqual(undefined);
+            expect(wrapper.state('actionValues').find(findByValue)).not.toEqual(undefined);
         });
     };
 
@@ -275,6 +283,38 @@ describe('GridPanel', () => {
         expectBoundState(wrapper, { schemaQuery: noMixturesSQ }, 2, [nameSort, expirFilter]);
         expectBoundState(wrapper, { filterArray: [expirFilter, search] }, 3, [nameSort, expirFilter, search]);
         expectBoundState(wrapper, { sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY }, 0, []);
+    });
+
+    test('FilterStatus from saved view', () => {
+        // This test ensures that the filter status includes sorts/filters from the saved view
+        const nameSort = { fieldKey: 'Name', dir: '+' };
+        const nameFilter = { fieldKey: 'Name', value: 'DMXP', op: 'eq' };
+        const expirFilter = { fieldKey: 'expirationTime', value: '1', op: 'eq' };
+        const view = ViewInfo.create({
+            name: ViewInfo.DEFAULT_NAME.toLowerCase(),
+            filter: [nameFilter, expirFilter],
+            sort: [nameSort],
+        });
+        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
+        const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, {}, [], 0);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+
+        const expirSort = new QuerySort({ fieldKey: 'expirationTime', dir: '-' });
+        const expirFilter2 = Filter.create('expirationTime', '2');
+        expectBoundState(wrapper, { sorts: [expirSort], filterArray: [expirFilter2] }, 5, [
+            'Name ASC',
+            'expirationTime DESC',
+            '"Name" = DMXP',
+            '"expirationTime" = 1',
+            '"expirationTime" = 2',
+        ]);
+
+        // verify that the view based filters are locked and model filters are not
+        const actionValues = wrapper.state('actionValues');
+        const filterActions = actionValues.filter(action => action.action.keyword === 'filter');
+        expect(filterActions.length).toBe(3);
+        expect(filterActions.filter(action => action.isReadOnly !== undefined).length).toBe(2);
+        expect(filterActions.filter(action => action.isReadOnly === undefined).length).toBe(1);
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

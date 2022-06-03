@@ -119,7 +119,7 @@ export class ViewInfo extends Record({
         json.filter = viewInfo.filters.map(filter => {
             return {
                 fieldKey: filter.getColumnName(),
-                value: filter.getValue(),
+                value: filter.getURLParameterValue(),
                 op: filter.getFilterType().getURLSuffix(),
             };
         });

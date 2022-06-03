@@ -64,34 +64,47 @@ function exportEditedData(exportType: EXPORT_TYPES, filename: string, exportData
     UtilsDOM.convertToTable(config);
 }
 
-// Should this be coming from the props (higher components)?
-const exportHandler = (exportType: EXPORT_TYPES, models: Array<QueryModel>, editorModels: Array<EditorModel>, readOnlyColumns: List<string>, getUpdateColumns: (tabId?: number) => List<QueryColumn>, activeTab: number ): void => {
-    const headings = Map<string, string>().asMutable();
-    const editorData = Map<string, Map<string,any>>().asMutable();
-    models.forEach((queryModel, idx) => {
-        const tabData = editorModels[idx]
-            .getRawDataFromGridData(
-                fromJS(queryModel.rows),
-                fromJS(queryModel.orderedRows),
-                queryModel.queryInfo,
-                true,
-                true,
-                readOnlyColumns
-            )
-            .toArray();
+const getEditorTableData = (editorModel: EditorModel, queryModel: QueryModel, readOnlyColumns: List<string>, headings: Map<string, string>, editorData: Map<string, Map<string, any>>): [Map<string, string>, Map<string, Map<string, any>>] => {
+    const tabData = editorModel
+        .getRawDataFromGridData(
+            fromJS(queryModel.rows),
+            fromJS(queryModel.orderedRows),
+            queryModel.queryInfo,
+            true,
+            true,
+            readOnlyColumns
+        )
+        .toArray();
 
-        const updateColumns = queryModel.queryInfo.getUpdateColumns(readOnlyColumns);
-        updateColumns.forEach(col => headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption));
-
-        tabData.forEach((row) => {
-            const rowId = row.get('RowId');
-            const draftRow = editorData.get(rowId) ?? Map<string, any>().asMutable();
-            updateColumns.forEach(col => {
-                draftRow.set(col.fieldKey, row.get(col.fieldKey));
-            });
-
-            editorData.set(rowId, draftRow);
+    const updateColumns = queryModel.queryInfo.getUpdateColumns(readOnlyColumns);
+    updateColumns.forEach(col =>
+        headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)
+    );
+    tabData.forEach((row) => {
+        const rowId = row.get('RowId');
+        let draftRow = editorData.get(rowId) ?? Map<string, any>();
+        updateColumns.forEach(col => {
+            draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
         });
+
+        editorData = editorData.set(rowId, draftRow);
+    });
+    return [headings, editorData];
+}
+
+const exportHandler = (
+    exportType: EXPORT_TYPES,
+    models: Array<QueryModel>,
+    editorModels: Array<EditorModel>,
+    readOnlyColumns: List<string>,
+    activeTab: number
+): void => {
+    let headings = Map<string, string>();
+    let editorData = Map<string, Map<string,any>>();
+    models.forEach((queryModel, idx) => {
+        const [modelHeadings, modelEditorData] = getEditorTableData(editorModels[idx], queryModel, readOnlyColumns, headings, editorData);
+        headings = modelHeadings;
+        editorData = modelEditorData;
     });
 
     const rows = [];
@@ -161,16 +174,16 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
 
     const csvExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.CSV, models, editorModels, readOnlyColumns, getUpdateColumns, activeTab);
-    }, [models, editorModels, activeTab, activeEditorModel, readOnlyColumns, getUpdateColumns]);
+        exportHandler(EXPORT_TYPES.CSV, models, editorModels, readOnlyColumns, activeTab);
+    }, [models, editorModels, readOnlyColumns, activeTab]);
 
     const tsvExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.TSV, models, editorModels, readOnlyColumns, getUpdateColumns, activeTab);
-    }, [models, editorModels, activeTab, activeEditorModel, readOnlyColumns, getUpdateColumns]);
+        exportHandler(EXPORT_TYPES.TSV, models, editorModels, readOnlyColumns, activeTab);
+    }, [models, editorModels, readOnlyColumns, activeTab]);
 
     const excelExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.EXCEL, models, editorModels, readOnlyColumns, getUpdateColumns, activeTab);
-    }, [models, editorModels, activeTab, activeModel, activeEditorModel, readOnlyColumns, getUpdateColumns]);
+        exportHandler(EXPORT_TYPES.EXCEL, models, editorModels, readOnlyColumns, activeTab);
+    }, [models, editorModels, readOnlyColumns, activeTab]);
 
     const onExport = {
         [EXPORT_TYPES.CSV]: csvExportHandlerCallback,

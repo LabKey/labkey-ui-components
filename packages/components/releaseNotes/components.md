@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 10293: Enable export for editable grids
+
 ### version 2.177.1
 *Released*: 31 May 2022
 * Issue 45451: Grid drop down menu (page size, views) does not retract after selection

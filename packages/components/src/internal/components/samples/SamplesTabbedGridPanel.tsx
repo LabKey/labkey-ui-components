@@ -38,7 +38,7 @@ const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXP
 
 interface Props extends InjectedQueryModels {
     asPanel?: boolean;
-    afterSampleActionComplete?: () => void;
+    afterSampleActionComplete?: (hasDelete?: boolean) => void;
     canPrintLabels?: boolean;
     createBtnParentType?: string;
     createBtnParentKey?: string;
@@ -158,8 +158,10 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         (data: Map<string, any>, submitForEdit = false) => {
             setShowBulkUpdate(false);
             setSelectionData(submitForEdit ? data : undefined);
-            actions.loadModel(activeModel.id, true);
-            afterSampleActionComplete?.();
+            if (!submitForEdit) {
+                actions.loadModel(activeModel.id, true);
+                afterSampleActionComplete?.();
+            }
         },
         [actions, activeModel.id, afterSampleActionComplete]
     );
@@ -185,10 +187,10 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         resetState();
     }, [afterSampleActionComplete, resetState]);
 
-    const _afterSampleActionComplete = useCallback(() => {
+    const _afterSampleActionComplete = useCallback((hasDelete?: boolean) => {
         dismissNotifications();
         actions.loadModel(activeModel.id, true);
-        afterSampleActionComplete?.();
+        afterSampleActionComplete?.(hasDelete);
         resetState();
     }, [actions, activeModel.id, afterSampleActionComplete, resetState]);
 
@@ -202,7 +204,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             }
             actions.replaceSelections(activeModel.id, ids);
 
-            _afterSampleActionComplete();
+            _afterSampleActionComplete(true);
         },
         [actions, activeModel, _afterSampleActionComplete]
     );

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 45325: SamplesTabbedGridPanel shouldn't call afterSampleActionComplete when going from bulk edit modal to grid edit
+
 ### version 2.178.0
 *Released*: 31 May 2022
 * Issue 45270: Show settings page to all admins

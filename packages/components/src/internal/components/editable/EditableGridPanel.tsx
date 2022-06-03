@@ -9,7 +9,6 @@ import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 import { ExportMenu } from '../../../public/QueryModel/ExportMenu';
 import { EXPORT_TYPES } from '../../constants';
-import { QueryColumn } from '../../../public/QueryColumn';
 import { UtilsDOM } from '@labkey/api';
 
 interface Props extends SharedEditableGridPanelProps {
@@ -31,6 +30,7 @@ const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, export
             schema: activeModel.schemaName,
             query: activeModel.queryName,
         },
+        auditMessage: 'Exported editable grid to file: ', // Filename will be appeneded
     } as UtilsDOM.ConvertToTableOptions;
 
     switch (exportType) {
@@ -55,6 +55,7 @@ function exportEditedData(exportType: EXPORT_TYPES, filename: string, exportData
                 schema: activeModel.schemaName,
                 query: activeModel.queryName,
             },
+            auditMessage: 'Exported editable grid to excel file: ', // Filename will be appended
         };
         UtilsDOM.convertToExcel(data);
         return;

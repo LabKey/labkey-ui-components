@@ -32,6 +32,7 @@ import {
     QueryInfo,
     resolveKey,
     SchemaQuery,
+    ViewInfo,
 } from '..';
 
 import { getQueryDetails, selectRowsDeprecated } from './query/api';
@@ -2528,13 +2529,14 @@ export function incrementClientSideMetricCount(featureArea: string, metricName: 
     });
 }
 
-export function saveSessionGridView(
+export function saveAsSessionView(
     schemaQuery: SchemaQuery,
     columns: any,
     containerPath: string,
-    name: string
+    name: string,
+    hidden: boolean
 ): Promise<void> {
-    return saveGridView(schemaQuery, columns, containerPath, name, true);
+    return saveGridView(schemaQuery, columns, containerPath, name, true, hidden);
 }
 
 export function saveGridView(
@@ -2543,6 +2545,7 @@ export function saveGridView(
     containerPath: string,
     name: string,
     session?: boolean,
+    hidden?: boolean,
     inherit?: boolean,
     replace = true,
     shared?: boolean
@@ -2552,7 +2555,7 @@ export function saveGridView(
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             containerPath,
-            views: [{ name, columns, session, inherit, replace, shared }],
+            views: [{ name, columns, session, inherit, replace, shared, hidden }],
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();
@@ -2560,6 +2563,62 @@ export function saveGridView(
             failure: response => {
                 console.error(response);
                 reject('There was a problem saving the view for the data grid. ' + resolveErrorMessage(response));
+            },
+        });
+    });
+}
+
+// save the current session view as a non session view, remove session view
+export function saveSessionView(
+    schemaQuery: SchemaQuery,
+    containerPath: string,
+    viewName: string,
+    newName: string,
+    inherit?: boolean,
+    shared?: boolean
+): Promise<void> {
+    return new Promise((resolve, reject) => {
+        Query.saveSessionView({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            containerPath,
+            viewName,
+            newName,
+            inherit,
+            shared,
+            success: () => {
+                invalidateQueryDetailsCache(schemaQuery, containerPath);
+                resolve();
+            },
+            failure: response => {
+                console.error(response);
+                reject('There was a problem saving the view for the data grid. ' + resolveErrorMessage(response));
+            },
+        });
+    });
+}
+
+export function getGridView(
+    schemaQuery: SchemaQuery,
+    viewName?: string,
+    excludeSessionView?: boolean
+): Promise<ViewInfo> {
+    return new Promise((resolve, reject) => {
+        Query.getQueryViews({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            viewName,
+            excludeSessionView,
+            success: (response) => {
+                const view = response.views?.[0];
+                if (view)
+                    resolve(ViewInfo.create(view));
+                else
+                    reject('Unable to load the view.')
+            },
+            failure: response => {
+                console.error(response);
+                reject('There was a problem loading the view for the data grid. ' + resolveErrorMessage(response));
             },
         });
     });

@@ -19,6 +19,7 @@ import {
     QueryConfig,
     QueryInfo,
     QuerySort,
+    User,
     useServerContext,
     ViewInfo,
 } from '../..';
@@ -26,7 +27,13 @@ import { GRID_SELECTION_INDEX } from '../../internal/constants';
 import { DataViewInfo } from '../../internal/models';
 import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
-import { revertViewEdit, saveGridView, saveSessionGridView } from '../../internal/actions';
+import {
+    getGridView,
+    revertViewEdit,
+    saveGridView,
+    saveAsSessionView,
+    saveSessionView
+} from '../../internal/actions';
 
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
@@ -85,6 +92,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     supportedExportTypes?: Set<EXPORT_TYPES>;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
     highlightLastSelectedRow?: boolean;
+    user?: User
 }
 
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
@@ -263,7 +271,8 @@ interface GridTitleProps {
     onSaveView?: () => void;
     onSaveNewView?: () => void;
     view?: ViewInfo;
-    isUpdated?: boolean
+    isUpdated?: boolean,
+    user?: User
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
@@ -277,7 +286,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         actions,
         allowSelections,
         allowViewCustomization,
-        isUpdated
+        isUpdated,
+        user
     } = props;
     const { queryInfo, viewName } = model;
 
@@ -297,15 +307,15 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
     }
 
-    const isEdited = currentView?.session && !currentView?.hidden;
+    const isEdited = currentView?.session;
     const showSave = allowViewCustomization && isEdited && currentView?.savable;
     const showRevert = allowViewCustomization && isEdited && currentView?.revertable;
+
     let canSaveCurrent = false;
-    if (!!viewName)
-        canSaveCurrent = true;
-    else if (isEdited) {
-        const user = useServerContext().user; // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
-        canSaveCurrent = user.hasAdminPermission() && !user.isGuest;
+
+    if (!!viewName) {
+        const currentUser = user ?? useServerContext().user; // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
+        canSaveCurrent = !currentUser.isGuest && !currentView?.hidden;
     }
 
     const _revertViewEdit = useCallback(async () => {
@@ -755,9 +765,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     hideColumn = (columnToHide: QueryColumn): void => {
         const { actions, model, allowSelections } = this.props;
+        const {queryInfo, viewName} = model;
+
+        const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
 
         const columns = model.displayColumns.filter(column => column.index !== columnToHide.index);
-        saveSessionGridView(model.schemaQuery, columns, model.containerPath, model.viewName)
+        saveAsSessionView(model.schemaQuery, columns, model.containerPath, model.viewName, view?.hidden)
             .then(() => {
                 actions.loadModel(model.id, allowSelections);
                 this.setState({
@@ -776,8 +789,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
 
+        let currentView = view
         try {
-            await this.onSaveView(viewName, view.inherit, true, view.shared);
+            if (view.session)
+                currentView = await getGridView(queryInfo.schemaQuery, viewName, true);
+            await this.onSaveView(viewName, currentView?.inherit, true, currentView?.shared);
         }
         catch (errorMsg) {
             this.setState({ errorMsg });
@@ -788,18 +804,24 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState({ showSaveViewModal: true });
     };
 
-    onSaveView = (name: string, inherit: boolean, replace: boolean, shared: boolean): Promise<any> => {
+    onSaveView = (newName: string, inherit: boolean, replace: boolean, shared: boolean): Promise<any> => {
         const { model, actions, allowSelections } = this.props;
+        const { viewName, queryInfo } = model;
+
         const { showSaveViewModal } = this.state;
 
         return new Promise((resolve, reject) => {
-            saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, name, false, inherit, replace, shared)
-                .then(response => {
+            const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
+
+            (view.session
+                ? saveSessionView(model.schemaQuery, model.containerPath, viewName, newName, inherit, shared)
+                : saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, newName, inherit, shared, inherit, replace, shared)
+            ).then(response => {
                     actions.loadModel(model.id, allowSelections);
 
                     if (showSaveViewModal) {
                         this.closeSaveViewModal();
-                        this.onViewSelect(name);
+                        this.onViewSelect(newName);
                     }
 
                     this.showViewSavedIndicator();
@@ -934,6 +956,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showFilterStatus,
             showHeader,
             title,
+            user
         } = this.props;
         const { showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
         const {
@@ -981,6 +1004,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         onSaveView={this.onSaveCurrentView}
                         onSaveNewView={this.onSaveNewView}
                         isUpdated={isViewSaved}
+                        user={user}
                     />
 
                     <div

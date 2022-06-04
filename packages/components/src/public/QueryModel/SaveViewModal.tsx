@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, memo, useCallback, useEffect, useState} from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
 import { PermissionTypes } from '@labkey/api';
@@ -10,7 +10,7 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 import { CUSTOM_VIEW, HelpLink } from '../../internal/util/helpLinks';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
 import { isSubfolderDataEnabled } from '../../internal/app/utils';
-import { useServerContext } from "../../internal/components/base/ServerContext";
+import { useServerContext } from '../../internal/components/base/ServerContext';
 
 export interface Props {
     currentView: ViewInfo;
@@ -22,9 +22,11 @@ export interface Props {
 export const SaveViewModal: FC<Props> = memo(props => {
     const { onConfirmSave, currentView, onCancel, gridLabel } = props;
 
-    const { user}  = useServerContext();
+    const { user } = useServerContext();
 
-    const [viewName, setViewName] = useState<string>(currentView?.isDefault || currentView?.hidden ? '' : currentView?.name);
+    const [viewName, setViewName] = useState<string>(
+        currentView?.isDefault || currentView?.hidden ? '' : currentView?.name
+    );
     const [isDefaultView, setIsDefaultView] = useState<boolean>(user.hasAdminPermission() && currentView?.isDefault);
     const [canInherit, setCanInherit] = useState<boolean>(currentView?.inherit);
     const [errorMessage, setErrorMessage] = useState<string>();
@@ -81,7 +83,9 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 width={50}
                             />
                         </div>
-                        <RequiresPermission perms={PermissionTypes.Admin}> {/* Only allow admins to create custom default views in app. Note this is different from LKS*/}
+                        <RequiresPermission perms={PermissionTypes.Admin}>
+                            {' '}
+                            {/* Only allow admins to create custom default views in app. Note this is different from LKS*/}
                             <div className="form-check bottom-spacing">
                                 <input
                                     className="form-check-input"

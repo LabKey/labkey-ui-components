@@ -27,13 +27,7 @@ import { GRID_SELECTION_INDEX } from '../../internal/constants';
 import { DataViewInfo } from '../../internal/models';
 import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
-import {
-    getGridView,
-    revertViewEdit,
-    saveGridView,
-    saveAsSessionView,
-    saveSessionView
-} from '../../internal/actions';
+import { getGridView, revertViewEdit, saveGridView, saveAsSessionView, saveSessionView } from '../../internal/actions';
 
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
@@ -92,7 +86,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     supportedExportTypes?: Set<EXPORT_TYPES>;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
     highlightLastSelectedRow?: boolean;
-    user?: User
+    user?: User;
 }
 
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
@@ -271,8 +265,8 @@ interface GridTitleProps {
     onSaveView?: () => void;
     onSaveNewView?: () => void;
     view?: ViewInfo;
-    isUpdated?: boolean,
-    user?: User
+    isUpdated?: boolean;
+    user?: User;
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
@@ -287,7 +281,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         allowSelections,
         allowViewCustomization,
         isUpdated,
-        user
+        user,
     } = props;
     const { queryInfo, viewName } = model;
 
@@ -297,8 +291,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     if (!currentView) {
         if (viewName) {
             currentView = queryInfo.views.get(viewName.toLowerCase());
-        }
-        else {
+        } else {
             currentView = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
         }
     }
@@ -313,7 +306,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 
     let canSaveCurrent = false;
 
-    if (!!viewName) {
+    if (viewName) {
         const currentUser = user ?? useServerContext().user; // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
         canSaveCurrent = !currentUser.isGuest && !currentView?.hidden;
     }
@@ -360,7 +353,7 @@ interface State {
     showSaveViewModal: boolean;
     headerClickCount: { [key: string]: number };
     errorMsg: React.ReactNode;
-    isViewSaved?: boolean
+    isViewSaved?: boolean;
 }
 
 /**
@@ -386,7 +379,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showSampleComparisonReports: false,
         showSearchInput: true,
         showViewMenu: true,
-        showHeader: true
+        showHeader: true,
     };
 
     constructor(props) {
@@ -406,7 +399,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showSaveViewModal: false,
             headerClickCount: {},
             errorMsg: undefined,
-            isViewSaved: false
+            isViewSaved: false,
         };
     }
 
@@ -765,7 +758,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     hideColumn = (columnToHide: QueryColumn): void => {
         const { actions, model, allowSelections } = this.props;
-        const {queryInfo, viewName} = model;
+        const { queryInfo, viewName } = model;
 
         const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
 
@@ -784,18 +777,16 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     onSaveCurrentView = async () => {
-        const {model} = this.props;
-        const {queryInfo, viewName} = model;
+        const { model } = this.props;
+        const { queryInfo, viewName } = model;
 
         const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
 
-        let currentView = view
+        let currentView = view;
         try {
-            if (view.session)
-                currentView = await getGridView(queryInfo.schemaQuery, viewName, true);
+            if (view.session) currentView = await getGridView(queryInfo.schemaQuery, viewName, true);
             await this.onSaveView(viewName, currentView?.inherit, true, currentView?.shared);
-        }
-        catch (errorMsg) {
+        } catch (errorMsg) {
             this.setState({ errorMsg });
         }
     };
@@ -815,8 +806,19 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
             (view.session
                 ? saveSessionView(model.schemaQuery, model.containerPath, viewName, newName, inherit, shared)
-                : saveGridView(model.schemaQuery, model.displayColumns, model.containerPath, newName, inherit, shared, inherit, replace, shared)
-            ).then(response => {
+                : saveGridView(
+                      model.schemaQuery,
+                      model.displayColumns,
+                      model.containerPath,
+                      newName,
+                      inherit,
+                      shared,
+                      inherit,
+                      replace,
+                      shared
+                  )
+            )
+                .then(response => {
                     actions.loadModel(model.id, allowSelections);
 
                     if (showSaveViewModal) {
@@ -835,15 +837,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     showViewSavedIndicator = (): void => {
         this.setState({
-            isViewSaved: true
+            isViewSaved: true,
         });
 
         setTimeout(() => {
             this.setState({
-                isViewSaved: false
+                isViewSaved: false,
             });
         }, 5000);
-
     };
 
     closeSaveViewModal = (): void => {
@@ -956,7 +957,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showFilterStatus,
             showHeader,
             title,
-            user
+            user,
         } = this.props;
         const { showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
         const {

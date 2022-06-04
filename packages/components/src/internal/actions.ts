@@ -2609,12 +2609,10 @@ export function getGridView(
             queryName: schemaQuery.queryName,
             viewName,
             excludeSessionView,
-            success: (response) => {
+            success: response => {
                 const view = response.views?.[0];
-                if (view)
-                    resolve(ViewInfo.create(view));
-                else
-                    reject('Unable to load the view.')
+                if (view) resolve(ViewInfo.create(view));
+                else reject('Unable to load the view.');
             },
             failure: response => {
                 console.error(response);

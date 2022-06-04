@@ -5,7 +5,7 @@ import { ModalBody } from 'react-bootstrap';
 import { ViewInfo } from '../../internal/ViewInfo';
 
 import { mountWithServerContext } from '../../internal/testHelpers';
-import {TEST_USER_APP_ADMIN, TEST_USER_EDITOR, TEST_USER_PROJECT_ADMIN} from '../../internal/userFixtures';
+import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR, TEST_USER_PROJECT_ADMIN } from '../../internal/userFixtures';
 
 import { SaveViewModal } from './SaveViewModal';
 

@@ -13,7 +13,7 @@
   "author": "kevink@labkey.com",
   "license": "Apache-2.0",
   "dependencies": {
-    "@labkey/eslint-config-base": "0.0.11-fb-add-linting.0",
+    "@labkey/eslint-config-base": "0.0.11-fb-add-linting.1",
     "eslint-plugin-react": "7.30.0",
     "eslint-plugin-react-hooks": "4.5.0"
   }

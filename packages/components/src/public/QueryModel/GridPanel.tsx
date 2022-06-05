@@ -86,7 +86,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     supportedExportTypes?: Set<EXPORT_TYPES>;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
     highlightLastSelectedRow?: boolean;
-    user?: User;
+    user?: User; // used by jest test
 }
 
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
@@ -262,11 +262,11 @@ interface GridTitleProps {
     allowSelections: boolean;
     allowViewCustomization: boolean;
     onRevertView?: () => void;
-    onSaveView?: () => void;
+    onSaveView?: (canSaveShared) => void;
     onSaveNewView?: () => void;
     view?: ViewInfo;
     isUpdated?: boolean;
-    user?: User;
+    user?: User; // used by jest
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
@@ -284,6 +284,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         user,
     } = props;
     const { queryInfo, viewName } = model;
+
+    const currentUser = user ?? useServerContext().user;
 
     let displayTitle = title;
     let currentView = view;
@@ -307,7 +309,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     let canSaveCurrent = false;
 
     if (viewName) {
-        const currentUser = user ?? useServerContext().user; // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
+        // const currentUser = user ?? useServerContext().user; // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
         canSaveCurrent = !currentUser.isGuest && !currentView?.hidden;
     }
 
@@ -316,6 +318,10 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         await actions.loadModel(model.id, allowSelections);
         onRevertView?.();
     }, [model, onRevertView, actions, allowSelections]);
+
+    const _onSaveCurrentView = () => {
+        onSaveView(currentUser.isAdmin); // // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
+    };
 
     if (!displayTitle && !isEdited && !isUpdated) {
         return null;
@@ -337,7 +343,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
                 </button>
             )}
             {showSave && canSaveCurrent && (
-                <SplitButton id="saveViewDropdown" bsStyle="success" onClick={onSaveView} title="Save">
+                <SplitButton id="saveViewDropdown" bsStyle="success" onClick={_onSaveCurrentView} title="Save">
                     <MenuItem title="Save as new view" onClick={onSaveNewView} key="saveNewGridView">
                         Save as
                     </MenuItem>
@@ -776,7 +782,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             });
     };
 
-    onSaveCurrentView = async () => {
+    onSaveCurrentView = async (canSaveShared) => {
         const { model } = this.props;
         const { queryInfo, viewName } = model;
 
@@ -785,7 +791,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         let currentView = view;
         try {
             if (view.session) currentView = await getGridView(queryInfo.schemaQuery, viewName, true);
-            await this.onSaveView(viewName, currentView?.inherit, true, currentView?.shared);
+            await this.onSaveView(viewName, currentView?.inherit, true, currentView.shared && canSaveShared);
         } catch (errorMsg) {
             this.setState({ errorMsg });
         }
@@ -795,7 +801,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState({ showSaveViewModal: true });
     };
 
-    onSaveView = (newName: string, inherit: boolean, replace: boolean, shared: boolean): Promise<any> => {
+    onSaveView = (newName: string, inherit: boolean, replace: boolean, shared?: boolean): Promise<any> => {
         const { model, actions, allowSelections } = this.props;
         const { viewName, queryInfo } = model;
 
@@ -811,8 +817,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                       model.displayColumns,
                       model.containerPath,
                       newName,
-                      inherit,
-                      shared,
+                      false,
+                      false,
                       inherit,
                       replace,
                       shared

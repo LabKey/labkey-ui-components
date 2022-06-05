@@ -80,7 +80,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 onChange={onViewNameChange}
                                 disabled={isDefaultView}
                                 type="text"
-                                width={50}
+                                maxLength={50}
                             />
                         </div>
                         <RequiresPermission perms={PermissionTypes.Admin}>

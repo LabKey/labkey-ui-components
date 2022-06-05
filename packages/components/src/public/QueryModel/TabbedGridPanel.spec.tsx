@@ -14,6 +14,7 @@ import { QueryModel } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
 import { TabbedGridPanel } from './TabbedGridPanel';
 import { makeTestActions, makeTestQueryModel } from './testUtils';
+import {TEST_USER_READER} from "../../internal/userFixtures";
 
 let MIXTURES_QUERY_INFO: QueryInfo;
 let MIXTURES_DATA: RowsResponse;
@@ -83,7 +84,7 @@ describe('TabbedGridPanel', () => {
     };
 
     test('default render', () => {
-        const wrapper = mount(<TabbedGridPanel tabOrder={tabOrder} queryModels={queryModels} actions={actions} />);
+        const wrapper = mount(<TabbedGridPanel tabOrder={tabOrder} queryModels={queryModels} actions={actions} user={TEST_USER_READER}/>);
         const tabs = wrapper.find(TABS_SELECTOR);
 
         // Here we test that tab order is honored, and that by default we set the first tab to active
@@ -102,6 +103,7 @@ describe('TabbedGridPanel', () => {
                 tabOrder={tabOrder}
                 queryModels={queryModels}
                 actions={actions}
+                user={TEST_USER_READER}
             />
         );
 
@@ -113,7 +115,7 @@ describe('TabbedGridPanel', () => {
     test('asPanel', () => {
         const title = 'My Tabbed Grid';
         const wrapper = mount(
-            <TabbedGridPanel tabOrder={tabOrder} title={title} queryModels={queryModels} actions={actions} />
+            <TabbedGridPanel tabOrder={tabOrder} title={title} queryModels={queryModels} actions={actions} user={TEST_USER_READER}/>
         );
 
         // When asPanel is true, we use appropriate styling classes
@@ -128,7 +130,7 @@ describe('TabbedGridPanel', () => {
 
     test('single model', () => {
         const wrapper = mount(
-            <TabbedGridPanel tabOrder={['mixtures']} queryModels={{ mixtures: mixturesModel }} actions={actions} />
+            <TabbedGridPanel tabOrder={['mixtures']} queryModels={{ mixtures: mixturesModel }} actions={actions} user={TEST_USER_READER}/>
         );
 
         // Hide the tabs if we only have one model.
@@ -144,6 +146,7 @@ describe('TabbedGridPanel', () => {
                 onTabSelect={onTabSelect}
                 queryModels={queryModels}
                 tabOrder={tabOrder}
+                user={TEST_USER_READER}
             />
         );
         expectTabs(wrapper, AMINO_ACIDS_TITLE);
@@ -164,6 +167,7 @@ describe('TabbedGridPanel', () => {
                 queryModels={queryModels}
                 showRowCountOnTabs
                 tabOrder={tabOrder}
+                user={TEST_USER_READER}
             />
         );
 

@@ -5698,6 +5698,36 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       },
     ]
   }
+  user={
+    Immutable.Record {
+      "id": 1200,
+      "canDelete": false,
+      "canDeleteOwn": false,
+      "canInsert": false,
+      "canUpdate": false,
+      "canUpdateOwn": false,
+      "displayName": "ReaderDisplayName",
+      "email": "guest",
+      "phone": null,
+      "avatar": "/labkey/_images/defaultavatar.png",
+      "isAdmin": false,
+      "isAnalyst": false,
+      "isDeveloper": false,
+      "isGuest": false,
+      "isRootAdmin": false,
+      "isSignedIn": true,
+      "isSystemAdmin": false,
+      "isTrusted": false,
+      "maxAllowedPhi": undefined,
+      "permissionsList": Immutable.List [
+        "org.labkey.api.security.permissions.ReadPermission",
+        "org.labkey.api.security.permissions.DataClassReadPermission",
+        "org.labkey.api.security.permissions.AssayReadPermission",
+        "org.labkey.api.security.permissions.MediaReadPermission",
+        "org.labkey.api.security.permissions.NotebookReadPermission",
+      ],
+    }
+  }
 >
   <withRouter(ComponentWithQueryModels)
     childNounSingular="Sample"
@@ -5833,6 +5863,36 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "viewName": undefined,
           },
         },
+      }
+    }
+    user={
+      Immutable.Record {
+        "id": 1200,
+        "canDelete": false,
+        "canDeleteOwn": false,
+        "canInsert": false,
+        "canUpdate": false,
+        "canUpdateOwn": false,
+        "displayName": "ReaderDisplayName",
+        "email": "guest",
+        "phone": null,
+        "avatar": "/labkey/_images/defaultavatar.png",
+        "isAdmin": false,
+        "isAnalyst": false,
+        "isDeveloper": false,
+        "isGuest": false,
+        "isRootAdmin": false,
+        "isSignedIn": true,
+        "isSystemAdmin": false,
+        "isTrusted": false,
+        "maxAllowedPhi": undefined,
+        "permissionsList": Immutable.List [
+          "org.labkey.api.security.permissions.ReadPermission",
+          "org.labkey.api.security.permissions.DataClassReadPermission",
+          "org.labkey.api.security.permissions.AssayReadPermission",
+          "org.labkey.api.security.permissions.MediaReadPermission",
+          "org.labkey.api.security.permissions.NotebookReadPermission",
+        ],
       }
     }
   >
@@ -5983,6 +6043,36 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "viewName": undefined,
             },
           },
+        }
+      }
+      user={
+        Immutable.Record {
+          "id": 1200,
+          "canDelete": false,
+          "canDeleteOwn": false,
+          "canInsert": false,
+          "canUpdate": false,
+          "canUpdateOwn": false,
+          "displayName": "ReaderDisplayName",
+          "email": "guest",
+          "phone": null,
+          "avatar": "/labkey/_images/defaultavatar.png",
+          "isAdmin": false,
+          "isAnalyst": false,
+          "isDeveloper": false,
+          "isGuest": false,
+          "isRootAdmin": false,
+          "isSignedIn": true,
+          "isSystemAdmin": false,
+          "isTrusted": false,
+          "maxAllowedPhi": undefined,
+          "permissionsList": Immutable.List [
+            "org.labkey.api.security.permissions.ReadPermission",
+            "org.labkey.api.security.permissions.DataClassReadPermission",
+            "org.labkey.api.security.permissions.AssayReadPermission",
+            "org.labkey.api.security.permissions.MediaReadPermission",
+            "org.labkey.api.security.permissions.NotebookReadPermission",
+          ],
         }
       }
     >
@@ -6180,6 +6270,36 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             },
           }
         }
+        user={
+          Immutable.Record {
+            "id": 1200,
+            "canDelete": false,
+            "canDeleteOwn": false,
+            "canInsert": false,
+            "canUpdate": false,
+            "canUpdateOwn": false,
+            "displayName": "ReaderDisplayName",
+            "email": "guest",
+            "phone": null,
+            "avatar": "/labkey/_images/defaultavatar.png",
+            "isAdmin": false,
+            "isAnalyst": false,
+            "isDeveloper": false,
+            "isGuest": false,
+            "isRootAdmin": false,
+            "isSignedIn": true,
+            "isSystemAdmin": false,
+            "isTrusted": false,
+            "maxAllowedPhi": undefined,
+            "permissionsList": Immutable.List [
+              "org.labkey.api.security.permissions.ReadPermission",
+              "org.labkey.api.security.permissions.DataClassReadPermission",
+              "org.labkey.api.security.permissions.AssayReadPermission",
+              "org.labkey.api.security.permissions.MediaReadPermission",
+              "org.labkey.api.security.permissions.NotebookReadPermission",
+            ],
+          }
+        }
       >
         <div
           className="top-spacing"
@@ -6320,6 +6440,36 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             showSampleComparisonReports={false}
             showSearchInput={true}
             showViewMenu={true}
+            user={
+              Immutable.Record {
+                "id": 1200,
+                "canDelete": false,
+                "canDeleteOwn": false,
+                "canInsert": false,
+                "canUpdate": false,
+                "canUpdateOwn": false,
+                "displayName": "ReaderDisplayName",
+                "email": "guest",
+                "phone": null,
+                "avatar": "/labkey/_images/defaultavatar.png",
+                "isAdmin": false,
+                "isAnalyst": false,
+                "isDeveloper": false,
+                "isGuest": false,
+                "isRootAdmin": false,
+                "isSignedIn": true,
+                "isSystemAdmin": false,
+                "isTrusted": false,
+                "maxAllowedPhi": undefined,
+                "permissionsList": Immutable.List [
+                  "org.labkey.api.security.permissions.ReadPermission",
+                  "org.labkey.api.security.permissions.DataClassReadPermission",
+                  "org.labkey.api.security.permissions.AssayReadPermission",
+                  "org.labkey.api.security.permissions.MediaReadPermission",
+                  "org.labkey.api.security.permissions.NotebookReadPermission",
+                ],
+              }
+            }
           >
             <div
               className="grid-panel"
@@ -6353,6 +6503,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 }
                 allowSelections={false}
                 allowViewCustomization={true}
+                isUpdated={false}
                 model={
                   QueryModel {
                     "baseFilters": Array [
@@ -6425,6 +6576,36 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 onRevertView={[Function]}
                 onSaveNewView={[Function]}
                 onSaveView={[Function]}
+                user={
+                  Immutable.Record {
+                    "id": 1200,
+                    "canDelete": false,
+                    "canDeleteOwn": false,
+                    "canInsert": false,
+                    "canUpdate": false,
+                    "canUpdateOwn": false,
+                    "displayName": "ReaderDisplayName",
+                    "email": "guest",
+                    "phone": null,
+                    "avatar": "/labkey/_images/defaultavatar.png",
+                    "isAdmin": false,
+                    "isAnalyst": false,
+                    "isDeveloper": false,
+                    "isGuest": false,
+                    "isRootAdmin": false,
+                    "isSignedIn": true,
+                    "isSystemAdmin": false,
+                    "isTrusted": false,
+                    "maxAllowedPhi": undefined,
+                    "permissionsList": Immutable.List [
+                      "org.labkey.api.security.permissions.ReadPermission",
+                      "org.labkey.api.security.permissions.DataClassReadPermission",
+                      "org.labkey.api.security.permissions.AssayReadPermission",
+                      "org.labkey.api.security.permissions.MediaReadPermission",
+                      "org.labkey.api.security.permissions.NotebookReadPermission",
+                    ],
+                  }
+                }
               />
               <div
                 className="grid-panel__body top-spacing"

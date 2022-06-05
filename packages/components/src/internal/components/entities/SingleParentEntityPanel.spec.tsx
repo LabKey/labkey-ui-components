@@ -11,6 +11,7 @@ import { GridPanel, SelectInput } from '../../..';
 import { IEntityTypeOption } from './models';
 import { DataClassDataType } from './constants';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
+import { TEST_USER_READER } from "../../userFixtures";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -89,6 +90,7 @@ describe('<SingleParentEntityPanel>', () => {
                 onRemoveParentType={() => {
                     console.log('No really removing anything.');
                 }}
+                user={TEST_USER_READER}
             />
         );
         expect(wrapper.find(GridPanel)).toHaveLength(1);

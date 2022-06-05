@@ -117,7 +117,7 @@ describe('GridPanel', () => {
 
         // Model is loading QueryInfo and Rows, should render loading, no ChartMenu/Pagination/ViewMenu.
         let model = makeTestQueryModel(SCHEMA_QUERY);
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} user={TEST_USER_READER}/>);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} user={TEST_USER_READER} />);
         expectNoQueryInfo(wrapper);
 
         // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewMenu.
@@ -383,7 +383,7 @@ describe('GridPanel', () => {
             selections: new Set(),
             selectionsLoadingState: LoadingState.LOADED,
         });
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} user={TEST_USER_READER}/>);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} user={TEST_USER_READER} />);
 
         // Check that with no selections the header checkbox is not selected.
         expectHeaderSelectionStatus(wrapper, false);
@@ -458,7 +458,15 @@ describe('GridTitle', () => {
 
     test('no title, no view', () => {
         const tree = renderer
-            .create(<GridTitle model={model} actions={actions} allowSelections={true} allowViewCustomization={false} user={TEST_USER_PROJECT_ADMIN}/>)
+            .create(
+                <GridTitle
+                    model={model}
+                    actions={actions}
+                    allowSelections={true}
+                    allowViewCustomization={false}
+                    user={TEST_USER_PROJECT_ADMIN}
+                />
+            )
             .toJSON();
         expect(tree).toBeNull();
     });

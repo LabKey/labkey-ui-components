@@ -782,7 +782,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             });
     };
 
-    onSaveCurrentView = async (canSaveShared) => {
+    onSaveCurrentView = async canSaveShared => {
         const { model } = this.props;
         const { queryInfo, viewName } = model;
 

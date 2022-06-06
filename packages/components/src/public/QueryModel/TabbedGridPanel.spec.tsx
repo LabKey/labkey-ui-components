@@ -9,8 +9,6 @@ import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 import { QueryInfo } from '../QueryInfo';
 import { SchemaQuery } from '../SchemaQuery';
 
-import { TEST_USER_READER } from '../../internal/userFixtures';
-
 import { QueryModel } from './QueryModel';
 
 import { RowsResponse } from './QueryModelLoader';
@@ -86,7 +84,7 @@ describe('TabbedGridPanel', () => {
 
     test('default render', () => {
         const wrapper = mount(
-            <TabbedGridPanel tabOrder={tabOrder} queryModels={queryModels} actions={actions} user={TEST_USER_READER} />
+            <TabbedGridPanel tabOrder={tabOrder} queryModels={queryModels} actions={actions} />
         );
         const tabs = wrapper.find(TABS_SELECTOR);
 
@@ -106,7 +104,6 @@ describe('TabbedGridPanel', () => {
                 tabOrder={tabOrder}
                 queryModels={queryModels}
                 actions={actions}
-                user={TEST_USER_READER}
             />
         );
 
@@ -123,7 +120,6 @@ describe('TabbedGridPanel', () => {
                 title={title}
                 queryModels={queryModels}
                 actions={actions}
-                user={TEST_USER_READER}
             />
         );
 
@@ -143,7 +139,6 @@ describe('TabbedGridPanel', () => {
                 tabOrder={['mixtures']}
                 queryModels={{ mixtures: mixturesModel }}
                 actions={actions}
-                user={TEST_USER_READER}
             />
         );
 
@@ -160,7 +155,6 @@ describe('TabbedGridPanel', () => {
                 onTabSelect={onTabSelect}
                 queryModels={queryModels}
                 tabOrder={tabOrder}
-                user={TEST_USER_READER}
             />
         );
         expectTabs(wrapper, AMINO_ACIDS_TITLE);
@@ -181,7 +175,6 @@ describe('TabbedGridPanel', () => {
                 queryModels={queryModels}
                 showRowCountOnTabs
                 tabOrder={tabOrder}
-                user={TEST_USER_READER}
             />
         );
 

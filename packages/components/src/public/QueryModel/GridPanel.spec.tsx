@@ -37,6 +37,7 @@ beforeAll(() => {
     initUnitTests();
     QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
     DATA = makeTestData(mixturesQuery);
+    LABKEY.user = TEST_USER_READER;
 });
 
 const CHART_MENU_SELECTOR = '.chart-menu';
@@ -117,7 +118,7 @@ describe('GridPanel', () => {
 
         // Model is loading QueryInfo and Rows, should render loading, no ChartMenu/Pagination/ViewMenu.
         let model = makeTestQueryModel(SCHEMA_QUERY);
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} user={TEST_USER_READER} />);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
         expectNoQueryInfo(wrapper);
 
         // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewMenu.
@@ -262,7 +263,7 @@ describe('GridPanel', () => {
         // happens when bindURL is true and there is a URL change.
         const { rows, orderedRows, rowCount } = DATA;
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} user={TEST_USER_PROJECT_ADMIN} />);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
         const nameSort = new QuerySort({ fieldKey: 'Name' });
         const nameFilter = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
         const expirFilter = Filter.create('expirationTime', '1', Filter.Types.EQUAL);
@@ -383,7 +384,7 @@ describe('GridPanel', () => {
             selections: new Set(),
             selectionsLoadingState: LoadingState.LOADED,
         });
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} user={TEST_USER_READER} />);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
 
         // Check that with no selections the header checkbox is not selected.
         expectHeaderSelectionStatus(wrapper, false);
@@ -464,7 +465,6 @@ describe('GridTitle', () => {
                     actions={actions}
                     allowSelections={true}
                     allowViewCustomization={false}
-                    user={TEST_USER_PROJECT_ADMIN}
                 />
             )
             .toJSON();
@@ -597,7 +597,6 @@ describe('GridTitle', () => {
                     actions={actions}
                     allowSelections={true}
                     allowViewCustomization={false}
-                    user={TEST_USER_PROJECT_ADMIN}
                 />
             )
             .toJSON();

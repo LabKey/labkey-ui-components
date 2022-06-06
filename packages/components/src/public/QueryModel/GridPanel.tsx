@@ -1,7 +1,7 @@
 import React, { ComponentType, FC, memo, PureComponent, ReactNode, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Set } from 'immutable';
-import { Filter, Query } from '@labkey/api';
+import {Filter, getServerContext, Query} from '@labkey/api';
 
 import { MenuItem, SplitButton } from 'react-bootstrap';
 
@@ -51,6 +51,7 @@ import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
+import {hasServerContext} from "../../internal/components/base/ServerContext";
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -86,7 +87,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     supportedExportTypes?: Set<EXPORT_TYPES>;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
     highlightLastSelectedRow?: boolean;
-    user?: User; // used by jest test
 }
 
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
@@ -266,7 +266,6 @@ interface GridTitleProps {
     onSaveNewView?: () => void;
     view?: ViewInfo;
     isUpdated?: boolean;
-    user?: User; // used by jest
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
@@ -280,12 +279,12 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         actions,
         allowSelections,
         allowViewCustomization,
-        isUpdated,
-        user,
+        isUpdated
     } = props;
     const { queryInfo, viewName } = model;
 
-    const currentUser = user ?? useServerContext().user;
+    // const user = user ?? getServerContext().user;
+    const user = hasServerContext() ? useServerContext().user : getServerContext().user; // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
 
     let displayTitle = title;
     let currentView = view;
@@ -309,8 +308,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     let canSaveCurrent = false;
 
     if (viewName) {
-        // const currentUser = user ?? useServerContext().user; // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
-        canSaveCurrent = !currentUser.isGuest && !currentView?.hidden;
+        canSaveCurrent = !user?.isGuest && !currentView?.hidden;
     }
 
     const _revertViewEdit = useCallback(async () => {
@@ -320,7 +318,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }, [model, onRevertView, actions, allowSelections]);
 
     const _onSaveCurrentView = () => {
-        onSaveView(currentUser.isAdmin); // // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
+        onSaveView(user?.isAdmin); // // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
     };
 
     if (!displayTitle && !isEdited && !isUpdated) {
@@ -972,7 +970,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showFilterStatus,
             showHeader,
             title,
-            user,
         } = this.props;
         const { showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
         const {
@@ -1020,7 +1017,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         onSaveView={this.onSaveCurrentView}
                         onSaveNewView={this.onSaveNewView}
                         isUpdated={isViewSaved}
-                        user={user}
                     />
 
                     <div

@@ -54,7 +54,6 @@ interface Props {
     parentLSIDs?: string[];
     parentTypeOptions?: List<IEntityTypeOption>;
     parentEntityType?: IEntityTypeOption;
-    user?: User; // used for jest for GridPanel, remove when GridPanel is converted to FC
 }
 
 type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;
@@ -226,7 +225,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     }
 
     render() {
-        const { actions, editing, index, queryModels, user } = this.props;
+        const { actions, editing, index, queryModels } = this.props;
         const { model } = queryModels;
 
         if (editing) {
@@ -246,7 +245,6 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         showChartMenu={false}
                         showExport={false}
                         allowFiltering={false}
-                        user={user}
                     />
                 )}
             </div>

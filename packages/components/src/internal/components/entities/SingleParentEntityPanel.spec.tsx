@@ -91,7 +91,6 @@ describe('<SingleParentEntityPanel>', () => {
                 onRemoveParentType={() => {
                     console.log('No really removing anything.');
                 }}
-                user={TEST_USER_READER}
             />
         );
         expect(wrapper.find(GridPanel)).toHaveLength(1);

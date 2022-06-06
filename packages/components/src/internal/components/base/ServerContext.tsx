@@ -47,7 +47,7 @@ export const ServerContextProvider: FC<ServerContextProviderProps> = ({ children
 };
 
 export const hasServerContext = (): boolean => {
-    return !!useContext(Context)
+    return !!useContext(Context);
 };
 
 export const useServerContext = (): ServerContext => {

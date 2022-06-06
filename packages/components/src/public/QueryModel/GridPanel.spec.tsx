@@ -459,14 +459,7 @@ describe('GridTitle', () => {
 
     test('no title, no view', () => {
         const tree = renderer
-            .create(
-                <GridTitle
-                    model={model}
-                    actions={actions}
-                    allowSelections={true}
-                    allowViewCustomization={false}
-                />
-            )
+            .create(<GridTitle model={model} actions={actions} allowSelections={true} allowViewCustomization={false} />)
             .toJSON();
         expect(tree).toBeNull();
     });
@@ -591,14 +584,7 @@ describe('GridTitle', () => {
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
         const tree = renderer
-            .create(
-                <GridTitle
-                    model={model}
-                    actions={actions}
-                    allowSelections={true}
-                    allowViewCustomization={false}
-                />
-            )
+            .create(<GridTitle model={model} actions={actions} allowSelections={true} allowViewCustomization={false} />)
             .toJSON();
         expect(tree).toBeNull();
     });

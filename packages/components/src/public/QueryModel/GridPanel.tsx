@@ -1,7 +1,7 @@
 import React, { ComponentType, FC, memo, PureComponent, ReactNode, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Set } from 'immutable';
-import {Filter, getServerContext, Query} from '@labkey/api';
+import { Filter, getServerContext, Query } from '@labkey/api';
 
 import { MenuItem, SplitButton } from 'react-bootstrap';
 
@@ -29,6 +29,8 @@ import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../
 
 import { getGridView, revertViewEdit, saveGridView, saveAsSessionView, saveSessionView } from '../../internal/actions';
 
+import { hasServerContext } from '../../internal/components/base/ServerContext';
+
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
 import { SearchAction } from './grid/actions/Search';
@@ -51,7 +53,6 @@ import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
-import {hasServerContext} from "../../internal/components/base/ServerContext";
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -279,7 +280,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         actions,
         allowSelections,
         allowViewCustomization,
-        isUpdated
+        isUpdated,
     } = props;
     const { queryInfo, viewName } = model;
 

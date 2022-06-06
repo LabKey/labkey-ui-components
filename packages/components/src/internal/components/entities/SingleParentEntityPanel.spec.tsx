@@ -8,10 +8,11 @@ import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { GridPanel, SelectInput } from '../../..';
 
+import { TEST_USER_READER } from '../../userFixtures';
+
 import { IEntityTypeOption } from './models';
 import { DataClassDataType } from './constants';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
-import { TEST_USER_READER } from "../../userFixtures";
 
 beforeAll(() => {
     initUnitTestMocks();

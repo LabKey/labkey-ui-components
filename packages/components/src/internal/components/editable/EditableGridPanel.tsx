@@ -9,7 +9,7 @@ import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 import { ExportMenu } from '../../../public/QueryModel/ExportMenu';
 import { EXPORT_TYPES } from '../../constants';
-import { UtilsDOM } from '@labkey/api';
+import {getEditorTableData, exportEditedData } from './utils'
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
@@ -20,77 +20,6 @@ interface Props extends SharedEditableGridPanelProps {
         data?: Map<string, Map<string, any>>,
         index?: number
     ) => void;
-}
-
-const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>, activeModel: QueryModel): UtilsDOM.ConvertToTableOptions => {
-    const config = {
-        rows: exportData,
-        fileNamePrefix: filename,
-        queryinfo: {
-            schema: activeModel.schemaName,
-            query: activeModel.queryName,
-        },
-        auditMessage: 'Exported editable grid to file: ', // Filename will be appeneded
-    } as UtilsDOM.ConvertToTableOptions;
-
-    switch (exportType) {
-        case EXPORT_TYPES.TSV:
-            config.delim = UtilsDOM.DelimiterType.TAB;
-            break;
-        case EXPORT_TYPES.CSV:
-        default:
-            config.delim = UtilsDOM.DelimiterType.COMMA;
-            break;
-    }
-
-    return config;
-};
-
-function exportEditedData(exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>, activeModel: QueryModel): void {
-    if (EXPORT_TYPES.EXCEL === exportType) {
-        const data = {
-            fileName: filename + '.xlsx',
-            sheets: [{name: 'data', data: exportData }],
-            queryinfo: {
-                schema: activeModel.schemaName,
-                query: activeModel.queryName,
-            },
-            auditMessage: 'Exported editable grid to excel file: ', // Filename will be appended
-        };
-        UtilsDOM.convertToExcel(data);
-        return;
-    }
-
-    const config = getTableExportConfig(exportType, filename, exportData, activeModel);
-    UtilsDOM.convertToTable(config);
-}
-
-const getEditorTableData = (editorModel: EditorModel, queryModel: QueryModel, readOnlyColumns: List<string>, headings: Map<string, string>, editorData: Map<string, Map<string, any>>): [Map<string, string>, Map<string, Map<string, any>>] => {
-    const tabData = editorModel
-        .getRawDataFromGridData(
-            fromJS(queryModel.rows),
-            fromJS(queryModel.orderedRows),
-            queryModel.queryInfo,
-            true,
-            true,
-            readOnlyColumns
-        )
-        .toArray();
-
-    const updateColumns = queryModel.queryInfo.getUpdateColumns(readOnlyColumns);
-    updateColumns.forEach(col =>
-        headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)
-    );
-    tabData.forEach((row) => {
-        const rowId = row.get('RowId');
-        let draftRow = editorData.get(rowId) ?? Map<string, any>();
-        updateColumns.forEach(col => {
-            draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
-        });
-
-        editorData = editorData.set(rowId, draftRow);
-    });
-    return [headings, editorData];
 }
 
 const exportHandler = (

@@ -17,6 +17,7 @@ import {
     SampleOperation,
     SchemaQuery,
     SelectInput,
+    User,
 } from '../../..';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
@@ -28,9 +29,10 @@ import { DELIMITER } from '../forms/input/SelectInput';
 import { isSampleStatusEnabled } from '../../app/utils';
 import { getFilterForSampleOperation } from '../samples/utils';
 
+import { quoteValueWithDelimiters } from '../../util/utils';
+
 import { IEntityTypeOption } from './models';
 import { isSampleEntity } from './utils';
-import { quoteValueWithDelimiters } from '../../util/utils';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -206,7 +208,8 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         <tr key="type-name">
                             <td>{parentDataType.typeNounAsParentSingular}</td>
                             <td>
-                                No {parentDataType.typeNounAsParentSingular.toLowerCase()} has been set for this {lcChildNoun}.
+                                No {parentDataType.typeNounAsParentSingular.toLowerCase()} has been set for this{' '}
+                                {lcChildNoun}.
                             </td>
                         </tr>
                         <tr key="parent-id">

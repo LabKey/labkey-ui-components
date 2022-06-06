@@ -46,6 +46,10 @@ export const ServerContextProvider: FC<ServerContextProviderProps> = ({ children
     );
 };
 
+export const hasServerContext = (): boolean => {
+    return !!useContext(Context);
+};
+
 export const useServerContext = (): ServerContext => {
     const context = useContext(Context);
     if (context === undefined) {

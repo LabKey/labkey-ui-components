@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX 2022
+### version 2.179.0
+*Released*: 6 June 2022
 * Item 10375: Save Grid Views - Save view dialog
   * Enable Save action for edited views
   * Add 'Save as custom view' option to views menu

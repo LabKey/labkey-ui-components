@@ -41,7 +41,7 @@
     "@fortawesome/free-regular-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "5.15.4",
     "@fortawesome/react-fontawesome": "0.1.15",
-    "@labkey/api": "1.14.1-fb-smSaveGridViews.4",
+    "@labkey/api": "1.14.1",
     "bootstrap": "3.4.1",
     "classnames": "2.3.1",
     "font-awesome": "4.7.0",

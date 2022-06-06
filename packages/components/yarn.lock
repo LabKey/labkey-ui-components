@@ -1511,10 +1511,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@labkey/api@1.14.1-fb-smSaveGridViews.4":
-  version "1.14.1-fb-smSaveGridViews.4"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.14.1-fb-smSaveGridViews.4.tgz#e89a43d57804514e9652c395710f629e9bf569dc"
-  integrity sha1-6JpD1XgEUU6WUsOVcQ9inpv1adw=
+"@labkey/api@1.14.1":
+  version "1.14.1"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.14.1.tgz#549e2df22d5902334ee48bad2ca615ca2b6124ea"
+  integrity sha1-VJ4t8i1ZAjNO5IutLKYVyithJOo=
 
 "@labkey/build@6.1.3":
   version "6.1.3"

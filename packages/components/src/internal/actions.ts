@@ -2575,7 +2575,9 @@ export function saveSessionView(
     viewName: string,
     newName: string,
     inherit?: boolean,
-    shared?: boolean
+    shared?: boolean,
+    hidden?: boolean,
+    replace?: boolean
 ): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.saveSessionView({
@@ -2586,6 +2588,8 @@ export function saveSessionView(
             newName,
             inherit,
             shared,
+            hidden,
+            replace,
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();

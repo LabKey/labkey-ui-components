@@ -811,7 +811,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
 
             (view.session
-                ? saveSessionView(model.schemaQuery, model.containerPath, viewName, newName, inherit, shared)
+                ? saveSessionView(model.schemaQuery, model.containerPath, viewName, newName, inherit, shared, false, replace)
                 : saveGridView(
                       model.schemaQuery,
                       model.displayColumns,

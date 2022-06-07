@@ -1,3 +1,6 @@
+## 0.0.12 - 2022-06-06
+- Package updates
+
 ## 0.0.10 - 2021-06-08
 - Add eslint-plugin-react-hooks
 

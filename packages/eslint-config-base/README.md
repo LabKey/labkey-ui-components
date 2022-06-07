@@ -47,7 +47,7 @@ src/api-src
 test/
 webpack/
 
-# white-list files
+# include files
 !*.js
 !*.jsx
 !*.ts

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.179.1
+*Released*: 6 June 2022
+* Update `@labkey/api` and `@labkey/eslint-config-react` dependencies
+
 ### version 2.179.0
 *Released*: 6 June 2022
 * Item 10375: Save Grid Views - Save view dialog

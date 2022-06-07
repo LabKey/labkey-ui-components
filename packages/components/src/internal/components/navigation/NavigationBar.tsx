@@ -69,7 +69,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         onFindByIds,
         onSignIn,
         onSignOut,
-        searchPlaceholder,
+        searchPlaceholder = 'Search for samples, assays, ...',
         showFolderMenu,
         showNavMenu,
         showNotifications,

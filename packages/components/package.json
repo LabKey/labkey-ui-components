@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.177.1-fb-exportEdits.3",
+  "version": "2.178.0-fb-exportEdits.4",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -41,7 +41,7 @@
     "@fortawesome/free-regular-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "5.15.4",
     "@fortawesome/react-fontawesome": "0.1.15",
-    "@labkey/api": "1.13.0-fb-exportEdits.3",
+    "@labkey/api": "1.14.1-fb-exportEdits.3",
     "bootstrap": "3.4.1",
     "classnames": "2.3.1",
     "font-awesome": "4.7.0",

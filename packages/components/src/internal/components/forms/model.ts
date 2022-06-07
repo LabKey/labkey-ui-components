@@ -18,8 +18,9 @@ import { Filter, Query } from '@labkey/api';
 
 import { ISelectRowsResult, QueryInfo, SchemaQuery } from '../../..';
 
-import { DELIMITER, SelectInputOption } from './input/SelectInput';
+import { SelectInputOption } from './input/SelectInput';
 import * as actions from './actions';
+import { DELIMITER } from "./constants";
 
 export interface QuerySelectModelProps {
     allResults: Map<string, Map<string, any>>;

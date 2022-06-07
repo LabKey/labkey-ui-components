@@ -24,6 +24,7 @@ import { getServerContext, Utils } from '@labkey/api';
 import { FieldLabel } from '../FieldLabel';
 
 import { generateId, QueryColumn } from '../../../..';
+import {DELIMITER} from "../constants";
 
 const _customStyles = {
     // ReactSelect v1 had a zIndex value of "1000" where as ReactSelect v4.3.1 has a value of "2"
@@ -96,7 +97,6 @@ export interface SelectInputOption {
 // Copied from @types/react-select/src/Select.d.ts
 export type FilterOption = ((option: SelectInputOption, rawInput: string) => boolean) | null;
 
-export const DELIMITER = ',';
 
 function initOptionFromPrimitive(value: string | number, props: SelectInputProps): SelectInputOption {
     const { labelKey = 'label', options, valueKey = 'value' } = props;

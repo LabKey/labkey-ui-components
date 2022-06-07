@@ -22,9 +22,7 @@ import {
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { DETAIL_TABLE_CLASSES } from '../forms/constants';
-
-import { DELIMITER } from '../forms/input/SelectInput';
+import {DELIMITER, DETAIL_TABLE_CLASSES} from '../forms/constants';
 
 import { isSampleStatusEnabled } from '../../app/utils';
 import { getFilterForSampleOperation } from '../samples/utils';

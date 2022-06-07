@@ -19,10 +19,11 @@ import { Filter, Query, Utils } from '@labkey/api';
 
 import { resolveErrorMessage, SchemaQuery } from '../../..';
 
-import { DELIMITER, SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
+import { SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
 import { QuerySelectModel } from './model';
+import {DELIMITER} from "./constants";
 
 function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
     const { rawSelectedValue } = model;

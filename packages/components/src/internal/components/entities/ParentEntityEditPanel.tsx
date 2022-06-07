@@ -24,13 +24,12 @@ import {
 } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 
-import { DELIMITER } from '../forms/input/SelectInput';
-
 import { getParentTypeDataForLineage } from '../samples/actions';
 
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from './utils';
+import {DELIMITER} from "../forms/constants";
 
 interface Props {
     auditBehavior?: AuditBehaviorTypes;

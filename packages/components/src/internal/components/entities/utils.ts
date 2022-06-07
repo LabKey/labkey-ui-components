@@ -4,23 +4,18 @@ import {
     caseInsensitive,
     EditableColumnMetadata,
     naturalSort,
-    OperationConfirmationData,
     parseCsvString,
     QueryInfo,
-    SampleOperation,
     SchemaQuery,
     SCHEMAS,
 } from '../../..';
-import { DELIMITER } from '../forms/input/SelectInput';
 
 import { getCurrentProductName } from '../../app/utils';
 
 import { ParentIdData } from '../samples/actions';
 
-import { operationRestrictionMessage } from '../samples/constants';
-
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
-import { DataOperation } from './constants';
+import {DELIMITER} from "../forms/constants";
 
 export function parentValuesDiffer(
     sortedOriginalParents: List<EntityChoice>,

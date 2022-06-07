@@ -8,8 +8,10 @@ import { EditorModel, EditorModelProps } from '../../models';
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 import { ExportMenu } from '../../../public/QueryModel/ExportMenu';
 import { EXPORT_TYPES } from '../../constants';
-import { getEditorTableData, exportEditedData } from './utils'
+
 import { QueryColumn } from '../../../public/QueryColumn';
+
+import { getEditorTableData, exportEditedData } from './utils';
 
 import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 

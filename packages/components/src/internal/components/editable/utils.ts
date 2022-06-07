@@ -10,8 +10,9 @@ import { LoadingState } from '../../../public/LoadingState';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { getUpdatedDataFromGrid } from '../../util/utils';
 
-import { EditableGridLoaderFromSelection } from './EditableGridLoaderFromSelection';
 import { EXPORT_TYPES } from '../../constants';
+
+import { EditableGridLoaderFromSelection } from './EditableGridLoaderFromSelection';
 
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
@@ -217,8 +218,12 @@ export const getUpdatedDataFromEditableGrid = (
     }
 };
 
-
-const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>, activeModel: QueryModel): UtilsDOM.ConvertToTableOptions => {
+const getTableExportConfig = (
+    exportType: EXPORT_TYPES,
+    filename: string,
+    exportData: any[][],
+    activeModel: QueryModel
+): UtilsDOM.ConvertToTableOptions => {
     const config = {
         rows: exportData,
         fileNamePrefix: filename,
@@ -242,11 +247,16 @@ const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, export
     return config;
 };
 
-export const exportEditedData = (exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>, activeModel: QueryModel): void => {
+export const exportEditedData = (
+    exportType: EXPORT_TYPES,
+    filename: string,
+    exportData: any[][],
+    activeModel: QueryModel
+): void => {
     if (EXPORT_TYPES.EXCEL === exportType) {
         const data = {
             fileName: filename + '.xlsx',
-            sheets: [{name: 'data', data: exportData }],
+            sheets: [{ name: 'data', data: exportData }],
             queryinfo: {
                 schema: activeModel.schemaName,
                 query: activeModel.queryName,
@@ -259,7 +269,7 @@ export const exportEditedData = (exportType: EXPORT_TYPES, filename: string, exp
 
     const config = getTableExportConfig(exportType, filename, exportData, activeModel);
     UtilsDOM.convertToTable(config);
-}
+};
 
 export const getEditorTableData = (
     editorModel: EditorModel,

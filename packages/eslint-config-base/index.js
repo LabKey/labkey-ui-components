@@ -18,8 +18,9 @@ module.exports = {
         'prettier',
         'plugin:prettier/recommended',
         'plugin:jest/recommended',
+        'plugin:typescript-sort-keys/recommended',
     ],
-    plugins: ['prettier', 'import', '@typescript-eslint', 'only-warn', 'jest'],
+    plugins: ['prettier', 'import', '@typescript-eslint', 'only-warn', 'jest', 'typescript-sort-keys'],
     globals: {
         LABKEY: 'readonly',
     },

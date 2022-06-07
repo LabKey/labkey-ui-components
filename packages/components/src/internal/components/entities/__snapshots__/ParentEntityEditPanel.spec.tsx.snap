@@ -5103,7 +5103,8 @@ exports[`ParentEntityEditPanel error state 1`] = `
                                 <td>
                                   No 
                                   data type
-                                   has been set for this 
+                                   has been set for this
+                                   
                                   testing
                                   .
                                 </td>

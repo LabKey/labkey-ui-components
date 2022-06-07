@@ -7,6 +7,5 @@
 /packages/*/node_modules
 *.log
 *.cache
-package-lock.json
 /docs
 /packages/*/.storybook-out

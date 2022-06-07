@@ -2,15 +2,17 @@ import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { fromJS, List, Map } from 'immutable';
 import classNames from 'classnames';
 
+import { UtilsDOM } from '@labkey/api';
+
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { EditorModel, EditorModelProps } from '../../models';
 
-import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 import { ExportMenu } from '../../../public/QueryModel/ExportMenu';
 import { EXPORT_TYPES } from '../../constants';
-import { UtilsDOM } from '@labkey/api';
-import {QueryColumn} from "../../../public/QueryColumn";
+import { QueryColumn } from '../../../public/QueryColumn';
+
+import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
@@ -23,7 +25,12 @@ interface Props extends SharedEditableGridPanelProps {
     ) => void;
 }
 
-const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>, activeModel: QueryModel): UtilsDOM.ConvertToTableOptions => {
+const getTableExportConfig = (
+    exportType: EXPORT_TYPES,
+    filename: string,
+    exportData: any[][],
+    activeModel: QueryModel
+): UtilsDOM.ConvertToTableOptions => {
     const config = {
         rows: exportData,
         fileNamePrefix: filename,
@@ -47,11 +54,16 @@ const getTableExportConfig = (exportType: EXPORT_TYPES, filename: string, export
     return config;
 };
 
-function exportEditedData(exportType: EXPORT_TYPES, filename: string, exportData: Array<Array<any>>, activeModel: QueryModel): void {
+function exportEditedData(
+    exportType: EXPORT_TYPES,
+    filename: string,
+    exportData: any[][],
+    activeModel: QueryModel
+): void {
     if (EXPORT_TYPES.EXCEL === exportType) {
         const data = {
             fileName: filename + '.xlsx',
-            sheets: [{name: 'data', data: exportData }],
+            sheets: [{ name: 'data', data: exportData }],
             queryinfo: {
                 schema: activeModel.schemaName,
                 query: activeModel.queryName,
@@ -66,7 +78,14 @@ function exportEditedData(exportType: EXPORT_TYPES, filename: string, exportData
     UtilsDOM.convertToTable(config);
 }
 
-const getEditorTableData = (editorModel: EditorModel, queryModel: QueryModel, readOnlyColumns: List<string>, headings: Map<string, string>, editorData: Map<string, Map<string, any>>, extraColumns?: Partial<QueryColumn>[]): [Map<string, string>, Map<string, Map<string, any>>] => {
+const getEditorTableData = (
+    editorModel: EditorModel,
+    queryModel: QueryModel,
+    readOnlyColumns: List<string>,
+    headings: Map<string, string>,
+    editorData: Map<string, Map<string, any>>,
+    extraColumns?: Array<Partial<QueryColumn>>
+): [Map<string, string>, Map<string, Map<string, any>>] => {
     const tabData = editorModel
         .getRawDataFromGridData(
             fromJS(queryModel.rows),
@@ -80,17 +99,15 @@ const getEditorTableData = (editorModel: EditorModel, queryModel: QueryModel, re
         .toArray();
 
     const updateColumns = queryModel.queryInfo.getUpdateColumns(readOnlyColumns);
-    updateColumns.forEach(col =>
-        headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)
-    )
+    updateColumns.forEach(col => (headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)));
 
     if (extraColumns) {
         extraColumns.forEach(col => {
             headings = headings.set(col.fieldKey, col.caption ?? col.fieldKey);
-        })
+        });
     }
 
-    tabData.forEach((row) => {
+    tabData.forEach(row => {
         const rowId = row.get('RowId');
         let draftRow = editorData.get(rowId) ?? Map<string, any>();
         updateColumns.forEach(col => {
@@ -99,28 +116,34 @@ const getEditorTableData = (editorModel: EditorModel, queryModel: QueryModel, re
 
         if (extraColumns) {
             extraColumns.forEach(col => {
-                if (row.get(col.fieldKey))
-                    draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
-            })
+                if (row.get(col.fieldKey)) draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
+            });
         }
 
         editorData = editorData.set(rowId, draftRow);
     });
     return [headings, editorData];
-}
+};
 
 const exportHandler = (
     exportType: EXPORT_TYPES,
-    models: Array<QueryModel>,
-    editorModels: Array<EditorModel>,
+    models: QueryModel[],
+    editorModels: EditorModel[],
     readOnlyColumns: List<string>,
     activeTab: number,
-    extraColumns?: Partial<QueryColumn>[]
+    extraColumns?: Array<Partial<QueryColumn>>
 ): void => {
     let headings = Map<string, string>();
-    let editorData = Map<string, Map<string,any>>();
+    let editorData = Map<string, Map<string, any>>();
     models.forEach((queryModel, idx) => {
-        const [modelHeadings, modelEditorData] = getEditorTableData(editorModels[idx], queryModel, readOnlyColumns, headings, editorData, extraColumns);
+        const [modelHeadings, modelEditorData] = getEditorTableData(
+            editorModels[idx],
+            queryModel,
+            readOnlyColumns,
+            headings,
+            editorData,
+            extraColumns
+        );
         headings = modelHeadings;
         editorData = modelEditorData;
     });
@@ -258,11 +281,8 @@ export const EditableGridPanel: FC<Props> = memo(props => {
                     </ul>
                 )}
                 {getTabHeader?.(activeTab)}
-                <div className={'pull-right'}>
-                    <ExportMenu
-                        model={activeModel}
-                        onExport={onExport}
-                    />
+                <div className="pull-right">
+                    <ExportMenu model={activeModel} onExport={onExport} />
                 </div>
                 {editableGrid}
             </div>

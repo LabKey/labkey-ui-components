@@ -419,7 +419,7 @@ export class EditorModel
         displayValues = true,
         forUpdate = false,
         readOnlyColumns?: List<string>,
-        extraColumns?: Partial<QueryColumn>[]
+        extraColumns?: Array<Partial<QueryColumn>>
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
         const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns);
@@ -427,9 +427,8 @@ export class EditorModel
         if (extraColumns) {
             extraColumns.forEach(col => {
                 const column = queryInfo.getColumn(col.fieldKey);
-                if (column)
-                    additionalColumns.push(column);
-            })
+                if (column) additionalColumns.push(column);
+            });
         }
 
         for (let rn = 0; rn < dataKeys.size; rn++) {

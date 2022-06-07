@@ -242,11 +242,11 @@ export class QueryColumn extends Record({
         return this.fieldKeyArray.join('/');
     }
 
-    isExpInput(checkLookup: boolean = true): boolean {
+    isExpInput(checkLookup = true): boolean {
         return this.isDataInput(checkLookup) || this.isMaterialInput(checkLookup);
     }
 
-    isDataInput(checkLookup: boolean = true): boolean {
+    isDataInput(checkLookup = true): boolean {
         return (
             this.name &&
             this.name.toLowerCase().indexOf(QueryColumn.DATA_INPUTS.toLowerCase()) !== -1 &&
@@ -255,7 +255,11 @@ export class QueryColumn extends Record({
     }
 
     isAliquotParent(): boolean {
-        return this.name && (this.name.toLowerCase() === QueryColumn.ALIQUOTED_FROM.toLowerCase() || this.name.toLowerCase() === QueryColumn.ALIQUOTED_FROM_LSID.toLowerCase());
+        return (
+            this.name &&
+            (this.name.toLowerCase() === QueryColumn.ALIQUOTED_FROM.toLowerCase() ||
+                this.name.toLowerCase() === QueryColumn.ALIQUOTED_FROM_LSID.toLowerCase())
+        );
     }
 
     isEditable() {
@@ -292,7 +296,7 @@ export class QueryColumn extends Record({
         return SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ) || lookupSQ.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA);
     }
 
-    isMaterialInput(checkLookup: boolean = true): boolean {
+    isMaterialInput(checkLookup = true): boolean {
         return (
             this.name &&
             this.name.toLowerCase().indexOf(QueryColumn.MATERIAL_INPUTS.toLowerCase()) !== -1 &&

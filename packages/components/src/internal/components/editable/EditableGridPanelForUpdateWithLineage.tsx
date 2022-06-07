@@ -61,7 +61,7 @@ export interface EditableGridPanelForUpdateWithLineageProps
     singularNoun?: string;
     targetEntityDataType: EntityDataType;
     updateAllTabRows: (updateData: any[]) => Promise<boolean>;
-    extraExportColumns?: Partial<QueryColumn>[]
+    extraExportColumns?: Array<Partial<QueryColumn>>;
 }
 
 export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {

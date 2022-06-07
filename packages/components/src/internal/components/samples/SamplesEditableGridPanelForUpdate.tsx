@@ -23,25 +23,25 @@ import {
 import { SampleStatusLegend } from './SampleStatusLegend';
 
 interface Props {
-    queryModel: QueryModel;
+    aliquots: any[];
+    combineParentTypes?: boolean;
+    idField: string;
+    includedTabs: UpdateGridTab[];
     loaders: EditableGridLoaderFromSelection[];
-    selectionData?: Map<string, any>;
-    updateAllTabRows: (updateData: any[]) => Promise<any>;
+    noStorageSamples: any[];
     onCancel: () => any;
     onComplete: () => any;
-    idField: string;
-    singularNoun?: string;
-    pluralNoun?: string;
-    readOnlyColumns?: List<string>;
-    includedTabs: UpdateGridTab[];
-
     // passed through from SampleEditableGrid
     parentDataTypes: List<EntityDataType>;
-    combineParentTypes?: boolean;
-    aliquots: any[];
-    noStorageSamples: any[];
-    sampleTypeDomainFields: GroupedSampleFields;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+    pluralNoun?: string;
+
+    queryModel: QueryModel;
+    readOnlyColumns?: List<string>;
+    updateAllTabRows: (updateData: any[]) => Promise<any>;
+    singularNoun?: string;
+    sampleTypeDomainFields: GroupedSampleFields;
+    selectionData?: Map<string, any>;
 }
 
 export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {

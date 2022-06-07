@@ -24,7 +24,7 @@ import { getServerContext, Utils } from '@labkey/api';
 import { FieldLabel } from '../FieldLabel';
 
 import { generateId, QueryColumn } from '../../../..';
-import {DELIMITER} from "../constants";
+import { DELIMITER } from '../constants';
 
 const _customStyles = {
     // ReactSelect v1 had a zIndex value of "1000" where as ReactSelect v4.3.1 has a value of "2"
@@ -88,15 +88,14 @@ const CustomOption = props => {
 
 // Molded from @types/react-select/src/filter.d.ts
 export interface SelectInputOption {
+    [key: string]: any;
     data?: any;
     label?: string;
     value?: any;
-    [key: string]: any;
 }
 
 // Copied from @types/react-select/src/Select.d.ts
 export type FilterOption = ((option: SelectInputOption, rawInput: string) => boolean) | null;
-
 
 function initOptionFromPrimitive(value: string | number, props: SelectInputProps): SelectInputOption {
     const { labelKey = 'label', options, valueKey = 'value' } = props;
@@ -140,17 +139,20 @@ export interface SelectInputProps {
     autoValue?: boolean;
     backspaceRemovesValue?: boolean;
     cacheOptions?: boolean;
-    clearable?: boolean;
     clearCacheOnChange?: boolean;
+    clearable?: boolean;
     containerClass?: string;
-    customTheme?: (theme) => Record<string, any>;
     customStyles?: Record<string, any>;
+    customTheme?: (theme) => Record<string, any>;
     defaultOptions?: boolean | readonly any[];
     delimiter?: string;
     description?: string;
     disabled?: boolean;
     filterOption?: FilterOption;
     formsy?: boolean;
+    // from formsy-react
+    getErrorMessage?: Function;
+    getValue?: Function;
     helpTipRenderer?: string;
     id?: any;
     initiallyDisabled?: boolean;
@@ -161,8 +163,6 @@ export interface SelectInputProps {
     joinValues?: boolean;
     label?: ReactNode;
     labelClass?: string;
-    labelKey?: string;
-    loadOptions?: (input: string) => Promise<SelectInputOption[]>;
     menuPosition?: string;
     multiple?: boolean;
     name?: string;
@@ -186,9 +186,8 @@ export interface SelectInputProps {
     valueKey?: string;
     valueRenderer?: any;
 
-    // from formsy-react
-    getErrorMessage?: Function;
-    getValue?: Function;
+    labelKey?: string;
+    loadOptions?: (input: string) => Promise<SelectInputOption[]>;
     setValue?: Function;
     showRequired?: Function;
     validations?: any;

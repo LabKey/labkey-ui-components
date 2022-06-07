@@ -47,6 +47,7 @@ const DEFAULT_PLURAL_NOUN = 'rows';
 export interface EditableGridPanelForUpdateWithLineageProps
     extends Omit<SharedEditableGridPanelProps, 'allowAdd' | 'allowRemove' | 'forUpdate'> {
     combineParentTypes?: boolean;
+    extraExportColumns?: Array<Partial<QueryColumn>>;
     getParentTypeWarning?: () => ReactNode;
     idField: string;
     includedTabs: UpdateGridTab[];
@@ -56,12 +57,11 @@ export interface EditableGridPanelForUpdateWithLineageProps
     parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     pluralNoun?: string;
-    queryModel: QueryModel;
     selectionData?: Map<string, any>;
     singularNoun?: string;
     targetEntityDataType: EntityDataType;
     updateAllTabRows: (updateData: any[]) => Promise<boolean>;
-    extraExportColumns?: Array<Partial<QueryColumn>>;
+    queryModel: QueryModel;
 }
 
 export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {

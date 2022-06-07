@@ -14,8 +14,9 @@ import { getCurrentProductName } from '../../app/utils';
 
 import { ParentIdData } from '../samples/actions';
 
+import { DELIMITER } from '../forms/constants';
+
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
-import {DELIMITER} from "../forms/constants";
 
 export function parentValuesDiffer(
     sortedOriginalParents: List<EntityChoice>,

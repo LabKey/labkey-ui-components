@@ -125,34 +125,38 @@ type DataViewInfoType =
  * a subset of the fields that are used by the client.
  */
 export interface IDataViewInfo {
-    name?: string;
+    appUrl?: AppURL;
+    // This is in the format of "db:953", not quite sure why we have an id and reportId.
+    created?: Date;
+    createdBy?: string;
     description?: string;
     detailsUrl?: string;
-    runUrl?: string; // This comes directly from the API response and is a link to LK Server
-    type?: DataViewInfoType;
-    visible?: boolean;
-    id?: string; // This is actually a uuid from the looks of it, should we be more strict on the type here?
-    reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
-    created?: Date;
-    modified?: Date;
-    createdBy?: string;
-    modifiedBy?: string;
-    thumbnail?: string; // This is actually a URL, do we enforce that?
+    // This is actually a URL, do we enforce that?
     icon?: string;
     iconCls?: string;
-    shared?: boolean;
-    schemaName?: string;
+    id?: string;
+    modified?: Date;
+    modifiedBy?: string;
+    name?: string;
     queryName?: string;
+    // This is actually a uuid from the looks of it, should we be more strict on the type here?
+    reportId?: string; 
+    visible?: boolean;
+    schemaName?: string;
+    shared?: boolean;
+    thumbnail?: string;
+    // This comes directly from the API response and is a link to LK Server
+    type?: DataViewInfoType;
     viewName?: string;
 
-    appUrl?: AppURL; // This is a client side only attribute. Used to navigate within a Single Page App.
+    runUrl?: string; // This is a client side only attribute. Used to navigate within a Single Page App.
 }
 
 export interface DataViewClientMetadata extends IDataViewInfo {
+    error?: any;
+    isLoaded?: boolean;
     // The attributes here are all specific to the DataViewInfo class and are not useful as part of IDataViewInfo
     isLoading?: boolean;
-    isLoaded?: boolean;
-    error?: any;
 }
 
 const DataViewInfoDefaultValues = {
@@ -297,10 +301,10 @@ export interface EditorModelProps {
     cellMessages: CellMessages;
     cellValues: CellValues;
     colCount: number;
-    id: string;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
+    id: string;
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
@@ -529,8 +533,9 @@ export class EditorModel
         queryGridModel: QueryGridModel,
         uniqueFieldKey?: string
     ): {
-        uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
-        missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
+        // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
+        missingRequired: Map<string, List<number>>;
+        uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from column caption to row numbers with missing values
     } {
         const columns = queryGridModel.getInsertColumns();
         let uniqueFieldCol;

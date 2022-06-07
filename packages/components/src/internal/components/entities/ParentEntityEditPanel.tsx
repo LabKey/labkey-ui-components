@@ -26,28 +26,30 @@ import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 
 import { getParentTypeDataForLineage } from '../samples/actions';
 
+import { DELIMITER } from '../forms/constants';
+
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from './utils';
-import {DELIMITER} from "../forms/constants";
 
 interface Props {
     auditBehavior?: AuditBehaviorTypes;
-    cancelText?: string;
     canUpdate: boolean;
-    childNounSingular: string;
+    cancelText?: string;
     childContainerPath?: string;
     childLSID?: string;
+    childNounSingular: string;
     childSchemaQuery: SchemaQuery;
-    onUpdate?: () => void;
+    editOnly?: boolean;
+    hideButtons?: boolean;
+    includePanelHeader?: boolean;
+    onChangeParent?: (currentParents: List<EntityChoice>) => void;
     onEditToggle?: (editing: boolean) => void;
-    parentDataTypes: EntityDataType[]; // Note: the first data type in the array will be used for labels, nouns, etc...
+    onUpdate?: () => void;
+    parentDataTypes: EntityDataType[];
+    // Note: the first data type in the array will be used for labels, nouns, etc...
     submitText?: string;
     title?: string;
-    hideButtons?: boolean;
-    editOnly?: boolean;
-    onChangeParent?: (currentParents: List<EntityChoice>) => void;
-    includePanelHeader?: boolean;
 }
 
 interface State {

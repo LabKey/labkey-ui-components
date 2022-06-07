@@ -20,14 +20,14 @@ import { ISelectRowsResult, QueryInfo, SchemaQuery } from '../../..';
 
 import { SelectInputOption } from './input/SelectInput';
 import * as actions from './actions';
-import { DELIMITER } from "./constants";
+import { DELIMITER } from './constants';
 
 export interface QuerySelectModelProps {
     allResults: Map<string, Map<string, any>>;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
-    displayColumn: string;
     delimiter: string;
+    displayColumn: string;
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
@@ -36,8 +36,8 @@ export interface QuerySelectModelProps {
     rawSelectedValue: any;
     schemaQuery: SchemaQuery;
     searchResults: Map<string, Map<string, any>>;
-    selectedQuery: string;
     selectedItems: Map<string, any>;
+    selectedQuery: string;
     valueColumn: string;
 }
 
@@ -115,7 +115,7 @@ export class QuerySelectModel
 }
 
 export interface ISelectInitData {
+    getSelectComponentId(): string;
     name: string;
     type: string;
-    getSelectComponentId(): string;
 }

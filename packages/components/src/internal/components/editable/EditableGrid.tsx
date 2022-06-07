@@ -161,15 +161,15 @@ function inputCellKey(col: QueryColumn, row: any): string {
 }
 
 export interface EditableColumnMetadata {
+    caption?: string;
+    filteredLookupKeys?: List<any>;
+    filteredLookupValues?: List<string>;
+    hideTitleTooltip?: boolean;
+    isReadOnlyCell?: (rowKey: string) => boolean;
     placeholder?: string;
+    popoverClassName?: string;
     readOnly?: boolean;
     toolTip?: ReactNode;
-    filteredLookupValues?: List<string>;
-    filteredLookupKeys?: List<any>;
-    caption?: string;
-    isReadOnlyCell?: (rowKey: string) => boolean;
-    hideTitleTooltip?: boolean;
-    popoverClassName?: string;
 }
 
 export interface BulkAddData {
@@ -183,11 +183,11 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
     activeTab?: number;
     bsStyle?: any;
     className?: string;
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
     getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
     getReadOnlyRows?: (tabId?: number) => List<any>;
-    getTabTitle?: (tabId?: number) => string;
     getTabHeader?: (tabId?: number) => ReactNode;
+    getTabTitle?: (tabId?: number) => string;
+    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
     title?: string;
 }
 
@@ -209,21 +209,24 @@ export interface SharedEditableGridProps {
     condensed?: boolean;
     disabled?: boolean;
     emptyGridMsg?: string;
+    extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
-    insertColumns?: List<QueryColumn>;
     hideCountCol?: boolean;
+    insertColumns?: List<QueryColumn>;
     isSubmitting?: boolean;
+    // list of key values for rows that are readonly.
+    lockedRows?: List<any>;
     maxRows?: number;
-    notDeletable?: List<any>; // list of key values that cannot be deleted.
+    notDeletable?: List<any>;
+    // list of key values that cannot be deleted.
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: List<string>;
-    readonlyRows?: List<any>; // list of key values for rows that are readonly.
-    lockedRows?: List<any>; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
+    readonlyRows?: List<any>;
+    // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     removeColumnTitle?: string;
-    rowNumColumn?: GridColumn;
     striped?: boolean;
     updateColumns?: List<QueryColumn>;
-    extraExportColumns?: Array<Partial<QueryColumn>>;
+    rowNumColumn?: GridColumn;
 }
 
 export interface EditableGridProps extends SharedEditableGridProps {

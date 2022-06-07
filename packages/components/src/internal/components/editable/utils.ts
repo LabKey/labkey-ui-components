@@ -309,7 +309,7 @@ export const getEditorTableData = (
 
         if (extraColumns) {
             extraColumns.forEach(col => {
-                if (row.get(col.fieldKey)) draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
+                if (row.has(col.fieldKey)) draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
             });
         }
 

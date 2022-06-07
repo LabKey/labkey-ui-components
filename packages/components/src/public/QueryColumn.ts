@@ -214,6 +214,7 @@ export class QueryColumn extends Record({
     static DATA_INPUTS = 'DataInputs';
     static MATERIAL_INPUTS = 'MaterialInputs';
     static ALIQUOTED_FROM = 'AliquotedFrom';
+    static ALIQUOTED_FROM_LSID = 'AliquotedFromLSID';
 
     get index(): string {
         // See Issues 41621, 45148
@@ -254,7 +255,7 @@ export class QueryColumn extends Record({
     }
 
     isAliquotParent(): boolean {
-        return this.name && this.name.toLowerCase() === QueryColumn.ALIQUOTED_FROM.toLowerCase();
+        return this.name && (this.name.toLowerCase() === QueryColumn.ALIQUOTED_FROM.toLowerCase() || this.name.toLowerCase() === QueryColumn.ALIQUOTED_FROM_LSID.toLowerCase());
     }
 
     isEditable() {

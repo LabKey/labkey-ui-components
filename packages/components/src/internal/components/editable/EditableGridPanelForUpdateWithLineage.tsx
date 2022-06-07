@@ -61,6 +61,7 @@ export interface EditableGridPanelForUpdateWithLineageProps
     singularNoun?: string;
     targetEntityDataType: EntityDataType;
     updateAllTabRows: (updateData: any[]) => Promise<boolean>;
+    extraExportColumns?: Partial<QueryColumn>[]
 }
 
 export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {
@@ -82,6 +83,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         singularNoun = DEFAULT_SINGULAR_NOUN,
         targetEntityDataType,
         updateAllTabRows,
+        extraExportColumns,
         ...gridProps
     } = props;
 
@@ -114,11 +116,17 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             dataModels: QueryModel[];
             editorModels: EditorModel[];
         }> => {
+            const extraColumns = [];
+            if (extraExportColumns) {
+                extraExportColumns.forEach(col => extraColumns.push(col.fieldKey));
+            }
+
             return await initEditableGridModels(
                 editableGridModels.dataModels,
                 editableGridModels.editorModels,
                 queryModel,
-                loaders
+                loaders,
+                extraColumns
             );
         };
 
@@ -327,6 +335,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 model={editableGridModels.dataModels}
                 onChange={onGridChange}
                 readOnlyColumns={readOnlyColumns}
+                extraExportColumns={extraExportColumns}
             />
             <WizardNavButtons
                 cancel={onCancel}

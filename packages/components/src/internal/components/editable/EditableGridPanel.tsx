@@ -10,6 +10,7 @@ import { getUniqueIdColumnMetadata } from '../entities/utils';
 import { ExportMenu } from '../../../public/QueryModel/ExportMenu';
 import { EXPORT_TYPES } from '../../constants';
 import { UtilsDOM } from '@labkey/api';
+import {QueryColumn} from "../../../public/QueryColumn";
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
@@ -65,7 +66,7 @@ function exportEditedData(exportType: EXPORT_TYPES, filename: string, exportData
     UtilsDOM.convertToTable(config);
 }
 
-const getEditorTableData = (editorModel: EditorModel, queryModel: QueryModel, readOnlyColumns: List<string>, headings: Map<string, string>, editorData: Map<string, Map<string, any>>): [Map<string, string>, Map<string, Map<string, any>>] => {
+const getEditorTableData = (editorModel: EditorModel, queryModel: QueryModel, readOnlyColumns: List<string>, headings: Map<string, string>, editorData: Map<string, Map<string, any>>, extraColumns?: Partial<QueryColumn>[]): [Map<string, string>, Map<string, Map<string, any>>] => {
     const tabData = editorModel
         .getRawDataFromGridData(
             fromJS(queryModel.rows),
@@ -73,20 +74,35 @@ const getEditorTableData = (editorModel: EditorModel, queryModel: QueryModel, re
             queryModel.queryInfo,
             true,
             true,
-            readOnlyColumns
+            readOnlyColumns,
+            extraColumns
         )
         .toArray();
 
     const updateColumns = queryModel.queryInfo.getUpdateColumns(readOnlyColumns);
     updateColumns.forEach(col =>
         headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)
-    );
+    )
+
+    if (extraColumns) {
+        extraColumns.forEach(col => {
+            headings = headings.set(col.fieldKey, col.caption ?? col.fieldKey);
+        })
+    }
+
     tabData.forEach((row) => {
         const rowId = row.get('RowId');
         let draftRow = editorData.get(rowId) ?? Map<string, any>();
         updateColumns.forEach(col => {
             draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
         });
+
+        if (extraColumns) {
+            extraColumns.forEach(col => {
+                if (row.get(col.fieldKey))
+                    draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
+            })
+        }
 
         editorData = editorData.set(rowId, draftRow);
     });
@@ -98,12 +114,13 @@ const exportHandler = (
     models: Array<QueryModel>,
     editorModels: Array<EditorModel>,
     readOnlyColumns: List<string>,
-    activeTab: number
+    activeTab: number,
+    extraColumns?: Partial<QueryColumn>[]
 ): void => {
     let headings = Map<string, string>();
     let editorData = Map<string, Map<string,any>>();
     models.forEach((queryModel, idx) => {
-        const [modelHeadings, modelEditorData] = getEditorTableData(editorModels[idx], queryModel, readOnlyColumns, headings, editorData);
+        const [modelHeadings, modelEditorData] = getEditorTableData(editorModels[idx], queryModel, readOnlyColumns, headings, editorData, extraColumns);
         headings = modelHeadings;
         editorData = modelEditorData;
     });
@@ -139,6 +156,7 @@ export const EditableGridPanel: FC<Props> = memo(props => {
         getTabHeader,
         getTabTitle,
         readOnlyColumns,
+        extraExportColumns,
         ...gridProps
     } = props;
 
@@ -175,15 +193,15 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
 
     const csvExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.CSV, models, editorModels, readOnlyColumns, activeTab);
+        exportHandler(EXPORT_TYPES.CSV, models, editorModels, readOnlyColumns, activeTab, extraExportColumns);
     }, [models, editorModels, readOnlyColumns, activeTab]);
 
     const tsvExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.TSV, models, editorModels, readOnlyColumns, activeTab);
+        exportHandler(EXPORT_TYPES.TSV, models, editorModels, readOnlyColumns, activeTab, extraExportColumns);
     }, [models, editorModels, readOnlyColumns, activeTab]);
 
     const excelExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.EXCEL, models, editorModels, readOnlyColumns, activeTab);
+        exportHandler(EXPORT_TYPES.EXCEL, models, editorModels, readOnlyColumns, activeTab, extraExportColumns);
     }, [models, editorModels, readOnlyColumns, activeTab]);
 
     const onExport = {

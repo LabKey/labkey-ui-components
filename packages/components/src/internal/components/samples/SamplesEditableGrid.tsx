@@ -97,7 +97,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     private _hasError: boolean;
 
     static defaultProps = {
-        samplesGridRequiredColumns: ['description'],
+        samplesGridRequiredColumns: ['description', 'AliquotedFromLSID'],
         api: getDefaultAPIWrapper(),
     };
 

@@ -142,6 +142,10 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
                     getTabHeader={this.getTabHeader}
                     targetEntityDataType={SampleTypeDataType}
                     getParentTypeWarning={this.getParentTypeWarning}
+                    extraExportColumns={[{
+                        fieldKey: QueryColumn.ALIQUOTED_FROM_LSID,
+                        caption: QueryColumn.ALIQUOTED_FROM
+                    }]}
                 />
             </>
         );

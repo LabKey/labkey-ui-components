@@ -14,10 +14,13 @@ import { EditableGridLoaderFromSelection } from './EditableGridLoaderFromSelecti
 
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
-    editorColumns?: List<QueryColumn>
+    editorColumns?: List<QueryColumn>,
+    extraColumns?: QueryColumn[],
 ): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
-    const columns = editorColumns ?? queryInfo.getInsertColumns();
+    let columns = editorColumns ?? queryInfo.getInsertColumns();
+    if (extraColumns?.length > 0)
+        columns = columns.push(...extraColumns);
     const lookupValueDescriptors = await getLookupValueDescriptors(
         columns.toArray(),
         fromJS(rows),
@@ -91,7 +94,8 @@ export const initEditableGridModels = async (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
     queryModel: QueryModel,
-    loaders: EditableGridLoaderFromSelection[]
+    loaders: EditableGridLoaderFromSelection[],
+    includeColumns? : string[],
 ): Promise<EditableGridModels> => {
     const updatedDataModels = [];
     const updatedEditorModels = [];
@@ -109,7 +113,15 @@ export const initEditableGridModels = async (
                                 orderedRows: response.dataIds.toArray(),
                                 queryInfo: loader.queryInfo,
                             };
-                            return loadEditorModelData(gridData, loader.updateColumns);
+                            let extraColumns = [];
+                            if (includeColumns) {
+                                includeColumns.forEach(col => {
+                                    const column = queryModel.getColumn(col);
+                                    if (column)
+                                        extraColumns.push(column);
+                                })
+                            }
+                            return loadEditorModelData(gridData, loader.updateColumns, extraColumns);
                         })
                         .then(editorModelData => {
                             resolve({ editorModelData, gridData });

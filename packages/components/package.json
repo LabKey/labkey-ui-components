@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.178.1-fb-sampleRename.1",
+  "version": "2.179.2-fb-sampleRename.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -41,7 +41,7 @@
     "@fortawesome/free-regular-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "5.15.4",
     "@fortawesome/react-fontawesome": "0.1.15",
-    "@labkey/api": "1.13.0",
+    "@labkey/api": "1.14.2",
     "bootstrap": "3.4.1",
     "classnames": "2.3.1",
     "font-awesome": "4.7.0",
@@ -74,7 +74,7 @@
   },
   "devDependencies": {
     "@labkey/build": "6.1.3",
-    "@labkey/eslint-config-react": "0.0.11",
+    "@labkey/eslint-config-react": "0.0.12",
     "@types/enzyme": "3.10.11",
     "@types/history": "4.7.9",
     "@types/jest": "27.4.1",

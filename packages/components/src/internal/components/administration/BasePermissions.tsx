@@ -6,6 +6,8 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState }
 import { MenuItem } from 'react-bootstrap';
 import { Map } from 'immutable';
 
+import { getServerContext } from '@labkey/api';
+
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { resolveErrorMessage } from '../../util/messaging';
 import { SecurityPolicy } from '../permissions/models';
@@ -26,7 +28,6 @@ import { PermissionAssignments } from '../permissions/PermissionAssignments';
 import { AppContext, useAppContext } from '../../AppContext';
 
 import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
-import { getServerContext } from '@labkey/api';
 
 interface OwnProps {
     containerId: string;
@@ -77,8 +78,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
             try {
                 const policy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
                 setPolicy(policy_);
-            }
-            catch (e) {
+            } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
             }
         }

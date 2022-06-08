@@ -41,6 +41,8 @@ export const SAMPLE_ALIQUOT_TOPIC = 'aliquot';
 
 export const UNIQUE_IDS_TOPIC = 'uniqueStorageIds';
 
+export const CUSTOM_VIEW = 'customView';
+
 // See HelpTopic.java Referrer enum
 export enum HELP_LINK_REFERRER {
     DEV_MENU = 'devMenu',

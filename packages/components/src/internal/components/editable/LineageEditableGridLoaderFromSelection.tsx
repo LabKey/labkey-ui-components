@@ -1,4 +1,4 @@
-import { fromJS, List, OrderedMap } from 'immutable';
+import { fromJS, List } from 'immutable';
 
 import { IEditableGridLoader, IGridResponse } from '../../QueryGridModel';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -14,6 +14,7 @@ export class LineageEditableGridLoaderFromSelection implements IEditableGridLoad
     originalParents: Record<string, List<EntityChoice>>;
     lineageKeys: string[];
     lineage: Record<string, any>;
+    aliquots?: any[];
 
     constructor(
         id: string,
@@ -21,7 +22,8 @@ export class LineageEditableGridLoaderFromSelection implements IEditableGridLoad
         updateColumns: List<QueryColumn>,
         originalParents: Record<string, List<EntityChoice>>,
         lineageKeys: string[],
-        lineage: Record<string, any>
+        lineage: Record<string, any>,
+        aliquotKeys: string[],
     ) {
         this.id = id;
         this.queryInfo = queryInfo;
@@ -29,6 +31,7 @@ export class LineageEditableGridLoaderFromSelection implements IEditableGridLoad
         this.originalParents = originalParents;
         this.lineageKeys = lineageKeys;
         this.lineage = lineage;
+        this.aliquots = aliquotKeys;
     }
 
     fetch(queryModel: QueryModel): Promise<IGridResponse> {
@@ -41,6 +44,8 @@ export class LineageEditableGridLoaderFromSelection implements IEditableGridLoad
             Object.keys(this.originalParents).forEach(rowId => {
                 this.originalParents[rowId].forEach(parent => {
                     const { schema, query } = parent.type;
+                    if (this.aliquots?.indexOf(parseInt(rowId)) > -1)
+                        return;
                     const value = List<DisplayObject>(parent.gridValues);
                     const parentType = EntityParentType.create({ schema, query, value });
                     const fieldKey = parentType.generateFieldKey();

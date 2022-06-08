@@ -554,7 +554,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     updateColumns,
                     originalParents,
                     sampleLineageKeys,
-                    sampleLineage
+                    sampleLineage,
+                    aliquots
                 )
             );
         }

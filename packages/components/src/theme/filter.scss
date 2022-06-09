@@ -1,7 +1,7 @@
 // #Filter
 // EntityFieldFilterModal.tsx, QueryFilterPanel.tsx, FilterFacetedSelector.tsx, FilterExpressionView.tsx
 
-.filter-modal__container {
+.field-modal__container {
     .list-group-item {
         color: $text-color;
         font-size: 16px;
@@ -26,7 +26,7 @@
         margin-top: 4px;
     }
 
-    .filter-modal__field_dot {
+    .field-modal__field_dot {
         height: 10px;
         width: 10px;
         border-radius: 50%;
@@ -35,7 +35,7 @@
         margin-top: 6px;
     }
 
-    .filter-modal__col-title {
+    .field-modal__col-title {
         padding-bottom: 10px;
         padding-left: 5px;
         font-size: 16px;
@@ -47,30 +47,30 @@
         }
     }
 
-    .filter-modal__col-sub-title {
+    .field-modal__col-sub-title {
         font-weight: bold;
         padding: 18px 0 10px 0;
     }
 
-    .filter-modal__col {
+    .field-modal__col {
         padding-right: 0;
         padding-left: 8px;
     }
 
-    .filter-modal__col2 {
+    .field-modal__col2 {
         padding-right: 0;
         padding-left: 15px;
     }
 
-    .filter-modal__col.col-sm-6, .filter-modal__col.col-xs-6, .filter-modal__col.col-xs-12 {
+    .field-modal__col.col-sm-6, .field-modal__col.col-xs-6, .field-modal__col.col-xs-12 {
         padding-right: 8px;
     }
 
-    .filter-modal__col2.col-sm-6, .filter-modal__col2.col-xs-6, .filter-modal__col2.col-xs-12 {
+    .field-modal__col2.col-sm-6, .field-modal__col2.col-xs-6, .field-modal__col2.col-xs-12 {
         padding-right: 15px;
     }
 
-    .filter-modal__col-content {
+    .field-modal__col-content {
         height: 470px;
         @media (max-width: $screen-sm-min) {
             height: 150px;
@@ -89,35 +89,35 @@
             border: none;
         }
 
-        .filter-modal__tabs {
+        .field-modal__tabs {
             padding: 8px 15px;
         }
 
-        .filter-modal__tabs.content-tabs {
+        .field-modal__tabs.content-tabs {
             .nav-tabs {
                 border-bottom: 1px solid $light-gray;
             }
         }
 
-        .filter-modal__values-col-content {
-            .filter-modal__col-content & {
+        .field-modal__values-col-content {
+            .field-modal__col-content & {
                 overflow: hidden;
             }
             height: 380px;
         }
 
-        &.filter-modal__values {
+        &.field-modal__values {
             overflow: visible;
         }
     }
 
-    .filter-modal__col_filter_exp .filter-modal__col-content {
+    .field-modal__col_filter_exp .field-modal__col-content {
         @media (max-width: $screen-sm-min) {
             height: 250px;
         }
     }
 
-    .filter-modal__empty-msg {
+    .field-modal__empty-msg {
         color: $gray-light;
         font-size: 16px;
         padding: 10px 10px;

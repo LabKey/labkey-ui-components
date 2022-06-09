@@ -3,6 +3,7 @@ import { Col, Modal, Row } from 'react-bootstrap';
 import { Alert } from '../../internal/components/base/Alert';
 import { saveAsSessionView } from '../../internal/actions';
 import { QueryModel } from './QueryModel';
+import { ChoicesListItem } from '../../internal/components/base/ChoicesListItem';
 
 interface Props {
     model: QueryModel;
@@ -44,16 +45,15 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
             </Modal.Header>
             <Modal.Body>
                 <Alert>{saveError}</Alert>
-                {/*TODO rename css classes */}
-                <Row className="filter-modal__container">
-                    <Col xs={6} className="filter-modal__col2">
-                        <div className="filter-modal__col-title">All Fields</div>
-                        <div className="list-group filter-modal__col-content">
+                <Row className="field-modal__container">
+                    <Col xs={6} className="field-modal__col2">
+                        <div className="field-modal__col-title">All Fields</div>
+                        <div className="list-group field-modal__col-content">
                             Coming soon
                         </div>
                     </Col>
-                    <Col xs={6} className="filter-modal__col2">
-                        <div className="filter-modal__col-title">
+                    <Col xs={6} className="field-modal__col2">
+                        <div className="field-modal__col-title">
                             <span>Shown in Grid</span>
                             <span className="pull-right action-text" onClick={revertEdits}>Restore default columns</span>
                         </div>

@@ -191,11 +191,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     const body = (
         <>
-            <Col xs={fullWidth ? 12 : 6} sm={fullWidth ? 4 : 3} className="filter-modal__col filter-modal__col_fields">
-                <div className="filter-modal__col-title">Fields</div>
-                {!queryName && emptyMsg && <div className="filter-modal__empty-msg">{emptyMsg}</div>}
+            <Col xs={fullWidth ? 12 : 6} sm={fullWidth ? 4 : 3} className="field-modal__col filter-modal__col_fields">
+                <div className="field-modal__col-title">Fields</div>
+                {!queryName && emptyMsg && <div className="field-modal__empty-msg">{emptyMsg}</div>}
                 {queryName && (
-                    <div className="list-group filter-modal__col-content filter-modal__fields-col-content">
+                    <div className="list-group field-modal__col-content filter-modal__fields-col-content">
                         {!queryFields && <LoadingSpinner wrapperClassName="loading-spinner" />}
                         {queryFields?.map((field, index) => {
                             const { caption } = field;
@@ -208,7 +208,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                     label={caption}
                                     onSelect={() => onFieldClick(field)}
                                     componentRight={
-                                        hasFilters(field) && <span className="pull-right filter-modal__field_dot" />
+                                        hasFilters(field) && <span className="pull-right field-modal__field_dot" />
                                     }
                                 />
                             );
@@ -216,11 +216,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                     </div>
                 )}
             </Col>
-            <Col xs={12} sm={fullWidth ? 8 : 6} className="filter-modal__col filter-modal__col_filter_exp">
-                <div className="filter-modal__col-title">Values</div>
-                {queryName && !activeField && <div className="filter-modal__empty-msg">Select a field.</div>}
+            <Col xs={12} sm={fullWidth ? 8 : 6} className="field-modal__col filter-modal__col_filter_exp">
+                <div className="field-modal__col-title">Values</div>
+                {queryName && !activeField && <div className="field-modal__empty-msg">Select a field.</div>}
                 {queryName && activeField && (
-                    <div className="filter-modal__col-content filter-modal__values">
+                    <div className="field-modal__col-content field-modal__values">
                         <Tab.Container
                             activeKey={activeTab}
                             className="filter-modal__tabs content-tabs"
@@ -238,7 +238,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                 </Nav>
                                 <Tab.Content animation className="filter-modal__values-col-content">
                                     <Tab.Pane eventKey={FieldFilterTabs.Filter}>
-                                        <div className="filter-modal__col-sub-title">
+                                        <div className="field-modal__col-sub-title">
                                             Find values for {activeField.caption}
                                         </div>
                                         {activeTab === FieldFilterTabs.Filter && (
@@ -255,7 +255,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                     </Tab.Pane>
                                     {activeTab === FieldFilterTabs.ChooseValues && allowFaceting(activeField) && (
                                         <Tab.Pane eventKey={FieldFilterTabs.ChooseValues}>
-                                            <div className="filter-modal__col-sub-title">
+                                            <div className="field-modal__col-sub-title">
                                                 Find values for {activeField.caption}
                                             </div>
                                             <FilterFacetedSelector
@@ -286,7 +286,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     );
 
     if (asRow) {
-        return <Row className="filter-modal__container">{body}</Row>;
+        return <Row className="field-modal__container">{body}</Row>;
     } else {
         return body;
     }

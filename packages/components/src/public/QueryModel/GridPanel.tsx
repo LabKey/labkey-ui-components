@@ -53,6 +53,7 @@ import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
+import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -98,6 +99,7 @@ interface GridBarProps<T> extends Props<T> {
     onSearch: (token: string) => void;
     onFilter: () => void;
     onSaveView: () => void;
+    onCustomizeView: () => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -138,6 +140,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             hideEmptyViewMenu,
             onChartClicked,
             onCreateReportClicked,
+            onCustomizeView,
             onExport,
             onFilter,
             onSearch,
@@ -219,6 +222,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                     model={model}
                                     onViewSelect={onViewSelect}
                                     onSaveView={onSaveView}
+                                    onCustomizeView={onCustomizeView}
                                     hideEmptyViewMenu={hideEmptyViewMenu}
                                 />
                             )}
@@ -356,6 +360,7 @@ interface State {
     actionValues: ActionValue[];
     showFilterModalFieldKey: string;
     showSaveViewModal: boolean;
+    showCustomizeViewModal: boolean;
     headerClickCount: { [key: string]: number };
     errorMsg: React.ReactNode;
     isViewSaved?: boolean;
@@ -402,6 +407,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             actionValues: [],
             showFilterModalFieldKey: undefined,
             showSaveViewModal: false,
+            showCustomizeViewModal: false,
             headerClickCount: {},
             errorMsg: undefined,
             isViewSaved: false,
@@ -800,6 +806,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState({ showSaveViewModal: true });
     };
 
+    toggleCustomizeView = (): void => {
+        this.setState((state) => ( {showCustomizeViewModal: !state.showCustomizeViewModal } ));
+    }
+
+
     onSaveView = (newName: string, inherit: boolean, replace: boolean, shared?: boolean): Promise<any> => {
         const { model, actions, allowSelections } = this.props;
         const { viewName, queryInfo } = model;
@@ -972,7 +983,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
-        const { showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
+        const { showCustomizeViewModal, showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
         const {
             hasData,
             id,
@@ -1032,6 +1043,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                 onSearch={this.onSearch}
                                 onViewSelect={this.onViewSelect}
                                 onSaveView={this.onSaveNewView}
+                                onCustomizeView={this.toggleCustomizeView}
                             />
                         )}
 
@@ -1091,6 +1103,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         currentView={view}
                         onCancel={this.closeSaveViewModal}
                         onConfirmSave={this.onSaveView}
+                    />
+                )}
+                {showCustomizeViewModal && (
+                    <CustomizeGridViewModal
+                        model={model}
+                        onCancel={this.toggleCustomizeView}
                     />
                 )}
             </>

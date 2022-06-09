@@ -19,7 +19,6 @@ import {
     QueryConfig,
     QueryInfo,
     QuerySort,
-    User,
     useServerContext,
     ViewInfo,
 } from '../..';
@@ -284,20 +283,13 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     } = props;
     const { queryInfo, viewName } = model;
 
+    // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
     // const user = user ?? getServerContext().user;
-    const user = hasServerContext() ? useServerContext().user : getServerContext().user; // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
+    const user = hasServerContext() ? useServerContext().user : getServerContext().user;
 
+    const currentView = view ?? queryInfo?.getView(viewName, true);
     let displayTitle = title;
-    let currentView = view;
-
-    if (!currentView) {
-        if (viewName) {
-            currentView = queryInfo.views.get(viewName.toLowerCase());
-        } else {
-            currentView = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
-        }
-    }
-    if (!currentView?.hidden && viewName) {
+    if (viewName && !currentView?.hidden) {
         const label = currentView?.label ?? viewName;
         displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
     }
@@ -323,10 +315,6 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     };
 
     if (!displayTitle && !isEdited && !isUpdated) {
-        return null;
-    }
-
-    if (!displayTitle && !isEdited) {
         return null;
     }
 
@@ -545,7 +533,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 // first check if we are removing a filter from the saved view
                 const viewFilterIndex = view?.filters.findIndex(filter => filtersEqual(filter, value)) ?? -1;
                 if (viewFilterIndex > -1) {
-                    this.saveSessionGridView({ filters: view.filters.remove(viewFilterIndex) });
+                    this.saveAsSessionView({ filters: view.filters.remove(viewFilterIndex) });
                     return;
                 }
 
@@ -566,7 +554,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             // Defer model updates after localState is updated so we don't unnecessarily repopulate the grid actionValues
             this.setState({ headerClickCount: {} }, () => {
                 actions.setFilters(model.id, newFilters, allowSelections);
-                if (viewUpdates) this.saveSessionGridView(viewUpdates);
+                if (viewUpdates) this.saveAsSessionView(viewUpdates);
             });
         }
     };
@@ -596,7 +584,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             // first check if we are removing a sort from the saved view
             const viewSortIndex = view?.sorts.findIndex(sort => sortsEqual(sort, value)) ?? -1;
             if (viewSortIndex > -1) {
-                this.saveSessionGridView({ sorts: view.sorts.remove(viewSortIndex) });
+                this.saveAsSessionView({ sorts: view.sorts.remove(viewSortIndex) });
                 return;
             }
 
@@ -607,7 +595,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             if (viewSortIndex > -1) {
                 let newViewSorts = view.sorts.remove(viewSortIndex);
                 newViewSorts = newViewSorts.push(newQuerySort);
-                this.saveSessionGridView({ sorts: newViewSorts });
+                this.saveAsSessionView({ sorts: newViewSorts });
                 return;
             }
 
@@ -707,12 +695,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     hideColumn = (columnToHide: QueryColumn): void => {
         const { model } = this.props;
-        this.saveSessionGridView({
+        this.saveAsSessionView({
             columns: model.displayColumns.filter(column => column.index !== columnToHide.index),
         });
     };
 
-    saveSessionGridView = (updates: Record<string, any>): void => {
+    saveAsSessionView = (updates: Record<string, any>): void => {
         const { schemaQuery, containerPath } = this.props.model;
         const view = this.getModelView();
         const viewInfo = new ViewInfo({
@@ -720,21 +708,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             ...updates,
         });
 
-        saveSessionGridView(schemaQuery, containerPath, viewInfo)
-            .then(this.afterSessionViewChange)
-            .catch(errorMsg => {
-                this.setState({ errorMsg });
-            });
-    };
-
-    afterSessionViewChange = (): void => {
-        const { actions, model, allowSelections } = this.props;
-        const { queryInfo, viewName } = model;
-
-        const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
-
-        const columns = model.displayColumns.filter(column => column.index !== columnToHide.index);
-        saveAsSessionView(model.schemaQuery, columns, model.containerPath, model.viewName, view?.hidden)
+        saveAsSessionView(schemaQuery, containerPath, viewInfo)
             .then(this.afterSessionViewChange)
             .catch(errorMsg => {
                 this.setState({ errorMsg });
@@ -750,11 +724,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
     };
 
-    onSaveCurrentView = async canSaveShared => {
+    onSaveCurrentView = async (canSaveShared: boolean): Promise<void> => {
         const { model } = this.props;
         const { queryInfo, viewName } = model;
-
-        const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
+        const view = queryInfo?.getView(viewName, true);
 
         let currentView = view;
         try {
@@ -772,11 +745,16 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     onSaveView = (newName: string, inherit: boolean, replace: boolean, shared?: boolean): Promise<any> => {
         const { model, actions, allowSelections } = this.props;
         const { viewName, queryInfo } = model;
-
         const { showSaveViewModal } = this.state;
 
         return new Promise((resolve, reject) => {
-            const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
+            const view = queryInfo?.getView(viewName, true);
+
+            // TODO need to update/set sorts and filters to combine view and user defined items?
+            const viewInfo = new ViewInfo({
+                ...view.toJS(), // clone the current view to make sure we maintain changes to columns/sorts/filters
+                name: newName,
+            });
 
             (view.session
                 ? saveSessionView(
@@ -790,15 +768,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                       replace
                   )
                 : saveGridView(
-                      model.schemaQuery,
-                      model.displayColumns,
-                      model.containerPath,
-                      newName,
-                      false,
-                      false,
-                      inherit,
-                      replace,
-                      shared
+                    model.schemaQuery,
+                    model.containerPath,
+                    viewInfo,
+                    replace,
+                  false,
+                  false,
+                    inherit,
+                    shared
                   )
             )
                 .then(response => {
@@ -819,15 +796,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     showViewSavedIndicator = (): void => {
-        this.setState({
-            isViewSaved: true,
-        });
-
-        setTimeout(() => {
-            this.setState({
-                isViewSaved: false,
-            });
-        }, 5000);
+        this.setState({ isViewSaved: true });
+        setTimeout(() => { this.setState({ isViewSaved: false }) }, 5000);
     };
 
     closeSaveViewModal = (): void => {
@@ -953,6 +923,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             messages,
             queryInfoError,
             queryInfo,
+            viewName,
         } = model;
         const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
         const hasError = hasGridError || selectionsError !== undefined || errorMsg;
@@ -967,12 +938,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
 
         const gridEmptyText = getEmptyText?.(model) ?? emptyText;
-        let view;
-        if (model.viewName) {
-            view = queryInfo.views.get(model.viewName.toLowerCase());
-        } else {
-            view = queryInfo?.views?.get(ViewInfo.DEFAULT_NAME.toLowerCase());
-        }
+        const view = queryInfo?.getView(viewName, true);
 
         return (
             <>

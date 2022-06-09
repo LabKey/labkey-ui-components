@@ -15,9 +15,11 @@ import {
     ViewInfo,
 } from '../..';
 
-import { initUnitTests, makeQueryInfo, makeTestData } from '../../internal/testHelpers';
+import { initUnitTests, makeQueryInfo, makeTestData, mountWithServerContext } from '../../internal/testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
+
+import { TEST_USER_EDITOR, TEST_USER_PROJECT_ADMIN, TEST_USER_READER } from '../../internal/userFixtures';
 
 import { ActionValue } from './grid/actions/Action';
 
@@ -43,6 +45,7 @@ beforeAll(() => {
     initUnitTests();
     QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
     DATA = makeTestData(mixturesQuery);
+    LABKEY.user = TEST_USER_READER;
 });
 
 const CHART_MENU_SELECTOR = '.chart-menu';
@@ -135,7 +138,7 @@ describe('GridPanel', () => {
         wrapper.setProps({ title: 'Test title' });
         expectGridTitle(wrapper, true, 'Test title');
         wrapper.setProps({ hasHeader: true, title: 'Test title' });
-        expectGridTitle(wrapper, false);
+        expectGridTitle(wrapper, true);
 
         // Loaded rows and QueryInfo. Should render grid, pagination, ViewMenu, ChartMenu
         model = model.mutate({
@@ -464,12 +467,20 @@ describe('GridTitle', () => {
     const actions = makeTestActions(jest.fn);
     const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO);
     const testTitle = 'Test title';
+    const GRID_TITLE_PROPS = {
+        title: testTitle,
+        actions,
+        allowSelections: true,
+        allowViewCustomization: false,
+    };
 
     function validate(
         wrapper: ReactWrapper,
         expectedTitle: string,
         isEdited: boolean,
-        allowCustomization: boolean
+        allowCustomization: boolean,
+        isDefaultView?: boolean,
+        isHidden?: boolean
     ): void {
         expect(wrapper.text()).toContain(expectedTitle);
         if (isEdited) {
@@ -477,7 +488,15 @@ describe('GridTitle', () => {
             expect(editedTag.exists()).toBe(true);
             expect(editedTag.text()).toBe('Edited');
             const buttons = wrapper.find('button');
-            expect(buttons).toHaveLength(allowCustomization ? 1 : 0);
+            let btnCount = 0;
+            if (allowCustomization) {
+                btnCount++;
+                if (!isDefaultView && !isHidden) {
+                    btnCount += 2;
+                } else btnCount += 1;
+            }
+
+            expect(buttons).toHaveLength(btnCount);
         }
     }
 
@@ -489,15 +508,9 @@ describe('GridTitle', () => {
     });
 
     test('title, no view', () => {
-        const wrapper = mount(
-            <GridTitle
-                title={testTitle}
-                model={model}
-                actions={actions}
-                allowSelections={true}
-                allowViewCustomization={false}
-            />
-        );
+        const wrapper = mountWithServerContext(<GridTitle {...GRID_TITLE_PROPS} model={model} />, {
+            user: TEST_USER_EDITOR,
+        });
         validate(wrapper, testTitle, false, false);
         wrapper.unmount();
     });
@@ -505,14 +518,9 @@ describe('GridTitle', () => {
     test('view, no title', () => {
         const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
         const modelWithView = makeTestQueryModel(viewSchemaQuery, QUERY_INFO);
-        const wrapper = mount(
-            <GridTitle
-                model={modelWithView}
-                actions={actions}
-                allowSelections={true}
-                allowViewCustomization={false}
-            />
-        );
+        const wrapper = mountWithServerContext(<GridTitle {...GRID_TITLE_PROPS} model={modelWithView} />, {
+            user: TEST_USER_EDITOR,
+        });
         validate(wrapper, 'No Extra Column', false, false);
         wrapper.unmount();
     });
@@ -520,15 +528,9 @@ describe('GridTitle', () => {
     test('title and view', () => {
         const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
         const modelWithView = makeTestQueryModel(viewSchemaQuery, QUERY_INFO);
-        const wrapper = mount(
-            <GridTitle
-                title={testTitle}
-                model={modelWithView}
-                actions={actions}
-                allowSelections={true}
-                allowViewCustomization={false}
-            />
-        );
+        const wrapper = mountWithServerContext(<GridTitle {...GRID_TITLE_PROPS} model={modelWithView} />, {
+            user: TEST_USER_EDITOR,
+        });
         validate(wrapper, testTitle + ' - No Extra Column', false, false);
         wrapper.unmount();
     });
@@ -539,16 +541,11 @@ describe('GridTitle', () => {
             true
         ) as QueryInfo;
         const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
-        const wrapper = mount(
-            <GridTitle
-                title={testTitle}
-                model={model}
-                actions={actions}
-                allowSelections={true}
-                allowViewCustomization={true}
-            />
+        const wrapper = mountWithServerContext(
+            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization={true} />,
+            { user: TEST_USER_PROJECT_ADMIN }
         );
-        validate(wrapper, testTitle, true, true);
+        validate(wrapper, testTitle, true, true, true, false);
         wrapper.unmount();
     });
 
@@ -559,16 +556,11 @@ describe('GridTitle', () => {
         ) as QueryInfo;
         const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
 
-        const wrapper = mount(
-            <GridTitle
-                title={testTitle}
-                model={model}
-                actions={actions}
-                allowSelections={true}
-                allowViewCustomization={false}
-            />
+        const wrapper = mountWithServerContext(
+            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization={false} />,
+            { user: TEST_USER_READER }
         );
-        validate(wrapper, testTitle, true, false);
+        validate(wrapper, testTitle, true, false, true, false);
         wrapper.unmount();
     });
 
@@ -579,15 +571,11 @@ describe('GridTitle', () => {
             true
         ) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
-        const wrapper = mount(
-            <GridTitle
-                model={model}
-                actions={actions}
-                allowSelections={true}
-                allowViewCustomization={true}
-            />
+        const wrapper = mountWithServerContext(
+            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization={true} />,
+            { user: TEST_USER_PROJECT_ADMIN }
         );
-        validate(wrapper, 'No Extra Column', true, true);
+        validate(wrapper, 'No Extra Column', true, true, false, false);
         wrapper.unmount();
     });
 
@@ -598,16 +586,11 @@ describe('GridTitle', () => {
             true
         ) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
-        const wrapper = mount(
-            <GridTitle
-                title={testTitle}
-                model={model}
-                actions={actions}
-                allowSelections={true}
-                allowViewCustomization={true}
-            />
+        const wrapper = mountWithServerContext(
+            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization={true} />,
+            { user: TEST_USER_READER }
         );
-        validate(wrapper, testTitle + ' - No Extra Column', true, true);
+        validate(wrapper, testTitle + ' - No Extra Column', true, true, false, false);
         wrapper.unmount();
     });
 
@@ -617,16 +600,11 @@ describe('GridTitle', () => {
             .setIn(['views', 'noextracolumn', 'revertable'], true)
             .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
-        const wrapper = mount(
-            <GridTitle
-                title={testTitle}
-                model={model}
-                actions={actions}
-                allowSelections={true}
-                allowViewCustomization={true}
-            />
+        const wrapper = mountWithServerContext(
+            <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization={true} />,
+            { user: TEST_USER_READER }
         );
-        validate(wrapper, testTitle, false, false);
+        validate(wrapper, testTitle, true, true, false, true);
         wrapper.unmount();
     });
 
@@ -636,10 +614,12 @@ describe('GridTitle', () => {
             .setIn(['views', 'noextracolumn', 'revertable'], true)
             .setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
-        const tree = renderer
-            .create(<GridTitle model={model} actions={actions} allowSelections={true} allowViewCustomization={false} />)
-            .toJSON();
-        expect(tree).toBeNull();
+        const wrapper = mountWithServerContext(
+            <GridTitle actions={actions} allowSelections={true} model={model} allowViewCustomization={true} />,
+            { user: TEST_USER_READER }
+        );
+        validate(wrapper, 'EditedDefault ViewUndoSave', true, true, false, true);
+        wrapper.unmount();
     });
 
     test('hidden view, not edited, no title', () => {

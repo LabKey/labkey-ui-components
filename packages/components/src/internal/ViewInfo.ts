@@ -51,7 +51,7 @@ export class ViewInfo extends Record({
     // editable: false,
     filters: List<Filter.IFilter>(),
     hidden: false,
-    // inherit: false,
+    inherit: false,
     isDefault: false,
     label: undefined,
     name: undefined,
@@ -68,7 +68,7 @@ export class ViewInfo extends Record({
     // declare editable: boolean;
     declare filters: List<Filter.IFilter>;
     declare hidden: boolean;
-    // declare inherit: boolean;
+    declare inherit: boolean;
     declare isDefault: boolean; // 'default' is a JavaScript keyword
     declare label: string;
     declare name: string;

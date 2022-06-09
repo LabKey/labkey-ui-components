@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
-import { mount } from 'enzyme';
+import React from 'react';
 
 import { List, Map } from 'immutable';
 
-import { MenuSectionConfig, User } from '../..';
+import { MenuSectionConfig } from '../..';
 
 import {
     TEST_USER_APP_ADMIN,
@@ -22,14 +21,15 @@ import {
     addSamplesSectionConfig,
     addSourcesSectionConfig,
     biologicsIsPrimaryApp,
-    getProjectPath,
     getCurrentAppProperties,
     getMenuSectionConfigs,
     getPrimaryAppProperties,
+    getProjectPath,
     getStorageSectionConfig,
     hasPremiumModule,
     isBiologicsEnabled,
     isCommunityDistribution,
+    isELNEnabledInLKSM,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
     isProductNavigationEnabled,
@@ -40,12 +40,10 @@ import {
     userCanDesignLocations,
     userCanDesignSourceTypes,
     userCanEditStorageData,
-    isELNEnabledInLKSM,
 } from './utils';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
-    EXPERIMENTAL_LKSM_ELN,
     EXPERIMENTAL_REQUESTS_MENU,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
@@ -248,12 +246,10 @@ describe('utils', () => {
     test('isELNEnabledInLKSM', () => {
         LABKEY.moduleContext = {
             api: { moduleNames: [] },
-            samplemanagement: { [EXPERIMENTAL_LKSM_ELN]: true },
         };
         expect(isELNEnabledInLKSM()).toBeFalsy();
         LABKEY.moduleContext = {
             api: { moduleNames: ['labbook'] },
-            samplemanagement: { [EXPERIMENTAL_LKSM_ELN]: true },
         };
         expect(isELNEnabledInLKSM()).toBeTruthy();
     });
@@ -785,7 +781,7 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             api: { moduleNames: ['labbook'] },
             inventory: {},
-            samplemanagement: { [EXPERIMENTAL_LKSM_ELN]: true },
+            samplemanagement: { },
         });
         expect(configs.size).toBe(5);
         expect(configs.getIn([0, SOURCES_KEY])).toBeDefined();
@@ -807,7 +803,7 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             api: { moduleNames: [] },
             inventory: {},
-            samplemanagement: { [EXPERIMENTAL_LKSM_ELN]: true },
+            samplemanagement: { },
         });
         expect(configs.size).toBe(5);
         expect(configs.getIn([0, SOURCES_KEY])).toBeDefined();
@@ -829,7 +825,6 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             api: { moduleNames: ['labbook'] },
             inventory: {},
-            samplemanagement: { [EXPERIMENTAL_LKSM_ELN]: true },
             biologics: {},
         });
         expect(configs.size).toBe(5);

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.179.3
+*Released*: 9 June May 2022
+* Item 10201: Sample renaming
+  * Remove "Name" field from SampleBulkUpdateForm
+  * Enable "Name" edit for aliquot details panel
+
 ### version 2.179.2
 *Released*: 9 June 2022
 * Remove experimental feature flag for ELN in LKSM

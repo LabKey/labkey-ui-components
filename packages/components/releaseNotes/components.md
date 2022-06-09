@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.179.2
+*Released*: 9 June 2022
 * Remove experimental feature flag for ELN in LKSM
 
 ### version 2.179.1

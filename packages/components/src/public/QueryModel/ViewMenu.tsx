@@ -11,11 +11,12 @@ interface ViewMenuProps {
     model: QueryModel;
     onViewSelect: (viewName: string) => void;
     onSaveView: () => void;
+    onCustomizeView: () => void;
 }
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {
     render(): ReactNode {
-        const { model, hideEmptyViewMenu, onViewSelect, onSaveView } = this.props;
+        const { model, hideEmptyViewMenu, onCustomizeView, onViewSelect, onSaveView } = this.props;
         const { isLoading, views, viewName, visibleViews } = model;
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
@@ -45,6 +46,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         if (hidden) return null;
 
         return (
+            <>
             <div className="view-menu">
                 <DropdownButton
                     disabled={disabled}
@@ -66,11 +68,13 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {isCustomizeViewsInAppEnabled() && (
                         <>
                             <MenuItem divider />
-                            <MenuItem onSelect={onSaveView}>Save as custom view</MenuItem>
+                            <MenuItem onSelect={onCustomizeView}>Customize Grid View</MenuItem>
+                            <MenuItem onSelect={onSaveView}>Save As Custom View</MenuItem>
                         </>
                     )}
                 </DropdownButton>
             </div>
+            </>
         );
     }
 }

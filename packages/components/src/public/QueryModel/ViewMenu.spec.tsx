@@ -58,27 +58,27 @@ describe('ViewMenu', () => {
         // Renders nothing
         let model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
         let tree = renderer.create(
-            <ViewMenu hideEmptyViewMenu model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} onCustomizeView={jest.fn()}/>
         );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // Renders empty view selector with disabled dropdown.
         tree = renderer.create(
-            <ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} onCustomizeView={jest.fn()}/>
         );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // "No Extra Column"  view shows up under "All Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         tree = renderer.create(
-            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} onCustomizeView={jest.fn()}/>
         );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // "No Extra Column" view shows up under "My Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PRIVATE_VIEWS, {}, []);
         tree = renderer.create(
-            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} onCustomizeView={jest.fn()}/>
         );
         expect(tree.toJSON()).toMatchSnapshot();
 
@@ -87,14 +87,14 @@ describe('ViewMenu', () => {
             schemaQuery: SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn'),
         });
         tree = renderer.create(
-            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} onCustomizeView={jest.fn()}/>
         );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // "No Extra Column" view is hidden so does not show up
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
         tree = renderer.create(
-            <ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} onCustomizeView={jest.fn()}/>
         );
         expect(tree.toJSON()).toMatchSnapshot();
     });
@@ -107,11 +107,12 @@ describe('ViewMenu', () => {
         };
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
         const wrapper = mount(
-            <ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} onCustomizeView={jest.fn()}/>
         );
         const items = wrapper.find('MenuItem');
-        expect(items).toHaveLength(3);
-        expect(items.at(2).text()).toBe('Save as custom view');
+        expect(items).toHaveLength(4);
+        expect(items.at(2).text()).toBe('Customize Grid View');
+        expect(items.at(3).text()).toBe('Save As Custom View');
 
         wrapper.unmount();
     });
@@ -125,7 +126,7 @@ describe('ViewMenu', () => {
         const onViewSelect = jest.fn();
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         const wrapper = mount(
-            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={onViewSelect} onSaveView={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={onViewSelect} onSaveView={jest.fn()} onCustomizeView={jest.fn()}/>
         );
         wrapper.find('MenuItem').last().find('a').simulate('click');
         expect(onViewSelect).toHaveBeenCalledWith('noMixtures');

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Remove experimental feature flag for ELN in LKSM
+
 ### version 2.179.1
 *Released*: 6 June 2022
 * Update `@labkey/api` and `@labkey/eslint-config-react` dependencies

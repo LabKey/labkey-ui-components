@@ -54,49 +54,49 @@ import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
 
 export interface GridPanelProps<ButtonsComponentProps> {
+    ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
+    ButtonsComponentRight?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
+    advancedExportOptions?: { [key: string]: any };
+    allowFiltering?: boolean;
     allowSelections?: boolean;
     allowSorting?: boolean;
-    allowFiltering?: boolean;
     allowViewCustomization?: boolean;
     asPanel?: boolean;
-    advancedExportOptions?: { [key: string]: any };
-    ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     buttonsComponentProps?: ButtonsComponentProps;
-    ButtonsComponentRight?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     emptyText?: string;
     getEmptyText?: (model: QueryModel) => string;
+    getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
     hasHeader?: boolean;
     hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
+    highlightLastSelectedRow?: boolean;
     loadOnMount?: boolean;
     onChartClicked?: (chart: DataViewInfo) => boolean;
     onCreateReportClicked?: (type: DataViewInfoTypes) => void;
     onExport?: { [key: string]: () => any };
     pageSizes?: number[];
-    title?: string;
     showButtonBar?: boolean;
     showChartMenu?: boolean;
     showExport?: boolean;
-    showFiltersButton?: boolean;
     showFilterStatus?: boolean;
+    showFiltersButton?: boolean;
+    showHeader?: boolean;
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
     showSearchInput?: boolean;
     showViewMenu?: boolean;
-    showHeader?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
-    getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
-    highlightLastSelectedRow?: boolean;
+    title?: string;
 }
 
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
     actionValues: ActionValue[];
-    onViewSelect: (viewName: string) => void;
-    onSearch: (token: string) => void;
     onFilter: () => void;
     onSaveView: () => void;
+    onSearch: (token: string) => void;
+    onViewSelect: (viewName: string) => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -256,16 +256,16 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 }
 
 interface GridTitleProps {
-    title?: string;
-    model: QueryModel;
     actions: Actions;
     allowSelections: boolean;
     allowViewCustomization: boolean;
-    onRevertView?: () => void;
-    onSaveView?: (canSaveShared) => void;
-    onSaveNewView?: () => void;
-    view?: ViewInfo;
     isUpdated?: boolean;
+    model: QueryModel;
+    onRevertView?: () => void;
+    onSaveNewView?: () => void;
+    onSaveView?: (canSaveShared) => void;
+    title?: string;
+    view?: ViewInfo;
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
@@ -284,7 +284,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     const { queryInfo, viewName } = model;
 
     // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
-    // const user = user ?? getServerContext().user;
+    // const { user } = useServerContext();
     const user = hasServerContext() ? useServerContext().user : getServerContext().user;
 
     const currentView = view ?? queryInfo?.getView(viewName, true);

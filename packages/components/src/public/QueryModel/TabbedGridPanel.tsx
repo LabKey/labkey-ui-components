@@ -21,7 +21,7 @@ import { EXPORT_TYPES } from '../../internal/constants';
 import { createNotification } from '../../internal/components/notifications/actions';
 import { exportTabsXlsx } from '../../internal/actions';
 
-import { GridPanel, GridPanelProps, GridTitle } from './GridPanel';
+import { GridPanel, GridPanelProps } from './GridPanel';
 import { InjectedQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';

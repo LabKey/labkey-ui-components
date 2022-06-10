@@ -886,13 +886,13 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     getInsertColumns = (): List<QueryColumn> => {
-        const { dataModel } = this.state;
-        let columns: List<QueryColumn> = dataModel.queryInfo
+        const { queryInfo } = this.state.dataModel;
+        let columns: List<QueryColumn> = queryInfo
             .getInsertColumns()
             .filter(col => col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY)
             .toList();
         // we add the UniqueId columns, which will be displayed as read-only fields
-        columns = columns.concat(dataModel.queryInfo.getUniqueIdColumns()).toList();
+        columns = columns.concat(queryInfo.getUniqueIdColumns()).toList();
         return columns;
     };
 

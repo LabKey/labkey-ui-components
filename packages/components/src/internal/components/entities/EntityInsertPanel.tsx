@@ -84,6 +84,8 @@ import { SampleStatusLegend } from '../samples/SampleStatusLegend';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { applyEditableGridChangesToModels } from '../editable/utils';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -104,7 +106,6 @@ import {
     EditorModelUpdatesWithParents,
 } from './EntityParentTypeSelectors';
 import { ENTITY_CREATION_METRIC } from './constants';
-import { applyEditableGridChangesToModels } from '../editable/utils';
 
 const ENTITY_GRID_ID = 'entity-insert-grid-data';
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];
@@ -158,21 +159,21 @@ const initEditableGridModel = async (
 
 interface OwnProps {
     acceptedFormats?: string;
+    afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?, response?) => void;
+    allowedNonDomainFields?: string[];
     api?: ComponentsAPIWrapper;
     asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
     auditBehavior?: AuditBehaviorTypes;
-    afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?, response?) => void;
-    allowedNonDomainFields?: string[];
     canEditEntityTypeDetails?: boolean;
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     creationTypeOptions?: SampleCreationTypeModel[];
     disableMerge?: boolean;
     entityDataType: EntityDataType;
     errorNounPlural?: string; // Used if you want a different noun in error messages than on the other components
-    fileSizeLimits?: Map<string, FileSizeLimitProps>;
-    getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
     fileImportParameters?: Record<string, any>;
     filePreviewFormats?: string;
+    fileSizeLimits?: Map<string, FileSizeLimitProps>;
+    getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
     hideParentEntityButtons?: boolean; // Used if you have an initial parent but don't want to enable ability to change it
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
@@ -191,39 +192,39 @@ interface OwnProps {
     onTargetChange?: (target: string) => void;
     parentDataTypes?: List<EntityDataType>;
     saveToPipeline?: boolean;
-    selectedTarget?: string; // controlling target from a parent component
     selectedParents?: string[];
+    selectedTarget?: string; // controlling target from a parent component
 }
 
 interface FromLocationProps {
     creationType?: SampleCreationType;
+    isItemSamples?: boolean;
     numPerParent?: number;
     parents?: string[];
     selectionKey?: string;
     tab?: number;
     target?: any;
     user?: User;
-    isItemSamples?: boolean;
 }
 
 type Props = FromLocationProps & OwnProps & WithFormStepsProps;
 
 interface StateProps {
+    allowUserSpecifiedNames: boolean;
+    creationType: SampleCreationType;
+    dataModel: QueryModel;
+    editorModel: EditorModel;
     error: ReactNode;
+    fieldsWarningMsg: ReactNode;
     file: File;
+    importAliases: Record<string, string>;
     insertModel: EntityIdCreationModel;
     isMerge: boolean;
     isSubmitting: boolean;
-    originalQueryInfo: QueryInfo;
-    importAliases: Record<string, string>;
-    useAsync: boolean;
-    fieldsWarningMsg: ReactNode;
-    creationType: SampleCreationType;
-    allowUserSpecifiedNames: boolean;
     previewName: string;
     previewAliquotName: string;
-    dataModel: QueryModel;
-    editorModel: EditorModel;
+    originalQueryInfo: QueryInfo;
+    useAsync: boolean;
 }
 
 enum EntityInsertPanelTabs {

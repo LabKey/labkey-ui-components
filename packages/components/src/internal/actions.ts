@@ -470,9 +470,9 @@ function bindSearch(searchTerm: string): List<Filter.IFilter> {
 export interface ExportOptions {
     columns?: string;
     filters?: List<Filter.IFilter>;
-    sorts?: string;
-    showRows?: 'ALL' | 'SELECTED' | 'UNSELECTED';
     selectionKey?: string;
+    showRows?: 'ALL' | 'SELECTED' | 'UNSELECTED';
+    sorts?: string;
 }
 
 export function getExportParams(
@@ -1423,7 +1423,7 @@ async function prepareInsertRowDataFromBulkForm(
     insertColumns: List<QueryColumn>,
     rowData: List<any>,
     colMin = 0
-): Promise<{ values: List<List<ValueDescriptor>>; messages: List<CellMessage> }> {
+): Promise<{ messages: List<CellMessage>; values: List<List<ValueDescriptor>> }> {
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();
 
@@ -1613,13 +1613,13 @@ type IParsePastePayload = {
 };
 
 type IPasteModel = {
-    message?: string;
     coordinates: {
         colMax: number;
         colMin: number;
         rowMax: number;
         rowMin: number;
     };
+    message?: string;
     payload: IParsePastePayload;
     rowsToAdd: number;
     success: boolean;
@@ -1810,8 +1810,8 @@ interface GridData {
 }
 
 export interface EditorModelUpdates {
-    editorModelChanges?: Partial<EditorModelProps>;
     data?: Map<any, Map<string, any>>;
+    editorModelChanges?: Partial<EditorModelProps>;
     queryInfo?: QueryInfo;
 }
 
@@ -2264,7 +2264,7 @@ export async function updateGridFromBulkForm(
 async function prepareUpdateRowDataFromBulkForm(
     queryInfo: QueryInfo,
     rowData: OrderedMap<string, any>
-): Promise<{ values: OrderedMap<number, List<ValueDescriptor>>; messages: OrderedMap<number, CellMessage> }> {
+): Promise<{ messages: OrderedMap<number, CellMessage>; values: OrderedMap<number, List<ValueDescriptor>> }> {
     const columns = queryInfo.getInsertColumns();
     let values = OrderedMap<number, List<ValueDescriptor>>();
     let messages = OrderedMap<number, CellMessage>();

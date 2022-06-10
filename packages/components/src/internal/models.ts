@@ -149,10 +149,10 @@ export interface IDataViewInfo {
 }
 
 export interface DataViewClientMetadata extends IDataViewInfo {
+    error?: any;
+    isLoaded?: boolean;
     // The attributes here are all specific to the DataViewInfo class and are not useful as part of IDataViewInfo
     isLoading?: boolean;
-    isLoaded?: boolean;
-    error?: any;
 }
 
 const DataViewInfoDefaultValues = {
@@ -297,10 +297,10 @@ export interface EditorModelProps {
     cellMessages: CellMessages;
     cellValues: CellValues;
     colCount: number;
-    id: string;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
+    id: string;
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
@@ -505,8 +505,8 @@ export class EditorModel
         queryModel: QueryModel,
         uniqueFieldKey?: string
     ): {
-        uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
         missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
+        uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
     } {
         const data = fromJS(queryModel.rows);
         const columns = queryModel.queryInfo.getInsertColumns();

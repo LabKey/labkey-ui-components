@@ -10,10 +10,12 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { addColumns, changeColumn, removeColumn, EditorModelUpdates } from '../../actions';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { EditorModel } from '../../models';
+
 import { EntityDataType, EntityParentType, getParentEntities, getParentOptions, IParentOption } from './models';
 import { getEntityDescription } from './utils';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { EditorModel } from '../../models';
 
 // exported for jest testing
 export const getAddEntityButtonTitle = (
@@ -39,10 +41,10 @@ export const getUpdatedEntityParentType = (
     parent: IParentOption,
     targetSchema: string
 ): {
-    updatedEntityParents: Map<string, List<EntityParentType>>;
     column: QueryColumn;
     existingParent: EntityParentType;
     parentColumnName: string;
+    updatedEntityParents: Map<string, List<EntityParentType>>;
 } => {
     let column;
     let parentColumnName;
@@ -205,9 +207,9 @@ export const addEntityParentType = (
 
 interface AddEntityButtonProps {
     entityDataType: EntityDataType;
-    parentOptions: List<IParentOption>;
     entityParents: List<EntityParentType>;
     onAdd: (queryName: string) => void;
+    parentOptions: List<IParentOption>;
 }
 
 // exported for jest testing
@@ -240,13 +242,13 @@ export const EntityParentTypeAddEntityButton: FC<AddEntityButtonProps> = memo(pr
 EntityParentTypeAddEntityButton.displayName = 'EntityParentTypeAddEntityButton';
 
 interface Props {
-    parentDataTypes: List<EntityDataType>;
-    parentOptionsMap: Map<string, List<IParentOption>>;
-    entityParentsMap: Map<string, List<EntityParentType>>;
     combineParentTypes: boolean;
+    entityParentsMap: Map<string, List<EntityParentType>>;
     onAdd: (queryName: string) => void;
     onChange: (index: number, queryName: string, fieldName: string, formValue: any, parent: IParentOption) => void;
     onRemove: (index: number, queryName: string) => void;
+    parentDataTypes: List<EntityDataType>;
+    parentOptionsMap: Map<string, List<IParentOption>>;
 }
 
 export const EntityParentTypeSelectors: FC<Props> = memo(props => {

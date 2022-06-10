@@ -169,9 +169,9 @@ export class EntityParentType extends Record({
 
 // represents a chosen entity type (e.g., Sample Set 1)
 export interface IEntityTypeOption extends SelectInputOption {
+    entityDataType: EntityDataType;
     lsid: string;
     rowId: number;
-    entityDataType: EntityDataType;
 }
 
 export class EntityTypeOption implements IEntityTypeOption {
@@ -193,10 +193,10 @@ export class EntityTypeOption implements IEntityTypeOption {
 
 // represents an entity type (e.g., Sample Type 1) and the values chosen of that type (e.g., S-1, S-2)
 export interface EntityChoice {
-    type: IEntityTypeOption;
-    ids: string[]; // LSIDs or RowIds
-    value: string; // String with comma-separated values (e.g., "S-1,S-2") for use with QuerySelect multi-select)
     gridValues?: DisplayObject[]; // array of RowId/DisplayValue DisplayObjects for use with EditableGrid
+    ids: string[]; // LSIDs or RowIds
+    type: IEntityTypeOption;
+    value: string; // String with comma-separated values (e.g., "S-1,S-2") for use with QuerySelect multi-select)
 }
 
 export interface MaterialOutput {
@@ -217,8 +217,8 @@ export class GenerateEntityResponse extends Record({
     success: false,
 }) {
     declare data: {
-        materialOutputs: MaterialOutput[];
         [key: string]: any;
+        materialOutputs: MaterialOutput[];
     };
     declare message: string;
     declare success: boolean;
@@ -403,7 +403,11 @@ export class EntityIdCreationModel extends Record({
         return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 
-    postEntityGrid(dataModel: QueryModel, editorModel: EditorModel, extraColumnsToInclude?: QueryColumn[]): Promise<InsertRowsResponse> {
+    postEntityGrid(
+        dataModel: QueryModel,
+        editorModel: EditorModel,
+        extraColumnsToInclude?: QueryColumn[]
+    ): Promise<InsertRowsResponse> {
         const rows = editorModel
             .getRawDataFromGridData(fromJS(dataModel.rows), fromJS(dataModel.orderedRows), dataModel.queryInfo, false)
             .valueSeq()
@@ -569,7 +573,7 @@ export class OperationConfirmationData {
 
     readonly allowed: any[];
     readonly notAllowed: any[];
-    readonly idMap: { key: number; isAllowed: boolean };
+    readonly idMap: { isAllowed: boolean; key: number };
 
     constructor(values?: Partial<OperationConfirmationData>) {
         Object.assign(this, values);

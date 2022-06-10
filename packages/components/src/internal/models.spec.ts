@@ -173,7 +173,8 @@ describe('EditorModel', () => {
                         Description: 'grid S-2 Description',
                     },
                 },
-                ['1']);
+                ['1']
+            );
             const { uniqueKeyViolations, missingRequired } = editorModel.validateData(dataModel, 'Name');
             expect(uniqueKeyViolations.isEmpty()).toBe(true);
             expect(missingRequired.isEmpty()).toBe(true);

@@ -208,7 +208,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                                         onSelect={() => onEntityClick(parentValue)}
                                         componentRight={
                                             fieldFilterCount !== 0 && (
-                                                <span className="pull-right field_count_circle">
+                                                <span className="pull-right filter_count_circle">
                                                     {fieldFilterCount}
                                                 </span>
                                             )

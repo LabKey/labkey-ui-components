@@ -67,7 +67,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                 <form onSubmit={saveView}>
                     <div className="form-group">
                         <div className="bottom-spacing">
-                            Sort order and filters are not saved as part of custom grid views. Once saved, this view
+                            Sort order and filters will be saved as part of custom grid views. Once saved, this view
                             will be available for all {gridLabel} grids throughout the application. Learn more about{' '}
                             <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                         </div>
@@ -84,7 +84,6 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             />
                         </div>
                         <RequiresPermission perms={PermissionTypes.Admin}>
-                            {' '}
                             {/* Only allow admins to create custom default views in app. Note this is different from LKS*/}
                             <div className="form-check bottom-spacing">
                                 <input

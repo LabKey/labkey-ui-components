@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, memo, PureComponent, ReactNode, useCallback, useMemo } from 'react';
+import React, { ComponentType, FC, memo, PureComponent, ReactNode, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Set } from 'immutable';
 import { Filter, getServerContext, Query } from '@labkey/api';
@@ -286,7 +286,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         allowViewCustomization,
         isUpdated,
     } = props;
-    const { queryInfo, viewName } = model;
+    const { viewName } = model;
+    const [errorMsg, setErrorMsg] = useState<string>(undefined);
 
     // const user = user ?? getServerContext().user;
     const user = hasServerContext() ? useServerContext().user : getServerContext().user; // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
@@ -310,7 +311,11 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }
 
     const _revertViewEdit = useCallback(async () => {
-        await revertViewEdit(model.schemaQuery, model.containerPath, model.viewName);
+        try {
+            await revertViewEdit(model.schemaQuery, model.containerPath, model.viewName);
+        } catch (error) {
+            setErrorMsg(error);
+        }
         await actions.loadModel(model.id, allowSelections);
         onRevertView?.();
     }, [model, onRevertView, actions, allowSelections]);
@@ -345,6 +350,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
                     </MenuItem>
                 </SplitButton>
             )}
+            {errorMsg && <span className="view-edit-error">{errorMsg}</span>}
         </div>
     );
 });

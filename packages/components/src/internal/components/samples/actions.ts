@@ -601,7 +601,7 @@ export interface GroupedSampleDisplayColumns {
 }
 
 function isAliquotEditableField(colName: string): boolean {
-    return colName === 'description' || (isSampleStatusEnabled() && colName === 'samplestate');
+    return colName === 'name' || colName === 'description' || (isSampleStatusEnabled() && colName === 'samplestate');
 }
 
 export function getGroupedSampleDisplayColumns(

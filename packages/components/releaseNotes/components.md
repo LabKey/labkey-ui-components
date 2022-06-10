@@ -5,6 +5,42 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * EntityInsertPanel refactor to use QueryModel based EditableGridPanel
 
+### version 2.179.3
+*Released*: 9 June May 2022
+* Item 10201: Sample renaming
+  * Remove "Name" field from SampleBulkUpdateForm
+  * Enable "Name" edit for aliquot details panel
+
+### version 2.179.2
+*Released*: 9 June 2022
+* Remove experimental feature flag for ELN in LKSM
+
+### version 2.179.1
+*Released*: 6 June 2022
+* Update `@labkey/api` and `@labkey/eslint-config-react` dependencies
+
+### version 2.179.0
+*Released*: 6 June 2022
+* Item 10375: Save Grid Views - Save view dialog
+  * Enable Save action for edited views
+  * Add 'Save as custom view' option to views menu
+  * Add SaveViewModal component
+
+### version 2.178.0
+*Released*: 31 May 2022
+* Issue 45270: Show settings page to all admins
+
+### version 2.177.3
+*Released*: 31 May 2022
+* Issue 45529: Adjust width of `.container` to use more of the screen
+* Issue 45290: Adjust width of search box in NavBar for better display (with lots of notifications) in medium media
+* Issue 45290: Use relative positioning for search-icon
+
+### version 2.177.2
+*Released*: 31 May 2022
+* Issue 44707
+  * Don't override background-color or text shadow in print styles
+
 ### version 2.177.1
 *Released*: 31 May 2022
 * Issue 45451: Grid drop down menu (page size, views) does not retract after selection

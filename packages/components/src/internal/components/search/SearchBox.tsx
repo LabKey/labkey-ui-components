@@ -43,7 +43,7 @@ export const SearchBox: FC<Props> = memo(props => {
             evt.preventDefault();
             onSearch(searchValue);
 
-            // reset the input value after it is has submitted
+            // reset the input value after it has been submitted
             setSearchValue('');
         },
         [onSearch, searchValue]

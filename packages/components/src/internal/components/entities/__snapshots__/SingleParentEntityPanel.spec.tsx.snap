@@ -5585,7 +5585,8 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
                 <td>
                   No 
                   data type
-                   has been set for this 
+                   has been set for this
+                   
                   sample
                   .
                 </td>
@@ -6353,6 +6354,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 }
                 allowSelections={false}
                 allowViewCustomization={true}
+                isUpdated={false}
                 model={
                   QueryModel {
                     "baseFilters": Array [
@@ -6423,6 +6425,8 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                   }
                 }
                 onRevertView={[Function]}
+                onSaveNewView={[Function]}
+                onSaveView={[Function]}
               />
               <div
                 className="grid-panel__body top-spacing"

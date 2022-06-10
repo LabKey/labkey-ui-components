@@ -8,6 +8,24 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Show saved view sorts in the grid column header icons
   * Allow for saved view sorts and filters to be updated/remove alongside the user-defined sorts/filters
 
+### version 2.179.5
+*Released*: 10 June May 2022
+* EntityInsertPanel refactor to use QueryModel based EditableGridPanel
+
+### version 2.179.4
+*Released*: 10 June May 2022
+* Issue 45325: SamplesTabbedGridPanel shouldn't call afterSampleActionComplete when going from bulk edit modal to grid edit
+
+### version 2.179.3
+*Released*: 9 June May 2022
+* Item 10201: Sample renaming
+  * Remove "Name" field from SampleBulkUpdateForm
+  * Enable "Name" edit for aliquot details panel
+
+### version 2.179.2
+*Released*: 9 June 2022
+* Remove experimental feature flag for ELN in LKSM
+
 ### version 2.179.1
 *Released*: 6 June 2022
 * Update `@labkey/api` and `@labkey/eslint-config-react` dependencies

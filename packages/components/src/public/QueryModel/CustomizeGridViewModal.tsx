@@ -6,6 +6,59 @@ import { QueryModel } from './QueryModel';
 import { QueryColumn } from '../QueryColumn';
 import { APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/renderers';
 
+interface ColumnChoiceProps {
+    column: QueryColumn,
+    index: number,
+    isInView: boolean,
+    onAddColumn: () => void,
+}
+
+// exported for jest tests
+export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
+    const { column, index, isInView, onAddColumn } = props;
+
+    return (
+        <div className="list-group-item" key={index}>
+            <span className="field-name">{column.caption}</span>
+            {isInView && <span className="pull-right" ><i className="fa fa-check"/></span>}
+            {!isInView && <span className="pull-right clickable" onClick={onAddColumn}><i className="fa fa-plus"/></span>}
+        </div>
+    );
+});
+
+interface ColumnInViewProps {
+    column: QueryColumn,
+    index: number
+    onColumnRemove: () => void,
+}
+
+// exported for jest tests
+export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
+    const { column, index, onColumnRemove } = props;
+
+    let overlay;
+    const disabled = column.addToDisplayView;
+    let content = (
+        <span className={"pull-right " + (disabled ? "text-muted disabled" : "clickable")} onClick={disabled ? undefined : onColumnRemove}>
+                                            <i className="fa fa-times"/>
+                                        </span>
+    );
+    if (disabled) {
+        overlay = <Popover key={index + '-disabled-warning'}>{APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}</Popover>;
+    }
+    return (
+        <div className="list-group-item" key={index}>
+            <span className={"field-name" + (disabled ? " text-muted" : "")} >{column.caption}</span>
+            {!disabled && content}
+            {disabled &&
+                <OverlayTrigger overlay={overlay} placement="bottom">
+                    {content}
+                </OverlayTrigger>
+            }
+        </div>
+    );
+})
+
 interface Props {
     model: QueryModel;
     onCancel: () => void;
@@ -62,7 +115,9 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
             <Modal.Header closeButton>
-                <Modal.Title>Customize {gridName} Grid{model.viewName && ' - ' + model.viewName}{model.currentView.session && <span className="alert-info view-edit-alert view-edit-title-alert">Edited</span>}</Modal.Title>
+                <Modal.Title>
+                    Customize {gridName} Grid{model.viewName && ' - ' + model.viewName}{model.currentView.session && <span className="alert-info view-edit-alert view-edit-title-alert">Edited</span>}
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Alert>{saveError}</Alert>
@@ -72,13 +127,13 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                         <div className="list-group field-modal__col-content">
                             {
                                 model.allColumns.filter(column => isColumnInView(column) || ((showAllColumns || !column.hidden) && !column.removeFromViews)).map((column, index) => {
-                                    const isInView = isColumnInView(column);
                                     return (
-                                        <div className="list-group-item" key={index}>
-                                            <span className="field-name">{column.caption}</span>
-                                            {isInView && <span className="pull-right" ><i className="fa fa-check"/></span>}
-                                            {!isInView && <span className="pull-right clickable" onClick={() => addColumn(column)}><i className="fa fa-plus"/></span>}
-                                        </div>
+                                        <ColumnChoice
+                                            column={column}
+                                            index={index}
+                                            isInView={isColumnInView(column)}
+                                            onAddColumn={() => addColumn(column)}
+                                        />
                                     );
                                 })
                             }
@@ -96,27 +151,14 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                         <div className="list-group field-modal__col-content">
                             {
                                 columnsInView.map((column, index) => {
-                                    let overlay;
-                                    const disabled = column.addToDisplayView;
-                                    let content = (
-                                        <span className={"pull-right " + (disabled ? "text-muted disabled" : "clickable")} onClick={disabled ? undefined : () => removeColumn(index)}>
-                                            <i className="fa fa-times"/>
-                                        </span>
-                                    );
-                                    if (disabled) {
-                                        overlay = <Popover key={index + '-disabled-warning'}>{APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}</Popover>;
-                                    }
                                     return (
-                                        <div className="list-group-item" key={index}>
-                                            <span className={"field-name" + (disabled ? " text-muted" : "")} >{column.caption}</span>
-                                            {!disabled && content}
-                                            {disabled &&
-                                                <OverlayTrigger overlay={overlay} placement="bottom">
-                                                    {content}
-                                                </OverlayTrigger>
-                                            }
-                                        </div>
-                                    );
+                                        <ColumnInView
+                                            key={index}
+                                            column={column}
+                                            index={index}
+                                            onColumnRemove={() => removeColumn(index)}
+                                        />
+                                    )
                                 })
                             }
                         </div>

@@ -37,20 +37,20 @@ import { SampleGridButtonProps } from './models';
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
 interface Props extends InjectedQueryModels {
-    asPanel?: boolean;
     afterSampleActionComplete?: (hasDelete?: boolean) => void;
+    asPanel?: boolean;
     canPrintLabels?: boolean;
-    createBtnParentType?: string;
     createBtnParentKey?: string;
-    initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
-    onPrintLabel?: () => void;
-    modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
-    sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
-    tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
-    samplesEditableGridProps: Partial<SamplesEditableGridProps>;
-    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
-    gridButtonProps?: any;
+    createBtnParentType?: string;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
+    gridButtonProps?: any;
+    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
+    initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
+    modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
+    onPrintLabel?: () => void;
+    sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
+    samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     user: User;
     withTitle?: boolean;
 }
@@ -187,12 +187,15 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         resetState();
     }, [afterSampleActionComplete, resetState]);
 
-    const _afterSampleActionComplete = useCallback((hasDelete?: boolean) => {
-        dismissNotifications();
-        actions.loadModel(activeModel.id, true);
-        afterSampleActionComplete?.(hasDelete);
-        resetState();
-    }, [actions, activeModel.id, afterSampleActionComplete, resetState]);
+    const _afterSampleActionComplete = useCallback(
+        (hasDelete?: boolean) => {
+            dismissNotifications();
+            actions.loadModel(activeModel.id, true);
+            afterSampleActionComplete?.(hasDelete);
+            resetState();
+        },
+        [actions, activeModel.id, afterSampleActionComplete, resetState]
+    );
 
     const afterSampleDelete = useCallback(
         (rowsToKeep: any[]) => {

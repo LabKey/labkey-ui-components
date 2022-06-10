@@ -292,15 +292,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     const user = hasServerContext() ? useServerContext().user : getServerContext().user; // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
 
     let displayTitle = title;
-    let currentView = view;
+    let currentView = view || model.currentView;
 
-    if (!currentView) {
-        if (viewName) {
-            currentView = queryInfo.views.get(viewName.toLowerCase());
-        } else {
-            currentView = queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
-        }
-    }
     if (!currentView?.hidden && viewName) {
         const label = currentView?.label ?? viewName;
         displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
@@ -810,6 +803,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState((state) => ( {showCustomizeViewModal: !state.showCustomizeViewModal } ));
     }
 
+    onSessionViewUpdate = (): void => {
+        const { actions, model, allowSelections } = this.props;
+
+        actions.loadModel(model.id, allowSelections);
+    }
+
 
     onSaveView = (newName: string, inherit: boolean, replace: boolean, shared?: boolean): Promise<any> => {
         const { model, actions, allowSelections } = this.props;
@@ -1109,6 +1108,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     <CustomizeGridViewModal
                         model={model}
                         onCancel={this.toggleCustomizeView}
+                        onUpdate={this.onSessionViewUpdate}
                     />
                 )}
             </>

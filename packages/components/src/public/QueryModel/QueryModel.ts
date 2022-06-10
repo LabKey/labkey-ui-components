@@ -379,6 +379,16 @@ export class QueryModel {
         return this.schemaQuery.viewName;
     }
 
+    get currentView(): ViewInfo {
+        let currentView;
+        if (this.viewName) {
+            currentView = this.queryInfo.views.get(this.viewName.toLowerCase());
+        } else {
+            currentView = this.queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
+        }
+        return currentView;
+    }
+
     /**
      * Array of [[QueryColumn]] objects from the [[QueryInfo]] "\~\~DETAILS\~\~" view. This will exclude those columns listed
      * in omittedColumns.

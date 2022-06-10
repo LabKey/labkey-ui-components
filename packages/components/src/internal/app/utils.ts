@@ -20,7 +20,6 @@ import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_CUSTOMIZE_VIEWS_IN_APPS,
-    EXPERIMENTAL_LKSM_ELN,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     EXPERIMENTAL_SAMPLE_FINDER,
@@ -229,10 +228,7 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
 }
 
 export function isELNEnabledInLKSM(moduleContext?: any): boolean {
-    return (
-        hasModule('LabBook', moduleContext) &&
-        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_LKSM_ELN] === true
-    );
+    return hasModule('LabBook', moduleContext);
 }
 
 export function isRequestsEnabled(moduleContext?: any): boolean {

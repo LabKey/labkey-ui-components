@@ -2540,7 +2540,7 @@ export function saveGridView(
     viewInfo: ViewInfo,
     replace: boolean,
     session: boolean,
-    hidden: boolean,
+    hidden: boolean, // TODO is this every not false?
     inherit: boolean,
     shared: boolean
 ): Promise<void> {

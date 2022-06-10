@@ -310,8 +310,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         onRevertView?.();
     }, [model, onRevertView, actions, allowSelections]);
 
-    const _onSaveCurrentView = () => {
-        onSaveView(user?.isAdmin); // // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
+    const _onSaveCurrentView = (): void => {
+        onSaveView(user?.isAdmin);
     };
 
     if (!displayTitle && !isEdited && !isUpdated) {
@@ -750,12 +750,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return new Promise((resolve, reject) => {
             const view = queryInfo?.getView(viewName, true);
 
-            // TODO need to update/set sorts and filters to combine view and user defined items?
             const viewInfo = new ViewInfo({
-                ...view.toJS(), // clone the current view to make sure we maintain changes to columns/sorts/filters
+                ...view.toJS(), // clone the current view to make sure we maintain changes to columns and other props
                 name: newName,
+                // update/set sorts and filters to combine view and user defined items
+                filters: List(model.filterArray.concat(view.filters.toArray())),
+                sorts: List(model.sorts.concat(view.sorts.toArray())),
             });
 
+            // TODO how to save the sorts/filtes with saveSessionView
             (view.session
                 ? saveSessionView(
                       model.schemaQuery,
@@ -772,13 +775,19 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     model.containerPath,
                     viewInfo,
                     replace,
-                  false,
-                  false,
+                    false,
+                    false,
                     inherit,
                     shared
                   )
             )
                 .then(response => {
+                    if (model.filterArray.length > 0) {
+                        actions.setFilters(model.id, [], false);
+                    }
+                    if (model.sorts.length > 0) {
+                        actions.setSorts(model.id, []);
+                    }
                     actions.loadModel(model.id, allowSelections);
 
                     if (showSaveViewModal) {

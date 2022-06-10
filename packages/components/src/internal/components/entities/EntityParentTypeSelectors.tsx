@@ -8,21 +8,14 @@ import { SelectInput } from '../forms/input/SelectInput';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
-import {
-    addColumns,
-    addColumnsForQueryGridModel,
-    changeColumn,
-    changeColumnForQueryGridModel,
-    EditorModelUpdates,
-    removeColumn,
-    removeColumnForQueryGridModel,
-} from '../../actions';
-import { QueryGridModel } from '../../QueryGridModel';
+import { addColumns, changeColumn, removeColumn, EditorModelUpdates } from '../../actions';
+
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { EditorModel } from '../../models';
 
 import { EntityDataType, EntityParentType, getParentEntities, getParentOptions, IParentOption } from './models';
 import { getEntityDescription } from './utils';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { EditorModel } from '../../models';
 
 // exported for jest testing
 export const getAddEntityButtonTitle = (
@@ -48,10 +41,10 @@ export const getUpdatedEntityParentType = (
     parent: IParentOption,
     targetSchema: string
 ): {
-    updatedEntityParents: Map<string, List<EntityParentType>>;
     column: QueryColumn;
     existingParent: EntityParentType;
     parentColumnName: string;
+    updatedEntityParents: Map<string, List<EntityParentType>>;
 } => {
     let column;
     let parentColumnName;
@@ -104,64 +97,7 @@ export const getUpdatedEntityParentType = (
     };
 };
 
-export const changeEntityParentTypeDeprecated = (
-    index: number,
-    queryName: string,
-    parent: IParentOption,
-    queryGridModel: QueryGridModel,
-    entityParents: Map<string, List<EntityParentType>>,
-    entityDataType: EntityDataType,
-    combineParentTypes: boolean
-): Map<string, List<EntityParentType>> => {
-    if (queryGridModel) {
-        const { updatedEntityParents, column, existingParent, parentColumnName } = getUpdatedEntityParentType(
-            entityParents,
-            index,
-            queryName,
-            entityDataType.uniqueFieldKey,
-            parent,
-            queryGridModel.schema
-        );
-
-        // no updated model if nothing has changed, so we can just stop
-        if (!updatedEntityParents) return undefined;
-
-        if (column && existingParent) {
-            if (existingParent.query !== undefined) {
-                changeColumnForQueryGridModel(queryGridModel, existingParent.createColumnName(), column);
-            } else {
-                const columnMap = OrderedMap<string, QueryColumn>();
-                let fieldKey;
-                if (existingParent.index === 1) {
-                    fieldKey = entityDataType.uniqueFieldKey;
-                } else {
-                    const definedParents = getParentEntities(
-                        updatedEntityParents,
-                        combineParentTypes,
-                        queryName
-                    ).filter(parent => parent.query !== undefined);
-                    if (definedParents.size === 0) fieldKey = entityDataType.uniqueFieldKey;
-                    else {
-                        // want the first defined parent before the new parent's index
-                        const prevParent = definedParents.findLast(parent => parent.index < existingParent.index);
-                        fieldKey = prevParent ? prevParent.createColumnName() : entityDataType.uniqueFieldKey;
-                    }
-                }
-                addColumnsForQueryGridModel(
-                    queryGridModel,
-                    columnMap.set(column.fieldKey.toLowerCase(), column),
-                    fieldKey
-                );
-            }
-        } else {
-            removeColumnForQueryGridModel(queryGridModel, parentColumnName);
-        }
-
-        return updatedEntityParents;
-    }
-};
-
-interface EditorModelUpdatesWithParents extends EditorModelUpdates {
+export interface EditorModelUpdatesWithParents extends EditorModelUpdates {
     entityParents: Map<string, List<EntityParentType>>;
 }
 
@@ -235,26 +171,6 @@ export const changeEntityParentType = (
     }
 };
 
-export const removeEntityParentTypeDeprecated = (
-    index: number,
-    queryName: string,
-    entityParents: Map<string, List<EntityParentType>>,
-    queryGridModel: QueryGridModel
-): Map<string, List<EntityParentType>> => {
-    const currentParents = entityParents.get(queryName);
-    const parentToResetKey = currentParents.findKey(parent => parent.get('index') === index);
-    const updatedParents = currentParents
-        .filter(parent => parent.index !== index)
-        .map((parent, key) => parent.set('index', key + 1) as EntityParentType)
-        .toList();
-    const updatedEntityParents = entityParents.set(queryName, updatedParents);
-
-    const parentColumnName = currentParents.get(parentToResetKey).createColumnName();
-    removeColumnForQueryGridModel(queryGridModel, parentColumnName);
-
-    return updatedEntityParents;
-};
-
 export const removeEntityParentType = (
     index: number,
     queryName: string,
@@ -291,9 +207,9 @@ export const addEntityParentType = (
 
 interface AddEntityButtonProps {
     entityDataType: EntityDataType;
-    parentOptions: List<IParentOption>;
     entityParents: List<EntityParentType>;
     onAdd: (queryName: string) => void;
+    parentOptions: List<IParentOption>;
 }
 
 // exported for jest testing
@@ -326,13 +242,13 @@ export const EntityParentTypeAddEntityButton: FC<AddEntityButtonProps> = memo(pr
 EntityParentTypeAddEntityButton.displayName = 'EntityParentTypeAddEntityButton';
 
 interface Props {
-    parentDataTypes: List<EntityDataType>;
-    parentOptionsMap: Map<string, List<IParentOption>>;
-    entityParentsMap: Map<string, List<EntityParentType>>;
     combineParentTypes: boolean;
+    entityParentsMap: Map<string, List<EntityParentType>>;
     onAdd: (queryName: string) => void;
     onChange: (index: number, queryName: string, fieldName: string, formValue: any, parent: IParentOption) => void;
     onRemove: (index: number, queryName: string) => void;
+    parentDataTypes: List<EntityDataType>;
+    parentOptionsMap: Map<string, List<IParentOption>>;
 }
 
 export const EntityParentTypeSelectors: FC<Props> = memo(props => {

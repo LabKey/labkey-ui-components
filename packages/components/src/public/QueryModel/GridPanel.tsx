@@ -709,13 +709,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
 
         saveAsSessionView(schemaQuery, containerPath, viewInfo)
-            .then(this.afterSessionViewChange)
+            .then(this.afterViewChange)
             .catch(errorMsg => {
                 this.setState({ errorMsg });
             });
     };
 
-    afterSessionViewChange = (): void => {
+    afterViewChange = (): void => {
         const { actions, model, allowSelections } = this.props;
         actions.loadModel(model.id, allowSelections);
         this.setState({
@@ -743,70 +743,85 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     onSaveView = (newName: string, inherit: boolean, replace: boolean, shared?: boolean): Promise<any> => {
-        const { model, actions, allowSelections } = this.props;
+        const { model } = this.props;
         const { viewName, queryInfo } = model;
-        const { showSaveViewModal } = this.state;
 
         return new Promise((resolve, reject) => {
             const view = queryInfo?.getView(viewName, true);
 
-            const viewInfo = new ViewInfo({
-                ...view.toJS(), // clone the current view to make sure we maintain changes to columns and other props
-                name: newName,
+            const updatedViewInfo = new ViewInfo({
+                // clone the current view to make sure we maintain changes to columns and other props
+                ...view.toJS(),
                 // update/set sorts and filters to combine view and user defined items
                 filters: List(model.filterArray.concat(view.filters.toArray())),
                 sorts: List(model.sorts.concat(view.sorts.toArray())),
             });
 
-            // TODO how to save the sorts/filtes with saveSessionView
-            (view.session
-                ? saveSessionView(
-                      model.schemaQuery,
-                      model.containerPath,
-                      viewName,
-                      newName,
-                      inherit,
-                      shared,
-                      false,
-                      replace
-                  )
-                : saveGridView(
-                    model.schemaQuery,
-                    model.containerPath,
-                    viewInfo,
-                    replace,
-                    false,
-                    false,
-                    inherit,
-                    shared
-                  )
-            )
-                .then(response => {
-                    if (model.filterArray.length > 0) {
-                        actions.setFilters(model.id, [], false);
-                    }
-                    if (model.sorts.length > 0) {
-                        actions.setSorts(model.id, []);
-                    }
-                    actions.loadModel(model.id, allowSelections);
-
-                    if (showSaveViewModal) {
-                        this.closeSaveViewModal();
-                        this.onViewSelect(newName);
-                    }
-
-                    this.showViewSavedIndicator();
-                    resolve(response);
-                })
-                .catch(errorMsg => {
-                    reject(errorMsg);
+            if (view.session) {
+                // first save an updated session view with the concatenated sorts/filters (without name update),
+                // then convert the session view to a non session view (with name update)
+                saveAsSessionView(model.schemaQuery, model.containerPath, updatedViewInfo)
+                    .then(() => {
+                        saveSessionView(
+                            model.schemaQuery,
+                            model.containerPath,
+                            viewName,
+                            newName,
+                            inherit,
+                            shared,
+                            replace
+                        )
+                            .then(response => {
+                                this.afterSaveViewComplete(newName);
+                                resolve(response);
+                            })
+                            .catch(errorMsg => {
+                                reject(errorMsg);
+                            });
+                    })
+                    .catch(errorMsg => {
+                        this.setState({ errorMsg });
+                    });
+            } else {
+                const finalViewInfo = new ViewInfo({
+                    ...updatedViewInfo.toJS(),
+                    name: newName,
                 });
+
+                saveGridView(model.schemaQuery, model.containerPath, finalViewInfo, replace, false, inherit, shared)
+                    .then(response => {
+                        this.afterSaveViewComplete(newName);
+                        resolve(response);
+                    })
+                    .catch(errorMsg => {
+                        reject(errorMsg);
+                    });
+            }
         });
+    };
+
+    afterSaveViewComplete = (newName: string): void => {
+        const { model, actions } = this.props;
+        const { showSaveViewModal } = this.state;
+
+        // if the model had any user defined sorts/filters, clear those since they are now saved with the view
+        if (model.filterArray.length > 0) actions.setFilters(model.id, [], false);
+        if (model.sorts.length > 0) actions.setSorts(model.id, []);
+
+        this.afterViewChange();
+        if (showSaveViewModal) {
+            this.closeSaveViewModal();
+            this.onViewSelect(newName);
+        }
+
+        this.showViewSavedIndicator();
     };
 
     showViewSavedIndicator = (): void => {
         this.setState({ isViewSaved: true });
-        setTimeout(() => { this.setState({ isViewSaved: false }) }, 5000);
+        setTimeout(() => {
+            this.setState({ isViewSaved: false });
+        }, 5000);
     };
 
     closeSaveViewModal = (): void => {

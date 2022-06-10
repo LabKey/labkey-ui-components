@@ -2374,7 +2374,7 @@ export function incrementClientSideMetricCount(featureArea: string, metricName: 
 
 export function saveAsSessionView(schemaQuery: SchemaQuery, containerPath: string, viewInfo: ViewInfo): Promise<void> {
     // See DataRegion.js _updateSessionCustomView(), this set of hard coded booleans matches that set
-    return saveGridView(schemaQuery, containerPath, viewInfo, true, true, false, false, false);
+    return saveGridView(schemaQuery, containerPath, viewInfo, true, true, false, false);
 }
 
 export function saveGridView(
@@ -2383,7 +2383,6 @@ export function saveGridView(
     viewInfo: ViewInfo,
     replace: boolean,
     session: boolean,
-    hidden: boolean, // TODO is this every not false?
     inherit: boolean,
     shared: boolean
 ): Promise<void> {
@@ -2392,7 +2391,7 @@ export function saveGridView(
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             containerPath,
-            views: [{ ...ViewInfo.serialize(viewInfo), replace, session, hidden, inherit, shared }],
+            views: [{ ...ViewInfo.serialize(viewInfo), replace, session, inherit, shared, hidden: false }],
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();
@@ -2413,7 +2412,6 @@ export function saveSessionView(
     newName: string,
     inherit?: boolean,
     shared?: boolean,
-    hidden?: boolean,
     replace?: boolean
 ): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -2425,7 +2423,7 @@ export function saveSessionView(
             newName,
             inherit,
             shared,
-            hidden,
+            hidden: false,
             replace,
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);

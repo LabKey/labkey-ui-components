@@ -11,7 +11,7 @@ interface ViewMenuProps {
     model: QueryModel;
     onViewSelect: (viewName: string) => void;
     onSaveView: () => void;
-    onCustomizeView: () => void;
+    onCustomizeView?: () => void;
 }
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {
@@ -65,7 +65,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {publicViews.length > 0 && <MenuItem divider />}
                     {publicViews.length > 0 && <MenuItem header>All Saved Views</MenuItem>}
                     {publicViews.length > 0 && publicViews.map(viewMapper)}
-                    {isCustomizeViewsInAppEnabled() && (
+                    {isCustomizeViewsInAppEnabled() && onCustomizeView && (
                         <>
                             <MenuItem divider />
                             <MenuItem onSelect={onCustomizeView}>Customize Grid View</MenuItem>

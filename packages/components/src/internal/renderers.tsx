@@ -18,7 +18,7 @@ import { Map, OrderedMap } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
-import { GRID_CHECKBOX_OPTIONS, GridColumn, LabelHelpTip, QueryColumn, QueryModel } from '..';
+import { DisableableMenuItem, GRID_CHECKBOX_OPTIONS, GridColumn, LabelHelpTip, QueryColumn, QueryModel } from '..';
 
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
@@ -29,6 +29,8 @@ import { isCustomizeViewsInAppEnabled } from './app/utils';
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
 }
+
+export const APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE = 'This application column cannot be removed.';
 
 interface HeaderCellDropdownProps {
     i: number;
@@ -216,15 +218,16 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                     )}
                                 </>
                             )}
-                            {allowColumnViewChange && (
-                                <>
-                                    {(allowColSort || allowColFilter) && <MenuItem divider />}
-                                    <MenuItem onClick={() => _handleHideColumn()}>
-                                        <span className="fa fa-eye-slash grid-panel__menu-icon" />
-                                        &nbsp; Hide Column
-                                    </MenuItem>
-                                </>
-                            )}
+
+                            {(allowColSort || allowColFilter) && <MenuItem divider />}
+                            <DisableableMenuItem
+                                operationPermitted={allowColumnViewChange}
+                                onClick={() => _handleHideColumn()}
+                                disabledMessage={APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}
+                            >
+                                <span className="fa fa-eye-slash grid-panel__menu-icon" />
+                                &nbsp; Hide Column
+                            </DisableableMenuItem>
                         </Dropdown.Menu>
                     </Dropdown>
                 </span>

@@ -131,6 +131,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
     render(): ReactNode {
         const {
             actionValues,
+            allowViewCustomization,
             model,
             actions,
             advancedExportOptions,
@@ -222,7 +223,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                     model={model}
                                     onViewSelect={onViewSelect}
                                     onSaveView={onSaveView}
-                                    onCustomizeView={onCustomizeView}
+                                    onCustomizeView={allowViewCustomization && onCustomizeView}
                                     hideEmptyViewMenu={hideEmptyViewMenu}
                                 />
                             )}

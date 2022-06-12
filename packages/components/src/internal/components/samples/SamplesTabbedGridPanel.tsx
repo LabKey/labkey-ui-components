@@ -37,20 +37,20 @@ import { SampleGridButtonProps } from './models';
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
 interface Props extends InjectedQueryModels {
+    afterSampleActionComplete?: (hasDelete?: boolean) => void;
     asPanel?: boolean;
-    afterSampleActionComplete?: () => void;
     canPrintLabels?: boolean;
-    createBtnParentType?: string;
     createBtnParentKey?: string;
-    initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
-    onPrintLabel?: () => void;
-    modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
-    sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
-    tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
-    samplesEditableGridProps: Partial<SamplesEditableGridProps>;
-    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
-    gridButtonProps?: any;
+    createBtnParentType?: string;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
+    gridButtonProps?: any;
+    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
+    initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
+    modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
+    onPrintLabel?: () => void;
+    sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
+    samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     user: User;
     withTitle?: boolean;
 }
@@ -158,8 +158,10 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         (data: Map<string, any>, submitForEdit = false) => {
             setShowBulkUpdate(false);
             setSelectionData(submitForEdit ? data : undefined);
-            actions.loadModel(activeModel.id, true);
-            afterSampleActionComplete?.();
+            if (!submitForEdit) {
+                actions.loadModel(activeModel.id, true);
+                afterSampleActionComplete?.();
+            }
         },
         [actions, activeModel.id, afterSampleActionComplete]
     );
@@ -185,12 +187,15 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         resetState();
     }, [afterSampleActionComplete, resetState]);
 
-    const _afterSampleActionComplete = useCallback(() => {
-        dismissNotifications();
-        actions.loadModel(activeModel.id, true);
-        afterSampleActionComplete?.();
-        resetState();
-    }, [actions, activeModel.id, afterSampleActionComplete, resetState]);
+    const _afterSampleActionComplete = useCallback(
+        (hasDelete?: boolean) => {
+            dismissNotifications();
+            actions.loadModel(activeModel.id, true);
+            afterSampleActionComplete?.(hasDelete);
+            resetState();
+        },
+        [actions, activeModel.id, afterSampleActionComplete, resetState]
+    );
 
     const afterSampleDelete = useCallback(
         (rowsToKeep: any[]) => {
@@ -202,7 +207,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             }
             actions.replaceSelections(activeModel.id, ids);
 
-            _afterSampleActionComplete();
+            _afterSampleActionComplete(true);
         },
         [actions, activeModel, _afterSampleActionComplete]
     );

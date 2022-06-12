@@ -157,22 +157,18 @@ import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal
 import {
     clearSelected,
     createQueryConfigFilteredBySample,
-    createQueryGridModelFilteredBySample,
     getSelected,
     getSelectedData,
     getSelection,
     getSnapshotSelections,
     gridIdInvalidate,
-    gridInit,
     gridInvalidate,
-    gridShowError,
     incrementClientSideMetricCount,
     queryGridInvalidate,
     replaceSelected,
     schemaGridInvalidate,
     setSelected,
     setSnapshotSelections,
-    unselectAll,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
 import {
@@ -863,12 +859,9 @@ export {
     getSelectedData,
     getSelection,
     getQueryModelExportParams,
-    gridInit,
-    gridShowError,
     replaceSelected,
     setSelected,
     setSnapshotSelections,
-    unselectAll,
     // query related items
     InsertRowsResponse,
     InsertFormats,
@@ -1048,7 +1041,6 @@ export {
     fetchSamples,
     getSampleSet,
     getSampleTypeDetails,
-    createQueryGridModelFilteredBySample,
     createQueryConfigFilteredBySample,
     getFieldLookupFromSelection,
     getSelectedItemSamples,

@@ -168,9 +168,7 @@ export class FilterAction implements Action {
         columnName: string,
         filterType: Filter.IFilterType,
         rawValue: string | string[]
-    ): { displayValue: string; isReadOnly: boolean; inputValue: string } {
-        const isReadOnly = false;
-
+    ): { displayValue: string; inputValue: string } {
         let value: string, inputValue: string;
         const displayParts = [decodePart(columnName), resolveSymbol(filterType)];
         const inputDisplayParts = [`"${displayParts[0]}"`, displayParts[1]]; // need to quote column name for input display
@@ -216,14 +214,10 @@ export class FilterAction implements Action {
             displayParts.push(value);
         }
 
-        return {
-            displayValue: displayParts.join(' '),
-            inputValue,
-            isReadOnly,
-        };
+        return { displayValue: displayParts.join(' '), inputValue };
     }
 
-    actionValueFromFilter(filter: Filter.IFilter, column: QueryColumn): ActionValue {
+    actionValueFromFilter(filter: Filter.IFilter, column: QueryColumn, isReadOnly?: string): ActionValue {
         const label = column?.shortCaption;
         const columnName = filter.getColumnName();
         const filterType = filter.getFilterType();
@@ -235,7 +229,7 @@ export class FilterAction implements Action {
             value = getColFormattedDateValue(column, value);
         }
 
-        const { displayValue, isReadOnly, inputValue } = this.getDisplayValue(label ?? columnName, filterType, value);
+        const { displayValue, inputValue } = this.getDisplayValue(label ?? columnName, filterType, value);
 
         return {
             action: this,

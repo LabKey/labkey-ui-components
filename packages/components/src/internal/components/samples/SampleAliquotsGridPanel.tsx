@@ -5,7 +5,7 @@ import { PermissionTypes } from '@labkey/api';
 import {
     DisableableButton,
     EntityDeleteModal,
-    getStateModelId,
+    createGridModelId,
     GridPanel,
     PicklistButton,
     QueryModel,
@@ -203,7 +203,7 @@ interface SampleAliquotsGridPanelProps extends Props {
 
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {
     const { sampleLsid, schemaQuery, rootLsid, user } = props;
-    const id = getStateModelId(
+    const id = createGridModelId(
         'sample-aliquots',
         SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery())
     );

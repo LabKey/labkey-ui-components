@@ -152,7 +152,7 @@ import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 import { Setting } from './internal/components/base/Setting';
 
-import { EditorModel, getStateModelId } from './internal/models';
+import { EditorModel, createGridModelId } from './internal/models';
 import {
     clearSelected,
     createQueryConfigFilteredBySample,
@@ -831,7 +831,7 @@ export {
     initNotificationsState,
     getContainerFilter,
     getContainerFilterForInsert,
-    getStateModelId,
+    createGridModelId,
     clearSelected,
     // grid functions
     getSnapshotSelections,

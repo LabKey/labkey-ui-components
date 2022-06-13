@@ -25,7 +25,7 @@ import { GRID_EDIT_INDEX } from './constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
 import { quoteValueWithDelimiters } from './util/utils';
 
-export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
+export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
 
     if (schemaQuery && schemaQuery.viewName) {

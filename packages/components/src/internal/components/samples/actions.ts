@@ -34,7 +34,7 @@ import {
     getContainerFilter,
     getSelectedData,
     getSelection,
-    getStateModelId,
+    createGridModelId,
     ISelectRowsResult,
     Location,
     naturalSort,
@@ -888,7 +888,7 @@ export function getSampleAliquotsQueryConfig(
     const omitCol = IS_ALIQUOT_COL;
 
     return {
-        id: getStateModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)),
+        id: createGridModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)),
         schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,

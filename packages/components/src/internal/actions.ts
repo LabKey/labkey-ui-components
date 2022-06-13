@@ -2437,11 +2437,12 @@ export function saveSessionView(
     });
 }
 
-export function getGridView(
+export function getGridViews(
     schemaQuery: SchemaQuery,
     viewName?: string,
-    excludeSessionView?: boolean
-): Promise<ViewInfo> {
+    excludeSessionView?: boolean,
+    includeHidden?: boolean
+): Promise<ViewInfo[]> {
     return new Promise((resolve, reject) => {
         Query.getQueryViews({
             schemaName: schemaQuery.schemaName,
@@ -2449,34 +2450,57 @@ export function getGridView(
             viewName,
             excludeSessionView,
             success: response => {
-                const view = response.views?.[0];
-                if (view) resolve(ViewInfo.create(view));
-                else reject('Unable to load the view.');
+                const views = [];
+                response.views?.forEach(view => {
+                    if (includeHidden || view['hidden'] !== true)
+                        views.push(ViewInfo.create(view))
+                });
+                resolve(views);
             },
             failure: response => {
                 console.error(response);
-                reject('There was a problem loading the view for the data grid. ' + resolveErrorMessage(response));
+                reject('There was a problem loading the views for the data grid. ' + resolveErrorMessage(response));
             },
         });
     });
 }
 
+export function getGridView(
+    schemaQuery: SchemaQuery,
+    viewName?: string,
+    excludeSessionView?: boolean
+): Promise<ViewInfo> {
+    return new Promise((resolve, reject) => {
+        getGridViews(schemaQuery, viewName, excludeSessionView)
+            .then(views => {
+                if (views?.length > 0) resolve(views[0]);
+                else reject('Unable to load the view.');
+            })
+            .catch(error => reject(error))
+    });
+}
+
 export function revertViewEdit(schemaQuery: SchemaQuery, containerPath: string, viewName?: string): Promise<void> {
+    return deleteView(schemaQuery, containerPath, viewName, true);
+}
+
+export function deleteView(schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.deleteQueryView({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             viewName,
             containerPath,
-            revert: true,
+            revert,
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();
             },
             failure: response => {
                 console.error(response);
-                reject('There was a problem updating the view for the data grid. ' + resolveErrorMessage(response));
+                reject('There was a problem deleting the view for the data grid. ' + resolveErrorMessage(response));
             },
         });
     });
+
 }

@@ -11,11 +11,12 @@ interface ViewMenuProps {
     model: QueryModel;
     onViewSelect: (viewName: string) => void;
     onSaveView: () => void;
+    onManageViews: () => void;
 }
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {
     render(): ReactNode {
-        const { model, hideEmptyViewMenu, onViewSelect, onSaveView } = this.props;
+        const { model, hideEmptyViewMenu, onViewSelect, onSaveView, onManageViews } = this.props;
         const { isLoading, views, viewName, visibleViews } = model;
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
@@ -66,6 +67,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {isCustomizeViewsInAppEnabled() && (
                         <>
                             <MenuItem divider />
+                            <MenuItem onSelect={onManageViews}>Manage saved views</MenuItem>
                             <MenuItem onSelect={onSaveView}>Save as custom view</MenuItem>
                         </>
                     )}

@@ -76,6 +76,7 @@ export function deleteReport(reportId: string, reportType?: string): Promise<any
     });
 }
 
+
 export function renameReport(reportId: string, newName: string, reportType?: string): Promise<any> {
     return new Promise((resolve, reject) => {
         Ajax.request({

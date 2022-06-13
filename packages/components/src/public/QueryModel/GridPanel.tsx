@@ -52,6 +52,7 @@ import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
+import {ManageViewsModal} from "./ManageViewsModal";
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -97,6 +98,7 @@ interface GridBarProps<T> extends Props<T> {
     onSaveView: () => void;
     onSearch: (token: string) => void;
     onViewSelect: (viewName: string) => void;
+    onManageViews: () => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -139,6 +141,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             onCreateReportClicked,
             onExport,
             onFilter,
+            onManageViews,
             onSearch,
             onSaveView,
             onViewSelect,
@@ -218,6 +221,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                     model={model}
                                     onViewSelect={onViewSelect}
                                     onSaveView={onSaveView}
+                                    onManageViews={onManageViews}
                                     hideEmptyViewMenu={hideEmptyViewMenu}
                                 />
                             )}
@@ -350,6 +354,7 @@ interface State {
     headerClickCount: { [key: string]: number };
     isViewSaved?: boolean;
     showFilterModalFieldKey: string;
+    showManageViewsModal: boolean;
     showSaveViewModal: boolean;
 }
 
@@ -394,6 +399,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             actionValues: [],
             showFilterModalFieldKey: undefined,
             showSaveViewModal: false,
+            showManageViewsModal: false,
             headerClickCount: {},
             errorMsg: undefined,
             isViewSaved: false,
@@ -566,6 +572,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             {
                 showFilterModalFieldKey: undefined,
                 showSaveViewModal: false,
+                showManageViewsModal: false,
                 headerClickCount: {},
             },
             () => actions.setFilters(model.id, newFilters, allowSelections)
@@ -736,6 +743,22 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         } catch (errorMsg) {
             this.setState({ errorMsg });
         }
+    };
+
+    onManageViews = (): void => {
+        this.setState({ showManageViewsModal: true });
+    };
+
+    closeManageViewsModal = (hasChange?: boolean, selectDefaultView?: boolean): void => {
+        const { model, actions, allowSelections } = this.props;
+
+        if (hasChange) {
+            actions.loadModel(model.id, allowSelections);
+            if (selectDefaultView)
+                this.onViewSelect(undefined);
+        }
+
+        this.setState({ showManageViewsModal: false });
     };
 
     onSaveNewView = (): void => {
@@ -936,7 +959,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
-        const { showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
+        const { showFilterModalFieldKey, showManageViewsModal, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
         const {
             hasData,
             id,
@@ -992,6 +1015,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                 onSearch={this.onSearch}
                                 onViewSelect={this.onViewSelect}
                                 onSaveView={this.onSaveNewView}
+                                onManageViews={this.onManageViews}
                             />
                         )}
 
@@ -1051,6 +1075,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         currentView={view}
                         onCancel={this.closeSaveViewModal}
                         onConfirmSave={this.onSaveView}
+                    />
+                )}
+                {showManageViewsModal && (
+                    <ManageViewsModal
+                        schemaQuery={model.schemaQuery}
+                        currentView={view}
+                        onDone={this.closeManageViewsModal}
                     />
                 )}
             </>

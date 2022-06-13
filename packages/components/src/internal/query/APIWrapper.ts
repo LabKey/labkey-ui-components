@@ -5,10 +5,12 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { EntityDataType, IEntityTypeOption } from '../components/entities/models';
 import { getEntityTypeOptions } from '../components/entities/actions';
 
-import { incrementClientSideMetricCount } from '../actions';
+import { getGridViews, incrementClientSideMetricCount } from '../actions';
 
 import { getQueryDetails, GetQueryDetailsOptions, SelectDistinctResponse, selectDistinctRows } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
+import { SchemaQuery } from "../../public/SchemaQuery";
+import { ViewInfo } from "../ViewInfo";
 
 export interface QueryAPIWrapper {
     getEntityTypeOptions: (
@@ -19,6 +21,11 @@ export interface QueryAPIWrapper {
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
     selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<SelectDistinctResponse>;
+    getGridViews: (
+        schemaQuery: SchemaQuery,
+        viewName?: string,
+        excludeSessionView?: boolean
+    ) => Promise<ViewInfo[]>
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {
@@ -27,6 +34,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     incrementClientSideMetricCount = incrementClientSideMetricCount;
     selectRows = selectRows;
     selectDistinctRows = selectDistinctRows;
+    getGridViews = getGridViews;
 }
 
 /**
@@ -42,6 +50,7 @@ export function getQueryTestAPIWrapper(
         incrementClientSideMetricCount: mockFn(),
         selectRows: mockFn(),
         selectDistinctRows: mockFn(),
+        getGridViews: mockFn,
         ...overrides,
     };
 }

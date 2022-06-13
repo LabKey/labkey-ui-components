@@ -378,7 +378,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         allowViewCustomization: true,
         asPanel: true,
         hideEmptyChartMenu: true,
-        hideEmptyViewMenu: !isCustomizeViewsInAppEnabled(),
+        hideEmptyViewMenu: true,
         highlightLastSelectedRow: false,
         loadOnMount: true,
         showPagination: true,

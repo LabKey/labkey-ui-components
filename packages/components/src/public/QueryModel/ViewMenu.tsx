@@ -26,7 +26,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const noViews = publicViews.length === 0 && privateViews.length === 0;
         const _hideEmptyViewMenu = getQueryMetadata().get('hideEmptyViewMenu', hideEmptyViewMenu);
         const hidden = _hideEmptyViewMenu && noViews;
-        const disabled = isLoading || noViews;
+        const disabled = isLoading || (noViews && !isCustomizeViewsInAppEnabled());
 
         const viewMapper = (viewInfo): ReactNode => {
             const { name, label, isDefault } = viewInfo;

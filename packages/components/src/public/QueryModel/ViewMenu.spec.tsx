@@ -117,6 +117,24 @@ describe('ViewMenu', () => {
         wrapper.unmount();
     });
 
+    test("No views but customize enabled", () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
+
+        let model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
+        const wrapper = mount(
+            <ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} onSaveView={jest.fn()} onCustomizeView={jest.fn()}/>
+        );
+        const items = wrapper.find('MenuItem');
+        expect(items).toHaveLength(3); // one separator and two options
+        expect(items.at(1).text()).toBe('Customize Grid View');
+        expect(items.at(2).text()).toBe('Save As Custom View');
+        wrapper.unmount();
+    })
+
     test('Interactivity', () => {
         LABKEY.moduleContext = {
             query: {

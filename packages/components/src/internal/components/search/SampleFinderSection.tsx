@@ -52,6 +52,7 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
+import { isCustomizeViewsInAppEnabled } from '../../app/utils';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -477,6 +478,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                     alwaysShowTabs: true,
                     advancedExportOptions: SAMPLE_DATA_EXPORT_CONFIG,
                     exportFilename: 'Samples',
+                    hideEmptyViewMenu: !isCustomizeViewsInAppEnabled(),
                 }}
             />
         </>

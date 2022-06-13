@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Remove QueryGridModel and related utils, actions, components, etc.
+
 ### version 2.180.0
 *Released*: 13 June May 2022
 * Item 10373: GridPanel updates to show sorts and filters saved with the view

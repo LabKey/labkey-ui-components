@@ -47,7 +47,7 @@ export function parseDataTextToRunRows(rawData: string): any[] {
 }
 
 export interface IAssayUploadOptions extends AssayDOM.IImportRunOptions {
-    dataRows?: any; // Array<any> | QueryGridModel
+    dataRows?: any; // Array<any>
     maxFileSize?: number;
     maxRowCount?: number;
 }

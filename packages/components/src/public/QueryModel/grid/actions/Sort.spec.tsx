@@ -1,29 +1,18 @@
 import { ActionValue } from './Action';
 import { QueryInfo } from '../../../QueryInfo';
-import { fromJS, List } from 'immutable';
+import { List } from 'immutable';
 import { QueryColumn } from '../../../QueryColumn';
-import { initUnitTests, makeQueryInfo, makeTestData } from '../../../../internal/testHelpers';
-import mixturesQuery from '../../../../test/data/mixtures-getQuery.json';
+import { initUnitTests, makeQueryInfo } from '../../../../internal/testHelpers';
 import mixturesQueryInfo from '../../../../test/data/mixtures-getQueryDetails.json';
-import { QueryGridModel } from '../../../../internal/QueryGridModel';
 import { SortAction } from './Sort';
-
 
 let queryInfo: QueryInfo;
 let getColumns: () => List<QueryColumn>;
 
 beforeAll(() => {
     initUnitTests();
-    const mockData = makeTestData(mixturesQuery);
     queryInfo = makeQueryInfo(mixturesQueryInfo);
-    const model = new QueryGridModel({
-        queryInfo,
-        messages: fromJS(mockData.messages),
-        data: fromJS(mockData.rows),
-        dataIds: fromJS(mockData.orderedRows),
-        totalRows: mockData.rowCount,
-    });
-    getColumns = (all?) => (all ? model.getAllColumns() : model.getDisplayColumns());
+    getColumns = (all?) => (all ? queryInfo.getAllColumns() : queryInfo.getDisplayColumns());
 });
 
 describe("SortAction::parseParam", () => {

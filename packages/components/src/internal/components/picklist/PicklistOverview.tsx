@@ -14,7 +14,6 @@ import {
     Page,
     PageDetailHeader,
     QueryConfigMap,
-    queryGridInvalidate,
     RequiresModelAndActions,
     resolveErrorMessage,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -160,8 +159,6 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
 
     const afterSampleActionComplete = useCallback(() => {
         invalidateLineageResults();
-        queryGridInvalidate(SCHEMAS.EXP_TABLES.MATERIALS);
-
         loadPicklist(true);
     }, [loadPicklist]);
 

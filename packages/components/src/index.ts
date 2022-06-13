@@ -45,7 +45,6 @@ import {
 } from './internal/components/base/ServerContext';
 import { naturalSort, naturalSortByProperty } from './public/sort';
 import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/AssayDefinitionModel';
-import { QueryGridModel } from './internal/QueryGridModel';
 import {
     applyDevTools,
     blurActiveElement,
@@ -153,7 +152,7 @@ import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 import { Setting } from './internal/components/base/Setting';
 
-import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal/models';
+import { EditorModel, getStateModelId } from './internal/models';
 import {
     clearSelected,
     createQueryConfigFilteredBySample,
@@ -161,23 +160,13 @@ import {
     getSelectedData,
     getSelection,
     getSnapshotSelections,
-    gridIdInvalidate,
-    gridInvalidate,
     incrementClientSideMetricCount,
-    queryGridInvalidate,
     replaceSelected,
-    schemaGridInvalidate,
     setSelected,
     setSnapshotSelections,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
-import {
-    getEditorModel,
-    getQueryGridModel,
-    initQueryGridState,
-    removeQueryGridModel,
-    updateEditorModel,
-} from './internal/global';
+import { initQueryGridState } from './internal/global';
 import {
     deleteRows,
     getContainerFilter,
@@ -842,17 +831,8 @@ export {
     initNotificationsState,
     getContainerFilter,
     getContainerFilterForInsert,
-    getStateQueryGridModel,
     getStateModelId,
-    getQueryGridModel,
-    getEditorModel,
-    removeQueryGridModel,
     clearSelected,
-    gridInvalidate,
-    gridIdInvalidate,
-    queryGridInvalidate,
-    schemaGridInvalidate,
-    updateEditorModel,
     // grid functions
     getSnapshotSelections,
     getSelected,
@@ -1402,10 +1382,8 @@ export {
     resolveSchemaQuery,
     insertColumnFilter,
     EXPORT_TYPES,
-    // QueryGridModel
-    QueryGridModel,
-    GRID_CHECKBOX_OPTIONS,
     // QueryModel
+    GRID_CHECKBOX_OPTIONS,
     QueryModel,
     withQueryModels,
     GridPanel,
@@ -1487,7 +1465,6 @@ export type { TimelineGroupedEventInfo } from './internal/components/auditlog/mo
 export type { PaginationData } from './internal/components/pagination/Pagination';
 export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
 export type { QueryConfig } from './public/QueryModel/QueryModel';
-export type { IGridLoader, IGridResponse } from './internal/QueryGridModel';
 export type { ServerContext } from './internal/components/base/ServerContext';
 export type { GridProps } from './internal/components/base/Grid';
 export type { InjectedRouteLeaveProps, WrappedRouteLeaveProps } from './internal/util/RouteLeave';
@@ -1508,7 +1485,7 @@ export type { MessageFunction, NotificationItemProps } from './internal/componen
 export type { VisGraphNode } from './internal/components/lineage/vis/VisGraphGenerator';
 export type { ITab } from './internal/components/navigation/SubNav';
 export type { NotificationCreatable } from './internal/components/notifications/actions';
-export type { IDataViewInfo, EditorModelProps } from './internal/models';
+export type { IDataViewInfo, EditorModelProps, IGridLoader, IGridResponse } from './internal/models';
 export type { HeatMapCell } from './internal/components/heatmap/HeatMap';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
 export type { SearchResultCardData } from './internal/components/search/models';

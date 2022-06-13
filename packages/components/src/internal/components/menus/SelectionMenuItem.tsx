@@ -16,12 +16,11 @@
 import React, { PureComponent } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { QueryGridModel, QueryModel } from '../../..';
+import { QueryModel } from '../../..';
 
 interface Props {
     href?: string;
     id: string;
-    model?: QueryGridModel;
     queryModel?: QueryModel;
     text: string;
     onClick?: () => void;
@@ -38,20 +37,20 @@ export class SelectionMenuItem extends PureComponent<Props> {
     };
 
     get tooManySelected(): boolean {
-        const { maxSelection, model, queryModel } = this.props;
-        const numSelections = model?.selectedIds.size ?? queryModel?.selections?.size;
+        const { maxSelection, queryModel } = this.props;
+        const numSelections = queryModel?.selections?.size;
         return numSelections !== undefined && numSelections > maxSelection;
     }
 
     get tooFewSelected(): boolean {
-        const { model, queryModel } = this.props;
-        const numSelections = model?.selectedIds.size ?? queryModel?.selections?.size;
+        const { queryModel } = this.props;
+        const numSelections = queryModel?.selections?.size;
         return numSelections !== undefined && numSelections === 0;
     }
 
     get disabled(): boolean {
-        const { model, queryModel } = this.props;
-        const totalRows = model?.totalRows ?? queryModel?.rowCount;
+        const { queryModel } = this.props;
+        const totalRows = queryModel?.rowCount;
         return totalRows === undefined || this.tooFewSelected || this.tooManySelected;
     }
 

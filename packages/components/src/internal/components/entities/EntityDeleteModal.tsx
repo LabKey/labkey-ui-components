@@ -6,8 +6,6 @@ import {
     capitalizeFirstChar,
     ConfirmModal,
     Progress,
-    QueryGridModel,
-    SchemaQuery,
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
     deleteRows,
@@ -21,7 +19,6 @@ import { EntityDataType } from './models';
 import { getEntityNoun } from './utils';
 
 interface Props {
-    model?: QueryGridModel;
     queryModel?: QueryModel;
     maxSelected?: number;
     useSelected: boolean;
@@ -36,7 +33,6 @@ interface Props {
 export const EntityDeleteModal: FC<Props> = memo(props => {
     const {
         auditBehavior,
-        model,
         queryModel,
         onCancel,
         afterDelete,
@@ -52,20 +48,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
     let numSelected = 0;
     let selectionKey: string;
 
-    if (model) {
-        if (useSelected) {
-            if (model.isFiltered()) {
-                rowIds = model.selectedIds.toArray();
-                numSelected = rowIds.length;
-            } else {
-                numSelected = model.selectedQuantity;
-                selectionKey = model.getId();
-            }
-        } else {
-            rowIds = [model.dataIds.get(0)];
-            numSelected = 1;
-        }
-    } else if (queryModel) {
+    if (queryModel) {
         if (useSelected) {
             selectionKey = queryModel.id;
         } else {
@@ -87,7 +70,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                 await deleteRows({
                     auditBehavior,
                     rows: rowsToDelete,
-                    schemaQuery: queryModel?.schemaQuery ?? SchemaQuery.create(model.schema, model.query),
+                    schemaQuery: queryModel?.schemaQuery,
                 });
                 afterDelete(rowsToKeep);
                 createDeleteSuccessNotification(noun, rowsToDelete.length, undefined);
@@ -96,10 +79,10 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                 createDeleteErrorNotification(noun);
             }
         },
-        [auditBehavior, beforeDelete, entityDataType, model, queryModel]
+        [auditBehavior, beforeDelete, entityDataType, queryModel]
     );
 
-    if (!model && !queryModel) {
+    if (!queryModel) {
         return null;
     }
 

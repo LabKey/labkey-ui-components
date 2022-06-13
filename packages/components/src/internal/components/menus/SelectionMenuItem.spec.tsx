@@ -15,22 +15,18 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import { List } from 'immutable';
 
 import { MenuItem, OverlayTrigger } from 'react-bootstrap';
 
-import { QueryGridModel } from '../../..';
-
 import { SelectionMenuItem } from './SelectionMenuItem';
+import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
+import {SchemaQuery} from "../../../public/SchemaQuery";
 
 describe('SelectionMenuItem', () => {
     test('without selections', () => {
         const text = 'Menu Item Text';
-        const model = new QueryGridModel({
-            totalRows: 3,
-            selectedIds: List(),
-        });
-        const component = <SelectionMenuItem id="jest-test-1" model={model} text={text} onClick={jest.fn()} />;
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ rowCount: 3, selections: new Set() });
+        const component = <SelectionMenuItem id="jest-test-1" queryModel={model} text={text} onClick={jest.fn()} />;
 
         const wrapper = mount(component);
         expect(wrapper.find(MenuItem)).toHaveLength(1);
@@ -42,11 +38,8 @@ describe('SelectionMenuItem', () => {
 
     test('with selections', () => {
         const text = 'Menu Item Text';
-        const model = new QueryGridModel({
-            totalRows: 3,
-            selectedIds: List(['1', '2']),
-        });
-        const component = <SelectionMenuItem id="jest-test-1" model={model} text={text} onClick={jest.fn()} />;
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ rowCount: 3, selections: new Set(['1', '2']) });
+        const component = <SelectionMenuItem id="jest-test-1" queryModel={model} text={text} onClick={jest.fn()} />;
 
         const wrapper = mount(component);
         expect(wrapper.find(MenuItem)).toHaveLength(1);
@@ -58,12 +51,9 @@ describe('SelectionMenuItem', () => {
 
     test('with maxSelection but not too many', () => {
         const text = 'Menu Item Text';
-        const model = new QueryGridModel({
-            totalRows: 5,
-            selectedIds: List(['1', '2', '3']),
-        });
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ rowCount: 5, selections: new Set(['1', '2', '3']) });
         const component = (
-            <SelectionMenuItem maxSelection={4} id="jest-test-1" model={model} text={text} onClick={jest.fn()} />
+            <SelectionMenuItem maxSelection={4} id="jest-test-1" queryModel={model} text={text} onClick={jest.fn()} />
         );
 
         const wrapper = mount(component);
@@ -75,12 +65,9 @@ describe('SelectionMenuItem', () => {
 
     test('with maxSelection too many', () => {
         const text = 'Menu Item Text';
-        const model = new QueryGridModel({
-            totalRows: 5,
-            selectedIds: List(['1', '2', '3']),
-        });
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ rowCount: 5, selections: new Set(['1', '2', '3']) });
         const component = (
-            <SelectionMenuItem maxSelection={2} id="jest-test-1" model={model} text={text} onClick={jest.fn()} />
+            <SelectionMenuItem maxSelection={2} id="jest-test-1" queryModel={model} text={text} onClick={jest.fn()} />
         );
 
         const wrapper = mount(component);
@@ -92,13 +79,10 @@ describe('SelectionMenuItem', () => {
 
     test('with href', () => {
         const text = 'Menu Item Text';
-        const model = new QueryGridModel({
-            totalRows: 5,
-            selectedIds: List(['1', '2', '3']),
-        });
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({ rowCount: 5, selections: new Set(['1', '2', '3']) });
         const href = 'http://my.href.test';
         const wrapper = mount(
-            <SelectionMenuItem maxSelection={2} id="jest-test-1" model={model} text={text} href={href} />
+            <SelectionMenuItem maxSelection={2} id="jest-test-1" queryModel={model} text={text} href={href} />
         );
         expect(wrapper.prop('href')).toBe(href);
         expect(wrapper.prop('onClick')).toBe(undefined);

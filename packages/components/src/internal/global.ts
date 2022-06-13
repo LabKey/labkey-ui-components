@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 import { getGlobal, setGlobal } from 'reactn';
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 
-import { NotificationItemModel, QueryGridModel, resolveSchemaQuery, SchemaQuery } from '..';
+import { NotificationItemModel } from '..';
 
 import { initBrowserHistoryState } from './util/global';
-import { EditorModel } from './models';
-import { GRID_CHECKBOX_OPTIONS } from './constants';
 
 export type GlobalAppState = {
     // src/global.ts
-    QueryGrid_editors: Map<string, EditorModel>;
     QueryGrid_metadata: Map<string, any>;
-    QueryGrid_models: Map<string, QueryGridModel>;
     QueryGrid_columnrenderers: Map<string, any>;
 
     // src/util/global.ts
@@ -50,7 +46,7 @@ let _queryColumnRenderers = Map<string, any>();
  * @param columnRenderers Optional Map to set the column renderers for this application
  */
 export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Map<string, any>): void {
-    if (!getGlobal()['QueryGrid_models']) {
+    if (!getGlobal()['QueryGrid_metadata']) {
         resetQueryGridState();
     }
 
@@ -70,99 +66,9 @@ export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?
  */
 export function resetQueryGridState(): void {
     setGlobal({
-        QueryGrid_editors: Map<string, EditorModel>(),
         QueryGrid_metadata: Map<string, any>(),
-        QueryGrid_models: Map<string, QueryGridModel>(),
         QueryGrid_columnrenderers: Map<string, any>(),
     });
-}
-
-function getGlobalState(property: string): any {
-    if (!getGlobal()['QueryGrid_' + property]) {
-        throw new Error(
-            'Must call initQueryGridState before you can access anything from the global.QueryGrid_' +
-                property +
-                ' objects.'
-        );
-    }
-
-    return getGlobal()['QueryGrid_' + property];
-}
-
-/**
- * Get the latest QueryGridModel object from the global state for a given modelId.
- * @param modelId QueryGridModel id to fetch
- */
-export function getQueryGridModel(modelId: string): QueryGridModel {
-    return getGlobalState('models').get(modelId);
-}
-
-export function getQueryGridModelsForSchema(schemaName: string): List<QueryGridModel> {
-    return getGlobalState('models')
-        .filter(model => model.schema.toLowerCase() === schemaName.toLowerCase())
-        .toList();
-}
-
-export function getQueryGridModelsForSchemaQuery(schemaQuery: SchemaQuery): List<QueryGridModel> {
-    const modelName = resolveSchemaQuery(schemaQuery);
-    return getGlobalState('models')
-        .filter(model => model.getModelName() === modelName)
-        .toList();
-}
-
-export function getQueryGridModelsForGridId(gridIdPrefix: string): List<QueryGridModel> {
-    const prefix = (gridIdPrefix + '|').toLowerCase();
-    return getGlobalState('models')
-        .filter(model => model.getId().indexOf(prefix) === 0)
-        .toList();
-}
-
-/**
- * Helper function for all callers/actions that would like to update information for a QueryGridModel in the global state.
- * @param model QueryGridModel in the global state to be updated, or to be added to global state if it does not already exist by Id
- * @param updates JS Object with the key/value pairs for updates to make to the model
- * @param connectedComponent Optional React.Component which should be re-rendered with this QueryGridModel update (prevents the need to "connect" the component to the global state)
- * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
- */
-export function updateQueryGridModel(
-    model: QueryGridModel,
-    updates: Partial<QueryGridModel>,
-    connectedComponent?: React.Component,
-    failIfNotFound = true
-): QueryGridModel {
-    if (failIfNotFound && !getGlobalState('models').has(model.getId())) {
-        throw new Error('Unable to find QueryGridModel for modelId: ' + model.getId());
-    }
-
-    const updatedModel = model.merge(updates) as QueryGridModel;
-
-    setGlobal({ QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel) }, () => {
-        if (connectedComponent) {
-            connectedComponent.forceUpdate();
-        }
-    });
-
-    return updatedModel;
-}
-
-/**
- * Remove a QueryGridModel from the global state
- * @param model QueryGridModel to be removed
- * @param connectedComponent Optional React.Component which should be re-rendered with this QueryGridModel update (prevents the need to "connect" the component to the global state)
- */
-export function removeQueryGridModel(model: QueryGridModel, connectedComponent?: React.Component): void {
-    setGlobal(
-        {
-            QueryGrid_models: getGlobalState('models').delete(model.getId()),
-            QueryGrid_editors: getGlobalState('editors').delete(model.getId()),
-        },
-
-        () => {
-            if (connectedComponent) {
-                connectedComponent.forceUpdate();
-            }
-        }
-    );
 }
 
 /**
@@ -193,98 +99,4 @@ export function getQueryColumnRenderers(): Map<string, any> {
  */
 export function setQueryColumnRenderers(columnRenderers: Map<string, any>): void {
     _queryColumnRenderers = columnRenderers;
-}
-
-function getSelectedState(
-    dataIds: List<string>,
-    selected: List<string>,
-    maxRows: number,
-    totalRows: number
-): GRID_CHECKBOX_OPTIONS {
-    const selectedOnPage: number = dataIds.filter(id => selected.indexOf(id) !== -1).size,
-        totalSelected: number = selected.size;
-
-    if (
-        maxRows === selectedOnPage ||
-        (totalRows === totalSelected && totalRows !== 0) ||
-        (selectedOnPage === totalSelected && selectedOnPage === dataIds.size && selectedOnPage > 0)
-    ) {
-        return GRID_CHECKBOX_OPTIONS.ALL;
-    } else if (totalSelected > 0) {
-        // if model has any selected show checkbox as indeterminate
-        return GRID_CHECKBOX_OPTIONS.SOME;
-    }
-
-    return GRID_CHECKBOX_OPTIONS.NONE;
-}
-
-interface IGridSelectionResponse {
-    selectedIds: List<any>;
-}
-
-/**
- * Update model data with select changes
- * @param model
- * @param response
- */
-export function updateSelections(model: QueryGridModel, response: IGridSelectionResponse): QueryGridModel {
-    const selectedIds = response.selectedIds;
-    const id = model.getId();
-    const selectedLoaded = true;
-
-    if (selectedIds !== undefined && selectedIds.size) {
-        const { dataIds, maxRows, totalRows } = model;
-        const selectedState = getSelectedState(dataIds, selectedIds, maxRows, totalRows);
-        const updatedState = {
-            selectedIds,
-            selectedLoaded,
-            selectedQuantity: selectedIds.size,
-            selectedState,
-        } as any;
-
-        const updatedModel = model.merge(updatedState) as QueryGridModel;
-        setGlobal({
-            QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel),
-        });
-
-        return updatedModel;
-    } else {
-        const updatedModel = model.merge({ selectedLoaded, ...QueryGridModel.EMPTY_SELECTION }) as QueryGridModel;
-        setGlobal({
-            QueryGrid_models: getGlobalState('models').set(id, updatedModel),
-        });
-
-        return updatedModel;
-    }
-}
-
-/**
- * Get the latest EditorModel object from the global state for a given modelId.
- * @param modelId QueryGridModel id to fetch
- */
-export function getEditorModel(modelId: string): EditorModel {
-    return getGlobalState('editors').get(modelId);
-}
-
-/**
- * Helper function for all callers/actions that would like to update information for an EditorModel in the global state.
- * @param model EditorModel in the global state to be updated, or to be added to global state if it does not already exist by Id
- * @param updates JS Object with the key/value pairs for updates to make to the model
- * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
- */
-export function updateEditorModel(model: EditorModel, updates: any, failIfNotFound = true): EditorModel {
-    if (!model)
-        return model;
-
-    if (failIfNotFound && !getGlobalState('editors').has(model.id)) {
-        throw new Error('Unable to find EditorModel for modelId: ' + model.id);
-    }
-
-    const updatedModel = model.merge(updates) as EditorModel;
-
-    setGlobal({
-        QueryGrid_editors: getGlobalState('editors').set(model.id, updatedModel),
-    });
-
-    return updatedModel;
 }

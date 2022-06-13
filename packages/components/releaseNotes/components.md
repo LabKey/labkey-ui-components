@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.180.0
+*Released*: 13 June May 2022
 * Item 10373: GridPanel updates to show sorts and filters saved with the view
   * Show saved view filters in the grid panel filter display section
   * Show saved view sorts in the grid column header icons

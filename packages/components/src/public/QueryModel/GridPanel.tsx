@@ -52,7 +52,7 @@ import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
-import {ManageViewsModal} from "./ManageViewsModal";
+import { ManageViewsModal } from './ManageViewsModal';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -95,10 +95,10 @@ type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 interface GridBarProps<T> extends Props<T> {
     actionValues: ActionValue[];
     onFilter: () => void;
+    onManageViews: () => void;
     onSaveView: () => void;
     onSearch: (token: string) => void;
     onViewSelect: (viewName: string) => void;
-    onManageViews: () => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -754,8 +754,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         if (hasChange) {
             actions.loadModel(model.id, allowSelections);
-            if (selectDefaultView)
-                this.onViewSelect(undefined);
+            if (selectDefaultView) this.onViewSelect(undefined);
         }
 
         this.setState({ showManageViewsModal: false });
@@ -959,7 +958,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
-        const { showFilterModalFieldKey, showManageViewsModal, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
+        const {
+            showFilterModalFieldKey,
+            showManageViewsModal,
+            showSaveViewModal,
+            actionValues,
+            errorMsg,
+            isViewSaved,
+        } = this.state;
         const {
             hasData,
             id,

@@ -7,25 +7,23 @@ import { getEntityTypeOptions } from '../components/entities/actions';
 
 import { getGridViews, incrementClientSideMetricCount } from '../actions';
 
+import { SchemaQuery } from '../../public/SchemaQuery';
+
+import { ViewInfo } from '../ViewInfo';
+
 import { getQueryDetails, GetQueryDetailsOptions, SelectDistinctResponse, selectDistinctRows } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
-import { SchemaQuery } from "../../public/SchemaQuery";
-import { ViewInfo } from "../ViewInfo";
 
 export interface QueryAPIWrapper {
     getEntityTypeOptions: (
         entityDataType: EntityDataType,
         containerPath?: string
     ) => Promise<Map<string, List<IEntityTypeOption>>>;
+    getGridViews: (schemaQuery: SchemaQuery, viewName?: string, excludeSessionView?: boolean) => Promise<ViewInfo[]>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
-    selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<SelectDistinctResponse>;
-    getGridViews: (
-        schemaQuery: SchemaQuery,
-        viewName?: string,
-        excludeSessionView?: boolean
-    ) => Promise<ViewInfo[]>
+    selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {

@@ -2452,8 +2452,7 @@ export function getGridViews(
             success: response => {
                 const views = [];
                 response.views?.forEach(view => {
-                    if (includeHidden || view['hidden'] !== true)
-                        views.push(ViewInfo.create(view))
+                    if (includeHidden || view['hidden'] !== true) views.push(ViewInfo.create(view));
                 });
                 resolve(views);
             },
@@ -2476,7 +2475,7 @@ export function getGridView(
                 if (views?.length > 0) resolve(views[0]);
                 else reject('Unable to load the view.');
             })
-            .catch(error => reject(error))
+            .catch(error => reject(error));
     });
 }
 
@@ -2484,7 +2483,12 @@ export function revertViewEdit(schemaQuery: SchemaQuery, containerPath: string, 
     return deleteView(schemaQuery, containerPath, viewName, true);
 }
 
-export function deleteView(schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean): Promise<void> {
+export function deleteView(
+    schemaQuery: SchemaQuery,
+    containerPath: string,
+    viewName?: string,
+    revert?: boolean
+): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.deleteQueryView({
             schemaName: schemaQuery.schemaName,
@@ -2502,5 +2506,4 @@ export function deleteView(schemaQuery: SchemaQuery, containerPath: string, view
             },
         });
     });
-
 }

@@ -9,9 +9,9 @@ import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
 interface ViewMenuProps {
     hideEmptyViewMenu: boolean;
     model: QueryModel;
-    onViewSelect: (viewName: string) => void;
-    onSaveView: () => void;
     onManageViews: () => void;
+    onSaveView: () => void;
+    onViewSelect: (viewName: string) => void;
 }
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {

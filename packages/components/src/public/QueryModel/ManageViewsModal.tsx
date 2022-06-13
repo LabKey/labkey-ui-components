@@ -1,17 +1,18 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Modal, Row } from 'react-bootstrap';
-import { ViewInfo } from "../../internal/ViewInfo";
-import { SchemaQuery } from "../SchemaQuery";
-import {LoadingSpinner} from "../../internal/components/base/LoadingSpinner";
-import {Alert} from "../../internal/components/base/Alert";
-import {useServerContext} from "../../internal/components/base/ServerContext";
-import {useAppContext} from "../../internal/AppContext";
-import {resolveErrorMessage} from "../../internal/util/messaging";
-import {deleteView, revertViewEdit, saveGridView} from "../../internal/actions";
+
+import { ViewInfo } from '../../internal/ViewInfo';
+import { SchemaQuery } from '../SchemaQuery';
+import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
+import { Alert } from '../../internal/components/base/Alert';
+import { useServerContext } from '../../internal/components/base/ServerContext';
+import { useAppContext } from '../../internal/AppContext';
+import { resolveErrorMessage } from '../../internal/util/messaging';
+import { deleteView, revertViewEdit, saveGridView } from '../../internal/actions';
 
 export interface Props {
-    onDone: (hasChange?: boolean, selectDefaultView?: boolean) => void;
     currentView: ViewInfo;
+    onDone: (hasChange?: boolean, selectDefaultView?: boolean) => void;
     schemaQuery: SchemaQuery;
 }
 
@@ -40,20 +41,23 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         })();
     }, []);
 
-    const handleAction = useCallback(async (_handle: () => any) => {
-        setErrorMessage(undefined);
-        setIsSubmitting(true);
-        setHasChange(true);
+    const handleAction = useCallback(
+        async (_handle: () => any) => {
+            setErrorMessage(undefined);
+            setIsSubmitting(true);
+            setHasChange(true);
 
-        try {
-            await _handle();
-            setViews(await api.query.getGridViews(schemaQuery));
-        } catch (error) {
-            setErrorMessage(resolveErrorMessage(error));
-        } finally {
-            setIsSubmitting(false);
-        }
-    }, [schemaQuery]);
+            try {
+                await _handle();
+                setViews(await api.query.getGridViews(schemaQuery));
+            } catch (error) {
+                setErrorMessage(resolveErrorMessage(error));
+            } finally {
+                setIsSubmitting(false);
+            }
+        },
+        [schemaQuery]
+    );
 
     const revertDefaultView = useCallback(async () => {
         await handleAction(async () => {
@@ -61,22 +65,24 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         });
     }, [schemaQuery]);
 
-    const setDefaultView = useCallback(async (view: ViewInfo) => {
-        await handleAction(async () => {
-            await saveGridView(schemaQuery, view.columns, undefined, '', false, false, view.inherit, true, true);
+    const setDefaultView = useCallback(
+        async (view: ViewInfo) => {
+            await handleAction(async () => {
+                await saveGridView(schemaQuery, view.columns, undefined, '', false, false, view.inherit, true, true);
+            });
+        },
+        [schemaQuery]
+    );
 
-        });
-
-    }, [schemaQuery]);
-
-    const deleteSavedView = useCallback(async viewName => {
-        await handleAction(async () => {
-            await deleteView(schemaQuery, undefined, viewName, false);
-            if (currentView.name === viewName)
-                setSelectDefaultView(true);
-        });
-
-    }, [currentView, schemaQuery]);
+    const deleteSavedView = useCallback(
+        async viewName => {
+            await handleAction(async () => {
+                await deleteView(schemaQuery, undefined, viewName, false);
+                if (currentView.name === viewName) setSelectDefaultView(true);
+            });
+        },
+        [currentView, schemaQuery]
+    );
 
     const renameView = useCallback(async () => {
         if (!selectedView || !newName) {
@@ -93,10 +99,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             // await renameReport(selectedSearch.entityId, newName);
 
             setSelectedView(undefined);
-            if (selectedView.name === currentView.name)
-                setSelectDefaultView(true);
+            if (selectedView.name === currentView.name) setSelectDefaultView(true);
         });
-
     }, [selectedView, newName, currentView, schemaQuery]);
 
     const onNewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setNewName(evt.target.value), []);
@@ -125,49 +129,47 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                             onChange={onNewNameChange}
                                             type="text"
                                         />
+                                    ) : view.isDefault ? (
+                                        'Default View'
                                     ) : (
-                                        view.isDefault ? 'Default View' : view.label
+                                        view.label
                                     )}
                                 </Col>
                                 <Col xs={3}>
-                                    {
-                                        user.hasAdminPermission() && (
-                                            <>
-                                                {isDefault && !selectedView &&
-                                                    <span onClick={revertDefaultView} className="clickable-text">
-                                                        Revert
-                                                     </span>
-                                                }
-                                                {!isDefault && !selectedView &&
-                                                    <span onClick={() => setDefaultView(view)} className="clickable-text">
-                                                        Make default
-                                                     </span>
-                                                }
-                                            </>
-                                        )
-                                    }
+                                    {user.hasAdminPermission() && (
+                                        <>
+                                            {isDefault && !selectedView && (
+                                                <span onClick={revertDefaultView} className="clickable-text">
+                                                    Revert
+                                                </span>
+                                            )}
+                                            {!isDefault && !selectedView && (
+                                                <span onClick={() => setDefaultView(view)} className="clickable-text">
+                                                    Make default
+                                                </span>
+                                            )}
+                                        </>
+                                    )}
                                 </Col>
                                 <Col xs={1}>
-                                    {
-                                        (!view.isDefault && !selectedView) &&
+                                    {!view.isDefault && !selectedView && (
                                         <span
                                             className="edit-inline-field__toggle"
                                             onClick={() => setSelectedView(view)}
                                         >
-                                                <i className="fa fa-pencil" />
-                                            </span>
-                                    }
+                                            <i className="fa fa-pencil" />
+                                        </span>
+                                    )}
                                 </Col>
                                 <Col xs={1}>
-                                    {
-                                        (!view.isDefault && !selectedView) &&
+                                    {!view.isDefault && !selectedView && (
                                         <span
                                             className="edit-inline-field__toggle"
                                             onClick={() => deleteSavedView(view.name)}
                                         >
-                                                <i className="fa fa-trash-o" />
-                                            </span>
-                                    }
+                                            <i className="fa fa-trash-o" />
+                                        </span>
+                                    )}
                                 </Col>
                             </Row>
                         );

@@ -223,7 +223,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                     <div className="field-modal__col-content field-modal__values">
                         <Tab.Container
                             activeKey={activeTab}
-                            className="filter-modal__tabs content-tabs"
+                            className="field-modal__tabs content-tabs"
                             id="filter-field-tabs"
                             onSelect={key => onTabChange(key)}
                         >

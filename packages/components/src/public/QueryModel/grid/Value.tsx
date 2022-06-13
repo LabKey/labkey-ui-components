@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { ActionValue } from './actions/Action';
@@ -42,35 +42,35 @@ export class Value extends React.Component<ValueProps, ValueState> {
         };
     }
 
-    onClick(event) {
+    onClick = (event): void => {
         event.stopPropagation();
         event.preventDefault();
-        if (this.props.onClick && !this.props.actionValue.isReadOnly) {
+        if (this.props.onClick && this.props.actionValue.isReadOnly === undefined) {
             this.props.onClick(this.props.actionValue, event);
         }
-    }
+    };
 
-    onIconClick(event) {
+    onIconClick = (event): void => {
         event.stopPropagation();
         event.preventDefault();
         if (this.props.onRemove && this.props.actionValue.isRemovable !== false) {
             this.props.onRemove(this.props.index, event);
         }
-    }
+    };
 
-    onMouseEnter() {
+    onMouseEnter = (): void => {
         this.setState({
             isActive: true,
         });
-    }
+    };
 
-    onMouseLeave() {
+    onMouseLeave = (): void => {
         this.setState({
             isActive: false,
         });
-    }
+    };
 
-    render() {
+    render(): ReactNode {
         const { actionValue } = this.props;
         const { action, value, displayValue, isReadOnly, isRemovable } = actionValue;
         const showRemoveIcon = this.state.isActive && isRemovable !== false && actionValue.action.keyword !== 'view';
@@ -78,7 +78,7 @@ export class Value extends React.Component<ValueProps, ValueState> {
         const className = classNames(valueClassName, {
             'is-active': this.state.isActive,
             'is-disabled': this.state.isDisabled,
-            'is-readonly': isReadOnly,
+            'is-readonly': isReadOnly !== undefined,
         });
 
         const iconClassNames = classNames(
@@ -90,12 +90,12 @@ export class Value extends React.Component<ValueProps, ValueState> {
         return (
             <div
                 className={className}
-                onClick={this.onClick.bind(this)}
-                onMouseEnter={this.onMouseEnter.bind(this)}
-                onMouseLeave={this.onMouseLeave.bind(this)}
+                onClick={this.onClick}
+                onMouseEnter={this.onMouseEnter}
+                onMouseLeave={this.onMouseLeave}
             >
-                <i className={iconClassNames} onClick={this.onIconClick.bind(this)} />
-                {isReadOnly ? <i className="read-lock fa fa-lock" title="locked (read only)" /> : null}
+                <i className={iconClassNames} onClick={this.onIconClick} />
+                {isReadOnly ? <i className="read-lock fa fa-lock" title={isReadOnly} /> : null}
                 <span>{displayValue ?? value}</span>
             </div>
         );

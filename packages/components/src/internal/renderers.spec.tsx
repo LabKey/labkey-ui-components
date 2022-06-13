@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
+import { fromJS } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../public/QueryColumn';
@@ -11,10 +12,13 @@ import { SchemaQuery } from '../public/SchemaQuery';
 
 import { QuerySort } from '../public/QuerySort';
 
+import { QueryInfo } from '../public/QueryInfo';
+
 import { HeaderCellDropdown, isFilterColumnNameMatch } from './renderers';
 import { GridColumn } from './components/base/models/GridColumn';
 import { LabelHelpTip } from './components/base/LabelHelpTip';
 import { CustomToggle } from './components/base/CustomToggle';
+import { ViewInfo } from './ViewInfo';
 
 describe('isFilterColumnNameMatch', () => {
     const filter = Filter.create('Column', 'Value');
@@ -259,12 +263,62 @@ describe('HeaderCellDropdown', () => {
         wrapper.unmount();
     });
 
+    test('isSortAsc via view sort', () => {
+        const sortObj = { fieldKey: 'column', dir: '+' };
+        const view = ViewInfo.create({ sort: [sortObj] });
+        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
+
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
+            sorts: [],
+        });
+        const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
+        validate(wrapper, 1, 6);
+        expect(wrapper.find('.fa-filter')).toHaveLength(1);
+        expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(2);
+        expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
+        const sortAscItem = wrapper.find(MenuItem).at(3);
+        expect(sortAscItem.text()).toContain('Sort ascending');
+        expect(sortAscItem.prop('disabled')).toBe(true);
+        const sortDescItem = wrapper.find(MenuItem).at(4);
+        expect(sortDescItem.text()).toContain('Sort descending');
+        expect(sortDescItem.prop('disabled')).toBe(false);
+        const clearSortItem = wrapper.find(MenuItem).at(5);
+        expect(clearSortItem.text()).toContain('Clear sort');
+        expect(clearSortItem.prop('disabled')).toBe(false);
+        wrapper.unmount();
+    });
+
     test('isSortDesc', () => {
         const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
             sorts: [new QuerySort({ fieldKey: 'column', dir: '-' })],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
         validate(wrapper, 1, 8);
+        expect(wrapper.find('.fa-filter')).toHaveLength(1);
+        expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
+        expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(2);
+        const sortAscItem = wrapper.find(MenuItem).at(3);
+        expect(sortAscItem.text()).toContain('Sort ascending');
+        expect(sortAscItem.prop('disabled')).toBe(false);
+        const sortDescItem = wrapper.find(MenuItem).at(4);
+        expect(sortDescItem.text()).toContain('Sort descending');
+        expect(sortDescItem.prop('disabled')).toBe(true);
+        const clearSortItem = wrapper.find(MenuItem).at(5);
+        expect(clearSortItem.text()).toContain('Clear sort');
+        expect(clearSortItem.prop('disabled')).toBe(false);
+        wrapper.unmount();
+    });
+
+    test('isSortDesc via view sort', () => {
+        const sortObj = { fieldKey: 'column', dir: '-' };
+        const view = ViewInfo.create({ sort: [sortObj] });
+        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
+
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
+            sorts: [],
+        });
+        const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
+        validate(wrapper, 1, 6);
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(2);
@@ -295,12 +349,32 @@ describe('HeaderCellDropdown', () => {
         wrapper.unmount();
     });
 
-    test('multiple colFilters', () => {
-        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query')).mutate({
-            filterArray: [
-                Filter.create('column', 'value', Filter.Types.EQUALS),
-                Filter.create('column', 'value', Filter.Types.ISBLANK),
-            ],
+    test('view filter', () => {
+        const filterObj = { fieldKey: 'column', value: 'val', op: 'contains' };
+        const view = ViewInfo.create({ filter: [filterObj] });
+        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
+
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
+            filterArray: [],
+        });
+        const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
+        validate(wrapper, 1, 6);
+        expect(wrapper.find('.fa-filter')).toHaveLength(2);
+        expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
+        expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
+        const removeFilterItem = wrapper.find(MenuItem).at(1);
+        expect(removeFilterItem.text()).toBe('  Remove filter');
+        expect(removeFilterItem.prop('disabled')).toBe(false);
+        wrapper.unmount();
+    });
+
+    test('multiple colFilters, one being a view filter', () => {
+        const filterObj = { fieldKey: 'column', value: 'val', op: 'contains' };
+        const view = ViewInfo.create({ filter: [filterObj] });
+        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
+
+        const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
+            filterArray: [Filter.create('column', 'value', Filter.Types.EQUALS)],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
         validate(wrapper, 1, 8);

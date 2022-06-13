@@ -2373,33 +2373,26 @@ export function incrementClientSideMetricCount(featureArea: string, metricName: 
     });
 }
 
-export function saveAsSessionView(
-    schemaQuery: SchemaQuery,
-    columns: any,
-    containerPath: string,
-    name: string,
-    hidden: boolean
-): Promise<void> {
-    return saveGridView(schemaQuery, columns, containerPath, name, true, hidden);
+export function saveAsSessionView(schemaQuery: SchemaQuery, containerPath: string, viewInfo: ViewInfo): Promise<void> {
+    // See DataRegion.js _updateSessionCustomView(), this set of hard coded booleans matches that set
+    return saveGridView(schemaQuery, containerPath, viewInfo, true, true, false, false);
 }
 
 export function saveGridView(
     schemaQuery: SchemaQuery,
-    columns: any,
     containerPath: string,
-    name: string,
-    session?: boolean,
-    hidden?: boolean,
-    inherit?: boolean,
-    replace = true,
-    shared?: boolean
+    viewInfo: ViewInfo,
+    replace: boolean,
+    session: boolean,
+    inherit: boolean,
+    shared: boolean
 ): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.saveQueryViews({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             containerPath,
-            views: [{ name, columns, session, inherit, replace, shared, hidden }],
+            views: [{ ...ViewInfo.serialize(viewInfo), replace, session, inherit, shared, hidden: false }],
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();
@@ -2420,7 +2413,6 @@ export function saveSessionView(
     newName: string,
     inherit?: boolean,
     shared?: boolean,
-    hidden?: boolean,
     replace?: boolean
 ): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -2432,7 +2424,7 @@ export function saveSessionView(
             newName,
             inherit,
             shared,
-            hidden,
+            hidden: false,
             replace,
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);

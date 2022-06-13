@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 10376: Add `CustomizeGridViewModal` for, yeah, customizing grid views
 
+### version 2.180.0
+*Released*: 13 June May 2022
+* Item 10373: GridPanel updates to show sorts and filters saved with the view
+  * Show saved view filters in the grid panel filter display section
+  * Show saved view sorts in the grid column header icons
+  * Allow for saved view sorts and filters to be updated/remove alongside the user-defined sorts/filters
+
 ### version 2.179.5
 *Released*: 10 June May 2022
 * EntityInsertPanel refactor to use QueryModel based EditableGridPanel

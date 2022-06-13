@@ -19,7 +19,6 @@ import {
     QueryConfig,
     QueryInfo,
     QuerySort,
-    User,
     useServerContext,
     ViewInfo,
 } from '../..';
@@ -37,7 +36,7 @@ import { SearchAction } from './grid/actions/Search';
 import { SortAction } from './grid/actions/Sort';
 import { ViewAction } from './grid/actions/View';
 
-import { removeActionValue, replaceSearchValue } from './grid/utils';
+import { getSearchValueAction } from './grid/utils';
 import { Change, ChangeType } from './grid/model';
 
 import { createQueryModelId, QueryModel } from './QueryModel';
@@ -57,49 +56,49 @@ import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
 
 export interface GridPanelProps<ButtonsComponentProps> {
+    ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
+    ButtonsComponentRight?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
+    advancedExportOptions?: { [key: string]: any };
+    allowFiltering?: boolean;
     allowSelections?: boolean;
     allowSorting?: boolean;
-    allowFiltering?: boolean;
     allowViewCustomization?: boolean;
     asPanel?: boolean;
-    advancedExportOptions?: { [key: string]: any };
-    ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     buttonsComponentProps?: ButtonsComponentProps;
-    ButtonsComponentRight?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     emptyText?: string;
     getEmptyText?: (model: QueryModel) => string;
+    getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
     hasHeader?: boolean;
     hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
+    highlightLastSelectedRow?: boolean;
     loadOnMount?: boolean;
     onChartClicked?: (chart: DataViewInfo) => boolean;
     onCreateReportClicked?: (type: DataViewInfoTypes) => void;
     onExport?: { [key: string]: () => any };
     pageSizes?: number[];
-    title?: string;
     showButtonBar?: boolean;
     showChartMenu?: boolean;
     showExport?: boolean;
-    showFiltersButton?: boolean;
     showFilterStatus?: boolean;
+    showFiltersButton?: boolean;
+    showHeader?: boolean;
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
     showSearchInput?: boolean;
     showViewMenu?: boolean;
-    showHeader?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
-    getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
-    highlightLastSelectedRow?: boolean;
+    title?: string;
 }
 
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
     actionValues: ActionValue[];
-    onViewSelect: (viewName: string) => void;
-    onSearch: (token: string) => void;
     onFilter: () => void;
     onSaveView: () => void;
+    onSearch: (token: string) => void;
+    onViewSelect: (viewName: string) => void;
     onCustomizeView: () => void;
 }
 
@@ -263,16 +262,16 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 }
 
 interface GridTitleProps {
-    title?: string;
-    model: QueryModel;
     actions: Actions;
     allowSelections: boolean;
     allowViewCustomization: boolean;
-    onRevertView?: () => void;
-    onSaveView?: (canSaveShared) => void;
-    onSaveNewView?: () => void;
-    view?: ViewInfo;
     isUpdated?: boolean;
+    model: QueryModel;
+    onRevertView?: () => void;
+    onSaveNewView?: () => void;
+    onSaveView?: (canSaveShared) => void;
+    title?: string;
+    view?: ViewInfo;
 }
 
 export const GridTitle: FC<GridTitleProps> = memo(props => {
@@ -291,13 +290,13 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     const { viewName } = model;
     const [errorMsg, setErrorMsg] = useState<string>(undefined);
 
-    // const user = user ?? getServerContext().user;
-    const user = hasServerContext() ? useServerContext().user : getServerContext().user; // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
+    // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
+    // const { user } = useServerContext();
+    const user = hasServerContext() ? useServerContext().user : getServerContext().user;
 
+    const currentView = view ?? model.currentView;
     let displayTitle = title;
-    let currentView = view || model.currentView;
-
-    if (!currentView?.hidden && viewName) {
+    if (viewName && !currentView?.hidden) {
         const label = currentView?.label ?? viewName;
         displayTitle = displayTitle ? displayTitle + ' - ' + label : label;
     }
@@ -322,8 +321,8 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         onRevertView?.();
     }, [model, onRevertView, actions, allowSelections]);
 
-    const _onSaveCurrentView = () => {
-        onSaveView(user?.isAdmin); // // call useServerContext in if block to avoid ServerContext for GridPanel jest tests
+    const _onSaveCurrentView = (): void => {
+        onSaveView(user?.isAdmin);
     };
 
     if (!displayTitle && !isEdited && !isUpdated) {
@@ -359,12 +358,12 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 
 interface State {
     actionValues: ActionValue[];
+    errorMsg: React.ReactNode;
+    headerClickCount: { [key: string]: number };
+    isViewSaved?: boolean;
     showFilterModalFieldKey: string;
     showSaveViewModal: boolean;
     showCustomizeViewModal: boolean;
-    headerClickCount: { [key: string]: number };
-    errorMsg: React.ReactNode;
-    isViewSaved?: boolean;
 }
 
 /**
@@ -435,23 +434,46 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         view: ViewAction;
     };
 
+    getModelView = (): ViewInfo => {
+        const { queryInfo, viewName } = this.props.model;
+        return queryInfo?.getView(viewName, true);
+    };
+
     createGridActionValues = (): ActionValue[] => {
         const { model } = this.props;
         const { filterArray, sorts } = model;
+        const view = this.getModelView();
         const actionValues = [];
 
-        sorts.forEach((sort): void => {
+        const _sorts = view ? sorts.concat(view.sorts.toArray()) : sorts;
+        _sorts.forEach((sort): void => {
             const column = model.getColumn(sort.fieldKey);
-            actionValues.push(this.gridActions.sort.actionValueFromSort(sort, column?.shortCaption));
+            if (column) {
+                actionValues.push(this.gridActions.sort.actionValueFromSort(sort, column?.shortCaption));
+            }
         });
 
-        filterArray.forEach((filter): void => {
-            const column = model.getColumn(filter.getColumnName());
+        // handle the view's saved filters (which will be shown as read only)
+        if (view && view.filters.size) {
+            view.filters.forEach((filter): void => {
+                const column = model.getColumn(filter.getColumnName());
+                if (column) {
+                    actionValues.push(
+                        this.gridActions.filter.actionValueFromFilter(filter, column, 'Locked (saved with view)')
+                    );
+                }
+            });
+        }
 
+        // handle the model.filterArray (user-defined filters)
+        filterArray.forEach((filter): void => {
             if (filter.getColumnName() === '*') {
                 actionValues.push(this.gridActions.search.actionValueFromFilter(filter));
             } else {
-                actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
+                const column = model.getColumn(filter.getColumnName());
+                if (column) {
+                    actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
+                }
             }
         });
 
@@ -496,63 +518,59 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return this.props.model.queryInfo;
     };
 
-    getSelectDistinctOptions = (column: string, allFilters = true): Query.SelectDistinctOptions => {
+    getSelectDistinctOptions = (): Query.SelectDistinctOptions => {
         const { model } = this.props;
         return {
-            column,
+            column: undefined,
             containerFilter: model.containerFilter,
             containerPath: model.containerPath,
             schemaName: model.schemaName,
             queryName: model.queryName,
-            viewName: model.viewName,
-            filterArray: allFilters ? model.filters : model.modelFilters,
+            filterArray: model.modelFilters,
             parameters: model.queryParameters,
         };
     };
 
-    handleFilterChange = (actionValues: ActionValue[], change: Change, column?: QueryColumn): void => {
+    handleFilterRemove = (change: Change, column?: QueryColumn): void => {
         const { model, actions, allowSelections } = this.props;
-        let newFilters = model.filterArray;
+        const { actionValues } = this.state;
+        const view = this.getModelView();
 
-        if (change.type === ChangeType.modify || change.type === ChangeType.remove) {
+        if (change.type === ChangeType.remove) {
+            let newFilters = model.filterArray;
+            let viewUpdates;
+
             // If a column is provided instead of a change.index, then we will remove all filters for that column.
             if (change.index !== undefined) {
-                const value = this.state.actionValues[change.index].valueObject;
+                const value = actionValues[change.index].valueObject;
+
+                // first check if we are removing a filter from the saved view
+                const viewFilterIndex = view?.filters.findIndex(filter => filtersEqual(filter, value)) ?? -1;
+                if (viewFilterIndex > -1) {
+                    this.saveAsSessionView({ filters: view.filters.remove(viewFilterIndex) });
+                    return;
+                }
+
                 newFilters = newFilters.filter(filter => !filtersEqual(filter, value));
             } else if (column) {
                 newFilters = newFilters.filter(filter => !isFilterColumnNameMatch(filter, column));
+                if (view?.filters.size) {
+                    viewUpdates = { filters: view.filters.filter(filter => !isFilterColumnNameMatch(filter, column)) };
+                }
             } else {
                 // remove all filters, but keep the search
                 newFilters = newFilters.filter(filter => filter.getFilterType() === Filter.Types.Q);
+                if (view?.filters.size) {
+                    viewUpdates = { filters: view.filters.filter(filter => filter.getFilterType() === Filter.Types.Q) };
+                }
             }
+
+            // Defer model updates after localState is updated so we don't unnecessarily repopulate the grid actionValues
+            this.setState({ headerClickCount: {} }, () => {
+                actions.setFilters(model.id, newFilters, allowSelections);
+                if (viewUpdates) this.saveAsSessionView(viewUpdates);
+            });
         }
-
-        if (change.type === ChangeType.add || change.type === ChangeType.modify) {
-            const newValue = actionValues[actionValues.length - 1].valueObject;
-            const newColumnName = newValue.getColumnName();
-            const newFilterTypeSuffix = newValue.getFilterType().getURLSuffix();
-
-            // Remove any filters on the same column with the same filter type. Append the new filter.
-            newFilters = newFilters
-                .filter(
-                    f => f.getColumnName() !== newColumnName || f.getFilterType().getURLSuffix() !== newFilterTypeSuffix
-                )
-                .concat(newValue);
-
-            // Remove any filter ActionValues with the same columnName as well.
-            actionValues = actionValues.filter(
-                ({ action, valueObject }) =>
-                    action.keyword !== 'filter' ||
-                    valueObject === newValue ||
-                    valueObject.getColumnName() !== newColumnName ||
-                    valueObject.getFilterType().getURLSuffix() !== newFilterTypeSuffix
-            );
-        }
-
-        // Defer model updates after localState is updated so we don't unnecessarily repopulate the grid actionValues
-        this.setState({ actionValues, headerClickCount: {} }, () =>
-            actions.setFilters(model.id, newFilters, allowSelections)
-        );
     };
 
     handleApplyFilters = (newFilters: Filter.IFilter[]): void => {
@@ -560,7 +578,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         this.setState(
             {
-                actionValues: this.state.actionValues,
                 showFilterModalFieldKey: undefined,
                 showSaveViewModal: false,
                 headerClickCount: {},
@@ -569,144 +586,84 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         );
     };
 
-    handleSortChange = (actionValues: ActionValue[], change: Change): void => {
+    handleSortChange = (change: Change, newQuerySort?: QuerySort): void => {
         const { model, actions } = this.props;
-        let updateSortsCallback: () => void;
+        const { actionValues } = this.state;
+        const view = this.getModelView();
+        let newSorts;
 
         if (change.type === ChangeType.remove) {
-            const value = this.state.actionValues[change.index].valueObject;
-            const newSorts = model.sorts.filter(sort => !sortsEqual(sort, value));
-            updateSortsCallback = () => actions.setSorts(model.id, newSorts);
-        } else {
-            const newActionValue = actionValues[actionValues.length - 1];
-            const oldActionValue = this.state.actionValues[change.index];
-            const newValue = newActionValue.valueObject;
-            const oldValue = oldActionValue?.valueObject;
+            const value = actionValues[change.index].valueObject;
 
-            if (oldValue === undefined || !sortsEqual(oldValue, newValue)) {
-                const newSorts = [];
-
-                actionValues = actionValues.filter((actionValue): boolean => {
-                    const { action, valueObject } = actionValue;
-
-                    if (action.keyword !== 'sort') {
-                        return true;
-                    }
-
-                    // It doesn't make sense to have multiple sorts on one column.
-                    const keepSort = valueObject === newValue || valueObject.fieldKey !== newValue.fieldKey;
-
-                    if (keepSort) {
-                        newSorts.push(valueObject);
-                    }
-
-                    return keepSort;
-                });
-
-                updateSortsCallback = () => actions.setSorts(model.id, newSorts);
+            // first check if we are removing a sort from the saved view
+            const viewSortIndex = view?.sorts.findIndex(sort => sortsEqual(sort, value)) ?? -1;
+            if (viewSortIndex > -1) {
+                this.saveAsSessionView({ sorts: view.sorts.remove(viewSortIndex) });
+                return;
             }
+
+            newSorts = model.sorts.filter(sort => !sortsEqual(sort, value));
+        } else if (newQuerySort) {
+            // first check if we are changing a sort from the saved view
+            const viewSortIndex = view?.sorts.findIndex(sort => sort.fieldKey === newQuerySort.fieldKey) ?? -1;
+            if (viewSortIndex > -1) {
+                let newViewSorts = view.sorts.remove(viewSortIndex);
+                newViewSorts = newViewSorts.push(newQuerySort);
+                this.saveAsSessionView({ sorts: newViewSorts });
+                return;
+            }
+
+            // remove any existing sorts on the given column (doesn't make sense to keep multiple)
+            // before adding the new sort value
+            newSorts = model.sorts.filter(sort => sort.fieldKey !== newQuerySort.fieldKey);
+            newSorts.push(newQuerySort);
         }
 
         // Defer sorts update to after setState is complete so we don't unnecessarily repopulate the grid actionValues
-        this.setState({ actionValues, headerClickCount: {} }, updateSortsCallback);
+        this.setState({ headerClickCount: {} }, () => actions.setSorts(model.id, newSorts));
     };
 
-    handleSearchChange = (actionValues: ActionValue[], change: Change): void => {
+    onSearch = (value: string): void => {
         const { model, actions, allowSelections } = this.props;
-        let newFilters = model.filterArray;
+        const { actionValues } = this.state;
 
+        const change = getSearchValueAction(actionValues, value);
         if (!change) return;
 
+        let newFilters = model.filterArray;
         if (change.type === ChangeType.modify || change.type === ChangeType.remove) {
             // Remove the filter with the value of oldValue
-            const oldValue = this.state.actionValues[change.index].valueObject;
+            const oldValue = actionValues[change.index].valueObject;
             newFilters = newFilters.filter(filter => !filtersEqual(filter, oldValue));
         }
 
         if (change.type === ChangeType.add || change.type === ChangeType.modify) {
-            // Append the new value
-            const newValue = actionValues[actionValues.length - 1].valueObject;
-            newFilters = newFilters.concat(newValue);
+            newFilters = newFilters.concat(Filter.create('*', value, Filter.Types.Q));
         }
 
         // Defer search update to after setState so we don't unnecessarily repopulate the grid actionValues
-        this.setState({ actionValues, headerClickCount: {} }, () =>
-            actions.setFilters(model.id, newFilters, allowSelections)
-        );
+        this.setState({ headerClickCount: {} }, () => actions.setFilters(model.id, newFilters, allowSelections));
     };
 
-    onSearch = (value: string): void => {
-        const { actionValues, change } = replaceSearchValue(this.state.actionValues, value, this.gridActions.search);
-        this.handleSearchChange(actionValues, change);
-    };
-
-    handleViewChange = (actionValues: ActionValue[], change: Change): void => {
-        const { model, actions, allowSelections } = this.props;
-        let updateViewCallback: () => void;
-
-        if (change.type === ChangeType.remove) {
-            updateViewCallback = () => actions.setView(model.id, undefined, allowSelections);
-        } else {
-            const newActionValue = actionValues[actionValues.length - 1];
-            const newValue = newActionValue.value;
-            // actionValues only passes view name not label, so we need to extract the view label.
-            const viewLabel = model.queryInfo.views.get(newValue.toLowerCase())?.label ?? newValue;
-
-            if (newValue !== model.viewName) {
-                // Only trigger view change if the viewName has changed
-                updateViewCallback = () => actions.setView(model.id, newValue, allowSelections);
-            }
-
-            actionValues = [...actionValues.slice(0, actionValues.length - 1), { ...newActionValue, value: viewLabel }];
-        }
-        // Defer view update to after setState so we don't unnecessarily repopulate the grid actionValues
-        this.setState(
-            {
-                actionValues,
-                headerClickCount: {}, // view change will refresh the grid, so clear the headerClickCount values
-            },
-            updateViewCallback
-        );
-    };
-
-    onRevertView = () => {
+    onRevertView = (): void => {
         this.setState({ errorMsg: undefined });
     };
 
-    /**
-     * Handler called when the user clicks a filter action from the column dropdown menu.
-     * @param column: QueryColumn
-     * @param remove: true if the user is requesting to remove the filters for this column
-     */
     filterColumn = (column: QueryColumn, remove = false): void => {
-        const fieldKey = column.resolveFieldKey(); // resolveFieldKey because of Issue 34627
-
         if (remove) {
-            const newActionValues = this.state.actionValues.filter(actionValue => {
-                return !(
-                    actionValue.action === this.gridActions.filter &&
-                    isFilterColumnNameMatch(actionValue.valueObject, column)
-                );
-            });
-
-            this.handleFilterChange(newActionValues, { type: ChangeType.remove }, column);
+            this.handleFilterRemove({ type: ChangeType.remove }, column);
         } else {
+            const fieldKey = column.resolveFieldKey(); // resolveFieldKey because of Issue 34627
             this.setState({ showFilterModalFieldKey: fieldKey });
         }
     };
 
     removeAllFilters = (): void => {
-        const { actionValues } = this.state;
-        const newActionValues = actionValues.filter(actionValue => {
-            return actionValue.action === this.gridActions.filter;
-        });
-
-        this.handleFilterChange(newActionValues, { type: ChangeType.remove });
+        this.handleFilterRemove({ type: ChangeType.remove });
     };
 
     removeFilter = (index: number): void => {
-        const { actionValues } = this.state;
-        this.handleFilterChange(removeActionValue(actionValues, index), { type: ChangeType.remove, index });
+        this.handleFilterRemove({ type: ChangeType.remove, index });
     };
 
     showFilterModal = (actionValue?: ActionValue): void => {
@@ -731,68 +688,60 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState({ showFilterModalFieldKey: undefined });
     };
 
-    /**
-     * Handler called when the user clicks a sort action from a column dropdown menu. Creates a grid actionValue style
-     * change event and triggers handleSortChange.
-     * @param column: QueryColumn
-     * @param direction: '+' or '-', use undefined for "clear sort" case
-     */
     sortColumn = (column: QueryColumn, direction?: string): void => {
         const fieldKey = column.resolveFieldKey(); // resolveFieldKey because of Issue 34627
 
         if (direction) {
             const dir = direction === '+' ? '' : '-'; // Sort Action only uses '-' and ''
             const sort = new QuerySort({ fieldKey, dir });
-            const actionValue = {
-                displayValue: column.shortCaption,
-                value: `${fieldKey} ${direction === '+' ? 'asc' : 'desc'}`,
-                valueObject: sort,
-                action: this.gridActions.sort,
-            };
-            const actionValues = this.state.actionValues.concat(actionValue);
-
-            this.handleSortChange(actionValues, { type: ChangeType.add });
+            this.handleSortChange({ type: ChangeType.add }, sort);
         } else {
-            let actionIndex = -1;
-            const newActionValues = this.state.actionValues.filter((actionValue, i) => {
-                if (actionValue.action === this.gridActions.sort && actionValue.valueObject.fieldKey === fieldKey) {
-                    actionIndex = i;
-                    return false;
-                }
-                return true;
-            });
+            const actionIndex = this.state.actionValues.findIndex(
+                actionValue =>
+                    actionValue.action === this.gridActions.sort && actionValue.valueObject.fieldKey === fieldKey
+            );
 
             if (actionIndex > -1) {
-                this.handleSortChange(newActionValues, { type: ChangeType.remove, index: actionIndex });
+                this.handleSortChange({ type: ChangeType.remove, index: actionIndex });
             }
         }
     };
 
     hideColumn = (columnToHide: QueryColumn): void => {
-        const { actions, model, allowSelections } = this.props;
-        const { queryInfo, viewName } = model;
+        const { model } = this.props;
+        this.saveAsSessionView({
+            columns: model.displayColumns.filter(column => column.index !== columnToHide.index),
+        });
+    };
 
-        const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
+    saveAsSessionView = (updates: Record<string, any>): void => {
+        const { schemaQuery, containerPath } = this.props.model;
+        const view = this.getModelView();
+        const viewInfo = new ViewInfo({
+            ...view.toJS(), // clone the current view to make sure we maintain changes to columns/sorts/filters
+            ...updates,
+        });
 
-        const columns = model.displayColumns.filter(column => column.index !== columnToHide.index);
-        saveAsSessionView(model.schemaQuery, columns, model.containerPath, model.viewName, view?.hidden)
-            .then(() => {
-                actions.loadModel(model.id, allowSelections);
-                this.setState({
-                    headerClickCount: {},
-                    errorMsg: undefined,
-                });
-            })
+        saveAsSessionView(schemaQuery, containerPath, viewInfo)
+            .then(this.afterViewChange)
             .catch(errorMsg => {
                 this.setState({ errorMsg });
             });
     };
 
-    onSaveCurrentView = async canSaveShared => {
+    afterViewChange = (): void => {
+        const { actions, model, allowSelections } = this.props;
+        actions.loadModel(model.id, allowSelections);
+        this.setState({
+            headerClickCount: {},
+            errorMsg: undefined,
+        });
+    };
+
+    onSaveCurrentView = async (canSaveShared: boolean): Promise<void> => {
         const { model } = this.props;
         const { queryInfo, viewName } = model;
-
-        const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
+        const view = queryInfo?.getView(viewName, true);
 
         let currentView = view;
         try {
@@ -819,63 +768,84 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
 
     onSaveView = (newName: string, inherit: boolean, replace: boolean, shared?: boolean): Promise<any> => {
-        const { model, actions, allowSelections } = this.props;
+        const { model } = this.props;
         const { viewName, queryInfo } = model;
 
-        const { showSaveViewModal } = this.state;
-
         return new Promise((resolve, reject) => {
-            const view = queryInfo?.views?.get(viewName ? viewName.toLowerCase() : ViewInfo.DEFAULT_NAME.toLowerCase());
+            const view = queryInfo?.getView(viewName, true);
 
-            (view.session
-                ? saveSessionView(
-                      model.schemaQuery,
-                      model.containerPath,
-                      viewName,
-                      newName,
-                      inherit,
-                      shared,
-                      false,
-                      replace
-                  )
-                : saveGridView(
-                      model.schemaQuery,
-                      model.displayColumns,
-                      model.containerPath,
-                      newName,
-                      false,
-                      false,
-                      inherit,
-                      replace,
-                      shared
-                  )
-            )
-                .then(response => {
-                    actions.loadModel(model.id, allowSelections);
+            const updatedViewInfo = new ViewInfo({
+                // clone the current view to make sure we maintain changes to columns and other props
+                ...view.toJS(),
+                // update/set sorts and filters to combine view and user defined items
+                filters: List(model.filterArray.concat(view.filters.toArray())),
+                sorts: List(model.sorts.concat(view.sorts.toArray())),
+            });
 
-                    if (showSaveViewModal) {
-                        this.closeSaveViewModal();
-                        this.onViewSelect(newName);
-                    }
-
-                    this.showViewSavedIndicator();
-                    resolve(response);
-                })
-                .catch(errorMsg => {
-                    reject(errorMsg);
+            if (view.session) {
+                // first save an updated session view with the concatenated sorts/filters (without name update),
+                // then convert the session view to a non session view (with name update)
+                saveAsSessionView(model.schemaQuery, model.containerPath, updatedViewInfo)
+                    .then(() => {
+                        saveSessionView(
+                            model.schemaQuery,
+                            model.containerPath,
+                            viewName,
+                            newName,
+                            inherit,
+                            shared,
+                            replace
+                        )
+                            .then(response => {
+                                this.afterSaveViewComplete(newName);
+                                resolve(response);
+                            })
+                            .catch(errorMsg => {
+                                reject(errorMsg);
+                            });
+                    })
+                    .catch(errorMsg => {
+                        this.setState({ errorMsg });
+                    });
+            } else {
+                const finalViewInfo = new ViewInfo({
+                    ...updatedViewInfo.toJS(),
+                    name: newName,
                 });
+
+                saveGridView(model.schemaQuery, model.containerPath, finalViewInfo, replace, false, inherit, shared)
+                    .then(response => {
+                        this.afterSaveViewComplete(newName);
+                        resolve(response);
+                    })
+                    .catch(errorMsg => {
+                        reject(errorMsg);
+                    });
+            }
         });
     };
 
-    showViewSavedIndicator = (): void => {
-        this.setState({
-            isViewSaved: true,
-        });
+    afterSaveViewComplete = (newName: string): void => {
+        const { model, actions } = this.props;
+        const { showSaveViewModal } = this.state;
 
+        // if the model had any user defined sorts/filters, clear those since they are now saved with the view
+        if (model.filterArray.length > 0) actions.setFilters(model.id, [], false);
+        if (model.sorts.length > 0) actions.setSorts(model.id, []);
+
+        this.afterViewChange();
+        if (showSaveViewModal) {
+            this.closeSaveViewModal();
+            this.onViewSelect(newName);
+        }
+
+        this.showViewSavedIndicator();
+    };
+
+    showViewSavedIndicator = (): void => {
+        this.setState({ isViewSaved: true });
         setTimeout(() => {
-            this.setState({
-                isViewSaved: false,
-            });
+            this.setState({ isViewSaved: false });
         }, 5000);
     };
 
@@ -883,21 +853,22 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState({ showSaveViewModal: false });
     };
 
-    /**
-     * Handler for the ViewSelectorComponent. Creates a grid style change event and triggers handleViewChange.
-     * @param viewName: the view name selected by the user.
-     */
     onViewSelect = (viewName: string): void => {
-        const actionValue = { value: viewName, action: this.gridActions.view };
-        let changeType = ChangeType.remove;
-        let actionValues = this.state.actionValues.filter(av => av.action.keyword !== 'view');
+        const { actions, model, allowSelections } = this.props;
+        let updateViewCallback: () => void;
 
         if (viewName !== undefined) {
-            changeType = ChangeType.add;
-            actionValues = actionValues.concat(actionValue);
+            if (viewName !== model.viewName) {
+                // Only trigger view change if the viewName has changed
+                updateViewCallback = () => actions.setView(model.id, viewName, allowSelections);
+            }
+        } else {
+            updateViewCallback = () => actions.setView(model.id, undefined, allowSelections);
         }
 
-        this.handleViewChange(actionValues, { type: changeType });
+        // Defer view update to after setState so we don't unnecessarily repopulate the grid actionValues.
+        // View change will refresh the grid, so clear the headerClickCount values
+        if (updateViewCallback) this.setState({ headerClickCount: {} }, updateViewCallback);
     };
 
     getGridColumns = (): List<GridColumn | QueryColumn> => {
@@ -1001,6 +972,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             messages,
             queryInfoError,
             queryInfo,
+            viewName,
         } = model;
         const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
         const hasError = hasGridError || selectionsError !== undefined || errorMsg;
@@ -1015,12 +987,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
 
         const gridEmptyText = getEmptyText?.(model) ?? emptyText;
-        let view;
-        if (model.viewName) {
-            view = queryInfo.views.get(model.viewName.toLowerCase());
-        } else {
-            view = queryInfo?.views?.get(ViewInfo.DEFAULT_NAME.toLowerCase());
-        }
+        const view = queryInfo?.getView(viewName, true);
 
         return (
             <>
@@ -1097,7 +1064,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 {showFilterModalFieldKey && (
                     <GridFilterModal
                         fieldKey={showFilterModalFieldKey}
-                        selectDistinctOptions={this.getSelectDistinctOptions(undefined, false)}
+                        selectDistinctOptions={this.getSelectDistinctOptions()}
                         initFilters={model.filterArray} // using filterArray to indicate user-defined filters only
                         model={model}
                         onApply={this.handleApplyFilters}

@@ -635,7 +635,6 @@ import {
     userCanReadSources,
 } from './internal/app/utils';
 import {
-    doResetQueryGridState,
     menuInit,
     menuInvalidate,
     menuReload,
@@ -739,7 +738,6 @@ const App = {
     getDateFormat: getAppDateFormat,
     getDateTimeFormat: getAppDateTimeFormat,
     useMenuSectionConfigs,
-    doResetQueryGridState,
     menuInit,
     menuInvalidate,
     menuReload,

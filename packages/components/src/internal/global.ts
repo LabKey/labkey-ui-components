@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { getGlobal, setGlobal } from 'reactn';
 import { Map } from 'immutable';
 
 import { NotificationItemModel } from '..';
@@ -21,10 +20,6 @@ import { NotificationItemModel } from '..';
 import { initBrowserHistoryState } from './util/global';
 
 export type GlobalAppState = {
-    // src/global.ts
-    QueryGrid_metadata: Map<string, any>;
-    QueryGrid_columnrenderers: Map<string, any>;
-
     // src/util/global.ts
     BrowserHistory: any; // TODO what type to use here?
 
@@ -46,10 +41,6 @@ let _queryColumnRenderers = Map<string, any>();
  * @param columnRenderers Optional Map to set the column renderers for this application
  */
 export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Map<string, any>): void {
-    if (!getGlobal()['QueryGrid_metadata']) {
-        resetQueryGridState();
-    }
-
     initBrowserHistoryState();
 
     if (metadata) {
@@ -59,16 +50,6 @@ export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?
     if (columnRenderers) {
         setQueryColumnRenderers(columnRenderers);
     }
-}
-
-/**
- * Clear out all of the global state object for this package
- */
-export function resetQueryGridState(): void {
-    setGlobal({
-        QueryGrid_metadata: Map<string, any>(),
-        QueryGrid_columnrenderers: Map<string, any>(),
-    });
 }
 
 /**

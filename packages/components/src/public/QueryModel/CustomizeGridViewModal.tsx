@@ -176,7 +176,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                         type="button"
                         className="btn btn-success"
                         onClick={_onUpdate}
-                        disabled={!isDirty}
+                        disabled={!isDirty || columnsInView.length === 0}
                     >
                         Update Grid
                     </button>

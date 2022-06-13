@@ -272,7 +272,7 @@ describe('HeaderCellDropdown', () => {
             sorts: [],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
-        validate(wrapper, 1, 6);
+        validate(wrapper, 1, 8);
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(2);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
@@ -318,7 +318,7 @@ describe('HeaderCellDropdown', () => {
             sorts: [],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
-        validate(wrapper, 1, 6);
+        validate(wrapper, 1, 8);
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(2);
@@ -358,7 +358,7 @@ describe('HeaderCellDropdown', () => {
             filterArray: [],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
-        validate(wrapper, 1, 6);
+        validate(wrapper, 1, 8);
         expect(wrapper.find('.fa-filter')).toHaveLength(2);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);

@@ -5,6 +5,7 @@ import { saveAsSessionView } from '../../internal/actions';
 import { QueryModel } from './QueryModel';
 import { QueryColumn } from '../QueryColumn';
 import { APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/renderers';
+import { ViewInfo } from '../../internal/ViewInfo';
 
 interface ColumnChoiceProps {
     column: QueryColumn,
@@ -40,8 +41,8 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     const disabled = column.addToDisplayView;
     let content = (
         <span className={"pull-right " + (disabled ? "text-muted disabled" : "clickable")} onClick={disabled ? undefined : onColumnRemove}>
-                                            <i className="fa fa-times"/>
-                                        </span>
+            <i className="fa fa-times"/>
+        </span>
     );
     if (disabled) {
         overlay = <Popover key={index + '-disabled-warning'}>{APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}</Popover>;
@@ -81,7 +82,11 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
 
     const _onUpdate = useCallback(async () => {
         try {
-            await saveAsSessionView(schemaQuery, columnsInView, model.containerPath, model.viewName, false);
+            const viewInfo = new ViewInfo({
+                ...model.currentView.toJS(), // clone the current view to make sure we maintain changes to columns/sorts/filters
+                ...{columns: columnsInView},
+            });
+            await saveAsSessionView(schemaQuery, model.containerPath, viewInfo);
             closeModal();
             onUpdate();
         } catch (error) {

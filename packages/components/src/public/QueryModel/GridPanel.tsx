@@ -54,6 +54,7 @@ import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
 import { CustomizeGridViewModal } from './CustomizeGridViewModal';
+import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -302,7 +303,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }
 
     const isEdited = currentView?.session;
-    const showSave = allowViewCustomization && isEdited && currentView?.savable;
+    const showSave = isCustomizeViewsInAppEnabled() && allowViewCustomization && isEdited && currentView?.savable;
     const showRevert = allowViewCustomization && isEdited && currentView?.revertable;
 
     let canSaveCurrent = false;
@@ -377,7 +378,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         allowViewCustomization: true,
         asPanel: true,
         hideEmptyChartMenu: true,
-        hideEmptyViewMenu: true,
+        hideEmptyViewMenu: !isCustomizeViewsInAppEnabled(),
         highlightLastSelectedRow: false,
         loadOnMount: true,
         showPagination: true,

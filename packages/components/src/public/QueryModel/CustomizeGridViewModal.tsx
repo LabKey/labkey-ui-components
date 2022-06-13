@@ -20,7 +20,7 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
 
     return (
         <div className="list-group-item" key={index}>
-            <span className="field-name">{column.caption}</span>
+            <span className="field-name">{column.caption ?? column.name}</span>
             {isInView && <span className="pull-right" ><i className="fa fa-check"/></span>}
             {!isInView && <span className="pull-right clickable" onClick={onAddColumn}><i className="fa fa-plus"/></span>}
         </div>
@@ -45,11 +45,11 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
         </span>
     );
     if (disabled) {
-        overlay = <Popover key={index + '-disabled-warning'}>{APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}</Popover>;
+        overlay = <Popover id={column.name + "-disabled-popover"} key={index + '-disabled-warning'}>{APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}</Popover>;
     }
     return (
         <div className="list-group-item" key={index}>
-            <span className={"field-name" + (disabled ? " text-muted" : "")} >{column.caption}</span>
+            <span className={"field-name" + (disabled ? " text-muted" : "")} >{column.caption ?? column.name}</span>
             {!disabled && content}
             {disabled &&
                 <OverlayTrigger overlay={overlay} placement="bottom">
@@ -128,14 +128,15 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                 <Alert>{saveError}</Alert>
                 <Row className="field-modal__container">
                     <Col xs={6} className="field-modal__col-2">
-                        <div className="field-modal__col-title">All Fields</div>
-                        <div className="list-group field-modal__col-content">
+                        <div key="title" className="field-modal__col-title">All Fields</div>
+                        <div key="field-list" className="list-group field-modal__col-content">
                             {
                                 model.allColumns.filter(column => isColumnInView(column) || ((showAllColumns || !column.hidden) && !column.removeFromViews)).map((column, index) => {
                                     return (
                                         <ColumnChoice
                                             column={column}
                                             index={index}
+                                            key={index}
                                             isInView={isColumnInView(column)}
                                             onAddColumn={() => addColumn(column)}
                                         />
@@ -143,8 +144,8 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                                 })
                             }
                         </div>
-                        <div>
-                            <input type="checkbox" checked={showAllColumns} onClick={toggleShowAll}/>&nbsp;Show all system and user-defined fields
+                        <div key={"toggleAll"}>
+                            <input type="checkbox" checked={showAllColumns} onChange={toggleShowAll}/>&nbsp;Show all system and user-defined fields
                         </div>
                     </Col>
                     <Col xs={6} className="field-modal__col-2">

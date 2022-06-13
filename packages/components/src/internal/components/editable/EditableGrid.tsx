@@ -1037,7 +1037,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         </span>
                     )}
                     {allowExport && (
-                        <span className="control-right">
+                        <span className="control-right pull-right">
                             <EditableGridExportMenu id={editorModel.id} hasData={true} exportHandler={exportHandler} />
                         </span>
                     )}

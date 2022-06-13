@@ -31,15 +31,15 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
 }
 
 interface HeaderCellDropdownProps {
-    i: number;
     column: GridColumn;
-    selectable?: boolean;
     columnCount?: number;
-    handleSort?: (column: QueryColumn, dir?: string) => void;
     handleFilter?: (column: QueryColumn, remove?: boolean) => void;
     handleHideColumn?: (column: QueryColumn) => void;
+    handleSort?: (column: QueryColumn, dir?: string) => void;
     headerClickCount?: number;
+    i: number;
     model?: QueryModel;
+    selectable?: boolean;
 }
 
 // exported for jest testing

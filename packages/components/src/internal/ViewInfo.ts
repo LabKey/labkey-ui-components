@@ -10,8 +10,8 @@ function getFiltersFromView(rawViewInfo): List<Filter.IFilter> {
     if (rawViewInfo && rawViewInfo.filter) {
         const rawFilters: Array<{
             fieldKey: string;
-            value: any;
             op: string;
+            value: any;
         }> = rawViewInfo.filter;
 
         for (let i = 0; i < rawFilters.length; i++) {

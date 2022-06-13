@@ -20,19 +20,20 @@ import { FieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
 
 enum FieldFilterTabs {
-    Filter = 'Filter',
     ChooseValues = 'ChooseValues',
+    Filter = 'Filter',
 }
 
 const DEFAULT_VIEW_NAME = ''; // always use default view for selection, if none provided
 const CHOOSE_VALUES_TAB_KEY = 'Choose values';
 
 interface Props {
-    asRow?: boolean;
     api?: ComponentsAPIWrapper;
+    asRow?: boolean;
     emptyMsg?: string;
     entityDataType?: EntityDataType; // used for Sample Finder use case
     fieldKey?: string;
+    filterTypesToExclude?: string[];
     filters: { [key: string]: FieldFilter[] };
     fullWidth?: boolean;
     metricFeatureArea?: string;
@@ -42,7 +43,6 @@ interface Props {
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
-    filterTypesToExclude?: string[];
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {

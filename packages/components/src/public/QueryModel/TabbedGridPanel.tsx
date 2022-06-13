@@ -73,6 +73,10 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      */
     asPanel?: boolean;
     /**
+     * Optional value to use as the filename prefix for the exported file, otherwise will default to 'Data'
+     */
+    exportFilename?: string;
+    /**
      * Optional, if used the TabbedGridPanel will act as a controlled component, requiring you to always pass the
      * activeModelId. If not passed the TabbedGridPanel will maintain the activeModelId state internally.
      * @param string
@@ -97,10 +101,6 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      * The title to render, only used if asPanel is true.
      */
     title?: string;
-    /**
-     * Optional value to use as the filename prefix for the exported file, otherwise will default to 'Data'
-     */
-    exportFilename?: string;
 }
 
 export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = memo(props => {

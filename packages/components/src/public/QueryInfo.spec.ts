@@ -19,9 +19,10 @@ import sampleSetQueryInfo from '../test/data/sampleSet-getQueryDetails.json';
 import sampleSet3QueryColumn from '../test/data/SampleSet3Parent-QueryColumn.json';
 import nameExpSetQueryColumn from '../test/data/NameExprParent-QueryColumn.json';
 
+import { ViewInfo } from '../internal/ViewInfo';
+
 import { QueryInfo } from './QueryInfo';
 import { QueryColumn } from './QueryColumn';
-import { ViewInfo } from '../internal/ViewInfo';
 
 describe('getColumnFieldKeys', () => {
     test('missing params', () => {

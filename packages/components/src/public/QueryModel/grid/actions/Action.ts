@@ -21,6 +21,12 @@
  */
 export interface Action {
     /**
+     * This is a shorthand font awesome icon class. E.g. "globe" would apply the icon fa-globe.
+     * http://fontawesome.io/icons
+     */
+    iconCls: string;
+
+    /**
      * Special case to allow an action to be the default if no keyword is provided. Note the first action with this
      * set, if there are multiple, will be the default.
      */
@@ -31,22 +37,16 @@ export interface Action {
      * with no spaces.
      */
     keyword: string;
-
-    /**
-     * This is a shorthand font awesome icon class. E.g. "globe" would apply the icon fa-globe.
-     * http://fontawesome.io/icons
-     */
-    iconCls: string;
 }
 
 export interface Value {
-    value: string;
-    valueObject?: any;
     displayValue?: string;
     isReadOnly?: string;
     isRemovable?: boolean;
     isValid?: boolean;
     param?: any;
+    value: string;
+    valueObject?: any;
 }
 
 export interface ActionValue extends Value {
@@ -54,15 +54,14 @@ export interface ActionValue extends Value {
 }
 
 export interface ActionOption {
-    label: string;
-
     action?: Action;
-    value?: string;
     appendValue?: boolean;
     isAction?: boolean;
     isComplete?: boolean;
-    isSelected?: boolean;
     isOverwrite?: boolean;
+    isSelected?: boolean;
+    label: string;
     nextLabel?: string;
     selectable?: boolean;
+    value?: string;
 }

@@ -1,4 +1,5 @@
 import { List } from 'immutable';
+
 import { ViewInfo } from './ViewInfo';
 
 describe('ViewInfo', () => {

@@ -346,11 +346,11 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 
 interface State {
     actionValues: ActionValue[];
+    errorMsg: React.ReactNode;
+    headerClickCount: { [key: string]: number };
+    isViewSaved?: boolean;
     showFilterModalFieldKey: string;
     showSaveViewModal: boolean;
-    headerClickCount: { [key: string]: number };
-    errorMsg: React.ReactNode;
-    isViewSaved?: boolean;
 }
 
 /**
@@ -835,7 +835,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         if (viewName !== undefined) {
             if (viewName !== model.viewName) {
                 // Only trigger view change if the viewName has changed
-                updateViewCallback = () => actions.setView(model.id, viewName, allowSelections)
+                updateViewCallback = () => actions.setView(model.id, viewName, allowSelections);
             }
         } else {
             updateViewCallback = () => actions.setView(model.id, undefined, allowSelections);

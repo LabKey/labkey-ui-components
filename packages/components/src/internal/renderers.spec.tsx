@@ -12,12 +12,13 @@ import { SchemaQuery } from '../public/SchemaQuery';
 
 import { QuerySort } from '../public/QuerySort';
 
+import { QueryInfo } from '../public/QueryInfo';
+
 import { HeaderCellDropdown, isFilterColumnNameMatch } from './renderers';
 import { GridColumn } from './components/base/models/GridColumn';
 import { LabelHelpTip } from './components/base/LabelHelpTip';
 import { CustomToggle } from './components/base/CustomToggle';
 import { ViewInfo } from './ViewInfo';
-import { QueryInfo } from '../public/QueryInfo';
 
 describe('isFilterColumnNameMatch', () => {
     const filter = Filter.create('Column', 'Value');
@@ -260,7 +261,7 @@ describe('HeaderCellDropdown', () => {
     test('isSortAsc via view sort', () => {
         const sortObj = { fieldKey: 'column', dir: '+' };
         const view = ViewInfo.create({ sort: [sortObj] });
-        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view })});
+        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
         const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
             sorts: [],
@@ -306,7 +307,7 @@ describe('HeaderCellDropdown', () => {
     test('isSortDesc via view sort', () => {
         const sortObj = { fieldKey: 'column', dir: '-' };
         const view = ViewInfo.create({ sort: [sortObj] });
-        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view })});
+        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
         const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
             sorts: [],
@@ -346,7 +347,7 @@ describe('HeaderCellDropdown', () => {
     test('view filter', () => {
         const filterObj = { fieldKey: 'column', value: 'val', op: 'contains' };
         const view = ViewInfo.create({ filter: [filterObj] });
-        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view })});
+        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
         const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
             filterArray: [],
@@ -365,12 +366,10 @@ describe('HeaderCellDropdown', () => {
     test('multiple colFilters, one being a view filter', () => {
         const filterObj = { fieldKey: 'column', value: 'val', op: 'contains' };
         const view = ViewInfo.create({ filter: [filterObj] });
-        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view })});
+        const queryInfo = QueryInfo.create({ views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }) });
 
         const model = makeTestQueryModel(SchemaQuery.create('schema', 'query'), queryInfo).mutate({
-            filterArray: [
-                Filter.create('column', 'value', Filter.Types.EQUALS),
-            ],
+            filterArray: [Filter.create('column', 'value', Filter.Types.EQUALS)],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
         validate(wrapper, 1, 6);

@@ -1,13 +1,11 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useCallback } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
-
-import { Set } from 'immutable';
 
 import { EXPORT_TYPES, getQueryModelExportParams, QueryModel, Tip } from '../..';
 
 import { exportRows } from '../../internal/actions';
 
-interface ExportMenuProps {
+export interface ExportMenuProps {
     // pageSizes is expected to be sorted (ascending)
     model: QueryModel;
     advancedOptions?: { [key: string]: any };
@@ -15,20 +13,94 @@ interface ExportMenuProps {
     onExport?: { [key: string]: () => any };
 }
 
-export class ExportMenu extends PureComponent<ExportMenuProps> {
-    static exportOptions = [
-        { type: EXPORT_TYPES.CSV, icon: 'fa-file-o', label: 'CSV' },
-        { type: EXPORT_TYPES.EXCEL, icon: 'fa-file-excel-o', label: 'Excel' },
-        { type: EXPORT_TYPES.TSV, icon: 'fa-file-text-o', label: 'TSV' },
-        { type: EXPORT_TYPES.LABEL, icon: 'fa-tag', label: 'Label', hidden: true },
-        // Note: EXPORT_TYPES and exportRows (used in export function below) also include support for FASTA and GENBANK,
-        // but they were never used in the QueryGridPanel version of export. We're explicitly not supporting them in
-        // this implementation until we need them.
-    ];
+export interface ExportOption {
+    type: EXPORT_TYPES;
+    icon: string;
+    label: string;
+    hidden?: boolean;
+}
 
-    export = (option): void => {
+const exportOptions = [
+    { type: EXPORT_TYPES.CSV, icon: 'fa-file-o', label: 'CSV' },
+    { type: EXPORT_TYPES.EXCEL, icon: 'fa-file-excel-o', label: 'Excel' },
+    { type: EXPORT_TYPES.TSV, icon: 'fa-file-text-o', label: 'TSV' },
+    { type: EXPORT_TYPES.LABEL, icon: 'fa-tag', label: 'Label', hidden: true },
+    // Note: EXPORT_TYPES and exportRows (used in export function below) also include support for FASTA and GENBANK,
+    // but they were never used in the QueryGridPanel version of export. We're explicitly not supporting them in
+    // this implementation until we need them.
+] as Array<ExportOption>;
+
+export interface ExportMenuImplProps extends Omit<ExportMenuProps, "model"> {
+    id: string;
+    hasData: boolean;
+    selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set.
+    hasSelections?: boolean;
+    exportHandler: (option: ExportOption) => void;
+}
+
+export const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
+    const { id, hasData, supportedTypes, selections, hasSelections, exportHandler, onExport } = props;
+
+    const exportCallback = useCallback((option: ExportOption) => {
+        const {type} = option;
+        if (onExport?.[type])
+            onExport[type]?.();
+        else
+            exportHandler(option);
+    }, [exportHandler, onExport])
+
+    return (
+        hasData && (
+            <div className="export-menu">
+                <Tip caption="Export" trigger={['hover']}>
+                    <DropdownButton
+                        id={`export-drop-${id}`}
+                        noCaret
+                        pullRight
+                        title={<span className="fa fa-download" />}
+                    >
+                        <MenuItem key="export_header" header>
+                            Export
+                            {hasSelections ? ' Selected' : ''}
+                        </MenuItem>
+
+                        {exportOptions.map(option => {
+                            if (option.hidden && !supportedTypes?.has(option.type)) return null;
+
+                            if (option.type === EXPORT_TYPES.LABEL) {
+                                return (
+                                    <React.Fragment key={option.type}>
+                                        <MenuItem divider />
+                                        <MenuItem header>
+                                            Export and Print {selections?.size > 0 ? 'Selected' : ''}
+                                        </MenuItem>
+                                        <MenuItem onClick={() => exportCallback(option)}>
+                                            <span className={`fa ${option.icon} export-menu-icon`} />
+                                            &nbsp; {option.label}
+                                        </MenuItem>
+                                    </React.Fragment>
+                                );
+                            }
+                            return (
+                                <MenuItem key={option.type} onClick={() => exportCallback(option)}>
+                                    <div className="export-menu__item">
+                                        <span className={`fa ${option.icon} export-menu-icon`} />
+                                        <span>{option.label}</span>
+                                    </div>
+                                </MenuItem>
+                            );
+                        })}
+                    </DropdownButton>
+                </Tip>
+            </div>
+        )
+    );
+});
+
+export class ExportMenu extends PureComponent<ExportMenuProps> {
+    export = (option: ExportOption): void => {
         const { model, advancedOptions, onExport } = this.props;
-        const type = option.type;
+        const {type} = option;
         const exportParams = getQueryModelExportParams(model, type, advancedOptions);
         if (onExport && onExport[type]) {
             onExport[type]();
@@ -38,54 +110,19 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
     };
 
     render(): ReactNode {
-        const { model, supportedTypes } = this.props;
+        const { model, ...rest } = this.props;
         const { id, hasData, hasSelections, selections } = model;
 
         return (
-            hasData && (
-                <div className="export-menu">
-                    <Tip caption="Export" trigger={['hover']}>
-                        <DropdownButton
-                            id={`export-drop-${id}`}
-                            noCaret
-                            pullRight
-                            title={<span className="fa fa-download" />}
-                        >
-                            <MenuItem key="export_header" header>
-                                Export
-                                {hasSelections ? ' Selected' : ''}
-                            </MenuItem>
-
-                            {ExportMenu.exportOptions.map(option => {
-                                if (option.hidden && !supportedTypes?.includes(option.type)) return null;
-
-                                if (option.type === EXPORT_TYPES.LABEL) {
-                                    return (
-                                        <React.Fragment key={option.type}>
-                                            <MenuItem divider />
-                                            <MenuItem header>
-                                                Export and Print {model.selections?.size > 0 ? 'Selected' : ''}
-                                            </MenuItem>
-                                            <MenuItem onClick={() => this.export(option)}>
-                                                <span className={`fa ${option.icon} export-menu-icon`} />
-                                                &nbsp; {option.label}
-                                            </MenuItem>
-                                        </React.Fragment>
-                                    );
-                                }
-                                return (
-                                    <MenuItem key={option.type} onClick={() => this.export(option)}>
-                                        <div className="export-menu__item">
-                                            <span className={`fa ${option.icon} export-menu-icon`} />
-                                            <span>{option.label}</span>
-                                        </div>
-                                    </MenuItem>
-                                );
-                            })}
-                        </DropdownButton>
-                    </Tip>
-                </div>
-            )
+            <ExportMenuImpl {...rest} id={id} hasData={hasData} hasSelections={hasSelections} selections={selections} exportHandler={this.export} />
         );
     }
 }
+
+export const EditableGridExportMenu: FC<ExportMenuImplProps> = memo(props => {
+    return (
+        <>
+            <ExportMenuImpl {...props} />
+        </>
+    );
+});

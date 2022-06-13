@@ -1,19 +1,19 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { fromJS, List, Map } from 'immutable';
+import { fromJS, List, Map, OrderedMap } from 'immutable';
 import classNames from 'classnames';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { EditorModel, EditorModelProps } from '../../models';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
-import { ExportMenu } from '../../../public/QueryModel/ExportMenu';
-import { EXPORT_TYPES } from '../../constants';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { getEditorTableData, exportEditedData } from './utils';
 
 import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
+import { EXPORT_TYPES } from '../../constants';
+import { exportEditedData, getEditorTableData } from './utils';
+import { ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
@@ -34,8 +34,8 @@ const exportHandler = (
     activeTab: number,
     extraColumns?: Array<Partial<QueryColumn>>
 ): void => {
-    let headings = Map<string, string>();
-    let editorData = Map<string, Map<string, any>>();
+    let headings = OrderedMap<string, string>();
+    let editorData = OrderedMap<string, Map<string, any>>();
     models.forEach((queryModel, idx) => {
         const [modelHeadings, modelEditorData] = getEditorTableData(
             editorModels[idx],
@@ -116,23 +116,9 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     let activeUpdateColumns = updateColumns;
     if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
 
-    const csvExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.CSV, models, editorModels, readOnlyColumns, activeTab, extraExportColumns);
+    const exportHandlerCallback = useCallback((option: ExportOption) => {
+        exportHandler(option.type, models, editorModels, readOnlyColumns, activeTab, extraExportColumns);
     }, [models, editorModels, readOnlyColumns, activeTab]);
-
-    const tsvExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.TSV, models, editorModels, readOnlyColumns, activeTab, extraExportColumns);
-    }, [models, editorModels, readOnlyColumns, activeTab]);
-
-    const excelExportHandlerCallback = useCallback(() => {
-        exportHandler(EXPORT_TYPES.EXCEL, models, editorModels, readOnlyColumns, activeTab, extraExportColumns);
-    }, [models, editorModels, readOnlyColumns, activeTab]);
-
-    const onExport = {
-        [EXPORT_TYPES.CSV]: csvExportHandlerCallback,
-        [EXPORT_TYPES.TSV]: tsvExportHandlerCallback,
-        [EXPORT_TYPES.EXCEL]: excelExportHandlerCallback,
-    };
 
     const onTabClick = useCallback(setActiveTab, []);
 
@@ -149,6 +135,8 @@ export const EditableGridPanel: FC<Props> = memo(props => {
             readonlyRows={activeReadOnlyRows}
             readOnlyColumns={readOnlyColumns}
             updateColumns={activeUpdateColumns}
+            allowExport={true}
+            exportHandler={exportHandlerCallback}
         />
     );
 
@@ -182,9 +170,6 @@ export const EditableGridPanel: FC<Props> = memo(props => {
                     </ul>
                 )}
                 {getTabHeader?.(activeTab)}
-                <div className="pull-right">
-                    <ExportMenu model={activeModel} onExport={onExport} />
-                </div>
                 {editableGrid}
             </div>
         </div>

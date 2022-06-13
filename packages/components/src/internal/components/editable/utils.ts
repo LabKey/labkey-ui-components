@@ -1,4 +1,4 @@
-import { fromJS, List, Map, Set } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { Utils, UtilsDOM } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -275,8 +275,8 @@ export const getEditorTableData = (
     editorModel: EditorModel,
     queryModel: QueryModel,
     readOnlyColumns: List<string>,
-    headings: Map<string, string>,
-    editorData: Map<string, Map<string, any>>,
+    headings: OrderedMap<string, string>,
+    editorData: OrderedMap<string, OrderedMap<string, any>>,
     extraColumns?: Array<Partial<QueryColumn>>
 ): [Map<string, string>, Map<string, Map<string, any>>] => {
     const tabData = editorModel
@@ -300,9 +300,9 @@ export const getEditorTableData = (
         });
     }
 
-    tabData.forEach(row => {
-        const rowId = row.get('RowId');
-        let draftRow = editorData.get(rowId) ?? Map<string, any>();
+    tabData.forEach((row, idx) => {
+        const rowId = row.get('RowId') ?? idx;
+        let draftRow = editorData.get(rowId) ?? OrderedMap<string, any>();
         updateColumns.forEach(col => {
             draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
         });

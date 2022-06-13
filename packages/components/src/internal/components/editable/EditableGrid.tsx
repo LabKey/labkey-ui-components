@@ -51,6 +51,7 @@ import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { Cell, CellActions } from './Cell';
 import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
+import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -197,6 +198,7 @@ export interface SharedEditableGridProps {
     allowBulkAdd?: boolean;
     allowBulkRemove?: boolean;
     allowBulkUpdate?: boolean;
+    allowExport?: boolean;
     allowFieldDisable?: boolean;
     allowRemove?: boolean;
     bordered?: boolean;
@@ -240,6 +242,7 @@ export interface EditableGridProps extends SharedEditableGridProps {
         data?: Map<any, Map<string, any>>
     ) => void;
     queryInfo: QueryInfo;
+    exportHandler?: (option: ExportOption) => void;
 }
 
 export interface EditableGridState {
@@ -256,6 +259,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         allowBulkAdd: false,
         allowBulkRemove: false,
         allowBulkUpdate: false,
+        allowExport: false,
         allowRemove: false,
         removeColumnTitle: 'Delete',
         addControlProps: {
@@ -995,6 +999,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             data,
             isSubmitting,
             maxRows,
+            editorModel,
+            allowExport,
+            exportHandler,
         } = this.props;
         const nounPlural = addControlProps?.nounPlural ?? 'rows';
         const showAddOnTop = allowAdd && this.getControlsPlacement() !== 'bottom';
@@ -1027,6 +1034,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                             <Button className="control-right" disabled={invalidSel} onClick={this.removeSelected}>
                                 {bulkRemoveText}
                             </Button>
+                        </span>
+                    )}
+                    {allowExport && (
+                        <span className="control-right">
+                            <EditableGridExportMenu id={editorModel.id} hasData={true} exportHandler={exportHandler} />
                         </span>
                     )}
                 </div>

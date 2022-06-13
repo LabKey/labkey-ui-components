@@ -76,24 +76,29 @@ describe('HeaderCellDropdown', () => {
 
     test('default props', () => {
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} />);
-        validate(wrapper, 0, 6);
-        // 3 with icons, 2 with spacers, and one menu separator
-        expect(wrapper.find('.grid-panel__menu-icon')).toHaveLength(3);
+        validate(wrapper, 0, 8);
+        // 4 with icons, 2 with spacers, and 2 menu separators
+        expect(wrapper.find('.grid-panel__menu-icon')).toHaveLength(4);
         expect(wrapper.find('.grid-panel__menu-icon-spacer')).toHaveLength(2);
         // the two remove/clear options should be disabled
-        const removeFilterItem = wrapper.find(MenuItem).at(1);
+        const menuItems = wrapper.find(MenuItem);
+        const removeFilterItem = menuItems.at(1);
         expect(removeFilterItem.text()).toContain('Remove filter');
         expect(removeFilterItem.prop('disabled')).toBe(true);
-        const clearSortItem = wrapper.find(MenuItem).at(5);
+        const clearSortItem = menuItems.at(5);
         expect(clearSortItem.text()).toContain('Clear sort');
         expect(clearSortItem.prop('disabled')).toBe(true);
         // sort asc and sort desc should be enabled
-        const sortAscItem = wrapper.find(MenuItem).at(3);
+        const sortAscItem = menuItems.at(3);
         expect(sortAscItem.text()).toContain('Sort ascending');
         expect(sortAscItem.prop('disabled')).toBe(false);
-        const sortDescItem = wrapper.find(MenuItem).at(4);
+        const sortDescItem = menuItems.at(4);
         expect(sortDescItem.text()).toContain('Sort descending');
         expect(sortDescItem.prop('disabled')).toBe(false);
+        // hide column should be disabled
+        const hideColItem = menuItems.at(7);
+        expect(hideColItem.text()).toContain("Hide Column");
+        expect(hideColItem.prop('disabled')).toBe(true);
         wrapper.unmount();
     });
 
@@ -158,7 +163,7 @@ describe('HeaderCellDropdown', () => {
                 }
             />
         );
-        validate(wrapper, 0, 3);
+        validate(wrapper, 0, 5);
         wrapper.unmount();
     });
 
@@ -198,7 +203,7 @@ describe('HeaderCellDropdown', () => {
                 }
             />
         );
-        validate(wrapper, 0, 2);
+        validate(wrapper, 0, 4);
         wrapper.unmount();
     });
 
@@ -238,7 +243,7 @@ describe('HeaderCellDropdown', () => {
             sorts: [new QuerySort({ fieldKey: 'column', dir: '' })],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
-        validate(wrapper, 1, 6);
+        validate(wrapper, 1, 8);
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(2);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
@@ -259,7 +264,7 @@ describe('HeaderCellDropdown', () => {
             sorts: [new QuerySort({ fieldKey: 'column', dir: '-' })],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
-        validate(wrapper, 1, 6);
+        validate(wrapper, 1, 8);
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(2);
@@ -280,7 +285,7 @@ describe('HeaderCellDropdown', () => {
             filterArray: [Filter.create('column', 'value', Filter.Types.EQUALS)],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
-        validate(wrapper, 1, 6);
+        validate(wrapper, 1, 8);
         expect(wrapper.find('.fa-filter')).toHaveLength(2);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
@@ -298,7 +303,7 @@ describe('HeaderCellDropdown', () => {
             ],
         });
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} model={model} />);
-        validate(wrapper, 1, 6);
+        validate(wrapper, 1, 8);
         expect(wrapper.find('.fa-filter')).toHaveLength(2);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);

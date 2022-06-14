@@ -81,7 +81,7 @@ describe('HeaderCellDropdown', () => {
     test('default props', () => {
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} />);
         validate(wrapper, 0, 6);
-        // 3 with icons, 1 with spacers, and 2 menu separators
+        // 3 with icons, 2 with spacers, and 1 menu separators
         expect(wrapper.find('.grid-panel__menu-icon')).toHaveLength(3);
         expect(wrapper.find('.grid-panel__menu-icon-spacer')).toHaveLength(2);
         // the two remove/clear options should be disabled

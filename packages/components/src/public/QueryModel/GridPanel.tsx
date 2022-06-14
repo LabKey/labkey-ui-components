@@ -717,10 +717,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     saveAsSessionView = (updates: Record<string, any>): void => {
         const { schemaQuery, containerPath } = this.props.model;
         const view = this.getModelView();
-        const viewInfo = new ViewInfo({
-            ...view.toJS(), // clone the current view to make sure we maintain changes to columns/sorts/filters
-            ...updates,
-        });
+        const viewInfo = view.mutate(updates);
 
         saveAsSessionView(schemaQuery, containerPath, viewInfo)
             .then(this.afterViewChange)
@@ -774,9 +771,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return new Promise((resolve, reject) => {
             const view = queryInfo?.getView(viewName, true);
 
-            const updatedViewInfo = new ViewInfo({
-                // clone the current view to make sure we maintain changes to columns and other props
-                ...view.toJS(),
+            const updatedViewInfo = view.mutate({
                 // update/set sorts and filters to combine view and user defined items
                 filters: List(model.filterArray.concat(view.filters.toArray())),
                 sorts: List(model.sorts.concat(view.sorts.toArray())),
@@ -808,8 +803,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         this.setState({ errorMsg });
                     });
             } else {
-                const finalViewInfo = new ViewInfo({
-                    ...updatedViewInfo.toJS(),
+                const finalViewInfo = updatedViewInfo.mutate({
                     name: newName,
                 });
 

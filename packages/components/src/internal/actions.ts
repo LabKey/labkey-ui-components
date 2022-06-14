@@ -44,7 +44,7 @@ import {
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
     GRID_EDIT_INDEX,
-    VIEW_NO_FOUND_EXCEPTION_CLASS,
+    VIEW_NOT_FOUND_EXCEPTION_CLASS,
 } from './constants';
 import { cancelEvent, getPasteValue, setCopyValue } from './events';
 import {
@@ -2475,7 +2475,7 @@ export function revertViewEdit(schemaQuery: SchemaQuery, containerPath: string, 
                 resolve();
             },
             failure: response => {
-                if (response.exceptionClass === VIEW_NO_FOUND_EXCEPTION_CLASS) {
+                if (response.exceptionClass === VIEW_NOT_FOUND_EXCEPTION_CLASS) {
                     invalidateQueryDetailsCache(schemaQuery, containerPath);
                     resolve(); // view has already been deleted
                 } else {

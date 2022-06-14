@@ -46,7 +46,6 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         if (hidden) return null;
 
         return (
-            <>
             <div className="view-menu">
                 <DropdownButton
                     disabled={disabled}
@@ -69,12 +68,11 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                         <>
                             <MenuItem divider />
                             <MenuItem onSelect={onCustomizeView}>Customize Grid View</MenuItem>
-                            <MenuItem onSelect={onSaveView}>Save As Custom View</MenuItem>
+                            <MenuItem onSelect={onSaveView}>Save Grid View</MenuItem>
                         </>
                     )}
                 </DropdownButton>
             </div>
-            </>
         );
     }
 }

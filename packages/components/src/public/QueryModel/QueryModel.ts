@@ -380,13 +380,7 @@ export class QueryModel {
     }
 
     get currentView(): ViewInfo {
-        let currentView;
-        if (this.viewName) {
-            currentView = this.queryInfo.views.get(this.viewName.toLowerCase());
-        } else {
-            currentView = this.queryInfo?.views.get(ViewInfo.DEFAULT_NAME.toLowerCase());
-        }
-        return currentView;
+        return this.queryInfo?.getView(this.viewName, true);
     }
 
     /**

@@ -21,6 +21,7 @@ describe("ColumnChoice", () => {
         expect(wrapper.find(".field-name").text()).toBe("Test Column");
         expect(wrapper.find(".fa-check").exists()).toBeTruthy();
         expect(wrapper.find(".fa-plus").exists()).toBeFalsy();
+        wrapper.unmount();
     });
 
     test("not isInView", () => {
@@ -34,6 +35,7 @@ describe("ColumnChoice", () => {
         expect(wrapper.find(".field-name").text()).toBe("Test Column");
         expect(wrapper.find(".fa-check").exists()).toBeFalsy();
         expect(wrapper.find(".fa-plus").exists()).toBeTruthy();
+        wrapper.unmount();
     });
 
 });
@@ -47,11 +49,9 @@ describe("ColumnInView", () => {
         expect(removeIcon.exists()).toBeTruthy();
         const iconParent = removeIcon.parent();
         if (canBeRemoved) {
-            expect(fieldName.prop("className").indexOf("text-muted")).toBe(-1);
             expect(iconParent.prop("className")).toContain("clickable")
             expect(iconParent.prop("onClick")).toBeDefined();
         } else {
-            expect(fieldName.prop("className")).toContain("text-muted");
             expect(iconParent.prop("className")).toContain("text-muted disabled");
             expect(iconParent.prop("onClick")).toBeNull();
         }
@@ -72,6 +72,7 @@ describe("ColumnInView", () => {
             />
         );
         validate(wrapper, column, true);
+        wrapper.unmount();
 
     });
 
@@ -86,6 +87,7 @@ describe("ColumnInView", () => {
             />
         );
         validate(wrapper, column, false);
+        wrapper.unmount();
     });
 
 });

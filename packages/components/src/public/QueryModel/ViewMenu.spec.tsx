@@ -112,7 +112,7 @@ describe('ViewMenu', () => {
         const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(4);
         expect(items.at(2).text()).toBe('Customize Grid View');
-        expect(items.at(3).text()).toBe('Save As Custom View');
+        expect(items.at(3).text()).toBe('Save Grid View');
 
         wrapper.unmount();
     });
@@ -131,7 +131,7 @@ describe('ViewMenu', () => {
         const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(3); // one separator and two options
         expect(items.at(1).text()).toBe('Customize Grid View');
-        expect(items.at(2).text()).toBe('Save As Custom View');
+        expect(items.at(2).text()).toBe('Save Grid View');
         wrapper.unmount();
     })
 

@@ -5,7 +5,6 @@ import { saveAsSessionView } from '../../internal/actions';
 import { QueryModel } from './QueryModel';
 import { QueryColumn } from '../QueryColumn';
 import { APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/renderers';
-import { ViewInfo } from '../../internal/ViewInfo';
 
 interface ColumnChoiceProps {
     column: QueryColumn,
@@ -21,8 +20,8 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     return (
         <div className="list-group-item" key={index}>
             <span className="field-name">{column.caption ?? column.name}</span>
-            {isInView && <span className="pull-right" ><i className="fa fa-check"/></span>}
-            {!isInView && <span className="pull-right clickable" onClick={onAddColumn}><i className="fa fa-plus"/></span>}
+            {isInView && <span className="pull-right" title={"This field is included in the view."} ><i className="fa fa-check"/></span>}
+            {!isInView && <span className="pull-right clickable" title={"Add this field to the view."} onClick={onAddColumn}><i className="fa fa-plus"/></span>}
         </div>
     );
 });
@@ -49,7 +48,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     }
     return (
         <div className="list-group-item" key={index}>
-            <span className={"field-name" + (disabled ? " text-muted" : "")} >{column.caption ?? column.name}</span>
+            <span className="field-name" >{column.caption ?? column.name}</span>
             {!disabled && content}
             {disabled &&
                 <OverlayTrigger overlay={overlay} placement="bottom">
@@ -82,17 +81,14 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
 
     const _onUpdate = useCallback(async () => {
         try {
-            const viewInfo = new ViewInfo({
-                ...model.currentView.toJS(), // clone the current view to make sure we maintain changes to columns/sorts/filters
-                ...{columns: columnsInView},
-            });
+            const viewInfo = model.currentView.mutate({columns: columnsInView});
             await saveAsSessionView(schemaQuery, model.containerPath, viewInfo);
             closeModal();
             onUpdate();
         } catch (error) {
             setSaveError(error);
         }
-    }, [schemaQuery, columnsInView]);
+    }, [model, schemaQuery, columnsInView]);
 
     const revertEdits = useCallback(() => {
         setColumnsInView(model.displayColumns);
@@ -128,7 +124,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                 <Alert>{saveError}</Alert>
                 <Row className="field-modal__container">
                     <Col xs={6} className="field-modal__col-2">
-                        <div key="title" className="field-modal__col-title">All Fields</div>
+                        <div key="title" className="field-modal__col-title">Available Fields</div>
                         <div key="field-list" className="list-group field-modal__col-content">
                             {
                                 model.allColumns.filter(column => isColumnInView(column) || ((showAllColumns || !column.hidden) && !column.removeFromViews)).map((column, index) => {

@@ -251,4 +251,4 @@ export const PIPELINE_JOB_NOTIFICATION_EVENT_ERROR = PIPELINE_JOB_NOTIFICATION_E
 
 export const SHARED_CONTAINER_PATH = '/Shared';
 
-export const VIEW_NO_FOUND_EXCEPTION_CLASS = "org.labkey.api.view.NotFoundException";
+export const VIEW_NOT_FOUND_EXCEPTION_CLASS = "org.labkey.api.view.NotFoundException";

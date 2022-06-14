@@ -32,6 +32,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
 import { getSampleStatusType } from './utils';
+import { isCustomizeViewsInAppEnabled } from '../../app/utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -309,6 +310,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
             activeModelId={activeTabId}
             title="Assay Results"
             exportFilename={exportPrefix && exportPrefix + '_assay_results'}
+            hideEmptyViewMenu={!isCustomizeViewsInAppEnabled()}
         />
     );
 });

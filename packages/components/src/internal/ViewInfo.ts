@@ -142,4 +142,11 @@ export class ViewInfo extends Record({
             !this.isDefault && !this.hidden && this.name.indexOf('~~') !== 0 && this.name !== ViewInfo.BIO_DETAIL_NAME
         );
     }
+
+    mutate(updates: Partial<ViewInfo>) {
+        return new ViewInfo({
+            ...this.toJS(),
+            ...updates
+        });
+    }
 }

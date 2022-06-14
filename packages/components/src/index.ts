@@ -50,8 +50,6 @@ import {
     applyDevTools,
     blurActiveElement,
     capitalizeFirstChar,
-    uncapitalizeFirstChar,
-    withTransformedKeys,
     caseInsensitive,
     debounce,
     devToolsActive,
@@ -67,7 +65,9 @@ import {
     parseCsvString,
     quoteValueWithDelimiters,
     toggleDevTools,
+    uncapitalizeFirstChar,
     valueIsEmpty,
+    withTransformedKeys,
 } from './internal/util/utils';
 import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
@@ -148,7 +148,7 @@ import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
 import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMenuButton';
 import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
-import { getMenuItemsForSection, getMenuItemForSectionKey } from './internal/components/buttons/utils';
+import { getMenuItemForSectionKey, getMenuItemsForSection } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 import { Setting } from './internal/components/base/Setting';
@@ -226,14 +226,16 @@ import {
     EditableGridPanelForUpdateWithLineage,
     UpdateGridTab,
 } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+import {
+    LineageEditableGridLoaderFromSelection
+} from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
-import { AncestorRenderer, ANCESTOR_LOOKUP_CONCEPT_URI } from './internal/renderers/AncestorRenderer';
+import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
 import {
@@ -309,8 +311,8 @@ import { UserManagementPage } from './internal/components/administration/UserMan
 import { BasePermissions } from './internal/components/administration/BasePermissions';
 import { showPremiumFeatures } from './internal/components/administration/utils';
 import {
-    SECURITY_ROLE_DESCRIPTIONS,
     HOSTED_APPLICATION_SECURITY_ROLES,
+    SECURITY_ROLE_DESCRIPTIONS,
 } from './internal/components/administration/constants';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
@@ -321,14 +323,14 @@ import {
     getEditSharedSampleTypeUrl,
     getFieldLookupFromSelection,
     getFindSamplesByIdData,
+    getLineageEditorUpdateColumns,
+    getOriginalParentsFromLineage,
     getSampleSet,
     getSampleTypeDetails,
     getSampleTypes,
     getSelectedItemSamples,
     getSelectionLineageData,
     getUpdatedLineageRows,
-    getOriginalParentsFromLineage,
-    getLineageEditorUpdateColumns,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
@@ -351,6 +353,7 @@ import { AppContexts } from './internal/AppContexts';
 import { useContainerUser } from './internal/components/container/actions';
 
 import {
+    downloadSampleTypeTemplate,
     filterSampleRowsForOperation,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
@@ -361,7 +364,6 @@ import {
     getSampleStatusType,
     getSampleTypeTemplateUrl,
     getSampleWizardURL,
-    downloadSampleTypeTemplate,
     isSampleOperationPermitted,
     isSamplesSchema,
     SamplesEditButtonSections,
@@ -430,7 +432,7 @@ import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { SubNav } from './internal/components/navigation/SubNav';
-import { useSubNavContext, SubNavWithContext } from './internal/components/navigation/SubNavWithContext';
+import { SubNavWithContext, useSubNavContext } from './internal/components/navigation/SubNavWithContext';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
@@ -459,8 +461,8 @@ import { Principal, SecurityPolicy, SecurityRole } from './internal/components/p
 import { fetchContainerSecurityPolicy, getUserLimitSettings } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,
-    getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
+    getDataOperationConfirmationData,
     getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
@@ -621,13 +623,14 @@ import {
     hasModule,
     hasPremiumModule,
     isBiologicsEnabled,
+    isCustomizeViewsInAppEnabled,
     isELNEnabledInLKSM,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
     isProjectContainer,
     isRequestsEnabled,
-    isSampleManagerEnabled,
     isSampleAliquotSelectorEnabled,
+    isSampleManagerEnabled,
     isSampleStatusEnabled,
     isSubfolderDataEnabled,
     registerWebSocketListeners,
@@ -682,11 +685,11 @@ import {
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
+    MEDIA_KEY,
     NEW_ASSAY_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
-    MEDIA_KEY,
     NOTIFICATION_TIMEOUT,
     PICKLIST_HOME_HREF,
     PICKLIST_KEY,
@@ -732,6 +735,7 @@ const App = {
     ServerNotificationReducers,
     CloseEventCode,
     registerWebSocketListeners,
+    isCustomizeViewsInAppEnabled,
     isELNEnabledInLKSM,
     isFreezerManagementEnabled,
     isRequestsEnabled,

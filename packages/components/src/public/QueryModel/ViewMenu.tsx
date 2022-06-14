@@ -68,16 +68,12 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {publicViews.length > 0 && <MenuItem divider />}
                     {publicViews.length > 0 && <MenuItem header>All Saved Views</MenuItem>}
                     {publicViews.length > 0 && publicViews.map(viewMapper)}
-                    {isCustomizeViewsInAppEnabled() && onCustomizeView && (
+                    {isCustomizeViewsInAppEnabled() && onCustomizeView && !user.isGuest && (
                         <>
                             <MenuItem divider />
                             <MenuItem onSelect={onCustomizeView}>Customize Grid View</MenuItem>
-                            {!user.isGuest &&
-                                <>
-                                    <MenuItem onSelect={onManageViews}>Manage Saved Views</MenuItem>
-                                    <MenuItem onSelect={onSaveView}>Save Grid View</MenuItem>
-                                </>
-                            }
+                            <MenuItem onSelect={onManageViews}>Manage Saved Views</MenuItem>
+                            <MenuItem onSelect={onSaveView}>Save Grid View</MenuItem>
                         </>
                     )}
                 </DropdownButton>

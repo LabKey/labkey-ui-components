@@ -174,8 +174,7 @@ describe('ViewMenu', () => {
             />
         );
         const items = wrapper.find('MenuItem');
-        expect(items).toHaveLength(3);
-        expect(items.at(2).text()).toBe('Customize Grid View');
+        expect(items).toHaveLength(1);
 
         wrapper.unmount();
     });

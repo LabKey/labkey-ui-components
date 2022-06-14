@@ -47,6 +47,13 @@ beforeAll(() => {
     });
 });
 
+const DEFAULT_PROPS = {
+    onViewSelect: jest.fn(),
+    onSaveView: jest.fn(),
+    onManageViews: jest.fn(),
+    onCustomizeView: jest.fn(),
+}
+
 describe('ViewMenu', () => {
     test('Render', () => {
         LABKEY.moduleContext = {
@@ -59,11 +66,9 @@ describe('ViewMenu', () => {
         let model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
         let tree = renderer.create(
             <ViewMenu
-                hideEmptyViewMenu
+                {...DEFAULT_PROPS}
+                hideEmptyViewMenu={true}
                 model={model}
-                onViewSelect={jest.fn()}
-                onSaveView={jest.fn()}
-                onManageViews={jest.fn()}
             />
         );
         expect(tree.toJSON()).toMatchSnapshot();
@@ -71,11 +76,9 @@ describe('ViewMenu', () => {
         // Renders empty view selector with disabled dropdown.
         tree = renderer.create(
             <ViewMenu
+                {...DEFAULT_PROPS}
                 hideEmptyViewMenu={false}
                 model={model}
-                onViewSelect={jest.fn()}
-                onSaveView={jest.fn()}
-                onManageViews={jest.fn()}
             />
         );
         expect(tree.toJSON()).toMatchSnapshot();
@@ -84,11 +87,9 @@ describe('ViewMenu', () => {
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         tree = renderer.create(
             <ViewMenu
+                {...DEFAULT_PROPS}
                 hideEmptyViewMenu={true}
                 model={model}
-                onViewSelect={jest.fn()}
-                onSaveView={jest.fn()}
-                onManageViews={jest.fn()}
             />
         );
         expect(tree.toJSON()).toMatchSnapshot();
@@ -97,11 +98,9 @@ describe('ViewMenu', () => {
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PRIVATE_VIEWS, {}, []);
         tree = renderer.create(
             <ViewMenu
+                {...DEFAULT_PROPS}
                 hideEmptyViewMenu={true}
                 model={model}
-                onViewSelect={jest.fn()}
-                onSaveView={jest.fn()}
-                onManageViews={jest.fn()}
             />
         );
         expect(tree.toJSON()).toMatchSnapshot();
@@ -112,11 +111,9 @@ describe('ViewMenu', () => {
         });
         tree = renderer.create(
             <ViewMenu
+                {...DEFAULT_PROPS}
                 hideEmptyViewMenu={true}
                 model={model}
-                onViewSelect={jest.fn()}
-                onSaveView={jest.fn()}
-                onManageViews={jest.fn()}
             />
         );
         expect(tree.toJSON()).toMatchSnapshot();
@@ -125,11 +122,9 @@ describe('ViewMenu', () => {
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
         tree = renderer.create(
             <ViewMenu
+                {...DEFAULT_PROPS}
                 hideEmptyViewMenu={false}
                 model={model}
-                onViewSelect={jest.fn()}
-                onSaveView={jest.fn()}
-                onManageViews={jest.fn()}
             />
         );
         expect(tree.toJSON()).toMatchSnapshot();
@@ -144,20 +139,38 @@ describe('ViewMenu', () => {
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
         const wrapper = mount(
             <ViewMenu
+                {...DEFAULT_PROPS}
                 hideEmptyViewMenu={false}
                 model={model}
-                onViewSelect={jest.fn()}
-                onSaveView={jest.fn()}
-                onManageViews={jest.fn()}
             />
         );
         const items = wrapper.find('MenuItem');
-        expect(items).toHaveLength(4);
-        expect(items.at(2).text()).toBe('Manage saved views');
-        expect(items.at(3).text()).toBe('Save as custom view');
+        expect(items).toHaveLength(5);
+        expect(items.at(2).text()).toBe('Customize Grid View');
+        expect(items.at(3).text()).toBe('Manage Saved Views');
+        expect(items.at(4).text()).toBe('Save Grid View');
 
         wrapper.unmount();
     });
+
+    test("No views but customize enabled", () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
+
+        let model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
+        const wrapper = mount(
+            <ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />
+        );
+        const items = wrapper.find('MenuItem');
+        expect(items).toHaveLength(4); // one separator and three options
+        expect(items.at(1).text()).toBe('Customize Grid View');
+        expect(items.at(2).text()).toBe('Manage Saved Views');
+        expect(items.at(3).text()).toBe('Save Grid View');
+        wrapper.unmount();
+    })
 
     test('Interactivity', () => {
         LABKEY.moduleContext = {

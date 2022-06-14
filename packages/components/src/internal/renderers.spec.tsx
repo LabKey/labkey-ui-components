@@ -81,25 +81,27 @@ describe('HeaderCellDropdown', () => {
     test('default props', () => {
         const wrapper = mount(<HeaderCellDropdown {...DEFAULT_PROPS} />);
         validate(wrapper, 0, 6);
-        // 3 with icons, 2 with spacers, and one menu separator
+        // 3 with icons, 2 with spacers, and 1 menu separators
         expect(wrapper.find('.grid-panel__menu-icon')).toHaveLength(3);
         expect(wrapper.find('.grid-panel__menu-icon-spacer')).toHaveLength(2);
         // the two remove/clear options should be disabled
-        const removeFilterItem = wrapper.find(MenuItem).at(1);
+        const menuItems = wrapper.find(MenuItem);
+        const removeFilterItem = menuItems.at(1);
         expect(removeFilterItem.text()).toContain('Remove filter');
         expect(removeFilterItem.prop('disabled')).toBe(true);
-        const clearSortItem = wrapper.find(MenuItem).at(5);
+        const clearSortItem = menuItems.at(5);
         expect(clearSortItem.text()).toContain('Clear sort');
         expect(clearSortItem.prop('disabled')).toBe(true);
         // sort asc and sort desc should be enabled
-        const sortAscItem = wrapper.find(MenuItem).at(3);
+        const sortAscItem = menuItems.at(3);
         expect(sortAscItem.text()).toContain('Sort ascending');
         expect(sortAscItem.prop('disabled')).toBe(false);
-        const sortDescItem = wrapper.find(MenuItem).at(4);
+        const sortDescItem = menuItems.at(4);
         expect(sortDescItem.text()).toContain('Sort descending');
         expect(sortDescItem.prop('disabled')).toBe(false);
         wrapper.unmount();
     });
+
 
     test('no col', () => {
         const wrapper = mount(

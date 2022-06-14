@@ -51,15 +51,15 @@ describe('QueryFilterPanel', () => {
     test('asRow', () => {
         const wrapper = mount(<QueryFilterPanel {...DEFAULT_PROPS} asRow />);
         validate(wrapper, 10);
-        expect(wrapper.find('.filter-modal__container').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.field-modal__container').hostNodes()).toHaveLength(1);
         wrapper.unmount();
     });
 
     test('no queryName emptyMsg', () => {
         const wrapper = mount(<QueryFilterPanel {...DEFAULT_PROPS} queryInfo={undefined} emptyMsg="Select a query" />);
         validate(wrapper, 0);
-        expect(wrapper.find('.filter-modal__empty-msg').hostNodes()).toHaveLength(1);
-        expect(wrapper.find('.filter-modal__empty-msg').hostNodes().text()).toBe('Select a query');
+        expect(wrapper.find('.field-modal__empty-msg').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.field-modal__empty-msg').hostNodes().text()).toBe('Select a query');
         wrapper.unmount();
     });
 
@@ -94,11 +94,11 @@ describe('QueryFilterPanel', () => {
         const wrapper = mount(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Text" />);
         validate(wrapper, 10, false, true);
         expect(wrapper.find('.list-group-item.active').text()).toBe('Text');
-        expect(wrapper.find('.filter-modal__col-sub-title').first().text()).toBe('Find values for Text');
-        expect(wrapper.find('.filter-modal__empty-msg').hostNodes()).toHaveLength(0);
+        expect(wrapper.find('.field-modal__col-sub-title').first().text()).toBe('Find values for Text');
+        expect(wrapper.find('.field-modal__empty-msg').hostNodes()).toHaveLength(0);
         expect(wrapper.find(NavItem)).toHaveLength(2);
         expect(wrapper.find('#filter-field-tabs').first().prop('activeKey')).toBe('ChooseValues');
-        expect(wrapper.find('.filter-modal__field_dot')).toHaveLength(0);
+        expect(wrapper.find('.field-modal__field_dot')).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -106,8 +106,8 @@ describe('QueryFilterPanel', () => {
         const wrapper = mount(<QueryFilterPanel {...DEFAULT_PROPS} fieldKey="Integer" />);
         validate(wrapper, 10, true, false);
         expect(wrapper.find('.list-group-item.active').text()).toBe('Integer');
-        expect(wrapper.find('.filter-modal__col-sub-title').text()).toBe('Find values for Integer');
-        expect(wrapper.find('.filter-modal__empty-msg').hostNodes()).toHaveLength(0);
+        expect(wrapper.find('.field-modal__col-sub-title').text()).toBe('Find values for Integer');
+        expect(wrapper.find('.field-modal__empty-msg').hostNodes()).toHaveLength(0);
         expect(wrapper.find(NavItem)).toHaveLength(1);
         expect(wrapper.find('#filter-field-tabs').first().prop('activeKey')).toBe('Filter');
         wrapper.unmount();
@@ -130,11 +130,11 @@ describe('QueryFilterPanel', () => {
         );
         validate(wrapper, 10, true, false);
         expect(wrapper.find('.list-group-item.active').text()).toBe('Text');
-        expect(wrapper.find('.filter-modal__col-sub-title').first().text()).toBe('Find values for Text');
-        expect(wrapper.find('.filter-modal__empty-msg').hostNodes()).toHaveLength(0);
+        expect(wrapper.find('.field-modal__col-sub-title').first().text()).toBe('Find values for Text');
+        expect(wrapper.find('.field-modal__empty-msg').hostNodes()).toHaveLength(0);
         expect(wrapper.find(NavItem)).toHaveLength(2);
         expect(wrapper.find('#filter-field-tabs').first().prop('activeKey')).toBe('Filter');
-        expect(wrapper.find('.filter-modal__field_dot')).toHaveLength(1);
+        expect(wrapper.find('.field-modal__field_dot')).toHaveLength(1);
         wrapper.unmount();
     });
 });

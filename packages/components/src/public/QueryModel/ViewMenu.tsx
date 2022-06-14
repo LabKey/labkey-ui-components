@@ -11,12 +11,13 @@ interface ViewMenuProps {
     model: QueryModel;
     onManageViews: () => void;
     onSaveView: () => void;
+    onCustomizeView?: () => void;
     onViewSelect: (viewName: string) => void;
 }
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {
     render(): ReactNode {
-        const { model, hideEmptyViewMenu, onViewSelect, onSaveView, onManageViews } = this.props;
+        const { model, hideEmptyViewMenu, onCustomizeView, onManageViews, onViewSelect, onSaveView } = this.props;
         const { isLoading, views, viewName, visibleViews } = model;
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
@@ -26,7 +27,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const noViews = publicViews.length === 0 && privateViews.length === 0;
         const _hideEmptyViewMenu = getQueryMetadata().get('hideEmptyViewMenu', hideEmptyViewMenu);
         const hidden = _hideEmptyViewMenu && noViews;
-        const disabled = isLoading || noViews;
+        const disabled = isLoading || (noViews && !isCustomizeViewsInAppEnabled());
 
         const viewMapper = (viewInfo): ReactNode => {
             const { name, label, isDefault } = viewInfo;
@@ -64,11 +65,12 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {publicViews.length > 0 && <MenuItem divider />}
                     {publicViews.length > 0 && <MenuItem header>All Saved Views</MenuItem>}
                     {publicViews.length > 0 && publicViews.map(viewMapper)}
-                    {isCustomizeViewsInAppEnabled() && (
+                    {isCustomizeViewsInAppEnabled() && onCustomizeView && (
                         <>
                             <MenuItem divider />
-                            <MenuItem onSelect={onManageViews}>Manage saved views</MenuItem>
-                            <MenuItem onSelect={onSaveView}>Save as custom view</MenuItem>
+                            <MenuItem onSelect={onCustomizeView}>Customize Grid View</MenuItem>
+                            <MenuItem onSelect={onManageViews}>Manage Saved Views</MenuItem>
+                            <MenuItem onSelect={onSaveView}>Save Grid View</MenuItem>
                         </>
                     )}
                 </DropdownButton>

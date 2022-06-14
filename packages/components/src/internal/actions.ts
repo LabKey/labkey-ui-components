@@ -44,6 +44,7 @@ import {
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
     GRID_EDIT_INDEX,
+    VIEW_NOT_FOUND_EXCEPTION_CLASS,
 } from './constants';
 import { cancelEvent, getPasteValue, setCopyValue } from './events';
 import {
@@ -2510,9 +2511,13 @@ export function deleteView(
                 resolve();
             },
             failure: response => {
-                console.error(response);
-                reject('There was a problem deleting the view for the data grid. ' + resolveErrorMessage(response));
-            },
+                if (response.exceptionClass === VIEW_NOT_FOUND_EXCEPTION_CLASS) {
+                    invalidateQueryDetailsCache(schemaQuery, containerPath);
+                    resolve(); // view has already been deleted
+                } else {
+                    console.error(response);
+                    reject('Unable to deleting the view for the data grid. ' + resolveErrorMessage(response));
+                }            },
         });
     });
 }

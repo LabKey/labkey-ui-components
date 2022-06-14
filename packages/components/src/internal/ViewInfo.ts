@@ -10,8 +10,8 @@ function getFiltersFromView(rawViewInfo): List<Filter.IFilter> {
     if (rawViewInfo && rawViewInfo.filter) {
         const rawFilters: Array<{
             fieldKey: string;
-            value: any;
             op: string;
+            value: any;
         }> = rawViewInfo.filter;
 
         for (let i = 0; i < rawFilters.length; i++) {
@@ -107,6 +107,33 @@ export class ViewInfo extends Record({
                 sorts: getSortsFromView(rawViewInfo),
             })
         );
+    }
+
+    static serialize(viewInfo: ViewInfo): any {
+        const json = viewInfo.toJS();
+
+        if (json.name === this.DEFAULT_NAME) {
+            json.name = '';
+        }
+
+        json.filter = viewInfo.filters.map(filter => {
+            return {
+                fieldKey: filter.getColumnName(),
+                value: filter.getURLParameterValue(),
+                op: filter.getFilterType().getURLSuffix(),
+            };
+        });
+        delete json.filters;
+
+        json.sort = viewInfo.sorts.map(sort => {
+            return {
+                fieldKey: sort.fieldKey,
+                dir: sort.dir,
+            };
+        });
+        delete json.sorts;
+
+        return json;
     }
 
     get isVisible(): boolean {

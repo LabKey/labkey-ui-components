@@ -64,7 +64,7 @@ describe('SaveViewModal', () => {
 
         expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
         expect(wrapper.find(ModalBody).text()).toContain(
-            'Sort order and filters are not saved as part of custom grid views. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Sort order and filters will be saved as part of custom grid views. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('');
         expect(wrapper.find('input[name="setDefaultView"]').prop('checked')).toBe(true);
@@ -81,7 +81,7 @@ describe('SaveViewModal', () => {
 
         expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
         expect(wrapper.find(ModalBody).text()).toContain(
-            'Sort order and filters are not saved as part of custom grid views. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Sort order and filters will be saved as part of custom grid views. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View1');
         expect(wrapper.find('input[name="setDefaultView"]').prop('checked')).toBe(false);
@@ -98,7 +98,7 @@ describe('SaveViewModal', () => {
 
         expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
         expect(wrapper.find(ModalBody).text()).toContain(
-            'Sort order and filters are not saved as part of custom grid views. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+            'Sort order and filters will be saved as part of custom grid views. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View2');
         expect(wrapper.find('input[name="setDefaultView"]').length).toEqual(0);

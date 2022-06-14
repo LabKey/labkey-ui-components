@@ -54,31 +54,9 @@ export function resolveFieldKey(columnName: string, column?: QueryColumn): strin
     return column?.resolveFieldKey() ?? columnName;
 }
 
-export function removeActionValue(actionValues: ActionValue[], indexToRemove: number): ActionValue[] {
-    if (indexToRemove < actionValues.length) {
-        const newActionValues = [...actionValues];
-        newActionValues.splice(indexToRemove, 1);
-        return newActionValues;
-    }
-
-    return actionValues;
-}
-
-export function replaceSearchValue(
-    actionValues: ActionValue[],
-    value: string,
-    searchAction: SearchAction
-): { actionValues: ActionValue[]; change: Change } {
+export function getSearchValueAction(actionValues: ActionValue[], value: string): Change {
     const hasNewSearch = value?.length > 0;
     const existingSearchIndex = actionValues.findIndex(actionValue => actionValue.action.keyword === 'search');
-    const newActionValues = actionValues.filter(actionValue => actionValue.action.keyword !== 'search');
-    if (hasNewSearch) {
-        newActionValues.push({
-            action: searchAction,
-            value,
-            valueObject: Filter.create('*', value, Filter.Types.Q),
-        });
-    }
 
     let change = hasNewSearch ? ({ type: ChangeType.add } as Change) : undefined;
     if (existingSearchIndex > -1) {
@@ -88,8 +66,7 @@ export function replaceSearchValue(
             change = { type: ChangeType.remove, index: existingSearchIndex };
         }
     }
-
-    return { actionValues: newActionValues, change };
+    return change;
 }
 
 export function filterActionValuesByType(actionValues: ActionValue[], keyword: string): ActionValue[] {

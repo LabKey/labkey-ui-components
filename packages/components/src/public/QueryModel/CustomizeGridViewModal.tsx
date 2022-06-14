@@ -126,8 +126,14 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                     <Col xs={6} className="field-modal__col-2">
                         <div key="title" className="field-modal__col-title">Available Fields</div>
                         <div key="field-list" className="list-group field-modal__col-content">
-                            {
-                                model.allColumns.filter(column => isColumnInView(column) || ((showAllColumns || !column.hidden) && !column.removeFromViews)).map((column, index) => {
+                            {model.queryInfo.columns
+                                .valueSeq()
+                                .filter(
+                                    column =>
+                                        isColumnInView(column) ||
+                                        ((showAllColumns || !column.hidden) && !column.removeFromViews)
+                                )
+                                .map((column, index) => {
                                     return (
                                         <ColumnChoice
                                             column={column}

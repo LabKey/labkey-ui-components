@@ -227,7 +227,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                     )}
                                 </>
                             )}
-                            {handleHideColumn && (
+                            {handleHideColumn && isCustomizeViewsInAppEnabled() && (
                                 <>
                                     {(allowColSort || allowColFilter) && <MenuItem divider />}
                                     <DisableableMenuItem

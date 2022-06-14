@@ -136,6 +136,9 @@ describe('ViewMenu', () => {
                 canCustomizeViewsFromApp: true,
             },
         };
+        LABKEY.user = {
+            isGuest: false,
+        };
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
         const wrapper = mount(
             <ViewMenu
@@ -153,11 +156,38 @@ describe('ViewMenu', () => {
         wrapper.unmount();
     });
 
+    test('Customized view menus, guest user', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
+        LABKEY.user = {
+            isGuest: true,
+        };
+        const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
+        const wrapper = mount(
+            <ViewMenu
+                {...DEFAULT_PROPS}
+                hideEmptyViewMenu={false}
+                model={model}
+            />
+        );
+        const items = wrapper.find('MenuItem');
+        expect(items).toHaveLength(3);
+        expect(items.at(2).text()).toBe('Customize Grid View');
+
+        wrapper.unmount();
+    });
+
     test("No views but customize enabled", () => {
         LABKEY.moduleContext = {
             query: {
                 canCustomizeViewsFromApp: true,
             },
+        };
+        LABKEY.user = {
+            isGuest: false,
         };
 
         let model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);

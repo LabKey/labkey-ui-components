@@ -1,6 +1,8 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
+import { getServerContext } from "@labkey/api";
+
 import { QueryModel, ViewInfo } from '../..';
 import { blurActiveElement } from '../../internal/util/utils';
 import { getQueryMetadata } from '../../internal/global';
@@ -19,6 +21,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
     render(): ReactNode {
         const { model, hideEmptyViewMenu, onCustomizeView, onManageViews, onViewSelect, onSaveView } = this.props;
         const { isLoading, views, viewName, visibleViews } = model;
+        const { user } = getServerContext();
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
 
@@ -69,8 +72,12 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                         <>
                             <MenuItem divider />
                             <MenuItem onSelect={onCustomizeView}>Customize Grid View</MenuItem>
-                            <MenuItem onSelect={onManageViews}>Manage Saved Views</MenuItem>
-                            <MenuItem onSelect={onSaveView}>Save Grid View</MenuItem>
+                            {!user.isGuest &&
+                                <>
+                                    <MenuItem onSelect={onManageViews}>Manage Saved Views</MenuItem>
+                                    <MenuItem onSelect={onSaveView}>Save Grid View</MenuItem>
+                                </>
+                            }
                         </>
                     )}
                 </DropdownButton>

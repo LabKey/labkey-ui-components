@@ -46,8 +46,7 @@ interface Props {
     onChangeParent?: (currentParents: List<EntityChoice>) => void;
     onEditToggle?: (editing: boolean) => void;
     onUpdate?: () => void;
-    parentDataTypes: EntityDataType[];
-    // Note: the first data type in the array will be used for labels, nouns, etc...
+    parentDataTypes: EntityDataType[];    // Note: the first data type in the array will be used for labels, nouns, etc...
     submitText?: string;
     title?: string;
 }

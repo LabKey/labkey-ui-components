@@ -5,7 +5,7 @@ import { EXPORT_TYPES, getQueryModelExportParams, QueryModel, Tip } from '../..'
 
 import { exportRows } from '../../internal/actions';
 
-export interface ExportMenuProps {
+interface ExportMenuProps {
     // pageSizes is expected to be sorted (ascending)
     model: QueryModel;
     advancedOptions?: { [key: string]: any };
@@ -38,7 +38,7 @@ export interface ExportMenuImplProps extends Omit<ExportMenuProps, "model"> {
     exportHandler: (option: ExportOption) => void;
 }
 
-export const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
+const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
     const { id, hasData, supportedTypes, selections, hasSelections, exportHandler, onExport } = props;
 
     const exportCallback = useCallback((option: ExportOption) => {

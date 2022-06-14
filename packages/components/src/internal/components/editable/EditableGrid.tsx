@@ -216,15 +216,12 @@ export interface SharedEditableGridProps {
     hideCountCol?: boolean;
     insertColumns?: List<QueryColumn>;
     isSubmitting?: boolean;
-    // list of key values for rows that are readonly.
-    lockedRows?: List<any>;
+    lockedRows?: List<any>;   // list of key values for rows that are readonly.
     maxRows?: number;
-    notDeletable?: List<any>;
-    // list of key values that cannot be deleted.
+    notDeletable?: List<any>;   // list of key values that cannot be deleted.
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: List<string>;
-    readonlyRows?: List<any>;
-    // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
+    readonlyRows?: List<any>;   // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     removeColumnTitle?: string;
     striped?: boolean;
     updateColumns?: List<QueryColumn>;

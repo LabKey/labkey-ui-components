@@ -150,9 +150,6 @@ export interface SelectInputProps {
     disabled?: boolean;
     filterOption?: FilterOption;
     formsy?: boolean;
-    // from formsy-react
-    getErrorMessage?: Function;
-    getValue?: Function;
     helpTipRenderer?: string;
     id?: any;
     initiallyDisabled?: boolean;
@@ -188,6 +185,10 @@ export interface SelectInputProps {
 
     labelKey?: string;
     loadOptions?: (input: string) => Promise<SelectInputOption[]>;
+
+    // from formsy-react
+    getErrorMessage?: Function;
+    getValue?: Function;
     setValue?: Function;
     showRequired?: Function;
     validations?: any;

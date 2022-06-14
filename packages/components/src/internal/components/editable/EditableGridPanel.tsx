@@ -118,7 +118,7 @@ export const EditableGridPanel: FC<Props> = memo(props => {
 
     const exportHandlerCallback = useCallback((option: ExportOption) => {
         exportHandler(option.type, models, editorModels, readOnlyColumns, activeTab, extraExportColumns);
-    }, [models, editorModels, readOnlyColumns, activeTab]);
+    }, [activeTab, editorModels, extraExportColumns, models, readOnlyColumns]);
 
     const onTabClick = useCallback(setActiveTab, []);
 

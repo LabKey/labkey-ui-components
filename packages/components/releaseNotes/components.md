@@ -1,27 +1,27 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.181.0
+*Released*: 14 June 2022
 * Item 10376: Add `CustomizeGridViewModal` for, yeah, customizing grid views
 
 ### version 2.180.0
-*Released*: 13 June May 2022
+*Released*: 13 June 2022
 * Item 10373: GridPanel updates to show sorts and filters saved with the view
   * Show saved view filters in the grid panel filter display section
   * Show saved view sorts in the grid column header icons
   * Allow for saved view sorts and filters to be updated/remove alongside the user-defined sorts/filters
 
 ### version 2.179.5
-*Released*: 10 June May 2022
+*Released*: 10 June 2022
 * EntityInsertPanel refactor to use QueryModel based EditableGridPanel
 
 ### version 2.179.4
-*Released*: 10 June May 2022
+*Released*: 10 June 2022
 * Issue 45325: SamplesTabbedGridPanel shouldn't call afterSampleActionComplete when going from bulk edit modal to grid edit
 
 ### version 2.179.3
-*Released*: 9 June May 2022
+*Released*: 9 June 2022
 * Item 10201: Sample renaming
   * Remove "Name" field from SampleBulkUpdateForm
   * Enable "Name" edit for aliquot details panel

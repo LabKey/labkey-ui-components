@@ -2439,9 +2439,10 @@ export function saveSessionView(
 
 export function getGridViews(
     schemaQuery: SchemaQuery,
+    sort?: boolean,
     viewName?: string,
     excludeSessionView?: boolean,
-    includeHidden?: boolean
+    includeHidden?: boolean,
 ): Promise<ViewInfo[]> {
     return new Promise((resolve, reject) => {
         Query.getQueryViews({
@@ -2454,6 +2455,16 @@ export function getGridViews(
                 response.views?.forEach(view => {
                     if (includeHidden || view['hidden'] !== true) views.push(ViewInfo.create(view));
                 });
+                if (sort) {
+                    views.sort((a, b) => {
+                        if (a === ViewInfo.DEFAULT_NAME)
+                            return -1;
+                        else if (b === '')
+                            return 1;
+
+                        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+                    })
+                }
                 resolve(views);
             },
             failure: response => {
@@ -2470,7 +2481,7 @@ export function getGridView(
     excludeSessionView?: boolean
 ): Promise<ViewInfo> {
     return new Promise((resolve, reject) => {
-        getGridViews(schemaQuery, viewName, excludeSessionView)
+        getGridViews(schemaQuery, false, viewName, excludeSessionView)
             .then(views => {
                 if (views?.length > 0) resolve(views[0]);
                 else reject('Unable to load the view.');
@@ -2506,4 +2517,37 @@ export function deleteView(
             },
         });
     });
+}
+
+/**
+ * Rename a custom view from viewName to newName.
+ * @param schemaQuery
+ * @param containerPath
+ * @param viewName The old custom view name to replace
+ * @param newName The new custom view name
+ */
+export function renameGridView(schemaQuery: SchemaQuery, containerPath: string, viewName: string, newName: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('query', 'renameQueryView.api', undefined, {
+                container: containerPath,
+            }),
+            method: 'POST',
+            jsonData: {
+                schemaName: schemaQuery.schemaName,
+                queryName: schemaQuery.queryName,
+                viewName,
+                newName,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                invalidateQueryDetailsCache(schemaQuery, containerPath);
+                resolve();
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(error);
+                reject(resolveErrorMessage(error) ?? 'Failed to rename the custom view.');
+            }),
+        });
+    });
+
 }

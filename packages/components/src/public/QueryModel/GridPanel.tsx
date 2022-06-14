@@ -749,12 +749,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState({ showManageViewsModal: true });
     };
 
-    closeManageViewsModal = (hasChange?: boolean, selectDefaultView?: boolean): void => {
+    closeManageViewsModal = (hasChange?: boolean, reselectViewName?: string): void => {
         const { model, actions, allowSelections } = this.props;
 
         if (hasChange) {
             actions.loadModel(model.id, allowSelections);
-            if (selectDefaultView) this.onViewSelect(undefined);
+            if (reselectViewName !== undefined) {
+                this.onViewSelect(reselectViewName === '' ? undefined : reselectViewName);
+            }
         }
 
         this.setState({ showManageViewsModal: false });

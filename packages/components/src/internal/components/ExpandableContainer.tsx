@@ -17,6 +17,7 @@ interface Props {
     onClick?: (show: boolean) => void;
     iconClickOnly?: boolean;
     containerCls?: string;
+    useGreyTheme?: boolean;
 }
 
 interface State {
@@ -63,10 +64,10 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { children, iconSrc, iconFaCls, isExpandable, clause, links, iconClickOnly, containerCls } = this.props;
+        const { children, iconSrc, iconFaCls, isExpandable, clause, links, iconClickOnly, containerCls, useGreyTheme } = this.props;
         const { visible, isHover } = this.state;
         const hasOnClick = this.props.onClick !== undefined;
-        const containerDivCls = iconClickOnly ? 'container-expandable-icononly' : 'container-expandable-detail';
+        const containerDivCls = iconClickOnly || useGreyTheme ? 'container-expandable-icononly' : 'container-expandable-detail';
 
         return (
             <div className={classNames('row', 'container-expandable', { disabled: !isExpandable })}>

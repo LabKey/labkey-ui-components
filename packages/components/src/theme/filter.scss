@@ -14,6 +14,18 @@
         font-weight: bold;
     }
 
+    .list-group-item .field-name {
+        cursor: pointer;
+    }
+
+    .list-group-item .field-expand-icon {
+        color: $gray-lighten;
+        display: inline-block;
+        height: 16px;
+        width: 16px;
+        margin-right: 10px;
+    }
+
     .field_count_circle {
         border-radius: 50%;
         text-align: center;

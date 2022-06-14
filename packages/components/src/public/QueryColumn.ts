@@ -70,7 +70,7 @@ export class QueryColumn extends Record({
     // fieldKeyPath: undefined,
     filterable: true,
     format: undefined,
-    // friendlyType: undefined,
+    friendlyType: undefined,
     hidden: undefined,
     inputType: undefined,
     // isAutoIncrement: undefined, // DUPLICATE
@@ -97,7 +97,7 @@ export class QueryColumn extends Record({
     readOnly: undefined,
     // recommendedVariable: undefined,
     required: undefined,
-    // selectable: undefined,
+    selectable: undefined,
     shortCaption: undefined,
     addToDisplayView: undefined,
     shownInDetailsView: undefined,
@@ -145,7 +145,7 @@ export class QueryColumn extends Record({
     // declare fieldKeyPath: string;
     declare filterable: boolean;
     declare format: string;
-    // declare friendlyType: string;
+    declare friendlyType: string;
     declare hidden: boolean;
     declare inputType: string;
     // declare isAutoIncrement: boolean; // DUPLICATE
@@ -172,7 +172,7 @@ export class QueryColumn extends Record({
     declare readOnly: boolean;
     // declare recommendedVariable: boolean;
     declare required: boolean;
-    // declare selectable: boolean;
+    declare selectable: boolean;
     declare shortCaption: string;
     declare addToDisplayView: boolean;
     declare shownInDetailsView: boolean;

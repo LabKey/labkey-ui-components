@@ -8,7 +8,7 @@ import { Alert } from '../../internal/components/base/Alert';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 import { useAppContext } from '../../internal/AppContext';
 import { resolveErrorMessage } from '../../internal/util/messaging';
-import {deleteView, renameGridView, revertViewEdit, saveGridView} from '../../internal/actions';
+import { deleteView, renameGridView, revertViewEdit, saveGridView } from '../../internal/actions';
 
 export interface Props {
     currentView: ViewInfo;
@@ -123,8 +123,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                         const isDefault = view.isDefault;
                         const canEdit = !isDefault && !isRenaming && !unsavedView;
                         let viewLabel = view.isDefault ? 'Default View' : view.label;
-                        if (unsavedView)
-                            viewLabel += ' (Edited)';
+                        if (unsavedView) viewLabel += ' (Edited)';
 
                         return (
                             <Row className="small-margin-bottom">
@@ -139,7 +138,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                             onChange={onNewNameChange}
                                             type="text"
                                         />
-                                    ) : viewLabel}
+                                    ) : (
+                                        viewLabel
+                                    )}
                                 </Col>
                                 <Col xs={3}>
                                     {user.hasAdminPermission() && (

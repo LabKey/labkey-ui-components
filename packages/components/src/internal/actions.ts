@@ -2442,7 +2442,7 @@ export function getGridViews(
     sort?: boolean,
     viewName?: string,
     excludeSessionView?: boolean,
-    includeHidden?: boolean,
+    includeHidden?: boolean
 ): Promise<ViewInfo[]> {
     return new Promise((resolve, reject) => {
         Query.getQueryViews({
@@ -2457,13 +2457,11 @@ export function getGridViews(
                 });
                 if (sort) {
                     views.sort((a, b) => {
-                        if (a === ViewInfo.DEFAULT_NAME)
-                            return -1;
-                        else if (b === '')
-                            return 1;
+                        if (a === ViewInfo.DEFAULT_NAME) return -1;
+                        else if (b === '') return 1;
 
                         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-                    })
+                    });
                 }
                 resolve(views);
             },
@@ -2526,7 +2524,12 @@ export function deleteView(
  * @param viewName The old custom view name to replace
  * @param newName The new custom view name
  */
-export function renameGridView(schemaQuery: SchemaQuery, containerPath: string, viewName: string, newName: string): Promise<void> {
+export function renameGridView(
+    schemaQuery: SchemaQuery,
+    containerPath: string,
+    viewName: string,
+    newName: string
+): Promise<void> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('query', 'renameQueryView.api', undefined, {
@@ -2549,5 +2552,4 @@ export function renameGridView(schemaQuery: SchemaQuery, containerPath: string, 
             }),
         });
     });
-
 }

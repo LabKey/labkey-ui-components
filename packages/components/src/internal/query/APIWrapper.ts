@@ -19,7 +19,13 @@ export interface QueryAPIWrapper {
         entityDataType: EntityDataType,
         containerPath?: string
     ) => Promise<Map<string, List<IEntityTypeOption>>>;
-    getGridViews: (schemaQuery: SchemaQuery, sort?: boolean, viewName?: string, excludeSessionView?: boolean, includeHidden?: boolean,) => Promise<ViewInfo[]>;
+    getGridViews: (
+        schemaQuery: SchemaQuery,
+        sort?: boolean,
+        viewName?: string,
+        excludeSessionView?: boolean,
+        includeHidden?: boolean
+    ) => Promise<ViewInfo[]>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<SelectDistinctResponse>;

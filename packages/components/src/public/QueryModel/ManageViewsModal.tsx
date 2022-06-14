@@ -138,7 +138,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                             onChange={onNewNameChange}
                                             type="text"
                                         />
-                                    ) : <span className="manage-view-name">{viewLabel}</span>}
+                                    ) : (
+                                        <span className="manage-view-name">{viewLabel}</span>
+                                    )}
                                 </Col>
                                 <Col xs={2}>
                                     {user.hasAdminPermission() && (

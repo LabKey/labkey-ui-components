@@ -15,7 +15,7 @@ import { caseInsensitive, OperationConfirmationData, SCHEMAS } from '../../..';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
-import { isSubfolderDataEnabled } from '../../app/utils';
+import { isProductProjectsEnabled } from '../../app/utils';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 
@@ -23,7 +23,7 @@ export function getPicklistsForInsert(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
         const { queryName, schemaName } = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS;
         selectRowsDeprecated({
-            containerFilter: isSubfolderDataEnabled() ? Query.ContainerFilter.current : undefined,
+            containerFilter: isProductProjectsEnabled() ? Query.ContainerFilter.current : undefined,
             schemaName,
             queryName,
             sort: 'Name',
@@ -456,5 +456,5 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
 };
 
 export function getPicklistListingContainerFilter(): Query.ContainerFilter {
-    return isSubfolderDataEnabled() ? Query.ContainerFilter.current : undefined;
+    return isProductProjectsEnabled() ? Query.ContainerFilter.current : undefined;
 }

@@ -19,7 +19,7 @@ import { Filter, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson } from '../../public/SchemaQuery';
-import { isProjectContainer, isSubfolderDataEnabled } from '../app/utils';
+import { isProjectContainer, isProductProjectsEnabled } from '../app/utils';
 import {
     caseInsensitive,
     QueryColumn,
@@ -944,7 +944,7 @@ export function processRequest(response: any, request: any, reject: (reason?: an
  */
 export function getContainerFilter(containerPath?: string): Query.ContainerFilter {
     // Check experimental flag to see if cross-folder data support is enabled.
-    if (!isSubfolderDataEnabled()) {
+    if (!isProductProjectsEnabled()) {
         return undefined;
     }
 
@@ -967,8 +967,8 @@ export function getContainerFilter(containerPath?: string): Query.ContainerFilte
  * @private
  */
 export function getContainerFilterForInsert(): Query.ContainerFilter {
-    // Check experimental flag to see if cross-folder data support is enabled.
-    if (!isSubfolderDataEnabled()) {
+    // Check to see if product projects support is enabled.
+    if (!isProductProjectsEnabled()) {
         return undefined;
     }
 

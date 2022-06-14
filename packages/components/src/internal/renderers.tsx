@@ -227,16 +227,19 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                     )}
                                 </>
                             )}
-
-                            {(allowColSort || allowColFilter) && <MenuItem divider />}
-                            <DisableableMenuItem
-                                operationPermitted={allowColumnViewChange}
-                                onClick={() => _handleHideColumn()}
-                                disabledMessage={APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}
-                            >
-                                <span className="fa fa-eye-slash grid-panel__menu-icon" />
-                                &nbsp; Hide Column
-                            </DisableableMenuItem>
+                            {handleHideColumn && (
+                                <>
+                                    {(allowColSort || allowColFilter) && <MenuItem divider />}
+                                    <DisableableMenuItem
+                                        operationPermitted={allowColumnViewChange}
+                                        onClick={() => _handleHideColumn()}
+                                        disabledMessage={APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}
+                                    >
+                                        <span className="fa fa-eye-slash grid-panel__menu-icon" />
+                                        &nbsp; Hide Column
+                                    </DisableableMenuItem>
+                                </>
+                            )}
                         </Dropdown.Menu>
                     </Dropdown>
                 </span>

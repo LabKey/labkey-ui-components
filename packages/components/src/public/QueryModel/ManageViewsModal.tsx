@@ -127,7 +127,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
 
                         return (
                             <Row className="small-margin-bottom">
-                                <Col xs={5}>
+                                <Col xs={7}>
                                     {selectedView && selectedView?.name === view.name ? (
                                         <input
                                             autoFocus
@@ -138,11 +138,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                             onChange={onNewNameChange}
                                             type="text"
                                         />
-                                    ) : (
-                                        viewLabel
-                                    )}
+                                    ) : <span className="manage-view-name">{viewLabel}</span>}
                                 </Col>
-                                <Col xs={3}>
+                                <Col xs={2}>
                                     {user.hasAdminPermission() && (
                                         <>
                                             {isDefault && !isRenaming && (
@@ -152,7 +150,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                             )}
                                             {canEdit && (
                                                 <span onClick={() => setDefaultView(view)} className="clickable-text">
-                                                    Make default
+                                                    Set default
                                                 </span>
                                             )}
                                         </>

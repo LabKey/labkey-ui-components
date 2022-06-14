@@ -96,7 +96,7 @@ export const initEditableGridModels = async (
     editorModels: EditorModel[],
     queryModel: QueryModel,
     loaders: EditableGridLoaderFromSelection[],
-    includeColumns?: string[]
+    includeColumns?: Array<Partial<QueryColumn>>
 ): Promise<EditableGridModels> => {
     const updatedDataModels = [];
     const updatedEditorModels = [];
@@ -117,7 +117,7 @@ export const initEditableGridModels = async (
                             const extraColumns = [];
                             if (includeColumns) {
                                 includeColumns.forEach(col => {
-                                    const column = queryModel.getColumn(col);
+                                    const column = queryModel.getColumn(col.fieldKey);
                                     if (column) extraColumns.push(column);
                                 });
                             }

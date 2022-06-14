@@ -198,7 +198,6 @@ export interface SharedEditableGridProps {
     allowBulkAdd?: boolean;
     allowBulkRemove?: boolean;
     allowBulkUpdate?: boolean;
-    allowExport?: boolean;
     allowFieldDisable?: boolean;
     allowRemove?: boolean;
     bordered?: boolean;
@@ -256,7 +255,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         allowBulkAdd: false,
         allowBulkRemove: false,
         allowBulkUpdate: false,
-        allowExport: false,
         allowRemove: false,
         removeColumnTitle: 'Delete',
         addControlProps: {
@@ -997,7 +995,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             isSubmitting,
             maxRows,
             editorModel,
-            allowExport,
             exportHandler,
         } = this.props;
         const nounPlural = addControlProps?.nounPlural ?? 'rows';
@@ -1007,6 +1004,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const addTitle = canAddRows
             ? 'Add multiple ' + nounPlural + ' with the same values'
             : 'The grid contains the maximum number of ' + nounPlural + '.';
+
+        const allowExport = !!exportHandler;
 
         return (
             <div className="row QueryGrid-bottom-spacing">

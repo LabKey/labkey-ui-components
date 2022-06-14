@@ -135,7 +135,6 @@ export const EditableGridPanel: FC<Props> = memo(props => {
             readonlyRows={activeReadOnlyRows}
             readOnlyColumns={readOnlyColumns}
             updateColumns={activeUpdateColumns}
-            allowExport={true}
             exportHandler={exportHandlerCallback}
         />
     );

@@ -116,17 +116,12 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             dataModels: QueryModel[];
             editorModels: EditorModel[];
         }> => {
-            const extraColumns = [];
-            if (extraExportColumns) {
-                extraExportColumns.forEach(col => extraColumns.push(col.fieldKey));
-            }
-
             return await initEditableGridModels(
                 editableGridModels.dataModels,
                 editableGridModels.editorModels,
                 queryModel,
                 loaders,
-                extraColumns
+                extraExportColumns
             );
         };
 

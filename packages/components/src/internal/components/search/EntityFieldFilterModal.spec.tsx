@@ -107,7 +107,7 @@ describe('EntityFieldFilterModal', () => {
             let hasFieldFilter = false;
             if (fieldName === 'Integer' || fieldName === 'Boolean') hasFieldFilter = true;
 
-            expect(fields.at(i).find('.filter-modal__field_dot')).toHaveLength(hasFieldFilter ? 1 : 0); // has filter indicator
+            expect(fields.at(i).find('.field-modal__field_dot')).toHaveLength(hasFieldFilter ? 1 : 0); // has filter indicator
 
             if (fieldName === 'Integer') {
                 expect(fields.at(i).props()['active']).toEqual(!!isFieldSelected);
@@ -125,9 +125,9 @@ describe('EntityFieldFilterModal', () => {
         expect(wrapper.find('ModalTitle').text()).toBe('Select Sample Test Parent Properties');
 
         const queriesContainer = wrapper.find('.filter-modal__col_queries');
-        const queriesContainerTitle = queriesContainer.find('.filter-modal__col-title');
+        const queriesContainerTitle = queriesContainer.find('.field-modal__col-title');
 
-        const queriesContainerBody = queriesContainer.find('.filter-modal__col-content');
+        const queriesContainerBody = queriesContainer.find('.field-modal__col-content');
         expect(queriesContainerTitle.text()).toBe('test Parents');
         const queries = queriesContainerBody.find(ChoicesListItem);
         expect(queries.length).toBe(2);
@@ -139,7 +139,7 @@ describe('EntityFieldFilterModal', () => {
 
         const fieldsContainerTitle = wrapper.find('.filter-modal__col_fields').at(0);
         expect(fieldsContainerTitle.text()).toContain('Fields');
-        const fieldsContainerEmptyBody = wrapper.find('.filter-modal__empty-msg').at(0);
+        const fieldsContainerEmptyBody = wrapper.find('.field-modal__empty-msg').at(0);
         expect(fieldsContainerEmptyBody.text()).toContain('Select a test parent.');
 
         const findButton = wrapper.find('button.btn-success');
@@ -173,7 +173,7 @@ describe('EntityFieldFilterModal', () => {
 
         verifyOpenedFieldsPanel(wrapper);
 
-        expect(wrapper.find('.filter-modal__empty-msg').text()).toContain('Select a field.'); // filter panel empty
+        expect(wrapper.find('.field-modal__empty-msg').text()).toContain('Select a field.'); // filter panel empty
 
         wrapper.unmount();
     });

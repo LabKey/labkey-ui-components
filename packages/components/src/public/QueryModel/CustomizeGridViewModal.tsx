@@ -4,7 +4,7 @@ import { Col, Modal, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { Alert } from '../../internal/components/base/Alert';
 import { saveAsSessionView } from '../../internal/actions';
 import { getQueryDetails } from '../../internal/query/api';
-import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/renderers';
+import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/constants';
 import { QueryModel } from './QueryModel';
 import { QueryColumn } from '../QueryColumn';
 import { QueryInfo } from '../QueryInfo';

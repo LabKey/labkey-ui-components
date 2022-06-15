@@ -25,12 +25,11 @@ import { getQueryColumnRenderers } from './global';
 import { CustomToggle } from './components/base/CustomToggle';
 import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
 import { isCustomizeViewsInAppEnabled } from './app/utils';
+import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE } from './constants';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
 }
-
-export const APP_FIELD_CANNOT_BE_REMOVED_MESSAGE = 'This application field cannot be removed.';
 
 interface HeaderCellDropdownProps {
     column: GridColumn;

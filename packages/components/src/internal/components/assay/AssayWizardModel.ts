@@ -47,7 +47,7 @@ export function parseDataTextToRunRows(rawData: string): any[] {
 }
 
 export interface IAssayUploadOptions extends AssayDOM.IImportRunOptions {
-    dataRows?: any; // Array<any> | QueryGridModel
+    dataRows?: any; // Array<any>
     maxFileSize?: number;
     maxRowCount?: number;
 }
@@ -235,7 +235,7 @@ export class AssayWizardModel
         return assayData;
     }
 
-    getInitialQueryModelData(): { rows: { [key: string]: any }; orderedRows: string[]; queryInfo: QueryInfo } {
+    getInitialQueryModelData(): { orderedRows: string[]; queryInfo: QueryInfo; rows: { [key: string]: any } } {
         const { assayDef, selectedSamples } = this;
         const sampleColumnData = assayDef.getSampleColumn();
         const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;

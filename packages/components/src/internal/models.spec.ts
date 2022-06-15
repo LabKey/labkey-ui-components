@@ -19,7 +19,6 @@ import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import { QueryInfo, SchemaQuery, QueryColumn, makeTestQueryModel } from '..';
 
 import { CellMessage, EditorModel, getPkData, ValueDescriptor } from './models';
-import { resetQueryGridState } from './global';
 
 const schemaQ = new SchemaQuery({
     schemaName: 'samples',
@@ -75,10 +74,6 @@ const QUERY_INFO = QueryInfo.fromJSON({
         neither: COLUMN_CANNOT_INSERT_AND_UPDATE,
         fileInput: COLUMN_FILE_INPUT,
     },
-});
-
-beforeEach(() => {
-    resetQueryGridState();
 });
 
 describe('EditorModel', () => {

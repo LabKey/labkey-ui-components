@@ -38,7 +38,6 @@ import {
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
     SERVER_NOTIFICATIONS_INVALIDATE,
-    SET_RESET_QUERY_GRID_STATE,
     SOURCES_KEY,
     USER_KEY,
     WORKFLOW_HOME_HREF,
@@ -69,8 +68,7 @@ export enum CloseEventCode {
 export function registerWebSocketListeners(
     store,
     notificationListeners?: string[],
-    menuReloadListeners?: string[],
-    resetQueryGridListeners?: string[]
+    menuReloadListeners?: string[]
 ): void {
     if (notificationListeners) {
         notificationListeners.forEach(listener => {
@@ -86,14 +84,6 @@ export function registerWebSocketListeners(
             LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
                 // not checking evt.wasClean since we want this event for all user sessions
                 window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
-            });
-        });
-    }
-
-    if (resetQueryGridListeners) {
-        resetQueryGridListeners.forEach(listener => {
-            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
-                window.setTimeout(() => store.dispatch({ type: SET_RESET_QUERY_GRID_STATE }), 1000);
             });
         });
     }

@@ -117,11 +117,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                 if (value === null || value === undefined) displayValue = '[blank]';
 
                                 return (
-                                    <li
-                                        key={index}
-                                        className="filter-faceted__li"
-                                        onClick={() => onChange(value, true, true)}
-                                    >
+                                    <li key={index} className="filter-faceted__li">
                                         <div className="form-check">
                                             <input
                                                 className="form-check-input filter-faceted__checkbox"
@@ -130,7 +126,12 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                                 onChange={event => onChange(value, event.target.checked)}
                                                 checked={checkedValues.indexOf(value) > -1}
                                             />
-                                            <div className="filter-faceted__value">{displayValue}</div>
+                                            <div
+                                                className="filter-faceted__value"
+                                                onClick={() => onChange(value, true, true)}
+                                            >
+                                                {displayValue}
+                                            </div>
                                         </div>
                                     </li>
                                 );

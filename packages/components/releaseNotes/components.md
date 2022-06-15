@@ -13,6 +13,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Update api/`getQueryDetails()` to accept a fk for cache key
   * Enabled `QueryColumn` props for `selectable` and `friendlyType`
   * Include fieldKey in grid column header hover text
+  * Issue 45693: Filter dialog choose values click target is too big
 
 ### version 2.181.0
 *Released*: 14 June 2022

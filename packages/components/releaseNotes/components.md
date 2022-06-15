@@ -12,6 +12,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Show lookup fields on expand in Available Fields listing and allow them to be added to view
   * Update api/`getQueryDetails()` to accept a fk for cache key
   * Enabled `QueryColumn` props for `selectable` and `friendlyType`
+  * Include fieldKey in grid column header hover text
 
 ### version 2.181.0
 *Released*: 14 June 2022

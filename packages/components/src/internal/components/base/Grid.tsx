@@ -74,6 +74,21 @@ function resolveColumns(data: List<Map<string, any>>): List<GridColumn> {
     return columns.asImmutable();
 }
 
+function getColumnHoverText(info: any): string {
+    let description = info?.description || '';
+    let sepLeft = description.length > 0 ? '(' : '';
+    let sepRight = description.length > 0 ? ')' : '';
+
+    description += info?.index !== info?.caption ? ' ' + sepLeft + info.index + sepRight : '';
+    sepLeft = description.length > 0 ? '(' : '';
+    sepRight = description.length > 0 ? ')' : '';
+
+    description += info?.phiProtected === true ? ' ' + sepLeft + 'PHI protected data removed' + sepRight : '';
+
+    description = description.trim();
+    return !description ? undefined : description;
+}
+
 interface GridHeaderProps {
     calcWidths?: boolean;
     headerCell?: any;
@@ -122,11 +137,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, any> {
                                 'grid-header-cell': headerCls === undefined,
                                 'phi-protected': raw?.phiProtected === true,
                             });
-                            let description = raw?.description || '';
-                            description =
-                                description + ' ' + (raw?.phiProtected === true ? '(PHI protected data removed)' : '');
-                            description = description.trim();
-                            if (!description) description = undefined;
+                            const description = getColumnHoverText(raw);
 
                             return (
                                 <th

@@ -7,6 +7,7 @@ import { QueryColumn } from '../QueryColumn';
 import { APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/renderers';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { DragDropHandle } from '../../internal/components/base/DragDropHandle';
+import classNames from 'classnames';
 
 interface ColumnChoiceProps {
     column: QueryColumn,
@@ -31,12 +32,14 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
 interface ColumnInViewProps {
     column: QueryColumn,
     index: number
-    onColumnRemove: () => void,
+    onColumnRemove: () => void
+    selected: boolean
+    onClick: () => void
 }
 
 // exported for jest tests
 export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
-    const { column, index, onColumnRemove } = props;
+    const { column, index, onClick, onColumnRemove, selected } = props;
 
     let overlay;
     const canBeRemoved = column.addToDisplayView;
@@ -53,7 +56,8 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     return (
         <Draggable key={key} draggableId={key} index={index} >
             {(dragProvided, snapshot) => (
-                <div className="list-group-item"
+                <div className={classNames("list-group-item", {"selected": selected})}
+                     onClick={onClick}
                      ref={dragProvided.innerRef}
                      {...dragProvided.draggableProps}>
                     <span {...dragProvided.dragHandleProps}>
@@ -87,6 +91,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const [isDirty, setIsDirty] = useState<boolean>(false);
     const [saveError, setSaveError] = useState<string>(undefined);
     const [showAllColumns, setShowAllColumns] = useState<boolean>(false);
+    const [selectedIndex, setSelectedIndex] = useState<number>(undefined);
 
     const gridName = title ?? schemaQuery.queryName;
 
@@ -116,9 +121,13 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     }, [columnsInView]);
 
     const addColumn = useCallback((column: QueryColumn) => {
-        setColumnsInView([...columnsInView, column]);
+        if (selectedIndex) {
+            setColumnsInView([...columnsInView.slice(0, selectedIndex), column, ...columnsInView.slice(selectedIndex)]);
+        } else {
+            setColumnsInView([...columnsInView, column]);
+        }
         setIsDirty(true);
-    }, [columnsInView]);
+    }, [selectedIndex, columnsInView]);
 
     const toggleShowAll = useCallback(() => {
         setShowAllColumns(!showAllColumns);
@@ -139,9 +148,11 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         let updatedColumns = columnsInView.filter(col => col.index != draggableId);
         updatedColumns = [...updatedColumns.slice(0, index), colInMotion, ...updatedColumns.slice(index) ];
         setColumnsInView(updatedColumns);
+        if (source.index === selectedIndex) {
+            setSelectedIndex(index);
+        }
         setIsDirty(true);
-    }, [columnsInView]);
-
+    }, [selectedIndex, columnsInView]);
 
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
@@ -191,6 +202,8 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                                                     column={column}
                                                     index={index}
                                                     onColumnRemove={() => removeColumn(index)}
+                                                    selected={selectedIndex === index}
+                                                    onClick={() => setSelectedIndex(index)}
                                                 />
                                             )
                                         })}

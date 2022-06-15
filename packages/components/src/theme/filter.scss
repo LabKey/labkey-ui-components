@@ -8,8 +8,8 @@
         padding: 8px 10px;
         border-radius: 0;
 
-        &.dragging .hierarchy-drop-target {
-            background-color: rgba($brand-primary, 0.15);
+        &.selected {
+            background-color: $blue-bkgrd-selected;
         }
     }
 

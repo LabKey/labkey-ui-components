@@ -239,7 +239,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     }, [model]);
 
     const removeColumn = useCallback((removedColumn: QueryColumn) => {
-        setColumnsInView(columnsInView.filter(column => column !== removedColumn));
+        setColumnsInView(columnsInView.filter(column => column.index !== removedColumn.index));
         setIsDirty(true);
     }, [columnsInView]);
 

@@ -232,7 +232,7 @@ export class QueryColumn extends Record({
 
         // "fieldKeyPath" is used for getQueryDetails calls when an fk is passed as a prop (to get the child fields
         // for a lookup
-        if (this.fieldKeyPath.indexOf('/') > -1) {
+        if (this.fieldKeyPath?.indexOf('/') > -1) {
             return this.fieldKeyPath;
         }
 

@@ -19,15 +19,15 @@ import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 import { QueryModel } from '../../..';
 
 interface Props {
+    disabledMsg: string;
     href?: string;
     id: string;
-    queryModel?: QueryModel;
-    text: string;
-    onClick?: () => void;
-    disabledMsg: string;
     maxSelection?: number;
     maxSelectionDisabledMsg?: string;
     nounPlural: string;
+    onClick?: () => void;
+    queryModel?: QueryModel;
+    text: string;
 }
 
 export class SelectionMenuItem extends PureComponent<Props> {

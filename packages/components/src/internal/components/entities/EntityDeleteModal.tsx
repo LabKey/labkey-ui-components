@@ -19,28 +19,20 @@ import { EntityDataType } from './models';
 import { getEntityNoun } from './utils';
 
 interface Props {
-    queryModel?: QueryModel;
-    maxSelected?: number;
-    useSelected: boolean;
-    beforeDelete?: () => any;
     afterDelete: (rowsToKeep?: any[]) => any;
-    onCancel: () => any;
-    entityDataType: EntityDataType;
     auditBehavior?: AuditBehaviorTypes;
+    beforeDelete?: () => any;
+    entityDataType: EntityDataType;
+    maxSelected?: number;
+    onCancel: () => any;
+    queryModel?: QueryModel;
+    useSelected: boolean;
     verb?: string;
 }
 
 export const EntityDeleteModal: FC<Props> = memo(props => {
-    const {
-        auditBehavior,
-        queryModel,
-        onCancel,
-        afterDelete,
-        beforeDelete,
-        useSelected,
-        entityDataType,
-        maxSelected,
-    } = props;
+    const { auditBehavior, queryModel, onCancel, afterDelete, beforeDelete, useSelected, entityDataType, maxSelected } =
+        props;
     const { nounPlural } = entityDataType;
     const [showProgress, setShowProgress] = useState(false);
     const [numConfirmed, setNumConfirmed] = useState(0);

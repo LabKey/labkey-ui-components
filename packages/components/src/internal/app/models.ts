@@ -44,10 +44,10 @@ export class AppModel extends Record({
 }
 
 export interface AppProperties {
-    productId: string;
-    name: string;
-    logoWithTextImageUrl: string;
-    logoBadgeImageUrl: string;
     controllerName: string;
+    logoBadgeImageUrl: string;
+    logoWithTextImageUrl: string;
     moduleName: string;
+    name: string;
+    productId: string;
 }

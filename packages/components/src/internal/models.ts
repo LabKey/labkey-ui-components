@@ -58,24 +58,24 @@ type DataViewInfoType =
  * a subset of the fields that are used by the client.
  */
 export interface IDataViewInfo {
-    name?: string;
+    created?: Date;
+    createdBy?: string;
     description?: string;
     detailsUrl?: string;
-    runUrl?: string; // This comes directly from the API response and is a link to LK Server
-    type?: DataViewInfoType;
-    visible?: boolean;
-    id?: string; // This is actually a uuid from the looks of it, should we be more strict on the type here?
-    reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
-    created?: Date;
-    modified?: Date;
-    createdBy?: string;
-    modifiedBy?: string;
-    thumbnail?: string; // This is actually a URL, do we enforce that?
     icon?: string;
     iconCls?: string;
-    shared?: boolean;
-    schemaName?: string;
+    id?: string;// This is actually a uuid from the looks of it, should we be more strict on the type here?
+    modified?: Date;
+    modifiedBy?: string;
+    name?: string;
     queryName?: string;
+    reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
+    runUrl?: string; // This comes directly from the API response and is a link to LK Server
+    visible?: boolean;
+    schemaName?: string;
+    shared?: boolean;
+    thumbnail?: string; // This is actually a URL, do we enforce that?
+    type?: DataViewInfoType;
     viewName?: string;
 
     appUrl?: AppURL; // This is a client side only attribute. Used to navigate within a Single Page App.
@@ -686,17 +686,17 @@ export interface IGridLoader {
 
 export interface IEditableGridLoader extends IGridLoader {
     id: string;
+    omittedColumns?: string[];
     queryInfo: QueryInfo;
     requiredColumns?: string[];
-    omittedColumns?: string[];
     updateColumns?: List<QueryColumn>;
 }
 
 export interface IGridResponse {
     data: Map<any, any>;
     dataIds: List<any>;
-    totalRows?: number;
     messages?: List<Map<string, string>>;
+    totalRows?: number;
 }
 
 export interface IGridSelectionResponse {

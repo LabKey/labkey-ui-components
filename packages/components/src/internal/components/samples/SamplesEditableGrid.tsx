@@ -36,23 +36,19 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { UpdateGridTab } from '../editable/EditableGridPanelForUpdateWithLineage';
 
+import { IEditableGridLoader } from '../../models';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromLineage, getUpdatedLineageRows } from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
-import { IEditableGridLoader } from '../../models';
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;
-    user: User;
+    combineParentTypes?: boolean;
     displayQueryModel: QueryModel;
-    onGridEditCancel: () => any;
-    onGridEditComplete: () => any;
-    selectionData: Map<string, any>;
     editableGridUpdateData?: OrderedMap<string, any>;
-    samplesGridRequiredColumns?: string[];
-    samplesGridOmittedColumns?: List<string>;
     getConvertedStorageUpdateData?: (
         storageRows: any[],
         sampleItems: {},
@@ -61,8 +57,13 @@ export interface SamplesEditableGridProps {
         selection: List<any>
     ) => any;
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
+    onGridEditCancel: () => any;
+    onGridEditComplete: () => any;
     parentDataTypes: List<EntityDataType>;
-    combineParentTypes?: boolean;
+    samplesGridOmittedColumns?: List<string>;
+    samplesGridRequiredColumns?: string[];
+    selectionData: Map<string, any>;
+    user: User;
 }
 
 type Props = SamplesEditableGridProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
@@ -75,16 +76,16 @@ const SAMPLES_LINEAGE_EDIT_GRID_ID = 'update-samples-lineage-grid';
 const INVENTORY_ITEM_QS = SchemaQuery.create('inventory', 'item');
 
 interface State {
+    consumedStatusIds: number[];
+    discardConsumed: boolean;
+    discardSamplesComment: string;
+    discardSamplesCount: number;
+    includedTabs: UpdateGridTab[];
     originalParents: Record<string, List<EntityChoice>>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     pendingUpdateDataRows: any[];
     showDiscardDialog: boolean;
-    discardConsumed: boolean;
-    discardSamplesComment: string;
-    discardSamplesCount: number;
     totalEditCount: number;
-    consumedStatusIds: number[];
-    includedTabs: UpdateGridTab[];
 }
 
 class SamplesEditableGridBase extends React.Component<Props, State> {

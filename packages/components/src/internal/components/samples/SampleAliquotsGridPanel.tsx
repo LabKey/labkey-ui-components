@@ -30,13 +30,13 @@ import { getSampleAliquotsQueryConfig } from './actions';
 import { JobsButton, SampleStorageButton } from './models';
 
 interface AliquotGridButtonsProps {
-    afterAction: () => void;
-    onDelete: () => void;
-    StorageButtonComponent?: SampleStorageButton;
     JobsButtonComponent?: JobsButton;
-    user: User;
-    lineageUpdateAllowed: boolean;
+    StorageButtonComponent?: SampleStorageButton;
+    afterAction: () => void;
     assayProviderType?: string;
+    lineageUpdateAllowed: boolean;
+    onDelete: () => void;
+    user: User;
 }
 
 const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> = props => {
@@ -114,12 +114,12 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
 };
 
 interface Props {
+    assayProviderType?: string;
+    jobsButton?: JobsButton;
+    lineageUpdateAllowed: boolean;
     onSampleChangeInvalidate: (schemaQuery: SchemaQuery) => void;
     storageButton?: SampleStorageButton;
-    jobsButton?: JobsButton;
     user: User;
-    lineageUpdateAllowed: boolean;
-    assayProviderType?: string;
 }
 
 interface State {

@@ -28,9 +28,9 @@ import { ChangePasswordModal } from './ChangePasswordModal';
 import { useUserProperties } from './UserProvider';
 
 interface Props {
-    updateUserDisplayName: (displayName: string) => any;
-    setReloadRequired: () => any;
     goBack: (n?: number) => any;
+    setReloadRequired: () => any;
+    updateUserDisplayName: (displayName: string) => any;
 }
 
 const TITLE = 'User Profile';

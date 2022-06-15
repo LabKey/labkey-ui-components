@@ -235,7 +235,7 @@ export class AssayWizardModel
         return assayData;
     }
 
-    getInitialQueryModelData(): { rows: { [key: string]: any }; orderedRows: string[]; queryInfo: QueryInfo } {
+    getInitialQueryModelData(): { orderedRows: string[]; queryInfo: QueryInfo; rows: { [key: string]: any } } {
         const { assayDef, selectedSamples } = this;
         const sampleColumnData = assayDef.getSampleColumn();
         const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;

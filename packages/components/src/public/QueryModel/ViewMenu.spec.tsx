@@ -52,7 +52,7 @@ const DEFAULT_PROPS = {
     onSaveView: jest.fn(),
     onManageViews: jest.fn(),
     onCustomizeView: jest.fn(),
-}
+};
 
 describe('ViewMenu', () => {
     test('Render', () => {
@@ -64,69 +64,33 @@ describe('ViewMenu', () => {
 
         // Renders nothing
         let model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
-        let tree = renderer.create(
-            <ViewMenu
-                {...DEFAULT_PROPS}
-                hideEmptyViewMenu={true}
-                model={model}
-            />
-        );
+        let tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
         // Renders empty view selector with disabled dropdown.
-        tree = renderer.create(
-            <ViewMenu
-                {...DEFAULT_PROPS}
-                hideEmptyViewMenu={false}
-                model={model}
-            />
-        );
+        tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
         // "No Extra Column"  view shows up under "All Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
-        tree = renderer.create(
-            <ViewMenu
-                {...DEFAULT_PROPS}
-                hideEmptyViewMenu={true}
-                model={model}
-            />
-        );
+        tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
         // "No Extra Column" view shows up under "My Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PRIVATE_VIEWS, {}, []);
-        tree = renderer.create(
-            <ViewMenu
-                {...DEFAULT_PROPS}
-                hideEmptyViewMenu={true}
-                model={model}
-            />
-        );
+        tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
         // Same as previous, but the No Extra Column view is set to active.
         model = model.mutate({
             schemaQuery: SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn'),
         });
-        tree = renderer.create(
-            <ViewMenu
-                {...DEFAULT_PROPS}
-                hideEmptyViewMenu={true}
-                model={model}
-            />
-        );
+        tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
         // "No Extra Column" view is hidden so does not show up
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
-        tree = renderer.create(
-            <ViewMenu
-                {...DEFAULT_PROPS}
-                hideEmptyViewMenu={false}
-                model={model}
-            />
-        );
+        tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
@@ -140,13 +104,7 @@ describe('ViewMenu', () => {
             isGuest: false,
         };
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
-        const wrapper = mount(
-            <ViewMenu
-                {...DEFAULT_PROPS}
-                hideEmptyViewMenu={false}
-                model={model}
-            />
-        );
+        const wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
         const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(5);
         expect(items.at(2).text()).toBe('Customize Grid View');
@@ -166,20 +124,14 @@ describe('ViewMenu', () => {
             isGuest: true,
         };
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
-        const wrapper = mount(
-            <ViewMenu
-                {...DEFAULT_PROPS}
-                hideEmptyViewMenu={false}
-                model={model}
-            />
-        );
+        const wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
         const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(1);
 
         wrapper.unmount();
     });
 
-    test("No views but customize enabled", () => {
+    test('No views but customize enabled', () => {
         LABKEY.moduleContext = {
             query: {
                 canCustomizeViewsFromApp: true,
@@ -189,17 +141,15 @@ describe('ViewMenu', () => {
             isGuest: false,
         };
 
-        let model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
-        const wrapper = mount(
-            <ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />
-        );
+        const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
+        const wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
         const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(4); // one separator and three options
         expect(items.at(1).text()).toBe('Customize Grid View');
         expect(items.at(2).text()).toBe('Manage Saved Views');
         expect(items.at(3).text()).toBe('Save Grid View');
         wrapper.unmount();
-    })
+    });
 
     test('Interactivity', () => {
         LABKEY.moduleContext = {

@@ -30,6 +30,8 @@ import { getGridView, revertViewEdit, saveGridView, saveAsSessionView, saveSessi
 
 import { hasServerContext } from '../../internal/components/base/ServerContext';
 
+import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
+
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
 import { SearchAction } from './grid/actions/Search';
@@ -53,7 +55,6 @@ import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
 import { CustomizeGridViewModal } from './CustomizeGridViewModal';
-import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
 import { ManageViewsModal } from './ManageViewsModal';
 
 export interface GridPanelProps<ButtonsComponentProps> {
@@ -96,12 +97,12 @@ type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
     actionValues: ActionValue[];
+    onCustomizeView: () => void;
     onFilter: () => void;
     onManageViews: () => void;
     onSaveView: () => void;
     onSearch: (token: string) => void;
     onViewSelect: (viewName: string) => void;
-    onCustomizeView: () => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -365,10 +366,10 @@ interface State {
     errorMsg: React.ReactNode;
     headerClickCount: { [key: string]: number };
     isViewSaved?: boolean;
+    showCustomizeViewModal: boolean;
     showFilterModalFieldKey: string;
     showManageViewsModal: boolean;
     showSaveViewModal: boolean;
-    showCustomizeViewModal: boolean;
 }
 
 /**
@@ -778,15 +779,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     toggleCustomizeView = (): void => {
-        this.setState((state) => ( {showCustomizeViewModal: !state.showCustomizeViewModal } ));
-    }
+        this.setState(state => ({ showCustomizeViewModal: !state.showCustomizeViewModal }));
+    };
 
     onSessionViewUpdate = (): void => {
         const { actions, model, allowSelections } = this.props;
 
         actions.loadModel(model.id, allowSelections);
-    }
-
+    };
 
     onSaveView = (newName: string, inherit: boolean, replace: boolean, shared?: boolean): Promise<any> => {
         const { model } = this.props;
@@ -979,7 +979,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
-        const { showCustomizeViewModal, showFilterModalFieldKey, showManageViewsModal, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
+        const {
+            showCustomizeViewModal,
+            showFilterModalFieldKey,
+            showManageViewsModal,
+            showSaveViewModal,
+            actionValues,
+            errorMsg,
+            isViewSaved,
+        } = this.state;
         const {
             hasData,
             id,

@@ -1,7 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
-import { getServerContext } from "@labkey/api";
+import { getServerContext } from '@labkey/api';
 
 import { QueryModel, ViewInfo } from '../..';
 import { blurActiveElement } from '../../internal/util/utils';
@@ -11,9 +11,9 @@ import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
 interface ViewMenuProps {
     hideEmptyViewMenu: boolean;
     model: QueryModel;
+    onCustomizeView?: () => void;
     onManageViews: () => void;
     onSaveView: () => void;
-    onCustomizeView?: () => void;
     onViewSelect: (viewName: string) => void;
 }
 

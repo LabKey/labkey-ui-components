@@ -2517,7 +2517,8 @@ export function deleteView(
                 } else {
                     console.error(response);
                     reject('Unable to deleting the view for the data grid. ' + resolveErrorMessage(response));
-                }            },
+                }
+            },
         });
     });
 }

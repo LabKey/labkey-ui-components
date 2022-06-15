@@ -11,10 +11,10 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 import { deleteView, renameGridView, revertViewEdit, saveGridView, saveSessionView } from '../../internal/actions';
 
 export interface Props {
+    containerPath?: string;
     currentView: ViewInfo;
     onDone: (hasChange?: boolean, reselectViewName?: string) => void;
     schemaQuery: SchemaQuery;
-    containerPath?: string;
 }
 
 export const ManageViewsModal: FC<Props> = memo(props => {
@@ -74,17 +74,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                     name: '',
                 });
                 if (view.session)
-                    await saveSessionView(
-                        schemaQuery,
-                        containerPath,
-                        view.name,
-                        '',
-                        view.inherit,
-                        true,
-                        true
-                    );
-                else
-                    await saveGridView(schemaQuery, containerPath, finalViewInfo, true, false, view.inherit, true);
+                    await saveSessionView(schemaQuery, containerPath, view.name, '', view.inherit, true, true);
+                else await saveGridView(schemaQuery, containerPath, finalViewInfo, true, false, view.inherit, true);
                 await deleteView(schemaQuery, containerPath, view.name, false);
                 if (currentView.name === view.name) setReselectViewName('');
             });
@@ -136,8 +127,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                         const isRenaming = !!selectedView;
                         const isDefault = view.isDefault;
                         let canEdit = !isDefault && !isRenaming && !unsavedView;
-                        if (view.shared)
-                            canEdit = canEdit && (user.isAdmin);
+                        if (view.shared) canEdit = canEdit && user.isAdmin;
 
                         let viewLabel = view.isDefault ? 'Default View' : view.label;
                         if (unsavedView) viewLabel += ' (Edited)';

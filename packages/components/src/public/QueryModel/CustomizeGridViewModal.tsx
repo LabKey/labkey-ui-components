@@ -42,13 +42,13 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     const { column, index, onClick, onColumnRemove, selected } = props;
 
     let overlay;
-    const canBeRemoved = column.addToDisplayView;
+    const cannotBeRemoved = column.addToDisplayView === true;
     let content = (
-        <span className={"pull-right " + (!canBeRemoved ? "text-muted disabled" : "clickable")} onClick={!canBeRemoved ? undefined : onColumnRemove}>
+        <span className={"pull-right " + (cannotBeRemoved ? "text-muted disabled" : "clickable")} onClick={cannotBeRemoved ? undefined : onColumnRemove}>
             <i className="fa fa-times"/>
         </span>
     );
-    if (!canBeRemoved) {
+    if (cannotBeRemoved) {
         overlay = <Popover id={column.name + "-disabled-popover"} key={index + '-disabled-warning'}>{APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}</Popover>;
     }
     const key = column.index;
@@ -65,8 +65,8 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                     </span>
                     <span key={index}>
                         <span className="field-name left-spacing" >{column.caption ?? column.name}</span>
-                        {canBeRemoved && content}
-                        {!canBeRemoved &&
+                        {!cannotBeRemoved && content}
+                        {cannotBeRemoved &&
                             <OverlayTrigger overlay={overlay} placement="bottom">
                                 {content}
                             </OverlayTrigger>
@@ -121,8 +121,8 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     }, [columnsInView]);
 
     const addColumn = useCallback((column: QueryColumn) => {
-        if (selectedIndex) {
-            setColumnsInView([...columnsInView.slice(0, selectedIndex), column, ...columnsInView.slice(selectedIndex)]);
+        if (selectedIndex !== undefined) {
+            setColumnsInView([...columnsInView.slice(0, selectedIndex+1), column, ...columnsInView.slice(selectedIndex+1)]);
         } else {
             setColumnsInView([...columnsInView, column]);
         }
@@ -153,6 +153,14 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         }
         setIsDirty(true);
     }, [selectedIndex, columnsInView]);
+
+    const onSelectField = useCallback((index): void => {
+        if (index === selectedIndex) {
+            setSelectedIndex(undefined);
+        } else {
+            setSelectedIndex(index);
+        }
+    }, [selectedIndex])
 
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
@@ -203,7 +211,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                                                     index={index}
                                                     onColumnRemove={() => removeColumn(index)}
                                                     selected={selectedIndex === index}
-                                                    onClick={() => setSelectedIndex(index)}
+                                                    onClick={() => onSelectField(index)}
                                                 />
                                             )
                                         })}

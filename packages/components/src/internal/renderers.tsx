@@ -129,6 +129,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
+    const showGridCustomization = handleHideColumn && isCustomizeViewsInAppEnabled();
 
     return (
         <>
@@ -227,7 +228,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                     )}
                                 </>
                             )}
-                            {handleHideColumn && isCustomizeViewsInAppEnabled() && (
+                            {showGridCustomization && (
                                 <>
                                     {(allowColSort || allowColFilter) && <MenuItem divider />}
                                     <DisableableMenuItem

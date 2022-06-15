@@ -32,8 +32,8 @@ const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
 
 interface ColumnChoiceProps {
     column: QueryColumn;
-    isExpanded: boolean;
-    isInView: boolean;
+    isExpanded?: boolean;
+    isInView?: boolean;
     onAddColumn: (column: QueryColumn) => void;
     onCollapseColumn: (column: QueryColumn) => void;
     onExpandColumn: (column: QueryColumn) => void;
@@ -94,6 +94,64 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
                 </OverlayTrigger>
             )}
         </div>
+    );
+});
+
+interface ColumnChoiceLookupProps extends ColumnChoiceProps {
+    columnsInView: any;
+    expandedColumns: Record<string, QueryInfo>;
+    showAllColumns: boolean;
+}
+
+// exported for jest tests
+export const ColumnChoiceGroup: FC<ColumnChoiceLookupProps> = memo(props => {
+    const { expandedColumns, column, onAddColumn, onExpandColumn, onCollapseColumn, columnsInView, showAllColumns } =
+        props;
+    const isLookupExpanded = !!expandedColumns[column.index];
+
+    const isColumnInView = (column: QueryColumn): boolean => {
+        return columnsInView.findIndex(col => col.index === column.index) !== -1;
+    };
+
+    const parentElement = (
+        <ColumnChoice
+            column={column}
+            key={column.index}
+            isInView={isColumnInView(column)}
+            onAddColumn={onAddColumn}
+            isExpanded={isLookupExpanded}
+            onExpandColumn={onExpandColumn}
+            onCollapseColumn={onCollapseColumn}
+        />
+    );
+
+    let childElements = [];
+    if (isLookupExpanded) {
+        childElements = expandedColumns[column.index].columns
+            .valueSeq()
+            .filter(fkCol => (showAllColumns || !fkCol.hidden) && !fkCol.removeFromViews)
+            .map(fkCol => (
+                <ColumnChoiceGroup
+                    column={fkCol}
+                    key={fkCol.index}
+                    isInView={isColumnInView(fkCol)}
+                    onAddColumn={onAddColumn}
+                    isExpanded={!!expandedColumns[fkCol.index]}
+                    onExpandColumn={onExpandColumn}
+                    onCollapseColumn={onCollapseColumn}
+                    expandedColumns={expandedColumns}
+                    columnsInView={columnsInView}
+                    showAllColumns={showAllColumns}
+                />
+            ))
+            .toArray();
+    }
+
+    return (
+        <>
+            {parentElement}
+            {childElements}
+        </>
     );
 });
 
@@ -213,10 +271,6 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         setShowAllColumns(!showAllColumns);
     }, [showAllColumns]);
 
-    const isColumnInView = (column: QueryColumn): boolean => {
-        return columnsInView.findIndex(col => col.index === column.index) !== -1;
-    };
-
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
             <Modal.Header closeButton>
@@ -240,47 +294,22 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                                 .valueSeq()
                                 .filter(
                                     column =>
-                                        isColumnInView(column) ||
-                                        ((showAllColumns || !column.hidden) && !column.removeFromViews)
+                                        (showAllColumns || !column.hidden) &&
+                                        !column.removeFromViews &&
+                                        column.index.indexOf('/') === -1 // here at the top level we don't want to include lookup fields
                                 )
-                                .map(column => {
-                                    const isLookupExpanded = !!expandedColumns[column.index];
-                                    let content = [
-                                        <ColumnChoice
-                                            column={column}
-                                            key={column.index}
-                                            isInView={isColumnInView(column)}
-                                            onAddColumn={addColumn}
-                                            isExpanded={isLookupExpanded}
-                                            onExpandColumn={expandColumn}
-                                            onCollapseColumn={collapseColumn}
-                                        />,
-                                    ];
-
-                                    if (isLookupExpanded) {
-                                        content = content.concat(
-                                            expandedColumns[column.index].columns
-                                                .valueSeq()
-                                                .filter(
-                                                    fkCol => (showAllColumns || !fkCol.hidden) && !fkCol.removeFromViews
-                                                )
-                                                .map(fkCol => (
-                                                    <ColumnChoice
-                                                        column={fkCol}
-                                                        key={fkCol.index}
-                                                        isInView={isColumnInView(fkCol)}
-                                                        onAddColumn={addColumn}
-                                                        isExpanded={false}
-                                                        onExpandColumn={expandColumn}
-                                                        onCollapseColumn={collapseColumn}
-                                                    />
-                                                ))
-                                                .toArray()
-                                        );
-                                    }
-
-                                    return content;
-                                })}
+                                .map(column => (
+                                    <ColumnChoiceGroup
+                                        column={column}
+                                        key={column.index}
+                                        onAddColumn={addColumn}
+                                        onExpandColumn={expandColumn}
+                                        onCollapseColumn={collapseColumn}
+                                        expandedColumns={expandedColumns}
+                                        columnsInView={columnsInView}
+                                        showAllColumns={showAllColumns}
+                                    />
+                                ))}
                         </div>
                         <div key="toggleAll">
                             <input type="checkbox" checked={showAllColumns} onChange={toggleShowAll} />

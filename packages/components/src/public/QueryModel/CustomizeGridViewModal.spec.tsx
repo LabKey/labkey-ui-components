@@ -9,14 +9,22 @@ import { QueryInfo } from '../QueryInfo';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { fromJS } from 'immutable';
 
+const QUERY_COL = QueryColumn.create({
+    name: "testColumn",
+    fieldKey: "testColumn",
+    fieldKeyArray: ["testColumn"],
+    caption: "Test Column"
+});
+
 describe("ColumnChoice", () => {
     test("isInView", () => {
         const wrapper = mount(
             <ColumnChoice
-                column={QueryColumn.create({name: "testColumn", caption: "Test Column"})}
-                index={1}
+                column={QUERY_COL}
                 isInView={true}
                 onAddColumn={jest.fn()}
+                onCollapseColumn={jest.fn()}
+                onExpandColumn={jest.fn()}
             />);
         expect(wrapper.find(".field-name").text()).toBe("Test Column");
         expect(wrapper.find(".fa-check").exists()).toBeTruthy();
@@ -27,10 +35,11 @@ describe("ColumnChoice", () => {
     test("not isInView", () => {
         const wrapper = mount(
             <ColumnChoice
-                column={QueryColumn.create({name: "testColumn", caption: "Test Column"})}
-                index={1}
+                column={QUERY_COL}
                 isInView={false}
                 onAddColumn={jest.fn()}
+                onCollapseColumn={jest.fn()}
+                onExpandColumn={jest.fn()}
             />);
         expect(wrapper.find(".field-name").text()).toBe("Test Column");
         expect(wrapper.find(".fa-check").exists()).toBeFalsy();
@@ -62,13 +71,12 @@ describe("ColumnInView", () => {
 
     test("remove enabled", () => {
 
-        const column = QueryColumn.create({name: "testColumn", caption: "Test Column"});
+        const column = QUERY_COL;
 
         const wrapper = mount(
             <ColumnInView
                 column={column}
-                index={1}
-                onColumnRemove={jest.fn()}
+                onRemoveColumn={jest.fn()}
             />
         );
         validate(wrapper, column, true);
@@ -77,13 +85,18 @@ describe("ColumnInView", () => {
     });
 
     test("remove disabled", () => {
-        const column = QueryColumn.create({name: "testColumn", caption: "Test Column", addToDisplayView: true});
+        const column = QueryColumn.create({
+            name: "testColumn",
+            fieldKey: "testColumn",
+            fieldKeyArray: ["testColumn"],
+            caption: "Test Column",
+            addToDisplayView: true,
+        });
 
         const wrapper = mount(
             <ColumnInView
                 column={column}
-                index={1}
-                onColumnRemove={jest.fn()}
+                onRemoveColumn={jest.fn()}
             />
         );
         validate(wrapper, column, false);
@@ -93,11 +106,11 @@ describe("ColumnInView", () => {
 });
 
 describe("CustomizeGridViewModal", () => {
-    const FIELD_1_COL = new QueryColumn({ name: "field1", fieldKey: "field1" });
-    const FIELD_2_COL = new QueryColumn({ name: "field2", fieldKey: "field2"});
-    const FIELD_3_COL = new QueryColumn({name: "field3", fieldKey: "field3"});
-    const SYSTEM_COL = new QueryColumn({ name: "systemCol", fieldKey: "systemCol", hidden: true});
-    const HIDDEN_COL = new QueryColumn({ name: "hiddenCol", fieldKey: "hiddenCol", hidden: true});
+    const FIELD_1_COL = new QueryColumn({ name: "field1", fieldKey: "field1", fieldKeyArray: ["field1"] });
+    const FIELD_2_COL = new QueryColumn({ name: "field2", fieldKey: "field2", fieldKeyArray: ["field2"] });
+    const FIELD_3_COL = new QueryColumn({name: "field3", fieldKey: "field3", fieldKeyArray: ["field3"] });
+    const SYSTEM_COL = new QueryColumn({ name: "systemCol", fieldKey: "systemCol", fieldKeyArray: ["systemCol"] , hidden: true});
+    const HIDDEN_COL = new QueryColumn({ name: "hiddenCol", fieldKey: "hiddenCol", fieldKeyArray: ["hiddenCol"] , hidden: true});
     const columns = fromJS({
         field1: FIELD_1_COL,
         field2: FIELD_2_COL,
@@ -215,5 +228,4 @@ describe("CustomizeGridViewModal", () => {
 
         wrapper.unmount();
     });
-
 });

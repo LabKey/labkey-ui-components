@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.181.1
+*Released*: 15 June 2022
 * Remove QueryGridModel and related utils, actions, components, etc.
 
 ### version 2.181.0

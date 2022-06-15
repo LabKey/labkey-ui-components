@@ -7,8 +7,6 @@ import { handleActions } from 'redux-actions';
 
 import { ServerNotificationModel, ProductMenuModel } from '../..';
 
-import { resetQueryGridState } from '../global';
-
 import { AppModel, LogoutReason } from './models';
 import {
     SECURITY_LOGOUT,
@@ -27,8 +25,6 @@ import {
     SERVER_NOTIFICATIONS_LOADING_START,
     SERVER_NOTIFICATIONS_LOADING_ERROR,
     SERVER_NOTIFICATIONS_LOADING_END,
-    SET_RESET_QUERY_GRID_STATE,
-    RESET_QUERY_GRID_STATE,
 } from './constants';
 
 export type AppReducerState = AppModel;
@@ -67,19 +63,6 @@ export const AppReducers = handleActions<AppReducerState, any>(
             return state.merge({
                 reloadRequired: true,
                 logoutReason: LogoutReason.SERVER_UNAVAILABLE,
-            });
-        },
-
-        [SET_RESET_QUERY_GRID_STATE]: (state: AppReducerState) => {
-            return state.merge({
-                needsInvalidateQueryGrid: true,
-            });
-        },
-
-        [RESET_QUERY_GRID_STATE]: (state: AppReducerState) => {
-            resetQueryGridState();
-            return state.merge({
-                needsInvalidateQueryGrid: false,
             });
         },
     },

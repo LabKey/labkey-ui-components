@@ -16,9 +16,8 @@
 import { List, Map } from 'immutable';
 
 import { getSelectedData } from '../../actions';
-import { EditorModel } from '../../models';
+import { EditorModel, IEditableGridLoader } from '../../models';
 import { IGridResponse, QueryColumn, QueryInfo, QueryModel } from '../../..';
-import { IEditableGridLoader } from '../../QueryGridModel';
 
 export class EditableGridLoaderFromSelection implements IEditableGridLoader {
     id: string;

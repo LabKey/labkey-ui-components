@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 45030: Admin > Permissions Groups click target should be the whole row
 
+### version 2.181.1
+*Released*: 15 June 2022
+* Remove QueryGridModel and related utils, actions, components, etc.
+
 ### version 2.181.0
 *Released*: 14 June 2022
 * Item 10376: Add `CustomizeGridViewModal` for, yeah, customizing grid views

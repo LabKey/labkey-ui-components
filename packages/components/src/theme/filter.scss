@@ -23,7 +23,11 @@
         display: inline-block;
         height: 16px;
         width: 16px;
-        margin-right: 10px;
+        margin-right: 5px;
+
+        .fa {
+            cursor: pointer;
+        }
     }
 
     .field_count_circle {

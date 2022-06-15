@@ -30,7 +30,7 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
 }
 
-export const APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE = 'This application column cannot be removed.';
+export const APP_FIELD_CANNOT_BE_REMOVED_MESSAGE = 'This application field cannot be removed.';
 
 interface HeaderCellDropdownProps {
     column: GridColumn;
@@ -233,7 +233,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                     <DisableableMenuItem
                                         operationPermitted={allowColumnViewChange}
                                         onClick={() => _handleHideColumn()}
-                                        disabledMessage={APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}
+                                        disabledMessage={APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
                                     >
                                         <span className="fa fa-eye-slash grid-panel__menu-icon" />
                                         &nbsp; Hide Column

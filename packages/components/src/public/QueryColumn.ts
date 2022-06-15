@@ -67,7 +67,7 @@ export class QueryColumn extends Record({
     facetingBehaviorType: undefined,
     fieldKey: undefined,
     fieldKeyArray: undefined,
-    // fieldKeyPath: undefined,
+    fieldKeyPath: undefined,
     filterable: true,
     format: undefined,
     friendlyType: undefined,
@@ -142,7 +142,7 @@ export class QueryColumn extends Record({
     declare facetingBehaviorType: string;
     declare fieldKey: string;
     declare fieldKeyArray: string[];
-    // declare fieldKeyPath: string;
+    declare fieldKeyPath: string;
     declare filterable: boolean;
     declare format: string;
     declare friendlyType: string;
@@ -228,6 +228,12 @@ export class QueryColumn extends Record({
         // this is a multi-part fieldKey which means the data index will be FieldKey encoded as well.
         if (this.fieldKey.indexOf('/') > -1) {
             return this.fieldKey;
+        }
+
+        // "fieldKeyPath" is used for getQueryDetails calls when an fk is passed as a prop (to get the child fields
+        // for a lookup
+        if (this.fieldKeyPath.indexOf('/') > -1) {
+            return this.fieldKeyPath;
         }
 
         // This is a single-part fieldKey so the data index will NOT be FieldKey encoded.

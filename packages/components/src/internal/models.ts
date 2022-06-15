@@ -15,30 +15,17 @@
  */
 import { fromJS, Iterable, List, Map, Record, Set } from 'immutable';
 
-import {
-    AppURL,
-    DataViewInfoTypes,
-    getQueryGridModel,
-    QueryColumn,
-    QueryGridModel,
-    QueryInfo,
-    QueryModel,
-    resolveSchemaQuery,
-    SchemaQuery,
-    ViewInfo,
-} from '..';
+import { AppURL, DataViewInfoTypes, QueryColumn, QueryInfo, QueryModel, resolveSchemaQuery, SchemaQuery } from '..';
 
 import { encodePart } from '../public/SchemaQuery';
 
 import { genCellKey } from './actions';
-import { getQueryColumnRenderers, getQueryMetadata } from './global';
-import { DefaultGridLoader } from './components/GridLoader';
+import { getQueryColumnRenderers } from './global';
 import { GRID_EDIT_INDEX } from './constants';
-import { IQueryGridModel } from './QueryGridModel';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
 import { quoteValueWithDelimiters } from './util/utils';
 
-export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
+export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
 
     if (schemaQuery && schemaQuery.viewName) {
@@ -49,60 +36,6 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
     }
 
     return parts.join('|').toLowerCase();
-}
-
-export type PropsInitializer = () => IQueryGridModel;
-
-/**
- * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
- * @param gridId
- * @param schemaQuery
- * @param [initProps] can be either a props object or a function that returns a props object.
- * @param [keyValue]
- * @returns {QueryGridModel}
- */
-export function getStateQueryGridModel(
-    gridId: string,
-    schemaQuery: SchemaQuery,
-    initProps?: IQueryGridModel | PropsInitializer,
-    keyValue?: any
-): QueryGridModel {
-    const modelId = getStateModelId(gridId, schemaQuery, keyValue);
-
-    // if the model already exists in the global state, return it
-    const model = getQueryGridModel(modelId);
-
-    if (model) {
-        return model;
-    }
-
-    const metadata = getQueryMetadata();
-
-    let modelProps: Partial<IQueryGridModel> = {
-        keyValue,
-        id: modelId,
-        loader: DefaultGridLoader, // Should we make this a default on the QueryGridModel class?
-        schema: schemaQuery.schemaName,
-        query: schemaQuery.queryName,
-        view: schemaQuery.viewName,
-        hideEmptyChartSelector: metadata.get('hideEmptyChartMenu'),
-        hideEmptyViewSelector: metadata.get('hideEmptyViewMenu'),
-    };
-
-    if (keyValue !== undefined && schemaQuery.viewName === undefined) {
-        modelProps.view = ViewInfo.DETAIL_NAME;
-        modelProps.bindURL = false;
-    }
-
-    if (initProps !== undefined) {
-        const props = typeof initProps === 'function' ? initProps() : initProps;
-        modelProps = {
-            ...modelProps,
-            ...props,
-        };
-    }
-
-    return new QueryGridModel(modelProps);
 }
 
 type DataViewInfoType =
@@ -125,24 +58,24 @@ type DataViewInfoType =
  * a subset of the fields that are used by the client.
  */
 export interface IDataViewInfo {
-    name?: string;
+    created?: Date;
+    createdBy?: string;
     description?: string;
     detailsUrl?: string;
-    runUrl?: string; // This comes directly from the API response and is a link to LK Server
-    type?: DataViewInfoType;
-    visible?: boolean;
-    id?: string; // This is actually a uuid from the looks of it, should we be more strict on the type here?
-    reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
-    created?: Date;
-    modified?: Date;
-    createdBy?: string;
-    modifiedBy?: string;
-    thumbnail?: string; // This is actually a URL, do we enforce that?
     icon?: string;
     iconCls?: string;
-    shared?: boolean;
-    schemaName?: string;
+    id?: string;// This is actually a uuid from the looks of it, should we be more strict on the type here?
+    modified?: Date;
+    modifiedBy?: string;
+    name?: string;
     queryName?: string;
+    reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
+    runUrl?: string; // This comes directly from the API response and is a link to LK Server
+    visible?: boolean;
+    schemaName?: string;
+    shared?: boolean;
+    thumbnail?: string; // This is actually a URL, do we enforce that?
+    type?: DataViewInfoType;
     viewName?: string;
 
     appUrl?: AppURL; // This is a client side only attribute. Used to navigate within a Single Page App.
@@ -307,7 +240,6 @@ export interface EditorModelProps {
     selectionCells: Set<string>;
 }
 
-// This is a model agnostic form of QueryGridModel.getPkData
 export function getPkData(queryInfo: QueryInfo, row: Map<string, any>) {
     const data = {};
     queryInfo.getPkCols().forEach(pkCol => {
@@ -745,4 +677,28 @@ export class EditorModel
     isRowEmpty(editedRow: Map<string, any>): boolean {
         return editedRow.find(value => value !== undefined) === undefined;
     }
+}
+
+export interface IGridLoader {
+    fetch: (model: QueryModel) => Promise<IGridResponse>;
+    fetchSelection?: (model: QueryModel) => Promise<IGridSelectionResponse>;
+}
+
+export interface IEditableGridLoader extends IGridLoader {
+    id: string;
+    omittedColumns?: string[];
+    queryInfo: QueryInfo;
+    requiredColumns?: string[];
+    updateColumns?: List<QueryColumn>;
+}
+
+export interface IGridResponse {
+    data: Map<any, any>;
+    dataIds: List<any>;
+    messages?: List<Map<string, string>>;
+    totalRows?: number;
+}
+
+export interface IGridSelectionResponse {
+    selectedIds: List<any>;
 }

@@ -6,8 +6,6 @@ import React, { FC, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
 import { createNotification, withTimeout } from '../notifications/actions';
-import { queryGridInvalidate } from '../../actions';
-import { SCHEMAS } from '../../schemas';
 import { isLoginAutoRedirectEnabled } from '../administration/utils';
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
 
@@ -30,9 +28,9 @@ import { ChangePasswordModal } from './ChangePasswordModal';
 import { useUserProperties } from './UserProvider';
 
 interface Props {
-    updateUserDisplayName: (displayName: string) => any;
-    setReloadRequired: () => any;
     goBack: (n?: number) => any;
+    setReloadRequired: () => any;
+    updateUserDisplayName: (displayName: string) => any;
 }
 
 const TITLE = 'User Profile';
@@ -54,8 +52,6 @@ export const ProfilePage: FC<Props> = props => {
             createNotification(successMsg);
             setReloadRequired();
         } else if (result) {
-            queryGridInvalidate(SCHEMAS.CORE_TABLES.USERS);
-
             // push any display name changes to the app state user object
             if (result['updatedRows'].length === 1) {
                 const row = result['updatedRows'][0];

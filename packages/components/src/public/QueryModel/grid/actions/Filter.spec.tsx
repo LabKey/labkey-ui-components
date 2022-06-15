@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List } from 'immutable';
+import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { QueryColumn, QueryGridModel, QueryInfo } from '../../../..';
+import { QueryColumn, QueryInfo } from '../../../..';
 
 import mixturesWithAliasesQueryInfo from '../../../../test/data/mixturesWithAliases-getQueryDetails.json';
-import mixturesWithAliasesQuery from '../../../../test/data/mixturesWithAliases-getQuery.json';
-import { initUnitTests, makeQueryInfo, makeTestData } from '../../../../internal/testHelpers';
+import { initUnitTests, makeQueryInfo } from '../../../../internal/testHelpers';
 
 import { FilterAction } from './Filter';
 import { ActionValue } from './Action';
@@ -30,16 +29,7 @@ let getColumns: () => List<QueryColumn>;
 
 beforeAll(() => {
     initUnitTests();
-    const mockData = makeTestData(mixturesWithAliasesQuery);
     queryInfo = makeQueryInfo(mixturesWithAliasesQueryInfo);
-    const model = new QueryGridModel({
-        queryInfo,
-        messages: fromJS(mockData.messages),
-        data: fromJS(mockData.rows),
-        dataIds: fromJS(mockData.orderedRows),
-        totalRows: mockData.rowCount,
-    });
-    getColumns = (all?) => (all ? model.getAllColumns() : model.getDisplayColumns());
 });
 
 describe('FilterAction::actionValueFromFilter', () => {

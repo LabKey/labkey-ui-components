@@ -44,6 +44,15 @@ describe('ManageViewsModal', () => {
         session: true,
     });
 
+    const SHARED_VIEW = ViewInfo.create({
+        columns: [],
+        filters: [],
+        default: false,
+        label: 'View 3',
+        name: 'View3',
+        shared: true,
+    });
+
     test('no views', async () => {
         const wrapper = mountWithAppServerContext(
             <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
@@ -65,11 +74,11 @@ describe('ManageViewsModal', () => {
         wrapper.unmount();
     });
 
-    test('multiple saved views: default, named and session view', async () => {
+    test('multiple saved views: default, named, shared and session view', async () => {
         const wrapper = mountWithAppServerContext(
             <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
             {
-                api: getQueryAPI([DEFAULT_VIEW, VIEW_1, SESSION_VIEW]),
+                api: getQueryAPI([DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
             },
             {
                 user: TEST_USER_PROJECT_ADMIN,
@@ -83,7 +92,7 @@ describe('ManageViewsModal', () => {
         expect(wrapper.find('ModalTitle').text()).toBe('Manage Saved Views');
 
         const rows = wrapper.find('.row');
-        expect(rows.length).toBe(3);
+        expect(rows.length).toBe(4);
 
         expect(rows.at(0).find('.manage-view-name').text()).toBe('Default View');
         expect(rows.at(0).find('.fa-pencil').length).toBe(0);
@@ -100,7 +109,14 @@ describe('ManageViewsModal', () => {
         expect(rows.at(2).find('.manage-view-name').text()).toBe('View 2 (Edited)');
         expect(rows.at(2).find('.fa-pencil').length).toBe(0);
         expect(rows.at(2).find('.fa-trash-o').length).toBe(0);
-        expect(rows.at(2).find('.clickable-text').length).toBe(0);
+        expect(rows.at(2).find('.clickable-text').length).toBe(1);
+        expect(rows.at(2).find('.clickable-text').text()).toBe('Set default');
+
+        expect(rows.at(3).find('.manage-view-name').text()).toBe('View 3');
+        expect(rows.at(3).find('.fa-pencil').length).toBe(1);
+        expect(rows.at(3).find('.fa-trash-o').length).toBe(1);
+        expect(rows.at(3).find('.clickable-text').length).toBe(1);
+        expect(rows.at(3).find('.clickable-text').text()).toBe('Set default');
 
         const findButton = wrapper.find('button.btn-default');
         expect(findButton.text()).toEqual('Done editing');
@@ -112,7 +128,7 @@ describe('ManageViewsModal', () => {
         const wrapper = mountWithAppServerContext(
             <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
             {
-                api: getQueryAPI([DEFAULT_VIEW, VIEW_1, SESSION_VIEW]),
+                api: getQueryAPI([DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
             },
             {
                 user: TEST_USER_READER,
@@ -126,7 +142,7 @@ describe('ManageViewsModal', () => {
         expect(wrapper.find('ModalTitle').text()).toBe('Manage Saved Views');
 
         const rows = wrapper.find('.row');
-        expect(rows.length).toBe(3);
+        expect(rows.length).toBe(4);
 
         expect(rows.at(0).find('.manage-view-name').text()).toBe('Default View');
         expect(rows.at(0).find('.fa-pencil').length).toBe(0);
@@ -142,6 +158,11 @@ describe('ManageViewsModal', () => {
         expect(rows.at(2).find('.fa-pencil').length).toBe(0);
         expect(rows.at(2).find('.fa-trash-o').length).toBe(0);
         expect(rows.at(2).find('.clickable-text').length).toBe(0);
+
+        expect(rows.at(3).find('.manage-view-name').text()).toBe('View 3');
+        expect(rows.at(3).find('.fa-pencil').length).toBe(0);
+        expect(rows.at(3).find('.fa-trash-o').length).toBe(0);
+        expect(rows.at(3).find('.clickable-text').length).toBe(0);
 
         const findButton = wrapper.find('button.btn-default');
         expect(findButton.text()).toEqual('Done editing');

@@ -8,16 +8,17 @@ import { Alert } from '../../internal/components/base/Alert';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 import { useAppContext } from '../../internal/AppContext';
 import { resolveErrorMessage } from '../../internal/util/messaging';
-import { deleteView, renameGridView, revertViewEdit, saveGridView } from '../../internal/actions';
+import { deleteView, renameGridView, revertViewEdit, saveGridView, saveSessionView } from '../../internal/actions';
 
 export interface Props {
     currentView: ViewInfo;
     onDone: (hasChange?: boolean, reselectViewName?: string) => void;
     schemaQuery: SchemaQuery;
+    containerPath?: string;
 }
 
 export const ManageViewsModal: FC<Props> = memo(props => {
-    const { onDone, schemaQuery, currentView } = props;
+    const { onDone, schemaQuery, currentView, containerPath } = props;
 
     const [views, setViews] = useState<ViewInfo[]>(undefined);
     const [selectedView, setSelectedView] = useState<ViewInfo>(undefined);
@@ -70,9 +71,22 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             await handleAction(async () => {
                 const finalViewInfo = new ViewInfo({
                     ...view.toJS(),
-                    name: newName,
+                    name: '',
                 });
-                await saveGridView(schemaQuery, undefined, finalViewInfo, true, false, view.inherit, true);
+                if (view.session)
+                    await saveSessionView(
+                        schemaQuery,
+                        containerPath,
+                        view.name,
+                        '',
+                        view.inherit,
+                        true,
+                        true
+                    );
+                else
+                    await saveGridView(schemaQuery, containerPath, finalViewInfo, true, false, view.inherit, true);
+                await deleteView(schemaQuery, containerPath, view.name, false);
+                if (currentView.name === view.name) setReselectViewName('');
             });
         },
         [schemaQuery]
@@ -81,7 +95,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     const deleteSavedView = useCallback(
         async viewName => {
             await handleAction(async () => {
-                await deleteView(schemaQuery, undefined, viewName, false);
+                await deleteView(schemaQuery, containerPath, viewName, false);
                 if (currentView.name === viewName) setReselectViewName('');
             });
         },
@@ -121,7 +135,10 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                         const unsavedView = view.session;
                         const isRenaming = !!selectedView;
                         const isDefault = view.isDefault;
-                        const canEdit = !isDefault && !isRenaming && !unsavedView;
+                        let canEdit = !isDefault && !isRenaming && !unsavedView;
+                        if (view.shared)
+                            canEdit = canEdit && (user.isAdmin);
+
                         let viewLabel = view.isDefault ? 'Default View' : view.label;
                         if (unsavedView) viewLabel += ' (Edited)';
 
@@ -150,7 +167,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                     Revert
                                                 </span>
                                             )}
-                                            {canEdit && (
+                                            {!isDefault && !isRenaming && (
                                                 <span onClick={() => setDefaultView(view)} className="clickable-text">
                                                     Set default
                                                 </span>

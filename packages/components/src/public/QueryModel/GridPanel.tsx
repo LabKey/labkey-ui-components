@@ -1108,6 +1108,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 {showManageViewsModal && (
                     <ManageViewsModal
                         schemaQuery={model.schemaQuery}
+                        containerPath={model.containerPath}
                         currentView={view}
                         onDone={this.closeManageViewsModal}
                     />

@@ -70,7 +70,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                 await deleteRows({
                     auditBehavior,
                     rows: rowsToDelete,
-                    schemaQuery: queryModel?.schemaQuery,
+                    schemaQuery: queryModel.schemaQuery,
                 });
                 afterDelete(rowsToKeep);
                 createDeleteSuccessNotification(noun, rowsToDelete.length, undefined);
@@ -79,7 +79,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                 createDeleteErrorNotification(noun);
             }
         },
-        [auditBehavior, beforeDelete, entityDataType, queryModel]
+        [afterDelete, auditBehavior, beforeDelete, entityDataType, queryModel]
     );
 
     if (!queryModel) {

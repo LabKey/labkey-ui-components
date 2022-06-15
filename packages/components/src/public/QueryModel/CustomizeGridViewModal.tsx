@@ -82,16 +82,17 @@ interface Props {
     model: QueryModel;
     onCancel: () => void;
     onUpdate: () => void;
+    selectedColumn: QueryColumn;
 }
 
 export const CustomizeGridViewModal: FC<Props> = memo(props => {
-    const { model, onCancel, onUpdate } = props;
+    const { model, onCancel, onUpdate, selectedColumn } = props;
     const { schemaQuery, title } = model;
     const [columnsInView, setColumnsInView] = useState<any>(model.displayColumns);
     const [isDirty, setIsDirty] = useState<boolean>(false);
     const [saveError, setSaveError] = useState<string>(undefined);
     const [showAllColumns, setShowAllColumns] = useState<boolean>(false);
-    const [selectedIndex, setSelectedIndex] = useState<number>(undefined);
+    const [selectedIndex, setSelectedIndex] = useState<number>(selectedColumn ? model.displayColumns.findIndex(col => selectedColumn.index === col.index) : undefined);
 
     const gridName = title ?? schemaQuery.queryName;
 

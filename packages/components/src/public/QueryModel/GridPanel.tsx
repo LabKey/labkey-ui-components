@@ -364,6 +364,7 @@ interface State {
     showFilterModalFieldKey: string;
     showSaveViewModal: boolean;
     showCustomizeViewModal: boolean;
+    selectedColumn: QueryColumn;
 }
 
 /**
@@ -411,6 +412,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             headerClickCount: {},
             errorMsg: undefined,
             isViewSaved: false,
+            selectedColumn: undefined,
         };
     }
 
@@ -714,6 +716,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
     };
 
+    addColumn = (selectedColumn: QueryColumn): void => {
+        this.setState({
+            selectedColumn: selectedColumn,
+            showCustomizeViewModal: true
+        });
+    };
+
     saveAsSessionView = (updates: Record<string, any>): void => {
         const { schemaQuery, containerPath } = this.props.model;
         const view = this.getModelView();
@@ -925,6 +934,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             columnCount,
             allowSorting ? this.sortColumn : undefined,
             allowFiltering ? this.filterColumn : undefined,
+            allowViewCustomization ? this.addColumn : undefined,
             allowViewCustomization ? this.hideColumn : undefined,
             model,
             headerClickCount[column.index]
@@ -1078,6 +1088,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         model={model}
                         onCancel={this.toggleCustomizeView}
                         onUpdate={this.onSessionViewUpdate}
+                        selectedColumn={this.state.selectedColumn}
                     />
                 )}
             </>

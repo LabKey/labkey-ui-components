@@ -85,7 +85,9 @@ export function getDeleteConfirmationData(
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
     }
-    return getOperationConfirmationData(selectionKey, dataType, rowIds);
+    return getOperationConfirmationData(selectionKey, dataType, rowIds, {
+        dataOperation: DataOperation.Delete
+    });
 }
 
 export function getSampleOperationConfirmationData(

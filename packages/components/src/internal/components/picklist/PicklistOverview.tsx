@@ -39,6 +39,7 @@ import { Picklist, PICKLIST_SAMPLES_FILTER } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
+import { isCustomizeViewsInAppEnabled } from '../../app/utils';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -221,6 +222,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                                 advancedExportOptions: exportConfig,
                                 alwaysShowTabs: true,
                                 exportFilename: picklist.name + '_Samples',
+                                hideEmptyViewMenu: !isCustomizeViewsInAppEnabled(),
                             }}
                         />
                     </div>

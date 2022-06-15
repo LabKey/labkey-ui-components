@@ -372,7 +372,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             {renderFilterTypeInputs(0)}
             {shouldShowSecondFilter() && (
                 <>
-                    <div className="filter-modal__col-sub-title">and</div>
+                    <div className="field-modal__col-sub-title">and</div>
                     <SelectInput
                         key="filter-expression-field-filter-type"
                         name="filter-expression-field-filter-type"

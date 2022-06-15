@@ -7,6 +7,10 @@
         font-size: 16px;
         padding: 8px 10px;
         border-radius: 0;
+
+        &.dragging .hierarchy-drop-target {
+            background-color: rgba($brand-primary, 0.15);
+        }
     }
 
     .list-group-item.active {

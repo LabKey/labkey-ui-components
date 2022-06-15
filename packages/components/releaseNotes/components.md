@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add ability to rearrange fields from `CustomizeGridViewModal`
+
 ### version 2.181.1
 *Released*: 15 June 2022
 * Remove QueryGridModel and related utils, actions, components, etc.

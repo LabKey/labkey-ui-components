@@ -5,6 +5,8 @@ import { saveAsSessionView } from '../../internal/actions';
 import { QueryModel } from './QueryModel';
 import { QueryColumn } from '../QueryColumn';
 import { APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/renderers';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragDropHandle } from '../../internal/components/base/DragDropHandle';
 
 interface ColumnChoiceProps {
     column: QueryColumn,
@@ -37,25 +39,38 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     const { column, index, onColumnRemove } = props;
 
     let overlay;
-    const disabled = column.addToDisplayView;
+    const canBeRemoved = column.addToDisplayView;
     let content = (
-        <span className={"pull-right " + (disabled ? "text-muted disabled" : "clickable")} onClick={disabled ? undefined : onColumnRemove}>
+        <span className={"pull-right " + (!canBeRemoved ? "text-muted disabled" : "clickable")} onClick={!canBeRemoved ? undefined : onColumnRemove}>
             <i className="fa fa-times"/>
         </span>
     );
-    if (disabled) {
+    if (!canBeRemoved) {
         overlay = <Popover id={column.name + "-disabled-popover"} key={index + '-disabled-warning'}>{APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}</Popover>;
     }
+    const key = column.index;
+
     return (
-        <div className="list-group-item" key={index}>
-            <span className="field-name" >{column.caption ?? column.name}</span>
-            {!disabled && content}
-            {disabled &&
-                <OverlayTrigger overlay={overlay} placement="bottom">
-                    {content}
-                </OverlayTrigger>
-            }
-        </div>
+        <Draggable key={key} draggableId={key} index={index} >
+            {(dragProvided, snapshot) => (
+                <div className="list-group-item"
+                     ref={dragProvided.innerRef}
+                     {...dragProvided.draggableProps}>
+                    <span {...dragProvided.dragHandleProps}>
+                        <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps}/>
+                    </span>
+                    <span key={index}>
+                        <span className="field-name left-spacing" >{column.caption ?? column.name}</span>
+                        {canBeRemoved && content}
+                        {!canBeRemoved &&
+                            <OverlayTrigger overlay={overlay} placement="bottom">
+                                {content}
+                            </OverlayTrigger>
+                        }
+                    </span>
+                </div>
+            )}
+        </Draggable>
     );
 })
 
@@ -113,6 +128,21 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         return columnsInView.findIndex(col => col === column) !== -1;
     }
 
+    const onDropField = useCallback((dropResult: DropResult): void => {
+        const { destination, draggableId, source } = dropResult;
+        if (destination === null || source.index === destination.index) {
+            return;
+        }
+        const { index } = destination;
+
+        const colInMotion = columnsInView[source.index];
+        let updatedColumns = columnsInView.filter(col => col.index != draggableId);
+        updatedColumns = [...updatedColumns.slice(0, index), colInMotion, ...updatedColumns.slice(index) ];
+        setColumnsInView(updatedColumns);
+        setIsDirty(true);
+    }, [columnsInView]);
+
+
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
             <Modal.Header closeButton>
@@ -150,20 +180,25 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                             {/* Taking this out for now, until we figure out how to handle session views here */}
                             {/*{!model.currentView.session && isDirty && <span className="pull-right action-text" onClick={revertEdits}>Restore default columns</span>}*/}
                         </div>
-                        <div className="list-group field-modal__col-content">
-                            {
-                                columnsInView.map((column, index) => {
-                                    return (
-                                        <ColumnInView
-                                            key={index}
-                                            column={column}
-                                            index={index}
-                                            onColumnRemove={() => removeColumn(index)}
-                                        />
-                                    )
-                                })
-                            }
-                        </div>
+                        <DragDropContext onDragEnd={onDropField} >
+                            <Droppable droppableId="field-droppable">
+                                {dropProvided => (
+                                    <div className="list-group field-modal__col-content" {...dropProvided.droppableProps} ref={dropProvided.innerRef}>
+                                        {columnsInView.map((column, index) => {
+                                            return (
+                                                <ColumnInView
+                                                    key={index}
+                                                    column={column}
+                                                    index={index}
+                                                    onColumnRemove={() => removeColumn(index)}
+                                                />
+                                            )
+                                        })}
+                                        {dropProvided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
                     </Col>
                 </Row>
             </Modal.Body>

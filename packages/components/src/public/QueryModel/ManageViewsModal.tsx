@@ -13,7 +13,7 @@ import { deleteView, renameGridView, revertViewEdit, saveGridView, saveSessionVi
 export interface Props {
     containerPath?: string;
     currentView: ViewInfo;
-    onDone: (hasChange?: boolean, reselectViewName?: string) => void;
+    onDone: (hasChange: boolean, reselectViewName: string) => void;
     schemaQuery: SchemaQuery;
 }
 
@@ -42,8 +42,12 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         })();
     }, []);
 
+    const onClose = useCallback(() => {
+        onDone(hasChange, reselectViewName);
+    }, [hasChange, reselectViewName, onDone]);
+
     const handleAction = useCallback(
-        async (_handle: () => any) => {
+        async (_handle: () => void) => {
             setErrorMessage(undefined);
             setIsSubmitting(true);
             setHasChange(true);
@@ -60,19 +64,15 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         [schemaQuery]
     );
 
-    const revertDefaultView = useCallback(async () => {
-        await handleAction(async () => {
-            await revertViewEdit(schemaQuery, undefined, '');
+    const revertDefaultView = useCallback(() => {
+        handleAction(async () => {
+            await revertViewEdit(schemaQuery, containerPath, '');
         });
-    }, [schemaQuery]);
+    }, [schemaQuery, containerPath]);
 
-    const setDefaultView = useCallback(
-        async (view: ViewInfo) => {
-            await handleAction(async () => {
-                const finalViewInfo = new ViewInfo({
-                    ...view.toJS(),
-                    name: '',
-                });
+    const setDefaultView = useCallback((view: ViewInfo) => {
+            handleAction(async () => {
+                const finalViewInfo = view.mutate({ name: '' });
                 if (view.session)
                     await saveSessionView(schemaQuery, containerPath, view.name, '', view.inherit, true, true);
                 else await saveGridView(schemaQuery, containerPath, finalViewInfo, true, false, view.inherit, true);
@@ -80,17 +80,17 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                 if (currentView.name === view.name) setReselectViewName('');
             });
         },
-        [schemaQuery]
+        [schemaQuery, containerPath, currentView]
     );
 
     const deleteSavedView = useCallback(
-        async viewName => {
-            await handleAction(async () => {
+        viewName => {
+            handleAction(async () => {
                 await deleteView(schemaQuery, containerPath, viewName, false);
                 if (currentView.name === viewName) setReselectViewName('');
             });
         },
-        [currentView, schemaQuery]
+        [currentView, schemaQuery, containerPath]
     );
 
     const renameView = useCallback(async () => {
@@ -105,16 +105,16 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         }
 
         await handleAction(async () => {
-            await renameGridView(schemaQuery, undefined, selectedView.name, newName);
+            await renameGridView(schemaQuery, containerPath, selectedView.name, newName);
             setSelectedView(undefined);
             if (selectedView.name === currentView.name) setReselectViewName(newName);
         });
-    }, [selectedView, newName, currentView, schemaQuery]);
+    }, [selectedView, newName, currentView, schemaQuery, containerPath]);
 
     const onNewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setNewName(evt.target.value), []);
 
     return (
-        <Modal onHide={() => onDone(hasChange, reselectViewName)} show>
+        <Modal onHide={onClose} show>
             <Modal.Header closeButton>
                 <Modal.Title>Manage Saved Views</Modal.Title>
             </Modal.Header>
@@ -133,7 +133,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                         if (unsavedView) viewLabel += ' (Edited)';
 
                         return (
-                            <Row className="small-margin-bottom">
+                            <Row className="small-margin-bottom" key={view.name}>
                                 <Col xs={7}>
                                     {selectedView && selectedView?.name === view.name ? (
                                         <input
@@ -192,7 +192,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             <Modal.Footer>
                 <button
                     disabled={isSubmitting}
-                    onClick={() => onDone(hasChange, reselectViewName)}
+                    onClick={onClose}
                     className="btn btn-default pull-right"
                 >
                     Done editing

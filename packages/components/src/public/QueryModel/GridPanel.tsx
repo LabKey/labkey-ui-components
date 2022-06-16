@@ -766,8 +766,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         if (hasChange) {
             actions.loadModel(model.id, allowSelections);
-            if (reselectViewName !== undefined) {
-                this.onViewSelect(reselectViewName === '' ? undefined : reselectViewName);
+            if (reselectViewName !== undefined) { // don't reselect if reselectViewName is undefined
+                this.onViewSelect(reselectViewName);
             }
         }
 
@@ -875,7 +875,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { actions, model, allowSelections } = this.props;
         let updateViewCallback: () => void;
 
-        if (viewName !== undefined) {
+        if (viewName !== undefined && viewName !== null && viewName !== '') {
             if (viewName !== model.viewName) {
                 // Only trigger view change if the viewName has changed
                 updateViewCallback = () => actions.setView(model.id, viewName, allowSelections);

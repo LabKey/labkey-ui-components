@@ -54,7 +54,7 @@ export function getQueryTestAPIWrapper(
         incrementClientSideMetricCount: mockFn(),
         selectRows: mockFn(),
         selectDistinctRows: mockFn(),
-        getGridViews: mockFn,
+        getGridViews: mockFn(),
         ...overrides,
     };
 }

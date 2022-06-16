@@ -14,6 +14,10 @@
         font-weight: bold;
     }
 
+    .list-group-item.draggable {
+        left: auto !important;
+    }
+
     .field_count_circle {
         border-radius: 50%;
         text-align: center;
@@ -44,6 +48,11 @@
             font-size: 14px;
             color: $link-color;
             cursor: pointer;
+
+        }
+        .disabled-action-text {
+            font-size: 14px;
+            color: $light-gray;
         }
     }
 
@@ -187,6 +196,7 @@
     margin: 3px 0;
     line-height: 22px;
 }
+
 
 .filter-faceted__panel {
         height: 355px;

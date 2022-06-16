@@ -74,12 +74,15 @@ function resolveColumns(data: List<Map<string, any>>): List<GridColumn> {
     return columns.asImmutable();
 }
 
-function getColumnHoverText(info: any): string {
+// export for jest testing
+export function getColumnHoverText(info: any): string {
     let description = info?.description || '';
     let sepLeft = description.length > 0 ? '(' : '';
     let sepRight = description.length > 0 ? ')' : '';
 
-    description += info?.index !== info?.caption ? ' ' + sepLeft + info.index + sepRight : '';
+    // show field key for lookups to help determine path to field when the name is generic (i.e. "Name" is
+    // from "Ancestors/Sources/Lab/Name")
+    description += info?.index?.indexOf('/') > -1 ? ' ' + sepLeft + info.index + sepRight : '';
     sepLeft = description.length > 0 ? '(' : '';
     sepRight = description.length > 0 ? ')' : '';
 

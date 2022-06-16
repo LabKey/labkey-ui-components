@@ -20,7 +20,6 @@ exports[`Grid component hide tooltip 1`] = `
               "minWidth": undefined,
             }
           }
-          title="name"
         >
           Player Name
         </th>
@@ -32,7 +31,6 @@ exports[`Grid component hide tooltip 1`] = `
               "minWidth": undefined,
             }
           }
-          title="number"
         >
           Number
         </th>
@@ -238,7 +236,6 @@ exports[`Grid component loading text and action 1`] = `
               "minWidth": undefined,
             }
           }
-          title="name"
         >
           Player Name
         </th>
@@ -250,7 +247,6 @@ exports[`Grid component loading text and action 1`] = `
               "minWidth": undefined,
             }
           }
-          title="number"
         >
           Number
         </th>
@@ -485,7 +481,6 @@ exports[`Grid component render with non-default properties 1`] = `
               "minWidth": "133px",
             }
           }
-          title="name"
         >
           Player Name
         </th>
@@ -497,7 +492,6 @@ exports[`Grid component render with non-default properties 1`] = `
               "minWidth": "93px",
             }
           }
-          title="number"
         >
           Number
         </th>
@@ -841,7 +835,6 @@ exports[`Grid component rendering with data and columns 1`] = `
               "minWidth": undefined,
             }
           }
-          title="name"
         >
           Player Name
         </th>
@@ -853,7 +846,6 @@ exports[`Grid component rendering with data and columns 1`] = `
               "minWidth": undefined,
             }
           }
-          title="number"
         >
           Number
         </th>
@@ -1021,7 +1013,6 @@ exports[`Grid component rendering with no data and columns 1`] = `
               "minWidth": undefined,
             }
           }
-          title="name"
         >
           Player Name
         </th>
@@ -1033,7 +1024,6 @@ exports[`Grid component rendering with no data and columns 1`] = `
               "minWidth": undefined,
             }
           }
-          title="number"
         >
           Number
         </th>
@@ -1085,7 +1075,6 @@ exports[`Grid component with phi data 1`] = `
               "minWidth": undefined,
             }
           }
-          title="name"
         >
           Player Name
         </th>
@@ -1097,7 +1086,6 @@ exports[`Grid component with phi data 1`] = `
               "minWidth": undefined,
             }
           }
-          title="number"
         >
           Number
         </th>

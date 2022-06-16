@@ -9060,7 +9060,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                             "minWidth": "100px",
                                           }
                                         }
-                                        title="Used with either VisitID or Date to identify subject and timepoint for assay. (ParticipantID)"
+                                        title="Used with either VisitID or Date to identify subject and timepoint for assay."
                                       >
                                         Participant ID
                                       </th>
@@ -9073,7 +9073,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                             "minWidth": "100px",
                                           }
                                         }
-                                        title="Used with ParticipantID to identify subject and timepoint for assay. (VisitID)"
+                                        title="Used with ParticipantID to identify subject and timepoint for assay."
                                       >
                                         Visit ID
                                       </th>
@@ -18451,7 +18451,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                                             "minWidth": "100px",
                                           }
                                         }
-                                        title="Used with either VisitID or Date to identify subject and timepoint for assay. (ParticipantID)"
+                                        title="Used with either VisitID or Date to identify subject and timepoint for assay."
                                       >
                                         Participant ID
                                       </th>
@@ -18464,7 +18464,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                                             "minWidth": "100px",
                                           }
                                         }
-                                        title="Used with ParticipantID to identify subject and timepoint for assay. (VisitID)"
+                                        title="Used with ParticipantID to identify subject and timepoint for assay."
                                       >
                                         Visit ID
                                       </th>

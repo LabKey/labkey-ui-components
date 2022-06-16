@@ -69,7 +69,6 @@ null"
                 "minWidth": undefined,
               }
             }
-            title="mixtureTypeId"
           >
             Mixture Type
           </th>
@@ -81,7 +80,7 @@ null"
                 "minWidth": undefined,
               }
             }
-            title="The expiration period in days. (expirationTime)"
+            title="The expiration period in days."
           >
             Expiration Time
           </th>

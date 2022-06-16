@@ -1,6 +1,8 @@
 import React, { FC, memo, PureComponent, ReactNode, useCallback } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
+import { Set } from 'immutable';
+
 import { EXPORT_TYPES, getQueryModelExportParams, QueryModel, Tip } from '../..';
 
 import { exportRows } from '../../internal/actions';
@@ -33,13 +35,12 @@ const exportOptions = [
 export interface ExportMenuImplProps extends Omit<ExportMenuProps, "model"> {
     id: string;
     hasData: boolean;
-    selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set.
     hasSelections?: boolean;
     exportHandler: (option: ExportOption) => void;
 }
 
 const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
-    const { id, hasData, supportedTypes, selections, hasSelections, exportHandler, onExport } = props;
+    const { id, hasData, supportedTypes, hasSelections, exportHandler, onExport } = props;
 
     const exportCallback = useCallback((option: ExportOption) => {
         const {type} = option;
@@ -65,14 +66,14 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
                         </MenuItem>
 
                         {exportOptions.map(option => {
-                            if (option.hidden && !supportedTypes?.has(option.type)) return null;
+                            if (option.hidden && !supportedTypes?.includes(option.type)) return null;
 
                             if (option.type === EXPORT_TYPES.LABEL) {
                                 return (
                                     <React.Fragment key={option.type}>
                                         <MenuItem divider />
                                         <MenuItem header>
-                                            Export and Print {selections?.size > 0 ? 'Selected' : ''}
+                                            Export and Print {hasSelections ? 'Selected' : ''}
                                         </MenuItem>
                                         <MenuItem onClick={() => exportCallback(option)}>
                                             <span className={`fa ${option.icon} export-menu-icon`} />
@@ -111,10 +112,10 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
 
     render(): ReactNode {
         const { model, ...rest } = this.props;
-        const { id, hasData, hasSelections, selections } = model;
+        const { id, hasData, hasSelections, } = model;
 
         return (
-            <ExportMenuImpl {...rest} id={id} hasData={hasData} hasSelections={hasSelections} selections={selections} exportHandler={this.export} />
+            <ExportMenuImpl {...rest} id={id} hasData={hasData} hasSelections={hasSelections} exportHandler={this.export} />
         );
     }
 }

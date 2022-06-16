@@ -64,13 +64,25 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         [schemaQuery]
     );
 
+    const getActionView = useCallback((event) => {
+        const targetId = event.target.id;
+        const viewInd = parseInt(targetId.split('-')[1]);
+        return views[viewInd];
+    }, [views]);
+
+    const onSelectView = useCallback((event) => {
+        const view = getActionView(event);
+        setSelectedView(view);
+    }, [getActionView]);
+
     const revertDefaultView = useCallback(() => {
         handleAction(async () => {
             await revertViewEdit(schemaQuery, containerPath, '');
         });
     }, [schemaQuery, containerPath]);
 
-    const setDefaultView = useCallback((view: ViewInfo) => {
+    const setDefaultView = useCallback((event) => {
+            const view = getActionView(event);
             handleAction(async () => {
                 const finalViewInfo = view.mutate({ name: '' });
                 if (view.session)
@@ -80,17 +92,19 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                 if (currentView.name === view.name) setReselectViewName('');
             });
         },
-        [schemaQuery, containerPath, currentView]
+        [schemaQuery, containerPath, currentView, getActionView]
     );
 
     const deleteSavedView = useCallback(
-        viewName => {
+        event => {
+            const view = getActionView(event);
             handleAction(async () => {
+                const viewName = view.name;
                 await deleteView(schemaQuery, containerPath, viewName, false);
                 if (currentView.name === viewName) setReselectViewName('');
             });
         },
-        [currentView, schemaQuery, containerPath]
+        [currentView, schemaQuery, containerPath, getActionView]
     );
 
     const renameView = useCallback(async () => {
@@ -120,9 +134,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             </Modal.Header>
             <Modal.Body>
                 <Alert>{errorMessage}</Alert>
-                {!views && <LoadingSpinner />}
+                {!views && !errorMessage && <LoadingSpinner />}
                 {views &&
-                    views.map(view => {
+                    views.map((view, ind) => {
                         const unsavedView = view.session;
                         const isRenaming = !!selectedView;
                         const isDefault = view.isDefault;
@@ -134,7 +148,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
 
                         return (
                             <Row className="small-margin-bottom" key={view.name}>
-                                <Col xs={7}>
+                                <Col xs={8}>
                                     {selectedView && selectedView?.name === view.name ? (
                                         <input
                                             autoFocus
@@ -158,7 +172,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                 </span>
                                             )}
                                             {!isDefault && !isRenaming && (
-                                                <span onClick={() => setDefaultView(view)} className="clickable-text">
+                                                <span onClick={setDefaultView} id={'setDefault-' + ind} className="clickable-text">
                                                     Set default
                                                 </span>
                                             )}
@@ -169,9 +183,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                     {canEdit && (
                                         <span
                                             className="edit-inline-field__toggle"
-                                            onClick={() => setSelectedView(view)}
+                                            onClick={onSelectView}
                                         >
-                                            <i className="fa fa-pencil" />
+                                            <i id={'select-' + ind} className="fa fa-pencil" />
                                         </span>
                                     )}
                                 </Col>
@@ -179,9 +193,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                     {canEdit && (
                                         <span
                                             className="edit-inline-field__toggle"
-                                            onClick={() => deleteSavedView(view.name)}
+                                            onClick={deleteSavedView}
                                         >
-                                            <i className="fa fa-trash-o" />
+                                            <i id={'delete-' + ind} className="fa fa-trash-o" />
                                         </span>
                                     )}
                                 </Col>

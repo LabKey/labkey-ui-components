@@ -21,6 +21,9 @@
         box-shadow: 0 2px 4px darkgrey;
         display: block;
       }
+      & > .sub-nav.sub-nav--ignore-show {
+          display: none;
+      }
     }
   }
 }

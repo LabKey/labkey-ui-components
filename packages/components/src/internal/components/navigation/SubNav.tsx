@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import classNames from 'classnames';
 import React, { ReactNode, FC, useRef, useState, useCallback, useEffect } from 'react';
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
@@ -23,6 +24,7 @@ import { AppURL, useAppContext, useServerContext } from '../../..';
 import NavItem, { ParentNavItem } from './NavItem';
 
 interface Props {
+    ignoreShow?: boolean; // Forces the SubNav to always be hidden in "scrolled" mode
     noun?: ITab;
     tabs: List<ITab>;
 }
@@ -33,7 +35,7 @@ export interface ITab {
     url: string | AppURL;
 }
 
-export const SubNav: FC<Props> = ({ noun, tabs }) => {
+export const SubNav: FC<Props> = ({ ignoreShow, noun, tabs }) => {
     const scrollable = useRef<HTMLDivElement>();
     const { navigation } = useAppContext();
     const { container } = useServerContext();
@@ -84,8 +86,10 @@ export const SubNav: FC<Props> = ({ noun, tabs }) => {
         calculateIsScrollable();
     }, [calculateIsScrollable, tabs]);
 
+    const className = classNames('navbar navbar-inverse no-margin-bottom sub-nav', { 'sub-nav--ignore-show': ignoreShow });
+
     return (
-        <nav className="navbar navbar-inverse no-margin-bottom sub-nav">
+        <nav className={className}>
             <div className="container">
                 {noun && <ParentNavItem to={noun.url}>{noun.text}</ParentNavItem>}
 

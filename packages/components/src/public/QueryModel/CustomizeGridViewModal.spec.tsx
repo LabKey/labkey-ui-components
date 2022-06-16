@@ -8,12 +8,13 @@ import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { fromJS } from 'immutable';
+import { wrapDraggable } from '../../internal/testHelpers';
 
 describe("ColumnChoice", () => {
     test("isInView", () => {
         const wrapper = mount(
             <ColumnChoice
-                column={QueryColumn.create({name: "testColumn", caption: "Test Column"})}
+                column={QueryColumn.create({name: "testColumn", caption: "Test Column", fieldKey: "testColumn", fieldKeyArray: ["testColumn"]})}
                 index={1}
                 isInView={true}
                 onAddColumn={jest.fn()}
@@ -27,7 +28,7 @@ describe("ColumnChoice", () => {
     test("not isInView", () => {
         const wrapper = mount(
             <ColumnChoice
-                column={QueryColumn.create({name: "testColumn", caption: "Test Column"})}
+                column={QueryColumn.create({name: "testColumn", caption: "Test Column", fieldKey: "testColumn", fieldKeyArray: ["testColumn"]})}
                 index={1}
                 isInView={false}
                 onAddColumn={jest.fn()}
@@ -62,14 +63,18 @@ describe("ColumnInView", () => {
 
     test("remove enabled", () => {
 
-        const column = QueryColumn.create({name: "testColumn", caption: "Test Column"});
+        const column = QueryColumn.create({name: "testColumn", caption: "Test Column", fieldKey: "testColumn", fieldKeyArray: ["testColumn"]});
 
         const wrapper = mount(
-            <ColumnInView
-                column={column}
-                index={1}
-                onColumnRemove={jest.fn()}
-            />
+            wrapDraggable(
+                <ColumnInView
+                    column={column}
+                    index={1}
+                    onColumnRemove={jest.fn()}
+                    onClick={jest.fn}
+                    selected={undefined}
+                />
+            )
         );
         validate(wrapper, column, true);
         wrapper.unmount();
@@ -77,14 +82,18 @@ describe("ColumnInView", () => {
     });
 
     test("remove disabled", () => {
-        const column = QueryColumn.create({name: "testColumn", caption: "Test Column", addToDisplayView: true});
+        const column = QueryColumn.create({name: "testColumn", caption: "Test Column", addToDisplayView: true, fieldKey: "testColumn", fieldKeyArray: ["testColumn"]});
 
         const wrapper = mount(
-            <ColumnInView
-                column={column}
-                index={1}
-                onColumnRemove={jest.fn()}
-            />
+            wrapDraggable(
+                <ColumnInView
+                    column={column}
+                    index={1}
+                    onColumnRemove={jest.fn()}
+                    onClick={jest.fn}
+                    selected={undefined}
+                />
+            )
         );
         validate(wrapper, column, false);
         wrapper.unmount();
@@ -93,11 +102,11 @@ describe("ColumnInView", () => {
 });
 
 describe("CustomizeGridViewModal", () => {
-    const FIELD_1_COL = new QueryColumn({ name: "field1", fieldKey: "field1" });
-    const FIELD_2_COL = new QueryColumn({ name: "field2", fieldKey: "field2"});
-    const FIELD_3_COL = new QueryColumn({name: "field3", fieldKey: "field3"});
-    const SYSTEM_COL = new QueryColumn({ name: "systemCol", fieldKey: "systemCol", hidden: true});
-    const HIDDEN_COL = new QueryColumn({ name: "hiddenCol", fieldKey: "hiddenCol", hidden: true});
+    const FIELD_1_COL = new QueryColumn({ name: "field1", fieldKey: "field1", fieldKeyArray: ["field1"] });
+    const FIELD_2_COL = new QueryColumn({ name: "field2", fieldKey: "field2", fieldKeyArray: ["field2"]});
+    const FIELD_3_COL = new QueryColumn({name: "field3", fieldKey: "field3", fieldKeyArray: ["field3"]});
+    const SYSTEM_COL = new QueryColumn({ name: "systemCol", fieldKey: "systemCol", hidden: true, fieldKeyArray: ["systemCol"]});
+    const HIDDEN_COL = new QueryColumn({ name: "hiddenCol", fieldKey: "hiddenCol", hidden: true, fieldKeyArray: ["hiddenCol"]});
     const columns = fromJS({
         field1: FIELD_1_COL,
         field2: FIELD_2_COL,
@@ -216,4 +225,42 @@ describe("CustomizeGridViewModal", () => {
         wrapper.unmount();
     });
 
+    test("with selectedColumn", () => {
+        const view = ViewInfo.create({
+            name: ViewInfo.DEFAULT_NAME,
+            columns: [
+                FIELD_1_COL,
+                FIELD_2_COL
+            ]
+        });
+        const queryInfo = QueryInfo.create({
+            views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+            columns,
+        });
+        const model = makeTestQueryModel(SchemaQuery.create("test", QUERY_NAME), queryInfo);
+        const wrapper = mount(
+            <CustomizeGridViewModal
+                model={model}
+                onCancel={jest.fn()}
+                onUpdate={jest.fn()}
+                selectedColumn={FIELD_2_COL}
+            />
+        );
+        let colsInView = wrapper.find(ColumnInView);
+        // selected column passed in should be highlighted
+        expect(colsInView.at(0).prop('selected')).toBe(false);
+        expect(colsInView.at(1).prop('selected')).toBe(true);
+
+        // clicking a new column should change the selected index
+        colsInView.at(0).find(".field-name").simulate("click");
+        colsInView = wrapper.find(ColumnInView);
+        expect(colsInView.at(0).prop('selected')).toBe(true);
+        expect(colsInView.at(1).prop('selected')).toBe(false);
+
+        // clicking on the same column should unselect
+        colsInView.at(0).find('.field-name').simulate("click");
+        colsInView = wrapper.find(ColumnInView);
+        expect(colsInView.at(0).prop('selected')).toBe(false);
+        expect(colsInView.at(1).prop('selected')).toBe(false);
+    });
 });

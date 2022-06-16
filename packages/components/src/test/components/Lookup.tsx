@@ -9,6 +9,7 @@ import { QueryInfoLite } from '../../internal/components/domainproperties/models
 import containerData from '../data/project-getContainers.json';
 import queryData from '../data/query-getQueries.json';
 import schemaData from '../data/query-getSchemas.json';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 export class MockLookupProvider extends React.Component<any, ILookupContext> {
     constructor(props) {
@@ -37,3 +38,4 @@ export class MockLookupProvider extends React.Component<any, ILookupContext> {
         return <LookupContextProvider value={this.state}>{this.props.children}</LookupContextProvider>;
     }
 }
+

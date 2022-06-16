@@ -82,7 +82,7 @@ interface Props {
     model: QueryModel;
     onCancel: () => void;
     onUpdate: () => void;
-    selectedColumn: QueryColumn;
+    selectedColumn?: QueryColumn;
 }
 
 export const CustomizeGridViewModal: FC<Props> = memo(props => {

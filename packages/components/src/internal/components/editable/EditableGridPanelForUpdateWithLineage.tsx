@@ -47,6 +47,7 @@ const DEFAULT_PLURAL_NOUN = 'rows';
 export interface EditableGridPanelForUpdateWithLineageProps
     extends Omit<SharedEditableGridPanelProps, 'allowAdd' | 'allowRemove' | 'forUpdate'> {
     combineParentTypes?: boolean;
+    extraExportColumns?: Array<Partial<QueryColumn>>;
     getParentTypeWarning?: () => ReactNode;
     idField: string;
     includedTabs: UpdateGridTab[];
@@ -56,11 +57,11 @@ export interface EditableGridPanelForUpdateWithLineageProps
     parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     pluralNoun?: string;
-    queryModel: QueryModel;
     selectionData?: Map<string, any>;
     singularNoun?: string;
     targetEntityDataType: EntityDataType;
     updateAllTabRows: (updateData: any[]) => Promise<boolean>;
+    queryModel: QueryModel;
 }
 
 export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {
@@ -82,6 +83,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         singularNoun = DEFAULT_SINGULAR_NOUN,
         targetEntityDataType,
         updateAllTabRows,
+        extraExportColumns,
         ...gridProps
     } = props;
 
@@ -118,7 +120,8 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 editableGridModels.dataModels,
                 editableGridModels.editorModels,
                 queryModel,
-                loaders
+                loaders,
+                extraExportColumns
             );
         };
 
@@ -327,6 +330,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 model={editableGridModels.dataModels}
                 onChange={onGridChange}
                 readOnlyColumns={readOnlyColumns}
+                extraExportColumns={extraExportColumns}
             />
             <WizardNavButtons
                 cancel={onCancel}

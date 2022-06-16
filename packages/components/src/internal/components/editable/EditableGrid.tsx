@@ -51,6 +51,7 @@ import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { Cell, CellActions } from './Cell';
 import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
+import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -161,15 +162,15 @@ function inputCellKey(col: QueryColumn, row: any): string {
 }
 
 export interface EditableColumnMetadata {
+    caption?: string;
+    filteredLookupKeys?: List<any>;
+    filteredLookupValues?: List<string>;
+    hideTitleTooltip?: boolean;
+    isReadOnlyCell?: (rowKey: string) => boolean;
     placeholder?: string;
+    popoverClassName?: string;
     readOnly?: boolean;
     toolTip?: ReactNode;
-    filteredLookupValues?: List<string>;
-    filteredLookupKeys?: List<any>;
-    caption?: string;
-    isReadOnlyCell?: (rowKey: string) => boolean;
-    hideTitleTooltip?: boolean;
-    popoverClassName?: string;
 }
 
 export interface BulkAddData {
@@ -183,11 +184,11 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
     activeTab?: number;
     bsStyle?: any;
     className?: string;
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
     getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
     getReadOnlyRows?: (tabId?: number) => List<any>;
-    getTabTitle?: (tabId?: number) => string;
     getTabHeader?: (tabId?: number) => ReactNode;
+    getTabTitle?: (tabId?: number) => string;
+    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
     title?: string;
 }
 
@@ -209,20 +210,21 @@ export interface SharedEditableGridProps {
     condensed?: boolean;
     disabled?: boolean;
     emptyGridMsg?: string;
+    extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
-    insertColumns?: List<QueryColumn>;
     hideCountCol?: boolean;
+    insertColumns?: List<QueryColumn>;
     isSubmitting?: boolean;
+    lockedRows?: List<any>;   // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     maxRows?: number;
-    notDeletable?: List<any>; // list of key values that cannot be deleted.
+    notDeletable?: List<any>;   // list of key values that cannot be deleted.
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: List<string>;
-    readonlyRows?: List<any>; // list of key values for rows that are readonly.
-    lockedRows?: List<any>; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
+    readonlyRows?: List<any>;   // list of key values for rows that are readonly.
     removeColumnTitle?: string;
-    rowNumColumn?: GridColumn;
     striped?: boolean;
     updateColumns?: List<QueryColumn>;
+    rowNumColumn?: GridColumn;
 }
 
 export interface EditableGridProps extends SharedEditableGridProps {
@@ -236,6 +238,7 @@ export interface EditableGridProps extends SharedEditableGridProps {
         data?: Map<any, Map<string, any>>
     ) => void;
     queryInfo: QueryInfo;
+    exportHandler?: (option: ExportOption) => void;
 }
 
 export interface EditableGridState {
@@ -991,6 +994,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             data,
             isSubmitting,
             maxRows,
+            editorModel,
+            exportHandler,
         } = this.props;
         const nounPlural = addControlProps?.nounPlural ?? 'rows';
         const showAddOnTop = allowAdd && this.getControlsPlacement() !== 'bottom';
@@ -999,6 +1004,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const addTitle = canAddRows
             ? 'Add multiple ' + nounPlural + ' with the same values'
             : 'The grid contains the maximum number of ' + nounPlural + '.';
+
+        const allowExport = !!exportHandler;
 
         return (
             <div className="row QueryGrid-bottom-spacing">
@@ -1023,6 +1030,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                             <Button className="control-right" disabled={invalidSel} onClick={this.removeSelected}>
                                 {bulkRemoveText}
                             </Button>
+                        </span>
+                    )}
+                    {allowExport && (
+                        <span className="control-right pull-right">
+                            <EditableGridExportMenu id={editorModel.id} hasData={true} exportHandler={exportHandler} />
                         </span>
                     )}
                 </div>

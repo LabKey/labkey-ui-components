@@ -20,7 +20,6 @@ import {
     SERVER_NOTIFICATIONS_LOADING_END,
     SERVER_NOTIFICATIONS_LOADING_ERROR,
     SERVER_NOTIFICATIONS_INVALIDATE,
-    RESET_QUERY_GRID_STATE,
 } from './constants';
 import { getAppProductIds } from './utils';
 
@@ -29,8 +28,6 @@ export const updateUser = (userProps: Partial<User>) => ({ type: UPDATE_USER, us
 export const updateUserDisplayName = (displayName: string) => ({ type: UPDATE_USER_DISPLAY_NAME, displayName });
 
 export const setReloadRequired = () => ({ type: SET_RELOAD_REQUIRED });
-
-export const doResetQueryGridState = () => ({ type: RESET_QUERY_GRID_STATE });
 
 export function menuInit(currentProductId: string, appProductId: string, productIds?: List<string>) {
     return (dispatch, getState) => {

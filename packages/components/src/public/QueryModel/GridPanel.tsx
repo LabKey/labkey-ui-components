@@ -208,7 +208,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 <ExportMenu
                                     model={model}
                                     advancedOptions={advancedExportOptions}
-                                    supportedTypes={supportedExportTypes}
+                                    supportedTypes={supportedExportTypes?.toJS()}
                                     onExport={onExport}
                                 />
                             )}

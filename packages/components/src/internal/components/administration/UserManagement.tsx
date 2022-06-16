@@ -12,8 +12,6 @@ import { Container } from '../base/models/Container';
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
 import { SecurityPolicy } from '../permissions/models';
 import { createNotification } from '../notifications/actions';
-import { queryGridInvalidate } from '../../actions';
-import { SCHEMAS } from '../../schemas';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { AppURL } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
@@ -135,7 +133,6 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
 
     onCreateComplete = (response: any, roleUniqueNames: string[]): void => {
         const { container, project } = this.props;
-        this.invalidateGlobal();
 
         // split response to count new vs existing users separately
         let newUsers = List<number>(),
@@ -209,8 +206,6 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     };
 
     onUsersStateChangeComplete = (response: any) => {
-        this.invalidateGlobal();
-
         if (response.resetPassword) {
             createNotification({
                 message: () => {
@@ -262,10 +257,6 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                 );
             },
         });
-    }
-
-    invalidateGlobal() {
-        queryGridInvalidate(SCHEMAS.CORE_TABLES.USERS);
     }
 
     renderButtons = (): ReactNode => {

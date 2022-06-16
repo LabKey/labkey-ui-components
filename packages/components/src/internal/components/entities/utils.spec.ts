@@ -1,14 +1,6 @@
-import { fromJS, List, Map } from 'immutable';
+import { List } from 'immutable';
 
-import {
-    createEntityParentKey,
-    DataClassDataType,
-    makeQueryInfo,
-    makeTestQueryModel,
-    QueryGridModel,
-    SampleTypeDataType,
-    SchemaQuery,
-} from '../../..';
+import { createEntityParentKey, DataClassDataType, makeQueryInfo, SampleTypeDataType, SchemaQuery } from '../../..';
 
 import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 
@@ -22,11 +14,6 @@ import {
 } from './utils';
 
 describe('getInitialParentChoices', () => {
-    const modelId = 'id';
-    const schemaQuery = new SchemaQuery({
-        schemaName: 'samples',
-        queryName: 'example',
-    });
     const parentTypeOptions = List<IEntityTypeOption>([
         {
             label: 'Second Source',
@@ -60,96 +47,18 @@ describe('getInitialParentChoices', () => {
     });
 
     test('no data', () => {
-        const model = new QueryGridModel({
-            id: modelId,
-            isLoaded: false,
-            isLoading: false,
-            isError: true,
-            schema: schemaQuery.schemaName,
-            query: schemaQuery.queryName,
-            data: Map<any, Map<string, any>>(),
-        });
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model, {});
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, {});
         expect(parentChoices.size).toBe(0);
     });
 
     test('missing parent type', () => {
-        const model = new QueryGridModel({
-            id: modelId,
-            isLoaded: true,
-            isLoading: false,
-            isError: false,
-            schema: schemaQuery.schemaName,
-            query: schemaQuery.queryName,
-            dataIds: List(['1']),
-            data: fromJS({
-                '1': {
-                    LSID: {
-                        value: 'urn:lsid:labkey.com:Sample.252.Examples:E-20200303-1',
-                    },
-                    'Inputs/Materials/First': [],
-                    RowId: {
-                        value: 53412,
-                        url: '/labkey/Sam%20Man/experiment-showMaterial.view?rowId=53412',
-                    },
-                    CreatedBy: {
-                        displayValue: 'Susan',
-                        value: 1005,
-                        url: '/labkey/Sam%20Man/user-details.view?schemaName=core&query.queryName=Users&userId=1005',
-                    },
-                    Modified: {
-                        formattedValue: '2020-03-03 08:58',
-                        value: '2020-03-03 08:58:04.911',
-                    },
-                    Description: {
-                        value: null,
-                    },
-                    'Inputs/Data/First': [
-                        {
-                            displayValue: 'Sec-32',
-                            value: 'urn:lsid:labkey.com:Data.Folder-252:1fce5b0b-33ce-1038-8604-d42714b6919e',
-                            url: '/labkey/Sam%20Man/experiment-showData.view?rowId=57093&dataClassId=322',
-                        },
-                    ],
-                    Run: {
-                        displayValue: 'Derive sample from Sec-32',
-                        value: 2144,
-                        url: '/labkey/Sam%20Man/experiment-showRunText.view?rowId=2144',
-                    },
-                    IntField: {
-                        value: null,
-                    },
-                    ModifiedBy: {
-                        displayValue: 'Susan',
-                        value: 1005,
-                        url: '/labkey/Sam%20Man/user-details.view?schemaName=core&query.queryName=Users&userId=1005',
-                    },
-                    Created: {
-                        formattedValue: '2020-03-03 08:58',
-                        value: '2020-03-03 08:58:04.911',
-                    },
-                    Name: {
-                        value: 'E-20200303-1',
-                        url: '/labkey/Sam%20Man/experiment-showMaterial.view?rowId=53412',
-                    },
-                    SampleSet: {
-                        displayValue: 'Examples',
-                        value: 'urn:lsid:labkey.com:SampleSet.Folder-252:Examples',
-                        url: '/labkey/Sam%20Man/experiment-showMaterialSource.view?rowId=205',
-                    },
-                    TextField: {
-                        value: null,
-                    },
-                },
-            }),
-        });
         const parentIdData = {
             'urn:lsid:labkey.com:Data.Folder-252:1fce5b0b-33ce-1038-8604-d42714b6919e': {
                 rowId: 123,
                 parentId: 321,
             },
         };
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, model, parentIdData);
+        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, parentIdData);
         expect(parentChoices.size).toBe(0);
     });
 

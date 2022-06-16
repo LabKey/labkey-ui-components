@@ -31,7 +31,6 @@ import {
     quoteEncodedValue,
 } from './actions';
 import { CellMessage, ValueDescriptor } from './models';
-import { resetQueryGridState } from './global';
 
 // FIXME, when the editableGridWithData file is read in, the objects are automatically
 //  converted to Maps, which means accessing them like objects doesn't work.  That's a problem.
@@ -146,10 +145,6 @@ const queryColumn = new QueryColumn({
     type: 'Text (String)',
     userEditable: true,
     removeFromViews: false,
-});
-
-beforeEach(() => {
-    resetQueryGridState();
 });
 
 describe('changeColumn', () => {

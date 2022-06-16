@@ -14,3 +14,5 @@
  * limitations under the License.
  */
 export const DETAIL_TABLE_CLASSES = 'table table-responsive table-condensed detail-component--table__fixed';
+
+export const DELIMITER = ',';

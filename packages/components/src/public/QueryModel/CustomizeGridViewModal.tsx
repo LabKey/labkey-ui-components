@@ -114,6 +114,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const revertEdits = useCallback(() => {
         setColumnsInView(model.displayColumns);
         setIsDirty(false);
+        setSelectedIndex(undefined);
     }, [model]);
 
     const removeColumn = useCallback((deleteIndex: number) => {

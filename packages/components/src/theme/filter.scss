@@ -14,6 +14,10 @@
         font-weight: bold;
     }
 
+    .list-group-item.draggable {
+        left: auto !important;
+    }
+
     .field_count_circle {
         border-radius: 50%;
         text-align: center;
@@ -193,10 +197,6 @@
     line-height: 22px;
 }
 
-.draggable {
-     top: auto !important;
-     left: auto !important;
- }
 
 .filter-faceted__panel {
         height: 355px;

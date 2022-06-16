@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 45006: Provide link to lookup table/query in field designer
+
 ### version 2.181.1
 *Released*: 15 June 2022
 * Remove QueryGridModel and related utils, actions, components, etc.

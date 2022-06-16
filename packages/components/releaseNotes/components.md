@@ -1,10 +1,6 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.181.1
-*Released*: 15 June 2022
-* Remove QueryGridModel and related utils, actions, components, etc.
-
 ### version TBD
 *Released*: TBD June 2022
 * Item 10445: CustomizeGridViewModal - Handling lookup columns
@@ -14,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Enabled `QueryColumn` props for `selectable` and `friendlyType`
   * Include fieldKey in grid column header hover text
   * Issue 45693: Filter dialog choose values click target is too big
+
+### version 2.181.1
+*Released*: 15 June 2022
+* Remove QueryGridModel and related utils, actions, components, etc.
 
 ### version 2.182.0
 *Released*: 15 June 2022

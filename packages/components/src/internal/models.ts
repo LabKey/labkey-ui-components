@@ -350,14 +350,22 @@ export class EditorModel
         queryInfo: QueryInfo,
         displayValues = true,
         forUpdate = false,
-        readOnlyColumns?: List<string>
+        readOnlyColumns?: List<string>,
+        extraColumns?: Array<Partial<QueryColumn>>
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
         const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns);
+        const additionalColumns = [];
+        if (extraColumns) {
+            extraColumns.forEach(col => {
+                const column = queryInfo.getColumn(col.fieldKey);
+                if (column) additionalColumns.push(column);
+            });
+        }
 
         for (let rn = 0; rn < dataKeys.size; rn++) {
             let row = Map<string, any>();
-            columns.forEach((col, cn) => {
+            columns.push(...additionalColumns).forEach((col, cn) => {
                 const values = this.getValue(cn, rn);
 
                 // Some column types have special handling of raw data, such as multi value columns like alias,

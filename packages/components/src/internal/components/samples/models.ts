@@ -80,14 +80,14 @@ export interface SamplesSelectionProviderProps {
 }
 
 export interface SamplesSelectionResultProps {
-    sampleTypeDomainFields: GroupedSampleFields;
     aliquots: any[];
+    editStatusData: OperationConfirmationData; // data about which samples can and cannot be edited due to their status
     noStorageSamples: any[];
-    selectionInfoError: any;
     sampleItems: Record<string, any>;
     sampleLineageKeys: string[];
     sampleLineage: Record<string, any>; // mapping from sample rowId to sample record containing lineage
-    editStatusData: OperationConfirmationData; // data about which samples can and cannot be edited due to their status
+    sampleTypeDomainFields: GroupedSampleFields;
+    selectionInfoError: any;
 }
 
 export interface GroupedSampleFields {

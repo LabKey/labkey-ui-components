@@ -56,7 +56,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     return (
         <Draggable key={key} draggableId={key} index={index} >
             {(dragProvided, snapshot) => (
-                <div className={classNames("list-group-item", {"selected": selected})}
+                <div className={classNames("list-group-item", {"active": selected})}
                      onClick={onClick}
                      ref={dragProvided.innerRef}
                      {...dragProvided.draggableProps}>

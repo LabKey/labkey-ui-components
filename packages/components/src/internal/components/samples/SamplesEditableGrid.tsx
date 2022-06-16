@@ -1,7 +1,7 @@
 import React from 'react';
-import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 
-import { AuditBehaviorTypes, Query, Utils } from '@labkey/api';
+import { AuditBehaviorTypes, Query } from '@labkey/api';
 
 import {
     App,
@@ -19,13 +19,10 @@ import {
     invalidateLineageResults,
     LineageEditableGridLoaderFromSelection,
     LoadingSpinner,
-    naturalSort,
     NO_UPDATES_MESSAGE,
     QueryColumn,
-    queryGridInvalidate,
     QueryInfo,
     QueryModel,
-    quoteValueWithDelimiters,
     resolveErrorMessage,
     SampleStateType,
     SchemaQuery,
@@ -37,9 +34,9 @@ import { EntityChoice } from '../entities/models';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { IEditableGridLoader } from '../../QueryGridModel';
-
 import { UpdateGridTab } from '../editable/EditableGridPanelForUpdateWithLineage';
+
+import { IEditableGridLoader } from '../../models';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromLineage, getUpdatedLineageRows } from './actions';
@@ -359,13 +356,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                         if (invalidateSampleQueries) {
                             invalidateSampleQueries(sampleSchemaQuery);
                         } else {
-                            queryGridInvalidate(sampleSchemaQuery);
                             invalidateLineageResults();
                         }
                     }
-
-                    if (convertedStorageData?.normalizedRows.length > 0 || doDiscard)
-                        queryGridInvalidate(INVENTORY_ITEM_QS);
 
                     dismissNotifications(); // get rid of any error notifications that have already been created
 

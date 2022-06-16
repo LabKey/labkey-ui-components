@@ -446,3 +446,14 @@ $table-cell-selection-bg-color: #EDF3FF;
     margin-right: 10px;
     text-transform: uppercase;
 }
+
+.view-edit-title-alert {
+    margin-left: 15px;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.view-edit-error {
+    padding: 15px;
+    color: $brand-danger;
+}

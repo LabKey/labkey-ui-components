@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, memo, PureComponent, ReactNode, useCallback, useMemo } from 'react';
+import React, { ComponentType, FC, memo, PureComponent, ReactNode, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Set } from 'immutable';
 import { Filter, getServerContext, Query } from '@labkey/api';
@@ -52,6 +52,8 @@ import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
+import { CustomizeGridViewModal } from './CustomizeGridViewModal';
+import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -97,6 +99,7 @@ interface GridBarProps<T> extends Props<T> {
     onSaveView: () => void;
     onSearch: (token: string) => void;
     onViewSelect: (viewName: string) => void;
+    onCustomizeView: () => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -128,6 +131,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
     render(): ReactNode {
         const {
             actionValues,
+            allowViewCustomization,
             model,
             actions,
             advancedExportOptions,
@@ -137,6 +141,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             hideEmptyViewMenu,
             onChartClicked,
             onCreateReportClicked,
+            onCustomizeView,
             onExport,
             onFilter,
             onSearch,
@@ -218,6 +223,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                     model={model}
                                     onViewSelect={onViewSelect}
                                     onSaveView={onSaveView}
+                                    onCustomizeView={allowViewCustomization && onCustomizeView}
                                     hideEmptyViewMenu={hideEmptyViewMenu}
                                 />
                             )}
@@ -281,13 +287,14 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         allowViewCustomization,
         isUpdated,
     } = props;
-    const { queryInfo, viewName } = model;
+    const { viewName } = model;
+    const [errorMsg, setErrorMsg] = useState<string>(undefined);
 
     // TODO: unable to get jest to pass with useServerContext() due to GridPanel being Component instead of FC
     // const { user } = useServerContext();
     const user = hasServerContext() ? useServerContext().user : getServerContext().user;
 
-    const currentView = view ?? queryInfo?.getView(viewName, true);
+    const currentView = view ?? model.currentView;
     let displayTitle = title;
     if (viewName && !currentView?.hidden) {
         const label = currentView?.label ?? viewName;
@@ -295,7 +302,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }
 
     const isEdited = currentView?.session;
-    const showSave = allowViewCustomization && isEdited && currentView?.savable;
+    const showSave = isCustomizeViewsInAppEnabled() && allowViewCustomization && isEdited && currentView?.savable;
     const showRevert = allowViewCustomization && isEdited && currentView?.revertable;
 
     let canSaveCurrent = false;
@@ -305,7 +312,11 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }
 
     const _revertViewEdit = useCallback(async () => {
-        await revertViewEdit(model.schemaQuery, model.containerPath, model.viewName);
+        try {
+            await revertViewEdit(model.schemaQuery, model.containerPath, model.viewName);
+        } catch (error) {
+            setErrorMsg(error);
+        }
         await actions.loadModel(model.id, allowSelections);
         onRevertView?.();
     }, [model, onRevertView, actions, allowSelections]);
@@ -340,6 +351,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
                     </MenuItem>
                 </SplitButton>
             )}
+            {errorMsg && <span className="view-edit-error">{errorMsg}</span>}
         </div>
     );
 });
@@ -351,6 +363,7 @@ interface State {
     isViewSaved?: boolean;
     showFilterModalFieldKey: string;
     showSaveViewModal: boolean;
+    showCustomizeViewModal: boolean;
 }
 
 /**
@@ -394,6 +407,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             actionValues: [],
             showFilterModalFieldKey: undefined,
             showSaveViewModal: false,
+            showCustomizeViewModal: false,
             headerClickCount: {},
             errorMsg: undefined,
             isViewSaved: false,
@@ -703,10 +717,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     saveAsSessionView = (updates: Record<string, any>): void => {
         const { schemaQuery, containerPath } = this.props.model;
         const view = this.getModelView();
-        const viewInfo = new ViewInfo({
-            ...view.toJS(), // clone the current view to make sure we maintain changes to columns/sorts/filters
-            ...updates,
-        });
+        const viewInfo = view.mutate(updates);
 
         saveAsSessionView(schemaQuery, containerPath, viewInfo)
             .then(this.afterViewChange)
@@ -742,6 +753,17 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.setState({ showSaveViewModal: true });
     };
 
+    toggleCustomizeView = (): void => {
+        this.setState((state) => ( {showCustomizeViewModal: !state.showCustomizeViewModal } ));
+    }
+
+    onSessionViewUpdate = (): void => {
+        const { actions, model, allowSelections } = this.props;
+
+        actions.loadModel(model.id, allowSelections);
+    }
+
+
     onSaveView = (newName: string, inherit: boolean, replace: boolean, shared?: boolean): Promise<any> => {
         const { model } = this.props;
         const { viewName, queryInfo } = model;
@@ -749,9 +771,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return new Promise((resolve, reject) => {
             const view = queryInfo?.getView(viewName, true);
 
-            const updatedViewInfo = new ViewInfo({
-                // clone the current view to make sure we maintain changes to columns and other props
-                ...view.toJS(),
+            const updatedViewInfo = view.mutate({
                 // update/set sorts and filters to combine view and user defined items
                 filters: List(model.filterArray.concat(view.filters.toArray())),
                 sorts: List(model.sorts.concat(view.sorts.toArray())),
@@ -783,8 +803,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         this.setState({ errorMsg });
                     });
             } else {
-                const finalViewInfo = new ViewInfo({
-                    ...updatedViewInfo.toJS(),
+                const finalViewInfo = updatedViewInfo.mutate({
                     name: newName,
                 });
 
@@ -936,7 +955,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
-        const { showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
+        const { showCustomizeViewModal, showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
         const {
             hasData,
             id,
@@ -992,6 +1011,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                 onSearch={this.onSearch}
                                 onViewSelect={this.onViewSelect}
                                 onSaveView={this.onSaveNewView}
+                                onCustomizeView={this.toggleCustomizeView}
                             />
                         )}
 
@@ -1051,6 +1071,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         currentView={view}
                         onCancel={this.closeSaveViewModal}
                         onConfirmSave={this.onSaveView}
+                    />
+                )}
+                {showCustomizeViewModal && (
+                    <CustomizeGridViewModal
+                        model={model}
+                        onCancel={this.toggleCustomizeView}
+                        onUpdate={this.onSessionViewUpdate}
                     />
                 )}
             </>

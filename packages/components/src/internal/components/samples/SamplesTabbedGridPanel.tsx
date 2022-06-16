@@ -8,13 +8,11 @@ import {
     dismissNotifications,
     EXPORT_TYPES,
     GridAliquotViewSelector,
-    gridIdInvalidate,
     InjectedQueryModels,
     invalidateLineageResults,
     IS_ALIQUOT_COL,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
-    queryGridInvalidate,
     RequiresModelAndActions,
     resolveErrorMessage,
     SampleTypeDataType,
@@ -230,9 +228,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                 auditBehavior: getSampleAuditBehaviorType(),
             })
                 .then(result => {
-                    queryGridInvalidate(schemaQuery);
                     invalidateLineageResults();
-                    gridIdInvalidate('update-samples-grid', true);
                     dismissNotifications(); // get rid of any error notifications that have already been created
                     withTimeout(() => {
                         const noun =

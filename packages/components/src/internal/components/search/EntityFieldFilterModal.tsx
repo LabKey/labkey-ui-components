@@ -185,12 +185,12 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             <Modal.Body>
                 <Alert>{loadingError}</Alert>
                 <Alert>{filterError}</Alert>
-                <Row className="filter-modal__container">
-                    <Col xs={6} sm={3} className="filter-modal__col filter-modal__col_queries">
-                        <div className="filter-modal__col-title">
+                <Row className="field-modal__container">
+                    <Col xs={6} sm={3} className="field-modal__col filter-modal__col_queries">
+                        <div className="field-modal__col-title">
                             {entityDataType.nounAsParentPlural ?? entityDataType.nounPlural}
                         </div>
-                        <div className="list-group filter-modal__col-content">
+                        <div className="list-group field-modal__col-content">
                             {!entityQueries && <LoadingSpinner wrapperClassName="loading-spinner" />}
                             {entityQueries?.map((parent, index) => {
                                 const label = parent.label ?? parent.get?.('label'); // jest test data is Map, instead of js object

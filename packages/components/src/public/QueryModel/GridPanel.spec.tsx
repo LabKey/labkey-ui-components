@@ -536,6 +536,11 @@ describe('GridTitle', () => {
     });
 
     test('updated default view, with title', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
         const sessionQueryInfo = QUERY_INFO.setIn(['views', '~~default~~', 'session'], true).setIn(
             ['views', '~~default~~', 'revertable'],
             true
@@ -550,6 +555,11 @@ describe('GridTitle', () => {
     });
 
     test('updated default view, with title, not customizable', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
         const sessionQueryInfo = QUERY_INFO.setIn(['views', '~~default~~', 'session'], true).setIn(
             ['views', '~~default~~', 'revertable'],
             true
@@ -565,6 +575,11 @@ describe('GridTitle', () => {
     });
 
     test('updated named view, no title, customizable', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
         const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true).setIn(
             ['views', 'noextracolumn', 'revertable'],
@@ -580,6 +595,11 @@ describe('GridTitle', () => {
     });
 
     test('updated named view with title', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
         const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true).setIn(
             ['views', 'noextracolumn', 'revertable'],
@@ -595,6 +615,11 @@ describe('GridTitle', () => {
     });
 
     test('hidden view, edited', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
         const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true)
             .setIn(['views', 'noextracolumn', 'revertable'], true)
@@ -609,6 +634,11 @@ describe('GridTitle', () => {
     });
 
     test('hidden view, edited, no title', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
         const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'session'], true)
             .setIn(['views', 'noextracolumn', 'revertable'], true)
@@ -623,6 +653,11 @@ describe('GridTitle', () => {
     });
 
     test('hidden view, not edited, no title', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
         const viewSchemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'noExtraColumn');
         const sessionQueryInfo = QUERY_INFO.setIn(['views', 'noextracolumn', 'hidden'], true) as QueryInfo;
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);

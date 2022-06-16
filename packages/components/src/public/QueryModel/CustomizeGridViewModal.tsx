@@ -34,13 +34,16 @@ interface ColumnInViewProps {
     index: number
     onColumnRemove: () => void
     selected: boolean
-    onClick: () => void
+    onClick: (index) => void
 }
 
 // exported for jest tests
 export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     const { column, index, onClick, onColumnRemove, selected } = props;
 
+    const _onClick = useCallback(() => {
+        onClick(index);
+    }, [onClick, index])
     let overlay;
     const cannotBeRemoved = column.addToDisplayView === true;
     let content = (
@@ -57,7 +60,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
         <Draggable key={key} draggableId={key} index={index} >
             {(dragProvided, snapshot) => (
                 <div className={classNames("list-group-item draggable", {"active": selected})}
-                     onClick={onClick}
+                     onClick={_onClick}
                      ref={dragProvided.innerRef}
                      {...dragProvided.draggableProps}>
                     <span {...dragProvided.dragHandleProps}>
@@ -218,7 +221,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                                                     index={index}
                                                     onColumnRemove={() => removeColumn(index)}
                                                     selected={selectedIndex === index}
-                                                    onClick={() => onSelectField(index)}
+                                                    onClick={onSelectField}
                                                 />
                                             )
                                         })}

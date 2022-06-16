@@ -965,7 +965,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showHeader,
             title,
         } = this.props;
-        const { showCustomizeViewModal, showFilterModalFieldKey, showSaveViewModal, actionValues, errorMsg, isViewSaved } = this.state;
+        const {
+            selectedColumn,
+            showCustomizeViewModal,
+            showFilterModalFieldKey,
+            showSaveViewModal,
+            actionValues,
+            errorMsg,
+            isViewSaved
+        } = this.state;
         const {
             hasData,
             id,
@@ -1088,7 +1096,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         model={model}
                         onCancel={this.toggleCustomizeView}
                         onUpdate={this.onSessionViewUpdate}
-                        selectedColumn={this.state.selectedColumn}
+                        selectedColumn={selectedColumn}
                     />
                 )}
             </>

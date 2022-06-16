@@ -48,6 +48,11 @@
             font-size: 14px;
             color: $link-color;
             cursor: pointer;
+
+        }
+        .disabled-action-text {
+            font-size: 14px;
+            color: $light-gray;
         }
     }
 

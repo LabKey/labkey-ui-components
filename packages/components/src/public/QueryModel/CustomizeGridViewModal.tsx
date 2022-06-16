@@ -25,7 +25,7 @@ const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
 
     return (
         <OverlayTrigger overlay={overlay} placement="right">
-            <span className="field-name">{column.caption ?? column.name}</span>
+            <div className="field-name">{column.caption ?? column.name}</div>
         </OverlayTrigger>
     );
 });
@@ -62,22 +62,22 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     return (
         <div className="list-group-item" key={colFK}>
             {parentFKs.map((parent, index) => (
-                <span className="field-expand-icon" key={colFK + '|' + index} />
+                <div className="field-expand-icon" key={colFK + '|' + index} />
             ))}
-            <span className="field-expand-icon">
+            <div className="field-expand-icon">
                 {column.isLookup() && !isExpanded && <i className="fa fa-plus-square" onClick={_onExpandColumn} />}
                 {column.isLookup() && isExpanded && <i className="fa fa-minus-square" onClick={_onCollapseColumn} />}
-            </span>
+            </div>
             <FieldLabelDisplay column={column} />
             {isInView && (
-                <span className="pull-right" title="This field is included in the view.">
+                <div className="pull-right" title="This field is included in the view.">
                     <i className="fa fa-check" />
-                </span>
+                </div>
             )}
             {!isInView && column.selectable && (
-                <span className="pull-right clickable" title="Add this field to the view." onClick={_onAddColumn}>
+                <div className="pull-right clickable" title="Add this field to the view." onClick={_onAddColumn}>
                     <i className="fa fa-plus" />
-                </span>
+                </div>
             )}
             {!isInView && !column.selectable && (
                 <OverlayTrigger
@@ -88,9 +88,9 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
                     }
                     placement="left"
                 >
-                    <span className="pull-right text-muted disabled">
+                    <div className="pull-right text-muted disabled">
                         <i className="fa fa-plus" />
-                    </span>
+                    </div>
                 </OverlayTrigger>
             )}
         </div>
@@ -285,7 +285,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                 <Alert>{queryDetailError}</Alert>
                 <Alert>{saveError}</Alert>
                 <Row className="field-modal__container">
-                    <Col xs={6} className="field-modal__col-2">
+                    <Col xs={12} sm={6} className="field-modal__col-2">
                         <div key="title" className="field-modal__col-title">
                             Available Fields
                         </div>
@@ -311,12 +311,12 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                                     />
                                 ))}
                         </div>
-                        <div key="toggleAll">
+                        <div key="toggleAll" className="field-modal__footer">
                             <input type="checkbox" checked={showAllColumns} onChange={toggleShowAll} />
                             &nbsp;Show all system and user-defined fields
                         </div>
                     </Col>
-                    <Col xs={6} className="field-modal__col-2">
+                    <Col xs={12} sm={6} className="field-modal__col-2">
                         <div className="field-modal__col-title">
                             <span>Shown in Grid</span>
                             {/* Taking this out for now, until we figure out how to handle session views here */}

@@ -155,8 +155,8 @@ export function isProductNavigationEnabled(productId: string): boolean {
     return false;
 }
 
-export function isSubfolderDataEnabled(): boolean {
-    return getServerContext().moduleContext?.query?.isSubfolderDataEnabled === true;
+export function isProductProjectsEnabled(): boolean {
+    return getServerContext().moduleContext?.query?.isProductProjectsEnabled === true;
 }
 
 export function isSampleManagerEnabled(moduleContext?: any): boolean {

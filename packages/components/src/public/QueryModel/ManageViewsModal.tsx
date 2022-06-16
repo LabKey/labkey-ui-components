@@ -64,16 +64,22 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         [schemaQuery]
     );
 
-    const getActionView = useCallback((event) => {
-        const targetId = event.target.id;
-        const viewInd = parseInt(targetId.split('-')[1]);
-        return views[viewInd];
-    }, [views]);
+    const getActionView = useCallback(
+        event => {
+            const targetId = event.target.id;
+            const viewInd = parseInt(targetId.split('-')[1]);
+            return views[viewInd];
+        },
+        [views]
+    );
 
-    const onSelectView = useCallback((event) => {
-        const view = getActionView(event);
-        setSelectedView(view);
-    }, [getActionView]);
+    const onSelectView = useCallback(
+        event => {
+            const view = getActionView(event);
+            setSelectedView(view);
+        },
+        [getActionView]
+    );
 
     const revertDefaultView = useCallback(() => {
         handleAction(async () => {
@@ -81,7 +87,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         });
     }, [schemaQuery, containerPath]);
 
-    const setDefaultView = useCallback((event) => {
+    const setDefaultView = useCallback(
+        event => {
             const view = getActionView(event);
             handleAction(async () => {
                 const finalViewInfo = view.mutate({ name: '' });
@@ -172,7 +179,11 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                 </span>
                                             )}
                                             {!isDefault && !isRenaming && (
-                                                <span onClick={setDefaultView} id={'setDefault-' + ind} className="clickable-text">
+                                                <span
+                                                    onClick={setDefaultView}
+                                                    id={'setDefault-' + ind}
+                                                    className="clickable-text"
+                                                >
                                                     Set default
                                                 </span>
                                             )}
@@ -181,20 +192,14 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                 </Col>
                                 <Col xs={1}>
                                     {canEdit && (
-                                        <span
-                                            className="edit-inline-field__toggle"
-                                            onClick={onSelectView}
-                                        >
+                                        <span className="edit-inline-field__toggle" onClick={onSelectView}>
                                             <i id={'select-' + ind} className="fa fa-pencil" />
                                         </span>
                                     )}
                                 </Col>
                                 <Col xs={1}>
                                     {canEdit && (
-                                        <span
-                                            className="edit-inline-field__toggle"
-                                            onClick={deleteSavedView}
-                                        >
+                                        <span className="edit-inline-field__toggle" onClick={deleteSavedView}>
                                             <i id={'delete-' + ind} className="fa fa-trash-o" />
                                         </span>
                                     )}
@@ -204,11 +209,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                     })}
             </Modal.Body>
             <Modal.Footer>
-                <button
-                    disabled={isSubmitting}
-                    onClick={onClose}
-                    className="btn btn-default pull-right"
-                >
+                <button disabled={isSubmitting} onClick={onClose} className="btn btn-default pull-right">
                     Done editing
                 </button>
             </Modal.Footer>

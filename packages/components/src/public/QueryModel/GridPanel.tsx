@@ -766,7 +766,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         if (hasChange) {
             actions.loadModel(model.id, allowSelections);
-            if (reselectViewName !== undefined) { // don't reselect if reselectViewName is undefined
+            if (reselectViewName !== undefined) {
+                // don't reselect if reselectViewName is undefined
                 this.onViewSelect(reselectViewName);
             }
         }

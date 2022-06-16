@@ -140,8 +140,8 @@ export function updatePicklist(picklist: Picklist): Promise<Picklist> {
 
 export interface SampleTypeCount {
     ItemCount: number;
-    SampleType: string;
     LabelColor: string;
+    SampleType: string;
 }
 
 export function getPicklistCountsBySampleType(listName: string): Promise<SampleTypeCount[]> {
@@ -297,10 +297,10 @@ export function addSamplesToPicklist(
 }
 
 export interface PicklistDeletionData {
+    deletableLists: Picklist[];
     numDeletable: number;
     numNotDeletable: number;
     numShared: number;
-    deletableLists: Picklist[];
 }
 
 export function getPicklistDeleteData(model: QueryModel, user: User): Promise<PicklistDeletionData> {

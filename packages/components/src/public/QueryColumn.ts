@@ -70,7 +70,7 @@ export class QueryColumn extends Record({
     fieldKeyPath: undefined,
     filterable: true,
     format: undefined,
-    friendlyType: undefined,
+    // friendlyType: undefined,
     hidden: undefined,
     inputType: undefined,
     // isAutoIncrement: undefined, // DUPLICATE
@@ -145,7 +145,7 @@ export class QueryColumn extends Record({
     declare fieldKeyPath: string;
     declare filterable: boolean;
     declare format: string;
-    declare friendlyType: string;
+    // declare friendlyType: string;
     declare hidden: boolean;
     declare inputType: string;
     // declare isAutoIncrement: boolean; // DUPLICATE
@@ -231,7 +231,7 @@ export class QueryColumn extends Record({
             return this.fieldKey;
         }
 
-        // "fieldKeyPath" is used for getQueryDetails calls when an fk is passed as a prop (to get the child fields
+        // "fieldKeyPath" is used for getQueryDetails calls when a fk is passed as a prop, to get the child fields
         // for a lookup
         if (this.fieldKeyPath?.indexOf('/') > -1) {
             return this.fieldKeyPath;

@@ -11,21 +11,27 @@ import { QueryInfo } from '../QueryInfo';
 
 interface FieldLabelDisplayProps {
     column: QueryColumn;
+    includeFieldKey?: boolean;
 }
 
 const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
-    const { column } = props;
+    const { column, includeFieldKey } = props;
     const id = column.index + '-fieldlabel-popover';
+    const content = <div className="field-name">{column.caption ?? column.name}</div>;
 
-    const overlay = (
-        <Popover id={id} key={id}>
-            Field Key: {column.index}
-        </Popover>
-    );
+    // only show hover tooltip for lookup child fields
+    if (!includeFieldKey || column.index.indexOf('/') === -1) return content;
 
     return (
-        <OverlayTrigger overlay={overlay} placement="right">
-            <div className="field-name">{column.caption ?? column.name}</div>
+        <OverlayTrigger
+            overlay={
+                <Popover id={id} key={id}>
+                    {column.index}
+                </Popover>
+            }
+            placement="left"
+        >
+            {content}
         </OverlayTrigger>
     );
 });
@@ -42,10 +48,9 @@ interface ColumnChoiceProps {
 // exported for jest tests
 export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     const { column, isExpanded, isInView, onAddColumn, onExpandColumn, onCollapseColumn } = props;
-    const colFK = column.index;
-    const idPopover = colFK + '-unselectable-popover';
-    const hasParentFKs = colFK.indexOf('/') > -1;
-    const parentFKs = hasParentFKs ? colFK.substring(0, colFK.lastIndexOf('/')).split('/') : [];
+    const colFieldKey = column.index;
+    const hasParentFieldKeys = colFieldKey.indexOf('/') > -1;
+    const parentFieldKeys = hasParentFieldKeys ? colFieldKey.substring(0, colFieldKey.lastIndexOf('/')).split('/') : [];
 
     const _onAddColumn = useCallback(() => {
         onAddColumn(column);
@@ -60,9 +65,9 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     }, [column, onCollapseColumn]);
 
     return (
-        <div className="list-group-item" key={colFK}>
-            {parentFKs.map((parent, index) => (
-                <div className="field-expand-icon" key={colFK + '|' + index} />
+        <div className="list-group-item flex" key={colFieldKey}>
+            {parentFieldKeys.map((parent, index) => (
+                <div className="field-expand-icon" key={colFieldKey + '|' + index} />
             ))}
             <div className="field-expand-icon">
                 {column.isLookup() && !isExpanded && <i className="fa fa-plus-square" onClick={_onExpandColumn} />}
@@ -78,20 +83,6 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
                 <div className="pull-right clickable" title="Add this field to the view." onClick={_onAddColumn}>
                     <i className="fa fa-plus" />
                 </div>
-            )}
-            {!isInView && !column.selectable && (
-                <OverlayTrigger
-                    overlay={
-                        <Popover id={idPopover} key={idPopover}>
-                            This field cannot be added.
-                        </Popover>
-                    }
-                    placement="left"
-                >
-                    <div className="pull-right text-muted disabled">
-                        <i className="fa fa-plus" />
-                    </div>
-                </OverlayTrigger>
             )}
         </div>
     );
@@ -186,8 +177,8 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
         );
     }
     return (
-        <div className="list-group-item" key={column.index}>
-            <FieldLabelDisplay column={column} />
+        <div className="list-group-item flex" key={column.index}>
+            <FieldLabelDisplay column={column} includeFieldKey />
             {!disabled && content}
             {disabled && (
                 <OverlayTrigger overlay={overlay} placement="left">

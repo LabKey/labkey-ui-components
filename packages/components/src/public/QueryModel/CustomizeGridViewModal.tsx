@@ -151,6 +151,12 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         setColumnsInView(updatedColumns);
         if (source.index === selectedIndex) {
             setSelectedIndex(index);
+        } else if (selectedIndex !== undefined) {
+            if (source.index > selectedIndex && index <= selectedIndex) {
+                setSelectedIndex(selectedIndex + 1);
+            } else if (source.index < selectedIndex && index >= selectedIndex) {
+                setSelectedIndex(selectedIndex - 1);
+            }
         }
         setIsDirty(true);
     }, [selectedIndex, columnsInView]);
@@ -197,8 +203,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                     <Col xs={6} className="field-modal__col-2">
                         <div className="field-modal__col-title">
                             <span>Shown in Grid</span>
-                            {/* Taking this out for now, until we figure out how to handle session views here */}
-                            {/*{!model.currentView.session && isDirty && <span className="pull-right action-text" onClick={revertEdits}>Restore default columns</span>}*/}
+                            <span className={"pull-right " + (isDirty ? "action-text" : "disabled-action-text")} onClick={isDirty ? revertEdits : undefined} >Undo edits</span>
                         </div>
                         <DragDropContext onDragEnd={onDropField} >
                             <Droppable droppableId="field-droppable">

@@ -11,13 +11,17 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Include fieldKey in grid column header hover text
   * Issue 45693: Filter dialog choose values click target is too big
 
-### version 2.181.1
-*Released*: 15 June 2022
-* Remove QueryGridModel and related utils, actions, components, etc.
+### version 2.183.0
+*Released*: 16 June 2022
+* Item 10293: Enable export for editable grids
 
 ### version 2.182.0
 *Released*: 15 June 2022
 * Rename `isSubfolderDataEnabled` to `isProductProjectsEnabled` in all the places.
+
+### version 2.181.1
+*Released*: 15 June 2022
+* Remove QueryGridModel and related utils, actions, components, etc.
 
 ### version 2.181.0
 *Released*: 14 June 2022

@@ -31,6 +31,7 @@ import { DisableableButton } from '../buttons/DisableableButton';
 import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
+import { userCanManagePicklists } from '../../app/utils';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';
@@ -176,8 +177,9 @@ const PicklistGridWithModels = withQueryModels<PicklistGridProps>(PicklistGridIm
 export const PicklistListing: FC<OwnProps> = memo(props => {
     const { user, initTab } = props;
 
-    const queryConfigs = {
-        [MY_PICKLISTS_GRID_ID]: {
+    const queryConfigs = {};
+    if (userCanManagePicklists(user)) {
+        queryConfigs[MY_PICKLISTS_GRID_ID] = {
             baseFilters: [Filter.create('CreatedBy', user.id)],
             containerFilter: getPicklistListingContainerFilter(),
             sorts: [new QuerySort({ fieldKey: 'Name' })],
@@ -185,16 +187,16 @@ export const PicklistListing: FC<OwnProps> = memo(props => {
             title: 'My Picklists',
             omittedColumns: ['CreatedBy'],
             schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
-        },
-        [TEAM_PICKLISTS_GRID_ID]: {
-            baseFilters: [Filter.create('Category', PUBLIC_PICKLIST_CATEGORY)],
-            containerFilter: getPicklistListingContainerFilter(),
-            sorts: [new QuerySort({ fieldKey: 'Name' })],
-            id: TEAM_PICKLISTS_GRID_ID,
-            title: 'Team Picklists',
-            omittedColumns: ['Category', 'Sharing'],
-            schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
-        },
+        };
+    }
+    queryConfigs[TEAM_PICKLISTS_GRID_ID] = {
+        baseFilters: [Filter.create('Category', PUBLIC_PICKLIST_CATEGORY)],
+        containerFilter: getPicklistListingContainerFilter(),
+        sorts: [new QuerySort({ fieldKey: 'Name' })],
+        id: TEAM_PICKLISTS_GRID_ID,
+        title: 'Team Picklists',
+        omittedColumns: ['Category', 'Sharing'],
+        schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
     };
 
     return (

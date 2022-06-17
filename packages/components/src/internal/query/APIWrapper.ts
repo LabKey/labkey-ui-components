@@ -5,7 +5,11 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { EntityDataType, IEntityTypeOption } from '../components/entities/models';
 import { getEntityTypeOptions } from '../components/entities/actions';
 
-import { incrementClientSideMetricCount } from '../actions';
+import { getGridViews, incrementClientSideMetricCount } from '../actions';
+
+import { SchemaQuery } from '../../public/SchemaQuery';
+
+import { ViewInfo } from '../ViewInfo';
 
 import { getQueryDetails, GetQueryDetailsOptions, SelectDistinctResponse, selectDistinctRows } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
@@ -15,10 +19,17 @@ export interface QueryAPIWrapper {
         entityDataType: EntityDataType,
         containerPath?: string
     ) => Promise<Map<string, List<IEntityTypeOption>>>;
+    getGridViews: (
+        schemaQuery: SchemaQuery,
+        sort?: boolean,
+        viewName?: string,
+        excludeSessionView?: boolean,
+        includeHidden?: boolean
+    ) => Promise<ViewInfo[]>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
-    selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<SelectDistinctResponse>;
+    selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {
@@ -27,6 +38,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     incrementClientSideMetricCount = incrementClientSideMetricCount;
     selectRows = selectRows;
     selectDistinctRows = selectDistinctRows;
+    getGridViews = getGridViews;
 }
 
 /**
@@ -42,6 +54,7 @@ export function getQueryTestAPIWrapper(
         incrementClientSideMetricCount: mockFn(),
         selectRows: mockFn(),
         selectDistinctRows: mockFn(),
+        getGridViews: mockFn(),
         ...overrides,
     };
 }

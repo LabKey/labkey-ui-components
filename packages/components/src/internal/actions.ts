@@ -1950,11 +1950,13 @@ export function saveSessionView(
     });
 }
 
-export function getGridView(
+export function getGridViews(
     schemaQuery: SchemaQuery,
+    sort?: boolean,
     viewName?: string,
-    excludeSessionView?: boolean
-): Promise<ViewInfo> {
+    excludeSessionView?: boolean,
+    includeHidden?: boolean
+): Promise<ViewInfo[]> {
     return new Promise((resolve, reject) => {
         Query.getQueryViews({
             schemaName: schemaQuery.schemaName,
@@ -1962,26 +1964,60 @@ export function getGridView(
             viewName,
             excludeSessionView,
             success: response => {
-                const view = response.views?.[0];
-                if (view) resolve(ViewInfo.create(view));
-                else reject('Unable to load the view.');
+                const views = [];
+                response.views?.forEach(view => {
+                    if (includeHidden || view['hidden'] !== true) views.push(ViewInfo.create(view));
+                });
+                if (sort) {
+                    views.sort((a, b) => {
+                        if (a === ViewInfo.DEFAULT_NAME) return -1;
+                        else if (b === '') return 1;
+
+                        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+                    });
+                }
+                resolve(views);
             },
             failure: response => {
                 console.error(response);
-                reject('There was a problem loading the view for the data grid. ' + resolveErrorMessage(response));
+                reject('There was a problem loading the views for the data grid. ' + resolveErrorMessage(response));
             },
         });
     });
 }
 
+export function getGridView(
+    schemaQuery: SchemaQuery,
+    viewName?: string,
+    excludeSessionView?: boolean
+): Promise<ViewInfo> {
+    return new Promise((resolve, reject) => {
+        getGridViews(schemaQuery, false, viewName, excludeSessionView)
+            .then(views => {
+                if (views?.length > 0) resolve(views[0]);
+                else reject('Unable to load the view.');
+            })
+            .catch(error => reject(error));
+    });
+}
+
 export function revertViewEdit(schemaQuery: SchemaQuery, containerPath: string, viewName?: string): Promise<void> {
+    return deleteView(schemaQuery, containerPath, viewName, true);
+}
+
+export function deleteView(
+    schemaQuery: SchemaQuery,
+    containerPath: string,
+    viewName?: string,
+    revert?: boolean
+): Promise<void> {
     return new Promise((resolve, reject) => {
         Query.deleteQueryView({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             viewName,
             containerPath,
-            revert: true,
+            revert,
             success: () => {
                 invalidateQueryDetailsCache(schemaQuery, containerPath);
                 resolve();
@@ -1992,9 +2028,46 @@ export function revertViewEdit(schemaQuery: SchemaQuery, containerPath: string, 
                     resolve(); // view has already been deleted
                 } else {
                     console.error(response);
-                    reject('Unable to update view for the data grid. ' + resolveErrorMessage(response));
+                    reject('Unable to deleting the view for the data grid. ' + resolveErrorMessage(response));
                 }
             },
+        });
+    });
+}
+
+/**
+ * Rename a custom view from viewName to newName.
+ * @param schemaQuery
+ * @param containerPath
+ * @param viewName The old custom view name to replace
+ * @param newName The new custom view name
+ */
+export function renameGridView(
+    schemaQuery: SchemaQuery,
+    containerPath: string,
+    viewName: string,
+    newName: string
+): Promise<void> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('query', 'renameQueryView.api', undefined, {
+                container: containerPath,
+            }),
+            method: 'POST',
+            jsonData: {
+                schemaName: schemaQuery.schemaName,
+                queryName: schemaQuery.queryName,
+                viewName,
+                newName,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                invalidateQueryDetailsCache(schemaQuery, containerPath);
+                resolve();
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(error);
+                reject(resolveErrorMessage(error) ?? 'Failed to rename the custom view.');
+            }),
         });
     });
 }

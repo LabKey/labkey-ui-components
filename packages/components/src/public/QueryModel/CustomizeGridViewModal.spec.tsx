@@ -14,6 +14,7 @@ import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { fromJS } from 'immutable';
+import { wrapDraggable } from '../../internal/testHelpers';
 
 const QUERY_COL = QueryColumn.create({
     name: "testColumn",
@@ -135,16 +136,15 @@ describe("ColumnInView", () => {
     }
 
     test("remove enabled", () => {
-
-        const column = QUERY_COL;
-
         const wrapper = mount(
             <ColumnInView
-                column={column}
+                column={QUERY_COL}
                 onRemoveColumn={jest.fn()}
+                onClick={jest.fn}
+                selected={undefined}
             />
         );
-        validate(wrapper, column, true);
+        validate(wrapper, QUERY_COL, true);
         wrapper.unmount();
 
     });
@@ -162,6 +162,8 @@ describe("ColumnInView", () => {
             <ColumnInView
                 column={column}
                 onRemoveColumn={jest.fn()}
+                onClick={jest.fn}
+                selected={undefined}
             />
         );
         validate(wrapper, column, false);
@@ -291,6 +293,45 @@ describe("CustomizeGridViewModal", () => {
         expect(wrapper.find(".btn-success").prop("disabled")).toBeFalsy();
 
         wrapper.unmount();
+    });
+
+    test("with selectedColumn", () => {
+        const view = ViewInfo.create({
+            name: ViewInfo.DEFAULT_NAME,
+            columns: [
+                FIELD_1_COL,
+                FIELD_2_COL
+            ]
+        });
+        const queryInfo = QueryInfo.create({
+            views: fromJS({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
+            columns,
+        });
+        const model = makeTestQueryModel(SchemaQuery.create("test", QUERY_NAME), queryInfo);
+        const wrapper = mount(
+            <CustomizeGridViewModal
+                model={model}
+                onCancel={jest.fn()}
+                onUpdate={jest.fn()}
+                selectedColumn={FIELD_2_COL}
+            />
+        );
+        let colsInView = wrapper.find(ColumnInView);
+        // selected column passed in should be highlighted
+        expect(colsInView.at(0).prop('selected')).toBe(false);
+        expect(colsInView.at(1).prop('selected')).toBe(true);
+
+        // clicking a new column should change the selected index
+        colsInView.at(0).find(".field-name").simulate("click");
+        colsInView = wrapper.find(ColumnInView);
+        expect(colsInView.at(0).prop('selected')).toBe(true);
+        expect(colsInView.at(1).prop('selected')).toBe(false);
+
+        // clicking on the same column should unselect
+        colsInView.at(0).find('.field-name').simulate("click");
+        colsInView = wrapper.find(ColumnInView);
+        expect(colsInView.at(0).prop('selected')).toBe(false);
+        expect(colsInView.at(1).prop('selected')).toBe(false);
     });
 });
 

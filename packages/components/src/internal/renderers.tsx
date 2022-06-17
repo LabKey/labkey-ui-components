@@ -36,6 +36,7 @@ interface HeaderCellDropdownProps {
     columnCount?: number;
     handleFilter?: (column: QueryColumn, remove?: boolean) => void;
     handleHideColumn?: (column: QueryColumn) => void;
+    handleAddColumn?: (column: QueryColumn) => void;
     handleSort?: (column: QueryColumn, dir?: string) => void;
     headerClickCount?: number;
     i: number;
@@ -45,7 +46,7 @@ interface HeaderCellDropdownProps {
 
 // exported for jest testing
 export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
-    const { i, column, handleSort, handleFilter, handleHideColumn, headerClickCount, model } = props;
+    const { i, column, handleSort, handleFilter, handleAddColumn, handleHideColumn, headerClickCount, model } = props;
     const col: QueryColumn = column.raw;
     const [open, setOpen] = useState<boolean>();
     const wrapperEl = useRef<HTMLSpanElement>();
@@ -53,7 +54,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const allowColSort = handleSort && col?.sortable;
     const allowColFilter = handleFilter && col?.filterable;
-    const allowColumnViewChange = handleHideColumn && model && isCustomizeViewsInAppEnabled() && !col.addToDisplayView;
+    const allowColumnViewChange = (handleHideColumn || handleAddColumn) && model && isCustomizeViewsInAppEnabled() && !col.addToDisplayView;
     const includeDropdown = allowColSort || allowColFilter || allowColumnViewChange;
 
     const onToggleClick = useCallback(
@@ -87,6 +88,11 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const _handleHideColumn = useCallback(() => {
         setOpen(false);
         handleHideColumn(col);
+    }, [col]);
+
+    const _handleAddColumn = useCallback(() => {
+        setOpen(false);
+        handleAddColumn(col);
     }, [col]);
 
     // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
@@ -128,6 +134,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
+    const showGridCustomization = (handleHideColumn || handleAddColumn) && isCustomizeViewsInAppEnabled();
 
     return (
         <>
@@ -226,9 +233,14 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                     )}
                                 </>
                             )}
-                            {handleHideColumn && isCustomizeViewsInAppEnabled() && (
+                            {showGridCustomization && (
                                 <>
                                     {(allowColSort || allowColFilter) && <MenuItem divider />}
+                                    {handleAddColumn && (
+                                        <MenuItem onClick={_handleAddColumn}>
+                                            <span className="fa fa-plus grid-panel__menu-icon"/> Insert Column
+                                        </MenuItem>
+                                    )}
                                     <DisableableMenuItem
                                         operationPermitted={allowColumnViewChange}
                                         onClick={() => _handleHideColumn()}
@@ -237,6 +249,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                         <span className="fa fa-eye-slash grid-panel__menu-icon" />
                                         &nbsp; Hide Column
                                     </DisableableMenuItem>
+
                                 </>
                             )}
                         </Dropdown.Menu>
@@ -254,6 +267,7 @@ export function headerCell(
     columnCount?: number,
     handleSort?: (column: QueryColumn, dir?: string) => void,
     handleFilter?: (column: QueryColumn, remove?: boolean) => void,
+    handleAddColumn?: (column: QueryColumn) => void,
     handleHideColumn?: (column: QueryColumn) => void,
     model?: QueryModel,
     headerClickCount?: number
@@ -266,6 +280,7 @@ export function headerCell(
             columnCount={columnCount}
             handleSort={handleSort}
             handleFilter={handleFilter}
+            handleAddColumn={handleAddColumn}
             handleHideColumn={handleHideColumn}
             headerClickCount={headerClickCount}
             model={model}

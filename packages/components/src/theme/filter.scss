@@ -13,6 +13,10 @@
         display: flex;
     }
 
+    .list-group-item.draggable {
+        left: auto !important;
+    }
+
     .list-group-item.active {
         color: $white;
         font-weight: bold;
@@ -64,6 +68,11 @@
             font-size: 14px;
             color: $link-color;
             cursor: pointer;
+
+        }
+        .disabled-action-text {
+            font-size: 14px;
+            color: $light-gray;
         }
     }
 

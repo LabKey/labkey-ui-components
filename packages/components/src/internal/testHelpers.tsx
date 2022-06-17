@@ -13,6 +13,7 @@ import { bindColumnRenderers } from './renderers';
 import { URL_MAPPERS, URLService } from './url/URLResolver';
 import { AppContext, AppContextProvider } from './AppContext';
 import { getTestAPIWrapper } from './APIWrapper';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 declare let LABKEY: LabKey;
 
@@ -224,3 +225,20 @@ export const waitForLifecycle = (wrapper: ReactWrapper): Promise<undefined> => {
         wrapper.update();
     });
 };
+
+
+export const wrapDraggable = element => {
+    return (
+        <DragDropContext onDragEnd={jest.fn()}>
+            <Droppable droppableId="domain-form-droppable">
+                {provided => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                        {element}
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
+        </DragDropContext>
+    );
+};
+

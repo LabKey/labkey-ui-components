@@ -51,7 +51,6 @@ describe('Pagination', () => {
 
         wrapper.setProps({ rowCount: 661 });
         expect(wrapper.find('.pagination-info').text()).toEqual('1 - 20 of 661');
-        expect(wrapper.find(PageMenu).prop('showPageSizeMenu')).toEqual(true);
 
         wrapper.setProps({ pageSize: 40 });
         expect(wrapper.find('.pagination-info').text()).toEqual('1 - 40 of 661');

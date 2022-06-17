@@ -94,9 +94,9 @@ export function getColumnHoverText(info: any): string {
 
 interface GridHeaderProps {
     calcWidths?: boolean;
+    columns: List<GridColumn>;
     headerCell?: any;
     onCellClick?: (column: GridColumn) => void;
-    columns: List<GridColumn>;
     showHeader?: boolean;
     transpose?: boolean;
 }
@@ -189,10 +189,10 @@ const GridMessages: FC<GridMessagesProps> = memo(({ messages }) => (
 ));
 
 interface GridBodyProps {
-    data: List<Map<string, any>>;
-    highlightRowIndexes?: List<number>;
     columns: List<GridColumn>;
+    data: List<Map<string, any>>;
     emptyText: string;
+    highlightRowIndexes?: List<number>;
     isLoading: boolean;
     loadingText: ReactNode;
     rowKey: any;
@@ -277,17 +277,17 @@ export interface GridProps {
     bordered?: boolean;
     calcWidths?: boolean;
     cellular?: boolean;
-    condensed?: boolean;
     columns?: List<any>;
+    condensed?: boolean;
     data?: GridData;
-    highlightRowIndexes?: List<number>;
     emptyText?: string;
     gridId?: string;
     headerCell?: any;
-    onHeaderCellClick?: (column: GridColumn) => void;
+    highlightRowIndexes?: List<number>;
     isLoading?: boolean;
     loadingText?: ReactNode;
     messages?: List<Map<string, string>>;
+    onHeaderCellClick?: (column: GridColumn) => void;
     responsive?: boolean;
 
     /**

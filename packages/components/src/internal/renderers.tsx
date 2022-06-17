@@ -34,9 +34,9 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
 interface HeaderCellDropdownProps {
     column: GridColumn;
     columnCount?: number;
+    handleAddColumn?: (column: QueryColumn) => void;
     handleFilter?: (column: QueryColumn, remove?: boolean) => void;
     handleHideColumn?: (column: QueryColumn) => void;
-    handleAddColumn?: (column: QueryColumn) => void;
     handleSort?: (column: QueryColumn, dir?: string) => void;
     headerClickCount?: number;
     i: number;
@@ -54,7 +54,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const allowColSort = handleSort && col?.sortable;
     const allowColFilter = handleFilter && col?.filterable;
-    const allowColumnViewChange = (handleHideColumn || handleAddColumn) && model && isCustomizeViewsInAppEnabled() && !col.addToDisplayView;
+    const allowColumnViewChange =
+        (handleHideColumn || handleAddColumn) && model && isCustomizeViewsInAppEnabled() && !col.addToDisplayView;
     const includeDropdown = allowColSort || allowColFilter || allowColumnViewChange;
 
     const onToggleClick = useCallback(
@@ -238,7 +239,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                     {(allowColSort || allowColFilter) && <MenuItem divider />}
                                     {handleAddColumn && (
                                         <MenuItem onClick={_handleAddColumn}>
-                                            <span className="fa fa-plus grid-panel__menu-icon"/> Insert Column
+                                            <span className="fa fa-plus grid-panel__menu-icon" /> Insert Column
                                         </MenuItem>
                                     )}
                                     <DisableableMenuItem
@@ -249,7 +250,6 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                         <span className="fa fa-eye-slash grid-panel__menu-icon" />
                                         &nbsp; Hide Column
                                     </DisableableMenuItem>
-
                                 </>
                             )}
                         </Dropdown.Menu>

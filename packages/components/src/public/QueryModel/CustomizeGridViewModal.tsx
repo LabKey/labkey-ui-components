@@ -8,9 +8,11 @@ import { saveAsSessionView } from '../../internal/actions';
 import { getQueryDetails } from '../../internal/query/api';
 import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/constants';
 import { DragDropHandle } from '../../internal/components/base/DragDropHandle';
-import { QueryModel } from './QueryModel';
+
 import { QueryColumn } from '../QueryColumn';
 import { QueryInfo } from '../QueryInfo';
+
+import { QueryModel } from './QueryModel';
 
 interface FieldLabelDisplayProps {
     column: QueryColumn;
@@ -191,20 +193,22 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     return (
         <Draggable key={key} draggableId={key} index={index}>
             {(dragProvided, snapshot) => (
-                <div className={classNames("list-group-item flex draggable", {"active": selected})}
-                     onClick={_onClick}
-                     ref={dragProvided.innerRef}
-                     {...dragProvided.draggableProps}>
+                <div
+                    className={classNames('list-group-item flex draggable', { active: selected })}
+                    onClick={_onClick}
+                    ref={dragProvided.innerRef}
+                    {...dragProvided.draggableProps}
+                >
                     <div className="right-spacing" {...dragProvided.dragHandleProps}>
-                        <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps}/>
+                        <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps} />
                     </div>
                     <FieldLabelDisplay column={column} includeFieldKey />
                     {!cannotBeRemoved && content}
-                    {cannotBeRemoved &&
+                    {cannotBeRemoved && (
                         <OverlayTrigger overlay={overlay} placement="left">
                             {content}
                         </OverlayTrigger>
-                    }
+                    )}
                 </div>
             )}
         </Draggable>
@@ -227,7 +231,9 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const [queryDetailError, setQueryDetailError] = useState<string>(undefined);
     const [showAllColumns, setShowAllColumns] = useState<boolean>(false);
     const [expandedColumns, setExpandedColumns] = useState<Record<string, QueryInfo>>({});
-    const [selectedIndex, setSelectedIndex] = useState<number>(selectedColumn ? model.displayColumns.findIndex(col => selectedColumn.index === col.index) : undefined);
+    const [selectedIndex, setSelectedIndex] = useState<number>(
+        selectedColumn ? model.displayColumns.findIndex(col => selectedColumn.index === col.index) : undefined
+    );
 
     const gridName = title ?? schemaQuery.queryName;
 
@@ -254,65 +260,84 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         setSelectedIndex(undefined);
     }, [model]);
 
-    const removeColumn = useCallback((removedColumn: QueryColumn) => {
-        setColumnsInView(columnsInView.filter(column => column.index !== removedColumn.index));
-        setIsDirty(true);
-    }, [columnsInView]);
+    const removeColumn = useCallback(
+        (removedColumn: QueryColumn) => {
+            setColumnsInView(columnsInView.filter(column => column.index !== removedColumn.index));
+            setIsDirty(true);
+        },
+        [columnsInView]
+    );
 
-    const addColumn = useCallback((column: QueryColumn) => {
-        if (selectedIndex !== undefined) {
-            setColumnsInView([...columnsInView.slice(0, selectedIndex+1), column, ...columnsInView.slice(selectedIndex+1)]);
-        } else {
-            setColumnsInView([...columnsInView, column]);
-        }
-        setIsDirty(true);
-    }, [selectedIndex, columnsInView]);
+    const addColumn = useCallback(
+        (column: QueryColumn) => {
+            if (selectedIndex !== undefined) {
+                setColumnsInView([
+                    ...columnsInView.slice(0, selectedIndex + 1),
+                    column,
+                    ...columnsInView.slice(selectedIndex + 1),
+                ]);
+            } else {
+                setColumnsInView([...columnsInView, column]);
+            }
+            setIsDirty(true);
+        },
+        [selectedIndex, columnsInView]
+    );
 
-    const expandColumn = useCallback(async (column: QueryColumn) => {
-        try {
+    const expandColumn = useCallback(
+        async (column: QueryColumn) => {
+            try {
+                setQueryDetailError(undefined);
+                const fkQueryInfo = await getQueryDetails({
+                    schemaName: queryInfo.schemaQuery.schemaName,
+                    queryName: queryInfo.schemaQuery.queryName,
+                    fk: column.index,
+                });
+                setExpandedColumns({ ...expandedColumns, [column.index]: fkQueryInfo });
+            } catch (error) {
+                setQueryDetailError(error.message);
+            }
+        },
+        [queryInfo, expandedColumns]
+    );
+
+    const collapseColumn = useCallback(
+        (column: QueryColumn) => {
             setQueryDetailError(undefined);
-            const fkQueryInfo = await getQueryDetails({
-                schemaName: queryInfo.schemaQuery.schemaName,
-                queryName: queryInfo.schemaQuery.queryName,
-                fk: column.index,
-            });
-            setExpandedColumns({ ...expandedColumns, [column.index]: fkQueryInfo });
-        } catch (error) {
-            setQueryDetailError(error.message);
-        }
-    }, [queryInfo, expandedColumns]);
-
-    const collapseColumn = useCallback((column: QueryColumn) => {
-        setQueryDetailError(undefined);
-        setExpandedColumns({ ...expandedColumns, [column.index]: undefined });
-    }, [expandedColumns]);
+            setExpandedColumns({ ...expandedColumns, [column.index]: undefined });
+        },
+        [expandedColumns]
+    );
 
     const toggleShowAll = useCallback(() => {
         setShowAllColumns(!showAllColumns);
     }, [showAllColumns]);
 
-    const onDropField = useCallback((dropResult: DropResult): void => {
-        const { destination, draggableId, source } = dropResult;
-        if (destination === null || source.index === destination.index) {
-            return;
-        }
-        const { index } = destination;
-
-        const colInMotion = columnsInView[source.index];
-        let updatedColumns = columnsInView.filter(col => col.index != draggableId);
-        updatedColumns = [...updatedColumns.slice(0, index), colInMotion, ...updatedColumns.slice(index) ];
-        setColumnsInView(updatedColumns);
-        if (source.index === selectedIndex) {
-            setSelectedIndex(index);
-        } else if (selectedIndex !== undefined) {
-            if (source.index > selectedIndex && index <= selectedIndex) {
-                setSelectedIndex(selectedIndex + 1);
-            } else if (source.index < selectedIndex && index >= selectedIndex) {
-                setSelectedIndex(selectedIndex - 1);
+    const onDropField = useCallback(
+        (dropResult: DropResult): void => {
+            const { destination, draggableId, source } = dropResult;
+            if (destination === null || source.index === destination.index) {
+                return;
             }
-        }
-        setIsDirty(true);
-    }, [selectedIndex, columnsInView]);
+            const { index } = destination;
+
+            const colInMotion = columnsInView[source.index];
+            let updatedColumns = columnsInView.filter(col => col.index != draggableId);
+            updatedColumns = [...updatedColumns.slice(0, index), colInMotion, ...updatedColumns.slice(index)];
+            setColumnsInView(updatedColumns);
+            if (source.index === selectedIndex) {
+                setSelectedIndex(index);
+            } else if (selectedIndex !== undefined) {
+                if (source.index > selectedIndex && index <= selectedIndex) {
+                    setSelectedIndex(selectedIndex + 1);
+                } else if (source.index < selectedIndex && index >= selectedIndex) {
+                    setSelectedIndex(selectedIndex - 1);
+                }
+            }
+            setIsDirty(true);
+        },
+        [selectedIndex, columnsInView]
+    );
 
     const onSelectField = useCallback((index: number): void => {
         setSelectedIndex(_selectedIndex => (_selectedIndex === index ? undefined : index));
@@ -366,12 +391,21 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                     <Col xs={12} sm={6} className="field-modal__col-2">
                         <div className="field-modal__col-title">
                             <span>Shown in Grid</span>
-                            <span className={"pull-right " + (isDirty ? "action-text" : "disabled-action-text")} onClick={isDirty ? revertEdits : undefined} >Undo edits</span>
+                            <span
+                                className={'pull-right ' + (isDirty ? 'action-text' : 'disabled-action-text')}
+                                onClick={isDirty ? revertEdits : undefined}
+                            >
+                                Undo edits
+                            </span>
                         </div>
-                        <DragDropContext onDragEnd={onDropField} >
+                        <DragDropContext onDragEnd={onDropField}>
                             <Droppable droppableId="field-droppable">
                                 {dropProvided => (
-                                    <div className="list-group field-modal__col-content" {...dropProvided.droppableProps} ref={dropProvided.innerRef}>
+                                    <div
+                                        className="list-group field-modal__col-content"
+                                        {...dropProvided.droppableProps}
+                                        ref={dropProvided.innerRef}
+                                    >
                                         {columnsInView.map((column, index) => {
                                             return (
                                                 <ColumnInView

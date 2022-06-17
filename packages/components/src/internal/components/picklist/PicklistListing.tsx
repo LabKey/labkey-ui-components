@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Filter, PermissionTypes } from '@labkey/api';
 
@@ -90,6 +90,10 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
 
     const [activeTabId, setActiveTabId] = useState(activeTab || tabOrder[0]);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+
+    useEffect(() => {
+        setActiveTabId(activeTab);
+    }, [activeTab]);
 
     const onChangeTab = useCallback((tab: string) => {
         replaceParameter(getLocation(), 'tab', tab);

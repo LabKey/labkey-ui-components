@@ -415,11 +415,12 @@ const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
 function getBioWorkflowNotebookMediaConfigs(appBase: string, user: User) {
     let configs = Map({
         [WORKFLOW_KEY]: getWorkflowSectionConfig(appBase),
-        [PICKLIST_KEY]: getPicklistsSectionConfig(appBase),
+
     });
     if (userCanReadMedia(user)) {
         configs = configs.set(MEDIA_KEY, getMediaSectionConfig(appBase));
     }
+    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase),)
     if (userCanReadNotebooks(user)) {
         configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
     }

@@ -148,6 +148,14 @@ describe('QueryColumn', () => {
 
         expect(singlePartFieldKeyColumn.index).toEqual(singlePartFieldKey.name);
 
+        const lookupFieldKeyColumn = QueryColumn.create({
+            fieldKey: singlePartFieldKey.toString(),
+            fieldKeyArray: singlePartFieldKey.getParts(),
+            fieldKeyPath: 'parent/' + singlePartFieldKey.toString(),
+        });
+
+        expect(lookupFieldKeyColumn.index).toEqual(lookupFieldKeyColumn.fieldKeyPath);
+
         const parentFieldKey = new FieldKey(null, 'runApplicationOutput');
         const multiPartFieldKey = new FieldKey(parentFieldKey, 'urn:recipe.labkey.org/#RecipeAmount');
 

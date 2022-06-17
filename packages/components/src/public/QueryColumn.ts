@@ -67,7 +67,7 @@ export class QueryColumn extends Record({
     facetingBehaviorType: undefined,
     fieldKey: undefined,
     fieldKeyArray: undefined,
-    // fieldKeyPath: undefined,
+    fieldKeyPath: undefined,
     filterable: true,
     format: undefined,
     // friendlyType: undefined,
@@ -97,7 +97,7 @@ export class QueryColumn extends Record({
     readOnly: undefined,
     // recommendedVariable: undefined,
     required: undefined,
-    // selectable: undefined,
+    selectable: undefined,
     shortCaption: undefined,
     addToDisplayView: undefined,
     shownInDetailsView: undefined,
@@ -142,7 +142,7 @@ export class QueryColumn extends Record({
     declare facetingBehaviorType: string;
     declare fieldKey: string;
     declare fieldKeyArray: string[];
-    // declare fieldKeyPath: string;
+    declare fieldKeyPath: string;
     declare filterable: boolean;
     declare format: string;
     // declare friendlyType: string;
@@ -172,7 +172,7 @@ export class QueryColumn extends Record({
     declare readOnly: boolean;
     // declare recommendedVariable: boolean;
     declare required: boolean;
-    // declare selectable: boolean;
+    declare selectable: boolean;
     declare shortCaption: string;
     declare addToDisplayView: boolean;
     declare shownInDetailsView: boolean;
@@ -225,10 +225,19 @@ export class QueryColumn extends Record({
         //    is FieldKey encoded.
         // 2. If the fieldKey is made up of one part (e.g: "someKey"), then the data index is not FieldKey encoded.
 
+        // return if the column does not have a fieldKey at all
+        if (!this.fieldKey) return;
+
         // "fieldKey" is expected to be FieldKey encoded so the presence of "/" indicates
         // this is a multi-part fieldKey which means the data index will be FieldKey encoded as well.
         if (this.fieldKey.indexOf('/') > -1) {
             return this.fieldKey;
+        }
+
+        // "fieldKeyPath" is used for getQueryDetails calls when a fk is passed as a prop, to get the child fields
+        // for a lookup
+        if (this.fieldKeyPath?.indexOf('/') > -1) {
+            return this.fieldKeyPath;
         }
 
         // This is a single-part fieldKey so the data index will NOT be FieldKey encoded.
@@ -239,7 +248,7 @@ export class QueryColumn extends Record({
         // We're in an unexpected state. The "fieldKey" is single-part but the
         // "fieldKeyArray" is non-singular (made up of zero or two or more parts).
         // Fallback to old behavior.
-        return this.fieldKeyArray.join('/');
+        return this.fieldKeyArray?.join('/');
     }
 
     isExpInput(checkLookup = true): boolean {

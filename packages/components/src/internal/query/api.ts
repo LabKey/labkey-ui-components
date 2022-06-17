@@ -39,12 +39,12 @@ export function invalidateFullQueryDetailsCache(): void {
     queryDetailsCache = {};
 }
 
-function getQueryDetailsCacheKey(schemaQuery: SchemaQuery, containerPath?: string): string {
-    return '' + resolveSchemaQuery(schemaQuery) + (containerPath ? '|' + containerPath : '');
+function getQueryDetailsCacheKey(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): string {
+    return '' + resolveSchemaQuery(schemaQuery) + (fk ? '|' + fk : '') + (containerPath ? '|' + containerPath : '');
 }
 
-export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery, containerPath?: string): void {
-    const key = getQueryDetailsCacheKey(schemaQuery, containerPath);
+export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): void {
+    const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
     invalidateQueryDetailsCacheKey(key);
 }
 
@@ -55,14 +55,15 @@ export function invalidateQueryDetailsCacheKey(key: string): void {
 
 export interface GetQueryDetailsOptions {
     containerPath?: string;
+    fk?: string;
     queryName: string;
     schemaName: string;
 }
 
 export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
-    const { containerPath, queryName, schemaName } = options;
+    const { containerPath, queryName, schemaName, fk } = options;
     const schemaQuery = SchemaQuery.create(schemaName, queryName);
-    const key = getQueryDetailsCacheKey(schemaQuery, containerPath);
+    const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
 
     if (!queryDetailsCache[key]) {
         queryDetailsCache[key] = new Promise((resolve, reject) => {
@@ -70,13 +71,14 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                 containerPath,
                 schemaName,
                 queryName,
-                viewName: '*',
+                fk,
+                viewName: fk ? undefined : '*',
                 success: queryDetails => {
                     // getQueryDetails will return an exception parameter in cases
                     // where it is unable to resolve the tableInfo. This is deemed a 'success'
                     // by the request standards but here we reject as an outright failure
                     if (queryDetails.exception) {
-                        invalidateQueryDetailsCache(schemaQuery, containerPath);
+                        invalidateQueryDetailsCache(schemaQuery, containerPath, fk);
                         reject({
                             schemaQuery,
                             message: queryDetails.exception,
@@ -88,7 +90,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                 },
                 failure: (error, request) => {
                     console.error(error);
-                    invalidateQueryDetailsCache(schemaQuery, containerPath);
+                    invalidateQueryDetailsCache(schemaQuery, containerPath, fk);
                     reject({
                         message: error.exception,
                         exceptionClass: error.exceptionClass,

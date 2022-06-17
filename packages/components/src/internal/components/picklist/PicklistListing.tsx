@@ -89,12 +89,16 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
         return Object.keys(queryModels);
     }, [queryModels]);
 
-    const [activeTabId, setActiveTabId] = useState(activeTab || tabOrder[0]);
+    const [activeTabId, setActiveTabId] = useState(undefined);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
     useEffect(() => {
-        setActiveTabId(activeTab);
-    }, [activeTab]);
+        if (activeTab) {
+            setActiveTabId(activeTab);
+        } else {
+            setActiveTabId(tabOrder[0]);
+        }
+    }, [activeTab, tabOrder]);
 
     const onChangeTab = useCallback((tab: string) => {
         replaceParameter(getLocation(), 'tab', tab);

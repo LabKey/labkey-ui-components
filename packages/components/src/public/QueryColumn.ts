@@ -227,7 +227,7 @@ export class QueryColumn extends Record({
 
         // "fieldKey" is expected to be FieldKey encoded so the presence of "/" indicates
         // this is a multi-part fieldKey which means the data index will be FieldKey encoded as well.
-        if (this.fieldKey.indexOf('/') > -1) {
+        if (this.fieldKey?.indexOf('/') > -1) {
             return this.fieldKey;
         }
 

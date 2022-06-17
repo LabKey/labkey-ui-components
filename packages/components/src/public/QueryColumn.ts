@@ -225,9 +225,12 @@ export class QueryColumn extends Record({
         //    is FieldKey encoded.
         // 2. If the fieldKey is made up of one part (e.g: "someKey"), then the data index is not FieldKey encoded.
 
+        // return if the column does not have a fieldKey at all
+        if (!this.fieldKey) return;
+
         // "fieldKey" is expected to be FieldKey encoded so the presence of "/" indicates
         // this is a multi-part fieldKey which means the data index will be FieldKey encoded as well.
-        if (this.fieldKey?.indexOf('/') > -1) {
+        if (this.fieldKey.indexOf('/') > -1) {
             return this.fieldKey;
         }
 
@@ -238,7 +241,7 @@ export class QueryColumn extends Record({
         }
 
         // This is a single-part fieldKey so the data index will NOT be FieldKey encoded.
-        if (this.fieldKeyArray?.length === 1) {
+        if (this.fieldKeyArray.length === 1) {
             return this.fieldKeyArray[0];
         }
 

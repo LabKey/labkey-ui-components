@@ -315,12 +315,8 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     }, [selectedIndex, columnsInView]);
 
     const onSelectField = useCallback((index: number): void => {
-        if (index === selectedIndex) {
-            setSelectedIndex(undefined);
-        } else {
-            setSelectedIndex(index);
-        }
-    }, [selectedIndex]);
+        setSelectedIndex(_selectedIndex => (_selectedIndex === index ? undefined : index));
+    }, []);
 
     return (
         <Modal show bsSize="lg" onHide={closeModal}>

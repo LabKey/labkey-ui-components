@@ -137,12 +137,15 @@ describe("ColumnInView", () => {
 
     test("remove enabled", () => {
         const wrapper = mount(
-            <ColumnInView
-                column={QUERY_COL}
-                onRemoveColumn={jest.fn()}
-                onClick={jest.fn}
-                selected={undefined}
-            />
+            wrapDraggable(
+                <ColumnInView
+                    column={QUERY_COL}
+                    index={1}
+                    onRemoveColumn={jest.fn()}
+                    onClick={jest.fn}
+                    selected={undefined}
+                />
+            )
         );
         validate(wrapper, QUERY_COL, true);
         wrapper.unmount();
@@ -159,12 +162,15 @@ describe("ColumnInView", () => {
         });
 
         const wrapper = mount(
-            <ColumnInView
-                column={column}
-                onRemoveColumn={jest.fn()}
-                onClick={jest.fn}
-                selected={undefined}
-            />
+            wrapDraggable(
+                <ColumnInView
+                    column={column}
+                    index={1}
+                    onRemoveColumn={jest.fn()}
+                    onClick={jest.fn}
+                    selected={undefined}
+                />
+            )
         );
         validate(wrapper, column, false);
         wrapper.unmount();

@@ -96,16 +96,16 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
 
 interface ITargetTableSelectProps {
     containerPath: string;
+    disabled?: boolean;
     id: string;
     lookupURI?: string;
     onChange: (any) => any;
     schemaName: string;
-    value?: any;
-    disabled?: boolean;
     shouldDisableNonExists?: boolean;
+    value?: any;
 }
 
-export class TargetTableSelect extends React.PureComponent<ITargetTableSelectProps, any> {
+export class TargetTableSelect extends React.PureComponent<ITargetTableSelectProps> {
     render() {
         return (
             <LookupContextConsumer>
@@ -132,6 +132,10 @@ export interface ITargetTableSelectImplState {
 export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
 
 class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITargetTableSelectImplState> {
+    static defaultProps = {
+        shouldDisableNonExists: true,
+    };
+
     constructor(props) {
         super(props);
 
@@ -204,7 +208,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
     }
 
     render() {
-        const { id, onChange, value, name, disabled, shouldDisableNonExists = true } = this.props;
+        const { id, onChange, value, name, disabled, shouldDisableNonExists } = this.props;
         const { loading, queries } = this.state;
 
         const isEmpty = queries.size === 0;

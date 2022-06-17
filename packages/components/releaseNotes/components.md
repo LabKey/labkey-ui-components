@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD June 2022
+### version 2.184.0
+*Released*: 17 June 2022
 * Item 10445: CustomizeGridViewModal - Handling lookup columns
   * Order columns based on `queryInfo.columns` instead of `queryInfo.allColumns`
   * Show lookup fields on expand in Available Fields listing and allow them to be added to view

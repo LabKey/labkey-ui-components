@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add Picklist menu item in megamenu
 
+### version 2.185.0
+*Released*: 17 June 2022
+* Item 10379: Save Grid Views - Manage views dialog
+  * Add ManageViewsModal component
+
 ### version 2.184.0
 *Released*: 17 June 2022
 * Item 10445: CustomizeGridViewModal - Handling lookup columns

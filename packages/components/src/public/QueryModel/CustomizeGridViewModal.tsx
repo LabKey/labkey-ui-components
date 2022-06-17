@@ -1,10 +1,13 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Col, Modal, OverlayTrigger, Popover, Row } from 'react-bootstrap';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import classNames from 'classnames';
 
 import { Alert } from '../../internal/components/base/Alert';
 import { saveAsSessionView } from '../../internal/actions';
 import { getQueryDetails } from '../../internal/query/api';
 import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/constants';
+import { DragDropHandle } from '../../internal/components/base/DragDropHandle';
 import { QueryModel } from './QueryModel';
 import { QueryColumn } from '../QueryColumn';
 import { QueryInfo } from '../QueryInfo';
@@ -149,44 +152,65 @@ export const ColumnChoiceGroup: FC<ColumnChoiceLookupProps> = memo(props => {
 
 interface ColumnInViewProps {
     column: QueryColumn;
+    index: number;
+    onClick: (index: number) => void;
     onRemoveColumn: (column: QueryColumn) => void;
+    selected: boolean;
 }
 
 // exported for jest tests
 export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
-    const { column, onRemoveColumn } = props;
+    const { column, onRemoveColumn, onClick, selected, index } = props;
+    const key = column.index;
 
     const _onRemoveColumn = useCallback(() => {
         onRemoveColumn(column);
     }, [column, onRemoveColumn]);
 
+    const _onClick = useCallback(() => {
+        onClick(index);
+    }, [onClick, index]);
+
     let overlay;
-    const disabled = column.addToDisplayView;
+    const cannotBeRemoved = column.addToDisplayView === true;
     const content = (
         <span
-            className={'pull-right ' + (disabled ? 'text-muted disabled' : 'clickable')}
-            onClick={disabled ? undefined : _onRemoveColumn}
+            className={'pull-right ' + (cannotBeRemoved ? 'text-muted disabled' : 'clickable')}
+            onClick={cannotBeRemoved ? undefined : _onRemoveColumn}
         >
             <i className="fa fa-times" />
         </span>
     );
-    if (disabled) {
+    if (cannotBeRemoved) {
         overlay = (
-            <Popover id={column.index + '-disabled-popover'} key={column.index + '-disabled-warning'}>
+            <Popover id={key + '-disabled-popover'} key={key + '-disabled-warning'}>
                 {APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
             </Popover>
         );
     }
     return (
-        <div className="list-group-item flex" key={column.index}>
-            <FieldLabelDisplay column={column} includeFieldKey />
-            {!disabled && content}
-            {disabled && (
-                <OverlayTrigger overlay={overlay} placement="left">
-                    {content}
-                </OverlayTrigger>
+        <Draggable key={key} draggableId={key} index={index}>
+            {(dragProvided, snapshot) => (
+                <div className={classNames("list-group-item flex draggable", {"active": selected})}
+                     onClick={_onClick}
+                     ref={dragProvided.innerRef}
+                     {...dragProvided.draggableProps}>
+                    <span {...dragProvided.dragHandleProps}>
+                        <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps}/>
+                    </span>
+                    <span key={index}>
+                        {/* TODO left-spacing for FieldLabelDisplay via <span className="field-name left-spacing" >{column.caption ?? column.name}</span>*/}
+                        <FieldLabelDisplay column={column} includeFieldKey />
+                        {!cannotBeRemoved && content}
+                        {cannotBeRemoved &&
+                            <OverlayTrigger overlay={overlay} placement="left">
+                                {content}
+                            </OverlayTrigger>
+                        }
+                    </span>
+                </div>
             )}
-        </div>
+        </Draggable>
     );
 });
 
@@ -194,10 +218,11 @@ interface Props {
     model: QueryModel;
     onCancel: () => void;
     onUpdate: () => void;
+    selectedColumn?: QueryColumn;
 }
 
 export const CustomizeGridViewModal: FC<Props> = memo(props => {
-    const { model, onCancel, onUpdate } = props;
+    const { model, onCancel, onUpdate, selectedColumn } = props;
     const { schemaQuery, title, queryInfo } = model;
     const [columnsInView, setColumnsInView] = useState<any>(model.displayColumns);
     const [isDirty, setIsDirty] = useState<boolean>(false);
@@ -205,6 +230,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const [queryDetailError, setQueryDetailError] = useState<string>(undefined);
     const [showAllColumns, setShowAllColumns] = useState<boolean>(false);
     const [expandedColumns, setExpandedColumns] = useState<Record<string, QueryInfo>>({});
+    const [selectedIndex, setSelectedIndex] = useState<number>(selectedColumn ? model.displayColumns.findIndex(col => selectedColumn.index === col.index) : undefined);
 
     const gridName = title ?? schemaQuery.queryName;
 
@@ -228,6 +254,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const revertEdits = useCallback(() => {
         setColumnsInView(model.displayColumns);
         setIsDirty(false);
+        setSelectedIndex(undefined);
     }, [model]);
 
     const removeColumn = useCallback((removedColumn: QueryColumn) => {
@@ -236,9 +263,13 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     }, [columnsInView]);
 
     const addColumn = useCallback((column: QueryColumn) => {
-        setColumnsInView([...columnsInView, column]);
+        if (selectedIndex !== undefined) {
+            setColumnsInView([...columnsInView.slice(0, selectedIndex+1), column, ...columnsInView.slice(selectedIndex+1)]);
+        } else {
+            setColumnsInView([...columnsInView, column]);
+        }
         setIsDirty(true);
-    }, [columnsInView]);
+    }, [selectedIndex, columnsInView]);
 
     const expandColumn = useCallback(async (column: QueryColumn) => {
         try {
@@ -262,6 +293,37 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const toggleShowAll = useCallback(() => {
         setShowAllColumns(!showAllColumns);
     }, [showAllColumns]);
+
+    const onDropField = useCallback((dropResult: DropResult): void => {
+        const { destination, draggableId, source } = dropResult;
+        if (destination === null || source.index === destination.index) {
+            return;
+        }
+        const { index } = destination;
+
+        const colInMotion = columnsInView[source.index];
+        let updatedColumns = columnsInView.filter(col => col.index != draggableId);
+        updatedColumns = [...updatedColumns.slice(0, index), colInMotion, ...updatedColumns.slice(index) ];
+        setColumnsInView(updatedColumns);
+        if (source.index === selectedIndex) {
+            setSelectedIndex(index);
+        } else if (selectedIndex !== undefined) {
+            if (source.index > selectedIndex && index <= selectedIndex) {
+                setSelectedIndex(selectedIndex + 1);
+            } else if (source.index < selectedIndex && index >= selectedIndex) {
+                setSelectedIndex(selectedIndex - 1);
+            }
+        }
+        setIsDirty(true);
+    }, [selectedIndex, columnsInView]);
+
+    const onSelectField = useCallback((index: number): void => {
+        if (index === selectedIndex) {
+            setSelectedIndex(undefined);
+        } else {
+            setSelectedIndex(index);
+        }
+    }, [selectedIndex]);
 
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
@@ -311,14 +373,29 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                     <Col xs={12} sm={6} className="field-modal__col-2">
                         <div className="field-modal__col-title">
                             <span>Shown in Grid</span>
-                            {/* Taking this out for now, until we figure out how to handle session views here */}
-                            {/* {!model.currentView.session && isDirty && <span className="pull-right action-text" onClick={revertEdits}>Restore default columns</span>} */}
+                            <span className={"pull-right " + (isDirty ? "action-text" : "disabled-action-text")} onClick={isDirty ? revertEdits : undefined} >Undo edits</span>
                         </div>
-                        <div className="list-group field-modal__col-content">
-                            {columnsInView.map(column => (
-                                <ColumnInView key={column.index} column={column} onRemoveColumn={removeColumn} />
-                            ))}
-                        </div>
+                        <DragDropContext onDragEnd={onDropField} >
+                            <Droppable droppableId="field-droppable">
+                                {dropProvided => (
+                                    <div className="list-group field-modal__col-content" {...dropProvided.droppableProps} ref={dropProvided.innerRef}>
+                                        {columnsInView.map((column, index) => {
+                                            return (
+                                                <ColumnInView
+                                                    key={column.index}
+                                                    column={column}
+                                                    index={index}
+                                                    onRemoveColumn={removeColumn}
+                                                    selected={selectedIndex === index}
+                                                    onClick={onSelectField}
+                                                />
+                                            );
+                                        })}
+                                        {dropProvided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
                     </Col>
                 </Row>
             </Modal.Body>

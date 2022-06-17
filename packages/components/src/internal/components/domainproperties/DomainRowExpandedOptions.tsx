@@ -169,12 +169,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                     <LookupFieldOptions
                         index={index}
                         domainIndex={domainIndex}
+                        field={field}
                         label="Lookup Definition Options"
                         lookupContainer={field.lookupContainer ?? domainContainerPath}
-                        lookupSchema={field.lookupSchema}
-                        lookupQueryValue={field.lookupQueryValue}
-                        lookupValidator={field.lookupValidator}
-                        original={field.original}
                         onChange={onChange}
                         onMultiChange={onMultiChange}
                         lockType={field.lockType}

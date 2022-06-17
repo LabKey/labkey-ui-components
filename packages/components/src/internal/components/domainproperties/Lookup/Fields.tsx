@@ -102,6 +102,7 @@ interface ITargetTableSelectProps {
     schemaName: string;
     value?: any;
     disabled?: boolean;
+    shouldDisableNonExists?: boolean;
 }
 
 export class TargetTableSelect extends React.PureComponent<ITargetTableSelectProps, any> {
@@ -203,7 +204,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
     }
 
     render() {
-        const { id, onChange, value, name, disabled } = this.props;
+        const { id, onChange, value, name, disabled, shouldDisableNonExists = true } = this.props;
         const { loading, queries } = this.state;
 
         const isEmpty = queries.size === 0;
@@ -216,7 +217,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
         return (
             <FormControl
                 componentClass="select"
-                disabled={loading || disabled || !queryNameOptionExists}
+                disabled={loading || disabled || (shouldDisableNonExists && !queryNameOptionExists)}
                 value={value}
                 id={id}
                 name={name}

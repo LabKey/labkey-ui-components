@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX June 2022
+### version 2.185.0
+*Released*: 17 June 2022
 * Item 10379: Save Grid Views - Manage views dialog
   * Add ManageViewsModal component
 

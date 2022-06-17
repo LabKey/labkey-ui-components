@@ -1132,7 +1132,7 @@ exports[`Grid component with phi data 1`] = `
               "minWidth": undefined,
             }
           }
-          title="(PHI protected data removed)"
+          title="PHI protected data removed"
         >
           Lefty
         </th>

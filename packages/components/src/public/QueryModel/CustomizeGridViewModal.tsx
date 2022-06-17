@@ -1,85 +1,219 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Col, Modal, OverlayTrigger, Popover, Row } from 'react-bootstrap';
-import { Alert } from '../../internal/components/base/Alert';
-import { saveAsSessionView } from '../../internal/actions';
-import { QueryModel } from './QueryModel';
-import { QueryColumn } from '../QueryColumn';
-import { APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/renderers';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import { DragDropHandle } from '../../internal/components/base/DragDropHandle';
 import classNames from 'classnames';
 
+import { Alert } from '../../internal/components/base/Alert';
+import { saveAsSessionView } from '../../internal/actions';
+import { getQueryDetails } from '../../internal/query/api';
+import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/constants';
+import { DragDropHandle } from '../../internal/components/base/DragDropHandle';
+
+import { QueryColumn } from '../QueryColumn';
+import { QueryInfo } from '../QueryInfo';
+
+import { QueryModel } from './QueryModel';
+
+interface FieldLabelDisplayProps {
+    column: QueryColumn;
+    includeFieldKey?: boolean;
+}
+
+// exported for jest testing
+export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
+    const { column, includeFieldKey } = props;
+    const id = column.index + '-fieldlabel-popover';
+    const content = <div className="field-name">{column.caption ?? column.name}</div>;
+
+    // only show hover tooltip for lookup child fields
+    if (!includeFieldKey || column.index.indexOf('/') === -1) return content;
+
+    return (
+        <OverlayTrigger
+            overlay={
+                <Popover id={id} key={id}>
+                    {column.index}
+                </Popover>
+            }
+            placement="left"
+        >
+            {content}
+        </OverlayTrigger>
+    );
+});
+
 interface ColumnChoiceProps {
-    column: QueryColumn,
-    index: number,
-    isInView: boolean,
-    onAddColumn: () => void,
+    column: QueryColumn;
+    isExpanded?: boolean;
+    isInView?: boolean;
+    onAddColumn: (column: QueryColumn) => void;
+    onCollapseColumn: (column: QueryColumn) => void;
+    onExpandColumn: (column: QueryColumn) => void;
 }
 
 // exported for jest tests
 export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
-    const { column, index, isInView, onAddColumn } = props;
+    const { column, isExpanded, isInView, onAddColumn, onExpandColumn, onCollapseColumn } = props;
+    const colFieldKey = column.index;
+    const hasParentFieldKeys = colFieldKey.indexOf('/') > -1;
+    const parentFieldKeys = hasParentFieldKeys ? colFieldKey.substring(0, colFieldKey.lastIndexOf('/')).split('/') : [];
+
+    const _onAddColumn = useCallback(() => {
+        onAddColumn(column);
+    }, [column, onAddColumn]);
+
+    const _onExpandColumn = useCallback(() => {
+        onExpandColumn(column);
+    }, [column, onExpandColumn]);
+
+    const _onCollapseColumn = useCallback(() => {
+        onCollapseColumn(column);
+    }, [column, onCollapseColumn]);
 
     return (
-        <div className="list-group-item" key={index}>
-            <span className="field-name">{column.caption ?? column.name}</span>
-            {isInView && <span className="pull-right" title={"This field is included in the view."} ><i className="fa fa-check"/></span>}
-            {!isInView && <span className="pull-right clickable" title={"Add this field to the view."} onClick={onAddColumn}><i className="fa fa-plus"/></span>}
+        <div className="list-group-item flex" key={colFieldKey}>
+            {parentFieldKeys.map((parent, index) => (
+                <div className="field-expand-icon" key={colFieldKey + '|' + index} />
+            ))}
+            <div className="field-expand-icon">
+                {column.isLookup() && !isExpanded && <i className="fa fa-plus-square" onClick={_onExpandColumn} />}
+                {column.isLookup() && isExpanded && <i className="fa fa-minus-square" onClick={_onCollapseColumn} />}
+            </div>
+            <FieldLabelDisplay column={column} />
+            {isInView && (
+                <div className="pull-right" title="This field is included in the view.">
+                    <i className="fa fa-check" />
+                </div>
+            )}
+            {!isInView && column.selectable && (
+                <div className="pull-right clickable" title="Add this field to the view." onClick={_onAddColumn}>
+                    <i className="fa fa-plus" />
+                </div>
+            )}
         </div>
     );
 });
 
+interface ColumnChoiceLookupProps extends ColumnChoiceProps {
+    columnsInView: any;
+    expandedColumns: Record<string, QueryInfo>;
+    showAllColumns: boolean;
+}
+
+// exported for jest tests
+export const ColumnChoiceGroup: FC<ColumnChoiceLookupProps> = memo(props => {
+    const { expandedColumns, column, onAddColumn, onExpandColumn, onCollapseColumn, columnsInView, showAllColumns } =
+        props;
+    const isLookupExpanded = !!expandedColumns[column.index];
+
+    const isColumnInView = (column: QueryColumn): boolean => {
+        return columnsInView.findIndex(col => col.index === column.index) !== -1;
+    };
+
+    const parentElement = (
+        <ColumnChoice
+            column={column}
+            key={column.index}
+            isInView={isColumnInView(column)}
+            onAddColumn={onAddColumn}
+            isExpanded={isLookupExpanded}
+            onExpandColumn={onExpandColumn}
+            onCollapseColumn={onCollapseColumn}
+        />
+    );
+
+    let childElements = [];
+    if (isLookupExpanded) {
+        childElements = expandedColumns[column.index].columns
+            .valueSeq()
+            .filter(fkCol => (showAllColumns || !fkCol.hidden) && !fkCol.removeFromViews)
+            .map(fkCol => (
+                <ColumnChoiceGroup
+                    column={fkCol}
+                    key={fkCol.index}
+                    isInView={isColumnInView(fkCol)}
+                    onAddColumn={onAddColumn}
+                    isExpanded={!!expandedColumns[fkCol.index]}
+                    onExpandColumn={onExpandColumn}
+                    onCollapseColumn={onCollapseColumn}
+                    expandedColumns={expandedColumns}
+                    columnsInView={columnsInView}
+                    showAllColumns={showAllColumns}
+                />
+            ))
+            .toArray();
+    }
+
+    return (
+        <>
+            {parentElement}
+            {childElements}
+        </>
+    );
+});
+
 interface ColumnInViewProps {
-    column: QueryColumn,
-    index: number
-    onColumnRemove: () => void
-    selected: boolean
-    onClick: (index) => void
+    column: QueryColumn;
+    index: number;
+    onClick: (index: number) => void;
+    onRemoveColumn: (column: QueryColumn) => void;
+    selected: boolean;
 }
 
 // exported for jest tests
 export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
-    const { column, index, onClick, onColumnRemove, selected } = props;
+    const { column, onRemoveColumn, onClick, selected, index } = props;
+    const key = column.index;
+
+    const _onRemoveColumn = useCallback(() => {
+        onRemoveColumn(column);
+    }, [column, onRemoveColumn]);
 
     const _onClick = useCallback(() => {
         onClick(index);
-    }, [onClick, index])
+    }, [onClick, index]);
+
     let overlay;
     const cannotBeRemoved = column.addToDisplayView === true;
-    let content = (
-        <span className={"pull-right " + (cannotBeRemoved ? "text-muted disabled" : "clickable")} onClick={cannotBeRemoved ? undefined : onColumnRemove}>
-            <i className="fa fa-times"/>
+    const content = (
+        <span
+            className={'pull-right ' + (cannotBeRemoved ? 'text-muted disabled' : 'clickable')}
+            onClick={cannotBeRemoved ? undefined : _onRemoveColumn}
+        >
+            <i className="fa fa-times" />
         </span>
     );
     if (cannotBeRemoved) {
-        overlay = <Popover id={column.name + "-disabled-popover"} key={index + '-disabled-warning'}>{APP_COLUMN_CANNOT_BE_REMOVED_MESSAGE}</Popover>;
+        overlay = (
+            <Popover id={key + '-disabled-popover'} key={key + '-disabled-warning'}>
+                {APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
+            </Popover>
+        );
     }
-    const key = column.index;
-
     return (
-        <Draggable key={key} draggableId={key} index={index} >
+        <Draggable key={key} draggableId={key} index={index}>
             {(dragProvided, snapshot) => (
-                <div className={classNames("list-group-item draggable", {"active": selected})}
-                     onClick={_onClick}
-                     ref={dragProvided.innerRef}
-                     {...dragProvided.draggableProps}>
-                    <span {...dragProvided.dragHandleProps}>
-                        <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps}/>
-                    </span>
-                    <span key={index}>
-                        <span className="field-name left-spacing" >{column.caption ?? column.name}</span>
-                        {!cannotBeRemoved && content}
-                        {cannotBeRemoved &&
-                            <OverlayTrigger overlay={overlay} placement="bottom">
-                                {content}
-                            </OverlayTrigger>
-                        }
-                    </span>
+                <div
+                    className={classNames('list-group-item flex draggable', { active: selected })}
+                    onClick={_onClick}
+                    ref={dragProvided.innerRef}
+                    {...dragProvided.draggableProps}
+                >
+                    <div className="right-spacing" {...dragProvided.dragHandleProps}>
+                        <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps} />
+                    </div>
+                    <FieldLabelDisplay column={column} includeFieldKey />
+                    {!cannotBeRemoved && content}
+                    {cannotBeRemoved && (
+                        <OverlayTrigger overlay={overlay} placement="left">
+                            {content}
+                        </OverlayTrigger>
+                    )}
                 </div>
             )}
         </Draggable>
     );
-})
+});
 
 interface Props {
     model: QueryModel;
@@ -90,12 +224,16 @@ interface Props {
 
 export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const { model, onCancel, onUpdate, selectedColumn } = props;
-    const { schemaQuery, title } = model;
+    const { schemaQuery, title, queryInfo } = model;
     const [columnsInView, setColumnsInView] = useState<any>(model.displayColumns);
     const [isDirty, setIsDirty] = useState<boolean>(false);
     const [saveError, setSaveError] = useState<string>(undefined);
+    const [queryDetailError, setQueryDetailError] = useState<string>(undefined);
     const [showAllColumns, setShowAllColumns] = useState<boolean>(false);
-    const [selectedIndex, setSelectedIndex] = useState<number>(selectedColumn ? model.displayColumns.findIndex(col => selectedColumn.index === col.index) : undefined);
+    const [expandedColumns, setExpandedColumns] = useState<Record<string, QueryInfo>>({});
+    const [selectedIndex, setSelectedIndex] = useState<number>(
+        selectedColumn ? model.displayColumns.findIndex(col => selectedColumn.index === col.index) : undefined
+    );
 
     const gridName = title ?? schemaQuery.queryName;
 
@@ -105,14 +243,16 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
 
     const _onUpdate = useCallback(async () => {
         try {
-            const viewInfo = model.currentView.mutate({columns: columnsInView});
+            const viewInfo = model.currentView.mutate({
+                columns: columnsInView.map(col => ({ fieldKey: col.index })),
+            });
             await saveAsSessionView(schemaQuery, model.containerPath, viewInfo);
             closeModal();
             onUpdate();
         } catch (error) {
             setSaveError(error);
         }
-    }, [model, schemaQuery, columnsInView]);
+    }, [closeModal, onUpdate, model, schemaQuery, columnsInView]);
 
     const revertEdits = useCallback(() => {
         setColumnsInView(model.displayColumns);
@@ -120,110 +260,163 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         setSelectedIndex(undefined);
     }, [model]);
 
-    const removeColumn = useCallback((deleteIndex: number) => {
-        setColumnsInView(columnsInView.filter((column, index) => index !== deleteIndex));
-        setIsDirty(true);
-    }, [columnsInView]);
+    const removeColumn = useCallback(
+        (removedColumn: QueryColumn) => {
+            setColumnsInView(columnsInView.filter(column => column.index !== removedColumn.index));
+            setIsDirty(true);
+        },
+        [columnsInView]
+    );
 
-    const addColumn = useCallback((column: QueryColumn) => {
-        if (selectedIndex !== undefined) {
-            setColumnsInView([...columnsInView.slice(0, selectedIndex+1), column, ...columnsInView.slice(selectedIndex+1)]);
-        } else {
-            setColumnsInView([...columnsInView, column]);
-        }
-        setIsDirty(true);
-    }, [selectedIndex, columnsInView]);
+    const addColumn = useCallback(
+        (column: QueryColumn) => {
+            if (selectedIndex !== undefined) {
+                setColumnsInView([
+                    ...columnsInView.slice(0, selectedIndex + 1),
+                    column,
+                    ...columnsInView.slice(selectedIndex + 1),
+                ]);
+            } else {
+                setColumnsInView([...columnsInView, column]);
+            }
+            setIsDirty(true);
+        },
+        [selectedIndex, columnsInView]
+    );
+
+    const expandColumn = useCallback(
+        async (column: QueryColumn) => {
+            try {
+                setQueryDetailError(undefined);
+                const fkQueryInfo = await getQueryDetails({
+                    schemaName: queryInfo.schemaQuery.schemaName,
+                    queryName: queryInfo.schemaQuery.queryName,
+                    fk: column.index,
+                });
+                setExpandedColumns({ ...expandedColumns, [column.index]: fkQueryInfo });
+            } catch (error) {
+                setQueryDetailError(error.message);
+            }
+        },
+        [queryInfo, expandedColumns]
+    );
+
+    const collapseColumn = useCallback(
+        (column: QueryColumn) => {
+            setQueryDetailError(undefined);
+            setExpandedColumns({ ...expandedColumns, [column.index]: undefined });
+        },
+        [expandedColumns]
+    );
 
     const toggleShowAll = useCallback(() => {
         setShowAllColumns(!showAllColumns);
     }, [showAllColumns]);
 
-    const isColumnInView = (column: QueryColumn) => {
-        return columnsInView.findIndex(col => col === column) !== -1;
-    }
-
-    const onDropField = useCallback((dropResult: DropResult): void => {
-        const { destination, draggableId, source } = dropResult;
-        if (destination === null || source.index === destination.index) {
-            return;
-        }
-        const { index } = destination;
-
-        const colInMotion = columnsInView[source.index];
-        let updatedColumns = columnsInView.filter(col => col.index != draggableId);
-        updatedColumns = [...updatedColumns.slice(0, index), colInMotion, ...updatedColumns.slice(index) ];
-        setColumnsInView(updatedColumns);
-        if (source.index === selectedIndex) {
-            setSelectedIndex(index);
-        } else if (selectedIndex !== undefined) {
-            if (source.index > selectedIndex && index <= selectedIndex) {
-                setSelectedIndex(selectedIndex + 1);
-            } else if (source.index < selectedIndex && index >= selectedIndex) {
-                setSelectedIndex(selectedIndex - 1);
+    const onDropField = useCallback(
+        (dropResult: DropResult): void => {
+            const { destination, draggableId, source } = dropResult;
+            if (destination === null || source.index === destination.index) {
+                return;
             }
-        }
-        setIsDirty(true);
-    }, [selectedIndex, columnsInView]);
+            const { index } = destination;
 
-    const onSelectField = useCallback((index): void => {
-        if (index === selectedIndex) {
-            setSelectedIndex(undefined);
-        } else {
-            setSelectedIndex(index);
-        }
-    }, [selectedIndex])
+            const colInMotion = columnsInView[source.index];
+            let updatedColumns = columnsInView.filter(col => col.index != draggableId);
+            updatedColumns = [...updatedColumns.slice(0, index), colInMotion, ...updatedColumns.slice(index)];
+            setColumnsInView(updatedColumns);
+            if (source.index === selectedIndex) {
+                setSelectedIndex(index);
+            } else if (selectedIndex !== undefined) {
+                if (source.index > selectedIndex && index <= selectedIndex) {
+                    setSelectedIndex(selectedIndex + 1);
+                } else if (source.index < selectedIndex && index >= selectedIndex) {
+                    setSelectedIndex(selectedIndex - 1);
+                }
+            }
+            setIsDirty(true);
+        },
+        [selectedIndex, columnsInView]
+    );
+
+    const onSelectField = useCallback((index: number): void => {
+        setSelectedIndex(_selectedIndex => (_selectedIndex === index ? undefined : index));
+    }, []);
 
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    Customize {gridName} Grid{model.viewName && ' - ' + model.viewName}{model.currentView.session && <span className="alert-info view-edit-alert view-edit-title-alert">Edited</span>}
+                    Customize {gridName} Grid{model.viewName && ' - ' + model.viewName}
+                    {model.currentView.session && (
+                        <span className="alert-info view-edit-alert view-edit-title-alert">Edited</span>
+                    )}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <Alert>{queryDetailError}</Alert>
                 <Alert>{saveError}</Alert>
                 <Row className="field-modal__container">
-                    <Col xs={6} className="field-modal__col-2">
-                        <div key="title" className="field-modal__col-title">Available Fields</div>
-                        <div key="field-list" className="list-group field-modal__col-content">
-                            {
-                                model.allColumns.filter(column => isColumnInView(column) || ((showAllColumns || !column.hidden) && !column.removeFromViews)).map((column, index) => {
-                                    return (
-                                        <ColumnChoice
-                                            column={column}
-                                            index={index}
-                                            key={index}
-                                            isInView={isColumnInView(column)}
-                                            onAddColumn={() => addColumn(column)}
-                                        />
-                                    );
-                                })
-                            }
+                    <Col xs={12} sm={6} className="field-modal__col-2">
+                        <div key="title" className="field-modal__col-title">
+                            Available Fields
                         </div>
-                        <div key={"toggleAll"}>
-                            <input type="checkbox" checked={showAllColumns} onChange={toggleShowAll}/>&nbsp;Show all system and user-defined fields
+                        <div key="field-list" className="list-group field-modal__col-content">
+                            {model.queryInfo.columns
+                                .valueSeq()
+                                .filter(
+                                    column =>
+                                        (showAllColumns || !column.hidden) &&
+                                        !column.removeFromViews &&
+                                        column.index.indexOf('/') === -1 // here at the top level we don't want to include lookup fields
+                                )
+                                .map(column => (
+                                    <ColumnChoiceGroup
+                                        column={column}
+                                        key={column.index}
+                                        onAddColumn={addColumn}
+                                        onExpandColumn={expandColumn}
+                                        onCollapseColumn={collapseColumn}
+                                        expandedColumns={expandedColumns}
+                                        columnsInView={columnsInView}
+                                        showAllColumns={showAllColumns}
+                                    />
+                                ))}
+                        </div>
+                        <div key="toggleAll" className="field-modal__footer">
+                            <input type="checkbox" checked={showAllColumns} onChange={toggleShowAll} />
+                            &nbsp;Show all system and user-defined fields
                         </div>
                     </Col>
-                    <Col xs={6} className="field-modal__col-2">
+                    <Col xs={12} sm={6} className="field-modal__col-2">
                         <div className="field-modal__col-title">
                             <span>Shown in Grid</span>
-                            <span className={"pull-right " + (isDirty ? "action-text" : "disabled-action-text")} onClick={isDirty ? revertEdits : undefined} >Undo edits</span>
+                            <span
+                                className={'pull-right ' + (isDirty ? 'action-text' : 'disabled-action-text')}
+                                onClick={isDirty ? revertEdits : undefined}
+                            >
+                                Undo edits
+                            </span>
                         </div>
-                        <DragDropContext onDragEnd={onDropField} >
+                        <DragDropContext onDragEnd={onDropField}>
                             <Droppable droppableId="field-droppable">
                                 {dropProvided => (
-                                    <div className="list-group field-modal__col-content" {...dropProvided.droppableProps} ref={dropProvided.innerRef}>
+                                    <div
+                                        className="list-group field-modal__col-content"
+                                        {...dropProvided.droppableProps}
+                                        ref={dropProvided.innerRef}
+                                    >
                                         {columnsInView.map((column, index) => {
                                             return (
                                                 <ColumnInView
-                                                    key={index}
+                                                    key={column.index}
                                                     column={column}
                                                     index={index}
-                                                    onColumnRemove={() => removeColumn(index)}
+                                                    onRemoveColumn={removeColumn}
                                                     selected={selectedIndex === index}
                                                     onClick={onSelectField}
                                                 />
-                                            )
+                                            );
                                         })}
                                         {dropProvided.placeholder}
                                     </div>
@@ -251,5 +444,5 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                 </div>
             </Modal.Footer>
         </Modal>
-    )
-})
+    );
+});

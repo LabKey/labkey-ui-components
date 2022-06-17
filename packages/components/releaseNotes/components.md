@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add Picklist menu item in megamenu
 
+### version 2.184.0
+*Released*: 17 June 2022
+* Item 10445: CustomizeGridViewModal - Handling lookup columns
+  * Order columns based on `queryInfo.columns` instead of `queryInfo.allColumns`
+  * Show lookup fields on expand in Available Fields listing and allow them to be added to view
+  * Update api/`getQueryDetails()` to accept a fk for cache key
+  * Enabled `QueryColumn` props for `selectable` and `friendlyType`
+  * Include fieldKey in grid column header hover text
+  * Issue 45693: Filter dialog choose values click target is too big
+
 ### version 2.183.1
 *Released*: 16 June 2022
 * Add ability to rearrange fields from `CustomizeGridViewModal`

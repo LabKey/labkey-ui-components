@@ -14,7 +14,8 @@ interface FieldLabelDisplayProps {
     includeFieldKey?: boolean;
 }
 
-const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
+// exported for jest testing
+export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
     const { column, includeFieldKey } = props;
     const id = column.index + '-fieldlabel-popover';
     const content = <div className="field-name">{column.caption ?? column.name}</div>;

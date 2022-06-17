@@ -1,5 +1,11 @@
 import React from 'react';
-import { ColumnChoice, ColumnInView, CustomizeGridViewModal } from './CustomizeGridViewModal';
+import {
+    ColumnChoice,
+    ColumnChoiceGroup,
+    ColumnInView,
+    CustomizeGridViewModal,
+    FieldLabelDisplay,
+} from './CustomizeGridViewModal';
 import { mount, ReactWrapper } from 'enzyme';
 import { QueryColumn } from '../QueryColumn';
 import { Modal, OverlayTrigger } from 'react-bootstrap';
@@ -13,7 +19,21 @@ const QUERY_COL = QueryColumn.create({
     name: "testColumn",
     fieldKey: "testColumn",
     fieldKeyArray: ["testColumn"],
-    caption: "Test Column"
+    fieldKeyPath: "testColumn",
+    caption: "Test Column",
+    selectable: true,
+});
+
+const QUERY_COL_LOOKUP = QueryColumn.create({
+    name: "testColumn",
+    fieldKey: "testColumn",
+    fieldKeyArray: ["testColumn"],
+    fieldKeyPath: "parent1/parent2/testColumn",
+    caption: "Test Column",
+    selectable: true,
+    lookup: {
+        /* this would define the schema/query */
+    },
 });
 
 describe("ColumnChoice", () => {
@@ -27,8 +47,11 @@ describe("ColumnChoice", () => {
                 onExpandColumn={jest.fn()}
             />);
         expect(wrapper.find(".field-name").text()).toBe("Test Column");
-        expect(wrapper.find(".fa-check").exists()).toBeTruthy();
-        expect(wrapper.find(".fa-plus").exists()).toBeFalsy();
+        expect(wrapper.find(".fa-check")).toHaveLength(1);
+        expect(wrapper.find(".fa-plus")).toHaveLength(0);
+        expect(wrapper.find(".field-expand-icon")).toHaveLength(1);
+        expect(wrapper.find(".fa-plus-square")).toHaveLength(0);
+        expect(wrapper.find(".fa-plus-minus")).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -40,13 +63,55 @@ describe("ColumnChoice", () => {
                 onAddColumn={jest.fn()}
                 onCollapseColumn={jest.fn()}
                 onExpandColumn={jest.fn()}
-            />);
+            />
+        );
         expect(wrapper.find(".field-name").text()).toBe("Test Column");
-        expect(wrapper.find(".fa-check").exists()).toBeFalsy();
-        expect(wrapper.find(".fa-plus").exists()).toBeTruthy();
+        expect(wrapper.find(".fa-check")).toHaveLength(0);
+        expect(wrapper.find(".fa-plus")).toHaveLength(1);
+        expect(wrapper.find(".field-expand-icon")).toHaveLength(1);
+        expect(wrapper.find(".fa-plus-square")).toHaveLength(0);
+        expect(wrapper.find(".fa-plus-minus")).toHaveLength(0);
         wrapper.unmount();
     });
 
+    test("lookup, collapsed", () => {
+        const wrapper = mount(
+            <ColumnChoice
+                column={QUERY_COL_LOOKUP}
+                isInView={false}
+                onAddColumn={jest.fn()}
+                onCollapseColumn={jest.fn()}
+                onExpandColumn={jest.fn()}
+            />
+        );
+        expect(wrapper.find(".field-name").text()).toBe("Test Column");
+        expect(wrapper.find(".fa-check")).toHaveLength(0);
+        expect(wrapper.find(".fa-plus")).toHaveLength(1);
+        expect(wrapper.find(".field-expand-icon")).toHaveLength(3);
+        expect(wrapper.find(".fa-plus-square")).toHaveLength(1);
+        expect(wrapper.find(".fa-plus-minus")).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test("lookup, expanded", () => {
+        const wrapper = mount(
+            <ColumnChoice
+                column={QUERY_COL_LOOKUP}
+                isInView={false}
+                isExpanded
+                onAddColumn={jest.fn()}
+                onCollapseColumn={jest.fn()}
+                onExpandColumn={jest.fn()}
+            />
+        );
+        expect(wrapper.find(".field-name").text()).toBe("Test Column");
+        expect(wrapper.find(".fa-check")).toHaveLength(0);
+        expect(wrapper.find(".fa-plus")).toHaveLength(1);
+        expect(wrapper.find(".field-expand-icon")).toHaveLength(3);
+        expect(wrapper.find(".fa-plus-square")).toHaveLength(0);
+        expect(wrapper.find(".fa-minus-square")).toHaveLength(1);
+        wrapper.unmount();
+    });
 });
 
 describe("ColumnInView", () => {
@@ -102,15 +167,14 @@ describe("ColumnInView", () => {
         validate(wrapper, column, false);
         wrapper.unmount();
     });
-
 });
 
 describe("CustomizeGridViewModal", () => {
-    const FIELD_1_COL = new QueryColumn({ name: "field1", fieldKey: "field1", fieldKeyArray: ["field1"] });
-    const FIELD_2_COL = new QueryColumn({ name: "field2", fieldKey: "field2", fieldKeyArray: ["field2"] });
-    const FIELD_3_COL = new QueryColumn({name: "field3", fieldKey: "field3", fieldKeyArray: ["field3"] });
-    const SYSTEM_COL = new QueryColumn({ name: "systemCol", fieldKey: "systemCol", fieldKeyArray: ["systemCol"] , hidden: true});
-    const HIDDEN_COL = new QueryColumn({ name: "hiddenCol", fieldKey: "hiddenCol", fieldKeyArray: ["hiddenCol"] , hidden: true});
+    const FIELD_1_COL = new QueryColumn({ name: "field1", fieldKey: "field1", fieldKeyArray: ["field1"], selectable: true });
+    const FIELD_2_COL = new QueryColumn({ name: "field2", fieldKey: "field2", fieldKeyArray: ["field2"], selectable: true });
+    const FIELD_3_COL = new QueryColumn({name: "field3", fieldKey: "field3", fieldKeyArray: ["field3"], selectable: true });
+    const SYSTEM_COL = new QueryColumn({ name: "systemCol", fieldKey: "systemCol", fieldKeyArray: ["systemCol"], selectable: true, hidden: true});
+    const HIDDEN_COL = new QueryColumn({ name: "hiddenCol", fieldKey: "hiddenCol", fieldKeyArray: ["hiddenCol"], selectable: true, hidden: true});
     const columns = fromJS({
         field1: FIELD_1_COL,
         field2: FIELD_2_COL,
@@ -226,6 +290,160 @@ describe("CustomizeGridViewModal", () => {
         wrapper.find(ColumnChoice).at(4).find(".fa-plus").simulate("click");
         expect(wrapper.find(".btn-success").prop("disabled")).toBeFalsy();
 
+        wrapper.unmount();
+    });
+});
+
+describe('FieldLabelDisplay', () => {
+    test('not lookup', () => {
+        const wrapper = mount(<FieldLabelDisplay column={QUERY_COL} includeFieldKey />);
+        expect(wrapper.find('.field-name')).toHaveLength(1);
+        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test('is lookup', () => {
+        const wrapper = mount(<FieldLabelDisplay column={QUERY_COL_LOOKUP} includeFieldKey />);
+        expect(wrapper.find('.field-name')).toHaveLength(1);
+        expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+    test('is lookup, do not include fieldKey', () => {
+        const wrapper = mount(<FieldLabelDisplay column={QUERY_COL_LOOKUP} />);
+        expect(wrapper.find('.field-name')).toHaveLength(1);
+        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        wrapper.unmount();
+    });
+});
+
+describe('ColumnChoiceGroup', () => {
+    const DEFAULT_PROPS = {
+        column: QUERY_COL,
+        columnsInView: [],
+        expandedColumns: {},
+        showAllColumns: false,
+        onAddColumn: jest.fn(),
+        onCollapseColumn: jest.fn(),
+        onExpandColumn: jest.fn(),
+    };
+
+    function validate(wrapper: ReactWrapper, expanded = false, inView = false, hasChild = false): void {
+        const count = hasChild ? 2 : 1;
+        expect(wrapper.find(ColumnChoice)).toHaveLength(count);
+        expect(wrapper.find(ColumnChoice).first().prop('isExpanded')).toBe(expanded);
+        expect(wrapper.find(ColumnChoice).first().prop('isInView')).toBe(inView);
+        expect(wrapper.find(ColumnChoiceGroup)).toHaveLength(count);
+    }
+
+    test('standard column, not lookup, no in view', () => {
+        const wrapper = mount(<ColumnChoiceGroup {...DEFAULT_PROPS} />);
+        validate(wrapper);
+        wrapper.unmount();
+    });
+
+    test('standard column, not lookup, in view', () => {
+        const wrapper = mount(<ColumnChoiceGroup {...DEFAULT_PROPS} columnsInView={[QUERY_COL]} />);
+        validate(wrapper, false, true);
+        wrapper.unmount();
+    });
+
+    test('lookup column, collapsed, not in view', () => {
+        const wrapper = mount(<ColumnChoiceGroup {...DEFAULT_PROPS} column={QUERY_COL_LOOKUP} />);
+        validate(wrapper);
+        wrapper.unmount();
+    });
+
+    test('lookup column, expanded, in view', () => {
+        const wrapper = mount(
+            <ColumnChoiceGroup
+                {...DEFAULT_PROPS}
+                column={QUERY_COL_LOOKUP}
+                expandedColumns={{ [QUERY_COL_LOOKUP.index]: QueryInfo.create({}) }}
+                columnsInView={[QUERY_COL_LOOKUP]}
+            />
+        );
+        validate(wrapper, true, true);
+        wrapper.unmount();
+    });
+
+    test('lookup column with children, child not in view', () => {
+        const queryInfo = QueryInfo.create({ columns: fromJS({ [QUERY_COL.fieldKey]: QUERY_COL })});
+        const wrapper = mount(
+            <ColumnChoiceGroup
+                {...DEFAULT_PROPS}
+                column={QUERY_COL_LOOKUP}
+                expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
+                columnsInView={[QUERY_COL_LOOKUP]}
+            />
+        );
+        validate(wrapper, true, true, true);
+        expect(wrapper.find(ColumnChoice).last().prop('isExpanded')).toBe(false);
+        expect(wrapper.find(ColumnChoice).last().prop('isInView')).toBe(false);
+        wrapper.unmount();
+    });
+
+    test('lookup column with children, child in view', () => {
+        const queryInfo = QueryInfo.create({ columns: fromJS({ [QUERY_COL.fieldKey]: QUERY_COL })});
+        const wrapper = mount(
+            <ColumnChoiceGroup
+                {...DEFAULT_PROPS}
+                column={QUERY_COL_LOOKUP}
+                expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
+                columnsInView={[QUERY_COL_LOOKUP, QUERY_COL]}
+            />
+        );
+        validate(wrapper, true, true, true);
+        expect(wrapper.find(ColumnChoice).last().prop('isExpanded')).toBe(false);
+        expect(wrapper.find(ColumnChoice).last().prop('isInView')).toBe(true);
+        wrapper.unmount();
+    });
+
+    test('lookup column with children, child hidden', () => {
+        const colHidden = QueryColumn.create({ ...QUERY_COL.toJS(), hidden: true });
+        const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden })});
+        const wrapper = mount(
+            <ColumnChoiceGroup
+                {...DEFAULT_PROPS}
+                column={QUERY_COL_LOOKUP}
+                expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
+                columnsInView={[QUERY_COL_LOOKUP]}
+            />
+        );
+        validate(wrapper, true, true);
+        wrapper.unmount();
+    });
+
+    test('lookup column with children, child hidden with showAllColumns', () => {
+        const colHidden = QueryColumn.create({ ...QUERY_COL.toJS(), hidden: true });
+        const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden })});
+        const wrapper = mount(
+            <ColumnChoiceGroup
+                {...DEFAULT_PROPS}
+                column={QUERY_COL_LOOKUP}
+                expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
+                columnsInView={[QUERY_COL_LOOKUP, colHidden]}
+                showAllColumns
+            />
+        );
+        validate(wrapper, true, true, true);
+        expect(wrapper.find(ColumnChoice).last().prop('isExpanded')).toBe(false);
+        expect(wrapper.find(ColumnChoice).last().prop('isInView')).toBe(true);
+        wrapper.unmount();
+    });
+
+    test('lookup column with children, child removeFromViews', () => {
+        const colHidden = QueryColumn.create({ ...QUERY_COL.toJS(), removeFromViews: true });
+        const queryInfo = QueryInfo.create({ columns: fromJS({ [colHidden.fieldKey]: colHidden })});
+        const wrapper = mount(
+            <ColumnChoiceGroup
+                {...DEFAULT_PROPS}
+                column={QUERY_COL_LOOKUP}
+                expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
+                columnsInView={[QUERY_COL_LOOKUP]}
+            />
+        );
+        validate(wrapper, true, true);
         wrapper.unmount();
     });
 });

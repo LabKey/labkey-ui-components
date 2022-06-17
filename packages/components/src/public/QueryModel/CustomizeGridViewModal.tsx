@@ -195,19 +195,16 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                      onClick={_onClick}
                      ref={dragProvided.innerRef}
                      {...dragProvided.draggableProps}>
-                    <span {...dragProvided.dragHandleProps}>
+                    <div className="right-spacing" {...dragProvided.dragHandleProps}>
                         <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps}/>
-                    </span>
-                    <span key={index}>
-                        {/* TODO left-spacing for FieldLabelDisplay via <span className="field-name left-spacing" >{column.caption ?? column.name}</span>*/}
-                        <FieldLabelDisplay column={column} includeFieldKey />
-                        {!cannotBeRemoved && content}
-                        {cannotBeRemoved &&
-                            <OverlayTrigger overlay={overlay} placement="left">
-                                {content}
-                            </OverlayTrigger>
-                        }
-                    </span>
+                    </div>
+                    <FieldLabelDisplay column={column} includeFieldKey />
+                    {!cannotBeRemoved && content}
+                    {cannotBeRemoved &&
+                        <OverlayTrigger overlay={overlay} placement="left">
+                            {content}
+                        </OverlayTrigger>
+                    }
                 </div>
             )}
         </Draggable>

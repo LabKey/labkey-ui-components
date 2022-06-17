@@ -238,14 +238,14 @@ export class QueryColumn extends Record({
         }
 
         // This is a single-part fieldKey so the data index will NOT be FieldKey encoded.
-        if (this.fieldKeyArray.length === 1) {
+        if (this.fieldKeyArray?.length === 1) {
             return this.fieldKeyArray[0];
         }
 
         // We're in an unexpected state. The "fieldKey" is single-part but the
         // "fieldKeyArray" is non-singular (made up of zero or two or more parts).
         // Fallback to old behavior.
-        return this.fieldKeyArray.join('/');
+        return this.fieldKeyArray?.join('/');
     }
 
     isExpInput(checkLookup = true): boolean {

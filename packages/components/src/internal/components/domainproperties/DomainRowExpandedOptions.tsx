@@ -256,7 +256,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         />
                     </Col>
                     {domainFormDisplayOptions?.derivationDataScopeConfig?.show && (
-                        <Col xs={12} lg={10}>
+                        <Col xs={12}>
                             <DerivationDataScopeFieldOptions
                                 index={index}
                                 domainIndex={domainIndex}
@@ -265,6 +265,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                 label={domainFormDisplayOptions?.derivationDataScopeConfig?.sectionTitle}
                                 onChange={onChange}
                                 lockType={field.lockType}
+                                isExistingField={!field.isNew()}
                             />
                         </Col>
                     )}

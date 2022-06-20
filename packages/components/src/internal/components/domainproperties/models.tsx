@@ -1868,10 +1868,12 @@ export interface IDomainFormDisplayOptions {
 
 export interface IDerivationDataScope {
     show?: boolean;
-    disable?: boolean;
     sectionTitle?: string;
-    fieldLabel?: string;
+    label_all?: string;
+    label_child?: string;
+    label_parent?: string;
     helpLinkNode?: ReactNode;
+    scopeChangeWarning?: string;
 }
 
 /**

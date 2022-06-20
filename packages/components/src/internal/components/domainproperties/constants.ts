@@ -211,5 +211,7 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
 };
 
 export const DERIVATION_DATA_SCOPE_CHILD_ONLY = 'ChildOnly';
+export const DERIVATION_DATA_SCOPE_PARENT_ONLY = 'ParentOnly';
+export const DERIVATION_DATA_SCOPE_ALL = 'All';
 
 export const MAX_VALID_TEXT_CHOICES = 200;

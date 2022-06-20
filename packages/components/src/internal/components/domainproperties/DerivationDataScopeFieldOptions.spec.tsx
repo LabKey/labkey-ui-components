@@ -49,7 +49,6 @@ describe('DerivationDataScopeFieldOptions', () => {
             lockType: DOMAIN_FIELD_NOT_LOCKED,
             config: {
                 show: true,
-                disable: true,
                 sectionTitle: 'Aliquot field',
                 fieldLabel: 'Aliquot Only',
             },

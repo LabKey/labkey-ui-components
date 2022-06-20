@@ -70,7 +70,10 @@ import { DATA_IMPORT_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { BulkAddData } from '../editable/EditableGrid';
 
-import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
+import {
+    DERIVATION_DATA_SCOPE_ALL,
+    DERIVATION_DATA_SCOPE_CHILD_ONLY,
+} from '../domainproperties/constants';
 
 import { getCurrentProductName, isSampleManagerEnabled } from '../../app/utils';
 
@@ -452,11 +455,17 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         }
     };
 
+    isAliquotField = (column) : boolean => {
+        return (ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1
+            || column.derivationDataScope === DERIVATION_DATA_SCOPE_CHILD_ONLY
+            || column.derivationDataScope === DERIVATION_DATA_SCOPE_ALL)
+    };
+
     getAliquotCreationColumns = (allColumns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> => {
         let columns = OrderedMap<string, QueryColumn>();
 
         allColumns.forEach((column, key) => {
-            if (ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1) {
+            if (this.isAliquotField(column)) {
                 let col = column;
                 // Aliquot name can be auto generated, regardless of sample name expression config
                 if (column.fieldKey.toLowerCase() === 'name')
@@ -886,11 +895,19 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         this.setState({ error: undefined });
     };
 
+    isIncludedColumn = (column : QueryColumn) : boolean => {
+        const { creationType } = this.props;
+
+        if(creationType === SampleCreationType.Aliquots)
+            return this.isAliquotField(column);
+        return column.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY;
+    };
+
     getInsertColumns = (): List<QueryColumn> => {
         const { queryInfo } = this.state.dataModel;
         let columns: List<QueryColumn> = queryInfo
             .getInsertColumns()
-            .filter(col => col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY)
+            .filter(this.isIncludedColumn)
             .toList();
         // we add the UniqueId columns, which will be displayed as read-only fields
         columns = columns.concat(queryInfo.getUniqueIdColumns()).toList();
@@ -901,7 +918,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         return (
             insertColumnFilter(col, false) &&
             col.fieldKey !== this.props.entityDataType.uniqueFieldKey &&
-            col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY
+            this.isIncludedColumn(col)
         );
     };
 

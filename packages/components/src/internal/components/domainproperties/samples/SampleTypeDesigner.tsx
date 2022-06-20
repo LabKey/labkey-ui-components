@@ -2,19 +2,28 @@ import React, { ReactNode } from 'react';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Domain } from '@labkey/api';
 
-import { DomainDesign, DomainDetails, IAppDomainHeader, IDomainField, IDomainFormDisplayOptions } from '../models';
+import {
+    DomainDesign,
+    DomainDetails,
+    IAppDomainHeader,
+    IDomainField,
+    IDomainFormDisplayOptions
+} from '../models';
 import DomainForm from '../DomainForm';
 import {
     Alert,
     ConfirmModal,
     generateId,
     getHelpLink,
+    HelpLink,
     initQueryGridState,
     IParentOption,
     ISelectRowsResult,
+    LabelHelpTip,
     MetricUnitProps,
     naturalSortByProperty,
     resolveErrorMessage,
+    SAMPLE_ALIQUOT_TOPIC,
     SCHEMAS,
 } from '../../../..';
 
@@ -54,6 +63,20 @@ const DATA_CLASS_SCHEMA_KEY = 'exp/dataclasses';
 const SAMPLE_SET_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
 const SAMPLE_SET_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
 const SAMPLE_SET_HELP_TOPIC = 'createSampleType';
+
+const ALIQUOT_OPTIONS_HELP = (
+    <LabelHelpTip title="Sample/Aliquot Options">
+        <div>
+            <p>
+                If checked, this field is only available for aliquots and not for samples that are not aliquots.
+            </p>
+            <p>
+                Learn more about {' '}
+                <HelpLink topic={SAMPLE_ALIQUOT_TOPIC}>Sample Aliquots</HelpLink>.
+            </p>
+        </div>
+    </LabelHelpTip>
+)
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -101,6 +124,8 @@ interface Props {
     validateNameExpressions?: boolean;
 
     showGenIdBanner?: boolean;
+
+    showAliquotOptions?: boolean;
 }
 
 interface State {
@@ -653,6 +678,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             showLinkToStudy,
             aliquotNamePatternProps,
             initModel,
+            showAliquotOptions,
             showGenIdBanner,
         } = this.props;
         const {
@@ -779,6 +805,15 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                         showScannableOption: true,
                         textChoiceLockedSqlFragment:
                             "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
+                        derivationDataScopeConfig: {
+                            show: showAliquotOptions,
+                            sectionTitle: 'Sample/Aliquot Options',
+                            label_all: 'Separately editable for samples and aliquots',
+                            label_child: 'Editable for aliquots only',
+                            label_parent: 'Editable for samples only (default)',
+                            helpLinkNode: ALIQUOT_OPTIONS_HELP,
+                            scopeChangeWarning: "Updating a 'Samples Only' field to be 'Samples and Aliquots' will blank out the field values for all aliquots. This action cannot be undone. " ,
+                        },
                     }}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}

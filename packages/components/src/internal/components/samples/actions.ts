@@ -228,19 +228,25 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
         getSampleTypeDetails(SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType))
             .then(sampleTypeDomain => {
                 const metaFields = [],
+                    independentFields = [],
                     aliquotFields = [];
                 const metricUnit = sampleTypeDomain.get('options').get('metricUnit');
 
                 sampleTypeDomain.domainDesign.fields.forEach(field => {
                     if (field.derivationDataScope === 'ChildOnly') {
                         aliquotFields.push(field.name.toLowerCase());
-                    } else {
+                    }
+                    else if (field.derivationDataScope === 'All') {
+                        independentFields.push(field.name.toLowerCase());
+                    }
+                    else {
                         metaFields.push(field.name.toLowerCase());
                     }
                 });
 
                 resolve({
                     aliquotFields,
+                    independentFields,
                     metaFields,
                     metricUnit,
                 });
@@ -616,6 +622,11 @@ export function getGroupedSampleDisplayColumns(
 
     allDisplayColumns.forEach(col => {
         const colName = col.name.toLowerCase();
+        if (sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
+            displayColumns.push(col);
+            return;
+        }
+
         if (isAliquot) {
             // barcodes belong to the individual sample or aliquot (but not both)
             if (col.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI) {
@@ -634,6 +645,10 @@ export function getGroupedSampleDisplayColumns(
 
     allUpdateColumns.forEach(col => {
         const colName = col.name.toLowerCase();
+        if (sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
+            editColumns.push(col);
+            return;
+        }
         if (isAliquot) {
             if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
                 editColumns.push(col);

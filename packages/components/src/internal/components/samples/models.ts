@@ -91,8 +91,9 @@ export interface SamplesSelectionResultProps {
 }
 
 export interface GroupedSampleFields {
-    aliquotFields: string[];
-    metaFields: string[];
+    aliquotFields: string[]; // aliquot-specific
+    metaFields: string[]; // parent only
+    independentFields: string[]; // aliquot & parent rename to sharedFields
     metricUnit: string;
 }
 

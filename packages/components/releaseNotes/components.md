@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.185.1
+*Released*: 20 June 2022
+* Issue 45581: Field editor LookupFieldOptions shouldn't disable target table selection for alias fields in metadata editor
+
 ### version 2.185.0
 *Released*: 17 June 2022
 * Item 10379: Save Grid Views - Manage views dialog

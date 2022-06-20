@@ -1,10 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.186.0
+*Released*: 20 June 2022
 * Add Picklist menu item in megamenu
 * Update picklist page routes to not rely on location query parameter
+* Issue 45710: use clone of constant instead of constant for omitted column, so we can add to it.
 
 ### version 2.185.1
 *Released*: 20 June 2022
@@ -36,7 +37,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.182.0
 *Released*: 15 June 2022
 * Rename `isSubfolderDataEnabled` to `isProductProjectsEnabled` in all the places.
-* Issue 45710: use clone of constant instead of constant for omitted column, so we can add to it.
 
 ### version 2.181.1
 *Released*: 15 June 2022

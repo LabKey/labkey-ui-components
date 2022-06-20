@@ -13,15 +13,12 @@ import {
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     DOMAIN_VALIDATOR_LOOKUP,
 } from './constants';
-import { IDomainField, IFieldChange, ITypeDependentProps, PropertyValidator } from './models';
+import { DomainField, IFieldChange, ITypeDependentProps, PropertyValidator } from './models';
 import { FolderSelect, SchemaSelect, TargetTableSelect } from './Lookup/Fields';
 
 interface LookupFieldProps extends ITypeDependentProps {
+    field: DomainField;
     lookupContainer: string;
-    lookupSchema: string;
-    lookupQueryValue: string;
-    lookupValidator?: PropertyValidator;
-    original: Partial<IDomainField>;
     onMultiChange: (changes: List<IFieldChange>) => void;
 }
 
@@ -69,17 +66,8 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
     };
 
     render() {
-        const {
-            index,
-            label,
-            lookupContainer,
-            lookupSchema,
-            lookupQueryValue,
-            original,
-            lockType,
-            lookupValidator,
-            domainIndex,
-        } = this.props;
+        const { index, label, lookupContainer, lockType, domainIndex, field } = this.props;
+        const { lookupSchema, lookupQueryValue, lookupValidator, original, wrappedColumnName } = field;
         const disabled = lockType === DOMAIN_FIELD_PARTIALLY_LOCKED || lockType === DOMAIN_FIELD_FULLY_LOCKED;
 
         return (
@@ -122,6 +110,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             onChange={this.onFieldChange}
                             schemaName={lookupSchema}
                             value={lookupQueryValue}
+                            shouldDisableNonExists={!wrappedColumnName}
                         />
                     </Col>
                     <Col xs={6}>

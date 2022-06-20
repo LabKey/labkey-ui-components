@@ -17,10 +17,10 @@ interface ILookupProps {
 }
 
 interface IFolderSelectProps {
+    disabled?: boolean;
     id: string;
     onChange: (any) => any;
     value?: any;
-    disabled?: boolean;
 }
 
 export class FolderSelect extends React.PureComponent<IFolderSelectProps, any> {
@@ -96,15 +96,16 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
 
 interface ITargetTableSelectProps {
     containerPath: string;
+    disabled?: boolean;
     id: string;
     lookupURI?: string;
     onChange: (any) => any;
     schemaName: string;
+    shouldDisableNonExists?: boolean;
     value?: any;
-    disabled?: boolean;
 }
 
-export class TargetTableSelect extends React.PureComponent<ITargetTableSelectProps, any> {
+export class TargetTableSelect extends React.PureComponent<ITargetTableSelectProps> {
     render() {
         return (
             <LookupContextConsumer>
@@ -131,6 +132,10 @@ export interface ITargetTableSelectImplState {
 export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
 
 class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITargetTableSelectImplState> {
+    static defaultProps = {
+        shouldDisableNonExists: true,
+    };
+
     constructor(props) {
         super(props);
 
@@ -203,7 +208,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
     }
 
     render() {
-        const { id, onChange, value, name, disabled } = this.props;
+        const { id, onChange, value, name, disabled, shouldDisableNonExists } = this.props;
         const { loading, queries } = this.state;
 
         const isEmpty = queries.size === 0;
@@ -216,7 +221,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
         return (
             <FormControl
                 componentClass="select"
-                disabled={loading || disabled || !queryNameOptionExists}
+                disabled={loading || disabled || (shouldDisableNonExists && !queryNameOptionExists)}
                 value={value}
                 id={id}
                 name={name}
@@ -255,10 +260,10 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
 
 interface ISchemaSelectProps {
     containerPath: string;
+    disabled?: boolean;
     id: string;
     onChange: (any) => any;
     value?: any;
-    disabled?: boolean;
 }
 
 export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {

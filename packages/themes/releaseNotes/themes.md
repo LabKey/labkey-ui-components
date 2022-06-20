@@ -1,6 +1,10 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.2.3
+*Released*: 17 June 2022
+* Issue 45673: Configure bootstrap scaffolding "html" selector font-size to respect $font-size-base
+
 ### version 1.2.2
 *Released*: 27 May 2022
 * Issue 45170: fix date picker month selection borders

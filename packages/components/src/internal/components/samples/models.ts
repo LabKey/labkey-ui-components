@@ -10,10 +10,10 @@ import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SamplesEditButtonSections } from './utils';
 
 export enum SampleCreationType {
-    Independents = 'New samples',
-    Derivatives = 'Derivatives',
-    PooledSamples = 'Pooled Samples',
     Aliquots = 'Aliquots',
+    Derivatives = 'Derivatives',
+    Independents = 'New samples',
+    PooledSamples = 'Pooled Samples',
 }
 
 export enum SampleCreationTypeGroup {
@@ -22,16 +22,16 @@ export enum SampleCreationTypeGroup {
 }
 
 export interface SampleCreationTypeModel {
-    type: SampleCreationType;
     description?: string;
-    quantityLabel?: string;
+    disabled?: boolean;
     disabledDescription?: string;
-    minParentsPerSample: number;
-    typeGroup: SampleCreationTypeGroup;
     iconSrc?: string;
     iconUrl?: string;
-    disabled?: boolean;
+    minParentsPerSample: number;
+    quantityLabel?: string;
     selected?: boolean;
+    type: SampleCreationType;
+    typeGroup: SampleCreationTypeGroup;
 }
 
 export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
@@ -72,11 +72,11 @@ export const ALIQUOT_CREATION: SampleCreationTypeModel = {
 };
 
 export interface SamplesSelectionProviderProps {
-    selection: List<any>;
-    sampleSet: string;
+    determineLineage?: boolean;
     determineSampleData: boolean;
     determineStorage?: boolean;
-    determineLineage?: boolean;
+    sampleSet: string;
+    selection: List<any>;
 }
 
 export interface SamplesSelectionResultProps {
@@ -84,57 +84,59 @@ export interface SamplesSelectionResultProps {
     editStatusData: OperationConfirmationData; // data about which samples can and cannot be edited due to their status
     noStorageSamples: any[];
     sampleItems: Record<string, any>;
-    sampleLineageKeys: string[];
-    sampleLineage: Record<string, any>; // mapping from sample rowId to sample record containing lineage
+    sampleLineage: Record<string, any>;
+    sampleLineageKeys: string[]; // mapping from sample rowId to sample record containing lineage
     sampleTypeDomainFields: GroupedSampleFields;
     selectionInfoError: any;
 }
 
 export interface GroupedSampleFields {
-    aliquotFields: string[]; // aliquot-specific
-    metaFields: string[]; // parent only
-    independentFields: string[]; // aliquot & parent rename to sharedFields
+    aliquotFields: string[];
+    // parent only
+    independentFields: string[];
+    // aliquot-specific
+    metaFields: string[]; // aliquot & parent rename to sharedFields
     metricUnit: string;
 }
 
 export interface FindField {
-    nounSingular: string;
-    nounPlural: string;
-    name: string;
     helpText?: string;
     helpTextTitle?: string;
     label: string;
+    name: string;
+    nounPlural: string;
+    nounSingular: string;
     storageKeyPrefix: string;
 }
 
 export interface SampleAliquotsStats {
     aliquotCount: number;
+    aliquotIds?: number[];
     inStorageCount: number;
     jobsCount?: number;
-    aliquotIds?: number[];
 }
 
 export interface SampleStatus {
+    description?: string;
     label: string;
     statusType: SampleStateType;
-    description?: string;
 }
 
 interface SampleStorageButtonComponentProps {
-    user: User;
     afterStorageUpdate?: () => void;
-    queryModel: QueryModel;
     isPicklist?: boolean;
-    nounPlural?: string;
     metricFeatureArea?: string;
+    nounPlural?: string;
+    queryModel: QueryModel;
+    user: User;
 }
 
 export type SampleStorageButton = ComponentType<SampleStorageButtonComponentProps>;
 
 interface JobsButtonsComponentProps {
-    user: User;
-    model: QueryModel;
     metricFeatureArea?: string;
+    model: QueryModel;
+    user: User;
 }
 
 export type JobsButton = ComponentType<JobsButtonsComponentProps>;
@@ -174,8 +176,8 @@ export interface SampleGridButtonProps {
     createBtnParentType?: string;
     excludedMenuKeys?: SamplesEditButtonSections[];
     initAliquotMode?: ALIQUOT_FILTER_MODE;
+    metricFeatureArea?: string;
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     showBulkUpdate?: () => void;
     toggleEditWithGridUpdate?: () => void;
-    metricFeatureArea?: string;
 }

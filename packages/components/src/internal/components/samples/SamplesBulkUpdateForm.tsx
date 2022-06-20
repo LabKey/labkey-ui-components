@@ -28,14 +28,14 @@ import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
 
 interface OwnProps {
-    queryModel: QueryModel;
-    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<void>;
-    hasValidMaxSelection: boolean;
-    sampleSetLabel: string;
-    onCancel: () => void;
-    onBulkUpdateError: (message: string) => void;
-    onBulkUpdateComplete: (data: any, submitForEdit) => void;
     editSelectionInGrid: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
+    hasValidMaxSelection: boolean;
+    onBulkUpdateComplete: (data: any, submitForEdit) => void;
+    onBulkUpdateError: (message: string) => void;
+    onCancel: () => void;
+    queryModel: QueryModel;
+    sampleSetLabel: string;
+    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<void>;
     user: User;
 }
 
@@ -43,8 +43,8 @@ type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultPr
 
 interface UpdateAlertProps {
     aliquots: any[];
-    numSelections: number;
     editStatusData: OperationConfirmationData;
+    numSelections: number;
 }
 
 // exported for jest testing
@@ -72,8 +72,8 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo(props => {
 });
 
 interface State {
-    shouldDiscard: boolean;
     discardComment: string;
+    shouldDiscard: boolean;
 }
 
 // exported for jest testing
@@ -107,11 +107,13 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
         if (aliquots?.length > 0) {
             originalQueryInfo.columns.forEach((column, key) => {
                 const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1;
-                const isIndependentField = sampleTypeDomainFields.independentFields.indexOf(column.fieldKey.toLowerCase()) > -1;
+                const isIndependentField =
+                    sampleTypeDomainFields.independentFields.indexOf(column.fieldKey.toLowerCase()) > -1;
                 if (
                     column.fieldKey.toLowerCase() === 'description' ||
                     column.fieldKey.toLowerCase() === 'samplestate' ||
-                    isAliquotField || isIndependentField
+                    isAliquotField ||
+                    isIndependentField
                 )
                     columns = columns.set(key, column);
             });

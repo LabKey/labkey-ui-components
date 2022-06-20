@@ -235,11 +235,9 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
                 sampleTypeDomain.domainDesign.fields.forEach(field => {
                     if (field.derivationDataScope === 'ChildOnly') {
                         aliquotFields.push(field.name.toLowerCase());
-                    }
-                    else if (field.derivationDataScope === 'All') {
+                    } else if (field.derivationDataScope === 'All') {
                         independentFields.push(field.name.toLowerCase());
-                    }
-                    else {
+                    } else {
                         metaFields.push(field.name.toLowerCase());
                     }
                 });

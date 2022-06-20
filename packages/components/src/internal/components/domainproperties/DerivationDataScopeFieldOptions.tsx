@@ -1,5 +1,7 @@
-import React, {FC, memo, useCallback, useEffect, useMemo, useState} from 'react';
-import { Col, Radio, Row} from 'react-bootstrap';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Col, Radio, Row } from 'react-bootstrap';
+
+import { Alert } from '../base/Alert';
 
 import { createFormInputId } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
@@ -7,20 +9,18 @@ import {
     DERIVATION_DATA_SCOPE_ALL,
     DERIVATION_DATA_SCOPE_CHILD_ONLY,
     DERIVATION_DATA_SCOPE_PARENT_ONLY,
-    DOMAIN_FIELD_DERIVATION_DATA_SCOPE
+    DOMAIN_FIELD_DERIVATION_DATA_SCOPE,
 } from './constants';
 import { IDerivationDataScope, ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
-import {Alert} from "../base/Alert";
 
 interface Props extends ITypeDependentProps {
-    value?: string;
     config?: IDerivationDataScope;
     isExistingField?: boolean;
+    value?: string;
 }
 
 export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
-
     const { domainIndex, index, onChange, config, lockType, value, label, isExistingField } = props;
 
     const [isExistingParentOnly, setIsExistingParentOnly] = useState<boolean>(false);
@@ -42,16 +42,16 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
         return isFieldFullyLocked(lockType);
     }, [lockType]);
 
-    const onRadioChange = useCallback((event) => {
-        if (isExistingParentOnly && event.target.value === DERIVATION_DATA_SCOPE_ALL)
-            setHasScopeChange(true);
-        else
-            setHasScopeChange(false);
-        onChange(inputId, event.target.value);
-    }, [inputId, onChange, isExistingParentOnly]);
+    const onRadioChange = useCallback(
+        event => {
+            if (isExistingParentOnly && event.target.value === DERIVATION_DATA_SCOPE_ALL) setHasScopeChange(true);
+            else setHasScopeChange(false);
+            onChange(inputId, event.target.value);
+        },
+        [inputId, onChange, isExistingParentOnly]
+    );
 
-    if (!config.show)
-        return null;
+    if (!config.show) return null;
 
     return (
         <div>
@@ -97,11 +97,11 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
                     </div>
                 </Col>
             </Row>
-            {hasScopeChange && config.scopeChangeWarning &&
+            {hasScopeChange && config.scopeChangeWarning && (
                 <Row>
                     <Alert bsStyle="warning">{config.scopeChangeWarning}</Alert>
                 </Row>
-            }
+            )}
         </div>
     );
 });

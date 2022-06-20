@@ -70,10 +70,7 @@ import { DATA_IMPORT_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { BulkAddData } from '../editable/EditableGrid';
 
-import {
-    DERIVATION_DATA_SCOPE_ALL,
-    DERIVATION_DATA_SCOPE_CHILD_ONLY,
-} from '../domainproperties/constants';
+import { DERIVATION_DATA_SCOPE_ALL, DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
 
 import { getCurrentProductName, isSampleManagerEnabled } from '../../app/utils';
 
@@ -224,9 +221,9 @@ interface StateProps {
     insertModel: EntityIdCreationModel;
     isMerge: boolean;
     isSubmitting: boolean;
-    previewName: string;
-    previewAliquotName: string;
     originalQueryInfo: QueryInfo;
+    previewAliquotName: string;
+    previewName: string;
     useAsync: boolean;
 }
 
@@ -455,10 +452,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         }
     };
 
-    isAliquotField = (column) : boolean => {
-        return (ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1
-            || column.derivationDataScope === DERIVATION_DATA_SCOPE_CHILD_ONLY
-            || column.derivationDataScope === DERIVATION_DATA_SCOPE_ALL)
+    isAliquotField = (column): boolean => {
+        return (
+            ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1 ||
+            column.derivationDataScope === DERIVATION_DATA_SCOPE_CHILD_ONLY ||
+            column.derivationDataScope === DERIVATION_DATA_SCOPE_ALL
+        );
     };
 
     getAliquotCreationColumns = (allColumns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> => {
@@ -895,20 +894,16 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         this.setState({ error: undefined });
     };
 
-    isIncludedColumn = (column : QueryColumn) : boolean => {
+    isIncludedColumn = (column: QueryColumn): boolean => {
         const { creationType } = this.props;
 
-        if(creationType === SampleCreationType.Aliquots)
-            return this.isAliquotField(column);
+        if (creationType === SampleCreationType.Aliquots) return this.isAliquotField(column);
         return column.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY;
     };
 
     getInsertColumns = (): List<QueryColumn> => {
         const { queryInfo } = this.state.dataModel;
-        let columns: List<QueryColumn> = queryInfo
-            .getInsertColumns()
-            .filter(this.isIncludedColumn)
-            .toList();
+        let columns: List<QueryColumn> = queryInfo.getInsertColumns().filter(this.isIncludedColumn).toList();
         // we add the UniqueId columns, which will be displayed as read-only fields
         columns = columns.concat(queryInfo.getUniqueIdColumns()).toList();
         return columns;

@@ -99,11 +99,11 @@ export interface IBannerMessage {
 }
 
 export interface ITypeDependentProps {
-    index: number;
     domainIndex: number;
+    index: number;
     label: string;
-    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any;
     lockType: string;
+    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any;
 }
 
 export interface FieldDetails {
@@ -112,35 +112,36 @@ export interface FieldDetails {
 }
 
 export interface DomainPropertiesGridColumn {
-    index: string;
     caption: string;
+    index: string;
     sortable: boolean;
 }
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
 
 interface IDomainDesign {
-    name: string;
-    container: string;
-    description?: string;
-    domainURI: string;
-    domainId: number;
-    allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
+    allowFileLinkProperties: boolean;
     allowFlagProperties: boolean;
     allowTextChoiceProperties: boolean;
     allowTimepointProperties: boolean;
-    showDefaultValueSettings: boolean;
+    container: string;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
+    description?: string;
+    domainException?: DomainException;
+    domainId: number;
+    domainKindName?: string;
+    domainURI: string;
     fields?: List<DomainField>;
     indices?: List<DomainIndex>;
-    domainException?: DomainException;
-    newDesignFields?: List<DomainField>; // set of fields to initialize a manually created design
+    // set of fields to initialize a manually created design
     instructions?: string;
-    domainKindName?: string;
-    schemaName?: string;
+    name: string;
+    newDesignFields?: List<DomainField>;
     queryName?: string;
+    schemaName?: string;
+    showDefaultValueSettings: boolean;
 }
 
 export class DomainDesign
@@ -490,20 +491,20 @@ export class DomainIndex
 }
 
 export enum FieldErrors {
-    NONE = '',
-    MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
     MISSING_DATA_TYPE = 'Please provide a data type for each field.',
     MISSING_FIELD_NAME = 'Please provide a name for each field.',
     MISSING_ONTOLOGY_PROPERTIES = 'Missing required ontology source or label field property.',
+    MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
+    NONE = '',
 }
 
 export interface IConditionalFormat {
-    formatFilter: string;
+    backgroundColor?: string;
     bold: boolean;
+    formatFilter: string;
     italic: boolean;
     strikethrough: boolean;
     textColor?: string;
-    backgroundColor?: string;
 }
 
 export class ConditionalFormat
@@ -589,16 +590,16 @@ export class PropertyValidatorProperties
 const EXPECTED_VALIDATOR_TYPES = ['Range', 'RegEx', 'TextChoice', 'Lookup'];
 
 export interface IPropertyValidator {
-    type: string;
-    name: string;
-    properties: PropertyValidatorProperties;
-    extraProperties: PropertyValidatorProperties;
-    errorMessage?: string;
     description?: string;
-    new: boolean;
-    shouldShowWarning: boolean;
-    rowId?: number;
+    errorMessage?: string;
     expression?: string;
+    extraProperties: PropertyValidatorProperties;
+    name: string;
+    new: boolean;
+    properties: PropertyValidatorProperties;
+    rowId?: number;
+    shouldShowWarning: boolean;
+    type: string;
 }
 
 export class PropertyValidator
@@ -699,22 +700,22 @@ export const DEFAULT_TEXT_CHOICE_VALIDATOR = new PropertyValidator({
 interface ILookupConfig {
     lookupContainer?: string;
     lookupQuery?: string;
-    lookupSchema?: string;
     lookupQueryValue?: string;
+    lookupSchema?: string;
     lookupType?: PropDescType;
 }
 
 export interface IDomainField {
+    PHI?: string;
+    URL?: string;
+    conceptImportColumn?: string;
+    conceptLabelColumn?: string;
+    conceptSubtree?: string;
     conceptURI?: string;
     conditionalFormats: List<ConditionalFormat>;
-    defaultScale?: string;
-    defaultValueType?: string;
-    defaultValue?: string;
+    dataType: PropDescType;
     defaultDisplayValue?: string;
-    description?: string;
-    dimension?: boolean;
-    excludeFromShifting?: boolean;
-    format?: string;
+    defaultScale?: string;
     hidden?: boolean;
     importAliases?: string;
     label?: string;
@@ -725,37 +726,37 @@ export interface IDomainField {
     measure?: boolean;
     mvEnabled?: boolean;
     name: string;
-    PHI?: string;
+    excludeFromShifting?: boolean;
     primaryKey?: boolean;
     propertyId?: number;
     propertyURI: string;
     propertyValidators: List<PropertyValidator>;
-    rangeValidators: List<PropertyValidator>;
-    rangeURI: string;
-    regexValidators: List<PropertyValidator>;
+    lookupQueryValue: string;
+    dimension?: boolean;
+    lookupType: PropDescType;
     textChoiceValidator?: PropertyValidator;
-    required?: boolean;
+    updatedField: boolean;
     recommendedVariable?: boolean;
     scale?: number;
     scannable?: boolean;
-    URL?: string;
+    description?: string;
     shownInDetailsView?: boolean;
     shownInInsertView?: boolean;
     shownInUpdateView?: boolean;
     visible: boolean;
-    dataType: PropDescType;
-    lookupQueryValue: string;
-    lookupType: PropDescType;
+    rangeURI: string;
+    rangeValidators: List<PropertyValidator>;
+    regexValidators: List<PropertyValidator>;
     original: Partial<IDomainField>;
-    updatedField: boolean;
+    required?: boolean;
     isPrimaryKey: boolean;
     lockType: string;
     disablePhiLevel?: boolean;
     lockExistingField?: boolean;
     sourceOntology?: string;
-    conceptSubtree?: string;
-    conceptLabelColumn?: string;
-    conceptImportColumn?: string;
+    defaultValue?: string;
+    defaultValueType?: string;
+    format?: string;
     principalConceptCode?: string;
 }
 
@@ -1612,10 +1613,10 @@ export class QueryInfoLite
 
 // modeled after the JSON object received during server side error (except the severity).
 interface IDomainException {
-    exception: string;
-    success: boolean;
-    severity: string;
     errors?: List<DomainFieldError>;
+    exception: string;
+    severity: string;
+    success: boolean;
 }
 
 // DomainException is used for both server side and client side errors.
@@ -1770,12 +1771,12 @@ export class DomainException
 }
 
 interface IDomainFieldError {
-    message: string;
     fieldName: string;
+    message: string;
+    newRowIndexes?: List<number>;
     propertyId?: number;
-    severity?: string;
     rowIndexes: List<number>;
-    newRowIndexes?: List<number>; // for drag and drop
+    severity?: string; // for drag and drop
 }
 
 export class DomainFieldError
@@ -1837,43 +1838,43 @@ export interface IAppDomainHeader {
     domain: DomainDesign;
     domainIndex: number;
     modelDomains?: List<DomainDesign>;
-    onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void;
     onAddField?: (fieldConfig: Partial<IDomainField>) => void;
+    onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void;
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void;
 }
 
 export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
 
 export interface IDomainFormDisplayOptions {
+    derivationDataScopeConfig?: IDerivationDataScope;
+    disableMvEnabled?: boolean;
+    domainKindDisplayName?: string;
+    hideAddFieldsButton?: boolean;
+    hideConditionalFormatting?: boolean;
+    hideFilePropertyType?: boolean;
+    hideImportData?: boolean;
+    hideImportExport?: boolean;
+    hideInferFromFile?: boolean;
     hideRequired?: boolean;
+    hideStudyPropertyTypes?: boolean;
+    hideTextOptions?: boolean;
     hideValidators?: boolean;
     isDragDisabled?: boolean;
-    hideTextOptions?: boolean;
     phiLevelDisabled?: boolean;
-    hideAddFieldsButton?: boolean;
-    disableMvEnabled?: boolean;
-    hideImportData?: boolean;
-    derivationDataScopeConfig?: IDerivationDataScope;
-    domainKindDisplayName?: string;
     retainReservedFields?: boolean;
-    hideFilePropertyType?: boolean;
-    hideStudyPropertyTypes?: boolean;
-    hideImportExport?: boolean;
-    hideConditionalFormatting?: boolean;
-    hideInferFromFile?: boolean;
     showScannableOption?: boolean;
     textChoiceLockedForDomain?: boolean;
     textChoiceLockedSqlFragment?: string;
 }
 
 export interface IDerivationDataScope {
-    show?: boolean;
-    sectionTitle?: string;
+    helpLinkNode?: ReactNode;
     label_all?: string;
     label_child?: string;
     label_parent?: string;
-    helpLinkNode?: ReactNode;
     scopeChangeWarning?: string;
+    sectionTitle?: string;
+    show?: boolean;
 }
 
 /**
@@ -1918,8 +1919,8 @@ export class DomainDetails extends Record({
 }
 
 export interface DomainFieldIndexChange {
-    originalIndex: number;
     newIndex: number;
+    originalIndex: number;
 }
 
 export interface BulkDeleteConfirmInfo {
@@ -1928,7 +1929,7 @@ export interface BulkDeleteConfirmInfo {
 }
 
 export interface NameExpressionsValidationResults {
-    warnings: string[];
     errors: string[];
     previews: string[];
+    warnings: string[];
 }

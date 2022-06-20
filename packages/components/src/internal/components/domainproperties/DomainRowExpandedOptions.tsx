@@ -35,19 +35,19 @@ import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptio
 import { TextChoiceOptions } from './TextChoiceOptions';
 
 interface IDomainRowExpandedOptionsProps {
+    appPropertiesOnly?: boolean;
+    domainContainerPath?: string;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    domainIndex: number;
     field: DomainField;
+    getDomainFields?: () => List<DomainField>;
     index: number;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => void;
     onMultiChange: (changes: List<IFieldChange>) => void;
-    showingModal: (boolean) => void;
-    appPropertiesOnly?: boolean;
-    domainIndex: number;
-    successBsStyle?: string;
-    domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    getDomainFields?: () => List<DomainField>;
-    domainContainerPath?: string;
-    schemaName?: string;
     queryName?: string;
+    schemaName?: string;
+    showingModal: (boolean) => void;
+    successBsStyle?: string;
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps> {

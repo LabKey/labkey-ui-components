@@ -17,10 +17,10 @@ interface ILookupProps {
 }
 
 interface IFolderSelectProps {
+    disabled?: boolean;
     id: string;
     onChange: (any) => any;
     value?: any;
-    disabled?: boolean;
 }
 
 export class FolderSelect extends React.PureComponent<IFolderSelectProps, any> {
@@ -260,10 +260,10 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
 
 interface ISchemaSelectProps {
     containerPath: string;
+    disabled?: boolean;
     id: string;
     onChange: (any) => any;
     value?: any;
-    disabled?: boolean;
 }
 
 export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {

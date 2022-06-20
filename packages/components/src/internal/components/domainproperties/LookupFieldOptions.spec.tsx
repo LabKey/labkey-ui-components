@@ -97,10 +97,14 @@ describe('LookupFieldOptions', () => {
         const lookupField = mount(
             <MockLookupProvider>
                 <LookupFieldOptions
+                    field={
+                        new DomainField({
+                            original: field,
+                            lookupSchema: _schema,
+                            lookupQueryValue: _query,
+                        })
+                    }
                     lookupContainer={_container}
-                    lookupSchema={_schema}
-                    lookupQueryValue={_query}
-                    original={field}
                     onChange={jest.fn()}
                     onMultiChange={jest.fn()}
                     index={_index}
@@ -173,10 +177,14 @@ describe('LookupFieldOptions', () => {
         const lookupField = mount(
             <MockLookupProvider>
                 <LookupFieldOptions
+                    field={
+                        new DomainField({
+                            original: field,
+                            lookupSchema: _schema,
+                            lookupQueryValue: _query,
+                        })
+                    }
                     lookupContainer={_container1}
-                    lookupSchema={_schema}
-                    lookupQueryValue={_query}
-                    original={field}
                     onChange={jest.fn()}
                     onMultiChange={jest.fn()}
                     index={_index}
@@ -203,10 +211,14 @@ describe('LookupFieldOptions', () => {
                 lookupField.setProps({
                     children: (
                         <LookupFieldOptions
+                            field={
+                                new DomainField({
+                                    original: field,
+                                    lookupSchema: '',
+                                    lookupQueryValue: '',
+                                })
+                            }
                             lookupContainer={_container2}
-                            lookupSchema=""
-                            lookupQueryValue=""
-                            original={field}
                             onChange={jest.fn()}
                             onMultiChange={jest.fn()}
                             index={_index}
@@ -249,10 +261,14 @@ describe('LookupFieldOptions', () => {
         const lookupField = mount(
             <MockLookupProvider>
                 <LookupFieldOptions
+                    field={
+                        new DomainField({
+                            original: field,
+                            lookupSchema: _schema1,
+                            lookupQueryValue: _query1,
+                        })
+                    }
                     lookupContainer={_container}
-                    lookupSchema={_schema1}
-                    lookupQueryValue={_query1}
-                    original={field}
                     onChange={jest.fn()}
                     onMultiChange={jest.fn()}
                     index={_index}
@@ -278,10 +294,14 @@ describe('LookupFieldOptions', () => {
                 lookupField.setProps({
                     children: (
                         <LookupFieldOptions
+                            field={
+                                new DomainField({
+                                    original: field,
+                                    lookupSchema: _schema2,
+                                    lookupQueryValue: '',
+                                })
+                            }
                             lookupContainer={_container}
-                            lookupSchema={_schema2}
-                            lookupQueryValue=""
-                            original={field}
                             onChange={jest.fn()}
                             onMultiChange={jest.fn()}
                             index={_index}
@@ -326,10 +346,14 @@ describe('LookupFieldOptions', () => {
         const lookupField = mount(
             <MockLookupProvider>
                 <LookupFieldOptions
+                    field={
+                        new DomainField({
+                            original: field,
+                            lookupSchema: _schema1,
+                            lookupQueryValue: _query1,
+                        })
+                    }
                     lookupContainer={_container1}
-                    lookupSchema={_schema1}
-                    lookupQueryValue={_query1}
-                    original={field}
                     onChange={jest.fn()}
                     onMultiChange={jest.fn()}
                     index={_index}
@@ -349,10 +373,14 @@ describe('LookupFieldOptions', () => {
             lookupField.setProps({
                 children: (
                     <LookupFieldOptions
+                        field={
+                            new DomainField({
+                                original: field,
+                                lookupSchema: '',
+                                lookupQueryValue: '',
+                            })
+                        }
                         lookupContainer={_container2}
-                        lookupSchema=""
-                        lookupQueryValue=""
-                        original={field}
                         onChange={jest.fn()}
                         onMultiChange={jest.fn()}
                         index={_index}
@@ -379,10 +407,12 @@ describe('LookupFieldOptions', () => {
 
     test('lockType', () => {
         const base = {
+            field: new DomainField({
+                original: {},
+                lookupSchema: 'schema',
+                lookupQueryValue: 'query',
+            }),
             lookupContainer: 'container',
-            lookupSchema: 'schema',
-            lookupQueryValue: 'query',
-            original: {},
             onMultiChange: jest.fn,
             onChange: jest.fn,
             index: 0,

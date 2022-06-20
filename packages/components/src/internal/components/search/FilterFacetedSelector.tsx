@@ -6,16 +6,17 @@ import { naturalSort } from '../../../public/sort';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
+
 interface Props {
     api?: ComponentsAPIWrapper;
-    selectDistinctOptions: Query.SelectDistinctOptions;
-    fieldKey: string;
     fieldFilters: Filter.IFilter[];
+    fieldKey: string;
     onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index) => void;
+    selectDistinctOptions: Query.SelectDistinctOptions;
     showSearchLength?: number; // show search box if number of unique values > N
 }
 
@@ -117,11 +118,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                 if (value === null || value === undefined) displayValue = '[blank]';
 
                                 return (
-                                    <li
-                                        key={index}
-                                        className="filter-faceted__li"
-                                        onClick={() => onChange(value, true, true)}
-                                    >
+                                    <li key={index} className="filter-faceted__li">
                                         <div className="form-check">
                                             <input
                                                 className="form-check-input filter-faceted__checkbox"
@@ -130,7 +127,12 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                                 onChange={event => onChange(value, event.target.checked)}
                                                 checked={checkedValues.indexOf(value) > -1}
                                             />
-                                            <div className="filter-faceted__value">{displayValue}</div>
+                                            <div
+                                                className="filter-faceted__value"
+                                                onClick={() => onChange(value, true, true)}
+                                            >
+                                                {displayValue}
+                                            </div>
                                         </div>
                                     </li>
                                 );

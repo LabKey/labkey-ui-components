@@ -19,6 +19,7 @@ import { GridColumn } from './components/base/models/GridColumn';
 import { LabelHelpTip } from './components/base/LabelHelpTip';
 import { CustomToggle } from './components/base/CustomToggle';
 import { ViewInfo } from './ViewInfo';
+import { DisableableMenuItem } from './components/samples/DisableableMenuItem';
 
 describe('isFilterColumnNameMatch', () => {
     const filter = Filter.create('Column', 'Value');
@@ -145,9 +146,35 @@ describe('HeaderCellDropdown', () => {
                     })
                 }
                 handleHideColumn={jest.fn}
+                handleAddColumn={jest.fn}
             />
         );
-        validate(wrapper, 0, 1);
+        validate(wrapper, 0, 2);
+        wrapper.unmount();
+    });
+
+    test('column not sortable or filterable, can add but not hide', () => {
+        LABKEY.moduleContext = {
+            query: {
+                canCustomizeViewsFromApp: true,
+            },
+        };
+        const wrapper = mount(
+            <HeaderCellDropdown
+                {...DEFAULT_PROPS}
+                column={
+                    new GridColumn({
+                        index: 'column',
+                        title: 'Column',
+                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: false }),
+                    })
+                }
+                handleAddColumn={jest.fn}
+            />
+        );
+        validate(wrapper, 0, 2);
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
+        expect(wrapper.find(DisableableMenuItem).text()).toContain("Hide Column");
         wrapper.unmount();
     });
 

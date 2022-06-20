@@ -9,9 +9,33 @@
         border-radius: 0;
     }
 
+    .list-group-item.flex {
+        display: flex;
+    }
+
+    .list-group-item.draggable {
+        left: auto !important;
+    }
+
     .list-group-item.active {
         color: $white;
         font-weight: bold;
+    }
+
+    .list-group-item .field-name {
+        flex: 1;
+        cursor: default;
+    }
+
+    .list-group-item .field-expand-icon {
+        color: $gray-lighten;
+        height: 16px;
+        width: 16px;
+        margin-right: 5px;
+
+        .fa {
+            cursor: pointer;
+        }
     }
 
     .field_count_circle {
@@ -44,6 +68,11 @@
             font-size: 14px;
             color: $link-color;
             cursor: pointer;
+
+        }
+        .disabled-action-text {
+            font-size: 14px;
+            color: $light-gray;
         }
     }
 
@@ -68,6 +97,10 @@
 
     .field-modal__col-2.col-sm-6, .field-modal__col-2.col-xs-6, .field-modal__col-2.col-xs-12 {
         padding-right: 15px;
+    }
+
+    .col-xs-12 .field-modal__footer {
+        margin-bottom: 20px;
     }
 
     .field-modal__col-content {

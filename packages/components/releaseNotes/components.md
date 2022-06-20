@@ -5,6 +5,37 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 45006: Provide link to lookup table/query in field designer
 
+### version 2.185.1
+*Released*: 20 June 2022
+* Issue 45581: Field editor LookupFieldOptions shouldn't disable target table selection for alias fields in metadata editor
+
+### version 2.185.0
+*Released*: 17 June 2022
+* Item 10379: Save Grid Views - Manage views dialog
+  * Add ManageViewsModal component
+
+### version 2.184.0
+*Released*: 17 June 2022
+* Item 10445: CustomizeGridViewModal - Handling lookup columns
+  * Order columns based on `queryInfo.columns` instead of `queryInfo.allColumns`
+  * Show lookup fields on expand in Available Fields listing and allow them to be added to view
+  * Update api/`getQueryDetails()` to accept a fk for cache key
+  * Enabled `QueryColumn` props for `selectable` and `friendlyType`
+  * Include fieldKey in grid column header hover text
+  * Issue 45693: Filter dialog choose values click target is too big
+
+### version 2.183.1
+*Released*: 16 June 2022
+* Add ability to rearrange fields from `CustomizeGridViewModal`
+
+### version 2.183.0
+*Released*: 16 June 2022
+* Item 10293: Enable export for editable grids
+
+### version 2.182.0
+*Released*: 15 June 2022
+* Rename `isSubfolderDataEnabled` to `isProductProjectsEnabled` in all the places.
+
 ### version 2.181.1
 *Released*: 15 June 2022
 * Remove QueryGridModel and related utils, actions, components, etc.

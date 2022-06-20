@@ -1100,6 +1100,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         },
         "query": QueryServerAPIWrapper {
           "getEntityTypeOptions": [Function],
+          "getGridViews": [Function],
           "getQueryDetails": [Function],
           "incrementClientSideMetricCount": [Function],
           "selectDistinctRows": [Function],

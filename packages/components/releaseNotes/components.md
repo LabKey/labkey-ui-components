@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add Picklist menu item in megamenu
+* Update picklist page routes to not rely on location query parameter
 
 ### version 2.185.1
 *Released*: 20 June 2022

@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from 'react';
 
 import { Filter, PermissionTypes } from '@labkey/api';
 
@@ -6,10 +6,8 @@ import {
     Actions,
     App,
     createNotification,
-    getLocation,
     Page,
     QuerySort,
-    replaceParameter,
     RequiresPermission,
     SCHEMAS,
     Section,
@@ -32,6 +30,7 @@ import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { userCanManagePicklists } from '../../app/utils';
+import { MY_PICKLISTS_HREF, TEAM_PICKLISTS_HREF } from '../../app/constants';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';
@@ -89,19 +88,11 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
         return Object.keys(queryModels);
     }, [queryModels]);
 
-    const [activeTabId, setActiveTabId] = useState(undefined);
+    const [activeTabId, setActiveTabId] = useState(activeTab ?? tabOrder[0]);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
-    useEffect(() => {
-        if (activeTab) {
-            setActiveTabId(activeTab);
-        } else {
-            setActiveTabId(tabOrder[0]);
-        }
-    }, [activeTab, tabOrder]);
-
     const onChangeTab = useCallback((tab: string) => {
-        replaceParameter(getLocation(), 'tab', tab);
+        window.location.href = tab === MY_PICKLISTS_GRID_ID ? MY_PICKLISTS_HREF.toHref() : TEAM_PICKLISTS_HREF.toHref()
         setActiveTabId(tab);
     }, []);
 

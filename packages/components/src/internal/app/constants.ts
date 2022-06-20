@@ -44,6 +44,9 @@ export const NOTEBOOKS_KEY = 'notebooks';
 export const REGISTRY_KEY = 'registry';
 export const ELN_KEY = 'notebooks';
 
+export const MINE_KEY = 'mine';
+export const TEAM_KEY = 'team';
+
 export const FIND_SAMPLES_BY_ID_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_ID_KEY);
 export const FIND_SAMPLES_BY_FILTER_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_FILTER_KEY);
 export const NEW_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new');
@@ -54,6 +57,8 @@ export const WORKFLOW_HOME_HREF = AppURL.create(WORKFLOW_KEY)
     .addParam('mine.sort', 'DueDate')
     .addParam('active.sort', 'DueDate');
 export const PICKLIST_HOME_HREF = AppURL.create(PICKLIST_KEY);
+export const MY_PICKLISTS_HREF = AppURL.create(PICKLIST_KEY, MINE_KEY);
+export const TEAM_PICKLISTS_HREF = AppURL.create(PICKLIST_KEY, TEAM_KEY);
 
 export const USER_PERMISSIONS_REQUEST = '/app/USER_PERMISSIONS_REQUEST';
 export const USER_PERMISSIONS_SUCCESS = '/app/USER_PERMISSIONS_SUCCESS';

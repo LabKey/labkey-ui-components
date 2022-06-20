@@ -33,6 +33,8 @@ import {
     NEW_SAMPLE_TYPE_HREF,
     NEW_SOURCE_TYPE_HREF,
     NOTEBOOKS_KEY,
+    PICKLIST_HOME_HREF,
+    PICKLIST_KEY,
     REGISTRY_KEY,
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
@@ -369,10 +371,17 @@ function getWorkflowSectionConfig(appBase: string): MenuSectionConfig {
     });
 }
 
+function getPicklistsSectionConfig(appBase: string): MenuSectionConfig {
+    return new MenuSectionConfig({
+        headerURL: appBase + PICKLIST_HOME_HREF.toHref(),
+        iconURL: imageURL('_images', 'picklist.svg'),
+    })
+}
+
 function getNotebooksSectionConfig(appBase: string): MenuSectionConfig {
     return new MenuSectionConfig({
         iconURL: imageURL('labbook/images', 'notebook_blue.svg'),
-        seeAllURL: appBase + AppURL.create(NOTEBOOKS_KEY).toHref(),
+        headerURL: appBase + AppURL.create(NOTEBOOKS_KEY).toHref(),
     });
 }
 
@@ -406,10 +415,12 @@ const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
 function getBioWorkflowNotebookMediaConfigs(appBase: string, user: User) {
     let configs = Map({
         [WORKFLOW_KEY]: getWorkflowSectionConfig(appBase),
+
     });
     if (userCanReadMedia(user)) {
         configs = configs.set(MEDIA_KEY, getMediaSectionConfig(appBase));
     }
+    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase),)
     if (userCanReadNotebooks(user)) {
         configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
     }
@@ -459,7 +470,11 @@ export function getMenuSectionConfigs(
             sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
         }
 
-        let configs = Map({ [WORKFLOW_KEY]: workflowConfig });
+        let configs = Map({
+            [WORKFLOW_KEY]: workflowConfig,
+            [PICKLIST_KEY]: getPicklistsSectionConfig(appBase)
+        });
+
         if (userCanReadNotebooks(user) && isELNEnabledInLKSM(moduleContext)) {
             configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
         }

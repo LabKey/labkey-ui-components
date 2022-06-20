@@ -6,10 +6,8 @@ import {
     Actions,
     App,
     createNotification,
-    getLocation,
     Page,
     QuerySort,
-    replaceParameter,
     RequiresPermission,
     SCHEMAS,
     Section,
@@ -31,6 +29,8 @@ import { DisableableButton } from '../buttons/DisableableButton';
 import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
+import { userCanManagePicklists } from '../../app/utils';
+import { MY_PICKLISTS_HREF, TEAM_PICKLISTS_HREF } from '../../app/constants';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';
@@ -88,11 +88,11 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
         return Object.keys(queryModels);
     }, [queryModels]);
 
-    const [activeTabId, setActiveTabId] = useState(activeTab || tabOrder[0]);
+    const [activeTabId, setActiveTabId] = useState(activeTab ?? tabOrder[0]);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
     const onChangeTab = useCallback((tab: string) => {
-        replaceParameter(getLocation(), 'tab', tab);
+        window.location.href = tab === MY_PICKLISTS_GRID_ID ? MY_PICKLISTS_HREF.toHref() : TEAM_PICKLISTS_HREF.toHref()
         setActiveTabId(tab);
     }, []);
 
@@ -172,8 +172,9 @@ const PicklistGridWithModels = withQueryModels<PicklistGridProps>(PicklistGridIm
 export const PicklistListing: FC<OwnProps> = memo(props => {
     const { user, initTab } = props;
 
-    const queryConfigs = {
-        [MY_PICKLISTS_GRID_ID]: {
+    const queryConfigs = {};
+    if (userCanManagePicklists(user)) {
+        queryConfigs[MY_PICKLISTS_GRID_ID] = {
             baseFilters: [Filter.create('CreatedBy', user.id)],
             containerFilter: getPicklistListingContainerFilter(),
             sorts: [new QuerySort({ fieldKey: 'Name' })],
@@ -181,16 +182,16 @@ export const PicklistListing: FC<OwnProps> = memo(props => {
             title: 'My Picklists',
             omittedColumns: ['CreatedBy'],
             schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
-        },
-        [TEAM_PICKLISTS_GRID_ID]: {
-            baseFilters: [Filter.create('Category', PUBLIC_PICKLIST_CATEGORY)],
-            containerFilter: getPicklistListingContainerFilter(),
-            sorts: [new QuerySort({ fieldKey: 'Name' })],
-            id: TEAM_PICKLISTS_GRID_ID,
-            title: 'Team Picklists',
-            omittedColumns: ['Category', 'Sharing'],
-            schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
-        },
+        };
+    }
+    queryConfigs[TEAM_PICKLISTS_GRID_ID] = {
+        baseFilters: [Filter.create('Category', PUBLIC_PICKLIST_CATEGORY)],
+        containerFilter: getPicklistListingContainerFilter(),
+        sorts: [new QuerySort({ fieldKey: 'Name' })],
+        id: TEAM_PICKLISTS_GRID_ID,
+        title: 'Team Picklists',
+        omittedColumns: ['Category', 'Sharing'],
+        schemaQuery: SCHEMAS.LIST_METADATA_TABLES.PICKLISTS,
     };
 
     return (

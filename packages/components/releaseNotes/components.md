@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.186.0
+*Released*: 20 June 2022
+* Add Picklist menu item in megamenu
+* Update picklist page routes to not rely on location query parameter
+* Issue 45710: use clone of constant instead of constant for omitted column, so we can add to it.
+
 ### version 2.185.1
 *Released*: 20 June 2022
 * Issue 45581: Field editor LookupFieldOptions shouldn't disable target table selection for alias fields in metadata editor

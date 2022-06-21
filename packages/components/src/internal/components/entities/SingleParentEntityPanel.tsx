@@ -22,9 +22,7 @@ import {
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { DETAIL_TABLE_CLASSES } from '../forms/constants';
-
-import { DELIMITER } from '../forms/input/SelectInput';
+import { DELIMITER, DETAIL_TABLE_CLASSES } from '../forms/constants';
 
 import { isSampleStatusEnabled } from '../../app/utils';
 import { getFilterForSampleOperation } from '../samples/utils';
@@ -51,9 +49,9 @@ interface Props {
     onInitialParentValue?: (value: string, selectedValues: List<any>, index: number) => void;
     onRemoveParentType?: (index: number) => void;
     parentDataType: EntityDataType;
+    parentEntityType?: IEntityTypeOption;
     parentLSIDs?: string[];
     parentTypeOptions?: List<IEntityTypeOption>;
-    parentEntityType?: IEntityTypeOption;
 }
 
 type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;

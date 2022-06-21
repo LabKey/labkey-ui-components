@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
 import { PermissionTypes } from '@labkey/api';
@@ -9,7 +9,7 @@ import { Alert } from '../../internal/components/base/Alert';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 import { CUSTOM_VIEW, HelpLink } from '../../internal/util/helpLinks';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
-import { isSubfolderDataEnabled } from '../../internal/app/utils';
+import { isProductProjectsEnabled } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 
 export interface Props {
@@ -96,7 +96,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 <span className="margin-left">Make default view for all users</span>
                             </div>
                         </RequiresPermission>
-                        {isSubfolderDataEnabled() && (
+                        {isProductProjectsEnabled() && (
                             <div className="form-check">
                                 <input
                                     className="form-check-input"

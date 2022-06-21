@@ -4,15 +4,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
 <MockLookupProvider>
   <LookupFieldOptions
     domainIndex={1}
-    index={1}
-    label="Lookup Field Options"
-    lockType="NotLocked"
-    lookupContainer="/StudyVerifyProject/My Study"
-    lookupQueryValue="Data"
-    lookupSchema="exp"
-    onChange={[MockFunction]}
-    onMultiChange={[MockFunction]}
-    original={
+    field={
       Immutable.Record {
         "conceptURI": undefined,
         "conditionalFormats": Immutable.List [],
@@ -29,17 +21,17 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "label": undefined,
         "lookupContainer": undefined,
         "lookupQuery": undefined,
-        "lookupSchema": undefined,
+        "lookupSchema": "exp",
         "lookupValidator": undefined,
         "measure": undefined,
         "mvEnabled": false,
-        "name": "key",
+        "name": undefined,
         "PHI": undefined,
-        "propertyId": 1,
-        "propertyURI": "test",
+        "propertyId": undefined,
+        "propertyURI": undefined,
         "propertyValidators": Immutable.List [],
         "rangeValidators": Immutable.List [],
-        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "rangeURI": undefined,
         "regexValidators": Immutable.List [],
         "textChoiceValidator": undefined,
         "recommendedVariable": false,
@@ -50,29 +42,46 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "visible": true,
-        "dataType": Immutable.Record {
+        "dataType": undefined,
+        "lookupQueryValue": "Data",
+        "lookupType": undefined,
+        "original": Immutable.Record {
           "conceptURI": undefined,
-          "display": "Integer",
-          "name": "int",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-          "alternateRangeURI": "xsd:int",
-          "shortDisplay": undefined,
-          "lookupSchema": undefined,
+          "conditionalFormats": Immutable.List [],
+          "defaultScale": undefined,
+          "defaultValueType": undefined,
+          "defaultValue": undefined,
+          "defaultDisplayValue": undefined,
+          "description": undefined,
+          "dimension": undefined,
+          "excludeFromShifting": false,
+          "format": undefined,
+          "hidden": false,
+          "importAliases": undefined,
+          "label": undefined,
+          "lookupContainer": undefined,
           "lookupQuery": undefined,
-        },
-        "lookupQueryValue": undefined,
-        "lookupType": Immutable.Record {
-          "conceptURI": undefined,
-          "display": "Lookup",
-          "name": "lookup",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-          "alternateRangeURI": undefined,
-          "shortDisplay": undefined,
           "lookupSchema": undefined,
-          "lookupQuery": undefined,
-        },
-        "original": Object {
-          "conceptURI": undefined,
+          "lookupValidator": undefined,
+          "measure": undefined,
+          "mvEnabled": false,
+          "name": "key",
+          "PHI": undefined,
+          "propertyId": 1,
+          "propertyURI": "test",
+          "propertyValidators": Immutable.List [],
+          "rangeValidators": Immutable.List [],
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "regexValidators": Immutable.List [],
+          "textChoiceValidator": undefined,
+          "recommendedVariable": false,
+          "required": false,
+          "scale": 4000,
+          "URL": undefined,
+          "shownInDetailsView": true,
+          "shownInInsertView": true,
+          "shownInUpdateView": true,
+          "visible": true,
           "dataType": Immutable.Record {
             "conceptURI": undefined,
             "display": "Integer",
@@ -83,8 +92,46 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
             "lookupSchema": undefined,
             "lookupQuery": undefined,
           },
-          "name": "key",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "lookupQueryValue": undefined,
+          "lookupType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Lookup",
+            "name": "lookup",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+            "alternateRangeURI": undefined,
+            "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
+          },
+          "original": Object {
+            "conceptURI": undefined,
+            "dataType": Immutable.Record {
+              "conceptURI": undefined,
+              "display": "Integer",
+              "name": "int",
+              "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+              "alternateRangeURI": "xsd:int",
+              "shortDisplay": undefined,
+              "lookupSchema": undefined,
+              "lookupQuery": undefined,
+            },
+            "name": "key",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          },
+          "updatedField": false,
+          "isPrimaryKey": false,
+          "lockType": "NotLocked",
+          "wrappedColumnName": undefined,
+          "disablePhiLevel": false,
+          "lockExistingField": false,
+          "sourceOntology": undefined,
+          "conceptSubtree": undefined,
+          "conceptLabelColumn": undefined,
+          "conceptImportColumn": undefined,
+          "principalConceptCode": undefined,
+          "derivationDataScope": undefined,
+          "selected": false,
+          "scannable": false,
         },
         "updatedField": false,
         "isPrimaryKey": false,
@@ -102,6 +149,12 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "scannable": false,
       }
     }
+    index={1}
+    label="Lookup Field Options"
+    lockType="NotLocked"
+    lookupContainer="/StudyVerifyProject/My Study"
+    onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
   >
     <div>
       <Row
@@ -394,6 +447,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
                 onChange={[Function]}
                 schemaName="exp"
+                shouldDisableNonExists={true}
                 value="Data"
               >
                 <TargetTableSelectImpl
@@ -434,6 +488,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
                   schemaName="exp"
+                  shouldDisableNonExists={true}
                   value="Data"
                 >
                   <FormControl
@@ -601,15 +656,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
 <MockLookupProvider>
   <LookupFieldOptions
     domainIndex={1}
-    index={1}
-    label="Lookup Field Options"
-    lockType="NotLocked"
-    lookupContainer="/StudyVerifyProject"
-    lookupQueryValue=""
-    lookupSchema=""
-    onChange={[MockFunction]}
-    onMultiChange={[MockFunction]}
-    original={
+    field={
       Immutable.Record {
         "conceptURI": undefined,
         "conditionalFormats": Immutable.List [],
@@ -626,17 +673,17 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "label": undefined,
         "lookupContainer": undefined,
         "lookupQuery": undefined,
-        "lookupSchema": undefined,
+        "lookupSchema": "",
         "lookupValidator": undefined,
         "measure": undefined,
         "mvEnabled": false,
-        "name": "key",
+        "name": undefined,
         "PHI": undefined,
-        "propertyId": 1,
-        "propertyURI": "test",
+        "propertyId": undefined,
+        "propertyURI": undefined,
         "propertyValidators": Immutable.List [],
         "rangeValidators": Immutable.List [],
-        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "rangeURI": undefined,
         "regexValidators": Immutable.List [],
         "textChoiceValidator": undefined,
         "recommendedVariable": false,
@@ -647,29 +694,46 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "visible": true,
-        "dataType": Immutable.Record {
+        "dataType": undefined,
+        "lookupQueryValue": "",
+        "lookupType": undefined,
+        "original": Immutable.Record {
           "conceptURI": undefined,
-          "display": "Integer",
-          "name": "int",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-          "alternateRangeURI": "xsd:int",
-          "shortDisplay": undefined,
-          "lookupSchema": undefined,
+          "conditionalFormats": Immutable.List [],
+          "defaultScale": undefined,
+          "defaultValueType": undefined,
+          "defaultValue": undefined,
+          "defaultDisplayValue": undefined,
+          "description": undefined,
+          "dimension": undefined,
+          "excludeFromShifting": false,
+          "format": undefined,
+          "hidden": false,
+          "importAliases": undefined,
+          "label": undefined,
+          "lookupContainer": undefined,
           "lookupQuery": undefined,
-        },
-        "lookupQueryValue": undefined,
-        "lookupType": Immutable.Record {
-          "conceptURI": undefined,
-          "display": "Lookup",
-          "name": "lookup",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-          "alternateRangeURI": undefined,
-          "shortDisplay": undefined,
           "lookupSchema": undefined,
-          "lookupQuery": undefined,
-        },
-        "original": Object {
-          "conceptURI": undefined,
+          "lookupValidator": undefined,
+          "measure": undefined,
+          "mvEnabled": false,
+          "name": "key",
+          "PHI": undefined,
+          "propertyId": 1,
+          "propertyURI": "test",
+          "propertyValidators": Immutable.List [],
+          "rangeValidators": Immutable.List [],
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "regexValidators": Immutable.List [],
+          "textChoiceValidator": undefined,
+          "recommendedVariable": false,
+          "required": false,
+          "scale": 4000,
+          "URL": undefined,
+          "shownInDetailsView": true,
+          "shownInInsertView": true,
+          "shownInUpdateView": true,
+          "visible": true,
           "dataType": Immutable.Record {
             "conceptURI": undefined,
             "display": "Integer",
@@ -680,8 +744,46 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
             "lookupSchema": undefined,
             "lookupQuery": undefined,
           },
-          "name": "key",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "lookupQueryValue": undefined,
+          "lookupType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Lookup",
+            "name": "lookup",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+            "alternateRangeURI": undefined,
+            "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
+          },
+          "original": Object {
+            "conceptURI": undefined,
+            "dataType": Immutable.Record {
+              "conceptURI": undefined,
+              "display": "Integer",
+              "name": "int",
+              "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+              "alternateRangeURI": "xsd:int",
+              "shortDisplay": undefined,
+              "lookupSchema": undefined,
+              "lookupQuery": undefined,
+            },
+            "name": "key",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          },
+          "updatedField": false,
+          "isPrimaryKey": false,
+          "lockType": "NotLocked",
+          "wrappedColumnName": undefined,
+          "disablePhiLevel": false,
+          "lockExistingField": false,
+          "sourceOntology": undefined,
+          "conceptSubtree": undefined,
+          "conceptLabelColumn": undefined,
+          "conceptImportColumn": undefined,
+          "principalConceptCode": undefined,
+          "derivationDataScope": undefined,
+          "selected": false,
+          "scannable": false,
         },
         "updatedField": false,
         "isPrimaryKey": false,
@@ -699,6 +801,12 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "scannable": false,
       }
     }
+    index={1}
+    label="Lookup Field Options"
+    lockType="NotLocked"
+    lookupContainer="/StudyVerifyProject"
+    onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
   >
     <div>
       <Row
@@ -1029,6 +1137,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
                 onChange={[Function]}
                 schemaName=""
+                shouldDisableNonExists={true}
                 value=""
               >
                 <TargetTableSelectImpl
@@ -1069,6 +1178,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
                   schemaName=""
+                  shouldDisableNonExists={true}
                   value=""
                 >
                   <FormControl
@@ -1301,15 +1411,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
 <MockLookupProvider>
   <LookupFieldOptions
     domainIndex={1}
-    index={1}
-    label="Lookup Field Options"
-    lockType="NotLocked"
-    lookupContainer="/StudyVerifyProject"
-    lookupQueryValue=""
-    lookupSchema=""
-    onChange={[MockFunction]}
-    onMultiChange={[MockFunction]}
-    original={
+    field={
       Immutable.Record {
         "conceptURI": undefined,
         "conditionalFormats": Immutable.List [],
@@ -1326,17 +1428,17 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "label": undefined,
         "lookupContainer": undefined,
         "lookupQuery": undefined,
-        "lookupSchema": undefined,
+        "lookupSchema": "",
         "lookupValidator": undefined,
         "measure": undefined,
         "mvEnabled": false,
-        "name": "key",
+        "name": undefined,
         "PHI": undefined,
-        "propertyId": 1,
-        "propertyURI": "test",
+        "propertyId": undefined,
+        "propertyURI": undefined,
         "propertyValidators": Immutable.List [],
         "rangeValidators": Immutable.List [],
-        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "rangeURI": undefined,
         "regexValidators": Immutable.List [],
         "textChoiceValidator": undefined,
         "recommendedVariable": false,
@@ -1347,29 +1449,46 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "visible": true,
-        "dataType": Immutable.Record {
+        "dataType": undefined,
+        "lookupQueryValue": "",
+        "lookupType": undefined,
+        "original": Immutable.Record {
           "conceptURI": undefined,
-          "display": "Integer",
-          "name": "int",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-          "alternateRangeURI": "xsd:int",
-          "shortDisplay": undefined,
-          "lookupSchema": undefined,
+          "conditionalFormats": Immutable.List [],
+          "defaultScale": undefined,
+          "defaultValueType": undefined,
+          "defaultValue": undefined,
+          "defaultDisplayValue": undefined,
+          "description": undefined,
+          "dimension": undefined,
+          "excludeFromShifting": false,
+          "format": undefined,
+          "hidden": false,
+          "importAliases": undefined,
+          "label": undefined,
+          "lookupContainer": undefined,
           "lookupQuery": undefined,
-        },
-        "lookupQueryValue": undefined,
-        "lookupType": Immutable.Record {
-          "conceptURI": undefined,
-          "display": "Lookup",
-          "name": "lookup",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-          "alternateRangeURI": undefined,
-          "shortDisplay": undefined,
           "lookupSchema": undefined,
-          "lookupQuery": undefined,
-        },
-        "original": Object {
-          "conceptURI": undefined,
+          "lookupValidator": undefined,
+          "measure": undefined,
+          "mvEnabled": false,
+          "name": "key",
+          "PHI": undefined,
+          "propertyId": 1,
+          "propertyURI": "test",
+          "propertyValidators": Immutable.List [],
+          "rangeValidators": Immutable.List [],
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "regexValidators": Immutable.List [],
+          "textChoiceValidator": undefined,
+          "recommendedVariable": false,
+          "required": false,
+          "scale": 4000,
+          "URL": undefined,
+          "shownInDetailsView": true,
+          "shownInInsertView": true,
+          "shownInUpdateView": true,
+          "visible": true,
           "dataType": Immutable.Record {
             "conceptURI": undefined,
             "display": "Integer",
@@ -1380,8 +1499,46 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
             "lookupSchema": undefined,
             "lookupQuery": undefined,
           },
-          "name": "key",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "lookupQueryValue": undefined,
+          "lookupType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Lookup",
+            "name": "lookup",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+            "alternateRangeURI": undefined,
+            "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
+          },
+          "original": Object {
+            "conceptURI": undefined,
+            "dataType": Immutable.Record {
+              "conceptURI": undefined,
+              "display": "Integer",
+              "name": "int",
+              "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+              "alternateRangeURI": "xsd:int",
+              "shortDisplay": undefined,
+              "lookupSchema": undefined,
+              "lookupQuery": undefined,
+            },
+            "name": "key",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          },
+          "updatedField": false,
+          "isPrimaryKey": false,
+          "lockType": "NotLocked",
+          "wrappedColumnName": undefined,
+          "disablePhiLevel": false,
+          "lockExistingField": false,
+          "sourceOntology": undefined,
+          "conceptSubtree": undefined,
+          "conceptLabelColumn": undefined,
+          "conceptImportColumn": undefined,
+          "principalConceptCode": undefined,
+          "derivationDataScope": undefined,
+          "selected": false,
+          "scannable": false,
         },
         "updatedField": false,
         "isPrimaryKey": false,
@@ -1399,6 +1556,12 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "scannable": false,
       }
     }
+    index={1}
+    label="Lookup Field Options"
+    lockType="NotLocked"
+    lookupContainer="/StudyVerifyProject"
+    onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
   >
     <div>
       <Row
@@ -1729,6 +1892,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
                 onChange={[Function]}
                 schemaName=""
+                shouldDisableNonExists={true}
                 value=""
               >
                 <TargetTableSelectImpl
@@ -1769,6 +1933,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
                   schemaName=""
+                  shouldDisableNonExists={true}
                   value=""
                 >
                   <FormControl
@@ -2001,15 +2166,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
 <MockLookupProvider>
   <LookupFieldOptions
     domainIndex={1}
-    index={1}
-    label="Lookup Field Options"
-    lockType="NotLocked"
-    lookupContainer="/StudyVerifyProject/My Study"
-    lookupQueryValue=""
-    lookupSchema="study"
-    onChange={[MockFunction]}
-    onMultiChange={[MockFunction]}
-    original={
+    field={
       Immutable.Record {
         "conceptURI": undefined,
         "conditionalFormats": Immutable.List [],
@@ -2026,17 +2183,17 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "label": undefined,
         "lookupContainer": undefined,
         "lookupQuery": undefined,
-        "lookupSchema": undefined,
+        "lookupSchema": "study",
         "lookupValidator": undefined,
         "measure": undefined,
         "mvEnabled": false,
-        "name": "key",
+        "name": undefined,
         "PHI": undefined,
-        "propertyId": 1,
-        "propertyURI": "test",
+        "propertyId": undefined,
+        "propertyURI": undefined,
         "propertyValidators": Immutable.List [],
         "rangeValidators": Immutable.List [],
-        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "rangeURI": undefined,
         "regexValidators": Immutable.List [],
         "textChoiceValidator": undefined,
         "recommendedVariable": false,
@@ -2047,29 +2204,46 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "visible": true,
-        "dataType": Immutable.Record {
+        "dataType": undefined,
+        "lookupQueryValue": "",
+        "lookupType": undefined,
+        "original": Immutable.Record {
           "conceptURI": undefined,
-          "display": "Integer",
-          "name": "int",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-          "alternateRangeURI": "xsd:int",
-          "shortDisplay": undefined,
-          "lookupSchema": undefined,
+          "conditionalFormats": Immutable.List [],
+          "defaultScale": undefined,
+          "defaultValueType": undefined,
+          "defaultValue": undefined,
+          "defaultDisplayValue": undefined,
+          "description": undefined,
+          "dimension": undefined,
+          "excludeFromShifting": false,
+          "format": undefined,
+          "hidden": false,
+          "importAliases": undefined,
+          "label": undefined,
+          "lookupContainer": undefined,
           "lookupQuery": undefined,
-        },
-        "lookupQueryValue": undefined,
-        "lookupType": Immutable.Record {
-          "conceptURI": undefined,
-          "display": "Lookup",
-          "name": "lookup",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-          "alternateRangeURI": undefined,
-          "shortDisplay": undefined,
           "lookupSchema": undefined,
-          "lookupQuery": undefined,
-        },
-        "original": Object {
-          "conceptURI": undefined,
+          "lookupValidator": undefined,
+          "measure": undefined,
+          "mvEnabled": false,
+          "name": "key",
+          "PHI": undefined,
+          "propertyId": 1,
+          "propertyURI": "test",
+          "propertyValidators": Immutable.List [],
+          "rangeValidators": Immutable.List [],
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "regexValidators": Immutable.List [],
+          "textChoiceValidator": undefined,
+          "recommendedVariable": false,
+          "required": false,
+          "scale": 4000,
+          "URL": undefined,
+          "shownInDetailsView": true,
+          "shownInInsertView": true,
+          "shownInUpdateView": true,
+          "visible": true,
           "dataType": Immutable.Record {
             "conceptURI": undefined,
             "display": "Integer",
@@ -2080,8 +2254,46 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
             "lookupSchema": undefined,
             "lookupQuery": undefined,
           },
-          "name": "key",
-          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "lookupQueryValue": undefined,
+          "lookupType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Lookup",
+            "name": "lookup",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+            "alternateRangeURI": undefined,
+            "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
+          },
+          "original": Object {
+            "conceptURI": undefined,
+            "dataType": Immutable.Record {
+              "conceptURI": undefined,
+              "display": "Integer",
+              "name": "int",
+              "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+              "alternateRangeURI": "xsd:int",
+              "shortDisplay": undefined,
+              "lookupSchema": undefined,
+              "lookupQuery": undefined,
+            },
+            "name": "key",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          },
+          "updatedField": false,
+          "isPrimaryKey": false,
+          "lockType": "NotLocked",
+          "wrappedColumnName": undefined,
+          "disablePhiLevel": false,
+          "lockExistingField": false,
+          "sourceOntology": undefined,
+          "conceptSubtree": undefined,
+          "conceptLabelColumn": undefined,
+          "conceptImportColumn": undefined,
+          "principalConceptCode": undefined,
+          "derivationDataScope": undefined,
+          "selected": false,
+          "scannable": false,
         },
         "updatedField": false,
         "isPrimaryKey": false,
@@ -2099,6 +2311,12 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "scannable": false,
       }
     }
+    index={1}
+    label="Lookup Field Options"
+    lockType="NotLocked"
+    lookupContainer="/StudyVerifyProject/My Study"
+    onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
   >
     <div>
       <Row
@@ -2426,6 +2644,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
                 onChange={[Function]}
                 schemaName="study"
+                shouldDisableNonExists={true}
                 value=""
               >
                 <TargetTableSelectImpl
@@ -2466,6 +2685,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
                   schemaName="study"
+                  shouldDisableNonExists={true}
                   value=""
                 >
                   <FormControl

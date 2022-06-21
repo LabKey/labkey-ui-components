@@ -12,7 +12,7 @@ import { SaveViewModal } from './SaveViewModal';
 beforeAll(() => {
     LABKEY.moduleContext = {
         query: {
-            isSubfolderDataEnabled: true,
+            isProductProjectsEnabled: true,
         },
     };
 });
@@ -52,11 +52,11 @@ describe('SaveViewModal', () => {
 
     const moduleContext = {
         query: {
-            isSubfolderDataEnabled: true,
+            isProductProjectsEnabled: true,
         },
     };
 
-    test('current view is default', async () => {
+    test('current view is default', () => {
         const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={DEFAULT_VIEW} />, {
             user: TEST_USER_APP_ADMIN,
             moduleContext,
@@ -73,7 +73,7 @@ describe('SaveViewModal', () => {
         wrapper.unmount();
     });
 
-    test('current view is a customized view', async () => {
+    test('current view is a customized view', () => {
         const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={VIEW_1} />, {
             user: TEST_USER_PROJECT_ADMIN,
             moduleContext,
@@ -90,7 +90,7 @@ describe('SaveViewModal', () => {
         wrapper.unmount();
     });
 
-    test('no admin perm', async () => {
+    test('no admin perm', () => {
         const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={VIEW_2} />, {
             user: TEST_USER_EDITOR,
             moduleContext,

@@ -18,7 +18,7 @@ import { fromJS, List } from 'immutable';
 import { mount, ReactWrapper, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import { Grid, GridHeader } from './Grid';
+import { getColumnHoverText, Grid, GridHeader } from './Grid';
 import { GridColumn } from './models/GridColumn';
 import { LabelHelpTip } from './LabelHelpTip';
 
@@ -254,5 +254,63 @@ describe('GridHeader', () => {
         );
         validate(wrapper, 2, 1);
         wrapper.unmount();
+    });
+});
+
+describe('getColumnHoverText', () => {
+    test('no hover text', () => {
+        expect(getColumnHoverText({})).toBe(undefined);
+        expect(
+            getColumnHoverText({
+                description: undefined,
+                index: undefined,
+                phiProtected: undefined,
+            })
+        ).toBe(undefined);
+        expect(
+            getColumnHoverText({
+                description: '  ',
+                index: 'name',
+                phiProtected: false,
+            })
+        ).toBe(undefined);
+    });
+
+    test('with hover text', () => {
+        expect(
+            getColumnHoverText({
+                description: ' desc ',
+                index: 'name',
+                phiProtected: false,
+            })
+        ).toBe('desc');
+        expect(
+            getColumnHoverText({
+                description: ' desc ',
+                index: 'name',
+                phiProtected: true,
+            })
+        ).toBe('desc  (PHI protected data removed)');
+        expect(
+            getColumnHoverText({
+                description: ' desc ',
+                index: 'parent/name',
+                phiProtected: true,
+            })
+        ).toBe('desc  (parent/name) (PHI protected data removed)');
+        expect(
+            getColumnHoverText({
+                description: ' desc ',
+                index: 'parent/name',
+                phiProtected: false,
+            })
+        ).toBe('desc  (parent/name)');
+        expect(
+            getColumnHoverText({
+                description: undefined,
+                index: 'parent/name',
+                phiProtected: false,
+            })
+        ).toBe('parent/name');
     });
 });

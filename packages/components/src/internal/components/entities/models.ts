@@ -406,10 +406,11 @@ export class EntityIdCreationModel extends Record({
     postEntityGrid(
         dataModel: QueryModel,
         editorModel: EditorModel,
-        extraColumnsToInclude?: QueryColumn[]
+        extraColumnsToInclude?: QueryColumn[],
+        colFilter?: (col : QueryColumn) => boolean
     ): Promise<InsertRowsResponse> {
         const rows = editorModel
-            .getRawDataFromGridData(fromJS(dataModel.rows), fromJS(dataModel.orderedRows), dataModel.queryInfo, false)
+            .getRawDataFromGridData(fromJS(dataModel.rows), fromJS(dataModel.orderedRows), dataModel.queryInfo, false, false, undefined, undefined, colFilter)
             .valueSeq()
             .reduce((rows, row) => {
                 let map = row.toMap();

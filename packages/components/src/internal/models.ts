@@ -330,7 +330,8 @@ export class EditorModel
         forUpdate?: boolean,
         readOnlyColumns?: List<string>,
         insertColumns?: List<QueryColumn>,
-        updateColumns?: List<QueryColumn>
+        updateColumns?: List<QueryColumn>,
+        colFilter?: (col: QueryColumn) => boolean
     ): List<QueryColumn> {
         let columns;
 
@@ -340,6 +341,8 @@ export class EditorModel
             columns = insertColumns ? insertColumns : queryInfo.getInsertColumns();
         }
 
+        if (colFilter)
+            columns = columns.filter(colFilter);
         // file input columns are not supported in the editable grid, so remove them
         return columns.filter(col => !col.isFileInput);
     }
@@ -351,10 +354,11 @@ export class EditorModel
         displayValues = true,
         forUpdate = false,
         readOnlyColumns?: List<string>,
-        extraColumns?: Array<Partial<QueryColumn>>
+        extraColumns?: Array<Partial<QueryColumn>>,
+        colFilter?: (col : QueryColumn) => boolean,
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
-        const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns);
+        const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns, undefined, undefined, colFilter);
         const additionalColumns = [];
         if (extraColumns) {
             extraColumns.forEach(col => {

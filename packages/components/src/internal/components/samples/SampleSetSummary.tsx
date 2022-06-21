@@ -33,7 +33,7 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
     const canUpdate = hasAnyPermissions(user, [PermissionTypes.Insert, PermissionTypes.Update]);
     const queryConfig = useMemo(() => {
         let requiredColumns;
-        const omittedColumns = SAMPLE_QUERY_CONFIG.omittedColumns;
+        const omittedColumns = [...SAMPLE_QUERY_CONFIG.omittedColumns];
         if (canUpdate) {
             requiredColumns = ['lsid'];
         } else {

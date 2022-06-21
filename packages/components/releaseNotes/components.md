@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX
+### version 2.188.0
+*Released*: 21 June 2022
 * Issue 45373: Sample Finder export generates ambiguous column header names
     * Support advancedExportOption per TabbedGridPanel tab
 

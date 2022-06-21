@@ -56,12 +56,12 @@ import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
-    user: User;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
-    samplesEditableGridProps: Partial<SamplesEditableGridProps>;
-    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     gridButtonProps?: any;
+    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     sampleTypeNames: string[];
+    samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    user: User;
 }
 
 interface Props extends SampleFinderSamplesGridProps {
@@ -69,9 +69,9 @@ interface Props extends SampleFinderSamplesGridProps {
 }
 
 interface SampleFinderHeaderProps {
-    parentEntityDataTypes: EntityDataType[];
-    onAddEntity: (entityType: EntityDataType) => void;
     enabledEntityTypes: string[];
+    onAddEntity: (entityType: EntityDataType) => void;
+    parentEntityDataTypes: EntityDataType[];
 }
 
 export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props => {
@@ -493,7 +493,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                     getAdvancedExportOptions,
                     exportFilename: 'Samples',
                     allowViewCustomization: false,
-                    showViewMenu: false
+                    showViewMenu: false,
                 }}
             />
         </>

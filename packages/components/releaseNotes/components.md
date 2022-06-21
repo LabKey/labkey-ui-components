@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.187.1
+*Released*: 21 June 2022
+* Issue 45006: Provide link to lookup table/query in field designer
+
 ### version 2.187.0
 *Released*: 21 June 2022
 * SubNav: Add ignoreShow prop

@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
-import { Col, Modal, Row } from 'react-bootstrap';
+import { Col, Modal, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 
 import { ViewInfo } from '../../internal/ViewInfo';
 import { SchemaQuery } from '../SchemaQuery';
@@ -153,6 +153,11 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                         let viewLabel = view.isDefault ? 'Default View' : view.label;
                         if (unsavedView) viewLabel += ' (Edited)';
 
+                        let revert = <span className="gray-text">Revert</span>;
+                        if (view.isSaved) {
+                            revert = <span onClick={revertDefaultView} className="clickable-text">Revert</span>;
+                        }
+
                         return (
                             <Row className="small-margin-bottom" key={view.name}>
                                 <Col xs={8}>
@@ -174,9 +179,16 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                     {user.hasAdminPermission() && (
                                         <>
                                             {isDefault && !isRenaming && (
-                                                <span onClick={revertDefaultView} className="clickable-text">
-                                                    Revert
-                                                </span>
+                                                <OverlayTrigger
+                                                    placement="top"
+                                                    overlay={
+                                                        <Popover id="disabled-button-popover">
+                                                            Revert back to the system default view
+                                                        </Popover>
+                                                    }
+                                                >
+                                                    {revert}
+                                                </OverlayTrigger>
                                             )}
                                             {!isDefault && !isRenaming && (
                                                 <span

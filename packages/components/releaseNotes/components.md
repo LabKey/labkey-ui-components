@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.186.1
+*Released*: 21 June 2022
+* Issue 45524: Grid pagination buttons should not disappear when changing to a larger page size
+
 ### version 2.186.0
 *Released*: 20 June 2022
 * Add Picklist menu item in megamenu

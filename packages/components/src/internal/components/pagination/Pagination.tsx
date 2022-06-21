@@ -50,8 +50,7 @@ export class Pagination extends PureComponent<PaginationProps> {
             rowCount,
             setPageSize,
         } = this.props;
-        const showPageSizeMenu = rowCount > pageSizes[0];
-        const showPaginationButtons = rowCount > pageSize;
+        const showPaginationButtons = rowCount > pageSizes[0];
 
         // Use lk-pagination so we don't conflict with bootstrap pagination class.
         return (
@@ -77,7 +76,6 @@ export class Pagination extends PureComponent<PaginationProps> {
                             pageCount={pageCount}
                             loadFirstPage={loadFirstPage}
                             loadLastPage={loadLastPage}
-                            showPageSizeMenu={showPageSizeMenu}
                             pageSize={pageSize}
                             pageSizes={pageSizes}
                             setPageSize={setPageSize}

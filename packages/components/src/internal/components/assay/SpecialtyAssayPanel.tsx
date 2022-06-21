@@ -66,10 +66,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                                 </select>
                             </div>
 
-                            <div
-                                className="small-margin-bottom"
-                                dangerouslySetInnerHTML={{ __html: selected?.description }}
-                            />
+                            <div className="small-margin-bottom">{selected?.description}</div>
                         </>
                     )}
 

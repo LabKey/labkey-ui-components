@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * only add "addToDisplayView" fields to view for unsaved default view (i.e. system default view)
   * only allow default view revert in Manage Saved Views modal if it is not the system default
   * set allowViewCustomization false for a few more cases
+  * SpecialtyAssayPanel.tsx update to remove usage of dangerouslySetInnerHTML
 
 ### version 2.186.1
 *Released*: 21 June 2022

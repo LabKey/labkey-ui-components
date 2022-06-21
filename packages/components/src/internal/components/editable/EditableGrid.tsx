@@ -225,6 +225,7 @@ export interface SharedEditableGridProps {
     striped?: boolean;
     updateColumns?: List<QueryColumn>;
     rowNumColumn?: GridColumn;
+    exportColFilter?: (col: QueryColumn) => boolean;
 }
 
 export interface EditableGridProps extends SharedEditableGridProps {

@@ -1029,6 +1029,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                 editorModel={editorModel}
                                 maxRows={this.props.maxEntities}
                                 onChange={this.onGridChange}
+                                exportColFilter={this.isIncludedColumn}
                             />
                         </>
                     )}

@@ -330,7 +330,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         onSaveView(user?.isAdmin);
     };
 
-    if (!displayTitle && !isEdited && !isUpdated) {
+    if (!displayTitle && (!allowViewCustomization || (!isEdited && !isUpdated))) {
         return null;
     }
 

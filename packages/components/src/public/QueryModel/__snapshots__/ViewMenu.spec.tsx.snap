@@ -20,9 +20,17 @@ exports[`ViewMenu Render 2`] = `
       role="button"
       type="button"
     >
-      <span
-        className="fa fa-table"
-      />
+      <span>
+        <i
+          className="fa fa-table"
+        />
+         
+        <span
+          className="spacer-left"
+        >
+          Views
+        </span>
+      </span>
        
       <span
         className="caret"
@@ -55,9 +63,17 @@ exports[`ViewMenu Render 3`] = `
       role="button"
       type="button"
     >
-      <span
-        className="fa fa-table"
-      />
+      <span>
+        <i
+          className="fa fa-table"
+        />
+         
+        <span
+          className="spacer-left"
+        >
+          Views
+        </span>
+      </span>
        
       <span
         className="caret"
@@ -84,10 +100,12 @@ exports[`ViewMenu Render 3`] = `
       </li>
       <li
         className="divider"
+        onKeyDown={[Function]}
         role="separator"
       />
       <li
         className="dropdown-header"
+        onKeyDown={[Function]}
         role="heading"
       >
         All Saved Views
@@ -143,9 +161,17 @@ exports[`ViewMenu Render 4`] = `
       role="button"
       type="button"
     >
-      <span
-        className="fa fa-table"
-      />
+      <span>
+        <i
+          className="fa fa-table"
+        />
+         
+        <span
+          className="spacer-left"
+        >
+          Views
+        </span>
+      </span>
        
       <span
         className="caret"
@@ -172,10 +198,12 @@ exports[`ViewMenu Render 4`] = `
       </li>
       <li
         className="divider"
+        onKeyDown={[Function]}
         role="separator"
       />
       <li
         className="dropdown-header"
+        onKeyDown={[Function]}
         role="heading"
       >
         My Saved Views
@@ -217,9 +245,17 @@ exports[`ViewMenu Render 5`] = `
       role="button"
       type="button"
     >
-      <span
-        className="fa fa-table"
-      />
+      <span>
+        <i
+          className="fa fa-table"
+        />
+         
+        <span
+          className="spacer-left"
+        >
+          Views
+        </span>
+      </span>
        
       <span
         className="caret"
@@ -246,10 +282,12 @@ exports[`ViewMenu Render 5`] = `
       </li>
       <li
         className="divider"
+        onKeyDown={[Function]}
         role="separator"
       />
       <li
         className="dropdown-header"
+        onKeyDown={[Function]}
         role="heading"
       >
         My Saved Views
@@ -291,9 +329,17 @@ exports[`ViewMenu Render 6`] = `
       role="button"
       type="button"
     >
-      <span
-        className="fa fa-table"
-      />
+      <span>
+        <i
+          className="fa fa-table"
+        />
+         
+        <span
+          className="spacer-left"
+        >
+          Views
+        </span>
+      </span>
        
       <span
         className="caret"

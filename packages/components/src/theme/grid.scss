@@ -208,6 +208,7 @@ $table-cell-selection-bg-color: #EDF3FF;
 
   & > tbody > tr.grid-empty > td {
       height: 30px;
+      padding: 0 4px;
   }
 
   & > tbody > tr > td {
@@ -430,10 +431,29 @@ $table-cell-selection-bg-color: #EDF3FF;
 }
 
 .tabbed-grid-panel .nav-tabs {
-    margin-bottom: 30px;
-
-
     & > li.no-data {
         opacity: 0.5;
     }
+}
+
+.view-header {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+}
+
+.view-edit-alert {
+    padding: 4px 10px;
+    margin-right: 10px;
+    text-transform: uppercase;
+}
+
+.view-edit-title-alert {
+    margin-left: 15px;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.view-edit-error {
+    padding: 15px;
+    color: $brand-danger;
 }

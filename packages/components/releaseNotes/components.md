@@ -6,6 +6,122 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 45373: Sample Finder export generates ambiguous column header names
     * Support advancedExportOption per TabbedGridPanel tab
 
+### version 2.187.0
+*Released*: 21 June 2022
+* SubNav: Add ignoreShow prop
+* SubNavWithContext: Add ignoreShowProp and setIgnoreShow setter
+
+### version 2.186.1
+*Released*: 21 June 2022
+* Issue 45524: Grid pagination buttons should not disappear when changing to a larger page size
+
+### version 2.186.0
+*Released*: 20 June 2022
+* Add Picklist menu item in megamenu
+* Update picklist page routes to not rely on location query parameter
+* Issue 45710: use clone of constant instead of constant for omitted column, so we can add to it.
+
+### version 2.185.1
+*Released*: 20 June 2022
+* Issue 45581: Field editor LookupFieldOptions shouldn't disable target table selection for alias fields in metadata editor
+
+### version 2.185.0
+*Released*: 17 June 2022
+* Item 10379: Save Grid Views - Manage views dialog
+  * Add ManageViewsModal component
+
+### version 2.184.0
+*Released*: 17 June 2022
+* Item 10445: CustomizeGridViewModal - Handling lookup columns
+  * Order columns based on `queryInfo.columns` instead of `queryInfo.allColumns`
+  * Show lookup fields on expand in Available Fields listing and allow them to be added to view
+  * Update api/`getQueryDetails()` to accept a fk for cache key
+  * Enabled `QueryColumn` props for `selectable` and `friendlyType`
+  * Include fieldKey in grid column header hover text
+  * Issue 45693: Filter dialog choose values click target is too big
+
+### version 2.183.1
+*Released*: 16 June 2022
+* Add ability to rearrange fields from `CustomizeGridViewModal`
+
+### version 2.183.0
+*Released*: 16 June 2022
+* Item 10293: Enable export for editable grids
+
+### version 2.182.0
+*Released*: 15 June 2022
+* Rename `isSubfolderDataEnabled` to `isProductProjectsEnabled` in all the places.
+
+### version 2.181.1
+*Released*: 15 June 2022
+* Remove QueryGridModel and related utils, actions, components, etc.
+
+### version 2.181.0
+*Released*: 14 June 2022
+* Item 10376: Add `CustomizeGridViewModal` for, yeah, customizing grid views
+
+### version 2.180.0
+*Released*: 13 June 2022
+* Item 10373: GridPanel updates to show sorts and filters saved with the view
+  * Show saved view filters in the grid panel filter display section
+  * Show saved view sorts in the grid column header icons
+  * Allow for saved view sorts and filters to be updated/remove alongside the user-defined sorts/filters
+
+### version 2.179.5
+*Released*: 10 June 2022
+* EntityInsertPanel refactor to use QueryModel based EditableGridPanel
+
+### version 2.179.4
+*Released*: 10 June 2022
+* Issue 45325: SamplesTabbedGridPanel shouldn't call afterSampleActionComplete when going from bulk edit modal to grid edit
+
+### version 2.179.3
+*Released*: 9 June 2022
+* Item 10201: Sample renaming
+  * Remove "Name" field from SampleBulkUpdateForm
+  * Enable "Name" edit for aliquot details panel
+
+### version 2.179.2
+*Released*: 9 June 2022
+* Remove experimental feature flag for ELN in LKSM
+
+### version 2.179.1
+*Released*: 6 June 2022
+* Update `@labkey/api` and `@labkey/eslint-config-react` dependencies
+
+### version 2.179.0
+*Released*: 6 June 2022
+* Item 10375: Save Grid Views - Save view dialog
+  * Enable Save action for edited views
+  * Add 'Save as custom view' option to views menu
+  * Add SaveViewModal component
+
+### version 2.178.0
+*Released*: 31 May 2022
+* Issue 45270: Show settings page to all admins
+
+### version 2.177.3
+*Released*: 31 May 2022
+* Issue 45529: Adjust width of `.container` to use more of the screen
+* Issue 45290: Adjust width of search box in NavBar for better display (with lots of notifications) in medium media
+* Issue 45290: Use relative positioning for search-icon
+
+### version 2.177.2
+*Released*: 31 May 2022
+* Issue 44707
+  * Don't override background-color or text shadow in print styles
+
+### version 2.177.1
+*Released*: 31 May 2022
+* Issue 45451: Grid drop down menu (page size, views) does not retract after selection
+
+### version 2.177.0
+*Released*: 27 May 2022
+* Item 10374: Begin adding support for customizing views in our application
+  * Move display of custom view name into panel header
+  * Add header action for hiding a column and saving a new session view
+  * Add buttons for reverting session grid customization in panel header
+
 ### version 2.176.0
 *Released*: 26 May 2022
 * Factor EditableGridPanelForUpdateWithLineage component out of SamplesEditableGridPanelForUpdate

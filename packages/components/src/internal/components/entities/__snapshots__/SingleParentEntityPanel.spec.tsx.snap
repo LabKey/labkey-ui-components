@@ -5585,7 +5585,8 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
                 <td>
                   No 
                   data type
-                   has been set for this 
+                   has been set for this
+                   
                   sample
                   .
                 </td>
@@ -6235,6 +6236,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             allowFiltering={false}
             allowSelections={false}
             allowSorting={true}
+            allowViewCustomization={true}
             asPanel={false}
             hideEmptyChartMenu={true}
             hideEmptyViewMenu={true}
@@ -6323,8 +6325,111 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             <div
               className="grid-panel"
             >
+              <Memo()
+                actions={
+                  Object {
+                    "addModel": [Function],
+                    "clearSelections": [Function],
+                    "loadAllModels": [Function],
+                    "loadCharts": [Function],
+                    "loadFirstPage": [Function],
+                    "loadLastPage": [Function],
+                    "loadModel": [Function],
+                    "loadNextPage": [Function],
+                    "loadPreviousPage": [Function],
+                    "loadRows": [Function],
+                    "replaceSelections": [Function],
+                    "selectAllRows": [Function],
+                    "selectPage": [Function],
+                    "selectReport": [Function],
+                    "selectRow": [Function],
+                    "setFilters": [Function],
+                    "setMaxRows": [Function],
+                    "setOffset": [Function],
+                    "setSchemaQuery": [Function],
+                    "setSelections": [Function],
+                    "setSorts": [Function],
+                    "setView": [Function],
+                  }
+                }
+                allowSelections={false}
+                allowViewCustomization={true}
+                isUpdated={false}
+                model={
+                  QueryModel {
+                    "baseFilters": Array [
+                      Filter {
+                        "columnName": "LSID",
+                        "filterType": Object {
+                          "getDisplaySymbol": [Function],
+                          "getDisplayText": [Function],
+                          "getLabKeySqlOperator": [Function],
+                          "getLongDisplayText": [Function],
+                          "getMultiValueFilter": [Function],
+                          "getMultiValueMaxOccurs": [Function],
+                          "getMultiValueMinOccurs": [Function],
+                          "getMultiValueSeparator": [Function],
+                          "getOpposite": [Function],
+                          "getSingleValueFilter": [Function],
+                          "getURLParameterValue": [Function],
+                          "getURLSuffix": [Function],
+                          "isDataValueRequired": [Function],
+                          "isMultiValued": [Function],
+                          "isTableWise": [Function],
+                          "parseValue": [Function],
+                          "validate": [Function],
+                        },
+                        "value": Array [
+                          "url:lsid:blah",
+                        ],
+                      },
+                    ],
+                    "bindURL": false,
+                    "charts": undefined,
+                    "chartsError": undefined,
+                    "chartsLoadingState": "INITIALIZED",
+                    "containerFilter": undefined,
+                    "containerPath": undefined,
+                    "filterArray": Array [],
+                    "id": "model",
+                    "includeDetailsColumn": false,
+                    "includeUpdateColumn": false,
+                    "keyValue": undefined,
+                    "maxRows": 20,
+                    "messages": Array [],
+                    "offset": 0,
+                    "omittedColumns": Array [],
+                    "orderedRows": undefined,
+                    "queryInfo": undefined,
+                    "queryInfoError": undefined,
+                    "queryInfoLoadingState": "LOADING",
+                    "queryParameters": undefined,
+                    "requiredColumns": Array [],
+                    "rowCount": undefined,
+                    "rows": undefined,
+                    "rowsError": undefined,
+                    "rowsLoadingState": "INITIALIZED",
+                    "schemaQuery": Immutable.Record {
+                      "schemaName": "exp.data",
+                      "queryName": "Second Source",
+                      "viewName": undefined,
+                    },
+                    "selectedReportId": undefined,
+                    "selections": undefined,
+                    "selectionsError": undefined,
+                    "selectionsLoadingState": "INITIALIZED",
+                    "sorts": Array [],
+                    "title": undefined,
+                    "urlPrefix": "query",
+                    Symbol(immer-draftable): true,
+                  }
+                }
+                onRevertView={[Function]}
+                onSaveNewView={[Function]}
+                onSaveView={[Function]}
+              />
               <div
-                className="grid-panel__body"
+                className="grid-panel__body top-spacing"
               >
                 <div
                   className="grid-panel__info"

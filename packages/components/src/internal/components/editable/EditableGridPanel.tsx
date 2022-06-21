@@ -1,12 +1,19 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { fromJS, List, Map } from 'immutable';
+import { fromJS, List, Map, OrderedMap } from 'immutable';
 import classNames from 'classnames';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { EditorModel, EditorModelProps } from '../../models';
 
-import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
 import { getUniqueIdColumnMetadata } from '../entities/utils';
+
+import { QueryColumn } from '../../../public/QueryColumn';
+
+
+import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
+import { EXPORT_TYPES } from '../../constants';
+import { exportEditedData, getEditorTableData } from './utils';
+import { ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
@@ -18,6 +25,36 @@ interface Props extends SharedEditableGridPanelProps {
         index?: number
     ) => void;
 }
+
+const exportHandler = (
+    exportType: EXPORT_TYPES,
+    models: QueryModel[],
+    editorModels: EditorModel[],
+    readOnlyColumns: List<string>,
+    activeTab: number,
+    extraColumns?: Array<Partial<QueryColumn>>
+): void => {
+    let headings = OrderedMap<string, string>();
+    let editorData = OrderedMap<string, Map<string, any>>();
+    models.forEach((queryModel, idx) => {
+        const [modelHeadings, modelEditorData] = getEditorTableData(
+            editorModels[idx],
+            queryModel,
+            readOnlyColumns,
+            headings,
+            editorData,
+            extraColumns
+        );
+        headings = modelHeadings;
+        editorData = modelEditorData;
+    });
+
+    const rows = [];
+    editorData.forEach(rowMap => rows.push([...rowMap.toArray().values()]));
+    const exportData = [headings.toArray(), ...rows];
+
+    exportEditedData(exportType, 'data', exportData, models[activeTab]);
+};
 
 /**
  * Note that there are some cases which will call the onChange callback prop back to back (i.e. see LookupCell.onInputChange)
@@ -42,8 +79,11 @@ export const EditableGridPanel: FC<Props> = memo(props => {
         getUpdateColumns,
         getTabHeader,
         getTabTitle,
+        readOnlyColumns,
+        extraExportColumns,
         ...gridProps
     } = props;
+
     const [activeTab, setActiveTab] = useState<number>(props.activeTab ?? 0);
     const models = Array.isArray(model) ? model : [model];
     const activeModel = models[activeTab];
@@ -56,8 +96,6 @@ export const EditableGridPanel: FC<Props> = memo(props => {
             onChange(editorModelChanges, dataKeys, data, activeTab),
         [activeTab, onChange]
     );
-
-    const onTabClick = useCallback(setActiveTab, []);
 
     // TODO: When EditableGridPanelDeprecated is removed we should be able to just pass model.rows and model.orderedRows
     //  to the EditableGrid.
@@ -78,6 +116,12 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     let activeUpdateColumns = updateColumns;
     if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
 
+    const exportHandlerCallback = useCallback((option: ExportOption) => {
+        exportHandler(option.type, models, editorModels, readOnlyColumns, activeTab, extraExportColumns);
+    }, [activeTab, editorModels, extraExportColumns, models, readOnlyColumns]);
+
+    const onTabClick = useCallback(setActiveTab, []);
+
     const editableGrid = (
         <EditableGrid
             {...gridProps}
@@ -89,7 +133,9 @@ export const EditableGridPanel: FC<Props> = memo(props => {
             onChange={_onChange}
             queryInfo={queryInfo}
             readonlyRows={activeReadOnlyRows}
+            readOnlyColumns={readOnlyColumns}
             updateColumns={activeUpdateColumns}
+            exportHandler={exportHandlerCallback}
         />
     );
 

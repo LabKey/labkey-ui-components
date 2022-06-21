@@ -21,6 +21,9 @@
         box-shadow: 0 2px 4px darkgrey;
         display: block;
       }
+      & > .sub-nav.sub-nav--ignore-show {
+          display: none;
+      }
     }
   }
 }
@@ -439,7 +442,9 @@ $nav-menu-btn-width: 85px;
   height: 34px;
 
   .navbar__search-icon {
-    position: absolute;
+    position: relative;
+    float: left;
+    left: 18px;
     top: 8px;
     margin-left: 5px;
     color: $gray-light;
@@ -453,7 +458,7 @@ $nav-menu-btn-width: 85px;
   }
 
   .navbar__input-group {
-      width: 300px;
+      width: 245px;
   }
   .navbar__find-and-search-button {
       border-color: $white;

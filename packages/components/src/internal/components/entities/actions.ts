@@ -5,7 +5,6 @@ import {
     buildURL,
     caseInsensitive,
     getFilterForSampleOperation,
-    getQueryGridModel,
     getSelected,
     importData,
     InsertOptions,
@@ -86,7 +85,9 @@ export function getDeleteConfirmationData(
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
     }
-    return getOperationConfirmationData(selectionKey, dataType, rowIds);
+    return getOperationConfirmationData(selectionKey, dataType, rowIds, {
+        dataOperation: DataOperation.Delete
+    });
 }
 
 export function getSampleOperationConfirmationData(
@@ -218,31 +219,19 @@ async function initParents(
 
     if (selectionKey) {
         const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
-        const queryGridModel = getQueryGridModel(selectionKey);
+        const selectionResponse = await getSelected(selectionKey);
 
-        if (queryGridModel?.selectedLoaded) {
-            const filterArray = [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)];
-            const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
-            if (opFilter) {
-                filterArray.push(opFilter);
-            }
-
-            return getSelectedParents(schemaQuery, filterArray, isAliquotParent);
-        } else {
-            const selectionResponse = await getSelected(selectionKey);
-
-            if (isItemSamples) {
-                return getSelectedSampleParentsFromItems(selectionResponse.selected, isAliquotParent);
-            }
-
-            const filterArray = [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)];
-            const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
-            if (opFilter) {
-                filterArray.push(opFilter);
-            }
-
-            return getSelectedParents(schemaQuery, filterArray, isAliquotParent);
+        if (isItemSamples) {
+            return getSelectedSampleParentsFromItems(selectionResponse.selected, isAliquotParent);
         }
+
+        const filterArray = [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)];
+        const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
+        if (opFilter) {
+            filterArray.push(opFilter);
+        }
+
+        return getSelectedParents(schemaQuery, filterArray, isAliquotParent);
     } else if (initialParents?.length > 0) {
         const [parent] = initialParents;
         const [schema, query, value] = parent.toLowerCase().split(':');

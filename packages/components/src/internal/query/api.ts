@@ -19,7 +19,7 @@ import { Filter, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson } from '../../public/SchemaQuery';
-import { isProjectContainer, isSubfolderDataEnabled } from '../app/utils';
+import { isProjectContainer, isProductProjectsEnabled } from '../app/utils';
 import {
     caseInsensitive,
     QueryColumn,
@@ -39,12 +39,12 @@ export function invalidateFullQueryDetailsCache(): void {
     queryDetailsCache = {};
 }
 
-function getQueryDetailsCacheKey(schemaQuery: SchemaQuery, containerPath?: string): string {
-    return '' + resolveSchemaQuery(schemaQuery) + (containerPath ? '|' + containerPath : '');
+function getQueryDetailsCacheKey(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): string {
+    return '' + resolveSchemaQuery(schemaQuery) + (fk ? '|' + fk : '') + (containerPath ? '|' + containerPath : '');
 }
 
-export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery, containerPath?: string): void {
-    const key = getQueryDetailsCacheKey(schemaQuery, containerPath);
+export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): void {
+    const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
     invalidateQueryDetailsCacheKey(key);
 }
 
@@ -54,15 +54,16 @@ export function invalidateQueryDetailsCacheKey(key: string): void {
 }
 
 export interface GetQueryDetailsOptions {
-    schemaName: string;
-    queryName: string;
     containerPath?: string;
+    fk?: string;
+    queryName: string;
+    schemaName: string;
 }
 
 export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
-    const { containerPath, queryName, schemaName } = options;
+    const { containerPath, queryName, schemaName, fk } = options;
     const schemaQuery = SchemaQuery.create(schemaName, queryName);
-    const key = getQueryDetailsCacheKey(schemaQuery, containerPath);
+    const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
 
     if (!queryDetailsCache[key]) {
         queryDetailsCache[key] = new Promise((resolve, reject) => {
@@ -70,13 +71,14 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                 containerPath,
                 schemaName,
                 queryName,
-                viewName: '*',
+                fk,
+                viewName: fk ? undefined : '*',
                 success: queryDetails => {
                     // getQueryDetails will return an exception parameter in cases
                     // where it is unable to resolve the tableInfo. This is deemed a 'success'
                     // by the request standards but here we reject as an outright failure
                     if (queryDetails.exception) {
-                        invalidateQueryDetailsCache(schemaQuery, containerPath);
+                        invalidateQueryDetailsCache(schemaQuery, containerPath, fk);
                         reject({
                             schemaQuery,
                             message: queryDetails.exception,
@@ -88,7 +90,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                 },
                 failure: (error, request) => {
                     console.error(error);
-                    invalidateQueryDetailsCache(schemaQuery, containerPath);
+                    invalidateQueryDetailsCache(schemaQuery, containerPath, fk);
                     reject({
                         message: error.exception,
                         exceptionClass: error.exceptionClass,
@@ -342,15 +344,15 @@ class Renderers {
 }
 
 export interface ISelectRowsResult {
+    caller?: any;
     key: string;
+    messages?: List<Map<string, string>>;
     models: any;
     orderedModels: List<any>;
     queries: {
         [key: string]: QueryInfo;
     };
     totalRows: number;
-    messages?: List<Map<string, string>>;
-    caller?: any;
 }
 
 /**
@@ -567,25 +569,33 @@ export function handleSelectRowsResponse(json): any {
 }
 
 // exported for jest testing
-export function quoteValueColumnWithDelimiters(selectRowsResult: ISelectRowsResult, valueColumn: string, delimiter: string): ISelectRowsResult {
+export function quoteValueColumnWithDelimiters(
+    selectRowsResult: ISelectRowsResult,
+    valueColumn: string,
+    delimiter: string
+): ISelectRowsResult {
     const rowMap = selectRowsResult.models[selectRowsResult.key];
     Object.keys(rowMap).forEach(key => {
         if (rowMap[key][valueColumn]) {
-            Object.assign(rowMap[key],
-                {
-                    [valueColumn]: {
-                        value: quoteValueWithDelimiters(rowMap[key][valueColumn].value, delimiter),
-                        displayValue: rowMap[key][valueColumn].displayValue ?? rowMap[key][valueColumn].value,
-                        url: rowMap[key][valueColumn].url
-                    }
-                }
-            );
+            Object.assign(rowMap[key], {
+                [valueColumn]: {
+                    value: quoteValueWithDelimiters(rowMap[key][valueColumn].value, delimiter),
+                    displayValue: rowMap[key][valueColumn].displayValue ?? rowMap[key][valueColumn].value,
+                    url: rowMap[key][valueColumn].url,
+                },
+            });
         }
     });
     return selectRowsResult;
 }
 
-export function searchRows(selectRowsConfig, token: any, valueColumn: string, delimiter: string, exactColumn?: string): Promise<ISelectRowsResult> {
+export function searchRows(
+    selectRowsConfig,
+    token: any,
+    valueColumn: string,
+    delimiter: string,
+    exactColumn?: string
+): Promise<ISelectRowsResult> {
     return new Promise((resolve, reject) => {
         let exactFilters, qFilters;
         const baseFilters = selectRowsConfig.filterArray ? selectRowsConfig.filterArray : [];
@@ -623,7 +633,7 @@ export function searchRows(selectRowsConfig, token: any, valueColumn: string, de
             .then(allResults => {
                 const [queryResults, exactResults] = allResults;
 
-                let finalResults : ISelectRowsResult;
+                let finalResults: ISelectRowsResult;
                 if (exactResults && exactResults.totalRows > 0) {
                     finalResults = exactResults;
 
@@ -888,20 +898,21 @@ export enum InsertOptions {
 }
 
 export enum InsertFormats {
-    tsv = 'tsv',
     csv = 'csv',
+    tsv = 'tsv',
 }
 
 export interface IImportData {
-    schemaName: string;
-    queryName: string;
-    file?: File; // must contain file or text but not both
+    file?: File;
+    // must contain file or text but not both
     format?: InsertFormats;
-    text?: string;
-    insertOption?: string;
     importLookupByAlternateKey?: boolean;
-    saveToPipeline?: boolean;
     importUrl?: string;
+    insertOption?: string;
+    queryName: string;
+    saveToPipeline?: boolean;
+    schemaName: string;
+    text?: string;
     useAsync?: boolean;
 }
 
@@ -944,7 +955,7 @@ export function processRequest(response: any, request: any, reject: (reason?: an
  */
 export function getContainerFilter(containerPath?: string): Query.ContainerFilter {
     // Check experimental flag to see if cross-folder data support is enabled.
-    if (!isSubfolderDataEnabled()) {
+    if (!isProductProjectsEnabled()) {
         return undefined;
     }
 
@@ -967,8 +978,8 @@ export function getContainerFilter(containerPath?: string): Query.ContainerFilte
  * @private
  */
 export function getContainerFilterForInsert(): Query.ContainerFilter {
-    // Check experimental flag to see if cross-folder data support is enabled.
-    if (!isSubfolderDataEnabled()) {
+    // Check to see if product projects support is enabled.
+    if (!isProductProjectsEnabled()) {
         return undefined;
     }
 
@@ -978,9 +989,9 @@ export function getContainerFilterForInsert(): Query.ContainerFilter {
 }
 
 export interface SelectDistinctResponse {
-    values: any[];
-    schemaName: string;
     queryName: string;
+    schemaName: string;
+    values: any[];
 }
 
 export function selectDistinctRows(

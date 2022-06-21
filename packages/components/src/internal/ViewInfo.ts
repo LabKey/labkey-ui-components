@@ -10,8 +10,8 @@ function getFiltersFromView(rawViewInfo): List<Filter.IFilter> {
     if (rawViewInfo && rawViewInfo.filter) {
         const rawFilters: Array<{
             fieldKey: string;
-            value: any;
             op: string;
+            value: any;
         }> = rawViewInfo.filter;
 
         for (let i = 0; i < rawFilters.length; i++) {
@@ -51,13 +51,13 @@ export class ViewInfo extends Record({
     // editable: false,
     filters: List<Filter.IFilter>(),
     hidden: false,
-    // inherit: false,
+    inherit: false,
     isDefault: false,
     label: undefined,
     name: undefined,
-    // revertable: false,
-    // savable: false,
-    // session: false,
+    revertable: false,
+    savable: false,
+    session: false,
     shared: false,
     sorts: List<QuerySort>(),
 }) {
@@ -68,13 +68,13 @@ export class ViewInfo extends Record({
     // declare editable: boolean;
     declare filters: List<Filter.IFilter>;
     declare hidden: boolean;
-    // declare inherit: boolean;
+    declare inherit: boolean;
     declare isDefault: boolean; // 'default' is a JavaScript keyword
     declare label: string;
     declare name: string;
-    // declare revertable: boolean;
-    // declare savable: boolean;
-    // declare session: boolean;
+    declare revertable: boolean;
+    declare savable: boolean;
+    declare session: boolean;
     declare shared: boolean;
     declare sorts: List<QuerySort>;
 
@@ -109,10 +109,44 @@ export class ViewInfo extends Record({
         );
     }
 
+    static serialize(viewInfo: ViewInfo): any {
+        const json = viewInfo.toJS();
+
+        if (json.name === this.DEFAULT_NAME) {
+            json.name = '';
+        }
+
+        json.filter = viewInfo.filters.map(filter => {
+            return {
+                fieldKey: filter.getColumnName(),
+                value: filter.getURLParameterValue(),
+                op: filter.getFilterType().getURLSuffix(),
+            };
+        });
+        delete json.filters;
+
+        json.sort = viewInfo.sorts.map(sort => {
+            return {
+                fieldKey: sort.fieldKey,
+                dir: sort.dir,
+            };
+        });
+        delete json.sorts;
+
+        return json;
+    }
+
     get isVisible(): boolean {
         // Issue 42628: Hide Biologics details view override in view menu
         return (
             !this.isDefault && !this.hidden && this.name.indexOf('~~') !== 0 && this.name !== ViewInfo.BIO_DETAIL_NAME
         );
+    }
+
+    mutate(updates: Partial<ViewInfo>) {
+        return new ViewInfo({
+            ...this.toJS(),
+            ...updates
+        });
     }
 }

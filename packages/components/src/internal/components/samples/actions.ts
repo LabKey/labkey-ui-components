@@ -34,7 +34,7 @@ import {
     getContainerFilter,
     getSelectedData,
     getSelection,
-    getStateModelId,
+    createGridModelId,
     ISelectRowsResult,
     Location,
     naturalSort,
@@ -443,8 +443,8 @@ export const getParentTypeDataForLineage = async (
     data: any[],
     containerPath?: string
 ): Promise<{
-    parentTypeOptions: List<IEntityTypeOption>;
     parentIdData: Record<string, ParentIdData>;
+    parentTypeOptions: List<IEntityTypeOption>;
 }> => {
     let parentTypeOptions = List<IEntityTypeOption>();
     let parentIdData: {};
@@ -601,7 +601,7 @@ export interface GroupedSampleDisplayColumns {
 }
 
 function isAliquotEditableField(colName: string): boolean {
-    return colName === 'description' || (isSampleStatusEnabled() && colName === 'samplestate');
+    return colName === 'name' || colName === 'description' || (isSampleStatusEnabled() && colName === 'samplestate');
 }
 
 export function getGroupedSampleDisplayColumns(
@@ -715,7 +715,7 @@ function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): Promise
 
 export function getFindSamplesByIdData(
     sessionKey: string
-): Promise<{ queryName: string; ids: string[]; missingIds?: { [key: string]: string[] } }> {
+): Promise<{ ids: string[]; missingIds?: { [key: string]: string[] }; queryName: string }> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('experiment', 'saveOrderedSamplesQuery.api'),
@@ -888,7 +888,7 @@ export function getSampleAliquotsQueryConfig(
     const omitCol = IS_ALIQUOT_COL;
 
     return {
-        id: getStateModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)),
+        id: createGridModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)),
         schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,
@@ -902,14 +902,14 @@ export function getSampleAliquotsQueryConfig(
 }
 
 export type SampleAssayResultViewConfig = {
-    title: string;
-    moduleName: string;
-    schemaName: string;
-    queryName: string;
-    viewName?: string;
-    sampleRowKey?: string; // sample row property to use for key in baseFilter, defaults to 'RowId' when value is undefined
-    filterKey: string; // field key of the query/view to use for the sample filter IN clause
     containerFilter?: string; // Defaults to 'current' when value is undefined
+    filterKey: string; // field key of the query/view to use for the sample filter IN clause
+    moduleName: string;
+    queryName: string;
+    sampleRowKey?: string; // sample row property to use for key in baseFilter, defaults to 'RowId' when value is undefined
+    schemaName: string;
+    title: string;
+    viewName?: string;
 };
 
 export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultViewConfig[]> {

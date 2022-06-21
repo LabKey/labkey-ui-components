@@ -19,7 +19,7 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
-    EXPERIMENTAL_LKSM_ELN,
+    EXPERIMENTAL_CUSTOMIZE_VIEWS_IN_APPS,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     EXPERIMENTAL_SAMPLE_FINDER,
@@ -33,12 +33,13 @@ import {
     NEW_SAMPLE_TYPE_HREF,
     NEW_SOURCE_TYPE_HREF,
     NOTEBOOKS_KEY,
+    PICKLIST_HOME_HREF,
+    PICKLIST_KEY,
     REGISTRY_KEY,
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
     SERVER_NOTIFICATIONS_INVALIDATE,
-    SET_RESET_QUERY_GRID_STATE,
     SOURCES_KEY,
     USER_KEY,
     WORKFLOW_HOME_HREF,
@@ -69,8 +70,7 @@ export enum CloseEventCode {
 export function registerWebSocketListeners(
     store,
     notificationListeners?: string[],
-    menuReloadListeners?: string[],
-    resetQueryGridListeners?: string[]
+    menuReloadListeners?: string[]
 ): void {
     if (notificationListeners) {
         notificationListeners.forEach(listener => {
@@ -86,14 +86,6 @@ export function registerWebSocketListeners(
             LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
                 // not checking evt.wasClean since we want this event for all user sessions
                 window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
-            });
-        });
-    }
-
-    if (resetQueryGridListeners) {
-        resetQueryGridListeners.forEach(listener => {
-            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
-                window.setTimeout(() => store.dispatch({ type: SET_RESET_QUERY_GRID_STATE }), 1000);
             });
         });
     }
@@ -165,8 +157,8 @@ export function isProductNavigationEnabled(productId: string): boolean {
     return false;
 }
 
-export function isSubfolderDataEnabled(): boolean {
-    return getServerContext().moduleContext?.query?.isSubfolderDataEnabled === true;
+export function isProductProjectsEnabled(): boolean {
+    return getServerContext().moduleContext?.query?.isProductProjectsEnabled === true;
 }
 
 export function isSampleManagerEnabled(moduleContext?: any): boolean {
@@ -191,6 +183,10 @@ export function biologicsIsPrimaryApp(moduleContext?: any): boolean {
 
 export function isSampleStatusEnabled(): boolean {
     return hasModule('SampleManagement');
+}
+
+export function isCustomizeViewsInAppEnabled(moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.query?.[EXPERIMENTAL_CUSTOMIZE_VIEWS_IN_APPS] === true;
 }
 
 export function isSampleFinderEnabled(moduleContext?: any): boolean {
@@ -224,10 +220,7 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
 }
 
 export function isELNEnabledInLKSM(moduleContext?: any): boolean {
-    return (
-        hasModule('LabBook', moduleContext) &&
-        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_LKSM_ELN] === true
-    );
+    return hasModule('LabBook', moduleContext);
 }
 
 export function isRequestsEnabled(moduleContext?: any): boolean {
@@ -378,10 +371,17 @@ function getWorkflowSectionConfig(appBase: string): MenuSectionConfig {
     });
 }
 
+function getPicklistsSectionConfig(appBase: string): MenuSectionConfig {
+    return new MenuSectionConfig({
+        headerURL: appBase + PICKLIST_HOME_HREF.toHref(),
+        iconURL: imageURL('_images', 'picklist.svg'),
+    })
+}
+
 function getNotebooksSectionConfig(appBase: string): MenuSectionConfig {
     return new MenuSectionConfig({
         iconURL: imageURL('labbook/images', 'notebook_blue.svg'),
-        seeAllURL: appBase + AppURL.create(NOTEBOOKS_KEY).toHref(),
+        headerURL: appBase + AppURL.create(NOTEBOOKS_KEY).toHref(),
     });
 }
 
@@ -415,10 +415,12 @@ const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
 function getBioWorkflowNotebookMediaConfigs(appBase: string, user: User) {
     let configs = Map({
         [WORKFLOW_KEY]: getWorkflowSectionConfig(appBase),
+
     });
     if (userCanReadMedia(user)) {
         configs = configs.set(MEDIA_KEY, getMediaSectionConfig(appBase));
     }
+    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase),)
     if (userCanReadNotebooks(user)) {
         configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
     }
@@ -468,7 +470,11 @@ export function getMenuSectionConfigs(
             sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
         }
 
-        let configs = Map({ [WORKFLOW_KEY]: workflowConfig });
+        let configs = Map({
+            [WORKFLOW_KEY]: workflowConfig,
+            [PICKLIST_KEY]: getPicklistsSectionConfig(appBase)
+        });
+
         if (userCanReadNotebooks(user) && isELNEnabledInLKSM(moduleContext)) {
             configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
         }

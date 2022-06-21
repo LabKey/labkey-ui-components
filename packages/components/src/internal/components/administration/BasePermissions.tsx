@@ -6,6 +6,8 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState }
 import { MenuItem } from 'react-bootstrap';
 import { Map } from 'immutable';
 
+import { getServerContext } from '@labkey/api';
+
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { resolveErrorMessage } from '../../util/messaging';
 import { SecurityPolicy } from '../permissions/models';
@@ -63,21 +65,26 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const { api } = useAppContext<AppContext>();
     const { user } = useServerContext();
     const loaded = !isLoading(loadingState);
+    const isRoot = getServerContext().project.rootId === containerId;
+    const showAssignments = (!isRoot && user.isAdmin) || user.isRootAdmin;
 
     const loadPolicy = useCallback(async () => {
         setError(undefined);
         setIsDirty(false);
-        setLoadingState(LoadingState.LOADING);
 
-        try {
-            const policy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
-            setPolicy(policy_);
-        } catch (e) {
-            setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
+        if (showAssignments) {
+            setLoadingState(LoadingState.LOADING);
+
+            try {
+                const policy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
+                setPolicy(policy_);
+            } catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
+            }
         }
 
         setLoadingState(LoadingState.LOADED);
-    }, [api.security, containerId, inactiveUsersById, principalsById, setIsDirty]);
+    }, [api.security, containerId, inactiveUsersById, principalsById, setIsDirty, user]);
 
     useEffect(() => {
         loadPolicy();
@@ -130,7 +137,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
         >
             {!loaded && <LoadingSpinner />}
             {!!error && <Alert>{error}</Alert>}
-            {loaded && !error && (
+            {loaded && !error && showAssignments && (
                 <PermissionAssignments
                     {...props}
                     {...rolesProps}

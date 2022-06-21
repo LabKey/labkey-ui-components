@@ -26,7 +26,6 @@ export class AppModel extends Record({
     logoutReason: undefined,
     reloadRequired: false,
     user,
-    needsInvalidateQueryGrid: false,
 }) {
     declare container: Container;
     declare contextPath: string;
@@ -34,7 +33,6 @@ export class AppModel extends Record({
     declare logoutReason: LogoutReason;
     declare reloadRequired: boolean;
     declare user: User;
-    declare needsInvalidateQueryGrid: boolean; // separate query grid invalidate from menu reload, allow grid to invalidate on route change, to avoid invalid query grid state
 
     hasUserChanged(): boolean {
         return this.initialUserId !== this.user.id;
@@ -43,17 +41,13 @@ export class AppModel extends Record({
     shouldReload(): boolean {
         return this.reloadRequired || this.hasUserChanged();
     }
-
-    shouldInvalidateQueryGrid(): boolean {
-        return this.needsInvalidateQueryGrid;
-    }
 }
 
 export interface AppProperties {
-    productId: string;
-    name: string;
-    logoWithTextImageUrl: string;
-    logoBadgeImageUrl: string;
     controllerName: string;
+    logoBadgeImageUrl: string;
+    logoWithTextImageUrl: string;
     moduleName: string;
+    name: string;
+    productId: string;
 }

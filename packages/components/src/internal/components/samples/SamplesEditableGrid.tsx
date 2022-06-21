@@ -1,7 +1,7 @@
 import React from 'react';
-import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 
-import { AuditBehaviorTypes, Query, Utils } from '@labkey/api';
+import { AuditBehaviorTypes, Query } from '@labkey/api';
 
 import {
     App,
@@ -19,13 +19,10 @@ import {
     invalidateLineageResults,
     LineageEditableGridLoaderFromSelection,
     LoadingSpinner,
-    naturalSort,
     NO_UPDATES_MESSAGE,
     QueryColumn,
-    queryGridInvalidate,
     QueryInfo,
     QueryModel,
-    quoteValueWithDelimiters,
     resolveErrorMessage,
     SampleStateType,
     SchemaQuery,
@@ -37,9 +34,9 @@ import { EntityChoice } from '../entities/models';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { IEditableGridLoader } from '../../QueryGridModel';
-
 import { UpdateGridTab } from '../editable/EditableGridPanelForUpdateWithLineage';
+
+import { IEditableGridLoader } from '../../models';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromLineage, getUpdatedLineageRows } from './actions';
@@ -49,14 +46,9 @@ import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelFor
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;
-    user: User;
+    combineParentTypes?: boolean;
     displayQueryModel: QueryModel;
-    onGridEditCancel: () => any;
-    onGridEditComplete: () => any;
-    selectionData: Map<string, any>;
     editableGridUpdateData?: OrderedMap<string, any>;
-    samplesGridRequiredColumns?: string[];
-    samplesGridOmittedColumns?: List<string>;
     getConvertedStorageUpdateData?: (
         storageRows: any[],
         sampleItems: {},
@@ -65,8 +57,13 @@ export interface SamplesEditableGridProps {
         selection: List<any>
     ) => any;
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
+    onGridEditCancel: () => any;
+    onGridEditComplete: () => any;
     parentDataTypes: List<EntityDataType>;
-    combineParentTypes?: boolean;
+    samplesGridOmittedColumns?: List<string>;
+    samplesGridRequiredColumns?: string[];
+    selectionData: Map<string, any>;
+    user: User;
 }
 
 type Props = SamplesEditableGridProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
@@ -79,16 +76,16 @@ const SAMPLES_LINEAGE_EDIT_GRID_ID = 'update-samples-lineage-grid';
 const INVENTORY_ITEM_QS = SchemaQuery.create('inventory', 'item');
 
 interface State {
+    consumedStatusIds: number[];
+    discardConsumed: boolean;
+    discardSamplesComment: string;
+    discardSamplesCount: number;
+    includedTabs: UpdateGridTab[];
     originalParents: Record<string, List<EntityChoice>>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     pendingUpdateDataRows: any[];
     showDiscardDialog: boolean;
-    discardConsumed: boolean;
-    discardSamplesComment: string;
-    discardSamplesCount: number;
     totalEditCount: number;
-    consumedStatusIds: number[];
-    includedTabs: UpdateGridTab[];
 }
 
 class SamplesEditableGridBase extends React.Component<Props, State> {
@@ -97,7 +94,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     private _hasError: boolean;
 
     static defaultProps = {
-        samplesGridRequiredColumns: ['description'],
+        samplesGridRequiredColumns: ['description', 'AliquotedFromLSID'],
         api: getDefaultAPIWrapper(),
     };
 
@@ -359,13 +356,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                         if (invalidateSampleQueries) {
                             invalidateSampleQueries(sampleSchemaQuery);
                         } else {
-                            queryGridInvalidate(sampleSchemaQuery);
                             invalidateLineageResults();
                         }
                     }
-
-                    if (convertedStorageData?.normalizedRows.length > 0 || doDiscard)
-                        queryGridInvalidate(INVENTORY_ITEM_QS);
 
                     dismissNotifications(); // get rid of any error notifications that have already been created
 
@@ -554,7 +547,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     updateColumns,
                     originalParents,
                     sampleLineageKeys,
-                    sampleLineage
+                    sampleLineage,
+                    aliquots
                 )
             );
         }

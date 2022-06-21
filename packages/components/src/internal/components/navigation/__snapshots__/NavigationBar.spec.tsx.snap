@@ -81,7 +81,7 @@ exports[`<NavigationBar/> with findByIds 1`] = `
                       <input
                         className="form-control navbar__search-input"
                         onChange={[Function]}
-                        placeholder="Enter Search Terms"
+                        placeholder="Search for samples, assays, ..."
                         size={34}
                         type="text"
                         value=""
@@ -337,7 +337,7 @@ exports[`<NavigationBar/> with search box 1`] = `
                       <input
                         className="form-control navbar__search-input"
                         onChange={[Function]}
-                        placeholder="Enter Search Terms"
+                        placeholder="Search for samples, assays, ..."
                         size={34}
                         type="text"
                         value=""

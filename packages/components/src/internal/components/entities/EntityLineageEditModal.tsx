@@ -67,7 +67,7 @@ export const restrictedDataOperationMsg = (
     }
 
     return notAllowedMsg;
-}
+};
 
 export const EntityLineageEditModal: FC<Props> = memo(props => {
     const { api, auditBehavior, queryModel, onCancel, childEntityDataType, onSuccess, parentEntityDataTypes } = props;

@@ -83,7 +83,9 @@ describe('TabbedGridPanel', () => {
     };
 
     test('default render', () => {
-        const wrapper = mount(<TabbedGridPanel tabOrder={tabOrder} queryModels={queryModels} actions={actions} />);
+        const wrapper = mount(
+            <TabbedGridPanel tabOrder={tabOrder} queryModels={queryModels} actions={actions} />
+        );
         const tabs = wrapper.find(TABS_SELECTOR);
 
         // Here we test that tab order is honored, and that by default we set the first tab to active
@@ -113,22 +115,31 @@ describe('TabbedGridPanel', () => {
     test('asPanel', () => {
         const title = 'My Tabbed Grid';
         const wrapper = mount(
-            <TabbedGridPanel tabOrder={tabOrder} title={title} queryModels={queryModels} actions={actions} />
+            <TabbedGridPanel
+                tabOrder={tabOrder}
+                title={title}
+                queryModels={queryModels}
+                actions={actions}
+            />
         );
 
-        // When asPanel is true we should render the title
+        // When asPanel is true, we use appropriate styling classes
         expect(wrapper.find('.tabbed-grid-panel.panel-default').exists()).toEqual(true);
-        expect(wrapper.find('.tabbed-grid-panel__title').text()).toEqual(title);
+        expect(wrapper.find('.tabbed-grid-panel.panel').exists()).toEqual(true);
 
-        // When asPanel is false we should not render the title
+        // When asPanel is false we don't use those classes
         wrapper.setProps({ asPanel: false });
         expect(wrapper.find('.tabbed-grid-panel.panel-default').exists()).toEqual(false);
-        expect(wrapper.find('.tabbed-grid-panel__title').exists()).toEqual(false);
+        expect(wrapper.find('.tabbed-grid-panel.panel').exists()).toEqual(false);
     });
 
     test('single model', () => {
         const wrapper = mount(
-            <TabbedGridPanel tabOrder={['mixtures']} queryModels={{ mixtures: mixturesModel }} actions={actions} />
+            <TabbedGridPanel
+                tabOrder={['mixtures']}
+                queryModels={{ mixtures: mixturesModel }}
+                actions={actions}
+            />
         );
 
         // Hide the tabs if we only have one model.

@@ -17,20 +17,20 @@ import {
     SampleOperation,
     SchemaQuery,
     SelectInput,
+    User,
 } from '../../..';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { DETAIL_TABLE_CLASSES } from '../forms/constants';
-
-import { DELIMITER } from '../forms/input/SelectInput';
+import { DELIMITER, DETAIL_TABLE_CLASSES } from '../forms/constants';
 
 import { isSampleStatusEnabled } from '../../app/utils';
 import { getFilterForSampleOperation } from '../samples/utils';
 
+import { quoteValueWithDelimiters } from '../../util/utils';
+
 import { IEntityTypeOption } from './models';
 import { isSampleEntity } from './utils';
-import { quoteValueWithDelimiters } from '../../util/utils';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -49,9 +49,9 @@ interface Props {
     onInitialParentValue?: (value: string, selectedValues: List<any>, index: number) => void;
     onRemoveParentType?: (index: number) => void;
     parentDataType: EntityDataType;
+    parentEntityType?: IEntityTypeOption;
     parentLSIDs?: string[];
     parentTypeOptions?: List<IEntityTypeOption>;
-    parentEntityType?: IEntityTypeOption;
 }
 
 type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;
@@ -206,7 +206,8 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                         <tr key="type-name">
                             <td>{parentDataType.typeNounAsParentSingular}</td>
                             <td>
-                                No {parentDataType.typeNounAsParentSingular.toLowerCase()} has been set for this {lcChildNoun}.
+                                No {parentDataType.typeNounAsParentSingular.toLowerCase()} has been set for this{' '}
+                                {lcChildNoun}.
                             </td>
                         </tr>
                         <tr key="parent-id">

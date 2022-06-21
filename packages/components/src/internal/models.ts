@@ -13,31 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Iterable, List, Map, Record, Set } from 'immutable';
+import { fromJS, Iterable, List, Map, Record, Set } from 'immutable';
 
-import {
-    AppURL,
-    DataViewInfoTypes,
-    getQueryGridModel,
-    QueryColumn,
-    QueryGridModel,
-    QueryInfo,
-    resolveSchemaQuery,
-    SchemaQuery,
-    ViewInfo,
-} from '..';
+import { AppURL, DataViewInfoTypes, QueryColumn, QueryInfo, QueryModel, resolveSchemaQuery, SchemaQuery } from '..';
 
 import { encodePart } from '../public/SchemaQuery';
 
 import { genCellKey } from './actions';
-import { getQueryColumnRenderers, getQueryMetadata } from './global';
-import { DefaultGridLoader } from './components/GridLoader';
+import { getQueryColumnRenderers } from './global';
 import { GRID_EDIT_INDEX } from './constants';
-import { IQueryGridModel } from './QueryGridModel';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
 import { quoteValueWithDelimiters } from './util/utils';
 
-export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
+export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
 
     if (schemaQuery && schemaQuery.viewName) {
@@ -48,61 +36,6 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
     }
 
     return parts.join('|').toLowerCase();
-}
-
-export type PropsInitializer = () => IQueryGridModel;
-
-// TODO: Move to QueryGridModel.ts
-/**
- * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
- * @param gridId
- * @param schemaQuery
- * @param [initProps] can be either a props object or a function that returns a props object.
- * @param [keyValue]
- * @returns {QueryGridModel}
- */
-export function getStateQueryGridModel(
-    gridId: string,
-    schemaQuery: SchemaQuery,
-    initProps?: IQueryGridModel | PropsInitializer,
-    keyValue?: any
-): QueryGridModel {
-    const modelId = getStateModelId(gridId, schemaQuery, keyValue);
-
-    // if the model already exists in the global state, return it
-    const model = getQueryGridModel(modelId);
-
-    if (model) {
-        return model;
-    }
-
-    const metadata = getQueryMetadata();
-
-    let modelProps: Partial<IQueryGridModel> = {
-        keyValue,
-        id: modelId,
-        loader: DefaultGridLoader, // Should we make this a default on the QueryGridModel class?
-        schema: schemaQuery.schemaName,
-        query: schemaQuery.queryName,
-        view: schemaQuery.viewName,
-        hideEmptyChartSelector: metadata.get('hideEmptyChartMenu'),
-        hideEmptyViewSelector: metadata.get('hideEmptyViewMenu'),
-    };
-
-    if (keyValue !== undefined && schemaQuery.viewName === undefined) {
-        modelProps.view = ViewInfo.DETAIL_NAME;
-        modelProps.bindURL = false;
-    }
-
-    if (initProps !== undefined) {
-        const props = typeof initProps === 'function' ? initProps() : initProps;
-        modelProps = {
-            ...modelProps,
-            ...props,
-        };
-    }
-
-    return new QueryGridModel(modelProps);
 }
 
 type DataViewInfoType =
@@ -125,34 +58,34 @@ type DataViewInfoType =
  * a subset of the fields that are used by the client.
  */
 export interface IDataViewInfo {
-    name?: string;
+    created?: Date;
+    createdBy?: string;
     description?: string;
     detailsUrl?: string;
-    runUrl?: string; // This comes directly from the API response and is a link to LK Server
-    type?: DataViewInfoType;
-    visible?: boolean;
-    id?: string; // This is actually a uuid from the looks of it, should we be more strict on the type here?
-    reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
-    created?: Date;
-    modified?: Date;
-    createdBy?: string;
-    modifiedBy?: string;
-    thumbnail?: string; // This is actually a URL, do we enforce that?
     icon?: string;
     iconCls?: string;
-    shared?: boolean;
-    schemaName?: string;
+    id?: string;// This is actually a uuid from the looks of it, should we be more strict on the type here?
+    modified?: Date;
+    modifiedBy?: string;
+    name?: string;
     queryName?: string;
+    reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
+    runUrl?: string; // This comes directly from the API response and is a link to LK Server
+    visible?: boolean;
+    schemaName?: string;
+    shared?: boolean;
+    thumbnail?: string; // This is actually a URL, do we enforce that?
+    type?: DataViewInfoType;
     viewName?: string;
 
     appUrl?: AppURL; // This is a client side only attribute. Used to navigate within a Single Page App.
 }
 
 export interface DataViewClientMetadata extends IDataViewInfo {
+    error?: any;
+    isLoaded?: boolean;
     // The attributes here are all specific to the DataViewInfo class and are not useful as part of IDataViewInfo
     isLoading?: boolean;
-    isLoaded?: boolean;
-    error?: any;
 }
 
 const DataViewInfoDefaultValues = {
@@ -297,17 +230,16 @@ export interface EditorModelProps {
     cellMessages: CellMessages;
     cellValues: CellValues;
     colCount: number;
-    id: string;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
+    id: string;
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
     selectionCells: Set<string>;
 }
 
-// This is a model agnostic form of QueryGridModel.getPkData
 export function getPkData(queryInfo: QueryInfo, row: Map<string, any>) {
     const data = {};
     queryInfo.getPkCols().forEach(pkCol => {
@@ -418,14 +350,22 @@ export class EditorModel
         queryInfo: QueryInfo,
         displayValues = true,
         forUpdate = false,
-        readOnlyColumns?: List<string>
+        readOnlyColumns?: List<string>,
+        extraColumns?: Array<Partial<QueryColumn>>
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
         const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns);
+        const additionalColumns = [];
+        if (extraColumns) {
+            extraColumns.forEach(col => {
+                const column = queryInfo.getColumn(col.fieldKey);
+                if (column) additionalColumns.push(column);
+            });
+        }
 
         for (let rn = 0; rn < dataKeys.size; rn++) {
             let row = Map<string, any>();
-            columns.forEach((col, cn) => {
+            columns.push(...additionalColumns).forEach((col, cn) => {
                 const values = this.getValue(cn, rn);
 
                 // Some column types have special handling of raw data, such as multi value columns like alias,
@@ -493,44 +433,29 @@ export class EditorModel
         return rawData;
     }
 
-    getRawData(
-        model: QueryGridModel,
-        displayValues = true,
-        forUpdate = false,
-        readOnlyColumns?: List<string>
-    ): List<Map<string, any>> {
-        return this.getRawDataFromGridData(
-            model.data,
-            model.dataIds,
-            model.queryInfo,
-            displayValues,
-            forUpdate,
-            readOnlyColumns
-        );
-    }
-
     /**
      * Determines which rows in the grid have missing required fields, which sets of rows have combinations
      * of key fields that are duplicated, and, optionally, which sets of rows have duplicated values for a
      * given field key.
      *
-     * @param queryGridModel the model whose data we are validating
+     * @param queryModel the model whose data we are validating
      * @param uniqueFieldKey optional (non-key) field that should be unique.
      */
     validateData(
-        queryGridModel: QueryGridModel,
+        queryModel: QueryModel,
         uniqueFieldKey?: string
     ): {
-        uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
         missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
+        uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
     } {
-        const columns = queryGridModel.getInsertColumns();
+        const data = fromJS(queryModel.rows);
+        const columns = queryModel.queryInfo.getInsertColumns();
         let uniqueFieldCol;
         const keyColumns = columns.filter(column => column.isKeyField);
         let keyValues = Map<number, List<string>>(); // map from row number to list of key values on that row
         let uniqueKeyMap = Map<string, List<number>>(); // map from value to rows with that value
         let missingRequired = Map<string, List<number>>(); // map from column caption to list of rows missing a value for that column
-        for (let rn = 0; rn < queryGridModel.data.size; rn++) {
+        for (let rn = 0; rn < data.size; rn++) {
             columns.forEach((col, cn) => {
                 const values = this.getValue(cn, rn);
                 if (col.required) {
@@ -607,8 +532,8 @@ export class EditorModel
         };
     }
 
-    getValidationErrors(queryGridModel: QueryGridModel, uniqueFieldKey?: string): string[] {
-        const { uniqueKeyViolations, missingRequired } = this.validateData(queryGridModel, uniqueFieldKey);
+    getValidationErrors(queryModel: QueryModel, uniqueFieldKey?: string): string[] {
+        const { uniqueKeyViolations, missingRequired } = this.validateData(queryModel, uniqueFieldKey);
         let errors = [];
         if (!uniqueKeyViolations.isEmpty()) {
             const messages = uniqueKeyViolations.reduce((keyMessages, valueMap, fieldNames) => {
@@ -760,26 +685,28 @@ export class EditorModel
     isRowEmpty(editedRow: Map<string, any>): boolean {
         return editedRow.find(value => value !== undefined) === undefined;
     }
+}
 
-    getModifiedData(
-        model: QueryGridModel,
-        readOnlyColumns?: List<string>
-    ): { newRows: List<Map<string, any>>; updatedRows: List<Map<string, any>> } {
-        // find all the rows where the dataId has a prefix of GRID_EDIT_INDEX
-        const rawData: List<Map<string, any>> = this.getRawData(model, true, false, readOnlyColumns);
-        let updatedRows = List<Map<string, any>>();
-        let newRows = List<Map<string, any>>();
-        model.dataIds.forEach((id, index) => {
-            const editedRow = rawData.get(index);
-            if (id.toString().indexOf(GRID_EDIT_INDEX) === 0) {
-                if (!this.isRowEmpty(editedRow)) newRows = newRows.push(editedRow);
-            } else if (this.isModified(editedRow, model.data.get(id))) {
-                updatedRows = updatedRows.push(editedRow.merge(model.getPkData(id)));
-            }
-        });
-        return {
-            newRows,
-            updatedRows,
-        };
-    }
+export interface IGridLoader {
+    fetch: (model: QueryModel) => Promise<IGridResponse>;
+    fetchSelection?: (model: QueryModel) => Promise<IGridSelectionResponse>;
+}
+
+export interface IEditableGridLoader extends IGridLoader {
+    id: string;
+    omittedColumns?: string[];
+    queryInfo: QueryInfo;
+    requiredColumns?: string[];
+    updateColumns?: List<QueryColumn>;
+}
+
+export interface IGridResponse {
+    data: Map<any, any>;
+    dataIds: List<any>;
+    messages?: List<Map<string, string>>;
+    totalRows?: number;
+}
+
+export interface IGridSelectionResponse {
+    selectedIds: List<any>;
 }

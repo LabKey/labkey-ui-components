@@ -491,6 +491,8 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                     alwaysShowTabs: true,
                     getAdvancedExportOptions,
                     exportFilename: 'Samples',
+                    allowViewCustomization: false,
+                    showViewMenu: false
                 }}
             />
         </>

@@ -14,7 +14,6 @@ import {
     Page,
     PageDetailHeader,
     QueryConfigMap,
-    queryGridInvalidate,
     RequiresModelAndActions,
     resolveErrorMessage,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
@@ -35,6 +34,8 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { ALIQUOTED_FROM_COL } from '../samples/constants';
 
+import { isCustomizeViewsInAppEnabled } from '../../app/utils';
+
 import { deletePicklists, updatePicklist } from './actions';
 import { Picklist, PICKLIST_SAMPLES_FILTER } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
@@ -45,18 +46,18 @@ const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
 
 interface OwnProps {
-    user: User;
-    navigate: (url: string | AppURL) => any;
-    params?: any;
     AdditionalGridButtons?: ComponentType<RequiresModelAndActions>;
-    samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
     advancedExportOptions?: { [key: string]: any };
     api?: ComponentsAPIWrapper;
+    navigate: (url: string | AppURL) => any;
+    params?: any;
+    samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
+    user: User;
 }
 
 interface ImplProps {
-    picklist: Picklist;
     loadPicklist: (incrementCounter: boolean) => void;
+    picklist: Picklist;
 }
 
 type Props = OwnProps & ImplProps & InjectedQueryModels;
@@ -160,8 +161,6 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
 
     const afterSampleActionComplete = useCallback(() => {
         invalidateLineageResults();
-        queryGridInvalidate(SCHEMAS.EXP_TABLES.MATERIALS);
-
         loadPicklist(true);
     }, [loadPicklist]);
 
@@ -178,7 +177,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         <Page title={picklist?.name}>
             <PageDetailHeader
                 iconDir="_images"
-                iconSrc="workflow"
+                iconSrc="picklist"
                 title={picklist?.name}
                 subTitle={undefined}
                 description={picklist.Description}
@@ -224,6 +223,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                                 advancedExportOptions: exportConfig,
                                 alwaysShowTabs: true,
                                 exportFilename: picklist.name + '_Samples',
+                                hideEmptyViewMenu: !isCustomizeViewsInAppEnabled(),
                             }}
                         />
                     </div>

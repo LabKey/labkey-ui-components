@@ -23,25 +23,25 @@ import {
 import { SampleStatusLegend } from './SampleStatusLegend';
 
 interface Props {
-    queryModel: QueryModel;
+    idField: string;
+    includedTabs: UpdateGridTab[];
     loaders: EditableGridLoaderFromSelection[];
-    selectionData?: Map<string, any>;
-    updateAllTabRows: (updateData: any[]) => Promise<any>;
     onCancel: () => any;
     onComplete: () => any;
-    idField: string;
-    singularNoun?: string;
     pluralNoun?: string;
+    queryModel: QueryModel;
     readOnlyColumns?: List<string>;
-    includedTabs: UpdateGridTab[];
+    updateAllTabRows: (updateData: any[]) => Promise<any>;
+    singularNoun?: string;
+    selectionData?: Map<string, any>;
 
     // passed through from SampleEditableGrid
-    parentDataTypes: List<EntityDataType>;
-    combineParentTypes?: boolean;
     aliquots: any[];
+    combineParentTypes?: boolean;
     noStorageSamples: any[];
-    sampleTypeDomainFields: GroupedSampleFields;
+    parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+    sampleTypeDomainFields: GroupedSampleFields;
 }
 
 export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
@@ -142,6 +142,12 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
                     getTabHeader={this.getTabHeader}
                     targetEntityDataType={SampleTypeDataType}
                     getParentTypeWarning={this.getParentTypeWarning}
+                    extraExportColumns={[
+                        {
+                            fieldKey: QueryColumn.ALIQUOTED_FROM_LSID,
+                            caption: QueryColumn.ALIQUOTED_FROM,
+                        },
+                    ]}
                 />
             </>
         );

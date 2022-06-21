@@ -26,7 +26,7 @@ const readOnlyAction = {
     ),
     value: 'test',
     valueObject: Filter.create('A', 'test', Filter.Types.EQUAL),
-    isReadOnly: true,
+    isReadOnly: 'Filter is read only',
 };
 const nonRemovableAction = {
     action: new FilterAction(

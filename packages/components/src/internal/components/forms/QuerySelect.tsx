@@ -19,10 +19,11 @@ import { Filter, Query, Utils } from '@labkey/api';
 
 import { resolveErrorMessage, SchemaQuery } from '../../..';
 
-import { DELIMITER, SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
+import { SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
 import { QuerySelectModel } from './model';
+import { DELIMITER } from './constants';
 
 function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
     const { rawSelectedValue } = model;
@@ -130,8 +131,8 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     fireQSChangeOnInit?: boolean;
     loadOnFocus?: boolean;
     maxRows?: number;
-    onQSChange?: (name: string, value: string | number | any[], items: any, selectedItems: Map<string, any>) => void;
     onInitValue?: (value: any, selectedValues: List<any>) => void;
+    onQSChange?: (name: string, value: string | number | any[], items: any, selectedItems: Map<string, any>) => void;
     preLoad?: boolean;
     previewOptions?: boolean;
     queryFilters?: List<Filter.IFilter>;

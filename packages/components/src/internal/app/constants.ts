@@ -44,6 +44,9 @@ export const NOTEBOOKS_KEY = 'notebooks';
 export const REGISTRY_KEY = 'registry';
 export const ELN_KEY = 'notebooks';
 
+export const MINE_KEY = 'mine';
+export const TEAM_KEY = 'team';
+
 export const FIND_SAMPLES_BY_ID_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_ID_KEY);
 export const FIND_SAMPLES_BY_FILTER_HREF = AppURL.create(SEARCH_KEY, FIND_SAMPLES_BY_FILTER_KEY);
 export const NEW_SAMPLES_HREF = AppURL.create(SAMPLES_KEY, 'new');
@@ -54,6 +57,8 @@ export const WORKFLOW_HOME_HREF = AppURL.create(WORKFLOW_KEY)
     .addParam('mine.sort', 'DueDate')
     .addParam('active.sort', 'DueDate');
 export const PICKLIST_HOME_HREF = AppURL.create(PICKLIST_KEY);
+export const MY_PICKLISTS_HREF = AppURL.create(PICKLIST_KEY, MINE_KEY);
+export const TEAM_PICKLISTS_HREF = AppURL.create(PICKLIST_KEY, TEAM_KEY);
 
 export const USER_PERMISSIONS_REQUEST = '/app/USER_PERMISSIONS_REQUEST';
 export const USER_PERMISSIONS_SUCCESS = '/app/USER_PERMISSIONS_SUCCESS';
@@ -64,8 +69,6 @@ export const SECURITY_LOGOUT = '/app/SECURITY_LOGOUT';
 export const SECURITY_SESSION_TIMEOUT = '/app/SECURITY_SESSION_TIMEOUT';
 export const SECURITY_SERVER_UNAVAILABLE = '/app/SECURITY_SERVER_UNAVAILABLE';
 export const ADD_TABLE_ROUTE = '/app/ADD_TABLE_ROUTE';
-export const SET_RESET_QUERY_GRID_STATE = '/app/RESET_QUERY_GRID_REQUIRED';
-export const RESET_QUERY_GRID_STATE = '/app/RESET_QUERY_GRID';
 export const MENU_LOADING_START = '/app/MENU_LOADING_START';
 export const MENU_LOADING_END = '/app/MENU_LOADING_END';
 export const MENU_LOADING_ERROR = '/app/MENU_LOADING_ERROR';
@@ -86,7 +89,7 @@ export const SERVER_NOTIFICATION_MAX_ROWS = 8;
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
 export const EXPERIMENTAL_SAMPLE_FINDER = 'experimental-biologics-sample-finder';
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
-export const EXPERIMENTAL_LKSM_ELN = 'experimental-lksm-eln';
+export const EXPERIMENTAL_CUSTOMIZE_VIEWS_IN_APPS = 'canCustomizeViewsFromApp';
 
 export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     productId: BIOLOGICS_PRODUCT_ID,

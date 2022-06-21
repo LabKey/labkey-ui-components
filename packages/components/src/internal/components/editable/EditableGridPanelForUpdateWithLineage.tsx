@@ -30,9 +30,9 @@ import {
     applyEditableGridChangesToModels,
     EditableGridModels,
     getUpdatedDataFromEditableGrid,
-    initEditableGridModels
+    initEditableGridModels,
 } from './utils';
-import {SharedEditableGridPanelProps} from "./EditableGrid";
+import { SharedEditableGridPanelProps } from './EditableGrid';
 
 export enum UpdateGridTab {
     Samples,
@@ -47,6 +47,7 @@ const DEFAULT_PLURAL_NOUN = 'rows';
 export interface EditableGridPanelForUpdateWithLineageProps
     extends Omit<SharedEditableGridPanelProps, 'allowAdd' | 'allowRemove' | 'forUpdate'> {
     combineParentTypes?: boolean;
+    extraExportColumns?: Array<Partial<QueryColumn>>;
     getParentTypeWarning?: () => ReactNode;
     idField: string;
     includedTabs: UpdateGridTab[];
@@ -56,11 +57,11 @@ export interface EditableGridPanelForUpdateWithLineageProps
     parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     pluralNoun?: string;
-    queryModel: QueryModel;
     selectionData?: Map<string, any>;
     singularNoun?: string;
     targetEntityDataType: EntityDataType;
     updateAllTabRows: (updateData: any[]) => Promise<boolean>;
+    queryModel: QueryModel;
 }
 
 export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {
@@ -82,6 +83,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         singularNoun = DEFAULT_SINGULAR_NOUN,
         targetEntityDataType,
         updateAllTabRows,
+        extraExportColumns,
         ...gridProps
     } = props;
 
@@ -98,7 +100,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         });
 
         setIsSubmitting(false);
-        setEditableGridModels({dataModels, editorModels})
+        setEditableGridModels({ dataModels, editorModels });
         setEntityParentsMap(
             fromJS(
                 parentDataTypes.reduce((map, dataType) => {
@@ -114,18 +116,26 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             dataModels: QueryModel[];
             editorModels: EditorModel[];
         }> => {
-            return await initEditableGridModels(editableGridModels.dataModels, editableGridModels.editorModels, queryModel, loaders);
+            return await initEditableGridModels(
+                editableGridModels.dataModels,
+                editableGridModels.editorModels,
+                queryModel,
+                loaders,
+                extraExportColumns
+            );
         };
 
         if (loaders && editableGridModels?.dataModels?.find(dataModel => dataModel.isLoading)) {
-            initEditorModel().then(models => {
-                setEditableGridModels(models)
-            }).catch(error => {
-                createNotification({
-                    message: error,
-                    alertClass: "danger"
+            initEditorModel()
+                .then(models => {
+                    setEditableGridModels(models);
                 })
-            })
+                .catch(error => {
+                    createNotification({
+                        message: error,
+                        alertClass: 'danger',
+                    });
+                });
         }
     }, [loaders, queryModel, editableGridModels]);
 
@@ -295,7 +305,12 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         ]
     );
 
-    if (!editableGridModels || !editableGridModels.dataModels || editableGridModels.dataModels.length < 1 || !editableGridModels.dataModels.every(dataModel => !dataModel.isLoading)) {
+    if (
+        !editableGridModels ||
+        !editableGridModels.dataModels ||
+        editableGridModels.dataModels.length < 1 ||
+        !editableGridModels.dataModels.every(dataModel => !dataModel.isLoading)
+    ) {
         return <LoadingSpinner />;
     }
 
@@ -315,6 +330,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 model={editableGridModels.dataModels}
                 onChange={onGridChange}
                 readOnlyColumns={readOnlyColumns}
+                extraExportColumns={extraExportColumns}
             />
             <WizardNavButtons
                 cancel={onCancel}

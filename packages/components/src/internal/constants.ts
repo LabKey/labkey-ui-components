@@ -250,3 +250,6 @@ export const PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS = PIPELINE_JOB_NOTIFICATION
 export const PIPELINE_JOB_NOTIFICATION_EVENT_ERROR = PIPELINE_JOB_NOTIFICATION_EVENT + '#Error';
 
 export const SHARED_CONTAINER_PATH = '/Shared';
+
+export const VIEW_NOT_FOUND_EXCEPTION_CLASS = 'org.labkey.api.view.NotFoundException';
+export const APP_FIELD_CANNOT_BE_REMOVED_MESSAGE = 'This application field cannot be removed.';

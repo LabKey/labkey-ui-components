@@ -74,11 +74,29 @@ function resolveColumns(data: List<Map<string, any>>): List<GridColumn> {
     return columns.asImmutable();
 }
 
+// export for jest testing
+export function getColumnHoverText(info: any): string {
+    let description = info?.description || '';
+    let sepLeft = description.length > 0 ? '(' : '';
+    let sepRight = description.length > 0 ? ')' : '';
+
+    // show field key for lookups to help determine path to field when the name is generic (i.e. "Name" is
+    // from "Ancestors/Sources/Lab/Name")
+    description += info?.index?.indexOf('/') > -1 ? ' ' + sepLeft + info.index + sepRight : '';
+    sepLeft = description.length > 0 ? '(' : '';
+    sepRight = description.length > 0 ? ')' : '';
+
+    description += info?.phiProtected === true ? ' ' + sepLeft + 'PHI protected data removed' + sepRight : '';
+
+    description = description.trim();
+    return !description ? undefined : description;
+}
+
 interface GridHeaderProps {
     calcWidths?: boolean;
+    columns: List<GridColumn>;
     headerCell?: any;
     onCellClick?: (column: GridColumn) => void;
-    columns: List<GridColumn>;
     showHeader?: boolean;
     transpose?: boolean;
 }
@@ -122,11 +140,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, any> {
                                 'grid-header-cell': headerCls === undefined,
                                 'phi-protected': raw?.phiProtected === true,
                             });
-                            let description = raw?.description || '';
-                            description =
-                                description + ' ' + (raw?.phiProtected === true ? '(PHI protected data removed)' : '');
-                            description = description.trim();
-                            if (!description) description = undefined;
+                            const description = getColumnHoverText(raw);
 
                             return (
                                 <th
@@ -175,10 +189,10 @@ const GridMessages: FC<GridMessagesProps> = memo(({ messages }) => (
 ));
 
 interface GridBodyProps {
-    data: List<Map<string, any>>;
-    highlightRowIndexes?: List<number>;
     columns: List<GridColumn>;
+    data: List<Map<string, any>>;
     emptyText: string;
+    highlightRowIndexes?: List<number>;
     isLoading: boolean;
     loadingText: ReactNode;
     rowKey: any;
@@ -263,17 +277,17 @@ export interface GridProps {
     bordered?: boolean;
     calcWidths?: boolean;
     cellular?: boolean;
-    condensed?: boolean;
     columns?: List<any>;
+    condensed?: boolean;
     data?: GridData;
-    highlightRowIndexes?: List<number>;
     emptyText?: string;
     gridId?: string;
     headerCell?: any;
-    onHeaderCellClick?: (column: GridColumn) => void;
+    highlightRowIndexes?: List<number>;
     isLoading?: boolean;
     loadingText?: ReactNode;
     messages?: List<Map<string, string>>;
+    onHeaderCellClick?: (column: GridColumn) => void;
     responsive?: boolean;
 
     /**

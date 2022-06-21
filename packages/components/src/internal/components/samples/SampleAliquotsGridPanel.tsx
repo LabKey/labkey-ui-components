@@ -175,7 +175,6 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
                         JobsButtonComponent: jobsButton,
                     }}
                     model={queryModel}
-                    showViewMenu={false}
                 />
 
                 {this.state.showConfirmDelete && (

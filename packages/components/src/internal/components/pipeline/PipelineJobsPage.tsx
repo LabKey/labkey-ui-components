@@ -115,6 +115,7 @@ export class PipelineJobsPageImpl extends React.PureComponent<Props & InjectedQu
                     actions={actions}
                     model={model}
                     ButtonsComponent={() => this.renderButtons(refreshOn)}
+                    allowViewCustomization={false}
                 />
             </Page>
         );

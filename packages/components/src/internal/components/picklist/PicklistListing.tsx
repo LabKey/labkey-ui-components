@@ -147,6 +147,7 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
                 onTabSelect={onChangeTab}
                 showChartMenu={false}
                 asPanel={false}
+                allowViewCustomization={false}
                 ButtonsComponent={PicklistGridButtons}
                 buttonsComponentProps={{
                     onDelete: showDeleteConfirm,

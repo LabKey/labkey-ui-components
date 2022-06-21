@@ -245,16 +245,6 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             <div className="domain-row-container">
                 <div className="domain-row-container-expand-spacer" />
                 <div className="domain-row-container-expanded">
-                    <Col xs={12}>{this.typeDependentOptions()}</Col>
-                    <Col xs={12}>
-                        <NameAndLinkingOptions
-                            index={index}
-                            domainIndex={domainIndex}
-                            field={field}
-                            onChange={onChange}
-                            appPropertiesOnly={appPropertiesOnly}
-                        />
-                    </Col>
                     {domainFormDisplayOptions?.derivationDataScopeConfig?.show && (
                         <Col xs={12}>
                             <DerivationDataScopeFieldOptions
@@ -269,6 +259,16 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                             />
                         </Col>
                     )}
+                    <Col xs={12}>{this.typeDependentOptions()}</Col>
+                    <Col xs={12}>
+                        <NameAndLinkingOptions
+                            index={index}
+                            domainIndex={domainIndex}
+                            field={field}
+                            onChange={onChange}
+                            appPropertiesOnly={appPropertiesOnly}
+                        />
+                    </Col>
                     {!isFieldFullyLocked(field.lockType) && (
                         <Col xs={12}>
                             <ConditionalFormattingAndValidation

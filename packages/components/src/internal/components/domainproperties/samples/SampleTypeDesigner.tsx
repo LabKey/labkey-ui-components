@@ -59,14 +59,15 @@ const SAMPLE_SET_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-
 const SAMPLE_SET_HELP_TOPIC = 'createSampleType';
 
 const ALIQUOT_OPTIONS_HELP = (
-    <LabelHelpTip title="Sample/Aliquot Options">
-        <div>
-            <p>If checked, this field is only available for aliquots and not for samples that are not aliquots.</p>
-            <p>
-                Learn more about <HelpLink topic={SAMPLE_ALIQUOT_TOPIC}>Sample Aliquots</HelpLink>.
-            </p>
-        </div>
-    </LabelHelpTip>
+    <div>
+        <p><b>Editable for samples only:</b> Field is only editable for samples but not for aliquots. Aliquot will inherit the field value from its parent sample.</p>
+        <p><b>Editable for aliquots only:</b> Field is only viewable and editable for aliquots.</p>
+        <p><b>Separately editable for samples and aliquots:</b> Field is editable for samples and aliquots independently.</p>
+        <br/>
+        <p>
+            Learn more about <HelpLink topic={SAMPLE_ALIQUOT_TOPIC}>Sample Aliquots</HelpLink>.
+        </p>
+    </div>
 );
 
 interface Props {

@@ -1,10 +1,19 @@
 import React, { FC, memo, useMemo } from 'react';
 import { Experiment, Filter } from '@labkey/api';
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
 
-import { DetailPanel, LoadingSpinner, QueryColumn, resolveDetailRenderer, SchemaQuery, Alert } from '../../../..';
+import {
+    Alert,
+    DetailPanel,
+    LoadingSpinner,
+    QueryColumn,
+    resolveDetailRenderer,
+    SchemaQuery,
+    ViewInfo,
+} from '../../../..';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
+import { Renderer } from '../../forms/detail/DetailDisplay';
 
 const ADDITIONAL_DETAIL_FIELDS = ['properties'];
 
@@ -40,7 +49,9 @@ export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
             model: {
                 baseFilters: item.pkFilters.map(pkFilter => Filter.create(pkFilter.fieldKey, pkFilter.value)),
                 containerPath: item.container,
-                schemaQuery: SchemaQuery.create(item.schemaName, item.queryName),
+                // Issue 45028: Display details view columns in lineage
+                schemaQuery: SchemaQuery.create(item.schemaName, item.queryName, ViewInfo.DETAIL_NAME),
+                // Must specify '*' columns be requested to resolve "properties" columns
                 requiredColumns: ['*'],
             },
         }),
@@ -52,17 +63,15 @@ export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
 });
 
 interface RendererProps {
-    data: Map<string, any>;
+    data: List<Map<string, any>>;
 }
 
 // exported for jest testing
-export const CustomPropertiesRenderer: FC<RendererProps> = memo(props => {
-    const { data } = props;
-
+export const CustomPropertiesRenderer: FC<RendererProps> = memo(({ data }) => {
     return (
         <table className="lineage-detail-prop-table">
             <tbody>
-                {data.map(row => {
+                {data?.map(row => {
                     const fieldKey = row.get('fieldKey');
                     const name = fieldKey.substring(fieldKey.indexOf('#') + 1);
 
@@ -78,12 +87,10 @@ export const CustomPropertiesRenderer: FC<RendererProps> = memo(props => {
     );
 });
 
-function _resolveDetailRenderer(column: QueryColumn) {
-    let renderer = resolveDetailRenderer(column);
-
+function _resolveDetailRenderer(column: QueryColumn): Renderer {
     if (column.fieldKey.toLowerCase() === 'properties') {
-        renderer = d => <CustomPropertiesRenderer data={d} />;
+        return d => <CustomPropertiesRenderer data={d} />;
     }
 
-    return renderer;
+    return resolveDetailRenderer(column);
 }

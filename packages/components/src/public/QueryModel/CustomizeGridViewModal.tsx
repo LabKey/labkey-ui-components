@@ -173,23 +173,6 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
         onClick(index);
     }, [onClick, index]);
 
-    let overlay;
-    const cannotBeRemoved = column.addToDisplayView === true;
-    const content = (
-        <span
-            className={'pull-right ' + (cannotBeRemoved ? 'text-muted disabled' : 'clickable')}
-            onClick={cannotBeRemoved ? undefined : _onRemoveColumn}
-        >
-            <i className="fa fa-times" />
-        </span>
-    );
-    if (cannotBeRemoved) {
-        overlay = (
-            <Popover id={key + '-disabled-popover'} key={key + '-disabled-warning'}>
-                {APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
-            </Popover>
-        );
-    }
     return (
         <Draggable key={key} draggableId={key} index={index}>
             {(dragProvided, snapshot) => (
@@ -203,12 +186,9 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                         <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps} />
                     </div>
                     <FieldLabelDisplay column={column} includeFieldKey />
-                    {!cannotBeRemoved && content}
-                    {cannotBeRemoved && (
-                        <OverlayTrigger overlay={overlay} placement="left">
-                            {content}
-                        </OverlayTrigger>
-                    )}
+                    <span className="pull-right clickable" onClick={_onRemoveColumn}>
+                        <i className="fa fa-times" />
+                    </span>
                 </div>
             )}
         </Draggable>

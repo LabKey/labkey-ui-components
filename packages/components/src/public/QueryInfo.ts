@@ -206,16 +206,18 @@ export class QueryInfo extends Record({
                 return list;
             }, List<QueryColumn>());
 
-            // add addToDisplayView columns
-            const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
-                return list.push(col.fieldKey.toLowerCase());
-            }, List<string>());
-            this.columns.forEach(col => {
-                if (col.fieldKey && col.addToDisplayView && !columnFieldKeys.includes(col.fieldKey.toLowerCase())) {
-                    if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
-                        displayColumns = displayColumns.push(col);
-                }
-            });
+            // add addToDisplayView columns to unsaved default view (i.e. the default-default view)
+            if (viewInfo.isDefault && !viewInfo.isSaved && !viewInfo.session) {
+                const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
+                    return list.push(col.fieldKey.toLowerCase());
+                }, List<string>());
+                this.columns.forEach(col => {
+                    if (col.fieldKey && col.addToDisplayView && !columnFieldKeys.includes(col.fieldKey.toLowerCase())) {
+                        if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
+                            displayColumns = displayColumns.push(col);
+                    }
+                });
+            }
 
             return displayColumns;
         }

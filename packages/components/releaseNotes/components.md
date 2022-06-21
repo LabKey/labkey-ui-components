@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD June 2022
+* Item 10380: Save Grid Views - Allow removal of addToDisplayView columns
+  * Only add "addToDisplayView" fields to view for unsaved default view (i.e. system default view)
+  * set allowViewCustomization false for a few more cases
+
 ### version 2.186.1
 *Released*: 21 June 2022
 * Issue 45524: Grid pagination buttons should not disappear when changing to a larger page size

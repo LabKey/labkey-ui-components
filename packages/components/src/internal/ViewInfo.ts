@@ -57,6 +57,7 @@ export class ViewInfo extends Record({
     name: undefined,
     revertable: false,
     savable: false,
+    saved: undefined,
     session: false,
     shared: false,
     sorts: List<QuerySort>(),
@@ -74,6 +75,7 @@ export class ViewInfo extends Record({
     declare name: string;
     declare revertable: boolean;
     declare savable: boolean;
+    declare saved: boolean;
     declare session: boolean;
     declare shared: boolean;
     declare sorts: List<QuerySort>;
@@ -141,6 +143,10 @@ export class ViewInfo extends Record({
         return (
             !this.isDefault && !this.hidden && this.name.indexOf('~~') !== 0 && this.name !== ViewInfo.BIO_DETAIL_NAME
         );
+    }
+
+    get isSaved(): boolean {
+        return this.saved === true;
     }
 
     mutate(updates: Partial<ViewInfo>) {

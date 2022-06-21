@@ -35,8 +35,7 @@ export class PageMenu extends PureComponent<Props> {
     };
 
     render(): ReactNode {
-        const { currentPage, disabled, id, isFirstPage, isLastPage, pageCount, pageSize, pageSizes } =
-            this.props;
+        const { currentPage, disabled, id, isFirstPage, isLastPage, pageCount, pageSize, pageSizes } = this.props;
 
         return (
             <Tip caption="Current Page" trigger={['hover']}>

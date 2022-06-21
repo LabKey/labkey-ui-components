@@ -123,22 +123,14 @@ describe('ColumnChoice', () => {
 });
 
 describe('ColumnInView', () => {
-    function validate(wrapper: ReactWrapper, column: QueryColumn, canBeRemoved: boolean) {
+    function validate(wrapper: ReactWrapper, column: QueryColumn) {
         const fieldName = wrapper.find('.field-name');
         expect(fieldName.text()).toBe(column.caption);
         const removeIcon = wrapper.find('.fa-times');
         expect(removeIcon.exists()).toBeTruthy();
         const iconParent = removeIcon.parent();
-        if (canBeRemoved) {
-            expect(iconParent.prop('className')).toContain('clickable');
-            expect(iconParent.prop('onClick')).toBeDefined();
-        } else {
-            expect(iconParent.prop('className')).toContain('text-muted disabled');
-            expect(iconParent.prop('onClick')).toBeNull();
-        }
-        if (!canBeRemoved) {
-            expect(wrapper.find(OverlayTrigger).exists()).toBeTruthy();
-        }
+        expect(iconParent.prop('className')).toContain('clickable');
+        expect(iconParent.prop('onClick')).toBeDefined();
     }
 
     test('remove enabled', () => {
@@ -153,11 +145,11 @@ describe('ColumnInView', () => {
                 />
             )
         );
-        validate(wrapper, QUERY_COL, true);
+        validate(wrapper, QUERY_COL);
         wrapper.unmount();
     });
 
-    test('remove disabled', () => {
+    test('addToDisplayView can be removed', () => {
         const column = QueryColumn.create({
             name: 'testColumn',
             fieldKey: 'testColumn',
@@ -177,7 +169,7 @@ describe('ColumnInView', () => {
                 />
             )
         );
-        validate(wrapper, column, false);
+        validate(wrapper, column);
         wrapper.unmount();
     });
 });

@@ -43,6 +43,7 @@ import {
     getSampleFinderQueryConfigs,
     getSearchFilterObjs,
     SAMPLE_FILTER_METRIC_AREA,
+    SAMPLE_FINDER_VIEW_NAME,
     searchFiltersFromJson,
     searchFiltersToJson,
 } from './utils';
@@ -459,7 +460,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
 
     const getAdvancedExportOptions = useCallback(
         (tabId: string): { [key: string]: any } => {
-            const columnLabels = queryModels[tabId]?.queryInfo?.getView('sample finder')?.columns;
+            const columnLabels = queryModels[tabId]?.queryInfo?.getView(SAMPLE_FINDER_VIEW_NAME.toLowerCase())?.columns;
             const advancedExportOptions = { ...SAMPLE_DATA_EXPORT_CONFIG, 'exportAlias.SampleSet': 'Sample Type' };
             if (columnLabels)
                 columnLabels.forEach(columnLabel => {

@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.187.0
-*Released*: 16th June 2022
+*Released*: 21 June 2022
 * SubNav: Add ignoreShow prop
 * SubNavWithContext: Add ignoreShowProp and setIgnoreShow setter
 

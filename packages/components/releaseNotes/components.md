@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.187.0
+*Released*: 21 June 2022
+* SubNav: Add ignoreShow prop
+* SubNavWithContext: Add ignoreShowProp and setIgnoreShow setter
+
 ### version 2.186.1
 *Released*: 21 June 2022
 * Issue 45524: Grid pagination buttons should not disappear when changing to a larger page size

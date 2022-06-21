@@ -80,13 +80,13 @@
 .edit-inline-field__toggle {
     cursor: pointer;
 
-    .fa-pencil {
+    .fa {
         color: #D3D3D3;
         padding-left: 5px;
     }
 
     &:hover {
-        .fa-pencil {
+        .fa {
             color: #333333;
         }
     }

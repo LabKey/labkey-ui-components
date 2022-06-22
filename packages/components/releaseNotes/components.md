@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX 2022
+* Item 10437: Aliquot Field Inheritance
+    * Update DerivationDataScopeFieldOptions, SampleTypeDesigner, EntityInsertPanel and SamplesBulkUpdateForm to support aliquot & sample options
+
 ### version 2.188.0
 *Released*: 21 June 2022
 * Issue 45373: Sample Finder export generates ambiguous column header names
@@ -18,11 +23,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.186.1
 *Released*: 21 June 2022
 * Issue 45524: Grid pagination buttons should not disappear when changing to a larger page size
-
-### version 2.186.0
-*Released*: 20 June 2022
-* Item 10437: Aliquot Field Inheritance
-  * Update DerivationDataScopeFieldOptions, SampleTypeDesigner, EntityInsertPanel and SamplesBulkUpdateForm to support aliquot & sample options
 
 ### version 2.186.0
 *Released*: 20 June 2022

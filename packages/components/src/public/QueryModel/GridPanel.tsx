@@ -224,10 +224,11 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                             )}
                             {canSelectView && (
                                 <ViewMenu
+                                    allowViewCustomization={allowViewCustomization}
                                     model={model}
                                     onViewSelect={onViewSelect}
                                     onSaveView={onSaveView}
-                                    onCustomizeView={allowViewCustomization && onCustomizeView}
+                                    onCustomizeView={onCustomizeView}
                                     onManageViews={onManageViews}
                                     hideEmptyViewMenu={hideEmptyViewMenu}
                                 />

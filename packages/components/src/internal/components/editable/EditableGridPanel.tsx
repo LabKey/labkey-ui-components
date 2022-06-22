@@ -9,11 +9,13 @@ import { getUniqueIdColumnMetadata } from '../entities/utils';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { EXPORT_TYPES } from '../../constants';
+
+import { ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
-import { EXPORT_TYPES } from '../../constants';
+
 import { exportEditedData, getEditorTableData } from './utils';
-import { ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
@@ -36,7 +38,7 @@ const exportHandler = (
     updateColumns?: List<QueryColumn>,
     forUpdate?: boolean,
     extraColumns?: Array<Partial<QueryColumn>>,
-    colFilter?: (col : QueryColumn) => boolean
+    colFilter?: (col: QueryColumn) => boolean
 ): void => {
     let headings = OrderedMap<string, string>();
     let editorData = OrderedMap<string, Map<string, any>>();
@@ -127,9 +129,34 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     let activeUpdateColumns = updateColumns;
     if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
 
-    const exportHandlerCallback = useCallback((option: ExportOption) => {
-        exportHandler(option.type, models, editorModels, activeTab, readOnlyColumns, insertColumns, updateColumns, forUpdate, extraExportColumns, exportColFilter);
-    }, [activeTab, editorModels, extraExportColumns, models, readOnlyColumns, insertColumns, updateColumns, forUpdate, extraExportColumns, exportColFilter]);
+    const exportHandlerCallback = useCallback(
+        (option: ExportOption) => {
+            exportHandler(
+                option.type,
+                models,
+                editorModels,
+                activeTab,
+                readOnlyColumns,
+                insertColumns,
+                updateColumns,
+                forUpdate,
+                extraExportColumns,
+                exportColFilter
+            );
+        },
+        [
+            activeTab,
+            editorModels,
+            extraExportColumns,
+            models,
+            readOnlyColumns,
+            insertColumns,
+            updateColumns,
+            forUpdate,
+            extraExportColumns,
+            exportColFilter,
+        ]
+    );
 
     const onTabClick = useCallback(setActiveTab, []);
 

@@ -58,15 +58,16 @@ type DataViewInfoType =
  * a subset of the fields that are used by the client.
  */
 export interface IDataViewInfo {
+    appUrl?: AppURL;
     created?: Date;
     createdBy?: string;
     description?: string;
     detailsUrl?: string;
     icon?: string;
     iconCls?: string;
-    id?: string;// This is actually a uuid from the looks of it, should we be more strict on the type here?
+    id?: string;
+    // This is actually a uuid from the looks of it, should we be more strict on the type here?
     modified?: Date;
-    modifiedBy?: string;
     name?: string;
     queryName?: string;
     reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
@@ -78,7 +79,7 @@ export interface IDataViewInfo {
     type?: DataViewInfoType;
     viewName?: string;
 
-    appUrl?: AppURL; // This is a client side only attribute. Used to navigate within a Single Page App.
+    modifiedBy?: string; // This is a client side only attribute. Used to navigate within a Single Page App.
 }
 
 export interface DataViewClientMetadata extends IDataViewInfo {
@@ -341,8 +342,7 @@ export class EditorModel
             columns = insertColumns ? insertColumns : queryInfo.getInsertColumns();
         }
 
-        if (colFilter)
-            columns = columns.filter(colFilter);
+        if (colFilter) columns = columns.filter(colFilter);
         // file input columns are not supported in the editable grid, so remove them
         return columns.filter(col => !col.isFileInput);
     }
@@ -355,7 +355,7 @@ export class EditorModel
         forUpdate = false,
         readOnlyColumns?: List<string>,
         extraColumns?: Array<Partial<QueryColumn>>,
-        colFilter?: (col : QueryColumn) => boolean,
+        colFilter?: (col: QueryColumn) => boolean
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
         const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns, undefined, undefined, colFilter);

@@ -281,7 +281,7 @@ export const getEditorTableData = (
     updateColumns?: List<QueryColumn>,
     forUpdate?: boolean,
     extraColumns?: Array<Partial<QueryColumn>>,
-    colFilter?: (col : QueryColumn) => boolean
+    colFilter?: (col: QueryColumn) => boolean
 ): [Map<string, string>, Map<string, Map<string, any>>] => {
     const tabData = editorModel
         .getRawDataFromGridData(
@@ -296,7 +296,13 @@ export const getEditorTableData = (
         )
         .toArray();
 
-    const columns = editorModel.getColumns(queryModel.queryInfo, forUpdate, readOnlyColumns, insertColumns, updateColumns);
+    const columns = editorModel.getColumns(
+        queryModel.queryInfo,
+        forUpdate,
+        readOnlyColumns,
+        insertColumns,
+        updateColumns
+    );
     columns.forEach(col => (headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)));
 
     if (extraColumns) {

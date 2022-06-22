@@ -795,7 +795,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         if (creationType === SampleCreationType.Aliquots) extraColumnsToInclude = this.getAliquotCreationExtraColumns(); // include required sample property fields in post
 
         try {
-            const response = await insertModel.postEntityGrid(dataModel, editorModel, extraColumnsToInclude, this.isIncludedColumn);
+            const response = await insertModel.postEntityGrid(
+                dataModel,
+                editorModel,
+                extraColumnsToInclude,
+                this.isIncludedColumn
+            );
 
             this.setSubmitting(false);
 

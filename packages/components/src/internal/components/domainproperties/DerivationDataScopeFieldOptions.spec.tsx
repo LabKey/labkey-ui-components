@@ -1,10 +1,12 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
+import { Radio } from 'react-bootstrap';
+
+import { Alert } from '../base/Alert';
+
 import { DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
-import {Radio} from "react-bootstrap";
-import {Alert} from "../base/Alert";
 
 describe('DerivationDataScopeFieldOptions', () => {
     test('Default config, new field', () => {
@@ -14,7 +16,7 @@ describe('DerivationDataScopeFieldOptions', () => {
             label: null,
             onChange: jest.fn(),
             lockType: DOMAIN_FIELD_NOT_LOCKED,
-            isExistingField: false
+            isExistingField: false,
         };
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
@@ -47,7 +49,7 @@ describe('DerivationDataScopeFieldOptions', () => {
             onChange: jest.fn(),
             lockType: DOMAIN_FIELD_NOT_LOCKED,
             isExistingField: true,
-            value: 'ParentOnly'
+            value: 'ParentOnly',
         };
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
@@ -73,7 +75,7 @@ describe('DerivationDataScopeFieldOptions', () => {
             onChange: jest.fn(),
             lockType: DOMAIN_FIELD_NOT_LOCKED,
             isExistingField: true,
-            value: ''
+            value: '',
         };
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
@@ -99,7 +101,7 @@ describe('DerivationDataScopeFieldOptions', () => {
             onChange: jest.fn(),
             lockType: DOMAIN_FIELD_NOT_LOCKED,
             isExistingField: true,
-            value: 'ChildOnly'
+            value: 'ChildOnly',
         };
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
@@ -128,7 +130,7 @@ describe('DerivationDataScopeFieldOptions', () => {
             onChange: jest.fn(),
             lockType: DOMAIN_FIELD_NOT_LOCKED,
             isExistingField: true,
-            value: 'All'
+            value: 'All',
         };
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
@@ -148,7 +150,8 @@ describe('DerivationDataScopeFieldOptions', () => {
 
     test('With config, show = true', () => {
         const label = 'Sample/Aliquot Options';
-        const warning = "Updating a 'Samples Only' field to be 'Samples and Aliquots' will blank out the field values for all aliquots. This action cannot be undone.";
+        const warning =
+            "Updating a 'Samples Only' field to be 'Samples and Aliquots' will blank out the field values for all aliquots. This action cannot be undone.";
         const props = {
             index: 1,
             domainIndex: 1,
@@ -204,5 +207,4 @@ describe('DerivationDataScopeFieldOptions', () => {
         expect(wrapper).toEqual({});
         wrapper.unmount();
     });
-
 });

@@ -60,10 +60,18 @@ const SAMPLE_SET_HELP_TOPIC = 'createSampleType';
 
 const ALIQUOT_OPTIONS_HELP = (
     <div>
-        <p><b>Editable for samples only:</b> Field is only editable for samples but not for aliquots. Aliquot will inherit the field value from its parent sample.</p>
-        <p><b>Editable for aliquots only:</b> Field is only viewable and editable for aliquots.</p>
-        <p><b>Separately editable for samples and aliquots:</b> Field is editable for samples and aliquots independently.</p>
-        <br/>
+        <p>
+            <b>Editable for samples only:</b> Field is only editable for samples but not for aliquots. Aliquot will
+            inherit the field value from its parent sample.
+        </p>
+        <p>
+            <b>Editable for aliquots only:</b> Field is only viewable and editable for aliquots.
+        </p>
+        <p>
+            <b>Separately editable for samples and aliquots:</b> Field is editable for samples and aliquots
+            independently.
+        </p>
+        <br />
         <p>
             Learn more about <HelpLink topic={SAMPLE_ALIQUOT_TOPIC}>Sample Aliquots</HelpLink>.
         </p>
@@ -83,11 +91,11 @@ interface Props {
     defaultSampleFieldConfig?: Partial<IDomainField>;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     headerText?: string;
-    sampleAliasCaption?: string;
-    sampleTypeCaption?: string;
+    helpTopic?: string;
+    includeDataClasses?: boolean;
     initModel: DomainDetails;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
-    useSeparateDataClassesAliasMenu?: boolean;
+    metricUnitProps?: MetricUnitProps;
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
     nounPlural?: string;
@@ -96,28 +104,29 @@ interface Props {
     nounSingular?: string;
     onCancel: () => void;
     onChange?: (model: SampleTypeModel) => void;
-    includeDataClasses?: boolean;
+    onComplete: (response: DomainDesign) => void;
 
-    onComplete: (response: DomainDesign) => void; // This sets the top of the sticky header, default is 0
-    useTheme?: boolean;
+    sampleAliasCaption?: string;
+    sampleTypeCaption?: string;
     saveBtnText?: string;
     showAliquotOptions?: boolean;
     showGenIdBanner?: boolean;
     showLinkToStudy?: boolean;
 
-    metricUnitProps?: MetricUnitProps;
+    showParentLabelPrefix?: boolean;
 
     successBsStyle?: string;
 
     testMode?: boolean;
 
-    showParentLabelPrefix?: boolean;
+    useSeparateDataClassesAliasMenu?: boolean;
+
+    // This sets the top of the sticky header, default is 0
+    useTheme?: boolean;
 
     validateNameExpressions?: boolean;
 
     validateProperties?: (designerDetails?: any) => Promise<any>;
-
-    helpTopic?: string;
 }
 
 interface State {

@@ -48,10 +48,11 @@ import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from '../
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 
+import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
+
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { Cell, CellActions } from './Cell';
 import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
-import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -210,22 +211,24 @@ export interface SharedEditableGridProps {
     condensed?: boolean;
     disabled?: boolean;
     emptyGridMsg?: string;
+    exportColFilter?: (col: QueryColumn) => boolean;
     extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
     hideCountCol?: boolean;
     insertColumns?: List<QueryColumn>;
     isSubmitting?: boolean;
-    lockedRows?: List<any>;   // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
-    maxRows?: number;
-    notDeletable?: List<any>;   // list of key values that cannot be deleted.
-    processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
+    lockedRows?: List<any>;
+    // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
+    maxRows?: number; 
+    notDeletable?: List<any>;
     readOnlyColumns?: List<string>;
-    readonlyRows?: List<any>;   // list of key values for rows that are readonly.
+    readonlyRows?: List<any>; // list of key values for rows that are readonly.
     removeColumnTitle?: string;
     striped?: boolean;
-    updateColumns?: List<QueryColumn>;
     rowNumColumn?: GridColumn;
-    exportColFilter?: (col: QueryColumn) => boolean;
+    updateColumns?: List<QueryColumn>;
+    // list of key values that cannot be deleted.
+    processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
 }
 
 export interface EditableGridProps extends SharedEditableGridProps {
@@ -233,13 +236,13 @@ export interface EditableGridProps extends SharedEditableGridProps {
     dataKeys?: List<any>;
     editorModel: EditorModel;
     error: string;
+    exportHandler?: (option: ExportOption) => void;
     onChange: (
         editorModelChanges: Partial<EditorModelProps>,
         dataKeys?: List<any>,
         data?: Map<any, Map<string, any>>
     ) => void;
     queryInfo: QueryInfo;
-    exportHandler?: (option: ExportOption) => void;
 }
 
 export interface EditableGridState {

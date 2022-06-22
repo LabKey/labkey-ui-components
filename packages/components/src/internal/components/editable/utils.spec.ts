@@ -1,9 +1,11 @@
-import { getEditorTableData } from './utils';
+import { List, OrderedMap } from 'immutable';
+
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { LoadingState } from '../../../public/LoadingState';
 import { EditorModel } from '../../models';
-import { List, OrderedMap } from 'immutable';
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
+
+import { getEditorTableData } from './utils';
 
 const MODEL_ID_LOADED = 'loaded';
 
@@ -23,11 +25,6 @@ describe('Editable Grids Utils', () => {
         const editorModel = new EditorModel({ id: MODEL_ID_LOADED });
         const [headings, rows] = getEditorTableData(editorModel, queryModel, OrderedMap(), OrderedMap());
 
-
-        expect(headings.toArray()).toEqual(['SampleID',
-            'Participant ID',
-            'Visit ID',
-            'Date']);
-
+        expect(headings.toArray()).toEqual(['SampleID', 'Participant ID', 'Visit ID', 'Date']);
     });
 });

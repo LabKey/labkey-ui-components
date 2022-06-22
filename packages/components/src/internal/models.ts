@@ -68,18 +68,20 @@ export interface IDataViewInfo {
     id?: string;
     // This is actually a uuid from the looks of it, should we be more strict on the type here?
     modified?: Date;
+    modifiedBy?: string;
     name?: string;
     queryName?: string;
-    reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
-    runUrl?: string; // This comes directly from the API response and is a link to LK Server
-    visible?: boolean;
+    reportId?: string;
+    // This is in the format of "db:953", not quite sure why we have an id and reportId.
+    runUrl?: string;
     schemaName?: string;
     shared?: boolean;
     thumbnail?: string; // This is actually a URL, do we enforce that?
     type?: DataViewInfoType;
     viewName?: string;
 
-    modifiedBy?: string; // This is a client side only attribute. Used to navigate within a Single Page App.
+    // This comes directly from the API response and is a link to LK Server
+    visible?: boolean; // This is a client side only attribute. Used to navigate within a Single Page App.
 }
 
 export interface DataViewClientMetadata extends IDataViewInfo {

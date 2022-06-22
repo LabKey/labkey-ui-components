@@ -57,7 +57,7 @@ describe('SamplesBulkUpdateForm', () => {
             samplestate: COLUMN_STATUS,
             meta: COLUMN_META,
             aliquotspecific: COLUMN_ALIQUOT,
-            independent: COLUMN_INDEPENDENT
+            independent: COLUMN_INDEPENDENT,
         },
     });
 

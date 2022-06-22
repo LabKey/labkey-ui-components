@@ -288,7 +288,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const { schemaQuery, title, queryInfo } = model;
     const [columnsInView, setColumnsInView] = useState<any>(model.displayColumns);
     const [isDirty, setIsDirty] = useState<boolean>(false);
-    const [editingTitle, setEditingTitle] = useState<boolean>(false);
+    const [editingColumnTitle, setEditingColumnTitle] = useState<boolean>(false);
     const [saveError, setSaveError] = useState<string>(undefined);
     const [queryDetailError, setQueryDetailError] = useState<string>(undefined);
     const [showAllColumns, setShowAllColumns] = useState<boolean>(false);
@@ -331,7 +331,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     );
 
     const onEditColumnTitle = useCallback(() => {
-        setEditingTitle(true);
+        setEditingColumnTitle(true);
     }, []);
 
     const updateColumnTitle = useCallback((updatedColumn: QueryColumn, title: string) => {
@@ -339,7 +339,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         const index = columnsInView.findIndex(column => column.index === updatedColumn.index);
         setColumnsInView([...columnsInView.slice(0, index), relabeledColumn, ...columnsInView.slice(index+1)]);
         setIsDirty(true);
-        setEditingTitle(false);
+        setEditingColumnTitle(false);
     }, [columnsInView]);
 
     const addColumn = useCallback(
@@ -486,7 +486,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                                                     key={column.index}
                                                     column={column}
                                                     index={index}
-                                                    isDragDisabled={editingTitle}
+                                                    isDragDisabled={editingColumnTitle}
                                                     onRemoveColumn={removeColumn}
                                                     selected={selectedIndex === index}
                                                     onClick={onSelectField}

@@ -46,4 +46,11 @@ describe('ViewInfo', () => {
         view = ViewInfo.create({ default: false, hidden: false, name: ViewInfo.BIO_DETAIL_NAME });
         expect(view.isVisible).toBeFalsy();
     });
+
+    test('isSaved', () => {
+        expect(ViewInfo.create({}).isSaved).toBeFalsy();
+        expect(ViewInfo.create({ saved: undefined }).isSaved).toBeFalsy();
+        expect(ViewInfo.create({ saved: false }).isSaved).toBeFalsy();
+        expect(ViewInfo.create({ saved: true }).isSaved).toBeTruthy();
+    });
 });

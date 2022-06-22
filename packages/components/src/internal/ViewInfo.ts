@@ -57,7 +57,7 @@ export class ViewInfo extends Record({
     name: undefined,
     revertable: false,
     savable: false,
-    saved: undefined,
+    saved: false,
     session: false,
     shared: false,
     sorts: List<QuerySort>(),

@@ -276,7 +276,7 @@ export const getEditorTableData = (
     queryModel: QueryModel,
     headings: OrderedMap<string, string>,
     editorData: OrderedMap<string, OrderedMap<string, any>>,
-    readOnlyColumns: List<string>,
+    readOnlyColumns?: List<string>,
     insertColumns?: List<QueryColumn>,
     updateColumns?: List<QueryColumn>,
     forUpdate?: boolean,

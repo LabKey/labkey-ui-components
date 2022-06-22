@@ -21,7 +21,7 @@ describe('Editable Grids Utils', () => {
             queryInfo,
         });
         const editorModel = new EditorModel({ id: MODEL_ID_LOADED });
-        const [headings, rows] = getEditorTableData(editorModel, queryModel, List(), OrderedMap(), OrderedMap());
+        const [headings, rows] = getEditorTableData(editorModel, queryModel, OrderedMap(), OrderedMap());
 
 
         expect(headings.toArray()).toEqual(['SampleID',

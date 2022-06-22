@@ -41,6 +41,13 @@ describe('SamplesBulkUpdateForm', () => {
         shownInUpdateView: false,
         userEditable: true,
     });
+    const COLUMN_INDEPENDENT = new QueryColumn({
+        fieldKey: 'independent',
+        name: 'independent',
+        fieldKeyArray: ['independent'],
+        shownInUpdateView: false,
+        userEditable: true,
+    });
 
     const QUERY_INFO = QueryInfo.fromJSON({
         name: 'test',
@@ -50,12 +57,14 @@ describe('SamplesBulkUpdateForm', () => {
             samplestate: COLUMN_STATUS,
             meta: COLUMN_META,
             aliquotspecific: COLUMN_ALIQUOT,
+            independent: COLUMN_INDEPENDENT
         },
     });
 
     const sampleTypeDomainFields = {
         aliquotFields: ['aliquotspecific'],
         metaFields: ['metadata'],
+        independentFields: ['independent'],
         metricUnit: 'g',
     };
 
@@ -92,10 +101,12 @@ describe('SamplesBulkUpdateForm', () => {
     test('all selected are samples', () => {
         const wrapper = mount(<SamplesBulkUpdateFormBase {...DEFAULT_PROPS} />);
         const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(3);
+        expect(queryInfo.columns.size).toBe(4);
         expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
         expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
         expect(queryInfo.columns.get('meta')).toBe(COLUMN_META);
+        expect(queryInfo.columns.get('independent')).toBe(COLUMN_INDEPENDENT);
+        expect(queryInfo.columns.get('aliquotspecific')).toBeUndefined();
         wrapper.unmount();
     });
 
@@ -106,10 +117,12 @@ describe('SamplesBulkUpdateForm', () => {
         };
         const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
         const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(3);
+        expect(queryInfo.columns.size).toBe(4);
         expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
         expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
+        expect(queryInfo.columns.get('meta')).toBeUndefined();
         expect(queryInfo.columns.get('aliquotspecific')).toBe(COLUMN_ALIQUOT);
+        expect(queryInfo.columns.get('independent')).toBe(COLUMN_INDEPENDENT);
 
         wrapper.unmount();
     });
@@ -121,10 +134,12 @@ describe('SamplesBulkUpdateForm', () => {
         };
         const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
         const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(3);
+        expect(queryInfo.columns.size).toBe(4);
         expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
         expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
+        expect(queryInfo.columns.get('meta')).toBeUndefined();
         expect(queryInfo.columns.get('aliquotspecific')).toBe(COLUMN_ALIQUOT);
+        expect(queryInfo.columns.get('independent')).toBe(COLUMN_INDEPENDENT);
 
         wrapper.unmount();
     });
@@ -136,10 +151,12 @@ describe('SamplesBulkUpdateForm', () => {
         };
         const wrapper = mount(<SamplesBulkUpdateFormBase {...props} />);
         const queryInfo = wrapper.find(BulkUpdateForm).prop('queryInfo');
-        expect(queryInfo.columns.size).toBe(3);
+        expect(queryInfo.columns.size).toBe(4);
         expect(queryInfo.columns.get('description')).toBe(COLUMN_DESCRIPTION);
         expect(queryInfo.columns.get('samplestate')).toBe(COLUMN_STATUS);
+        expect(queryInfo.columns.get('meta')).toBeUndefined();
         expect(queryInfo.columns.get('aliquotspecific')).toBe(COLUMN_ALIQUOT);
+        expect(queryInfo.columns.get('independent')).toBe(COLUMN_INDEPENDENT);
 
         wrapper.unmount();
     });

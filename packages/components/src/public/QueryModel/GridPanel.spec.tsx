@@ -483,7 +483,7 @@ describe('GridTitle', () => {
         isHidden?: boolean
     ): void {
         expect(wrapper.text()).toContain(expectedTitle);
-        if (isEdited) {
+        if (isEdited && allowCustomization) {
             const editedTag = wrapper.find('.view-edit-alert');
             expect(editedTag.exists()).toBe(true);
             expect(editedTag.text()).toBe('Edited');

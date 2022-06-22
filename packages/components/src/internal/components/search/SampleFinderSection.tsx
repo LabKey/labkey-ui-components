@@ -43,6 +43,7 @@ import {
     getSampleFinderQueryConfigs,
     getSearchFilterObjs,
     SAMPLE_FILTER_METRIC_AREA,
+    SAMPLE_FINDER_VIEW_NAME,
     searchFiltersFromJson,
     searchFiltersToJson,
 } from './utils';
@@ -55,12 +56,12 @@ import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
-    user: User;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
-    samplesEditableGridProps: Partial<SamplesEditableGridProps>;
-    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     gridButtonProps?: any;
+    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     sampleTypeNames: string[];
+    samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    user: User;
 }
 
 interface Props extends SampleFinderSamplesGridProps {
@@ -68,9 +69,9 @@ interface Props extends SampleFinderSamplesGridProps {
 }
 
 interface SampleFinderHeaderProps {
-    parentEntityDataTypes: EntityDataType[];
-    onAddEntity: (entityType: EntityDataType) => void;
     enabledEntityTypes: string[];
+    onAddEntity: (entityType: EntityDataType) => void;
+    parentEntityDataTypes: EntityDataType[];
 }
 
 export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props => {
@@ -457,6 +458,20 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
         actions.loadAllModels();
     }, [actions]);
 
+    const getAdvancedExportOptions = useCallback(
+        (tabId: string): { [key: string]: any } => {
+            const columnLabels = queryModels[tabId]?.queryInfo?.getView(SAMPLE_FINDER_VIEW_NAME.toLowerCase())?.columns;
+            const advancedExportOptions = { ...SAMPLE_DATA_EXPORT_CONFIG, 'exportAlias.SampleSet': 'Sample Type' };
+            if (columnLabels)
+                columnLabels.forEach(columnLabel => {
+                    if (columnLabel.title)
+                        advancedExportOptions['exportAlias.' + columnLabel.fieldKey] = columnLabel.title;
+                });
+            return advancedExportOptions;
+        },
+        [queryModels]
+    );
+
     if (isLoading) return <LoadingSpinner />;
 
     return (
@@ -475,10 +490,10 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 }}
                 tabbedGridPanelProps={{
                     alwaysShowTabs: true,
-                    advancedExportOptions: SAMPLE_DATA_EXPORT_CONFIG,
+                    getAdvancedExportOptions,
                     exportFilename: 'Samples',
                     allowViewCustomization: false,
-                    showViewMenu: false
+                    showViewMenu: false,
                 }}
             />
         </>

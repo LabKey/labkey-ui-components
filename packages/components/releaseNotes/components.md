@@ -9,6 +9,20 @@ Components, models, actions, and utility functions for LabKey applications and p
   * set allowViewCustomization false for a few more cases
   * SpecialtyAssayPanel.tsx update to remove usage of dangerouslySetInnerHTML
 
+### version 2.188.0
+*Released*: 21 June 2022
+* Issue 45373: Sample Finder export generates ambiguous column header names
+    * Support advancedExportOption per TabbedGridPanel tab
+
+### version 2.187.1
+*Released*: 21 June 2022
+* Issue 45006: Provide link to lookup table/query in field designer
+
+### version 2.187.0
+*Released*: 21 June 2022
+* SubNav: Add ignoreShow prop
+* SubNavWithContext: Add ignoreShowProp and setIgnoreShow setter
+
 ### version 2.186.1
 *Released*: 21 June 2022
 * Issue 45524: Grid pagination buttons should not disappear when changing to a larger page size

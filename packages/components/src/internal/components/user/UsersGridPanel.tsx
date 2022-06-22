@@ -37,6 +37,7 @@ import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserDetailsPanel } from './UserDetailsPanel';
 import { CreateUsersModal } from './CreateUsersModal';
+import { isCustomizeViewsInAppEnabled } from '../../app/utils';
 
 const OMITTED_COLUMNS = [
     'phone',
@@ -343,7 +344,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                                 title={capitalizeFirstChar(usersView) + ' Users'}
                                 ButtonsComponent={() => this.renderButtons()}
                                 highlightLastSelectedRow
-                                allowViewCustomization={false}
+                                hideEmptyViewMenu={!isCustomizeViewsInAppEnabled()}
                             />
                         )}
                     </Col>

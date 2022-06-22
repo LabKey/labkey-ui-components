@@ -5,7 +5,9 @@ import { ITab, SubNav } from './SubNav';
 
 export interface SubNavState {
     clearNav: () => void;
+    ignoreShow: boolean;
     noun: ITab;
+    setIgnoreShow: (ignoreScrolled: boolean) => void;
     setNoun: (noun: ITab) => void;
     setTabs: (tabs: List<ITab>) => void;
     tabs: List<ITab>;
@@ -24,13 +26,15 @@ export const useSubNavContext = (): SubNavState => {
 export const SubNavContextProvider: FC = memo(({ children }) => {
     const [noun, setNoun] = useState<ITab>(undefined);
     const [tabs, setTabs] = useState<List<ITab>>(List());
+    const [ignoreShow, setIgnoreShow] = useState<boolean>(false);
     const clearNav = useCallback(() => {
         setNoun(undefined);
         setTabs(List());
+        setIgnoreShow(false);
     }, []);
     const subNavContext = useMemo<SubNavState>(
-        () => ({ clearNav, noun, setNoun, setTabs, tabs }),
-        [clearNav, noun, tabs]
+        () => ({ clearNav, ignoreShow, noun, setIgnoreShow, setNoun, setTabs, tabs }),
+        [clearNav, ignoreShow, noun, tabs]
     );
 
     return <SubNavContext.Provider value={subNavContext}>{children}</SubNavContext.Provider>;
@@ -41,11 +45,11 @@ export const SubNavContextProvider: FC = memo(({ children }) => {
  * you need to update the SubNav based on data you load asynchronously after the page loads.
  */
 export const SubNavWithContext: FC<SubNavState> = memo(() => {
-    const { noun, tabs } = useSubNavContext();
+    const { ignoreShow, noun, tabs } = useSubNavContext();
 
     if (tabs.size === 0 && noun === undefined) {
         return null;
     }
 
-    return <SubNav tabs={tabs} noun={noun} />;
+    return <SubNav ignoreShow={ignoreShow} noun={noun} tabs={tabs} />;
 });

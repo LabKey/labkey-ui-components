@@ -808,10 +808,16 @@ describe('DomainField', () => {
         expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SampleType1');
 
         field = field.merge({ dataType: LOOKUP_TYPE }) as DomainField;
-        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. Current Folder > exp > SampleType1');
+        expect(field.getDetailsTextArray(0).slice(0, 2).join('')).toBe('Updated. Current Folder > exp');
+        expect(field.getDetailsTextArray(0)[3].props.href).toBe(
+            '/labkey/query/testContainer/executeQuery.view?schemaName=exp&query.queryName=SampleType1'
+        );
 
         field = field.merge({ lookupContainer: 'Test Folder' }) as DomainField;
-        expect(field.getDetailsTextArray(0).join('')).toBe('Updated. Test Folder > exp > SampleType1');
+        expect(field.getDetailsTextArray(0).slice(0, 2).join('')).toBe('Updated. Test Folder > exp');
+        expect(field.getDetailsTextArray(0)[3].props.href).toBe(
+            '/labkey/query/Test%20Folder/executeQuery.view?schemaName=exp&query.queryName=SampleType1'
+        );
 
         field = field.merge({ dataType: ONTOLOGY_LOOKUP_TYPE, sourceOntology: 'SRC' }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe('Updated. SRC');

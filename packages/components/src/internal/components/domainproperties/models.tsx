@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, Record } from 'immutable';
-import { Domain, getServerContext, Utils } from '@labkey/api';
+import { ActionURL, Domain, getServerContext, Utils } from '@labkey/api';
 import React, { ReactNode } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
@@ -1176,8 +1176,14 @@ export class DomainField
             details.push(period + detailsText);
             period = '. ';
         } else if (this.dataType.isLookup() && this.lookupSchema && this.lookupQuery) {
+            const params = {schemaName: this.lookupSchema, ['query.queryName']: this.lookupQuery};
+            const href = ActionURL.buildURL('query', 'executeQuery.view', this.lookupContainer, params);
+            const link = <a href={href}> {this.lookupQuery} </a>;
+
             details.push(
-                period + [this.lookupContainer || 'Current Folder', this.lookupSchema, this.lookupQuery].join(' > ')
+                period + [this.lookupContainer || 'Current Folder', this.lookupSchema].join(' > '),
+                ' > ',
+                link
             );
             period = '. ';
         } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {

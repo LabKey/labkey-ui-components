@@ -13,7 +13,6 @@ interface Props {
     loadFirstPage: () => void;
     loadLastPage: () => void;
     pageCount: number;
-    showPageSizeMenu: boolean;
     pageSize: number;
     pageSizes: number[];
     setPageSize: (size: number) => void;
@@ -36,8 +35,7 @@ export class PageMenu extends PureComponent<Props> {
     };
 
     render(): ReactNode {
-        const { currentPage, disabled, id, isFirstPage, isLastPage, pageCount, showPageSizeMenu, pageSize, pageSizes } =
-            this.props;
+        const { currentPage, disabled, id, isFirstPage, isLastPage, pageCount, pageSize, pageSizes } = this.props;
 
         return (
             <Tip caption="Current Page" trigger={['hover']}>
@@ -58,14 +56,13 @@ export class PageMenu extends PureComponent<Props> {
                     <MenuItem header className="submenu-footer">
                         {disabled ? '...' : `${pageCount} Total Pages`}
                     </MenuItem>
-                    {showPageSizeMenu && <MenuItem divider />}
-                    {showPageSizeMenu && <MenuItem header>Page Size</MenuItem>}
-                    {showPageSizeMenu &&
-                        pageSizes?.map(size => (
-                            <MenuItem key={size} active={size === pageSize} onClick={() => this.setPageSize(size)}>
-                                {size}
-                            </MenuItem>
-                        ))}
+                    <MenuItem divider />
+                    <MenuItem header>Page Size</MenuItem>
+                    {pageSizes?.map(size => (
+                        <MenuItem key={size} active={size === pageSize} onClick={() => this.setPageSize(size)}>
+                            {size}
+                        </MenuItem>
+                    ))}
                 </DropdownButton>
             </Tip>
         );

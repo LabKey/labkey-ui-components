@@ -206,8 +206,8 @@ export class QueryInfo extends Record({
                 return list;
             }, List<QueryColumn>());
 
-            // add addToDisplayView columns to unsaved default view (i.e. the default-default view)
-            if (viewInfo.isDefault && !viewInfo.isSaved && !viewInfo.session) {
+            // add addToDisplayView columns to unsaved system view (i.e. the default-default view, details view, or update view)
+            if ((viewInfo.isDefault || viewInfo.isSystemView) && !viewInfo.isSaved && !viewInfo.session) {
                 const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
                     return list.push(col.fieldKey.toLowerCase());
                 }, List<string>());

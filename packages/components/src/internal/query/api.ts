@@ -134,7 +134,7 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
             'schema',
             _schemaName.toLowerCase(),
             'query',
-            _schemaName.toLowerCase(),
+            _queryName.toLowerCase(),
         ]);
 
         if (queryMeta) {

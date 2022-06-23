@@ -28,7 +28,7 @@ import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../../samples/constants';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { UNIQUE_ID_TYPE } from '../PropDescType';
+import { PropDescType, UNIQUE_ID_TYPE } from '../PropDescType';
 
 import { hasModule, isCommunityDistribution } from '../../../app/utils';
 
@@ -814,6 +814,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
                         derivationDataScopeConfig: {
                             show: showAliquotOptions,
+                            dataTypeFilter: (dataType: PropDescType) => !dataType.isUniqueId(),
                             sectionTitle: 'Sample/Aliquot Options',
                             labelAll: 'Separately editable for samples and aliquots',
                             labelChild: 'Editable for aliquots only',

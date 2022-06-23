@@ -8,25 +8,30 @@ import { isFieldFullyLocked } from './propertiesUtil';
 import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_DERIVATION_DATA_SCOPE } from './constants';
 import { IDerivationDataScope, ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
+import { PropDescType } from "./PropDescType";
 
 interface Props extends ITypeDependentProps {
     config?: IDerivationDataScope;
+    fieldDataType?: PropDescType;
     isExistingField?: boolean;
     value?: string;
 }
 
 export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
-    const { domainIndex, index, onChange, config, lockType, value, label, isExistingField } = props;
+    const { domainIndex, index, onChange, config, lockType, value, label, isExistingField, fieldDataType } = props;
 
     const [isExistingParentOnly, setIsExistingParentOnly] = useState<boolean>(false);
     const [isChildOnlyValidOption, setIsChildOnlyValidOption] = useState<boolean>(false);
     const [isParentOnlyValidOption, setIsParentOnlyValidOption] = useState<boolean>(false);
     const [hasScopeChange, setHasScopeChange] = useState<boolean>(false);
+    const [isExistingNonScopedField, setIsExistingNonScopedField] = useState<boolean>(false);
 
     useEffect(() => {
         setIsExistingParentOnly(isExistingField && (!value || value === DERIVATION_DATA_SCOPES.PARENT_ONLY));
         setIsChildOnlyValidOption(!isExistingField || value === DERIVATION_DATA_SCOPES.CHILD_ONLY);
         setIsParentOnlyValidOption(!isExistingField || !value || value === DERIVATION_DATA_SCOPES.PARENT_ONLY);
+        if (isExistingField && config.dataTypeFilter && fieldDataType && !config.dataTypeFilter(fieldDataType))
+            setIsExistingNonScopedField(true); // scenario: modify from Unique Id column to other colum types
     }, [domainIndex, index, isExistingField]); // don't use config or value in dependency, only evaluate once per index
 
     const inputId = useMemo(() => {
@@ -48,6 +53,9 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
 
     if (!config.show) return null;
 
+    if (config.dataTypeFilter && fieldDataType && !config.dataTypeFilter(fieldDataType))
+        return null;
+
     return (
         <div>
             <Row>
@@ -65,7 +73,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
                         <Radio
                             name={inputId}
                             value={DERIVATION_DATA_SCOPES.PARENT_ONLY}
-                            checked={!value || value === DERIVATION_DATA_SCOPES.PARENT_ONLY}
+                            checked={(!value && !isExistingNonScopedField) || value === DERIVATION_DATA_SCOPES.PARENT_ONLY}
                             onChange={onRadioChange}
                             disabled={isFullyLocked || !isParentOnlyValidOption}
                         >
@@ -83,7 +91,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
                         <Radio
                             name={inputId}
                             value={DERIVATION_DATA_SCOPES.ALL}
-                            checked={value === DERIVATION_DATA_SCOPES.ALL}
+                            checked={value === DERIVATION_DATA_SCOPES.ALL || (!value && isExistingNonScopedField)}
                             onChange={onRadioChange}
                             disabled={isFullyLocked}
                         >

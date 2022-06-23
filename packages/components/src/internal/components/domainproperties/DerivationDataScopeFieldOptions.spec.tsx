@@ -7,6 +7,7 @@ import { Alert } from '../base/Alert';
 
 import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
+import { PropDescType, TEXT_TYPE, UNIQUE_ID_TYPE } from "./PropDescType";
 
 describe('DerivationDataScopeFieldOptions', () => {
     test('Default config, new field', () => {
@@ -205,6 +206,53 @@ describe('DerivationDataScopeFieldOptions', () => {
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
         expect(wrapper).toEqual({});
+        wrapper.unmount();
+    });
+
+    test('With config, isExistingField is not applicable', () => {
+        const props = {
+            index: 1,
+            domainIndex: 1,
+            label: null,
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED,
+            isExistingField: true,
+            value: DERIVATION_DATA_SCOPES.ALL,
+            config: {
+                show: true,
+                dataTypeFilter: (dataType: PropDescType) => !dataType.isUniqueId(),
+            },
+            fieldDataType: UNIQUE_ID_TYPE,
+        };
+
+        const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
+
+        expect(wrapper).toEqual({});
+
+        wrapper.unmount();
+    });
+
+    test('With config, isExistingField is applicable', () => {
+        const props = {
+            index: 1,
+            domainIndex: 1,
+            label: null,
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED,
+            isExistingField: true,
+            value: DERIVATION_DATA_SCOPES.ALL,
+            config: {
+                show: true,
+                dataTypeFilter: (dataType: PropDescType) => !dataType.isUniqueId(),
+            },
+            fieldDataType: TEXT_TYPE,
+        };
+
+        const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
+
+        const radios = wrapper.find(Radio);
+        expect(radios).toHaveLength(3);
+
         wrapper.unmount();
     });
 });

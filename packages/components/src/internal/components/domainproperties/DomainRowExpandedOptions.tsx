@@ -256,6 +256,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                 onChange={onChange}
                                 lockType={field.lockType}
                                 isExistingField={!field.isNew()}
+                                fieldDataType={field.dataType}
                             />
                         </Col>
                     )}

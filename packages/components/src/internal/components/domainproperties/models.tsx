@@ -1881,6 +1881,7 @@ export interface IDerivationDataScope {
     scopeChangeWarning?: string;
     sectionTitle?: string;
     show?: boolean;
+    dataTypeFilter?: (type: PropDescType) => boolean;
 }
 
 /**

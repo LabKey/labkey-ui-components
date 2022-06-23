@@ -239,13 +239,26 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                     <div className="right-spacing" {...dragProvided.dragHandleProps}>
                         <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps} />
                     </div>
-                    <FieldLabelDisplay column={column} includeFieldKey editing={editing} onEditComplete={_onUpdateTitle}/>
+                    <FieldLabelDisplay
+                        column={column}
+                        includeFieldKey
+                        editing={editing}
+                        onEditComplete={_onUpdateTitle}
+                    />
                     {!editing && (
                         <span className="pull-right">
-                            <span className="edit-inline-field__toggle" onClick={_onEditTitle}>
+                            <span
+                                className="edit-inline-field__toggle"
+                                title="Edit the field's label for this view."
+                                onClick={_onEditTitle}
+                            >
                                 <i id={'select-' + index} className="fa fa-pencil" />
                             </span>
-                            <span className="view-field__action clickable" onClick={_onRemoveColumn}>
+                            <span
+                                className="view-field__action clickable"
+                                title="Remove this field from the view."
+                                onClick={_onRemoveColumn}
+                            >
                                 <i className="fa fa-times" />
                             </span>
                         </span>

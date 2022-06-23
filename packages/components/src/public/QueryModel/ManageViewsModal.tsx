@@ -183,7 +183,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                     placement="top"
                                                     overlay={
                                                         <Popover id="disabled-button-popover">
-                                                            Revert back to the system default view
+                                                            Revert back to the system default view.
                                                         </Popover>
                                                     }
                                                 >

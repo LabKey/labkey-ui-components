@@ -124,22 +124,15 @@ describe('ColumnChoice', () => {
 });
 
 describe('ColumnInView', () => {
-    function validate(wrapper: ReactWrapper, column: QueryColumn, canBeRemoved: boolean, dragDisabled: boolean) {
+    function validate(wrapper: ReactWrapper, column: QueryColumn, dragDisabled: boolean) {
         const fieldName = wrapper.find('.field-name');
         expect(fieldName.text()).toBe(column.caption);
         const removeIcon = wrapper.find('.fa-times');
         expect(removeIcon.exists()).toBeTruthy();
         const iconParent = removeIcon.parent();
-        if (canBeRemoved) {
-            expect(iconParent.prop('className')).toContain('clickable');
-            expect(iconParent.prop('onClick')).toBeDefined();
-        } else {
-            expect(iconParent.prop('className')).toContain('view-field__action disabled');
-            expect(iconParent.prop('onClick')).toBeNull();
-        }
-        if (!canBeRemoved) {
-            expect(wrapper.find(OverlayTrigger).exists()).toBeTruthy();
-        }
+        expect(iconParent.prop('className')).toContain('view-field__action disabled');
+        expect(iconParent.prop('onClick')).toBeNull();
+        expect(wrapper.find(OverlayTrigger).exists()).toBeTruthy();
         if (dragDisabled) {
             expect(wrapper.find(Draggable).prop("isDragDisabled")).toBe(true);
         }
@@ -160,7 +153,7 @@ describe('ColumnInView', () => {
                 />
             )
         );
-        validate(wrapper, QUERY_COL, true, false);
+        validate(wrapper, QUERY_COL, false);
         wrapper.unmount();
     });
 
@@ -187,7 +180,7 @@ describe('ColumnInView', () => {
                 />
             )
         );
-        validate(wrapper, column, false, false);
+        validate(wrapper, column, false);
         wrapper.unmount();
     });
 
@@ -214,7 +207,7 @@ describe('ColumnInView', () => {
                 />
             )
         );
-        validate(wrapper, column, false, false);
+        validate(wrapper, column, false);
         wrapper.unmount();
     });
 

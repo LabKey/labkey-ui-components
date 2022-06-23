@@ -227,23 +227,6 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
         onEditTitle();
     }, [onEditTitle]);
 
-    let overlay;
-    const cannotBeRemoved = column.addToDisplayView === true;
-    const removeIconContent = (
-        <span
-            className={'view-field__action ' + (cannotBeRemoved ? 'disabled' : 'clickable')}
-            onClick={cannotBeRemoved ? undefined : _onRemoveColumn}
-        >
-            <i className="fa fa-times" />
-        </span>
-    );
-    if (cannotBeRemoved) {
-        overlay = (
-            <Popover id={key + '-disabled-popover'} key={key + '-disabled-warning'}>
-                {APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
-            </Popover>
-        );
-    }
     return (
         <Draggable key={key} draggableId={key} index={index} isDragDisabled={isDragDisabled}>
             {(dragProvided, snapshot) => (
@@ -262,12 +245,9 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                             <span className="edit-inline-field__toggle" onClick={_onEditTitle}>
                                 <i id={'select-' + index} className="fa fa-pencil" />
                             </span>
-                        {!cannotBeRemoved && removeIconContent}
-                        {cannotBeRemoved && (
-                            <OverlayTrigger overlay={overlay} placement="left">
-                                {removeIconContent}
-                            </OverlayTrigger>
-                        )}
+                            <span className="view-field__action clickable" onClick={_onRemoveColumn}>
+                                <i className="fa fa-times" />
+                            </span>
                         </span>
                     )}
                 </div>

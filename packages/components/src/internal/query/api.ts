@@ -234,6 +234,20 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
         if (columnMeta) {
             columnMeta = columnMeta.toJS();
         }
+        // special case for assay schema to allow for metadata to be applied to all protocols base tables
+        else if (schemaQuery.schemaName.toLowerCase().startsWith('assay.')) {
+            columnMeta = metadata.getIn([
+                'schema',
+                'assay',
+                'query',
+                schemaQuery.queryName.toLowerCase(),
+                'column',
+                rawColumn.fieldKey.toLowerCase(),
+            ]);
+            if (columnMeta) {
+                columnMeta = columnMeta.toJS();
+            }
+        }
 
         columnMetadata = Object.assign({}, allMeta, schemaMeta, columnMeta);
 

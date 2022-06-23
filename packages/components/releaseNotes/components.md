@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Save Grid Views - Update Grid Column Metadata for User Customization
+  * apply app query metadata to query details for lookup
+  * special case for assay schema to allow for metadata to be applied to all protocols base tables
+  * ...
+
 ### version 2.188.2
 *Released*: 23 June 2022
 * Item 10380: Save Grid Views - Allow removal of addToDisplayView columns

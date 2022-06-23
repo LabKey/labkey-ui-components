@@ -14,7 +14,8 @@ import { QueryInfo } from '../QueryInfo';
 
 import { QueryModel } from './QueryModel';
 
-const includedColumnsForCustomizationFilter = (column: QueryColumn, showAllColumns: boolean): boolean => {
+// exported for jest testing
+export const includedColumnsForCustomizationFilter = (column: QueryColumn, showAllColumns: boolean): boolean => {
     return (
         (showAllColumns || !column.hidden) &&
         !column.removeFromViews &&

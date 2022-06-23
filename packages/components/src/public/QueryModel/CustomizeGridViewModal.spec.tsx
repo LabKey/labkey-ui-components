@@ -22,6 +22,7 @@ import {
     ColumnInView,
     CustomizeGridViewModal,
     FieldLabelDisplay,
+    includedColumnsForCustomizationFilter,
 } from './CustomizeGridViewModal';
 
 const QUERY_COL = QueryColumn.create({
@@ -571,5 +572,40 @@ describe('ColumnChoiceGroup', () => {
         );
         validate(wrapper, true, true);
         wrapper.unmount();
+    });
+});
+
+describe('includedColumnsForCustomizationFilter', () => {
+    test('hidden', () => {
+        let col = QueryColumn.create({ name: 'testColumn', hidden: false });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy;
+
+        col = QueryColumn.create({ name: 'testColumn', hidden: true });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
+
+        col = QueryColumn.create({ name: 'testColumn', hidden: false });
+        expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy;
+
+        col = QueryColumn.create({ name: 'testColumn', hidden: true });
+        expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy;
+    });
+
+    test('removeFromViews', () => {
+        let col = QueryColumn.create({ name: 'testColumn', removeFromViews: false });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+
+        col = QueryColumn.create({ name: 'testColumn', removeFromViews: true });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
+    });
+
+    test('removeFromViewCustomization', () => {
+        let col = QueryColumn.create({ name: 'testColumn', removeFromViewCustomization: false });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+
+        col = QueryColumn.create({ name: 'testColumn', removeFromViewCustomization: true });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
+
+        LABKEY.moduleContext = { api: { moduleNames: ['api', 'core', 'premium'] } };
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
     });
 });

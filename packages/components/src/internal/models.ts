@@ -58,6 +58,7 @@ type DataViewInfoType =
  * a subset of the fields that are used by the client.
  */
 export interface IDataViewInfo {
+    // This is a client side only attribute. Used to navigate within a Single Page App.
     appUrl?: AppURL;
     created?: Date;
     createdBy?: string;
@@ -65,22 +66,21 @@ export interface IDataViewInfo {
     detailsUrl?: string;
     icon?: string;
     iconCls?: string;
-    id?: string;
     // This is actually a uuid from the looks of it, should we be more strict on the type here?
+    id?: string;
     modified?: Date;
     modifiedBy?: string;
     name?: string;
     queryName?: string;
     // This is in the format of "db:953", not quite sure why we have an id and reportId.
     reportId?: string;
-    // This comes directly from the API response and is a link to LK Server
     runUrl?: string;
     schemaName?: string;
     shared?: boolean;
+    // This comes directly from the API response and is a link to LK Server
     thumbnail?: string; // This is actually a URL, do we enforce that?
     type?: DataViewInfoType;
     viewName?: string;
-    // This is a client side only attribute. Used to navigate within a Single Page App.
     visible?: boolean;
 }
 

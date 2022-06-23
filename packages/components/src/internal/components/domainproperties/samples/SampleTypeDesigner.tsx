@@ -83,7 +83,7 @@ interface Props {
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: SampleTypeModel) => void;
-    // DomainDesigner props
+    // This sets the top of the sticky header, default is 0
     containerTop?: number;
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
@@ -99,33 +99,22 @@ interface Props {
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
     nounPlural?: string;
-
-    // EntityDetailsForm props
     nounSingular?: string;
     onCancel: () => void;
     onChange?: (model: SampleTypeModel) => void;
     onComplete: (response: DomainDesign) => void;
-
     sampleAliasCaption?: string;
     sampleTypeCaption?: string;
     saveBtnText?: string;
     showAliquotOptions?: boolean;
     showGenIdBanner?: boolean;
     showLinkToStudy?: boolean;
-
     showParentLabelPrefix?: boolean;
-
     successBsStyle?: string;
-
     testMode?: boolean;
-
     useSeparateDataClassesAliasMenu?: boolean;
-
-    // This sets the top of the sticky header, default is 0
     useTheme?: boolean;
-
     validateNameExpressions?: boolean;
-
     validateProperties?: (designerDetails?: any) => Promise<any>;
 }
 

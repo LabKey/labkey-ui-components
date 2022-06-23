@@ -135,9 +135,9 @@ interface IDomainDesign {
     domainURI: string;
     fields?: List<DomainField>;
     indices?: List<DomainIndex>;
-    // set of fields to initialize a manually created design
     instructions?: string;
     name: string;
+    // set of fields to initialize a manually created design
     newDesignFields?: List<DomainField>;
     queryName?: string;
     schemaName?: string;
@@ -1779,10 +1779,10 @@ export class DomainException
 interface IDomainFieldError {
     fieldName: string;
     message: string;
-    newRowIndexes?: List<number>;
+    newRowIndexes?: List<number>; // for drag and drop
     propertyId?: number;
     rowIndexes: List<number>;
-    severity?: string; // for drag and drop
+    severity?: string;
 }
 
 export class DomainFieldError

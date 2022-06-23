@@ -25,6 +25,7 @@ import {
     QueryColumn,
     QueryInfo,
     QueryInfoStatus,
+    QueryLookup,
     resolveSchemaQuery,
     SchemaDetails,
     SchemaQuery,
@@ -56,12 +57,13 @@ export function invalidateQueryDetailsCacheKey(key: string): void {
 export interface GetQueryDetailsOptions {
     containerPath?: string;
     fk?: string;
+    lookup?: QueryLookup;
     queryName: string;
     schemaName: string;
 }
 
 export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
-    const { containerPath, queryName, schemaName, fk } = options;
+    const { containerPath, queryName, schemaName, fk, lookup } = options;
     const schemaQuery = SchemaQuery.create(schemaName, queryName);
     const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
 
@@ -84,6 +86,8 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                             message: queryDetails.exception,
                             exceptionClass: undefined,
                         });
+                    } else if (lookup) {
+                        resolve(applyQueryMetadata(queryDetails, lookup.schemaName, lookup.queryName));
                     } else {
                         resolve(applyQueryMetadata(queryDetails));
                     }
@@ -105,19 +109,21 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
     return queryDetailsCache[key];
 }
 
-export function applyQueryMetadata(rawQueryInfo: any): QueryInfo {
+export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, queryName?: string): QueryInfo {
     let queryInfo;
     const metadata = getQueryMetadata();
+    const _schemaName = schemaName ?? rawQueryInfo?.schemaName;
+    const _queryName = queryName ?? rawQueryInfo?.name;
 
-    if (rawQueryInfo && rawQueryInfo.schemaName && rawQueryInfo.name) {
-        const schemaQuery = SchemaQuery.create(rawQueryInfo.schemaName, rawQueryInfo.name);
+    if (rawQueryInfo && _schemaName && _queryName) {
+        const schemaQuery = SchemaQuery.create(_schemaName, _queryName);
 
         let columns = OrderedMap<string, QueryColumn>();
         rawQueryInfo.columns.forEach(rawColumn => {
             columns = columns.set(rawColumn.fieldKey.toLowerCase(), applyColumnMetadata(schemaQuery, rawColumn));
         });
 
-        let schemaMeta = metadata.getIn(['schema', rawQueryInfo.schemaName.toLowerCase(), 'queryDefaults']);
+        let schemaMeta = metadata.getIn(['schema', _schemaName.toLowerCase(), 'queryDefaults']);
 
         if (schemaMeta) {
             schemaMeta = schemaMeta.toJS();
@@ -126,9 +132,9 @@ export function applyQueryMetadata(rawQueryInfo: any): QueryInfo {
         // see if metadata is defined for this query
         let queryMeta = metadata.getIn([
             'schema',
-            rawQueryInfo.schemaName.toLowerCase(),
+            _schemaName.toLowerCase(),
             'query',
-            rawQueryInfo.name.toLowerCase(),
+            _schemaName.toLowerCase(),
         ]);
 
         if (queryMeta) {
@@ -166,12 +172,12 @@ export function applyQueryMetadata(rawQueryInfo: any): QueryInfo {
         }
 
         // TODO get rid of the splitCamelCase?  It's only sometimes the right thing to do.
-        const queryLabel = Parsers.splitCamelCase(rawQueryInfo.title || rawQueryInfo.name);
+        const queryLabel = Parsers.splitCamelCase(rawQueryInfo.title || _queryName);
 
         const defaultQueryMeta = {
             queryLabel,
             plural: queryLabel,
-            schemaLabel: Parsers.splitCamelCase(rawQueryInfo.schemaName),
+            schemaLabel: Parsers.splitCamelCase(_schemaName),
             singular: queryLabel,
         };
 

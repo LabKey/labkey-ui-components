@@ -372,6 +372,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                     schemaName: queryInfo.schemaQuery.schemaName,
                     queryName: queryInfo.schemaQuery.queryName,
                     fk: column.index,
+                    lookup: column.lookup,
                 });
                 setExpandedColumns({ ...expandedColumns, [column.index]: fkQueryInfo });
             } catch (error) {

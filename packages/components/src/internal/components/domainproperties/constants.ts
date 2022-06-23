@@ -210,9 +210,9 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideConditionalFormatting: false,
 };
 
-export const DERIVATION_DATA_SCOPE_CHILD_ONLY = 'ChildOnly';
-export const DERIVATION_DATA_SCOPE_PARENT_ONLY = 'ParentOnly';
-export const DERIVATION_DATA_SCOPE_ALL = 'All';
+const DERIVATION_DATA_SCOPE_CHILD_ONLY = 'ChildOnly';
+const DERIVATION_DATA_SCOPE_PARENT_ONLY = 'ParentOnly';
+const DERIVATION_DATA_SCOPE_ALL = 'All';
 
 export const DERIVATION_DATA_SCOPES = {
     CHILD_ONLY: DERIVATION_DATA_SCOPE_CHILD_ONLY,

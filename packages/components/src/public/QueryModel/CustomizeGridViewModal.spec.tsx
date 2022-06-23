@@ -21,6 +21,7 @@ import {
     CustomizeGridViewModal,
     FieldLabelDisplay,
 } from './CustomizeGridViewModal';
+import { Draggable } from 'react-beautiful-dnd';
 
 const QUERY_COL = QueryColumn.create({
     name: 'testColumn',
@@ -123,7 +124,7 @@ describe('ColumnChoice', () => {
 });
 
 describe('ColumnInView', () => {
-    function validate(wrapper: ReactWrapper, column: QueryColumn, canBeRemoved: boolean) {
+    function validate(wrapper: ReactWrapper, column: QueryColumn, canBeRemoved: boolean, dragDisabled: boolean) {
         const fieldName = wrapper.find('.field-name');
         expect(fieldName.text()).toBe(column.caption);
         const removeIcon = wrapper.find('.fa-times');
@@ -133,11 +134,14 @@ describe('ColumnInView', () => {
             expect(iconParent.prop('className')).toContain('clickable');
             expect(iconParent.prop('onClick')).toBeDefined();
         } else {
-            expect(iconParent.prop('className')).toContain('text-muted disabled');
+            expect(iconParent.prop('className')).toContain('view-field__action disabled');
             expect(iconParent.prop('onClick')).toBeNull();
         }
         if (!canBeRemoved) {
             expect(wrapper.find(OverlayTrigger).exists()).toBeTruthy();
+        }
+        if (dragDisabled) {
+            expect(wrapper.find(Draggable).prop("isDragDisabled")).toBe(true);
         }
     }
 
@@ -148,12 +152,15 @@ describe('ColumnInView', () => {
                     column={QUERY_COL}
                     index={1}
                     onRemoveColumn={jest.fn()}
-                    onClick={jest.fn}
+                    onClick={jest.fn()}
                     selected={undefined}
+                    isDragDisabled={false}
+                    onEditTitle={jest.fn()}
+                    onUpdateTitle={jest.fn()}
                 />
             )
         );
-        validate(wrapper, QUERY_COL, true);
+        validate(wrapper, QUERY_COL, true, false);
         wrapper.unmount();
     });
 
@@ -174,10 +181,69 @@ describe('ColumnInView', () => {
                     onRemoveColumn={jest.fn()}
                     onClick={jest.fn}
                     selected={undefined}
+                    isDragDisabled={false}
+                    onEditTitle={jest.fn()}
+                    onUpdateTitle={jest.fn()}
                 />
             )
         );
-        validate(wrapper, column, false);
+        validate(wrapper, column, false, false);
+        wrapper.unmount();
+    });
+
+    test("drag disabled", () => {
+        const column = QueryColumn.create({
+            name: 'testColumn',
+            fieldKey: 'testColumn',
+            fieldKeyArray: ['testColumn'],
+            caption: 'Test Column',
+            addToDisplayView: true,
+        });
+
+        const wrapper = mount(
+            wrapDraggable(
+                <ColumnInView
+                    column={column}
+                    index={1}
+                    onRemoveColumn={jest.fn()}
+                    onClick={jest.fn}
+                    selected={undefined}
+                    isDragDisabled={true}
+                    onEditTitle={jest.fn()}
+                    onUpdateTitle={jest.fn()}
+                />
+            )
+        );
+        validate(wrapper, column, false, false);
+        wrapper.unmount();
+    });
+
+    test("Editing", () => {
+        const column = QueryColumn.create({
+            name: 'testColumn',
+            fieldKey: 'testColumn',
+            fieldKeyArray: ['testColumn'],
+            caption: 'Test Column',
+            addToDisplayView: true,
+        });
+
+        const wrapper = mount(
+            wrapDraggable(
+                <ColumnInView
+                    column={column}
+                    index={1}
+                    onRemoveColumn={jest.fn()}
+                    onClick={jest.fn}
+                    selected={undefined}
+                    isDragDisabled={true}
+                    onEditTitle={jest.fn()}
+                    onUpdateTitle={jest.fn()}
+                />
+            )
+        );
+        wrapper.find(".fa-pencil").simulate("click");
+        expect(wrapper.find(".fa-pencil").exists()).toBeFalsy();
+        expect(wrapper.find("input").exists()).toBe(true);
         wrapper.unmount();
     });
 });
@@ -353,14 +419,17 @@ describe('FieldLabelDisplay', () => {
     test('not lookup', () => {
         const wrapper = mount(<FieldLabelDisplay column={QUERY_COL} includeFieldKey />);
         expect(wrapper.find('.field-name')).toHaveLength(1);
+        expect(wrapper.find('.field-name').text()).toBe(QUERY_COL.caption)
         expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find("input")).toHaveLength(0);
         wrapper.unmount();
     });
 
     test('is lookup', () => {
         const wrapper = mount(<FieldLabelDisplay column={QUERY_COL_LOOKUP} includeFieldKey />);
         expect(wrapper.find('.field-name')).toHaveLength(1);
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
+        expect(wrapper.find(OverlayTrigger)).toHaveLength(1)
+        expect(wrapper.find("input")).toHaveLength(0);;
         wrapper.unmount();
     });
 
@@ -368,7 +437,16 @@ describe('FieldLabelDisplay', () => {
         const wrapper = mount(<FieldLabelDisplay column={QUERY_COL_LOOKUP} />);
         expect(wrapper.find('.field-name')).toHaveLength(1);
         expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find("input")).toHaveLength(0);
+
         wrapper.unmount();
+    });
+
+    test("is editing", () => {
+       const wrapper = mount(<FieldLabelDisplay column={QUERY_COL} editing />);
+       expect(wrapper.find("input")).toHaveLength(1);
+       expect(wrapper.find("input").prop("defaultValue")).toBe(QUERY_COL.caption);
+       wrapper.unmount();
     });
 });
 

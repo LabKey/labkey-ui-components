@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.188.1
+*Released*: 22 June 2022
+* Enable editing of column titles for fields shown in view
+* Don't show `GridTitle` when grid is not editable in application.
+
 ### version 2.188.0
 *Released*: 21 June 2022
 * Issue 45373: Sample Finder export generates ambiguous column header names

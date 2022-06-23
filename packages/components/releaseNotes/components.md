@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.188.3
+*Released*: 23 June 2022
+* Issue 45028: Display details view columns in lineage
+
 ### version 2.188.2
 *Released*: 23 June 2022
 * Item 10380: Save Grid Views - Allow removal of addToDisplayView columns

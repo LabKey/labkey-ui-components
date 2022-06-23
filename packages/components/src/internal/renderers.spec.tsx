@@ -103,7 +103,6 @@ describe('HeaderCellDropdown', () => {
         wrapper.unmount();
     });
 
-
     test('no col', () => {
         const wrapper = mount(
             <HeaderCellDropdown {...DEFAULT_PROPS} column={new GridColumn({ index: 'column', title: 'Column' })} />

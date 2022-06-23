@@ -155,7 +155,11 @@ export const ManageViewsModal: FC<Props> = memo(props => {
 
                         let revert = <span className="gray-text">Revert</span>;
                         if (view.isSaved) {
-                            revert = <span onClick={revertDefaultView} className="clickable-text">Revert</span>;
+                            revert = (
+                                <span onClick={revertDefaultView} className="clickable-text">
+                                    Revert
+                                </span>
+                            );
                         }
 
                         return (

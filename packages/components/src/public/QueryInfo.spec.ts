@@ -124,12 +124,17 @@ describe('QueryInfo', () => {
     });
 
     describe('getDisplayColumns', () => {
-        const queryInfoWithViews = QueryInfo.fromJSON({
-            columns: [{ fieldKey: 'test1' }, { fieldKey: 'test2', addToDisplayView: true }, { fieldKey: 'test3', addToDisplayView: true }],
-            views: [
-                { name: '', default: true },
-            ],
-        }, true);
+        const queryInfoWithViews = QueryInfo.fromJSON(
+            {
+                columns: [
+                    { fieldKey: 'test1' },
+                    { fieldKey: 'test2', addToDisplayView: true },
+                    { fieldKey: 'test3', addToDisplayView: true },
+                ],
+                views: [{ name: '', default: true }],
+            },
+            true
+        );
 
         test('system default view with addToDisplayView', () => {
             const columns = queryInfoWithViews.getDisplayColumns();
@@ -145,12 +150,17 @@ describe('QueryInfo', () => {
         });
 
         test('saved default view should not include addToDisplayView', () => {
-            const qv = QueryInfo.fromJSON({
-                columns: [{ fieldKey: 'test1' }, { fieldKey: 'test2', addToDisplayView: true }, { fieldKey: 'test3', addToDisplayView: true }],
-                views: [
-                    { name: '', default: true, saved: true },
-                ],
-            }, true);
+            const qv = QueryInfo.fromJSON(
+                {
+                    columns: [
+                        { fieldKey: 'test1' },
+                        { fieldKey: 'test2', addToDisplayView: true },
+                        { fieldKey: 'test3', addToDisplayView: true },
+                    ],
+                    views: [{ name: '', default: true, saved: true }],
+                },
+                true
+            );
             const columns = qv.getDisplayColumns();
             expect(columns.size).toBe(0);
         });

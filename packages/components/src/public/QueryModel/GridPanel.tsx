@@ -367,11 +367,11 @@ interface State {
     errorMsg: React.ReactNode;
     headerClickCount: { [key: string]: number };
     isViewSaved?: boolean;
+    selectedColumn: QueryColumn;
     showCustomizeViewModal: boolean;
     showFilterModalFieldKey: string;
     showManageViewsModal: boolean;
     showSaveViewModal: boolean;
-    selectedColumn: QueryColumn;
 }
 
 /**
@@ -718,14 +718,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.saveAsSessionView({
             columns: model.displayColumns
                 .filter(column => column.index !== columnToHide.index)
-                .map(col => ({ fieldKey: col.index, title: col.caption === col.name ? "" : col.caption })),
+                .map(col => ({ fieldKey: col.index, title: col.caption === col.name ? '' : col.caption })),
         });
     };
 
     addColumn = (selectedColumn: QueryColumn): void => {
         this.setState({
-            selectedColumn: selectedColumn,
-            showCustomizeViewModal: true
+            selectedColumn,
+            showCustomizeViewModal: true,
         });
     };
 

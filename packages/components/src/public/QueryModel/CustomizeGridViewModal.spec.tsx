@@ -6,6 +6,8 @@ import { Modal, OverlayTrigger } from 'react-bootstrap';
 
 import { fromJS } from 'immutable';
 
+import { Draggable } from 'react-beautiful-dnd';
+
 import { SchemaQuery } from '../SchemaQuery';
 import { QueryInfo } from '../QueryInfo';
 import { ViewInfo } from '../../internal/ViewInfo';
@@ -21,7 +23,6 @@ import {
     CustomizeGridViewModal,
     FieldLabelDisplay,
 } from './CustomizeGridViewModal';
-import { Draggable } from 'react-beautiful-dnd';
 
 const QUERY_COL = QueryColumn.create({
     name: 'testColumn',
@@ -133,7 +134,7 @@ describe('ColumnInView', () => {
         expect(iconParent.prop('className')).toContain('view-field__action clickable');
         expect(iconParent.prop('onClick')).toBeDefined();
         if (dragDisabled) {
-            expect(wrapper.find(Draggable).prop("isDragDisabled")).toBe(true);
+            expect(wrapper.find(Draggable).prop('isDragDisabled')).toBe(true);
         }
     }
 
@@ -183,7 +184,7 @@ describe('ColumnInView', () => {
         wrapper.unmount();
     });
 
-    test("drag disabled", () => {
+    test('drag disabled', () => {
         const column = QueryColumn.create({
             name: 'testColumn',
             fieldKey: 'testColumn',
@@ -210,7 +211,7 @@ describe('ColumnInView', () => {
         wrapper.unmount();
     });
 
-    test("Editing", () => {
+    test('Editing', () => {
         const column = QueryColumn.create({
             name: 'testColumn',
             fieldKey: 'testColumn',
@@ -233,9 +234,9 @@ describe('ColumnInView', () => {
                 />
             )
         );
-        wrapper.find(".fa-pencil").simulate("click");
-        expect(wrapper.find(".fa-pencil").exists()).toBeFalsy();
-        expect(wrapper.find("input").exists()).toBe(true);
+        wrapper.find('.fa-pencil').simulate('click');
+        expect(wrapper.find('.fa-pencil').exists()).toBeFalsy();
+        expect(wrapper.find('input').exists()).toBe(true);
         wrapper.unmount();
     });
 });
@@ -411,17 +412,17 @@ describe('FieldLabelDisplay', () => {
     test('not lookup', () => {
         const wrapper = mount(<FieldLabelDisplay column={QUERY_COL} includeFieldKey />);
         expect(wrapper.find('.field-name')).toHaveLength(1);
-        expect(wrapper.find('.field-name').text()).toBe(QUERY_COL.caption)
+        expect(wrapper.find('.field-name').text()).toBe(QUERY_COL.caption);
         expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
-        expect(wrapper.find("input")).toHaveLength(0);
+        expect(wrapper.find('input')).toHaveLength(0);
         wrapper.unmount();
     });
 
     test('is lookup', () => {
         const wrapper = mount(<FieldLabelDisplay column={QUERY_COL_LOOKUP} includeFieldKey />);
         expect(wrapper.find('.field-name')).toHaveLength(1);
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(1)
-        expect(wrapper.find("input")).toHaveLength(0);;
+        expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
+        expect(wrapper.find('input')).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -429,16 +430,16 @@ describe('FieldLabelDisplay', () => {
         const wrapper = mount(<FieldLabelDisplay column={QUERY_COL_LOOKUP} />);
         expect(wrapper.find('.field-name')).toHaveLength(1);
         expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
-        expect(wrapper.find("input")).toHaveLength(0);
+        expect(wrapper.find('input')).toHaveLength(0);
 
         wrapper.unmount();
     });
 
-    test("is editing", () => {
-       const wrapper = mount(<FieldLabelDisplay column={QUERY_COL} editing />);
-       expect(wrapper.find("input")).toHaveLength(1);
-       expect(wrapper.find("input").prop("defaultValue")).toBe(QUERY_COL.caption);
-       wrapper.unmount();
+    test('is editing', () => {
+        const wrapper = mount(<FieldLabelDisplay column={QUERY_COL} editing />);
+        expect(wrapper.find('input')).toHaveLength(1);
+        expect(wrapper.find('input').prop('defaultValue')).toBe(QUERY_COL.caption);
+        wrapper.unmount();
     });
 });
 

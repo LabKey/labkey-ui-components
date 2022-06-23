@@ -26,25 +26,27 @@ import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 import { DisableableButton } from '../buttons/DisableableButton';
 
+import { userCanManagePicklists } from '../../app/utils';
+
+import { MY_PICKLISTS_HREF, TEAM_PICKLISTS_HREF } from '../../app/constants';
+
 import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 import { Picklist } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
-import { userCanManagePicklists } from '../../app/utils';
-import { MY_PICKLISTS_HREF, TEAM_PICKLISTS_HREF } from '../../app/constants';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';
 
 interface OwnProps {
-    user: User;
-    initTab?: string;
     CreateButton?: ComponentType<PicklistCreateButtonProps>;
+    initTab?: string;
+    user: User;
 }
 
 interface PicklistGridProps {
-    user: User;
     CreateButton?: ComponentType<PicklistCreateButtonProps>;
     activeTab?: string;
+    user: User;
 }
 
 interface PicklistCreateButtonProps {
@@ -56,8 +58,8 @@ interface PicklistCreateButtonProps {
 const PICKLISTS_CAPTION = 'Manage sample groups for storage and export';
 
 interface ButtonProps {
-    onDelete: () => void;
     activeId: string;
+    onDelete: () => void;
 }
 
 const PicklistGridButtons: FC<ButtonProps & RequiresModelAndActions> = memo(props => {
@@ -92,7 +94,7 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
     const onChangeTab = useCallback((tab: string) => {
-        window.location.href = tab === MY_PICKLISTS_GRID_ID ? MY_PICKLISTS_HREF.toHref() : TEAM_PICKLISTS_HREF.toHref()
+        window.location.href = tab === MY_PICKLISTS_GRID_ID ? MY_PICKLISTS_HREF.toHref() : TEAM_PICKLISTS_HREF.toHref();
         setActiveTabId(tab);
     }, []);
 

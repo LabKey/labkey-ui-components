@@ -8,7 +8,7 @@ import { isFieldFullyLocked } from './propertiesUtil';
 import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_DERIVATION_DATA_SCOPE } from './constants';
 import { IDerivationDataScope, ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
-import { PropDescType } from "./PropDescType";
+import { PropDescType } from './PropDescType';
 
 interface Props extends ITypeDependentProps {
     config?: IDerivationDataScope;
@@ -53,8 +53,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
 
     if (!config.show) return null;
 
-    if (config.dataTypeFilter && fieldDataType && !config.dataTypeFilter(fieldDataType))
-        return null;
+    if (config.dataTypeFilter && fieldDataType && !config.dataTypeFilter(fieldDataType)) return null;
 
     return (
         <div>
@@ -73,7 +72,9 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
                         <Radio
                             name={inputId}
                             value={DERIVATION_DATA_SCOPES.PARENT_ONLY}
-                            checked={(!value && !isExistingNonScopedField) || value === DERIVATION_DATA_SCOPES.PARENT_ONLY}
+                            checked={
+                                (!value && !isExistingNonScopedField) || value === DERIVATION_DATA_SCOPES.PARENT_ONLY
+                            }
                             onChange={onRadioChange}
                             disabled={isFullyLocked || !isParentOnlyValidOption}
                         >

@@ -1874,6 +1874,7 @@ export interface IDomainFormDisplayOptions {
 }
 
 export interface IDerivationDataScope {
+    dataTypeFilter?: (type: PropDescType) => boolean;
     helpLinkNode?: ReactNode;
     labelAll?: string;
     labelChild?: string;
@@ -1881,7 +1882,6 @@ export interface IDerivationDataScope {
     scopeChangeWarning?: string;
     sectionTitle?: string;
     show?: boolean;
-    dataTypeFilter?: (type: PropDescType) => boolean;
 }
 
 /**

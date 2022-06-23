@@ -7,7 +7,7 @@ import { Alert } from '../base/Alert';
 
 import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
-import { PropDescType, TEXT_TYPE, UNIQUE_ID_TYPE } from "./PropDescType";
+import { PropDescType, TEXT_TYPE, UNIQUE_ID_TYPE } from './PropDescType';
 
 describe('DerivationDataScopeFieldOptions', () => {
     test('Default config, new field', () => {

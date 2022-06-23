@@ -57,6 +57,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                 <div className="export-modal-body">
                     <ul>
                         {tabOrder.map(modelId => {
+                            const model = queryModels[modelId];
                             return (
                                 <Checkbox
                                     checked={selected.has(modelId)}
@@ -65,7 +66,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                                     value={modelId}
                                     onChange={onChecked}
                                 >
-                                    {queryModels[modelId].title}
+                                    {`${model.title} (${model.rowCount})`}
                                 </Checkbox>
                             );
                         })}

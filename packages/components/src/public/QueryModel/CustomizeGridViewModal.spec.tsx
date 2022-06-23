@@ -130,9 +130,8 @@ describe('ColumnInView', () => {
         const removeIcon = wrapper.find('.fa-times');
         expect(removeIcon.exists()).toBeTruthy();
         const iconParent = removeIcon.parent();
-        expect(iconParent.prop('className')).toContain('view-field__action disabled');
-        expect(iconParent.prop('onClick')).toBeNull();
-        expect(wrapper.find(OverlayTrigger).exists()).toBeTruthy();
+        expect(iconParent.prop('className')).toContain('view-field__action clickable');
+        expect(iconParent.prop('onClick')).toBeDefined();
         if (dragDisabled) {
             expect(wrapper.find(Draggable).prop("isDragDisabled")).toBe(true);
         }

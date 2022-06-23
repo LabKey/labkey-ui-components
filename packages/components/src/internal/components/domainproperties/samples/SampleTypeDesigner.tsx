@@ -61,7 +61,8 @@ const SAMPLE_SET_HELP_TOPIC = 'createSampleType';
 const ALIQUOT_OPTIONS_HELP = (
     <div>
         <p>
-            <b>Editable for samples only:</b> Field is editable for samples but not for aliquots. An aliquot will inherit the field value from its parent sample.
+            <b>Editable for samples only:</b> Field is editable for samples but not for aliquots. An aliquot will
+            inherit the field value from its parent sample.
         </p>
         <p>
             <b>Editable for aliquots only:</b> Field is viewable and editable for aliquots but not for samples.

@@ -6,6 +6,23 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 10437: Aliquot Field Inheritance
     * Update DerivationDataScopeFieldOptions, SampleTypeDesigner, EntityInsertPanel and SamplesBulkUpdateForm to support aliquot & sample options
 
+### version 2.188.3
+*Released*: 23 June 2022
+* Issue 45028: Display details view columns in lineage
+
+### version 2.188.2
+*Released*: 23 June 2022
+* Item 10380: Save Grid Views - Allow removal of addToDisplayView columns
+  * only add "addToDisplayView" fields to view for unsaved default view (i.e. system default view)
+  * only allow default view revert in Manage Saved Views modal if it is not the system default
+  * set allowViewCustomization false for a few more cases
+  * SpecialtyAssayPanel.tsx update to remove usage of dangerouslySetInnerHTML
+
+### version 2.188.1
+*Released*: 22 June 2022
+* Enable editing of column titles for fields shown in view
+* Don't show `GridTitle` when grid is not editable in application.
+
 ### version 2.188.0
 *Released*: 21 June 2022
 * Issue 45373: Sample Finder export generates ambiguous column header names

@@ -6236,7 +6236,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             allowFiltering={false}
             allowSelections={false}
             allowSorting={true}
-            allowViewCustomization={true}
+            allowViewCustomization={false}
             asPanel={false}
             hideEmptyChartMenu={true}
             hideEmptyViewMenu={true}
@@ -6353,7 +6353,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                   }
                 }
                 allowSelections={false}
-                allowViewCustomization={true}
+                allowViewCustomization={false}
                 isUpdated={false}
                 model={
                   QueryModel {

@@ -57,6 +57,7 @@ export class ViewInfo extends Record({
     name: undefined,
     revertable: false,
     savable: false,
+    saved: false,
     session: false,
     shared: false,
     sorts: List<QuerySort>(),
@@ -74,6 +75,7 @@ export class ViewInfo extends Record({
     declare name: string;
     declare revertable: boolean;
     declare savable: boolean;
+    declare saved: boolean;
     declare session: boolean;
     declare shared: boolean;
     declare sorts: List<QuerySort>;
@@ -143,10 +145,23 @@ export class ViewInfo extends Record({
         );
     }
 
+    get isSaved(): boolean {
+        return this.saved === true;
+    }
+
+    get isSystemView(): boolean {
+        const lcName = this.name?.toLowerCase();
+        return (
+            lcName === ViewInfo.DEFAULT_NAME.toLowerCase() ||
+            lcName === ViewInfo.DETAIL_NAME.toLowerCase() ||
+            lcName === ViewInfo.UPDATE_NAME.toLowerCase()
+        );
+    }
+
     mutate(updates: Partial<ViewInfo>) {
         return new ViewInfo({
             ...this.toJS(),
-            ...updates
+            ...updates,
         });
     }
 }

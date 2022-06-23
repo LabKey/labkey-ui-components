@@ -799,12 +799,9 @@ exports[`AssayPicker AssayPicker 1`] = `
                                           </div>
                                           <div
                                             className="small-margin-bottom"
-                                            dangerouslySetInnerHTML={
-                                              Object {
-                                                "__html": "Imports data from simple Excel or TSV files.",
-                                              }
-                                            }
-                                          />
+                                          >
+                                            Imports data from simple Excel or TSV files.
+                                          </div>
                                         </div>
                                       </Col>
                                     </div>

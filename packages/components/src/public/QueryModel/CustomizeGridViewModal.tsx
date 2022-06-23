@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Modal, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import classNames from 'classnames';
@@ -16,15 +16,53 @@ import { QueryModel } from './QueryModel';
 
 interface FieldLabelDisplayProps {
     column: QueryColumn;
+    editing?: boolean;
     includeFieldKey?: boolean;
+    onEditComplete?: (column?: QueryColumn, title?: string) => void;
 }
 
 // exported for jest testing
 export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
-    const { column, includeFieldKey } = props;
-    const id = column.index + '-fieldlabel-popover';
-    const content = <div className="field-name">{column.caption ?? column.name}</div>;
+    const { column, editing, includeFieldKey, onEditComplete } = props;
 
+    const initialTitle = useMemo(() => {
+        return column.caption ?? column.name;
+    }, [column.caption, column.name]);
+    const [title, setTitle] = useState<string>(initialTitle);
+    const id = column.index + '-fieldlabel-popover';
+    const content = useMemo(() => {
+        return <div className="field-name">{initialTitle}</div>;
+    }, [initialTitle]);
+
+    useEffect(() => {
+        setTitle(initialTitle);
+    }, [initialTitle]);
+
+    const onTitleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+        setTitle(evt.target.value);
+    }, []);
+
+    const onInputBlur = useCallback(() => {
+        if (title !== initialTitle) {
+            onEditComplete(column, title);
+        } else {
+            onEditComplete();
+        }
+    }, [column, initialTitle, title, onEditComplete]);
+
+    if (editing) {
+        return (
+            <input
+                autoFocus
+                placeholder={undefined}
+                className="form-control"
+                defaultValue={title}
+                onBlur={onInputBlur}
+                onChange={onTitleChange}
+                type="text"
+            />
+        );
+    }
     // only show hover tooltip for lookup child fields
     if (!includeFieldKey || column.index.indexOf('/') === -1) return content;
 
@@ -81,12 +119,16 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
             </div>
             <FieldLabelDisplay column={column} />
             {isInView && (
-                <div className="pull-right" title="This field is included in the view.">
+                <div className="pull-right view-field__action disabled" title="This field is included in the view.">
                     <i className="fa fa-check" />
                 </div>
             )}
             {!isInView && column.selectable && (
-                <div className="pull-right clickable" title="Add this field to the view." onClick={_onAddColumn}>
+                <div
+                    className="pull-right view-field__action"
+                    title="Add this field to the view."
+                    onClick={_onAddColumn}
+                >
                     <i className="fa fa-plus" />
                 </div>
             )}
@@ -155,15 +197,19 @@ export const ColumnChoiceGroup: FC<ColumnChoiceLookupProps> = memo(props => {
 interface ColumnInViewProps {
     column: QueryColumn;
     index: number;
+    isDragDisabled: boolean;
     onClick: (index: number) => void;
+    onEditTitle: () => void;
     onRemoveColumn: (column: QueryColumn) => void;
+    onUpdateTitle: (column: QueryColumn, title: string) => void;
     selected: boolean;
 }
 
 // exported for jest tests
 export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
-    const { column, onRemoveColumn, onClick, selected, index } = props;
+    const { column, isDragDisabled, onRemoveColumn, onClick, onEditTitle, onUpdateTitle, selected, index } = props;
     const key = column.index;
+    const [editing, setEditing] = useState<boolean>(false);
 
     const _onRemoveColumn = useCallback(() => {
         onRemoveColumn(column);
@@ -173,28 +219,26 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
         onClick(index);
     }, [onClick, index]);
 
-    let overlay;
-    const cannotBeRemoved = column.addToDisplayView === true;
-    const content = (
-        <span
-            className={'pull-right ' + (cannotBeRemoved ? 'text-muted disabled' : 'clickable')}
-            onClick={cannotBeRemoved ? undefined : _onRemoveColumn}
-        >
-            <i className="fa fa-times" />
-        </span>
+    const _onUpdateTitle = useCallback(
+        (column: QueryColumn, title: string) => {
+            setEditing(false);
+            if (column && title) {
+                onUpdateTitle(column, title);
+            }
+        },
+        [onUpdateTitle]
     );
-    if (cannotBeRemoved) {
-        overlay = (
-            <Popover id={key + '-disabled-popover'} key={key + '-disabled-warning'}>
-                {APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
-            </Popover>
-        );
-    }
+
+    const _onEditTitle = useCallback(() => {
+        setEditing(true);
+        onEditTitle();
+    }, [onEditTitle]);
+
     return (
-        <Draggable key={key} draggableId={key} index={index}>
+        <Draggable key={key} draggableId={key} index={index} isDragDisabled={isDragDisabled}>
             {(dragProvided, snapshot) => (
                 <div
-                    className={classNames('list-group-item flex draggable', { active: selected })}
+                    className={classNames('list-group-item flex draggable', { active: selected && !editing })}
                     onClick={_onClick}
                     ref={dragProvided.innerRef}
                     {...dragProvided.draggableProps}
@@ -202,12 +246,29 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                     <div className="right-spacing" {...dragProvided.dragHandleProps}>
                         <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps} />
                     </div>
-                    <FieldLabelDisplay column={column} includeFieldKey />
-                    {!cannotBeRemoved && content}
-                    {cannotBeRemoved && (
-                        <OverlayTrigger overlay={overlay} placement="left">
-                            {content}
-                        </OverlayTrigger>
+                    <FieldLabelDisplay
+                        column={column}
+                        includeFieldKey
+                        editing={editing}
+                        onEditComplete={_onUpdateTitle}
+                    />
+                    {!editing && (
+                        <span className="pull-right">
+                            <span
+                                className="edit-inline-field__toggle"
+                                title="Edit the field's label for this view."
+                                onClick={_onEditTitle}
+                            >
+                                <i id={'select-' + index} className="fa fa-pencil" />
+                            </span>
+                            <span
+                                className="view-field__action clickable"
+                                title="Remove this field from the view."
+                                onClick={_onRemoveColumn}
+                            >
+                                <i className="fa fa-times" />
+                            </span>
+                        </span>
                     )}
                 </div>
             )}
@@ -227,6 +288,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const { schemaQuery, title, queryInfo } = model;
     const [columnsInView, setColumnsInView] = useState<any>(model.displayColumns);
     const [isDirty, setIsDirty] = useState<boolean>(false);
+    const [editingColumnTitle, setEditingColumnTitle] = useState<boolean>(false);
     const [saveError, setSaveError] = useState<string>(undefined);
     const [queryDetailError, setQueryDetailError] = useState<string>(undefined);
     const [showAllColumns, setShowAllColumns] = useState<boolean>(false);
@@ -244,7 +306,10 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const _onUpdate = useCallback(async () => {
         try {
             const viewInfo = model.currentView.mutate({
-                columns: columnsInView.map(col => ({ fieldKey: col.index })),
+                columns: columnsInView.map(col => ({
+                    fieldKey: col.index,
+                    title: col.caption === col.name ? '' : col.caption,
+                })),
             });
             await saveAsSessionView(schemaQuery, model.containerPath, viewInfo);
             closeModal();
@@ -264,6 +329,21 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         (removedColumn: QueryColumn) => {
             setColumnsInView(columnsInView.filter(column => column.index !== removedColumn.index));
             setIsDirty(true);
+        },
+        [columnsInView]
+    );
+
+    const onEditColumnTitle = useCallback(() => {
+        setEditingColumnTitle(true);
+    }, []);
+
+    const updateColumnTitle = useCallback(
+        (updatedColumn: QueryColumn, title: string) => {
+            const relabeledColumn = updatedColumn.set('caption', title);
+            const index = columnsInView.findIndex(column => column.index === updatedColumn.index);
+            setColumnsInView([...columnsInView.slice(0, index), relabeledColumn, ...columnsInView.slice(index + 1)]);
+            setIsDirty(true);
+            setEditingColumnTitle(false);
         },
         [columnsInView]
     );
@@ -412,9 +492,12 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                                                     key={column.index}
                                                     column={column}
                                                     index={index}
+                                                    isDragDisabled={editingColumnTitle}
                                                     onRemoveColumn={removeColumn}
                                                     selected={selectedIndex === index}
                                                     onClick={onSelectField}
+                                                    onEditTitle={onEditColumnTitle}
+                                                    onUpdateTitle={updateColumnTitle}
                                                 />
                                             );
                                         })}

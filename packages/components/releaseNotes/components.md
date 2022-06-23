@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * apply app query metadata to query details for lookup
   * special case for assay schema to allow for metadata to be applied to all protocols base tables
   * add QueryColumn property for apps to flag columns as removeFromViewCustomization
+  * rename addToDisplayView -> addToSystemView
 
 ### version 2.188.2
 *Released*: 23 June 2022

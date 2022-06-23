@@ -99,7 +99,7 @@ export class QueryColumn extends Record({
     required: undefined,
     selectable: undefined,
     shortCaption: undefined,
-    addToDisplayView: undefined,
+    addToSystemView: undefined,
     removeFromViewCustomization: undefined,
     shownInDetailsView: undefined,
     shownInInsertView: undefined,
@@ -175,7 +175,7 @@ export class QueryColumn extends Record({
     declare required: boolean;
     declare selectable: boolean;
     declare shortCaption: string;
-    declare addToDisplayView: boolean;
+    declare addToSystemView: boolean;
     declare removeFromViewCustomization: boolean;
     declare shownInDetailsView: boolean;
     declare shownInInsertView: boolean;

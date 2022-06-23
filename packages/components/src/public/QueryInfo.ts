@@ -206,13 +206,13 @@ export class QueryInfo extends Record({
                 return list;
             }, List<QueryColumn>());
 
-            // add addToDisplayView columns to unsaved system view (i.e. the default-default view, details view, or update view)
+            // add addToSystemView columns to unsaved system view (i.e. the default-default view, details view, or update view)
             if ((viewInfo.isDefault || viewInfo.isSystemView) && !viewInfo.isSaved && !viewInfo.session) {
                 const columnFieldKeys = viewInfo.columns.reduce((list, col) => {
                     return list.push(col.fieldKey.toLowerCase());
                 }, List<string>());
                 this.columns.forEach(col => {
-                    if (col.fieldKey && col.addToDisplayView && !columnFieldKeys.includes(col.fieldKey.toLowerCase())) {
+                    if (col.fieldKey && col.addToSystemView && !columnFieldKeys.includes(col.fieldKey.toLowerCase())) {
                         if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
                             displayColumns = displayColumns.push(col);
                     }

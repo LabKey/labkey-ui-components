@@ -84,18 +84,20 @@ export interface SamplesSelectionResultProps {
     editStatusData: OperationConfirmationData; // data about which samples can and cannot be edited due to their status
     noStorageSamples: any[];
     sampleItems: Record<string, any>;
+    // mapping from sample rowId to sample record containing lineage
     sampleLineage: Record<string, any>;
-    sampleLineageKeys: string[]; // mapping from sample rowId to sample record containing lineage
+    sampleLineageKeys: string[];
     sampleTypeDomainFields: GroupedSampleFields;
     selectionInfoError: any;
 }
 
 export interface GroupedSampleFields {
-    aliquotFields: string[];
-    // parent only
-    independentFields: string[];
     // aliquot-specific
-    metaFields: string[]; // aliquot & parent rename to sharedFields
+    aliquotFields: string[];
+    // aliquot & parent rename to sharedFields
+    independentFields: string[];
+    // parent only
+    metaFields: string[];
     metricUnit: string;
 }
 

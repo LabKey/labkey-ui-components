@@ -5,7 +5,7 @@ import { Radio } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
 
-import { DOMAIN_FIELD_NOT_LOCKED } from './constants';
+import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 
 describe('DerivationDataScopeFieldOptions', () => {
@@ -49,7 +49,7 @@ describe('DerivationDataScopeFieldOptions', () => {
             onChange: jest.fn(),
             lockType: DOMAIN_FIELD_NOT_LOCKED,
             isExistingField: true,
-            value: 'ParentOnly',
+            value: DERIVATION_DATA_SCOPES.PARENT_ONLY,
         };
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
@@ -101,7 +101,7 @@ describe('DerivationDataScopeFieldOptions', () => {
             onChange: jest.fn(),
             lockType: DOMAIN_FIELD_NOT_LOCKED,
             isExistingField: true,
-            value: 'ChildOnly',
+            value: DERIVATION_DATA_SCOPES.CHILD_ONLY,
         };
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
@@ -130,7 +130,7 @@ describe('DerivationDataScopeFieldOptions', () => {
             onChange: jest.fn(),
             lockType: DOMAIN_FIELD_NOT_LOCKED,
             isExistingField: true,
-            value: 'All',
+            value: DERIVATION_DATA_SCOPES.ALL,
         };
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
@@ -161,14 +161,14 @@ describe('DerivationDataScopeFieldOptions', () => {
             config: {
                 show: true,
                 sectionTitle: 'Sample/Aliquot Options',
-                label_all: 'Separately editable for samples and aliquots',
-                label_child: 'Editable for aliquots only',
-                label_parent: 'Editable for samples only (default)',
+                labelAll: 'Separately editable for samples and aliquots',
+                labelChild: 'Editable for aliquots only',
+                labelParent: 'Editable for samples only (default)',
                 helpLinkNode: <>help</>,
                 scopeChangeWarning: warning,
             },
             isExistingField: true,
-            value: 'ParentOnly',
+            value: DERIVATION_DATA_SCOPES.PARENT_ONLY,
         };
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);

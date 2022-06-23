@@ -565,35 +565,32 @@ export interface EntityDataType {
     exprColumnsWithSubSelect?: string[];
     // when updating this value as an input, the name of that column (e.g, MaterialInputs)
     filterArray?: Filter.IFilter[];
-    // if the data type is defined in /Shared project
-    filterCardHeaderClass?: string;
+    nounAsParentPlural: string; 
     // the controller to use for file import for the given data type. 'experiment' if not provided
     importFileAction: string;
-    // the app url route prefix for the edit design page for the given data type
-    importFileController?: string;
+    uniqueFieldKey: string;
     // help topic for finding out more about dependencies and deletion
-    inputColumnName: string;
+    inputColumnName: string; 
     // used for extracting or querying for the ancestores of this type
-    inputTypeValueField: string;
+    inputTypeValueField: string; 
     // the prefix used for creating links to this type in the application
-    insertColumnNamePrefix: string;
-    // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
-    instanceSchemaName: string;
-    // the action in the 'experiment' controller to use for file import for the given data type
-    isFromSharedContainer?: boolean;
-    // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
-    listingSchemaQuery: SchemaQuery;
-    nounAsParentPlural: string;
-    nounAsParentSingular: string;
-    nounPlural: string;
-    // action in ExperimentController used to get the confirmation data for performing operations on entities
-    nounSingular: string;
+    insertColumnNamePrefix: string; 
+    typeListingSchemaQuery: SchemaQuery; 
     // (e.g., samples) Name of the schema associated with an individual instance that can be used in conjunction with a name returned from the typeListingSchemaQuery listing
     operationConfirmationActionName: string;
-    typeListingSchemaQuery: SchemaQuery;
-    typeNounAsParentSingular: string;
+    // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
+    listingSchemaQuery: SchemaQuery;
+    // action in ExperimentController used to get the confirmation data for performing operations on entities
+    nounSingular: string; 
+    typeNounAsParentSingular: string; 
+    nounPlural: string; // the app url route prefix for the edit design page for the given data type
+    importFileController?: string;
+    nounAsParentSingular: string; // the action in the 'experiment' controller to use for file import for the given data type
+    isFromSharedContainer?: boolean; // if the data type is defined in /Shared project
+    filterCardHeaderClass?: string;
     typeNounSingular: string;
-    uniqueFieldKey: string;
+    // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
+    instanceSchemaName: string;
 }
 
 export class OperationConfirmationData {

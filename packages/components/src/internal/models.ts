@@ -71,17 +71,17 @@ export interface IDataViewInfo {
     modifiedBy?: string;
     name?: string;
     queryName?: string;
-    reportId?: string;
     // This is in the format of "db:953", not quite sure why we have an id and reportId.
+    reportId?: string;
+    // This comes directly from the API response and is a link to LK Server
     runUrl?: string;
     schemaName?: string;
     shared?: boolean;
     thumbnail?: string; // This is actually a URL, do we enforce that?
     type?: DataViewInfoType;
     viewName?: string;
-
-    // This comes directly from the API response and is a link to LK Server
-    visible?: boolean; // This is a client side only attribute. Used to navigate within a Single Page App.
+    // This is a client side only attribute. Used to navigate within a Single Page App.
+    visible?: boolean;
 }
 
 export interface DataViewClientMetadata extends IDataViewInfo {

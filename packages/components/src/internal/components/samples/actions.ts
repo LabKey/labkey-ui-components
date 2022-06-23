@@ -58,7 +58,7 @@ import { findMissingValues } from '../../util/utils';
 import { ParentEntityLineageColumns } from '../entities/constants';
 import { getInitialParentChoices } from '../entities/utils';
 
-import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
+import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
 import { isSampleStatusEnabled } from '../../app/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
@@ -233,9 +233,9 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
                 const metricUnit = sampleTypeDomain.get('options').get('metricUnit');
 
                 sampleTypeDomain.domainDesign.fields.forEach(field => {
-                    if (field.derivationDataScope === 'ChildOnly') {
+                    if (field.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY) {
                         aliquotFields.push(field.name.toLowerCase());
-                    } else if (field.derivationDataScope === 'All') {
+                    } else if (field.derivationDataScope === DERIVATION_DATA_SCOPES.ALL) {
                         independentFields.push(field.name.toLowerCase());
                     } else {
                         metaFields.push(field.name.toLowerCase());

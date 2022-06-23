@@ -61,11 +61,10 @@ const SAMPLE_SET_HELP_TOPIC = 'createSampleType';
 const ALIQUOT_OPTIONS_HELP = (
     <div>
         <p>
-            <b>Editable for samples only:</b> Field is only editable for samples but not for aliquots. Aliquot will
-            inherit the field value from its parent sample.
+            <b>Editable for samples only:</b> Field is editable for samples but not for aliquots. An aliquot will inherit the field value from its parent sample.
         </p>
         <p>
-            <b>Editable for aliquots only:</b> Field is only viewable and editable for aliquots.
+            <b>Editable for aliquots only:</b> Field is viewable and editable for aliquots but not for samples.
         </p>
         <p>
             <b>Separately editable for samples and aliquots:</b> Field is editable for samples and aliquots
@@ -815,9 +814,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                         derivationDataScopeConfig: {
                             show: showAliquotOptions,
                             sectionTitle: 'Sample/Aliquot Options',
-                            label_all: 'Separately editable for samples and aliquots',
-                            label_child: 'Editable for aliquots only',
-                            label_parent: 'Editable for samples only (default)',
+                            labelAll: 'Separately editable for samples and aliquots',
+                            labelChild: 'Editable for aliquots only',
+                            labelParent: 'Editable for samples only (default)',
                             helpLinkNode: ALIQUOT_OPTIONS_HELP,
                             scopeChangeWarning:
                                 "Updating a 'Samples Only' field to be 'Samples and Aliquots' will blank out the field values for all aliquots. This action cannot be undone. ",

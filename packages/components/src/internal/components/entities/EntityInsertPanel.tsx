@@ -70,7 +70,7 @@ import { DATA_IMPORT_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { BulkAddData } from '../editable/EditableGrid';
 
-import { DERIVATION_DATA_SCOPE_ALL, DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
+import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
 
 import { getCurrentProductName, isSampleManagerEnabled } from '../../app/utils';
 
@@ -455,8 +455,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     isAliquotField = (column): boolean => {
         return (
             ALIQUOT_FIELD_COLS.indexOf(column.fieldKey.toLowerCase()) > -1 ||
-            column.derivationDataScope === DERIVATION_DATA_SCOPE_CHILD_ONLY ||
-            column.derivationDataScope === DERIVATION_DATA_SCOPE_ALL
+            column.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY ||
+            column.derivationDataScope === DERIVATION_DATA_SCOPES.ALL
         );
     };
 
@@ -903,7 +903,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { creationType } = this.props;
 
         if (creationType === SampleCreationType.Aliquots) return this.isAliquotField(column);
-        return column.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY;
+        return column.derivationDataScope !== DERIVATION_DATA_SCOPES.CHILD_ONLY;
     };
 
     getInsertColumns = (): List<QueryColumn> => {

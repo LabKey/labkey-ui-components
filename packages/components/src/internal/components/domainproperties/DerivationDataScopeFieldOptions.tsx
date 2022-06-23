@@ -5,12 +5,7 @@ import { Alert } from '../base/Alert';
 
 import { createFormInputId } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
-import {
-    DERIVATION_DATA_SCOPE_ALL,
-    DERIVATION_DATA_SCOPE_CHILD_ONLY,
-    DERIVATION_DATA_SCOPE_PARENT_ONLY,
-    DOMAIN_FIELD_DERIVATION_DATA_SCOPE,
-} from './constants';
+import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_DERIVATION_DATA_SCOPE } from './constants';
 import { IDerivationDataScope, ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 
@@ -29,9 +24,9 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
     const [hasScopeChange, setHasScopeChange] = useState<boolean>(false);
 
     useEffect(() => {
-        setIsExistingParentOnly(isExistingField && (!value || value === DERIVATION_DATA_SCOPE_PARENT_ONLY));
-        setIsChildOnlyValidOption(!isExistingField || value === DERIVATION_DATA_SCOPE_CHILD_ONLY);
-        setIsParentOnlyValidOption(!isExistingField || !value || value === DERIVATION_DATA_SCOPE_PARENT_ONLY);
+        setIsExistingParentOnly(isExistingField && (!value || value === DERIVATION_DATA_SCOPES.PARENT_ONLY));
+        setIsChildOnlyValidOption(!isExistingField || value === DERIVATION_DATA_SCOPES.CHILD_ONLY);
+        setIsParentOnlyValidOption(!isExistingField || !value || value === DERIVATION_DATA_SCOPES.PARENT_ONLY);
     }, [domainIndex, index, isExistingField]); // don't use config or value in dependency, only evaluate once per index
 
     const inputId = useMemo(() => {
@@ -44,7 +39,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
 
     const onRadioChange = useCallback(
         event => {
-            if (isExistingParentOnly && event.target.value === DERIVATION_DATA_SCOPE_ALL) setHasScopeChange(true);
+            if (isExistingParentOnly && event.target.value === DERIVATION_DATA_SCOPES.ALL) setHasScopeChange(true);
             else setHasScopeChange(false);
             onChange(inputId, event.target.value);
         },
@@ -66,33 +61,33 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
             </Row>
             <Row>
                 <Col xs={12}>
-                    <div className="dataset_data_row_uniqueness_container">
+                    <div className="derivation_scope_options_container">
                         <Radio
                             name={inputId}
-                            value={DERIVATION_DATA_SCOPE_PARENT_ONLY}
-                            checked={!value || value === DERIVATION_DATA_SCOPE_PARENT_ONLY}
+                            value={DERIVATION_DATA_SCOPES.PARENT_ONLY}
+                            checked={!value || value === DERIVATION_DATA_SCOPES.PARENT_ONLY}
                             onChange={onRadioChange}
                             disabled={isFullyLocked || !isParentOnlyValidOption}
                         >
-                            {config.label_parent}
+                            {config.labelParent}
                         </Radio>
                         <Radio
                             name={inputId}
-                            value={DERIVATION_DATA_SCOPE_CHILD_ONLY}
-                            checked={value === DERIVATION_DATA_SCOPE_CHILD_ONLY}
+                            value={DERIVATION_DATA_SCOPES.CHILD_ONLY}
+                            checked={value === DERIVATION_DATA_SCOPES.CHILD_ONLY}
                             onChange={onRadioChange}
                             disabled={isFullyLocked || !isChildOnlyValidOption}
                         >
-                            {config.label_child}
+                            {config.labelChild}
                         </Radio>
                         <Radio
                             name={inputId}
-                            value={DERIVATION_DATA_SCOPE_ALL}
-                            checked={value === DERIVATION_DATA_SCOPE_ALL}
+                            value={DERIVATION_DATA_SCOPES.ALL}
+                            checked={value === DERIVATION_DATA_SCOPES.ALL}
                             onChange={onRadioChange}
                             disabled={isFullyLocked}
                         >
-                            {config.label_all}
+                            {config.labelAll}
                         </Radio>
                     </div>
                 </Col>
@@ -110,8 +105,8 @@ DerivationDataScopeFieldOptions.defaultProps = {
     config: {
         show: true,
         sectionTitle: 'Derivation Data Scope',
-        label_all: 'Editable for parent and child data independently',
-        label_child: 'Editable for child data only',
-        label_parent: 'Editable for parent data only (default)',
+        labelAll: 'Editable for parent and child data independently',
+        labelChild: 'Editable for child data only',
+        labelParent: 'Editable for parent data only (default)',
     },
 };

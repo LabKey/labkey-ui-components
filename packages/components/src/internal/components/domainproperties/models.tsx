@@ -741,23 +741,23 @@ export interface IDomainField {
     original: Partial<IDomainField>;
     primaryKey?: boolean;
     principalConceptCode?: string;
-    shownInInsertView?: boolean;
-    shownInUpdateView?: boolean;
-    visible: boolean;
+    propertyId?: number;
+    propertyURI: string;
+    propertyValidators: List<PropertyValidator>;
     rangeURI: string;
     rangeValidators: List<PropertyValidator>;
     recommendedVariable?: boolean;
-    scannable?: boolean;
+    regexValidators: List<PropertyValidator>;
     required?: boolean;
     scale?: number;
-    propertyId?: number;
+    scannable?: boolean;
     shownInDetailsView?: boolean;
-    propertyURI: string;
+    shownInInsertView?: boolean;
+    shownInUpdateView?: boolean;
     sourceOntology?: string;
-    updatedField: boolean;
-    regexValidators: List<PropertyValidator>;
     textChoiceValidator?: PropertyValidator;
-    propertyValidators: List<PropertyValidator>;
+    updatedField: boolean;
+    visible: boolean;
 }
 
 export class DomainField
@@ -1875,9 +1875,9 @@ export interface IDomainFormDisplayOptions {
 
 export interface IDerivationDataScope {
     helpLinkNode?: ReactNode;
-    label_all?: string;
-    label_child?: string;
-    label_parent?: string;
+    labelAll?: string;
+    labelChild?: string;
+    labelParent?: string;
     scopeChangeWarning?: string;
     sectionTitle?: string;
     show?: boolean;

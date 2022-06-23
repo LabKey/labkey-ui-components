@@ -17,6 +17,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Query } from '@labkey/api';
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events';
 import { CellMessage, ValueDescriptor } from '../../models';
@@ -40,6 +41,7 @@ interface Props {
     cellActions: CellActions;
     col: QueryColumn;
     colIdx: number;
+    containerFilter?: Query.ContainerFilter;
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
@@ -73,7 +75,7 @@ export class Cell extends React.PureComponent<Props> {
         this.displayEl = React.createRef();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(): void {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
         }

@@ -17,6 +17,7 @@ import classNames from 'classnames';
 import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode } from 'react';
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { List, Map, OrderedMap, Set } from 'immutable';
+import { Query } from '@labkey/api';
 
 import {
     addRows,
@@ -97,7 +98,8 @@ function inputCellFactory(
     columnMetadata: EditableColumnMetadata,
     readonlyRows: List<any>,
     lockedRows: List<any>,
-    cellActions: CellActions
+    cellActions: CellActions,
+    containerFilter: Query.ContainerFilter
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
@@ -134,6 +136,7 @@ function inputCellFactory(
                 cellActions={cellActions}
                 col={c.raw}
                 colIdx={colIdx}
+                containerFilter={containerFilter}
                 key={inputCellKey(c.raw, row)}
                 placeholder={columnMetadata ? columnMetadata.placeholder : undefined}
                 readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
@@ -208,6 +211,7 @@ export interface SharedEditableGridProps {
     bulkUpdateText?: string;
     columnMetadata?: Map<string, EditableColumnMetadata>;
     condensed?: boolean;
+    containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
     emptyGridMsg?: string;
     extraExportColumns?: Array<Partial<QueryColumn>>;
@@ -222,9 +226,9 @@ export interface SharedEditableGridProps {
     readOnlyColumns?: List<string>;
     readonlyRows?: List<any>;   // list of key values for rows that are readonly.
     removeColumnTitle?: string;
+    rowNumColumn?: GridColumn;
     striped?: boolean;
     updateColumns?: List<QueryColumn>;
-    rowNumColumn?: GridColumn;
 }
 
 export interface EditableGridProps extends SharedEditableGridProps {
@@ -566,6 +570,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             allowBulkRemove,
             allowBulkUpdate,
             allowRemove,
+            containerFilter,
             editorModel,
             hideCountCol,
             queryInfo,
@@ -608,7 +613,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         metadata,
                         readonlyRows,
                         lockedRows,
-                        this.cellActions
+                        this.cellActions,
+                        containerFilter
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,

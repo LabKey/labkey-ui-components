@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { ValueDescriptor } from '../../models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
-import { QueryColumn, QuerySelect, SchemaQuery } from '../../..';
+import { QueryColumn, QuerySelect } from '../../..';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 
 const customStyles = {
-    control: (provided, state) => ({
+    control: provided => ({
         ...provided,
         minHeight: 24,
         borderRadius: 0,
     }),
-    valueContainer: (provided, state) => ({
+    valueContainer: provided => ({
         ...provided,
         minHeight: 24,
         padding: '0 4px',
     }),
-    input: (provided, state) => ({
+    input: provided => ({
         ...provided,
         margin: '0px',
     }),
-    indicatorsContainer: (provided, state) => ({
+    indicatorsContainer: provided => ({
         ...provided,
         minHeight: 24,
     }),
@@ -63,6 +63,7 @@ const customTheme = theme => ({
 export interface LookupCellProps {
     col: QueryColumn;
     colIdx: number;
+    containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     rowIdx: number;
@@ -96,7 +97,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
     };
 
     render(): ReactNode {
-        const { col, values, filteredLookupKeys, filteredLookupValues } = this.props;
+        const { col, containerFilter, disabled, values, filteredLookupKeys, filteredLookupValues } = this.props;
 
         const rawValues = values
             .filter(vd => vd.raw !== undefined)
@@ -108,12 +109,12 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 <TextChoiceInput
                     autoFocus
                     queryColumn={col}
-                    disabled={this.props.disabled}
+                    disabled={disabled}
                     containerClass="select-input-cell-container"
                     customTheme={customTheme}
                     customStyles={customStyles}
                     menuPosition="fixed" // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
-                    openMenuOnFocus={true}
+                    openMenuOnFocus
                     inputClass="select-input-cell"
                     placeholder=""
                     onChange={this.onInputChange}
@@ -137,8 +138,8 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         return (
             <QuerySelect
                 autoFocus
-                containerFilter={lookup.containerFilter}
-                disabled={this.props.disabled}
+                containerFilter={lookup.containerFilter ?? containerFilter}
+                disabled={disabled}
                 queryFilters={queryFilters}
                 multiple={isMultiple}
                 schemaQuery={lookup.schemaQuery}
@@ -153,8 +154,8 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 inputClass="select-input-cell"
                 placeholder=""
                 onQSChange={this.onInputChange}
-                label={null}
-                preLoad={true}
+                preLoad
+                showLabel={false}
                 value={isMultiple ? rawValues : rawValues[0]}
             />
         );

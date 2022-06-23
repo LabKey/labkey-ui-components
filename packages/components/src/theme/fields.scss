@@ -81,13 +81,37 @@
     cursor: pointer;
 
     .fa {
-        color: #D3D3D3;
+        color: $light-gray;
         padding-left: 5px;
     }
 
     &:hover {
         .fa {
-            color: #333333;
+            color: $gray-dark;
+        }
+    }
+}
+
+.view-field__action {
+    cursor: pointer;
+
+    .fa {
+        color: $light-gray;
+        padding-left: 8px;
+    }
+
+    &:hover {
+        .fa {
+            color: $gray-dark;
+        }
+    }
+
+    &.disabled {
+        cursor: default;
+        &:hover {
+            .fa {
+                color: $light-gray;
+            }
         }
     }
 }

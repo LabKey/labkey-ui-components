@@ -331,14 +331,14 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
         onSaveView(user?.isAdmin);
     };
 
-    if (!displayTitle && !isEdited && !isUpdated) {
+    if (!displayTitle && (!allowViewCustomization || (!isEdited && !isUpdated))) {
         return null;
     }
 
     return (
         <div className="panel-heading view-header">
-            {isEdited && <span className="alert-info view-edit-alert">Edited</span>}
-            {isUpdated && <span className="alert-success view-edit-alert">Updated</span>}
+            {isEdited && allowViewCustomization && <span className="alert-info view-edit-alert">Edited</span>}
+            {isUpdated && allowViewCustomization && <span className="alert-success view-edit-alert">Updated</span>}
             {displayTitle ?? 'Default View'}
             {showRevert && (
                 <button className="btn btn-default button-left-spacing button-right-spacing" onClick={_revertViewEdit}>
@@ -444,15 +444,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         view: ViewAction;
     };
 
-    getModelView = (): ViewInfo => {
-        const { queryInfo, viewName } = this.props.model;
-        return queryInfo?.getView(viewName, true);
-    };
-
     createGridActionValues = (): ActionValue[] => {
         const { model } = this.props;
         const { filterArray, sorts } = model;
-        const view = this.getModelView();
+        const view = model.currentView;
         const actionValues = [];
 
         const _sorts = view ? sorts.concat(view.sorts.toArray()) : sorts;
@@ -544,7 +539,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     handleFilterRemove = (change: Change, column?: QueryColumn): void => {
         const { model, actions, allowSelections } = this.props;
         const { actionValues } = this.state;
-        const view = this.getModelView();
+        const view = model.currentView;
 
         if (change.type === ChangeType.remove) {
             let newFilters = model.filterArray;
@@ -600,7 +595,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     handleSortChange = (change: Change, newQuerySort?: QuerySort): void => {
         const { model, actions } = this.props;
         const { actionValues } = this.state;
-        const view = this.getModelView();
+        const view = model.currentView;
         let newSorts;
 
         if (change.type === ChangeType.remove) {
@@ -721,7 +716,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     hideColumn = (columnToHide: QueryColumn): void => {
         const { model } = this.props;
         this.saveAsSessionView({
-            columns: model.displayColumns.filter(column => column.index !== columnToHide.index),
+            columns: model.displayColumns
+                .filter(column => column.index !== columnToHide.index)
+                .map(col => ({ fieldKey: col.index, title: col.caption === col.name ? "" : col.caption })),
         });
     };
 
@@ -733,9 +730,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     saveAsSessionView = (updates: Record<string, any>): void => {
-        const { schemaQuery, containerPath } = this.props.model;
-        const view = this.getModelView();
-        const viewInfo = view.mutate(updates);
+        const { model } = this.props;
+        const { schemaQuery, containerPath } = model;
+        const viewInfo = model.currentView.mutate(updates);
 
         saveAsSessionView(schemaQuery, containerPath, viewInfo)
             .then(this.afterViewChange)
@@ -795,7 +792,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     onSessionViewUpdate = (): void => {
         const { actions, model, allowSelections } = this.props;
-
         actions.loadModel(model.id, allowSelections);
     };
 

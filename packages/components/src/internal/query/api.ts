@@ -992,7 +992,7 @@ export function getContainerFilter(containerPath?: string): Query.ContainerFilte
  * This ContainerFilter must be explicitly applied to be respected.
  * @private
  */
-export function getContainerFilterForInsert(): Query.ContainerFilter {
+export function getContainerFilterForLookups(): Query.ContainerFilter {
     // Check to see if product projects support is enabled.
     if (!isProductProjectsEnabled()) {
         return undefined;

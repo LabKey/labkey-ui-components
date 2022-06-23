@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD June 2022
+### version 2.188.2
+*Released*: 23 June 2022
 * Item 10380: Save Grid Views - Allow removal of addToDisplayView columns
   * only add "addToDisplayView" fields to view for unsaved default view (i.e. system default view)
   * only allow default view revert in Manage Saved Views modal if it is not the system default

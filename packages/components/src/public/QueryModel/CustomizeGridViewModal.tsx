@@ -28,7 +28,7 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
     const initialTitle = useMemo(() => {
         return column.caption ?? column.name;
     }, [column.caption, column.name]);
-    const [ title, setTitle ] = useState<string>(initialTitle);
+    const [title, setTitle] = useState<string>(initialTitle);
     const id = column.index + '-fieldlabel-popover';
     const content = useMemo(() => {
         return <div className="field-name">{initialTitle}</div>;
@@ -36,10 +36,10 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
 
     useEffect(() => {
         setTitle(initialTitle);
-    }, [initialTitle])
+    }, [initialTitle]);
 
     const onTitleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-        setTitle(evt.target.value)
+        setTitle(evt.target.value);
     }, []);
 
     const onInputBlur = useCallback(() => {
@@ -61,7 +61,7 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
                 onChange={onTitleChange}
                 type="text"
             />
-        )
+        );
     }
     // only show hover tooltip for lookup child fields
     if (!includeFieldKey || column.index.indexOf('/') === -1) return content;
@@ -124,7 +124,11 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
                 </div>
             )}
             {!isInView && column.selectable && (
-                <div className="pull-right view-field__action" title="Add this field to the view." onClick={_onAddColumn}>
+                <div
+                    className="pull-right view-field__action"
+                    title="Add this field to the view."
+                    onClick={_onAddColumn}
+                >
                     <i className="fa fa-plus" />
                 </div>
             )}
@@ -192,11 +196,11 @@ export const ColumnChoiceGroup: FC<ColumnChoiceLookupProps> = memo(props => {
 
 interface ColumnInViewProps {
     column: QueryColumn;
-    isDragDisabled: boolean;
     index: number;
+    isDragDisabled: boolean;
     onClick: (index: number) => void;
-    onRemoveColumn: (column: QueryColumn) => void;
     onEditTitle: () => void;
+    onRemoveColumn: (column: QueryColumn) => void;
     onUpdateTitle: (column: QueryColumn, title: string) => void;
     selected: boolean;
 }
@@ -205,7 +209,7 @@ interface ColumnInViewProps {
 export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     const { column, isDragDisabled, onRemoveColumn, onClick, onEditTitle, onUpdateTitle, selected, index } = props;
     const key = column.index;
-    const [ editing, setEditing ] = useState<boolean>(false);
+    const [editing, setEditing] = useState<boolean>(false);
 
     const _onRemoveColumn = useCallback(() => {
         onRemoveColumn(column);
@@ -215,35 +219,21 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
         onClick(index);
     }, [onClick, index]);
 
-    const _onUpdateTitle = useCallback((column: QueryColumn, title: string)  => {
-        setEditing(false);
-        if (column && title) {
-            onUpdateTitle(column, title);
-        }
-    }, [onUpdateTitle]);
+    const _onUpdateTitle = useCallback(
+        (column: QueryColumn, title: string) => {
+            setEditing(false);
+            if (column && title) {
+                onUpdateTitle(column, title);
+            }
+        },
+        [onUpdateTitle]
+    );
 
     const _onEditTitle = useCallback(() => {
         setEditing(true);
         onEditTitle();
     }, [onEditTitle]);
 
-    let overlay;
-    const cannotBeRemoved = column.addToDisplayView === true;
-    const removeIconContent = (
-        <span
-            className={'view-field__action ' + (cannotBeRemoved ? 'disabled' : 'clickable')}
-            onClick={cannotBeRemoved ? undefined : _onRemoveColumn}
-        >
-            <i className="fa fa-times" />
-        </span>
-    );
-    if (cannotBeRemoved) {
-        overlay = (
-            <Popover id={key + '-disabled-popover'} key={key + '-disabled-warning'}>
-                {APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
-            </Popover>
-        );
-    }
     return (
         <Draggable key={key} draggableId={key} index={index} isDragDisabled={isDragDisabled}>
             {(dragProvided, snapshot) => (
@@ -256,18 +246,28 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                     <div className="right-spacing" {...dragProvided.dragHandleProps}>
                         <DragDropHandle highlighted={snapshot.isDragging} {...dragProvided.dragHandleProps} />
                     </div>
-                    <FieldLabelDisplay column={column} includeFieldKey editing={editing} onEditComplete={_onUpdateTitle}/>
+                    <FieldLabelDisplay
+                        column={column}
+                        includeFieldKey
+                        editing={editing}
+                        onEditComplete={_onUpdateTitle}
+                    />
                     {!editing && (
                         <span className="pull-right">
-                            <span className="edit-inline-field__toggle" onClick={_onEditTitle}>
+                            <span
+                                className="edit-inline-field__toggle"
+                                title="Edit the field's label for this view."
+                                onClick={_onEditTitle}
+                            >
                                 <i id={'select-' + index} className="fa fa-pencil" />
                             </span>
-                        {!cannotBeRemoved && removeIconContent}
-                        {cannotBeRemoved && (
-                            <OverlayTrigger overlay={overlay} placement="left">
-                                {removeIconContent}
-                            </OverlayTrigger>
-                        )}
+                            <span
+                                className="view-field__action clickable"
+                                title="Remove this field from the view."
+                                onClick={_onRemoveColumn}
+                            >
+                                <i className="fa fa-times" />
+                            </span>
                         </span>
                     )}
                 </div>
@@ -306,7 +306,10 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
     const _onUpdate = useCallback(async () => {
         try {
             const viewInfo = model.currentView.mutate({
-                columns: columnsInView.map(col => ({ fieldKey: col.index, title: col.caption === col.name ? "" : col.caption })),
+                columns: columnsInView.map(col => ({
+                    fieldKey: col.index,
+                    title: col.caption === col.name ? '' : col.caption,
+                })),
             });
             await saveAsSessionView(schemaQuery, model.containerPath, viewInfo);
             closeModal();
@@ -334,13 +337,16 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         setEditingColumnTitle(true);
     }, []);
 
-    const updateColumnTitle = useCallback((updatedColumn: QueryColumn, title: string) => {
-        const relabeledColumn = updatedColumn.set('caption', title);
-        const index = columnsInView.findIndex(column => column.index === updatedColumn.index);
-        setColumnsInView([...columnsInView.slice(0, index), relabeledColumn, ...columnsInView.slice(index+1)]);
-        setIsDirty(true);
-        setEditingColumnTitle(false);
-    }, [columnsInView]);
+    const updateColumnTitle = useCallback(
+        (updatedColumn: QueryColumn, title: string) => {
+            const relabeledColumn = updatedColumn.set('caption', title);
+            const index = columnsInView.findIndex(column => column.index === updatedColumn.index);
+            setColumnsInView([...columnsInView.slice(0, index), relabeledColumn, ...columnsInView.slice(index + 1)]);
+            setIsDirty(true);
+            setEditingColumnTitle(false);
+        },
+        [columnsInView]
+    );
 
     const addColumn = useCallback(
         (column: QueryColumn) => {

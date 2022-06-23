@@ -54,8 +54,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const allowColSort = handleSort && col?.sortable;
     const allowColFilter = handleFilter && col?.filterable;
-    const allowColumnViewChange =
-        (handleHideColumn || handleAddColumn) && model && isCustomizeViewsInAppEnabled() && !col.addToDisplayView;
+    const allowColumnViewChange = (handleHideColumn || handleAddColumn) && model && isCustomizeViewsInAppEnabled();
     const includeDropdown = allowColSort || allowColFilter || allowColumnViewChange;
 
     const onToggleClick = useCallback(

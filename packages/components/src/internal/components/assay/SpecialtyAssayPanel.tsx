@@ -6,10 +6,10 @@ import { Alert, GENERAL_ASSAY_PROVIDER_NAME, getHelpLink } from '../../..';
 import { AssayProvider } from './AssayPicker';
 
 interface SpecialtyAssayPanelProps {
+    hasPremium: boolean;
+    onChange: (value: string) => void;
     selected: AssayProvider;
     values: AssayProvider[];
-    onChange: (value: string) => void;
-    hasPremium: boolean;
 }
 
 export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
@@ -66,10 +66,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                                 </select>
                             </div>
 
-                            <div
-                                className="small-margin-bottom"
-                                dangerouslySetInnerHTML={{ __html: selected?.description }}
-                            />
+                            <div className="small-margin-bottom">{selected?.description}</div>
                         </>
                     )}
 

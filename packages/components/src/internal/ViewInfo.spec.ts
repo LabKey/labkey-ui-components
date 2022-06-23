@@ -46,4 +46,20 @@ describe('ViewInfo', () => {
         view = ViewInfo.create({ default: false, hidden: false, name: ViewInfo.BIO_DETAIL_NAME });
         expect(view.isVisible).toBeFalsy();
     });
+
+    test('isSaved', () => {
+        expect(ViewInfo.create({}).isSaved).toBeFalsy();
+        expect(ViewInfo.create({ saved: undefined }).isSaved).toBeFalsy();
+        expect(ViewInfo.create({ saved: false }).isSaved).toBeFalsy();
+        expect(ViewInfo.create({ saved: true }).isSaved).toBeTruthy();
+    });
+
+    test('isSystemView', () => {
+        expect(ViewInfo.create({}).isSystemView).toBeFalsy();
+        expect(ViewInfo.create({ name: 'testing' }).isSystemView).toBeFalsy();
+        expect(ViewInfo.create({ name: ViewInfo.BIO_DETAIL_NAME }).isSystemView).toBeFalsy();
+        expect(ViewInfo.create({ name: ViewInfo.DEFAULT_NAME }).isSystemView).toBeTruthy();
+        expect(ViewInfo.create({ name: ViewInfo.DETAIL_NAME }).isSystemView).toBeTruthy();
+        expect(ViewInfo.create({ name: ViewInfo.UPDATE_NAME }).isSystemView).toBeTruthy();
+    });
 });

@@ -158,6 +158,20 @@ export class ViewInfo extends Record({
         );
     }
 
+    get modifiers(): string[] {
+        const modifiers = [];
+        if (this.session) {
+            modifiers.push('edited')
+        }
+        else {
+            if (this.inherit)
+                modifiers.push('inherited');
+            if (this.shared)
+                modifiers.push('shared');
+        }
+        return modifiers;
+    }
+
     mutate(updates: Partial<ViewInfo>) {
         return new ViewInfo({
             ...this.toJS(),

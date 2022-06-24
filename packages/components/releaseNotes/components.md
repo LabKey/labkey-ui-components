@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Save Grid Views - misc. polish
+  * Update view label in ManageViewsModal to indicate if view is shared or inherited
+  * Add error message and styling when view name exceeds the maximum name length in `ManageViewsModal` and `SaveViewModal`
+  * Add indicator if default view is my personal default view (set in LKS)
+  * Adjust styling and button text in `ManageViewsModal`
+
 ### version 2.189.0
 *Released*: 24 June 2022
 * Save Grid Views - Update Grid Column Metadata for User Customization

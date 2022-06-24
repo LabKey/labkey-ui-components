@@ -14,18 +14,8 @@ import { ViewNameInput } from './SaveViewModal';
 
 const ViewLabel: FC<{ view: ViewInfo }> = memo(props => {
     const { view } = props;
-    const unsavedView = view.session;
     let viewLabel = view.isDefault ? 'Default View' : view.label;
-    const modifiers = [];
-    if (unsavedView) {
-        modifiers.push("edited");
-    }
-    else {
-        if (view.inherit)
-            modifiers.push('inherited');
-        if (view.shared)
-            modifiers.push('shared');
-    }
+    const modifiers = view.modifiers;
     if (modifiers.length > 0) {
         return <>{viewLabel} <span className={"text-muted"}>({modifiers.join(", ")})</span></>
     }
@@ -48,6 +38,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
     const [hasChange, setHasChange] = useState<boolean>();
     const [reselectViewName, setReselectViewName] = useState<string>(undefined);
+    const [deleting, setDeleting] = useState<ViewInfo>(undefined);
+    const [isDeleteConfirmed, setIsDeleteConfirmed] = useState<boolean>(false);
 
     const { api } = useAppContext();
 
@@ -70,6 +62,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     const handleAction = useCallback(
         async (_handle: () => void) => {
             setErrorMessage(undefined);
+            setIsDeleteConfirmed(false);
+            setDeleting(undefined);
             setIsSubmitting(true);
             setHasChange(true);
 
@@ -125,16 +119,28 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     );
 
     const deleteSavedView = useCallback(
-        event => {
-            const view = getActionView(event);
+        () => {
             handleAction(async () => {
-                const viewName = view.name;
+                const viewName = deleting.name;
                 await deleteView(schemaQuery, containerPath, viewName, false);
                 if (currentView.name === viewName) setReselectViewName('');
             });
         },
-        [currentView, schemaQuery, containerPath, getActionView]
+        [currentView, deleting, schemaQuery, containerPath]
     );
+
+    const onDeleteView = useCallback(event => {
+        const view = getActionView(event);
+        if (!view.shared && !view.inherit) {
+            setIsDeleteConfirmed(true);
+        }
+        setDeleting(view);
+    }, [getActionView]);
+
+    const cancelDeleteView = useCallback(event => {
+        setDeleting(undefined);
+        setIsDeleteConfirmed(false);
+    }, []);
 
     const renameView = useCallback(async (newName: string, hasError: boolean) => {
         if (!selectedView || !newName || !newName.trim() || hasError) {
@@ -183,6 +189,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                         }
 
                         return (
+                            <>
                             <Row className="small-margin-bottom" key={view.name}>
                                 <Col xs={8}>
                                     {selectedView && selectedView?.name === view.name ? (
@@ -228,13 +235,27 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                             <span className="edit-inline-field__toggle small-right-spacing" onClick={onSelectView}>
                                                 <i id={'select-' + ind} className="fa fa-pencil" />
                                             </span>
-                                            <span className="edit-inline-field__toggle" onClick={deleteSavedView}>
+                                            <span className="edit-inline-field__toggle" onClick={onDeleteView}>
                                                 <i id={'delete-' + ind} className="fa fa-trash-o" />
                                             </span>
                                         </span>
                                     )}
                                 </Col>
                             </Row>
+                            {((view.shared || view.inherit) && deleting === view && !isDeleteConfirmed) && (
+                                <Row className={"bottom-spacing"}>
+                                    <Col xs={12}>
+                                        <div className="inline-confirmation">
+                                            <div >
+                                                <span className="inline-confirmation__label">Permanently remove this {view.modifiers.join(", ")} view?</span>
+                                                <button className={"button-left-spacing alert-button btn btn-danger"} id={'confirm-delete-' + ind} onClick={deleteSavedView}>Yes</button>
+                                                <button className={"button-left-spacing alert-button btn btn-default"} id={'cancel-delete-' + ind} onClick={cancelDeleteView}>No</button>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            )}
+                            </>
                         );
                     })}
             </Modal.Body>

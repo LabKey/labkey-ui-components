@@ -130,11 +130,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     );
 
     const onDeleteView = useCallback(event => {
-        const view = getActionView(event);
-        // if (!view.shared && !view.inherit) {
-        //     setIsDeleteConfirmed(true);
-        // }
-        setDeleting(view);
+        setDeleting(getActionView(event));
     }, [getActionView]);
 
     const cancelDeleteView = useCallback(event => {

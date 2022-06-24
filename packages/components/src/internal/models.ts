@@ -74,10 +74,10 @@ export interface IDataViewInfo {
     queryName?: string;
     // This is in the format of "db:953", not quite sure why we have an id and reportId.
     reportId?: string;
+    // This comes directly from the API response and is a link to LK Server
     runUrl?: string;
     schemaName?: string;
     shared?: boolean;
-    // This comes directly from the API response and is a link to LK Server
     thumbnail?: string; // This is actually a URL, do we enforce that?
     type?: DataViewInfoType;
     viewName?: string;

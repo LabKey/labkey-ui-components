@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add error message and styling when view name exceeds the maximum name length in `ManageViewsModal` and `SaveViewModal`
   * Add indicator if default view is my personal default view (set in LKS)
   * Adjust styling and button text in `ManageViewsModal`
+  * Add in-line delete confirmation for views
 
 ### version 2.189.0
 *Released*: 24 June 2022

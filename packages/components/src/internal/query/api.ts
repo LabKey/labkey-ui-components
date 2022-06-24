@@ -130,12 +130,7 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
         }
 
         // see if metadata is defined for this query
-        let queryMeta = metadata.getIn([
-            'schema',
-            _schemaName.toLowerCase(),
-            'query',
-            _queryName.toLowerCase(),
-        ]);
+        let queryMeta = metadata.getIn(['schema', _schemaName.toLowerCase(), 'query', _queryName.toLowerCase()]);
 
         if (queryMeta) {
             // remove transient properties

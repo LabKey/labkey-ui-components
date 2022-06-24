@@ -15,7 +15,14 @@ const DEFAULT_TITLE = 'Select the Tabs to Export';
 
 export const ExportModal: FC<ExportModalProperties> = memo(props => {
     const { queryModels, tabOrder, onClose, onExport, canExport, title = DEFAULT_TITLE } = props;
-    const [selected, setSelected] = useState<Set<string>>(() => new Set(tabOrder));
+    const [selected, setSelected] = useState<Set<string>>(() => {
+        let selected = new Set<string>();
+        tabOrder.forEach((modelId) => {
+            if (queryModels[modelId].rowCount > 0)
+                selected = selected.add(modelId);
+        });
+        return selected;
+    });
 
     const closeHandler = useCallback(() => {
         onClose();
@@ -50,6 +57,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                 <div className="export-modal-body">
                     <ul>
                         {tabOrder.map(modelId => {
+                            const model = queryModels[modelId];
                             return (
                                 <Checkbox
                                     checked={selected.has(modelId)}
@@ -58,7 +66,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                                     value={modelId}
                                     onChange={onChecked}
                                 >
-                                    {queryModels[modelId].title}
+                                    {`${model.title} (${model.rowCount})`}
                                 </Checkbox>
                             );
                         })}

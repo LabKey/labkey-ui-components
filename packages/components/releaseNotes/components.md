@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.189.1
+*Released*: 24 June 2022
+* Issue 45385: don't export empty tabs by default
+
 ### version 2.189.0
 *Released*: 24 June 2022
 * Save Grid Views - Update Grid Column Metadata for User Customization

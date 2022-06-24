@@ -1,5 +1,6 @@
 import React from 'react';
 import { List, Map } from 'immutable';
+import { Query } from '@labkey/api';
 
 import {
     EditableGridLoaderFromSelection,
@@ -18,6 +19,7 @@ import { getUniqueIdColumnMetadata } from '../entities/utils';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
 
 interface Props {
+    containerFilter?: Query.ContainerFilter;
     queryModel: QueryModel;
     loader: EditableGridLoaderFromSelection;
     selectionData: Map<string, any>;
@@ -55,7 +57,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.initEditorModel();
     }
 
@@ -122,7 +124,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     };
 
     render() {
-        const { onCancel, singularNoun, pluralNoun, ...editableGridProps } = this.props;
+        const { containerFilter, onCancel, singularNoun, pluralNoun, ...editableGridProps } = this.props;
         const { isSubmitting, dataModels, editorModels } = this.state;
         const firstModel = dataModels[0];
         const columnMetadata = getUniqueIdColumnMetadata(firstModel.queryInfo);
@@ -139,8 +141,9 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                     allowRemove={false}
                     bordered
                     bsStyle="info"
-                    editorModel={editorModels}
                     columnMetadata={columnMetadata}
+                    containerFilter={containerFilter}
+                    editorModel={editorModels}
                     forUpdate
                     model={dataModels}
                     onChange={this.onGridChange}

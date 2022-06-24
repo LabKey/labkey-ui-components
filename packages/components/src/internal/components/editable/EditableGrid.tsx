@@ -183,18 +183,6 @@ export interface BulkAddData {
     validationMsg?: ReactNode;
 }
 
-export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
-    activeTab?: number;
-    bsStyle?: any;
-    className?: string;
-    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
-    getReadOnlyRows?: (tabId?: number) => List<any>;
-    getTabHeader?: (tabId?: number) => ReactNode;
-    getTabTitle?: (tabId?: number) => string;
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    title?: string;
-}
-
 export interface SharedEditableGridProps {
     addControlProps?: Partial<AddRowsControlProps>;
     allowAdd?: boolean;
@@ -231,18 +219,30 @@ export interface SharedEditableGridProps {
     updateColumns?: List<QueryColumn>;
 }
 
+export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
+    activeTab?: number;
+    bsStyle?: any;
+    className?: string;
+    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
+    getReadOnlyRows?: (tabId?: number) => List<any>;
+    getTabHeader?: (tabId?: number) => ReactNode;
+    getTabTitle?: (tabId?: number) => string;
+    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
+    title?: string;
+}
+
 export interface EditableGridProps extends SharedEditableGridProps {
     data?: Map<any, Map<string, any>>;
     dataKeys?: List<any>;
     editorModel: EditorModel;
     error: string;
+    exportHandler?: (option: ExportOption) => void;
     onChange: (
         editorModelChanges: Partial<EditorModelProps>,
         dataKeys?: List<any>,
         data?: Map<any, Map<string, any>>
     ) => void;
     queryInfo: QueryInfo;
-    exportHandler?: (option: ExportOption) => void;
 }
 
 export interface EditableGridState {
@@ -302,12 +302,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         document.addEventListener('copy', this.onCopy);
         document.addEventListener('paste', this.onPaste);
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         document.removeEventListener('copy', this.onCopy);
         document.removeEventListener('paste', this.onPaste);
     }

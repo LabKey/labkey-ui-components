@@ -1,7 +1,7 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { AuditBehaviorTypes } from '@labkey/api';
+import { AuditBehaviorTypes, Query } from '@labkey/api';
 
 import {
     Alert,
@@ -28,6 +28,7 @@ import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
 
 interface OwnProps {
+    containerFilter?: Query.ContainerFilter;
     queryModel: QueryModel;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<void>;
     hasValidMaxSelection: boolean;
@@ -189,6 +190,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
     render(): ReactNode {
         const {
             aliquots,
+            containerFilter,
             updateRows,
             queryModel,
             hasValidMaxSelection,
@@ -202,11 +204,12 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
 
         return (
             <BulkUpdateForm
+                containerFilter={containerFilter}
                 singularNoun={selectedNoun}
                 pluralNoun={`${selectedNoun}s`}
                 itemLabel={sampleSetLabel}
                 queryInfo={this.getQueryInfo()}
-                selectedIds={[...queryModel.selections]}
+                selectedIds={queryModel.selections}
                 canSubmitForEdit={hasValidMaxSelection}
                 onCancel={onCancel}
                 onError={onBulkUpdateError}

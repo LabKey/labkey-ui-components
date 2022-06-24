@@ -236,6 +236,7 @@ export class Cell extends React.PureComponent<Props> {
             cellActions,
             col,
             colIdx,
+            containerFilter,
             focused,
             message,
             placeholder,
@@ -310,6 +311,7 @@ export class Cell extends React.PureComponent<Props> {
             const lookupProps: LookupCellProps = {
                 col,
                 colIdx,
+                containerFilter,
                 disabled: this.isReadOnly(),
                 modifyCell: cellActions.modifyCell,
                 rowIdx,

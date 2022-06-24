@@ -3,7 +3,6 @@ import { fromJS, List, Map } from 'immutable';
 
 import {
     createNotification,
-    EditableColumnMetadata,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditorModel,
@@ -137,7 +136,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                     });
                 });
         }
-    }, [loaders, queryModel, editableGridModels]);
+    }, [loaders, queryModel, editableGridModels, extraExportColumns]);
 
     const onGridChange = useCallback(
         (

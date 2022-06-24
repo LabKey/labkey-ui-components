@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
-import { Utils } from '@labkey/api';
+import { Query, Utils } from '@labkey/api';
 
 import { getSelectedData } from '../../actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
@@ -12,9 +12,12 @@ import { QueryInfoForm } from './QueryInfoForm';
 
 interface Props {
     canSubmitForEdit: boolean;
+    containerFilter?: Query.ContainerFilter;
+    header?: ReactNode;
     itemLabel?: string;
-    onComplete: (data: any, submitForEdit: boolean) => void;
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
     onCancel: () => void;
+    onComplete: (data: any, submitForEdit: boolean) => void;
     onError?: (message: string) => void;
     onSubmitForEdit: (
         updateData: OrderedMap<string, any>,
@@ -24,15 +27,13 @@ interface Props {
     pluralNoun?: string;
     queryInfo: QueryInfo;
     readOnlyColumns?: List<string>;
-    selectedIds: string[];
+    selectedIds: Set<string>;
     shownInUpdateColumns?: boolean;
     singularNoun?: string;
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
     sortString?: string;
     uniqueFieldKey?: string;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
-    header?: ReactNode;
-    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {
@@ -71,7 +72,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         const { schemaName, name } = queryInfo;
 
         try {
-            const { data, dataIds } = await getSelectedData(schemaName, name, selectedIds, columnString, sortString);
+            const { data, dataIds } = await getSelectedData(schemaName, name, Array.from(selectedIds), columnString, sortString);
             this.setState({
                 dataForSelection: data,
                 dataIdsForSelection: dataIds,
@@ -85,7 +86,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     };
 
     getSelectionCount(): number {
-        return this.props.selectedIds.length;
+        return this.props.selectedIds.size;
     }
 
     getSelectionNoun(): string {
@@ -137,8 +138,15 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
     render() {
         const { isLoadingDataForSelection, dataForSelection } = this.state;
-        const { canSubmitForEdit, onCancel, onComplete, pluralNoun, queryInfo, onAdditionalFormDataChange } =
-            this.props;
+        const {
+            canSubmitForEdit,
+            containerFilter,
+            onCancel,
+            onComplete,
+            pluralNoun,
+            queryInfo,
+            onAdditionalFormDataChange,
+        } = this.props;
         const fieldValues =
             isLoadingDataForSelection || !dataForSelection ? undefined : getCommonDataValues(dataForSelection);
 
@@ -149,6 +157,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 canSubmitForEdit={canSubmitForEdit}
                 checkRequiredFields={false}
                 columnFilter={this.columnFilter}
+                containerFilter={containerFilter}
                 disableSubmitForEditMsg={'At most ' + MAX_EDITABLE_GRID_ROWS + ' can be edited with the grid.'}
                 fieldValues={fieldValues}
                 header={this.renderBulkUpdateHeader()}

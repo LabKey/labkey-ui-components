@@ -1,6 +1,6 @@
 import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from 'react';
 import { Set, List, Map, OrderedMap } from 'immutable';
-import { AuditBehaviorTypes, Filter } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
 import {
     App,
@@ -38,6 +38,7 @@ interface Props extends InjectedQueryModels {
     afterSampleActionComplete?: (hasDelete?: boolean) => void;
     asPanel?: boolean;
     canPrintLabels?: boolean;
+    containerFilter?: Query.ContainerFilter;
     createBtnParentKey?: string;
     createBtnParentType?: string;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
@@ -56,6 +57,7 @@ interface Props extends InjectedQueryModels {
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const {
         actions,
+        containerFilter,
         queryModels,
         modelId,
         user,
@@ -98,10 +100,10 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 
     const onEditSelectionInGrid = useCallback(
         (
-            editableGridUpdateData: OrderedMap<string, any>,
+            editableGridUpdateData_: OrderedMap<string, any>,
             editableGridDataForSelection: Map<string, any>
         ): Promise<Map<string, any>> => {
-            setEditableGridUpdateData(editableGridUpdateData);
+            setEditableGridUpdateData(editableGridUpdateData_);
             return Promise.resolve(editableGridDataForSelection);
         },
         []
@@ -302,6 +304,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             )}
             {showBulkUpdate && (
                 <SamplesBulkUpdateForm
+                    containerFilter={containerFilter}
                     determineSampleData
                     selection={selection}
                     sampleSet={activeModel.schemaQuery.queryName}

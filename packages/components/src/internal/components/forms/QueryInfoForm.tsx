@@ -14,38 +14,30 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { List, OrderedMap } from 'immutable';
+import { OrderedMap } from 'immutable';
 import { Alert, Button, Modal } from 'react-bootstrap';
 import Formsy from 'formsy-react';
 import { Utils } from '@labkey/api';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import { formatDateTime, LoadingSpinner, QueryColumn, QueryInfo, SampleCreationTypeModel, Tip } from '../../..';
+import { formatDateTime, LoadingSpinner, QueryInfo, SampleCreationTypeModel, Tip } from '../../..';
 
-import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs';
+import { getFieldEnabledFieldName, QueryFormInputs, QueryFormInputsProps } from './QueryFormInputs';
 import { QueryInfoQuantity } from './QueryInfoQuantity';
 
-export interface QueryInfoFormProps {
-    allowFieldDisable?: boolean;
+export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFieldsEnabledChange'> {
     asModal?: boolean;
-    cancelText?: string;
     canSubmitForEdit?: boolean;
     canSubmitNotDirty?: boolean;
-    // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
-    // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
-    checkRequiredFields?: boolean;
-    columnFilter?: (col?: QueryColumn) => boolean;
+    cancelText?: string;
     countText?: string;
     creationTypeOptions?: SampleCreationTypeModel[];
-    disabledFields?: List<string>;
     disableSubmitForEditMsg?: string;
     errorCallback?: (error: any) => void;
     errorMessagePrefix?: string;
-    fieldValues?: any;
     footer?: ReactNode;
     header?: ReactNode;
     includeCountField?: boolean;
-    initiallyDisableFields?: boolean;
     isLoading?: boolean;
     isSubmittedText?: string;
     isSubmittingText?: string;
@@ -57,29 +49,24 @@ export interface QueryInfoFormProps {
     onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSuccess?: (data: any, submitForEdit: boolean) => void;
     pluralNoun?: string;
-    queryInfo: QueryInfo;
-    renderFileInputs?: boolean;
+    queryInfo: QueryInfo; // required by QueryInfoForm
     showErrorsAtBottom?: boolean;
-    // if checkRequiredFields is false, showLabelAsterisk to show * for fields that are originally required
-    showLabelAsterisk?: boolean;
     singularNoun?: string;
     submitForEditText?: string;
     submitText?: string;
     title?: string;
-    useDatePicker?: boolean;
-    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {
-    show: boolean;
     canSubmit: boolean;
-    submitForEdit: boolean;
+    count: number;
+    errorMsg: string;
+    fieldEnabledCount: number;
+    isDirty: boolean;
     isSubmitted: boolean;
     isSubmitting: boolean;
-    isDirty: boolean;
-    errorMsg: string;
-    count: number;
-    fieldEnabledCount: number;
+    show: boolean;
+    submitForEdit: boolean;
 }
 
 export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
@@ -87,7 +74,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         canSubmitForEdit: true,
         canSubmitNotDirty: true,
         includeCountField: true,
-        checkRequiredFields: true,
         countText: 'Quantity',
         cancelText: 'Cancel',
         submitForEditText: 'Edit with Grid',
@@ -95,8 +81,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         isSubmittedText: 'Submitted',
         isSubmittingText: 'Submitting...',
         maxCount: MAX_EDITABLE_GRID_ROWS,
-        allowFieldDisable: false,
-        useDatePicker: true,
         creationTypeOptions: [],
     };
 
@@ -331,29 +315,38 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
     };
 
     render() {
+        // Include all props to support extraction of queryFormInputProps
         const {
             asModal,
+            canSubmitForEdit,
+            canSubmitNotDirty,
+            cancelText,
+            countText,
+            creationTypeOptions,
+            disableSubmitForEditMsg,
+            errorCallback,
             footer,
             header,
-            isLoading,
-            checkRequiredFields,
-            showLabelAsterisk,
-            renderFileInputs,
-            queryInfo,
-            fieldValues,
-            title,
-            allowFieldDisable,
-            initiallyDisableFields,
-            disabledFields,
-            columnFilter,
-            showErrorsAtBottom,
-            useDatePicker,
-            creationTypeOptions,
             includeCountField,
+            isLoading,
+            isSubmittedText,
+            isSubmittingText,
             maxCount,
-            countText,
-            onAdditionalFormDataChange,
+            onCancel,
+            onFormChange,
+            onHide,
+            onSubmit,
+            onSubmitForEdit,
+            onSuccess,
+            pluralNoun,
+            showErrorsAtBottom,
+            singularNoun,
+            submitForEditText,
+            submitText,
+            title,
+            ...queryFormInputProps
         } = this.props;
+        const { queryInfo } = queryFormInputProps;
 
         if (!queryInfo || queryInfo.isLoading) {
             return null;
@@ -382,20 +375,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                             onCountChange={this.onCountChange}
                         />
                         {(header || showQuantityHeader) && <hr />}
-                        <QueryFormInputs
-                            renderFileInputs={renderFileInputs}
-                            allowFieldDisable={allowFieldDisable}
-                            useDatePicker={useDatePicker}
-                            initiallyDisableFields={initiallyDisableFields}
-                            onFieldsEnabledChange={this.onFieldsEnabledChange}
-                            disabledFields={disabledFields}
-                            checkRequiredFields={checkRequiredFields}
-                            showLabelAsterisk={showLabelAsterisk}
-                            queryInfo={queryInfo}
-                            columnFilter={columnFilter}
-                            fieldValues={fieldValues}
-                            onAdditionalFormDataChange={onAdditionalFormDataChange}
-                        />
+                        <QueryFormInputs {...queryFormInputProps} onFieldsEnabledChange={this.onFieldsEnabledChange} />
                         {footer}
                         {showErrorsAtBottom && this.renderError()}
                         {this.renderButtons()}
@@ -415,8 +395,8 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     <Modal.Body>{content}</Modal.Body>
                 </Modal>
             );
-        } else {
-            return content;
         }
+
+        return content;
     }
 }

@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.190.0
+*Released*: 27 June 2022
+* Rename `getContainerFilterForInsert` to `getContainerFilterForLookups`.
+* Add optional `containerFilter?: Query.ContainerFilter` prop to `BulkUpdateForm`, `EditableGrid`, `EntityInsertPanel`, and `QueryInfoForm`.
+* Restructure prop declarations for `QueryInfoForm` to extend `QueryFormInputsProps`.
+* Convert `BulkUpdateForm` to accept a `Set<string>` for `selectedIds` to align with `QueryModel.selection`.
+
 ### version 2.189.1
 *Released*: 24 June 2022
 * Issue 45385: don't export empty tabs by default

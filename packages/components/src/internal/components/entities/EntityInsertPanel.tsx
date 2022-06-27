@@ -16,7 +16,7 @@
 import React, { Component, FC, memo, ReactNode, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap, fromJS } from 'immutable';
-import { AuditBehaviorTypes, Utils } from '@labkey/api';
+import { AuditBehaviorTypes, Query, Utils } from '@labkey/api';
 
 import { Link } from 'react-router';
 
@@ -166,6 +166,7 @@ interface OwnProps {
     auditBehavior?: AuditBehaviorTypes;
     canEditEntityTypeDetails?: boolean;
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
+    containerFilter?: Query.ContainerFilter;
     creationTypeOptions?: SampleCreationTypeModel[];
     disableMerge?: boolean;
     entityDataType: EntityDataType;
@@ -221,9 +222,9 @@ interface StateProps {
     insertModel: EntityIdCreationModel;
     isMerge: boolean;
     isSubmitting: boolean;
-    previewName: string;
-    previewAliquotName: string;
     originalQueryInfo: QueryInfo;
+    previewAliquotName: string;
+    previewName: string;
     useAsync: boolean;
 }
 
@@ -953,7 +954,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel, creationType, dataModel, editorModel } = this.state;
-        const { creationTypeOptions, nounPlural, onBulkAdd } = this.props;
+        const { containerFilter, creationTypeOptions, maxEntities, nounPlural, onBulkAdd } = this.props;
         const columnMetadata = this.getColumnMetadata();
         const isLoaded = (dataModel && !dataModel?.isLoading) ?? false;
 
@@ -1007,16 +1008,17 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     creationTypeOptions: bulkCreationTypeOptions,
                                     countText: `New ${gridNounPlural}`,
                                 }}
-                                processBulkData={onBulkAdd}
                                 bulkUpdateProps={{ columnFilter: this.columnFilter }}
                                 bulkRemoveText={'Remove ' + gridNounPluralCap}
                                 columnMetadata={columnMetadata}
+                                containerFilter={containerFilter}
+                                editorModel={editorModel}
                                 emptyGridMsg={`Start by adding the quantity of ${gridNounPlural} you want to create.`}
                                 insertColumns={this.getInsertColumns()}
+                                maxRows={maxEntities}
                                 model={dataModel}
-                                editorModel={editorModel}
-                                maxRows={this.props.maxEntities}
                                 onChange={this.onGridChange}
+                                processBulkData={onBulkAdd}
                             />
                         </>
                     )}

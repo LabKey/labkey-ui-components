@@ -9,13 +9,13 @@ import { InjectedAssayModel, withAssayModels } from './withAssayModels';
 import { getImportItemsForAssayDefinitions } from './actions';
 
 interface Props extends SubMenuItemProps {
+    disabled?: boolean;
     isLoaded?: boolean;
+    nounPlural?: string;
+    picklistName?: string;
+    providerType?: string;
     queryModel: QueryModel;
     requireSelection: boolean;
-    nounPlural?: string;
-    providerType?: string;
-    disabled?: boolean;
-    picklistName?: string;
 }
 
 // exported for jest testing

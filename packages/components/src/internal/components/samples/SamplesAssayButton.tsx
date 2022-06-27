@@ -12,15 +12,14 @@ import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
 import { isSamplesSchema } from './utils';
 
 interface Props {
-    model: QueryModel;
-    isPicklist?: boolean;
-    providerType?: string;
     asSubMenu?: boolean;
+    isPicklist?: boolean;
+    model: QueryModel;
+    providerType?: string;
 }
 
 export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props => {
     const { model, providerType, asSubMenu, assayModel, isPicklist } = props;
-
 
     if (!isSamplesSchema(model?.schemaQuery) && !isPicklist) return null;
 

@@ -7,8 +7,8 @@ import { AssayUploadTabs } from './constants';
 
 export enum AssayDomainTypes {
     BATCH = 'Batch',
-    RUN = 'Run',
     RESULT = 'Result',
+    RUN = 'Run',
 }
 
 export enum AssayLink {
@@ -23,8 +23,8 @@ export enum AssayLink {
 }
 
 interface ScopedSampleColumn {
-    domain: AssayDomainTypes;
     column: QueryColumn;
+    domain: AssayDomainTypes;
 }
 
 export class AssayDefinitionModel extends Record({
@@ -99,7 +99,12 @@ export class AssayDefinitionModel extends Record({
         return undefined;
     }
 
-    getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string, filterList?: List<Filter.IFilter>, isPicklist?: boolean) {
+    getImportUrl(
+        dataTab?: AssayUploadTabs,
+        selectionKey?: string,
+        filterList?: List<Filter.IFilter>,
+        isPicklist?: boolean
+    ) {
         let url;
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
         if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
@@ -132,13 +137,16 @@ export class AssayDefinitionModel extends Record({
         const isSampleSet = targetSQ.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA);
 
         // 44339: the SourceSamples custom query is backed by exp.materials
-        const isTargetAllSamples = targetSQ.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES)
-            || targetSQ.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ)
-            || (isPicklist && targetSQ.hasSchema(SCHEMAS.PICKLIST_TABLES.SCHEMA));
+        const isTargetAllSamples =
+            targetSQ.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES) ||
+            targetSQ.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ) ||
+            (isPicklist && targetSQ.hasSchema(SCHEMAS.PICKLIST_TABLES.SCHEMA));
         const findLookup = (col: QueryColumn): boolean => {
             if (col.isLookup()) {
                 const lookupSQ = col.lookup.schemaQuery;
-                const isMatch = targetSQ.isEqual(lookupSQ) || (isTargetAllSamples && SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ));
+                const isMatch =
+                    targetSQ.isEqual(lookupSQ) ||
+                    (isTargetAllSamples && SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ));
 
                 // 35881: If targetSQ is a Sample Set then allow targeting exp.materials table as well
                 if (isSampleSet) {

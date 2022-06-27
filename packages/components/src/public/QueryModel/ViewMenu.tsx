@@ -6,7 +6,6 @@ import { getServerContext } from '@labkey/api';
 import { QueryModel, ViewInfo } from '../..';
 import { blurActiveElement } from '../../internal/util/utils';
 import { getQueryMetadata } from '../../internal/global';
-import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
 
 interface ViewMenuProps {
     allowViewCustomization: boolean;
@@ -41,7 +40,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const noViews = publicViews.length === 0 && privateViews.length === 0;
         const _hideEmptyViewMenu = getQueryMetadata().get('hideEmptyViewMenu', hideEmptyViewMenu);
         const hidden = _hideEmptyViewMenu && noViews;
-        const disabled = isLoading || (noViews && !isCustomizeViewsInAppEnabled());
+        const disabled = isLoading || (noViews && !allowViewCustomization);
 
         const viewMapper = (viewInfo): ReactNode => {
             const { name, isDefault, saved } = viewInfo;
@@ -80,7 +79,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {publicViews.length > 0 && <MenuItem divider />}
                     {publicViews.length > 0 && <MenuItem header>Shared Saved Views</MenuItem>}
                     {publicViews.length > 0 && publicViews.map(viewMapper)}
-                    {isCustomizeViewsInAppEnabled() && allowViewCustomization && !user.isGuest && (
+                    {allowViewCustomization && !user.isGuest && (
                         <>
                             <MenuItem divider />
                             <MenuItem onSelect={onCustomizeView}>Customize Grid View</MenuItem>

@@ -30,8 +30,6 @@ import { getGridView, revertViewEdit, saveGridView, saveAsSessionView, saveSessi
 
 import { hasServerContext } from '../../internal/components/base/ServerContext';
 
-import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
-
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
 import { SearchAction } from './grid/actions/Search';
@@ -308,7 +306,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }
 
     const isEdited = currentView?.session;
-    const showSave = isCustomizeViewsInAppEnabled() && allowViewCustomization && isEdited && currentView?.savable;
+    const showSave = allowViewCustomization && isEdited && currentView?.savable;
     const showRevert = allowViewCustomization && isEdited && currentView?.revertable;
 
     let canSaveCurrent = false;

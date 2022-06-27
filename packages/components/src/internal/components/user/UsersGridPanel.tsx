@@ -33,8 +33,6 @@ import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel
 
 import { UserLimitSettings } from '../permissions/actions';
 
-import { isCustomizeViewsInAppEnabled } from '../../app/utils';
-
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserDetailsPanel } from './UserDetailsPanel';
@@ -345,7 +343,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                                 title={capitalizeFirstChar(usersView) + ' Users'}
                                 ButtonsComponent={() => this.renderButtons()}
                                 highlightLastSelectedRow
-                                hideEmptyViewMenu={!isCustomizeViewsInAppEnabled()}
+                                hideEmptyViewMenu={false}
                             />
                         )}
                     </Col>

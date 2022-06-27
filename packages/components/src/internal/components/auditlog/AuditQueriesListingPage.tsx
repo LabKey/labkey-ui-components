@@ -17,7 +17,6 @@ import { AuditDetails } from './AuditDetails';
 import { AuditDetailsModel } from './models';
 import { getAuditDetail } from './actions';
 import { AuditQuery, getAuditQueries } from './utils';
-import { isCustomizeViewsInAppEnabled } from '../../app/utils';
 
 interface OwnProps {
     params: any;
@@ -154,7 +153,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
         const model = this.getQueryModel();
         if (!model) return null;
 
-        return <GridPanel model={model} actions={this.props.actions} hideEmptyViewMenu={!isCustomizeViewsInAppEnabled()}/>;
+        return <GridPanel model={model} actions={this.props.actions} hideEmptyViewMenu={false}/>;
     };
 
     renderDetailsPanel = (): ReactNode => {

@@ -34,8 +34,6 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { ALIQUOTED_FROM_COL } from '../samples/constants';
 
-import { isCustomizeViewsInAppEnabled } from '../../app/utils';
-
 import { deletePicklists, updatePicklist } from './actions';
 import { Picklist, PICKLIST_SAMPLES_FILTER } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
@@ -223,7 +221,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                                 advancedExportOptions: exportConfig,
                                 alwaysShowTabs: true,
                                 exportFilename: picklist.name + '_Samples',
-                                hideEmptyViewMenu: !isCustomizeViewsInAppEnabled(),
+                                hideEmptyViewMenu: false,
                             }}
                         />
                     </div>

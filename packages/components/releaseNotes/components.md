@@ -3,12 +3,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Save Grid Views - misc. polish
+* Save Grid Views - misc. polish and remove experimental feature flag
   * Update view label in ManageViewsModal to indicate if view is shared or inherited
   * Add error message and styling when view name exceeds the maximum name length in `ManageViewsModal` and `SaveViewModal`
   * Add indicator if default view is my personal default view (set in LKS)
   * Adjust styling and button text in `ManageViewsModal`
   * Add in-line delete confirmation for views
+  * Remove experimental feature flag
 
 ### version 2.190.0
 *Released*: 27 June 2022

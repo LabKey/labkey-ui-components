@@ -11,8 +11,8 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 import { deleteView, renameGridView, revertViewEdit, saveGridView, saveSessionView } from '../../internal/actions';
 import { ViewNameInput } from './SaveViewModal';
 
-
-const ViewLabel: FC<{ view: ViewInfo }> = memo(props => {
+// exported for jest tests
+export const ViewLabel: FC<{ view: ViewInfo }> = memo(props => {
     const { view } = props;
     let viewLabel = view.isDefault ? 'Default View' : view.label;
     const modifiers = view.modifiers;

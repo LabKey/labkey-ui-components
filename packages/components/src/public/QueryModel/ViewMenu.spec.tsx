@@ -72,7 +72,7 @@ describe('ViewMenu', () => {
         tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
-        // "No Extra Column"  view shows up under "All Saved Views"
+        // "No Extra Column"  view shows up under "Shared Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();

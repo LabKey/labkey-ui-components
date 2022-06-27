@@ -108,7 +108,7 @@ exports[`ViewMenu Render 3`] = `
         onKeyDown={[Function]}
         role="heading"
       >
-        All Saved Views
+        Shared Saved Views
       </li>
       <li
         className=""

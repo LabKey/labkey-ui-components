@@ -21,10 +21,19 @@ interface ViewNameInputProps {
     onBlur: (name: string, hasError: boolean) => void;
     placeholder?: string;
     view: ViewInfo;
+    maxLength?: number;
 }
 
 export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
-    const { autoFocus, defaultValue, placeholder, view, isDefaultView, onBlur } = props;
+    const {
+        autoFocus,
+        defaultValue,
+        placeholder,
+        view,
+        isDefaultView,
+        onBlur,
+        maxLength = MAX_VIEW_NAME_LENGTH,
+    } = props;
 
     const [nameError, setNameError] = useState<boolean>(false);
     const [viewName, setViewName] = useState<string>(
@@ -32,7 +41,7 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
     );
 
     useEffect(() => {
-        setNameError(!isDefaultView && viewName.length > MAX_VIEW_NAME_LENGTH)
+        setNameError(!isDefaultView && viewName.length > maxLength)
     }, [isDefaultView, viewName]);
 
     const clearError = useCallback(() => {
@@ -44,7 +53,7 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
     }, []);
 
     const _onBlur = useCallback(() => {
-        if (viewName.length > MAX_VIEW_NAME_LENGTH) {
+        if (viewName.length > maxLength) {
             setNameError(true);
             onBlur(viewName, true);
         } else {
@@ -68,7 +77,7 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
                 disabled={isDefaultView}
                 type="text"
             />
-            {nameError && <span className="text-danger">Current length: {viewName.length}; maximum length: {MAX_VIEW_NAME_LENGTH}. </span>}
+            {nameError && <span className="text-danger">Current length: {viewName.length}; maximum length: {maxLength}</span>}
         </>
     )
 });

@@ -13,19 +13,24 @@ import { isSamplesSchema } from './utils';
 
 interface Props {
     model: QueryModel;
+    isPicklist?: boolean;
     providerType?: string;
     asSubMenu?: boolean;
 }
 
 export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props => {
-    const { model, providerType, asSubMenu, assayModel } = props;
+    const { model, providerType, asSubMenu, assayModel, isPicklist } = props;
 
-    if (!isSamplesSchema(model?.schemaQuery)) return null;
+
+    if (!isSamplesSchema(model?.schemaQuery) && !isPicklist) return null;
+
+    const picklistName = isPicklist ? model.queryName : undefined;
 
     let items = (
         <AssayImportSubMenuItem
             queryModel={model?.hasSelections ? model : undefined}
             providerType={providerType}
+            picklistName={picklistName}
             requireSelection={false}
             text={asSubMenu ? 'Import Assay Data' : null} // using null will render the submenu items inline in this button
         />

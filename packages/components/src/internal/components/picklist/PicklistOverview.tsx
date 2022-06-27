@@ -285,7 +285,7 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
         const configs = {};
 
         if (picklist?.listId) {
-            const gridId = PICKLIST_ITEMS_ID_PREFIX + picklist.listId + '-' + LOAD_PICKLIST_COUNTER;
+            const gridId = PICKLIST_ITEMS_ID_PREFIX + picklist.listId + '-' + LOAD_PICKLIST_COUNTER + '|' + SCHEMAS.PICKLIST_TABLES.SCHEMA + '/' + picklist.name;
             configs[gridId] = {
                 id: gridId,
                 title: 'All Samples',

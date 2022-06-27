@@ -51,6 +51,7 @@ import {
     selectRowsDeprecated,
     SHARED_CONTAINER_PATH,
     UNIQUE_ID_FIND_FIELD,
+    getSelectedPicklistSamples,
 } from '../../..';
 
 import { findMissingValues } from '../../util/utils';
@@ -65,6 +66,7 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 import { IS_ALIQUOT_COL } from './constants';
+import { EXP_TABLES } from "../../schemas";
 
 export function initSampleSetSelects(
     isUpdate: boolean,
@@ -208,12 +210,18 @@ export function loadSelectedSamples(location: Location, sampleColumn: QueryColum
     }
 
     // Otherwise, load the samples from the selection.
-    return getSelection(location).then(selection => {
+    return getSelection(location).then(async selection => {
         if (selection.resolved && selection.schemaQuery && selection.selected.length) {
+            const isPicklist = location?.query?.isPicklist === 'true';
+            let sampleIdNums = selection.selected;
+            if (isPicklist)
+                sampleIdNums = await getSelectedPicklistSamples(selection.schemaQuery.queryName, selection.selected, false);
+
+            const sampleSchemaQuery = isPicklist || selection.schemaQuery.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ) ? EXP_TABLES.MATERIALS : selection.schemaQuery;
             return fetchSamples(
-                selection.schemaQuery,
+                sampleSchemaQuery,
                 sampleColumn,
-                [Filter.create('RowId', selection.selected, Filter.Types.IN)],
+                [Filter.create('RowId', sampleIdNums, Filter.Types.IN)],
                 sampleColumn.lookup.displayColumn,
                 sampleColumn.lookup.keyColumn
             );

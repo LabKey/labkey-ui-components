@@ -15,6 +15,7 @@ interface Props extends SubMenuItemProps {
     nounPlural?: string;
     providerType?: string;
     disabled?: boolean;
+    picklistName?: string;
 }
 
 // exported for jest testing
@@ -24,6 +25,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         disabled,
         isLoaded = true,
         nounPlural = 'items',
+        picklistName,
         providerType,
         queryModel,
         requireSelection,
@@ -35,7 +37,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             return [];
         }
 
-        return getImportItemsForAssayDefinitions(assayModel, queryModel, providerType).reduce(
+        return getImportItemsForAssayDefinitions(assayModel, queryModel, providerType, !!picklistName).reduce(
             (subItems, href, assay) => {
                 subItems.push({ text: assay.name, href });
                 return subItems;

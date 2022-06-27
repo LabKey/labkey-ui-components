@@ -44,7 +44,7 @@ const DEFAULT_PROPS = {
     onCancel: jest.fn,
     onSubmitForEdit: jest.fn,
     queryInfo: QUERY_INFO,
-    selectedIds: [],
+    selectedIds: new Set<string>(),
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise.resolve(),
 };
 

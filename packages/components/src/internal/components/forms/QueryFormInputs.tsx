@@ -45,8 +45,10 @@ export const getFieldEnabledFieldName = function (column: QueryColumn, fieldName
     return name + '::enabled';
 };
 
-interface QueryFormInputsProps {
+export interface QueryFormInputsProps {
     allowFieldDisable?: boolean;
+    // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
+    // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
     checkRequiredFields?: boolean;
     columnFilter?: (col?: QueryColumn) => boolean;
     componentKey?: string; // unique key to add to QuerySelect to avoid duplication w/ transpose
@@ -58,16 +60,16 @@ interface QueryFormInputsProps {
     includeLabelField?: boolean;
     initiallyDisableFields?: boolean;
     lookups?: Map<string, number>;
+    onAdditionalFormDataChange?: (name: string, value: any) => void;
     onFieldsEnabledChange?: (numEnabled: number) => void;
-    onQSChange?: (name: string, value: string | any[], items: any) => any;
+    onQSChange?: (name: string, value: string | any[], items: any) => void;
     queryColumns?: OrderedMap<string, QueryColumn>;
     queryInfo?: QueryInfo;
-    renderFileInputs?: boolean;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    renderFileInputs?: boolean;
     showLabelAsterisk?: boolean; // only used if checkRequiredFields is false, to show * for fields that are originally required
     showQuerySelectPreviewOptions?: boolean;
     useDatePicker?: boolean;
-    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {

@@ -17,6 +17,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Query } from '@labkey/api';
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events';
 import { CellMessage, ValueDescriptor } from '../../models';
@@ -40,18 +41,19 @@ interface Props {
     cellActions: CellActions;
     col: QueryColumn;
     colIdx: number;
+    containerFilter?: Query.ContainerFilter;
+    filteredLookupKeys?: List<any>;
+    filteredLookupValues?: List<string>;
+    focused?: boolean;
+    locked?: boolean;
+    message?: CellMessage;
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
-    locked?: boolean;
     rowIdx: number;
-    focused?: boolean;
-    message?: CellMessage;
     selected?: boolean;
     selection?: boolean;
     values?: List<ValueDescriptor>;
-    filteredLookupValues?: List<string>;
-    filteredLookupKeys?: List<any>;
 }
 
 export class Cell extends React.PureComponent<Props> {
@@ -73,7 +75,7 @@ export class Cell extends React.PureComponent<Props> {
         this.displayEl = React.createRef();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(): void {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
         }
@@ -234,6 +236,7 @@ export class Cell extends React.PureComponent<Props> {
             cellActions,
             col,
             colIdx,
+            containerFilter,
             focused,
             message,
             placeholder,
@@ -308,6 +311,7 @@ export class Cell extends React.PureComponent<Props> {
             const lookupProps: LookupCellProps = {
                 col,
                 colIdx,
+                containerFilter,
                 disabled: this.isReadOnly(),
                 modifyCell: cellActions.modifyCell,
                 rowIdx,

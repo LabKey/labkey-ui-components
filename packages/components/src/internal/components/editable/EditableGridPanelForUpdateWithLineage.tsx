@@ -3,7 +3,6 @@ import { fromJS, List, Map } from 'immutable';
 
 import {
     createNotification,
-    EditableColumnMetadata,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditorModel,
@@ -57,11 +56,11 @@ export interface EditableGridPanelForUpdateWithLineageProps
     parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     pluralNoun?: string;
+    queryModel: QueryModel;
     selectionData?: Map<string, any>;
     singularNoun?: string;
     targetEntityDataType: EntityDataType;
     updateAllTabRows: (updateData: any[]) => Promise<boolean>;
-    queryModel: QueryModel;
 }
 
 export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {
@@ -137,7 +136,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                     });
                 });
         }
-    }, [loaders, queryModel, editableGridModels]);
+    }, [loaders, queryModel, editableGridModels, extraExportColumns]);
 
     const onGridChange = useCallback(
         (

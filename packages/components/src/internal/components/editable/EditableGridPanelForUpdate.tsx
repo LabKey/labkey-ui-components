@@ -20,21 +20,21 @@ import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initE
 
 interface Props {
     containerFilter?: Query.ContainerFilter;
-    queryModel: QueryModel;
+    idField: string;
     loader: EditableGridLoaderFromSelection;
-    selectionData: Map<string, any>;
-    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
     onCancel: () => any;
     onComplete: () => any;
-    idField: string;
-    singularNoun?: string;
     pluralNoun?: string;
+    queryModel: QueryModel;
+    selectionData: Map<string, any>;
+    singularNoun?: string;
+    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
 }
 
 interface State {
-    isSubmitting: boolean;
     dataModels: QueryModel[];
     editorModels: EditorModel[];
+    isSubmitting: boolean;
 }
 
 export class EditableGridPanelForUpdate extends React.Component<Props, State> {

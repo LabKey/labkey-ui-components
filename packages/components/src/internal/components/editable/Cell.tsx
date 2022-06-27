@@ -42,18 +42,18 @@ interface Props {
     col: QueryColumn;
     colIdx: number;
     containerFilter?: Query.ContainerFilter;
+    filteredLookupKeys?: List<any>;
+    filteredLookupValues?: List<string>;
+    focused?: boolean;
+    locked?: boolean;
+    message?: CellMessage;
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
-    locked?: boolean;
     rowIdx: number;
-    focused?: boolean;
-    message?: CellMessage;
     selected?: boolean;
     selection?: boolean;
     values?: List<ValueDescriptor>;
-    filteredLookupValues?: List<string>;
-    filteredLookupKeys?: List<any>;
 }
 
 export class Cell extends React.PureComponent<Props> {

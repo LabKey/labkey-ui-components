@@ -65,12 +65,12 @@ export interface LookupCellProps {
     colIdx: number;
     containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
+    filteredLookupKeys?: List<any>;
+    filteredLookupValues?: List<string>;
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     rowIdx: number;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     values: List<ValueDescriptor>;
-    filteredLookupValues?: List<string>;
-    filteredLookupKeys?: List<any>;
 }
 
 export class LookupCell extends PureComponent<LookupCellProps> {

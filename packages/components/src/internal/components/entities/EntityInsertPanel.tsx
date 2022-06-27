@@ -222,9 +222,9 @@ interface StateProps {
     insertModel: EntityIdCreationModel;
     isMerge: boolean;
     isSubmitting: boolean;
-    previewName: string;
-    previewAliquotName: string;
     originalQueryInfo: QueryInfo;
+    previewAliquotName: string;
+    previewName: string;
     useAsync: boolean;
 }
 

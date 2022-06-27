@@ -49,10 +49,11 @@ import { CellMessage, EditorModel, EditorModelProps, ValueDescriptor } from '../
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 
+import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
+
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { Cell, CellActions } from './Cell';
 import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
-import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -207,12 +208,12 @@ export interface SharedEditableGridProps {
     hideCountCol?: boolean;
     insertColumns?: List<QueryColumn>;
     isSubmitting?: boolean;
-    lockedRows?: List<any>;   // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
+    lockedRows?: List<any>; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     maxRows?: number;
-    notDeletable?: List<any>;   // list of key values that cannot be deleted.
+    notDeletable?: List<any>; // list of key values that cannot be deleted.
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: List<string>;
-    readonlyRows?: List<any>;   // list of key values for rows that are readonly.
+    readonlyRows?: List<any>; // list of key values for rows that are readonly.
     removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
     striped?: boolean;

@@ -72,7 +72,13 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         const { schemaName, name } = queryInfo;
 
         try {
-            const { data, dataIds } = await getSelectedData(schemaName, name, Array.from(selectedIds), columnString, sortString);
+            const { data, dataIds } = await getSelectedData(
+                schemaName,
+                name,
+                Array.from(selectedIds),
+                columnString,
+                sortString
+            );
             this.setState({
                 dataForSelection: data,
                 dataIdsForSelection: dataIds,

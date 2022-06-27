@@ -56,11 +56,11 @@ export interface EditableGridPanelForUpdateWithLineageProps
     parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     pluralNoun?: string;
+    queryModel: QueryModel;
     selectionData?: Map<string, any>;
     singularNoun?: string;
     targetEntityDataType: EntityDataType;
     updateAllTabRows: (updateData: any[]) => Promise<boolean>;
-    queryModel: QueryModel;
 }
 
 export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {

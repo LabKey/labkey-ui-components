@@ -18,6 +18,7 @@ interface ViewNameInputProps {
     autoFocus?: boolean;
     defaultValue?: string;
     isDefaultView?: boolean;
+    onChange?: (name: string, hasError: boolean) => void;
     onBlur: (name: string, hasError: boolean) => void;
     placeholder?: string;
     view: ViewInfo;
@@ -32,6 +33,7 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
         view,
         isDefaultView,
         onBlur,
+        onChange,
         maxLength = MAX_VIEW_NAME_LENGTH,
     } = props;
 
@@ -49,7 +51,10 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
     }, [setNameError]);
 
     const onViewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-        setViewName(evt.target.value)
+        setViewName(evt.target.value);
+        const hasError = evt.target.value.length > maxLength;
+        setNameError(hasError);
+        onChange?.(evt.target.value, hasError);
     }, []);
 
     const _onBlur = useCallback(() => {
@@ -120,6 +125,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
         }
     }, [viewName, isDefaultView, canInherit]);
 
+
     const onViewNameChange = useCallback((name: string, hasError: boolean) => {
         setViewName(name);
         setNameError(hasError);
@@ -147,7 +153,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                         </div>
                         <div className="bottom-spacing">
-                            <ViewNameInput onBlur={onViewNameChange} view={currentView} isDefaultView={isDefaultView} />
+                            <ViewNameInput onChange={onViewNameChange} onBlur={onViewNameChange} view={currentView} isDefaultView={isDefaultView} />
                         </div>
                         <RequiresPermission perms={PermissionTypes.Admin}>
                             {/* Only allow admins to create custom default views in app. Note this is different from LKS*/}

@@ -39,7 +39,6 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     const [hasChange, setHasChange] = useState<boolean>();
     const [reselectViewName, setReselectViewName] = useState<string>(undefined);
     const [deleting, setDeleting] = useState<ViewInfo>(undefined);
-    const [isDeleteConfirmed, setIsDeleteConfirmed] = useState<boolean>(false);
 
     const { api } = useAppContext();
 
@@ -62,7 +61,6 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     const handleAction = useCallback(
         async (_handle: () => void) => {
             setErrorMessage(undefined);
-            setIsDeleteConfirmed(false);
             setDeleting(undefined);
             setIsSubmitting(true);
             setHasChange(true);
@@ -135,7 +133,6 @@ export const ManageViewsModal: FC<Props> = memo(props => {
 
     const cancelDeleteView = useCallback(event => {
         setDeleting(undefined);
-        setIsDeleteConfirmed(false);
     }, []);
 
     const renameView = useCallback(async (newName: string, hasError: boolean) => {
@@ -169,7 +166,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                         const unsavedView = view.session;
                         const isRenaming = !!selectedView;
                         const isDefault = view.isDefault;
-                        let canEdit = !isDefault && !isRenaming && !unsavedView;
+                        let canEdit = !isDefault && !isRenaming && !unsavedView && !deleting;
                         if (view.shared) canEdit = canEdit && user.isAdmin;
 
                         let viewLabel = view.isDefault ? 'Default View' : view.label;
@@ -238,7 +235,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                         )}
                                     </Col>
                                 </Row>
-                            {(deleting === view && !isDeleteConfirmed) && (
+                            {(deleting === view) && (
                                 <Row className={"bottom-spacing"}>
                                     <Col xs={12}>
                                         <div className="inline-confirmation">

@@ -123,10 +123,10 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             handleAction(async () => {
                 const viewName = deleting.name;
                 await deleteView(schemaQuery, containerPath, viewName, false);
-                if (currentView.name === viewName) setReselectViewName('');
+                if (currentView.name === viewName || reselectViewName === viewName) setReselectViewName('');
             });
         },
-        [currentView, deleting, schemaQuery, containerPath]
+        [currentView, deleting, schemaQuery, containerPath, reselectViewName]
     );
 
     const onDeleteView = useCallback(event => {

@@ -334,7 +334,7 @@ export class QueryColumn extends Record({
     isImportColumn(importName: string): boolean {
         if (!importName) return false;
 
-        const lcName = importName.toLowerCase();
+        const lcName = importName.toLowerCase().trim();
         return (
             this.caption?.toLowerCase() === lcName ||
             this.caption?.replace(' ', '').toLowerCase() === lcName ||

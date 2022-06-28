@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Export `getCurrentAppProperties`
+* Issue 45739: when looking for import columns, trim the importName
 
 ### version 2.190.0
 *Released*: 27 June 2022

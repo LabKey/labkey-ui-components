@@ -14,7 +14,7 @@ import { ViewNameInput } from './SaveViewModal';
 // exported for jest tests
 export const ViewLabel: FC<{ view: ViewInfo }> = memo(props => {
     const { view } = props;
-    let viewLabel = view.isDefault ? 'Default View' : view.label;
+    let viewLabel = view.isDefault ? ((view.saved && !view.shared) ? 'My Default View' :  'Default View') : view.label;
     const modifiers = view.modifiers;
     if (modifiers.length > 0) {
         return <>{viewLabel} <span className={"text-muted"}>({modifiers.join(", ")})</span></>
@@ -163,14 +163,11 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                 {!views && !errorMessage && <LoadingSpinner />}
                 {views &&
                     views.map((view, ind) => {
+                        const { isDefault, shared } = view;
                         const unsavedView = view.session;
                         const isRenaming = !!selectedView;
-                        const isDefault = view.isDefault;
                         let canEdit = !isDefault && !isRenaming && !unsavedView && !deleting;
-                        if (view.shared) canEdit = canEdit && user.isAdmin;
-
-                        let viewLabel = view.isDefault ? 'Default View' : view.label;
-                        if (unsavedView) viewLabel += ' (Edited)';
+                        if (shared) canEdit = canEdit && user.isAdmin;
 
                         let revert = <span className="gray-text">Revert</span>;
                         if (view.isSaved) {

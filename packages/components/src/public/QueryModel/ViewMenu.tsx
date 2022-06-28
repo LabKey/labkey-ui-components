@@ -43,8 +43,8 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const disabled = isLoading || (noViews && !allowViewCustomization);
 
         const viewMapper = (viewInfo): ReactNode => {
-            const { name, isDefault, saved } = viewInfo;
-            const label = isDefault && saved ? 'My Default' : viewInfo.label;
+            const { name, isDefault, saved, shared } = viewInfo;
+            const label = isDefault && saved && !shared ? 'My Default' : viewInfo.label;
             const view = isDefault ? undefined : name;
             const onSelect = (): void => {
                 onViewSelect(view);

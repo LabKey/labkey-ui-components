@@ -64,10 +64,29 @@ const SHARED_VIEW = ViewInfo.create({
 
 describe("ViewLabel", () => {
    test("default view", () => {
-       const wrapper = mount(<ViewLabel view={DEFAULT_VIEW}/>);
+       const wrapper = mount(<ViewLabel view={SYSTEM_DEFAULT_VIEW}/>);
        expect(wrapper.text()).toBe("Default View");
        wrapper.unmount();
    });
+
+    test("own default view", () => {
+        const wrapper = mount(<ViewLabel view={DEFAULT_VIEW}/>);
+        expect(wrapper.text()).toBe("My Default View");
+        wrapper.unmount();
+    });
+
+    test("shared default view", () => {
+        const wrapper = mount(<ViewLabel view={ViewInfo.create({
+            columns: [],
+            filters: [],
+            default: true,
+            saved: true, // can be reverted
+            shared: true,
+            name: '',
+        })}/>);
+        expect(wrapper.text()).toBe("Default View (shared)");
+        wrapper.unmount();
+    });
 
    test("default view, edited", () => {
        const wrapper = mount(<ViewLabel view={ViewInfo.create({default: true, session: true})}/>);

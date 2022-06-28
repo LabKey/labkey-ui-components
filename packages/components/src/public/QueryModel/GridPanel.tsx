@@ -351,7 +351,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
             {showSave && canSaveCurrent && (
                 <SplitButton id="saveViewDropdown" bsStyle="success" onClick={_onSaveCurrentView} title="Save">
                     <MenuItem title="Save as new view" onClick={onSaveNewView} key="saveNewGridView">
-                        Save as
+                        Save as ...
                     </MenuItem>
                 </SplitButton>
             )}

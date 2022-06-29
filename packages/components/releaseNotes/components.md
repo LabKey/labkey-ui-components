@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Grid column drag-n-drop to reorder columns in grid view
+
 ### version 2.190.1
 *Released*: 29 June 2022
 * Export `getCurrentAppProperties`

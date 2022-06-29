@@ -1,11 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX 2022
+### version 2.190.2
+*Released*: 29 June 2022
 * Entity Grid Actions for All Samples Grids
   * Extend sample selection util to work with picklist and other non samples backed grids
   * Move SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ schema constant here from @labkey/workflow
+
+### version 2.190.1
+*Released*: 29 June 2022
+* Export `getCurrentAppProperties`
+* Issue 45739: when looking for import columns, trim the importName
 
 ### version 2.190.0
 *Released*: 27 June 2022

@@ -120,17 +120,12 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
     }
 
     handleDragStart = (e): void => {
-        e.dataTransfer.setData('dragIndex', e.target.id);
+        if (e.target?.tagName.toLowerCase() === 'th' && e.target.id !== GRID_SELECTION_INDEX) {
+            e.dataTransfer.setData('dragIndex', e.target.id);
+        }
     };
     handleDragOver = (e): void => {
         e.preventDefault();
-    };
-    handleDrop = (e): void => {
-        var source = e.dataTransfer.getData('dragIndex');
-        const target = this.state.dragTarget;
-        if (source && target && source !== target) {
-            this.props.onColumnDrop(source, target);
-        }
     };
     handlDragEnd = (e): void => {
         this.setState({ dragTarget: undefined });
@@ -138,6 +133,13 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
     handleDragEnter = (e): void => {
         if (e.target?.tagName.toLowerCase() === 'th' && e.target.id !== GRID_SELECTION_INDEX) {
             this.setState({ dragTarget: e.target.id });
+        }
+    };
+    handleDrop = (e): void => {
+        var source = e.dataTransfer.getData('dragIndex');
+        const target = this.state.dragTarget;
+        if (source && target && source !== target) {
+            this.props.onColumnDrop(source, target);
         }
     };
 

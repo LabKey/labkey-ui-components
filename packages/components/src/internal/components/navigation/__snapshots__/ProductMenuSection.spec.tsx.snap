@@ -129,6 +129,103 @@ exports[`ProductMenuSection render empty section with empty text and create link
 </ProductMenuSection>
 `;
 
+exports[`ProductMenuSection render one column with overflow link 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
+      "emptyText": undefined,
+      "emptyURL": undefined,
+      "emptyURLText": "Get started...",
+      "headerURL": undefined,
+      "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProductOverflowLink/images/assays.svg",
+      "maxColumns": 1,
+      "maxItemsPerColumn": 2,
+      "seeAllURL": undefined,
+      "showActiveJobIcon": true,
+    }
+  }
+  currentProductId="testProductOverflowLink"
+  maxColumns={1}
+  section={
+    Immutable.Record {
+      "label": "Assays",
+      "url": undefined,
+      "items": Immutable.List [
+        Object {
+          "id": 11,
+          "label": "Assay 1",
+        },
+        Object {
+          "id": 12,
+          "label": "Assay 2",
+        },
+        Object {
+          "id": 13,
+          "label": "Assay 3",
+        },
+        Object {
+          "id": 14,
+          "label": "Assay 4",
+        },
+        Object {
+          "id": 15,
+          "label": "Assay 5",
+        },
+      ],
+      "totalCount": 5,
+      "itemLimit": undefined,
+      "key": "assays",
+      "productId": undefined,
+      "sectionKey": undefined,
+    }
+  }
+>
+  <span
+    className="menu-section-header"
+  >
+    <img
+      alt="Assays icon"
+      className="menu-section-image "
+      height="24px"
+      src="/testProductOverflowLink/images/assays.svg"
+      width="24px"
+    />
+     
+    Assays
+  </span>
+  <hr />
+  <ul
+    className="col-1"
+    key="assayscol-1"
+  >
+    <li
+      key="Assay 1"
+    >
+      Assay 1
+    </li>
+    <li
+      key="Assay 2"
+    >
+      Assay 2
+    </li>
+  </ul>
+  <span
+    className="overflow-link"
+    key="overflow"
+  >
+    <a
+      href="#/assays"
+    >
+      See all 
+      5
+    </a>
+  </span>
+</ProductMenuSection>
+`;
+
 exports[`ProductMenuSection render one-column section 1`] = `
 <ProductMenuSection
   config={
@@ -247,6 +344,122 @@ exports[`ProductMenuSection render one-column section 1`] = `
       key="Sample Set 4"
     >
       Sample Set 4
+    </li>
+  </ul>
+</ProductMenuSection>
+`;
+
+exports[`ProductMenuSection render one-column section 2`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
+      "emptyText": undefined,
+      "emptyURL": undefined,
+      "emptyURLText": "Get started...",
+      "headerURL": undefined,
+      "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProduct4Columns/images/assays.svg",
+      "maxColumns": 1,
+      "maxItemsPerColumn": 2,
+      "seeAllURL": undefined,
+      "showActiveJobIcon": true,
+    }
+  }
+  currentProductId="testProduct4Columns"
+  maxColumns={1}
+  section={
+    Immutable.Record {
+      "label": "Assays",
+      "url": undefined,
+      "items": Immutable.List [
+        Immutable.Record {
+          "id": 11,
+          "key": undefined,
+          "label": "Assay 1",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 12,
+          "key": undefined,
+          "label": "Assay 2",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 13,
+          "key": undefined,
+          "label": "Assay 3",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 14,
+          "key": undefined,
+          "label": "Assay 4",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+        Immutable.Record {
+          "id": 15,
+          "key": undefined,
+          "label": "Assay 5",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+          "hasActiveJob": false,
+          "fromSharedContainer": false,
+        },
+      ],
+      "totalCount": 0,
+      "itemLimit": undefined,
+      "key": "assays",
+      "productId": undefined,
+      "sectionKey": undefined,
+    }
+  }
+>
+  <span
+    className="menu-section-header"
+  >
+    <img
+      alt="Assays icon"
+      className="menu-section-image "
+      height="24px"
+      src="/testProduct4Columns/images/assays.svg"
+      width="24px"
+    />
+     
+    Assays
+  </span>
+  <hr />
+  <ul
+    className="col-1"
+    key="assayscol-1"
+  >
+    <li
+      key="Assay 1"
+    >
+      Assay 1
+    </li>
+    <li
+      key="Assay 2"
+    >
+      Assay 2
     </li>
   </ul>
 </ProductMenuSection>

@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* TODO
+* Issue 45725: MegaMenu truncate and text wrap consistency + styling updates
 
 ### version 2.191.0
 *Released*: 29 June 2022

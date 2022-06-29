@@ -61,7 +61,7 @@ export const ImportAliasRenderer: FC<RendererProps> = memo(props => {
                     const value = aliasMap.get(key).substring(splitIndex + 1);
 
                     return (
-                        <div>
+                        <div key={key}>
                             {key} (Alias for:&nbsp;
                             <a key={key} href={AppURL.create(route, value).toHref()}>
                                 {value}

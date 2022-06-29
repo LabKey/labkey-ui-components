@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.191.0
+*Released*: 29 June 2022
+* Save Grid Views - misc. polish and remove experimental feature flag
+  * Update view label in ManageViewsModal to indicate if view is shared or inherited
+  * Add error message and styling when view name exceeds the maximum name length in `ManageViewsModal` and `SaveViewModal`
+  * Add indicator if default view is my personal default view (set in LKS)
+  * Adjust styling and button text in `ManageViewsModal`
+  * Add in-line delete confirmation for views
+  * Remove experimental feature flag
+
 ### version 2.190.3
 *Released*: 29 June 2022
 * Issue 45030: Admin > Permissions Groups click target should be the whole row

@@ -57,12 +57,6 @@ const DEFAULT_PROPS = {
 
 describe('ViewMenu', () => {
     test('Render', () => {
-        LABKEY.moduleContext = {
-            query: {
-                canCustomizeViewsFromApp: false,
-            },
-        };
-
         // Renders nothing
         let model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
         let tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
@@ -72,7 +66,7 @@ describe('ViewMenu', () => {
         tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
 
-        // "No Extra Column"  view shows up under "All Saved Views"
+        // "No Extra Column"  view shows up under "Shared Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         tree = renderer.create(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
         expect(tree.toJSON()).toMatchSnapshot();
@@ -96,11 +90,6 @@ describe('ViewMenu', () => {
     });
 
     test('Customized view menus', () => {
-        LABKEY.moduleContext = {
-            query: {
-                canCustomizeViewsFromApp: true,
-            },
-        };
         LABKEY.user = {
             isGuest: false,
         };
@@ -118,11 +107,6 @@ describe('ViewMenu', () => {
     });
 
     test('Customized view menus, guest user', () => {
-        LABKEY.moduleContext = {
-            query: {
-                canCustomizeViewsFromApp: true,
-            },
-        };
         LABKEY.user = {
             isGuest: true,
         };
@@ -135,11 +119,6 @@ describe('ViewMenu', () => {
     });
 
     test('No views but customize enabled', () => {
-        LABKEY.moduleContext = {
-            query: {
-                canCustomizeViewsFromApp: true,
-            },
-        };
         LABKEY.user = {
             isGuest: false,
         };
@@ -157,11 +136,6 @@ describe('ViewMenu', () => {
     });
 
     test('Interactivity', () => {
-        LABKEY.moduleContext = {
-            query: {
-                canCustomizeViewsFromApp: false,
-            },
-        };
         const onViewSelect = jest.fn();
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         const wrapper = mount(

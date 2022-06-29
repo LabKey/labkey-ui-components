@@ -194,13 +194,20 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
     return QueryInfo.create(queryInfo);
 }
 
+const DEFAULT_PROCESS_PARAMETER_DOMAIN_KEY = 'defaultprocessparameterdomain';
+
 function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryColumn {
     let columnMetadata;
     const metadata = getQueryMetadata();
 
     // lookup to see if metadata needs to be applied
     if (rawColumn && rawColumn.fieldKey) {
-        let allMeta = metadata.getIn(['columnDefaults', rawColumn.fieldKey.toLowerCase()]);
+        let lcFieldKey = rawColumn.fieldKey.toLowerCase();
+        // special case for vocabulary domain for process parameters. The name of the domain also contains
+        // the domainId (e.g., DefaultProcessParameterDomain40).
+        if (rawColumn.fieldKey.toLowerCase().startsWith(DEFAULT_PROCESS_PARAMETER_DOMAIN_KEY))
+            lcFieldKey = DEFAULT_PROCESS_PARAMETER_DOMAIN_KEY;
+        let allMeta = metadata.getIn(['columnDefaults', lcFieldKey]);
 
         if (allMeta) {
             allMeta = allMeta.toJS();
@@ -210,7 +217,7 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
             'schema',
             schemaQuery.schemaName.toLowerCase(),
             'columnDefaults',
-            rawColumn.fieldKey.toLowerCase(),
+            lcFieldKey,
         ]);
 
         if (schemaMeta) {
@@ -223,7 +230,7 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
             'query',
             schemaQuery.queryName.toLowerCase(),
             'column',
-            rawColumn.fieldKey.toLowerCase(),
+            lcFieldKey,
         ]);
 
         if (columnMeta) {
@@ -237,7 +244,7 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
                 'query',
                 schemaQuery.queryName.toLowerCase(),
                 'column',
-                rawColumn.fieldKey.toLowerCase(),
+                lcFieldKey,
             ]);
             if (columnMeta) {
                 columnMeta = columnMeta.toJS();

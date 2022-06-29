@@ -113,6 +113,7 @@ export const SAMPLE_MANAGEMENT = {
     SAMPLE_TYPE_INSIGHTS: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, 'SampleTypeInsights'),
     SAMPLE_STATUS_COUNTS: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, 'SampleStatusCounts'),
     SOURCE_SAMPLES: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, 'SourceSamples'),
+    INPUT_SAMPLES_SQ: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, 'InputSamples'),
     JOBS: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, 'Jobs'),
 };
 

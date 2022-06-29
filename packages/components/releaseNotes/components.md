@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.190.1
+*Released*: 29 June 2022
 * Export `getCurrentAppProperties`
 * Issue 45739: when looking for import columns, trim the importName
 

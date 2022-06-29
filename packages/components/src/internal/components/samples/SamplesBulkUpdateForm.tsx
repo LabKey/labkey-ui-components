@@ -1,7 +1,7 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { AuditBehaviorTypes } from '@labkey/api';
+import { AuditBehaviorTypes, Query } from '@labkey/api';
 
 import {
     Alert,
@@ -28,14 +28,15 @@ import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
 
 interface OwnProps {
-    queryModel: QueryModel;
-    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<void>;
-    hasValidMaxSelection: boolean;
-    sampleSetLabel: string;
-    onCancel: () => void;
-    onBulkUpdateError: (message: string) => void;
-    onBulkUpdateComplete: (data: any, submitForEdit) => void;
+    containerFilter?: Query.ContainerFilter;
     editSelectionInGrid: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
+    hasValidMaxSelection: boolean;
+    onBulkUpdateComplete: (data: any, submitForEdit) => void;
+    onBulkUpdateError: (message: string) => void;
+    onCancel: () => void;
+    queryModel: QueryModel;
+    sampleSetLabel: string;
+    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<void>;
     user: User;
 }
 
@@ -43,8 +44,8 @@ type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultPr
 
 interface UpdateAlertProps {
     aliquots: any[];
-    numSelections: number;
     editStatusData: OperationConfirmationData;
+    numSelections: number;
 }
 
 // exported for jest testing
@@ -72,8 +73,8 @@ export const SamplesBulkUpdateAlert: FC<UpdateAlertProps> = memo(props => {
 });
 
 interface State {
-    shouldDiscard: boolean;
     discardComment: string;
+    shouldDiscard: boolean;
 }
 
 // exported for jest testing
@@ -189,6 +190,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
     render(): ReactNode {
         const {
             aliquots,
+            containerFilter,
             updateRows,
             queryModel,
             hasValidMaxSelection,
@@ -202,11 +204,12 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
 
         return (
             <BulkUpdateForm
+                containerFilter={containerFilter}
                 singularNoun={selectedNoun}
                 pluralNoun={`${selectedNoun}s`}
                 itemLabel={sampleSetLabel}
                 queryInfo={this.getQueryInfo()}
-                selectedIds={[...queryModel.selections]}
+                selectedIds={queryModel.selections}
                 canSubmitForEdit={hasValidMaxSelection}
                 onCancel={onCancel}
                 onError={onBulkUpdateError}

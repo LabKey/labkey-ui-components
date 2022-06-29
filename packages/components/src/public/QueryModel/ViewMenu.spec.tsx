@@ -48,6 +48,7 @@ beforeAll(() => {
 });
 
 const DEFAULT_PROPS = {
+    allowViewCustomization: false,
     onViewSelect: jest.fn(),
     onSaveView: jest.fn(),
     onManageViews: jest.fn(),
@@ -104,7 +105,9 @@ describe('ViewMenu', () => {
             isGuest: false,
         };
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
-        const wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
+        const wrapper = mount(
+            <ViewMenu {...DEFAULT_PROPS} allowViewCustomization={true} hideEmptyViewMenu={false} model={model} />
+        );
         const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(5);
         expect(items.at(2).text()).toBe('Customize Grid View');
@@ -142,7 +145,9 @@ describe('ViewMenu', () => {
         };
 
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
-        const wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={false} model={model} />);
+        const wrapper = mount(
+            <ViewMenu {...DEFAULT_PROPS} allowViewCustomization={true} hideEmptyViewMenu={false} model={model} />
+        );
         const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(4); // one separator and three options
         expect(items.at(1).text()).toBe('Customize Grid View');
@@ -161,6 +166,7 @@ describe('ViewMenu', () => {
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         const wrapper = mount(
             <ViewMenu
+                allowViewCustomization={false}
                 hideEmptyViewMenu={true}
                 model={model}
                 onViewSelect={onViewSelect}

@@ -103,7 +103,6 @@ describe('HeaderCellDropdown', () => {
         wrapper.unmount();
     });
 
-
     test('no col', () => {
         const wrapper = mount(
             <HeaderCellDropdown {...DEFAULT_PROPS} column={new GridColumn({ index: 'column', title: 'Column' })} />
@@ -145,15 +144,15 @@ describe('HeaderCellDropdown', () => {
                         raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: false }),
                     })
                 }
-                handleHideColumn={jest.fn}
                 handleAddColumn={jest.fn}
+                handleHideColumn={jest.fn}
             />
         );
         validate(wrapper, 0, 2);
         wrapper.unmount();
     });
 
-    test('column not sortable or filterable, can add but not hide', () => {
+    test('column not sortable or filterable, can add and hide', () => {
         LABKEY.moduleContext = {
             query: {
                 canCustomizeViewsFromApp: true,
@@ -170,11 +169,13 @@ describe('HeaderCellDropdown', () => {
                     })
                 }
                 handleAddColumn={jest.fn}
+                handleHideColumn={jest.fn}
             />
         );
         validate(wrapper, 0, 2);
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
-        expect(wrapper.find(DisableableMenuItem).text()).toContain("Hide Column");
+        expect(wrapper.find(DisableableMenuItem).text()).toContain('Hide Column');
+        expect(wrapper.find(DisableableMenuItem).prop('operationPermitted')).toBe(true);
         wrapper.unmount();
     });
 

@@ -80,14 +80,38 @@
 .edit-inline-field__toggle {
     cursor: pointer;
 
-    .fa-pencil {
-        color: #D3D3D3;
+    .fa {
+        color: $light-gray;
         padding-left: 5px;
     }
 
     &:hover {
-        .fa-pencil {
-            color: #333333;
+        .fa {
+            color: $gray-dark;
+        }
+    }
+}
+
+.view-field__action {
+    cursor: pointer;
+
+    .fa {
+        color: $light-gray;
+        padding-left: 8px;
+    }
+
+    &:hover {
+        .fa {
+            color: $gray-dark;
+        }
+    }
+
+    &.disabled {
+        cursor: default;
+        &:hover {
+            .fa {
+                color: $light-gray;
+            }
         }
     }
 }

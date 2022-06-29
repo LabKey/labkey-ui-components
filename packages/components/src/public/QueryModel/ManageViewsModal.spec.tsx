@@ -20,10 +20,19 @@ export const getQueryAPI = (views: ViewInfo[]) => {
 };
 
 describe('ManageViewsModal', () => {
+    const SYSTEM_DEFAULT_VIEW = ViewInfo.create({
+        columns: [],
+        filters: [],
+        default: true,
+        saved: false, // cannot be reverted
+        name: '',
+    });
+
     const DEFAULT_VIEW = ViewInfo.create({
         columns: [],
         filters: [],
         default: true,
+        saved: true, // can be reverted
         name: '',
     });
 
@@ -115,11 +124,37 @@ describe('ManageViewsModal', () => {
         expect(rows.at(3).find('.manage-view-name').text()).toBe('View 3');
         expect(rows.at(3).find('.fa-pencil').length).toBe(1);
         expect(rows.at(3).find('.fa-trash-o').length).toBe(1);
+        expect(rows.at(0).find('.gray-text').length).toBe(0);
         expect(rows.at(3).find('.clickable-text').length).toBe(1);
         expect(rows.at(3).find('.clickable-text').text()).toBe('Set default');
 
         const findButton = wrapper.find('button.btn-default');
         expect(findButton.text()).toEqual('Done editing');
+
+        wrapper.unmount();
+    });
+
+    test('system default view', async () => {
+        const wrapper = mountWithAppServerContext(
+            <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
+            {
+                api: getQueryAPI([SYSTEM_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
+            },
+            {
+                user: TEST_USER_PROJECT_ADMIN,
+            }
+        );
+        await waitForLifecycle(wrapper);
+
+        const rows = wrapper.find('.row');
+        expect(rows.length).toBe(4);
+
+        expect(rows.at(0).find('.manage-view-name').text()).toBe('Default View');
+        expect(rows.at(0).find('.fa-pencil').length).toBe(0);
+        expect(rows.at(0).find('.fa-trash-o').length).toBe(0);
+        expect(rows.at(0).find('.clickable-text').length).toBe(0);
+        expect(rows.at(0).find('.gray-text').length).toBe(1);
+        expect(rows.at(0).find('.gray-text').text()).toBe('Revert');
 
         wrapper.unmount();
     });

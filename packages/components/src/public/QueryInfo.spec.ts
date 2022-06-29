@@ -123,6 +123,49 @@ describe('QueryInfo', () => {
         });
     });
 
+    describe('getDisplayColumns', () => {
+        const queryInfoWithViews = QueryInfo.fromJSON(
+            {
+                columns: [
+                    { fieldKey: 'test1' },
+                    { fieldKey: 'test2', addToSystemView: true },
+                    { fieldKey: 'test3', addToSystemView: true },
+                ],
+                views: [{ name: '', default: true }],
+            },
+            true
+        );
+
+        test('system default view with addToSystemView', () => {
+            const columns = queryInfoWithViews.getDisplayColumns();
+            expect(columns.size).toBe(2);
+            expect(columns.get(0).fieldKey).toBe('test2');
+            expect(columns.get(1).fieldKey).toBe('test3');
+        });
+
+        test('system default view with omittedColumns', () => {
+            const columns = queryInfoWithViews.getDisplayColumns('', List.of('test2'));
+            expect(columns.size).toBe(1);
+            expect(columns.get(0).fieldKey).toBe('test3');
+        });
+
+        test('saved default view should not include addToSystemView', () => {
+            const qv = QueryInfo.fromJSON(
+                {
+                    columns: [
+                        { fieldKey: 'test1' },
+                        { fieldKey: 'test2', addToSystemView: true },
+                        { fieldKey: 'test3', addToSystemView: true },
+                    ],
+                    views: [{ name: '', default: true, saved: true }],
+                },
+                true
+            );
+            const columns = qv.getDisplayColumns();
+            expect(columns.size).toBe(0);
+        });
+    });
+
     describe('getIconURL', () => {
         test('default', () => {
             const queryInfo = QueryInfo.create({ schemaName: 'test', name: 'test' });

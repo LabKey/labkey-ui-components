@@ -236,13 +236,14 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                 {model && (
                     <GridPanel
                         actions={actions}
+                        model={model}
                         allowSelections={false}
                         asPanel={false}
-                        model={model}
                         showButtonBar={false}
                         showChartMenu={false}
                         showExport={false}
                         allowFiltering={false}
+                        allowViewCustomization={false}
                     />
                 )}
             </div>

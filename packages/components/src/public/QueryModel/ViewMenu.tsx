@@ -9,6 +9,7 @@ import { getQueryMetadata } from '../../internal/global';
 import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
 
 interface ViewMenuProps {
+    allowViewCustomization: boolean;
     hideEmptyViewMenu: boolean;
     model: QueryModel;
     onCustomizeView?: () => void;
@@ -19,11 +20,21 @@ interface ViewMenuProps {
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {
     render(): ReactNode {
-        const { model, hideEmptyViewMenu, onCustomizeView, onManageViews, onViewSelect, onSaveView } = this.props;
+        const {
+            allowViewCustomization,
+            model,
+            hideEmptyViewMenu,
+            onCustomizeView,
+            onManageViews,
+            onViewSelect,
+            onSaveView,
+        } = this.props;
         const { isLoading, views, viewName, visibleViews } = model;
         const { user } = getServerContext();
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
+        const hasViewsToManage =
+            defaultView?.isSaved || views.filter(view => !view.hidden && !view.isSystemView).length > 0;
 
         const publicViews = visibleViews.filter(view => view.shared);
         const privateViews = visibleViews.filter(view => !view.shared);
@@ -68,11 +79,13 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {publicViews.length > 0 && <MenuItem divider />}
                     {publicViews.length > 0 && <MenuItem header>All Saved Views</MenuItem>}
                     {publicViews.length > 0 && publicViews.map(viewMapper)}
-                    {isCustomizeViewsInAppEnabled() && onCustomizeView && !user.isGuest && (
+                    {isCustomizeViewsInAppEnabled() && allowViewCustomization && !user.isGuest && (
                         <>
                             <MenuItem divider />
                             <MenuItem onSelect={onCustomizeView}>Customize Grid View</MenuItem>
-                            <MenuItem onSelect={onManageViews}>Manage Saved Views</MenuItem>
+                            <MenuItem onSelect={onManageViews} disabled={!hasViewsToManage}>
+                                Manage Saved Views
+                            </MenuItem>
                             <MenuItem onSelect={onSaveView}>Save Grid View</MenuItem>
                         </>
                     )}

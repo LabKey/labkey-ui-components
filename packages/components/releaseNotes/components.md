@@ -5,6 +5,47 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 45030: Admin > Permissions Groups click target should be the whole row
 
+### version 2.190.0
+*Released*: 27 June 2022
+* Rename `getContainerFilterForInsert` to `getContainerFilterForLookups`.
+* Add optional `containerFilter?: Query.ContainerFilter` prop to `BulkUpdateForm`, `EditableGrid`, `EntityInsertPanel`, and `QueryInfoForm`.
+* Restructure prop declarations for `QueryInfoForm` to extend `QueryFormInputsProps`.
+* Convert `BulkUpdateForm` to accept a `Set<string>` for `selectedIds` to align with `QueryModel.selection`.
+
+### version 2.189.1
+*Released*: 24 June 2022
+* Issue 45385: don't export empty tabs by default
+
+### version 2.189.0
+*Released*: 24 June 2022
+* Save Grid Views - Update Grid Column Metadata for User Customization
+  * apply app query metadata to query details for lookup
+  * special case for assay schema to allow for metadata to be applied to all protocols base tables
+  * add QueryColumn property for apps to flag columns as removeFromViewCustomization
+  * rename addToDisplayView -> addToSystemView
+
+### version 2.188.3
+*Released*: 23 June 2022
+* Issue 45028: Display details view columns in lineage
+
+### version 2.188.2
+*Released*: 23 June 2022
+* Item 10380: Save Grid Views - Allow removal of addToDisplayView columns
+  * only add "addToDisplayView" fields to view for unsaved default view (i.e. system default view)
+  * only allow default view revert in Manage Saved Views modal if it is not the system default
+  * set allowViewCustomization false for a few more cases
+  * SpecialtyAssayPanel.tsx update to remove usage of dangerouslySetInnerHTML
+
+### version 2.188.1
+*Released*: 22 June 2022
+* Enable editing of column titles for fields shown in view
+* Don't show `GridTitle` when grid is not editable in application.
+
+### version 2.188.0
+*Released*: 21 June 2022
+* Issue 45373: Sample Finder export generates ambiguous column header names
+    * Support advancedExportOption per TabbedGridPanel tab
+
 ### version 2.187.1
 *Released*: 21 June 2022
 * Issue 45006: Provide link to lookup table/query in field designer

@@ -180,7 +180,7 @@ export function filterSampleRowsForOperation(
     rows: Record<string, any>,
     operation: SampleOperation,
     sampleIdField = 'RowId'
-): { rows: { [p: string]: any }; statusMessage: string; statusData: OperationConfirmationData } {
+): { rows: { [p: string]: any }; statusData: OperationConfirmationData; statusMessage: string } {
     const allowed = [];
     const notAllowed = [];
     const validRows = {};
@@ -238,10 +238,14 @@ export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
     )
         return true;
 
-    return (
-        lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA &&
-        lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase()
-    );
+    if (lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA) {
+        return (
+            lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase() ||
+            lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ.queryName.toLowerCase()
+        );
+    }
+
+    return false;
 }
 
 export const getSampleTypeTemplateUrl = (

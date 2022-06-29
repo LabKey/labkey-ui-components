@@ -15,8 +15,8 @@ interface Props {
     isExpandable: boolean;
     initExpanded?: boolean;
     onClick?: (show: boolean) => void;
-    iconClickOnly?: boolean;
     containerCls?: string;
+    useGreyTheme?: boolean;
 }
 
 interface State {
@@ -25,10 +25,6 @@ interface State {
 }
 
 export class ExpandableContainer extends React.PureComponent<Props, State> {
-    static defaultProps = {
-        iconClickOnly: false,
-    };
-
     constructor(props: Props) {
         super(props);
 
@@ -63,15 +59,15 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { children, iconSrc, iconFaCls, isExpandable, clause, links, iconClickOnly, containerCls } = this.props;
+        const { children, iconSrc, iconFaCls, isExpandable, clause, links, containerCls, useGreyTheme } = this.props;
         const { visible, isHover } = this.state;
         const hasOnClick = this.props.onClick !== undefined;
-        const containerDivCls = iconClickOnly ? 'container-expandable-icononly' : 'container-expandable-detail';
+        const containerDivCls = useGreyTheme ? 'container-expandable-grey' : 'container-expandable-blue';
 
         return (
             <div className={classNames('row', 'container-expandable', { disabled: !isExpandable })}>
                 <div
-                    onClick={(hasOnClick || isExpandable) && !iconClickOnly ? this.handleClick : undefined}
+                    onClick={(hasOnClick || isExpandable) ? this.handleClick : undefined}
                     onMouseEnter={isExpandable ? this.handleMouseEnter : undefined}
                     onMouseLeave={isExpandable ? this.handleMouseLeave : undefined}
                     className={classNames(
@@ -90,7 +86,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                         )}
                     </i>
                     <div
-                        onClick={(hasOnClick || isExpandable) && iconClickOnly ? this.handleClick : undefined}
+                        onClick={(hasOnClick || isExpandable) ? this.handleClick : undefined}
                         className={classNames('pull-right', 'container-expandable-child__chevron', {
                             'text-muted': !isExpandable,
                         })}

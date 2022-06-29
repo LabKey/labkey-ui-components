@@ -4,11 +4,11 @@ import { Checkbox, Label, Modal } from 'react-bootstrap';
 import { QueryModelMap } from '../../../public/QueryModel/withQueryModels';
 
 interface ExportModalProperties {
+    canExport: boolean;
+    onClose: () => void;
+    onExport: (tabs: Set<string>) => Promise<void>;
     queryModels: QueryModelMap;
     tabOrder: string[];
-    onExport: (tabs: Set<string>) => Promise<void>;
-    onClose: () => void;
-    canExport: boolean;
     title?: string;
 }
 const DEFAULT_TITLE = 'Select the Tabs to Export';
@@ -17,9 +17,8 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
     const { queryModels, tabOrder, onClose, onExport, canExport, title = DEFAULT_TITLE } = props;
     const [selected, setSelected] = useState<Set<string>>(() => {
         let selected = new Set<string>();
-        tabOrder.forEach((modelId) => {
-            if (queryModels[modelId].rowCount > 0)
-                selected = selected.add(modelId);
+        tabOrder.forEach(modelId => {
+            if (queryModels[modelId].rowCount > 0) selected = selected.add(modelId);
         });
         return selected;
     });

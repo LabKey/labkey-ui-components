@@ -7,7 +7,8 @@ import { ViewInfo } from '../../internal/ViewInfo';
 import { mountWithServerContext } from '../../internal/testHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR, TEST_USER_PROJECT_ADMIN } from '../../internal/userFixtures';
 
-import { SaveViewModal } from './SaveViewModal';
+import { SaveViewModal, ViewNameInput } from './SaveViewModal';
+import { mount } from 'enzyme';
 
 beforeAll(() => {
     LABKEY.moduleContext = {
@@ -106,4 +107,56 @@ describe('SaveViewModal', () => {
 
         wrapper.unmount();
     });
+});
+
+describe("ViewNameInput", () => {
+
+    test("default view", () => {
+        const wrapper = mount(<ViewNameInput view={ViewInfo.create({default: true, name: 'default'})} onBlur={jest.fn()}/>);
+        const input = wrapper.find("input");
+        expect(input.prop('value')).toBe('');
+        const warning = wrapper.find(".text-danger");
+        expect(warning.exists()).toBe(false);
+    });
+
+    test("hidden view", () => {
+        const wrapper = mount(<ViewNameInput view={ViewInfo.create({default: false, name: 'Sample Finder', hidden: true})} onBlur={jest.fn()}/>);
+        const input = wrapper.find("input");
+        expect(input.prop('value')).toBe('');
+        const warning = wrapper.find(".text-danger");
+        expect(warning.exists()).toBe(false);
+    });
+
+    test("valid named view", () => {
+        const wrapper = mount(
+            <ViewNameInput
+                view={ViewInfo.create({default: false, name: 'Save Me'})}
+                onBlur={jest.fn()}
+            />);
+        const input = wrapper.find("input");
+        expect(input.prop('value')).toBe('Save Me');
+        let warning = wrapper.find(".text-danger");
+        expect(warning.exists()).toBe(false);
+        input.simulate('change', { target: { value: 'Save Me 2'}});
+        warning = wrapper.find(".text-danger");
+        expect(warning.exists()).toBe(false);
+        input.simulate('blur');
+        expect(warning.exists()).toBe(false);
+    });
+
+    test("invalid named view", () => {
+        const wrapper = mount(
+            <ViewNameInput
+                view={ViewInfo.create({default: false, name: 'Save Me'})}
+                onBlur={jest.fn()}
+                maxLength={10}
+            />);
+        const input = wrapper.find("input");
+        input.simulate('change', { target: { value: '12345 78901' } });
+        input.simulate('blur');
+        const warning = wrapper.find(".text-danger");
+        expect(warning.exists()).toBe(true);
+        expect(warning.text()).toBe("Current length: 11; maximum length: 10");
+    });
+
 });

@@ -9,6 +9,18 @@ import { useServerContext } from '../../internal/components/base/ServerContext';
 import { useAppContext } from '../../internal/AppContext';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 import { deleteView, renameGridView, revertViewEdit, saveGridView, saveSessionView } from '../../internal/actions';
+import { ViewNameInput } from './SaveViewModal';
+
+// exported for jest tests
+export const ViewLabel: FC<{ view: ViewInfo }> = memo(props => {
+    const { view } = props;
+    let viewLabel = view.isDefault ? ((view.saved && !view.shared) ? 'My Default View' :  'Default View') : view.label;
+    const modifiers = view.modifiers;
+    if (modifiers.length > 0) {
+        return <>{viewLabel} <span className={"text-muted"}>({modifiers.join(", ")})</span></>
+    }
+    return <>{viewLabel}</>;
+});
 
 export interface Props {
     containerPath?: string;
@@ -23,10 +35,10 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     const [views, setViews] = useState<ViewInfo[]>(undefined);
     const [selectedView, setSelectedView] = useState<ViewInfo>(undefined);
     const [errorMessage, setErrorMessage] = useState<string>();
-    const [newName, setNewName] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
     const [hasChange, setHasChange] = useState<boolean>();
     const [reselectViewName, setReselectViewName] = useState<string>(undefined);
+    const [deleting, setDeleting] = useState<ViewInfo>(undefined);
 
     const { api } = useAppContext();
 
@@ -49,6 +61,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     const handleAction = useCallback(
         async (_handle: () => void) => {
             setErrorMessage(undefined);
+            setDeleting(undefined);
             setIsSubmitting(true);
             setHasChange(true);
 
@@ -92,10 +105,11 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             const view = getActionView(event);
             handleAction(async () => {
                 const finalViewInfo = view.mutate({ name: '' });
-                if (view.session)
+                if (view.session) {
                     await saveSessionView(schemaQuery, containerPath, view.name, '', view.inherit, true, true);
-                else await saveGridView(schemaQuery, containerPath, finalViewInfo, true, false, view.inherit, true);
-                await deleteView(schemaQuery, containerPath, view.name, false);
+                } else {
+                    await saveGridView(schemaQuery, containerPath, finalViewInfo, true, false, view.inherit, true);
+                }
                 if (currentView.name === view.name) setReselectViewName('');
             });
         },
@@ -103,19 +117,26 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     );
 
     const deleteSavedView = useCallback(
-        event => {
-            const view = getActionView(event);
+        () => {
             handleAction(async () => {
-                const viewName = view.name;
+                const viewName = deleting.name;
                 await deleteView(schemaQuery, containerPath, viewName, false);
-                if (currentView.name === viewName) setReselectViewName('');
+                if (currentView.name === viewName || reselectViewName === viewName) setReselectViewName('');
             });
         },
-        [currentView, schemaQuery, containerPath, getActionView]
+        [currentView, deleting, schemaQuery, containerPath, reselectViewName]
     );
 
-    const renameView = useCallback(async () => {
-        if (!selectedView || !newName || !newName.trim()) {
+    const onDeleteView = useCallback(event => {
+        setDeleting(getActionView(event));
+    }, [getActionView]);
+
+    const cancelDeleteView = useCallback(event => {
+        setDeleting(undefined);
+    }, []);
+
+    const renameView = useCallback(async (newName: string, hasError: boolean) => {
+        if (!selectedView || !newName || !newName.trim() || hasError) {
             setSelectedView(undefined);
             return;
         }
@@ -130,9 +151,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             setSelectedView(undefined);
             if (selectedView.name === currentView.name) setReselectViewName(newName);
         });
-    }, [selectedView, newName, currentView, schemaQuery, containerPath]);
-
-    const onNewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setNewName(evt.target.value), []);
+    }, [selectedView, currentView, schemaQuery, containerPath]);
 
     return (
         <Modal onHide={onClose} show>
@@ -144,14 +163,11 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                 {!views && !errorMessage && <LoadingSpinner />}
                 {views &&
                     views.map((view, ind) => {
+                        const { isDefault, shared } = view;
                         const unsavedView = view.session;
                         const isRenaming = !!selectedView;
-                        const isDefault = view.isDefault;
-                        let canEdit = !isDefault && !isRenaming && !unsavedView;
-                        if (view.shared) canEdit = canEdit && user.isAdmin;
-
-                        let viewLabel = view.isDefault ? 'Default View' : view.label;
-                        if (unsavedView) viewLabel += ' (Edited)';
+                        let canEdit = !isDefault && !isRenaming && !unsavedView && !deleting;
+                        if (shared) canEdit = canEdit && user.isAdmin;
 
                         let revert = <span className="gray-text">Revert</span>;
                         if (view.isSaved) {
@@ -163,70 +179,79 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                         }
 
                         return (
-                            <Row className="small-margin-bottom" key={view.name}>
-                                <Col xs={8}>
-                                    {selectedView && selectedView?.name === view.name ? (
-                                        <input
-                                            autoFocus
-                                            placeholder={selectedView?.name}
-                                            className="form-control"
-                                            defaultValue={selectedView?.name}
-                                            onBlur={renameView}
-                                            onChange={onNewNameChange}
-                                            type="text"
-                                        />
-                                    ) : (
-                                        <span className="manage-view-name">{viewLabel}</span>
-                                    )}
-                                </Col>
-                                <Col xs={2}>
-                                    {user.hasAdminPermission() && (
-                                        <>
-                                            {isDefault && !isRenaming && (
-                                                <OverlayTrigger
-                                                    placement="top"
-                                                    overlay={
-                                                        <Popover id="disabled-button-popover">
-                                                            Revert back to the system default view.
-                                                        </Popover>
-                                                    }
-                                                >
-                                                    {revert}
-                                                </OverlayTrigger>
-                                            )}
-                                            {!isDefault && !isRenaming && (
-                                                <span
-                                                    onClick={setDefaultView}
-                                                    id={'setDefault-' + ind}
-                                                    className="clickable-text"
-                                                >
-                                                    Set default
+                            <>
+                                <Row className="small-margin-bottom" key={view.name}>
+                                    <Col xs={8}>
+                                        {selectedView && selectedView?.name === view.name ? (
+                                            <ViewNameInput
+                                                autoFocus={true}
+                                                view={selectedView}
+                                                onBlur={renameView}
+                                                placeholder={selectedView?.name}
+                                                defaultValue={selectedView?.name}
+                                            />
+                                        ) : (
+                                            <ViewLabel view={view}/>
+                                        )}
+                                    </Col>
+                                    <Col xs={4}>
+                                        {user.hasAdminPermission() && (
+                                            <>
+                                                {isDefault && !isRenaming && (
+                                                    <OverlayTrigger
+                                                        placement="top"
+                                                        overlay={
+                                                            <Popover id="disabled-button-popover">
+                                                                Revert back to the system default view.
+                                                            </Popover>
+                                                        }
+                                                    >
+                                                        {revert}
+                                                    </OverlayTrigger>
+                                                )}
+                                                {!isDefault && !isRenaming && (
+                                                    <span
+                                                        onClick={setDefaultView}
+                                                        id={'setDefault-' + ind}
+                                                        className="clickable-text"
+                                                    >
+                                                        Make default
+                                                    </span>
+                                                )}
+                                            </>
+                                        )}
+                                        {canEdit && (
+                                            <span className="pull-right">
+                                                <span className="edit-inline-field__toggle small-right-spacing" onClick={onSelectView}>
+                                                    <i id={'select-' + ind} className="fa fa-pencil" />
                                                 </span>
-                                            )}
-                                        </>
-                                    )}
-                                </Col>
-                                <Col xs={1}>
-                                    {canEdit && (
-                                        <span className="edit-inline-field__toggle" onClick={onSelectView}>
-                                            <i id={'select-' + ind} className="fa fa-pencil" />
-                                        </span>
-                                    )}
-                                </Col>
-                                <Col xs={1}>
-                                    {canEdit && (
-                                        <span className="edit-inline-field__toggle" onClick={deleteSavedView}>
-                                            <i id={'delete-' + ind} className="fa fa-trash-o" />
-                                        </span>
-                                    )}
-                                </Col>
-                            </Row>
+                                                <span className="edit-inline-field__toggle" onClick={onDeleteView}>
+                                                    <i id={'delete-' + ind} className="fa fa-trash-o" />
+                                                </span>
+                                            </span>
+                                        )}
+                                    </Col>
+                                </Row>
+                            {(deleting === view) && (
+                                <Row className={"bottom-spacing"}>
+                                    <Col xs={12}>
+                                        <div className="inline-confirmation">
+                                            <div >
+                                                <span className="inline-confirmation__label">Permanently remove this view?</span>
+                                                <button className={"button-left-spacing alert-button btn btn-danger"} id={'confirm-delete-' + ind} onClick={deleteSavedView}>Yes</button>
+                                                <button className={"button-left-spacing alert-button btn btn-default"} id={'cancel-delete-' + ind} onClick={cancelDeleteView}>No</button>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            )}
+                            </>
                         );
                     })}
             </Modal.Body>
             <Modal.Footer>
                 <button disabled={isSubmitting} onClick={onClose} className="btn btn-default pull-right">
-                    Done editing
+                    Done
                 </button>
             </Modal.Footer>
         </Modal>

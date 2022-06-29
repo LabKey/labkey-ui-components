@@ -16,7 +16,7 @@
   }
 }
 
-.container-expandable-detail {
+.container-expandable-blue {
   padding: 15px 20px 15px 5px;
   max-width: 100%;
   position: relative;
@@ -37,10 +37,11 @@
   }
 }
 
-.container-expandable-icononly {
+.container-expandable-grey {
     padding: 15px 20px 15px 5px;
     max-width: 100%;
     position: relative;
+    cursor: pointer;
 
     h4 {
         display: inline;
@@ -62,7 +63,6 @@
 
 .container-expandable-child__chevron {
   margin-top: 17px;
-  cursor: pointer;
 
   & i {
     width: 14px;

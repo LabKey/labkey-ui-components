@@ -311,3 +311,13 @@ div.react-datepicker__current-month {
         white-space: pre-wrap;
     }
 }
+
+.inline-confirmation {
+    .alert-button {
+        padding: 0 12px;
+    }
+}
+
+.inline-confirmation__label {
+    font-style: italic;
+}

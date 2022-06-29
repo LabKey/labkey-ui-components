@@ -129,11 +129,6 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('column not sortable or filterable but customizable', () => {
-        LABKEY.moduleContext = {
-            query: {
-                canCustomizeViewsFromApp: true,
-            },
-        };
         const wrapper = mount(
             <HeaderCellDropdown
                 {...DEFAULT_PROPS}
@@ -153,11 +148,6 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('column not sortable or filterable, can add and hide', () => {
-        LABKEY.moduleContext = {
-            query: {
-                canCustomizeViewsFromApp: true,
-            },
-        };
         const wrapper = mount(
             <HeaderCellDropdown
                 {...DEFAULT_PROPS}
@@ -197,11 +187,6 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('column sortable, not filterable, customizable', () => {
-        LABKEY.moduleContext = {
-            query: {
-                canCustomizeViewsFromApp: true,
-            },
-        };
         const wrapper = mount(
             <HeaderCellDropdown
                 {...DEFAULT_PROPS}
@@ -237,11 +222,6 @@ describe('HeaderCellDropdown', () => {
     });
 
     test('column filterable, not sortable, but customizable', () => {
-        LABKEY.moduleContext = {
-            query: {
-                canCustomizeViewsFromApp: true,
-            },
-        };
         const wrapper = mount(
             <HeaderCellDropdown
                 {...DEFAULT_PROPS}

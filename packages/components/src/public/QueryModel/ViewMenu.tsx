@@ -6,7 +6,6 @@ import { getServerContext } from '@labkey/api';
 import { QueryModel, ViewInfo } from '../..';
 import { blurActiveElement } from '../../internal/util/utils';
 import { getQueryMetadata } from '../../internal/global';
-import { isCustomizeViewsInAppEnabled } from '../../internal/app/utils';
 
 interface ViewMenuProps {
     allowViewCustomization: boolean;
@@ -40,11 +39,12 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const privateViews = visibleViews.filter(view => !view.shared);
         const noViews = publicViews.length === 0 && privateViews.length === 0;
         const _hideEmptyViewMenu = getQueryMetadata().get('hideEmptyViewMenu', hideEmptyViewMenu);
-        const hidden = _hideEmptyViewMenu && noViews;
-        const disabled = isLoading || (noViews && !isCustomizeViewsInAppEnabled());
+        const hidden = _hideEmptyViewMenu && noViews && !allowViewCustomization;
+        const disabled = isLoading || (noViews && !allowViewCustomization);
 
         const viewMapper = (viewInfo): ReactNode => {
-            const { name, label, isDefault } = viewInfo;
+            const { name, isDefault, saved, shared } = viewInfo;
+            const label = isDefault && saved && !shared ? 'My Default' : viewInfo.label;
             const view = isDefault ? undefined : name;
             const onSelect = (): void => {
                 onViewSelect(view);
@@ -77,9 +77,9 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                     {privateViews.length > 0 && <MenuItem header>My Saved Views</MenuItem>}
                     {privateViews.length > 0 && privateViews.map(viewMapper)}
                     {publicViews.length > 0 && <MenuItem divider />}
-                    {publicViews.length > 0 && <MenuItem header>All Saved Views</MenuItem>}
+                    {publicViews.length > 0 && <MenuItem header>Shared Saved Views</MenuItem>}
                     {publicViews.length > 0 && publicViews.map(viewMapper)}
-                    {isCustomizeViewsInAppEnabled() && allowViewCustomization && !user.isGuest && (
+                    {allowViewCustomization && !user.isGuest && (
                         <>
                             <MenuItem divider />
                             <MenuItem onSelect={onCustomizeView}>Customize Grid View</MenuItem>

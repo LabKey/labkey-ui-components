@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.190.3
+*Released*: 29 June 2022
+* Issue 45030: Admin > Permissions Groups click target should be the whole row
+
 ### version 2.190.2
 *Released*: 29 June 2022
 * Entity Grid Actions for All Samples Grids

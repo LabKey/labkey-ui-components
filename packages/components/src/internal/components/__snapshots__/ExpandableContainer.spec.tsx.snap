@@ -5,7 +5,7 @@ exports[`<ExpandableContainer/> custom props 1`] = `
   className="row container-expandable disabled"
 >
   <div
-    className="test-container-cls container-expandable-detail container-expandable-child__inactive container-expandable__active"
+    className="test-container-cls container-expandable-blue container-expandable-child__inactive container-expandable__active"
   >
     <i
       className="container-expandable-child__img"
@@ -48,7 +48,7 @@ exports[`<ExpandableContainer/> default props 1`] = `
   className="row container-expandable"
 >
   <div
-    className="container-expandable-detail container-expandable__inactive"
+    className="container-expandable-blue container-expandable__inactive"
     onClick={[Function]}
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
@@ -65,6 +65,7 @@ exports[`<ExpandableContainer/> default props 1`] = `
     </i>
     <div
       className="pull-right container-expandable-child__chevron"
+      onClick={[Function]}
     >
       <i
         className="fa fa-chevron-right"

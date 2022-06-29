@@ -24,7 +24,6 @@ import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
 import { CustomToggle } from './components/base/CustomToggle';
 import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
-import { isCustomizeViewsInAppEnabled } from './app/utils';
 import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE } from './constants';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
@@ -54,7 +53,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const allowColSort = handleSort && col?.sortable;
     const allowColFilter = handleFilter && col?.filterable;
-    const allowColumnViewChange = (handleHideColumn || handleAddColumn) && model && isCustomizeViewsInAppEnabled();
+    const allowColumnViewChange = (handleHideColumn || handleAddColumn) && !!model;
     const includeDropdown = allowColSort || allowColFilter || allowColumnViewChange;
 
     const onToggleClick = useCallback(
@@ -134,7 +133,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
-    const showGridCustomization = (handleHideColumn || handleAddColumn) && isCustomizeViewsInAppEnabled();
+    const showGridCustomization = (handleHideColumn || handleAddColumn);
 
     return (
         <>

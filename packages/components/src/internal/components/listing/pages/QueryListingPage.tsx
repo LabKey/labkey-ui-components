@@ -15,7 +15,6 @@ import {
     PageHeader,
     withQueryModels,
 } from '../../../..';
-import { isCustomizeViewsInAppEnabled } from '../../../app/utils';
 
 interface BodyProps {
     id: string;
@@ -38,7 +37,7 @@ const QueryListingBodyImpl: FC<BodyProps & InjectedQueryModels> = memo(({ action
 
             <PageHeader title={title} />
 
-            <GridPanel actions={actions} model={model} hideEmptyViewMenu={!isCustomizeViewsInAppEnabled()} />
+            <GridPanel actions={actions} model={model} />
         </Page>
     );
 });

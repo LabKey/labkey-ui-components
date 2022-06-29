@@ -8437,7 +8437,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           onMouseDown={[Function]}
                           onMouseUp={[Function]}
                         >
-                          <Grid
+                          <Memo()
                             bordered={true}
                             calcWidths={true}
                             cellular={true}
@@ -8773,14 +8773,9 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                             data={Immutable.List []}
                             emptyText="Start by adding the quantity of assay data rows you want to create."
                             headerCell={[Function]}
-                            isLoading={false}
-                            loadingText="Loading..."
-                            messages={Immutable.List []}
                             responsive={false}
                             rowKey="__editing__"
-                            showHeader={true}
                             striped={true}
-                            transpose={false}
                           >
                             <div
                               className=""
@@ -9135,8 +9130,15 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                     <tr>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="__selection__"
                                         key="__selection__"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": undefined,
@@ -9152,8 +9154,15 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="__editing__"
                                         key="__editing__"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": "45px",
@@ -9164,8 +9173,15 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="SampleID"
                                         key="SampleID"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": "100px",
@@ -9177,8 +9193,15 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="ParticipantID"
                                         key="ParticipantID"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": "100px",
@@ -9190,8 +9213,15 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="VisitID"
                                         key="VisitID"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": "100px",
@@ -9203,8 +9233,15 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="Date"
                                         key="Date"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": "100px",
@@ -9568,7 +9605,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                 </GridBody>
                               </table>
                             </div>
-                          </Grid>
+                          </Memo()>
                         </div>
                       </div>
                     </EditableGrid>
@@ -18001,7 +18038,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                           onMouseDown={[Function]}
                           onMouseUp={[Function]}
                         >
-                          <Grid
+                          <Memo()
                             bordered={true}
                             calcWidths={true}
                             cellular={true}
@@ -18323,14 +18360,9 @@ exports[`<RunDataPanel/> default props 1`] = `
                             data={Immutable.List []}
                             emptyText="Start by adding the quantity of assay data rows you want to create."
                             headerCell={[Function]}
-                            isLoading={false}
-                            loadingText="Loading..."
-                            messages={Immutable.List []}
                             responsive={false}
                             rowKey="__editing__"
-                            showHeader={true}
                             striped={true}
-                            transpose={false}
                           >
                             <div
                               className=""
@@ -18671,8 +18703,15 @@ exports[`<RunDataPanel/> default props 1`] = `
                                     <tr>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="__editing__"
                                         key="__editing__"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": "45px",
@@ -18683,8 +18722,15 @@ exports[`<RunDataPanel/> default props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="SampleID"
                                         key="SampleID"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": "100px",
@@ -18696,8 +18742,15 @@ exports[`<RunDataPanel/> default props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="ParticipantID"
                                         key="ParticipantID"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": "100px",
@@ -18709,8 +18762,15 @@ exports[`<RunDataPanel/> default props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="VisitID"
                                         key="VisitID"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": "100px",
@@ -18722,8 +18782,15 @@ exports[`<RunDataPanel/> default props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
+                                        draggable={true}
+                                        id="Date"
                                         key="Date"
                                         onClick={[Function]}
+                                        onDragEnd={[Function]}
+                                        onDragEnter={[Function]}
+                                        onDragOver={[Function]}
+                                        onDragStart={[Function]}
+                                        onDrop={[Function]}
                                         style={
                                           Object {
                                             "minWidth": "100px",
@@ -19073,7 +19140,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                                 </GridBody>
                               </table>
                             </div>
-                          </Grid>
+                          </Memo()>
                         </div>
                       </div>
                     </EditableGrid>

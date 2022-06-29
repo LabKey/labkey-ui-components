@@ -23,7 +23,14 @@ exports[`<LineageGrid/> loading 1`] = `
             <tr>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="name"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
                     "minWidth": "270px",
@@ -34,7 +41,14 @@ exports[`<LineageGrid/> loading 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="distance"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
                     "minWidth": "60px",
@@ -45,7 +59,14 @@ exports[`<LineageGrid/> loading 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="lsid"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
                     "minWidth": "70px",
@@ -56,10 +77,17 @@ exports[`<LineageGrid/> loading 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="displayType"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
-                    "minWidth": "77px",
+                    "minWidth": "150px",
                   }
                 }
               >
@@ -67,10 +95,17 @@ exports[`<LineageGrid/> loading 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="date"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
-                    "minWidth": "149px",
+                    "minWidth": "150px",
                   }
                 }
               >
@@ -78,10 +113,17 @@ exports[`<LineageGrid/> loading 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="description"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
-                    "minWidth": "133px",
+                    "minWidth": "150px",
                   }
                 }
               >
@@ -89,10 +131,17 @@ exports[`<LineageGrid/> loading 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="label"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
-                    "minWidth": "85px",
+                    "minWidth": "150px",
                   }
                 }
               >
@@ -231,7 +280,14 @@ exports[`<LineageGrid/> with data 1`] = `
             <tr>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="name"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
                     "minWidth": "270px",
@@ -242,7 +298,14 @@ exports[`<LineageGrid/> with data 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="distance"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
                     "minWidth": "60px",
@@ -253,7 +316,14 @@ exports[`<LineageGrid/> with data 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="lsid"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
                     "minWidth": "70px",
@@ -264,10 +334,17 @@ exports[`<LineageGrid/> with data 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="displayType"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
-                    "minWidth": "77px",
+                    "minWidth": "150px",
                   }
                 }
               >
@@ -275,10 +352,17 @@ exports[`<LineageGrid/> with data 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="date"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
-                    "minWidth": "149px",
+                    "minWidth": "150px",
                   }
                 }
               >
@@ -286,10 +370,17 @@ exports[`<LineageGrid/> with data 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="description"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
-                    "minWidth": "133px",
+                    "minWidth": "150px",
                   }
                 }
               >
@@ -297,10 +388,17 @@ exports[`<LineageGrid/> with data 1`] = `
               </th>
               <th
                 className="grid-header-cell"
+                draggable={true}
+                id="label"
                 onClick={[Function]}
+                onDragEnd={[Function]}
+                onDragEnter={[Function]}
+                onDragOver={[Function]}
+                onDragStart={[Function]}
+                onDrop={[Function]}
                 style={
                   Object {
-                    "minWidth": "85px",
+                    "minWidth": "150px",
                   }
                 }
               >

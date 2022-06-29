@@ -28,7 +28,14 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
           <tr>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="name"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -39,7 +46,14 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="label"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -50,7 +64,14 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="rangeURI"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -61,7 +82,14 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="conceptURI"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -72,7 +100,14 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="required"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -83,7 +118,14 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="scale"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -141,7 +183,14 @@ exports[`DomainFieldsDisplay with title 1`] = `
           <tr>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="name"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -152,7 +201,14 @@ exports[`DomainFieldsDisplay with title 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="label"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -163,7 +219,14 @@ exports[`DomainFieldsDisplay with title 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="rangeURI"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -174,7 +237,14 @@ exports[`DomainFieldsDisplay with title 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="conceptURI"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -185,7 +255,14 @@ exports[`DomainFieldsDisplay with title 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="required"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -196,7 +273,14 @@ exports[`DomainFieldsDisplay with title 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="scale"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -254,7 +338,14 @@ exports[`DomainFieldsDisplay without title 1`] = `
           <tr>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="name"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -265,7 +356,14 @@ exports[`DomainFieldsDisplay without title 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="label"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -276,7 +374,14 @@ exports[`DomainFieldsDisplay without title 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="rangeURI"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -287,7 +392,14 @@ exports[`DomainFieldsDisplay without title 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="conceptURI"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -298,7 +410,14 @@ exports[`DomainFieldsDisplay without title 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="required"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,
@@ -309,7 +428,14 @@ exports[`DomainFieldsDisplay without title 1`] = `
             </th>
             <th
               className="grid-header-cell"
+              draggable={true}
+              id="scale"
               onClick={[Function]}
+              onDragEnd={[Function]}
+              onDragEnter={[Function]}
+              onDragOver={[Function]}
+              onDragStart={[Function]}
+              onDrop={[Function]}
               style={
                 Object {
                   "minWidth": undefined,

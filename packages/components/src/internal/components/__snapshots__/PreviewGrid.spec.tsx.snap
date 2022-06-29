@@ -37,7 +37,14 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
         <tr>
           <th
             className="grid-header-cell"
+            draggable={true}
+            id="Name"
             onClick={[Function]}
+            onDragEnd={[Function]}
+            onDragEnter={[Function]}
+            onDragOver={[Function]}
+            onDragStart={[Function]}
+            onDrop={[Function]}
             style={
               Object {
                 "minWidth": undefined,
@@ -51,7 +58,14 @@ null"
           </th>
           <th
             className="grid-header-cell"
+            draggable={true}
+            id="Flag"
             onClick={[Function]}
+            onDragEnd={[Function]}
+            onDragEnter={[Function]}
+            onDragOver={[Function]}
+            onDragStart={[Function]}
+            onDrop={[Function]}
             style={
               Object {
                 "minWidth": undefined,
@@ -63,7 +77,14 @@ null"
           </th>
           <th
             className="grid-header-cell"
+            draggable={true}
+            id="mixtureTypeId"
             onClick={[Function]}
+            onDragEnd={[Function]}
+            onDragEnter={[Function]}
+            onDragOver={[Function]}
+            onDragStart={[Function]}
+            onDrop={[Function]}
             style={
               Object {
                 "minWidth": undefined,
@@ -74,7 +95,14 @@ null"
           </th>
           <th
             className="grid-header-cell"
+            draggable={true}
+            id="expirationTime"
             onClick={[Function]}
+            onDragEnd={[Function]}
+            onDragEnter={[Function]}
+            onDragOver={[Function]}
+            onDragStart={[Function]}
+            onDrop={[Function]}
             style={
               Object {
                 "minWidth": undefined,
@@ -251,7 +279,14 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
         <tr>
           <th
             className="grid-header-cell"
+            draggable={true}
+            id="Name"
             onClick={[Function]}
+            onDragEnd={[Function]}
+            onDragEnter={[Function]}
+            onDragOver={[Function]}
+            onDragStart={[Function]}
+            onDrop={[Function]}
             style={
               Object {
                 "minWidth": undefined,
@@ -265,7 +300,14 @@ null"
           </th>
           <th
             className="grid-header-cell"
+            draggable={true}
+            id="Flag"
             onClick={[Function]}
+            onDragEnd={[Function]}
+            onDragEnter={[Function]}
+            onDragOver={[Function]}
+            onDragStart={[Function]}
+            onDrop={[Function]}
             style={
               Object {
                 "minWidth": undefined,

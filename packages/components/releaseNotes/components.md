@@ -6,6 +6,50 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 10437: Aliquot Field Inheritance
     * Update DerivationDataScopeFieldOptions, SampleTypeDesigner, EntityInsertPanel and SamplesBulkUpdateForm to support aliquot & sample options
 
+### version 2.191.0
+*Released*: 29 June 2022
+* Save Grid Views - misc. polish and remove experimental feature flag
+  * Update view label in ManageViewsModal to indicate if view is shared or inherited
+  * Add error message and styling when view name exceeds the maximum name length in `ManageViewsModal` and `SaveViewModal`
+  * Add indicator if default view is my personal default view (set in LKS)
+  * Adjust styling and button text in `ManageViewsModal`
+  * Add in-line delete confirmation for views
+  * Remove experimental feature flag
+
+### version 2.190.3
+*Released*: 29 June 2022
+* Issue 45030: Admin > Permissions Groups click target should be the whole row
+
+### version 2.190.2
+*Released*: 29 June 2022
+* Entity Grid Actions for All Samples Grids
+  * Extend sample selection util to work with picklist and other non samples backed grids
+  * Move SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ schema constant here from @labkey/workflow
+
+### version 2.190.1
+*Released*: 29 June 2022
+* Export `getCurrentAppProperties`
+* Issue 45739: when looking for import columns, trim the importName
+
+### version 2.190.0
+*Released*: 27 June 2022
+* Rename `getContainerFilterForInsert` to `getContainerFilterForLookups`.
+* Add optional `containerFilter?: Query.ContainerFilter` prop to `BulkUpdateForm`, `EditableGrid`, `EntityInsertPanel`, and `QueryInfoForm`.
+* Restructure prop declarations for `QueryInfoForm` to extend `QueryFormInputsProps`.
+* Convert `BulkUpdateForm` to accept a `Set<string>` for `selectedIds` to align with `QueryModel.selection`.
+
+### version 2.189.1
+*Released*: 24 June 2022
+* Issue 45385: don't export empty tabs by default
+
+### version 2.189.0
+*Released*: 24 June 2022
+* Save Grid Views - Update Grid Column Metadata for User Customization
+  * apply app query metadata to query details for lookup
+  * special case for assay schema to allow for metadata to be applied to all protocols base tables
+  * add QueryColumn property for apps to flag columns as removeFromViewCustomization
+  * rename addToDisplayView -> addToSystemView
+
 ### version 2.188.3
 *Released*: 23 June 2022
 * Issue 45028: Display details view columns in lineage

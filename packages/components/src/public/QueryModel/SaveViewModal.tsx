@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
 import { PermissionTypes } from '@labkey/api';
@@ -12,7 +12,82 @@ import { RequiresPermission } from '../../internal/components/base/Permissions';
 import { isProductProjectsEnabled } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 
-export interface Props {
+const MAX_VIEW_NAME_LENGTH = 200;
+
+interface ViewNameInputProps {
+    autoFocus?: boolean;
+    defaultValue?: string;
+    isDefaultView?: boolean;
+    onChange?: (name: string, hasError: boolean) => void;
+    onBlur: (name: string, hasError: boolean) => void;
+    placeholder?: string;
+    view: ViewInfo;
+    maxLength?: number;
+}
+
+export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
+    const {
+        autoFocus,
+        defaultValue,
+        placeholder,
+        view,
+        isDefaultView,
+        onBlur,
+        onChange,
+        maxLength = MAX_VIEW_NAME_LENGTH,
+    } = props;
+
+    const [nameError, setNameError] = useState<boolean>(false);
+    const [viewName, setViewName] = useState<string>(
+        view?.isDefault || view?.hidden ? '' : view?.name
+    );
+
+    useEffect(() => {
+        setNameError(!isDefaultView && viewName.length > maxLength)
+    }, [isDefaultView, viewName]);
+
+    const clearError = useCallback(() => {
+        setNameError(false);
+    }, [setNameError]);
+
+    const onViewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+        setViewName(evt.target.value);
+        const hasError = evt.target.value.length > maxLength;
+        setNameError(hasError);
+        onChange?.(evt.target.value, hasError);
+    }, []);
+
+    const _onBlur = useCallback(() => {
+        if (viewName.length > maxLength) {
+            setNameError(true);
+            onBlur(viewName, true);
+        } else {
+            onBlur(viewName, false);
+        }
+    }, [viewName])
+
+
+    return (
+        <>
+            <input
+                autoFocus={autoFocus}
+                name="gridViewName"
+                defaultValue={defaultValue}
+                placeholder={placeholder ?? "Grid View Name"}
+                className={"form-control" + (nameError ? " grid-view-name-error" : "") }
+                value={viewName}
+                onChange={onViewNameChange}
+                onFocus={clearError}
+                onBlur={_onBlur}
+                disabled={isDefaultView}
+                type="text"
+            />
+            {nameError && <span className="text-danger">Current length: {viewName.length}; maximum length: {maxLength}</span>}
+        </>
+    )
+});
+
+interface Props {
     currentView: ViewInfo;
     gridLabel: string;
     onCancel: () => void;
@@ -27,6 +102,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
     const [viewName, setViewName] = useState<string>(
         currentView?.isDefault || currentView?.hidden ? '' : currentView?.name
     );
+    const [nameError, setNameError] = useState<boolean>(false);
     const [isDefaultView, setIsDefaultView] = useState<boolean>(user.hasAdminPermission() && currentView?.isDefault);
     const [canInherit, setCanInherit] = useState<boolean>(currentView?.inherit);
     const [errorMessage, setErrorMessage] = useState<string>();
@@ -49,10 +125,15 @@ export const SaveViewModal: FC<Props> = memo(props => {
         }
     }, [viewName, isDefaultView, canInherit]);
 
-    const onViewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setViewName(evt.target.value), []);
+
+    const onViewNameChange = useCallback((name: string, hasError: boolean) => {
+        setViewName(name);
+        setNameError(hasError);
+    }, []);
 
     const toggleDefaultView = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
         setIsDefaultView(evt.target.checked);
+        setNameError(false);
     }, []);
 
     const toggleInherit = useCallback((evt: ChangeEvent<HTMLInputElement>) => setCanInherit(evt.target.checked), []);
@@ -72,16 +153,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                         </div>
                         <div className="bottom-spacing">
-                            <input
-                                name="gridViewName"
-                                placeholder="Grid View Name"
-                                className="form-control"
-                                value={viewName}
-                                onChange={onViewNameChange}
-                                disabled={isDefaultView}
-                                type="text"
-                                maxLength={50}
-                            />
+                            <ViewNameInput onChange={onViewNameChange} onBlur={onViewNameChange} view={currentView} isDefaultView={isDefaultView} />
                         </div>
                         <RequiresPermission perms={PermissionTypes.Admin}>
                             {/* Only allow admins to create custom default views in app. Note this is different from LKS*/}
@@ -115,7 +187,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                 <WizardNavButtons
                     cancel={onCancel}
                     cancelText="Cancel"
-                    canFinish={!!viewName || isDefaultView}
+                    canFinish={(!!viewName && !nameError) || isDefaultView}
                     containerClassName=""
                     isFinishing={isSubmitting}
                     isFinishingText="Saving..."

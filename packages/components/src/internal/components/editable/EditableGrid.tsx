@@ -17,6 +17,7 @@ import classNames from 'classnames';
 import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode } from 'react';
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { List, Map, OrderedMap, Set } from 'immutable';
+import { Query } from '@labkey/api';
 
 import {
     addRows,
@@ -98,7 +99,8 @@ function inputCellFactory(
     columnMetadata: EditableColumnMetadata,
     readonlyRows: List<any>,
     lockedRows: List<any>,
-    cellActions: CellActions
+    cellActions: CellActions,
+    containerFilter: Query.ContainerFilter
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
@@ -135,6 +137,7 @@ function inputCellFactory(
                 cellActions={cellActions}
                 col={c.raw}
                 colIdx={colIdx}
+                containerFilter={containerFilter}
                 key={inputCellKey(c.raw, row)}
                 placeholder={columnMetadata ? columnMetadata.placeholder : undefined}
                 readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
@@ -181,18 +184,6 @@ export interface BulkAddData {
     validationMsg?: ReactNode;
 }
 
-export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
-    activeTab?: number;
-    bsStyle?: any;
-    className?: string;
-    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
-    getReadOnlyRows?: (tabId?: number) => List<any>;
-    getTabHeader?: (tabId?: number) => ReactNode;
-    getTabTitle?: (tabId?: number) => string;
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    title?: string;
-}
-
 export interface SharedEditableGridProps {
     addControlProps?: Partial<AddRowsControlProps>;
     allowAdd?: boolean;
@@ -209,6 +200,7 @@ export interface SharedEditableGridProps {
     bulkUpdateText?: string;
     columnMetadata?: Map<string, EditableColumnMetadata>;
     condensed?: boolean;
+    containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
     emptyGridMsg?: string;
     exportColFilter?: (col: QueryColumn) => boolean;
@@ -217,19 +209,28 @@ export interface SharedEditableGridProps {
     hideCountCol?: boolean;
     insertColumns?: List<QueryColumn>;
     isSubmitting?: boolean;
-    // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
-    lockedRows?: List<any>;
+    lockedRows?: List<any>; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     maxRows?: number;
-    // list of key values that cannot be deleted.
-    notDeletable?: List<any>;
+    notDeletable?: List<any>; // list of key values that cannot be deleted.
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: List<string>;
-    // list of key values for rows that are readonly.
-    readonlyRows?: List<any>;
+    readonlyRows?: List<any>; // list of key values for rows that are readonly.
     removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
     striped?: boolean;
     updateColumns?: List<QueryColumn>;
+}
+
+export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
+    activeTab?: number;
+    bsStyle?: any;
+    className?: string;
+    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
+    getReadOnlyRows?: (tabId?: number) => List<any>;
+    getTabHeader?: (tabId?: number) => ReactNode;
+    getTabTitle?: (tabId?: number) => string;
+    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
+    title?: string;
 }
 
 export interface EditableGridProps extends SharedEditableGridProps {
@@ -303,12 +304,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         document.addEventListener('copy', this.onCopy);
         document.addEventListener('paste', this.onPaste);
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         document.removeEventListener('copy', this.onCopy);
         document.removeEventListener('paste', this.onPaste);
     }
@@ -571,6 +572,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             allowBulkRemove,
             allowBulkUpdate,
             allowRemove,
+            containerFilter,
             editorModel,
             hideCountCol,
             queryInfo,
@@ -613,7 +615,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         metadata,
                         readonlyRows,
                         lockedRows,
-                        this.cellActions
+                        this.cellActions,
+                        containerFilter
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,

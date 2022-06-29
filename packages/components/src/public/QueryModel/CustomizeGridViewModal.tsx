@@ -6,13 +6,22 @@ import classNames from 'classnames';
 import { Alert } from '../../internal/components/base/Alert';
 import { saveAsSessionView } from '../../internal/actions';
 import { getQueryDetails } from '../../internal/query/api';
-import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE } from '../../internal/constants';
 import { DragDropHandle } from '../../internal/components/base/DragDropHandle';
+import { showPremiumFeatures } from '../../internal/components/administration/utils';
 
 import { QueryColumn } from '../QueryColumn';
 import { QueryInfo } from '../QueryInfo';
 
 import { QueryModel } from './QueryModel';
+
+// exported for jest testing
+export const includedColumnsForCustomizationFilter = (column: QueryColumn, showAllColumns: boolean): boolean => {
+    return (
+        (showAllColumns || !column.hidden) &&
+        !column.removeFromViews &&
+        (showPremiumFeatures() || !column.removeFromViewCustomization)
+    );
+};
 
 interface FieldLabelDisplayProps {
     column: QueryColumn;
@@ -168,7 +177,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceLookupProps> = memo(props => {
     if (isLookupExpanded) {
         childElements = expandedColumns[column.index].columns
             .valueSeq()
-            .filter(fkCol => (showAllColumns || !fkCol.hidden) && !fkCol.removeFromViews)
+            .filter(fkCol => includedColumnsForCustomizationFilter(fkCol, showAllColumns))
             .map(fkCol => (
                 <ColumnChoiceGroup
                     column={fkCol}
@@ -372,6 +381,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                     schemaName: queryInfo.schemaQuery.schemaName,
                     queryName: queryInfo.schemaQuery.queryName,
                     fk: column.index,
+                    lookup: column.lookup,
                 });
                 setExpandedColumns({ ...expandedColumns, [column.index]: fkQueryInfo });
             } catch (error) {
@@ -444,12 +454,8 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                         <div key="field-list" className="list-group field-modal__col-content">
                             {model.queryInfo.columns
                                 .valueSeq()
-                                .filter(
-                                    column =>
-                                        (showAllColumns || !column.hidden) &&
-                                        !column.removeFromViews &&
-                                        column.index.indexOf('/') === -1 // here at the top level we don't want to include lookup fields
-                                )
+                                .filter(column => includedColumnsForCustomizationFilter(column, showAllColumns))
+                                .filter(column => column.index.indexOf('/') === -1) // here at the top level we don't want to include lookup fields
                                 .map(column => (
                                     <ColumnChoiceGroup
                                         column={column}

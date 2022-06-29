@@ -170,7 +170,7 @@ import { initQueryGridState } from './internal/global';
 import {
     deleteRows,
     getContainerFilter,
-    getContainerFilterForInsert,
+    getContainerFilterForLookups,
     getQueryDetails,
     importData,
     InsertFormats,
@@ -606,11 +606,11 @@ import {
     getDateFormat as getAppDateFormat,
     getDateTimeFormat as getAppDateTimeFormat,
     getPrimaryAppProperties,
+    getCurrentAppProperties,
     getProjectPath,
     hasModule,
     hasPremiumModule,
     isBiologicsEnabled,
-    isCustomizeViewsInAppEnabled,
     isELNEnabledInLKSM,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
@@ -722,8 +722,8 @@ const App = {
     RoutingTableReducers,
     ServerNotificationReducers,
     CloseEventCode,
+    getCurrentAppProperties,
     registerWebSocketListeners,
-    isCustomizeViewsInAppEnabled,
     isELNEnabledInLKSM,
     isFreezerManagementEnabled,
     isRequestsEnabled,
@@ -834,7 +834,7 @@ export {
     initQueryGridState,
     initNotificationsState,
     getContainerFilter,
-    getContainerFilterForInsert,
+    getContainerFilterForLookups,
     createGridModelId,
     clearSelected,
     // grid functions
@@ -1545,3 +1545,4 @@ export type { PageDetailHeaderProps } from './internal/components/forms/PageDeta
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
+export type { EditableGridPanelForUpdateWithLineageProps } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';

@@ -62,4 +62,22 @@ describe('ViewInfo', () => {
         expect(ViewInfo.create({ name: ViewInfo.DETAIL_NAME }).isSystemView).toBeTruthy();
         expect(ViewInfo.create({ name: ViewInfo.UPDATE_NAME }).isSystemView).toBeTruthy();
     });
+
+    test("modifiers", () => {
+        let view = ViewInfo.create({ session: true });
+        expect(view.modifiers).toStrictEqual(['edited']);
+        view = ViewInfo.create({session: true, shared: true});
+        expect(view.modifiers).toStrictEqual(['edited']);
+        view = ViewInfo.create({session: true, inherit: true});
+        expect(view.modifiers).toStrictEqual(['edited']);
+        view = ViewInfo.create({session: true, shared: true, inherit: true});
+        expect(view.modifiers).toStrictEqual(['edited']);
+        view = ViewInfo.create({ shared: true });
+        expect(view.modifiers).toStrictEqual(['shared']);
+
+        view = ViewInfo.create({ inherit: true });
+        expect(view.modifiers).toStrictEqual(['inherited']);
+        view = ViewInfo.create({ shared: true, inherit: true });
+        expect(view.modifiers).toStrictEqual(['inherited', 'shared']);
+    })
 });

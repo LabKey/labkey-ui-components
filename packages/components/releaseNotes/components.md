@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.191.0
+*Released*: 29 June 2022
 * Save Grid Views - misc. polish and remove experimental feature flag
   * Update view label in ManageViewsModal to indicate if view is shared or inherited
   * Add error message and styling when view name exceeds the maximum name length in `ManageViewsModal` and `SaveViewModal`

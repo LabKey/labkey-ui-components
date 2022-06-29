@@ -233,6 +233,12 @@ $nav-menu-btn-width: 85px;
   }
 }
 
+@media (min-width: 1200px) {
+    .product-menu-content {
+        width: 1000px;
+    }
+}
+
 @media (min-width: 1450px) {
     .product-menu-content {
         width: 1230px;

@@ -260,7 +260,8 @@ export function deleteAssayRuns(
 export function getImportItemsForAssayDefinitions(
     assayStateModel: AssayStateModel,
     sampleModel?: QueryModel,
-    providerType?: string
+    providerType?: string,
+    isPicklist?: boolean
 ): OrderedMap<AssayDefinitionModel, string> {
     let targetSQ;
     const selectionKey = sampleModel?.id;
@@ -271,7 +272,7 @@ export function getImportItemsForAssayDefinitions(
 
     return assayStateModel.definitions
         .filter(assay => providerType === undefined || assay.type === providerType)
-        .filter(assay => !targetSQ || assay.hasLookup(targetSQ))
+        .filter(assay => !targetSQ || assay.hasLookup(targetSQ, isPicklist))
         .sort(naturalSortByProperty('name'))
         .reduce((items, assay) => {
             const href = assay.getImportUrl(
@@ -279,7 +280,8 @@ export function getImportItemsForAssayDefinitions(
                 selectionKey,
                 // Check for the existence of the "queryInfo" before getting filters from the model.
                 // This avoids `QueryModel` throwing an error when the "queryInfo" is not yet available.
-                sampleModel?.queryInfo ? List(sampleModel.filters) : undefined
+                sampleModel?.queryInfo ? List(sampleModel.filters) : undefined,
+                isPicklist
             );
             return items.set(assay, href);
         }, OrderedMap<AssayDefinitionModel, string>());

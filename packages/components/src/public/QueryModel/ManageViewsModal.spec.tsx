@@ -28,7 +28,16 @@ const SYSTEM_DEFAULT_VIEW = ViewInfo.create({
     name: '',
 });
 
-const DEFAULT_VIEW = ViewInfo.create({
+const SHARED_DEFAULT_VIEW = ViewInfo.create({
+    columns: [],
+    filters: [],
+    default: true,
+    saved: true, // can be reverted
+    shared: true,
+    name: '',
+});
+
+const MY_DEFAULT_VIEW = ViewInfo.create({
     columns: [],
     filters: [],
     default: true,
@@ -70,20 +79,13 @@ describe("ViewLabel", () => {
    });
 
     test("own default view", () => {
-        const wrapper = mount(<ViewLabel view={DEFAULT_VIEW}/>);
+        const wrapper = mount(<ViewLabel view={MY_DEFAULT_VIEW}/>);
         expect(wrapper.text()).toBe("My Default View");
         wrapper.unmount();
     });
 
     test("shared default view", () => {
-        const wrapper = mount(<ViewLabel view={ViewInfo.create({
-            columns: [],
-            filters: [],
-            default: true,
-            saved: true, // can be reverted
-            shared: true,
-            name: '',
-        })}/>);
+        const wrapper = mount(<ViewLabel view={SHARED_DEFAULT_VIEW}/>);
         expect(wrapper.text()).toBe("Default View (shared)");
         wrapper.unmount();
     });
@@ -199,7 +201,7 @@ describe('ManageViewsModal', () => {
         const wrapper = mountWithAppServerContext(
             <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
             {
-                api: getQueryAPI([DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
+                api: getQueryAPI([SHARED_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
             },
             {
                 user: TEST_USER_PROJECT_ADMIN,
@@ -217,7 +219,7 @@ describe('ManageViewsModal', () => {
 
         const labels = wrapper.find(ViewLabel);
         expect(labels.length).toBe(4);
-        expect(labels.at(0).text()).toBe('Default View');
+        expect(labels.at(0).text()).toBe('Default View (shared)');
         expect(rows.at(0).find('.fa-pencil').length).toBe(0);
         expect(rows.at(0).find('.fa-trash-o').length).toBe(0);
         expect(rows.at(0).find('.clickable-text').length).toBe(1);
@@ -278,7 +280,7 @@ describe('ManageViewsModal', () => {
         const wrapper = mountWithAppServerContext(
             <ManageViewsModal onDone={jest.fn()} currentView={null} schemaQuery={null} />,
             {
-                api: getQueryAPI([DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
+                api: getQueryAPI([MY_DEFAULT_VIEW, VIEW_1, SESSION_VIEW, SHARED_VIEW]),
             },
             {
                 user: TEST_USER_READER,
@@ -295,7 +297,7 @@ describe('ManageViewsModal', () => {
         expect(rows.length).toBe(4);
         const labels = wrapper.find(ViewLabel);
         expect(labels).toHaveLength(4);
-        expect(labels.at(0).text()).toBe('Default View');
+        expect(labels.at(0).text()).toBe('My Default View');
         expect(rows.at(0).find('.fa-pencil').length).toBe(0);
         expect(rows.at(0).find('.fa-trash-o').length).toBe(0);
         expect(rows.at(0).find('.clickable-text').length).toBe(0);

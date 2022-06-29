@@ -39,7 +39,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const privateViews = visibleViews.filter(view => !view.shared);
         const noViews = publicViews.length === 0 && privateViews.length === 0;
         const _hideEmptyViewMenu = getQueryMetadata().get('hideEmptyViewMenu', hideEmptyViewMenu);
-        const hidden = _hideEmptyViewMenu && noViews;
+        const hidden = _hideEmptyViewMenu && noViews && !allowViewCustomization;
         const disabled = isLoading || (noViews && !allowViewCustomization);
 
         const viewMapper = (viewInfo): ReactNode => {

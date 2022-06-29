@@ -309,7 +309,6 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
             activeModelId={activeTabId}
             title="Assay Results"
             exportFilename={exportPrefix && exportPrefix + '_assay_results'}
-            hideEmptyViewMenu={false}
         />
     );
 });

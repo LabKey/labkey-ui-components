@@ -37,7 +37,7 @@ const QueryListingBodyImpl: FC<BodyProps & InjectedQueryModels> = memo(({ action
 
             <PageHeader title={title} />
 
-            <GridPanel actions={actions} model={model} hideEmptyViewMenu={false} />
+            <GridPanel actions={actions} model={model} />
         </Page>
     );
 });

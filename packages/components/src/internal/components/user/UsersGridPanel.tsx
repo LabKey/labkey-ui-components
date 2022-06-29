@@ -343,7 +343,6 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                                 title={capitalizeFirstChar(usersView) + ' Users'}
                                 ButtonsComponent={() => this.renderButtons()}
                                 highlightLastSelectedRow
-                                hideEmptyViewMenu={false}
                             />
                         )}
                     </Col>

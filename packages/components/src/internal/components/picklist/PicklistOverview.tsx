@@ -221,7 +221,6 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                                 advancedExportOptions: exportConfig,
                                 alwaysShowTabs: true,
                                 exportFilename: picklist.name + '_Samples',
-                                hideEmptyViewMenu: false,
                             }}
                         />
                     </div>

@@ -153,7 +153,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
         const model = this.getQueryModel();
         if (!model) return null;
 
-        return <GridPanel model={model} actions={this.props.actions} hideEmptyViewMenu={false}/>;
+        return <GridPanel model={model} actions={this.props.actions} />;
     };
 
     renderDetailsPanel = (): ReactNode => {

@@ -11,6 +11,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add in-line delete confirmation for views
   * Remove experimental feature flag
 
+### version 2.190.1
+*Released*: 29 June 2022
+* Export `getCurrentAppProperties`
+* Issue 45739: when looking for import columns, trim the importName
+
 ### version 2.190.0
 *Released*: 27 June 2022
 * Rename `getContainerFilterForInsert` to `getContainerFilterForLookups`.

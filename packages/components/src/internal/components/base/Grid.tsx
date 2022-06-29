@@ -129,7 +129,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
         var source = e.dataTransfer.getData('dragIndex');
         const target = this.state.dragTarget;
         if (source && target && source !== target) {
-            this.props?.onColumnDrop(source, target);
+            this.props.onColumnDrop(source, target);
         }
     };
     handlDragEnd = (e): void => {
@@ -142,7 +142,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
     };
 
     render() {
-        const { calcWidths, columns, headerCell, showHeader, transpose } = this.props;
+        const { calcWidths, columns, headerCell, showHeader, transpose, onColumnDrop } = this.props;
         const { dragTarget } = this.state;
 
         if (transpose || !showHeader) {
@@ -182,7 +182,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                     onClick={this._handleClick.bind(this, column)}
                                     style={{ minWidth }}
                                     title={hideTooltip ? undefined : description}
-                                    draggable
+                                    draggable={onColumnDrop !== undefined}
                                     onDragStart={this.handleDragStart}
                                     onDragOver={this.handleDragOver}
                                     onDrop={this.handleDrop}

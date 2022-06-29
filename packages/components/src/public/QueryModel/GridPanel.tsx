@@ -1107,7 +1107,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                 <Grid
                                     headerCell={this.headerCell}
                                     onHeaderCellClick={this.onHeaderCellClick}
-                                    onColumnDrop={this.onColumnDrop}
+                                    onColumnDrop={allowViewCustomization ? this.onColumnDrop : undefined}
                                     showHeader={showHeader}
                                     calcWidths
                                     condensed

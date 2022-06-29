@@ -31,7 +31,7 @@ Array [
         <tr>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col1"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -49,7 +49,7 @@ Array [
           </th>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col2"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -67,7 +67,7 @@ Array [
           </th>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col3"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -217,7 +217,7 @@ Array [
         <tr>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col1"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -235,7 +235,7 @@ Array [
           </th>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col2"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -253,7 +253,7 @@ Array [
           </th>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col3"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -466,7 +466,7 @@ Array [
         <tr>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="test"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -535,7 +535,7 @@ Array [
         <tr>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col1"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -553,7 +553,7 @@ Array [
           </th>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col2"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -571,7 +571,7 @@ Array [
           </th>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col3"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -726,7 +726,7 @@ Array [
         <tr>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col1"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -744,7 +744,7 @@ Array [
           </th>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col2"
             onClick={[Function]}
             onDragEnd={[Function]}
@@ -762,7 +762,7 @@ Array [
           </th>
           <th
             className="grid-header-cell"
-            draggable={true}
+            draggable={false}
             id="col3"
             onClick={[Function]}
             onDragEnd={[Function]}

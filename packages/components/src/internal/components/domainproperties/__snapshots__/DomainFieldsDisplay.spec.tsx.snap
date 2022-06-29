@@ -28,7 +28,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
           <tr>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="name"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -46,7 +46,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="label"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -64,7 +64,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="rangeURI"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -82,7 +82,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="conceptURI"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -100,7 +100,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="required"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -118,7 +118,7 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="scale"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -183,7 +183,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
           <tr>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="name"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -201,7 +201,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="label"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -219,7 +219,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="rangeURI"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -237,7 +237,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="conceptURI"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -255,7 +255,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="required"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -273,7 +273,7 @@ exports[`DomainFieldsDisplay with title 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="scale"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -338,7 +338,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
           <tr>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="name"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -356,7 +356,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="label"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -374,7 +374,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="rangeURI"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -392,7 +392,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="conceptURI"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -410,7 +410,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="required"
               onClick={[Function]}
               onDragEnd={[Function]}
@@ -428,7 +428,7 @@ exports[`DomainFieldsDisplay without title 1`] = `
             </th>
             <th
               className="grid-header-cell"
-              draggable={true}
+              draggable={false}
               id="scale"
               onClick={[Function]}
               onDragEnd={[Function]}

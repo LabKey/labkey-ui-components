@@ -9130,7 +9130,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                     <tr>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="__selection__"
                                         key="__selection__"
                                         onClick={[Function]}
@@ -9154,7 +9154,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="__editing__"
                                         key="__editing__"
                                         onClick={[Function]}
@@ -9173,7 +9173,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="SampleID"
                                         key="SampleID"
                                         onClick={[Function]}
@@ -9193,7 +9193,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="ParticipantID"
                                         key="ParticipantID"
                                         onClick={[Function]}
@@ -9213,7 +9213,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="VisitID"
                                         key="VisitID"
                                         onClick={[Function]}
@@ -9233,7 +9233,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="Date"
                                         key="Date"
                                         onClick={[Function]}
@@ -18703,7 +18703,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                                     <tr>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="__editing__"
                                         key="__editing__"
                                         onClick={[Function]}
@@ -18722,7 +18722,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="SampleID"
                                         key="SampleID"
                                         onClick={[Function]}
@@ -18742,7 +18742,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="ParticipantID"
                                         key="ParticipantID"
                                         onClick={[Function]}
@@ -18762,7 +18762,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="VisitID"
                                         key="VisitID"
                                         onClick={[Function]}
@@ -18782,7 +18782,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                                       </th>
                                       <th
                                         className="grid-header-cell"
-                                        draggable={true}
+                                        draggable={false}
                                         id="Date"
                                         key="Date"
                                         onClick={[Function]}

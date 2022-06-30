@@ -1,7 +1,7 @@
 import React, { FC, memo, PureComponent, useCallback } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
-import { Filter, PermissionTypes, Query } from '@labkey/api';
+import { Filter, PermissionTypes } from '@labkey/api';
 
 import {
     Alert,
@@ -16,6 +16,7 @@ import {
     SampleTypeEmptyAlert,
     SchemaQuery,
     Section,
+    selectRows,
     selectRowsDeprecated,
     Tip,
     User,
@@ -33,25 +34,19 @@ import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';
 import { ChartConfig, ChartData, ChartSelector } from './types';
 
-function fetchItemCount(schemaQuery: SchemaQuery, filters?: Filter.IFilter[]): Promise<number> {
-    return new Promise(resolve => {
-        Query.selectRows({
-            filterArray: filters ?? [],
-            includeMetadata: false,
+async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFilter[] = []): Promise<number> {
+    try {
+        const response = await selectRows({
+            filterArray,
             maxRows: 1,
-            method: 'POST',
-            queryName: schemaQuery.getQuery(),
-            requiredVersion: '17.1',
-            schemaName: schemaQuery.getSchema(),
-            success: response => {
-                resolve(response.rowCount);
-            },
-            failure: error => {
-                console.error('Failed to fetch item count for charts', error);
-                resolve(0);
-            },
+            schemaQuery,
         });
-    });
+        return response.rowCount;
+    } catch (error) {
+        console.error('Failed to fetch item count for charts', error);
+    }
+
+    return 0;
 }
 
 interface Props {

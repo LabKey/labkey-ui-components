@@ -5,6 +5,7 @@ import { Filter } from '@labkey/api';
 import renderer from 'react-test-renderer';
 
 import {
+    Grid,
     GRID_CHECKBOX_OPTIONS,
     GridPanel,
     LoadingState,
@@ -248,6 +249,11 @@ describe('GridPanel', () => {
         wrapper.setProps({ model });
         expectGrid(wrapper);
         expectError(wrapper, selectionsError);
+
+        // allowViewCustomization defaults to true so onColumnDrop should be defined
+        expect(wrapper.find(Grid).prop('onColumnDrop')).toBeDefined();
+        wrapper.setProps({ allowViewCustomization: false });
+        expect(wrapper.find(Grid).prop('onColumnDrop')).toBeUndefined();
     });
 
     const expectBoundState = (

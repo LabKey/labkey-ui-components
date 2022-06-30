@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.192.2
+*Released*: 30 June 2022
 * Issue 45725: MegaMenu truncate and text wrap consistency
 
 ### version 2.192.1

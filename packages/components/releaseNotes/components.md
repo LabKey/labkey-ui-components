@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.192.2
+*Released*: 30 June 2022
+* Issue 45725: MegaMenu truncate and text wrap consistency
+
 ### version 2.192.1
 *Released*: 30 June 2022
 * Issue 45776: adjust BarChartViewer to resolve cross-folder item counts

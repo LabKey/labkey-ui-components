@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Grid column drag-n-drop to reorder columns in grid view
   * only allowed when "allowViewCustomization" is set to true
   * prevent drop to left of selection checkbox column
+  * attempt to close any open column header menus on drag start
 
 ### version 2.191.0
 *Released*: 29 June 2022

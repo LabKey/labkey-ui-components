@@ -98,6 +98,7 @@ interface GridHeaderProps {
     columns: List<GridColumn>;
     headerCell?: any;
     onCellClick?: (column: GridColumn) => void;
+    onColumnDrag?: (sourceIndex: string) => void;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     showHeader?: boolean;
     transpose?: boolean;
@@ -112,7 +113,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
     readonly state: State = { dragTarget: undefined };
 
     _handleClick(column: GridColumn, evt: any): void {
-        const isHeaderCellClick = evt.target.className === 'grid-header-cell';
+        const isHeaderCellClick = evt.target.className?.startsWith('grid-header-cell');
         evt.stopPropagation();
         if (this.props.onCellClick && isHeaderCellClick) {
             this.props.onCellClick(column);
@@ -120,14 +121,17 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
     }
 
     handleDragStart = (e): void => {
-        if (e.target?.tagName.toLowerCase() === 'th' && e.target.id !== GRID_SELECTION_INDEX) {
-            e.dataTransfer.setData('dragIndex', e.target.id);
+        const dragIndex = e.target.id;
+        this.props?.onColumnDrag(dragIndex);
+
+        if (e.target?.tagName.toLowerCase() === 'th' && dragIndex !== GRID_SELECTION_INDEX) {
+            e.dataTransfer.setData('dragIndex', dragIndex);
         }
     };
     handleDragOver = (e): void => {
         e.preventDefault();
     };
-    handlDragEnd = (e): void => {
+    handleDragEnd = (e): void => {
         this.setState({ dragTarget: undefined });
     };
     handleDragEnter = (e): void => {
@@ -139,7 +143,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
         var source = e.dataTransfer.getData('dragIndex');
         const target = this.state.dragTarget;
         if (source && target && source !== target) {
-            this.props.onColumnDrop(source, target);
+            this.props?.onColumnDrop(source, target);
         }
     };
 
@@ -157,6 +161,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                 <tr>
                     {columns.map((column: GridColumn, i: number) => {
                         const { headerCls, index, raw, title, width, hideTooltip } = column;
+                        const draggable = onColumnDrop !== undefined;
                         let minWidth = width;
 
                         if (minWidth === undefined) {
@@ -172,6 +177,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                             const className = classNames(headerCls, {
                                 'grid-header-cell': headerCls === undefined,
                                 'phi-protected': raw?.phiProtected === true,
+                                'grid-header-draggable': draggable && index !== GRID_SELECTION_INDEX,
                                 'grid-header-drag-over': dragTarget === index,
                             });
                             const description = getColumnHoverText(raw);
@@ -184,12 +190,12 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                     onClick={this._handleClick.bind(this, column)}
                                     style={{ minWidth }}
                                     title={hideTooltip ? undefined : description}
-                                    draggable={onColumnDrop !== undefined}
+                                    draggable={draggable}
                                     onDragStart={this.handleDragStart}
                                     onDragOver={this.handleDragOver}
                                     onDrop={this.handleDrop}
                                     onDragEnter={this.handleDragEnter}
-                                    onDragEnd={this.handlDragEnd}
+                                    onDragEnd={this.handleDragEnd}
                                 >
                                     {headerCell ? headerCell(column, i, columns.size) : title}
                                     {/* headerCell will render the helpTip, so only render here if not using headerCell() */}
@@ -328,6 +334,7 @@ export interface GridProps {
     isLoading?: boolean;
     loadingText?: ReactNode;
     messages?: List<Map<string, string>>;
+    onColumnDrag?: (sourceIndex: string) => void;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     onHeaderCellClick?: (column: GridColumn) => void;
     responsive?: boolean;
@@ -362,6 +369,7 @@ export const Grid: FC<GridProps> = memo(props => {
         columns,
         headerCell,
         onHeaderCellClick,
+        onColumnDrag,
         onColumnDrop,
         rowKey,
         highlightRowIndexes,
@@ -375,6 +383,7 @@ export const Grid: FC<GridProps> = memo(props => {
         columns: gridColumns,
         headerCell,
         onCellClick: onHeaderCellClick,
+        onColumnDrag,
         onColumnDrop,
         showHeader,
         transpose,

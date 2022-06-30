@@ -67,6 +67,10 @@
   font-weight: bold;
 }
 
+.grid-header-draggable {
+    cursor: pointer;
+}
+
 .grid-header-drag-over {
     box-shadow: inset 5px 0 $blue-highlight;
 }

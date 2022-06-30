@@ -131,7 +131,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
-    const showGridCustomization = (handleHideColumn || handleAddColumn);
+    const showGridCustomization = handleHideColumn || handleAddColumn;
 
     return (
         <>

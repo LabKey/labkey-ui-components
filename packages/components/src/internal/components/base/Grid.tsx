@@ -19,9 +19,10 @@ import { fromJS, List, Map } from 'immutable';
 
 import { HelpTipRenderer } from '../forms/HelpTipRenderer';
 
+import { GRID_SELECTION_INDEX } from '../../constants';
+
 import { LabelHelpTip } from './LabelHelpTip';
 import { GridColumn } from './models/GridColumn';
-import { GRID_SELECTION_INDEX } from '../../constants';
 
 function processColumns(columns: List<any>): List<GridColumn> {
     return columns

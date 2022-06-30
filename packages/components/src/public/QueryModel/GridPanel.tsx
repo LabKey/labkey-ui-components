@@ -13,6 +13,7 @@ import {
     Grid,
     GRID_CHECKBOX_OPTIONS,
     GridColumn,
+    incrementClientSideMetricCount,
     LoadingSpinner,
     Pagination,
     QueryColumn,
@@ -963,6 +964,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         title: col.caption === col.name ? '' : col.caption,
                     })),
                 });
+
+                incrementClientSideMetricCount('customViews', 'columnReorderDragNDrop');
             }
         }
     };

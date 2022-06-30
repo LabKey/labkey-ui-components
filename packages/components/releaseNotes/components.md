@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 45725: MegaMenu truncate and text wrap consistency + styling updates
 
+### version 2.192.0
+*Released*: 30 June 2022
+* Grid column drag-n-drop to reorder columns in grid view
+  * only allowed when "allowViewCustomization" is set to true
+  * prevent drop to left of selection checkbox column
+  * attempt to close any open column header menus on drag start
+
 ### version 2.191.0
 *Released*: 29 June 2022
 * Save Grid Views - misc. polish and remove experimental feature flag

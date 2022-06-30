@@ -210,10 +210,14 @@ describe('GridHeader', () => {
         ),
     };
 
-    function validate(wrapper: ReactWrapper, columnCount: number, labelHelpTipCount = 0): void {
+    function validate(wrapper: ReactWrapper, columnCount: number, labelHelpTipCount = 0, draggable = false): void {
         expect(wrapper.find('thead')).toHaveLength(1);
         expect(wrapper.find('.grid-header-cell')).toHaveLength(columnCount);
         expect(wrapper.find(LabelHelpTip)).toHaveLength(labelHelpTipCount);
+
+        if (columnCount > 0) {
+            expect(wrapper.find('.grid-header-cell').first().prop('draggable')).toBe(draggable);
+        }
     }
 
     test('default props', () => {
@@ -253,6 +257,21 @@ describe('GridHeader', () => {
             />
         );
         validate(wrapper, 2, 1);
+        wrapper.unmount();
+    });
+
+    test('draggable', () => {
+        const wrapper = mount(<GridHeader {...DEFAULT_PROPS} onColumnDrop={jest.fn} />);
+        validate(wrapper, 2, 0, true);
+        expect(wrapper.find('.grid-header-drag-over')).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test('dragTarget', () => {
+        const wrapper = mount(<GridHeader {...DEFAULT_PROPS} onColumnDrop={jest.fn} />);
+        validate(wrapper, 2, 0, true);
+        wrapper.setState({ dragTarget: 'b' });
+        expect(wrapper.find('.grid-header-drag-over')).toHaveLength(1);
         wrapper.unmount();
     });
 });

@@ -9,17 +9,18 @@ export interface SelectRowsOptions
     schemaQuery: SchemaQuery;
 }
 
-export interface RowResult {
+export interface RowValue {
     displayValue?: any;
     url?: string;
     value: any;
 }
+export type Row = Record<string, RowValue>;
 
 export interface SelectRowsResponse {
     messages: Array<Record<string, string>>;
     queryInfo: QueryInfo;
-    rows: Array<Record<string, RowResult>>;
     rowCount: number;
+    rows: Row[];
     schemaQuery: SchemaQuery;
 }
 

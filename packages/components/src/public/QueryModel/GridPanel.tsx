@@ -13,6 +13,7 @@ import {
     Grid,
     GRID_CHECKBOX_OPTIONS,
     GridColumn,
+    incrementClientSideMetricCount,
     LoadingSpinner,
     Pagination,
     QueryColumn,
@@ -937,6 +938,38 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
     };
 
+    onColumnDrag = (): void => {
+        // clear headerClickCount so that all menus are closed
+        this.setState(() => ({ headerClickCount: {} }));
+    };
+
+    onColumnDrop = (source: string, target: string): void => {
+        const { displayColumns } = this.props.model;
+
+        const sourceIndex = displayColumns.findIndex(col => col.index === source);
+        const colInMotion = displayColumns.find(col => col.index === source);
+        if (colInMotion) {
+            let updatedColumns = displayColumns.filter(col => col.index !== source);
+            const targetIndex = updatedColumns.findIndex(col => col.index === target);
+            if (targetIndex > -1 && targetIndex !== sourceIndex) {
+                updatedColumns = [
+                    ...updatedColumns.slice(0, targetIndex),
+                    colInMotion,
+                    ...updatedColumns.slice(targetIndex),
+                ];
+
+                this.saveAsSessionView({
+                    columns: updatedColumns.map(col => ({
+                        fieldKey: col.index,
+                        title: col.caption === col.name ? '' : col.caption,
+                    })),
+                });
+
+                incrementClientSideMetricCount('customViews', 'columnReorderDragNDrop');
+            }
+        }
+    };
+
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
         const { headerClickCount } = this.state;
         const { allowSelections, allowSorting, allowFiltering, allowViewCustomization, model } = this.props;
@@ -1081,6 +1114,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                 <Grid
                                     headerCell={this.headerCell}
                                     onHeaderCellClick={this.onHeaderCellClick}
+                                    onColumnDrag={this.onColumnDrag}
+                                    onColumnDrop={allowViewCustomization ? this.onColumnDrop : undefined}
                                     showHeader={showHeader}
                                     calcWidths
                                     condensed

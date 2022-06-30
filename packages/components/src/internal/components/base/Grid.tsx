@@ -19,6 +19,8 @@ import { fromJS, List, Map } from 'immutable';
 
 import { HelpTipRenderer } from '../forms/HelpTipRenderer';
 
+import { GRID_SELECTION_INDEX } from '../../constants';
+
 import { LabelHelpTip } from './LabelHelpTip';
 import { GridColumn } from './models/GridColumn';
 
@@ -97,22 +99,58 @@ interface GridHeaderProps {
     columns: List<GridColumn>;
     headerCell?: any;
     onCellClick?: (column: GridColumn) => void;
+    onColumnDrag?: (sourceIndex: string) => void;
+    onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     showHeader?: boolean;
     transpose?: boolean;
 }
 
+interface State {
+    dragTarget: string;
+}
+
 // export for jest testing
-export class GridHeader extends PureComponent<GridHeaderProps, any> {
+export class GridHeader extends PureComponent<GridHeaderProps, State> {
+    readonly state: State = { dragTarget: undefined };
+
     _handleClick(column: GridColumn, evt: any): void {
-        const isHeaderCellClick = evt.target.className === 'grid-header-cell';
+        const isHeaderCellClick = evt.target.className?.startsWith('grid-header-cell');
         evt.stopPropagation();
         if (this.props.onCellClick && isHeaderCellClick) {
             this.props.onCellClick(column);
         }
     }
 
+    handleDragStart = (e): void => {
+        const dragIndex = e.target.id;
+        this.props?.onColumnDrag(dragIndex);
+
+        if (e.target?.tagName.toLowerCase() === 'th' && dragIndex !== GRID_SELECTION_INDEX) {
+            e.dataTransfer.setData('dragIndex', dragIndex);
+        }
+    };
+    handleDragOver = (e): void => {
+        e.preventDefault();
+    };
+    handleDragEnd = (e): void => {
+        this.setState({ dragTarget: undefined });
+    };
+    handleDragEnter = (e): void => {
+        if (e.target?.tagName.toLowerCase() === 'th' && e.target.id !== GRID_SELECTION_INDEX) {
+            this.setState({ dragTarget: e.target.id });
+        }
+    };
+    handleDrop = (e): void => {
+        var source = e.dataTransfer.getData('dragIndex');
+        const target = this.state.dragTarget;
+        if (source && target && source !== target) {
+            this.props?.onColumnDrop(source, target);
+        }
+    };
+
     render() {
-        const { calcWidths, columns, headerCell, showHeader, transpose } = this.props;
+        const { calcWidths, columns, headerCell, showHeader, transpose, onColumnDrop } = this.props;
+        const { dragTarget } = this.state;
 
         if (transpose || !showHeader) {
             // returning null here causes <noscript/> to render which is not expected
@@ -124,11 +162,12 @@ export class GridHeader extends PureComponent<GridHeaderProps, any> {
                 <tr>
                     {columns.map((column: GridColumn, i: number) => {
                         const { headerCls, index, raw, title, width, hideTooltip } = column;
+                        const draggable = onColumnDrop !== undefined;
                         let minWidth = width;
 
                         if (minWidth === undefined) {
                             // the additional 45px is to account for the grid column header icons for sort/filter and the dropdown toggle
-                            minWidth = calcWidths && title ? 45 + title.length * 8 : undefined;
+                            minWidth = calcWidths && title ? Math.max(45 + title.length * 8, 150) : undefined;
                         }
 
                         if (minWidth !== undefined) {
@@ -139,16 +178,25 @@ export class GridHeader extends PureComponent<GridHeaderProps, any> {
                             const className = classNames(headerCls, {
                                 'grid-header-cell': headerCls === undefined,
                                 'phi-protected': raw?.phiProtected === true,
+                                'grid-header-draggable': draggable && index !== GRID_SELECTION_INDEX,
+                                'grid-header-drag-over': dragTarget === index,
                             });
                             const description = getColumnHoverText(raw);
 
                             return (
                                 <th
-                                    className={className}
+                                    id={index}
                                     key={index}
+                                    className={className}
                                     onClick={this._handleClick.bind(this, column)}
                                     style={{ minWidth }}
                                     title={hideTooltip ? undefined : description}
+                                    draggable={draggable}
+                                    onDragStart={this.handleDragStart}
+                                    onDragOver={this.handleDragOver}
+                                    onDrop={this.handleDrop}
+                                    onDragEnter={this.handleDragEnter}
+                                    onDragEnd={this.handleDragEnd}
                                 >
                                     {headerCell ? headerCell(column, i, columns.size) : title}
                                     {/* headerCell will render the helpTip, so only render here if not using headerCell() */}
@@ -287,6 +335,8 @@ export interface GridProps {
     isLoading?: boolean;
     loadingText?: ReactNode;
     messages?: List<Map<string, string>>;
+    onColumnDrag?: (sourceIndex: string) => void;
+    onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     onHeaderCellClick?: (column: GridColumn) => void;
     responsive?: boolean;
 
@@ -301,92 +351,76 @@ export interface GridProps {
     transpose?: boolean;
 }
 
-export class Grid extends PureComponent<GridProps> {
-    static defaultProps = {
-        bordered: true,
-        calcWidths: false,
-        cellular: false,
-        condensed: false,
-        data: List<Map<string, any>>(),
-        emptyText: 'No data available.',
-        isLoading: false,
-        loadingText: 'Loading...',
-        messages: List<Map<string, string>>(),
-        responsive: true,
-        showHeader: true,
-        striped: true,
-        tableRef: undefined,
-        transpose: false,
+export const Grid: FC<GridProps> = memo(props => {
+    const {
+        bordered = true,
+        calcWidths = false,
+        cellular = false,
+        condensed = false,
+        data = List<Map<string, any>>(),
+        emptyText = 'No data available.',
+        isLoading = false,
+        loadingText = 'Loading...',
+        messages = List<Map<string, string>>(),
+        responsive = true,
+        showHeader = true,
+        striped = true,
+        tableRef = undefined,
+        transpose = false,
+        columns,
+        headerCell,
+        onHeaderCellClick,
+        onColumnDrag,
+        onColumnDrop,
+        rowKey,
+        highlightRowIndexes,
+        gridId,
+    } = props;
+    const gridData = processData(data);
+    const gridColumns = columns !== undefined ? processColumns(columns) : resolveColumns(gridData);
+
+    const headerProps: GridHeaderProps = {
+        calcWidths,
+        columns: gridColumns,
+        headerCell,
+        onCellClick: onHeaderCellClick,
+        onColumnDrag,
+        onColumnDrop,
+        showHeader,
+        transpose,
     };
 
-    render() {
-        const {
-            bordered,
-            calcWidths,
-            cellular,
-            columns,
-            condensed,
-            data,
-            emptyText,
-            gridId,
-            headerCell,
-            onHeaderCellClick,
-            isLoading,
-            loadingText,
-            messages,
-            responsive,
-            rowKey,
-            showHeader,
-            striped,
-            tableRef,
-            transpose,
-            highlightRowIndexes,
-        } = this.props;
+    const bodyProps: GridBodyProps = {
+        columns: gridColumns,
+        data: gridData,
+        emptyText,
+        isLoading,
+        loadingText,
+        rowKey,
+        transpose,
+        highlightRowIndexes,
+    };
 
-        const gridData = processData(data);
-        const gridColumns = columns !== undefined ? processColumns(columns) : resolveColumns(gridData);
+    const tableClasses = classNames({
+        table: !cellular,
+        'table-cellular': cellular,
+        'table-striped': striped,
+        'table-bordered': bordered,
+        'table-condensed': condensed,
+    });
 
-        const headerProps: GridHeaderProps = {
-            calcWidths,
-            columns: gridColumns,
-            headerCell,
-            onCellClick: onHeaderCellClick,
-            showHeader,
-            transpose,
-        };
+    const wrapperClasses = classNames({
+        'table-responsive': responsive,
+    });
 
-        const bodyProps: GridBodyProps = {
-            columns: gridColumns,
-            data: gridData,
-            emptyText,
-            isLoading,
-            loadingText,
-            rowKey,
-            transpose,
-            highlightRowIndexes,
-        };
+    return (
+        <div className={wrapperClasses} data-gridid={gridId}>
+            <GridMessages messages={messages} />
 
-        const tableClasses = classNames({
-            table: !cellular,
-            'table-cellular': cellular,
-            'table-striped': striped,
-            'table-bordered': bordered,
-            'table-condensed': condensed,
-        });
-
-        const wrapperClasses = classNames({
-            'table-responsive': responsive,
-        });
-
-        return (
-            <div className={wrapperClasses} data-gridid={gridId}>
-                <GridMessages messages={messages} />
-
-                <table className={tableClasses} ref={tableRef}>
-                    <GridHeader {...headerProps} />
-                    <GridBody {...bodyProps} />
-                </table>
-            </div>
-        );
-    }
-}
+            <table className={tableClasses} ref={tableRef}>
+                <GridHeader {...headerProps} />
+                <GridBody {...bodyProps} />
+            </table>
+        </div>
+    );
+});

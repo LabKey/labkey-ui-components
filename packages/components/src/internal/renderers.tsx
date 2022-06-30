@@ -87,18 +87,16 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const _handleHideColumn = useCallback(() => {
         setOpen(false);
         handleHideColumn(col);
-    }, [col]);
+    }, [col, handleHideColumn]);
 
     const _handleAddColumn = useCallback(() => {
         setOpen(false);
         handleAddColumn(col);
-    }, [col]);
+    }, [col, handleAddColumn]);
 
     // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
     useEffect(() => {
-        if (headerClickCount) {
-            setOpen(true);
-        }
+        setOpen(headerClickCount !== undefined);
     }, [headerClickCount]);
 
     useEffect(() => {
@@ -133,7 +131,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
-    const showGridCustomization = (handleHideColumn || handleAddColumn);
+    const showGridCustomization = handleHideColumn || handleAddColumn;
 
     return (
         <>

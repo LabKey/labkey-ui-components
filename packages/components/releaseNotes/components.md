@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.193.0
+*Released*: ?? July 2022
+* Add and export Row, RowValue types
+* HorizontalBarSection: Update design
+
 ### version 2.192.0
 *Released*: 30 June 2022
 * Grid column drag-n-drop to reorder columns in grid view

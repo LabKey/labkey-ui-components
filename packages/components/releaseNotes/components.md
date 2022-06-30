@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.192.0
+*Released*: 30 June 2022
 * Grid column drag-n-drop to reorder columns in grid view
   * only allowed when "allowViewCustomization" is set to true
   * prevent drop to left of selection checkbox column

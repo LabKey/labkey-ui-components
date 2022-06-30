@@ -103,7 +103,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
             </Row>
             {hasScopeChange && config.scopeChangeWarning && (
                 <Row>
-                    <Alert bsStyle="warning">{config.scopeChangeWarning}</Alert>
+                    <Alert bsStyle="warning" className="aliquot-alert-warning">{config.scopeChangeWarning}</Alert>
                 </Row>
             )}
         </div>

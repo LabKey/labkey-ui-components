@@ -21,7 +21,7 @@ import {
     SCHEMAS,
 } from '../../../..';
 
-import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DERIVATION_DATA_SCOPES } from '../constants';
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
 import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../../samples/constants';
@@ -812,6 +812,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             scopeChangeWarning:
                                 "Updating a 'Samples Only' field to be 'Samples and Aliquots' will blank out the field values for all aliquots. This action cannot be undone. ",
                         },
+                    }}
+                    newFieldConfig={{
+                        derivationDataScope: DERIVATION_DATA_SCOPES.PARENT_ONLY
                     }}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}

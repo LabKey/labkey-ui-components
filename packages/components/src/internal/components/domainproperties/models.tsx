@@ -758,6 +758,7 @@ export interface IDomainField {
     textChoiceValidator?: PropertyValidator;
     updatedField: boolean;
     visible: boolean;
+    derivationDataScope?: string;
 }
 
 export class DomainField

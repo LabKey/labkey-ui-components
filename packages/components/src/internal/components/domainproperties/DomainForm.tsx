@@ -122,6 +122,7 @@ interface IDomainFormInput {
     isNew?: boolean;
     maxPhiLevel?: string; // Just for testing, only affects display
     modelDomains?: List<DomainDesign>; // Set of domains that encompass the full protocol, that may impact validation or alerts
+    newFieldConfig?: Partial<IDomainField>; // used to initialize newly added fields
     onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => any;
     onToggle?: (collapsed: boolean, callback?: () => any) => any;
     panelStatus?: DomainPanelStatus;
@@ -610,7 +611,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     applyAddField = (config?: Partial<IDomainField>): void => {
-        const newConfig = config ? { ...config } : undefined;
+        const { newFieldConfig } = this.props;
+        const newConfig = config ? { ...config } : newFieldConfig;
         const newDomain = addDomainField(this.props.domain, newConfig);
         this.onDomainChange(newDomain, true);
         this.setState({ selectAll: false, visibleFieldsCount: getVisibleFieldCount(newDomain) });

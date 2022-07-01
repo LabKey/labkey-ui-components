@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX 2022
+### version 2.192.3
+*Released*: 1 July 2022
 * Issue 45177: enable ontology filters for Sample Finder
 
 ### version 2.192.2

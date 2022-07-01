@@ -6,25 +6,23 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { Alert } from '../base/Alert';
 
 interface Props {
-    type: string;
     queryInfo: QueryInfo;
+    type: string;
 }
 
 export const EntityInsertGridRequiredFieldAlert: FC<Props> = memo(props => {
     const { type, queryInfo } = props;
 
     const allRequiredCols = useMemo(() => {
-        if (!queryInfo || queryInfo.isLoading)
-            return [];
+        if (!queryInfo || queryInfo.isLoading) return [];
 
-        return getFieldKeysOfRequiredCols(queryInfo.getAllColumns())
+        return getFieldKeysOfRequiredCols(queryInfo.getAllColumns());
     }, [queryInfo]);
 
     const insertRequiredCols = useMemo(() => {
-        if (!queryInfo || queryInfo.isLoading)
-            return [];
+        if (!queryInfo || queryInfo.isLoading) return [];
 
-        return getFieldKeysOfRequiredCols(queryInfo.getInsertColumns())
+        return getFieldKeysOfRequiredCols(queryInfo.getInsertColumns());
     }, [queryInfo]);
 
     const missingReqColLabels = useMemo(() => {
@@ -35,13 +33,12 @@ export const EntityInsertGridRequiredFieldAlert: FC<Props> = memo(props => {
 
     return (
         <>
-            { missingReqColLabels.length > 0 &&
+            {missingReqColLabels.length > 0 && (
                 <Alert bsStyle="warning">
-                    <b>Warning: </b> the selected {type} has required fields that are not included in the grid
-                    below:{' '}
+                    <b>Warning: </b> the selected {type} has required fields that are not included in the grid below:{' '}
                     {missingReqColLabels.join(', ')}.
                 </Alert>
-            }
+            )}
         </>
     );
 });

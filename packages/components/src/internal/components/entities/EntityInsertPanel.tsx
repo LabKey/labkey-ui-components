@@ -294,6 +294,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         ) {
             this.init();
         }
+
+        if (this.props.importOnly && this.props.tab !== EntityInsertPanelTabs.First)
+            this.props.selectStep(EntityInsertPanelTabs.First);
     }
 
     allowParents = (): boolean => {

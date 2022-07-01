@@ -165,7 +165,7 @@ describe('ProductMenuSection render', () => {
         menuSection.unmount();
     });
 
-    test('two-column section', () => {
+    test('one-column section', () => {
         const productId = 'testProduct4Columns';
 
         const section = MenuSectionModel.create({
@@ -176,7 +176,7 @@ describe('ProductMenuSection render', () => {
 
         const sectionConfig = new MenuSectionConfig({
             iconURL: '/testProduct4Columns/images/assays.svg',
-            maxColumns: 2,
+            maxColumns: 1,
             maxItemsPerColumn: 2,
         });
 
@@ -184,13 +184,13 @@ describe('ProductMenuSection render', () => {
             <ProductMenuSection section={section} currentProductId={productId} config={sectionConfig} />
         );
 
-        expect(menuSection.find('ul').length).toBe(2);
+        expect(menuSection.find('ul').length).toBe(1);
         expect(menuSection.find('i.fa-spinner').length).toBe(0); // no active jobs present
         expect(menuSection).toMatchSnapshot();
         menuSection.unmount();
     });
 
-    test('two columns with overflow link', () => {
+    test('one column with overflow link', () => {
         const productId = 'testProductOverflowLink';
 
         const section = new MenuSectionModel({
@@ -202,14 +202,14 @@ describe('ProductMenuSection render', () => {
 
         const sectionConfig = new MenuSectionConfig({
             iconURL: '/testProductOverflowLink/images/assays.svg',
-            maxColumns: 2,
+            maxColumns: 1,
             maxItemsPerColumn: 2,
         });
 
         const menuSection = mount(
             <ProductMenuSection section={section} currentProductId={productId} config={sectionConfig} />
         );
-        expect(menuSection.find('ul').length).toBe(2);
+        expect(menuSection.find('ul').length).toBe(1);
         expect(menuSection.find('span.overflow-link').length).toBe(1);
         expect(menuSection).toMatchSnapshot();
         menuSection.unmount();

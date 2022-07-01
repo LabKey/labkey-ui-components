@@ -870,7 +870,7 @@ describe('addAssaySectionConfig', () => {
         configs = addAssaysSectionConfig(TEST_USER_READER, '/labkey/test/app.view', configs);
         expect(configs.size).toBe(1);
         const sectionConfig = configs.get(0).get(ASSAYS_KEY);
-        expect(sectionConfig.maxColumns).toBe(2);
+        expect(sectionConfig.maxColumns).toBe(1);
         expect(sectionConfig.maxItemsPerColumn).toBe(12);
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
         expect(sectionConfig.emptyURL).toBe(undefined);

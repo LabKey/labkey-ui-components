@@ -18,7 +18,15 @@ import { Map, OrderedMap } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
-import { DisableableMenuItem, GRID_CHECKBOX_OPTIONS, GridColumn, LabelHelpTip, QueryColumn, QueryModel } from '..';
+import {
+    DisableableMenuItem,
+    GRID_CHECKBOX_OPTIONS,
+    GridColumn,
+    LabelHelpTip,
+    QueryColumn,
+    QueryModel,
+    useEnterEscape
+} from '..';
 
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
@@ -38,6 +46,7 @@ interface HeaderCellDropdownProps {
     handleHideColumn?: (column: QueryColumn) => void;
     handleSort?: (column: QueryColumn, dir?: string) => void;
     headerClickCount?: number;
+    onColumnTitleChange?: (column: QueryColumn) => void;
     i: number;
     model?: QueryModel;
     selectable?: boolean;
@@ -45,9 +54,11 @@ interface HeaderCellDropdownProps {
 
 // exported for jest testing
 export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
-    const { i, column, handleSort, handleFilter, handleAddColumn, handleHideColumn, headerClickCount, model } = props;
+    const { i, column, handleSort, handleFilter, handleAddColumn, handleHideColumn, headerClickCount, model, onColumnTitleChange } = props;
     const col: QueryColumn = column.raw;
     const [open, setOpen] = useState<boolean>();
+    const [editingTitle, setEditingTitle] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>(col.caption);
     const wrapperEl = useRef<HTMLSpanElement>();
     const view = useMemo(() => model?.queryInfo?.getView(model?.viewName, true), [model?.queryInfo, model?.viewName]);
 
@@ -55,10 +66,27 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const allowColFilter = handleFilter && col?.filterable;
     const allowColumnViewChange = (handleHideColumn || handleAddColumn) && !!model;
     const includeDropdown = allowColSort || allowColFilter || allowColumnViewChange;
+    const titleInput: React.RefObject<HTMLInputElement> = React.createRef();
+
+    useEffect(() => {
+        setTitle(col.caption);
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            setEditingTitle(false);
+            setOpen(false);
+            document.removeEventListener('mousedown', handleClickOutside, false);
+        }
+    }, [col.caption]);
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (titleInput?.current && !titleInput.current.contains(event.target as any))  {
+            onEditFinish();
+        }
+    }
 
     const onToggleClick = useCallback(
         (shouldOpen: boolean, evt?: any) => {
-            if (!includeDropdown) return;
+            if (!includeDropdown || editingTitle) return;
 
             // when menu is closed skip any clicks on icons by just checking for span el type
             if (shouldOpen && evt && evt.target.tagName.toLowerCase() !== 'span') return;
@@ -93,6 +121,29 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         setOpen(false);
         handleAddColumn(col);
     }, [col, handleAddColumn]);
+
+    const editColumnTitle = useCallback(() => {
+        setOpen(false);
+        setEditingTitle(true);
+    }, []);
+
+    const onTitleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+        setTitle(evt.target.value)
+    }, []);
+
+    const onCancelEdit = useCallback(() => {
+        setEditingTitle(false);
+        setTitle(col.caption);
+    }, []);
+
+    const onEditFinish = useCallback(() => {
+        setEditingTitle(false);
+        if (title !== col.caption) {
+            onColumnTitleChange(col.set('caption', title) as QueryColumn);
+        }
+    }, [col, onColumnTitleChange, title]);
+
+    const onKeyDown = useEnterEscape(onEditFinish, onCancelEdit);
 
     // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
     useEffect(() => {
@@ -136,7 +187,11 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     return (
         <>
             <span onClick={evt => onToggleClick(!open, evt)}>
-                {col.caption === '&nbsp;' ? '' : col.caption}
+                {col.caption === '&nbsp;' ? '' :
+                    (editingTitle ?
+                        <input ref={titleInput} value={title} onKeyDown={onKeyDown} onChange={onTitleChange} onBlur={onEditFinish} />
+                        : col.caption)
+                }
                 {colFilters?.length > 0 && (
                     <span
                         className="fa fa-filter grid-panel__col-header-icon"
@@ -155,7 +210,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     </LabelHelpTip>
                 )}
             </span>
-            {includeDropdown && (
+            {includeDropdown && !editingTitle && (
                 <span className="pull-right" ref={wrapperEl}>
                     <Dropdown id={`grid-menu-${i}`} onToggle={onToggleClick} open={open}>
                         <CustomToggle bsRole="toggle">
@@ -233,6 +288,9 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                             {showGridCustomization && (
                                 <>
                                     {(allowColSort || allowColFilter) && <MenuItem divider />}
+                                    <MenuItem onClick={editColumnTitle}>
+                                        <span className="fa fa-pencil grid-panel__menu-icon"/> Edit Label
+                                    </MenuItem>
                                     {handleAddColumn && (
                                         <MenuItem onClick={_handleAddColumn}>
                                             <span className="fa fa-plus grid-panel__menu-icon" /> Insert Column
@@ -265,6 +323,7 @@ export function headerCell(
     handleFilter?: (column: QueryColumn, remove?: boolean) => void,
     handleAddColumn?: (column: QueryColumn) => void,
     handleHideColumn?: (column: QueryColumn) => void,
+    onColumnTitleChange?: (column: QueryColumn) => void,
     model?: QueryModel,
     headerClickCount?: number
 ): ReactNode {
@@ -280,6 +339,7 @@ export function headerCell(
             handleHideColumn={handleHideColumn}
             headerClickCount={headerClickCount}
             model={model}
+            onColumnTitleChange={onColumnTitleChange}
         />
     );
 }

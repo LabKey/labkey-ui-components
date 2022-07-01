@@ -728,6 +728,24 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
     };
 
+    updateColumnTitle = (updatedCol: QueryColumn): void => {
+        const { model } = this.props;
+        this.saveAsSessionView({
+            columns: model.displayColumns
+                .map(col => {
+                    if (col.index === updatedCol.index) {
+                        return {
+                            fieldKey: updatedCol.index,
+                            title: updatedCol.caption === updatedCol.name ? '' : updatedCol.caption,
+                        }
+                    } else {
+                        return {fieldKey: col.index, title: col.caption === col.name ? '' : col.caption}
+                    }
+
+                })
+        });
+    }
+
     saveAsSessionView = (updates: Record<string, any>): void => {
         const { model } = this.props;
         const { schemaQuery, containerPath } = model;
@@ -989,6 +1007,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             allowFiltering ? this.filterColumn : undefined,
             allowViewCustomization ? this.addColumn : undefined,
             allowViewCustomization ? this.hideColumn : undefined,
+            allowViewCustomization? this.updateColumnTitle: undefined,
             model,
             headerClickCount[column.index]
         );

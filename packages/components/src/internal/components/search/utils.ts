@@ -237,13 +237,6 @@ export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string
     return columnNames;
 }
 
-// Issue 45177: Lineage filter "IN EXPDESCENDANTSOF" not working when sub select contains ontology filter
-// Hide ontology tree filter types until issue is fixed
-export const SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE = [
-    Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix(),
-    Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix(),
-];
-
 export const NEGATE_FILTERS = [
     Filter.Types.NEQ_OR_NULL.getURLSuffix(),
     Filter.Types.DATE_NOT_EQUAL.getURLSuffix(),
@@ -272,7 +265,7 @@ export function isBetweenOperator(urlSuffix: string): boolean {
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
 
-export function getFilterOptionsForType(field: QueryColumn, filterTypesToExclude?: string[]): FieldFilterOption[] {
+export function getFilterOptionsForType(field: QueryColumn): FieldFilterOption[] {
     if (!field) return null;
 
     const jsonType = field.getDisplayFieldJsonType() as JsonType;
@@ -282,8 +275,7 @@ export function getFilterOptionsForType(field: QueryColumn, filterTypesToExclude
     const filterList = (
         useConceptFilters ? CONCEPT_COLUMN_FILTER_TYPES : Filter.getFilterTypesForType(jsonType)
     ).filter(function (result) {
-        if (Filter.Types.HAS_ANY_VALUE.getURLSuffix() === result.getURLSuffix()) return false;
-        return !filterTypesToExclude || filterTypesToExclude.indexOf(result.getURLSuffix()) === -1;
+        return Filter.Types.HAS_ANY_VALUE.getURLSuffix() !== result.getURLSuffix();
     });
 
     if (jsonType === 'date') {

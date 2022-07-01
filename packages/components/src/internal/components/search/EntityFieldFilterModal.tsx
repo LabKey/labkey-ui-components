@@ -25,7 +25,6 @@ import {
     getFieldFiltersValidationResult,
     getUpdatedDataTypeFilters,
     isValidFilterFieldExcludeLookups,
-    SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE,
 } from './utils';
 import { QueryFilterPanel } from './QueryFilterPanel';
 
@@ -229,7 +228,6 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         queryInfo={activeQueryInfo}
                         skipDefaultViewCheck={skipDefaultViewCheck}
                         validFilterField={isValidFilterFieldExcludeLookups}
-                        filterTypesToExclude={SAMPLE_SEARCH_FILTER_TYPES_TO_EXCLUDE}
                     />
                 </Row>
             </Modal.Body>

@@ -189,7 +189,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
             <span onClick={evt => onToggleClick(!open, evt)}>
                 {col.caption === '&nbsp;' ? '' :
                     (editingTitle ?
-                        <input ref={titleInput} value={title} onKeyDown={onKeyDown} onChange={onTitleChange} onBlur={onEditFinish} />
+                        <input autoFocus ref={titleInput} defaultValue={title} onKeyDown={onKeyDown} onChange={onTitleChange} onBlur={onEditFinish} />
                         : col.caption)
                 }
                 {colFilters?.length > 0 && (

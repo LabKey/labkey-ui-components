@@ -345,7 +345,7 @@ export function addAssaysSectionConfig(
     let assaysMenuConfig = new MenuSectionConfig({
         emptyText: 'No assays have been defined',
         iconURL: imageURL('_images', 'assay.svg'),
-        maxColumns: 2,
+        maxColumns: 1,
         maxItemsPerColumn: 12,
         seeAllURL: appBase + AppURL.create(ASSAYS_KEY).addParam('viewAs', 'grid').toHref(),
     });

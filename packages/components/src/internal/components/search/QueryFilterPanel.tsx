@@ -33,7 +33,6 @@ interface Props {
     emptyMsg?: string;
     entityDataType?: EntityDataType; // used for Sample Finder use case
     fieldKey?: string;
-    filterTypesToExclude?: string[];
     filters: { [key: string]: FieldFilter[] };
     fullWidth?: boolean;
     metricFeatureArea?: string;
@@ -60,7 +59,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         metricFeatureArea,
         fullWidth,
         selectDistinctOptions,
-        filterTypesToExclude,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
@@ -249,7 +247,6 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                 onFieldFilterUpdate={(newFilters, index) =>
                                                     onFilterUpdate(activeField, newFilters, index)
                                                 }
-                                                filterTypesToExclude={filterTypesToExclude}
                                             />
                                         )}
                                     </Tab.Pane>

@@ -6,6 +6,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 10437: Aliquot Field Inheritance
     * Update DerivationDataScopeFieldOptions, SampleTypeDesigner, EntityInsertPanel and SamplesBulkUpdateForm to support aliquot & sample options
 
+### version 2.192.3
+*Released*: 1 July 2022
+* Issue 45177: enable ontology filters for Sample Finder
+
+### version 2.192.2
+*Released*: 30 June 2022
+* Issue 45725: MegaMenu truncate and text wrap consistency
+
+### version 2.192.1
+*Released*: 30 June 2022
+* Issue 45776: adjust BarChartViewer to resolve cross-folder item counts
+
 ### version 2.192.0
 *Released*: 30 June 2022
 * Grid column drag-n-drop to reorder columns in grid view

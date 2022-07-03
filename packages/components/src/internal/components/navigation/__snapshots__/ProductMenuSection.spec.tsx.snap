@@ -129,6 +129,103 @@ exports[`ProductMenuSection render empty section with empty text and create link
 </ProductMenuSection>
 `;
 
+exports[`ProductMenuSection render one column with overflow link 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
+      "emptyText": undefined,
+      "emptyURL": undefined,
+      "emptyURLText": "Get started...",
+      "headerURL": undefined,
+      "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProductOverflowLink/images/assays.svg",
+      "maxColumns": 1,
+      "maxItemsPerColumn": 2,
+      "seeAllURL": undefined,
+      "showActiveJobIcon": true,
+    }
+  }
+  currentProductId="testProductOverflowLink"
+  maxColumns={1}
+  section={
+    Immutable.Record {
+      "label": "Assays",
+      "url": undefined,
+      "items": Immutable.List [
+        Object {
+          "id": 11,
+          "label": "Assay 1",
+        },
+        Object {
+          "id": 12,
+          "label": "Assay 2",
+        },
+        Object {
+          "id": 13,
+          "label": "Assay 3",
+        },
+        Object {
+          "id": 14,
+          "label": "Assay 4",
+        },
+        Object {
+          "id": 15,
+          "label": "Assay 5",
+        },
+      ],
+      "totalCount": 5,
+      "itemLimit": undefined,
+      "key": "assays",
+      "productId": undefined,
+      "sectionKey": undefined,
+    }
+  }
+>
+  <span
+    className="menu-section-header"
+  >
+    <img
+      alt="Assays icon"
+      className="menu-section-image "
+      height="24px"
+      src="/testProductOverflowLink/images/assays.svg"
+      width="24px"
+    />
+     
+    Assays
+  </span>
+  <hr />
+  <ul
+    className="col-1"
+    key="assayscol-1"
+  >
+    <li
+      key="Assay 1"
+    >
+      Assay 1
+    </li>
+    <li
+      key="Assay 2"
+    >
+      Assay 2
+    </li>
+  </ul>
+  <span
+    className="overflow-link"
+    key="overflow"
+  >
+    <a
+      href="#/assays"
+    >
+      See all 
+      5
+    </a>
+  </span>
+</ProductMenuSection>
+`;
+
 exports[`ProductMenuSection render one-column section 1`] = `
 <ProductMenuSection
   config={
@@ -252,183 +349,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
 </ProductMenuSection>
 `;
 
-exports[`ProductMenuSection render section with custom headerURL and headerText 1`] = `
-<ProductMenuSection
-  config={
-    Immutable.Record {
-      "activeJobIconCls": "fa-spinner fa-pulse",
-      "emptyText": undefined,
-      "emptyURL": undefined,
-      "emptyURLText": "Get started...",
-      "headerURL": Immutable.Record {
-        "_baseUrl": "/sample/new",
-        "_filters": undefined,
-        "_params": Immutable.Map {
-          "sort": "date",
-        },
-      },
-      "headerText": "Custom Sample Sets",
-      "iconCls": undefined,
-      "iconURL": "/testProduct/images/samples.svg",
-      "maxColumns": 1,
-      "maxItemsPerColumn": 12,
-      "seeAllURL": undefined,
-      "showActiveJobIcon": true,
-    }
-  }
-  currentProductId="testProductHeaderUrl"
-  maxColumns={1}
-  section={
-    Immutable.Record {
-      "label": "Sample Sets",
-      "url": undefined,
-      "items": Immutable.List [],
-      "totalCount": 0,
-      "itemLimit": 2,
-      "key": "samples",
-      "productId": undefined,
-      "sectionKey": undefined,
-    }
-  }
->
-  <span
-    className="menu-section-header"
-  >
-    <a
-      href="#/sample/new?sort=date"
-    >
-      <img
-        alt="Sample Sets icon"
-        className="menu-section-image "
-        height="24px"
-        src="/testProduct/images/samples.svg"
-        width="24px"
-      />
-       
-      Custom Sample Sets
-    </a>
-  </span>
-  <hr />
-  <ul
-    className="col-0"
-    key="samplescol-1"
-  />
-</ProductMenuSection>
-`;
-
-exports[`ProductMenuSection render two columns with overflow link 1`] = `
-<ProductMenuSection
-  config={
-    Immutable.Record {
-      "activeJobIconCls": "fa-spinner fa-pulse",
-      "emptyText": undefined,
-      "emptyURL": undefined,
-      "emptyURLText": "Get started...",
-      "headerURL": undefined,
-      "headerText": undefined,
-      "iconCls": undefined,
-      "iconURL": "/testProductOverflowLink/images/assays.svg",
-      "maxColumns": 2,
-      "maxItemsPerColumn": 2,
-      "seeAllURL": undefined,
-      "showActiveJobIcon": true,
-    }
-  }
-  currentProductId="testProductOverflowLink"
-  maxColumns={1}
-  section={
-    Immutable.Record {
-      "label": "Assays",
-      "url": undefined,
-      "items": Immutable.List [
-        Object {
-          "id": 11,
-          "label": "Assay 1",
-        },
-        Object {
-          "id": 12,
-          "label": "Assay 2",
-        },
-        Object {
-          "id": 13,
-          "label": "Assay 3",
-        },
-        Object {
-          "id": 14,
-          "label": "Assay 4",
-        },
-        Object {
-          "id": 15,
-          "label": "Assay 5",
-        },
-      ],
-      "totalCount": 5,
-      "itemLimit": undefined,
-      "key": "assays",
-      "productId": undefined,
-      "sectionKey": undefined,
-    }
-  }
->
-  <span
-    className="menu-section-header"
-  >
-    <img
-      alt="Assays icon"
-      className="menu-section-image "
-      height="24px"
-      src="/testProductOverflowLink/images/assays.svg"
-      width="24px"
-    />
-     
-    Assays
-  </span>
-  <hr />
-  <ul
-    className="col-2"
-    key="assayscol-1"
-  >
-    <li
-      key="Assay 1"
-    >
-      Assay 1
-    </li>
-    <li
-      key="Assay 2"
-    >
-      Assay 2
-    </li>
-  </ul>
-  <ul
-    className="col-2"
-    key="assayscol-2"
-  >
-    <li
-      key="Assay 3"
-    >
-      Assay 3
-    </li>
-    <li
-      key="Assay 4"
-    >
-      Assay 4
-    </li>
-  </ul>
-  <span
-    className="overflow-link"
-    key="overflow"
-  >
-    <a
-      href="#/assays"
-    >
-      See all 
-      5
-    </a>
-  </span>
-</ProductMenuSection>
-`;
-
-exports[`ProductMenuSection render two-column section 1`] = `
+exports[`ProductMenuSection render one-column section 2`] = `
 <ProductMenuSection
   config={
     Immutable.Record {
@@ -440,7 +361,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
       "headerText": undefined,
       "iconCls": undefined,
       "iconURL": "/testProduct4Columns/images/assays.svg",
-      "maxColumns": 2,
+      "maxColumns": 1,
       "maxItemsPerColumn": 2,
       "seeAllURL": undefined,
       "showActiveJobIcon": true,
@@ -527,7 +448,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
   </span>
   <hr />
   <ul
-    className="col-2"
+    className="col-1"
     key="assayscol-1"
   >
     <li
@@ -541,20 +462,69 @@ exports[`ProductMenuSection render two-column section 1`] = `
       Assay 2
     </li>
   </ul>
-  <ul
-    className="col-2"
-    key="assayscol-2"
+</ProductMenuSection>
+`;
+
+exports[`ProductMenuSection render section with custom headerURL and headerText 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
+      "emptyText": undefined,
+      "emptyURL": undefined,
+      "emptyURLText": "Get started...",
+      "headerURL": Immutable.Record {
+        "_baseUrl": "/sample/new",
+        "_filters": undefined,
+        "_params": Immutable.Map {
+          "sort": "date",
+        },
+      },
+      "headerText": "Custom Sample Sets",
+      "iconCls": undefined,
+      "iconURL": "/testProduct/images/samples.svg",
+      "maxColumns": 1,
+      "maxItemsPerColumn": 12,
+      "seeAllURL": undefined,
+      "showActiveJobIcon": true,
+    }
+  }
+  currentProductId="testProductHeaderUrl"
+  maxColumns={1}
+  section={
+    Immutable.Record {
+      "label": "Sample Sets",
+      "url": undefined,
+      "items": Immutable.List [],
+      "totalCount": 0,
+      "itemLimit": 2,
+      "key": "samples",
+      "productId": undefined,
+      "sectionKey": undefined,
+    }
+  }
+>
+  <span
+    className="menu-section-header"
   >
-    <li
-      key="Assay 3"
+    <a
+      href="#/sample/new?sort=date"
     >
-      Assay 3
-    </li>
-    <li
-      key="Assay 4"
-    >
-      Assay 4
-    </li>
-  </ul>
+      <img
+        alt="Sample Sets icon"
+        className="menu-section-image "
+        height="24px"
+        src="/testProduct/images/samples.svg"
+        width="24px"
+      />
+       
+      Custom Sample Sets
+    </a>
+  </span>
+  <hr />
+  <ul
+    className="col-0"
+    key="samplescol-1"
+  />
 </ProductMenuSection>
 `;

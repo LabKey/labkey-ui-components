@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Map, OrderedMap } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
@@ -131,6 +131,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         setTitle(evt.target.value)
     }, []);
 
+
     const onCancelEdit = useCallback(() => {
         setEditingTitle(false);
         setTitle(col.caption);
@@ -138,8 +139,9 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const onEditFinish = useCallback(() => {
         setEditingTitle(false);
-        if (title !== col.caption) {
-            onColumnTitleChange(col.set('caption', title) as QueryColumn);
+        const trimmedTitle = title?.trim();
+        if (trimmedTitle !== col.caption) {
+            onColumnTitleChange(col.set('caption', trimmedTitle) as QueryColumn);
         }
     }, [col, onColumnTitleChange, title]);
 
@@ -190,7 +192,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 {col.caption === '&nbsp;' ? '' :
                     (editingTitle ?
                         <input autoFocus ref={titleInput} defaultValue={title} onKeyDown={onKeyDown} onChange={onTitleChange} onBlur={onEditFinish} />
-                        : col.caption)
+                        : col.caption
+                    )
                 }
                 {colFilters?.length > 0 && (
                     <span
@@ -204,7 +207,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 {isSortDesc && (
                     <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
                 )}
-                {column.helpTipRenderer && (
+                {!editingTitle && column.helpTipRenderer && (
                     <LabelHelpTip id={column.index} title={column.title} popoverClassName="label-help-arrow-top">
                         <HelpTipRenderer type={column.helpTipRenderer} />
                     </LabelHelpTip>

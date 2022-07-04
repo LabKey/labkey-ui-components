@@ -975,6 +975,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { allowSelections, allowSorting, allowFiltering, allowViewCustomization, model } = this.props;
         const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
         const disabled = isLoadingSelections || isLoading || (hasRows && rowCount === 0);
+        const nonSelectableColumnCount = allowSelections ? columnCount - 1 : columnCount;
 
         if (column.index === GRID_SELECTION_INDEX) {
             return headerSelectionCell(this.selectPage, model.selectedState, disabled, 'grid-panel__page-checkbox');
@@ -988,7 +989,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             allowSorting ? this.sortColumn : undefined,
             allowFiltering ? this.filterColumn : undefined,
             allowViewCustomization ? this.addColumn : undefined,
-            allowViewCustomization ? this.hideColumn : undefined,
+            allowViewCustomization && nonSelectableColumnCount > 1 ? this.hideColumn : undefined,
             model,
             headerClickCount[column.index]
         );

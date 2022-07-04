@@ -38,10 +38,10 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
                 <DropdownButton id="responsive-menu-button-group" title="More" className="responsive-menu">
                     {buttons.map((item, index) => {
                         return (
-                            <>
+                            <React.Fragment key={index}>
                                 {React.cloneElement(item, { asSubMenu: true })}
                                 {index < buttons.length - 1 && <MenuItem divider />}
-                            </>
+                            </React.Fragment>
                         );
                     })}
                 </DropdownButton>

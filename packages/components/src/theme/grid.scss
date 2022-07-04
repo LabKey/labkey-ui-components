@@ -65,6 +65,10 @@
   position: relative;
   padding: 0 9px;
   font-weight: bold;
+
+    input {
+        width: 100%
+    }
 }
 
 .grid-header-draggable {

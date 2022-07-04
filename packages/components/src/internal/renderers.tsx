@@ -38,54 +38,65 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
 }
 
-// interface FieldTitleInputProps {
-//     column: QueryColumn;
-//     editing: boolean;
-//     onEditToggle?: (editing: boolean) => void;
-// }
-//
-// const FieldTitleInput: FC<FieldTitleInputProps> = memo(props => {
-//     const {column, editing, onEditToggle} = props;
-//     const [title, setTitle] = useState<string>(column.caption);
-//
-//     const titleInput: React.RefObject<HTMLInputElement> = React.createRef();
-//
-//     useEffect(() => {
-//         setTitle(column.caption);
-//         document.addEventListener('mousedown', handleClickOutside);
-//         return () => {
-//             setEditingTitle(false);
-//             document.removeEventListener('mousedown', handleClickOutside, false);
-//         }
-//     }, [col.caption]);
-//
-//     const onTitleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-//         setTitle(evt.target.value)
-//     }, []);
-//
-//
-//     const onCancelEdit = useCallback(() => {
-//         onEditToggle(false);
-//         setTitle(column.caption);
-//     }, []);
-//
-//     const onEditFinish = useCallback(() => {
-//         setEditingTitle(false);
-//         const trimmedTitle = title?.trim();
-//         if (trimmedTitle !== col.caption) {
-//             onColumnTitleChange(col.set('caption', trimmedTitle) as QueryColumn);
-//         }
-//     }, [col, onColumnTitleChange, title]);
-//
-//     const onKeyDown = useEnterEscape(onEditFinish, onCancelEdit);
-//
-//     return {column.caption === '&nbsp;' ? '' :
-//         (editing ?
-//                 <input autoFocus ref={titleInput} defaultValue={title} onKeyDown={onKeyDown} onChange={onTitleChange} onBlur={onEditFinish} />
-//                 : column.caption
-//         )
-//     }
-// });
+interface EditableColumnTitleProps {
+    column: QueryColumn;
+    editing: boolean;
+    onEditToggle: (editing: boolean) => void;
+    onChange: (newValue: string) => void;
+}
+
+// exported for jest tests
+export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
+    const {column, editing, onChange, onEditToggle} = props;
+    const initialTitle = useMemo(() => {
+        return column.caption ?? column.name;
+    }, [column.caption, column.name]);
+    const [title, setTitle] = useState<string>(column.caption);
+
+    const titleInput: React.RefObject<HTMLInputElement> = React.createRef();
+
+    useEffect(() => {
+        setTitle(initialTitle);
+    }, [initialTitle]);
+
+    const onTitleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+        setTitle(evt.target.value)
+    }, []);
+
+
+    const onCancelEdit = useCallback(() => {
+        onEditToggle(false);
+        setTitle(initialTitle);
+    }, [initialTitle]);
+
+    const onEditFinish = useCallback(() => {
+        onEditToggle(false);
+        const trimmedTitle = title?.trim();
+        if (trimmedTitle !== initialTitle) {
+            onChange(trimmedTitle);
+        }
+    }, [initialTitle, onChange, title]);
+
+    const onKeyDown = useEnterEscape(onEditFinish, onCancelEdit);
+
+    if (initialTitle === '&nbsp;')  {
+        return <>''</>;
+    }
+
+    if (editing) {
+        return (
+            <input
+                autoFocus
+                ref={titleInput}
+                defaultValue={title}
+                onKeyDown={onKeyDown}
+                onChange={onTitleChange}
+                onBlur={onEditFinish} />
+        );
+    }
+
+    return <>{initialTitle}</>;
+});
 
 interface HeaderCellDropdownProps {
     column: GridColumn;
@@ -107,10 +118,6 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const col: QueryColumn = column.raw;
     const [open, setOpen] = useState<boolean>();
     const [editingTitle, setEditingTitle] = useState<boolean>(false);
-    const initialTitle = useMemo(() => {
-        return col.caption ?? col.name;
-    }, [col.caption, col.name]);
-    const [title, setTitle] = useState<string>(initialTitle);
     const wrapperEl = useRef<HTMLSpanElement>();
     const view = useMemo(() => model?.queryInfo?.getView(model?.viewName, true), [model?.queryInfo, model?.viewName]);
 
@@ -120,13 +127,11 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const includeDropdown = allowColSort || allowColFilter || allowColumnViewChange;
 
     useEffect(() => {
-        setTitle(initialTitle);
         return () => {
             setEditingTitle(false);
             setOpen(false);
-            setTitle(initialTitle);
         }
-    }, [initialTitle]);
+    }, []);
 
     const onToggleClick = useCallback(
         (shouldOpen: boolean, evt?: any) => {
@@ -171,24 +176,13 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         setEditingTitle(true);
     }, []);
 
-    const onTitleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-        setTitle(evt.target.value)
+    const onColumnTitleUpdate = useCallback((newTitle: string) => {
+        onColumnTitleChange(col.set('caption', newTitle) as QueryColumn);
     }, []);
 
-    const onCancelEdit = useCallback(() => {
-        setEditingTitle(false);
-        setTitle(initialTitle);
-    }, [initialTitle]);
-
-    const onEditFinish = useCallback(() => {
-        setEditingTitle(false);
-        const trimmedTitle = title?.trim();
-        if (trimmedTitle !== initialTitle) {
-            onColumnTitleChange(col.set('caption', trimmedTitle) as QueryColumn);
-        }
-    }, [initialTitle, onColumnTitleChange, title]);
-
-    const onKeyDown = useEnterEscape(onEditFinish, onCancelEdit);
+    const onEditTitleToggle = useCallback((value: boolean) => {
+        setEditingTitle(value);
+    }, []);
 
     // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
     useEffect(() => {
@@ -232,18 +226,13 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     return (
         <>
             <span onClick={evt => onToggleClick(!open, evt)}>
-                {initialTitle === '&nbsp;' ? '' :
-                    (editingTitle ?
-                        <input
-                            autoFocus
-                            defaultValue={title}
-                            onKeyDown={onKeyDown}
-                            onChange={onTitleChange}
-                            onBlur={onEditFinish}
-                        />
-                        : initialTitle
-                    )
-                }
+                <EditableColumnTitle
+                    column={col}
+                    onChange={onColumnTitleUpdate}
+                    editing={editingTitle}
+                    onEditToggle={onEditTitleToggle}
+                />
+
                 {colFilters?.length > 0 && (
                     <span
                         className="fa fa-filter grid-panel__col-header-icon"

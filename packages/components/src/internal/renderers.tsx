@@ -128,7 +128,6 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     useEffect(() => {
         return () => {
-            setEditingTitle(false);
             setOpen(false);
         }
     }, []);

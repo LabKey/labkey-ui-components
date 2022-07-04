@@ -178,12 +178,16 @@
 
     thead {
         position: sticky;
-        top: 0;
+        top: -1px;
         z-index: 2;
 
         th {
             background-color: $white;
-            border-color: $border-color;
         }
+    }
+
+    /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+    table thead th {
+        background-clip: padding-box
     }
 }

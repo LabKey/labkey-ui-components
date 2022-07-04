@@ -40,7 +40,7 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
 
 interface EditableColumnTitleProps {
     column: QueryColumn;
-    editing: boolean;
+    editing?: boolean;
     onEditToggle: (editing: boolean) => void;
     onChange: (newValue: string) => void;
 }
@@ -51,7 +51,7 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     const initialTitle = useMemo(() => {
         return column.caption ?? column.name;
     }, [column.caption, column.name]);
-    const [title, setTitle] = useState<string>(column.caption);
+    const [title, setTitle] = useState<string>(initialTitle);
 
     const titleInput: React.RefObject<HTMLInputElement> = React.createRef();
 
@@ -62,7 +62,6 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     const onTitleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
         setTitle(evt.target.value)
     }, []);
-
 
     const onCancelEdit = useCallback(() => {
         onEditToggle(false);
@@ -75,12 +74,12 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
         if (trimmedTitle !== initialTitle) {
             onChange(trimmedTitle);
         }
-    }, [initialTitle, onChange, title]);
+    }, [initialTitle, onChange, onEditToggle, title]);
 
     const onKeyDown = useEnterEscape(onEditFinish, onCancelEdit);
 
     if (initialTitle === '&nbsp;')  {
-        return <>''</>;
+        return <></>;
     }
 
     if (editing) {

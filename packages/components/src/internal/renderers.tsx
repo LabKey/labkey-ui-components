@@ -38,6 +38,55 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
 }
 
+// interface FieldTitleInputProps {
+//     column: QueryColumn;
+//     editing: boolean;
+//     onEditToggle?: (editing: boolean) => void;
+// }
+//
+// const FieldTitleInput: FC<FieldTitleInputProps> = memo(props => {
+//     const {column, editing, onEditToggle} = props;
+//     const [title, setTitle] = useState<string>(column.caption);
+//
+//     const titleInput: React.RefObject<HTMLInputElement> = React.createRef();
+//
+//     useEffect(() => {
+//         setTitle(column.caption);
+//         document.addEventListener('mousedown', handleClickOutside);
+//         return () => {
+//             setEditingTitle(false);
+//             document.removeEventListener('mousedown', handleClickOutside, false);
+//         }
+//     }, [col.caption]);
+//
+//     const onTitleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+//         setTitle(evt.target.value)
+//     }, []);
+//
+//
+//     const onCancelEdit = useCallback(() => {
+//         onEditToggle(false);
+//         setTitle(column.caption);
+//     }, []);
+//
+//     const onEditFinish = useCallback(() => {
+//         setEditingTitle(false);
+//         const trimmedTitle = title?.trim();
+//         if (trimmedTitle !== col.caption) {
+//             onColumnTitleChange(col.set('caption', trimmedTitle) as QueryColumn);
+//         }
+//     }, [col, onColumnTitleChange, title]);
+//
+//     const onKeyDown = useEnterEscape(onEditFinish, onCancelEdit);
+//
+//     return {column.caption === '&nbsp;' ? '' :
+//         (editing ?
+//                 <input autoFocus ref={titleInput} defaultValue={title} onKeyDown={onKeyDown} onChange={onTitleChange} onBlur={onEditFinish} />
+//                 : column.caption
+//         )
+//     }
+// });
+
 interface HeaderCellDropdownProps {
     column: GridColumn;
     columnCount?: number;
@@ -58,7 +107,10 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const col: QueryColumn = column.raw;
     const [open, setOpen] = useState<boolean>();
     const [editingTitle, setEditingTitle] = useState<boolean>(false);
-    const [title, setTitle] = useState<string>(col.caption);
+    const initialTitle = useMemo(() => {
+        return col.caption ?? col.name;
+    }, [col.caption, col.name]);
+    const [title, setTitle] = useState<string>(initialTitle);
     const wrapperEl = useRef<HTMLSpanElement>();
     const view = useMemo(() => model?.queryInfo?.getView(model?.viewName, true), [model?.queryInfo, model?.viewName]);
 
@@ -66,23 +118,15 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const allowColFilter = handleFilter && col?.filterable;
     const allowColumnViewChange = (handleHideColumn || handleAddColumn) && !!model;
     const includeDropdown = allowColSort || allowColFilter || allowColumnViewChange;
-    const titleInput: React.RefObject<HTMLInputElement> = React.createRef();
 
     useEffect(() => {
-        setTitle(col.caption);
-        document.addEventListener('mousedown', handleClickOutside);
+        setTitle(initialTitle);
         return () => {
             setEditingTitle(false);
             setOpen(false);
-            document.removeEventListener('mousedown', handleClickOutside, false);
+            setTitle(initialTitle);
         }
-    }, [col.caption]);
-
-    const handleClickOutside = (event: MouseEvent) => {
-        if (titleInput?.current && !titleInput.current.contains(event.target as any))  {
-            onEditFinish();
-        }
-    }
+    }, [initialTitle]);
 
     const onToggleClick = useCallback(
         (shouldOpen: boolean, evt?: any) => {
@@ -131,19 +175,18 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         setTitle(evt.target.value)
     }, []);
 
-
     const onCancelEdit = useCallback(() => {
         setEditingTitle(false);
-        setTitle(col.caption);
-    }, []);
+        setTitle(initialTitle);
+    }, [initialTitle]);
 
     const onEditFinish = useCallback(() => {
         setEditingTitle(false);
         const trimmedTitle = title?.trim();
-        if (trimmedTitle !== col.caption) {
+        if (trimmedTitle !== initialTitle) {
             onColumnTitleChange(col.set('caption', trimmedTitle) as QueryColumn);
         }
-    }, [col, onColumnTitleChange, title]);
+    }, [initialTitle, onColumnTitleChange, title]);
 
     const onKeyDown = useEnterEscape(onEditFinish, onCancelEdit);
 
@@ -189,10 +232,16 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     return (
         <>
             <span onClick={evt => onToggleClick(!open, evt)}>
-                {col.caption === '&nbsp;' ? '' :
+                {initialTitle === '&nbsp;' ? '' :
                     (editingTitle ?
-                        <input autoFocus ref={titleInput} defaultValue={title} onKeyDown={onKeyDown} onChange={onTitleChange} onBlur={onEditFinish} />
-                        : col.caption
+                        <input
+                            autoFocus
+                            defaultValue={title}
+                            onKeyDown={onKeyDown}
+                            onChange={onTitleChange}
+                            onBlur={onEditFinish}
+                        />
+                        : initialTitle
                     )
                 }
                 {colFilters?.length > 0 && (

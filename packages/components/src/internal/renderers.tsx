@@ -71,7 +71,9 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     const onEditFinish = useCallback(() => {
         onEditToggle(false);
         const trimmedTitle = title?.trim();
-        if (trimmedTitle !== initialTitle) {
+        if (!trimmedTitle) {
+            setTitle(initialTitle);
+        } else if (trimmedTitle !== initialTitle) {
             onChange(trimmedTitle);
         }
     }, [initialTitle, onChange, onEditToggle, title]);
@@ -90,7 +92,8 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
                 defaultValue={title}
                 onKeyDown={onKeyDown}
                 onChange={onTitleChange}
-                onBlur={onEditFinish} />
+                onBlur={onEditFinish}
+            />
         );
     }
 
@@ -176,7 +179,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const onColumnTitleUpdate = useCallback((newTitle: string) => {
         onColumnTitleChange(col.set('caption', newTitle) as QueryColumn);
-    }, []);
+    }, [col, onColumnTitleChange]);
 
     const onEditTitleToggle = useCallback((value: boolean) => {
         setEditingTitle(value);
@@ -231,16 +234,16 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     onEditToggle={onEditTitleToggle}
                 />
 
-                {colFilters?.length > 0 && (
+                {!editingTitle && colFilters?.length > 0 && (
                     <span
                         className="fa fa-filter grid-panel__col-header-icon"
                         title={colFilters?.length + ' filter' + (colFilters?.length > 1 ? 's' : '') + ' applied'}
                     />
                 )}
-                {isSortAsc && (
+                {!editingTitle && isSortAsc && (
                     <span className="fa fa-sort-amount-asc grid-panel__col-header-icon" title="Sorted ascending" />
                 )}
-                {isSortDesc && (
+                {!editingTitle && isSortDesc && (
                     <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
                 )}
                 {!editingTitle && column.helpTipRenderer && (

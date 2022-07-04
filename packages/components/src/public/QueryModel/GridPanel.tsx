@@ -717,7 +717,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         this.saveAsSessionView({
             columns: model.displayColumns
                 .filter(column => column.index !== columnToHide.index)
-                .map(col => ({ fieldKey: col.index, title: col.caption === col.name ? '' : col.caption })),
+                .map(col => ({ fieldKey: col.index, title: col.customViewTitle })),
         });
     };
 
@@ -736,10 +736,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     if (col.index === updatedCol.index) {
                         return {
                             fieldKey: updatedCol.index,
-                            title: updatedCol.caption === updatedCol.name ? '' : updatedCol.caption,
+                            title: updatedCol.customViewTitle,
                         }
                     } else {
-                        return {fieldKey: col.index, title: col.caption === col.name ? '' : col.caption}
+                        return {fieldKey: col.index, title: col.customViewTitle}
                     }
 
                 })
@@ -979,7 +979,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 this.saveAsSessionView({
                     columns: updatedColumns.map(col => ({
                         fieldKey: col.index,
-                        title: col.caption === col.name ? '' : col.caption,
+                        title: col.customViewTitle,
                     })),
                 });
 

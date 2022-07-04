@@ -25,7 +25,7 @@ import {
     LabelHelpTip,
     QueryColumn,
     QueryModel,
-    useEnterEscape
+    useEnterEscape,
 } from '..';
 
 import { DefaultRenderer } from './renderers/DefaultRenderer';
@@ -41,13 +41,13 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
 interface EditableColumnTitleProps {
     column: QueryColumn;
     editing?: boolean;
-    onEditToggle: (editing: boolean) => void;
     onChange: (newValue: string) => void;
+    onEditToggle: (editing: boolean) => void;
 }
 
 // exported for jest tests
 export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
-    const {column, editing, onChange, onEditToggle} = props;
+    const { column, editing, onChange, onEditToggle } = props;
     const initialTitle = useMemo(() => {
         return column.caption ?? column.name;
     }, [column.caption, column.name]);
@@ -60,7 +60,7 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     }, [initialTitle]);
 
     const onTitleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-        setTitle(evt.target.value)
+        setTitle(evt.target.value);
     }, []);
 
     const onCancelEdit = useCallback(() => {
@@ -80,7 +80,7 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
 
     const onKeyDown = useEnterEscape(onEditFinish, onCancelEdit);
 
-    if (initialTitle === '&nbsp;')  {
+    if (initialTitle === '&nbsp;') {
         return <></>;
     }
 
@@ -108,15 +108,25 @@ interface HeaderCellDropdownProps {
     handleHideColumn?: (column: QueryColumn) => void;
     handleSort?: (column: QueryColumn, dir?: string) => void;
     headerClickCount?: number;
-    onColumnTitleChange?: (column: QueryColumn) => void;
     i: number;
     model?: QueryModel;
+    onColumnTitleChange?: (column: QueryColumn) => void;
     selectable?: boolean;
 }
 
 // exported for jest testing
 export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
-    const { i, column, handleSort, handleFilter, handleAddColumn, handleHideColumn, headerClickCount, model, onColumnTitleChange } = props;
+    const {
+        i,
+        column,
+        handleSort,
+        handleFilter,
+        handleAddColumn,
+        handleHideColumn,
+        headerClickCount,
+        model,
+        onColumnTitleChange,
+    } = props;
     const col: QueryColumn = column.raw;
     const [open, setOpen] = useState<boolean>();
     const [editingTitle, setEditingTitle] = useState<boolean>(false);
@@ -131,7 +141,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     useEffect(() => {
         return () => {
             setOpen(false);
-        }
+        };
     }, []);
 
     const onToggleClick = useCallback(
@@ -177,9 +187,12 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         setEditingTitle(true);
     }, []);
 
-    const onColumnTitleUpdate = useCallback((newTitle: string) => {
-        onColumnTitleChange(col.set('caption', newTitle) as QueryColumn);
-    }, [col, onColumnTitleChange]);
+    const onColumnTitleUpdate = useCallback(
+        (newTitle: string) => {
+            onColumnTitleChange(col.set('caption', newTitle) as QueryColumn);
+        },
+        [col, onColumnTitleChange]
+    );
 
     const onEditTitleToggle = useCallback((value: boolean) => {
         setEditingTitle(value);
@@ -331,7 +344,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                 <>
                                     {(allowColSort || allowColFilter) && <MenuItem divider />}
                                     <MenuItem onClick={editColumnTitle}>
-                                        <span className="fa fa-pencil grid-panel__menu-icon"/> Edit Label
+                                        <span className="fa fa-pencil grid-panel__menu-icon" /> Edit Label
                                     </MenuItem>
                                     {handleAddColumn && (
                                         <MenuItem onClick={_handleAddColumn}>

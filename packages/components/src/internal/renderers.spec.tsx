@@ -393,83 +393,71 @@ describe('HeaderCellDropdown', () => {
     });
 });
 
-describe("EditableColumnTitle", () => {
-
-    test("Not editing, with caption", () => {
+describe('EditableColumnTitle', () => {
+    test('Not editing, with caption', () => {
         const column = QueryColumn.create({
-            caption: "Test Column",
-            name: "Testing"
+            caption: 'Test Column',
+            name: 'Testing',
         });
-        const wrapper = mount(
-            <EditableColumnTitle
-                column={column}
-                onChange={jest.fn()}
-                onEditToggle={jest.fn()}
-            />
-        );
-        expect(wrapper.find("input").exists()).toBe(false);
+        const wrapper = mount(<EditableColumnTitle column={column} onChange={jest.fn()} onEditToggle={jest.fn()} />);
+        expect(wrapper.find('input').exists()).toBe(false);
         expect(wrapper.text()).toBe(column.caption);
         wrapper.unmount();
     });
 
-    test("Not editing, no caption", () => {
+    test('Not editing, no caption', () => {
         const wrapper = mount(
             <EditableColumnTitle
-                column={QueryColumn.create({name: "TestName"})}
+                column={QueryColumn.create({ name: 'TestName' })}
                 onChange={jest.fn()}
                 onEditToggle={jest.fn()}
             />
         );
-        expect(wrapper.find("input").exists()).toBe(false);
-        expect(wrapper.text()).toBe("TestName");
+        expect(wrapper.find('input').exists()).toBe(false);
+        expect(wrapper.text()).toBe('TestName');
         wrapper.unmount();
     });
 
-    test("Not editing with nbsp", () => {
+    test('Not editing with nbsp', () => {
         const wrapper = mount(
             <EditableColumnTitle
-                column={QueryColumn.create({name: "TestName", caption: '&nbsp;'})}
+                column={QueryColumn.create({ name: 'TestName', caption: '&nbsp;' })}
                 onChange={jest.fn()}
                 onEditToggle={jest.fn()}
             />
         );
-        expect(wrapper.find("input").exists()).toBe(false);
-        expect(wrapper.text()).toBe("");
+        expect(wrapper.find('input').exists()).toBe(false);
+        expect(wrapper.text()).toBe('');
         wrapper.unmount();
     });
 
-    test("Editing with nbsp", () => {
+    test('Editing with nbsp', () => {
         const wrapper = mount(
             <EditableColumnTitle
-                column={QueryColumn.create({name: "TestName", caption: '&nbsp;'})}
+                column={QueryColumn.create({ name: 'TestName', caption: '&nbsp;' })}
                 onChange={jest.fn()}
                 onEditToggle={jest.fn()}
                 editing
             />
         );
-        expect(wrapper.find("input").exists()).toBe(false);
-        expect(wrapper.text()).toBe("");
+        expect(wrapper.find('input').exists()).toBe(false);
+        expect(wrapper.text()).toBe('');
         wrapper.unmount();
     });
 
-    test("Editing", async () => {
+    test('Editing', async () => {
         const column = QueryColumn.create({
-            caption: "Test Column",
-            name: "Testing"
+            caption: 'Test Column',
+            name: 'Testing',
         });
         const changeFn = jest.fn();
         const editToggleFn = jest.fn();
         const wrapper = mount(
-            <EditableColumnTitle
-                column={column}
-                onChange={changeFn}
-                onEditToggle={editToggleFn}
-                editing
-            />
+            <EditableColumnTitle column={column} onChange={changeFn} onEditToggle={editToggleFn} editing />
         );
-        const inputField = wrapper.find("input");
+        const inputField = wrapper.find('input');
         expect(inputField.exists()).toBe(true);
-        expect(inputField.prop("defaultValue")).toBe(column.caption);
+        expect(inputField.prop('defaultValue')).toBe(column.caption);
         wrapper.unmount();
     });
 });

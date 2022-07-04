@@ -396,7 +396,7 @@ export class QueryColumn extends Record({
     }
 
     get customViewTitle(): string {
-        return this.caption === this.name ? '' : this.caption
+        return this.caption === this.name ? '' : this.caption;
     }
 }
 

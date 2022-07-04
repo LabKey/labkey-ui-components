@@ -172,3 +172,18 @@
         }
     }
 }
+
+.grid-panel__grid .table-responsive {
+    overflow-y: auto;
+
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+
+        th {
+            background-color: $white;
+            border-color: $border-color;
+        }
+    }
+}

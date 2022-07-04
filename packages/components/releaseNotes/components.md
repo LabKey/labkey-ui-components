@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 43943: App grid column header locking on scroll
+  * set fixed height for GridPanel usage of <Grid>
+  * add SCSS for `position: sticky;` on GridPanel `thead`
+
 ### version 2.192.3
 *Released*: 1 July 2022
 * Issue 45177: enable ontology filters for Sample Finder

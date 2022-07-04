@@ -1120,6 +1120,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                     calcWidths
                                     condensed
                                     emptyText={gridEmptyText}
+                                    fixedHeight
                                     gridId={id}
                                     messages={fromJS(messages)}
                                     columns={this.getGridColumns()}

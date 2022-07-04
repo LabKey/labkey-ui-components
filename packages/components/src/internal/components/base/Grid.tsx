@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, PureComponent, ReactNode, RefObject } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, RefObject, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
@@ -339,7 +339,6 @@ export interface GridProps {
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     onHeaderCellClick?: (column: GridColumn) => void;
     responsive?: boolean;
-
     /**
      * If a rowKey is specified the <Grid> will use it as a lookup key into each row. The associated value
      * will be used as the Key for the row.
@@ -349,6 +348,7 @@ export interface GridProps {
     striped?: boolean;
     tableRef?: RefObject<HTMLTableElement>;
     transpose?: boolean;
+    fixedHeight?: boolean;
 }
 
 export const Grid: FC<GridProps> = memo(props => {
@@ -367,6 +367,7 @@ export const Grid: FC<GridProps> = memo(props => {
         striped = true,
         tableRef = undefined,
         transpose = false,
+        fixedHeight = false,
         columns,
         headerCell,
         onHeaderCellClick,
@@ -378,6 +379,14 @@ export const Grid: FC<GridProps> = memo(props => {
     } = props;
     const gridData = processData(data);
     const gridColumns = columns !== undefined ? processColumns(columns) : resolveColumns(gridData);
+
+    const divRef = useRef<HTMLDivElement>();
+    useEffect(() => {
+        if (!fixedHeight) return;
+        const maxHeight = window.innerHeight * 0.7;
+        divRef.current.style.height =
+            divRef.current.lastElementChild?.clientHeight < maxHeight ? 'unset' : maxHeight + 'px';
+    }, [fixedHeight, gridData.size]);
 
     const headerProps: GridHeaderProps = {
         calcWidths,
@@ -414,7 +423,7 @@ export const Grid: FC<GridProps> = memo(props => {
     });
 
     return (
-        <div className={wrapperClasses} data-gridid={gridId}>
+        <div className={wrapperClasses} data-gridid={gridId} ref={divRef}>
             <GridMessages messages={messages} />
 
             <table className={tableClasses} ref={tableRef}>

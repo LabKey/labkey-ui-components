@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.193.0
+*Released*: 4 July 2022
 * Add ability to edit the column title (caption) from the column header
 
 ### version 2.192.3

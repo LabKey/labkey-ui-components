@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.193.0
+*Released*: 4 July 2022
+* Add ability to edit the column title (caption) from the column header
+
+### version 2.192.3
+*Released*: 1 July 2022
+* Issue 45177: enable ontology filters for Sample Finder
+
 ### version 2.192.2
 *Released*: 30 June 2022
 * Issue 45725: MegaMenu truncate and text wrap consistency

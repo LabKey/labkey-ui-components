@@ -24,11 +24,10 @@ interface Props {
     field: QueryColumn;
     fieldFilters: Filter.IFilter[];
     onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index: number) => void;
-    filterTypesToExclude?: string[];
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { field, fieldFilters, onFieldFilterUpdate, filterTypesToExclude } = props;
+    const { field, fieldFilters, onFieldFilterUpdate } = props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
     const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);
@@ -36,7 +35,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const [expandedOntologyKey, setExpandedOntologyKey] = useState<string>(undefined);
 
     useEffect(() => {
-        const filterOptions = getFilterOptionsForType(field, filterTypesToExclude);
+        const filterOptions = getFilterOptionsForType(field);
         setFieldFilterOptions(filterOptions);
         setActiveFilters(getFilterSelections(fieldFilters, filterOptions));
     }, [field]); // leave fieldFilters out of deps list, fieldFilters is used to init once

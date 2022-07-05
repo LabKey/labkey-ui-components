@@ -364,9 +364,10 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 
 interface State {
     actionValues: ActionValue[];
+    disableColumnDrag: boolean;
     errorMsg: React.ReactNode;
     headerClickCount: { [key: string]: number };
-    isViewSaved?: boolean;
+    isViewSaved: boolean;
     selectedColumn: QueryColumn;
     showCustomizeViewModal: boolean;
     showFilterModalFieldKey: string;
@@ -413,6 +414,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         this.state = {
             actionValues: [],
+            disableColumnDrag: false,
             showFilterModalFieldKey: undefined,
             showSaveViewModal: false,
             showCustomizeViewModal: false,
@@ -729,6 +731,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
     };
 
+    onColumnTitleEdit = (): void => {
+        this.setState(state => ({ disableColumnDrag: !state.disableColumnDrag }));
+    };
+
     updateColumnTitle = (updatedCol: QueryColumn): void => {
         const { model } = this.props;
         this.saveAsSessionView({
@@ -743,6 +749,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 }
             }),
         });
+        this.setState({ disableColumnDrag: false });
     };
 
     saveAsSessionView = (updates: Record<string, any>): void => {
@@ -1007,6 +1014,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             allowFiltering ? this.filterColumn : undefined,
             allowViewCustomization ? this.addColumn : undefined,
             allowViewCustomization && nonSelectableColumnCount > 1 ? this.hideColumn : undefined,
+            allowViewCustomization ? this.onColumnTitleEdit : undefined,
             allowViewCustomization ? this.updateColumnTitle : undefined,
             model,
             headerClickCount[column.index]
@@ -1046,6 +1054,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             actionValues,
             errorMsg,
             isViewSaved,
+            disableColumnDrag,
         } = this.state;
         const {
             hasData,
@@ -1141,7 +1150,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                     headerCell={this.headerCell}
                                     onHeaderCellClick={this.onHeaderCellClick}
                                     onColumnDrag={this.onColumnDrag}
-                                    onColumnDrop={allowViewCustomization ? this.onColumnDrop : undefined}
+                                    onColumnDrop={
+                                        allowViewCustomization && !disableColumnDrag ? this.onColumnDrop : undefined
+                                    }
                                     showHeader={showHeader}
                                     calcWidths
                                     condensed

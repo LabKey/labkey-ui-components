@@ -1013,6 +1013,7 @@ export function getContainerFilterForLookups(): Query.ContainerFilter {
 export function selectDistinctRows(options: Query.SelectDistinctOptions): Promise<Query.SelectDistinctResponse> {
     return new Promise((resolve, reject) => {
         Query.selectDistinctRows({
+            method: 'POST',
             ...options,
             containerFilter: options.containerFilter ?? getContainerFilter(options.containerPath),
             success: response => {

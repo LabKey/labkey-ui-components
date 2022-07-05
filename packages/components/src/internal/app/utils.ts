@@ -378,7 +378,7 @@ function getPicklistsSectionConfig(appBase: string): MenuSectionConfig {
     return new MenuSectionConfig({
         headerURL: appBase + PICKLIST_HOME_HREF.toHref(),
         iconURL: imageURL('_images', 'picklist.svg'),
-    })
+    });
 }
 
 function getNotebooksSectionConfig(appBase: string): MenuSectionConfig {
@@ -418,12 +418,11 @@ const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
 function getBioWorkflowNotebookMediaConfigs(appBase: string, user: User) {
     let configs = Map({
         [WORKFLOW_KEY]: getWorkflowSectionConfig(appBase),
-
     });
     if (userCanReadMedia(user)) {
         configs = configs.set(MEDIA_KEY, getMediaSectionConfig(appBase));
     }
-    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase),)
+    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase));
     if (userCanReadNotebooks(user)) {
         configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
     }
@@ -475,7 +474,7 @@ export function getMenuSectionConfigs(
 
         let configs = Map({
             [WORKFLOW_KEY]: workflowConfig,
-            [PICKLIST_KEY]: getPicklistsSectionConfig(appBase)
+            [PICKLIST_KEY]: getPicklistsSectionConfig(appBase),
         });
 
         if (userCanReadNotebooks(user) && isELNEnabledInLKSM(moduleContext)) {

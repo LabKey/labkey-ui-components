@@ -197,10 +197,13 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         [col, onColumnTitleChange]
     );
 
-    const onEditTitleToggle = useCallback((value: boolean) => {
-        setEditingTitle(value);
-        onColumnTitleEdit?.(col);
-    }, [col, onColumnTitleEdit]);
+    const onEditTitleToggle = useCallback(
+        (value: boolean) => {
+            setEditingTitle(value);
+            onColumnTitleEdit?.(col);
+        },
+        [col, onColumnTitleEdit]
+    );
 
     // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
     useEffect(() => {

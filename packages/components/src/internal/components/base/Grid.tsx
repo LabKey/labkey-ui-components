@@ -329,6 +329,7 @@ export interface GridProps {
     condensed?: boolean;
     data?: GridData;
     emptyText?: string;
+    fixedHeight?: boolean;
     gridId?: string;
     headerCell?: any;
     highlightRowIndexes?: List<number>;
@@ -348,7 +349,6 @@ export interface GridProps {
     striped?: boolean;
     tableRef?: RefObject<HTMLTableElement>;
     transpose?: boolean;
-    fixedHeight?: boolean;
 }
 
 export const Grid: FC<GridProps> = memo(props => {

@@ -31,6 +31,8 @@ import { getGridView, revertViewEdit, saveGridView, saveAsSessionView, saveSessi
 
 import { hasServerContext } from '../../internal/components/base/ServerContext';
 
+import { isGridLockLeftColumnEnabled } from '../../internal/app/utils';
+
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
 import { SearchAction } from './grid/actions/Search';
@@ -55,7 +57,6 @@ import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
 import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
-import { isGridLockLeftColumnEnabled } from '../../internal/app/utils';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;

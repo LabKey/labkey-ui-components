@@ -21,6 +21,7 @@ import {
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
+    EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN,
     EXPERIMENTAL_SAMPLE_FINDER,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
@@ -227,6 +228,13 @@ export function isSampleAliquotSelectorEnabled(moduleContext?: any): boolean {
         (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[
             EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR
         ] === true
+    );
+}
+
+export function isGridLockLeftColumnEnabled(moduleContext?: any): boolean {
+    return (
+        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN] ===
+        true
     );
 }
 

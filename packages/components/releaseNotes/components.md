@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 43943: App grid column header locking on scroll
   * set fixed height for GridPanel usage of <Grid>
   * add SCSS for `position: sticky;` on GridPanel `thead`
+  * experimental feature: lock left column in app grid on horizontal scroll
   * note: not currently applied to the editable grid case
 
 ### version 2.192.3

@@ -55,6 +55,7 @@ import { FilterStatus } from './FilterStatus';
 import { SaveViewModal } from './SaveViewModal';
 import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
+import { isGridLockLeftColumnEnabled } from '../../internal/app/utils';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -1046,6 +1047,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         let loadingMessage;
         const gridIsLoading = !hasGridError && isLoading;
         const selectionsAreLoading = !hasError && allowSelections && isLoadingSelections;
+        const lockLeftCol = isGridLockLeftColumnEnabled();
 
         if (gridIsLoading) {
             loadingMessage = 'Loading data...';
@@ -1108,7 +1110,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             </div>
                         )}
 
-                        <div className="grid-panel__grid">
+                        <div
+                            className={classNames('grid-panel__grid', {
+                                'grid-panel__lock-left': lockLeftCol,
+                                'grid-panel__lock-left-with-checkboxes': lockLeftCol && allowSelections,
+                                'grid-panel__lock-left-without-checkboxes': lockLeftCol && !allowSelections,
+                            })}
+                        >
                             {hasError && <Alert>{errorMsg || queryInfoError || rowsError || selectionsError}</Alert>}
 
                             {!hasGridError && hasData && (

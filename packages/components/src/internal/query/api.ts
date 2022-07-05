@@ -213,12 +213,7 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
             allMeta = allMeta.toJS();
         }
 
-        let schemaMeta = metadata.getIn([
-            'schema',
-            schemaQuery.schemaName.toLowerCase(),
-            'columnDefaults',
-            lcFieldKey,
-        ]);
+        let schemaMeta = metadata.getIn(['schema', schemaQuery.schemaName.toLowerCase(), 'columnDefaults', lcFieldKey]);
 
         if (schemaMeta) {
             schemaMeta = schemaMeta.toJS();

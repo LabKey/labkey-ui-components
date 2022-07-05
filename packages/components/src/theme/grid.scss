@@ -65,6 +65,10 @@
   position: relative;
   padding: 0 9px;
   font-weight: bold;
+
+    input {
+        width: 100%
+    }
 }
 
 .grid-header-draggable {
@@ -447,6 +451,17 @@ $table-cell-selection-bg-color: #EDF3FF;
 .view-header {
     margin-bottom: 15px;
     padding: 10px 15px;
+}
+
+.view-menu .dropdown-menu {
+    max-width: 600px;
+    width: max-content;
+
+    li {
+        a {
+            white-space: normal;
+        }
+    }
 }
 
 .view-edit-alert {

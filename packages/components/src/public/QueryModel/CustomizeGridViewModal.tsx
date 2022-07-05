@@ -317,7 +317,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
             const viewInfo = model.currentView.mutate({
                 columns: columnsInView.map(col => ({
                     fieldKey: col.index,
-                    title: col.caption === col.name ? '' : col.caption,
+                    title: col.customViewTitle,
                 })),
             });
             await saveAsSessionView(schemaQuery, model.containerPath, viewInfo);

@@ -14,7 +14,7 @@ import { QuerySort } from '../public/QuerySort';
 
 import { QueryInfo } from '../public/QueryInfo';
 
-import { HeaderCellDropdown, isFilterColumnNameMatch } from './renderers';
+import { EditableColumnTitle, HeaderCellDropdown, isFilterColumnNameMatch } from './renderers';
 import { GridColumn } from './components/base/models/GridColumn';
 import { LabelHelpTip } from './components/base/LabelHelpTip';
 import { CustomToggle } from './components/base/CustomToggle';
@@ -143,7 +143,7 @@ describe('HeaderCellDropdown', () => {
                 handleHideColumn={jest.fn}
             />
         );
-        validate(wrapper, 0, 2);
+        validate(wrapper, 0, 3);
         wrapper.unmount();
     });
 
@@ -162,10 +162,32 @@ describe('HeaderCellDropdown', () => {
                 handleHideColumn={jest.fn}
             />
         );
-        validate(wrapper, 0, 2);
+        validate(wrapper, 0, 3);
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
         expect(wrapper.find(DisableableMenuItem).text()).toContain('Hide Column');
         expect(wrapper.find(DisableableMenuItem).prop('operationPermitted')).toBe(true);
+        wrapper.unmount();
+    });
+
+    test('column not sortable or filterable, can add but not hide', () => {
+        const wrapper = mount(
+            <HeaderCellDropdown
+                {...DEFAULT_PROPS}
+                column={
+                    new GridColumn({
+                        index: 'column',
+                        title: 'Column',
+                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: false }),
+                    })
+                }
+                handleAddColumn={jest.fn}
+                handleHideColumn={undefined}
+            />
+        );
+        validate(wrapper, 0, 3);
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
+        expect(wrapper.find(DisableableMenuItem).text()).toContain('Hide Column');
+        expect(wrapper.find(DisableableMenuItem).prop('operationPermitted')).toBe(undefined);
         wrapper.unmount();
     });
 
@@ -200,7 +222,7 @@ describe('HeaderCellDropdown', () => {
                 handleHideColumn={jest.fn}
             />
         );
-        validate(wrapper, 0, 5);
+        validate(wrapper, 0, 6);
         wrapper.unmount();
     });
 
@@ -235,7 +257,7 @@ describe('HeaderCellDropdown', () => {
                 handleHideColumn={jest.fn}
             />
         );
-        validate(wrapper, 0, 4);
+        validate(wrapper, 0, 5);
         wrapper.unmount();
     });
 
@@ -389,6 +411,75 @@ describe('HeaderCellDropdown', () => {
         const removeFilterItem = wrapper.find(MenuItem).at(1);
         expect(removeFilterItem.text()).toBe('  Remove filters');
         expect(removeFilterItem.prop('disabled')).toBe(false);
+        wrapper.unmount();
+    });
+});
+
+describe('EditableColumnTitle', () => {
+    test('Not editing, with caption', () => {
+        const column = QueryColumn.create({
+            caption: 'Test Column',
+            name: 'Testing',
+        });
+        const wrapper = mount(<EditableColumnTitle column={column} onChange={jest.fn()} onEditToggle={jest.fn()} />);
+        expect(wrapper.find('input').exists()).toBe(false);
+        expect(wrapper.text()).toBe(column.caption);
+        wrapper.unmount();
+    });
+
+    test('Not editing, no caption', () => {
+        const wrapper = mount(
+            <EditableColumnTitle
+                column={QueryColumn.create({ name: 'TestName' })}
+                onChange={jest.fn()}
+                onEditToggle={jest.fn()}
+            />
+        );
+        expect(wrapper.find('input').exists()).toBe(false);
+        expect(wrapper.text()).toBe('TestName');
+        wrapper.unmount();
+    });
+
+    test('Not editing with nbsp', () => {
+        const wrapper = mount(
+            <EditableColumnTitle
+                column={QueryColumn.create({ name: 'TestName', caption: '&nbsp;' })}
+                onChange={jest.fn()}
+                onEditToggle={jest.fn()}
+            />
+        );
+        expect(wrapper.find('input').exists()).toBe(false);
+        expect(wrapper.text()).toBe('');
+        wrapper.unmount();
+    });
+
+    test('Editing with nbsp', () => {
+        const wrapper = mount(
+            <EditableColumnTitle
+                column={QueryColumn.create({ name: 'TestName', caption: '&nbsp;' })}
+                onChange={jest.fn()}
+                onEditToggle={jest.fn()}
+                editing
+            />
+        );
+        expect(wrapper.find('input').exists()).toBe(false);
+        expect(wrapper.text()).toBe('');
+        wrapper.unmount();
+    });
+
+    test('Editing', async () => {
+        const column = QueryColumn.create({
+            caption: 'Test Column',
+            name: 'Testing',
+        });
+        const changeFn = jest.fn();
+        const editToggleFn = jest.fn();
+        const wrapper = mount(
+            <EditableColumnTitle column={column} onChange={changeFn} onEditToggle={editToggleFn} editing />
+        );
+        const inputField = wrapper.find('input');
+        expect(inputField.exists()).toBe(true);
+        expect(inputField.prop('defaultValue')).toBe(column.caption);
         wrapper.unmount();
     });
 });

@@ -394,6 +394,10 @@ export class QueryColumn extends Record({
     getDisplayFieldJsonType(): string {
         return (this.displayFieldJsonType ? this.displayFieldJsonType : this.jsonType) ?? 'string';
     }
+
+    get customViewTitle(): string {
+        return this.caption === this.name ? '' : this.caption;
+    }
 }
 
 export function insertColumnFilter(col: QueryColumn, includeFileInputs = true): boolean {

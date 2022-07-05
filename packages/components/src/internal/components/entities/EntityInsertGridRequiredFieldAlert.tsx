@@ -29,17 +29,17 @@ export const EntityInsertGridRequiredFieldAlert: FC<Props> = memo(props => {
         return allRequiredCols
             .filter(fieldKey => insertRequiredCols.indexOf(fieldKey) === -1)
             .map(fieldKey => queryInfo.getColumn(fieldKey).caption);
-    }, [queryInfo]);
+    }, [queryInfo, allRequiredCols, insertRequiredCols]);
+
+    if (missingReqColLabels.length === 0) {
+        return null;
+    }
 
     return (
-        <>
-            {missingReqColLabels.length > 0 && (
-                <Alert bsStyle="warning">
-                    <b>Warning: </b> the selected {type} has required fields that are not included in the grid below:{' '}
-                    {missingReqColLabels.join(', ')}.
-                </Alert>
-            )}
-        </>
+        <Alert bsStyle="warning">
+            <b>Warning: </b> the selected {type} has required fields that are not included in the grid below:{' '}
+            {missingReqColLabels.join(', ')}.
+        </Alert>
     );
 });
 

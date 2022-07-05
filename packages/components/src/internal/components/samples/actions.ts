@@ -48,6 +48,7 @@ import {
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SchemaQuery,
     SCHEMAS,
+    selectDistinctRows,
     selectRowsDeprecated,
     SHARED_CONTAINER_PATH,
     UNIQUE_ID_FIND_FIELD,
@@ -710,23 +711,17 @@ export function getDeleteSharedSampleTypeUrl(typeId: number): string {
     }).toString();
 }
 
-function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): Promise<string[]> {
-    return new Promise((resolve, reject) => {
-        Query.selectDistinctRows({
-            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-            queryName,
-            column: 'Ordinal',
-            sort: 'Ordinal',
-            success: result => {
-                // find the gaps in the ordinals values as these correspond to ids we could not find
-                resolve(findMissingValues(result.values, orderedIds));
-            },
-            failure: reason => {
-                console.error('There was a problem determining the missing Ids', reason);
-                reject(reason);
-            },
-        });
+async function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): Promise<string[]> {
+    // Not try/caught as caller is expected to handle errors
+    const result = await selectDistinctRows({
+        column: 'Ordinal',
+        queryName,
+        schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+        sort: 'Ordinal',
     });
+
+    // find the gaps in the ordinals values as these correspond to ids we could not find
+    return findMissingValues(result.values, orderedIds);
 }
 
 export function getFindSamplesByIdData(

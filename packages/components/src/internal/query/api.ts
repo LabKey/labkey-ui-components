@@ -213,12 +213,7 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
             allMeta = allMeta.toJS();
         }
 
-        let schemaMeta = metadata.getIn([
-            'schema',
-            schemaQuery.schemaName.toLowerCase(),
-            'columnDefaults',
-            lcFieldKey,
-        ]);
+        let schemaMeta = metadata.getIn(['schema', schemaQuery.schemaName.toLowerCase(), 'columnDefaults', lcFieldKey]);
 
         if (schemaMeta) {
             schemaMeta = schemaMeta.toJS();
@@ -1010,24 +1005,14 @@ export function getContainerFilterForLookups(): Query.ContainerFilter {
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }
 
-export interface SelectDistinctResponse {
-    queryName: string;
-    schemaName: string;
-    values: any[];
-}
-
-export function selectDistinctRows(
-    selectDistinctOptions: Query.SelectDistinctOptions
-): Promise<SelectDistinctResponse> {
+export function selectDistinctRows(options: Query.SelectDistinctOptions): Promise<Query.SelectDistinctResponse> {
     return new Promise((resolve, reject) => {
         Query.selectDistinctRows({
-            ...selectDistinctOptions,
+            method: 'POST',
+            ...options,
+            containerFilter: options.containerFilter ?? getContainerFilter(options.containerPath),
             success: response => {
-                resolve({
-                    values: response['values'],
-                    schemaName: response['schemaName'],
-                    queryName: response['queryName'],
-                });
+                resolve(response);
             },
             failure: error => {
                 console.error(error);

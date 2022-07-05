@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.194.2
+*Released*: 5 July 2022
+* Sort folders by their `title` property.
+* Apply contextual container filter to `selectDistinctRows` requests.
+* Update `getSamplesIdsNotFound` to use the scoped version of `selectDistinctRows`.
+* Export `selectDistinctRows`.
+
 ### version 2.194.1
 *Released*: 5 July 2022
 * Fixes for EntityInsertPanel and EntityInsertGridRequiredFieldAlert to support Biologics registry

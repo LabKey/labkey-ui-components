@@ -50,6 +50,7 @@ interface OwnProps {
     navigate: (url: string | AppURL) => any;
     params?: any;
     samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
+    onDataChange?: (dirty: boolean) => void;
     user: User;
 }
 
@@ -76,6 +77,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         advancedExportOptions,
         picklist,
         loadPicklist,
+        onDataChange,
         AdditionalGridButtons,
         samplesEditableGridProps,
     } = props;
@@ -214,6 +216,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                             user={user}
                             gridButtons={PicklistGridButtons}
                             gridButtonProps={gridButtonProps}
+                            onDataChange={onDataChange}
                             getSampleAuditBehaviorType={getSampleAuditBehaviorType}
                             afterSampleActionComplete={afterSampleActionComplete}
                             samplesEditableGridProps={samplesEditableGridProps}

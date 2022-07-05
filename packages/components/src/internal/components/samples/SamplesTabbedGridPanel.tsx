@@ -46,6 +46,7 @@ interface Props extends InjectedQueryModels {
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
     modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
+    onDataChange?: (dirty: boolean) => void;
     onPrintLabel?: () => void;
     sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
@@ -73,6 +74,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         gridButtons,
         gridButtonProps,
         getSampleAuditBehaviorType,
+        onDataChange,
         tabbedGridPanelProps,
         withTitle,
     } = props;
@@ -176,6 +178,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const toggleEditWithGridUpdate = useCallback(() => {
         if (isEditing) {
             resetState();
+            onDataChange(false);
         } else if (hasValidMaxSelection) {
             dismissNotifications();
             setIsEditing(true);
@@ -279,6 +282,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     editableGridUpdateData={editableGridUpdateData}
                     onGridEditCancel={resetState}
                     onGridEditComplete={onGridEditComplete}
+                    onDataChange={onDataChange}
                     sampleSet={activeModel.schemaQuery.queryName}
                     selection={selection}
                     selectionData={selectionData}

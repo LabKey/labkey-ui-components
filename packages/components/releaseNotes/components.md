@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 45479: Add onDataChange callback in more editable grids
+
 ### version 2.194.0
 *Released*: 5 July 2022
 * Issue 43943: App grid column header locking on scroll

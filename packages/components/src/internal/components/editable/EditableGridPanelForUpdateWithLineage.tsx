@@ -53,6 +53,7 @@ export interface EditableGridPanelForUpdateWithLineageProps
     loaders: EditableGridLoaderFromSelection[];
     onCancel: () => void;
     onComplete: () => void;
+    onDataChange?: (dirty: boolean) => void;
     parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     pluralNoun?: string;
@@ -73,6 +74,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         loaders,
         onCancel,
         onComplete,
+        onDataChange,
         parentDataTypes,
         parentTypeOptions,
         pluralNoun = DEFAULT_PLURAL_NOUN,
@@ -156,6 +158,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                     index ?? 0
                 )
             );
+            onDataChange?.(true);
         },
         []
     );

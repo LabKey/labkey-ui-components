@@ -449,6 +449,17 @@ $table-cell-selection-bg-color: #EDF3FF;
     padding: 10px 15px;
 }
 
+.view-menu .dropdown-menu {
+    max-width: 600px;
+    width: max-content;
+
+    li {
+        a {
+            white-space: normal;
+        }
+    }
+}
+
 .view-edit-alert {
     padding: 4px 10px;
     margin-right: 10px;

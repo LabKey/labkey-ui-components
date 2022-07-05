@@ -13,12 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Map, OrderedMap } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
-import { DisableableMenuItem, GRID_CHECKBOX_OPTIONS, GridColumn, LabelHelpTip, QueryColumn, QueryModel } from '..';
+import {
+    DisableableMenuItem,
+    GRID_CHECKBOX_OPTIONS,
+    GridColumn,
+    LabelHelpTip,
+    QueryColumn,
+    QueryModel,
+    useEnterEscape,
+} from '..';
 
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
@@ -30,6 +38,68 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
 }
 
+interface EditableColumnTitleProps {
+    column: QueryColumn;
+    editing?: boolean;
+    onChange: (newValue: string) => void;
+    onEditToggle: (editing: boolean) => void;
+}
+
+// exported for jest tests
+export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
+    const { column, editing, onChange, onEditToggle } = props;
+    const initialTitle = useMemo(() => {
+        return column.caption ?? column.name;
+    }, [column.caption, column.name]);
+    const [title, setTitle] = useState<string>(initialTitle);
+
+    const titleInput: React.RefObject<HTMLInputElement> = React.createRef();
+
+    useEffect(() => {
+        setTitle(initialTitle);
+    }, [initialTitle]);
+
+    const onTitleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
+        setTitle(evt.target.value);
+    }, []);
+
+    const onCancelEdit = useCallback(() => {
+        onEditToggle(false);
+        setTitle(initialTitle);
+    }, [initialTitle]);
+
+    const onEditFinish = useCallback(() => {
+        onEditToggle(false);
+        const trimmedTitle = title?.trim();
+        if (!trimmedTitle) {
+            setTitle(initialTitle);
+        } else if (trimmedTitle !== initialTitle) {
+            onChange(trimmedTitle);
+        }
+    }, [initialTitle, onChange, onEditToggle, title]);
+
+    const onKeyDown = useEnterEscape(onEditFinish, onCancelEdit);
+
+    if (initialTitle === '&nbsp;') {
+        return <></>;
+    }
+
+    if (editing) {
+        return (
+            <input
+                autoFocus
+                ref={titleInput}
+                defaultValue={title}
+                onKeyDown={onKeyDown}
+                onChange={onTitleChange}
+                onBlur={onEditFinish}
+            />
+        );
+    }
+
+    return <>{initialTitle}</>;
+});
+
 interface HeaderCellDropdownProps {
     column: GridColumn;
     columnCount?: number;
@@ -40,14 +110,26 @@ interface HeaderCellDropdownProps {
     headerClickCount?: number;
     i: number;
     model?: QueryModel;
+    onColumnTitleChange?: (column: QueryColumn) => void;
     selectable?: boolean;
 }
 
 // exported for jest testing
 export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
-    const { i, column, handleSort, handleFilter, handleAddColumn, handleHideColumn, headerClickCount, model } = props;
+    const {
+        i,
+        column,
+        handleSort,
+        handleFilter,
+        handleAddColumn,
+        handleHideColumn,
+        headerClickCount,
+        model,
+        onColumnTitleChange,
+    } = props;
     const col: QueryColumn = column.raw;
     const [open, setOpen] = useState<boolean>();
+    const [editingTitle, setEditingTitle] = useState<boolean>(false);
     const wrapperEl = useRef<HTMLSpanElement>();
     const view = useMemo(() => model?.queryInfo?.getView(model?.viewName, true), [model?.queryInfo, model?.viewName]);
 
@@ -56,9 +138,15 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const allowColumnViewChange = (handleHideColumn || handleAddColumn) && !!model;
     const includeDropdown = allowColSort || allowColFilter || allowColumnViewChange;
 
+    useEffect(() => {
+        return () => {
+            setOpen(false);
+        };
+    }, []);
+
     const onToggleClick = useCallback(
         (shouldOpen: boolean, evt?: any) => {
-            if (!includeDropdown) return;
+            if (!includeDropdown || editingTitle) return;
 
             // when menu is closed skip any clicks on icons by just checking for span el type
             if (shouldOpen && evt && evt.target.tagName.toLowerCase() !== 'span') return;
@@ -93,6 +181,22 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         setOpen(false);
         handleAddColumn(col);
     }, [col, handleAddColumn]);
+
+    const editColumnTitle = useCallback(() => {
+        setOpen(false);
+        setEditingTitle(true);
+    }, []);
+
+    const onColumnTitleUpdate = useCallback(
+        (newTitle: string) => {
+            onColumnTitleChange(col.set('caption', newTitle) as QueryColumn);
+        },
+        [col, onColumnTitleChange]
+    );
+
+    const onEditTitleToggle = useCallback((value: boolean) => {
+        setEditingTitle(value);
+    }, []);
 
     // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
     useEffect(() => {
@@ -136,26 +240,32 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     return (
         <>
             <span onClick={evt => onToggleClick(!open, evt)}>
-                {col.caption === '&nbsp;' ? '' : col.caption}
-                {colFilters?.length > 0 && (
+                <EditableColumnTitle
+                    column={col}
+                    onChange={onColumnTitleUpdate}
+                    editing={editingTitle}
+                    onEditToggle={onEditTitleToggle}
+                />
+
+                {!editingTitle && colFilters?.length > 0 && (
                     <span
                         className="fa fa-filter grid-panel__col-header-icon"
                         title={colFilters?.length + ' filter' + (colFilters?.length > 1 ? 's' : '') + ' applied'}
                     />
                 )}
-                {isSortAsc && (
+                {!editingTitle && isSortAsc && (
                     <span className="fa fa-sort-amount-asc grid-panel__col-header-icon" title="Sorted ascending" />
                 )}
-                {isSortDesc && (
+                {!editingTitle && isSortDesc && (
                     <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
                 )}
-                {column.helpTipRenderer && (
+                {!editingTitle && column.helpTipRenderer && (
                     <LabelHelpTip id={column.index} title={column.title} popoverClassName="label-help-arrow-top">
                         <HelpTipRenderer type={column.helpTipRenderer} />
                     </LabelHelpTip>
                 )}
             </span>
-            {includeDropdown && (
+            {includeDropdown && !editingTitle && (
                 <span className="pull-right" ref={wrapperEl}>
                     <Dropdown id={`grid-menu-${i}`} onToggle={onToggleClick} open={open}>
                         <CustomToggle bsRole="toggle">
@@ -233,6 +343,9 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                             {showGridCustomization && (
                                 <>
                                     {(allowColSort || allowColFilter) && <MenuItem divider />}
+                                    <MenuItem onClick={editColumnTitle}>
+                                        <span className="fa fa-pencil grid-panel__menu-icon" /> Edit Label
+                                    </MenuItem>
                                     {handleAddColumn && (
                                         <MenuItem onClick={_handleAddColumn}>
                                             <span className="fa fa-plus grid-panel__menu-icon" /> Insert Column
@@ -265,6 +378,7 @@ export function headerCell(
     handleFilter?: (column: QueryColumn, remove?: boolean) => void,
     handleAddColumn?: (column: QueryColumn) => void,
     handleHideColumn?: (column: QueryColumn) => void,
+    onColumnTitleChange?: (column: QueryColumn) => void,
     model?: QueryModel,
     headerClickCount?: number
 ): ReactNode {
@@ -280,6 +394,7 @@ export function headerCell(
             handleHideColumn={handleHideColumn}
             headerClickCount={headerClickCount}
             model={model}
+            onColumnTitleChange={onColumnTitleChange}
         />
     );
 }

@@ -31,6 +31,8 @@ import { getGridView, revertViewEdit, saveGridView, saveAsSessionView, saveSessi
 
 import { hasServerContext } from '../../internal/components/base/ServerContext';
 
+import { isGridLockLeftColumnEnabled } from '../../internal/app/utils';
+
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
 import { SearchAction } from './grid/actions/Search';
@@ -363,9 +365,10 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
 
 interface State {
     actionValues: ActionValue[];
+    disableColumnDrag: boolean;
     errorMsg: React.ReactNode;
     headerClickCount: { [key: string]: number };
-    isViewSaved?: boolean;
+    isViewSaved: boolean;
     selectedColumn: QueryColumn;
     showCustomizeViewModal: boolean;
     showFilterModalFieldKey: string;
@@ -412,6 +415,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         this.state = {
             actionValues: [],
+            disableColumnDrag: false,
             showFilterModalFieldKey: undefined,
             showSaveViewModal: false,
             showCustomizeViewModal: false,
@@ -728,6 +732,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
     };
 
+    onColumnTitleEdit = (): void => {
+        this.setState(state => ({ disableColumnDrag: !state.disableColumnDrag }));
+    };
+
     updateColumnTitle = (updatedCol: QueryColumn): void => {
         const { model } = this.props;
         this.saveAsSessionView({
@@ -742,6 +750,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 }
             }),
         });
+        this.setState({ disableColumnDrag: false });
     };
 
     saveAsSessionView = (updates: Record<string, any>): void => {
@@ -991,6 +1000,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { allowSelections, allowSorting, allowFiltering, allowViewCustomization, model } = this.props;
         const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
         const disabled = isLoadingSelections || isLoading || (hasRows && rowCount === 0);
+        const nonSelectableColumnCount = allowSelections ? columnCount - 1 : columnCount;
 
         if (column.index === GRID_SELECTION_INDEX) {
             return headerSelectionCell(this.selectPage, model.selectedState, disabled, 'grid-panel__page-checkbox');
@@ -1004,7 +1014,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             allowSorting ? this.sortColumn : undefined,
             allowFiltering ? this.filterColumn : undefined,
             allowViewCustomization ? this.addColumn : undefined,
-            allowViewCustomization ? this.hideColumn : undefined,
+            allowViewCustomization && nonSelectableColumnCount > 1 ? this.hideColumn : undefined,
+            allowViewCustomization ? this.onColumnTitleEdit : undefined,
             allowViewCustomization ? this.updateColumnTitle : undefined,
             model,
             headerClickCount[column.index]
@@ -1044,6 +1055,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             actionValues,
             errorMsg,
             isViewSaved,
+            disableColumnDrag,
         } = this.state;
         const {
             hasData,
@@ -1062,6 +1074,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         let loadingMessage;
         const gridIsLoading = !hasGridError && isLoading;
         const selectionsAreLoading = !hasError && allowSelections && isLoadingSelections;
+        const lockLeftCol = isGridLockLeftColumnEnabled();
 
         if (gridIsLoading) {
             loadingMessage = 'Loading data...';
@@ -1124,7 +1137,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             </div>
                         )}
 
-                        <div className="grid-panel__grid">
+                        <div
+                            className={classNames('grid-panel__grid', {
+                                'grid-panel__lock-left': lockLeftCol,
+                                'grid-panel__lock-left-with-checkboxes': lockLeftCol && allowSelections,
+                                'grid-panel__lock-left-without-checkboxes': lockLeftCol && !allowSelections,
+                            })}
+                        >
                             {hasError && <Alert>{errorMsg || queryInfoError || rowsError || selectionsError}</Alert>}
 
                             {!hasGridError && hasData && (
@@ -1132,11 +1151,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                     headerCell={this.headerCell}
                                     onHeaderCellClick={this.onHeaderCellClick}
                                     onColumnDrag={this.onColumnDrag}
-                                    onColumnDrop={allowViewCustomization ? this.onColumnDrop : undefined}
+                                    onColumnDrop={
+                                        allowViewCustomization && !disableColumnDrag ? this.onColumnDrop : undefined
+                                    }
                                     showHeader={showHeader}
                                     calcWidths
                                     condensed
                                     emptyText={gridEmptyText}
+                                    fixedHeight
                                     gridId={id}
                                     messages={fromJS(messages)}
                                     columns={this.getGridColumns()}

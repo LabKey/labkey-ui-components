@@ -111,6 +111,7 @@ interface HeaderCellDropdownProps {
     i: number;
     model?: QueryModel;
     onColumnTitleChange?: (column: QueryColumn) => void;
+    onColumnTitleEdit?: (column: QueryColumn) => void;
     selectable?: boolean;
 }
 
@@ -126,6 +127,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         headerClickCount,
         model,
         onColumnTitleChange,
+        onColumnTitleEdit,
     } = props;
     const col: QueryColumn = column.raw;
     const [open, setOpen] = useState<boolean>();
@@ -185,7 +187,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const editColumnTitle = useCallback(() => {
         setOpen(false);
         setEditingTitle(true);
-    }, []);
+        onColumnTitleEdit?.(col);
+    }, [col, onColumnTitleEdit]);
 
     const onColumnTitleUpdate = useCallback(
         (newTitle: string) => {
@@ -194,9 +197,13 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
         [col, onColumnTitleChange]
     );
 
-    const onEditTitleToggle = useCallback((value: boolean) => {
-        setEditingTitle(value);
-    }, []);
+    const onEditTitleToggle = useCallback(
+        (value: boolean) => {
+            setEditingTitle(value);
+            onColumnTitleEdit?.(col);
+        },
+        [col, onColumnTitleEdit]
+    );
 
     // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
     useEffect(() => {
@@ -352,7 +359,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                         </MenuItem>
                                     )}
                                     <DisableableMenuItem
-                                        operationPermitted={allowColumnViewChange}
+                                        operationPermitted={handleHideColumn && !!model}
                                         onClick={() => _handleHideColumn()}
                                         disabledMessage={APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
                                     >
@@ -378,6 +385,7 @@ export function headerCell(
     handleFilter?: (column: QueryColumn, remove?: boolean) => void,
     handleAddColumn?: (column: QueryColumn) => void,
     handleHideColumn?: (column: QueryColumn) => void,
+    onColumnTitleEdit?: (column: QueryColumn) => void,
     onColumnTitleChange?: (column: QueryColumn) => void,
     model?: QueryModel,
     headerClickCount?: number
@@ -395,6 +403,7 @@ export function headerCell(
             headerClickCount={headerClickCount}
             model={model}
             onColumnTitleChange={onColumnTitleChange}
+            onColumnTitleEdit={onColumnTitleEdit}
         />
     );
 }

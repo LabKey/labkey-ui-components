@@ -21,6 +21,7 @@ import {
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
+    EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN,
     EXPERIMENTAL_SAMPLE_FINDER,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
@@ -230,6 +231,13 @@ export function isSampleAliquotSelectorEnabled(moduleContext?: any): boolean {
     );
 }
 
+export function isGridLockLeftColumnEnabled(moduleContext?: any): boolean {
+    return (
+        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN] ===
+        true
+    );
+}
+
 export function hasModule(moduleName: string, moduleContext?: any) {
     return (moduleContext ?? getServerContext().moduleContext).api?.moduleNames?.indexOf(moduleName.toLowerCase()) >= 0;
 }
@@ -370,7 +378,7 @@ function getPicklistsSectionConfig(appBase: string): MenuSectionConfig {
     return new MenuSectionConfig({
         headerURL: appBase + PICKLIST_HOME_HREF.toHref(),
         iconURL: imageURL('_images', 'picklist.svg'),
-    })
+    });
 }
 
 function getNotebooksSectionConfig(appBase: string): MenuSectionConfig {
@@ -410,12 +418,11 @@ const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
 function getBioWorkflowNotebookMediaConfigs(appBase: string, user: User) {
     let configs = Map({
         [WORKFLOW_KEY]: getWorkflowSectionConfig(appBase),
-
     });
     if (userCanReadMedia(user)) {
         configs = configs.set(MEDIA_KEY, getMediaSectionConfig(appBase));
     }
-    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase),)
+    configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase));
     if (userCanReadNotebooks(user)) {
         configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
     }
@@ -467,7 +474,7 @@ export function getMenuSectionConfigs(
 
         let configs = Map({
             [WORKFLOW_KEY]: workflowConfig,
-            [PICKLIST_KEY]: getPicklistsSectionConfig(appBase)
+            [PICKLIST_KEY]: getPicklistsSectionConfig(appBase),
         });
 
         if (userCanReadNotebooks(user) && isELNEnabledInLKSM(moduleContext)) {

@@ -172,3 +172,53 @@
         }
     }
 }
+
+/* Grid sticky/locked column headers on vertical scroll */
+.grid-panel__grid .table-responsive {
+    overflow-y: auto;
+
+    thead {
+        position: sticky;
+        top: -1px;
+        z-index: 2;
+
+        th {
+            background-color: $white;
+        }
+    }
+
+    /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+    table thead th {
+        background-clip: padding-box
+    }
+}
+
+/* Grid sticky/locked left most column on horizontal scroll */
+.grid-panel__grid.grid-panel__lock-left .table-responsive {
+    thead th:nth-child(1), tr td:nth-child(1) {
+        position: sticky;
+        left: -1px;
+        z-index: 1;
+    }
+}
+.grid-panel__grid.grid-panel__lock-left-with-checkboxes .table-responsive {
+    thead th:nth-child(2), tr td:nth-child(2) {
+        position: sticky;
+        left: 22px;
+        z-index: 1;
+    }
+    thead th:nth-child(1), thead th:nth-child(2) {
+        background-color: $white;
+    }
+    tr td:nth-child(1), tr td:nth-child(2) {
+        background-color: $table-bg-accent;
+    }
+}
+.grid-panel__grid.grid-panel__lock-left-without-checkboxes .table-responsive {
+    thead th:nth-child(1) {
+        background-color: $white;
+    }
+    tr td:nth-child(1) {
+        background-color: $table-bg-accent;
+    }
+}

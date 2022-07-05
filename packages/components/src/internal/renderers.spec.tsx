@@ -169,6 +169,28 @@ describe('HeaderCellDropdown', () => {
         wrapper.unmount();
     });
 
+    test('column not sortable or filterable, can add but not hide', () => {
+        const wrapper = mount(
+            <HeaderCellDropdown
+                {...DEFAULT_PROPS}
+                column={
+                    new GridColumn({
+                        index: 'column',
+                        title: 'Column',
+                        raw: QueryColumn.create({ fieldKey: 'column', sortable: false, filterable: false }),
+                    })
+                }
+                handleAddColumn={jest.fn}
+                handleHideColumn={undefined}
+            />
+        );
+        validate(wrapper, 0, 3);
+        expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
+        expect(wrapper.find(DisableableMenuItem).text()).toContain('Hide Column');
+        expect(wrapper.find(DisableableMenuItem).prop('operationPermitted')).toBe(undefined);
+        wrapper.unmount();
+    });
+
     test('column sortable, not filterable', () => {
         const wrapper = mount(
             <HeaderCellDropdown

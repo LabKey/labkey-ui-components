@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.194.0
+*Released*: 5 July 2022
+* Issue 43943: App grid column header locking on scroll
+  * set fixed height for GridPanel usage of <Grid>
+  * add SCSS for `position: sticky;` on GridPanel `thead`
+  * fix to disable column dnd when editing column label
+  * experimental feature: lock left column in app grid on horizontal scroll
+  * note: not currently applied to the editable grid case
+
 ### version 2.193.0
 *Released*: 4 July 2022
 * Add ability to edit the column title (caption) from the column header

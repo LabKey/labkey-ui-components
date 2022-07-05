@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD July 2022
+* Issue 44599: Field editor PHI Level doesn't show correct value for a field if the admin user does not have that level of PHI access
+  * AdvancedSettings.tsx update to show current PHI level as select option and disable the input if current value is above max for user
+
 ### version 2.194.0
 *Released*: 5 July 2022
 * Issue 43943: App grid column header locking on scroll

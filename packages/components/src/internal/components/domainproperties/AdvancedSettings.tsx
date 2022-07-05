@@ -334,6 +334,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     renderMiscOptions = () => {
         const { index, field, domainIndex, domainFormDisplayOptions } = this.props;
         const { measure, dimension, mvEnabled, recommendedVariable, PHI, excludeFromShifting, phiLevels } = this.state;
+        const currentValueExists = phiLevels?.find(level => level.value === PHI) !== undefined;
+        const disablePhiSelect =
+            domainFormDisplayOptions.phiLevelDisabled || field.disablePhiLevel || !currentValueExists;
 
         return (
             <>
@@ -349,10 +352,15 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             id={createFormInputId(DOMAIN_FIELD_PHI, domainIndex, index)}
                             onChange={this.handleChange}
                             value={PHI}
-                            disabled={domainFormDisplayOptions.phiLevelDisabled || field.disablePhiLevel}
+                            disabled={disablePhiSelect}
                         >
-                            {phiLevels.map((level, i) => (
-                                <option key={i} value={level.value}>
+                            {!currentValueExists && (
+                                <option key={PHI} value={PHI}>
+                                    {DOMAIN_PHI_LEVELS.find(level => level.value === PHI)?.label ?? PHI}
+                                </option>
+                            )}
+                            {phiLevels.map(level => (
+                                <option key={level.value} value={level.value}>
                                     {level.label}
                                 </option>
                             ))}

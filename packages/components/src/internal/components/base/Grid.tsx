@@ -386,7 +386,7 @@ export const Grid: FC<GridProps> = memo(props => {
         const maxHeight = window.innerHeight * 0.7;
         divRef.current.style.height =
             divRef.current.lastElementChild?.clientHeight < maxHeight ? 'unset' : maxHeight + 'px';
-    }, [fixedHeight, gridData.size]);
+    }, [fixedHeight, gridData.size]); // dep on gridData.size to recalculate div height on each grid row count change
 
     const headerProps: GridHeaderProps = {
         calcWidths,

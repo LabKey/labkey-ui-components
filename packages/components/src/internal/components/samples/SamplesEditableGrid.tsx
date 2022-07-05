@@ -423,6 +423,12 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         return updatedColumns;
     };
 
+    getExportColumnFilter = (col: QueryColumn): any => {
+        const { sampleTypeDomainFields } = this.props;
+
+        return sampleTypeDomainFields.aliquotFields.indexOf(col.fieldKey.toLowerCase()) === -1;
+    };
+
     getSelectedSamplesNoun = (): string => {
         const { aliquots, displayQueryModel } = this.props;
         const allAliquots = this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
@@ -581,6 +587,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     noStorageSamples={noStorageSamples}
                     sampleTypeDomainFields={sampleTypeDomainFields}
                     parentTypeOptions={parentTypeOptions}
+                    getUpdateColumns={this.getSamplesUpdateColumns}
+                    exportColFilter={this.hasAliquots() ? null : this.getExportColumnFilter}
                 />
             </>
         );

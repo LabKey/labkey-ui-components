@@ -42,6 +42,9 @@ interface Props {
     parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     sampleTypeDomainFields: GroupedSampleFields;
+
+    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
+    exportColFilter?: (col: QueryColumn) => boolean;
 }
 
 export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {

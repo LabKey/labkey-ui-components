@@ -301,7 +301,8 @@ export const getEditorTableData = (
         forUpdate,
         readOnlyColumns,
         insertColumns,
-        updateColumns
+        updateColumns,
+        colFilter
     );
     columns.forEach(col => (headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)));
 

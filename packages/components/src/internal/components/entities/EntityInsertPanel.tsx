@@ -904,7 +904,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     isIncludedColumn = (column: QueryColumn): boolean => {
-        const { creationType } = this.props;
+        const { creationType } = this.state;
 
         if (creationType === SampleCreationType.Aliquots) return this.isAliquotField(column);
         return column.derivationDataScope !== DERIVATION_DATA_SCOPES.CHILD_ONLY;

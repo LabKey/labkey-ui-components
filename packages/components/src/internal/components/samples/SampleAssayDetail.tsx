@@ -190,6 +190,8 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         user,
         exportPrefix,
     } = props;
+    const [queryModelsWithData, setQueryModelsWithData] = useState<Record<string, QueryModel>>();
+    const [tabOrder, setTabOrder] = useState<string[]>();
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
 
@@ -197,7 +199,11 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         actions.loadAllModels(true);
     }, [actions]);
 
-    const { queryModelsWithData, tabOrder } = useMemo(() => {
+    useEffect(() => {
+        // only calculate the queryModelsWithData and tabOrder after all models have loaded and before any
+        // user defined filters are added to the grids (i.e. when queryModelsWithData is undefined)
+        if (!allLoaded || queryModelsWithData !== undefined) return;
+
         const models: Record<string, QueryModel> = {};
         let targetQueryModels = Object.values(queryModels);
         const isFilteredView =
@@ -223,13 +229,13 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
             }
         });
 
-        return {
-            queryModelsWithData: models,
-            tabOrder: Object.values(models)
+        setQueryModelsWithData(models);
+        setTabOrder(
+            Object.values(models)
                 .sort(naturalSortByProperty('title'))
-                .map(model => model.id),
-        };
-    }, [activeSampleAliquotType, queryModels, showAliquotViewSelector]);
+                .map(model => model.id)
+        );
+    }, [allLoaded, queryModelsWithData, activeSampleAliquotType, queryModels, showAliquotViewSelector]);
 
     const getEmptyText = useCallback(
         activeModel => {
@@ -256,7 +262,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         );
     }
 
-    if (!allLoaded) {
+    if (!allLoaded || queryModelsWithData === undefined) {
         return (
             <AssayResultPanel>
                 <LoadingSpinner />
@@ -302,7 +308,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
             ButtonsComponentRight={showAliquotViewSelector ? SampleAssayDetailButtonsRight : undefined}
             getEmptyText={getEmptyText}
             loadOnMount={false}
-            queryModels={queryModelsWithData}
+            queryModels={queryModels}
             showRowCountOnTabs
             tabOrder={tabOrder}
             onTabSelect={onTabChange}

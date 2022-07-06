@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD July 2022
+* Issue 45149: "Assay Results" tabbed grid can remove tabs if you filter a grid to zero rows
+  * store in state the set of queryModels with data after all have loaded
+
 ### version 2.194.2
 *Released*: 5 July 2022
 * Sort folders by their `title` property.

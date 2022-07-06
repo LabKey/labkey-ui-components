@@ -637,18 +637,14 @@ export function getGroupedSampleDisplayColumns(
 
     allDisplayColumns.forEach(col => {
         const colName = col.name.toLowerCase();
-        if (sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
-            displayColumns.push(col);
-            return;
-        }
-
         if (isAliquot) {
             // barcodes belong to the individual sample or aliquot (but not both)
             if (col.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI) {
                 aliquotHeaderDisplayColumns.push(col);
             }
             // display parent meta for aliquot
-            else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
+            else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1
+            || sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
                 aliquotHeaderDisplayColumns.push(col);
             }
         } else {

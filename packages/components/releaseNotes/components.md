@@ -5,6 +5,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 45479: Add onDataChange callback in more editable grids
 
+### version 2.194.2
+*Released*: 5 July 2022
+* Sort folders by their `title` property.
+* Apply contextual container filter to `selectDistinctRows` requests.
+* Update `getSamplesIdsNotFound` to use the scoped version of `selectDistinctRows`.
+* Export `selectDistinctRows`.
+
+### version 2.194.1
+*Released*: 5 July 2022
+* Fixes for EntityInsertPanel and EntityInsertGridRequiredFieldAlert to support Biologics registry
+
 ### version 2.194.0
 *Released*: 5 July 2022
 * Issue 43943: App grid column header locking on scroll

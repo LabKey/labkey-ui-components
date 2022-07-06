@@ -179,6 +179,7 @@ import {
     InsertRowsResponse,
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
+    selectDistinctRows,
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
@@ -851,6 +852,7 @@ export {
     InsertFormats,
     InsertOptions,
     insertRows,
+    selectDistinctRows,
     selectRows,
     selectRowsDeprecated,
     updateRows,

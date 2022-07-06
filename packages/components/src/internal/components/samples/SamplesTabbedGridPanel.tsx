@@ -173,6 +173,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         setSelectionData(undefined);
         setIsEditing(false);
         setShowBulkUpdate(false);
+        onDataChange(false);
     }, []);
 
     const toggleEditWithGridUpdate = useCallback(() => {

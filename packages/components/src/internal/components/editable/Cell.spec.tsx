@@ -20,6 +20,9 @@ import { QueryColumn } from '../../..';
 
 import { Cell } from './Cell';
 import { LookupCell } from './LookupCell';
+import {DateInputCell} from "./DateInputCell";
+import {List} from "immutable";
+import {ValueDescriptor} from "../../models";
 
 let actions;
 
@@ -28,6 +31,14 @@ beforeAll(() => {
         focusCell: jest.fn(),
         modifyCell: jest.fn(),
         selectCell: jest.fn(),
+    };
+
+    LABKEY.container = {
+        formats: {
+            dateFormat: 'yyyy-MM-dd',
+            dateTimeFormat: 'yyyy-MM-dd HH:mm',
+            numberFormat: null,
+        },
     };
 });
 
@@ -158,4 +169,59 @@ describe('Cell', () => {
         expect(cell.find('input')).toHaveLength(1);
         expect(cell.find(LookupCell)).toHaveLength(1);
     });
+
+    const expectDate = (cell: ReactWrapper, focused = false, value?: string, rawValue?: string): void => {
+        expect(cell.find('.cell-menu-value')).toHaveLength(focused ? 0 : 1);
+        expect(cell.find('input')).toHaveLength(focused ? 1 : 0);
+        expect(cell.find(DateInputCell)).toHaveLength(focused ? 1 : 0);
+        if (value) {
+            if (focused) {
+                expect(cell.find(DateInputCell).prop('defaultValue')).toEqual(rawValue);
+                expect(cell.find('input.date-input-cell').prop('value')).toEqual(value);
+            }
+            else
+                expect(cell.find('.cell-menu-value').text()).toEqual(value);
+        }
+    };
+
+    test('col is date', () => {
+        const lookupCol = QueryColumn.create({ name: 'test', jsonType: 'date' });
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} />);
+        expectDate(cell);
+        cell.unmount();
+    });
+
+    test('col is date, has value', () => {
+        const values = List<ValueDescriptor>([
+            {
+                display: '2022-08-05 00:00',
+                raw: '2022-08-05 00:00:00.000',
+            },
+        ]);
+        const lookupCol = QueryColumn.create({ name: 'test', jsonType: 'date' });
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} values={values}/>);
+        expectDate(cell, false, '2022-08-05 00:00');
+        cell.unmount();
+    });
+
+    test('col is date, focused', () => {
+        const lookupCol = QueryColumn.create({ name: 'test', jsonType: 'date', caption: 'Test' });
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} focused selected />);
+        expectDate(cell, true);
+        cell.unmount();
+    });
+
+    test('col is date, has value, focused', () => {
+        const values = List<ValueDescriptor>([
+            {
+                display: '2022-08-05 00:00',
+                raw: '2022-08-05 00:00:00.000',
+            },
+        ]);
+        const lookupCol = QueryColumn.create({ name: 'test', jsonType: 'date', caption: 'Test' });
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} values={values} focused selected />);
+        expectDate(cell, true, '2022-08-05 00:00', '2022-08-05 00:00:00.000');
+        cell.unmount();
+    });
+
 });

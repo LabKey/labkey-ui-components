@@ -46,6 +46,9 @@ export interface DatePickerInputProps extends DisableableInputProps {
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     initValueFormatted?: boolean;
 
+    autoFocus?: boolean
+    isFormInput?: boolean;
+
     // from formsy-react
     getErrorMessage?: Function;
     getValue?: Function;
@@ -69,6 +72,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         showLabel: true,
         addLabelAsterisk: false,
         initValueFormatted: true,
+        isFormInput: true
     };
 
     constructor(props: DatePickerInputProps) {
@@ -150,10 +154,36 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             placeholderText,
             isClearable,
             wrapperClassName,
+            autoFocus,
+            isFormInput
         } = this.props;
 
         const { isDisabled, selectedDate } = this.state;
         const labelClass = 'control-label col-sm-3 text-left col-xs-12';
+
+        const picker = (
+            <DatePicker
+                autoComplete="off"
+                wrapperClassName={inputWrapperClassName}
+                className={inputClassName}
+                isClearable={isClearable}
+                name={name ? name : queryColumn.fieldKey}
+                id={queryColumn.fieldKey}
+                disabled={isDisabled}
+                selected={selectedDate}
+                onChange={this.onChange}
+                showTimeSelect={this.shouldShowTime()}
+                placeholderText={
+                    placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`
+                }
+                dateFormat={this.getDateFormat()}
+                autoFocus={autoFocus}
+            />
+        );
+
+        if (!isFormInput)
+            return picker;
+
         return (
             <div className="form-group row">
                 {renderFieldLabel ? (
@@ -178,22 +208,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                     />
                 )}
                 <div className={wrapperClassName}>
-                    <DatePicker
-                        autoComplete="off"
-                        wrapperClassName={inputWrapperClassName}
-                        className={inputClassName}
-                        isClearable={isClearable}
-                        name={name ? name : queryColumn.fieldKey}
-                        id={queryColumn.fieldKey}
-                        disabled={isDisabled}
-                        selected={selectedDate}
-                        onChange={this.onChange}
-                        showTimeSelect={this.shouldShowTime()}
-                        placeholderText={
-                            placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`
-                        }
-                        dateFormat={this.getDateFormat()}
-                    />
+                    {picker}
                 </div>
             </div>
         );

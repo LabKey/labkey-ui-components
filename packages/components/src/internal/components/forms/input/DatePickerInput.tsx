@@ -51,6 +51,7 @@ export interface DatePickerInputProps extends DisableableInputProps {
     validations?: any; // from formsy-react
     value?: any;
     wrapperClassName?: string;
+    labelClassName?: string;
 }
 
 interface DatePickerInputState extends DisableableInputState {
@@ -69,6 +70,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         addLabelAsterisk: false,
         initValueFormatted: true,
         isFormInput: true,
+        labelClassName: 'control-label col-sm-3 text-left col-xs-12'
     };
 
     constructor(props: DatePickerInputProps) {
@@ -142,6 +144,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             inputWrapperClassName,
             allowDisable,
             label,
+            labelClassName,
             name,
             queryColumn,
             showLabel,
@@ -155,7 +158,6 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         } = this.props;
 
         const { isDisabled, selectedDate } = this.state;
-        const labelClass = 'control-label col-sm-3 text-left col-xs-12';
 
         const picker = (
             <DatePicker
@@ -180,7 +182,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         return (
             <div className="form-group row">
                 {renderFieldLabel ? (
-                    <label className={labelClass}>{renderFieldLabel(queryColumn)}</label>
+                    <label className={labelClassName}>{renderFieldLabel(queryColumn)}</label>
                 ) : (
                     <FieldLabel
                         label={label}
@@ -189,7 +191,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                             inputId: queryColumn.name,
                             required: queryColumn.required,
                             addLabelAsterisk,
-                            labelClass: allowDisable ? undefined : labelClass,
+                            labelClass: allowDisable ? undefined : labelClassName,
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}

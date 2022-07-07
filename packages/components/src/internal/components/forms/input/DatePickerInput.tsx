@@ -31,26 +31,26 @@ export interface DatePickerInputProps extends DisableableInputProps {
     dateFormat?: string;
     disabled?: boolean;
     formsy?: boolean;
-    getErrorMessage?: Function; //from formsy-react
-    getValue?: Function; //from formsy-react
+    getErrorMessage?: Function; // from formsy-react
+    getValue?: Function; // from formsy-react
     initValueFormatted?: boolean;
     inputClassName?: string;
     inputWrapperClassName?: string;
-    label?: any;
-    isFormInput?: boolean;
-    queryColumn: QueryColumn;
-    name?: string;
-    value?: any;
-    placeholderText?: string;
-    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    showLabel?: boolean;
-    wrapperClassName?: string;
-    onChange?: any;
     isClearable?: boolean;
+    isFormInput?: boolean;
+    label?: any;
+    name?: string;
+    onChange?: any;
+    placeholderText?: string;
+    queryColumn: QueryColumn;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    setValue?: Function; // from formsy-react
+    showLabel?: boolean;
+    showRequired?: Function; // from formsy-react
     showTime?: boolean;
-    setValue?: Function; //from formsy-react
-    showRequired?: Function; //from formsy-react
-    validations?: any; //from formsy-react
+    validations?: any; // from formsy-react
+    value?: any;
+    wrapperClassName?: string;
 }
 
 interface DatePickerInputState extends DisableableInputState {

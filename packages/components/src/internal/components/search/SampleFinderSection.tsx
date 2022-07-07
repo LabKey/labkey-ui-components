@@ -56,7 +56,8 @@ import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
-    onDataChange?: (dirty: boolean) => void;
+    getIsDirty?: () => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     gridButtonProps?: any;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;

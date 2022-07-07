@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Issue 45479: Add onDataChange callback in more editable grids
+* Issue 45479: Add getIsDirty and setIsDirty callback in editable grids so we warn on page leave but not on export
 
 ### version 2.195.0
 *Released*: 7 July 2022

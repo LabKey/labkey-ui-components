@@ -59,7 +59,8 @@ export interface SamplesEditableGridProps {
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
     onGridEditCancel: () => any;
     onGridEditComplete: () => any;
-    onDataChange?: (dirty: boolean) => void;
+    getIsDirty?: () => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
     parentDataTypes: List<EntityDataType>;
     samplesGridOmittedColumns?: List<string>;
     samplesGridRequiredColumns?: string[];
@@ -469,7 +470,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             samplesGridOmittedColumns,
             sampleLineageKeys,
             sampleLineage,
-            onDataChange,
+            getIsDirty,
+            setIsDirty,
             parentDataTypes,
             combineParentTypes,
             noStorageSamples,
@@ -576,7 +578,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                     singularNoun={this.getSelectedSamplesNoun()}
                     pluralNoun={this.getSelectedSamplesNoun() + 's'}
                     readOnlyColumns={this.getReadOnlyColumns()}
-                    onDataChange={onDataChange}
+                    getIsDirty={getIsDirty}
+                    setIsDirty={setIsDirty}
                     includedTabs={includedTabs}
                     parentDataTypes={parentDataTypes}
                     combineParentTypes={combineParentTypes}

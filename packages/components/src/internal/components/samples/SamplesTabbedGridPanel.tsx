@@ -181,7 +181,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const toggleEditWithGridUpdate = useCallback(() => {
         if (isEditing) {
             resetState();
-            setIsDirty(false);
         } else if (hasValidMaxSelection) {
             dismissNotifications();
             setIsEditing(true);

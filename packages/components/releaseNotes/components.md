@@ -6,6 +6,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 44599: Field editor PHI Level doesn't show correct value for a field if the admin user does not have that level of PHI access
   * AdvancedSettings.tsx update to show current PHI level as select option and disable the input if current value is above max for user
 
+### version 2.195.0
+*Released*: 7 July 2022
+* Issue 45149: "Assay Results" tabbed grid can remove tabs if you filter a grid to zero rows
+  * store in state the set of queryModels with data after all have loaded
+
+### version 2.194.2
+*Released*: 5 July 2022
+* Sort folders by their `title` property.
+* Apply contextual container filter to `selectDistinctRows` requests.
+* Update `getSamplesIdsNotFound` to use the scoped version of `selectDistinctRows`.
+* Export `selectDistinctRows`.
+
+### version 2.194.1
+*Released*: 5 July 2022
+* Fixes for EntityInsertPanel and EntityInsertGridRequiredFieldAlert to support Biologics registry
+
 ### version 2.194.0
 *Released*: 5 July 2022
 * Issue 43943: App grid column header locking on scroll

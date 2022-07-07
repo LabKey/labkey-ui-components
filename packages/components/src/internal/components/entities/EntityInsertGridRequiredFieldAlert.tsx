@@ -6,27 +6,34 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { Alert } from '../base/Alert';
 
 interface Props {
-    type: string;
     queryInfo: QueryInfo;
+    type: string;
 }
 
 export const EntityInsertGridRequiredFieldAlert: FC<Props> = memo(props => {
     const { type, queryInfo } = props;
-    if (!queryInfo || queryInfo.isLoading) {
-        return null;
-    }
 
-    const allRequiredCols = useMemo(() => getFieldKeysOfRequiredCols(queryInfo.getAllColumns()), [queryInfo]);
-    const insertRequiredCols = useMemo(() => getFieldKeysOfRequiredCols(queryInfo.getInsertColumns()), [queryInfo]);
-    if (allRequiredCols.length === insertRequiredCols.length) {
-        return null;
-    }
+    const allRequiredCols = useMemo(() => {
+        if (!queryInfo || queryInfo.isLoading) return [];
+
+        return getFieldKeysOfRequiredCols(queryInfo.getAllColumns());
+    }, [queryInfo]);
+
+    const insertRequiredCols = useMemo(() => {
+        if (!queryInfo || queryInfo.isLoading) return [];
+
+        return getFieldKeysOfRequiredCols(queryInfo.getInsertColumns());
+    }, [queryInfo]);
 
     const missingReqColLabels = useMemo(() => {
         return allRequiredCols
             .filter(fieldKey => insertRequiredCols.indexOf(fieldKey) === -1)
             .map(fieldKey => queryInfo.getColumn(fieldKey).caption);
-    }, [queryInfo]);
+    }, [queryInfo, allRequiredCols, insertRequiredCols]);
+
+    if (missingReqColLabels.length === 0) {
+        return null;
+    }
 
     return (
         <Alert bsStyle="warning">

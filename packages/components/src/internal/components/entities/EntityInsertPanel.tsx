@@ -294,6 +294,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         ) {
             this.init();
         }
+
+        if (this.props.importOnly && this.props.tab !== EntityInsertPanelTabs.First)
+            this.props.selectStep(EntityInsertPanelTabs.First);
     }
 
     allowParents = (): boolean => {
@@ -746,7 +749,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { originalQueryInfo } = this.state;
 
         const requiredProperties = [];
-        originalQueryInfo.columns.forEach((column, key) => {
+        originalQueryInfo.columns.forEach((column) => {
             if (
                 column.required &&
                 column.shownInInsertView &&
@@ -1027,7 +1030,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    renderUpdateTooltipText = () => {
+    renderUpdateTooltipText = (): ReactNode => {
         const { nounPlural } = this.props;
         const { allowUserSpecifiedNames } = this.state;
 

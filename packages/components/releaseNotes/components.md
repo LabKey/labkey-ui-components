@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.194.4
+*Released*: 7 July 2022
+* Add and export Row, RowValue types
+* HorizontalBarSection: Update design
+* App.isProductProjectsEnabled: Add optional moduleContext
+
 ### version 2.194.3
 *Released*: 7 July 2022
 * Update styling for checkbox that appears in grid header input fields

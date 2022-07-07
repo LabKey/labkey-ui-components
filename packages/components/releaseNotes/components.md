@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.194.X
-*Released*: TBD
+### version 2.194.3
+*Released*: 7 July 2022
 * Update styling for checkbox that appears in grid header input fields
 
 ### version 2.194.2

@@ -16,13 +16,15 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
+import { List } from 'immutable';
+
 import { QueryColumn } from '../../..';
+
+import { ValueDescriptor } from '../../models';
 
 import { Cell } from './Cell';
 import { LookupCell } from './LookupCell';
-import {DateInputCell} from "./DateInputCell";
-import {List} from "immutable";
-import {ValueDescriptor} from "../../models";
+import { DateInputCell } from './DateInputCell';
 
 let actions;
 
@@ -178,9 +180,7 @@ describe('Cell', () => {
             if (focused) {
                 expect(cell.find(DateInputCell).prop('defaultValue')).toEqual(rawValue);
                 expect(cell.find('input.date-input-cell').prop('value')).toEqual(value);
-            }
-            else
-                expect(cell.find('.cell-menu-value').text()).toEqual(value);
+            } else expect(cell.find('.cell-menu-value').text()).toEqual(value);
         }
     };
 
@@ -199,7 +199,7 @@ describe('Cell', () => {
             },
         ]);
         const lookupCol = QueryColumn.create({ name: 'test', jsonType: 'date' });
-        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} values={values}/>);
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} values={values} />);
         expectDate(cell, false, '2022-08-05 00:00');
         cell.unmount();
     });
@@ -219,9 +219,10 @@ describe('Cell', () => {
             },
         ]);
         const lookupCol = QueryColumn.create({ name: 'test', jsonType: 'date', caption: 'Test' });
-        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} values={values} focused selected />);
+        const cell = mount(
+            <Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} values={values} focused selected />
+        );
         expectDate(cell, true, '2022-08-05 00:00', '2022-08-05 00:00:00.000');
         cell.unmount();
     });
-
 });

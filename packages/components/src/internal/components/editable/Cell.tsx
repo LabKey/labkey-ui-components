@@ -28,7 +28,7 @@ import { QueryColumn } from '../../..';
 import { getQueryColumnRenderers } from '../../global';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
-import { DateInputCell, DateInputCellProps } from "./DateInputCell";
+import { DateInputCell, DateInputCellProps } from './DateInputCell';
 
 export interface CellActions {
     clearSelection: () => void;
@@ -291,7 +291,9 @@ export class Cell extends React.PureComponent<Props> {
             } else if (isDateField) {
                 cell = (
                     <div {...displayProps}>
-                        <div onClick={this.handleDblClick} className="cell-menu-value">{valueDisplay}</div>
+                        <div onClick={this.handleDblClick} className="cell-menu-value">
+                            {valueDisplay}
+                        </div>
                     </div>
                 );
             } else {

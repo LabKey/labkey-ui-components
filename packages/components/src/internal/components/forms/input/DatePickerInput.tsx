@@ -49,12 +49,12 @@ export interface DatePickerInputProps extends DisableableInputProps {
     autoFocus?: boolean
     isFormInput?: boolean;
 
-    // from formsy-react
-    getErrorMessage?: Function;
-    getValue?: Function;
-    setValue?: Function;
-    showRequired?: Function;
-    validations?: any;
+    // from formsy-react // eslint-disable-line group formsy props
+    getErrorMessage?: Function;// eslint-disable-line
+    getValue?: Function;// eslint-disable-line
+    setValue?: Function;// eslint-disable-line
+    showRequired?: Function;// eslint-disable-line
+    validations?: any;// eslint-disable-line
 }
 
 interface DatePickerInputState extends DisableableInputState {
@@ -72,7 +72,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         showLabel: true,
         addLabelAsterisk: false,
         initValueFormatted: true,
-        isFormInput: true
+        isFormInput: true,
     };
 
     constructor(props: DatePickerInputProps) {
@@ -155,7 +155,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             isClearable,
             wrapperClassName,
             autoFocus,
-            isFormInput
+            isFormInput,
         } = this.props;
 
         const { isDisabled, selectedDate } = this.state;
@@ -173,16 +173,13 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                 selected={selectedDate}
                 onChange={this.onChange}
                 showTimeSelect={this.shouldShowTime()}
-                placeholderText={
-                    placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`
-                }
+                placeholderText={placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`}
                 dateFormat={this.getDateFormat()}
                 autoFocus={autoFocus}
             />
         );
 
-        if (!isFormInput)
-            return picker;
+        if (!isFormInput) return picker;
 
         return (
             <div className="form-group row">
@@ -207,9 +204,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                         }}
                     />
                 )}
-                <div className={wrapperClassName}>
-                    {picker}
-                </div>
+                <div className={wrapperClassName}>{picker}</div>
             </div>
         );
     }

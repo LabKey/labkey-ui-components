@@ -1,17 +1,18 @@
-import {QueryColumn} from "../../../public/QueryColumn";
-import {ValueDescriptor} from "../../models";
-import {MODIFICATION_TYPES, SELECTION_TYPES} from "../../constants";
-import React, {FC, memo, useCallback, useMemo} from "react";
-import {DatePickerInput} from "../forms/input/DatePickerInput";
+import React, { FC, memo, useCallback } from 'react';
+
+import { QueryColumn } from '../../../public/QueryColumn';
+import { ValueDescriptor } from '../../models';
+import { MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
+import { DatePickerInput } from '../forms/input/DatePickerInput';
 
 export interface DateInputCellProps {
     col: QueryColumn;
     colIdx: number;
-    rowIdx: number;
+    defaultValue?: string;
     disabled?: boolean;
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
+    rowIdx: number;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
-    defaultValue?: string;
 }
 
 export const DateInputCell: FC<DateInputCellProps> = memo(props => {
@@ -40,5 +41,5 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
             autoFocus={true}
             isFormInput={false}
         />
-    )
+    );
 });

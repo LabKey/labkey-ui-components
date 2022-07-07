@@ -35,18 +35,18 @@ import { getSampleStatusType } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
+    emptyAliquotViewMsg?: string;
+    emptyAssayDefDisplay?: ReactNode;
+    emptyAssayResultDisplay?: ReactNode;
+    emptySampleViewMsg?: string;
+    exportPrefix?: string;
+    sampleAliquotType?: ALIQUOT_FILTER_MODE;
     sampleId?: string;
     sampleModel?: QueryModel;
     showAliquotViewSelector?: boolean;
-    sampleAliquotType?: ALIQUOT_FILTER_MODE;
-    sourceId?: number | string;
-    exportPrefix?: string;
-    sourceSampleRows?: Array<Record<string, any>>;
     sourceAliquotRows?: Array<Record<string, any>>;
-    emptyAssayDefDisplay?: ReactNode;
-    emptyAssayResultDisplay?: ReactNode;
-    emptyAliquotViewMsg?: string;
-    emptySampleViewMsg?: string;
+    sourceId?: number | string;
+    sourceSampleRows?: Array<Record<string, any>>;
     user: User;
 }
 
@@ -158,12 +158,12 @@ export const getSampleAssayDetailEmptyText = (
 };
 
 interface OwnProps {
-    onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => void;
     activeSampleAliquotType?: ALIQUOT_FILTER_MODE;
-    showImportBtn?: boolean;
-    isSourceSampleAssayGrid?: boolean;
-    onTabChange: (tabId: string) => void;
     activeTabId?: string;
+    isSourceSampleAssayGrid?: boolean;
+    onSampleAliquotTypeChange?: (mode: ALIQUOT_FILTER_MODE) => void;
+    onTabChange: (tabId: string) => void;
+    showImportBtn?: boolean;
     user: User;
 }
 

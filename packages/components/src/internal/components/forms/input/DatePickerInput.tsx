@@ -26,35 +26,31 @@ import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 export interface DatePickerInputProps extends DisableableInputProps {
+    addLabelAsterisk?: boolean;
+    autoFocus?: boolean;
+    dateFormat?: string;
+    disabled?: boolean;
     formsy?: boolean;
-    wrapperClassName?: string;
+    getErrorMessage?: Function; //from formsy-react
+    getValue?: Function; //from formsy-react
+    initValueFormatted?: boolean;
     inputClassName?: string;
     inputWrapperClassName?: string;
-    disabled?: boolean;
-    isClearable?: boolean;
-    placeholderText?: string;
-    name?: string;
     label?: any;
-    onChange?: any;
-    dateFormat?: string;
-    showTime?: boolean;
-
-    queryColumn: QueryColumn;
-    showLabel?: boolean;
-    value?: any;
-    addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    initValueFormatted?: boolean;
-
-    autoFocus?: boolean
     isFormInput?: boolean;
-
-    // from formsy-react // eslint-disable-line group formsy props
-    getErrorMessage?: Function;// eslint-disable-line
-    getValue?: Function;// eslint-disable-line
-    setValue?: Function;// eslint-disable-line
-    showRequired?: Function;// eslint-disable-line
-    validations?: any;// eslint-disable-line
+    queryColumn: QueryColumn;
+    name?: string;
+    value?: any;
+    placeholderText?: string;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    showLabel?: boolean;
+    wrapperClassName?: string;
+    onChange?: any;
+    isClearable?: boolean;
+    showTime?: boolean;
+    setValue?: Function; //from formsy-react
+    showRequired?: Function; //from formsy-react
+    validations?: any; //from formsy-react
 }
 
 interface DatePickerInputState extends DisableableInputState {

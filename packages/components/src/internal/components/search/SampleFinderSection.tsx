@@ -334,6 +334,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     key={filterChangeCounter + '-' + savedViewChangeCounter}
                 />
             }
+            titleSize="small"
             context={
                 <SampleFinderHeaderButtons
                     parentEntityDataTypes={parentEntityDataTypes}

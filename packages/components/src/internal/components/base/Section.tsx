@@ -22,7 +22,7 @@ interface SectionProps {
     titleClassName?: string;
     titleContainerClassName?: string;
     title?: ReactNode;
-    titleSize?: 'large' | 'medium';
+    titleSize?: 'large' | 'medium' | 'small';
 }
 
 export const Section: FC<SectionProps> = props => {

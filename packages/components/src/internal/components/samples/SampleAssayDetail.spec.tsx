@@ -258,8 +258,11 @@ describe('SampleAssayDetailBodyImpl', () => {
         );
         validate(wrapper, false, undefined, true);
         const modelKeys = Object.keys(wrapper.find(TabbedGridPanel).prop('queryModels'));
-        expect(modelKeys.indexOf('id1')).toBe(-1);
-        expect(modelKeys.indexOf('id2')).toBe(0);
+        expect(modelKeys.indexOf('id1')).toBe(0);
+        expect(modelKeys.indexOf('id2')).toBe(1);
+        const tabKeys = Object.keys(wrapper.find(TabbedGridPanel).prop('tabOrder'));
+        expect(tabKeys.length).toBe(1);
+        expect(tabKeys[0]).toBe('0');
         wrapper.unmount();
     });
 

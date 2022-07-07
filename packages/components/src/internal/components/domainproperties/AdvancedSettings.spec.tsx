@@ -144,7 +144,7 @@ describe('AdvancedSettings', () => {
             bsClass: 'form-control',
         });
         expect(phi.length).toEqual(1);
-        expect(phi.props().children.size).toEqual(3);
+        expect(phi.find('option')).toHaveLength(3);
         expect(phi.props().value).toEqual(PHILEVEL_LIMITED_PHI);
 
         // Verify default type

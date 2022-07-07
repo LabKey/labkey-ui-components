@@ -3054,6 +3054,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         helpTopic={null}
         initCollapsed={true}
         key="0"
+        newFieldConfig={
+          Object {
+            "derivationDataScope": "ParentOnly",
+          }
+        }
         onChange={[Function]}
         onToggle={[Function]}
         panelStatus="TODO"
@@ -3237,6 +3242,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             helpTopic={null}
             initCollapsed={true}
             isNew={false}
+            newFieldConfig={
+              Object {
+                "derivationDataScope": "ParentOnly",
+              }
+            }
             onChange={[Function]}
             onToggle={[Function]}
             panelStatus="TODO"

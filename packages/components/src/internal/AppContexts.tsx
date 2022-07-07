@@ -5,6 +5,7 @@ import { Router } from 'react-router';
 import { AppContextProvider, ExtendableAppContext } from './AppContext';
 import { ServerContextProvider, withAppUser } from './components/base/ServerContext';
 import { SubNavContextProvider } from './components/navigation/SubNavWithContext';
+import { NotificationsContextProvider } from './components/notifications/NotificationsContext';
 
 interface Props<T = {}> {
     initialAppContext?: ExtendableAppContext<T>;
@@ -24,9 +25,11 @@ export const AppContexts: FC<Props> = (props) => {
         <ServerContextProvider initialContext={initialServerContext}>
             <AppContextProvider initialContext={initialAppContext}>
                 <SubNavContextProvider>
-                    <Provider store={store}>
-                        <Router history={history}>{children}</Router>
-                    </Provider>
+                    <NotificationsContextProvider>
+                        <Provider store={store}>
+                            <Router history={history}>{children}</Router>
+                        </Provider>
+                    </NotificationsContextProvider>
                 </SubNavContextProvider>
             </AppContextProvider>
         </ServerContextProvider>

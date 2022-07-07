@@ -6,9 +6,7 @@ import { AuditBehaviorTypes, Query } from '@labkey/api';
 import {
     App,
     caseInsensitive,
-    createNotification,
     deleteRows,
-    dismissNotifications,
     EditableGridLoaderFromSelection,
     EditorModel,
     EntityDataType,
@@ -20,6 +18,7 @@ import {
     LineageEditableGridLoaderFromSelection,
     LoadingSpinner,
     NO_UPDATES_MESSAGE,
+    NotificationsContextProps,
     QueryColumn,
     QueryInfo,
     QueryModel,
@@ -28,6 +27,7 @@ import {
     SchemaQuery,
     SCHEMAS,
     User,
+    withNotificationsContext,
 } from '../../..';
 
 import { EntityChoice } from '../entities/models';
@@ -66,7 +66,7 @@ export interface SamplesEditableGridProps {
     user: User;
 }
 
-type Props = SamplesEditableGridProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
+type Props = SamplesEditableGridProps & SamplesSelectionProviderProps & SamplesSelectionResultProps & NotificationsContextProps;
 
 const STORAGE_UPDATE_FIELDS = ['StoredAmount', 'Units', 'FreezeThawCount'];
 const SAMPLES_EDIT_GRID_ID = 'update-samples-grid';
@@ -125,7 +125,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
     }
 
     init(): void {
-        dismissNotifications();
+        this.props.dismissNotifications();
         this.initLineageEditableGrid();
 
         this.props.api.samples
@@ -141,7 +141,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             })
             .catch(() => {
                 this._hasError = true;
-                createNotification({
+                this.props.createNotification({
                     alertClass: 'danger',
                     message:
                         'Error loading sample statuses. If you want to discard any samples being updated to a Consumed status, you will have to do that separately.',
@@ -151,7 +151,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
     componentWillUnmount(): void {
         // dismiss grid error msg, retain success msg
-        if (this._hasError) dismissNotifications();
+        if (this._hasError) this.props.dismissNotifications();
     }
 
     getReadOnlyColumns(): List<string> {
@@ -280,8 +280,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         if (storageRows.length === 0 && sampleRows.length === 0) {
             return new Promise(resolve => {
                 this._hasError = false;
-                dismissNotifications();
-                createNotification(NO_UPDATES_MESSAGE);
+                this.props.dismissNotifications();
+                this.props.createNotification(NO_UPDATES_MESSAGE);
                 resolve('No changes to be saved.');
             });
         }
@@ -290,8 +290,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         if (convertedStorageData?.errors) {
             return new Promise(resolve => {
                 this._hasError = true;
-                dismissNotifications(); // get rid of any error notifications that have already been created
-                createNotification({
+                this.props.dismissNotifications(); // get rid of any error notifications that have already been created
+                this.props.createNotification({
                     alertClass: 'danger',
                     message: convertedStorageData?.errors.join('\n'),
                 });
@@ -343,8 +343,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                         } catch (error) {
                             console.error(error);
                             this._hasError = true;
-                            dismissNotifications();
-                            createNotification({
+                            this.props.dismissNotifications();
+                            this.props.createNotification({
                                 alertClass: 'danger',
                                 message: resolveErrorMessage(error, 'sample', 'samples', 'discard'),
                             });
@@ -360,9 +360,8 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                         }
                     }
 
-                    dismissNotifications(); // get rid of any error notifications that have already been created
-
-                    createNotification(
+                    this.props.dismissNotifications(); // get rid of any error notifications that have already been created
+                    this.props.createNotification(
                         'Successfully updated ' + totalSamplesToUpdate + ' ' + noun + discardSuccessMsg + '.'
                     );
 
@@ -372,8 +371,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 },
                 failure: reason => {
                     this._hasError = true;
-                    dismissNotifications(); // get rid of any error notifications that have already been created
-                    createNotification({
+                    this.props.dismissNotifications(); // get rid of any error notifications that have already been created
+                    //TODO this is causing editable grid to rerender and then lose edits
+                    this.props.createNotification({
                         alertClass: 'danger',
                         message: resolveErrorMessage(reason, 'sample', 'samples', 'update'),
                     });
@@ -588,7 +588,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 }
 
 export const SamplesEditableGrid = SamplesSelectionProvider<SamplesEditableGridProps & SamplesSelectionProviderProps>(
-    SamplesEditableGridBase
+    withNotificationsContext(SamplesEditableGridBase)
 );
 
 class StorageEditableGridLoaderFromSelection implements IEditableGridLoader {

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Remove reactn dependency
+  * convert notifications to use a NotificationsContext (plus useNotificationsContext and withNotificationsContext)
+
 ### version 2.195.1
 *Released*: 7 July 2022
 * Issue 44599: Field editor PHI Level doesn't show correct value for a field if the admin user does not have that level of PHI access

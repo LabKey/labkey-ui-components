@@ -75,6 +75,8 @@ export class NotificationItemModel
     }
 }
 
+export type NotificationCreatable = string | NotificationItemProps | NotificationItemModel;
+
 function nextNotificationId(): string {
     return generateId('notification_');
 }

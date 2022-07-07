@@ -6,7 +6,6 @@ import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
     caseInsensitive,
-    createNotification,
     DefaultRenderer,
     deleteRows,
     DetailPanelWithModel,
@@ -18,7 +17,6 @@ import {
     SampleAliquotDetailHeader,
     SchemaQuery,
     SCHEMAS,
-    withTimeout,
 } from '../../..';
 
 import { EditableDetailPanel, EditableDetailPanelProps } from '../../../public/QueryModel/EditableDetailPanel';
@@ -29,6 +27,7 @@ import { GroupedSampleFields } from './models';
 import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from './actions';
 import { IS_ALIQUOT_COL } from './constants';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
+import { NotificationsContext } from '../notifications/NotificationsContext';
 
 interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
@@ -124,14 +123,10 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     auditBehavior: AuditBehaviorTypes.DETAILED,
                     auditUserComment: discardComment,
                 });
-                withTimeout(() => {
-                    createNotification('Successfully updated and discarded sample from storage.');
-                });
+                this.context.createNotification('Successfully updated and discarded sample from storage.', true);
             } catch (error) {
                 const errorMsg = resolveErrorMessage(error, 'sample', 'sample', 'discard');
-                withTimeout(() => {
-                    createNotification({ message: errorMsg, alertClass: 'danger' });
-                });
+                this.context.createNotification({ message: errorMsg, alertClass: 'danger' }, true);
             }
         }
     };
@@ -220,3 +215,6 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         );
     }
 }
+
+// TODO change this to withNotificationsContext
+SampleDetailEditing.contextType = NotificationsContext;

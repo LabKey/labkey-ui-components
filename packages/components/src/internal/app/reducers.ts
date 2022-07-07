@@ -112,6 +112,7 @@ export const ProductMenuReducers = handleActions<ProductMenuState, any>(
     new ProductMenuModel()
 );
 
+// TODO is this still used?
 export type ServerNotificationState = ServerNotificationModel;
 
 export const ServerNotificationReducers = handleActions<ServerNotificationState, any>(

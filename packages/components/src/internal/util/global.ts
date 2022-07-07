@@ -13,34 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { getGlobal, setGlobal } from 'reactn';
+// import { getGlobal, setGlobal } from 'reactn';
 import createHistory from 'history/createBrowserHistory';
+
+let _BrowserHistory;
 
 /**
  * Initialize the global state object for this package.
  */
 export function initBrowserHistoryState() {
-    if (!getGlobal()['BrowserHistory']) {
-        setGlobal(
-            {
-                BrowserHistory: createHistory(),
-            },
-
-            global => {
+    console.log('TODO initBrowserHistoryState');
+    _BrowserHistory = createHistory();
+    // if (!getGlobal()['BrowserHistory']) {
+    //     setGlobal(
+    //         {
+    //             BrowserHistory: createHistory(),
+    //         },
+    //
+    //         global => {
                 // add a no-op listener just to connect this global state history to the url changes
-                getBrowserHistory().listen((location, action) => {});
-            }
-        );
-    }
+                _BrowserHistory.listen((location, action) => {});
+    //         }
+    //     );
+    // }
 }
 
 /**
  * Access method for better browser history object from global state
  */
 export function getBrowserHistory() {
-    if (!getGlobal()['BrowserHistory']) {
-        throw new Error('Must call initBrowserHistoryState before you can access the global.BrowserHistory object.');
-    }
-
-    return getGlobal()['BrowserHistory'];
+    console.log('TODO getBrowserHistory');
+    // if (!getGlobal()['BrowserHistory']) {
+    //     throw new Error('Must call initBrowserHistoryState before you can access the global.BrowserHistory object.');
+    // }
+    //
+    // return getGlobal()['BrowserHistory'];
+    return _BrowserHistory;
 }

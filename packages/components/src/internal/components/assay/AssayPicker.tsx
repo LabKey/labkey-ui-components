@@ -6,12 +6,12 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { Map } from 'immutable';
 
-import { createNotification, GENERAL_ASSAY_PROVIDER_NAME } from '../../..';
-
+import { GENERAL_ASSAY_PROVIDER_NAME } from './actions';
 import { AssayContainerLocation } from './AssayContainerLocation';
 import { SpecialtyAssayPanel } from './SpecialtyAssayPanel';
 import { AssayDesignUploadPanel } from './AssayDesignUploadPanel';
 import { StandardAssayPanel } from './StandardAssayPanel';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 export interface AssayProvider {
     name: string;
@@ -63,15 +63,6 @@ const queryAssayProviders = (): Promise<AssayProvidersOptions> => {
     });
 };
 
-const getAssayProviders = async (): Promise<AssayProvidersOptions> => {
-    try {
-        return await queryAssayProviders();
-    } catch (error) {
-        console.error(error);
-        createNotification({ message: error, alertClass: 'danger' });
-    }
-};
-
 const getSelectedProvider = (providers: AssayProvider[], name: string): AssayProvider => {
     return providers?.find(p => {
         return p.name === name;
@@ -80,7 +71,7 @@ const getSelectedProvider = (providers: AssayProvider[], name: string): AssayPro
 
 export const AssayPicker: FC<AssayPickerProps> = memo(props => {
     const { showImport, showContainerSelect, onChange, selectedTab, excludedProviders, hasPremium } = props;
-
+    const { createNotification } = useNotificationsContext();
     const [providers, setProviders] = useState<AssayProvider[]>();
     const [containers, setContainers] = useState<{ [key: string]: string }>();
     const [assaySelectionModel, setAssaySelectionModel] = useImmer<AssayPickerSelectionModel>({
@@ -91,7 +82,7 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
     });
 
     useEffect(() => {
-        getAssayProviders().then(options => {
+        queryAssayProviders().then(options => {
             let providers = options.providers;
             if (excludedProviders) {
                 providers = providers.filter(provider => excludedProviders.indexOf(provider.name) === -1);
@@ -103,8 +94,11 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
             setAssaySelectionModel(draft => {
                 draft.container = options.defaultLocation;
             });
+        }).catch((error) => {
+            console.error(error);
+            createNotification({ message: error, alertClass: 'danger' });
         });
-    }, [excludedProviders]);
+    }, [createNotification, excludedProviders]);
 
     useEffect(() => {
         onTabChange((selectedTab ?? AssayPickerTabs.STANDARD_ASSAY_TAB) as any);

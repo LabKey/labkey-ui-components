@@ -1,25 +1,12 @@
-import * as React from 'react';
+import React, { ReactNode } from 'react';
 
 import { getActionErrorMessage } from '../../..';
 
-import { createNotification } from './actions';
-
-export function createDeleteSuccessNotification(
-    noun: string,
-    count?: number,
-    additionalInfo?: string,
-) {
+export function getDeleteSuccessNotification(noun: string, count?: number, additionalInfo?: string): string {
     const countStr = count === undefined ? '' : count;
-    createNotification('Successfully deleted ' + countStr + ' ' + noun + '. ' + (additionalInfo || ''));
+    return 'Successfully deleted ' + countStr + ' ' + noun + '. ' + (additionalInfo || '');
 }
 
-export function createDeleteErrorNotification(noun: string) {
-    createNotification(
-        {
-            alertClass: 'danger',
-            message: () => {
-                return getActionErrorMessage('There was a problem deleting the ' + noun + '. ', noun);
-            },
-        }
-    );
+export function getDeleteErrorNotification(noun: string): ReactNode {
+    return getActionErrorMessage('There was a problem deleting the ' + noun + '. ', noun);
 }

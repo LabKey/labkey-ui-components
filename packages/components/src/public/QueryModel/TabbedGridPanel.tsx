@@ -18,13 +18,13 @@ import classNames from 'classnames';
 
 import { ExportModal } from '../../internal/components/gridbar/ExportModal';
 import { EXPORT_TYPES } from '../../internal/constants';
-import { createNotification } from '../../internal/components/notifications/actions';
 import { exportTabsXlsx } from '../../internal/actions';
 
 import { GridPanel, GridPanelProps } from './GridPanel';
 import { InjectedQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
+import { useNotificationsContext } from '../../internal/components/notifications/NotificationsContext';
 
 interface GridTabProps {
     isActive: boolean;
@@ -116,7 +116,6 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         queryModels,
         rightTabs = [],
         showRowCountOnTabs,
-        title,
         tabOrder,
         onExport,
         exportFilename,
@@ -124,6 +123,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         getAdvancedExportOptions,
         ...rest
     } = props;
+    const { createNotification } = useNotificationsContext();
     const [internalActiveId, setInternalActiveId] = useState<string>(activeModelId ?? tabOrder[0]);
     const [showExportModal, setShowExportModal] = useState<boolean>(false);
     const [canExport, setCanExport] = useState<boolean>(true);
@@ -167,7 +167,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 setShowExportModal(false);
             }
         },
-        [exportFilename, canExport, queryModels, advancedExportOptions, getAdvancedExportOptions]
+        [exportFilename, canExport, createNotification, queryModels, advancedExportOptions, getAdvancedExportOptions]
     );
 
     const excelExportHandler = useCallback(async () => {

@@ -11,7 +11,6 @@ import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
 import { SecurityPolicy } from '../permissions/models';
-import { createNotification } from '../notifications/actions';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { AppURL } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
@@ -30,6 +29,7 @@ import { UserLimitSettings } from '../permissions/actions';
 
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
+import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
 
 export function getNewUserRoles(
     user: User,
@@ -78,7 +78,7 @@ interface OwnProps {
 }
 
 // exported for jest testing
-export type UserManagementProps = OwnProps & InjectedPermissionsPage;
+export type UserManagementProps = OwnProps & InjectedPermissionsPage & NotificationsContextProps;
 
 interface State {
     policy: SecurityPolicy;
@@ -109,7 +109,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
             const userLimitSettings = await api.getUserLimitSettings();
             this.setState({ userLimitSettings });
         } catch (error) {
-            createNotification({
+            this.props.createNotification({
                 alertClass: 'danger',
                 message: 'Unable to load user limit settings. ' + (error.exception ? error.exception : ''),
             });
@@ -124,7 +124,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
             const policy = await api.fetchPolicy(container.id, principalsById);
             this.setState({ policy: SecurityPolicy.updateAssignmentsData(policy, principalsById) });
         } catch (error) {
-            createNotification({
+            this.props.createNotification({
                 alertClass: 'danger',
                 message: 'Unable to load permissions information. ' + (error.exception ? error.exception : ''),
             });
@@ -163,7 +163,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                     })
                     .catch(error => {
                         console.error(error);
-                        createNotification({
+                        this.props.createNotification({
                             alertClass: 'danger',
                             message:
                                 'Unable to update permissions information. ' + (error.exception ? error.exception : ''),
@@ -177,7 +177,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         }
 
         if (existingUsers.size > 0) {
-            createNotification({
+            this.props.createNotification({
                 message: () => {
                     return (
                         <>
@@ -196,7 +196,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         }
 
         if (response.htmlErrors?.length > 0) {
-            createNotification({
+            this.props.createNotification({
                 alertClass: 'danger',
                 message: response.htmlErrors.join(' '),
             });
@@ -205,9 +205,9 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         this.loadUserLimitSettings();
     };
 
-    onUsersStateChangeComplete = (response: any) => {
+    onUsersStateChangeComplete = (response: any): void => {
         if (response.resetPassword) {
-            createNotification({
+            this.props.createNotification({
                 message: () => {
                     return (
                         <span>
@@ -223,7 +223,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         const action = response.delete ? 'deleted' : response.activate ? 'reactivated' : 'deactivated';
         const urlPrefix = response.activate ? 'active' : 'inactive';
 
-        createNotification({
+        this.props.createNotification({
             message: () => {
                 const href = getUserGridFilterURL(updatedUserIds, urlPrefix).addParam('usersView', urlPrefix).toHref();
                 return (
@@ -240,8 +240,8 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         this.loadUserLimitSettings();
     };
 
-    afterCreateComplete(newUsers: List<number>, permissionsSet: boolean) {
-        createNotification({
+    afterCreateComplete(newUsers: List<number>, permissionsSet: boolean): void {
+        this.props.createNotification({
             message: () => {
                 return (
                     <>
@@ -267,8 +267,8 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         );
     };
 
-    render() {
-        const { allowResetPassword, container, extraRoles, project, user, api } = this.props;
+    render(): ReactNode {
+        const { allowResetPassword, container, extraRoles, project, user } = this.props;
         const { policy, userLimitSettings } = this.state;
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
@@ -302,7 +302,7 @@ interface UserManagementPageProps {
     extraRoles?: string[][];
 }
 
-export const UserManagementPageImpl: FC<UserManagementPageProps & InjectedPermissionsPage> = props => {
+export const UserManagementPageImpl: FC<UserManagementPageProps & InjectedPermissionsPage & NotificationsContextProps> = props => {
     const { extraRoles, ...injectedProps } = props;
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext, project, user } = useServerContext();
@@ -320,4 +320,6 @@ export const UserManagementPageImpl: FC<UserManagementPageProps & InjectedPermis
     );
 };
 
-export const UserManagementPage = withPermissionsPage<UserManagementPageProps>(UserManagementPageImpl);
+export const UserManagementPage = withPermissionsPage<UserManagementPageProps>(
+    withNotificationsContext(UserManagementPageImpl)
+);

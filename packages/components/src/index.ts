@@ -117,17 +117,11 @@ import { FileAttachmentEntry } from './internal/components/files/FileAttachmentE
 import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notifications } from './internal/components/notifications/Notifications';
+import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/components/notifications/actions';
 import {
-    createNotification,
-    getPipelineActivityData,
-    markAllNotificationsAsRead,
-    withTimeout,
-} from './internal/components/notifications/actions';
-import {
-    addNotification,
-    dismissNotifications,
-    initNotificationsState,
-} from './internal/components/notifications/global';
+    useNotificationsContext,
+    withNotificationsContext,
+} from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
 import { formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
@@ -138,6 +132,10 @@ import {
     ServerActivityData,
     ServerNotificationModel,
 } from './internal/components/notifications/model';
+import {
+    getDeleteErrorNotification,
+    getDeleteSuccessNotification,
+} from './internal/components/notifications/messaging';
 import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons } from './internal/components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
@@ -283,10 +281,6 @@ import { EntityInsertPanel } from './internal/components/entities/EntityInsertPa
 import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
-import {
-    createDeleteErrorNotification,
-    createDeleteSuccessNotification,
-} from './internal/components/notifications/messaging';
 import { GenerateEntityResponse, OperationConfirmationData } from './internal/components/entities/models';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
@@ -833,7 +827,6 @@ export {
     LogoutReason,
     // global state functions
     initQueryGridState,
-    initNotificationsState,
     getContainerFilter,
     getContainerFilterForLookups,
     createGridModelId,
@@ -1196,14 +1189,12 @@ export {
     ServerNotificationModel,
     ServerActivityData,
     Persistence,
-    createNotification,
-    dismissNotifications,
     getPipelineActivityData,
     markAllNotificationsAsRead,
-    addNotification,
-    createDeleteSuccessNotification,
-    createDeleteErrorNotification,
-    withTimeout,
+    getDeleteSuccessNotification,
+    getDeleteErrorNotification,
+    useNotificationsContext,
+    withNotificationsContext,
     // domain designer related items
     DomainForm,
     DomainFieldsDisplay,
@@ -1487,10 +1478,14 @@ export type {
     IDomainField,
     IFieldChange,
 } from './internal/components/domainproperties/models';
-export type { MessageFunction, NotificationItemProps } from './internal/components/notifications/model';
+export type {
+    MessageFunction,
+    NotificationItemProps,
+    NotificationCreatable,
+} from './internal/components/notifications/model';
+export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';
 export type { VisGraphNode } from './internal/components/lineage/vis/VisGraphGenerator';
 export type { ITab } from './internal/components/navigation/SubNav';
-export type { NotificationCreatable } from './internal/components/notifications/actions';
 export type { IDataViewInfo, EditorModelProps, IGridLoader, IGridResponse } from './internal/models';
 export type { HeatMapCell } from './internal/components/heatmap/HeatMap';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';

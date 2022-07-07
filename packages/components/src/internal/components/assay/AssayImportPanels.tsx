@@ -27,7 +27,6 @@ import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     Container,
-    dismissNotifications,
     EditorModel,
     FileSizeLimitProps,
     getActionErrorMessage,
@@ -38,6 +37,7 @@ import {
     LoadingSpinner,
     LoadingState,
     Location,
+    NotificationsContextProps,
     Progress,
     QueryColumn,
     QueryConfigMap,
@@ -50,6 +50,7 @@ import {
     useServerContext,
     withFormSteps,
     WithFormStepsProps,
+    withNotificationsContext,
     WizardNavButtons,
 } from '../../..';
 
@@ -113,7 +114,11 @@ interface AssayImportPanelsBodyProps {
     user: User;
 }
 
-type Props = AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps & InjectedQueryModels;
+type Props = AssayImportPanelsBodyProps &
+    OwnProps &
+    WithFormStepsProps &
+    InjectedQueryModels &
+    NotificationsContextProps;
 
 interface State {
     duplicateFileResponse?: DuplicateFilesResponse;
@@ -483,8 +488,16 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     onFinish = (importAgain: boolean): void => {
-        const { currentStep, onSave, maxRows, beforeFinish, jobNotificationProvider, assayProtocol, location } =
-            this.props;
+        const {
+            currentStep,
+            onSave,
+            maxRows,
+            beforeFinish,
+            jobNotificationProvider,
+            assayProtocol,
+            location,
+            dismissNotifications,
+        } = this.props;
         const { model } = this.state;
         let data = model.prepareFormData(currentStep, this.state.editorModel, this.state.dataModel);
 
@@ -782,7 +795,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 }
 
 const AssayImportPanelWithQueryModels = withQueryModels<AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps>(
-    AssayImportPanelsBody
+    withNotificationsContext(AssayImportPanelsBody)
 );
 
 const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {

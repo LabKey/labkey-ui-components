@@ -15,19 +15,19 @@
  */
 import React, { FC, useCallback } from 'react';
 
-import { useServerContext } from '../../..';
+import { useNotificationsContext, useServerContext } from '../../..';
 
 import { NotificationItemModel } from './model';
-import { dismissNotifications } from './global';
 
 interface ItemProps {
     item: NotificationItemModel;
 }
 
 export const NotificationItem: FC<ItemProps> = ({ item }) => {
+    const { dismissNotifications } = useNotificationsContext();
     const { user } = useServerContext();
     const { data, id, message, isDismissible } = item;
-    const onClick = useCallback(() => dismissNotifications(id), [id]);
+    const onClick = useCallback(() => dismissNotifications(id), [dismissNotifications, id]);
 
     return (
         <div className="notification-item">

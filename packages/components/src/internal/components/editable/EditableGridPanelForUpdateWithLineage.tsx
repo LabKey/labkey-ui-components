@@ -2,7 +2,6 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 're
 import { fromJS, List, Map } from 'immutable';
 
 import {
-    createNotification,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditorModel,
@@ -13,6 +12,7 @@ import {
     LoadingSpinner,
     QueryColumn,
     QueryModel,
+    useNotificationsContext,
     WizardNavButtons,
 } from '../../../index';
 import { capitalizeFirstChar } from '../../util/utils';
@@ -85,7 +85,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         extraExportColumns,
         ...gridProps
     } = props;
-
+    const { createNotification } = useNotificationsContext();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [editableGridModels, setEditableGridModels] = useState<EditableGridModels>();
     const [entityParentsMap, setEntityParentsMap] = useState<Map<string, List<EntityParentType>>>();
@@ -136,7 +136,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                     });
                 });
         }
-    }, [loaders, queryModel, editableGridModels, extraExportColumns]);
+    }, [loaders, queryModel, editableGridModels, extraExportColumns, createNotification]);
 
     const onGridChange = useCallback(
         (

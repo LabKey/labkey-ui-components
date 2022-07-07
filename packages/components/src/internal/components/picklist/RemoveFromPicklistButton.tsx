@@ -4,10 +4,8 @@ import { PermissionTypes, Utils } from '@labkey/api';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { RequiresPermission } from '../base/Permissions';
 import { ConfirmModal } from '../base/ConfirmModal';
-import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 import { SampleTypeDataType } from '../entities/constants';
 import { getConfirmDeleteMessage } from '../../util/messaging';
-import { createNotification, withTimeout } from '../notifications/actions';
 import { User } from '../base/models/User';
 
 import { userCanManagePicklists } from '../../app/utils';
@@ -15,17 +13,19 @@ import { userCanManagePicklists } from '../../app/utils';
 import { removeSamplesFromPicklist } from './actions';
 import { Picklist } from './models';
 import { DisableableButton } from '../buttons/DisableableButton';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 interface Props {
-    user: User;
-    picklist: Picklist;
-    model: QueryModel;
     afterSampleActionComplete: () => void;
+    model: QueryModel;
+    picklist: Picklist;
+    user: User;
 }
 
 export const RemoveFromPicklistButton: FC<Props> = memo(props => {
     const { picklist, model, afterSampleActionComplete, user } = props;
     const [showRemoveFromPicklistConfirm, setShowRemoveFromPicklistConfirm] = useState<boolean>();
+    const { createNotification } = useNotificationsContext();
 
     const onRemoveFromPicklist = useCallback(() => {
         if (model.hasSelections) {
@@ -43,13 +43,12 @@ export const RemoveFromPicklistButton: FC<Props> = memo(props => {
             afterSampleActionComplete();
             onHideRemoveFromList();
 
-            withTimeout(() => {
-                createNotification(
-                    'Successfully removed ' + Utils.pluralize(numDeleted, 'sample', 'samples') + ' from this list.'
-                );
-            });
+            createNotification(
+                'Successfully removed ' + Utils.pluralize(numDeleted, 'sample', 'samples') + ' from this list.',
+                true
+            );
         }
-    }, [model, picklist, afterSampleActionComplete, onHideRemoveFromList]);
+    }, [model, picklist, afterSampleActionComplete, onHideRemoveFromList, createNotification]);
 
     if (!userCanManagePicklists(user)) {
         return null;

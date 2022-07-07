@@ -10,7 +10,6 @@ import {
     Alert,
     capitalizeFirstChar,
     caseInsensitive,
-    createNotification,
     getOperationNotPermittedMessage,
     LoadingSpinner,
     Progress,
@@ -18,6 +17,7 @@ import {
     resolveErrorMessage,
     SampleOperation,
     updateRows,
+    useNotificationsContext,
 } from '../../..';
 
 import { getOriginalParentsFromLineage } from '../samples/actions';
@@ -81,6 +81,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
     const lcParentNounPlural = parentNounPlural.toLowerCase();
     const [selectedParents, setSelectedParents] = useState<List<EntityChoice>>(List<EntityChoice>());
     const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
+    const { createNotification } = useNotificationsContext();
 
     useEffect(() => {
         if (!queryModel) return;

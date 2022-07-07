@@ -10,7 +10,6 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
-import { createNotification } from '../notifications/actions';
 
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
@@ -19,7 +18,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 
-import { useAppContext } from '../../../index';
+import { useAppContext, useNotificationsContext } from '../../..';
 
 import { Picklist } from './models';
 import { addSamplesToPicklist, getPicklistsForInsert, getPicklistUrl, SampleTypeCount } from './actions';
@@ -224,6 +223,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const [submitting, setSubmitting] = useState<boolean>(false);
         const [activeItem, setActiveItem] = useState<Picklist>(undefined);
         const { api } = useAppContext();
+        const { createNotification } = useNotificationsContext();
 
         const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
             setSearch(event.target.value.trim().toLowerCase());

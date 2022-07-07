@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Map } from 'immutable';
-import React, { FC, ReactNode, useCallback, useEffect, useMemo } from 'react';
-import ReactN from 'reactn';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import moment from 'moment';
 
 import { getDateFormat, useServerContext } from '../../..';
 
-import { GlobalAppState } from '../../global';
-
 import { NotificationItemModel, Persistence } from './model';
-import { createNotification, setTrialBannerDismissSessionKey } from './actions';
+import { setTrialBannerDismissSessionKey } from './actions';
 
 import { NotificationItem } from './NotificationItem';
-
-import { dismissNotifications } from './global';
+import { useNotificationsContext } from './NotificationsContext';
 
 interface NotificationListProps {
     alertClass: string;
@@ -54,11 +49,8 @@ const NotificationList: FC<NotificationListProps> = ({ alertClass, notifications
     return <div className={'notification-container alert alert-' + alertClass}>{body}</div>;
 };
 
-interface NotificationProps {
-    notifications: Map<string, NotificationItemModel>;
-}
-
-const NotificationsImpl: FC<NotificationProps> = ({ notifications }) => {
+export const Notifications: FC = () => {
+    const { notifications, dismissNotifications, createNotification } = useNotificationsContext();
     const { moduleContext, user } = useServerContext();
     const renderTrialServicesNotification = useCallback(() => {
         const { trialEndDate, upgradeLink, upgradeLinkText } = moduleContext.trialservices;
@@ -121,11 +113,3 @@ const NotificationsImpl: FC<NotificationProps> = ({ notifications }) => {
         </div>
     );
 };
-
-// In the future when we get rid of ReactN we'll probably store Notifications in a context, so we'll remove this
-// component and add something like const { notifications } = useNotificationsContext() in NotificationsImpl above.
-export class Notifications extends ReactN.Component<{}, {}, GlobalAppState> {
-    render(): ReactNode {
-        return <NotificationsImpl notifications={this.global.Notifications} />;
-    }
-}

@@ -10,8 +10,6 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
-import { createNotification } from '../notifications/actions';
-
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
@@ -21,6 +19,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 // TODO reconcile these properties. Do we need both selectionKey and queryModel.
 // Is selectedQuantity needed if we always have either the sampleIds or the queryModel?
@@ -82,6 +81,7 @@ export const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props =
         picklistProductId,
         metricFeatureArea,
     } = props;
+    const { createNotification } = useNotificationsContext();
     const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 

@@ -37,37 +37,37 @@ import {
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface AdvancedSettingsProps {
-    domainId?: number;
-    helpNoun: string;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
-    label: string;
-    index: number;
-    show: boolean;
-    maxPhiLevel: string;
-    field: DomainField;
-    onHide: () => any;
-    onApply: (any) => any;
-    showDefaultValueSettings: boolean;
-    domainIndex: number;
-    successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    domainId?: number;
+    domainIndex: number;
+    field: DomainField;
+    helpNoun: string;
+    index: number;
+    label: string;
+    maxPhiLevel: string;
+    onApply: (any) => any;
+    onHide: () => any;
+    show: boolean;
+    showDefaultValueSettings: boolean;
+    successBsStyle?: string;
 }
 
 interface AdvancedSettingsState {
+    PHI?: string;
+    defaultDisplayValue?: string;
+    defaultValueType?: string;
+    dimension?: boolean;
+    excludeFromShifting?: boolean;
     hidden?: boolean;
+    measure?: boolean;
+    mvEnabled?: boolean;
+    phiLevels?: List<any>;
+    recommendedVariable?: boolean;
     shownInDetailsView?: boolean;
     shownInInsertView?: boolean;
     shownInUpdateView?: boolean;
-    defaultValueType?: string;
-    defaultDisplayValue?: string;
-    dimension?: boolean;
-    measure?: boolean;
-    mvEnabled?: boolean;
-    recommendedVariable?: boolean;
-    PHI?: string;
-    phiLevels?: List<any>;
-    excludeFromShifting?: boolean;
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {

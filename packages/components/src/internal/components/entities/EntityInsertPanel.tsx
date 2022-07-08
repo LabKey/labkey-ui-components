@@ -175,6 +175,7 @@ interface OwnProps {
     filePreviewFormats?: string;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
+    getIsDirty?: () => boolean;
     hideParentEntityButtons?: boolean; // Used if you have an initial parent but don't want to enable ability to change it
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
@@ -187,7 +188,6 @@ interface OwnProps {
     onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData;
     onCancel?: () => void;
     onChangeInsertOption?: (isMerge: boolean) => void;
-    onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
     onFileChange?: (files?: string[]) => void;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
     onTargetChange?: (target: string) => void;
@@ -195,6 +195,7 @@ interface OwnProps {
     saveToPipeline?: boolean;
     selectedParents?: string[];
     selectedTarget?: string; // controlling target from a parent component
+    setIsDirty?: (isDirty: boolean) => void;
 }
 
 interface FromLocationProps {
@@ -719,14 +720,14 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 };
             },
             () => {
-                this.props.onDataChange?.(this.state.editorModel.rowCount > 0, IMPORT_DATA_FORM_TYPES.GRID);
+                this.props.setIsDirty?.(this.state.editorModel.rowCount > 0);
             }
         );
     };
 
     onCancel = (): void => {
         // if cancelling, presumably they know that they want to discard changes.
-        this.props.onDataChange?.(false);
+        this.props.setIsDirty?.(false);
 
         if (this.props.onCancel) {
             this.props.onCancel();
@@ -797,7 +798,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
             if (response?.rows) {
                 api.query.incrementClientSideMetricCount(ENTITY_CREATION_METRIC, nounPlural + 'CreationFromGrid');
-                this.props.onDataChange?.(false);
+                this.props.setIsDirty?.(false);
                 this.props.afterEntityCreation?.(
                     insertModel.getTargetEntityTypeLabel(),
                     response.getFilter(),
@@ -957,7 +958,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel, creationType, dataModel, editorModel } = this.state;
-        const { containerFilter, creationTypeOptions, maxEntities, nounPlural, onBulkAdd } = this.props;
+        const { containerFilter, creationTypeOptions, maxEntities, nounPlural, onBulkAdd, getIsDirty, setIsDirty } = this.props;
         const columnMetadata = this.getColumnMetadata();
         const isLoaded = (dataModel && !dataModel?.isLoading) ?? false;
 
@@ -1022,6 +1023,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                 model={dataModel}
                                 onChange={this.onGridChange}
                                 processBulkData={onBulkAdd}
+                                getIsDirty={getIsDirty}
+                                setIsDirty={setIsDirty}
                             />
                         </>
                     )}
@@ -1078,7 +1081,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     handleFileChange = (files: Map<string, File>): void => {
         const { asyncSize } = this.props;
 
-        this.props.onDataChange?.(files.size > 0, IMPORT_DATA_FORM_TYPES.FILE);
+        this.props.setIsDirty?.(files.size > 0);
         this.props.onFileChange?.(files.keySeq().toArray());
 
         const fileSize = files.valueSeq().first().size;
@@ -1091,7 +1094,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     handleFileRemoval = (): void => {
-        this.props.onDataChange?.(false, IMPORT_DATA_FORM_TYPES.FILE);
+        this.props.setIsDirty?.(false);
         this.props.onFileChange?.();
 
         this.setState({
@@ -1109,7 +1112,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             nounPlural,
             errorNounPlural,
             entityDataType,
-            onDataChange,
+            setIsDirty,
             onBackgroundJobStart,
             afterEntityCreation,
             saveToPipeline,
@@ -1134,7 +1137,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 ENTITY_CREATION_METRIC,
                 nounPlural + 'FileImport' + (isMerge ? 'WithMerge' : 'WithoutMerge')
             );
-            onDataChange?.(false);
+            setIsDirty?.(false);
 
             if (useAsync) {
                 onBackgroundJobStart?.(insertModel.getTargetEntityTypeLabel(), file.name, response.jobId);

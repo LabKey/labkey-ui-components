@@ -203,6 +203,7 @@ export interface SharedEditableGridProps {
     containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
     emptyGridMsg?: string;
+    exportColFilter?: (col: QueryColumn) => boolean;
     extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
     hideCountCol?: boolean;

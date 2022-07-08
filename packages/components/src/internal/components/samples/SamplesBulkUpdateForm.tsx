@@ -108,10 +108,13 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
         if (aliquots?.length > 0) {
             originalQueryInfo.columns.forEach((column, key) => {
                 const isAliquotField = sampleTypeDomainFields.aliquotFields.indexOf(column.fieldKey.toLowerCase()) > -1;
+                const isIndependentField =
+                    sampleTypeDomainFields.independentFields.indexOf(column.fieldKey.toLowerCase()) > -1;
                 if (
                     column.fieldKey.toLowerCase() === 'description' ||
                     column.fieldKey.toLowerCase() === 'samplestate' ||
-                    isAliquotField
+                    isAliquotField ||
+                    isIndependentField
                 )
                     columns = columns.set(key, column);
             });

@@ -9,11 +9,13 @@ import { getUniqueIdColumnMetadata } from '../entities/utils';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { EXPORT_TYPES } from '../../constants';
+
+import { ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 import { EditableGrid, SharedEditableGridPanelProps } from './EditableGrid';
-import { EXPORT_TYPES } from '../../constants';
+
 import { exportEditedData, getEditorTableData } from './utils';
-import { ExportOption } from '../../../public/QueryModel/ExportMenu';
 
 interface Props extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
@@ -32,9 +34,13 @@ const exportHandler = (
     exportType: EXPORT_TYPES,
     models: QueryModel[],
     editorModels: EditorModel[],
-    readOnlyColumns: List<string>,
     activeTab: number,
-    extraColumns?: Array<Partial<QueryColumn>>
+    readOnlyColumns: List<string>,
+    insertColumns?: List<QueryColumn>,
+    updateColumns?: List<QueryColumn>,
+    forUpdate?: boolean,
+    extraColumns?: Array<Partial<QueryColumn>>,
+    colFilter?: (col: QueryColumn) => boolean
 ): void => {
     let headings = OrderedMap<string, string>();
     let editorData = OrderedMap<string, Map<string, any>>();
@@ -42,10 +48,14 @@ const exportHandler = (
         const [modelHeadings, modelEditorData] = getEditorTableData(
             editorModels[idx],
             queryModel,
-            readOnlyColumns,
             headings,
             editorData,
-            extraColumns
+            readOnlyColumns,
+            insertColumns,
+            updateColumns,
+            forUpdate,
+            extraColumns,
+            colFilter
         );
         headings = modelHeadings;
         editorData = modelEditorData;
@@ -83,6 +93,9 @@ export const EditableGridPanel: FC<Props> = memo(props => {
         getTabTitle,
         readOnlyColumns,
         extraExportColumns,
+        forUpdate,
+        insertColumns,
+        exportColFilter,
         getIsDirty,
         setIsDirty,
         ...gridProps
@@ -121,21 +134,46 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     let activeUpdateColumns = updateColumns;
     if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
 
-    const exportHandlerCallback = useCallback((option: ExportOption) => {
-        // We temporarily unset the dirty bit on the page so the download doesn't produce an alert
-        if (getIsDirty && setIsDirty) {
-            wasDirty = getIsDirty();
-            setIsDirty(false);
-        }
-        exportHandler(option.type, models, editorModels, readOnlyColumns, activeTab, extraExportColumns);
-        // timeout needed here to wait for the download to begin. Value of 1000 not chosen scientifically.
-        window.setTimeout(() => {
-            if (setIsDirty && wasDirty) {
-                wasDirty = false;
-                setIsDirty(true);
+    const exportHandlerCallback = useCallback(
+        (option: ExportOption) => {
+            // We temporarily unset the dirty bit on the page so the download doesn't produce an alert
+            if (getIsDirty && setIsDirty) {
+                wasDirty = getIsDirty();
+                setIsDirty(false);
             }
-        }, 1000);
-    }, [activeTab, editorModels, extraExportColumns, models, readOnlyColumns]);
+            exportHandler(
+                option.type,
+                models,
+                editorModels,
+                activeTab,
+                readOnlyColumns,
+                insertColumns,
+                updateColumns,
+                forUpdate,
+                extraExportColumns,
+                exportColFilter
+            );
+            // timeout needed here to wait for the download to begin. Value of 1000 not chosen scientifically.
+            window.setTimeout(() => {
+                if (setIsDirty && wasDirty) {
+                    wasDirty = false;
+                    setIsDirty(true);
+                }
+            }, 1000);
+        },
+        [
+            activeTab,
+            editorModels,
+            extraExportColumns,
+            models,
+            readOnlyColumns,
+            insertColumns,
+            updateColumns,
+            forUpdate,
+            extraExportColumns,
+            exportColFilter,
+        ]
+    );
 
     const onTabClick = useCallback(setActiveTab, []);
 
@@ -153,6 +191,9 @@ export const EditableGridPanel: FC<Props> = memo(props => {
             readOnlyColumns={readOnlyColumns}
             updateColumns={activeUpdateColumns}
             exportHandler={exportHandlerCallback}
+            exportColFilter={exportColFilter}
+            insertColumns={insertColumns}
+            forUpdate={forUpdate}
         />
     );
 

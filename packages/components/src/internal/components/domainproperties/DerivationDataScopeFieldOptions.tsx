@@ -1,77 +1,121 @@
-import React from 'react';
-import { Checkbox, Col, Row } from 'react-bootstrap';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Col, Radio, Row } from 'react-bootstrap';
 
-import { LabelHelpTip } from '../../..';
+import { Alert } from '../base/Alert';
 
-import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
+import { createFormInputId } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
-import { DERIVATION_DATA_SCOPE_CHILD_ONLY, DOMAIN_FIELD_DERIVATION_DATA_SCOPE } from './constants';
+import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_DERIVATION_DATA_SCOPE } from './constants';
 import { IDerivationDataScope, ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
+import { PropDescType } from './PropDescType';
 
 interface Props extends ITypeDependentProps {
-    value?: string;
     config?: IDerivationDataScope;
+    fieldDataType?: PropDescType;
+    isExistingField?: boolean;
+    value?: string;
 }
 
-export class DerivationDataScopeFieldOptions extends React.PureComponent<Props, any> {
-    static defaultProps = {
-        config: {
-            show: true,
-            disable: false,
-            fieldLabel: 'Derivation Data Scope',
+export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
+    const { domainIndex, index, onChange, config, lockType, value, label, isExistingField, fieldDataType } = props;
+
+    const [isExistingParentOnly, setIsExistingParentOnly] = useState<boolean>(false);
+    const [isChildOnlyValidOption, setIsChildOnlyValidOption] = useState<boolean>(false);
+    const [isParentOnlyValidOption, setIsParentOnlyValidOption] = useState<boolean>(false);
+    const [hasScopeChange, setHasScopeChange] = useState<boolean>(false);
+    const [isExistingNonScopedField, setIsExistingNonScopedField] = useState<boolean>(false);
+
+    useEffect(() => {
+        setIsExistingParentOnly(isExistingField && (!value || value === DERIVATION_DATA_SCOPES.PARENT_ONLY));
+        setIsChildOnlyValidOption(!isExistingField || value === DERIVATION_DATA_SCOPES.CHILD_ONLY);
+        setIsParentOnlyValidOption(!isExistingField || !value || value === DERIVATION_DATA_SCOPES.PARENT_ONLY);
+        if (isExistingField && config.dataTypeFilter && fieldDataType && !config.dataTypeFilter(fieldDataType))
+            setIsExistingNonScopedField(true); // scenario: modify from Unique Id column to other colum types
+    }, [domainIndex, index, isExistingField]); // don't use config or value in dependency, only evaluate once per index
+
+    const inputId = useMemo(() => {
+        return createFormInputId(DOMAIN_FIELD_DERIVATION_DATA_SCOPE, domainIndex, index);
+    }, [domainIndex, index]);
+
+    const isFullyLocked = useMemo(() => {
+        return isFieldFullyLocked(lockType);
+    }, [lockType]);
+
+    const onRadioChange = useCallback(
+        event => {
+            if (isExistingParentOnly && event.target.value === DERIVATION_DATA_SCOPES.ALL) setHasScopeChange(true);
+            else setHasScopeChange(false);
+            onChange(inputId, event.target.value);
         },
-    };
+        [inputId, onChange, isExistingParentOnly]
+    );
 
-    handleCheckboxChange = evt => {
-        const { onChange } = this.props;
+    if (!config.show) return null;
 
-        if (onChange) {
-            const value = getCheckedValue(evt);
-            onChange(evt.target.id, value ? DERIVATION_DATA_SCOPE_CHILD_ONLY : '');
-        }
-    };
+    if (config.dataTypeFilter && fieldDataType && !config.dataTypeFilter(fieldDataType)) return null;
 
-    renderHelp() {
-        const { config } = this.props;
-        return config.helpLinkNode ? (
-            config.helpLinkNode
-        ) : (
-            <LabelHelpTip title="Child-specific field">
-                <div>
-                    <p>If checked, this field is only available for child data.</p>
-                </div>
-            </LabelHelpTip>
-        );
-    }
-
-    render() {
-        const { index, label, value, lockType, domainIndex, config } = this.props;
-
-        return (
-            <div>
-                <Row>
-                    <Col xs={12}>
-                        <SectionHeading title={label} cls="domain-field-section-hdr" />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={3}>
-                        <Checkbox
+    return (
+        <div>
+            <Row>
+                <Col xs={12}>
+                    <SectionHeading
+                        title={label ?? config.sectionTitle}
+                        cls="domain-field-section-hdr"
+                        helpTipBody={config.helpLinkNode}
+                    />
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12}>
+                    <div className="derivation_scope_options_container">
+                        <Radio
+                            name={inputId}
+                            value={DERIVATION_DATA_SCOPES.PARENT_ONLY}
                             checked={
-                                value?.toLocaleLowerCase() === DERIVATION_DATA_SCOPE_CHILD_ONLY.toLocaleLowerCase()
+                                (!value && !isExistingNonScopedField) || value === DERIVATION_DATA_SCOPES.PARENT_ONLY
                             }
-                            onChange={this.handleCheckboxChange}
-                            id={createFormInputId(DOMAIN_FIELD_DERIVATION_DATA_SCOPE, domainIndex, index)}
-                            disabled={config.disable || isFieldFullyLocked(lockType)}
-                            name={createFormInputName(DOMAIN_FIELD_DERIVATION_DATA_SCOPE)}
+                            onChange={onRadioChange}
+                            disabled={isFullyLocked || !isParentOnlyValidOption}
                         >
-                            {config.fieldLabel}
-                            {this.renderHelp()}
-                        </Checkbox>
-                    </Col>
+                            {config.labelParent}
+                        </Radio>
+                        <Radio
+                            name={inputId}
+                            value={DERIVATION_DATA_SCOPES.CHILD_ONLY}
+                            checked={value === DERIVATION_DATA_SCOPES.CHILD_ONLY}
+                            onChange={onRadioChange}
+                            disabled={isFullyLocked || !isChildOnlyValidOption}
+                        >
+                            {config.labelChild}
+                        </Radio>
+                        <Radio
+                            name={inputId}
+                            value={DERIVATION_DATA_SCOPES.ALL}
+                            checked={value === DERIVATION_DATA_SCOPES.ALL || (!value && isExistingNonScopedField)}
+                            onChange={onRadioChange}
+                            disabled={isFullyLocked}
+                        >
+                            {config.labelAll}
+                        </Radio>
+                    </div>
+                </Col>
+            </Row>
+            {hasScopeChange && config.scopeChangeWarning && (
+                <Row>
+                    <Alert bsStyle="warning" className="aliquot-alert-warning">{config.scopeChangeWarning}</Alert>
                 </Row>
-            </div>
-        );
-    }
-}
+            )}
+        </div>
+    );
+});
+
+DerivationDataScopeFieldOptions.defaultProps = {
+    config: {
+        show: true,
+        sectionTitle: 'Derivation Data Scope',
+        labelAll: 'Editable for parent and child data independently',
+        labelChild: 'Editable for child data only',
+        labelParent: 'Editable for parent data only (default)',
+    },
+};

@@ -274,10 +274,14 @@ export const exportEditedData = (
 export const getEditorTableData = (
     editorModel: EditorModel,
     queryModel: QueryModel,
-    readOnlyColumns: List<string>,
     headings: OrderedMap<string, string>,
     editorData: OrderedMap<string, OrderedMap<string, any>>,
-    extraColumns?: Array<Partial<QueryColumn>>
+    readOnlyColumns?: List<string>,
+    insertColumns?: List<QueryColumn>,
+    updateColumns?: List<QueryColumn>,
+    forUpdate?: boolean,
+    extraColumns?: Array<Partial<QueryColumn>>,
+    colFilter?: (col: QueryColumn) => boolean
 ): [Map<string, string>, Map<string, Map<string, any>>] => {
     const tabData = editorModel
         .getRawDataFromGridData(
@@ -285,14 +289,22 @@ export const getEditorTableData = (
             fromJS(queryModel.orderedRows),
             queryModel.queryInfo,
             true,
-            true,
+            forUpdate,
             readOnlyColumns,
-            extraColumns
+            extraColumns,
+            colFilter
         )
         .toArray();
 
-    const updateColumns = queryModel.queryInfo.getUpdateColumns(readOnlyColumns);
-    updateColumns.forEach(col => (headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)));
+    const columns = editorModel.getColumns(
+        queryModel.queryInfo,
+        forUpdate,
+        readOnlyColumns,
+        insertColumns,
+        updateColumns,
+        colFilter
+    );
+    columns.forEach(col => (headings = headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption)));
 
     if (extraColumns) {
         extraColumns.forEach(col => {
@@ -303,7 +315,7 @@ export const getEditorTableData = (
     tabData.forEach((row, idx) => {
         const rowId = row.get('RowId') ?? idx;
         let draftRow = editorData.get(rowId) ?? OrderedMap<string, any>();
-        updateColumns.forEach(col => {
+        columns.forEach(col => {
             draftRow = draftRow.set(col.fieldKey, row.get(col.fieldKey));
         });
 

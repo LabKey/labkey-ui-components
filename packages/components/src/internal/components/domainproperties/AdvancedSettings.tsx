@@ -37,37 +37,37 @@ import {
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface AdvancedSettingsProps {
-    domainId?: number;
-    helpNoun: string;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
-    label: string;
-    index: number;
-    show: boolean;
-    maxPhiLevel: string;
-    field: DomainField;
-    onHide: () => any;
-    onApply: (any) => any;
-    showDefaultValueSettings: boolean;
-    domainIndex: number;
-    successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    domainId?: number;
+    domainIndex: number;
+    field: DomainField;
+    helpNoun: string;
+    index: number;
+    label: string;
+    maxPhiLevel: string;
+    onApply: (any) => any;
+    onHide: () => any;
+    show: boolean;
+    showDefaultValueSettings: boolean;
+    successBsStyle?: string;
 }
 
 interface AdvancedSettingsState {
+    PHI?: string;
+    defaultDisplayValue?: string;
+    defaultValueType?: string;
+    dimension?: boolean;
+    excludeFromShifting?: boolean;
     hidden?: boolean;
+    measure?: boolean;
+    mvEnabled?: boolean;
+    phiLevels?: List<any>;
+    recommendedVariable?: boolean;
     shownInDetailsView?: boolean;
     shownInInsertView?: boolean;
     shownInUpdateView?: boolean;
-    defaultValueType?: string;
-    defaultDisplayValue?: string;
-    dimension?: boolean;
-    measure?: boolean;
-    mvEnabled?: boolean;
-    recommendedVariable?: boolean;
-    PHI?: string;
-    phiLevels?: List<any>;
-    excludeFromShifting?: boolean;
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -334,6 +334,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     renderMiscOptions = () => {
         const { index, field, domainIndex, domainFormDisplayOptions } = this.props;
         const { measure, dimension, mvEnabled, recommendedVariable, PHI, excludeFromShifting, phiLevels } = this.state;
+        const currentValueExists = phiLevels?.find(level => level.value === PHI) !== undefined;
+        const disablePhiSelect =
+            domainFormDisplayOptions.phiLevelDisabled || field.disablePhiLevel || !currentValueExists;
 
         return (
             <>
@@ -349,10 +352,15 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             id={createFormInputId(DOMAIN_FIELD_PHI, domainIndex, index)}
                             onChange={this.handleChange}
                             value={PHI}
-                            disabled={domainFormDisplayOptions.phiLevelDisabled || field.disablePhiLevel}
+                            disabled={disablePhiSelect}
                         >
-                            {phiLevels.map((level, i) => (
-                                <option key={i} value={level.value}>
+                            {!currentValueExists && (
+                                <option key={PHI} value={PHI}>
+                                    {DOMAIN_PHI_LEVELS.find(level => level.value === PHI)?.label ?? PHI}
+                                </option>
+                            )}
+                            {phiLevels.map(level => (
+                                <option key={level.value} value={level.value}>
                                     {level.label}
                                 </option>
                             ))}

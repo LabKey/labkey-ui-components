@@ -245,6 +245,21 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             <div className="domain-row-container">
                 <div className="domain-row-container-expand-spacer" />
                 <div className="domain-row-container-expanded">
+                    {domainFormDisplayOptions?.derivationDataScopeConfig?.show && (
+                        <Col xs={12}>
+                            <DerivationDataScopeFieldOptions
+                                index={index}
+                                domainIndex={domainIndex}
+                                config={domainFormDisplayOptions?.derivationDataScopeConfig}
+                                value={field.derivationDataScope}
+                                label={domainFormDisplayOptions?.derivationDataScopeConfig?.sectionTitle}
+                                onChange={onChange}
+                                lockType={field.lockType}
+                                isExistingField={!field.isNew()}
+                                fieldDataType={field.dataType}
+                            />
+                        </Col>
+                    )}
                     <Col xs={12}>{this.typeDependentOptions()}</Col>
                     <Col xs={12}>
                         <NameAndLinkingOptions
@@ -255,19 +270,6 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                             appPropertiesOnly={appPropertiesOnly}
                         />
                     </Col>
-                    {domainFormDisplayOptions?.derivationDataScopeConfig?.show && (
-                        <Col xs={12} lg={10}>
-                            <DerivationDataScopeFieldOptions
-                                index={index}
-                                domainIndex={domainIndex}
-                                config={domainFormDisplayOptions?.derivationDataScopeConfig}
-                                value={field.derivationDataScope}
-                                label={domainFormDisplayOptions?.derivationDataScopeConfig?.sectionTitle}
-                                onChange={onChange}
-                                lockType={field.lockType}
-                            />
-                        </Col>
-                    )}
                     {!isFieldFullyLocked(field.lockType) && (
                         <Col xs={12}>
                             <ConditionalFormattingAndValidation

@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XX July 2022
 * Issue 44518: Use date picker for date fields in editable grid.
 
+### version 2.196.0
+*Released*: 7 July 2022
+* Item 10437: Aliquot Field Inheritance
+    * Update DerivationDataScopeFieldOptions, SampleTypeDesigner, EntityInsertPanel and SamplesBulkUpdateForm to support aliquot & sample options
+
 ### version 2.195.1
 *Released*: 7 July 2022
 * Issue 44599: Field editor PHI Level doesn't show correct value for a field if the admin user does not have that level of PHI access

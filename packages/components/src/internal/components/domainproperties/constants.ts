@@ -210,6 +210,10 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideConditionalFormatting: false,
 };
 
-export const DERIVATION_DATA_SCOPE_CHILD_ONLY = 'ChildOnly';
+export const DERIVATION_DATA_SCOPES = {
+    CHILD_ONLY: 'ChildOnly',
+    PARENT_ONLY: 'ParentOnly',
+    ALL: 'All',
+};
 
 export const MAX_VALID_TEXT_CHOICES = 200;

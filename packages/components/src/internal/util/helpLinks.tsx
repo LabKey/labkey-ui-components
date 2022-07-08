@@ -37,7 +37,7 @@ export const URL_ENCODING_TOPIC = 'urlEncoding';
 export const SEARCH_SYNTAX_TOPIC = 'luceneSearch';
 export const DATA_IMPORT_TOPIC = 'dataImport';
 
-export const SAMPLE_ALIQUOT_TOPIC = 'aliquot';
+export const SAMPLE_ALIQUOT_TOPIC = 'aliquots';
 
 export const UNIQUE_IDS_TOPIC = 'uniqueStorageIds';
 

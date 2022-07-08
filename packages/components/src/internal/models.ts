@@ -58,27 +58,30 @@ type DataViewInfoType =
  * a subset of the fields that are used by the client.
  */
 export interface IDataViewInfo {
+    // This is a client side only attribute. Used to navigate within a Single Page App.
+    appUrl?: AppURL;
     created?: Date;
     createdBy?: string;
     description?: string;
     detailsUrl?: string;
     icon?: string;
     iconCls?: string;
-    id?: string;// This is actually a uuid from the looks of it, should we be more strict on the type here?
+    // This is actually a uuid from the looks of it, should we be more strict on the type here?
+    id?: string;
     modified?: Date;
     modifiedBy?: string;
     name?: string;
     queryName?: string;
-    reportId?: string; // This is in the format of "db:953", not quite sure why we have an id and reportId.
-    runUrl?: string; // This comes directly from the API response and is a link to LK Server
-    visible?: boolean;
+    // This is in the format of "db:953", not quite sure why we have an id and reportId.
+    reportId?: string;
+    // This comes directly from the API response and is a link to LK Server
+    runUrl?: string;
     schemaName?: string;
     shared?: boolean;
     thumbnail?: string; // This is actually a URL, do we enforce that?
     type?: DataViewInfoType;
     viewName?: string;
-
-    appUrl?: AppURL; // This is a client side only attribute. Used to navigate within a Single Page App.
+    visible?: boolean;
 }
 
 export interface DataViewClientMetadata extends IDataViewInfo {
@@ -330,7 +333,8 @@ export class EditorModel
         forUpdate?: boolean,
         readOnlyColumns?: List<string>,
         insertColumns?: List<QueryColumn>,
-        updateColumns?: List<QueryColumn>
+        updateColumns?: List<QueryColumn>,
+        colFilter?: (col: QueryColumn) => boolean
     ): List<QueryColumn> {
         let columns;
 
@@ -340,6 +344,7 @@ export class EditorModel
             columns = insertColumns ? insertColumns : queryInfo.getInsertColumns();
         }
 
+        if (colFilter) columns = columns.filter(colFilter);
         // file input columns are not supported in the editable grid, so remove them
         return columns.filter(col => !col.isFileInput);
     }
@@ -351,10 +356,11 @@ export class EditorModel
         displayValues = true,
         forUpdate = false,
         readOnlyColumns?: List<string>,
-        extraColumns?: Array<Partial<QueryColumn>>
+        extraColumns?: Array<Partial<QueryColumn>>,
+        colFilter?: (col: QueryColumn) => boolean
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
-        const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns);
+        const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns, undefined, undefined, colFilter);
         const additionalColumns = [];
         if (extraColumns) {
             extraColumns.forEach(col => {

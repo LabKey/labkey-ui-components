@@ -11,7 +11,7 @@ export interface NotificationsContextProps {
     dismissNotifications: (id?: string, persistence?: Persistence) => void;
 }
 
-interface NotificationsContextState extends NotificationsContextProps {
+export interface NotificationsContextState extends NotificationsContextProps {
     notifications: Map<string, NotificationItemModel>;
     resetNotifications: () => void;
     updateNotification: (id: string, updates: any, failIfNotFound?: boolean) => void;
@@ -27,9 +27,13 @@ export const useNotificationsContext = (): NotificationsContextState => {
     return context;
 };
 
-export const NotificationsContextProvider: FC = memo(({ children }) => {
+export interface NotificationsContextProviderProps {
+    initialContext?: NotificationsContextState;
+}
+
+export const NotificationsContextProvider: FC<NotificationsContextProviderProps> = memo(({ children, initialContext }) => {
     const [notifications, setNotifications] = useState<Map<string, NotificationItemModel>>(
-        Map<string, NotificationItemModel>()
+        initialContext?.notifications ?? Map<string, NotificationItemModel>()
     );
 
     /**

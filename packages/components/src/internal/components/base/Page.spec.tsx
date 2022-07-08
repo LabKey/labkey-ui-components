@@ -16,14 +16,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { notificationInit } from '../../../test/setupUtils';
-
 import { Page } from './Page';
 import { PageHeader } from './PageHeader';
-
-beforeEach(() => {
-    notificationInit();
-});
 
 describe('<Page /> document title', () => {
     test('empty properties', () => {

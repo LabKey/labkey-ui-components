@@ -15,31 +15,78 @@
  */
 import React from 'react';
 import moment from 'moment';
+import { Map } from 'immutable';
 
-import { notificationInit } from '../../../test/setupUtils';
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../testHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 
 import { Notifications } from './Notifications';
-import { createNotification } from './actions';
 import { NotificationItemModel } from './model';
 import { NotificationItem } from './NotificationItem';
 
 beforeEach(() => {
-    notificationInit();
+    LABKEY.moduleContext = {
+        study: {
+            subject: {
+                nounPlural: 'Participants',
+                tableName: 'Participant',
+                nounSingular: 'Participant',
+                columnName: 'ParticipantId',
+            },
+            timepointType: 'VISIT',
+        },
+    };
+    LABKEY.container = {
+        title: 'Test Container',
+        path: 'testContainer',
+        formats: {
+            dateTimeFormat: 'yyyy-MM-dd HH:mm',
+            numberFormat: null,
+            dateFormat: 'yyyy-MM-dd',
+        },
+        id: 'testContainerEntityId',
+        activeModules: [
+            'Wiki',
+            'Issues',
+            'Search',
+            'FileContent',
+            'Assay',
+            'Experiment',
+            'Query',
+            'Pipeline',
+            'Internal',
+            'API',
+            'Announcements',
+            'Core',
+        ],
+    };
+    LABKEY.project = {
+        id: '2f59536d-4186-1039-be5d-ea54f212ba60',
+        path: '/TestProjectName',
+        rootId: '7aacb1a7-040d-1037-88ec-f467162bb89c',
+        name: 'Test Project Name',
+        title: 'Test Project Title',
+    };
 });
 
 describe('<Notification/>', () => {
     test('no notifications', () => {
-        const notifications = mountWithServerContext(<Notifications />, { user: TEST_USER_READER });
+        const notifications = mountWithAppServerContext(<Notifications />, {}, { user: TEST_USER_READER });
         expect(notifications.find(NotificationItem)).toHaveLength(0);
     });
 
     test('one notification', () => {
         const alertClass = 'success';
         const message = 'one is the loneliest number';
-        createNotification(new NotificationItemModel({ alertClass, id: 'one_notification', message }));
-        const notifications = mountWithServerContext(<Notifications />, { user: TEST_USER_READER });
+        // createNotification();
+        const notifications = mountWithAppServerContext(
+            <Notifications />,
+            {},
+            { user: TEST_USER_READER },
+            {
+                notifications: Map.of('one_notification', new NotificationItemModel({ alertClass, id: 'one_notification', message })),
+            }
+        );
         expect(notifications.find(NotificationItem)).toHaveLength(1);
         expect(notifications.find('.alert-success')).toHaveLength(1);
         expect(notifications.find(NotificationItem).at(0).text()).toEqual(message);
@@ -52,8 +99,14 @@ describe('<Notification/>', () => {
             new NotificationItemModel({ id: 'default1', message: 'default message class' }),
             new NotificationItemModel({ alertClass: 'danger', id: 'danger1', message: 'Danger, Will Robinson!' }),
         ];
-        models.forEach(model => createNotification(model));
-        const notifications = mountWithServerContext(<Notifications />, { user: TEST_USER_READER });
+        const notifications = mountWithAppServerContext(<Notifications />, {}, { user: TEST_USER_READER }, {
+            notifications: Map.of(
+                models[0].id, models[0],
+                models[1].id, models[1],
+                models[2].id, models[2],
+                models[3].id, models[3],
+            )
+        });
         expect(notifications.find(NotificationItem)).toHaveLength(4);
         expect(notifications.find('.notification-container')).toHaveLength(3);
         expect(notifications.find('.alert-success').exists()).toEqual(true);
@@ -72,7 +125,7 @@ describe('<Notification/>', () => {
                 upgradeLinkText: 'Upgrade now',
             },
         };
-        const notifications = mountWithServerContext(<Notifications />, { user: TEST_USER_READER, moduleContext });
+        const notifications = mountWithAppServerContext(<Notifications />, {}, { user: TEST_USER_READER, moduleContext });
         expect(notifications.find(NotificationItem)).toHaveLength(1);
         expect(notifications.find('a')).toHaveLength(0);
         expect(notifications.find(NotificationItem).at(0).text()).toContain('This LabKey trial site will expire in ');
@@ -86,7 +139,7 @@ describe('<Notification/>', () => {
                 upgradeLinkText: 'Upgrade now',
             },
         };
-        const notifications = mountWithServerContext(<Notifications />, { user: TEST_USER_APP_ADMIN, moduleContext });
+        const notifications = mountWithAppServerContext(<Notifications />, {}, { user: TEST_USER_APP_ADMIN, moduleContext });
         expect(notifications.find(NotificationItem)).toHaveLength(1);
         expect(notifications.find(NotificationItem).at(0).text()).toContain('This LabKey trial site will expire in ');
         expect(notifications.find('a')).toHaveLength(1);

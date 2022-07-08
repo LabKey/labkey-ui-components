@@ -15,7 +15,7 @@ import { URL_MAPPERS, URLService } from './url/URLResolver';
 import { AppContext, AppContextProvider } from './AppContext';
 import { getTestAPIWrapper } from './APIWrapper';
 
-import { NotificationsContextProvider } from './components/notifications/NotificationsContext';
+import { NotificationsContextProvider, NotificationsContextState } from './components/notifications/NotificationsContext';
 
 declare let LABKEY: LabKey;
 
@@ -88,17 +88,18 @@ export const makeTestData = (getQueryResponse): RowsResponse => {
 
 interface AppContextTestProviderProps {
     appContext: Partial<AppContext>;
+    notificationContext: Partial<NotificationsContextState>;
     serverContext: Partial<ServerContext>;
 }
 
 export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => {
-    const { appContext, children, serverContext } = props;
+    const { appContext, children, serverContext, notificationContext } = props;
     const initialAppContext = useMemo(() => ({ api: getTestAPIWrapper(), ...appContext }), [appContext]);
 
     return (
         <ServerContextProvider initialContext={serverContext as ServerContext}>
             <AppContextProvider initialContext={initialAppContext}>
-                <NotificationsContextProvider>
+                <NotificationsContextProvider initialContext={notificationContext as NotificationsContextState}>
                     {children}
                 </NotificationsContextProvider>
             </AppContextProvider>
@@ -118,11 +119,12 @@ export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => 
 export const mountWithAppServerContextOptions = (
     appContext?: Partial<AppContext>,
     serverContext?: Partial<ServerContext>,
+    notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps
 ): MountRendererProps => {
     return {
         wrappingComponent: AppContextTestProvider,
-        wrappingComponentProps: { appContext, serverContext },
+        wrappingComponentProps: { appContext, serverContext, notificationContext },
         ...options,
     };
 };
@@ -140,10 +142,11 @@ export const mountWithAppServerContext = (
     node: ReactElement,
     appContext?: Partial<AppContext>,
     serverContext?: Partial<ServerContext>,
+    notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps
 ): ReactWrapper => {
     // NOTE: For internal package use only. Do not export externally as it will not work for external usages.
-    return mount(node, mountWithAppServerContextOptions(appContext, serverContext, options));
+    return mount(node, mountWithAppServerContextOptions(appContext, serverContext, notificationContext, options));
 };
 
 /**

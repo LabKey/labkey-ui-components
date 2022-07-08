@@ -1,6 +1,7 @@
 import React, { FC, ReactElement, useMemo } from 'react';
 import { act } from 'react-dom/test-utils';
 import { Map } from 'immutable';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { mount, MountRendererProps, ReactWrapper } from 'enzyme';
 import { LabKey, Query } from '@labkey/api';
 
@@ -13,7 +14,8 @@ import { bindColumnRenderers } from './renderers';
 import { URL_MAPPERS, URLService } from './url/URLResolver';
 import { AppContext, AppContextProvider } from './AppContext';
 import { getTestAPIWrapper } from './APIWrapper';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
+import { NotificationsContextProvider } from './components/notifications/NotificationsContext';
 
 declare let LABKEY: LabKey;
 
@@ -95,7 +97,11 @@ export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => 
 
     return (
         <ServerContextProvider initialContext={serverContext as ServerContext}>
-            <AppContextProvider initialContext={initialAppContext}>{children}</AppContextProvider>
+            <AppContextProvider initialContext={initialAppContext}>
+                <NotificationsContextProvider>
+                    {children}
+                </NotificationsContextProvider>
+            </AppContextProvider>
         </ServerContextProvider>
     );
 };

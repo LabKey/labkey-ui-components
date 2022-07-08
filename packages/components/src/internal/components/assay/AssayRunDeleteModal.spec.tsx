@@ -1,11 +1,11 @@
 import React from 'react';
-import { mount } from 'enzyme';
 
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
+import { mountWithAppServerContext } from '../../testHelpers';
 
 describe('<AssayRunDeleteModal/>', () => {
     test('Show progress', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <AssayRunDeleteModal
                 afterDelete={jest.fn()}
                 afterDeleteFailure={jest.fn()}

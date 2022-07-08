@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 import { Button, Modal, ModalFooter, ModalTitle } from 'react-bootstrap';
 
 import { Alert, OperationConfirmationData, Picklist } from '../../..';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
-import { waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 import { PicklistEditModal } from './PicklistEditModal';
@@ -92,7 +92,7 @@ describe('PicklistEditModal', () => {
     }
 
     test('create empty picklist', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <PicklistEditModal
                 selectionKey="selection"
                 selectedQuantity={0}
@@ -106,7 +106,7 @@ describe('PicklistEditModal', () => {
     });
 
     test('create picklist from multiple selections', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <PicklistEditModal
                 selectionKey="selection"
                 selectedQuantity={2}
@@ -120,7 +120,7 @@ describe('PicklistEditModal', () => {
     });
 
     test('create picklist from one selection', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <PicklistEditModal
                 selectionKey="selection"
                 selectedQuantity={1}
@@ -134,21 +134,21 @@ describe('PicklistEditModal', () => {
     });
 
     test('create empty picklist from sampleIds', () => {
-        const wrapper = mount(<PicklistEditModal sampleIds={[]} onCancel={jest.fn()} onFinish={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(<PicklistEditModal sampleIds={[]} onCancel={jest.fn()} onFinish={jest.fn()} />);
         validateText(wrapper, 'Create an Empty Picklist', 'Create Picklist');
 
         wrapper.unmount();
     });
 
     test('create picklist from one sampleId', () => {
-        const wrapper = mount(<PicklistEditModal sampleIds={['1']} onCancel={jest.fn()} onFinish={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(<PicklistEditModal sampleIds={['1']} onCancel={jest.fn()} onFinish={jest.fn()} />);
         validateText(wrapper, 'Create a New Picklist with This Sample', 'Create Picklist');
 
         wrapper.unmount();
     });
 
     test('create picklist from multiple sampleIds', () => {
-        const wrapper = mount(<PicklistEditModal sampleIds={['1', '2']} onCancel={jest.fn()} onFinish={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(<PicklistEditModal sampleIds={['1', '2']} onCancel={jest.fn()} onFinish={jest.fn()} />);
         validateText(wrapper, 'Create a New Picklist with These Samples', 'Create Picklist');
 
         wrapper.unmount();
@@ -160,7 +160,7 @@ describe('PicklistEditModal', () => {
             name: 'Existing list',
             Description: 'My test description',
         });
-        const wrapper = mount(<PicklistEditModal picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(<PicklistEditModal picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />);
         validateText(wrapper, 'Update Picklist Data', 'Update Picklist');
         const labels = wrapper.find('label');
         expect(labels).toHaveLength(3);
@@ -179,13 +179,13 @@ describe('PicklistEditModal', () => {
             name: 'Existing list',
             Description: 'My test description',
         });
-        const wrapper = mount(<PicklistEditModal picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(<PicklistEditModal picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />);
         expect(wrapper.find('input').at(1).prop('checked')).toBe(true);
         wrapper.unmount();
     });
 
     test('Create picklist, none allowed', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <PicklistEditModal
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
@@ -206,7 +206,7 @@ describe('PicklistEditModal', () => {
     });
 
     test('Create picklist, some allowed', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <PicklistEditModal
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}
@@ -228,7 +228,7 @@ describe('PicklistEditModal', () => {
     });
 
     test('Create picklist, all allowed', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <PicklistEditModal
                 sampleIds={['1', '2']}
                 onCancel={jest.fn()}

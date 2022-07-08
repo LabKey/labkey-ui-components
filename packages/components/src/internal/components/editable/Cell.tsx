@@ -345,6 +345,7 @@ export class Cell extends React.PureComponent<Props> {
                 modifyCell: cellActions.modifyCell,
                 select: cellActions.selectCell,
                 defaultValue: rawDateValue,
+                onKeyDown: this.handleKeys,
             };
 
             return <DateInputCell {...dateProps} />;

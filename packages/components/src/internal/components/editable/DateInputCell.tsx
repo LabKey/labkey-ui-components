@@ -4,6 +4,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { ValueDescriptor } from '../../models';
 import { MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { DatePickerInput } from '../forms/input/DatePickerInput';
+import { formatDate, formatDateTime, isDateTimeCol } from "../../util/Date";
 
 export interface DateInputCellProps {
     col: QueryColumn;
@@ -13,14 +14,23 @@ export interface DateInputCellProps {
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     rowIdx: number;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
+    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void
 }
 
 export const DateInputCell: FC<DateInputCellProps> = memo(props => {
-    const { col, defaultValue, colIdx, rowIdx, disabled } = props;
+    const { col, defaultValue, colIdx, rowIdx, disabled, onKeyDown } = props;
 
-    const onDateInputChange = useCallback((newDate: string) => {
-        const { colIdx, modifyCell, rowIdx, select } = props;
-        modifyCell(colIdx, rowIdx, [{ raw: newDate, display: newDate }], MODIFICATION_TYPES.REPLACE);
+    const onDateInputChange = useCallback((newDate: Date) => {
+        const { colIdx, modifyCell, rowIdx, select, col } = props;
+        let displayValue = null;
+        if (newDate) {
+            if (isDateTimeCol(col))
+                displayValue = formatDateTime(newDate);
+            else
+                displayValue = formatDate(newDate);
+        }
+
+        modifyCell(colIdx, rowIdx, [{ raw: newDate, display: displayValue}], MODIFICATION_TYPES.REPLACE);
         select(colIdx, rowIdx);
     }, []);
 
@@ -40,6 +50,7 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
             isClearable={false}
             autoFocus={true}
             isFormInput={false}
+            onKeyDown={onKeyDown}
         />
     );
 });

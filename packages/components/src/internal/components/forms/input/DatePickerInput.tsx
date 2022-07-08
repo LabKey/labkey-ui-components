@@ -40,7 +40,7 @@ export interface DatePickerInputProps extends DisableableInputProps {
     isFormInput?: boolean;
     label?: any;
     name?: string;
-    onChange?: any;
+    onChange?: (newDate?: Date) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
@@ -52,6 +52,7 @@ export interface DatePickerInputProps extends DisableableInputProps {
     value?: any;
     wrapperClassName?: string;
     labelClassName?: string;
+    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void
 }
 
 interface DatePickerInputState extends DisableableInputState {
@@ -121,10 +122,10 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             };
         });
 
+        if (this.props.onChange && Utils.isFunction(this.props.onChange)) this.props.onChange(date);
+
         // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
         const _date = getJsonDateTimeFormatString(date);
-
-        if (this.props.onChange && Utils.isFunction(this.props.onChange)) this.props.onChange(_date);
         if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(_date);
     };
 
@@ -155,6 +156,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             wrapperClassName,
             autoFocus,
             isFormInput,
+            onKeyDown,
         } = this.props;
 
         const { isDisabled, selectedDate } = this.state;
@@ -174,6 +176,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                 placeholderText={placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`}
                 dateFormat={this.getDateFormat()}
                 autoFocus={autoFocus}
+                onKeyDown={onKeyDown}
             />
         );
 

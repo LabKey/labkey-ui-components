@@ -93,7 +93,7 @@ export const Notifications: FC = () => {
         return () => {
             dismissNotifications();
         };
-    }, [createNotification, dismissNotifications]);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const byType = useMemo(() => {
         return notifications

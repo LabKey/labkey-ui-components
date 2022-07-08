@@ -126,6 +126,7 @@ import { ConfirmModal } from './internal/components/base/ConfirmModal';
 import { formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
+import { NotificationsContextProvider } from './internal/components/notifications/NotificationsContext';
 import {
     NotificationItemModel,
     Persistence,
@@ -1178,6 +1179,7 @@ export {
     Breadcrumb,
     BreadcrumbCreate,
     // notification related items
+    NotificationsContextProvider,
     NO_UPDATES_MESSAGE,
     PIPELINE_JOB_NOTIFICATION_EVENT,
     PIPELINE_JOB_NOTIFICATION_EVENT_START,

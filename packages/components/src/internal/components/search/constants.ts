@@ -1,12 +1,11 @@
-
 export enum SearchScope {
     All = 'All',
-    Project = 'Project',
-    ProjectAndShared = 'ProjectAndShared',
     Folder = 'Folder',
+    FolderAndProject = 'FolderAndProject',
+    FolderAndProjectAndShared = 'FolderAndProjectAndShared',
     FolderAndShared = 'FolderAndShared',
     FolderAndSubfolders = 'FolderAndSubfolders',
     FolderAndSubfoldersAndShared = 'FolderAndSubfoldersAndShared',
-    FolderAndProject = 'FolderAndProject',
-    FolderAndProjectAndShared = 'FolderAndProjectAndShared',
+    Project = 'Project',
+    ProjectAndShared = 'ProjectAndShared',
 }

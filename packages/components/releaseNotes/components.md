@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+Added SearchScope enum and ContainerFilter mapping utility method
+
 ### version 2.196.0
 *Released*: 7 July 2022
 * Item 10437: Aliquot Field Inheritance

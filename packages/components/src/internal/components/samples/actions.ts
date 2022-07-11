@@ -60,7 +60,7 @@ import { findMissingValues } from '../../util/utils';
 import { ParentEntityLineageColumns } from '../entities/constants';
 import { getInitialParentChoices } from '../entities/utils';
 
-import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
+import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
 import { isSampleStatusEnabled } from '../../app/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
@@ -245,12 +245,15 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
         getSampleTypeDetails(SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType))
             .then(sampleTypeDomain => {
                 const metaFields = [],
+                    independentFields = [],
                     aliquotFields = [];
                 const metricUnit = sampleTypeDomain.get('options').get('metricUnit');
 
                 sampleTypeDomain.domainDesign.fields.forEach(field => {
-                    if (field.derivationDataScope === 'ChildOnly') {
+                    if (field.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY) {
                         aliquotFields.push(field.name.toLowerCase());
+                    } else if (field.derivationDataScope === DERIVATION_DATA_SCOPES.ALL) {
+                        independentFields.push(field.name.toLowerCase());
                     } else {
                         metaFields.push(field.name.toLowerCase());
                     }
@@ -258,6 +261,7 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
 
                 resolve({
                     aliquotFields,
+                    independentFields,
                     metaFields,
                     metricUnit,
                 });
@@ -639,7 +643,8 @@ export function getGroupedSampleDisplayColumns(
                 aliquotHeaderDisplayColumns.push(col);
             }
             // display parent meta for aliquot
-            else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
+            else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1
+            || sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
                 aliquotHeaderDisplayColumns.push(col);
             }
         } else {
@@ -651,6 +656,10 @@ export function getGroupedSampleDisplayColumns(
 
     allUpdateColumns.forEach(col => {
         const colName = col.name.toLowerCase();
+        if (sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
+            editColumns.push(col);
+            return;
+        }
         if (isAliquot) {
             if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1) {
                 editColumns.push(col);

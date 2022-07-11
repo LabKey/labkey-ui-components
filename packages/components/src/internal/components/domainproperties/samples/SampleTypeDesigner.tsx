@@ -9,23 +9,26 @@ import {
     ConfirmModal,
     generateId,
     getHelpLink,
+    HelpLink,
     initQueryGridState,
     IParentOption,
     ISelectRowsResult,
+    LabelHelpTip,
     MetricUnitProps,
     naturalSortByProperty,
     resolveErrorMessage,
+    SAMPLE_ALIQUOT_TOPIC,
     SCHEMAS,
 } from '../../../..';
 
-import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DERIVATION_DATA_SCOPES } from '../constants';
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
 import { DEFAULT_SAMPLE_FIELD_CONFIG } from '../../samples/constants';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { UNIQUE_ID_TYPE } from '../PropDescType';
+import { PropDescType, UNIQUE_ID_TYPE } from '../PropDescType';
 
 import { hasModule, isCommunityDistribution } from '../../../app/utils';
 
@@ -55,63 +58,75 @@ const SAMPLE_SET_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
 const SAMPLE_SET_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
 const SAMPLE_SET_HELP_TOPIC = 'createSampleType';
 
+const ALIQUOT_OPTIONS_HELP = (
+    <div>
+        <p>
+            <b>Editable for samples only:</b> Field is editable for samples but not for aliquots. An aliquot will
+            inherit the field value from its parent sample.
+        </p>
+        <p>
+            <b>Editable for aliquots only:</b> Field is viewable and editable for aliquots but not for samples.
+        </p>
+        <p>
+            <b>Separately editable for samples and aliquots:</b> Field is editable for samples and aliquots
+            independently.
+        </p>
+        <br />
+        <p>
+            Learn more about <HelpLink topic={SAMPLE_ALIQUOT_TOPIC}>Sample Aliquots</HelpLink>.
+        </p>
+    </div>
+);
+
 interface Props {
+    aliquotNamePatternProps?: AliquotNamePatternProps;
     api?: ComponentsAPIWrapper;
-    onChange?: (model: SampleTypeModel) => void;
-    onCancel: () => void;
-    onComplete: (response: DomainDesign) => void;
+    appPropertiesOnly?: boolean;
     beforeFinish?: (model: SampleTypeModel) => void;
-    initModel: DomainDetails;
+    // This sets the top of the sticky header, default is 0
+    containerTop?: number;
+    dataClassAliasCaption?: string;
+    dataClassParentageLabel?: string;
+    dataClassTypeCaption?: string;
     defaultSampleFieldConfig?: Partial<IDomainField>;
-    includeDataClasses?: boolean;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
     headerText?: string;
     helpTopic?: string;
-    useSeparateDataClassesAliasMenu?: boolean;
-    sampleAliasCaption?: string;
-    sampleTypeCaption?: string;
-    dataClassAliasCaption?: string;
-    dataClassTypeCaption?: string;
-    dataClassParentageLabel?: string;
-    showParentLabelPrefix?: boolean;
+    includeDataClasses?: boolean;
+    initModel: DomainDetails;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
-    testMode?: boolean;
-
-    // EntityDetailsForm props
-    nounSingular?: string;
-    nounPlural?: string;
+    metricUnitProps?: MetricUnitProps;
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
-
-    // DomainDesigner props
-    containerTop?: number; // This sets the top of the sticky header, default is 0
-    useTheme?: boolean;
-    showLinkToStudy?: boolean;
-    appPropertiesOnly?: boolean;
-    successBsStyle?: string;
+    nounPlural?: string;
+    nounSingular?: string;
+    onCancel: () => void;
+    onChange?: (model: SampleTypeModel) => void;
+    onComplete: (response: DomainDesign) => void;
+    sampleAliasCaption?: string;
+    sampleTypeCaption?: string;
     saveBtnText?: string;
-
-    metricUnitProps?: MetricUnitProps;
-
-    validateProperties?: (designerDetails?: any) => Promise<any>;
-
-    domainFormDisplayOptions?: IDomainFormDisplayOptions;
-
-    aliquotNamePatternProps?: AliquotNamePatternProps;
-
-    validateNameExpressions?: boolean;
-
+    showAliquotOptions?: boolean;
     showGenIdBanner?: boolean;
+    showLinkToStudy?: boolean;
+    showParentLabelPrefix?: boolean;
+    successBsStyle?: string;
+    testMode?: boolean;
+    useSeparateDataClassesAliasMenu?: boolean;
+    useTheme?: boolean;
+    validateNameExpressions?: boolean;
+    validateProperties?: (designerDetails?: any) => Promise<any>;
 }
 
 interface State {
-    model: SampleTypeModel;
-    parentOptions: IParentOption[];
     error: React.ReactNode;
+    model: SampleTypeModel;
+    nameExpressionWarnings: string[];
+    namePreviews: string[];
+    namePreviewsLoading: boolean;
+    parentOptions: IParentOption[];
     showUniqueIdConfirmation: boolean;
     uniqueIdsConfirmed: boolean;
-    nameExpressionWarnings: string[];
-    namePreviewsLoading: boolean;
-    namePreviews: string[];
 }
 
 class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -475,7 +490,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 if (response.error) {
                     const updatedModel = model.set('exception', response.error) as SampleTypeModel;
                     setSubmitting(false, () => {
-                        this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false, }));
+                        this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false }));
                     });
                     return;
                 }
@@ -484,7 +499,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             console.error(error);
             const exception = resolveErrorMessage(error);
             setSubmitting(false, () => {
-                this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel, showUniqueIdConfirmation: false, }));
+                this.setState(() => ({
+                    model: model.set('exception', exception) as SampleTypeModel,
+                    showUniqueIdConfirmation: false,
+                }));
             });
             return;
         }
@@ -514,7 +532,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             console.error(error);
             const exception = resolveErrorMessage(error);
             setSubmitting(false, () => {
-                this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel, showUniqueIdConfirmation: false, }));
+                this.setState(() => ({
+                    model: model.set('exception', exception) as SampleTypeModel,
+                    showUniqueIdConfirmation: false,
+                }));
             });
             return;
         }
@@ -535,7 +556,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                   }) as SampleTypeModel);
 
             setSubmitting(false, () => {
-                this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false, }));
+                this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false }));
             });
         }
     };
@@ -653,6 +674,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             showLinkToStudy,
             aliquotNamePatternProps,
             initModel,
+            showAliquotOptions,
             showGenIdBanner,
         } = this.props;
         const {
@@ -779,6 +801,20 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                         showScannableOption: true,
                         textChoiceLockedSqlFragment:
                             "MAX(CASE WHEN SampleState.StatusType = 'Locked' THEN 1 ELSE 0 END)",
+                        derivationDataScopeConfig: {
+                            show: showAliquotOptions,
+                            dataTypeFilter: (dataType: PropDescType) => !dataType.isUniqueId(),
+                            sectionTitle: 'Sample/Aliquot Options',
+                            labelAll: 'Separately editable for samples and aliquots',
+                            labelChild: 'Editable for aliquots only',
+                            labelParent: 'Editable for samples only (default)',
+                            helpLinkNode: ALIQUOT_OPTIONS_HELP,
+                            scopeChangeWarning:
+                                "Updating a 'Samples Only' field to be 'Samples and Aliquots' will blank out the field values for all aliquots. This action cannot be undone. ",
+                        },
+                    }}
+                    newFieldConfig={{
+                        derivationDataScope: DERIVATION_DATA_SCOPES.PARENT_ONLY
                     }}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
@@ -787,7 +823,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                         title={'Updating Sample Type with Unique ID field' + (numNewUniqueIdFields !== 1 ? 's' : '')}
                         onCancel={this.onUniqueIdCancel}
                         onConfirm={this.onUniqueIdConfirm}
-                        confirmButtonText={submitting ? "Finishing ..." : "Finish Updating Sample Type"}
+                        confirmButtonText={submitting ? 'Finishing ...' : 'Finish Updating Sample Type'}
                         confirmVariant="success"
                         cancelButtonText="Cancel"
                         submitting={submitting}

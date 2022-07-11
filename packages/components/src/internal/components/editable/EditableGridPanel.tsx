@@ -43,7 +43,8 @@ const exportHandler = (
             readOnlyColumns,
             headings,
             editorData,
-            extraColumns
+            extraColumns,
+            true
         );
         headings = modelHeadings;
         editorData = modelEditorData;

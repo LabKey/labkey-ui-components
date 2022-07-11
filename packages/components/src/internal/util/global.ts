@@ -33,7 +33,7 @@ export function initBrowserHistoryState() {
  */
 export function getBrowserHistory() {
     if (!_BrowserHistory) {
-        throw new Error('Must call initBrowserHistoryState before you can access the global.BrowserHistory object.');
+        throw new Error('Must call initBrowserHistoryState before you can access the global BrowserHistory object.');
     }
 
     return _BrowserHistory;

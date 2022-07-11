@@ -686,6 +686,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             }),
             () => {
                 this.changeTargetEntityType(null, null, null);
+                this.props.setIsDirty?.(false);
             }
         );
     };

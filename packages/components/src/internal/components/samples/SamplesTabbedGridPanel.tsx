@@ -108,6 +108,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             editableGridDataForSelection: Map<string, any>
         ): Promise<Map<string, any>> => {
             setEditableGridUpdateData(editableGridUpdateData_);
+            setIsDirty?.(true);
             return Promise.resolve(editableGridDataForSelection);
         },
         []

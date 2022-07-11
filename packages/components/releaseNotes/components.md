@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Remove reactn dependency
   * convert notifications to use a NotificationsContext (plus useNotificationsContext and withNotificationsContext)
+  * EditableGridPanelForUpdate update so that it stores and display data errors as an Alert instead of having app use createNotification
 
 ### version 2.196.0
 *Released*: 7 July 2022

@@ -218,7 +218,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 sampleSchemaQuery = data.schemaQuery;
                 if (sampleItems) {
                     sampleRows.forEach(row => {
-                        if (consumedStatusIds.indexOf(caseInsensitive(row, 'sampleState')) > -1) {
+                        if (consumedStatusIds?.indexOf(caseInsensitive(row, 'sampleState')) > -1) {
                             const sampleId = caseInsensitive(row, 'RowId');
                             const existingStorageItem = sampleItems[sampleId];
                             if (existingStorageItem) {
@@ -288,14 +288,9 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
         const convertedStorageData = this.getStorageUpdateData(storageRows);
         if (convertedStorageData?.errors) {
-            return new Promise(resolve => {
+            return new Promise((resolve, reject) => {
                 this._hasError = true;
-                this.props.dismissNotifications(); // get rid of any error notifications that have already been created
-                this.props.createNotification({
-                    alertClass: 'danger',
-                    message: convertedStorageData?.errors.join('\n'),
-                });
-                resolve('There were errors during the save.');
+                reject(convertedStorageData?.errors.join('\n'));
             });
         }
 
@@ -371,13 +366,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
                 },
                 failure: reason => {
                     this._hasError = true;
-                    this.props.dismissNotifications(); // get rid of any error notifications that have already been created
-                    //TODO this is causing editable grid to rerender and then lose edits
-                    this.props.createNotification({
-                        alertClass: 'danger',
-                        message: resolveErrorMessage(reason, 'sample', 'samples', 'update'),
-                    });
-                    resolve(reason);
+                    reject(resolveErrorMessage(reason, 'sample', 'samples', 'update'));
                 },
             });
         });

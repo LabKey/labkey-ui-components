@@ -2,6 +2,7 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 're
 import { fromJS, List, Map } from 'immutable';
 
 import {
+    Alert,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditorModel,
@@ -14,7 +15,7 @@ import {
     QueryModel,
     useNotificationsContext,
     WizardNavButtons,
-} from '../../../index';
+} from '../../..';
 import { capitalizeFirstChar } from '../../util/utils';
 
 import {
@@ -91,6 +92,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [editableGridModels, setEditableGridModels] = useState<EditableGridModels>();
     const [entityParentsMap, setEntityParentsMap] = useState<Map<string, List<EntityParentType>>>();
+    const [error, setError] = useState<boolean>();
 
     useEffect(() => {
         const dataModels = [];
@@ -181,10 +183,12 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         if (gridDataAllTabs.length > 0) {
             setIsSubmitting(true);
             updateAllTabRows(gridDataAllTabs).then(result => {
+                console.log('result', result);
                 setIsSubmitting(false);
-                if (result !== false) {
-                    onComplete();
-                }
+                onComplete();
+            }).catch(error => {
+                setIsSubmitting(false);
+                setError(error);
             });
         } else {
             setIsSubmitting(false);
@@ -333,6 +337,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 readOnlyColumns={readOnlyColumns}
                 extraExportColumns={extraExportColumns}
             />
+            <Alert>{error}</Alert>
             <WizardNavButtons
                 cancel={onCancel}
                 nextStep={onSubmit}

@@ -22,7 +22,6 @@ export interface RenderOptions {
     containerFilter?: Query.ContainerFilter;
     /** A container path that will be applied to all query-based inputs on this form */
     containerPath?: string;
-    useDatePicker?: boolean;
 }
 
 export type DetailRenderer = (
@@ -111,7 +110,6 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
         data,
         displayColumns,
         editingMode,
-        useDatePicker,
         fileInputRenderer,
         fieldHelpTexts,
         onAdditionalFormDataChange,
@@ -137,7 +135,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
             displayColumns,
             detailRenderer,
             titleRenderer,
-            { containerFilter, containerPath, useDatePicker },
+            { containerFilter, containerPath},
             fileInputRenderer,
             onAdditionalFormDataChange
         );
@@ -202,7 +200,6 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
 DetailDisplay.defaultProps = {
     asPanel: false,
     editingMode: false,
-    useDatePicker: true,
 };
 
 DetailDisplay.displayName = 'DetailDisplay';

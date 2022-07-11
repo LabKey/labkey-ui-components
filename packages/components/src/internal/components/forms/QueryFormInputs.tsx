@@ -23,7 +23,6 @@ import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo } from '../
 import { resolveRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';
 import { TextInput } from './input/TextInput';
-import { QueryDateInput } from './input/QueryDateInput';
 import { CheckboxInput } from './input/CheckboxInput';
 import { TextAreaInput } from './input/TextAreaInput';
 import { FileInput } from './input/FileInput';
@@ -69,7 +68,6 @@ export interface QueryFormInputsProps {
     renderFileInputs?: boolean;
     showLabelAsterisk?: boolean; // only used if checkRequiredFields is false, to show * for fields that are originally required
     showQuerySelectPreviewOptions?: boolean;
-    useDatePicker?: boolean;
 }
 
 interface State {
@@ -80,7 +78,6 @@ interface State {
 export class QueryFormInputs extends React.Component<QueryFormInputsProps, State> {
     static defaultProps: Partial<QueryFormInputsProps> = {
         checkRequiredFields: true,
-        useDatePicker: true,
         includeLabelField: false,
         renderFileInputs: false,
         allowFieldDisable: false,
@@ -176,7 +173,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             renderFileInputs,
             allowFieldDisable,
             disabledFields,
-            useDatePicker,
             renderFieldLabel,
             showQuerySelectPreviewOptions,
             onAdditionalFormDataChange,
@@ -329,30 +325,17 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
                     switch (col.jsonType) {
                         case 'date':
-                            return useDatePicker ? (
-                                <DatePickerInput
-                                    key={i}
-                                    queryColumn={col}
-                                    value={value}
-                                    initValueFormatted={false}
-                                    allowDisable={allowFieldDisable}
-                                    initiallyDisabled={shouldDisableField}
-                                    onToggleDisable={this.onToggleDisable}
-                                    addLabelAsterisk={showAsteriskSymbol}
-                                    renderFieldLabel={renderFieldLabel}
-                                />
-                            ) : (
-                                <QueryDateInput
-                                    key={i}
-                                    queryColumn={col}
-                                    value={value}
-                                    allowDisable={allowFieldDisable}
-                                    initiallyDisabled={shouldDisableField}
-                                    onToggleDisable={this.onToggleDisable}
-                                    addLabelAsterisk={showAsteriskSymbol}
-                                    renderFieldLabel={renderFieldLabel}
-                                />
-                            );
+                            return (<DatePickerInput
+                                key={i}
+                                queryColumn={col}
+                                value={value}
+                                initValueFormatted={false}
+                                allowDisable={allowFieldDisable}
+                                initiallyDisabled={shouldDisableField}
+                                onToggleDisable={this.onToggleDisable}
+                                addLabelAsterisk={showAsteriskSymbol}
+                                renderFieldLabel={renderFieldLabel}
+                            />);
                         case 'boolean':
                             return (
                                 <CheckboxInput

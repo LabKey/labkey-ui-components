@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.XX
 *Released*: XX July 2022
 * Issue 44518: Use date picker for date fields in editable grid.
+  * Add DateInputCell
+  * Remove QueryDateInput and usage
 
 ### version 2.196.0
 *Released*: 7 July 2022

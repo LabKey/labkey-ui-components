@@ -85,7 +85,6 @@ export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(props =>
         detailRenderer,
         editingMode,
         titleRenderer,
-        useDatePicker,
         queryConfig,
     } = props;
     const queryConfigs = useMemo(() => ({ model: queryConfig }), [queryConfig]);
@@ -105,7 +104,6 @@ export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(props =>
             key={key}
             queryConfigs={queryConfigs}
             titleRenderer={titleRenderer}
-            useDatePicker={useDatePicker}
         />
     );
 });

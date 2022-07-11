@@ -53,7 +53,6 @@ export interface DatePickerInputProps extends DisableableInputProps {
     wrapperClassName?: string;
     labelClassName?: string;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
-    onSelect?(date: Date, event: React.SyntheticEvent<any> | undefined): void;
 }
 
 interface DatePickerInputState extends DisableableInputState {
@@ -158,7 +157,6 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             autoFocus,
             isFormInput,
             onKeyDown,
-            onSelect
         } = this.props;
 
         const { isDisabled, selectedDate } = this.state;
@@ -179,7 +177,6 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                 dateFormat={this.getDateFormat()}
                 autoFocus={autoFocus}
                 onKeyDown={onKeyDown}
-                onSelect={onSelect}
             />
         );
 

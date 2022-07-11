@@ -33,11 +33,6 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
         modifyCell(colIdx, rowIdx, [{ raw: newDate, display: displayValue}], MODIFICATION_TYPES.REPLACE);
     }, []);
 
-    const onDateSelect = useCallback(() => {
-        const { colIdx, rowIdx, select } = props;
-        select(colIdx, rowIdx);
-    }, []);
-
     return (
         <DatePickerInput
             key={colIdx + '-' + rowIdx}
@@ -50,7 +45,6 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
             inputClassName="date-input-cell cellular-input"
             inputWrapperClassName=""
             onChange={onDateInputChange}
-            onSelect={onDateSelect}
             formsy={false}
             isClearable={false}
             autoFocus={true}

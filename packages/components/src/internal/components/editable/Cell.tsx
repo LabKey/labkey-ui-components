@@ -288,14 +288,6 @@ export class Cell extends React.PureComponent<Props> {
                         </span>
                     </div>
                 );
-            } else if (isDateField) {
-                cell = (
-                    <div {...displayProps}>
-                        <div onClick={this.handleDblClick} className="cell-menu-value">
-                            {valueDisplay}
-                        </div>
-                    </div>
-                );
             } else {
                 cell = <div {...displayProps}>{valueDisplay}</div>;
             }

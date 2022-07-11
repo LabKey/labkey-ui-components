@@ -180,7 +180,7 @@ describe('Cell', () => {
             if (focused) {
                 expect(cell.find(DateInputCell).prop('defaultValue')).toEqual(rawValue);
                 expect(cell.find('input.date-input-cell').prop('value')).toEqual(value);
-            } else expect(cell.find('.cell-menu-value').text()).toEqual(value);
+            } else expect(cell.find('.cellular-display').text()).toEqual(value);
         }
     };
 

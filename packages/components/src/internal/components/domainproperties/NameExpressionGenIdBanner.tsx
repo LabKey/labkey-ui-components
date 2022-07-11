@@ -25,7 +25,14 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
     const [canReset, setCanReset] = useState<boolean>(false);
     const [showResetDialog, setShowResetDialog] = useState<boolean>(false);
     const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
-    const { createNotification } = useNotificationsContext();
+
+    // useNotificationsContext will not always be available depending on if the app wraps the NotificationsContext.Provider
+    let _createNotification;
+    try {
+        _createNotification = useNotificationsContext().createNotification;
+    } catch (e) {
+        // this is expected for LKS usages, so don't throw or console.error
+    }
 
     const init = async () => {
         if (rowId && kindName) {
@@ -75,14 +82,14 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                 kindName,
                 (newGenId ?? minNewGenId) - 1 /* Reset to N-1 so seq.next will be N. */
             );
-            createNotification('Successfully updated genId.');
+            _createNotification?.('Successfully updated genId.');
             init();
             setShowEditDialog(false);
         } catch (reason) {
             console.error(reason);
             setError(resolveErrorMessage(reason, 'genId', 'genId', 'edit'));
         }
-    }, [rowId, kindName, newGenId, createNotification]);
+    }, [rowId, kindName, newGenId, _createNotification]);
 
     const onResetClick = useCallback(() => {
         setShowResetDialog(true);
@@ -96,14 +103,14 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
     const onResetConfirm = useCallback(async () => {
         try {
             await api.domain.setGenId(rowId, kindName, 0 /* Reset to 0 so seq.next will be 1. */);
-            createNotification('Successfully reset genId.');
+            _createNotification?.('Successfully reset genId.');
             init();
             setShowResetDialog(false);
         } catch (reason) {
             console.error(reason);
             setError(resolveErrorMessage(reason, 'genId', 'genId', 'reset'));
         }
-    }, [rowId, kindName, createNotification]);
+    }, [rowId, kindName, _createNotification]);
 
     if (currentGenId === undefined) return <LoadingSpinner />;
 

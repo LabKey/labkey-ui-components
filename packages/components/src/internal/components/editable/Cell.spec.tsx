@@ -173,7 +173,6 @@ describe('Cell', () => {
     });
 
     const expectDate = (cell: ReactWrapper, focused = false, value?: string, rawValue?: string): void => {
-        expect(cell.find('.cell-menu-value')).toHaveLength(focused ? 0 : 1);
         expect(cell.find('input')).toHaveLength(focused ? 1 : 0);
         expect(cell.find(DateInputCell)).toHaveLength(focused ? 1 : 0);
         if (value) {

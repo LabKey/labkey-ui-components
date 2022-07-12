@@ -1,4 +1,4 @@
-import { ActionURL, Filter, getServerContext, Utils } from '@labkey/api';
+import { ActionURL, Filter, getServerContext, Utils, Query } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { JsonType } from '../domainproperties/PropDescType';
@@ -25,6 +25,7 @@ import { getPrimaryAppProperties, isOntologyEnabled } from '../../app/utils';
 import { formatDateTime } from '../../util/Date';
 
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
+import { SearchScope } from './constants';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 
@@ -58,7 +59,7 @@ const FIRST_COLUMNS_IN_VIEW = ['Name', 'SampleSet'];
 export function getFinderViewColumnsConfig(
     queryModel: QueryModel,
     columnDisplayNames: { [key: string]: string }
-): { hasUpdates: boolean; columns: any } {
+): { columns: any; hasUpdates: boolean } {
     const defaultDisplayColumns = queryModel.queryInfo?.getDisplayColumns().toArray();
     const displayColumnKeys = defaultDisplayColumns.map(col => col.fieldKey.toLowerCase());
     const columnKeys = [];
@@ -813,7 +814,7 @@ export function getUpdatedFilters(
 export function getUpdatedFilterSelection(
     newActiveFilterType: FieldFilterOption,
     activeFilter: FilterSelection
-): { shouldClear: boolean; filterSelection: FilterSelection } {
+): { filterSelection: FilterSelection; shouldClear: boolean } {
     let firstValue = activeFilter?.firstFilterValue;
     let shouldClear = false;
 
@@ -841,4 +842,25 @@ export function getUpdatedFilterSelection(
 
 export function getLocalStorageKey(): string {
     return getPrimaryAppProperties().productId + ActionURL.getContainer() + '-SampleFinder';
+}
+
+export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): SearchScope {
+    switch (cf) {
+        case Query.ContainerFilter.allFolders:
+            return SearchScope.All;
+        case Query.ContainerFilter.current:
+            return SearchScope.Folder;
+        case Query.ContainerFilter.currentAndParents:
+            return SearchScope.FolderAndProject; // TODO: I dont think this is a perfect match
+        case Query.ContainerFilter.currentAndSubfoldersPlusShared:
+            return SearchScope.FolderAndSubfoldersAndShared;
+        case Query.ContainerFilter.currentPlusProject:
+            return SearchScope.FolderAndProject;
+        case Query.ContainerFilter.currentPlusProjectAndShared:
+            return SearchScope.FolderAndProjectAndShared;
+        case Query.ContainerFilter.currentAndFirstChildren: // TODO: I dont think this is a perfect match
+        case Query.ContainerFilter.currentAndSubfolders:
+        default:
+            return SearchScope.FolderAndSubfolders;
+    }
 }

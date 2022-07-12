@@ -26,6 +26,8 @@ interface Props extends SharedEditableGridPanelProps {
         data?: Map<string, Map<string, any>>,
         index?: number
     ) => void;
+    getIsDirty?: () => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
 }
 
 const exportHandler = (
@@ -94,6 +96,8 @@ export const EditableGridPanel: FC<Props> = memo(props => {
         forUpdate,
         insertColumns,
         exportColFilter,
+        getIsDirty,
+        setIsDirty,
         ...gridProps
     } = props;
 
@@ -103,6 +107,7 @@ export const EditableGridPanel: FC<Props> = memo(props => {
     const editorModels = Array.isArray(editorModel) ? editorModel : [editorModel];
     const activeEditorModel = editorModels[activeTab];
     const hasTabs = models.length > 1;
+    let wasDirty = false;
 
     const _onChange = useCallback(
         (editorModelChanges: Partial<EditorModelProps>, dataKeys?: List<any>, data?: Map<any, Map<string, any>>) =>
@@ -131,6 +136,11 @@ export const EditableGridPanel: FC<Props> = memo(props => {
 
     const exportHandlerCallback = useCallback(
         (option: ExportOption) => {
+            // We temporarily unset the dirty bit on the page so the download doesn't produce an alert
+            if (getIsDirty && setIsDirty) {
+                wasDirty = getIsDirty();
+                setIsDirty(false);
+            }
             exportHandler(
                 option.type,
                 models,
@@ -143,6 +153,13 @@ export const EditableGridPanel: FC<Props> = memo(props => {
                 extraExportColumns,
                 exportColFilter
             );
+            // timeout needed here to wait for the download to begin. Value of 1000 not chosen scientifically.
+            window.setTimeout(() => {
+                if (setIsDirty && wasDirty) {
+                    wasDirty = false;
+                    setIsDirty(true);
+                }
+            }, 1000);
         },
         [
             activeTab,

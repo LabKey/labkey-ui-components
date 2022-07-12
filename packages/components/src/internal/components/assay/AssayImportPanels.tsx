@@ -97,7 +97,6 @@ interface OwnProps {
     allowBulkUpdate?: boolean;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     maxRows?: number; // Not currently used, but related logic retained in component
-    onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
     loadSelectedSamples?: (location: Location, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
     showUploadTabs?: boolean;
     showQuerySelectPreviewOptions?: boolean;
@@ -106,6 +105,8 @@ interface OwnProps {
     jobNotificationProvider?: string;
     assayProtocol?: AssayProtocolModel;
     backgroundUpload?: boolean; // assay design setting
+    getIsDirty?: () => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
 }
 
 interface AssayImportPanelsBodyProps {
@@ -367,7 +368,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     handleFileChange = (attachments: Map<string, File>): void => {
-        this.props.onDataChange?.(attachments.size > 0, IMPORT_DATA_FORM_TYPES.FILE);
+        this.props.setIsDirty?.(attachments.size > 0);
 
         this.setState(state => ({
             error: undefined,
@@ -379,7 +380,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     handleFileRemove = (): void => {
-        this.props.onDataChange?.(false, IMPORT_DATA_FORM_TYPES.FILE);
+        this.props.setIsDirty?.(false);
 
         this.setState(state => ({
             error: undefined,
@@ -394,7 +395,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const values = { ...this.state.model.batchProperties.toObject(), ...fieldValues };
 
         if (isChanged) {
-            this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.OTHER);
+            this.props.setIsDirty?.(true);
         }
 
         this.handleChange('batchProperties', Map<string, any>(values ? values : {}));
@@ -419,7 +420,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }, {});
 
         if (isChanged) {
-            this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.OTHER);
+            this.props.setIsDirty?.(true);
         }
 
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
@@ -434,7 +435,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     handleDataTextChange = (fieldValues: any): void => {
-        this.props.onDataChange?.(fieldValues !== undefined && fieldValues !== '', IMPORT_DATA_FORM_TYPES.TEXT);
+        this.props.setIsDirty?.(fieldValues !== undefined && fieldValues !== '');
         // use '' to clear out text area
         this.handleChange('dataText', fieldValues !== undefined ? fieldValues : '');
     };
@@ -526,7 +527,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     const jobDescription = this.getBackgroundJobDescription(data);
                     importAssayRun({ ...processedData, forceAsync, jobDescription, jobNotificationProvider })
                         .then((response: AssayUploadResultModel) => {
-                            this.props.onDataChange?.(false);
+                            this.props.setIsDirty?.(false);
                             if (importAgain && onSave) {
                                 this.onSuccessContinue(response, backgroundUpload || forceAsync);
                             } else {
@@ -640,7 +641,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 dataModel = dataModel.mutate({ orderedRows, rows });
             }
 
-            this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.GRID);
+            this.props.setIsDirty?.(true);
 
             return { dataModel, editorModel };
         });
@@ -662,6 +663,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
             runDataPanelTitle,
             fileSizeLimits,
             user,
+            getIsDirty,
+            setIsDirty,
         } = this.props;
         const { dataModel, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
             this.state;
@@ -737,6 +740,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     showTabs={showUploadTabs}
                     title={runDataPanelTitle}
                     wizardModel={model}
+                    getIsDirty={getIsDirty}
+                    setIsDirty={setIsDirty}
                 />
                 <Alert>{this.state.error}</Alert>
                 <WizardNavButtons cancel={onCancel} containerClassName="" includeNext={false}>

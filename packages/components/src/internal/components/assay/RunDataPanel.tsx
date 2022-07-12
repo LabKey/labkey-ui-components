@@ -71,6 +71,8 @@ interface Props {
     title: string;
     maxEditableGridRowMsg?: string;
     wizardModel: AssayWizardModel;
+    getIsDirty?: () => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
 }
 
 interface PreviousRunData {
@@ -224,6 +226,8 @@ export class RunDataPanel extends PureComponent<Props, State> {
             title,
             showTabs,
             wizardModel,
+            getIsDirty,
+            setIsDirty
         } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || queryModel.isLoading;
@@ -324,6 +328,8 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             model={queryModel}
                                             onChange={this.props.onGridChange}
                                             striped
+                                            getIsDirty={getIsDirty}
+                                            setIsDirty={setIsDirty}
                                         />
                                     </FormStep>
                                 </div>

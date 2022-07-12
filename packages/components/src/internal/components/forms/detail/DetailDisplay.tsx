@@ -22,7 +22,6 @@ export interface RenderOptions {
     containerFilter?: Query.ContainerFilter;
     /** A container path that will be applied to all query-based inputs on this form */
     containerPath?: string;
-    useDatePicker?: boolean;
 }
 
 export type DetailRenderer = (
@@ -65,8 +64,8 @@ function processFields(
 interface DetailFieldProps {
     fieldKey: string;
     index?: string;
-    title: string;
     renderer: Renderer;
+    title: string;
     titleRenderer: ReactNode;
 }
 
@@ -89,13 +88,13 @@ class DetailField {
 
 export interface DetailDisplaySharedProps extends RenderOptions {
     asPanel?: boolean;
-    detailRenderer?: DetailRenderer;
     detailEditRenderer?: DetailRenderer;
+    detailRenderer?: DetailRenderer;
     editingMode?: boolean;
-    titleRenderer?: TitleRenderer;
-    fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
     fieldHelpTexts?: { [key: string]: string };
+    fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
+    titleRenderer?: TitleRenderer;
 }
 
 interface DetailDisplayProps extends DetailDisplaySharedProps {
@@ -111,7 +110,6 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
         data,
         displayColumns,
         editingMode,
-        useDatePicker,
         fileInputRenderer,
         fieldHelpTexts,
         onAdditionalFormDataChange,
@@ -137,7 +135,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
             displayColumns,
             detailRenderer,
             titleRenderer,
-            { containerFilter, containerPath, useDatePicker },
+            { containerFilter, containerPath },
             fileInputRenderer,
             onAdditionalFormDataChange
         );
@@ -202,7 +200,6 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
 DetailDisplay.defaultProps = {
     asPanel: false,
     editingMode: false,
-    useDatePicker: true,
 };
 
 DetailDisplay.displayName = 'DetailDisplay';

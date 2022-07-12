@@ -459,7 +459,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                                 <a
                                                     target="_blank"
                                                     href={aliquotNameExpressionInfoUrl ?? ALIQUOT_HELP_LINK}
-                                                    rel="noreferrer"
+                                                    rel="noopener noreferrer"
                                                 >
                                                     More info
                                                 </a>

@@ -78,7 +78,7 @@ const NotificationsImpl: FC<NotificationProps> = ({ notifications }) => {
                 <span>
                     {message}
                     &nbsp;
-                    <a href={upgradeLink} target="_blank" rel="noreferrer">
+                    <a href={upgradeLink} target="_blank" rel="noopener noreferrer">
                         {upgradeLinkText}
                     </a>
                 </span>

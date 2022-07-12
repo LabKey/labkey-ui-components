@@ -66,7 +66,7 @@ export const HelpLink: FC<HelpLinkProps> = props => {
     const { className, topic, referrer, children } = props;
 
     return (
-        <a target="_blank" href={getHelpLink(topic, referrer)} className={className} rel="noreferrer">
+        <a target="_blank" href={getHelpLink(topic, referrer)} className={className} rel="noopener noreferrer">
             {children}
         </a>
     );
@@ -92,7 +92,7 @@ export const JavaDocsLink: FC<JavaDocsLinkProps> = memo(props => {
     const { jdkJavaDocLinkPrefix } = getServerContext();
 
     return (
-        <a target="_blank" href={jdkJavaDocLinkPrefix + urlSuffix} rel="noreferrer">
+        <a target="_blank" href={jdkJavaDocLinkPrefix + urlSuffix} rel="noopener noreferrer">
             {children}
         </a>
     );

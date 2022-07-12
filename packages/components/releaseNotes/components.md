@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.194.TBD
+*Released*: TBD July 2022
+* Issue 45852: External links should include 'noopener' in 'ref' attribute
+
 ### version 2.194.4
 *Released*: 7 July 2022
 * Add and export Row, RowValue types

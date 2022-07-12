@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.194.5
-*Released*: XX July 2022
+*Released*: 12 July 2022
 * Issue 45836: Export for editable grid should export display values instead of ids for lookups
 
 ### version 2.194.4

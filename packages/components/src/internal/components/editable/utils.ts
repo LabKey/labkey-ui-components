@@ -277,7 +277,8 @@ export const getEditorTableData = (
     readOnlyColumns: List<string>,
     headings: OrderedMap<string, string>,
     editorData: OrderedMap<string, OrderedMap<string, any>>,
-    extraColumns?: Array<Partial<QueryColumn>>
+    extraColumns?: Array<Partial<QueryColumn>>,
+    forExport?: boolean,
 ): [Map<string, string>, Map<string, Map<string, any>>] => {
     const tabData = editorModel
         .getRawDataFromGridData(
@@ -287,7 +288,8 @@ export const getEditorTableData = (
             true,
             true,
             readOnlyColumns,
-            extraColumns
+            extraColumns,
+            forExport
         )
         .toArray();
 

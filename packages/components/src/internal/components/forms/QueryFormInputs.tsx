@@ -325,17 +325,19 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
                     switch (col.jsonType) {
                         case 'date':
-                            return (<DatePickerInput
-                                key={i}
-                                queryColumn={col}
-                                value={value}
-                                initValueFormatted={false}
-                                allowDisable={allowFieldDisable}
-                                initiallyDisabled={shouldDisableField}
-                                onToggleDisable={this.onToggleDisable}
-                                addLabelAsterisk={showAsteriskSymbol}
-                                renderFieldLabel={renderFieldLabel}
-                            />);
+                            return (
+                                <DatePickerInput
+                                    key={i}
+                                    queryColumn={col}
+                                    value={value}
+                                    initValueFormatted={false}
+                                    allowDisable={allowFieldDisable}
+                                    initiallyDisabled={shouldDisableField}
+                                    onToggleDisable={this.onToggleDisable}
+                                    addLabelAsterisk={showAsteriskSymbol}
+                                    renderFieldLabel={renderFieldLabel}
+                                />
+                            );
                         case 'boolean':
                             return (
                                 <CheckboxInput

@@ -7,7 +7,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
 import { DatePickerInput, OntologyBrowserFilterPanel } from '../../..';
 
-import {getJsonDateTimeFormatString, isDateTimeCol} from '../../util/Date';
+import { getJsonDateTimeFormatString, isDateTimeCol } from '../../util/Date';
 
 import { isOntologyEnabled } from '../../app/utils';
 
@@ -219,7 +219,12 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         isClearable
                         showTime={showTimeStamp}
                         onChange={newDate =>
-                            updateDateFilterFieldValue(filterIndex, getJsonDateTimeFormatString(newDate), showTimeStamp, isSecondInput)
+                            updateDateFilterFieldValue(
+                                filterIndex,
+                                getJsonDateTimeFormatString(newDate),
+                                showTimeStamp,
+                                isSecondInput
+                            )
                         }
                     />
                 );

@@ -64,8 +64,8 @@ function processFields(
 interface DetailFieldProps {
     fieldKey: string;
     index?: string;
-    title: string;
     renderer: Renderer;
+    title: string;
     titleRenderer: ReactNode;
 }
 
@@ -88,13 +88,13 @@ class DetailField {
 
 export interface DetailDisplaySharedProps extends RenderOptions {
     asPanel?: boolean;
-    detailRenderer?: DetailRenderer;
     detailEditRenderer?: DetailRenderer;
+    detailRenderer?: DetailRenderer;
     editingMode?: boolean;
-    titleRenderer?: TitleRenderer;
-    fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
     fieldHelpTexts?: { [key: string]: string };
+    fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
+    titleRenderer?: TitleRenderer;
 }
 
 interface DetailDisplayProps extends DetailDisplaySharedProps {
@@ -135,7 +135,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
             displayColumns,
             detailRenderer,
             titleRenderer,
-            { containerFilter, containerPath},
+            { containerFilter, containerPath },
             fileInputRenderer,
             onAdditionalFormDataChange
         );

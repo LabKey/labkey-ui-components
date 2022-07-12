@@ -31,28 +31,28 @@ export interface DatePickerInputProps extends DisableableInputProps {
     dateFormat?: string;
     disabled?: boolean;
     formsy?: boolean;
-    getErrorMessage?: Function; // from formsy-react
-    getValue?: Function; // from formsy-react
+    getErrorMessage?: Function;// from formsy-react
+    getValue?: Function;// from formsy-react
     initValueFormatted?: boolean;
     inputClassName?: string;
     inputWrapperClassName?: string;
     isClearable?: boolean;
     isFormInput?: boolean;
     label?: any;
+    labelClassName?: string;
     name?: string;
     onChange?: (newDate?: Date) => void;
+    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    setValue?: Function; // from formsy-react
+    setValue?: Function;// from formsy-react
     showLabel?: boolean;
-    showRequired?: Function; // from formsy-react
-    showTime?: boolean;
-    validations?: any; // from formsy-react
+    showRequired?: Function;// from formsy-react
     value?: any;
     wrapperClassName?: string;
-    labelClassName?: string;
-    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
+    showTime?: boolean;
+    validations?: any;// from formsy-react
 }
 
 interface DatePickerInputState extends DisableableInputState {
@@ -71,7 +71,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         addLabelAsterisk: false,
         initValueFormatted: true,
         isFormInput: true,
-        labelClassName: 'control-label col-sm-3 text-left col-xs-12'
+        labelClassName: 'control-label col-sm-3 text-left col-xs-12',
     };
 
     constructor(props: DatePickerInputProps) {

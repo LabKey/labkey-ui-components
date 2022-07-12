@@ -972,7 +972,7 @@ exports[`AssayPicker AssayPicker 1`] = `
                                              
                                             <a
                                               href="https://www.labkey.org/Documentation/wiki-page.view?name=XarTutorial&referrer=inPage"
-                                              rel="noreferrer"
+                                              rel="noopener noreferrer"
                                               target="_blank"
                                             >
                                               .XAR or .XAR.XML

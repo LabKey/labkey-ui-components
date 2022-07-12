@@ -25,7 +25,7 @@ import { userCanEditStorageData } from '../../app/utils';
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
-import { NotificationsContext } from '../notifications/NotificationsContext';
+import { withNotificationsContext, NotificationsContextProps } from '../notifications/NotificationsContext';
 
 interface OwnProps {
     containerFilter?: Query.ContainerFilter;
@@ -40,7 +40,7 @@ interface OwnProps {
     user: User;
 }
 
-type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
+type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultProps & NotificationsContextProps;
 
 interface UpdateAlertProps {
     aliquots: any[];
@@ -134,7 +134,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
     }
 
     onComplete = (data: any, submitForEdit: boolean): void => {
-        const { onBulkUpdateComplete, sampleItems } = this.props;
+        const { onBulkUpdateComplete, sampleItems, createNotification } = this.props;
         const { shouldDiscard, discardComment } = this.state;
 
         if (shouldDiscard) {
@@ -156,7 +156,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                 auditUserComment: discardComment,
             })
                 .then(response => {
-                    this.context.createNotification(
+                    createNotification(
                         'Successfully discard ' +
                             discardStorageRows.length +
                             ' sample' +
@@ -167,7 +167,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                 })
                 .catch(error => {
                     const errorMsg = resolveErrorMessage(error, 'sample', 'sample', 'discard');
-                    this.context.createNotification({ message: errorMsg, alertClass: 'danger' });
+                    createNotification({ message: errorMsg, alertClass: 'danger' });
                 });
         } else {
             onBulkUpdateComplete?.(data, submitForEdit);
@@ -233,9 +233,6 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
     }
 }
 
-// TODO change this to withNotificationsContext
-SamplesBulkUpdateFormBase.contextType = NotificationsContext;
-
 export const SamplesBulkUpdateForm = SamplesSelectionProvider<OwnProps & SamplesSelectionProviderProps>(
-    SamplesBulkUpdateFormBase
+    withNotificationsContext(SamplesBulkUpdateFormBase)
 );

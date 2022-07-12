@@ -27,7 +27,7 @@ import { GroupedSampleFields } from './models';
 import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from './actions';
 import { IS_ALIQUOT_COL } from './constants';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
-import { NotificationsContext } from '../notifications/NotificationsContext';
+import { withNotificationsContext, NotificationsContextProps } from '../notifications/NotificationsContext';
 
 interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
@@ -42,7 +42,7 @@ interface State {
     discardComment: string;
 }
 
-export class SampleDetailEditing extends PureComponent<Props, State> {
+class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContextProps, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
     };
@@ -111,6 +111,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     };
 
     handleSave = async () => {
+        const { createNotification } = this.props;
         const { shouldDiscard, discardComment, sampleStorageItemId } = this.state;
 
         this.props.onUpdate?.();
@@ -123,10 +124,10 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     auditBehavior: AuditBehaviorTypes.DETAILED,
                     auditUserComment: discardComment,
                 });
-                this.context.createNotification('Successfully updated and discarded sample from storage.', true);
+                createNotification('Successfully updated and discarded sample from storage.', true);
             } catch (error) {
                 const errorMsg = resolveErrorMessage(error, 'sample', 'sample', 'discard');
-                this.context.createNotification({ message: errorMsg, alertClass: 'danger' }, true);
+                createNotification({ message: errorMsg, alertClass: 'danger' }, true);
             }
         }
     };
@@ -216,5 +217,4 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     }
 }
 
-// TODO change this to withNotificationsContext
-SampleDetailEditing.contextType = NotificationsContext;
+export const SampleDetailEditing = withNotificationsContext(SampleDetailEditingImpl);

@@ -183,9 +183,10 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         if (gridDataAllTabs.length > 0) {
             setIsSubmitting(true);
             updateAllTabRows(gridDataAllTabs).then(result => {
-                console.log('result', result);
                 setIsSubmitting(false);
-                onComplete();
+                if (result !== false) {
+                    onComplete();
+                }
             }).catch(error => {
                 setIsSubmitting(false);
                 setError(error);

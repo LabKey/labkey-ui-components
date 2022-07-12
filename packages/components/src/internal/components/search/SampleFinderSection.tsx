@@ -56,6 +56,8 @@ import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
+    getIsDirty?: () => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     gridButtonProps?: any;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
@@ -333,6 +335,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     key={filterChangeCounter + '-' + savedViewChangeCounter}
                 />
             }
+            titleSize="small"
             context={
                 <SampleFinderHeaderButtons
                     parentEntityDataTypes={parentEntityDataTypes}

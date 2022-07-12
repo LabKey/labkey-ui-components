@@ -44,10 +44,12 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
 
     const exportCallback = useCallback((option: ExportOption) => {
         const {type} = option;
-        if (onExport?.[type])
+        if (onExport?.[type]) {
             onExport[type]?.();
-        else
+        }
+        else {
             exportHandler(option);
+        }
     }, [exportHandler, onExport])
 
     return (

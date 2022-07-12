@@ -28,6 +28,8 @@ interface Props {
     loaders: EditableGridLoaderFromSelection[];
     onCancel: () => any;
     onComplete: () => any;
+    getIsDirty?: () => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
     pluralNoun?: string;
     queryModel: QueryModel;
     readOnlyColumns?: List<string>;

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.197.0
+*Released*: 12 July 2022
+* Issue 45479: Add getIsDirty and setIsDirty callback in editable grids so we warn on page leave but not on export
+
 ### version 2.196.1
 *Released*: 12 July 2022
 * Issue 44518: Use date picker for date fields in editable grid.

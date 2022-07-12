@@ -26,32 +26,33 @@ import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 export interface DatePickerInputProps extends DisableableInputProps {
+    addLabelAsterisk?: boolean;
+    autoFocus?: boolean;
+    dateFormat?: string;
+    disabled?: boolean;
     formsy?: boolean;
-    wrapperClassName?: string;
+    getErrorMessage?: Function;// from formsy-react
+    getValue?: Function;// from formsy-react
+    initValueFormatted?: boolean;
     inputClassName?: string;
     inputWrapperClassName?: string;
-    disabled?: boolean;
     isClearable?: boolean;
-    placeholderText?: string;
-    name?: string;
+    isFormInput?: boolean;
     label?: any;
-    onChange?: any;
-    dateFormat?: string;
-    showTime?: boolean;
-
+    labelClassName?: string;
+    name?: string;
+    onChange?: (newDate?: Date) => void;
+    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
+    placeholderText?: string;
     queryColumn: QueryColumn;
-    showLabel?: boolean;
-    value?: any;
-    addLabelAsterisk?: boolean;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    initValueFormatted?: boolean;
-
-    // from formsy-react
-    getErrorMessage?: Function;
-    getValue?: Function;
-    setValue?: Function;
-    showRequired?: Function;
-    validations?: any;
+    setValue?: Function;// from formsy-react
+    showLabel?: boolean;
+    showRequired?: Function;// from formsy-react
+    value?: any;
+    wrapperClassName?: string;
+    showTime?: boolean;
+    validations?: any;// from formsy-react
 }
 
 interface DatePickerInputState extends DisableableInputState {
@@ -69,6 +70,8 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         showLabel: true,
         addLabelAsterisk: false,
         initValueFormatted: true,
+        isFormInput: true,
+        labelClassName: 'control-label col-sm-3 text-left col-xs-12',
     };
 
     constructor(props: DatePickerInputProps) {
@@ -119,10 +122,10 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             };
         });
 
+        if (this.props.onChange && Utils.isFunction(this.props.onChange)) this.props.onChange(date);
+
         // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
         const _date = getJsonDateTimeFormatString(date);
-
-        if (this.props.onChange && Utils.isFunction(this.props.onChange)) this.props.onChange(_date);
         if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(_date);
     };
 
@@ -142,6 +145,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             inputWrapperClassName,
             allowDisable,
             label,
+            labelClassName,
             name,
             queryColumn,
             showLabel,
@@ -150,14 +154,38 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             placeholderText,
             isClearable,
             wrapperClassName,
+            autoFocus,
+            isFormInput,
+            onKeyDown,
         } = this.props;
 
         const { isDisabled, selectedDate } = this.state;
-        const labelClass = 'control-label col-sm-3 text-left col-xs-12';
+
+        const picker = (
+            <DatePicker
+                autoComplete="off"
+                wrapperClassName={inputWrapperClassName}
+                className={inputClassName}
+                isClearable={isClearable}
+                name={name ? name : queryColumn.fieldKey}
+                id={queryColumn.fieldKey}
+                disabled={isDisabled}
+                selected={selectedDate}
+                onChange={this.onChange}
+                showTimeSelect={this.shouldShowTime()}
+                placeholderText={placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`}
+                dateFormat={this.getDateFormat()}
+                autoFocus={autoFocus}
+                onKeyDown={onKeyDown}
+            />
+        );
+
+        if (!isFormInput) return picker;
+
         return (
             <div className="form-group row">
                 {renderFieldLabel ? (
-                    <label className={labelClass}>{renderFieldLabel(queryColumn)}</label>
+                    <label className={labelClassName}>{renderFieldLabel(queryColumn)}</label>
                 ) : (
                     <FieldLabel
                         label={label}
@@ -166,7 +194,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                             inputId: queryColumn.name,
                             required: queryColumn.required,
                             addLabelAsterisk,
-                            labelClass: allowDisable ? undefined : labelClass,
+                            labelClass: allowDisable ? undefined : labelClassName,
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}
@@ -177,24 +205,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                         }}
                     />
                 )}
-                <div className={wrapperClassName}>
-                    <DatePicker
-                        autoComplete="off"
-                        wrapperClassName={inputWrapperClassName}
-                        className={inputClassName}
-                        isClearable={isClearable}
-                        name={name ? name : queryColumn.fieldKey}
-                        id={queryColumn.fieldKey}
-                        disabled={isDisabled}
-                        selected={selectedDate}
-                        onChange={this.onChange}
-                        showTimeSelect={this.shouldShowTime()}
-                        placeholderText={
-                            placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`
-                        }
-                        dateFormat={this.getDateFormat()}
-                    />
-                </div>
+                <div className={wrapperClassName}>{picker}</div>
             </div>
         );
     }

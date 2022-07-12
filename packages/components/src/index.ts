@@ -251,7 +251,6 @@ import {
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
-import { QueryDateInput } from './internal/components/forms/input/QueryDateInput';
 import { FileInput } from './internal/components/forms/input/FileInput';
 import { TextInput } from './internal/components/forms/input/TextInput';
 import { TextAreaInput } from './internal/components/forms/input/TextAreaInput';
@@ -916,7 +915,6 @@ export {
     LookupSelectInput,
     SelectInput,
     DatePickerInput,
-    QueryDateInput,
     FileInput,
     TextAreaInput,
     TextInput,

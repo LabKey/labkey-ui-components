@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.196.1
+*Released*: 12 July 2022
+* Issue 44518: Use date picker for date fields in editable grid.
+  * Add DateInputCell
+  * Remove QueryDateInput and usage
+
 ### version 2.196.0
 *Released*: 7 July 2022
 * Item 10437: Aliquot Field Inheritance

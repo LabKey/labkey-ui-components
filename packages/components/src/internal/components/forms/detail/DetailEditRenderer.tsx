@@ -25,7 +25,6 @@ import {
     LabelColorRenderer,
     MultiValueRenderer,
     QueryColumn,
-    QueryDateInput,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
 } from '../../../..';
@@ -179,24 +178,13 @@ export function resolveDetailEditRenderer(
                     />
                 );
             case 'date':
-                if (options?.useDatePicker && (!value || typeof value === 'string')) {
+                if (typeof value === 'string') {
                     return (
                         <DatePickerInput
                             showLabel={false}
                             wrapperClassName="col-sm-12"
                             name={col.name}
                             queryColumn={col}
-                            value={value}
-                        />
-                    );
-                } else if (typeof value === 'string') {
-                    return (
-                        <QueryDateInput
-                            showLabel={false}
-                            elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
-                            name={col.name}
-                            queryColumn={col}
-                            validatePristine={true}
                             value={value}
                         />
                     );

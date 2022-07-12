@@ -357,14 +357,14 @@ $table-cell-selection-bg-color: #EDF3FF;
   }
 }
 
-.select-input-cell .select-input__control {
+.select-input-cell .select-input__control, .date-input-cell {
     border-style: none;
     min-height: 30px;
     width: 100%;
     min-width: 200px;
 }
 
-.select-input-cell-container {
+.select-input-cell-container, .date-input-cell-container {
     margin-bottom: 0;
     border-style: none;
 }

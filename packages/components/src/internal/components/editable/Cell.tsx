@@ -28,6 +28,7 @@ import { QueryColumn } from '../../..';
 import { getQueryColumnRenderers } from '../../global';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
+import { DateInputCell, DateInputCellProps } from './DateInputCell';
 
 export interface CellActions {
     clearSelection: () => void;
@@ -249,6 +250,8 @@ export class Cell extends React.PureComponent<Props> {
         } = this.props;
         const showLookup = col.isPublicLookup() || col.validValues;
 
+        const isDateField = col.jsonType === 'date';
+
         if (!focused) {
             let valueDisplay = values
                 .filter(vd => vd && vd.display !== undefined)
@@ -322,6 +325,22 @@ export class Cell extends React.PureComponent<Props> {
             };
 
             return <LookupCell {...lookupProps} />;
+        }
+
+        if (isDateField) {
+            const rawDateValue = values.size === 0 ? '' : values.first().raw !== undefined ? values.first().raw : '';
+            const dateProps: DateInputCellProps = {
+                col,
+                colIdx,
+                rowIdx,
+                disabled: this.isReadOnly(),
+                modifyCell: cellActions.modifyCell,
+                select: cellActions.selectCell,
+                defaultValue: rawDateValue,
+                onKeyDown: this.handleKeys,
+            };
+
+            return <DateInputCell {...dateProps} />;
         }
 
         // Some cells have custom displays such as multi value comma separated values like alias so

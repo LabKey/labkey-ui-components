@@ -96,6 +96,8 @@ describe('SamplesBulkUpdateForm', () => {
         editSelectionInGrid: jest.fn,
         api: getSamplesTestAPIWrapper(),
         user: TEST_USER_EDITOR,
+        createNotification: jest.fn,
+        dismissNotifications: jest.fn,
     };
 
     test('all selected are samples', () => {

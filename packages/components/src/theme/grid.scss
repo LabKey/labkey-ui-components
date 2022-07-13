@@ -484,3 +484,22 @@ $table-cell-selection-bg-color: #EDF3FF;
 .grid-view-name-error {
     border-color: $red-border;
 }
+
+.export-modal-body {
+    margin: 0 15px 8px 15px;
+
+    & .checkbox {
+        margin: 0;
+    }
+    & td, & th {
+        padding: 8px 8px 0 0;
+    }
+
+    & td.count {
+        float: right;
+    }
+
+    & td.view-name, & th.view-name {
+        padding-left: 15px;
+    }
+}

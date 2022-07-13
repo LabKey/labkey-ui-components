@@ -55,7 +55,8 @@ const exportHandler = (
             updateColumns,
             forUpdate,
             extraColumns,
-            colFilter
+            colFilter,
+            true
         );
         headings = modelHeadings;
         editorData = modelEditorData;

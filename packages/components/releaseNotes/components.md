@@ -9,6 +9,10 @@ Added SearchScope enum and ContainerFilter mapping utility method
 *Released*: 12 July 2022
 * Issue 45479: Add getIsDirty and setIsDirty callback in editable grids so we warn on page leave but not on export
 
+### version 2.XX
+*Released*: XX July 2022
+* Issue 45817: LKSM sample finder misc issues re: save and manage modal
+
 ### version 2.196.1
 *Released*: 12 July 2022
 * Issue 44518: Use date picker for date fields in editable grid.

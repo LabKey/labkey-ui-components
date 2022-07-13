@@ -68,6 +68,7 @@ interface SampleFinderSamplesGridProps {
 
 interface Props extends SampleFinderSamplesGridProps {
     parentEntityDataTypes: EntityDataType[];
+    clearSessionView?: boolean;
 }
 
 interface SampleFinderHeaderProps {
@@ -100,7 +101,7 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
 });
 
 export const SampleFinderSection: FC<Props> = memo(props => {
-    const { sampleTypeNames, parentEntityDataTypes, ...gridProps } = props;
+    const { sampleTypeNames, parentEntityDataTypes, clearSessionView, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [savedViewChangeCounter, setSavedViewChangeCounter] = useState<number>(0);
@@ -133,6 +134,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 setEnabledEntityTypes(_enabledEntityTypes);
             }
         })();
+        if (clearSessionView) {
+            sessionStorage.removeItem(getLocalStorageKey());
+            return;
+        }
+
         const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
         if (finderSessionDataStr) {
             const finderSessionData = searchFiltersFromJson(finderSessionDataStr);

@@ -1,5 +1,5 @@
 import React, { FC, memo, useState, useEffect, useMemo, useCallback } from 'react';
-import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
+import {Button, DropdownButton, MenuItem, SplitButton} from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -37,14 +37,18 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
     const hasSavedView = savedSearches?.length > 0;
 
     const menuTitle = useMemo(() => {
-        if (!currentView?.reportId) return 'Saved Searches';
+        if (!currentView) return 'Saved Searches';
         return (
             <>
-                {hasUnsavedChanges && <span className="alert-info view-edit-alert">Edited</span>}
+                {(hasUnsavedChanges && currentView.reportId) && <span className="alert-info view-edit-alert">Edited</span>}
                 {currentView.reportName}
             </>
         );
     }, [currentView, hasUnsavedChanges]);
+
+    const hasViews = useMemo(() => {
+        return savedSearches?.length > 0 || !!sessionViewName;
+    }, [savedSearches, sessionViewName]);
 
     const onLoadSavedSearch = useCallback(
         e => {
@@ -68,12 +72,11 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
 
     return (
         <>
-            <DropdownButton id="samplefinder-savedsearch-menu" title={menuTitle} className="button-right-spacing">
+            <DropdownButton id="samplefinder-savedsearch-menu" title={menuTitle} className="button-right-spacing" disabled={!hasViews}>
                 {sessionViewName && (
                     <>
                         <MenuItem header>Most Recent Search</MenuItem>
-                        <MenuItem onClick={onLoadSessionSearch}>{sessionViewName}</MenuItem>
-
+                        <MenuItem active={sessionViewName === currentView?.reportName} onClick={onLoadSessionSearch}>{sessionViewName}</MenuItem>
                         <MenuItem divider />
                     </>
                 )}
@@ -82,7 +85,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                     <>
                         {savedSearches.map((savedSearch, ind) => {
                             return (
-                                <MenuItem key={ind} onClick={onLoadSavedSearch} name={savedSearch.reportId}>
+                                <MenuItem key={ind} onClick={onLoadSavedSearch} name={savedSearch.reportId} active={savedSearch.reportId === currentView?.reportId} >
                                     {savedSearch.reportName}
                                 </MenuItem>
                             );
@@ -99,12 +102,13 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 </MenuItem>
             </DropdownButton>
             {hasUnsavedChanges && currentView?.reportId && (
-                <DropdownButton id="save-finderview-dropdown" title="Save Search" bsStyle="success">
-                    <MenuItem onClick={onSaveCurrentView}>Save this search</MenuItem>
-                    <MenuItem onClick={onSaveNewView}>Save as a new search</MenuItem>
-                </DropdownButton>
+                <SplitButton id="save-finderview-dropdown" bsStyle="success" onClick={onSaveCurrentView} title="Save Search">
+                    <MenuItem title="Save as a new search" onClick={onSaveNewView} key="saveNewGridView">
+                    Save as ...
+                    </MenuItem>
+                </SplitButton>
             )}
-            {hasUnsavedChanges && currentView && !currentView.reportId && (
+            {hasUnsavedChanges && !currentView?.reportId && (
                 <Button bsStyle="success" onClick={onSaveNewView} className="margin-left">
                     Save Search
                 </Button>

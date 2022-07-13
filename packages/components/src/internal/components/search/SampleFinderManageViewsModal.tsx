@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
-import { Col, Modal, Row } from 'react-bootstrap';
+import {Col, Modal, OverlayTrigger, Popover, Row} from 'react-bootstrap';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -31,7 +31,8 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
     useEffect(() => {
         (async () => {
             try {
-                const views = await api.samples.loadFinderSearches();
+                let views = await api.samples.loadFinderSearches();
+                views = views.sort((a, b) => a.reportName.localeCompare(b.reportName));
                 setSavedSearches(views);
             } catch (error) {
                 setErrorMessage(resolveErrorMessage(error));
@@ -90,12 +91,13 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
             <Modal.Body>
                 <Alert>{errorMessage}</Alert>
                 {!savedSearches && <LoadingSpinner />}
+                {savedSearches?.length === 0 && <div className="gray-text">No saved searches</div>}
                 {savedSearches &&
                     savedSearches.map(savedSearch => {
                         const isLocked = savedSearch.entityId === currentView?.entityId;
                         return (
                             <Row className="small-margin-bottom">
-                                <Col xs={5}>
+                                <Col xs={8}>
                                     {selectedSearch?.reportId === savedSearch.reportId ? (
                                         <input
                                             autoFocus
@@ -110,36 +112,40 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
                                         savedSearch.reportName
                                     )}
                                 </Col>
-                                {!selectedSearch && !isLocked && (
-                                    <>
-                                        <Col xs={1}>
+                                <Col xs={4}>
+                                    <span className="pull-right">
+                                        {!selectedSearch && !isLocked && (
+                                            <>
                                             <span
-                                                className="edit-inline-field__toggle"
+                                                className="edit-inline-field__toggle small-right-spacing"
                                                 onClick={() => setSelectedSearch(savedSearch)}
                                             >
                                                 <i className="fa fa-pencil" />
                                             </span>
-                                        </Col>
-                                        <Col xs={1}>
-                                            <span
-                                                className="edit-inline-field__toggle"
-                                                onClick={() => deleteView(savedSearch.entityId)}
-                                            >
+                                                <span
+                                                    className="edit-inline-field__toggle small-right-spacing"
+                                                    onClick={() => deleteView(savedSearch.entityId)}
+                                                >
                                                 <i className="fa fa-trash-o" />
                                             </span>
-                                        </Col>
-                                    </>
-                                )}
-                                {isLocked && (
-                                    <>
-                                        <Col xs={1} />
-                                        <Col xs={1}>
-                                            <span>
-                                                <i className="fa fa-lock" />
-                                            </span>
-                                        </Col>
-                                    </>
-                                )}
+                                            </>
+                                        )}
+                                        {isLocked && (
+                                            <OverlayTrigger
+                                                overlay={
+                                                    <Popover id="current-view-lock">
+                                                        The active search cannot be deleted or renamed.
+                                                    </Popover>
+                                                }
+                                                placement="top"
+                                            >
+                                                <span className="search-form__advanced-toggle small-right-spacing">
+                                                    <i className="fa fa-lock" />
+                                                </span>
+                                            </OverlayTrigger>
+                                        )}
+                                    </span>
+                                </Col>
                             </Row>
                         );
                     })}

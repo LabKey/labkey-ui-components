@@ -278,7 +278,7 @@ export const SampleButtons: FC<SampleButtonProps> = memo(props => {
             )}
             <RequiresPermission perms={PermissionTypes.Insert}>
                 <Button bsStyle="success" className="button-left-spacing" href={App.NEW_SAMPLES_HREF.toHref()}>
-                    Create Samples
+                    Add Samples
                 </Button>
             </RequiresPermission>
         </div>

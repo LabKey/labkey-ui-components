@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// import { getGlobal, setGlobal } from 'reactn';
 import createHistory from 'history/createBrowserHistory';
 
 let _BrowserHistory;
@@ -23,13 +22,10 @@ let _BrowserHistory;
  */
 export function initBrowserHistoryState() {
     _BrowserHistory = createHistory();
-
-    // add a no-op listener just to connect this global state history to the url changes
-    _BrowserHistory.listen((location, action) => {});
 }
 
 /**
- * Access method for better browser history object from global state
+ * Access method for getting global browser history object
  */
 export function getBrowserHistory() {
     if (!_BrowserHistory) {

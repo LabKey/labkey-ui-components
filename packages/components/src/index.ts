@@ -76,7 +76,13 @@ import {
     getUserSharedContainerPermissions,
 } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
-import { getActionErrorMessage, getConfirmDeleteMessage, resolveErrorMessage } from './internal/util/messaging';
+import {
+    getActionErrorMessage,
+    getConfirmDeleteMessage,
+    resolveErrorMessage,
+    deleteSuccessMessage,
+    deleteErrorMessage,
+} from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
 import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
@@ -133,10 +139,6 @@ import {
     ServerActivityData,
     ServerNotificationModel,
 } from './internal/components/notifications/model';
-import {
-    getDeleteErrorNotification,
-    getDeleteSuccessNotification,
-} from './internal/components/notifications/messaging';
 import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons } from './internal/components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
@@ -1195,8 +1197,8 @@ export {
     Persistence,
     getPipelineActivityData,
     markAllNotificationsAsRead,
-    getDeleteSuccessNotification,
-    getDeleteErrorNotification,
+    deleteSuccessMessage,
+    deleteErrorMessage,
     useNotificationsContext,
     withNotificationsContext,
     // domain designer related items

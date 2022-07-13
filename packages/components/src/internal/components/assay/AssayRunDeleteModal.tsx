@@ -1,7 +1,7 @@
 import React, { FC, useMemo, useState } from 'react';
 
 import { ConfirmModal, deleteAssayRuns, Progress, useNotificationsContext } from '../../..';
-import { getDeleteErrorNotification, getDeleteSuccessNotification } from '../notifications/messaging';
+import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 
 interface Props {
     afterDelete: () => void;
@@ -39,13 +39,13 @@ export const AssayRunDeleteModal: FC<Props> = props => {
                     : '';
 
             afterDelete();
-            createNotification(getDeleteSuccessNotification(noun, numToDelete, additionalInfo));
+            createNotification(deleteSuccessMessage(noun, numToDelete, additionalInfo));
         } catch (error) {
             console.error(error);
             setShowProgress(false);
             createNotification({
                 alertClass: 'danger',
-                message: () => getDeleteErrorNotification(noun),
+                message: () => deleteErrorMessage(noun),
             });
             afterDeleteFailure();
         }

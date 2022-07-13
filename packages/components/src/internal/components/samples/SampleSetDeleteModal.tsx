@@ -7,7 +7,7 @@ import {
     SHARED_CONTAINER_PATH,
     useNotificationsContext,
 } from '../../..';
-import { getDeleteErrorNotification, getDeleteSuccessNotification } from '../notifications/messaging';
+import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 
 interface Props {
     afterDelete?: (success: boolean) => void;
@@ -31,12 +31,12 @@ export const SampleSetDeleteModal: FC<Props> = props => {
         try {
             await deleteSampleSet(rowId, containerPath);
             afterDelete?.(true);
-            createNotification(getDeleteSuccessNotification(' sample type'));
+            createNotification(deleteSuccessMessage('sample type'));
         } catch (error) {
             afterDelete?.(false);
             createNotification({
                 alertClass: 'danger',
-                message: () => getDeleteErrorNotification('sample type'),
+                message: () => deleteErrorMessage('sample type'),
             });
         }
     }, [afterDelete, beforeDelete, containerPath, createNotification, rowId]);

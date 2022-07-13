@@ -13,7 +13,7 @@ import {
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-import { getDeleteErrorNotification, getDeleteSuccessNotification } from '../notifications/messaging';
+import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 
 const ASSAY_RUN_MODEL_ID = 'assay-runs-all';
 
@@ -48,14 +48,14 @@ const AssayDesignDeleteModalImpl: FC<Props & InjectedQueryModels> = memo(props =
         deleteAssayDesign(assay.id.toString())
             .then(() => {
                 afterDelete(true);
-                createNotification(getDeleteSuccessNotification(noun));
+                createNotification(deleteSuccessMessage(noun));
             })
             .catch(error => {
                 console.error(error);
                 afterDelete(false);
                 createNotification({
                     alertClass: 'danger',
-                    message: () => getDeleteErrorNotification(noun),
+                    message: () => deleteErrorMessage(noun),
                 });
             });
     }, [beforeDelete, assay.id, afterDelete, createNotification]);

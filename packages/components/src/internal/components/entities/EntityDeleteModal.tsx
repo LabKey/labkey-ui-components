@@ -9,7 +9,7 @@ import { MAX_SELECTED_SAMPLES } from '../samples/constants';
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
 import { getEntityNoun } from './utils';
-import { getDeleteErrorNotification, getDeleteSuccessNotification } from '../notifications/messaging';
+import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 
 interface Props {
     afterDelete: (rowsToKeep?: any[]) => any;
@@ -59,12 +59,12 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                     schemaQuery: queryModel.schemaQuery,
                 });
                 afterDelete(rowsToKeep);
-                createNotification(getDeleteSuccessNotification(noun, rowsToDelete.length, undefined));
+                createNotification(deleteSuccessMessage(noun, rowsToDelete.length, undefined));
             } catch (e) {
                 setShowProgress(false);
                 createNotification({
                     alertClass: 'danger',
-                    message: () => getDeleteErrorNotification(noun),
+                    message: () => deleteErrorMessage(noun),
                 });
             }
         },

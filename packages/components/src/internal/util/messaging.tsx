@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { capitalizeFirstChar } from './utils';
 
+// TODO rename as actionErrorMessage
 export function getActionErrorMessage(problemStatement: string, noun: string, showRefresh = true): React.ReactNode {
     return (
         <span>
@@ -14,6 +15,15 @@ export function getActionErrorMessage(problemStatement: string, noun: string, sh
             )}
         </span>
     );
+}
+
+export function deleteSuccessMessage(noun: string, count?: number, additionalInfo?: string): string {
+    const countStr = count === undefined ? '' : count;
+    return 'Successfully deleted ' + countStr + ' ' + noun + '. ' + (additionalInfo || '');
+}
+
+export function deleteErrorMessage(noun: string): ReactNode {
+    return getActionErrorMessage('There was a problem deleting the ' + noun + '. ', noun);
 }
 
 const IllegalArgumentMessage = 'java.lang.illegalargumentexception:';

@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Remove reactn dependency
   * convert notifications to use a NotificationsContext (plus useNotificationsContext and withNotificationsContext)
   * EditableGridPanelForUpdate update so that it stores and display data errors as an Alert instead of having app use createNotification
+  * DetailEditRenderer.tsx fix for displaying date picker input for case where initial value is empty (regression from changes in 2.196.1)
 
 ### version 2.198.0
 *Released*: 12 July 2022

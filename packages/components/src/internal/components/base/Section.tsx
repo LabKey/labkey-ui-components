@@ -19,9 +19,9 @@ interface SectionProps {
     caption?: ReactNode;
     context?: ReactNode;
     panelClassName?: string;
+    title?: ReactNode;
     titleClassName?: string;
     titleContainerClassName?: string;
-    title?: ReactNode;
     titleSize?: 'large' | 'medium' | 'small';
 }
 
@@ -36,7 +36,6 @@ export const Section: FC<SectionProps> = props => {
         caption,
         children,
     } = props;
-
     const showHeader = !!title || !!caption || !!context;
 
     return (
@@ -44,17 +43,9 @@ export const Section: FC<SectionProps> = props => {
             <div className={`panel panel-content ${panelClassName ? panelClassName : ''}`}>
                 {showHeader && (
                     <div className={`panel-heading panel-content-flex panel-content-${titleSize}`}>
-                        <div
-                            className={`panel-content-title-container ${
-                                titleContainerClassName ? titleContainerClassName : ''
-                            }`}
-                        >
+                        <div className={`panel-content-title-container ${titleContainerClassName ?? ''}`}>
                             {title && (
-                                <div
-                                    className={`panel-content-title-${titleSize} ${
-                                        titleClassName ? titleClassName : ''
-                                    }`}
-                                >
+                                <div className={`panel-content-title-${titleSize} ${titleClassName ?? ''}`}>
                                     {title}
                                 </div>
                             )}

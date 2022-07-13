@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.198.1
+*Released*: 13 July 2022
+* Merge release22.7-SNAPSHOT to develop
+    * Includes changes from version 2.194.3, 2.194.4, and 2.194.5
+
 ### version 2.198.0
 *Released*: 12 July 2022
 Added SearchScope enum and ContainerFilter mapping utility method
@@ -29,6 +34,20 @@ Added SearchScope enum and ContainerFilter mapping utility method
 *Released*: 7 July 2022
 * Issue 45149: "Assay Results" tabbed grid can remove tabs if you filter a grid to zero rows
   * store in state the set of queryModels with data after all have loaded
+
+### version 2.194.5
+*Released*: 12 July 2022
+* Issue 45836: Export for editable grid should export display values instead of ids for lookups
+
+### version 2.194.4
+*Released*: 7 July 2022
+* Add and export Row, RowValue types
+* HorizontalBarSection: Update design
+* App.isProductProjectsEnabled: Add optional moduleContext
+
+### version 2.194.3
+*Released*: 7 July 2022
+* Update styling for checkbox that appears in grid header input fields
 
 ### version 2.194.2
 *Released*: 5 July 2022

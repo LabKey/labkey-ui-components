@@ -157,8 +157,8 @@ export function isProductNavigationEnabled(productId: string): boolean {
     return false;
 }
 
-export function isProductProjectsEnabled(): boolean {
-    return getServerContext().moduleContext?.query?.isProductProjectsEnabled === true;
+export function isProductProjectsEnabled(moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.query?.isProductProjectsEnabled === true;
 }
 
 export function isSampleManagerEnabled(moduleContext?: any): boolean {

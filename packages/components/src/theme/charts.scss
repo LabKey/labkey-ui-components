@@ -31,11 +31,16 @@
     color: $text-muted;
 }
 
+.horizontal-bars {
+    width: 100%;
+}
+
 .horizontal-bar-part {
     display: inline-block;
     position: relative;
     height: 20px;
     outline: 1px solid $table-border-color;
+    vertical-align: bottom;
 }
 
 .horizontal-bar--linked {
@@ -48,15 +53,13 @@
 
 .horizontal-bar--link {
     display: block;
-}
+    width: 100%;
 
-.horizontal-bar--linkSpanner {
-    position:absolute;
-    width:100%;
-
-    top:0;
-    left: 0;
-    z-index: 1;
+    &:hover,
+    &:focus,
+    &:active {
+        text-decoration: none;
+    }
 }
 
 .bar-insights--checkedout, .bar-insights--consumed {

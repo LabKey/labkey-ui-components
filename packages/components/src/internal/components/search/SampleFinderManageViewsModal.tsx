@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
-import {Col, Modal, OverlayTrigger, Popover, Row} from 'react-bootstrap';
+import { Col, Modal, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -12,8 +12,8 @@ import { useAppContext } from '../../AppContext';
 import { FinderReport } from './models';
 
 export interface Props {
-    onDone: (hasChange?: boolean) => void;
     currentView?: FinderReport;
+    onDone: (hasChange?: boolean) => void;
 }
 
 export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
@@ -116,18 +116,18 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
                                     <span className="pull-right">
                                         {!selectedSearch && !isLocked && (
                                             <>
-                                            <span
-                                                className="edit-inline-field__toggle small-right-spacing"
-                                                onClick={() => setSelectedSearch(savedSearch)}
-                                            >
-                                                <i className="fa fa-pencil" />
-                                            </span>
+                                                <span
+                                                    className="edit-inline-field__toggle small-right-spacing"
+                                                    onClick={() => setSelectedSearch(savedSearch)}
+                                                >
+                                                    <i className="fa fa-pencil" />
+                                                </span>
                                                 <span
                                                     className="edit-inline-field__toggle small-right-spacing"
                                                     onClick={() => deleteView(savedSearch.entityId)}
                                                 >
-                                                <i className="fa fa-trash-o" />
-                                            </span>
+                                                    <i className="fa fa-trash-o" />
+                                                </span>
                                             </>
                                         )}
                                         {isLocked && (

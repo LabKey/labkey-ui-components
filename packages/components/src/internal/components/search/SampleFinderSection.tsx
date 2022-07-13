@@ -57,18 +57,18 @@ import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
     getIsDirty?: () => boolean;
-    setIsDirty?: (isDirty: boolean) => void;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     gridButtonProps?: any;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     sampleTypeNames: string[];
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    setIsDirty?: (isDirty: boolean) => void;
     user: User;
 }
 
 interface Props extends SampleFinderSamplesGridProps {
-    parentEntityDataTypes: EntityDataType[];
     clearSessionView?: boolean;
+    parentEntityDataTypes: EntityDataType[];
 }
 
 interface SampleFinderHeaderProps {

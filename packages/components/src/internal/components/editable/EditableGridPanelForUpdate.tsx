@@ -25,6 +25,8 @@ interface Props {
     loader: EditableGridLoaderFromSelection;
     onCancel: () => any;
     onComplete: () => any;
+    getIsDirty?: () => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
     pluralNoun?: string;
     queryModel: QueryModel;
     selectionData: Map<string, any>;
@@ -93,6 +95,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                 index
             );
         });
+        this.props.setIsDirty?.(true);
     };
 
     onSubmit = (): void => {

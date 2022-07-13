@@ -44,6 +44,8 @@ interface Props extends InjectedQueryModels {
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
     modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
+    getIsDirty?: () => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
     onPrintLabel?: () => void;
     sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
@@ -71,6 +73,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         gridButtons,
         gridButtonProps,
         getSampleAuditBehaviorType,
+        getIsDirty,
+        setIsDirty,
         tabbedGridPanelProps,
         withTitle,
     } = props;
@@ -103,6 +107,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             editableGridDataForSelection: Map<string, any>
         ): Promise<Map<string, any>> => {
             setEditableGridUpdateData(editableGridUpdateData_);
+            setIsDirty?.(true);
             return Promise.resolve(editableGridDataForSelection);
         },
         []
@@ -168,6 +173,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         setSelectionData(undefined);
         setIsEditing(false);
         setShowBulkUpdate(false);
+        setIsDirty(false);
     }, []);
 
     const toggleEditWithGridUpdate = useCallback(() => {
@@ -270,6 +276,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     editableGridUpdateData={editableGridUpdateData}
                     onGridEditCancel={resetState}
                     onGridEditComplete={onGridEditComplete}
+                    getIsDirty={getIsDirty}
+                    setIsDirty={setIsDirty}
                     sampleSet={activeModel.schemaQuery.queryName}
                     selection={selection}
                     selectionData={selectionData}

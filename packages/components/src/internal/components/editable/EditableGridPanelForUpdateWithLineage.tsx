@@ -54,6 +54,8 @@ export interface EditableGridPanelForUpdateWithLineageProps
     loaders: EditableGridLoaderFromSelection[];
     onCancel: () => void;
     onComplete: () => void;
+    getIsDirty?: () => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
     parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     pluralNoun?: string;
@@ -76,6 +78,8 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         loaders,
         onCancel,
         onComplete,
+        setIsDirty,
+        getIsDirty,
         parentDataTypes,
         parentTypeOptions,
         pluralNoun = DEFAULT_PLURAL_NOUN,
@@ -160,6 +164,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                     index ?? 0
                 )
             );
+            setIsDirty?.(true);
         },
         []
     );
@@ -327,6 +332,8 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 bsStyle="info"
                 striped
                 title={`Edit selected ${pluralNoun}`}
+                setIsDirty={setIsDirty}
+                getIsDirty={getIsDirty}
                 {...gridProps}
                 allowAdd={false}
                 allowRemove={false}

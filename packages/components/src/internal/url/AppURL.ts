@@ -22,8 +22,7 @@ export function createProductUrlFromParts(
     params: { [key: string]: any },
     ...parts
 ): string | AppURL {
-    let appUrl = AppURL.create(...parts);
-    appUrl = appUrl.addParams(params);
+    const appUrl = AppURL.create(...parts).addParams(params);
     return createProductUrl(urlProductId, currentProductId, appUrl);
 }
 

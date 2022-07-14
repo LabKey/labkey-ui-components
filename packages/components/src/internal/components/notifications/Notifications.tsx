@@ -51,10 +51,10 @@ const NotificationList: FC<NotificationListProps> = ({ alertClass, notifications
 
 export const Notifications: FC = () => {
     const { notifications, dismissNotifications, createNotification } = useNotificationsContext();
-    const { moduleContext, user } = useServerContext();
+    const { moduleContext, user, container } = useServerContext();
     const renderTrialServicesNotification = useCallback(() => {
         const { trialEndDate, upgradeLink, upgradeLinkText } = moduleContext.trialservices;
-        const endDate = moment(trialEndDate, getDateFormat());
+        const endDate = moment(trialEndDate, getDateFormat(container));
         const today = moment();
         const secondsLeft = endDate.diff(today, 'seconds') % 86400;
         // seems a little silly, but if we have any time left in the current day, we count it as a day

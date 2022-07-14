@@ -23,16 +23,7 @@ import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 import { Notifications } from './Notifications';
 import { NotificationItemModel } from './model';
 import { NotificationItem } from './NotificationItem';
-
-beforeEach(() => {
-    LABKEY.container = {
-        formats: {
-            dateTimeFormat: 'yyyy-MM-dd HH:mm',
-            numberFormat: null,
-            dateFormat: 'yyyy-MM-dd',
-        },
-    };
-});
+import { Container } from '../base/models/Container';
 
 describe('<Notification/>', () => {
     test('no notifications', () => {
@@ -89,7 +80,17 @@ describe('<Notification/>', () => {
                 upgradeLinkText: 'Upgrade now',
             },
         };
-        const notifications = mountWithAppServerContext(<Notifications />, {}, { user: TEST_USER_READER, moduleContext });
+        const notifications = mountWithAppServerContext(<Notifications />, {}, {
+            user: TEST_USER_READER,
+            container: new Container({
+                formats: {
+                    dateTimeFormat: 'yyyy-MM-dd HH:mm',
+                    numberFormat: null,
+                    dateFormat: 'yyyy-MM-dd',
+                },
+            }),
+            moduleContext,
+        });
         expect(notifications.find(NotificationItem)).toHaveLength(1);
         expect(notifications.find('a')).toHaveLength(0);
         expect(notifications.find(NotificationItem).at(0).text()).toContain('This LabKey trial site will expire in ');
@@ -103,7 +104,17 @@ describe('<Notification/>', () => {
                 upgradeLinkText: 'Upgrade now',
             },
         };
-        const notifications = mountWithAppServerContext(<Notifications />, {}, { user: TEST_USER_APP_ADMIN, moduleContext });
+        const notifications = mountWithAppServerContext(<Notifications />, {}, {
+            user: TEST_USER_APP_ADMIN,
+            container: new Container({
+                formats: {
+                    dateTimeFormat: 'yyyy-MM-dd HH:mm',
+                    numberFormat: null,
+                    dateFormat: 'yyyy-MM-dd',
+                },
+            }),
+            moduleContext,
+        });
         expect(notifications.find(NotificationItem)).toHaveLength(1);
         expect(notifications.find(NotificationItem).at(0).text()).toContain('This LabKey trial site will expire in ');
         expect(notifications.find('a')).toHaveLength(1);

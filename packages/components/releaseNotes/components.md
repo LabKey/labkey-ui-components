@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.199.0
+*Released*: 14 July 2022
+* Issue 45815: Show view name in tabbed export modal
+* Issue 45686: Change "Create Samples" to "Add Samples" on dashboard button
+
 ### version 2.198.1
 *Released*: 13 July 2022
 * Merge release22.7-SNAPSHOT to develop

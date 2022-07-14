@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const SamplesAddButton: FC<Props> = memo(props => {
-    const { model, hideImport, asSubMenu, text = 'Create Samples', bsStyle = 'default' } = props;
+    const { model, hideImport, asSubMenu, text = 'Add', bsStyle = 'default' } = props;
     const { showInsertNewButton, showImportDataButton, queryInfo } = model;
     const cls = bsStyle === 'default' ? 'responsive-menu' : '';
     const createSampleHref = App.NEW_SAMPLES_HREF.addParams({

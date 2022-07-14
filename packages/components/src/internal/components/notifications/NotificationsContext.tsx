@@ -91,7 +91,7 @@ export const NotificationsContextProvider: FC<NotificationsContextProviderProps>
 
                 if (item) {
                     setNotifications(current => {
-                        if (current.has(item.id)) return;
+                        if (current.has(item.id)) return current;
                         return current.set(item.id, item);
                     });
                 }

@@ -64,7 +64,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                 setShowProgress(false);
                 createNotification({
                     alertClass: 'danger',
-                    message: () => deleteErrorMessage(noun),
+                    message: deleteErrorMessage(noun),
                 });
             }
         },

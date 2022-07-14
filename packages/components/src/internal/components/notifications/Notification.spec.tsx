@@ -43,7 +43,6 @@ describe('<Notification/>', () => {
     test('one notification', () => {
         const alertClass = 'success';
         const message = 'one is the loneliest number';
-        // createNotification();
         const notifications = mountWithAppServerContext(
             <Notifications />,
             {},

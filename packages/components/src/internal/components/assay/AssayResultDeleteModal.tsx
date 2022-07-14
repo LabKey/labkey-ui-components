@@ -35,7 +35,7 @@ export const AssayResultDeleteModal: FC<Props> = props => {
             setShowProgress(false);
             createNotification({
                 alertClass: 'danger',
-                message: () => deleteErrorMessage(noun),
+                message: deleteErrorMessage(noun),
             });
             afterDeleteFailure();
         }

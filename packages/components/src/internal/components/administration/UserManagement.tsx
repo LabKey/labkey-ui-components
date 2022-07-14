@@ -178,20 +178,18 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
 
         if (existingUsers.size > 0) {
             this.props.createNotification({
-                message: () => {
-                    return (
-                        <>
-                            <span>
-                                {Utils.pluralBasic(existingUsers.size, 'user')} already existed and{' '}
-                                {existingUsers.size > 1 ? 'were' : 'was'} not updated.
-                            </span>
-                            &nbsp;
-                            <a href={getUserGridFilterURL(existingUsers, 'all').addParam('usersView', 'all').toHref()}>
-                                view
-                            </a>
-                        </>
-                    );
-                },
+                message: (
+                    <>
+                        <span>
+                            {Utils.pluralBasic(existingUsers.size, 'user')} already existed and{' '}
+                            {existingUsers.size > 1 ? 'were' : 'was'} not updated.
+                        </span>
+                        &nbsp;
+                        <a href={getUserGridFilterURL(existingUsers, 'all').addParam('usersView', 'all').toHref()}>
+                            view
+                        </a>
+                    </>
+                ),
             });
         }
 
@@ -208,13 +206,11 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     onUsersStateChangeComplete = (response: any): void => {
         if (response.resetPassword) {
             this.props.createNotification({
-                message: () => {
-                    return (
-                        <span>
-                            Successfully reset password for <b>{response.email}</b>.
-                        </span>
-                    );
-                },
+                message: (
+                    <span>
+                        Successfully reset password for <b>{response.email}</b>.
+                    </span>
+                ),
             });
             return;
         }
@@ -222,19 +218,17 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         const updatedUserIds = List<number>(response.userIds);
         const action = response.delete ? 'deleted' : response.activate ? 'reactivated' : 'deactivated';
         const urlPrefix = response.activate ? 'active' : 'inactive';
+        const href = getUserGridFilterURL(updatedUserIds, urlPrefix).addParam('usersView', urlPrefix).toHref();
 
         this.props.createNotification({
-            message: () => {
-                const href = getUserGridFilterURL(updatedUserIds, urlPrefix).addParam('usersView', urlPrefix).toHref();
-                return (
-                    <>
-                        <span>
-                            Successfully {action} {Utils.pluralBasic(updatedUserIds.size, 'user')}.&nbsp;
-                        </span>
-                        {!response.delete && <a href={href}>view</a>}
-                    </>
-                );
-            },
+            message: (
+                <>
+                    <span>
+                        Successfully {action} {Utils.pluralBasic(updatedUserIds.size, 'user')}.&nbsp;
+                    </span>
+                    {!response.delete && <a href={href}>view</a>}
+                </>
+            ),
         });
 
         this.loadUserLimitSettings();
@@ -242,20 +236,18 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
 
     afterCreateComplete(newUsers: List<number>, permissionsSet: boolean): void {
         this.props.createNotification({
-            message: () => {
-                return (
-                    <>
-                        <span>
-                            Successfully created {Utils.pluralBasic(newUsers.size, 'new user')}
-                            {permissionsSet ? ' and assigned the selected role' : ''}.
-                        </span>
-                        &nbsp;
-                        <a href={getUserGridFilterURL(newUsers, 'active').addParam('usersView', 'active').toHref()}>
-                            view
-                        </a>
-                    </>
-                );
-            },
+            message: (
+                <>
+                    <span>
+                        Successfully created {Utils.pluralBasic(newUsers.size, 'new user')}
+                        {permissionsSet ? ' and assigned the selected role' : ''}.
+                    </span>
+                    &nbsp;
+                    <a href={getUserGridFilterURL(newUsers, 'active').addParam('usersView', 'active').toHref()}>
+                        view
+                    </a>
+                </>
+            ),
         });
     }
 

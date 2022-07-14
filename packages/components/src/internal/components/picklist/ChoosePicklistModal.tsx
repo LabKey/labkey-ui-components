@@ -270,7 +270,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             }
 
             createNotification({
-                message: () => (
+                message: (
                     <AddedToPicklistNotification
                         picklist={activeItem}
                         numAdded={numAdded}

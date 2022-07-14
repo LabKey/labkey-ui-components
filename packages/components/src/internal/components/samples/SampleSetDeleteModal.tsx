@@ -36,7 +36,7 @@ export const SampleSetDeleteModal: FC<Props> = props => {
             afterDelete?.(false);
             createNotification({
                 alertClass: 'danger',
-                message: () => deleteErrorMessage('sample type'),
+                message: deleteErrorMessage('sample type'),
             });
         }
     }, [afterDelete, beforeDelete, containerPath, createNotification, rowId]);

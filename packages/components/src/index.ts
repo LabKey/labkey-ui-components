@@ -1484,11 +1484,7 @@ export type {
     IDomainField,
     IFieldChange,
 } from './internal/components/domainproperties/models';
-export type {
-    MessageFunction,
-    NotificationItemProps,
-    NotificationCreatable,
-} from './internal/components/notifications/model';
+export type { NotificationItemProps } from './internal/components/notifications/model';
 export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';
 export type { VisGraphNode } from './internal/components/lineage/vis/VisGraphGenerator';
 export type { ITab } from './internal/components/navigation/SubNav';

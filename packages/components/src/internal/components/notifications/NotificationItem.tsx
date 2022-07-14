@@ -25,13 +25,12 @@ interface ItemProps {
 
 export const NotificationItem: FC<ItemProps> = ({ item }) => {
     const { dismissNotifications } = useNotificationsContext();
-    const { user } = useServerContext();
-    const { data, id, message, isDismissible } = item;
+    const { id, message, isDismissible } = item;
     const onClick = useCallback(() => dismissNotifications(id), [dismissNotifications, id]);
 
     return (
         <div className="notification-item">
-            {typeof message === 'function' ? message(item, user, data) : message}
+            {message}
             {isDismissible && <i style={{ float: 'right' }} className="fa fa-times-circle pointer" onClick={onClick} />}
         </div>
     );

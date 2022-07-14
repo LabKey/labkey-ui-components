@@ -140,16 +140,14 @@ export const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props =
 
     const createSuccessNotification = (picklist: Picklist) => {
         createNotification({
-            message: () => {
-                return (
-                    <>
-                        Successfully created "{picklist.name}" with{' '}
-                        {validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples'}.&nbsp;
-                        <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>
-                        .
-                    </>
-                );
-            },
+            message: (
+                <>
+                    Successfully created "{picklist.name}" with{' '}
+                    {validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples'}.&nbsp;
+                    <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>
+                    .
+                </>
+            ),
             alertClass: 'success',
         });
     };

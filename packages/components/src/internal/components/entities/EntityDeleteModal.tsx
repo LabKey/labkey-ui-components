@@ -6,10 +6,11 @@ import { capitalizeFirstChar, ConfirmModal, Progress, deleteRows, QueryModel, us
 
 import { MAX_SELECTED_SAMPLES } from '../samples/constants';
 
+import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
+
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
 import { getEntityNoun } from './utils';
-import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 
 interface Props {
     afterDelete: (rowsToKeep?: any[]) => any;

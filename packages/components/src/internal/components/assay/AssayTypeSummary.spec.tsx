@@ -12,7 +12,11 @@ beforeAll(() => {
 
 describe('<AssayTypeSummary />', () => {
     test('Assay Type Display', async () => {
-        const component = mountWithAppServerContext(<AssayTypeSummary navigate={jest.fn()} />, {}, { user: TEST_USER_EDITOR });
+        const component = mountWithAppServerContext(
+            <AssayTypeSummary navigate={jest.fn()} />,
+            {},
+            { user: TEST_USER_EDITOR }
+        );
 
         expect(component.find(SELECT_INPUT_CONTROL_SELECTOR)).toHaveLength(1);
         expect(component.find('.heatmap-container')).toHaveLength(0);

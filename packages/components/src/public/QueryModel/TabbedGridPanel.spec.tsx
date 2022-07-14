@@ -115,12 +115,7 @@ describe('TabbedGridPanel', () => {
     test('asPanel', () => {
         const title = 'My Tabbed Grid';
         const wrapper = mountWithAppServerContext(
-            <TabbedGridPanel
-                tabOrder={tabOrder}
-                title={title}
-                queryModels={queryModels}
-                actions={actions}
-            />
+            <TabbedGridPanel tabOrder={tabOrder} title={title} queryModels={queryModels} actions={actions} />
         );
 
         // When asPanel is true, we use appropriate styling classes
@@ -135,11 +130,7 @@ describe('TabbedGridPanel', () => {
 
     test('single model', () => {
         const wrapper = mountWithAppServerContext(
-            <TabbedGridPanel
-                tabOrder={['mixtures']}
-                queryModels={{ mixtures: mixturesModel }}
-                actions={actions}
-            />
+            <TabbedGridPanel tabOrder={['mixtures']} queryModels={{ mixtures: mixturesModel }} actions={actions} />
         );
 
         // Hide the tabs if we only have one model.

@@ -27,9 +27,10 @@ import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
 
 import { UserLimitSettings } from '../permissions/actions';
 
+import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
+
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
-import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
 
 export function getNewUserRoles(
     user: User,
@@ -243,9 +244,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                         {permissionsSet ? ' and assigned the selected role' : ''}.
                     </span>
                     &nbsp;
-                    <a href={getUserGridFilterURL(newUsers, 'active').addParam('usersView', 'active').toHref()}>
-                        view
-                    </a>
+                    <a href={getUserGridFilterURL(newUsers, 'active').addParam('usersView', 'active').toHref()}>view</a>
                 </>
             ),
         });
@@ -294,7 +293,9 @@ interface UserManagementPageProps {
     extraRoles?: string[][];
 }
 
-export const UserManagementPageImpl: FC<UserManagementPageProps & InjectedPermissionsPage & NotificationsContextProps> = props => {
+export const UserManagementPageImpl: FC<
+    UserManagementPageProps & InjectedPermissionsPage & NotificationsContextProps
+> = props => {
     const { extraRoles, ...injectedProps } = props;
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext, project, user } = useServerContext();

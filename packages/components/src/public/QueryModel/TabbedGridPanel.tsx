@@ -20,11 +20,12 @@ import { ExportModal } from '../../internal/components/gridbar/ExportModal';
 import { EXPORT_TYPES } from '../../internal/constants';
 import { exportTabsXlsx } from '../../internal/actions';
 
+import { useNotificationsContext } from '../../internal/components/notifications/NotificationsContext';
+
 import { GridPanel, GridPanelProps } from './GridPanel';
 import { InjectedQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
-import { useNotificationsContext } from '../../internal/components/notifications/NotificationsContext';
 
 interface GridTabProps {
     isActive: boolean;

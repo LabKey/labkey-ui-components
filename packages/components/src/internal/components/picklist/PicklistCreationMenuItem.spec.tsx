@@ -3,9 +3,10 @@ import { MenuItem, Modal } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
+import { mountWithAppServerContext } from '../../testHelpers';
+
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { PicklistEditModal } from './PicklistEditModal';
-import { mountWithAppServerContext } from '../../testHelpers';
 
 beforeAll(() => {
     LABKEY.moduleContext.inventory = { productId: ['FreezerManager'] };

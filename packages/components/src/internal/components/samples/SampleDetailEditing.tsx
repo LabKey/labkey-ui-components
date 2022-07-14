@@ -23,11 +23,12 @@ import { EditableDetailPanel, EditableDetailPanelProps } from '../../../public/Q
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { withNotificationsContext, NotificationsContextProps } from '../notifications/NotificationsContext';
+
 import { GroupedSampleFields } from './models';
 import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from './actions';
 import { IS_ALIQUOT_COL } from './constants';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
-import { withNotificationsContext, NotificationsContextProps } from '../notifications/NotificationsContext';
 
 interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
@@ -35,11 +36,11 @@ interface Props extends EditableDetailPanelProps {
 }
 
 interface State {
+    discardComment: string;
     hasError: boolean;
     sampleStorageItemId: number;
     sampleTypeDomainFields: GroupedSampleFields;
     shouldDiscard: boolean;
-    discardComment: string;
 }
 
 class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContextProps, State> {

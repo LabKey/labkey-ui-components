@@ -31,6 +31,8 @@ import { formatDateTime } from '../../util/Date';
 
 import { useAppContext } from '../../AppContext';
 
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+
 import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';
 import {
@@ -51,17 +53,16 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
-import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
     getIsDirty?: () => boolean;
-    setIsDirty?: (isDirty: boolean) => void;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     gridButtonProps?: any;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     sampleTypeNames: string[];
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    setIsDirty?: (isDirty: boolean) => void;
     user: User;
 }
 

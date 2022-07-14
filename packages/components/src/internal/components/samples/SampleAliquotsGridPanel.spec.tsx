@@ -47,7 +47,8 @@ describe('SampleAliquotsGridPanel', () => {
                 storageButton={DummyButton1}
                 jobsButton={DummyButton2}
             />,
-            {}, { user: TEST_USER_STORAGE_EDITOR }
+            {},
+            { user: TEST_USER_STORAGE_EDITOR }
         );
         expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(1);
         const items = wrapper.find(ResponsiveMenuButtonGroup).prop('items');
@@ -67,7 +68,8 @@ describe('SampleAliquotsGridPanel', () => {
                 storageButton={DummyButton1}
                 jobsButton={DummyButton2}
             />,
-            {}, { user: TEST_USER_READER }
+            {},
+            { user: TEST_USER_READER }
         );
         expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(0);
         wrapper.unmount();
@@ -79,7 +81,8 @@ describe('SampleAliquotsGridPanel', () => {
 
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl {...props} queryModels={{ model }} lineageUpdateAllowed={true} />,
-            {}, DEFAULT_CONTEXT
+            {},
+            DEFAULT_CONTEXT
         );
 
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
@@ -89,7 +92,8 @@ describe('SampleAliquotsGridPanel', () => {
     test('show confirm delete', () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={true} />,
-            {}, DEFAULT_CONTEXT
+            {},
+            DEFAULT_CONTEXT
         );
         wrapper.setState({ showConfirmDelete: true });
         expect(wrapper.find(EntityDeleteModal).exists()).toEqual(true);
@@ -99,7 +103,8 @@ describe('SampleAliquotsGridPanel', () => {
     test('lineage update not allowed', () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={false} />,
-            {}, DEFAULT_CONTEXT
+            {},
+            DEFAULT_CONTEXT
         );
         expect(wrapper.find(ManageDropdownButton).exists()).toBeFalsy();
     });

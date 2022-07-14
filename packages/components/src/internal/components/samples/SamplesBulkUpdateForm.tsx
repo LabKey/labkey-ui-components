@@ -22,10 +22,11 @@ import { OperationConfirmationData } from '../entities/models';
 
 import { userCanEditStorageData } from '../../app/utils';
 
+import { withNotificationsContext, NotificationsContextProps } from '../notifications/NotificationsContext';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
-import { withNotificationsContext, NotificationsContextProps } from '../notifications/NotificationsContext';
 
 interface OwnProps {
     containerFilter?: Query.ContainerFilter;

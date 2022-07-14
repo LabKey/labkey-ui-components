@@ -21,15 +21,15 @@ import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initE
 
 interface Props {
     containerFilter?: Query.ContainerFilter;
+    getIsDirty?: () => boolean;
     idField: string;
     loader: EditableGridLoaderFromSelection;
     onCancel: () => any;
     onComplete: () => any;
-    getIsDirty?: () => boolean;
-    setIsDirty?: (isDirty: boolean) => void;
     pluralNoun?: string;
     queryModel: QueryModel;
     selectionData: Map<string, any>;
+    setIsDirty?: (isDirty: boolean) => void;
     singularNoun?: string;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
 }
@@ -37,8 +37,8 @@ interface Props {
 interface State {
     dataModels: QueryModel[];
     editorModels: EditorModel[];
-    isSubmitting: boolean;
     error: string;
+    isSubmitting: boolean;
 }
 
 export class EditableGridPanelForUpdate extends React.Component<Props, State> {
@@ -121,14 +121,16 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             this.setState(() => ({ isSubmitting: true }));
             const updatePromises = [];
             gridDataAllTabs.forEach(data => updatePromises.push(updateRows(data.schemaQuery, data.updatedRows)));
-            Promise.all(updatePromises).then(() => {
-                this.setState(() => ({ isSubmitting: false }), onComplete());
-            }).catch(error => {
-                this.setState(() => ({
-                    error: error?.exception ?? 'There was a problem updating the ' + singularNoun + ' data.',
-                    isSubmitting: false
-                }));
-            });
+            Promise.all(updatePromises)
+                .then(() => {
+                    this.setState(() => ({ isSubmitting: false }), onComplete());
+                })
+                .catch(error => {
+                    this.setState(() => ({
+                        error: error?.exception ?? 'There was a problem updating the ' + singularNoun + ' data.',
+                        isSubmitting: false,
+                    }));
+                });
         } else {
             this.setState(() => ({ isSubmitting: false }), onComplete());
         }

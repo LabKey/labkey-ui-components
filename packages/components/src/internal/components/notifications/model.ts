@@ -32,8 +32,8 @@ export enum Persistence {
 export interface NotificationItemProps {
     alertClass?: string;
     id?: string;
-    isDismissible?: boolean;
     isDismissed?: boolean;
+    isDismissible?: boolean;
     message: React.ReactNode | MessageFunction<NotificationItemProps>;
     onDismiss?: () => any;
     persistence?: Persistence;
@@ -50,7 +50,8 @@ export class NotificationItemModel
         onDismiss: undefined,
         persistence: Persistence.PAGE_LOAD,
     })
-    implements NotificationItemProps {
+    implements NotificationItemProps
+{
     declare alertClass: string;
     declare data?: any;
     declare id: string;
@@ -124,29 +125,29 @@ export class ServerActivityData {
 
 export interface ServerActivity {
     data: ServerActivityData[];
+    inProgressCount: number;
     totalRows: number;
     unreadCount: number;
-    inProgressCount: number;
 }
 
 export interface ServerNotificationsConfig {
-    maxRows: number;
     markAllNotificationsRead: () => Promise<boolean>;
-    serverActivity: ServerNotificationModel;
-    onViewAll: () => any;
+    maxRows: number;
     onRead?: () => any;
+    onViewAll: () => any;
+    serverActivity: ServerNotificationModel;
 }
 
 export interface IServerNotificationModel {
     data: ServerActivityData[];
-    totalRows: number;
-    unreadCount: number;
+    errorMessage: string;
     inProgressCount: number;
-
     isError: boolean;
+
     isLoaded: boolean;
     isLoading: boolean;
-    errorMessage: string;
+    totalRows: number;
+    unreadCount: number;
 }
 
 const DEFAULT_SERVER_NOTIFICATION_MODEL: IServerNotificationModel = {

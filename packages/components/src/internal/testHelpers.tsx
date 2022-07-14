@@ -15,7 +15,10 @@ import { URL_MAPPERS, URLService } from './url/URLResolver';
 import { AppContext, AppContextProvider } from './AppContext';
 import { getTestAPIWrapper } from './APIWrapper';
 
-import { NotificationsContextProvider, NotificationsContextState } from './components/notifications/NotificationsContext';
+import {
+    NotificationsContextProvider,
+    NotificationsContextState,
+} from './components/notifications/NotificationsContext';
 
 declare let LABKEY: LabKey;
 
@@ -235,7 +238,6 @@ export const waitForLifecycle = (wrapper: ReactWrapper): Promise<undefined> => {
     });
 };
 
-
 export const wrapDraggable = element => {
     return (
         <DragDropContext onDragEnd={jest.fn()}>
@@ -250,4 +252,3 @@ export const wrapDraggable = element => {
         </DragDropContext>
     );
 };
-

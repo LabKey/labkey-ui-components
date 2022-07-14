@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 import { mountWithAppServerContext } from '../../testHelpers';
+
+import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 
 describe('<AssayRunDeleteModal/>', () => {
     test('Show progress', () => {

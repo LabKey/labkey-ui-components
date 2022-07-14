@@ -10,10 +10,12 @@ import { User } from '../base/models/User';
 
 import { userCanManagePicklists } from '../../app/utils';
 
+import { DisableableButton } from '../buttons/DisableableButton';
+
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+
 import { removeSamplesFromPicklist } from './actions';
 import { Picklist } from './models';
-import { DisableableButton } from '../buttons/DisableableButton';
-import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 interface Props {
     afterSampleActionComplete: () => void;

@@ -26,9 +26,9 @@ import { addSamplesToPicklist, getPicklistsForInsert, getPicklistUrl, SampleType
 interface PicklistListProps {
     activeItem: Picklist;
     emptyMessage: ReactNode;
+    items: Picklist[];
     onSelect: (picklist: Picklist) => void;
     showSharedIcon?: boolean;
-    items: Picklist[];
 }
 
 // export for jest testing
@@ -159,10 +159,10 @@ export const PicklistDetails: FC<PicklistDetailsProps> = memo(props => {
 });
 
 interface AddedToPicklistNotificationProps {
-    picklist: Picklist;
+    currentProductId?: string;
     numAdded: number;
     numSelected: number;
-    currentProductId?: string;
+    picklist: Picklist;
     picklistProductId?: string;
 }
 
@@ -193,9 +193,9 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> =
 };
 
 interface ChoosePicklistModalDisplayProps {
-    picklists: Picklist[];
-    picklistLoadError: ReactNode;
     loading: boolean;
+    picklistLoadError: ReactNode;
+    picklists: Picklist[];
     statusData: OperationConfirmationData;
     validCount: number;
 }
@@ -439,9 +439,9 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
 interface ChoosePicklistModalProps {
     afterAddToPicklist: () => void;
     currentProductId?: string;
+    metricFeatureArea?: string;
     numSelected: number;
     onCancel: (cancelToCreate?: boolean) => void;
-    metricFeatureArea?: string;
     picklistProductId?: string;
     queryModel?: QueryModel;
     sampleFieldKey?: string;

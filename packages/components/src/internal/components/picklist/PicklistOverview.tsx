@@ -46,10 +46,10 @@ interface OwnProps {
     AdditionalGridButtons?: ComponentType<RequiresModelAndActions>;
     advancedExportOptions?: { [key: string]: any };
     api?: ComponentsAPIWrapper;
+    getIsDirty?: () => boolean;
     navigate: (url: string | AppURL) => any;
     params?: any;
     samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
-    getIsDirty?: () => boolean;
     setIsDirty?: (isDirty: boolean) => void;
     user: User;
 }

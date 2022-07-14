@@ -8,8 +8,9 @@ import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
 import { EntityDeleteConfirmModal } from '../entities/EntityDeleteConfirmModal';
 
-import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { mountWithAppServerContext } from '../../testHelpers';
+
+import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 
 describe('SampleDeleteMenuItem', () => {
     function validate(wrapper: ReactWrapper, deleteModalCount = 0) {

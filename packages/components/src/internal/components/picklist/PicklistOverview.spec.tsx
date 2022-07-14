@@ -64,7 +64,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -96,7 +97,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -132,7 +134,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -154,7 +157,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -180,7 +184,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -206,7 +211,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -247,7 +253,8 @@ describe('PicklistOverviewImpl', () => {
     test('picklist with multiple sample types', () => {
         const wrapper = mountWithAppServerContext(
             <PicklistOverviewImpl {...DEFAULT_PROPS} picklist={MULTI_SAMPLE_TYPE_PICKLIST} />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, MULTI_SAMPLE_TYPE_PICKLIST);
         wrapper.unmount();
@@ -256,7 +263,8 @@ describe('PicklistOverviewImpl', () => {
     test('picklist with single sample types', () => {
         const wrapper = mountWithAppServerContext(
             <PicklistOverviewImpl {...DEFAULT_PROPS} picklist={SINGLE_SAMPLE_TYPE_PICKLIST} />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, SINGLE_SAMPLE_TYPE_PICKLIST);
     });
@@ -264,7 +272,8 @@ describe('PicklistOverviewImpl', () => {
     test('reader', () => {
         const wrapper = mountWithAppServerContext(
             <PicklistOverviewImpl {...DEFAULT_PROPS} picklist={SINGLE_SAMPLE_TYPE_PICKLIST} user={TEST_USER_READER} />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, SINGLE_SAMPLE_TYPE_PICKLIST, false, false);
     });
@@ -279,7 +288,8 @@ describe('PicklistOverviewImpl', () => {
         });
         const wrapper = mountWithAppServerContext(
             <PicklistOverviewImpl {...DEFAULT_PROPS} picklist={picklist} />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, picklist, false, false);
     });
@@ -294,7 +304,8 @@ describe('PicklistOverviewImpl', () => {
         });
         const wrapper = mountWithAppServerContext(
             <PicklistOverviewImpl {...DEFAULT_PROPS} picklist={picklist} />,
-            {}, {}
+            {},
+            {}
         );
         validate(wrapper, picklist, true, true, true, false);
     });

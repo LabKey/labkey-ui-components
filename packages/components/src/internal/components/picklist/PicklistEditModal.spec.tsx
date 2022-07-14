@@ -134,21 +134,27 @@ describe('PicklistEditModal', () => {
     });
 
     test('create empty picklist from sampleIds', () => {
-        const wrapper = mountWithAppServerContext(<PicklistEditModal sampleIds={[]} onCancel={jest.fn()} onFinish={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(
+            <PicklistEditModal sampleIds={[]} onCancel={jest.fn()} onFinish={jest.fn()} />
+        );
         validateText(wrapper, 'Create an Empty Picklist', 'Create Picklist');
 
         wrapper.unmount();
     });
 
     test('create picklist from one sampleId', () => {
-        const wrapper = mountWithAppServerContext(<PicklistEditModal sampleIds={['1']} onCancel={jest.fn()} onFinish={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(
+            <PicklistEditModal sampleIds={['1']} onCancel={jest.fn()} onFinish={jest.fn()} />
+        );
         validateText(wrapper, 'Create a New Picklist with This Sample', 'Create Picklist');
 
         wrapper.unmount();
     });
 
     test('create picklist from multiple sampleIds', () => {
-        const wrapper = mountWithAppServerContext(<PicklistEditModal sampleIds={['1', '2']} onCancel={jest.fn()} onFinish={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(
+            <PicklistEditModal sampleIds={['1', '2']} onCancel={jest.fn()} onFinish={jest.fn()} />
+        );
         validateText(wrapper, 'Create a New Picklist with These Samples', 'Create Picklist');
 
         wrapper.unmount();
@@ -160,7 +166,9 @@ describe('PicklistEditModal', () => {
             name: 'Existing list',
             Description: 'My test description',
         });
-        const wrapper = mountWithAppServerContext(<PicklistEditModal picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(
+            <PicklistEditModal picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />
+        );
         validateText(wrapper, 'Update Picklist Data', 'Update Picklist');
         const labels = wrapper.find('label');
         expect(labels).toHaveLength(3);
@@ -179,7 +187,9 @@ describe('PicklistEditModal', () => {
             name: 'Existing list',
             Description: 'My test description',
         });
-        const wrapper = mountWithAppServerContext(<PicklistEditModal picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />);
+        const wrapper = mountWithAppServerContext(
+            <PicklistEditModal picklist={existingList} onCancel={jest.fn()} onFinish={jest.fn()} />
+        );
         expect(wrapper.find('input').at(1).prop('checked')).toBe(true);
         wrapper.unmount();
     });

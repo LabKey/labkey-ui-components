@@ -20,10 +20,11 @@ import { Map } from 'immutable';
 import { mountWithAppServerContext } from '../../testHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 
+import { Container } from '../base/models/Container';
+
 import { Notifications } from './Notifications';
 import { NotificationItemModel } from './model';
 import { NotificationItem } from './NotificationItem';
-import { Container } from '../base/models/Container';
 
 describe('<Notification/>', () => {
     test('no notifications', () => {
@@ -39,7 +40,10 @@ describe('<Notification/>', () => {
             {},
             { user: TEST_USER_READER },
             {
-                notifications: Map.of('one_notification', new NotificationItemModel({ alertClass, id: 'one_notification', message })),
+                notifications: Map.of(
+                    'one_notification',
+                    new NotificationItemModel({ alertClass, id: 'one_notification', message })
+                ),
             }
         );
         expect(notifications.find(NotificationItem)).toHaveLength(1);
@@ -54,14 +58,23 @@ describe('<Notification/>', () => {
             new NotificationItemModel({ id: 'default1', message: 'default message class' }),
             new NotificationItemModel({ alertClass: 'danger', id: 'danger1', message: 'Danger, Will Robinson!' }),
         ];
-        const notifications = mountWithAppServerContext(<Notifications />, {}, { user: TEST_USER_READER }, {
-            notifications: Map.of(
-                models[0].id, models[0],
-                models[1].id, models[1],
-                models[2].id, models[2],
-                models[3].id, models[3],
-            )
-        });
+        const notifications = mountWithAppServerContext(
+            <Notifications />,
+            {},
+            { user: TEST_USER_READER },
+            {
+                notifications: Map.of(
+                    models[0].id,
+                    models[0],
+                    models[1].id,
+                    models[1],
+                    models[2].id,
+                    models[2],
+                    models[3].id,
+                    models[3]
+                ),
+            }
+        );
         expect(notifications.find(NotificationItem)).toHaveLength(4);
         expect(notifications.find('.notification-container')).toHaveLength(3);
         expect(notifications.find('.alert-success').exists()).toEqual(true);
@@ -80,17 +93,21 @@ describe('<Notification/>', () => {
                 upgradeLinkText: 'Upgrade now',
             },
         };
-        const notifications = mountWithAppServerContext(<Notifications />, {}, {
-            user: TEST_USER_READER,
-            container: new Container({
-                formats: {
-                    dateTimeFormat: 'yyyy-MM-dd HH:mm',
-                    numberFormat: null,
-                    dateFormat: 'yyyy-MM-dd',
-                },
-            }),
-            moduleContext,
-        });
+        const notifications = mountWithAppServerContext(
+            <Notifications />,
+            {},
+            {
+                user: TEST_USER_READER,
+                container: new Container({
+                    formats: {
+                        dateTimeFormat: 'yyyy-MM-dd HH:mm',
+                        numberFormat: null,
+                        dateFormat: 'yyyy-MM-dd',
+                    },
+                }),
+                moduleContext,
+            }
+        );
         expect(notifications.find(NotificationItem)).toHaveLength(1);
         expect(notifications.find('a')).toHaveLength(0);
         expect(notifications.find(NotificationItem).at(0).text()).toContain('This LabKey trial site will expire in ');
@@ -104,17 +121,21 @@ describe('<Notification/>', () => {
                 upgradeLinkText: 'Upgrade now',
             },
         };
-        const notifications = mountWithAppServerContext(<Notifications />, {}, {
-            user: TEST_USER_APP_ADMIN,
-            container: new Container({
-                formats: {
-                    dateTimeFormat: 'yyyy-MM-dd HH:mm',
-                    numberFormat: null,
-                    dateFormat: 'yyyy-MM-dd',
-                },
-            }),
-            moduleContext,
-        });
+        const notifications = mountWithAppServerContext(
+            <Notifications />,
+            {},
+            {
+                user: TEST_USER_APP_ADMIN,
+                container: new Container({
+                    formats: {
+                        dateTimeFormat: 'yyyy-MM-dd HH:mm',
+                        numberFormat: null,
+                        dateFormat: 'yyyy-MM-dd',
+                    },
+                }),
+                moduleContext,
+            }
+        );
         expect(notifications.find(NotificationItem)).toHaveLength(1);
         expect(notifications.find(NotificationItem).at(0).text()).toContain('This LabKey trial site will expire in ');
         expect(notifications.find('a')).toHaveLength(1);

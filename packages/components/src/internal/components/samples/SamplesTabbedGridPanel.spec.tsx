@@ -5,10 +5,11 @@ import { AuditBehaviorTypes } from '@labkey/api';
 
 import { App, makeTestActions, makeTestQueryModel, QueryInfo, SchemaQuery, TabbedGridPanel } from '../../..';
 
+import { mountWithAppServerContext } from '../../testHelpers';
+
 import { SamplesEditableGrid } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
-import { mountWithAppServerContext } from '../../testHelpers';
 
 const SQ = SchemaQuery.create('schema', 'query');
 const QI = QueryInfo.create({ title: 'Test title' });

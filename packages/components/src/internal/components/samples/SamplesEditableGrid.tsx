@@ -56,19 +56,22 @@ export interface SamplesEditableGridProps {
         noStorageSamples: any[],
         selection: List<any>
     ) => any;
+    getIsDirty?: () => boolean;
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
     onGridEditCancel: () => any;
     onGridEditComplete: () => any;
-    getIsDirty?: () => boolean;
-    setIsDirty?: (isDirty: boolean) => void;
     parentDataTypes: List<EntityDataType>;
     samplesGridOmittedColumns?: List<string>;
     samplesGridRequiredColumns?: string[];
     selectionData: Map<string, any>;
+    setIsDirty?: (isDirty: boolean) => void;
     user: User;
 }
 
-type Props = SamplesEditableGridProps & SamplesSelectionProviderProps & SamplesSelectionResultProps & NotificationsContextProps;
+type Props = SamplesEditableGridProps &
+    SamplesSelectionProviderProps &
+    SamplesSelectionResultProps &
+    NotificationsContextProps;
 
 const STORAGE_UPDATE_FIELDS = ['StoredAmount', 'Units', 'FreezeThawCount'];
 const SAMPLES_EDIT_GRID_ID = 'update-samples-grid';

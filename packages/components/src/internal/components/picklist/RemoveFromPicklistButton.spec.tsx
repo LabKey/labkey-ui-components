@@ -47,7 +47,8 @@ describe('RemoveFromPicklistButton', () => {
     test('public picklist with remove perm', () => {
         const wrapper = mountWithAppServerContext(
             <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={publicPicklist} />,
-            {}, { user: TEST_USER_EDITOR }
+            {},
+            { user: TEST_USER_EDITOR }
         );
         validate(wrapper);
         wrapper.unmount();
@@ -56,7 +57,8 @@ describe('RemoveFromPicklistButton', () => {
     test('public picklist without remove perm', () => {
         const wrapper = mountWithAppServerContext(
             <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={publicPicklist} user={TEST_USER_READER} />,
-            {}, { user: TEST_USER_READER }
+            {},
+            { user: TEST_USER_READER }
         );
         validate(wrapper, false);
         wrapper.unmount();
@@ -65,7 +67,8 @@ describe('RemoveFromPicklistButton', () => {
     test('private picklist not owner with remove perm', () => {
         const wrapper = mountWithAppServerContext(
             <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={privatePicklistNotOwner} />,
-            {}, { user: TEST_USER_EDITOR }
+            {},
+            { user: TEST_USER_EDITOR }
         );
         validate(wrapper, false);
         wrapper.unmount();
@@ -74,7 +77,8 @@ describe('RemoveFromPicklistButton', () => {
     test('private picklist as owner with remove perm', () => {
         const wrapper = mountWithAppServerContext(
             <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={privatePicklistIsOwner} />,
-            {}, { user: TEST_USER_EDITOR }
+            {},
+            { user: TEST_USER_EDITOR }
         );
         validate(wrapper);
         wrapper.unmount();
@@ -83,7 +87,8 @@ describe('RemoveFromPicklistButton', () => {
     test('private picklist as owner without remove perm', () => {
         const wrapper = mountWithAppServerContext(
             <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={privatePicklistIsOwner} user={TEST_USER_READER} />,
-            {}, { user: TEST_USER_READER }
+            {},
+            { user: TEST_USER_READER }
         );
         validate(wrapper, false);
         wrapper.unmount();
@@ -92,7 +97,8 @@ describe('RemoveFromPicklistButton', () => {
     test('menu item click to show confirm modal', () => {
         const wrapper = mountWithAppServerContext(
             <RemoveFromPicklistButton {...DEFAULT_PROPS} picklist={publicPicklist} />,
-            {}, { user: TEST_USER_EDITOR }
+            {},
+            { user: TEST_USER_EDITOR }
         );
         validate(wrapper);
         wrapper.find(DisableableButton).simulate('click');

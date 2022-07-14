@@ -127,12 +127,12 @@ import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/
 import {
     useNotificationsContext,
     withNotificationsContext,
+    NotificationsContextProvider,
 } from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
 import { formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
-import { NotificationsContextProvider } from './internal/components/notifications/NotificationsContext';
 import {
     NotificationItemModel,
     Persistence,

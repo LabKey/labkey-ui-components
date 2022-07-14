@@ -5,9 +5,10 @@ import { sleep } from '../../testHelpers';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
+import { NotificationsContextProvider } from '../notifications/NotificationsContext';
+
 import { NameExpressionGenIdBanner } from './NameExpressionGenIdBanner';
 import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
-import {NotificationsContextProvider} from "../notifications/NotificationsContext";
 
 describe('NameExpressionGenIdBanner', () => {
     test('with existing data', async () => {

@@ -34,12 +34,12 @@ import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    queryModel: QueryModel;
+    auditBehavior?: AuditBehaviorTypes;
+    childEntityDataType: EntityDataType;
     onCancel: () => void;
     onSuccess: () => void;
-    childEntityDataType: EntityDataType;
-    auditBehavior?: AuditBehaviorTypes;
     parentEntityDataTypes: EntityDataType[];
+    queryModel: QueryModel;
 }
 
 export const restrictedDataOperationMsg = (

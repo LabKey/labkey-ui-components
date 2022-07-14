@@ -25,8 +25,9 @@ import { PermissionAssignments } from '../permissions/PermissionAssignments';
 
 import { AppContext, useAppContext } from '../../AppContext';
 
-import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
+
+import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
 
 interface OwnProps {
     containerId: string;

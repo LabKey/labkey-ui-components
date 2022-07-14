@@ -1506,12 +1506,12 @@
 
 "@labkey/api@1.15.0":
   version "1.15.0"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.15.0.tgz#39911ac243ca3c2ada9f2ae07a43213e8907e00d"
+  resolved "https://labkey.jfrog.io:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.15.0.tgz#39911ac243ca3c2ada9f2ae07a43213e8907e00d"
   integrity sha1-OZEawkPKPCranyrgekMhPokH4A0=
 
 "@labkey/build@6.1.3":
   version "6.1.3"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.3.tgz#f4ecf6c0607ca2fd68deb9a6c778043fbf24badb"
+  resolved "https://labkey.jfrog.io:443/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.3.tgz#f4ecf6c0607ca2fd68deb9a6c778043fbf24badb"
   integrity sha1-9Oz2wGB8ov1o3rmmx3gEP78kuts=
   dependencies:
     "@babel/core" "7.17.8"
@@ -1543,7 +1543,7 @@
 
 "@labkey/eslint-config-base@0.0.12":
   version "0.0.12"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/eslint-config-base/-/@labkey/eslint-config-base-0.0.12.tgz#ef8d6e86c43faf3f41525826883281559039bf0c"
+  resolved "https://labkey.jfrog.io:443/artifactory/api/npm/libs-client/@labkey/eslint-config-base/-/@labkey/eslint-config-base-0.0.12.tgz#ef8d6e86c43faf3f41525826883281559039bf0c"
   integrity sha1-741uhsQ/rz9BUlgmiDKBVZA5vww=
   dependencies:
     "@typescript-eslint/eslint-plugin" "5.27.0"
@@ -1559,7 +1559,7 @@
 
 "@labkey/eslint-config-react@0.0.12":
   version "0.0.12"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/eslint-config-react/-/@labkey/eslint-config-react-0.0.12.tgz#5a6b4092d4e0d480ccc0013ec3c854a787c1f8f0"
+  resolved "https://labkey.jfrog.io:443/artifactory/api/npm/libs-client/@labkey/eslint-config-react/-/@labkey/eslint-config-react-0.0.12.tgz#5a6b4092d4e0d480ccc0013ec3c854a787c1f8f0"
   integrity sha1-WmtAktTg1IDMwAE+w8hUp4fB+PA=
   dependencies:
     "@labkey/eslint-config-base" "0.0.12"

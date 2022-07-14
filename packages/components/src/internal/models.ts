@@ -357,7 +357,8 @@ export class EditorModel
         forUpdate = false,
         readOnlyColumns?: List<string>,
         extraColumns?: Array<Partial<QueryColumn>>,
-        colFilter?: (col: QueryColumn) => boolean
+        colFilter?: (col: QueryColumn) => boolean,
+        forExport?: boolean
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
         const columns = this.getColumns(queryInfo, forUpdate, readOnlyColumns, undefined, undefined, colFilter);
@@ -400,8 +401,9 @@ export class EditorModel
                         row = row.set(
                             col.name,
                             values.reduce((arr, vd) => {
-                                if (vd.raw !== undefined && vd.raw !== null) {
-                                    arr.push(vd.raw);
+                                const val = forExport ? vd.display : vd.raw;
+                                if (val !== undefined && val !== null) {
+                                    arr.push(val);
                                 }
                                 return arr;
                             }, [])
@@ -412,7 +414,10 @@ export class EditorModel
                             values.size === 1 ? quoteValueWithDelimiters(values.first().display, ',') : undefined
                         );
                     } else {
-                        row = row.set(col.name, values.size === 1 ? values.first()?.raw : undefined);
+                        let val = undefined;
+                        if (values.size === 1)
+                            val = forExport ? values.first()?.display : values.first()?.raw;
+                        row = row.set(col.name, val);
                     }
                 } else if (col.jsonType === 'date' && !displayValues) {
                     let dateVal;

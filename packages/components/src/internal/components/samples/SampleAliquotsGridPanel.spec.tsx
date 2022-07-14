@@ -13,7 +13,7 @@ import {
     SCHEMAS,
 } from '../../..';
 
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../testHelpers';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
@@ -39,7 +39,7 @@ describe('SampleAliquotsGridPanel', () => {
         const DummyButton1 = () => <div className="storage-button-test"> foo </div>;
         const DummyButton2 = () => <div className="jobs-button-test"> bar </div>;
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl
                 {...DEFAULT_PROPS}
                 user={TEST_USER_STORAGE_EDITOR}
@@ -47,6 +47,7 @@ describe('SampleAliquotsGridPanel', () => {
                 storageButton={DummyButton1}
                 jobsButton={DummyButton2}
             />,
+            {},
             { user: TEST_USER_STORAGE_EDITOR }
         );
         expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(1);
@@ -59,7 +60,7 @@ describe('SampleAliquotsGridPanel', () => {
         const DummyButton1 = () => <div className="storage-button-test"> foo </div>;
         const DummyButton2 = () => <div className="jobs-button-test"> bar </div>;
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl
                 {...DEFAULT_PROPS}
                 user={TEST_USER_READER}
@@ -67,6 +68,7 @@ describe('SampleAliquotsGridPanel', () => {
                 storageButton={DummyButton1}
                 jobsButton={DummyButton2}
             />,
+            {},
             { user: TEST_USER_READER }
         );
         expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(0);
@@ -77,8 +79,9 @@ describe('SampleAliquotsGridPanel', () => {
         const props = DEFAULT_PROPS;
         const model = props.queryModels.model.mutate({ queryInfoLoadingState: LoadingState.LOADING });
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl {...props} queryModels={{ model }} lineageUpdateAllowed={true} />,
+            {},
             DEFAULT_CONTEXT
         );
 
@@ -87,8 +90,9 @@ describe('SampleAliquotsGridPanel', () => {
     });
 
     test('show confirm delete', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={true} />,
+            {},
             DEFAULT_CONTEXT
         );
         wrapper.setState({ showConfirmDelete: true });
@@ -97,8 +101,9 @@ describe('SampleAliquotsGridPanel', () => {
     });
 
     test('lineage update not allowed', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={false} />,
+            {},
             DEFAULT_CONTEXT
         );
         expect(wrapper.find(ManageDropdownButton).exists()).toBeFalsy();

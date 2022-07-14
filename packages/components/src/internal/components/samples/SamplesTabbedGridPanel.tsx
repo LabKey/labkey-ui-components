@@ -4,8 +4,6 @@ import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
 import {
     App,
-    createNotification,
-    dismissNotifications,
     EXPORT_TYPES,
     GridAliquotViewSelector,
     InjectedQueryModels,
@@ -19,8 +17,8 @@ import {
     SchemaQuery,
     TabbedGridPanel,
     updateRows,
+    useNotificationsContext,
     User,
-    withTimeout,
 } from '../../..';
 
 import { TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
@@ -80,6 +78,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         tabbedGridPanelProps,
         withTitle,
     } = props;
+    const { dismissNotifications, createNotification } = useNotificationsContext();
     const onLabelExport = { [EXPORT_TYPES.LABEL]: onPrintLabel };
 
     const tabs = useMemo(() => {
@@ -153,11 +152,12 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         }
     }, [hasSelections]);
 
-    const onBulkUpdateError = useCallback((message: string) => {
-        withTimeout(() => {
-            createNotification(message);
-        });
-    }, []);
+    const onBulkUpdateError = useCallback(
+        (message: string) => {
+            createNotification(message, true);
+        },
+        [createNotification]
+    );
 
     const onBulkUpdateComplete = useCallback(
         (data: Map<string, any>, submitForEdit = false) => {
@@ -222,11 +222,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         async (schemaQuery: SchemaQuery, rows: any[]): Promise<void> => {
             if (rows.length === 0) {
                 dismissNotifications();
-
-                withTimeout(() => {
-                    createNotification(NO_UPDATES_MESSAGE);
-                });
-
+                createNotification(NO_UPDATES_MESSAGE, true);
                 return;
             }
 
@@ -238,11 +234,9 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                 .then(result => {
                     invalidateLineageResults();
                     dismissNotifications(); // get rid of any error notifications that have already been created
-                    withTimeout(() => {
-                        const noun =
-                            rows.length === 1 ? SampleTypeDataType.nounSingular : SampleTypeDataType.nounPlural;
-                        createNotification('Successfully updated ' + result.rows.length + ' ' + noun + '.');
-                    });
+
+                    const noun = rows.length === 1 ? SampleTypeDataType.nounSingular : SampleTypeDataType.nounPlural;
+                    createNotification('Successfully updated ' + result.rows.length + ' ' + noun + '.', true);
                 })
                 .catch(reason => {
                     dismissNotifications(); // get rid of any error notifications that have already been created
@@ -257,7 +251,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     });
                 });
         },
-        [getSampleAuditBehaviorType]
+        [createNotification, dismissNotifications, getSampleAuditBehaviorType]
     );
 
     const _gridButtonProps = {

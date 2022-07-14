@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.200.0
+*Released*: 14 July 2022
+* Remove reactn dependency
+  * convert notifications to use a NotificationsContext (plus useNotificationsContext and withNotificationsContext)
+  * Refactor message prop for NotificationItemProps to be ReactNode or callback function
+  * EditableGridPanelForUpdate update so that it stores and display data errors as an Alert instead of having app use createNotification
+  * DetailEditRenderer.tsx fix for displaying date picker input for case where initial value is empty (regression from changes in 2.196.1)
+
 ### version 2.199.0
 *Released*: 14 July 2022
 * Issue 45815: Show view name in tabbed export modal

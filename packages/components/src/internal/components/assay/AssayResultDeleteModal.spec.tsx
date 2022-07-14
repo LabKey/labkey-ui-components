@@ -1,12 +1,14 @@
 import React from 'react';
-import { mount } from 'enzyme';
 
 import { SCHEMAS } from '../../..';
+
+import { mountWithAppServerContext } from '../../testHelpers';
+
 import { AssayResultDeleteModal } from './AssayResultDeleteModal';
 
 describe('<AssayResultDeleteModal/>', () => {
     test('Show progress', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <AssayResultDeleteModal
                 afterDelete={jest.fn()}
                 afterDeleteFailure={jest.fn()}
@@ -21,5 +23,7 @@ describe('<AssayResultDeleteModal/>', () => {
 
         // Progress
         expect(wrapper.childAt(1).prop('title')).toBe('Deleting 1 assay result');
+
+        wrapper.unmount();
     });
 });

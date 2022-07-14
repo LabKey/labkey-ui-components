@@ -10,7 +10,6 @@ import { ChoicesListItem } from '../base/ChoicesListItem';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
-import { createNotification } from '../notifications/actions';
 
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
@@ -19,7 +18,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 
-import { useAppContext } from '../../../index';
+import { useAppContext, useNotificationsContext } from '../../..';
 
 import { Picklist } from './models';
 import { addSamplesToPicklist, getPicklistsForInsert, getPicklistUrl, SampleTypeCount } from './actions';
@@ -27,9 +26,9 @@ import { addSamplesToPicklist, getPicklistsForInsert, getPicklistUrl, SampleType
 interface PicklistListProps {
     activeItem: Picklist;
     emptyMessage: ReactNode;
+    items: Picklist[];
     onSelect: (picklist: Picklist) => void;
     showSharedIcon?: boolean;
-    items: Picklist[];
 }
 
 // export for jest testing
@@ -160,10 +159,10 @@ export const PicklistDetails: FC<PicklistDetailsProps> = memo(props => {
 });
 
 interface AddedToPicklistNotificationProps {
-    picklist: Picklist;
+    currentProductId?: string;
     numAdded: number;
     numSelected: number;
-    currentProductId?: string;
+    picklist: Picklist;
     picklistProductId?: string;
 }
 
@@ -194,9 +193,9 @@ export const AddedToPicklistNotification: FC<AddedToPicklistNotificationProps> =
 };
 
 interface ChoosePicklistModalDisplayProps {
-    picklists: Picklist[];
-    picklistLoadError: ReactNode;
     loading: boolean;
+    picklistLoadError: ReactNode;
+    picklists: Picklist[];
     statusData: OperationConfirmationData;
     validCount: number;
 }
@@ -224,6 +223,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
         const [submitting, setSubmitting] = useState<boolean>(false);
         const [activeItem, setActiveItem] = useState<Picklist>(undefined);
         const { api } = useAppContext();
+        const { createNotification } = useNotificationsContext();
 
         const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
             setSearch(event.target.value.trim().toLowerCase());
@@ -270,7 +270,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             }
 
             createNotification({
-                message: () => (
+                message: (
                     <AddedToPicklistNotification
                         picklist={activeItem}
                         numAdded={numAdded}
@@ -439,9 +439,9 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
 interface ChoosePicklistModalProps {
     afterAddToPicklist: () => void;
     currentProductId?: string;
+    metricFeatureArea?: string;
     numSelected: number;
     onCancel: (cancelToCreate?: boolean) => void;
-    metricFeatureArea?: string;
     picklistProductId?: string;
     queryModel?: QueryModel;
     sampleFieldKey?: string;

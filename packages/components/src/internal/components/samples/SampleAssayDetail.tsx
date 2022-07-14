@@ -7,7 +7,6 @@ import {
     ALIQUOT_FILTER_MODE,
     AssayStateModel,
     caseInsensitive,
-    createNotification,
     InjectedAssayModel,
     isLoading,
     isSampleOperationPermitted,
@@ -19,6 +18,7 @@ import {
     SampleOperation,
     SchemaQuery,
     TabbedGridPanel,
+    useNotificationsContext,
     User,
 } from '../../..';
 
@@ -335,6 +335,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         sourceAliquotRows,
         sourceId,
     } = props;
+    const { createNotification } = useNotificationsContext();
 
     const [activeSampleAliquotType, setActiveSampleAliquotType] = useState<ALIQUOT_FILTER_MODE>(
         sampleAliquotType ?? ALIQUOT_FILTER_MODE.all
@@ -360,7 +361,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
                     message: 'Unable to load sample aliquots. Your session may have expired.',
                 });
             });
-    }, [api, sampleId, showAliquotViewSelector]);
+    }, [api, createNotification, sampleId, showAliquotViewSelector]);
 
     const [sampleAssayResultViewConfigs, setSampleAssayResultViewConfigs] =
         useState<SampleAssayResultViewConfig[]>(undefined);

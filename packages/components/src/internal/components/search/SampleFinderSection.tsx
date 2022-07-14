@@ -31,7 +31,7 @@ import { formatDateTime } from '../../util/Date';
 
 import { useAppContext } from '../../AppContext';
 
-import { createNotification } from '../notifications/actions';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';
@@ -57,12 +57,12 @@ import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
     getIsDirty?: () => boolean;
-    setIsDirty?: (isDirty: boolean) => void;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     gridButtonProps?: any;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     sampleTypeNames: string[];
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    setIsDirty?: (isDirty: boolean) => void;
     user: User;
 }
 
@@ -117,6 +117,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [unsavedSessionViewName, setUnsavedSessionViewName] = useState<string>(undefined);
 
     const { api } = useAppContext();
+    const { createNotification } = useNotificationsContext();
 
     useEffect(() => {
         const _enabledEntityTypes = [];
@@ -269,7 +270,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             setShowSaveViewDialog(false);
             setCurrentView(view);
         },
-        [filterChangeCounter]
+        [createNotification, filterChangeCounter]
     );
 
     const onSaveComplete = useCallback(

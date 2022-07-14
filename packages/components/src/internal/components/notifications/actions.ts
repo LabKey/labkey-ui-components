@@ -15,30 +15,9 @@
  */
 import { ActionURL, Ajax, Filter, getServerContext, Utils } from '@labkey/api';
 
-import { App, buildURL, resolveErrorMessage, selectRowsDeprecated } from '../../..';
+import { buildURL, resolveErrorMessage, selectRowsDeprecated } from '../../..';
 
-import { NotificationItemModel, NotificationItemProps, ServerActivity, ServerActivityData } from './model';
-import { addNotification } from './global';
-
-export type NotificationCreatable = string | NotificationItemProps | NotificationItemModel;
-
-/**
- * Create a notification that can be displayed on pages within the application
- * @param creatable
- * @param notify - Function that handles display of the notification. Default is global.addNotification as used in SampleManagement
- */
-export function createNotification(creatable: NotificationCreatable): void {
-    let item: NotificationItemModel;
-    if (Utils.isString(creatable)) {
-        item = NotificationItemModel.create({
-            message: creatable,
-        });
-    } else if (!(creatable instanceof NotificationItemModel)) {
-        item = NotificationItemModel.create(creatable as NotificationItemProps);
-    } else item = creatable;
-
-    if (item) addNotification(item);
-}
+import { ServerActivity, ServerActivityData } from './model';
 
 /**
  * Used to notify the server that the trial banner has been dismissed
@@ -181,20 +160,4 @@ export function markAllNotificationsAsRead(typeLabels: string[]): Promise<boolea
             }),
         });
     });
-}
-
-/**
- * Wrapper function for the window.setTimeout so that they can use a constant timeout value.
- * @param callback function to call after timeout
- * @param notification optional message/notification to be added after the timeout
- */
-export function withTimeout(callback: any, notification?: NotificationCreatable): void {
-    window.setTimeout(callback, App.NOTIFICATION_TIMEOUT);
-
-    if (notification) {
-        // and then wait a bit to add the notification so the new component has mounted if the callback has a navigation
-        withTimeout(() => {
-            createNotification(notification);
-        });
-    }
 }

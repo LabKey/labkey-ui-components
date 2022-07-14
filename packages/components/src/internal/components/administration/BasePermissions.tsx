@@ -12,8 +12,6 @@ import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { resolveErrorMessage } from '../../util/messaging';
 import { SecurityPolicy } from '../permissions/models';
 import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
-import { dismissNotifications } from '../notifications/global';
-import { createNotification } from '../notifications/actions';
 import { CreatedModified } from '../base/CreatedModified';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
@@ -26,6 +24,8 @@ import { Alert } from '../base/Alert';
 import { PermissionAssignments } from '../permissions/PermissionAssignments';
 
 import { AppContext, useAppContext } from '../../AppContext';
+
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
 
@@ -63,6 +63,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [policy, setPolicy] = useState<SecurityPolicy>();
     const { api } = useAppContext<AppContext>();
+    const { dismissNotifications, createNotification } = useNotificationsContext();
     const { user } = useServerContext();
     const loaded = !isLoading(loadingState);
     const isRoot = getServerContext().project.rootId === containerId;
@@ -103,7 +104,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
         createNotification('Successfully updated roles and assignments.');
 
         loadPolicy();
-    }, [loadPolicy]);
+    }, [createNotification, dismissNotifications, loadPolicy]);
 
     const renderButtons = useCallback(() => {
         const row = policy ? { Modified: { value: policy.modified } } : {};

@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
 import { EntityDeleteConfirmModal } from '../entities/EntityDeleteConfirmModal';
+
+import { mountWithAppServerContext } from '../../testHelpers';
 
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 
@@ -26,14 +28,14 @@ describe('SampleDeleteMenuItem', () => {
 
     test('click menu item with no queryModel', () => {
         const queryModel = null;
-        const wrapper = mount(<SampleDeleteMenuItem queryModel={queryModel} />);
+        const wrapper = mountWithAppServerContext(<SampleDeleteMenuItem queryModel={queryModel} />);
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('click menu item with no selection', () => {
         const queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
-        const wrapper = mount(<SampleDeleteMenuItem queryModel={queryModel} />);
+        const wrapper = mountWithAppServerContext(<SampleDeleteMenuItem queryModel={queryModel} />);
         validate(wrapper);
         wrapper.unmount();
     });
@@ -41,7 +43,7 @@ describe('SampleDeleteMenuItem', () => {
     test('click menu item', () => {
         let queryModel = makeTestQueryModel(SchemaQuery.create('test', 'query'));
         queryModel = queryModel.mutate({ rowCount: 2, selections: new Set(['1', '2']) });
-        const wrapper = mount(<SampleDeleteMenuItem queryModel={queryModel} />);
+        const wrapper = mountWithAppServerContext(<SampleDeleteMenuItem queryModel={queryModel} />);
         validate(wrapper, 1);
         wrapper.unmount();
     });

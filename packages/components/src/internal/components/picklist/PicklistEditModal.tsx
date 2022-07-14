@@ -10,14 +10,14 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
-import { createNotification } from '../notifications/actions';
-
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
@@ -82,6 +82,7 @@ export const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props =
         picklistProductId,
         metricFeatureArea,
     } = props;
+    const { createNotification } = useNotificationsContext();
     const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
 
@@ -140,16 +141,13 @@ export const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props =
 
     const createSuccessNotification = (picklist: Picklist) => {
         createNotification({
-            message: () => {
-                return (
-                    <>
-                        Successfully created "{picklist.name}" with{' '}
-                        {validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples'}.&nbsp;
-                        <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>
-                        .
-                    </>
-                );
-            },
+            message: (
+                <>
+                    Successfully created "{picklist.name}" with{' '}
+                    {validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples'}.&nbsp;
+                    <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>.
+                </>
+            ),
             alertClass: 'success',
         });
     };

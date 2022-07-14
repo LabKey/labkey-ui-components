@@ -6,7 +6,6 @@ import { AuditBehaviorTypes, Query } from '@labkey/api';
 import {
     Alert,
     BulkUpdateForm,
-    createNotification,
     deleteRows,
     getOperationNotPermittedMessage,
     QueryColumn,
@@ -22,6 +21,8 @@ import {
 import { OperationConfirmationData } from '../entities/models';
 
 import { userCanEditStorageData } from '../../app/utils';
+
+import { withNotificationsContext, NotificationsContextProps } from '../notifications/NotificationsContext';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
@@ -40,7 +41,7 @@ interface OwnProps {
     user: User;
 }
 
-type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultProps;
+type Props = OwnProps & SamplesSelectionProviderProps & SamplesSelectionResultProps & NotificationsContextProps;
 
 interface UpdateAlertProps {
     aliquots: any[];
@@ -134,7 +135,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
     }
 
     onComplete = (data: any, submitForEdit: boolean): void => {
-        const { onBulkUpdateComplete, sampleItems } = this.props;
+        const { onBulkUpdateComplete, sampleItems, createNotification } = this.props;
         const { shouldDiscard, discardComment } = this.state;
 
         if (shouldDiscard) {
@@ -234,5 +235,5 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
 }
 
 export const SamplesBulkUpdateForm = SamplesSelectionProvider<OwnProps & SamplesSelectionProviderProps>(
-    SamplesBulkUpdateFormBase
+    withNotificationsContext(SamplesBulkUpdateFormBase)
 );

@@ -10,8 +10,6 @@ describe('HorizontalBarSection', () => {
         expect(wrapper.find('.horizontal-bar--title').text()).toBe('Test Allocation');
         expect(wrapper.find('.horizontal-bar--subtitle').text()).toBe('A description');
         expect(wrapper.find('.horizontal-bar-part')).toHaveLength(0);
-
-        wrapper.unmount();
     });
 
     test('with data', () => {
@@ -49,25 +47,15 @@ describe('HorizontalBarSection', () => {
         expect(wrapper.find('.horizontal-bar--title').text()).toBe('Test Allocation');
         expect(wrapper.find('.horizontal-bar--subtitle').text()).toBe('A description');
         expect(wrapper.find('.horizontal-bar-part')).toHaveLength(3);
-        expect(wrapper.find('.horizontal-bar--begin')).toHaveLength(1);
-        expect(wrapper.find('.horizontal-bar--filled')).toHaveLength(2);
         expect(wrapper.find('.horizontal-bar--linked')).toHaveLength(2);
-        expect(wrapper.find('.horizontal-bar--linkSpanner')).toHaveLength(2);
         expect(wrapper.find('.horizontal-bar--open')).toHaveLength(1);
-        expect(wrapper.find('.horizontal-bar--end')).toHaveLength(1);
         const parts = wrapper.find('.horizontal-bar-part');
         expect(parts).toHaveLength(3);
-        expect(parts.at(0).prop('className')).toContain('horizontal-bar--begin');
-        expect(parts.at(0).prop('className')).toContain('horizontal-bar--filled');
         expect(parts.at(0).prop('className')).toContain('horizontal-bar--linked');
         expect(parts.at(0).prop('style').width).toBe('20%');
-        expect(parts.at(1).prop('className')).toContain('horizontal-bar--filled');
         expect(parts.at(1).prop('className')).toContain('horizontal-bar--linked');
         expect(parts.at(1).prop('style').width).toBe('30%');
         expect(parts.at(2).prop('className')).toContain('horizontal-bar--open');
-        expect(parts.at(2).prop('className')).toContain('horizontal-bar--end');
         expect(parts.at(2).prop('style').width).toBe('50%');
-
-        wrapper.unmount();
     });
 });

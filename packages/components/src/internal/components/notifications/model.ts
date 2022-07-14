@@ -18,8 +18,9 @@ import { Record } from 'immutable';
 
 import { Draft, immerable, produce } from 'immer';
 
-import { User } from '../base/models/User'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
 import { generateId } from '../../util/utils'; // // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
+
+type MessageFunction<T> = (props?: T, data?: any) => React.ReactNode;
 
 export enum Persistence {
     PAGE_LOAD,
@@ -33,7 +34,7 @@ export interface NotificationItemProps {
     id?: string;
     isDismissible?: boolean;
     isDismissed?: boolean;
-    message: React.ReactNode;
+    message: React.ReactNode | MessageFunction<NotificationItemProps>;
     onDismiss?: () => any;
     persistence?: Persistence;
 }
@@ -55,7 +56,7 @@ export class NotificationItemModel
     declare id: string;
     declare isDismissible: boolean;
     declare isDismissed: boolean;
-    declare message: React.ReactNode;
+    declare message: React.ReactNode | MessageFunction<NotificationItemProps>;
     declare onDismiss?: () => any;
     declare persistence?: Persistence;
 

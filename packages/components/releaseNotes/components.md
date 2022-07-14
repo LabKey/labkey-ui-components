@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Remove reactn dependency
   * convert notifications to use a NotificationsContext (plus useNotificationsContext and withNotificationsContext)
-  * Refactor message prop for NotificationItemProps to be ReactNode only
+  * Refactor message prop for NotificationItemProps to be ReactNode or callback function
   * EditableGridPanelForUpdate update so that it stores and display data errors as an Alert instead of having app use createNotification
   * DetailEditRenderer.tsx fix for displaying date picker input for case where initial value is empty (regression from changes in 2.196.1)
 

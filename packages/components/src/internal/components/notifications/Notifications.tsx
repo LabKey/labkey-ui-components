@@ -85,7 +85,7 @@ export const Notifications: FC = () => {
             createNotification({
                 alertClass: 'warning',
                 id: 'trial_ending',
-                message: renderTrialServicesNotification(),
+                message: renderTrialServicesNotification,
                 onDismiss: setTrialBannerDismissSessionKey,
                 persistence: Persistence.LOGIN_SESSION,
             });

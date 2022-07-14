@@ -83,7 +83,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 {sessionViewName && (
                     <>
                         <MenuItem header>Most Recent Search</MenuItem>
-                        <MenuItem active={sessionViewName === currentView?.reportName} onClick={onLoadSessionSearch}>
+                        <MenuItem active={sessionViewName === currentView?.reportName} onClick={onLoadSessionSearch} className="session-finder-view">
                             {sessionViewName}
                         </MenuItem>
                         <MenuItem divider />
@@ -99,6 +99,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                                     onClick={onLoadSavedSearch}
                                     name={savedSearch.reportId}
                                     active={savedSearch.reportId === currentView?.reportId}
+                                    className="saved-finder-view"
                                 >
                                     {savedSearch.reportName}
                                 </MenuItem>

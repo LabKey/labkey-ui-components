@@ -66,6 +66,20 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
             return;
         }
 
+        const existingViews = await api.samples.loadFinderSearches();
+        let duplicate = false;
+        existingViews.forEach(v => {
+            if (v.reportName.toLowerCase() === newName.toLowerCase()) {
+                duplicate = true;
+                return;
+            }
+        });
+
+        if (duplicate) {
+            setErrorMessage('A saved search by the name "'+ newName + "' already exists.");
+            return;
+        }
+
         setErrorMessage(undefined);
         setIsSubmitting(true);
         setHasChange(true);

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 45815: Show view name in tabbed export modal
+* Issue 45686: Change "Create Samples" to "Add Samples" on dashboard button
+
 ### version 2.198.1
 *Released*: 13 July 2022
 * Merge release22.7-SNAPSHOT to develop
@@ -9,11 +14,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.198.0
 *Released*: 12 July 2022
 Added SearchScope enum and ContainerFilter mapping utility method
-
-### version TBD
-*Released*: TBD
-* Issue 45815: Show view name in tabbed export modal
-* Issue 45686: Change "Create Samples" to "Add Samples" on dashboard button
 
 ### version 2.197.0
 *Released*: 12 July 2022

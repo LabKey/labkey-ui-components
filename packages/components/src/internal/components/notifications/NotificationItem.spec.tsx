@@ -47,11 +47,10 @@ describe('<NotificationItem />', () => {
         expect(wrapper.text()).toEqual(item.message);
     });
 
-    test('with message function', () => {
-        const message = 'message from function';
-        const messageFn = (): string => message;
+    test('with message node', () => {
+        const message = 'message node';
         const item = new NotificationItemModel({
-            message: messageFn,
+            message: <div>{message}</div>,
             id: 'with_message_function',
             isDismissible: true,
         });

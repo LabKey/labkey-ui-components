@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.200.0
+*Released*: 14 July 2022
 * Remove reactn dependency
   * convert notifications to use a NotificationsContext (plus useNotificationsContext and withNotificationsContext)
   * Refactor message prop for NotificationItemProps to be ReactNode or callback function

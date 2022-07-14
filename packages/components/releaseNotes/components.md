@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.194.6
+*Released*: 14 July 2022
+* Issue 45852: External links should include 'noopener' in 'ref' attribute
+
 ### version 2.194.5
 *Released*: 12 July 2022
 * Issue 45836: Export for editable grid should export display values instead of ids for lookups

@@ -22,6 +22,9 @@ let _BrowserHistory;
  */
 export function initBrowserHistoryState() {
     _BrowserHistory = createHistory();
+
+    // add a no-op listener just to connect this global state history to the url changes
+    getBrowserHistory().listen((location, action) => {});
 }
 
 /**

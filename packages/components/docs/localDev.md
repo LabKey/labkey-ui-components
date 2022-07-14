@@ -203,7 +203,7 @@ to update the package.json file version number manually before running `npm publ
 number (then do the regular `npm install` for that module, build, etc. and push those `package.json` and `package-lock.json` file
 changes to github as well).
 2. Merge the PRs for your LabKey module changes.
-3. Remove any of the alpha package versions from [Artifactory](https://artifactory.labkey.com/artifactory/webapp/#/home)
+3. Remove any of the alpha package versions from [Artifactory](https://labkey.jfrog.io/artifactory/webapp/#/home)
 that you had published during development for this feature branch.
    - To do this all at once and for all packages, use the `prugeNpmAlphaVersions` gradle task as follows:
    ```commandline
@@ -216,7 +216,7 @@ that you had published during development for this feature branch.
        ./gradlew purgeNpmAlphaVersions -PalphaPrefix=fb-feature-1 -PdryRun
    ```
     - Alternatively, you can do this manually and one at a time:
-       1. Navigate to the `@labkey/components` [tree node](https://artifactory.labkey.com/artifactory/webapp/#/artifacts/browse/tree/General/libs-client-local/@labkey/components/-/@labkey)
+       1. Navigate to the `@labkey/components` [tree node](https://labkey.jfrog.io/artifactory/webapp/#/artifacts/browse/tree/General/libs-client-local/@labkey/components/-/@labkey)
     of the `libs-client-local` artifact.
        1. Right click on the name of the alpha package version in the tree on the left and choose `delete` (or use the
     `Actions > Delete` in the upper right), note that you must be logged in to see this option.

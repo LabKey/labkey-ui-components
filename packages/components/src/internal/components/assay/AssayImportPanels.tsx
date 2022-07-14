@@ -122,10 +122,10 @@ type Props = AssayImportPanelsBodyProps &
     NotificationsContextProps;
 
 interface State {
-    duplicateFileResponse?: DuplicateFilesResponse;
-    error: ReactNode;
     dataModel: QueryModel;
+    duplicateFileResponse?: DuplicateFilesResponse;
     editorModel: EditorModel;
+    error: ReactNode;
     importAgain?: boolean;
     model: AssayWizardModel;
     sampleStatusWarning: string;

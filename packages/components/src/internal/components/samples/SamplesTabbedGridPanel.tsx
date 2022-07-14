@@ -152,9 +152,12 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         }
     }, [hasSelections]);
 
-    const onBulkUpdateError = useCallback((message: string) => {
-        createNotification(message, true);
-    }, [createNotification]);
+    const onBulkUpdateError = useCallback(
+        (message: string) => {
+            createNotification(message, true);
+        },
+        [createNotification]
+    );
 
     const onBulkUpdateComplete = useCallback(
         (data: Map<string, any>, submitForEdit = false) => {

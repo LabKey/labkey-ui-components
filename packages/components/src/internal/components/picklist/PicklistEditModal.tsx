@@ -17,9 +17,10 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
-import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 // TODO reconcile these properties. Do we need both selectionKey and queryModel.
 // Is selectedQuantity needed if we always have either the sampleIds or the queryModel?
@@ -144,8 +145,7 @@ export const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props =
                 <>
                     Successfully created "{picklist.name}" with{' '}
                     {validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples'}.&nbsp;
-                    <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>
-                    .
+                    <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>.
                 </>
             ),
             alertClass: 'success',

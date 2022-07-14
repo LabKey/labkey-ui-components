@@ -78,7 +78,7 @@ export const Notifications: FC = () => {
         }
 
         return message;
-    }, [moduleContext, user]);
+    }, [moduleContext, user, container]);
 
     useEffect(() => {
         if (moduleContext?.trialservices?.trialEndDate) {

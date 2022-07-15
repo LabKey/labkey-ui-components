@@ -260,7 +260,7 @@ export function loadFinderSearches(): Promise<FinderReport[]> {
                             isSession: false,
                         };
                     });
-                resolve(views);
+                resolve(views.sort((a, b) => a.reportName.localeCompare(b.reportName)));
             })
             .catch(reason => {
                 console.error(reason);

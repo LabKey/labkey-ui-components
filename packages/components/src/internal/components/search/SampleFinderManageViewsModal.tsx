@@ -31,8 +31,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
     useEffect(() => {
         (async () => {
             try {
-                let views = await api.samples.loadFinderSearches();
-                views = views.sort((a, b) => a.reportName.localeCompare(b.reportName));
+                const views = await api.samples.loadFinderSearches();
                 setSavedSearches(views);
             } catch (error) {
                 setErrorMessage(resolveErrorMessage(error));

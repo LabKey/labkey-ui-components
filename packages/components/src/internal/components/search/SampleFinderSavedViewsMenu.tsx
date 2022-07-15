@@ -69,8 +69,18 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
     }, []);
 
     const onSaveNewView = useCallback(e => {
+        if (!currentView && !hasUnsavedChanges)
+            return;
+
         saveSearch(false);
-    }, []);
+    }, [currentView, currentView]);
+
+    const onManageView = useCallback(e => {
+        if (!hasSavedView)
+            return;
+
+        manageSearches();
+    }, [hasSavedView]);
 
     return (
         <>
@@ -109,10 +119,10 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 )}
                 {savedSearches?.length === 0 && <MenuItem header>No Saved Search</MenuItem>}
                 <MenuItem divider />
-                <MenuItem onClick={manageSearches} disabled={!hasSavedView}>
+                <MenuItem onClick={onManageView} disabled={!hasSavedView} className="saved-finder-menu-action-item">
                     Manage saved searches
                 </MenuItem>
-                <MenuItem onClick={onSaveNewView} disabled={!currentView && !hasUnsavedChanges}>
+                <MenuItem onClick={onSaveNewView} disabled={!currentView && !hasUnsavedChanges} className="saved-finder-menu-action-item">
                     Save as custom search
                 </MenuItem>
             </DropdownButton>

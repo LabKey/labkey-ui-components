@@ -70,12 +70,11 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         existingViews.forEach(v => {
             if (v.reportName.toLowerCase() === newName.toLowerCase()) {
                 duplicate = true;
-                return;
             }
         });
 
         if (duplicate) {
-            setErrorMessage('A saved search by the name "'+ newName + '" already exists.');
+            setErrorMessage('A saved search by the name "' + newName + '" already exists.');
             return;
         }
 

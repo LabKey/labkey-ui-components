@@ -68,19 +68,23 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
         saveSearch(true);
     }, []);
 
-    const onSaveNewView = useCallback(e => {
-        if (!currentView && !hasUnsavedChanges)
-            return;
+    const onSaveNewView = useCallback(
+        e => {
+            if (!currentView && !hasUnsavedChanges) return;
 
-        saveSearch(false);
-    }, [currentView, currentView]);
+            saveSearch(false);
+        },
+        [currentView, currentView]
+    );
 
-    const onManageView = useCallback(e => {
-        if (!hasSavedView)
-            return;
+    const onManageView = useCallback(
+        e => {
+            if (!hasSavedView) return;
 
-        manageSearches();
-    }, [hasSavedView]);
+            manageSearches();
+        },
+        [hasSavedView]
+    );
 
     return (
         <>
@@ -93,7 +97,11 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 {sessionViewName && (
                     <>
                         <MenuItem header>Most Recent Search</MenuItem>
-                        <MenuItem active={sessionViewName === currentView?.reportName} onClick={onLoadSessionSearch} className="session-finder-view">
+                        <MenuItem
+                            active={sessionViewName === currentView?.reportName}
+                            onClick={onLoadSessionSearch}
+                            className="session-finder-view"
+                        >
                             {sessionViewName}
                         </MenuItem>
                         <MenuItem divider />
@@ -122,7 +130,11 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 <MenuItem onClick={onManageView} disabled={!hasSavedView} className="saved-finder-menu-action-item">
                     Manage saved searches
                 </MenuItem>
-                <MenuItem onClick={onSaveNewView} disabled={!currentView && !hasUnsavedChanges} className="saved-finder-menu-action-item">
+                <MenuItem
+                    onClick={onSaveNewView}
+                    disabled={!currentView && !hasUnsavedChanges}
+                    className="saved-finder-menu-action-item"
+                >
                     Save as custom search
                 </MenuItem>
             </DropdownButton>

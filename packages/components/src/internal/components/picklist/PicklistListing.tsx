@@ -5,13 +5,13 @@ import { Filter, PermissionTypes } from '@labkey/api';
 import {
     Actions,
     App,
-    createNotification,
     Page,
     QuerySort,
     RequiresPermission,
     SCHEMAS,
     Section,
     TabbedGridPanel,
+    useNotificationsContext,
     User,
 } from '../../..';
 
@@ -85,6 +85,7 @@ const PicklistGridButtons: FC<ButtonProps & RequiresModelAndActions> = memo(prop
 
 const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props => {
     const { actions, queryModels, user, activeTab, CreateButton } = props;
+    const { createNotification } = useNotificationsContext();
 
     const tabOrder = useMemo(() => {
         return Object.keys(queryModels);
@@ -114,7 +115,7 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
                 actions.loadModel(queryModels[activeTabId].id, true);
                 createNotification('Successfully deleted ' + listsToDelete.length + ' pick' + noun + '.');
             })
-            .catch(reason => {
+            .catch(() => {
                 setShowDeleteModal(false);
                 createNotification({
                     message:

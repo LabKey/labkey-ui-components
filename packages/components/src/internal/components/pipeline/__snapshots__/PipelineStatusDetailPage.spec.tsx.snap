@@ -9,9 +9,7 @@ exports[`<PipelineStatusDetailPage> Completed job, no warn, no error 1`] = `
           assays - Workflow_Assay01
         </h2>
         <Notifications>
-          <NotificationsImpl notifications={{...}}>
-            <div className=\\"notifications-container\\" />
-          </NotificationsImpl>
+          <div className=\\"notifications-container\\" />
         </Notifications>
       </div>
     </PageHeader>
@@ -185,9 +183,7 @@ exports[`<PipelineStatusDetailPage> Failed job, with error 1`] = `
           SampleType_01 - SampleType_01_00.xlsx
         </h2>
         <Notifications>
-          <NotificationsImpl notifications={{...}}>
-            <div className=\\"notifications-container\\" />
-          </NotificationsImpl>
+          <div className=\\"notifications-container\\" />
         </Notifications>
       </div>
     </PageHeader>
@@ -316,9 +312,7 @@ exports[`<PipelineStatusDetailPage> Running job, with warning 1`] = `
           exp.data - sourceType1 - data_2021-01-10_06-02-08-2.xlsx
         </h2>
         <Notifications>
-          <NotificationsImpl notifications={{...}}>
-            <div className=\\"notifications-container\\" />
-          </NotificationsImpl>
+          <div className=\\"notifications-container\\" />
         </Notifications>
       </div>
     </PageHeader>

@@ -11,7 +11,6 @@ import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
 import { SecurityPolicy } from '../permissions/models';
-import { createNotification } from '../notifications/actions';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { AppURL } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
@@ -27,6 +26,8 @@ import { SecurityAPIWrapper } from '../security/APIWrapper';
 import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
 
 import { UserLimitSettings } from '../permissions/actions';
+
+import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
 
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
@@ -78,7 +79,7 @@ interface OwnProps {
 }
 
 // exported for jest testing
-export type UserManagementProps = OwnProps & InjectedPermissionsPage;
+export type UserManagementProps = OwnProps & InjectedPermissionsPage & NotificationsContextProps;
 
 interface State {
     policy: SecurityPolicy;
@@ -109,7 +110,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
             const userLimitSettings = await api.getUserLimitSettings();
             this.setState({ userLimitSettings });
         } catch (error) {
-            createNotification({
+            this.props.createNotification({
                 alertClass: 'danger',
                 message: 'Unable to load user limit settings. ' + (error.exception ? error.exception : ''),
             });
@@ -124,7 +125,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
             const policy = await api.fetchPolicy(container.id, principalsById);
             this.setState({ policy: SecurityPolicy.updateAssignmentsData(policy, principalsById) });
         } catch (error) {
-            createNotification({
+            this.props.createNotification({
                 alertClass: 'danger',
                 message: 'Unable to load permissions information. ' + (error.exception ? error.exception : ''),
             });
@@ -163,7 +164,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                     })
                     .catch(error => {
                         console.error(error);
-                        createNotification({
+                        this.props.createNotification({
                             alertClass: 'danger',
                             message:
                                 'Unable to update permissions information. ' + (error.exception ? error.exception : ''),
@@ -177,26 +178,24 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         }
 
         if (existingUsers.size > 0) {
-            createNotification({
-                message: () => {
-                    return (
-                        <>
-                            <span>
-                                {Utils.pluralBasic(existingUsers.size, 'user')} already existed and{' '}
-                                {existingUsers.size > 1 ? 'were' : 'was'} not updated.
-                            </span>
-                            &nbsp;
-                            <a href={getUserGridFilterURL(existingUsers, 'all').addParam('usersView', 'all').toHref()}>
-                                view
-                            </a>
-                        </>
-                    );
-                },
+            this.props.createNotification({
+                message: (
+                    <>
+                        <span>
+                            {Utils.pluralBasic(existingUsers.size, 'user')} already existed and{' '}
+                            {existingUsers.size > 1 ? 'were' : 'was'} not updated.
+                        </span>
+                        &nbsp;
+                        <a href={getUserGridFilterURL(existingUsers, 'all').addParam('usersView', 'all').toHref()}>
+                            view
+                        </a>
+                    </>
+                ),
             });
         }
 
         if (response.htmlErrors?.length > 0) {
-            createNotification({
+            this.props.createNotification({
                 alertClass: 'danger',
                 message: response.htmlErrors.join(' '),
             });
@@ -205,16 +204,14 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         this.loadUserLimitSettings();
     };
 
-    onUsersStateChangeComplete = (response: any) => {
+    onUsersStateChangeComplete = (response: any): void => {
         if (response.resetPassword) {
-            createNotification({
-                message: () => {
-                    return (
-                        <span>
-                            Successfully reset password for <b>{response.email}</b>.
-                        </span>
-                    );
-                },
+            this.props.createNotification({
+                message: (
+                    <span>
+                        Successfully reset password for <b>{response.email}</b>.
+                    </span>
+                ),
             });
             return;
         }
@@ -222,40 +219,34 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         const updatedUserIds = List<number>(response.userIds);
         const action = response.delete ? 'deleted' : response.activate ? 'reactivated' : 'deactivated';
         const urlPrefix = response.activate ? 'active' : 'inactive';
+        const href = getUserGridFilterURL(updatedUserIds, urlPrefix).addParam('usersView', urlPrefix).toHref();
 
-        createNotification({
-            message: () => {
-                const href = getUserGridFilterURL(updatedUserIds, urlPrefix).addParam('usersView', urlPrefix).toHref();
-                return (
-                    <>
-                        <span>
-                            Successfully {action} {Utils.pluralBasic(updatedUserIds.size, 'user')}.&nbsp;
-                        </span>
-                        {!response.delete && <a href={href}>view</a>}
-                    </>
-                );
-            },
+        this.props.createNotification({
+            message: (
+                <>
+                    <span>
+                        Successfully {action} {Utils.pluralBasic(updatedUserIds.size, 'user')}.&nbsp;
+                    </span>
+                    {!response.delete && <a href={href}>view</a>}
+                </>
+            ),
         });
 
         this.loadUserLimitSettings();
     };
 
-    afterCreateComplete(newUsers: List<number>, permissionsSet: boolean) {
-        createNotification({
-            message: () => {
-                return (
-                    <>
-                        <span>
-                            Successfully created {Utils.pluralBasic(newUsers.size, 'new user')}
-                            {permissionsSet ? ' and assigned the selected role' : ''}.
-                        </span>
-                        &nbsp;
-                        <a href={getUserGridFilterURL(newUsers, 'active').addParam('usersView', 'active').toHref()}>
-                            view
-                        </a>
-                    </>
-                );
-            },
+    afterCreateComplete(newUsers: List<number>, permissionsSet: boolean): void {
+        this.props.createNotification({
+            message: (
+                <>
+                    <span>
+                        Successfully created {Utils.pluralBasic(newUsers.size, 'new user')}
+                        {permissionsSet ? ' and assigned the selected role' : ''}.
+                    </span>
+                    &nbsp;
+                    <a href={getUserGridFilterURL(newUsers, 'active').addParam('usersView', 'active').toHref()}>view</a>
+                </>
+            ),
         });
     }
 
@@ -267,8 +258,8 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
         );
     };
 
-    render() {
-        const { allowResetPassword, container, extraRoles, project, user, api } = this.props;
+    render(): ReactNode {
+        const { allowResetPassword, container, extraRoles, project, user } = this.props;
         const { policy, userLimitSettings } = this.state;
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
@@ -302,7 +293,9 @@ interface UserManagementPageProps {
     extraRoles?: string[][];
 }
 
-export const UserManagementPageImpl: FC<UserManagementPageProps & InjectedPermissionsPage> = props => {
+export const UserManagementPageImpl: FC<
+    UserManagementPageProps & InjectedPermissionsPage & NotificationsContextProps
+> = props => {
     const { extraRoles, ...injectedProps } = props;
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext, project, user } = useServerContext();
@@ -320,4 +313,6 @@ export const UserManagementPageImpl: FC<UserManagementPageProps & InjectedPermis
     );
 };
 
-export const UserManagementPage = withPermissionsPage<UserManagementPageProps>(UserManagementPageImpl);
+export const UserManagementPage = withPermissionsPage<UserManagementPageProps>(
+    withNotificationsContext(UserManagementPageImpl)
+);

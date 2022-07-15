@@ -178,7 +178,7 @@ export function resolveDetailEditRenderer(
                     />
                 );
             case 'date':
-                if (typeof value === 'string') {
+                if (!value || typeof value === 'string') {
                     return (
                         <DatePickerInput
                             showLabel={false}

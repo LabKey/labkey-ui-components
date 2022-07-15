@@ -18,10 +18,9 @@ import { Record } from 'immutable';
 
 import { Draft, immerable, produce } from 'immer';
 
-import { User } from '../base/models/User'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
 import { generateId } from '../../util/utils'; // // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
 
-export type MessageFunction<T> = (props?: T, user?: User, data?: any) => React.ReactNode;
+type MessageFunction<T> = (props?: T, data?: any) => React.ReactNode;
 
 export enum Persistence {
     PAGE_LOAD,
@@ -32,11 +31,10 @@ export enum Persistence {
 // created for you.
 export interface NotificationItemProps {
     alertClass?: string;
-    data?: any;
     id?: string;
-    isDismissible?: boolean;
     isDismissed?: boolean;
-    message: string | MessageFunction<NotificationItemProps>;
+    isDismissible?: boolean;
+    message: React.ReactNode | MessageFunction<NotificationItemProps>;
     onDismiss?: () => any;
     persistence?: Persistence;
 }
@@ -52,13 +50,14 @@ export class NotificationItemModel
         onDismiss: undefined,
         persistence: Persistence.PAGE_LOAD,
     })
-    implements NotificationItemProps {
+    implements NotificationItemProps
+{
     declare alertClass: string;
     declare data?: any;
     declare id: string;
     declare isDismissible: boolean;
     declare isDismissed: boolean;
-    declare message: string | MessageFunction<NotificationItemProps>;
+    declare message: React.ReactNode | MessageFunction<NotificationItemProps>;
     declare onDismiss?: () => any;
     declare persistence?: Persistence;
 
@@ -74,6 +73,8 @@ export class NotificationItemModel
         );
     }
 }
+
+export type NotificationCreatable = string | NotificationItemProps | NotificationItemModel;
 
 function nextNotificationId(): string {
     return generateId('notification_');
@@ -124,29 +125,29 @@ export class ServerActivityData {
 
 export interface ServerActivity {
     data: ServerActivityData[];
+    inProgressCount: number;
     totalRows: number;
     unreadCount: number;
-    inProgressCount: number;
 }
 
 export interface ServerNotificationsConfig {
-    maxRows: number;
     markAllNotificationsRead: () => Promise<boolean>;
-    serverActivity: ServerNotificationModel;
-    onViewAll: () => any;
+    maxRows: number;
     onRead?: () => any;
+    onViewAll: () => any;
+    serverActivity: ServerNotificationModel;
 }
 
 export interface IServerNotificationModel {
     data: ServerActivityData[];
-    totalRows: number;
-    unreadCount: number;
+    errorMessage: string;
     inProgressCount: number;
-
     isError: boolean;
+
     isLoaded: boolean;
     isLoading: boolean;
-    errorMessage: string;
+    totalRows: number;
+    unreadCount: number;
 }
 
 const DEFAULT_SERVER_NOTIFICATION_MODEL: IServerNotificationModel = {

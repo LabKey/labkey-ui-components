@@ -1,7 +1,7 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 
-import { makeQueryInfo, makeTestData } from '../../internal/testHelpers';
+import { makeQueryInfo, makeTestData, mountWithAppServerContext } from '../../internal/testHelpers';
 import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
 import aminoAcidsQueryInfo from '../../test/data/assayAminoAcidsData-getQueryDetails.json';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
@@ -83,7 +83,7 @@ describe('TabbedGridPanel', () => {
     };
 
     test('default render', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <TabbedGridPanel tabOrder={tabOrder} queryModels={queryModels} actions={actions} />
         );
         const tabs = wrapper.find(TABS_SELECTOR);
@@ -98,7 +98,7 @@ describe('TabbedGridPanel', () => {
     });
 
     test('activeTab', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <TabbedGridPanel
                 activeModelId="aminoAcids"
                 tabOrder={tabOrder}
@@ -114,13 +114,8 @@ describe('TabbedGridPanel', () => {
 
     test('asPanel', () => {
         const title = 'My Tabbed Grid';
-        const wrapper = mount(
-            <TabbedGridPanel
-                tabOrder={tabOrder}
-                title={title}
-                queryModels={queryModels}
-                actions={actions}
-            />
+        const wrapper = mountWithAppServerContext(
+            <TabbedGridPanel tabOrder={tabOrder} title={title} queryModels={queryModels} actions={actions} />
         );
 
         // When asPanel is true, we use appropriate styling classes
@@ -134,12 +129,8 @@ describe('TabbedGridPanel', () => {
     });
 
     test('single model', () => {
-        const wrapper = mount(
-            <TabbedGridPanel
-                tabOrder={['mixtures']}
-                queryModels={{ mixtures: mixturesModel }}
-                actions={actions}
-            />
+        const wrapper = mountWithAppServerContext(
+            <TabbedGridPanel tabOrder={['mixtures']} queryModels={{ mixtures: mixturesModel }} actions={actions} />
         );
 
         // Hide the tabs if we only have one model.
@@ -148,7 +139,7 @@ describe('TabbedGridPanel', () => {
 
     test('controlled', () => {
         const onTabSelect = jest.fn();
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <TabbedGridPanel
                 actions={actions}
                 activeModelId="aminoAcids"
@@ -168,7 +159,7 @@ describe('TabbedGridPanel', () => {
     });
 
     test('showRowCountOnTabs', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <TabbedGridPanel
                 actions={actions}
                 activeModelId="aminoAcids"

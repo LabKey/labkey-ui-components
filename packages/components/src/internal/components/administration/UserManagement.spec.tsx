@@ -5,7 +5,6 @@ import { LabKey, PermissionRoles } from '@labkey/api';
 
 import { initQueryGridState } from '../../global';
 import { mountWithAppServerContext } from '../../testHelpers';
-import { initNotificationsState } from '../notifications/global';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { UsersGridPanel } from '../user/UsersGridPanel';
 import { SecurityPolicy } from '../permissions/models';
@@ -22,7 +21,6 @@ declare const LABKEY: LabKey;
 
 beforeAll(() => {
     initQueryGridState();
-    initNotificationsState();
 });
 
 beforeEach(() => {
@@ -52,36 +50,68 @@ describe('UserManagement', () => {
     }
 
     test('default props', () => {
-        const wrapper = mountWithAppServerContext(<UserManagementPageImpl {...getDefaultProps()} />, undefined, {
-            user: App.TEST_USER_APP_ADMIN,
-        });
+        const wrapper = mountWithAppServerContext(
+            <UserManagementPageImpl
+                {...getDefaultProps()}
+                createNotification={jest.fn()}
+                dismissNotifications={jest.fn()}
+            />,
+            {},
+            {
+                user: App.TEST_USER_APP_ADMIN,
+            }
+        );
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('non-inherit security policy', () => {
-        const wrapper = mountWithAppServerContext(<UserManagementPageImpl {...getDefaultProps()} />, undefined, {
-            user: App.TEST_USER_APP_ADMIN,
-        });
+        const wrapper = mountWithAppServerContext(
+            <UserManagementPageImpl
+                {...getDefaultProps()}
+                createNotification={jest.fn()}
+                dismissNotifications={jest.fn()}
+            />,
+            {},
+            {
+                user: App.TEST_USER_APP_ADMIN,
+            }
+        );
         wrapper.find('UserManagement').setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '1' }) });
         validate(wrapper, true);
         wrapper.unmount();
     });
 
     test('inherit security policy', () => {
-        const wrapper = mountWithAppServerContext(<UserManagementPageImpl {...getDefaultProps()} />, undefined, {
-            user: App.TEST_USER_APP_ADMIN,
-        });
+        const wrapper = mountWithAppServerContext(
+            <UserManagementPageImpl
+                {...getDefaultProps()}
+                createNotification={jest.fn()}
+                dismissNotifications={jest.fn()}
+            />,
+            {},
+            {
+                user: App.TEST_USER_APP_ADMIN,
+            }
+        );
         wrapper.find('UserManagement').setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '2' }) });
         validate(wrapper);
         wrapper.unmount();
     });
 
     test('allowResetPassword false', () => {
-        const wrapper = mountWithAppServerContext(<UserManagementPageImpl {...getDefaultProps()} />, undefined, {
-            user: App.TEST_USER_APP_ADMIN,
-            moduleContext: { api: { AutoRedirectSSOAuthConfiguration: true } },
-        });
+        const wrapper = mountWithAppServerContext(
+            <UserManagementPageImpl
+                {...getDefaultProps()}
+                createNotification={jest.fn()}
+                dismissNotifications={jest.fn()}
+            />,
+            {},
+            {
+                user: App.TEST_USER_APP_ADMIN,
+                moduleContext: { api: { AutoRedirectSSOAuthConfiguration: true } },
+            }
+        );
         validate(wrapper, false, false);
         wrapper.unmount();
     });

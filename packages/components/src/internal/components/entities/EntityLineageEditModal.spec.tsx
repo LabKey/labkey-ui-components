@@ -1,14 +1,14 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { List } from 'immutable';
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
 
-import { waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 
 import { Progress } from '../base/Progress';
 
@@ -138,13 +138,13 @@ describe('EntityLineageEditModal', () => {
     }
 
     test('without queryModel', () => {
-        const wrapper = mount(<EntityLineageEditModal {...DEFAULT_PROPS} queryModel={undefined} />);
+        const wrapper = mountWithAppServerContext(<EntityLineageEditModal {...DEFAULT_PROPS} queryModel={undefined} />);
         validate(wrapper, false, false, false);
         wrapper.unmount();
     });
 
     test('without aliquots', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
@@ -165,7 +165,7 @@ describe('EntityLineageEditModal', () => {
     });
 
     test('with some aliquots', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
@@ -189,7 +189,7 @@ describe('EntityLineageEditModal', () => {
     });
 
     test('with only aliquots', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
@@ -211,7 +211,7 @@ describe('EntityLineageEditModal', () => {
     });
 
     test('parent noun based on first parentEntityDataTypes', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
@@ -233,7 +233,7 @@ describe('EntityLineageEditModal', () => {
     });
 
     test('none allowed', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
@@ -258,7 +258,7 @@ describe('EntityLineageEditModal', () => {
     });
 
     test('none allowed with aliquots', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
@@ -285,7 +285,7 @@ describe('EntityLineageEditModal', () => {
     });
 
     test('none allowed with aliquots locked', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}
@@ -312,7 +312,7 @@ describe('EntityLineageEditModal', () => {
     });
 
     test('some not allowed, without aliquots', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <EntityLineageEditModal
                 {...DEFAULT_PROPS}
                 queryModel={MODEL}

@@ -1,9 +1,9 @@
 import React from 'react';
-
-import { mount } from 'enzyme';
 import { MenuItem, Modal } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
+
+import { mountWithAppServerContext } from '../../testHelpers';
 
 import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { PicklistEditModal } from './PicklistEditModal';
@@ -19,7 +19,7 @@ describe('PicklistCreationMenuItem', () => {
     const text = 'Picklist';
 
     test('modal hidden', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <PicklistCreationMenuItem
                 itemText={text}
                 selectionKey={selectionKey}
@@ -37,7 +37,7 @@ describe('PicklistCreationMenuItem', () => {
     });
 
     test('modal shown', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <PicklistCreationMenuItem
                 itemText={text}
                 sampleIds={['1']}
@@ -56,7 +56,7 @@ describe('PicklistCreationMenuItem', () => {
     });
 
     test('not Editor', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <PicklistCreationMenuItem
                 itemText={text}
                 selectionKey={selectionKey}
@@ -70,7 +70,7 @@ describe('PicklistCreationMenuItem', () => {
     });
 
     test('create empty list', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <PicklistCreationMenuItem
                 itemText={text}
                 sampleIds={undefined}

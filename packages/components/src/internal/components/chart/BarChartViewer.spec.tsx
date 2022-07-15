@@ -12,7 +12,7 @@ describe('SampleButtons', () => {
         const wrapper = mountWithServerContext(<SampleButtons />, { user: TEST_USER_AUTHOR });
         expect(wrapper.find(Button)).toHaveLength(2);
         expect(wrapper.find(Button).first().text()).toBe('Go to Sample Finder');
-        expect(wrapper.find(Button).last().text()).toBe('Create Samples');
+        expect(wrapper.find(Button).last().text()).toBe('Add Samples');
         wrapper.unmount();
     });
 
@@ -28,7 +28,7 @@ describe('SampleButtons', () => {
         LABKEY.moduleContext = { biologics: {} };
         const wrapper = mountWithServerContext(<SampleButtons />, { user: TEST_USER_AUTHOR });
         expect(wrapper.find(Button)).toHaveLength(1);
-        expect(wrapper.find(Button).first().text()).toBe('Create Samples');
+        expect(wrapper.find(Button).first().text()).toBe('Add Samples');
         wrapper.unmount();
     });
 

@@ -6,21 +6,21 @@ import {
     LoadingModal,
     Progress,
     SchemaQuery,
-    createDeleteErrorNotification,
-    createDeleteSuccessNotification,
     isLoading,
     AssayDesignDeleteConfirmModal,
+    useNotificationsContext,
 } from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 
 const ASSAY_RUN_MODEL_ID = 'assay-runs-all';
 
 interface Props {
+    afterDelete: (success: boolean) => any;
     assay: AssayDefinitionModel;
     beforeDelete?: () => any;
-    afterDelete: (success: boolean) => any;
     onCancel: () => any;
 }
 
@@ -28,7 +28,7 @@ const noun = 'assay design';
 
 const AssayDesignDeleteModalImpl: FC<Props & InjectedQueryModels> = memo(props => {
     const { queryModels, actions, assay, beforeDelete, afterDelete, onCancel } = props;
-
+    const { createNotification } = useNotificationsContext();
     const [showProgress, setShowProgress] = useState(false);
 
     useEffect(() => {
@@ -48,13 +48,17 @@ const AssayDesignDeleteModalImpl: FC<Props & InjectedQueryModels> = memo(props =
         deleteAssayDesign(assay.id.toString())
             .then(() => {
                 afterDelete(true);
-                createDeleteSuccessNotification(noun);
+                createNotification(deleteSuccessMessage(noun));
             })
             .catch(error => {
+                console.error(error);
                 afterDelete(false);
-                createDeleteErrorNotification(noun);
+                createNotification({
+                    alertClass: 'danger',
+                    message: () => deleteErrorMessage(noun),
+                });
             });
-    }, [assay, beforeDelete, afterDelete]);
+    }, [beforeDelete, assay.id, afterDelete, createNotification]);
 
     const model = queryModels[ASSAY_RUN_MODEL_ID];
 

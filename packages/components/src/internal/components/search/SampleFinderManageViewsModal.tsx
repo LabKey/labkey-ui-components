@@ -76,7 +76,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         });
 
         if (duplicate) {
-            setErrorMessage('A saved search by the name "'+ newName + "' already exists.");
+            setErrorMessage('A saved search by the name "'+ newName + '" already exists.');
             return;
         }
 

@@ -146,7 +146,7 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                     title="Save Search"
                 >
                     <MenuItem title="Save as a new search" onClick={onSaveNewView} key="saveNewGridView">
-                        Save as ...
+                        Save as...
                     </MenuItem>
                 </SplitButton>
             )}

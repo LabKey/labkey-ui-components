@@ -55,12 +55,13 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
     }, []);
 
     const renameView = useCallback(async () => {
-        if (!selectedSearch || !newName) {
+        const newNameTrimmed = newName?.trim();
+        if (!selectedSearch || !newNameTrimmed) {
             setSelectedSearch(undefined);
             return;
         }
 
-        if (selectedSearch.reportName.toLowerCase() === newName.toLowerCase()) {
+        if (selectedSearch.reportName.toLowerCase() === newNameTrimmed.toLowerCase()) {
             setSelectedSearch(undefined);
             return;
         }
@@ -68,13 +69,13 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         const existingViews = await api.samples.loadFinderSearches();
         let duplicate = false;
         existingViews.forEach(v => {
-            if (v.reportName.toLowerCase() === newName.toLowerCase()) {
+            if (v.reportName.toLowerCase() === newNameTrimmed.toLowerCase()) {
                 duplicate = true;
             }
         });
 
         if (duplicate) {
-            setErrorMessage('A saved search by the name "' + newName + '" already exists.');
+            setErrorMessage('A saved search by the name "' + newNameTrimmed + '" already exists.');
             return;
         }
 
@@ -83,7 +84,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         setHasChange(true);
 
         try {
-            await renameReport(selectedSearch.entityId, newName);
+            await renameReport(selectedSearch.entityId, newNameTrimmed);
             setSavedSearches(await api.samples.loadFinderSearches());
             setSelectedSearch(undefined);
         } catch (error) {

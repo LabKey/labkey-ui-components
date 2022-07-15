@@ -67,7 +67,7 @@ describe('SampleFinderSavedViewsMenu', () => {
     function verifySaveBtn(wrapper, canSave?: boolean, canSaveExisting?: boolean): void {
         if (canSaveExisting) {
             const dropdown = wrapper.find('SplitButton');
-            expect(dropdown.text()).toBe('Save Search Save as ...');
+            expect(dropdown.text()).toBe('Save Search Save as...');
         } else if (canSave) {
             const btn = wrapper.find('Button');
             expect(btn.at(1).text()).toBe('Save Search');

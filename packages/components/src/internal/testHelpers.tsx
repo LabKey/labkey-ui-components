@@ -197,7 +197,7 @@ export const mountWithServerContextOptions = (
  */
 export const mountWithServerContext = (
     node: ReactElement,
-    initialContext: any,
+    initialContext?: any,
     options?: MountRendererProps
 ): ReactWrapper => {
     return mount(node, mountWithServerContextOptions(initialContext, options));
@@ -228,7 +228,6 @@ export const sleep = (ms = 0): Promise<void> => {
  * @param wrapper: enzyme ReactWrapper
  */
 export const waitForLifecycle = (wrapper: ReactWrapper): Promise<undefined> => {
-    // NOTE: For internal package use only. Do not export externally as it will not work for external usages.
     // Wrap in react-dom/utils act so we don't get errors in our test logs
     return act(async () => {
         await sleep();
@@ -239,7 +238,7 @@ export const waitForLifecycle = (wrapper: ReactWrapper): Promise<undefined> => {
 export const wrapDraggable = element => {
     return (
         <DragDropContext onDragEnd={jest.fn()}>
-            <Droppable droppableId="domain-form-droppable">
+            <Droppable droppableId="jest-test-droppable">
                 {provided => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>
                         {element}

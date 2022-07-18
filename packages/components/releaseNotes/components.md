@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.201.0
 *Released*: TBD
 * Remove jQuery as a dependency
-* Export waitForLifecycle, mountWithServerContext, mountWithAppServerContext
+* Export waitForLifecycle, mountWithServerContext, mountWithAppServerContext, wrapDraggable
 
 ### version 2.200.2
 *Released*: 21 July 2022

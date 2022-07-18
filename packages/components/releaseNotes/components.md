@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX July 2022
+### version 2.200.1
+*Released*: 18 July 2022
 * Issue 45817: LKSM sample finder misc issues re: save and manage modal
 
 ### version 2.200.0

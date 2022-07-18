@@ -93,6 +93,7 @@ module.exports = {
         'react-bootstrap-toggle',
         'react-datepicker',
         'react-dom',
+        'react-dom/test-utils',
         'react-redux',
         'react-router',
         'react-test-renderer',

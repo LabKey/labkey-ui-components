@@ -15,7 +15,6 @@
  */
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
-import $ from 'jquery';
 
 import {
     AssayDefinitionModel,
@@ -220,7 +219,16 @@ export function exportTabsXlsx(filename: string, queryForms: SchemaQuery[]): Pro
 }
 
 export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>): void {
-    const params = Object.assign({}, exportParams);
+    const form = new FormData();
+    Object.keys(exportParams).forEach(key => {
+        const value = quoteEncodedValue(exportParams[key]);
+
+        if (value instanceof Array) {
+            value.forEach(arrayValue => form.append(key, arrayValue));
+        } else {
+            form.append(key, value);
+        }
+    });
 
     let controller, action;
     if (type === EXPORT_TYPES.CSV || type === EXPORT_TYPES.TSV) {
@@ -232,11 +240,11 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     } else if (type === EXPORT_TYPES.FASTA) {
         controller = FASTA_EXPORT_CONTROLLER;
         action = 'export.post';
-        params['format'] = 'FASTA';
+        form.append('format', 'FASTA');
     } else if (type === EXPORT_TYPES.GENBANK) {
         controller = GENBANK_EXPORT_CONTROLLER;
         action = 'export.post';
-        params['format'] = 'GENBANK';
+        form.append('format', 'GENEBANK');
     } else if (type === EXPORT_TYPES.LABEL) {
         controller = BARTENDER_EXPORT_CONTROLLER;
         action = 'printBarTenderLabels.post';
@@ -245,19 +253,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     }
 
     const url = buildURL(controller, action, undefined, { returnUrl: false });
-
-    // POST a form
-    const form = $(`<form method="POST" action="${url}">`);
-    $.each(params, function (k, v) {
-        const safeValue = quoteEncodedValue(v);
-        if (safeValue instanceof Array) {
-            safeValue.forEach(val => {
-                form.append($(`<input type="hidden" name="${k.toString()}" value="${val}">`));
-            });
-        } else form.append($(`<input type="hidden" name="${k.toString()}" value="${safeValue}">`));
-    });
-    $('body').append(form);
-    form.trigger('submit');
+    Ajax.request({ url: url.toString(), method: 'POST', form, downloadFile: true });
 }
 
 const QUOTE_REGEX = new RegExp('"', 'g');

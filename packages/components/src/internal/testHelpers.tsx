@@ -148,7 +148,6 @@ export const mountWithAppServerContext = (
     notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps
 ): ReactWrapper => {
-    // NOTE: For internal package use only. Do not export externally as it will not work for external usages.
     return mount(node, mountWithAppServerContextOptions(appContext, serverContext, notificationContext, options));
 };
 
@@ -201,7 +200,6 @@ export const mountWithServerContext = (
     initialContext: any,
     options?: MountRendererProps
 ): ReactWrapper => {
-    // NOTE: For internal package use only. Do not export externally as it will not work for external usages.
     return mount(node, mountWithServerContextOptions(initialContext, options));
 };
 

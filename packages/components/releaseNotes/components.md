@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX July 2022
+* Issue 45822: incorrect unit types available when adding sample to storage
+  * Support getFilteredLookupKeys at cell level based on value of another cell.
+  * For example, the storage unit dropdown options might vary for each row on the editable grid, based on the row's selected sample type.
+
 ### version 2.200.1
 *Released*: 18 July 2022
 * Issue 45817: LKSM sample finder misc issues re: save and manage modal

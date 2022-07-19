@@ -221,7 +221,7 @@ export function exportTabsXlsx(filename: string, queryForms: SchemaQuery[]): Pro
 export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>): void {
     const form = new FormData();
     Object.keys(exportParams).forEach(key => {
-        const value = quoteEncodedValue(exportParams[key]);
+        const value = exportParams[key];
 
         if (value instanceof Array) {
             value.forEach(arrayValue => form.append(key, arrayValue));
@@ -254,31 +254,6 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
 
     const url = buildURL(controller, action, undefined, { returnUrl: false });
     Ajax.request({ url, method: 'POST', form, downloadFile: true });
-}
-
-const QUOTE_REGEX = new RegExp('"', 'g');
-const QUOTE_ENTITY = '&quot;';
-
-// Issue 45366: form value containing unescaped quotes gets truncated
-export function quoteEncodedValue(rawValue: any) {
-    let safeValue = rawValue;
-
-    if (rawValue instanceof Array) {
-        safeValue = [];
-        rawValue.forEach(rawVal => {
-            safeValue.push(_quoteEncodedValue(rawVal));
-        });
-    } else safeValue = _quoteEncodedValue(rawValue);
-
-    return safeValue;
-}
-
-function _quoteEncodedValue(rawValue: any) {
-    let safeValue = rawValue;
-    if (typeof rawValue === 'string' && rawValue.indexOf('"') > -1) {
-        safeValue = rawValue.replace(QUOTE_REGEX, QUOTE_ENTITY);
-    }
-    return safeValue;
 }
 
 interface IGetSelectedResponse {

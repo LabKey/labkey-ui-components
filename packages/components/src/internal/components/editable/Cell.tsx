@@ -46,6 +46,8 @@ interface Props {
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
     focused?: boolean;
+    getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
+    linkedValues?: any[];
     locked?: boolean;
     message?: CellMessage;
     name?: string;
@@ -55,8 +57,6 @@ interface Props {
     selected?: boolean;
     selection?: boolean;
     values?: List<ValueDescriptor>;
-    linkedValues?: any[],
-    getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
 }
 
 interface State {
@@ -98,10 +98,9 @@ export class Cell extends React.PureComponent<Props, State> {
     }
 
     loadFilteredLookupKeys = async (): Promise<void> => {
-        const {getFilteredLookupKeys, linkedValues, readOnly} = this.props;
+        const { getFilteredLookupKeys, linkedValues, readOnly } = this.props;
 
-        if (!getFilteredLookupKeys || readOnly)
-            return;
+        if (!getFilteredLookupKeys || readOnly) return;
 
         const linkedFilteredLookupKeys = await getFilteredLookupKeys(linkedValues);
 

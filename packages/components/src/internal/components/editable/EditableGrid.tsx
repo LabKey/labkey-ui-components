@@ -134,7 +134,8 @@ function inputCellFactory(
 
         let linkedValues;
         if (columnMetadata?.getFilteredLookupKeys) {
-            linkedValues = editorModel.getValue(columnMetadata.linkedColInd, rn)
+            linkedValues = editorModel
+                .getValue(columnMetadata.linkedColInd, rn)
                 .map(vd => vd.raw)
                 .toArray();
         }
@@ -181,11 +182,11 @@ export interface EditableColumnMetadata {
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
     hideTitleTooltip?: boolean;
     isReadOnlyCell?: (rowKey: string) => boolean;
+    linkedColInd?: number;
     placeholder?: string;
     popoverClassName?: string;
     readOnly?: boolean;
     toolTip?: ReactNode;
-    linkedColInd?: number
 }
 
 export interface BulkAddData {

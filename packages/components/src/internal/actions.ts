@@ -253,7 +253,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     }
 
     const url = buildURL(controller, action, undefined, { returnUrl: false });
-    Ajax.request({ url: url.toString(), method: 'POST', form, downloadFile: true });
+    Ajax.request({ url, method: 'POST', form, downloadFile: true });
 }
 
 const QUOTE_REGEX = new RegExp('"', 'g');

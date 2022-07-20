@@ -587,9 +587,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             readonlyRows,
             lockedRows,
         } = this.props;
-        const sortedSelectionCellKeys = editorModel.hasMultipleSelection()
-            ? editorModel?.getSortedSelectionKeys()
-            : [editorModel.getSelectionKey()];
+
+        // initial implementation of drag handle fill actions only support single column selection
+        const sortedSelectionCellKeys = !editorModel.hasMultipleColumnSelection()
+            ? editorModel.hasMultipleSelection()
+                ? editorModel?.getSortedSelectionKeys()
+                : [editorModel.getSelectionKey()]
+            : [];
         let gridColumns = List<GridColumn>();
 
         if (allowBulkRemove || allowBulkUpdate) {

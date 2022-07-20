@@ -19,7 +19,7 @@ import { AppURL, DataViewInfoTypes, QueryColumn, QueryInfo, QueryModel, resolveS
 
 import { encodePart } from '../public/SchemaQuery';
 
-import { genCellKey, getCellKeySortableIndex } from './actions';
+import { genCellKey, getCellKeySortableIndex, parseCellKey } from './actions';
 import { getQueryColumnRenderers } from './global';
 import { GRID_EDIT_INDEX } from './constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
@@ -602,6 +602,13 @@ export class EditorModel
 
     hasMultipleSelection(): boolean {
         return this.selectionCells.size > 1;
+    }
+
+    hasMultipleColumnSelection(): boolean {
+        if (!this.hasMultipleSelection()) return false;
+
+        const firstCellColIdx = parseCellKey(this.selectionCells.first()).colIdx;
+        return !this.selectionCells.every(cellKey => parseCellKey(cellKey).colIdx === firstCellColIdx);
     }
 
     hasSelection(): boolean {

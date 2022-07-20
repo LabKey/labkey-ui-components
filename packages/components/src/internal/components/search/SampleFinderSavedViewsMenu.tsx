@@ -1,5 +1,5 @@
 import React, { FC, memo, useState, useEffect, useMemo, useCallback } from 'react';
-import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Button, DropdownButton, MenuItem, SplitButton } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -8,11 +8,11 @@ import { useAppContext } from '../../AppContext';
 import { FinderReport } from './models';
 
 interface Props {
-    loadSearch: (view: FinderReport) => void;
-    saveSearch: (saveCurrentName?: boolean) => void;
-    manageSearches: () => void;
     currentView?: FinderReport;
     hasUnsavedChanges?: boolean;
+    loadSearch: (view: FinderReport) => void;
+    manageSearches: () => void;
+    saveSearch: (saveCurrentName?: boolean) => void;
     sessionViewName?: string;
 }
 
@@ -37,14 +37,20 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
     const hasSavedView = savedSearches?.length > 0;
 
     const menuTitle = useMemo(() => {
-        if (!currentView?.reportId) return 'Saved Searches';
+        if (!currentView) return 'Saved Searches';
         return (
             <>
-                {hasUnsavedChanges && <span className="alert-info view-edit-alert">Edited</span>}
+                {hasUnsavedChanges && currentView.reportId && (
+                    <span className="alert-info view-edit-alert">Edited</span>
+                )}
                 {currentView.reportName}
             </>
         );
     }, [currentView, hasUnsavedChanges]);
+
+    const hasViews = useMemo(() => {
+        return savedSearches?.length > 0 || !!sessionViewName;
+    }, [savedSearches, sessionViewName]);
 
     const onLoadSavedSearch = useCallback(
         e => {
@@ -62,18 +68,42 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
         saveSearch(true);
     }, []);
 
-    const onSaveNewView = useCallback(e => {
-        saveSearch(false);
-    }, []);
+    const onSaveNewView = useCallback(
+        e => {
+            if (!currentView && !hasUnsavedChanges) return;
+
+            saveSearch(false);
+        },
+        [currentView, currentView]
+    );
+
+    const onManageView = useCallback(
+        e => {
+            if (!hasSavedView) return;
+
+            manageSearches();
+        },
+        [hasSavedView]
+    );
 
     return (
         <>
-            <DropdownButton id="samplefinder-savedsearch-menu" title={menuTitle} className="button-right-spacing">
+            <DropdownButton
+                id="samplefinder-savedsearch-menu"
+                title={menuTitle}
+                className="button-right-spacing"
+                disabled={!hasViews}
+            >
                 {sessionViewName && (
                     <>
                         <MenuItem header>Most Recent Search</MenuItem>
-                        <MenuItem onClick={onLoadSessionSearch}>{sessionViewName}</MenuItem>
-
+                        <MenuItem
+                            active={sessionViewName === currentView?.reportName}
+                            onClick={onLoadSessionSearch}
+                            className="session-finder-view"
+                        >
+                            {sessionViewName}
+                        </MenuItem>
                         <MenuItem divider />
                     </>
                 )}
@@ -82,7 +112,13 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                     <>
                         {savedSearches.map((savedSearch, ind) => {
                             return (
-                                <MenuItem key={ind} onClick={onLoadSavedSearch} name={savedSearch.reportId}>
+                                <MenuItem
+                                    key={ind}
+                                    onClick={onLoadSavedSearch}
+                                    name={savedSearch.reportId}
+                                    active={savedSearch.reportId === currentView?.reportId}
+                                    className="saved-finder-view"
+                                >
                                     {savedSearch.reportName}
                                 </MenuItem>
                             );
@@ -91,20 +127,30 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
                 )}
                 {savedSearches?.length === 0 && <MenuItem header>No Saved Search</MenuItem>}
                 <MenuItem divider />
-                <MenuItem onClick={manageSearches} disabled={!hasSavedView}>
+                <MenuItem onClick={onManageView} disabled={!hasSavedView} className="saved-finder-menu-action-item">
                     Manage saved searches
                 </MenuItem>
-                <MenuItem onClick={onSaveNewView} disabled={!currentView && !hasUnsavedChanges}>
+                <MenuItem
+                    onClick={onSaveNewView}
+                    disabled={!currentView && !hasUnsavedChanges}
+                    className="saved-finder-menu-action-item"
+                >
                     Save as custom search
                 </MenuItem>
             </DropdownButton>
             {hasUnsavedChanges && currentView?.reportId && (
-                <DropdownButton id="save-finderview-dropdown" title="Save Search" bsStyle="success">
-                    <MenuItem onClick={onSaveCurrentView}>Save this search</MenuItem>
-                    <MenuItem onClick={onSaveNewView}>Save as a new search</MenuItem>
-                </DropdownButton>
+                <SplitButton
+                    id="save-finderview-dropdown"
+                    bsStyle="success"
+                    onClick={onSaveCurrentView}
+                    title="Save Search"
+                >
+                    <MenuItem title="Save as a new search" onClick={onSaveNewView} key="saveNewGridView">
+                        Save as...
+                    </MenuItem>
+                </SplitButton>
             )}
-            {hasUnsavedChanges && currentView && !currentView.reportId && (
+            {hasUnsavedChanges && !currentView?.reportId && (
                 <Button bsStyle="success" onClick={onSaveNewView} className="margin-left">
                     Save Search
                 </Button>

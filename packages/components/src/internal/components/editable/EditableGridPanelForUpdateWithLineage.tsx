@@ -2,7 +2,7 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 're
 import { fromJS, List, Map } from 'immutable';
 
 import {
-    createNotification,
+    Alert,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditorModel,
@@ -13,8 +13,9 @@ import {
     LoadingSpinner,
     QueryColumn,
     QueryModel,
+    useNotificationsContext,
     WizardNavButtons,
-} from '../../../index';
+} from '../../..';
 import { capitalizeFirstChar } from '../../util/utils';
 
 import {
@@ -46,25 +47,25 @@ const DEFAULT_PLURAL_NOUN = 'rows';
 export interface EditableGridPanelForUpdateWithLineageProps
     extends Omit<SharedEditableGridPanelProps, 'allowAdd' | 'allowRemove' | 'forUpdate'> {
     combineParentTypes?: boolean;
+    exportColFilter?: (col: QueryColumn) => boolean;
     extraExportColumns?: Array<Partial<QueryColumn>>;
+    getIsDirty?: () => boolean;
     getParentTypeWarning?: () => ReactNode;
+    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
     idField: string;
     includedTabs: UpdateGridTab[];
     loaders: EditableGridLoaderFromSelection[];
     onCancel: () => void;
     onComplete: () => void;
-    getIsDirty?: () => boolean;
-    setIsDirty?: (isDirty: boolean) => void;
     parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
-    pluralNoun?: string;
     queryModel: QueryModel;
     selectionData?: Map<string, any>;
     singularNoun?: string;
     targetEntityDataType: EntityDataType;
     updateAllTabRows: (updateData: any[]) => Promise<boolean>;
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    exportColFilter?: (col: QueryColumn) => boolean;
+    setIsDirty?: (isDirty: boolean) => void;
+    pluralNoun?: string;
 }
 
 export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {
@@ -91,10 +92,11 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
         extraExportColumns,
         ...gridProps
     } = props;
-
+    const { createNotification } = useNotificationsContext();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [editableGridModels, setEditableGridModels] = useState<EditableGridModels>();
     const [entityParentsMap, setEntityParentsMap] = useState<Map<string, List<EntityParentType>>>();
+    const [error, setError] = useState<boolean>();
 
     useEffect(() => {
         const dataModels = [];
@@ -142,7 +144,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                     });
                 });
         }
-    }, [loaders, queryModel, editableGridModels, extraExportColumns]);
+    }, [loaders, queryModel, editableGridModels, extraExportColumns, createNotification]);
 
     const onGridChange = useCallback(
         (
@@ -185,12 +187,17 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
 
         if (gridDataAllTabs.length > 0) {
             setIsSubmitting(true);
-            updateAllTabRows(gridDataAllTabs).then(result => {
-                setIsSubmitting(false);
-                if (result !== false) {
-                    onComplete();
-                }
-            });
+            updateAllTabRows(gridDataAllTabs)
+                .then(result => {
+                    setIsSubmitting(false);
+                    if (result !== false) {
+                        onComplete();
+                    }
+                })
+                .catch(error => {
+                    setIsSubmitting(false);
+                    setError(error);
+                });
         } else {
             setIsSubmitting(false);
             onComplete();
@@ -340,6 +347,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
                 readOnlyColumns={readOnlyColumns}
                 extraExportColumns={extraExportColumns}
             />
+            <Alert>{error}</Alert>
             <WizardNavButtons
                 cancel={onCancel}
                 nextStep={onSubmit}

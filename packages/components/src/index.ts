@@ -76,7 +76,13 @@ import {
     getUserSharedContainerPermissions,
 } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
-import { getActionErrorMessage, getConfirmDeleteMessage, resolveErrorMessage } from './internal/util/messaging';
+import {
+    getActionErrorMessage,
+    getConfirmDeleteMessage,
+    resolveErrorMessage,
+    deleteSuccessMessage,
+    deleteErrorMessage,
+} from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
 import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
@@ -117,17 +123,12 @@ import { FileAttachmentEntry } from './internal/components/files/FileAttachmentE
 import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notifications } from './internal/components/notifications/Notifications';
+import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/components/notifications/actions';
 import {
-    createNotification,
-    getPipelineActivityData,
-    markAllNotificationsAsRead,
-    withTimeout,
-} from './internal/components/notifications/actions';
-import {
-    addNotification,
-    dismissNotifications,
-    initNotificationsState,
-} from './internal/components/notifications/global';
+    useNotificationsContext,
+    withNotificationsContext,
+    NotificationsContextProvider,
+} from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
 import { formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
@@ -282,10 +283,6 @@ import { EntityInsertPanel } from './internal/components/entities/EntityInsertPa
 import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
-import {
-    createDeleteErrorNotification,
-    createDeleteSuccessNotification,
-} from './internal/components/notifications/messaging';
 import { GenerateEntityResponse, OperationConfirmationData } from './internal/components/entities/models';
 import { SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
@@ -834,7 +831,6 @@ export {
     LogoutReason,
     // global state functions
     initQueryGridState,
-    initNotificationsState,
     getContainerFilter,
     getContainerFilterForLookups,
     createGridModelId,
@@ -1187,6 +1183,7 @@ export {
     Breadcrumb,
     BreadcrumbCreate,
     // notification related items
+    NotificationsContextProvider,
     NO_UPDATES_MESSAGE,
     PIPELINE_JOB_NOTIFICATION_EVENT,
     PIPELINE_JOB_NOTIFICATION_EVENT_START,
@@ -1198,14 +1195,12 @@ export {
     ServerNotificationModel,
     ServerActivityData,
     Persistence,
-    createNotification,
-    dismissNotifications,
     getPipelineActivityData,
     markAllNotificationsAsRead,
-    addNotification,
-    createDeleteSuccessNotification,
-    createDeleteErrorNotification,
-    withTimeout,
+    deleteSuccessMessage,
+    deleteErrorMessage,
+    useNotificationsContext,
+    withNotificationsContext,
     // domain designer related items
     DomainForm,
     DomainFieldsDisplay,
@@ -1489,10 +1484,10 @@ export type {
     IDomainField,
     IFieldChange,
 } from './internal/components/domainproperties/models';
-export type { MessageFunction, NotificationItemProps } from './internal/components/notifications/model';
+export type { NotificationItemProps } from './internal/components/notifications/model';
+export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';
 export type { VisGraphNode } from './internal/components/lineage/vis/VisGraphGenerator';
 export type { ITab } from './internal/components/navigation/SubNav';
-export type { NotificationCreatable } from './internal/components/notifications/actions';
 export type { IDataViewInfo, EditorModelProps, IGridLoader, IGridResponse } from './internal/models';
 export type { HeatMapCell } from './internal/components/heatmap/HeatMap';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
@@ -1524,7 +1519,7 @@ export type { AppRouteResolver } from './internal/url/AppURLResolver';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
-export type { SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
+export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
 export type { Location } from './internal/util/URL';
 export type {
     RoutingTableState,

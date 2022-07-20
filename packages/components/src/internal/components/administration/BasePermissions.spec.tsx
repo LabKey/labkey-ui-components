@@ -11,7 +11,6 @@ import policyJSON from '../../../test/data/security-getPolicy.json';
 
 import { Alert } from '../base/Alert';
 
-import { initNotificationsState } from '../notifications/global';
 import { AppContext } from '../../AppContext';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
@@ -21,10 +20,6 @@ import { PermissionAssignments } from '../permissions/PermissionAssignments';
 import { BasePermissionsImpl, BasePermissionsImplProps } from './BasePermissions';
 
 const TEST_POLICY = SecurityPolicy.create(policyJSON);
-
-beforeAll(() => {
-    initNotificationsState();
-});
 
 describe('BasePermissions', () => {
     function getDefaultProps(): BasePermissionsImplProps {

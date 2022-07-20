@@ -1,25 +1,26 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import {
-    createDeleteErrorNotification,
-    createDeleteSuccessNotification,
     deleteSampleSet,
     EntityTypeDeleteConfirmModal,
     Progress,
     SHARED_CONTAINER_PATH,
+    useNotificationsContext,
 } from '../../..';
+import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 
 interface Props {
     afterDelete?: (success: boolean) => void;
     beforeDelete?: () => void;
+    containerPath?: string;
+    numSamples: number;
     onCancel: () => void;
     rowId: number;
-    numSamples: number;
-    containerPath?: string;
 }
 
 export const SampleSetDeleteModal: FC<Props> = props => {
     const { beforeDelete, afterDelete, rowId, numSamples, onCancel, containerPath } = props;
+    const { createNotification } = useNotificationsContext();
     const [showProgress, setShowProgress] = useState<boolean>();
     const isShared = containerPath === SHARED_CONTAINER_PATH;
 
@@ -30,12 +31,15 @@ export const SampleSetDeleteModal: FC<Props> = props => {
         try {
             await deleteSampleSet(rowId, containerPath);
             afterDelete?.(true);
-            createDeleteSuccessNotification(' sample type');
+            createNotification(deleteSuccessMessage('sample type'));
         } catch (error) {
             afterDelete?.(false);
-            createDeleteErrorNotification('sample type');
+            createNotification({
+                alertClass: 'danger',
+                message: deleteErrorMessage('sample type'),
+            });
         }
-    }, [beforeDelete, setShowProgress]);
+    }, [afterDelete, beforeDelete, containerPath, createNotification, rowId]);
 
     return (
         <>

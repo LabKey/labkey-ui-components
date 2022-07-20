@@ -1,13 +1,7 @@
 import React, { FC, useMemo, useState } from 'react';
 
-import {
-    ConfirmModal,
-    createDeleteErrorNotification,
-    createDeleteSuccessNotification,
-    deleteRows,
-    Progress,
-    SchemaQuery,
-} from '../../..';
+import { ConfirmModal, deleteRows, Progress, SchemaQuery, useNotificationsContext } from '../../..';
+import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 
 interface Props {
     afterDelete: () => void;
@@ -20,6 +14,7 @@ interface Props {
 
 export const AssayResultDeleteModal: FC<Props> = props => {
     const { onCancel, afterDelete, afterDeleteFailure, maxToDelete, schemaQuery, selectedIds } = props;
+    const { createNotification } = useNotificationsContext();
     const [showProgress, setShowProgress] = useState<boolean>(false);
     const numToDelete = selectedIds.length;
     const noun = useMemo<string>(() => (numToDelete ? ' assay result' : ' assay results'), [numToDelete]);
@@ -34,11 +29,14 @@ export const AssayResultDeleteModal: FC<Props> = props => {
             });
 
             afterDelete();
-            createDeleteSuccessNotification(noun, numToDelete);
+            createNotification(deleteSuccessMessage(noun, numToDelete));
         } catch (error) {
             console.error(error);
             setShowProgress(false);
-            createDeleteErrorNotification(noun);
+            createNotification({
+                alertClass: 'danger',
+                message: deleteErrorMessage(noun),
+            });
             afterDeleteFailure();
         }
     };

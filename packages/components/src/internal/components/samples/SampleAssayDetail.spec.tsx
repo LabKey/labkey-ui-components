@@ -13,7 +13,7 @@ import { LoadingState } from '../../../public/LoadingState';
 import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, mountWithServerContext, waitForLifecycle } from '../../testHelpers';
 import { TEST_USER_AUTHOR, TEST_USER_READER } from '../../userFixtures';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
@@ -180,13 +180,13 @@ describe('SampleAssayDetailBodyImpl', () => {
     }
 
     test('no assay models', () => {
-        const wrapper = mount(<SampleAssayDetailBodyImpl {...IMPL_PROPS} />);
+        const wrapper = mountWithAppServerContext(<SampleAssayDetailBodyImpl {...IMPL_PROPS} />);
         validate(wrapper, true, 'There are no assay designs defined that reference this sample type');
         wrapper.unmount();
     });
 
     test('no assay models with emptyAssayDefDisplay', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 emptyAssayDefDisplay={
@@ -201,7 +201,7 @@ describe('SampleAssayDetailBodyImpl', () => {
     });
 
     test('models loading', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
@@ -216,7 +216,7 @@ describe('SampleAssayDetailBodyImpl', () => {
     });
 
     test('no assay results for models', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
@@ -229,7 +229,7 @@ describe('SampleAssayDetailBodyImpl', () => {
     });
 
     test('no assay results for models with emptyAssayResultDisplay', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
@@ -247,7 +247,7 @@ describe('SampleAssayDetailBodyImpl', () => {
     });
 
     test('with assay results', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
@@ -267,7 +267,7 @@ describe('SampleAssayDetailBodyImpl', () => {
     });
 
     test('tabOrder by title', () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
@@ -287,7 +287,7 @@ describe('SampleAssayDetailImpl', () => {
     // TODO more test cases for other parts of the SampleAssayDetailImpl to be added
 
     test('sampleAssayResultViewConfigs - none', async () => {
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
@@ -314,7 +314,7 @@ describe('SampleAssayDetailImpl', () => {
     test('sampleAssayResultViewConfigs - module not enabled', async () => {
         LABKEY.container.activeModules = ['ModuleA'];
 
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
@@ -333,7 +333,7 @@ describe('SampleAssayDetailImpl', () => {
     test('sampleAssayResultViewConfigs - module is enabled', async () => {
         LABKEY.container.activeModules = ['ModuleA', 'ModuleB'];
 
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
@@ -355,7 +355,7 @@ describe('SampleAssayDetailImpl', () => {
     test('sampleAssayResultViewConfigs - sampleRowKey', async () => {
         LABKEY.container.activeModules = ['ModuleA', 'ModuleB'];
 
-        const wrapper = mount(
+        const wrapper = mountWithAppServerContext(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {

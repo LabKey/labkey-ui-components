@@ -53,24 +53,35 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="export-modal-body">
-                    <ul>
+                    <table className="export-modal-body">
+                        <tr>
+                            <th></th>
+                            <th className="pull-right">Count</th>
+                            <th className="view-name">View</th>
+                        </tr>
+
                         {tabOrder.map(modelId => {
                             const model = queryModels[modelId];
                             return (
-                                <Checkbox
-                                    checked={selected.has(modelId)}
-                                    className="export-modal-checkbox"
-                                    key={modelId}
-                                    value={modelId}
-                                    onChange={onChecked}
-                                >
-                                    {`${model.title} (${model.rowCount})`}
-                                </Checkbox>
+                                <tr>
+                                    <td>
+                                        <Checkbox
+                                            checked={selected.has(modelId)}
+                                            key={modelId}
+                                            value={modelId}
+                                            onChange={onChecked}
+                                        >
+                                            {model.title}
+                                        </Checkbox>
+                                    </td>
+                                    <td className="pull-right">{model.rowCount}</td>
+                                    <td className="view-name">
+                                        {model.viewName || 'Default'} {model.currentView.session && <span className="text-muted">(edited)</span>}
+                                    </td>
+                                </tr>
                             );
                         })}
-                    </ul>
-                </div>
+                    </table>
             </Modal.Body>
             <Modal.Footer>
                 <div className="pull-left">

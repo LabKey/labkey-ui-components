@@ -2,17 +2,11 @@ import React, { FC, memo, useCallback, useState } from 'react';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import {
-    capitalizeFirstChar,
-    ConfirmModal,
-    Progress,
-    createDeleteErrorNotification,
-    createDeleteSuccessNotification,
-    deleteRows,
-    QueryModel,
-} from '../../..';
+import { capitalizeFirstChar, ConfirmModal, Progress, deleteRows, QueryModel, useNotificationsContext } from '../../..';
 
 import { MAX_SELECTED_SAMPLES } from '../samples/constants';
+
+import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
@@ -34,6 +28,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
     const { auditBehavior, queryModel, onCancel, afterDelete, beforeDelete, useSelected, entityDataType, maxSelected } =
         props;
     const { nounPlural } = entityDataType;
+    const { createNotification } = useNotificationsContext();
     const [showProgress, setShowProgress] = useState(false);
     const [numConfirmed, setNumConfirmed] = useState(0);
     let rowIds;
@@ -65,13 +60,16 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                     schemaQuery: queryModel.schemaQuery,
                 });
                 afterDelete(rowsToKeep);
-                createDeleteSuccessNotification(noun, rowsToDelete.length, undefined);
+                createNotification(deleteSuccessMessage(noun, rowsToDelete.length, undefined));
             } catch (e) {
                 setShowProgress(false);
-                createDeleteErrorNotification(noun);
+                createNotification({
+                    alertClass: 'danger',
+                    message: deleteErrorMessage(noun),
+                });
             }
         },
-        [afterDelete, auditBehavior, beforeDelete, entityDataType, queryModel]
+        [afterDelete, auditBehavior, beforeDelete, createNotification, entityDataType, queryModel.schemaQuery]
     );
 
     if (!queryModel) {

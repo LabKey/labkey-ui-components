@@ -7,9 +7,8 @@ import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 import { LoadingPage } from '../base/LoadingPage';
 import { NotFound } from '../base/NotFound';
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
-import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
-import { initNotificationsState } from '../notifications/global';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { Page } from '../base/Page';
 import { PageDetailHeader } from '../forms/PageDetailHeader';
@@ -41,10 +40,6 @@ const SINGLE_SAMPLE_TYPE_PICKLIST = new Picklist({
     sampleTypes: ['type1'],
 });
 
-beforeAll(() => {
-    initNotificationsState();
-});
-
 describe('PicklistOverview', () => {
     const DEFAULT_PROPS = {
         user: TEST_USER_EDITOR,
@@ -60,7 +55,7 @@ describe('PicklistOverview', () => {
     }
 
     test('picklist with multiple sample types', async () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverview
                 {...DEFAULT_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
@@ -69,7 +64,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -92,7 +88,7 @@ describe('PicklistOverview', () => {
     });
 
     test('picklist with single sample type', async () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverview
                 {...DEFAULT_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
@@ -101,7 +97,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -119,7 +116,7 @@ describe('PicklistOverview', () => {
     });
 
     test('picklist without samples', async () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverview
                 {...DEFAULT_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
@@ -137,7 +134,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -150,7 +148,7 @@ describe('PicklistOverview', () => {
     });
 
     test('picklist not found', async () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverview
                 {...DEFAULT_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
@@ -159,7 +157,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -167,7 +166,7 @@ describe('PicklistOverview', () => {
     });
 
     test('private picklist with perm', async () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverview
                 {...DEFAULT_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
@@ -185,7 +184,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -193,7 +193,7 @@ describe('PicklistOverview', () => {
     });
 
     test('private picklist without perm', async () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverview
                 {...DEFAULT_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
@@ -211,7 +211,8 @@ describe('PicklistOverview', () => {
                     }),
                 })}
             />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, true);
         await waitForLifecycle(wrapper);
@@ -250,26 +251,29 @@ describe('PicklistOverviewImpl', () => {
     }
 
     test('picklist with multiple sample types', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverviewImpl {...DEFAULT_PROPS} picklist={MULTI_SAMPLE_TYPE_PICKLIST} />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, MULTI_SAMPLE_TYPE_PICKLIST);
         wrapper.unmount();
     });
 
     test('picklist with single sample types', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverviewImpl {...DEFAULT_PROPS} picklist={SINGLE_SAMPLE_TYPE_PICKLIST} />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, SINGLE_SAMPLE_TYPE_PICKLIST);
     });
 
     test('reader', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverviewImpl {...DEFAULT_PROPS} picklist={SINGLE_SAMPLE_TYPE_PICKLIST} user={TEST_USER_READER} />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, SINGLE_SAMPLE_TYPE_PICKLIST, false, false);
     });
@@ -282,9 +286,10 @@ describe('PicklistOverviewImpl', () => {
             Category: PUBLIC_PICKLIST_CATEGORY,
             sampleTypes: [],
         });
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverviewImpl {...DEFAULT_PROPS} picklist={picklist} />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, picklist, false, false);
     });
@@ -297,9 +302,10 @@ describe('PicklistOverviewImpl', () => {
             Category: PRIVATE_PICKLIST_CATEGORY,
             sampleTypes: [],
         });
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <PicklistOverviewImpl {...DEFAULT_PROPS} picklist={picklist} />,
-            undefined
+            {},
+            {}
         );
         validate(wrapper, picklist, true, true, true, false);
     });

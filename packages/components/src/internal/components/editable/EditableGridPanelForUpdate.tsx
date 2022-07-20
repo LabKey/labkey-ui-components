@@ -3,6 +3,7 @@ import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
 import {
+    Alert,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
     EditorModel,
@@ -20,15 +21,15 @@ import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initE
 
 interface Props {
     containerFilter?: Query.ContainerFilter;
+    getIsDirty?: () => boolean;
     idField: string;
     loader: EditableGridLoaderFromSelection;
     onCancel: () => any;
     onComplete: () => any;
-    getIsDirty?: () => boolean;
-    setIsDirty?: (isDirty: boolean) => void;
     pluralNoun?: string;
     queryModel: QueryModel;
     selectionData: Map<string, any>;
+    setIsDirty?: (isDirty: boolean) => void;
     singularNoun?: string;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
 }
@@ -36,6 +37,7 @@ interface Props {
 interface State {
     dataModels: QueryModel[];
     editorModels: EditorModel[];
+    error: string;
     isSubmitting: boolean;
 }
 
@@ -56,6 +58,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             isSubmitting: false,
             dataModels,
             editorModels,
+            error: undefined,
         };
     }
 
@@ -96,7 +99,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     };
 
     onSubmit = (): void => {
-        const { onComplete, updateRows, idField, selectionData } = this.props;
+        const { onComplete, updateRows, idField, selectionData, singularNoun } = this.props;
         const { dataModels, editorModels } = this.state;
 
         const gridDataAllTabs = [];
@@ -118,9 +121,16 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             this.setState(() => ({ isSubmitting: true }));
             const updatePromises = [];
             gridDataAllTabs.forEach(data => updatePromises.push(updateRows(data.schemaQuery, data.updatedRows)));
-            Promise.all(updatePromises).then(() => {
-                this.setState(() => ({ isSubmitting: false }), onComplete());
-            });
+            Promise.all(updatePromises)
+                .then(() => {
+                    this.setState(() => ({ isSubmitting: false }), onComplete());
+                })
+                .catch(error => {
+                    this.setState(() => ({
+                        error: error?.exception ?? 'There was a problem updating the ' + singularNoun + ' data.',
+                        isSubmitting: false,
+                    }));
+                });
         } else {
             this.setState(() => ({ isSubmitting: false }), onComplete());
         }
@@ -128,7 +138,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
 
     render() {
         const { containerFilter, onCancel, singularNoun, pluralNoun, ...editableGridProps } = this.props;
-        const { isSubmitting, dataModels, editorModels } = this.state;
+        const { isSubmitting, dataModels, editorModels, error } = this.state;
         const firstModel = dataModels[0];
         const columnMetadata = getUniqueIdColumnMetadata(firstModel.queryInfo);
 
@@ -153,6 +163,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                     striped
                     title={`Edit selected ${pluralNoun}`}
                 />
+                <Alert>{error}</Alert>
                 <WizardNavButtons
                     cancel={onCancel}
                     nextStep={this.onSubmit}

@@ -5,7 +5,6 @@
 import React, { FC, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-import { createNotification, withTimeout } from '../notifications/actions';
 import { isLoginAutoRedirectEnabled } from '../administration/utils';
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
 
@@ -17,7 +16,7 @@ import { Notifications } from '../notifications/Notifications';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { App } from '../../../index';
+import { App, useNotificationsContext } from '../../..';
 
 import { UserDetailHeader } from './UserDetailHeader';
 import { getUserRoleDisplay } from './actions';
@@ -39,6 +38,7 @@ export const ProfilePage: FC<Props> = props => {
     const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
     const { moduleContext, user } = useServerContext();
     const userProperties = useUserProperties(user);
+    const { createNotification } = useNotificationsContext();
 
     if (!user.isSignedIn) {
         return <InsufficientPermissionsPage title={TITLE} />;
@@ -63,9 +63,7 @@ export const ProfilePage: FC<Props> = props => {
 
         goBack();
         if (result && result['success']) {
-            withTimeout(() => {
-                createNotification(successMsg);
-            });
+            createNotification(successMsg, true);
         }
     };
 

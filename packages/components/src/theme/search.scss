@@ -50,3 +50,7 @@
 .search-form__advanced-title{
   padding-left: 1px;
 }
+
+li.saved-finder-menu-action-item a:focus {
+    outline: none;
+}

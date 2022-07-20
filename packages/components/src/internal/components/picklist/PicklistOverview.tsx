@@ -5,7 +5,6 @@ import { AuditBehaviorTypes, Filter } from '@labkey/api';
 import {
     App,
     AppURL,
-    createNotification,
     InsufficientPermissionsPage,
     invalidateLineageResults,
     LoadingPage,
@@ -21,8 +20,8 @@ import {
     SamplesTabbedGridPanel,
     SchemaQuery,
     SCHEMAS,
+    useNotificationsContext,
     User,
-    withTimeout,
 } from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
@@ -47,10 +46,10 @@ interface OwnProps {
     AdditionalGridButtons?: ComponentType<RequiresModelAndActions>;
     advancedExportOptions?: { [key: string]: any };
     api?: ComponentsAPIWrapper;
+    getIsDirty?: () => boolean;
     navigate: (url: string | AppURL) => any;
     params?: any;
     samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
-    getIsDirty?: () => boolean;
     setIsDirty?: (isDirty: boolean) => void;
     user: User;
 }
@@ -85,6 +84,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
     } = props;
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
+    const { createNotification } = useNotificationsContext();
 
     const onDeletePicklistClick = useCallback(() => {
         setShowDeleteModal(true);
@@ -113,7 +113,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
                     alertClass: 'danger',
                 });
             });
-    }, [picklist, hideDeletePicklistConfirm, navigate]);
+    }, [picklist, hideDeletePicklistConfirm, navigate, createNotification]);
 
     const onEditPicklistMetadataClick = useCallback(() => {
         setShowEditModal(true);
@@ -131,11 +131,9 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
 
             hideEditPicklistMetadataModal();
 
-            withTimeout(() => {
-                createNotification('Successfully updated picklist metadata.');
-            });
+            createNotification('Successfully updated picklist metadata.', true);
         },
-        [hideEditPicklistMetadataModal, loadPicklist, picklist]
+        [createNotification, hideEditPicklistMetadataModal, loadPicklist, picklist.name]
     );
 
     // Using a type for evt here causes difficulties.  It wants a FormEvent<Checkbox> but

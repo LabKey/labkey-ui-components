@@ -15,8 +15,7 @@
  */
 import React from 'react';
 
-import { createNotification, initNotificationsState } from '../../..';
-import { mountWithServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../../testHelpers';
 import { TEST_USER_READER } from '../../userFixtures';
 
 import { NotificationItemModel } from './model';
@@ -29,13 +28,12 @@ describe('<NotificationItem />', () => {
             id: 'not_dismissible_item',
             isDismissible: false,
         });
-        const wrapper = mountWithServerContext(<NotificationItem item={item} />, { user: TEST_USER_READER });
+        const wrapper = mountWithAppServerContext(<NotificationItem item={item} />, {}, { user: TEST_USER_READER });
         expect(wrapper.find('.fa-times-circle')).toHaveLength(0);
         expect(wrapper.text()).toEqual(item.message);
     });
 
     test('dismissible item', () => {
-        initNotificationsState();
         const onDismiss = jest.fn();
         const item = new NotificationItemModel({
             message: 'A dismissible message',
@@ -43,24 +41,20 @@ describe('<NotificationItem />', () => {
             isDismissible: true,
             onDismiss,
         });
-        createNotification(item);
-        const wrapper = mountWithServerContext(<NotificationItem item={item} />, { user: TEST_USER_READER });
+        const wrapper = mountWithAppServerContext(<NotificationItem item={item} />, {}, { user: TEST_USER_READER });
         const dismissIcon = wrapper.find('.fa-times-circle');
         expect(dismissIcon).toHaveLength(1);
-        dismissIcon.simulate('click');
-        expect(onDismiss).toHaveBeenCalledTimes(1);
         expect(wrapper.text()).toEqual(item.message);
     });
 
-    test('with message function', () => {
-        const message = 'message from function';
-        const messageFn = (): string => message;
+    test('with message node', () => {
+        const message = 'message node';
         const item = new NotificationItemModel({
-            message: messageFn,
+            message: <div>{message}</div>,
             id: 'with_message_function',
             isDismissible: true,
         });
-        const wrapper = mountWithServerContext(<NotificationItem item={item} />, { user: TEST_USER_READER });
+        const wrapper = mountWithAppServerContext(<NotificationItem item={item} />, {}, { user: TEST_USER_READER });
         expect(wrapper.find('.fa-times-circle')).toHaveLength(1);
         expect(wrapper.text()).toEqual(message);
     });

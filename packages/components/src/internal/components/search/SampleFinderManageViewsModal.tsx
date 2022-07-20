@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
-import { Col, Modal, Row } from 'react-bootstrap';
+import { Col, Modal, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -12,8 +12,8 @@ import { useAppContext } from '../../AppContext';
 import { FinderReport } from './models';
 
 export interface Props {
-    onDone: (hasChange?: boolean) => void;
     currentView?: FinderReport;
+    onDone: (hasChange?: boolean) => void;
 }
 
 export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
@@ -55,13 +55,27 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
     }, []);
 
     const renameView = useCallback(async () => {
-        if (!selectedSearch || !newName) {
+        const newNameTrimmed = newName?.trim();
+        if (!selectedSearch || !newNameTrimmed) {
             setSelectedSearch(undefined);
             return;
         }
 
-        if (selectedSearch.reportName.toLowerCase() === newName.toLowerCase()) {
+        if (selectedSearch.reportName.toLowerCase() === newNameTrimmed.toLowerCase()) {
             setSelectedSearch(undefined);
+            return;
+        }
+
+        const existingViews = await api.samples.loadFinderSearches();
+        let duplicate = false;
+        existingViews.forEach(v => {
+            if (v.reportName.toLowerCase() === newNameTrimmed.toLowerCase()) {
+                duplicate = true;
+            }
+        });
+
+        if (duplicate) {
+            setErrorMessage('A saved search by the name "' + newNameTrimmed + '" already exists.');
             return;
         }
 
@@ -70,7 +84,7 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
         setHasChange(true);
 
         try {
-            await renameReport(selectedSearch.entityId, newName);
+            await renameReport(selectedSearch.entityId, newNameTrimmed);
             setSavedSearches(await api.samples.loadFinderSearches());
             setSelectedSearch(undefined);
         } catch (error) {
@@ -90,12 +104,13 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
             <Modal.Body>
                 <Alert>{errorMessage}</Alert>
                 {!savedSearches && <LoadingSpinner />}
+                {savedSearches?.length === 0 && <div className="gray-text">No saved searches</div>}
                 {savedSearches &&
                     savedSearches.map(savedSearch => {
                         const isLocked = savedSearch.entityId === currentView?.entityId;
                         return (
                             <Row className="small-margin-bottom">
-                                <Col xs={5}>
+                                <Col xs={8}>
                                     {selectedSearch?.reportId === savedSearch.reportId ? (
                                         <input
                                             autoFocus
@@ -110,36 +125,40 @@ export const SampleFinderManageViewsModal: FC<Props> = memo(props => {
                                         savedSearch.reportName
                                     )}
                                 </Col>
-                                {!selectedSearch && !isLocked && (
-                                    <>
-                                        <Col xs={1}>
-                                            <span
-                                                className="edit-inline-field__toggle"
-                                                onClick={() => setSelectedSearch(savedSearch)}
+                                <Col xs={4}>
+                                    <span className="pull-right">
+                                        {!selectedSearch && !isLocked && (
+                                            <>
+                                                <span
+                                                    className="edit-inline-field__toggle small-right-spacing"
+                                                    onClick={() => setSelectedSearch(savedSearch)}
+                                                >
+                                                    <i className="fa fa-pencil" />
+                                                </span>
+                                                <span
+                                                    className="edit-inline-field__toggle small-right-spacing"
+                                                    onClick={() => deleteView(savedSearch.entityId)}
+                                                >
+                                                    <i className="fa fa-trash-o" />
+                                                </span>
+                                            </>
+                                        )}
+                                        {isLocked && (
+                                            <OverlayTrigger
+                                                overlay={
+                                                    <Popover id="current-view-lock">
+                                                        The active search cannot be deleted or renamed.
+                                                    </Popover>
+                                                }
+                                                placement="top"
                                             >
-                                                <i className="fa fa-pencil" />
-                                            </span>
-                                        </Col>
-                                        <Col xs={1}>
-                                            <span
-                                                className="edit-inline-field__toggle"
-                                                onClick={() => deleteView(savedSearch.entityId)}
-                                            >
-                                                <i className="fa fa-trash-o" />
-                                            </span>
-                                        </Col>
-                                    </>
-                                )}
-                                {isLocked && (
-                                    <>
-                                        <Col xs={1} />
-                                        <Col xs={1}>
-                                            <span>
-                                                <i className="fa fa-lock" />
-                                            </span>
-                                        </Col>
-                                    </>
-                                )}
+                                                <span className="search-form__advanced-toggle small-right-spacing">
+                                                    <i className="fa fa-lock" />
+                                                </span>
+                                            </OverlayTrigger>
+                                        )}
+                                    </span>
+                                </Col>
                             </Row>
                         );
                     })}

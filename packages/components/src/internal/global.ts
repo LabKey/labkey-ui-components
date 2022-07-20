@@ -15,17 +15,7 @@
  */
 import { Map } from 'immutable';
 
-import { NotificationItemModel } from '..';
-
 import { initBrowserHistoryState } from './util/global';
-
-export type GlobalAppState = {
-    // src/util/global.ts
-    BrowserHistory: any; // TODO what type to use here?
-
-    // src/components/notifications/global.ts
-    Notifications: Map<string, NotificationItemModel>;
-};
 
 // Don't touch this directly, if you need access to it use getQueryMetadata, if you need to set the value use
 // setQueryMetadata

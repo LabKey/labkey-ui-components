@@ -6,7 +6,6 @@ import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
     caseInsensitive,
-    createNotification,
     DefaultRenderer,
     deleteRows,
     DetailPanelWithModel,
@@ -18,12 +17,13 @@ import {
     SampleAliquotDetailHeader,
     SchemaQuery,
     SCHEMAS,
-    withTimeout,
 } from '../../..';
 
 import { EditableDetailPanel, EditableDetailPanelProps } from '../../../public/QueryModel/EditableDetailPanel';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { withNotificationsContext, NotificationsContextProps } from '../notifications/NotificationsContext';
 
 import { GroupedSampleFields } from './models';
 import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from './actions';
@@ -36,14 +36,14 @@ interface Props extends EditableDetailPanelProps {
 }
 
 interface State {
+    discardComment: string;
     hasError: boolean;
     sampleStorageItemId: number;
     sampleTypeDomainFields: GroupedSampleFields;
     shouldDiscard: boolean;
-    discardComment: string;
 }
 
-export class SampleDetailEditing extends PureComponent<Props, State> {
+class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContextProps, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
     };
@@ -112,6 +112,7 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
     };
 
     handleSave = async () => {
+        const { createNotification } = this.props;
         const { shouldDiscard, discardComment, sampleStorageItemId } = this.state;
 
         this.props.onUpdate?.();
@@ -124,14 +125,10 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
                     auditBehavior: AuditBehaviorTypes.DETAILED,
                     auditUserComment: discardComment,
                 });
-                withTimeout(() => {
-                    createNotification('Successfully updated and discarded sample from storage.');
-                });
+                createNotification('Successfully updated and discarded sample from storage.', true);
             } catch (error) {
                 const errorMsg = resolveErrorMessage(error, 'sample', 'sample', 'discard');
-                withTimeout(() => {
-                    createNotification({ message: errorMsg, alertClass: 'danger' });
-                });
+                createNotification({ message: errorMsg, alertClass: 'danger' }, true);
             }
         }
     };
@@ -220,3 +217,5 @@ export class SampleDetailEditing extends PureComponent<Props, State> {
         );
     }
 }
+
+export const SampleDetailEditing = withNotificationsContext(SampleDetailEditingImpl);

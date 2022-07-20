@@ -1,12 +1,11 @@
 import React from 'react';
-import { mount } from 'enzyme';
 
-import { AssayPicker, AssayPickerTabs, initNotificationsState, sleep } from '../../..';
+import { AssayPicker, AssayPickerTabs, sleep } from '../../..';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { initAssayPickerOptions } from '../../../test/mock';
+import { mountWithAppServerContext } from '../../testHelpers';
 
 beforeAll(() => {
-    initNotificationsState();
     initUnitTestMocks([initAssayPickerOptions]);
 });
 
@@ -16,7 +15,7 @@ describe('AssayPicker', () => {
             <AssayPicker showImport={true} showContainerSelect={true} onChange={jest.fn()} hasPremium={true} />
         );
 
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         await sleep();
 
         // Verify all three tabs shown and standard assay selected
@@ -47,7 +46,7 @@ describe('AssayPicker', () => {
             />
         );
 
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         await sleep(1000);
 
         // Verify only two tabs and specialty tab selected

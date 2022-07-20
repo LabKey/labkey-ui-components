@@ -32,7 +32,7 @@
     "url": "https://www.labkey.org/project/home/Developer/issues/begin.view?"
   },
   "publishConfig": {
-    "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"
+    "registry": "https://labkey.jfrog.io/artifactory/api/npm/libs-client"
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {

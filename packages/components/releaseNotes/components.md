@@ -52,6 +52,10 @@ Added SearchScope enum and ContainerFilter mapping utility method
 * Issue 45149: "Assay Results" tabbed grid can remove tabs if you filter a grid to zero rows
   * store in state the set of queryModels with data after all have loaded
 
+### version 2.194.6
+*Released*: 14 July 2022
+* Issue 45852: External links should include 'noopener' in 'ref' attribute
+
 ### version 2.194.5
 *Released*: 12 July 2022
 * Issue 45836: Export for editable grid should export display values instead of ids for lookups

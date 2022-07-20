@@ -54,7 +54,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
             <a
               className="domain-field-float-right"
               href="https://www.labkey.org/Documentation/wiki-page.view?name=createListOptions&referrer=inPage"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               target="_blank"
             >
               Learn more about designing lists
@@ -336,7 +336,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
             <a
               className="domain-field-float-right"
               href="https://www.labkey.org/Documentation/wiki-page.view?name=createListOptions&referrer=inPage"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               target="_blank"
             >
               Learn more about designing lists
@@ -591,7 +591,7 @@ exports[`ListPropertiesPanel new list 1`] = `
             <a
               className="domain-field-float-right"
               href="https://www.labkey.org/Documentation/wiki-page.view?name=createListOptions&referrer=inPage"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               target="_blank"
             >
               Learn more about designing lists

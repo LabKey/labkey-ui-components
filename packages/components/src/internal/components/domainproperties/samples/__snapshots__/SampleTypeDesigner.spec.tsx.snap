@@ -68,7 +68,7 @@ Array [
                 <a
                   className="domain-field-float-right"
                   href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType&referrer=inPage"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   target="_blank"
                 >
                   Learn more about designing some samples
@@ -502,7 +502,7 @@ Array [
                 <a
                   className="domain-field-float-right"
                   href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType&referrer=inPage"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   target="_blank"
                 >
                   Learn more about designing sample types
@@ -2118,7 +2118,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                     <a
                                                       className="domain-field-float-right"
                                                       href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType&referrer=inPage"
-                                                      rel="noreferrer"
+                                                      rel="noopener noreferrer"
                                                       target="_blank"
                                                     >
                                                       Learn more about designing sample types
@@ -2587,7 +2587,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                       <p>
                                                         <a
                                                           href="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns&referrer=inPage"
-                                                          rel="noreferrer"
+                                                          rel="noopener noreferrer"
                                                           target="_blank"
                                                         >
                                                           More info

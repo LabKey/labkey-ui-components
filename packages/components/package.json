@@ -1,9 +1,10 @@
 {
   "name": "@labkey/components",
-  "version": "2.200.2-fb-jest-perf.8",
+  "version": "2.200.2-fb-jest-perf.9",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
+  "sideEffects": false,
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
@@ -71,7 +72,7 @@
     "vis-network": "6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "6.1.4-fb-jest-perf.7",
+    "@labkey/build": "6.1.4-fb-jest-perf.12",
     "@labkey/eslint-config-react": "0.0.12",
     "@types/enzyme": "3.10.11",
     "@types/history": "4.7.9",

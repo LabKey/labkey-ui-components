@@ -1728,10 +1728,10 @@
   resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.15.0.tgz#39911ac243ca3c2ada9f2ae07a43213e8907e00d"
   integrity sha1-OZEawkPKPCranyrgekMhPokH4A0=
 
-"@labkey/build@6.1.4-fb-jest-perf.7":
-  version "6.1.4-fb-jest-perf.7"
-  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.4-fb-jest-perf.7.tgz#fa7d7613ddd9b777eeb7ede4aa72199d90c902cc"
-  integrity sha1-+n12E93Zt3fut+3kqnIZnZDJAsw=
+"@labkey/build@6.1.4-fb-jest-perf.12":
+  version "6.1.4-fb-jest-perf.12"
+  resolved "https://artifactory.labkey.com:443/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.4-fb-jest-perf.12.tgz#95d6aaa89d3f7e2e5ac55cfe04cd218cb3ac5b6c"
+  integrity sha1-ldaqqJ0/fi5axVz+BM0hjLOsW2w=
   dependencies:
     "@babel/core" "7.17.8"
     "@babel/plugin-proposal-class-properties" "7.16.7"

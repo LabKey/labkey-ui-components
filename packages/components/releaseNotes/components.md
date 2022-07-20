@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 45722: Editable grid support for column fill actions
+  * initial support for copying a cell value, or set of selected values, down a column on cell handle drag
+
 ### version 2.200.1
 *Released*: 18 July 2022
 * Issue 45817: LKSM sample finder misc issues re: save and manage modal

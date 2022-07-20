@@ -19,7 +19,7 @@ import { AppURL, DataViewInfoTypes, QueryColumn, QueryInfo, QueryModel, resolveS
 
 import { encodePart } from '../public/SchemaQuery';
 
-import { genCellKey } from './actions';
+import { genCellKey, getCellKeySortableIndex } from './actions';
 import { getQueryColumnRenderers } from './global';
 import { GRID_EDIT_INDEX } from './constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
@@ -585,7 +585,10 @@ export class EditorModel
     }
 
     getValue(colIdx: number, rowIdx: number): List<ValueDescriptor> {
-        const cellKey = genCellKey(colIdx, rowIdx);
+        return this.getValueForCellKey(genCellKey(colIdx, rowIdx));
+    }
+
+    getValueForCellKey(cellKey: string): List<ValueDescriptor> {
         if (this.cellValues.has(cellKey)) {
             return this.cellValues.get(cellKey);
         }
@@ -605,12 +608,23 @@ export class EditorModel
         return this.selectedColIdx > -1 && this.selectedRowIdx > -1;
     }
 
+    getSelectionKey(): string {
+        if (this.hasSelection()) return genCellKey(this.selectedColIdx, this.selectedRowIdx);
+        return undefined;
+    }
+
     isInBounds(colIdx: number, rowIdx: number): boolean {
         return colIdx >= 0 && colIdx < this.colCount && rowIdx >= 0 && rowIdx < this.rowCount;
     }
 
     inSelection(colIdx: number, rowIdx: number): boolean {
         return colIdx > -1 && rowIdx > -1 && this.selectionCells.get(genCellKey(colIdx, rowIdx)) !== undefined;
+    }
+
+    getSortedSelectionKeys(): string[] {
+        return this.selectionCells.toArray().sort((a, b) => {
+            return getCellKeySortableIndex(a, this.rowCount) - getCellKeySortableIndex(b, this.rowCount);
+        });
     }
 
     hasRawValue(descriptor: ValueDescriptor) {

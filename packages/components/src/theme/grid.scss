@@ -264,6 +264,17 @@ $table-cell-selection-bg-color: #EDF3FF;
         cursor: default;
         outline: none;
       }
+
+      .cell-selection-handle {
+        display: inline-block;
+        float: right;
+        position: relative;
+        top: 14px;
+        right: -2px;
+        font-size: 8px;
+        color: #2980b9;
+        cursor: crosshair;
+      }
     }
 
     .cellular-input {

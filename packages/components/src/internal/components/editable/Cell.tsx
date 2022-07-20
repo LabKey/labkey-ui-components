@@ -15,20 +15,20 @@
  */
 import React from 'react';
 import classNames from 'classnames';
-import { List } from 'immutable';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
-import { Query } from '@labkey/api';
+import {List} from 'immutable';
+import {OverlayTrigger, Popover} from 'react-bootstrap';
+import {Query} from '@labkey/api';
 
-import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events';
-import { CellMessage, ValueDescriptor } from '../../models';
-import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
+import {cancelEvent, isCopy, isPaste, isSelectAll} from '../../events';
+import {CellMessage, ValueDescriptor} from '../../models';
+import {CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES} from '../../constants';
 
-import { QueryColumn } from '../../..';
+import {QueryColumn} from '../../..';
 
-import { getQueryColumnRenderers } from '../../global';
+import {getQueryColumnRenderers} from '../../global';
 
-import { LookupCell, LookupCellProps } from './LookupCell';
-import { DateInputCell, DateInputCellProps } from './DateInputCell';
+import {LookupCell, LookupCellProps} from './LookupCell';
+import {DateInputCell, DateInputCellProps} from './DateInputCell';
 
 export interface CellActions {
     clearSelection: () => void;
@@ -46,6 +46,7 @@ interface Props {
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
     focused?: boolean;
+    lastSelection?: boolean;
     locked?: boolean;
     message?: CellMessage;
     name?: string;
@@ -64,6 +65,7 @@ export class Cell extends React.PureComponent<Props> {
 
     static defaultProps = {
         focused: false,
+        lastSelection: false,
         message: undefined,
         selected: false,
         selection: false,
@@ -221,6 +223,7 @@ export class Cell extends React.PureComponent<Props> {
     handleSelect = (event): void => {
         const { cellActions, colIdx, rowIdx, selected } = this.props;
         const { selectCell } = cellActions;
+        const isDragHandle = event.target?.className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
 
         if (event.ctrlKey || event.metaKey) {
             selectCell(colIdx, rowIdx, SELECTION_TYPES.SINGLE);
@@ -228,7 +231,11 @@ export class Cell extends React.PureComponent<Props> {
             cancelEvent(event);
             selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
         } else if (!selected) {
-            selectCell(colIdx, rowIdx);
+            if (isDragHandle) {
+                selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
+            } else {
+                selectCell(colIdx, rowIdx);
+            }
         }
     };
 
@@ -239,6 +246,7 @@ export class Cell extends React.PureComponent<Props> {
             colIdx,
             containerFilter,
             focused,
+            lastSelection,
             message,
             placeholder,
             rowIdx,
@@ -282,6 +290,7 @@ export class Cell extends React.PureComponent<Props> {
             if (showLookup) {
                 cell = (
                     <div {...displayProps}>
+                        {lastSelection && <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />}
                         <div className="cell-menu-value">{valueDisplay}</div>
                         <span onClick={this.handleDblClick} className="cell-menu-selector">
                             <i className="fa fa-chevron-down" />
@@ -289,7 +298,12 @@ export class Cell extends React.PureComponent<Props> {
                     </div>
                 );
             } else {
-                cell = <div {...displayProps}>{valueDisplay}</div>;
+                cell = (
+                    <div {...displayProps}>
+                        {lastSelection && <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />}
+                        {valueDisplay}
+                    </div>
+                );
             }
 
             if (message) {

@@ -253,3 +253,5 @@ export const SHARED_CONTAINER_PATH = '/Shared';
 
 export const VIEW_NOT_FOUND_EXCEPTION_CLASS = 'org.labkey.api.view.NotFoundException';
 export const APP_FIELD_CANNOT_BE_REMOVED_MESSAGE = 'This application field cannot be removed.';
+
+export const CELL_SELECTION_HANDLE_CLASSNAME = 'cell-selection-handle';

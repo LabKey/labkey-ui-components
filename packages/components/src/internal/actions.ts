@@ -36,6 +36,7 @@ import { selectRowsDeprecated } from './query/api';
 import { Location } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
+    CELL_SELECTION_HANDLE_CLASSNAME,
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
@@ -731,17 +732,33 @@ export function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number 
     };
 }
 
+export function getCellKeySortableIndex(cellKey: string, rowCount: number): number {
+    const { rowIdx, colIdx } = parseCellKey(cellKey);
+    return colIdx * rowCount + rowIdx;
+}
+
 const dragLock = Map<string, boolean>().asMutable();
+let dragHandleInitSelection; // track the initial selection state if the drag event was initiated from the corner drag handle
 
 export function beginDrag(editorModel: EditorModel, event: any): void {
     if (handleDrag(editorModel, event)) {
         dragLock.set(editorModel.id, true);
+
+        const isDragHandleAction = (event.target as Element).className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
+        if (isDragHandleAction) {
+            dragHandleInitSelection = [...editorModel.selectionCells.toArray()];
+            if (!dragHandleInitSelection.length) dragHandleInitSelection.push(editorModel.getSelectionKey());
+        }
     }
 }
 
-export function endDrag(editorModel: EditorModel, event: any): void {
+export function endDrag(editorModel: EditorModel, event: any): string[] {
     if (handleDrag(editorModel, event)) {
         dragLock.remove(editorModel.id);
+
+        const _dragHandleInitSelection = dragHandleInitSelection ? [...dragHandleInitSelection] : undefined;
+        dragHandleInitSelection = undefined;
+        return _dragHandleInitSelection;
     }
 }
 
@@ -970,6 +987,29 @@ async function prepareInsertRowDataFromBulkForm(
         values,
         messages,
     };
+}
+
+export function dragFillEvent(editorModel: EditorModel, initSelection: string[]): EditorModelAndGridData {
+    if (initSelection?.length > 0) {
+        let cellValues = editorModel.cellValues;
+
+        const initColIdx = parseCellKey(initSelection[0]).colIdx;
+        const fillCells = editorModel
+            .getSortedSelectionKeys()
+            // initially we will only support fill for drag end that is within a single column
+            .filter(cellKey => parseCellKey(cellKey).colIdx === initColIdx)
+            // filter out the initial selection as we don't want to update/fill those
+            .filter(cellKey => initSelection.indexOf(cellKey) === -1);
+
+        fillCells.forEach((cellKey, i) => {
+            const selectedValue = editorModel.getValueForCellKey(initSelection[i % initSelection.length]);
+            cellValues = cellValues.set(cellKey, selectedValue);
+        });
+
+        return { data: undefined, dataKeys: undefined, editorModel: { cellValues } };
+    }
+
+    return { data: undefined, dataKeys: undefined, editorModel: undefined };
 }
 
 export async function pasteEvent(

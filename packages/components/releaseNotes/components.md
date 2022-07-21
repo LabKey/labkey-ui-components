@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.201.1
+*Released*: 21 July 2022
+* Issue 45822: incorrect unit types available when adding sample to storage
+  * Support getFilteredLookupKeys at cell level based on value of another cell.
+  * For example, the storage unit dropdown options might vary for each row on the editable grid, based on the row's selected sample type.
+
 ### version 2.201.0
 *Released*: 21 July 2022
 * Remove jQuery as a dependency

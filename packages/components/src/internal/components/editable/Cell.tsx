@@ -46,6 +46,8 @@ interface Props {
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
     focused?: boolean;
+    getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
+    linkedValues?: any[];
     locked?: boolean;
     message?: CellMessage;
     name?: string;
@@ -57,7 +59,11 @@ interface Props {
     values?: List<ValueDescriptor>;
 }
 
-export class Cell extends React.PureComponent<Props> {
+interface State {
+    filteredLookupKeys?: List<any>;
+}
+
+export class Cell extends React.PureComponent<Props, State> {
     private changeTO: number;
     private clickTO: number;
     private displayEl: React.RefObject<any>;
@@ -73,14 +79,35 @@ export class Cell extends React.PureComponent<Props> {
     constructor(props: Props) {
         super(props);
 
+        this.state = {
+            filteredLookupKeys: this.props.filteredLookupKeys,
+        };
+
         this.displayEl = React.createRef();
     }
 
     componentDidUpdate(): void {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
+            this.loadFilteredLookupKeys();
         }
     }
+
+    componentDidMount(): void {
+        this.loadFilteredLookupKeys();
+    }
+
+    loadFilteredLookupKeys = async (): Promise<void> => {
+        const { getFilteredLookupKeys, linkedValues, readOnly } = this.props;
+
+        if (!getFilteredLookupKeys || readOnly) return;
+
+        const linkedFilteredLookupKeys = await getFilteredLookupKeys(linkedValues);
+
+        this.setState({
+            filteredLookupKeys: linkedFilteredLookupKeys,
+        });
+    };
 
     handleSelectionBlur = (): void => {
         const { cellActions, selected } = this.props;
@@ -246,8 +273,10 @@ export class Cell extends React.PureComponent<Props> {
             selection,
             values,
             filteredLookupValues,
-            filteredLookupKeys,
         } = this.props;
+
+        const { filteredLookupKeys } = this.state;
+
         const showLookup = col.isPublicLookup() || col.validValues;
 
         const isDateField = col.jsonType === 'date';

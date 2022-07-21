@@ -298,6 +298,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.cellActions = {
             clearSelection: this.clearSelection,
             focusCell: this.focusCell,
+            fillDown: this.fillDown,
             inDrag: this.inDrag,
             modifyCell: this.modifyCell,
             selectCell: this.selectCell,
@@ -858,6 +859,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 const changes = dragFillEvent(editorModel, dragHandleInitSelection);
                 if (changes.editorModel) onChange(changes.editorModel);
             }
+        }
+    };
+
+    fillDown = (): void => {
+        const { editorModel, onChange } = this.props;
+
+        if (editorModel.hasMultipleSelection() && !editorModel.hasMultipleColumnSelection()) {
+            const initSelection = editorModel.getSortedSelectionKeys().slice(0, 1);
+            const changes = dragFillEvent(editorModel, initSelection);
+            if (changes.editorModel) onChange(changes.editorModel);
         }
     };
 

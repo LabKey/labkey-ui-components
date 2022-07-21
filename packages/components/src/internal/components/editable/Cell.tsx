@@ -19,7 +19,7 @@ import {List} from 'immutable';
 import {OverlayTrigger, Popover} from 'react-bootstrap';
 import {Query} from '@labkey/api';
 
-import {cancelEvent, isCopy, isPaste, isSelectAll} from '../../events';
+import {cancelEvent, isCopy, isFillDown, isPaste, isSelectAll} from '../../events';
 import {CellMessage, ValueDescriptor} from '../../models';
 import {CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES} from '../../constants';
 
@@ -32,6 +32,7 @@ import {DateInputCell, DateInputCellProps} from './DateInputCell';
 
 export interface CellActions {
     clearSelection: () => void;
+    fillDown: () => void;
     focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
     inDrag: () => boolean; // Not really an action, but useful to be part of this interface
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
@@ -146,7 +147,7 @@ export class Cell extends React.PureComponent<Props> {
 
     handleKeys = (event: React.KeyboardEvent<HTMLElement>) => {
         const { cellActions, colIdx, focused, rowIdx, selected } = this.props;
-        const { focusCell, modifyCell, selectCell } = cellActions;
+        const { focusCell, modifyCell, selectCell, fillDown } = cellActions;
 
         switch (event.keyCode) {
             case KEYS.Alt:
@@ -203,6 +204,9 @@ export class Cell extends React.PureComponent<Props> {
                     if (isSelectAll(event)) {
                         cancelEvent(event);
                         selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
+                    } else if (isFillDown(event)) {
+                        cancelEvent(event);
+                        fillDown();
                     } else {
                         // Do not cancel event here, otherwise, key capture will be lost
                         focusCell(colIdx, rowIdx, !this.isReadOnly());

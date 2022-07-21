@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * initially only support for a single column selection range
   * initial support for copying a cell value, or set of selected values, down a column on cell handle drag
   * initial support for numeric fill sequence for a column if initSelection has int or decimal values
+  * allow cell key handler for CTRL+D to fill down a single column
 
 ### version 2.200.2
 *Released*: 21 July 2022

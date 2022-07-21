@@ -46,6 +46,10 @@ export function isSelectAll(event: React.KeyboardEvent<any>): boolean {
     return isEvent(event) && event.keyCode === KEYS.A && (event.ctrlKey || event.metaKey);
 }
 
+export function isFillDown(event: React.KeyboardEvent<any>): boolean {
+    return isEvent(event) && event.keyCode === KEYS.D && (event.ctrlKey || event.metaKey);
+}
+
 export function setCopyValue(event: any, value: string): boolean {
     if (isEvent(event)) {
         (event.clipboardData || window['clipboardData']).setData('text/plain', value);

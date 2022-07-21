@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "6.1.3",
+  "version": "6.1.4",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"
@@ -19,7 +19,6 @@
     "@babel/preset-react": "7.16.7",
     "@babel/preset-typescript": "7.16.7",
     "@hot-loader/react-dom": "16.14.0",
-    "@types/react": "16.14.24",
     "babel-loader": "8.2.4",
     "bootstrap-sass": "3.4.3",
     "copy-webpack-plugin": "10.2.4",

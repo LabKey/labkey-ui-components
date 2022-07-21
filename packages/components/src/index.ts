@@ -524,7 +524,11 @@ import {
     makeQueryInfo,
     mountWithAppServerContextOptions,
     mountWithServerContextOptions,
+    mountWithAppServerContext,
+    mountWithServerContext,
     sleep,
+    waitForLifecycle,
+    wrapDraggable,
 } from './internal/testHelpers';
 import { QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
@@ -1430,6 +1434,10 @@ export {
     makeQueryInfo,
     mountWithAppServerContextOptions,
     mountWithServerContextOptions,
+    mountWithAppServerContext,
+    mountWithServerContext,
+    waitForLifecycle,
+    wrapDraggable,
     // Ontology
     OntologyBrowserPage,
     OntologyConceptOverviewPanel,

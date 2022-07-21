@@ -1,6 +1,10 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.2.4
+*Released*: 19 July 2022
+* Issue 45857: Add header locking to misc LKS HTML tables
+
 ### version 1.2.3
 *Released*: 17 June 2022
 * Issue 45673: Configure bootstrap scaffolding "html" selector font-size to respect $font-size-base

@@ -29,7 +29,7 @@ const ThreadAttachment: FC<ThreadAttachmentProps> = memo(({ attachment, onRemove
             {url === undefined && <span>{attachment.name}</span>}
 
             {url !== undefined && (
-                <a href={url} target="__blank">
+                <a href={url} target="_blank" rel="noopener noreferrer">
                     {attachment.name}
                 </a>
             )}

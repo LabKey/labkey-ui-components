@@ -100,7 +100,7 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
                             if (item.url) {
                                 return (
                                     <li key={item.label}>
-                                        <a href={item.getUrlString()} target={item.key === 'docs' ? '_blank' : '_self'}>
+                                        <a href={item.getUrlString()} target="_self">
                                             {labelDisplay}
                                         </a>
                                     </li>

@@ -510,7 +510,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                     })}
                                     target="_blank"
                                     className="labkey-text-link"
-                                    rel="noreferrer"
+                                    rel="noopener noreferrer"
                                 >
                                     Download sample file
                                 </a>

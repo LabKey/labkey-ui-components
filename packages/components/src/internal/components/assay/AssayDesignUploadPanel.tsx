@@ -23,7 +23,7 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                     </div>
                     <p>
                         To create an assay from an existing design, import a{' '}
-                        <a href={getHelpLink('XarTutorial')} target="_blank" rel="noreferrer">
+                        <a href={getHelpLink('XarTutorial')} target="_blank" rel="noopener noreferrer">
                             .XAR or .XAR.XML
                         </a>{' '}
                         file here. You will be able to customize the design after importing.

@@ -401,9 +401,19 @@ td.labkey-blank-cell, th.labkey-blank-cell {
   }
 
   th, .labkey-column-header {
+    background-color: $white;
     border-bottom: solid 1px #AAAAAA !important;
     vertical-align: top;
   }
+}
+
+/*
+    This is for HTML tables that have a header row as the first tr child to lock the header at the
+    top of the browser window on vertical scroll for tall tables.
+*/
+table.labkey-data-region-header-lock tr:first-child {
+    position: sticky;
+    top: -1px;
 }
 
 .unselectable {

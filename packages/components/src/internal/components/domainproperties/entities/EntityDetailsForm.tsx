@@ -54,7 +54,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
         } = this.props;
         const moreInfoLink = nameExpressionInfoUrl ? (
             <p>
-                <a target="_blank" href={nameExpressionInfoUrl} rel="noreferrer">
+                <a target="_blank" href={nameExpressionInfoUrl} rel="noopener noreferrer">
                     More info
                 </a>
             </p>

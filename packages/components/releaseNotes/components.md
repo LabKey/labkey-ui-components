@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 45722: Editable grid support for column fill actions
   * initial support for copying a cell value, or set of selected values, down a column on cell handle drag
 
+### version 2.200.2
+*Released*: 21 July 2022
+* Merge release22.7-SNAPSHOT to develop
+    * Includes changes from version 2.194.6
+
 ### version 2.200.1
 *Released*: 18 July 2022
 * Issue 45817: LKSM sample finder misc issues re: save and manage modal
@@ -56,6 +61,10 @@ Added SearchScope enum and ContainerFilter mapping utility method
 *Released*: 7 July 2022
 * Issue 45149: "Assay Results" tabbed grid can remove tabs if you filter a grid to zero rows
   * store in state the set of queryModels with data after all have loaded
+
+### version 2.194.6
+*Released*: 14 July 2022
+* Issue 45852: External links should include 'noopener' in 'ref' attribute
 
 ### version 2.194.5
 *Released*: 12 July 2022

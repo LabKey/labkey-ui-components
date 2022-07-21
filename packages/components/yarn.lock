@@ -1553,10 +1553,10 @@
   resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.15.0.tgz#39911ac243ca3c2ada9f2ae07a43213e8907e00d"
   integrity sha1-OZEawkPKPCranyrgekMhPokH4A0=
 
-"@labkey/build@6.1.4-fb-jest-perf.14":
-  version "6.1.4-fb-jest-perf.14"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.4-fb-jest-perf.14.tgz#569c1b5d16f2ddcde2d9a4bb21f5ee67cb6425d4"
-  integrity sha512-Anen7pT6yWS/FUJpdpDsIvp+isqb/qPYSHyLFPvg/OVybnuVW/h5JzkzvGF1EHbQRrISvGSki/hoSrC+NdgShw==
+"@labkey/build@6.1.4":
+  version "6.1.4"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.4.tgz#c0523f2c7164c16a75d89e87820769a8aa365b06"
+  integrity sha512-6/ybj0WdWXzYIZ82Y8QSCyU8VWEKgqQfngDFfSJV0VnExsqU+AymoXbiJZsKJ7FXjMFQZNpbsssEy52hKtloww==
   dependencies:
     "@babel/core" "7.17.8"
     "@babel/plugin-proposal-class-properties" "7.16.7"

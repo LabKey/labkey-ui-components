@@ -72,7 +72,7 @@
     "vis-network": "6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "6.1.4-fb-jest-perf.12",
+    "@labkey/build": "6.1.4-fb-jest-perf.14",
     "@labkey/eslint-config-react": "0.0.12",
     "@types/enzyme": "3.10.11",
     "@types/history": "4.7.9",
@@ -106,5 +106,9 @@
     "react": "^16.0",
     "react-bootstrap": "^0.33.1",
     "react-dom": "^16.0"
+  },
+  "resolutions": {
+    "**/@types/react-dom": "16.9.14",
+    "**/@types/react": "16.14.23"
   }
 }

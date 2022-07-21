@@ -264,17 +264,16 @@ $table-cell-selection-bg-color: #EDF3FF;
         cursor: default;
         outline: none;
       }
+    }
 
-      .cell-selection-handle {
-        display: inline-block;
-        float: right;
+    .cell-selection-handle {
+        height: 0; // to prevent grid cell height from adjusting when this is rendered
         position: relative;
-        top: 14px;
-        right: -2px;
+        float: right;
+        bottom: 8px;
         font-size: 8px;
         color: #2980b9;
         cursor: crosshair;
-      }
     }
 
     .cellular-input {

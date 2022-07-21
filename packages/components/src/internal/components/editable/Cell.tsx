@@ -293,20 +293,24 @@ export class Cell extends React.PureComponent<Props> {
             let cell;
             if (showLookup) {
                 cell = (
-                    <div {...displayProps}>
+                    <>
+                        <div {...displayProps}>
+                            <div className="cell-menu-value">{valueDisplay}</div>
+                            <span onClick={this.handleDblClick} className="cell-menu-selector">
+                                <i className="fa fa-chevron-down" />
+                            </span>
+                        </div>
                         {lastSelection && <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />}
-                        <div className="cell-menu-value">{valueDisplay}</div>
-                        <span onClick={this.handleDblClick} className="cell-menu-selector">
-                            <i className="fa fa-chevron-down" />
-                        </span>
-                    </div>
+                    </>
                 );
             } else {
                 cell = (
-                    <div {...displayProps}>
+                    <>
+                        <div {...displayProps}>
+                            {valueDisplay}
+                        </div>
                         {lastSelection && <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />}
-                        {valueDisplay}
-                    </div>
+                    </>
                 );
             }
 

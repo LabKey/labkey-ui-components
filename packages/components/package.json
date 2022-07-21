@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.200.2-fb-issue45822.1",
+  "version": "2.200.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -32,7 +32,7 @@
     "url": "https://www.labkey.org/project/home/Developer/issues/begin.view?"
   },
   "publishConfig": {
-    "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"
+    "registry": "https://labkey.jfrog.io/artifactory/api/npm/libs-client"
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {

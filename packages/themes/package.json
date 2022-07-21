@@ -1,6 +1,6 @@
 {
   "name": "@labkey/themes",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Themes that come bundled with LabKey Server",
   "files": [
     "dist/"
@@ -22,7 +22,7 @@
     "url": "https://www.labkey.org/project/home/Developer/issues/begin.view?"
   },
   "publishConfig": {
-    "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"
+    "registry": "https://labkey.jfrog.io/artifactory/api/npm/libs-client"
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {},

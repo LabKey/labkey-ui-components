@@ -10,7 +10,7 @@ exports[`<HelpTopicURL/> default properties 1`] = `
     <a
       className="domain-field-float-right"
       href="https://www.labkey.org/Documentation/wiki-page.view?name=testTopic&referrer=inPage"
-      rel="noreferrer"
+      rel="noopener noreferrer"
       target="_blank"
     >
       Learn more about this tool
@@ -29,7 +29,7 @@ exports[`<HelpTopicURL/> with nounPlural 1`] = `
     <a
       className="domain-field-float-right"
       href="https://www.labkey.org/Documentation/wiki-page.view?name=sampleTopic&referrer=inPage"
-      rel="noreferrer"
+      rel="noopener noreferrer"
       target="_blank"
     >
       Learn more about designing samples

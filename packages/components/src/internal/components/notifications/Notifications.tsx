@@ -70,7 +70,7 @@ export const Notifications: FC = () => {
                 <span>
                     {message}
                     &nbsp;
-                    <a href={upgradeLink} target="_blank" rel="noreferrer">
+                    <a href={upgradeLink} target="_blank" rel="noopener noreferrer">
                         {upgradeLinkText}
                     </a>
                 </span>

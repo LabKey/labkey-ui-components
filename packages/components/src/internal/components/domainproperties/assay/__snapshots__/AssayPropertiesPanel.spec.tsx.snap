@@ -1567,7 +1567,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                               <a
                                 className="domain-field-float-right"
                                 href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema&referrer=inPage"
-                                rel="noreferrer"
+                                rel="noopener noreferrer"
                                 target="_blank"
                               >
                                 Learn more about designing assays
@@ -3483,7 +3483,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                               <a
                                 className="domain-field-float-right"
                                 href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema&referrer=inPage"
-                                rel="noreferrer"
+                                rel="noopener noreferrer"
                                 target="_blank"
                               >
                                 Learn more about designing assays
@@ -5173,7 +5173,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                               <a
                                 className="domain-field-float-right"
                                 href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema&referrer=inPage"
-                                rel="noreferrer"
+                                rel="noopener noreferrer"
                                 target="_blank"
                               >
                                 Learn more about designing assays

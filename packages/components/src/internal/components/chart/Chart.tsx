@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import $ from 'jquery';
+import React, { ReactNode } from 'react';
 import { Filter } from '@labkey/api';
 
 import { DataViewInfo, VisualizationConfigModel } from '../../models';
@@ -28,8 +27,8 @@ interface Props {
 }
 
 interface State {
-    divId: string;
     config: VisualizationConfigModel;
+    divId: string;
 }
 
 export class Chart extends React.Component<Props, State> {
@@ -44,33 +43,33 @@ export class Chart extends React.Component<Props, State> {
         this.handleResize = debounce(this.handleResize.bind(this), 250);
     }
 
-    componentDidMount() {
-        $(window).on('resize', this.handleResize);
+    componentDidMount(): void {
+        window.addEventListener('resize', this.handleResize);
         this.getChartConfig();
     }
 
-    componentWillUnmount() {
-        $(window).off('resize', this.handleResize);
+    componentWillUnmount(): void {
+        window.removeEventListener('resize', this.handleResize);
     }
 
-    shouldComponentUpdate() {
+    shouldComponentUpdate(): boolean {
         return false;
     }
 
-    handleResize(e) {
+    handleResize(): void {
         this.renderChart();
     }
 
-    getPlotElement() {
-        return $('#' + this.state.divId);
+    getPlotElement(): HTMLDivElement {
+        return document.querySelector('#' + this.state.divId);
     }
 
-    getChartConfig() {
+    getChartConfig(): void {
         const { chart } = this.props;
 
         if (chart) {
             if (chart.error) {
-                this.getPlotElement().html(chart.error);
+                this.getPlotElement().innerHTML = chart.error;
             } else {
                 getVisualizationConfig(chart.reportId)
                     .then(config => {
@@ -82,29 +81,29 @@ export class Chart extends React.Component<Props, State> {
                     });
             }
         } else {
-            this.getPlotElement().html('No chart selected.');
+            this.getPlotElement().innerHTML = 'No chart selected.';
         }
     }
 
-    renderError(msg) {
-        this.getPlotElement().html('<span class="text-danger">' + msg + '</span>');
+    renderError(msg): void {
+        this.getPlotElement().innerHTML = '<span class="text-danger">' + msg + '</span>';
     }
 
-    renderChart() {
+    renderChart(): void {
         const { filters } = this.props;
         const { config } = this.state;
         const processedConfig = config.toJS();
 
         if (config) {
             // set the size of the SVG based on the plot el width (i.e. the model width)
-            processedConfig.chartConfig.width = this.getPlotElement().width();
+            processedConfig.chartConfig.width = this.getPlotElement().offsetWidth;
             processedConfig.chartConfig.height = (processedConfig.chartConfig.width * 9) / 16; // 16:9 aspect ratio
 
             if (filters && filters.length > 0) {
                 processedConfig.queryConfig.filterArray = [...processedConfig.queryConfig.filterArray, ...filters];
             }
 
-            this.getPlotElement().html('');
+            this.getPlotElement().innerHTML = '';
             LABKEY_VIS.GenericChartHelper.renderChartSVG(
                 this.state.divId,
                 processedConfig.queryConfig,
@@ -113,7 +112,7 @@ export class Chart extends React.Component<Props, State> {
         }
     }
 
-    render() {
+    render(): ReactNode {
         return (
             <div id={this.state.divId}>
                 <LoadingSpinner />

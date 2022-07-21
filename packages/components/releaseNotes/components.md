@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.201.0
+*Released*: 21 July 2022
+* Remove jQuery as a dependency
+* Export waitForLifecycle, mountWithServerContext, mountWithAppServerContext, wrapDraggable
+
 ### version 2.200.2
 *Released*: 21 July 2022
 * Merge release22.7-SNAPSHOT to develop

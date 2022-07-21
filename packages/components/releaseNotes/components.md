@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.194.TBD
+*Released*: TBD July 2022
+* Issue 45852: External links should include 'noopener' in 'ref' attribute
+  * round 2: this was missed from the changes in 2.194.6
+
 ### version 2.194.6
 *Released*: 14 July 2022
 * Issue 45852: External links should include 'noopener' in 'ref' attribute

@@ -4,7 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 45722: Editable grid support for column fill actions
+  * initially only support for a single column selection range
   * initial support for copying a cell value, or set of selected values, down a column on cell handle drag
+  * initial support for numeric fill sequence for a column if initSelection has int or decimal values
 
 ### version 2.200.2
 *Released*: 21 July 2022

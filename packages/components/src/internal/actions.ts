@@ -55,7 +55,7 @@ import {
 } from './models';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 
-import { parseCsvString } from './util/utils';
+import { isFloat, isInteger, parseCsvString, parseScientificInt } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 import { hasModule } from './app/utils';
 
@@ -732,9 +732,15 @@ export function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number 
     };
 }
 
-export function getCellKeySortableIndex(cellKey: string, rowCount: number): number {
+function getCellKeySortableIndex(cellKey: string, rowCount: number): number {
     const { rowIdx, colIdx } = parseCellKey(cellKey);
     return colIdx * rowCount + rowIdx;
+}
+
+export function getSortedCellKeys(cellKeys: string[], rowCount: number): string[] {
+    return cellKeys.sort((a, b) => {
+        return getCellKeySortableIndex(a, rowCount) - getCellKeySortableIndex(b, rowCount);
+    });
 }
 
 const dragLock = Map<string, boolean>().asMutable();
@@ -991,8 +997,6 @@ async function prepareInsertRowDataFromBulkForm(
 
 export function dragFillEvent(editorModel: EditorModel, initSelection: string[]): EditorModelAndGridData {
     if (initSelection?.length > 0) {
-        let cellValues = editorModel.cellValues;
-
         const initColIdx = parseCellKey(initSelection[0]).colIdx;
         const fillCells = editorModel
             .getSortedSelectionKeys()
@@ -1001,15 +1005,70 @@ export function dragFillEvent(editorModel: EditorModel, initSelection: string[])
             // filter out the initial selection as we don't want to update/fill those
             .filter(cellKey => initSelection.indexOf(cellKey) === -1);
 
-        fillCells.forEach((cellKey, i) => {
-            const selectedValue = editorModel.getValueForCellKey(initSelection[i % initSelection.length]);
-            cellValues = cellValues.set(cellKey, selectedValue);
-        });
-
-        return { data: undefined, dataKeys: undefined, editorModel: { cellValues } };
+        return {
+            data: undefined,
+            dataKeys: undefined,
+            editorModel: {
+                cellValues: generateFillSequence(editorModel, initSelection, fillCells),
+            },
+        };
     }
 
     return { data: undefined, dataKeys: undefined, editorModel: undefined };
+}
+
+/**
+ * Generate a sequence, of length fillSelection, based on the values in the initSelection of the editorModel.
+ * If the initSelection is for a single cell, the fill operation will always be a copy of that value.
+ * If the initSelection includes a range of cells and all values are numeric, fill via a generated sequence where the step/diff is based on the first and last value in the initSelection.
+ * If the initSelection includes a range of cells and not all values are numeric, fill via a copy of all of the values in initSelection.
+ */
+function generateFillSequence(editorModel: EditorModel, initSelection: string[], fillSelection: string[]): CellValues {
+    const sortedInitSelection = getSortedCellKeys(initSelection, editorModel.rowCount);
+    const initCellValues = sortedInitSelection.map(cellKey => editorModel.getValueForCellKey(cellKey));
+    const initCellRawValues = initCellValues.map(cellValue => cellValue?.first()?.raw);
+    const initCellDisplayValues = initCellValues.map(cellValue => cellValue?.first()?.display);
+
+    // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
+    const isFloatSeq = initCellValues.length > 1 && initCellDisplayValues.every(isFloat);
+    const isIntSeq = initCellValues.length > 1 && initCellDisplayValues.every(isInteger);
+
+    let firstCellRawVal = initCellRawValues[0];
+    let lastCellRawVal = initCellRawValues[initCellRawValues.length - 1];
+
+    let diff = 0;
+    if (isFloatSeq || isIntSeq) {
+        if (isFloatSeq) {
+            firstCellRawVal = parseFloat(firstCellRawVal);
+            lastCellRawVal = parseFloat(lastCellRawVal);
+        } else if (isIntSeq) {
+            firstCellRawVal = parseScientificInt(firstCellRawVal);
+            lastCellRawVal = parseScientificInt(lastCellRawVal);
+        }
+
+        // diff -> last value minus first value divide by the number of steps in the initial selection
+        diff = decimalDifference(lastCellRawVal, firstCellRawVal);
+        diff = initCellRawValues.length > 1 ? diff / (initCellRawValues.length - 1) : 0;
+    }
+
+    let cellValues = editorModel.cellValues;
+    fillSelection.forEach((cellKey, i) => {
+        let fillValue = initCellValues[i % sortedInitSelection.length];
+        if (isFloatSeq || isIntSeq) {
+            const raw = decimalDifference(diff * (i + 1), lastCellRawVal, false);
+            fillValue = List([{ raw, display: raw }]);
+        }
+
+        cellValues = cellValues.set(cellKey, fillValue);
+    });
+
+    return cellValues;
+}
+
+// https://stackoverflow.com/questions/10713878/decimal-subtraction-problems-in-javascript
+function decimalDifference(first, second, substract = true): number {
+    const multiplier = 10000; // this will only help/work to 4 decimal places
+    return (first * multiplier + (substract ? -1 : 1) * second * multiplier) / multiplier;
 }
 
 export async function pasteEvent(

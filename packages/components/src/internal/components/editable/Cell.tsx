@@ -232,7 +232,7 @@ export class Cell extends React.PureComponent<Props> {
             selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
         } else if (!selected) {
             if (isDragHandle) {
-                selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
+                selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA); // use AREA to keep initial selection in the range
             } else {
                 selectCell(colIdx, rowIdx);
             }

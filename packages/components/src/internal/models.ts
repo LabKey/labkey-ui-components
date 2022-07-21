@@ -19,7 +19,7 @@ import { AppURL, DataViewInfoTypes, QueryColumn, QueryInfo, QueryModel, resolveS
 
 import { encodePart } from '../public/SchemaQuery';
 
-import { genCellKey, getCellKeySortableIndex, parseCellKey } from './actions';
+import { genCellKey, getSortedCellKeys, parseCellKey } from './actions';
 import { getQueryColumnRenderers } from './global';
 import { GRID_EDIT_INDEX } from './constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
@@ -629,9 +629,7 @@ export class EditorModel
     }
 
     getSortedSelectionKeys(): string[] {
-        return this.selectionCells.toArray().sort((a, b) => {
-            return getCellKeySortableIndex(a, this.rowCount) - getCellKeySortableIndex(b, this.rowCount);
-        });
+        return getSortedCellKeys(this.selectionCells.toArray(), this.rowCount);
     }
 
     hasRawValue(descriptor: ValueDescriptor) {

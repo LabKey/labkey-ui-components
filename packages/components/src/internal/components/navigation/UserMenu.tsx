@@ -41,9 +41,16 @@ export const UserMenu: FC<UserMenuProps> = props => {
         return menuSection?.items
             .filter(item => !item.requiresLogin || (item.requiresLogin && user?.isSignedIn))
             .map(item => {
-                const target = item.key === 'docs' ? '_blank' : '_self';
+                if (item.key === 'docs') {
+                    return (
+                        <MenuItem key={item.key} href={item.getUrlString()} target="_blank" rel="noopener noreferrer">
+                            {item.label}
+                        </MenuItem>
+                    );
+                }
+
                 return (
-                    <MenuItem key={item.key} href={item.getUrlString()} target={target}>
+                    <MenuItem key={item.key} href={item.getUrlString()} target="_self">
                         {item.label}
                     </MenuItem>
                 );

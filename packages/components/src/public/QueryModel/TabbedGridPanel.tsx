@@ -104,6 +104,12 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      * The title to render, only used if asPanel is true.
      */
     title?: string;
+
+    /**
+     * return the custom GridPanel for an active tab
+     * @param activeGridId
+     */
+    getGridPanelDisplay?: (activeGridId: string) => React.ReactNode;
 }
 
 export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = memo(props => {
@@ -122,6 +128,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         exportFilename,
         advancedExportOptions,
         getAdvancedExportOptions,
+        getGridPanelDisplay,
         ...rest
     } = props;
     const { createNotification } = useNotificationsContext();
@@ -195,7 +202,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     const activeModel = queryModels[activeId];
     const hasTabs = tabOrder.length > 1 || alwaysShowTabs;
 
-    const gridDisplay = (
+    const gridDisplay = getGridPanelDisplay?.(activeId) ?? (
         <GridPanel
             allowViewCustomization={allowViewCustomization}
             key={activeId}

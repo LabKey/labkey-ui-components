@@ -728,6 +728,21 @@ describe('EditorModel', () => {
             expect(model.getValue(1, 1).get(0).raw).toBe('b');
         });
 
+        test('getValueForCellKey', () => {
+            const model = new EditorModel({
+                cellValues: fromJS({
+                    '0-0': List([{ display: 'A', raw: 'a' } as ValueDescriptor]),
+                    '1-1': List([{ display: 'B', raw: 'b' } as ValueDescriptor]),
+                }),
+            });
+            expect(model.getValueForCellKey('0-0').size).toBe(1);
+            expect(model.getValueForCellKey('0-0').get(0).raw).toBe('a');
+            expect(model.getValueForCellKey('1-0').size).toBe(0);
+            expect(model.getValueForCellKey('0-1').size).toBe(0);
+            expect(model.getValueForCellKey('1-1').size).toBe(1);
+            expect(model.getValueForCellKey('1-1').get(0).raw).toBe('b');
+        });
+
         test('hasFocus', () => {
             expect(new EditorModel({ focusColIdx: -1, focusRowIdx: -1 }).hasFocus()).toBeFalsy();
             expect(new EditorModel({ focusColIdx: -1, focusRowIdx: 0 }).hasFocus()).toBeFalsy();
@@ -753,6 +768,15 @@ describe('EditorModel', () => {
             expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: 0 }).hasSelection()).toBeTruthy();
         });
 
+        test('selectionKey', () => {
+            expect(new EditorModel({ selectedColIdx: -1, selectedRowIdx: -1 }).selectionKey).toBe(undefined);
+            expect(new EditorModel({ selectedColIdx: -1, selectedRowIdx: 0 }).selectionKey).toBe(undefined);
+            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: -1 }).selectionKey).toBe(undefined);
+            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: 0 }).selectionKey).toBe('0-0');
+            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: 1 }).selectionKey).toBe('0-1');
+            expect(new EditorModel({ selectedColIdx: 1, selectedRowIdx: 0 }).selectionKey).toBe('1-0');
+        });
+
         test('isSelected', () => {
             const model = new EditorModel({ selectedColIdx: 0, selectedRowIdx: 0 });
             expect(model.isSelected(-1, -1)).toBeFalsy();
@@ -768,6 +792,35 @@ describe('EditorModel', () => {
             expect(new EditorModel({ selectionCells: Set([]) }).hasMultipleSelection()).toBeFalsy();
             expect(new EditorModel({ selectionCells: Set(['0-0']) }).hasMultipleSelection()).toBeFalsy();
             expect(new EditorModel({ selectionCells: Set(['0-0', '1-1']) }).hasMultipleSelection()).toBeTruthy();
+        });
+
+        test('hasMultipleColumnSelection', () => {
+            expect(new EditorModel({ selectionCells: Set([]) }).hasMultipleColumnSelection()).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['0-0']) }).hasMultipleColumnSelection()).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['0-0', '0-1']) }).hasMultipleColumnSelection()).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['0-0', '1-1']) }).hasMultipleColumnSelection()).toBeTruthy();
+        });
+
+        test('sortedSelectionKeys', () => {
+            expect(new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).sortedSelectionKeys).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
+            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).sortedSelectionKeys).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
+            expect(new EditorModel({ selectionCells: Set(['1-10', '1-1', '1-5', '1-15']), rowCount: 100 }).sortedSelectionKeys).toStrictEqual(['1-1', '1-5', '1-10', '1-15']);
+        });
+
+        test('lastSelection', () => {
+            // multiple columns should always return false
+            expect(new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(0, 0)).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(1, 1)).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(0, 0)).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(1, 1)).toBeFalsy();
+            // single column should have a true
+            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(1, 0)).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(1, 1)).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(1, 2)).toBeFalsy();
+            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(1, 3)).toBeTruthy();
+            // single cell should always be true
+            expect(new EditorModel({ selectionCells: Set(), selectedColIdx: 0, selectedRowIdx: 0, rowCount: 100 }).lastSelection(0, 0)).toBeTruthy();
+            expect(new EditorModel({ selectionCells: Set(), selectedColIdx: 100, selectedRowIdx: 100, rowCount: 100 }).lastSelection(100, 100)).toBeTruthy();
         });
 
         test('isInBounds', () => {

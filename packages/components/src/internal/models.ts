@@ -615,7 +615,7 @@ export class EditorModel
         return this.selectedColIdx > -1 && this.selectedRowIdx > -1;
     }
 
-    getSelectionKey(): string {
+    get selectionKey(): string {
         if (this.hasSelection()) return genCellKey(this.selectedColIdx, this.selectedRowIdx);
         return undefined;
     }
@@ -628,7 +628,7 @@ export class EditorModel
         return colIdx > -1 && rowIdx > -1 && this.selectionCells.get(genCellKey(colIdx, rowIdx)) !== undefined;
     }
 
-    getSortedSelectionKeys(): string[] {
+    get sortedSelectionKeys(): string[] {
         return getSortedCellKeys(this.selectionCells.toArray(), this.rowCount);
     }
 
@@ -714,6 +714,25 @@ export class EditorModel
 
     isRowEmpty(editedRow: Map<string, any>): boolean {
         return editedRow.find(value => value !== undefined) === undefined;
+    }
+
+    lastSelection(colIdx: number, rowIdx: number): boolean {
+        let cellKeys = [];
+
+        // Initial implementation of drag handle fill actions only support single column selection
+        if (!this.hasMultipleColumnSelection()) {
+            if (this.hasMultipleSelection()) {
+                cellKeys = this.sortedSelectionKeys;
+            } else {
+                cellKeys = [this.selectionKey];
+            }
+        }
+
+        if (cellKeys.length === 0) {
+            return false;
+        }
+
+        return cellKeys.indexOf(genCellKey(colIdx, rowIdx)) === cellKeys.length - 1;
     }
 }
 

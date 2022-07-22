@@ -724,7 +724,7 @@ export function beginDrag(editorModel: EditorModel, event: any): void {
         const isDragHandleAction = (event.target as Element).className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
         if (isDragHandleAction) {
             dragHandleInitSelection = [...editorModel.selectionCells.toArray()];
-            if (!dragHandleInitSelection.length) dragHandleInitSelection.push(editorModel.getSelectionKey());
+            if (!dragHandleInitSelection.length) dragHandleInitSelection.push(editorModel.selectionKey);
         }
     }
 }
@@ -969,8 +969,7 @@ async function prepareInsertRowDataFromBulkForm(
 export function dragFillEvent(editorModel: EditorModel, initSelection: string[]): EditorModelAndGridData {
     if (initSelection?.length > 0) {
         const initColIdx = parseCellKey(initSelection[0]).colIdx;
-        const fillCells = editorModel
-            .getSortedSelectionKeys()
+        const fillCells = editorModel.sortedSelectionKeys
             // initially we will only support fill for drag end that is within a single column
             .filter(cellKey => parseCellKey(cellKey).colIdx === initColIdx)
             // filter out the initial selection as we don't want to update/fill those
@@ -1037,9 +1036,9 @@ function generateFillSequence(editorModel: EditorModel, initSelection: string[],
 }
 
 // https://stackoverflow.com/questions/10713878/decimal-subtraction-problems-in-javascript
-function decimalDifference(first, second, substract = true): number {
+function decimalDifference(first, second, subtract = true): number {
     const multiplier = 10000; // this will only help/work to 4 decimal places
-    return (first * multiplier + (substract ? -1 : 1) * second * multiplier) / multiplier;
+    return (first * multiplier + (subtract ? -1 : 1) * second * multiplier) / multiplier;
 }
 
 export async function pasteEvent(

@@ -254,7 +254,6 @@ export class Cell extends React.PureComponent<Props, State> {
     handleSelect = (event): void => {
         const { cellActions, colIdx, rowIdx, selected } = this.props;
         const { selectCell } = cellActions;
-        const isDragHandle = event.target?.className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
 
         if (event.ctrlKey || event.metaKey) {
             selectCell(colIdx, rowIdx, SELECTION_TYPES.SINGLE);
@@ -262,6 +261,7 @@ export class Cell extends React.PureComponent<Props, State> {
             cancelEvent(event);
             selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
         } else if (!selected) {
+            const isDragHandle = event.target?.className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
             if (isDragHandle) {
                 selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA); // use AREA to keep initial selection in the range
             } else {

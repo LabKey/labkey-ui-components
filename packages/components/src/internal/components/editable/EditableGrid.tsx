@@ -95,7 +95,6 @@ const COUNT_COL = new GridColumn({
 function inputCellFactory(
     queryInfo: QueryInfo,
     editorModel: EditorModel,
-    sortedSelectionCellKeys: string[],
     allowSelection: boolean,
     hideCountCol: boolean,
     columnMetadata: EditableColumnMetadata,
@@ -157,11 +156,7 @@ function inputCellFactory(
                 message={editorModel?.getMessage(colIdx, rn)}
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
                 selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
-                lastSelection={
-                    sortedSelectionCellKeys?.length > 0
-                        ? sortedSelectionCellKeys.indexOf(genCellKey(colIdx, rn)) === sortedSelectionCellKeys.length - 1
-                        : false
-                }
+                lastSelection={editorModel ? editorModel.lastSelection(colIdx, rn) : false}
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
                 filteredLookupValues={columnMetadata?.filteredLookupValues}
                 filteredLookupKeys={columnMetadata?.filteredLookupKeys}
@@ -601,12 +596,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             lockedRows,
         } = this.props;
 
-        // initial implementation of drag handle fill actions only support single column selection
-        const sortedSelectionCellKeys = !editorModel.hasMultipleColumnSelection()
-            ? editorModel.hasMultipleSelection()
-                ? editorModel?.getSortedSelectionKeys()
-                : [editorModel.getSelectionKey()]
-            : [];
         let gridColumns = List<GridColumn>();
 
         if (allowBulkRemove || allowBulkUpdate) {
@@ -637,7 +626,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     cell: inputCellFactory(
                         queryInfo,
                         editorModel,
-                        sortedSelectionCellKeys,
                         allowBulkRemove || allowBulkUpdate,
                         hideCountCol,
                         metadata,
@@ -878,7 +866,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { editorModel, onChange } = this.props;
 
         if (editorModel.hasMultipleSelection() && !editorModel.hasMultipleColumnSelection()) {
-            const initSelection = editorModel.getSortedSelectionKeys().slice(0, 1);
+            const initSelection = editorModel.sortedSelectionKeys.slice(0, 1);
             const changes = dragFillEvent(editorModel, initSelection);
             if (changes.editorModel) onChange(changes.editorModel);
         }

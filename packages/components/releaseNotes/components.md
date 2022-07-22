@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Move `jest` and `enzyme` from devDependencies to dependencies
+
 ### version 2.201.1
 *Released*: 21 July 2022
 * Issue 45822: incorrect unit types available when adding sample to storage

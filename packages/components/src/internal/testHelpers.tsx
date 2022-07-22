@@ -148,7 +148,6 @@ export const mountWithAppServerContext = (
     notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps
 ): ReactWrapper => {
-    // NOTE: For internal package use only. Do not export externally as it will not work for external usages.
     return mount(node, mountWithAppServerContextOptions(appContext, serverContext, notificationContext, options));
 };
 
@@ -198,17 +197,16 @@ export const mountWithServerContextOptions = (
  */
 export const mountWithServerContext = (
     node: ReactElement,
-    initialContext: any,
+    initialContext?: any,
     options?: MountRendererProps
 ): ReactWrapper => {
-    // NOTE: For internal package use only. Do not export externally as it will not work for external usages.
     return mount(node, mountWithServerContextOptions(initialContext, options));
 };
 
 /**
  * Use this to sleep in the tests. If you make your test methods async you can use "await sleep();" to put your thread
  * to sleep temporarily which will allow async actions in your component to continue.
- * @param ms
+ * @param ms: the amount of time (in ms) to sleep
  */
 export const sleep = (ms = 0): Promise<void> => {
     return new Promise(resolve => {
@@ -228,12 +226,12 @@ export const sleep = (ms = 0): Promise<void> => {
  *      // Items have been loaded and rendered
  *      expect(wrapper.find('.item').length).toEqual(4);
  * @param wrapper: enzyme ReactWrapper
+ * @param ms: the amount of time (in ms) to sleep
  */
-export const waitForLifecycle = (wrapper: ReactWrapper): Promise<undefined> => {
-    // NOTE: For internal package use only. Do not export externally as it will not work for external usages.
+export const waitForLifecycle = (wrapper: ReactWrapper, ms?: number): Promise<undefined> => {
     // Wrap in react-dom/utils act so we don't get errors in our test logs
     return act(async () => {
-        await sleep();
+        await sleep(ms);
         wrapper.update();
     });
 };
@@ -241,7 +239,7 @@ export const waitForLifecycle = (wrapper: ReactWrapper): Promise<undefined> => {
 export const wrapDraggable = element => {
     return (
         <DragDropContext onDragEnd={jest.fn()}>
-            <Droppable droppableId="domain-form-droppable">
+            <Droppable droppableId="jest-test-droppable">
                 {provided => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>
                         {element}

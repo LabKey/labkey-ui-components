@@ -23,6 +23,10 @@ module.exports = {
                     timepointType: 'VISIT'
                 }
             }
+        },
+        'ts-jest': {
+            // This increases test perf by a considerable margin
+            isolatedModules: true,
         }
     },
     moduleFileExtensions: ['ts', 'tsx', 'js'],

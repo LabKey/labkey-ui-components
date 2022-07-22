@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 6.1.4
+*Released*: 21 July 2022
+* Add additional packages to externals
+* Remove reactn from externals
+
 ### version 6.1.3
 *Released*: 17 May 2022
 * Remove `moment-jdateformatparser` from external dependency list.

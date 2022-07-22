@@ -134,6 +134,14 @@ function inputCellFactory(
             }
         }
 
+        let linkedValues;
+        if (columnMetadata?.getFilteredLookupKeys) {
+            linkedValues = editorModel
+                .getValue(columnMetadata.linkedColInd, rn)
+                .map(vd => vd.raw)
+                .toArray();
+        }
+
         return (
             <Cell
                 cellActions={cellActions}
@@ -146,7 +154,7 @@ function inputCellFactory(
                 locked={isLockedRow}
                 rowIdx={rn}
                 focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
-                message={editorModel ? editorModel.getMessage(colIdx, rn) : undefined}
+                message={editorModel?.getMessage(colIdx, rn)}
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
                 selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
                 lastSelection={
@@ -155,8 +163,10 @@ function inputCellFactory(
                         : false
                 }
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
-                filteredLookupValues={columnMetadata ? columnMetadata.filteredLookupValues : undefined}
-                filteredLookupKeys={columnMetadata ? columnMetadata.filteredLookupKeys : undefined}
+                filteredLookupValues={columnMetadata?.filteredLookupValues}
+                filteredLookupKeys={columnMetadata?.filteredLookupKeys}
+                getFilteredLookupKeys={columnMetadata?.getFilteredLookupKeys}
+                linkedValues={linkedValues}
             />
         );
     };
@@ -176,8 +186,10 @@ export interface EditableColumnMetadata {
     caption?: string;
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
+    getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
     hideTitleTooltip?: boolean;
     isReadOnlyCell?: (rowKey: string) => boolean;
+    linkedColInd?: number;
     placeholder?: string;
     popoverClassName?: string;
     readOnly?: boolean;

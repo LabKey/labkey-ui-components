@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 6.1.5
+*Released*: 22 July 2022
+* Bump webpack, wepback-cli, webpack-dev-server dependencies
+
 ### version 6.1.4
 *Released*: 21 July 2022
 * Add additional packages to externals

@@ -322,29 +322,19 @@ export class Cell extends React.PureComponent<Props, State> {
             let cell;
             if (showLookup) {
                 cell = (
-                    <>
-                        <div {...displayProps}>
-                            <div className="cell-menu-value">{valueDisplay}</div>
-                            <span onClick={this.handleDblClick} className="cell-menu-selector">
-                                <i className="fa fa-chevron-down" />
-                            </span>
-                        </div>
-                        {lastSelection && <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />}
-                    </>
+                    <div {...displayProps}>
+                        <div className="cell-menu-value">{valueDisplay}</div>
+                        <span onClick={this.handleDblClick} className="cell-menu-selector">
+                            <i className="fa fa-chevron-down" />
+                        </span>
+                    </div>
                 );
             } else {
-                cell = (
-                    <>
-                        <div {...displayProps}>
-                            {valueDisplay}
-                        </div>
-                        {lastSelection && <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />}
-                    </>
-                );
+                cell = <div {...displayProps}>{valueDisplay}</div>;
             }
 
             if (message) {
-                return (
+                cell = (
                     <OverlayTrigger
                         overlay={
                             <Popover bsClass="popover" id="grid-cell-popover">
@@ -358,7 +348,12 @@ export class Cell extends React.PureComponent<Props, State> {
                 );
             }
 
-            return cell;
+            return (
+                <>
+                    {cell}
+                    {lastSelection && <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />}
+                </>
+            );
         }
 
         if (showLookup) {

@@ -52,6 +52,7 @@ interface Props extends InjectedQueryModels {
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     user: User;
     withTitle?: boolean;
+    onSampleTabSelect?: (modelId: string) => void;
 }
 
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
@@ -74,6 +75,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         gridButtonProps,
         getSampleAuditBehaviorType,
         getIsDirty,
+        onSampleTabSelect,
         setIsDirty,
         tabbedGridPanelProps,
         withTitle,
@@ -87,6 +89,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const [activeTabId, setActiveTabId] = useState<string>(initialTabId ?? tabs[0]);
     const onTabSelect = useCallback((tab: string) => {
         setActiveTabId(tab);
+        onSampleTabSelect?.(tab);
     }, []);
     const activeModel = useMemo(() => queryModels[activeTabId], [activeTabId, queryModels]);
     const { hasSelections, selections } = activeModel;

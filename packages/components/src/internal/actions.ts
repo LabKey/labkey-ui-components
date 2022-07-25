@@ -968,13 +968,48 @@ async function prepareInsertRowDataFromBulkForm(
     };
 }
 
+export function checkCellReadStatus(
+    row: any,
+    queryInfo: QueryInfo,
+    columnMetadata: EditableColumnMetadata,
+    readonlyRows: List<any>,
+    lockedRows: List<any>
+): { isLockedRow: boolean; isReadonlyCell: boolean; isReadonlyRow: boolean } {
+    if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
+        const keyCols = queryInfo.getPkCols();
+        if (keyCols.size === 1) {
+            let key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+            if (Array.isArray(key)) key = key[0];
+            if (typeof key === 'object') key = key.value;
+
+            return {
+                isReadonlyRow: readonlyRows && key ? readonlyRows.contains(key) : false,
+                isReadonlyCell: columnMetadata?.isReadOnlyCell ? columnMetadata.isReadOnlyCell(key) : false,
+                isLockedRow: lockedRows && key ? lockedRows.contains(key) : false,
+            };
+        } else {
+            console.warn(
+                'Setting readonly rows or cells for models with ' + keyCols.size + ' keys is not currently supported.'
+            );
+        }
+    }
+
+    return {
+        isReadonlyRow: false,
+        isReadonlyCell: false,
+        isLockedRow: false,
+    };
+}
+
 export function dragFillEvent(
     editorModel: EditorModel,
     initSelection: string[],
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
-    readonlyRows?: List<any>
+    columnMetadata: EditableColumnMetadata,
+    readonlyRows: List<any>,
+    lockedRows: List<any>
 ): EditorModelAndGridData {
     if (initSelection?.length > 0) {
         const initColIdx = parseCellKey(initSelection[0]).colIdx;
@@ -983,15 +1018,17 @@ export function dragFillEvent(
             .filter(cellKey => parseCellKey(cellKey).colIdx === initColIdx)
             // filter out the initial selection as we don't want to update/fill those
             .filter(cellKey => initSelection.indexOf(cellKey) === -1)
-            // filter out readOnly rows
-            .filter(
-                cellKey =>
-                    !isReadonlyRow(
-                        data.get(dataKeys.get(parseCellKey(cellKey).rowIdx)),
-                        queryInfo.getPkCols(),
-                        readonlyRows
-                    )
-            );
+            // filter out readOnly/locked rows and columns
+            .filter(cellKey => {
+                const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
+                    data.get(dataKeys.get(parseCellKey(cellKey).rowIdx)),
+                    queryInfo,
+                    columnMetadata,
+                    readonlyRows,
+                    lockedRows
+                );
+                return !isReadonlyCell && !isReadonlyRow && !isLockedRow;
+            });
 
         return {
             data: undefined,
@@ -1753,11 +1790,8 @@ function pasteCellLoad(
 }
 
 function isReadonlyRow(row: Map<string, any>, pkCols: List<QueryColumn>, readonlyRows: List<string>) {
-    if (readonlyRows && pkCols.size === 1 && row) {
-        let pkValue = caseInsensitive(row.toJS(), pkCols.get(0).fieldKey);
-        if (Utils.isArray(pkValue) && pkValue[0]?.value !== undefined) {
-            pkValue = pkValue[0].value;
-        }
+    if (pkCols.size === 1 && row) {
+        const pkValue = caseInsensitive(row.toJS(), pkCols.get(0).fieldKey);
         return readonlyRows.contains(pkValue);
     }
 

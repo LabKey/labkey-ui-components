@@ -23,11 +23,13 @@ import {
     addRows,
     addRowsPerPivotValue,
     beginDrag,
+    checkCellReadStatus,
     copyEvent,
     dragFillEvent,
     endDrag,
     genCellKey,
     inDrag,
+    parseCellKey,
     pasteEvent,
     updateGridFromBulkForm,
 } from '../../actions';
@@ -110,28 +112,13 @@ function inputCellFactory(
 
         const colIdx = cn - colOffset;
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
-        let isReadonlyRow = false;
-        let isReadonlyCell = false;
-        let isLockedRow = false;
-
-        if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
-            const keyCols = queryInfo.getPkCols();
-            if (keyCols.size == 1) {
-                let key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
-                if (Array.isArray(key)) key = key[0];
-                if (typeof key === 'object') key = key.value;
-
-                if (readonlyRows) isReadonlyRow = key && readonlyRows.contains(key);
-                if (columnMetadata?.isReadOnlyCell) isReadonlyCell = columnMetadata.isReadOnlyCell(key);
-                if (lockedRows) isLockedRow = key && lockedRows.contains(key);
-            } else {
-                console.warn(
-                    'Setting readonly rows or cells for models with ' +
-                        keyCols.size +
-                        ' keys is not currently supported.'
-                );
-            }
-        }
+        const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
+            row,
+            queryInfo,
+            columnMetadata,
+            readonlyRows,
+            lockedRows
+        );
 
         let linkedValues;
         if (columnMetadata?.getFilteredLookupKeys) {
@@ -850,19 +837,25 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     onMouseUp = (event: MouseEvent): void => {
-        const { editorModel, onChange, disabled, data, dataKeys, queryInfo, readonlyRows } = this.props;
+        const { editorModel, onChange, disabled, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
 
         if (!disabled) {
             const dragHandleInitSelection = endDrag(editorModel, event);
 
             if (dragHandleInitSelection && editorModel.hasMultipleSelection()) {
+                const selColFieldKey = this.generateColumns()
+                    .get(parseCellKey(dragHandleInitSelection[0]).colIdx + 1)
+                    ?.raw.fieldKey?.toLowerCase();
+
                 const changes = dragFillEvent(
                     editorModel,
                     dragHandleInitSelection,
                     dataKeys,
                     data,
                     queryInfo,
-                    readonlyRows
+                    this.getLoweredColumnMetadata().get(selColFieldKey),
+                    readonlyRows,
+                    lockedRows
                 );
                 if (changes.editorModel) onChange(changes.editorModel);
             }
@@ -870,11 +863,24 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     fillDown = (): void => {
-        const { editorModel, onChange, data, dataKeys, queryInfo, readonlyRows } = this.props;
+        const { editorModel, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
 
         if (editorModel.hasMultipleSelection() && !editorModel.hasMultipleColumnSelection()) {
             const initSelection = editorModel.sortedSelectionKeys.slice(0, 1);
-            const changes = dragFillEvent(editorModel, initSelection, dataKeys, data, queryInfo, readonlyRows);
+            const selColFieldKey = this.generateColumns()
+                .get(parseCellKey(initSelection[0]).colIdx + 1)
+                ?.raw.fieldKey?.toLowerCase();
+
+            const changes = dragFillEvent(
+                editorModel,
+                initSelection,
+                dataKeys,
+                data,
+                queryInfo,
+                this.getLoweredColumnMetadata().get(selColFieldKey),
+                readonlyRows,
+                lockedRows
+            );
             if (changes.editorModel) onChange(changes.editorModel);
         }
     };

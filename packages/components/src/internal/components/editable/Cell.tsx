@@ -351,7 +351,9 @@ export class Cell extends React.PureComponent<Props, State> {
             return (
                 <>
                     {cell}
-                    {lastSelection && <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />}
+                    {lastSelection && !this.isReadOnly() && (
+                        <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />
+                    )}
                 </>
             );
         }

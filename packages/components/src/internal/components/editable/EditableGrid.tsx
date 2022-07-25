@@ -850,24 +850,31 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     onMouseUp = (event: MouseEvent): void => {
-        const { editorModel, onChange, disabled } = this.props;
+        const { editorModel, onChange, disabled, data, dataKeys, queryInfo, readonlyRows } = this.props;
 
         if (!disabled) {
             const dragHandleInitSelection = endDrag(editorModel, event);
 
             if (dragHandleInitSelection && editorModel.hasMultipleSelection()) {
-                const changes = dragFillEvent(editorModel, dragHandleInitSelection);
+                const changes = dragFillEvent(
+                    editorModel,
+                    dragHandleInitSelection,
+                    dataKeys,
+                    data,
+                    queryInfo,
+                    readonlyRows
+                );
                 if (changes.editorModel) onChange(changes.editorModel);
             }
         }
     };
 
     fillDown = (): void => {
-        const { editorModel, onChange } = this.props;
+        const { editorModel, onChange, data, dataKeys, queryInfo, readonlyRows } = this.props;
 
         if (editorModel.hasMultipleSelection() && !editorModel.hasMultipleColumnSelection()) {
             const initSelection = editorModel.sortedSelectionKeys.slice(0, 1);
-            const changes = dragFillEvent(editorModel, initSelection);
+            const changes = dragFillEvent(editorModel, initSelection, dataKeys, data, queryInfo, readonlyRows);
             if (changes.editorModel) onChange(changes.editorModel);
         }
     };

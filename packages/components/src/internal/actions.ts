@@ -968,14 +968,30 @@ async function prepareInsertRowDataFromBulkForm(
     };
 }
 
-export function dragFillEvent(editorModel: EditorModel, initSelection: string[]): EditorModelAndGridData {
+export function dragFillEvent(
+    editorModel: EditorModel,
+    initSelection: string[],
+    dataKeys: List<any>,
+    data: Map<any, Map<string, any>>,
+    queryInfo: QueryInfo,
+    readonlyRows?: List<any>
+): EditorModelAndGridData {
     if (initSelection?.length > 0) {
         const initColIdx = parseCellKey(initSelection[0]).colIdx;
         const fillCells = editorModel.sortedSelectionKeys
             // initially we will only support fill for drag end that is within a single column
             .filter(cellKey => parseCellKey(cellKey).colIdx === initColIdx)
             // filter out the initial selection as we don't want to update/fill those
-            .filter(cellKey => initSelection.indexOf(cellKey) === -1);
+            .filter(cellKey => initSelection.indexOf(cellKey) === -1)
+            // filter out readOnly rows
+            .filter(
+                cellKey =>
+                    !isReadonlyRow(
+                        data.get(dataKeys.get(parseCellKey(cellKey).rowIdx)),
+                        queryInfo.getPkCols(),
+                        readonlyRows
+                    )
+            );
 
         return {
             data: undefined,
@@ -1737,8 +1753,11 @@ function pasteCellLoad(
 }
 
 function isReadonlyRow(row: Map<string, any>, pkCols: List<QueryColumn>, readonlyRows: List<string>) {
-    if (pkCols.size === 1 && row) {
-        const pkValue = caseInsensitive(row.toJS(), pkCols.get(0).fieldKey);
+    if (readonlyRows && pkCols.size === 1 && row) {
+        let pkValue = caseInsensitive(row.toJS(), pkCols.get(0).fieldKey);
+        if (Utils.isArray(pkValue) && pkValue[0]?.value !== undefined) {
+            pkValue = pkValue[0].value;
+        }
         return readonlyRows.contains(pkValue);
     }
 

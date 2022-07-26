@@ -15,8 +15,9 @@ import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../
 
 import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
 
-import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 import { TEST_USER_APP_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
+
+import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 
 declare const LABKEY: LabKey;
 

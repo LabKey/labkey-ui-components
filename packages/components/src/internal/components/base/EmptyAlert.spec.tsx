@@ -4,8 +4,9 @@ import { PermissionTypes } from '@labkey/api';
 
 import { AppURL } from '../../..';
 
-import { EmptyAlert, EmptyAlertWithPermissions } from './EmptyAlert';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
+
+import { EmptyAlert, EmptyAlertWithPermissions } from './EmptyAlert';
 
 const EMPTY_ALERT = 'div.empty-alert';
 

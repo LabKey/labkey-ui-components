@@ -7,10 +7,11 @@ import { makeTestActions, makeTestQueryModel, QueryInfo, SchemaQuery, TabbedGrid
 
 import { mountWithAppServerContext } from '../../testHelpers';
 
+import { TEST_USER_READER } from '../../userFixtures';
+
 import { SamplesEditableGrid } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
-import { TEST_USER_READER } from '../../userFixtures';
 
 const SQ = SchemaQuery.create('schema', 'query');
 const QI = QueryInfo.create({ title: 'Test title' });

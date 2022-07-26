@@ -9,11 +9,11 @@ import { NEW_SAMPLES_HREF } from '../../app/constants';
 const SAMPLE_IMPORT_TAB_ID = 2;
 
 interface Props {
-    model: QueryModel;
-    hideImport?: boolean;
     asSubMenu?: boolean;
-    text?: string;
     bsStyle?: string;
+    hideImport?: boolean;
+    model: QueryModel;
+    text?: string;
 }
 
 export const SamplesAddButton: FC<Props> = memo(props => {

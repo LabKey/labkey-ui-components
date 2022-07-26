@@ -18,6 +18,8 @@ import {
     selectRowsDeprecated,
 } from '../../..';
 
+import { SAMPLES_KEY } from '../../app/constants';
+
 import {
     Lineage,
     LineageGridModel,
@@ -33,15 +35,14 @@ import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants
 import { LINEAGE_DIRECTIONS, LineageFilter, LineageLinkMetadata, LineageOptions } from './types';
 import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
 import { getURLResolver, LineageURLResolver } from './LineageURLResolvers';
-import { SAMPLES_KEY } from '../../app/constants';
 
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
 export interface WithNodeInteraction {
     isNodeInGraph?: (node: Experiment.LineageItemBase) => boolean;
-    onNodeMouseOver?: (node: Experiment.LineageItemBase) => void;
-    onNodeMouseOut?: (node: Experiment.LineageItemBase) => void;
     onNodeClick?: (node: Experiment.LineageItemBase) => void;
+    onNodeMouseOut?: (node: Experiment.LineageItemBase) => void;
+    onNodeMouseOver?: (node: Experiment.LineageItemBase) => void;
 }
 
 const NodeInteractionContext = createContext<WithNodeInteraction>(undefined);

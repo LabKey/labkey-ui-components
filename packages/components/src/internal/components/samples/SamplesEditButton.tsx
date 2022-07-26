@@ -17,17 +17,19 @@ import { EntityDataType } from '../entities/models';
 
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 
+import { EntityLineageEditMenuItem } from '../entities/EntityLineageEditMenuItem';
+
+import { hasModule } from '../../app/utils';
+
 import { SampleGridButtonProps } from './models';
 import { getSampleTypeRowId } from './actions';
 import { SamplesEditButtonSections, shouldIncludeMenuItem } from './utils';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
-import { EntityLineageEditMenuItem } from '../entities/EntityLineageEditMenuItem';
-import { hasModule } from '../../app/utils';
 
 interface OwnProps {
-    showLinkToStudy?: boolean;
-    parentEntityDataTypes: EntityDataType[];
     combineParentTypes?: boolean;
+    parentEntityDataTypes: EntityDataType[];
+    showLinkToStudy?: boolean;
 }
 
 export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresModelAndActions> = memo(props => {

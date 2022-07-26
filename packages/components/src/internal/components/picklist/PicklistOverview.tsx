@@ -32,12 +32,13 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { ALIQUOTED_FROM_COL } from '../samples/constants';
 
+import { PICKLIST_KEY } from '../../app/constants';
+
 import { deletePicklists, updatePicklist } from './actions';
 import { Picklist, PICKLIST_SAMPLES_FILTER } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
-import { PICKLIST_KEY } from '../../app/constants';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';

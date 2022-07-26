@@ -3,8 +3,9 @@ import { Filter } from '@labkey/api';
 
 import { AppURL, SCHEMAS, User, HeatMap, HeatMapCell } from '../../..';
 
-import { SampleEmptyAlert } from './SampleEmptyAlert';
 import { SAMPLES_KEY } from '../../app/constants';
+
+import { SampleEmptyAlert } from './SampleEmptyAlert';
 
 const getCellUrl = (row: Record<string, any>): AppURL => {
     const protocolName = row.Protocol?.displayValue;

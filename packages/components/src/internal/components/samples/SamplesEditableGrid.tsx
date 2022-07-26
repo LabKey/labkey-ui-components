@@ -37,12 +37,13 @@ import { UpdateGridTab } from '../editable/EditableGridPanelForUpdateWithLineage
 
 import { IEditableGridLoader } from '../../models';
 
+import { isFreezerManagementEnabled } from '../../app/utils';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromLineage, getUpdatedLineageRows } from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
-import { isFreezerManagementEnabled } from '../../app/utils';
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;

@@ -16,26 +16,27 @@ import {
     caseInsensitive,
 } from '../../..';
 
+import { SAMPLES_KEY } from '../../app/constants';
+
 import { getSampleAliquotsQueryConfig, getSampleAliquotsStats } from './actions';
 import { SampleAliquotsStats } from './models';
 import { SampleAliquotAssaysCount } from './SampleAliquotAssaysCount';
-import { SAMPLES_KEY } from '../../app/constants';
 
 interface OwnProps {
-    sampleLsid: string;
-    sampleId: string;
-    sampleSet: string;
     aliquotJobsQueryConfig: QueryConfig;
+    sampleId: string;
+    sampleLsid: string;
     sampleRow: any;
     sampleSchemaQuery?: SchemaQuery;
+    sampleSet: string;
 }
 
 type Props = OwnProps & InjectedQueryModels;
 
 interface SampleAliquotsSummaryWithModelsProps {
     aliquotsModel: QueryModel;
-    jobsModel?: QueryModel;
     hideAssayData?: boolean;
+    jobsModel?: QueryModel;
 }
 
 // exported for jest testing

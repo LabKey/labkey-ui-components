@@ -5,8 +5,8 @@ import { Alert, AppURL, SCHEMAS, HeatMap, HeatMapCell } from '../../..';
 import { ASSAYS_KEY } from '../../app/constants';
 
 interface Props {
-    navigate: (url: AppURL) => any;
     excludedAssayProviders?: string[];
+    navigate: (url: AppURL) => any;
 }
 
 const getAssayUrl = (provider: string, protocol: string, page?: string): AppURL => {

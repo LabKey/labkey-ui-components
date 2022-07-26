@@ -8,6 +8,7 @@ import {
     TEST_USER_PROJECT_ADMIN,
     TEST_USER_READER,
 } from '../../userFixtures';
+
 import { getAdministrationSubNavTabs } from './AdministrationSubNav';
 
 describe('AdministrationSubNav', () => {

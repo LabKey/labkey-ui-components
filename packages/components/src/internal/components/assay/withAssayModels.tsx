@@ -19,8 +19,9 @@ import {
 
 import { fetchProtocol } from '../domainproperties/assay/actions';
 
-import { clearAssayDefinitionCache, fetchAllAssays } from './actions';
 import { userCanReadAssays } from '../../app/utils';
+
+import { clearAssayDefinitionCache, fetchAllAssays } from './actions';
 
 export interface AssayLoader {
     clearDefinitionsCache: () => void;

@@ -26,10 +26,11 @@ import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/uti
 
 import { OperationConfirmationData } from '../entities/models';
 
+import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
+
 import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
 import { SampleStatus } from './models';
-import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
 
 export function getOmittedSampleTypeColumns(user: User): string[] {
     let cols: string[] = [];

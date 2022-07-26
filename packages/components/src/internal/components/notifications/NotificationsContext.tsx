@@ -2,8 +2,9 @@ import React, { ComponentType, createContext, FC, memo, useCallback, useContext,
 import { Map } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { NotificationCreatable, NotificationItemModel, NotificationItemProps, Persistence } from './model';
 import { NOTIFICATION_TIMEOUT } from '../../app/constants';
+
+import { NotificationCreatable, NotificationItemModel, NotificationItemProps, Persistence } from './model';
 
 export interface NotificationsContextProps {
     createNotification: (creatable: NotificationCreatable, withTimeout?: boolean, callback?: () => void) => void;

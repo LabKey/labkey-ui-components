@@ -19,21 +19,21 @@ import {
 import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
 
 interface CreateSamplesSubMenuProps {
+    allowPooledSamples?: boolean;
     getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
-    maxParentPerSample: number;
+    getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
+    inlineItemsCount?: number;
     isSelectingSamples: (schemaQuery: SchemaQuery) => boolean;
-    navigate: (url: string | AppURL) => any;
+    maxParentPerSample: number;
     menuCurrentChoice?: string;
     menuText?: string;
-    parentType?: string;
+    navigate: (url: string | AppURL) => any;
     parentKey?: string;
-    parentQueryModel?: QueryModel;
+    parentType?: string;
     sampleWizardURL?: (targetSampleType?: string, parent?: string) => AppURL;
-    getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
-    allowPooledSamples?: boolean;
     selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
-    inlineItemsCount?: number;
+    parentQueryModel?: QueryModel;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {

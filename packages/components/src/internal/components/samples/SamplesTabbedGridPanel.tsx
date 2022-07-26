@@ -38,16 +38,19 @@ interface Props extends InjectedQueryModels {
     containerFilter?: Query.ContainerFilter;
     createBtnParentKey?: string;
     createBtnParentType?: string;
+    getIsDirty?: () => boolean;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
     gridButtonProps?: any;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
-    initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
-    modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
-    getIsDirty?: () => boolean;
-    setIsDirty?: (isDirty: boolean) => void;
+    // use if you have multiple tabs but want to start on something other than the first one
+    initialTabId?: string;
+    // if a usage wants to just show a single GridPanel, they should provide a modelId prop
+    modelId?: string;
     onPrintLabel?: () => void;
-    sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
+    sampleAliquotType?: ALIQUOT_FILTER_MODE;
+    // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    setIsDirty?: (isDirty: boolean) => void;
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     user: User;
     withTitle?: boolean;

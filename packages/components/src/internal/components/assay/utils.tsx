@@ -9,8 +9,9 @@ import { processRequest } from '../../query/api';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { getPipelineLinkMsg, getWorkflowLinkMsg } from '../pipeline/utils';
 
-import { AssayUploadResultModel } from './models';
 import { ASSAYS_KEY } from '../../app/constants';
+
+import { AssayUploadResultModel } from './models';
 
 export function inferDomainFromFile(
     file: File,
@@ -78,13 +79,7 @@ function getAssayImportSuccessMsg(
         const msg = `Successfully ${reimport ? 're-imported' : 'created'} assay run`;
         if (assayDefinition) {
             // Displayed if 'Save and Import Another Run' chosen
-            const href = AppURL.create(
-                ASSAYS_KEY,
-                assayDefinition.type,
-                assayDefinition.name,
-                'runs',
-                runId
-            ).toHref();
+            const href = AppURL.create(ASSAYS_KEY, assayDefinition.type, assayDefinition.name, 'runs', runId).toHref();
             return (
                 <>
                     {msg} <a href={href}>#{runId}</a>.{' '}

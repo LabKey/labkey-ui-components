@@ -160,6 +160,6 @@ export class TimelineEventModel extends Record({
 
 export interface TimelineGroupedEventInfo {
     firstEvent: TimelineEventModel;
-    lastEvent: TimelineEventModel;
     isCompleted: boolean;
+    lastEvent: TimelineEventModel;
 }

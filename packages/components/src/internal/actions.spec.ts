@@ -28,8 +28,11 @@ import {
     genCellKey,
     parseCellKey,
     getExportParams,
+    getCellKeySortableIndex,
+    getSortedCellKeys,
+    generateFillSequence,
 } from './actions';
-import { CellMessage, ValueDescriptor } from './models';
+import { CellMessage, CellValues, ValueDescriptor } from './models';
 
 // FIXME, when the editableGridWithData file is read in, the objects are automatically
 //  converted to Maps, which means accessing them like objects doesn't work.  That's a problem.
@@ -338,6 +341,21 @@ describe('CellKey', () => {
         expect(parseCellKey('1-2').colIdx).toBe(1);
         expect(parseCellKey('1-2').rowIdx).toBe(2);
     });
+
+    test('getCellKeySortableIndex', () => {
+        expect(getCellKeySortableIndex('0-0', 0)).toBe(0);
+        expect(getCellKeySortableIndex('0-0', 10)).toBe(0);
+        expect(getCellKeySortableIndex('1-0', 10)).toBe(10);
+        expect(getCellKeySortableIndex('0-1', 10)).toBe(1);
+        expect(getCellKeySortableIndex('1-1', 10)).toBe(11);
+        expect(getCellKeySortableIndex('10-10', 10)).toBe(110);
+    });
+
+    test('getSortedCellKeys', () => {
+        expect(getSortedCellKeys(['0-0', '1-1', '0-1', '1-0'], 0)).toStrictEqual(['0-0', '1-0', '1-1', '0-1']);
+        expect(getSortedCellKeys(['0-0', '1-1', '0-1', '1-0'], 10)).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
+        expect(getSortedCellKeys(['1-1', '1-15', '0-10', '1-5'], 10)).toStrictEqual(['0-10', '1-1', '1-5', '1-15']);
+    });
 });
 
 describe('getExportParams', () => {
@@ -499,5 +517,271 @@ describe('getExportParams', () => {
             includeColumn: ['extra1', 'extra2'],
             excludeColumn: ['Field3', 'extra2'],
         });
+    });
+});
+
+describe('generateFillSequence', () => {
+    const editorModel = new EditorModel({ id: queryModel.id }).merge({
+        cellMessages: Map<string, CellMessage>({
+            '1-0': 'description 1 message',
+        }),
+        cellValues: Map<string, List<ValueDescriptor>>({
+            '0-0': List<ValueDescriptor>([
+                {
+                    display: 'S-1',
+                    raw: 'S-1',
+                },
+            ]),
+            '0-1': List<ValueDescriptor>([
+                {
+                    display: 'S-2',
+                    raw: 'S-2',
+                },
+            ]),
+            '0-2': List<ValueDescriptor>([
+                {
+                    display: 'S-3',
+                    raw: 'S-3',
+                },
+            ]),
+            '1-0': List<ValueDescriptor>([
+                {
+                    display: 1,
+                    raw: 1,
+                },
+            ]),
+            '1-1': List<ValueDescriptor>([
+                {
+                    display: 3,
+                    raw: 3,
+                },
+            ]),
+            '1-2': List<ValueDescriptor>([
+                {
+                    display: 5,
+                    raw: 5,
+                },
+            ]),
+            '2-0': List<ValueDescriptor>([
+                {
+                    display: 3.0,
+                    raw: 3.0,
+                },
+            ]),
+            '2-1': List<ValueDescriptor>([
+                {
+                    display: 1.5,
+                    raw: 1.5,
+                },
+            ]),
+            '2-2': List<ValueDescriptor>([
+                {
+                    display: 0,
+                    raw: 0,
+                },
+            ]),
+            '3-0': List<ValueDescriptor>([
+                {
+                    display: 'Lookup 1',
+                    raw: 1,
+                },
+            ]),
+            '3-1': List<ValueDescriptor>([
+                {
+                    display: 'Lookup 2',
+                    raw: 2,
+                },
+            ]),
+            '3-2': List<ValueDescriptor>([
+                {
+                    display: 'Lookup 2',
+                    raw: 2,
+                },
+            ]),
+            '4-0': List<ValueDescriptor>([
+                {
+                    display: 'S-1',
+                    raw: 'S-1',
+                },
+            ]),
+            '4-1': List<ValueDescriptor>([
+                {
+                    display: 2,
+                    raw: 2,
+                },
+            ]),
+            '4-2': List<ValueDescriptor>([
+                {
+                    display: 'Lookup 5',
+                    raw: 5,
+                },
+            ]),
+        }),
+        colCount: 5,
+        rowCount: 10,
+    }) as EditorModel;
+
+    function validate(
+        editorModel: EditorModel,
+        newValues: CellValues,
+        cellKey: string,
+        expectedValue?: List<ValueDescriptor>
+    ): void {
+        if (!expectedValue) {
+            expect(newValues.get(cellKey)).toBe(editorModel.getValueForCellKey(cellKey));
+        } else {
+            expect(newValues.get(cellKey).first().raw).toBe(expectedValue.first().raw);
+            expect(newValues.get(cellKey).first().display).toBe(expectedValue.first().display);
+        }
+    }
+
+    test('one initSelection, text', () => {
+        const fillValues = generateFillSequence(editorModel, ['0-0'], ['0-1', '0-2']);
+        validate(editorModel, fillValues, '0-0');
+        validate(editorModel, fillValues, '0-1', editorModel.getValueForCellKey('0-0'));
+        validate(editorModel, fillValues, '0-2', editorModel.getValueForCellKey('0-0'));
+        validate(editorModel, fillValues, '1-0');
+        validate(editorModel, fillValues, '1-1');
+        validate(editorModel, fillValues, '1-2');
+        validate(editorModel, fillValues, '2-0');
+        validate(editorModel, fillValues, '2-1');
+        validate(editorModel, fillValues, '2-2');
+        validate(editorModel, fillValues, '3-0');
+        validate(editorModel, fillValues, '3-1');
+        validate(editorModel, fillValues, '3-2');
+        validate(editorModel, fillValues, '4-0');
+        validate(editorModel, fillValues, '4-1');
+        validate(editorModel, fillValues, '4-2');
+    });
+
+    test('one initSelection, int', () => {
+        const fillValues = generateFillSequence(editorModel, ['1-0'], ['1-1', '1-2']);
+        validate(editorModel, fillValues, '0-0');
+        validate(editorModel, fillValues, '0-1');
+        validate(editorModel, fillValues, '0-2');
+        validate(editorModel, fillValues, '1-0');
+        validate(editorModel, fillValues, '1-1', editorModel.getValueForCellKey('1-0'));
+        validate(editorModel, fillValues, '1-2', editorModel.getValueForCellKey('1-0'));
+        validate(editorModel, fillValues, '2-0');
+        validate(editorModel, fillValues, '2-1');
+        validate(editorModel, fillValues, '2-2');
+        validate(editorModel, fillValues, '3-0');
+        validate(editorModel, fillValues, '3-1');
+        validate(editorModel, fillValues, '3-2');
+        validate(editorModel, fillValues, '4-0');
+        validate(editorModel, fillValues, '4-1');
+        validate(editorModel, fillValues, '4-2');
+    });
+
+    test('one initSelection, decimal', () => {
+        const fillValues = generateFillSequence(editorModel, ['2-0'], ['2-1', '2-2']);
+        validate(editorModel, fillValues, '0-0');
+        validate(editorModel, fillValues, '0-1');
+        validate(editorModel, fillValues, '0-2');
+        validate(editorModel, fillValues, '1-0');
+        validate(editorModel, fillValues, '1-1');
+        validate(editorModel, fillValues, '1-2');
+        validate(editorModel, fillValues, '2-0');
+        validate(editorModel, fillValues, '2-1', editorModel.getValueForCellKey('2-0'));
+        validate(editorModel, fillValues, '2-2', editorModel.getValueForCellKey('2-0'));
+        validate(editorModel, fillValues, '3-0');
+        validate(editorModel, fillValues, '3-1');
+        validate(editorModel, fillValues, '3-2');
+        validate(editorModel, fillValues, '4-0');
+        validate(editorModel, fillValues, '4-1');
+        validate(editorModel, fillValues, '4-2');
+    });
+
+    test('one initSelection, lookup', () => {
+        const fillValues = generateFillSequence(editorModel, ['3-0'], ['3-1', '3-2']);
+        validate(editorModel, fillValues, '0-0');
+        validate(editorModel, fillValues, '0-1');
+        validate(editorModel, fillValues, '0-2');
+        validate(editorModel, fillValues, '1-0');
+        validate(editorModel, fillValues, '1-1');
+        validate(editorModel, fillValues, '1-2');
+        validate(editorModel, fillValues, '2-0');
+        validate(editorModel, fillValues, '2-1');
+        validate(editorModel, fillValues, '2-2');
+        validate(editorModel, fillValues, '3-0');
+        validate(editorModel, fillValues, '3-1', editorModel.getValueForCellKey('3-0'));
+        validate(editorModel, fillValues, '3-2', editorModel.getValueForCellKey('3-0'));
+        validate(editorModel, fillValues, '4-0');
+        validate(editorModel, fillValues, '4-1');
+        validate(editorModel, fillValues, '4-2');
+    });
+
+    test('one initSelection, mixed', () => {
+        const fillValues = generateFillSequence(editorModel, ['4-0'], ['4-1', '4-2']);
+        validate(editorModel, fillValues, '0-0');
+        validate(editorModel, fillValues, '0-1');
+        validate(editorModel, fillValues, '0-2');
+        validate(editorModel, fillValues, '1-0');
+        validate(editorModel, fillValues, '1-1');
+        validate(editorModel, fillValues, '1-2');
+        validate(editorModel, fillValues, '2-0');
+        validate(editorModel, fillValues, '2-1');
+        validate(editorModel, fillValues, '2-2');
+        validate(editorModel, fillValues, '3-0');
+        validate(editorModel, fillValues, '3-1');
+        validate(editorModel, fillValues, '3-2');
+        validate(editorModel, fillValues, '4-0');
+        validate(editorModel, fillValues, '4-1', editorModel.getValueForCellKey('4-0'));
+        validate(editorModel, fillValues, '4-2', editorModel.getValueForCellKey('4-0'));
+    });
+
+    test('multiple initSelection, text', () => {
+        const fillValues = generateFillSequence(editorModel, ['0-0', '0-1', '0-2'], ['0-3', '0-4', '0-5', '0-6']);
+        validate(editorModel, fillValues, '0-0');
+        validate(editorModel, fillValues, '0-1');
+        validate(editorModel, fillValues, '0-2');
+        validate(editorModel, fillValues, '0-3', editorModel.getValueForCellKey('0-0'));
+        validate(editorModel, fillValues, '0-4', editorModel.getValueForCellKey('0-1'));
+        validate(editorModel, fillValues, '0-5', editorModel.getValueForCellKey('0-2'));
+        validate(editorModel, fillValues, '0-6', editorModel.getValueForCellKey('0-0'));
+    });
+
+    test('multiple initSelection, int', () => {
+        const fillValues = generateFillSequence(editorModel, ['1-0', '1-1', '1-2'], ['1-3', '1-4', '1-5', '1-6']);
+        validate(editorModel, fillValues, '1-0');
+        validate(editorModel, fillValues, '1-1');
+        validate(editorModel, fillValues, '1-2');
+        validate(editorModel, fillValues, '1-3', List([{ raw: 7, display: 7 }]));
+        validate(editorModel, fillValues, '1-4', List([{ raw: 9, display: 9 }]));
+        validate(editorModel, fillValues, '1-5', List([{ raw: 11, display: 11 }]));
+        validate(editorModel, fillValues, '1-6', List([{ raw: 13, display: 13 }]));
+    });
+
+    test('multiple initSelection, decimal', () => {
+        const fillValues = generateFillSequence(editorModel, ['2-0', '2-1', '2-2'], ['2-3', '2-4', '2-5', '2-6']);
+        validate(editorModel, fillValues, '2-0');
+        validate(editorModel, fillValues, '2-1');
+        validate(editorModel, fillValues, '2-2');
+        validate(editorModel, fillValues, '2-3', List([{ raw: -1.5, display: -1.5 }]));
+        validate(editorModel, fillValues, '2-4', List([{ raw: -3, display: -3 }]));
+        validate(editorModel, fillValues, '2-5', List([{ raw: -4.5, display: -4.5 }]));
+        validate(editorModel, fillValues, '2-6', List([{ raw: -6, display: -6 }]));
+    });
+
+    test('multiple initSelection, lookup', () => {
+        const fillValues = generateFillSequence(editorModel, ['3-0', '3-1', '3-2'], ['3-3', '3-4', '3-5', '3-6']);
+        validate(editorModel, fillValues, '3-0');
+        validate(editorModel, fillValues, '3-1');
+        validate(editorModel, fillValues, '3-2');
+        validate(editorModel, fillValues, '3-3', editorModel.getValueForCellKey('3-0'));
+        validate(editorModel, fillValues, '3-4', editorModel.getValueForCellKey('3-1'));
+        validate(editorModel, fillValues, '3-5', editorModel.getValueForCellKey('3-2'));
+        validate(editorModel, fillValues, '3-6', editorModel.getValueForCellKey('3-0'));
+    });
+
+    test('multiple initSelection, mixed', () => {
+        const fillValues = generateFillSequence(editorModel, ['4-0', '4-1', '4-2'], ['4-3', '4-4', '4-5', '4-6']);
+        validate(editorModel, fillValues, '4-0');
+        validate(editorModel, fillValues, '4-1');
+        validate(editorModel, fillValues, '4-2');
+        validate(editorModel, fillValues, '4-3', editorModel.getValueForCellKey('4-0'));
+        validate(editorModel, fillValues, '4-4', editorModel.getValueForCellKey('4-1'));
+        validate(editorModel, fillValues, '4-5', editorModel.getValueForCellKey('4-2'));
+        validate(editorModel, fillValues, '4-6', editorModel.getValueForCellKey('4-0'));
     });
 });

@@ -22,6 +22,8 @@ import { QueryColumn } from '../../..';
 
 import { ValueDescriptor } from '../../models';
 
+import { CELL_SELECTION_HANDLE_CLASSNAME } from '../../constants';
+
 import { Cell } from './Cell';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
@@ -139,6 +141,7 @@ describe('Cell', () => {
         expect(cell.find('.cell-menu')).toHaveLength(focused ? 0 : 1);
         expect(cell.find('.cell-menu-value')).toHaveLength(focused ? 0 : 1);
         expect(cell.find('.cell-menu-selector')).toHaveLength(focused ? 0 : 1);
+        expect(cell.find('.' + CELL_SELECTION_HANDLE_CLASSNAME)).toHaveLength(0);
         expect(cell.find('input')).toHaveLength(focused ? 1 : 0);
         expect(cell.find(LookupCell)).toHaveLength(focused ? 1 : 0);
     };
@@ -168,8 +171,21 @@ describe('Cell', () => {
         expect(cell.find('.cell-menu')).toHaveLength(0);
         expect(cell.find('.cell-menu-value')).toHaveLength(0);
         expect(cell.find('.cell-menu-selector')).toHaveLength(0);
+        expect(cell.find('.' + CELL_SELECTION_HANDLE_CLASSNAME)).toHaveLength(0);
         expect(cell.find('input')).toHaveLength(1);
         expect(cell.find(LookupCell)).toHaveLength(1);
+    });
+
+    test('cell lastSelection', () => {
+        const lookupCol = QueryColumn.create({ name: 'test', validValues: ['a', 'b'] });
+        const cell = mount(<Cell cellActions={actions} col={lookupCol} colIdx={1} rowIdx={2} lastSelection />);
+        expect(cell.find('div')).toHaveLength(2);
+        expect(cell.find('.cell-menu')).toHaveLength(1);
+        expect(cell.find('.cell-menu-value')).toHaveLength(1);
+        expect(cell.find('.cell-menu-selector')).toHaveLength(1);
+        expect(cell.find('.' + CELL_SELECTION_HANDLE_CLASSNAME)).toHaveLength(1);
+        expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
     const expectDate = (cell: ReactWrapper, focused = false, value?: string, rawValue?: string): void => {

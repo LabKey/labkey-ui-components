@@ -35,6 +35,7 @@ import { selectRowsDeprecated } from './query/api';
 import { Location } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
+    CELL_SELECTION_HANDLE_CLASSNAME,
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
@@ -53,7 +54,7 @@ import {
 } from './models';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 
-import { parseCsvString } from './util/utils';
+import { isFloat, isInteger, parseCsvString, parseScientificInt } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 import { hasModule } from './app/utils';
 
@@ -702,17 +703,41 @@ export function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number 
     };
 }
 
+// exported for jest testing
+export function getCellKeySortableIndex(cellKey: string, rowCount: number): number {
+    const { rowIdx, colIdx } = parseCellKey(cellKey);
+    return colIdx * rowCount + rowIdx;
+}
+
+// exported for jest testing
+export function getSortedCellKeys(cellKeys: string[], rowCount: number): string[] {
+    return cellKeys.sort((a, b) => {
+        return getCellKeySortableIndex(a, rowCount) - getCellKeySortableIndex(b, rowCount);
+    });
+}
+
 const dragLock = Map<string, boolean>().asMutable();
+let dragHandleInitSelection; // track the initial selection state if the drag event was initiated from the corner drag handle
 
 export function beginDrag(editorModel: EditorModel, event: any): void {
     if (handleDrag(editorModel, event)) {
         dragLock.set(editorModel.id, true);
+
+        const isDragHandleAction = (event.target as Element).className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
+        if (isDragHandleAction) {
+            dragHandleInitSelection = [...editorModel.selectionCells.toArray()];
+            if (!dragHandleInitSelection.length) dragHandleInitSelection.push(editorModel.selectionKey);
+        }
     }
 }
 
-export function endDrag(editorModel: EditorModel, event: any): void {
+export function endDrag(editorModel: EditorModel, event: any): string[] {
     if (handleDrag(editorModel, event)) {
         dragLock.remove(editorModel.id);
+
+        const _dragHandleInitSelection = dragHandleInitSelection ? [...dragHandleInitSelection] : undefined;
+        dragHandleInitSelection = undefined;
+        return _dragHandleInitSelection;
     }
 }
 
@@ -941,6 +966,138 @@ async function prepareInsertRowDataFromBulkForm(
         values,
         messages,
     };
+}
+
+export function checkCellReadStatus(
+    row: any,
+    queryInfo: QueryInfo,
+    columnMetadata: EditableColumnMetadata,
+    readonlyRows: List<any>,
+    lockedRows: List<any>
+): { isLockedRow: boolean; isReadonlyCell: boolean; isReadonlyRow: boolean } {
+    if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
+        const keyCols = queryInfo.getPkCols();
+        if (keyCols.size === 1) {
+            let key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+            if (Array.isArray(key)) key = key[0];
+            if (typeof key === 'object') key = key.value;
+
+            return {
+                isReadonlyRow: readonlyRows && key ? readonlyRows.contains(key) : false,
+                isReadonlyCell: columnMetadata?.isReadOnlyCell ? columnMetadata.isReadOnlyCell(key) : false,
+                isLockedRow: lockedRows && key ? lockedRows.contains(key) : false,
+            };
+        } else {
+            console.warn(
+                'Setting readonly rows or cells for models with ' + keyCols.size + ' keys is not currently supported.'
+            );
+        }
+    }
+
+    return {
+        isReadonlyRow: false,
+        isReadonlyCell: false,
+        isLockedRow: false,
+    };
+}
+
+export function dragFillEvent(
+    editorModel: EditorModel,
+    initSelection: string[],
+    dataKeys: List<any>,
+    data: Map<any, Map<string, any>>,
+    queryInfo: QueryInfo,
+    columnMetadata: EditableColumnMetadata,
+    readonlyRows: List<any>,
+    lockedRows: List<any>
+): EditorModelAndGridData {
+    if (initSelection?.length > 0) {
+        const initColIdx = parseCellKey(initSelection[0]).colIdx;
+        const fillCells = editorModel.sortedSelectionKeys
+            // initially we will only support fill for drag end that is within a single column
+            .filter(cellKey => parseCellKey(cellKey).colIdx === initColIdx)
+            // filter out the initial selection as we don't want to update/fill those
+            .filter(cellKey => initSelection.indexOf(cellKey) === -1)
+            // filter out readOnly/locked rows and columns
+            .filter(cellKey => {
+                const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
+                    data.get(dataKeys.get(parseCellKey(cellKey).rowIdx)),
+                    queryInfo,
+                    columnMetadata,
+                    readonlyRows,
+                    lockedRows
+                );
+                return !isReadonlyCell && !isReadonlyRow && !isLockedRow;
+            });
+
+        return {
+            data: undefined,
+            dataKeys: undefined,
+            editorModel: {
+                cellValues: generateFillSequence(editorModel, initSelection, fillCells),
+            },
+        };
+    }
+
+    return { data: undefined, dataKeys: undefined, editorModel: undefined };
+}
+
+/**
+ * Generate a sequence, of length fillSelection, based on the values in the initSelection of the editorModel.
+ * If the initSelection is for a single cell, the fill operation will always be a copy of that value.
+ * If the initSelection includes a range of cells and all values are numeric, fill via a generated sequence where the step/diff is based on the first and last value in the initSelection.
+ * If the initSelection includes a range of cells and not all values are numeric, fill via a copy of all of the values in initSelection.
+ */
+export function generateFillSequence(
+    editorModel: EditorModel,
+    initSelection: string[],
+    fillSelection: string[]
+): CellValues {
+    const sortedInitSelection = getSortedCellKeys(initSelection, editorModel.rowCount);
+    const initCellValues = sortedInitSelection.map(cellKey => editorModel.getValueForCellKey(cellKey));
+    const initCellRawValues = initCellValues.map(cellValue => cellValue?.first()?.raw);
+    const initCellDisplayValues = initCellValues.map(cellValue => cellValue?.first()?.display);
+
+    // use the display values to determine sequence type to account for lookup cell values with numeric key/raw values
+    const isFloatSeq = initCellValues.length > 1 && initCellDisplayValues.every(isFloat);
+    const isIntSeq = initCellValues.length > 1 && initCellDisplayValues.every(isInteger);
+
+    let firstCellRawVal = initCellRawValues[0];
+    let lastCellRawVal = initCellRawValues[initCellRawValues.length - 1];
+
+    let diff = 0;
+    if (isFloatSeq || isIntSeq) {
+        if (isFloatSeq) {
+            firstCellRawVal = parseFloat(firstCellRawVal);
+            lastCellRawVal = parseFloat(lastCellRawVal);
+        } else if (isIntSeq) {
+            firstCellRawVal = parseScientificInt(firstCellRawVal);
+            lastCellRawVal = parseScientificInt(lastCellRawVal);
+        }
+
+        // diff -> last value minus first value divide by the number of steps in the initial selection
+        diff = decimalDifference(lastCellRawVal, firstCellRawVal);
+        diff = initCellRawValues.length > 1 ? diff / (initCellRawValues.length - 1) : 0;
+    }
+
+    let cellValues = editorModel.cellValues;
+    fillSelection.forEach((cellKey, i) => {
+        let fillValue = initCellValues[i % sortedInitSelection.length];
+        if (isFloatSeq || isIntSeq) {
+            const raw = decimalDifference(diff * (i + 1), lastCellRawVal, false);
+            fillValue = List([{ raw, display: raw }]);
+        }
+
+        cellValues = cellValues.set(cellKey, fillValue);
+    });
+
+    return cellValues;
+}
+
+// https://stackoverflow.com/questions/10713878/decimal-subtraction-problems-in-javascript
+function decimalDifference(first, second, subtract = true): number {
+    const multiplier = 10000; // this will only help/work to 4 decimal places
+    return (first * multiplier + (subtract ? -1 : 1) * second * multiplier) / multiplier;
 }
 
 export async function pasteEvent(

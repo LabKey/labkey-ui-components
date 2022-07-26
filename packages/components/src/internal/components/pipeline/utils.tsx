@@ -2,7 +2,8 @@ import React, { ReactNode } from 'react';
 import { Utils } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
-import { ACTIVE_JOB_INDICATOR_CLS, App, AssayUploadResultModel, ProductMenuModel, Tip } from '../../../index';
+import { ACTIVE_JOB_INDICATOR_CLS, AssayUploadResultModel, ProductMenuModel, Tip } from '../../../index';
+import { WORKFLOW_KEY } from '../../app/constants';
 
 export function hasActivePipelineJob(menu: ProductMenuModel, sectionKey: string, itemLabel: string): boolean {
     if (!menu.isLoaded) return false;
@@ -27,7 +28,7 @@ export function getPipelineLinkMsg(response: AssayUploadResultModel): ReactNode 
 
 export function getWorkflowLinkMsg(workflowJobId?: string, workflowTaskId?: string): ReactNode {
     if (workflowJobId) {
-        let jobTasksUrl = AppURL.create(App.WORKFLOW_KEY, workflowJobId, 'tasks');
+        let jobTasksUrl = AppURL.create(WORKFLOW_KEY, workflowJobId, 'tasks');
         if (workflowTaskId) {
             jobTasksUrl = jobTasksUrl.addParams({
                 taskId: workflowTaskId,

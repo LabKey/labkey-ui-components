@@ -2,9 +2,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { PermissionTypes } from '@labkey/api';
 
-import { App, AppURL } from '../../..';
+import { AppURL } from '../../..';
 
 import { EmptyAlert, EmptyAlertWithPermissions } from './EmptyAlert';
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
 const EMPTY_ALERT = 'div.empty-alert';
 
@@ -59,13 +60,13 @@ describe('EmptyAlertWithPermissions', () => {
         // Should not display action link when user is not provided
         expect(wrapper.find(EMPTY_ALERT).text()).toEqual(expectedMessage);
 
-        wrapper.setProps({ user: App.TEST_USER_EDITOR });
+        wrapper.setProps({ user: TEST_USER_EDITOR });
 
         // Assert
         // Should display action link for editor
         expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(actionURL.toHref());
 
-        wrapper.setProps({ user: App.TEST_USER_READER });
+        wrapper.setProps({ user: TEST_USER_READER });
 
         // Assert
         // Should not display action link for reader

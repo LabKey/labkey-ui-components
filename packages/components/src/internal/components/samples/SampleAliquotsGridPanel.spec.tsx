@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {
-    App,
     EntityDeleteModal,
     LoadingSpinner,
     LoadingState,
@@ -16,13 +15,13 @@ import {
 import { mountWithAppServerContext } from '../../testHelpers';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
-import { TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
+import { TEST_USER_EDITOR, TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
 
 import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
 
 describe('SampleAliquotsGridPanel', () => {
     const SCHEMA_QUERY = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');
-    const DEFAULT_CONTEXT = { user: App.TEST_USER_EDITOR };
+    const DEFAULT_CONTEXT = { user: TEST_USER_EDITOR };
 
     const DEFAULT_PROPS = {
         actions: makeTestActions(jest.fn),
@@ -32,7 +31,7 @@ describe('SampleAliquotsGridPanel', () => {
         },
         sampleLsid: 'lsidValue',
         schemaQuery: SCHEMA_QUERY,
-        user: App.TEST_USER_READER,
+        user: TEST_USER_READER,
     };
 
     test('check buttons with permissions', () => {

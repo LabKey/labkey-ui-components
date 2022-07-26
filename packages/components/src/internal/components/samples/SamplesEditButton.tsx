@@ -3,7 +3,6 @@ import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
 import {
-    App,
     buildURL,
     hasAnyPermissions,
     ManageDropdownButton,
@@ -23,6 +22,7 @@ import { getSampleTypeRowId } from './actions';
 import { SamplesEditButtonSections, shouldIncludeMenuItem } from './utils';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { EntityLineageEditMenuItem } from '../entities/EntityLineageEditMenuItem';
+import { hasModule } from '../../app/utils';
 
 interface OwnProps {
     showLinkToStudy?: boolean;
@@ -64,7 +64,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
     const showDelete = shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, excludedMenuKeys);
     const showStudy =
         showLinkToStudy &&
-        App.hasModule('study', moduleContext) &&
+        hasModule('study', moduleContext) &&
         shouldIncludeMenuItem(SamplesEditButtonSections.LINKTOSTUDY, excludedMenuKeys);
 
     return (

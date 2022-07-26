@@ -3,7 +3,6 @@ import { Checkbox, MenuItem } from 'react-bootstrap';
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
-    App,
     AppURL,
     InsufficientPermissionsPage,
     invalidateLineageResults,
@@ -38,6 +37,7 @@ import { Picklist, PICKLIST_SAMPLES_FILTER } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
+import { PICKLIST_KEY } from '../../app/constants';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';
@@ -102,7 +102,7 @@ export const PicklistOverviewImpl: FC<Props> = memo(props => {
         deletePicklists([picklist])
             .then(() => {
                 hideDeletePicklistConfirm();
-                navigate(AppURL.create(App.PICKLIST_KEY));
+                navigate(AppURL.create(PICKLIST_KEY));
                 createNotification('Successfully deleted picklist "' + picklist.name + '".');
             })
             .catch(() => {

@@ -3,7 +3,6 @@ import { Set, List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
 import {
-    App,
     EXPORT_TYPES,
     GridAliquotViewSelector,
     InjectedQueryModels,
@@ -274,7 +273,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     {...(samplesEditableGridProps as SamplesEditableGridProps)}
                     determineSampleData={user.canUpdate}
                     determineLineage={user.canUpdate}
-                    determineStorage={App.userCanEditStorageData(user)}
+                    determineStorage={userCanEditStorageData(user)}
                     displayQueryModel={activeModel}
                     editableGridUpdateData={editableGridUpdateData}
                     onGridEditCancel={resetState}

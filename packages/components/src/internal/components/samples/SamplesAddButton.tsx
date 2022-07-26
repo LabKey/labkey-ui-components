@@ -3,7 +3,8 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { App, RequiresPermission, SubMenuItem } from '../../..';
+import { RequiresPermission, SubMenuItem } from '../../..';
+import { NEW_SAMPLES_HREF } from '../../app/constants';
 
 const SAMPLE_IMPORT_TAB_ID = 2;
 
@@ -19,10 +20,10 @@ export const SamplesAddButton: FC<Props> = memo(props => {
     const { model, hideImport, asSubMenu, text = 'Add', bsStyle = 'default' } = props;
     const { showInsertNewButton, showImportDataButton, queryInfo } = model;
     const cls = bsStyle === 'default' ? 'responsive-menu' : '';
-    const createSampleHref = App.NEW_SAMPLES_HREF.addParams({
+    const createSampleHref = NEW_SAMPLES_HREF.addParams({
         target: queryInfo?.schemaQuery?.queryName,
     }).toHref();
-    const importSampleHref = App.NEW_SAMPLES_HREF.addParams({
+    const importSampleHref = NEW_SAMPLES_HREF.addParams({
         target: queryInfo?.schemaQuery?.queryName,
         tab: SAMPLE_IMPORT_TAB_ID,
     }).toHref();

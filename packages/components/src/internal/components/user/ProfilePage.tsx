@@ -16,7 +16,7 @@ import { Notifications } from '../notifications/Notifications';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { App, useNotificationsContext } from '../../..';
+import { useNotificationsContext } from '../../..';
 
 import { UserDetailHeader } from './UserDetailHeader';
 import { getUserRoleDisplay } from './actions';
@@ -25,6 +25,7 @@ import { UserProfile } from './UserProfile';
 import { ChangePasswordModal } from './ChangePasswordModal';
 
 import { useUserProperties } from './UserProvider';
+import { getDateFormat } from '../../app/utils';
 
 interface Props {
     goBack: (n?: number) => any;
@@ -88,7 +89,7 @@ export const ProfilePage: FC<Props> = props => {
                 user={user}
                 title={user.displayName + "'s Profile"}
                 description={getUserRoleDisplay(user)}
-                dateFormat={App.getDateFormat().toUpperCase()}
+                dateFormat={getDateFormat().toUpperCase()}
                 renderButtons={
                     allowChangePassword ? <Button onClick={toggleChangePassword}>Change Password</Button> : null
                 }

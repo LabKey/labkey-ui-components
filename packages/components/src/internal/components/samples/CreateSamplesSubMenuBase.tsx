@@ -3,7 +3,6 @@ import { List } from 'immutable';
 
 import {
     ALIQUOT_CREATION,
-    App,
     AppURL,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
@@ -17,6 +16,7 @@ import {
     SchemaQuery,
     SubMenu,
 } from '../../..';
+import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
 
 interface CreateSamplesSubMenuProps {
     getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
@@ -143,7 +143,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
             <SubMenu
                 currentMenuChoice={menuCurrentChoice}
                 extractCurrentMenuChoice={false}
-                key={App.SAMPLES_KEY}
+                key={SAMPLES_KEY}
                 options={
                     getOptions
                         ? getOptions(useOnClick, disabledMsg, disabledMsg ? undefined : onSampleCreationMenuSelect)
@@ -157,7 +157,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     show={true}
                     showIcons={true}
                     parentCount={selectedQuantity}
-                    options={parentType === App.SOURCES_KEY ? [CHILD_SAMPLE_CREATION] : sampleOptions}
+                    options={parentType === SOURCES_KEY ? [CHILD_SAMPLE_CREATION] : sampleOptions}
                     onCancel={onCancel}
                     onSubmit={onSampleCreationSubmit}
                     selectionKey={selectedItems ? undefined : selectionKey}

@@ -5,7 +5,6 @@ import { Filter } from '@labkey/api';
 import { mount } from 'enzyme';
 
 import {
-    App,
     filterSampleRowsForOperation,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
@@ -28,6 +27,7 @@ import {
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
 import { getSampleStatus, getSampleStatusType, getSampleTypeTemplateUrl, shouldIncludeMenuItem } from './utils';
+import { TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
@@ -35,15 +35,15 @@ const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
 test('getOmittedSampleTypeColumn', () => {
     LABKEY.moduleContext = {};
     expect(isFreezerManagementEnabled()).toBeFalsy();
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_READER)).toStrictEqual(INVENTORY_COLS);
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST)).toStrictEqual(
+    expect(getOmittedSampleTypeColumns(TEST_USER_READER)).toStrictEqual(INVENTORY_COLS);
+    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST)).toStrictEqual(
         [CHECKED_OUT_BY_FIELD].concat(INVENTORY_COLS)
     );
 
     LABKEY.moduleContext = { inventory: {} };
     expect(isFreezerManagementEnabled()).toBeTruthy();
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_READER)).toStrictEqual([]);
-    expect(getOmittedSampleTypeColumns(App.TEST_USER_GUEST)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
+    expect(getOmittedSampleTypeColumns(TEST_USER_READER)).toStrictEqual([]);
+    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
 });
 
 describe('getSampleDeleteMessage', () => {

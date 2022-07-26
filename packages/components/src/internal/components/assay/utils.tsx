@@ -7,10 +7,10 @@ import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { processRequest } from '../../query/api';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
-import { App } from '../../../index';
 import { getPipelineLinkMsg, getWorkflowLinkMsg } from '../pipeline/utils';
 
 import { AssayUploadResultModel } from './models';
+import { ASSAYS_KEY } from '../../app/constants';
 
 export function inferDomainFromFile(
     file: File,
@@ -79,7 +79,7 @@ function getAssayImportSuccessMsg(
         if (assayDefinition) {
             // Displayed if 'Save and Import Another Run' chosen
             const href = AppURL.create(
-                App.ASSAYS_KEY,
+                ASSAYS_KEY,
                 assayDefinition.type,
                 assayDefinition.name,
                 'runs',

@@ -8,7 +8,6 @@ import { fromJS, Map, OrderedSet } from 'immutable';
 import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
 import {
-    App,
     AppURL,
     caseInsensitive,
     ISelectRowsResult,
@@ -34,6 +33,7 @@ import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants
 import { LINEAGE_DIRECTIONS, LineageFilter, LineageLinkMetadata, LineageOptions } from './types';
 import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
 import { getURLResolver, LineageURLResolver } from './LineageURLResolvers';
+import { SAMPLES_KEY } from '../../app/constants';
 
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
@@ -308,7 +308,7 @@ function computeSampleCounts(lineageResult: LineageResult, sampleSets: ISelectRo
 
         return {
             name: {
-                url: AppURL.create(App.SAMPLES_KEY, name).toHref(),
+                url: AppURL.create(SAMPLES_KEY, name).toHref(),
                 value: name,
             },
             sampleCount: {

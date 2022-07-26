@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Move `jest` and `enzyme` from devDependencies to dependencies
+* remove @labkey/components package internal imports of App from index.ts
 
 ### version 2.202.0
 *Released*: 26 July 2022

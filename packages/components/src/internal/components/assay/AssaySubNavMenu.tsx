@@ -5,7 +5,8 @@
 import React, { Component } from 'react';
 import { List } from 'immutable';
 import { WithRouterProps } from 'react-router';
-import { App, AppURL, InjectedAssayModel, ITab, SubNav, withAssayModelsFromLocation } from '../../..';
+import { AppURL, InjectedAssayModel, ITab, SubNav, withAssayModelsFromLocation } from '../../..';
+import { ASSAYS_KEY } from '../../app/constants';
 
 const BATCHES_TAB = 'Batches';
 const TABS_WITHOUT_BATCHES = List<string>(['Overview', 'Runs', 'Results']);
@@ -20,7 +21,7 @@ export class AssaySubNavMenuImpl extends Component<Props> {
 
     PARENT_TAB: ITab = {
         text: 'Assays',
-        url: AppURL.create(App.ASSAYS_KEY)
+        url: AppURL.create(ASSAYS_KEY)
     };
 
     generateTabs(): List<ITab> {

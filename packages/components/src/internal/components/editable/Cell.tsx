@@ -19,9 +19,9 @@ import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Query } from '@labkey/api';
 
-import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events';
+import { cancelEvent, isCopy, isFillDown, isPaste, isSelectAll } from '../../events';
 import { CellMessage, ValueDescriptor } from '../../models';
-import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
+import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
 import { QueryColumn } from '../../..';
 
@@ -32,6 +32,7 @@ import { DateInputCell, DateInputCellProps } from './DateInputCell';
 
 export interface CellActions {
     clearSelection: () => void;
+    fillDown: () => void;
     focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
     inDrag: () => boolean; // Not really an action, but useful to be part of this interface
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
@@ -47,6 +48,7 @@ interface Props {
     filteredLookupValues?: List<string>;
     focused?: boolean;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
+    lastSelection?: boolean;
     linkedValues?: any[];
     locked?: boolean;
     message?: CellMessage;
@@ -70,6 +72,7 @@ export class Cell extends React.PureComponent<Props, State> {
 
     static defaultProps = {
         focused: false,
+        lastSelection: false,
         message: undefined,
         selected: false,
         selection: false,
@@ -171,7 +174,7 @@ export class Cell extends React.PureComponent<Props, State> {
 
     handleKeys = (event: React.KeyboardEvent<HTMLElement>) => {
         const { cellActions, colIdx, focused, rowIdx, selected } = this.props;
-        const { focusCell, modifyCell, selectCell } = cellActions;
+        const { focusCell, modifyCell, selectCell, fillDown } = cellActions;
 
         switch (event.keyCode) {
             case KEYS.Alt:
@@ -228,6 +231,9 @@ export class Cell extends React.PureComponent<Props, State> {
                     if (isSelectAll(event)) {
                         cancelEvent(event);
                         selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
+                    } else if (isFillDown(event)) {
+                        cancelEvent(event);
+                        fillDown();
                     } else {
                         // Do not cancel event here, otherwise, key capture will be lost
                         focusCell(colIdx, rowIdx, !this.isReadOnly());
@@ -255,7 +261,12 @@ export class Cell extends React.PureComponent<Props, State> {
             cancelEvent(event);
             selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA);
         } else if (!selected) {
-            selectCell(colIdx, rowIdx);
+            const isDragHandle = event.target?.className?.indexOf(CELL_SELECTION_HANDLE_CLASSNAME) > -1;
+            if (isDragHandle) {
+                selectCell(colIdx, rowIdx, SELECTION_TYPES.AREA); // use AREA to keep initial selection in the range
+            } else {
+                selectCell(colIdx, rowIdx);
+            }
         }
     };
 
@@ -266,6 +277,7 @@ export class Cell extends React.PureComponent<Props, State> {
             colIdx,
             containerFilter,
             focused,
+            lastSelection,
             message,
             placeholder,
             rowIdx,
@@ -322,7 +334,7 @@ export class Cell extends React.PureComponent<Props, State> {
             }
 
             if (message) {
-                return (
+                cell = (
                     <OverlayTrigger
                         overlay={
                             <Popover bsClass="popover" id="grid-cell-popover">
@@ -336,7 +348,14 @@ export class Cell extends React.PureComponent<Props, State> {
                 );
             }
 
-            return cell;
+            return (
+                <>
+                    {cell}
+                    {lastSelection && !this.isReadOnly() && (
+                        <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />
+                    )}
+                </>
+            );
         }
 
         if (showLookup) {

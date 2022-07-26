@@ -19,7 +19,7 @@ import { AppURL, DataViewInfoTypes, QueryColumn, QueryInfo, QueryModel, resolveS
 
 import { encodePart } from '../public/SchemaQuery';
 
-import { genCellKey } from './actions';
+import { genCellKey, getSortedCellKeys, parseCellKey } from './actions';
 import { getQueryColumnRenderers } from './global';
 import { GRID_EDIT_INDEX } from './constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
@@ -414,9 +414,8 @@ export class EditorModel
                             values.size === 1 ? quoteValueWithDelimiters(values.first().display, ',') : undefined
                         );
                     } else {
-                        let val = undefined;
-                        if (values.size === 1)
-                            val = forExport ? values.first()?.display : values.first()?.raw;
+                        let val;
+                        if (values.size === 1) val = forExport ? values.first()?.display : values.first()?.raw;
                         row = row.set(col.name, val);
                     }
                 } else if (col.jsonType === 'date' && !displayValues) {
@@ -585,7 +584,10 @@ export class EditorModel
     }
 
     getValue(colIdx: number, rowIdx: number): List<ValueDescriptor> {
-        const cellKey = genCellKey(colIdx, rowIdx);
+        return this.getValueForCellKey(genCellKey(colIdx, rowIdx));
+    }
+
+    getValueForCellKey(cellKey: string): List<ValueDescriptor> {
         if (this.cellValues.has(cellKey)) {
             return this.cellValues.get(cellKey);
         }
@@ -601,8 +603,20 @@ export class EditorModel
         return this.selectionCells.size > 1;
     }
 
+    hasMultipleColumnSelection(): boolean {
+        if (!this.hasMultipleSelection()) return false;
+
+        const firstCellColIdx = parseCellKey(this.selectionCells.first()).colIdx;
+        return !this.selectionCells.every(cellKey => parseCellKey(cellKey).colIdx === firstCellColIdx);
+    }
+
     hasSelection(): boolean {
         return this.selectedColIdx > -1 && this.selectedRowIdx > -1;
+    }
+
+    get selectionKey(): string {
+        if (this.hasSelection()) return genCellKey(this.selectedColIdx, this.selectedRowIdx);
+        return undefined;
     }
 
     isInBounds(colIdx: number, rowIdx: number): boolean {
@@ -611,6 +625,10 @@ export class EditorModel
 
     inSelection(colIdx: number, rowIdx: number): boolean {
         return colIdx > -1 && rowIdx > -1 && this.selectionCells.get(genCellKey(colIdx, rowIdx)) !== undefined;
+    }
+
+    get sortedSelectionKeys(): string[] {
+        return getSortedCellKeys(this.selectionCells.toArray(), this.rowCount);
     }
 
     hasRawValue(descriptor: ValueDescriptor) {
@@ -695,6 +713,25 @@ export class EditorModel
 
     isRowEmpty(editedRow: Map<string, any>): boolean {
         return editedRow.find(value => value !== undefined) === undefined;
+    }
+
+    lastSelection(colIdx: number, rowIdx: number): boolean {
+        let cellKeys = [];
+
+        // Initial implementation of drag handle fill actions only support single column selection
+        if (!this.hasMultipleColumnSelection()) {
+            if (this.hasMultipleSelection()) {
+                cellKeys = this.sortedSelectionKeys;
+            } else {
+                cellKeys = [this.selectionKey];
+            }
+        }
+
+        if (cellKeys.length === 0) {
+            return false;
+        }
+
+        return cellKeys.indexOf(genCellKey(colIdx, rowIdx)) === cellKeys.length - 1;
     }
 }
 

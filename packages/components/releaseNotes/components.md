@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.201.2
+*Released*: 26 July 2022
+* Merge release22.7-SNAPSHOT to develop
+    * Includes changes from version 2.194.7
+
 ### version 2.201.1
 *Released*: 21 July 2022
 * Issue 45822: incorrect unit types available when adding sample to storage
@@ -67,6 +72,11 @@ Added SearchScope enum and ContainerFilter mapping utility method
 *Released*: 7 July 2022
 * Issue 45149: "Assay Results" tabbed grid can remove tabs if you filter a grid to zero rows
   * store in state the set of queryModels with data after all have loaded
+
+### version 2.194.7
+*Released*: 22 July 2022
+* Issue 45852: External links should include 'noopener' in 'ref' attribute
+    * round 2: this was missed from the changes in 2.194.6
 
 ### version 2.194.6
 *Released*: 14 July 2022

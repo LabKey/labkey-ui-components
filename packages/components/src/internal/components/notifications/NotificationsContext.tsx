@@ -2,9 +2,8 @@ import React, { ComponentType, createContext, FC, memo, useCallback, useContext,
 import { Map } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { App } from '../../..';
-
 import { NotificationCreatable, NotificationItemModel, NotificationItemProps, Persistence } from './model';
+import { NOTIFICATION_TIMEOUT } from '../../app/constants';
 
 export interface NotificationsContextProps {
     createNotification: (creatable: NotificationCreatable, withTimeout?: boolean, callback?: () => void) => void;
@@ -74,9 +73,9 @@ export const NotificationsContextProvider: FC<NotificationsContextProviderProps>
          */
         const createNotification = useCallback(
             (creatable: NotificationCreatable, withTimeout = false, callback?: any) => {
-                if (callback) window.setTimeout(callback, App.NOTIFICATION_TIMEOUT);
+                if (callback) window.setTimeout(callback, NOTIFICATION_TIMEOUT);
                 if (withTimeout) {
-                    window.setTimeout(() => createNotification(creatable), App.NOTIFICATION_TIMEOUT);
+                    window.setTimeout(() => createNotification(creatable), NOTIFICATION_TIMEOUT);
                     return;
                 }
 

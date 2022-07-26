@@ -28,12 +28,14 @@ interface CreateSamplesSubMenuProps {
     parentType?: string;
     parentKey?: string;
     parentQueryModel?: QueryModel;
-    sampleWizardURL?: (targetSampleType?: string, parent?: string) => AppURL;
+    sampleWizardURL?: (targetSampleType?: string, parent?: string, currentProductId?: string, targetProductId?: string, selectionKey?: string) => AppURL;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     allowPooledSamples?: boolean;
     selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
     inlineItemsCount?: number;
+    currentProductId?: string;
+    targetProductId?: string;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -53,6 +55,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         selectedItems,
         selectedType,
         inlineItemsCount,
+        currentProductId,
+        targetProductId
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -86,9 +90,11 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         (key: string) => {
             let appURL: string | AppURL;
 
+            console.log(parentKey);
+            console.log(selectionKey);
+
             if (sampleWizardURL) {
-                appURL = sampleWizardURL(key, parentKey);
-                if (selectionKey) appURL = appURL.addParam('selectionKey', selectionKey);
+                appURL = sampleWizardURL(key, parentKey, currentProductId, targetProductId, selectionKey);
             } else if (getProductSampleWizardURL) {
                 appURL = getProductSampleWizardURL(key, parentKey, selectionKey);
             }
@@ -100,7 +106,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 return appURL;
             }
         },
-        [sampleWizardURL, getProductSampleWizardURL, useOnClick, parentKey, selectionKey]
+        [sampleWizardURL, getProductSampleWizardURL, useOnClick, parentKey, currentProductId, targetProductId, selectionKey]
     );
 
     const onCancel = useCallback(() => {
@@ -125,6 +131,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
             selected: selectedType === SampleCreationType.Derivatives,
         } as SampleCreationTypeModel,
     ];
+
     if (selectedOption && selectedOption === menuCurrentChoice) {
         if (allowPooledSamples) {
             sampleOptions.push({

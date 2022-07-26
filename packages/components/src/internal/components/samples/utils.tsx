@@ -6,7 +6,7 @@ import { User } from '../base/models/User';
 import {
     App,
     AppURL,
-    caseInsensitive,
+    caseInsensitive, createProductUrlFromParts,
     downloadAttachment,
     getQueryDetails,
     getSampleTypeDetails,
@@ -30,6 +30,7 @@ import { OperationConfirmationData } from '../entities/models';
 import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
 import { SampleStatus } from './models';
+import {SAMPLES_KEY} from "../../app/constants";
 
 export function getOmittedSampleTypeColumns(user: User): string[] {
     let cols: string[] = [];
@@ -277,16 +278,29 @@ export const getSampleTypeTemplateUrl = (
  * Provides sample wizard URL for this application.
  * @param targetSampleSet - Intended sample type of newly created samples.
  * @param parent - Intended parent of derived samples. Format SCHEMA:QUERY:ID
+ * @param currentProductId
+ * @param targetProductId
+ * @param selectionKey
  */
-export function getSampleWizardURL(targetSampleSet?: string, parent?: string): AppURL {
-    let url = App.NEW_SAMPLES_HREF;
+export function getSampleWizardURL(targetSampleSet?: string, parent?: string, currentProductId?: string, targetProductId?: string, selectionKey?: string) : string | AppURL {
+    let params = {}, url;
 
     if (targetSampleSet) {
-        url = url.addParam('target', targetSampleSet);
+        params['target'] = targetSampleSet;
     }
 
     if (parent) {
-        url = url.addParam('parent', parent);
+        params['parent'] = parent;
+    }
+
+    if (selectionKey)
+        params['selectionKey'] = selectionKey;
+
+    if (currentProductId && targetProductId && currentProductId !== targetProductId) {
+        url = createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
+    }
+    else {
+        url = App.NEW_SAMPLES_HREF.addParams(params).toHref();
     }
 
     return url;

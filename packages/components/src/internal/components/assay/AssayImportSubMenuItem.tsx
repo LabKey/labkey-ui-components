@@ -16,6 +16,9 @@ interface Props extends SubMenuItemProps {
     providerType?: string;
     queryModel: QueryModel;
     requireSelection: boolean;
+    currentProductId?: string;
+    targetProductId?: string;
+    ignoreFilter?: boolean;
 }
 
 // exported for jest testing
@@ -30,6 +33,9 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         queryModel,
         requireSelection,
         text = 'Import Assay Data',
+        currentProductId,
+        targetProductId,
+        ignoreFilter,
     } = props;
 
     const items = useMemo(() => {
@@ -37,14 +43,14 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             return [];
         }
 
-        return getImportItemsForAssayDefinitions(assayModel, queryModel, providerType, !!picklistName).reduce(
+        return getImportItemsForAssayDefinitions(assayModel, queryModel, providerType, !!picklistName, currentProductId, targetProductId, ignoreFilter).reduce(
             (subItems, href, assay) => {
                 subItems.push({ text: assay.name, href });
                 return subItems;
             },
             []
         );
-    }, [assayModel, isLoaded, providerType, queryModel]);
+    }, [assayModel, isLoaded, providerType, queryModel, currentProductId, targetProductId]);
 
     if (disabled) {
         return <DisableableMenuItem operationPermitted={false}>{text}</DisableableMenuItem>;

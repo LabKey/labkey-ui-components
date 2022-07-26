@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter } from '@labkey/api';
 
-import { OperationConfirmationData, QueryModel, User } from '../../..';
+import {AppURL, OperationConfirmationData, QueryModel, User} from '../../..';
 
 import { SampleStateType } from './constants';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
@@ -182,4 +182,5 @@ export interface SampleGridButtonProps {
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     showBulkUpdate?: () => void;
     toggleEditWithGridUpdate?: () => void;
+    navigate?: (url: string | AppURL) => void;
 }

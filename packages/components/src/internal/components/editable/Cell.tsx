@@ -15,20 +15,20 @@
  */
 import React from 'react';
 import classNames from 'classnames';
-import {List} from 'immutable';
-import {OverlayTrigger, Popover} from 'react-bootstrap';
-import {Query} from '@labkey/api';
+import { List } from 'immutable';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Query } from '@labkey/api';
 
-import {cancelEvent, isCopy, isFillDown, isPaste, isSelectAll} from '../../events';
-import {CellMessage, ValueDescriptor} from '../../models';
-import {CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES} from '../../constants';
+import { cancelEvent, isCopy, isFillDown, isPaste, isSelectAll } from '../../events';
+import { CellMessage, ValueDescriptor } from '../../models';
+import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
-import {QueryColumn} from '../../..';
+import { QueryColumn } from '../../..';
 
-import {getQueryColumnRenderers} from '../../global';
+import { getQueryColumnRenderers } from '../../global';
 
-import {LookupCell, LookupCellProps} from './LookupCell';
-import {DateInputCell, DateInputCellProps} from './DateInputCell';
+import { LookupCell, LookupCellProps } from './LookupCell';
+import { DateInputCell, DateInputCellProps } from './DateInputCell';
 
 export interface CellActions {
     clearSelection: () => void;

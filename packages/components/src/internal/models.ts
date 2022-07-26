@@ -414,9 +414,8 @@ export class EditorModel
                             values.size === 1 ? quoteValueWithDelimiters(values.first().display, ',') : undefined
                         );
                     } else {
-                        let val = undefined;
-                        if (values.size === 1)
-                            val = forExport ? values.first()?.display : values.first()?.raw;
+                        let val;
+                        if (values.size === 1) val = forExport ? values.first()?.display : values.first()?.raw;
                         row = row.set(col.name, val);
                     }
                 } else if (col.jsonType === 'date' && !displayValues) {

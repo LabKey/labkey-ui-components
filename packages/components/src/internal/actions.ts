@@ -1048,7 +1048,11 @@ export function dragFillEvent(
  * If the initSelection includes a range of cells and all values are numeric, fill via a generated sequence where the step/diff is based on the first and last value in the initSelection.
  * If the initSelection includes a range of cells and not all values are numeric, fill via a copy of all of the values in initSelection.
  */
-export function generateFillSequence(editorModel: EditorModel, initSelection: string[], fillSelection: string[]): CellValues {
+export function generateFillSequence(
+    editorModel: EditorModel,
+    initSelection: string[],
+    fillSelection: string[]
+): CellValues {
     const sortedInitSelection = getSortedCellKeys(initSelection, editorModel.rowCount);
     const initCellValues = sortedInitSelection.map(cellKey => editorModel.getValueForCellKey(cellKey));
     const initCellRawValues = initCellValues.map(cellValue => cellValue?.first()?.raw);

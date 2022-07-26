@@ -802,25 +802,88 @@ describe('EditorModel', () => {
         });
 
         test('sortedSelectionKeys', () => {
-            expect(new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).sortedSelectionKeys).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
-            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).sortedSelectionKeys).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
-            expect(new EditorModel({ selectionCells: Set(['1-10', '1-1', '1-5', '1-15']), rowCount: 100 }).sortedSelectionKeys).toStrictEqual(['1-1', '1-5', '1-10', '1-15']);
+            expect(
+                new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 })
+                    .sortedSelectionKeys
+            ).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
+            expect(
+                new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 })
+                    .sortedSelectionKeys
+            ).toStrictEqual(['0-0', '0-1', '1-0', '1-1']);
+            expect(
+                new EditorModel({ selectionCells: Set(['1-10', '1-1', '1-5', '1-15']), rowCount: 100 })
+                    .sortedSelectionKeys
+            ).toStrictEqual(['1-1', '1-5', '1-10', '1-15']);
         });
 
         test('lastSelection', () => {
             // multiple columns should always return false
-            expect(new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(0, 0)).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(1, 1)).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(0, 0)).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(1, 1)).toBeFalsy();
+            expect(
+                new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(
+                    0,
+                    0
+                )
+            ).toBeFalsy();
+            expect(
+                new EditorModel({ selectionCells: Set(['0-0', '0-1', '1-0', '1-1']), rowCount: 100 }).lastSelection(
+                    1,
+                    1
+                )
+            ).toBeFalsy();
+            expect(
+                new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(
+                    0,
+                    0
+                )
+            ).toBeFalsy();
+            expect(
+                new EditorModel({ selectionCells: Set(['1-0', '1-1', '0-1', '0-0']), rowCount: 100 }).lastSelection(
+                    1,
+                    1
+                )
+            ).toBeFalsy();
             // single column should have a true
-            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(1, 0)).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(1, 1)).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(1, 2)).toBeFalsy();
-            expect(new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(1, 3)).toBeTruthy();
+            expect(
+                new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
+                    1,
+                    0
+                )
+            ).toBeFalsy();
+            expect(
+                new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
+                    1,
+                    1
+                )
+            ).toBeFalsy();
+            expect(
+                new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
+                    1,
+                    2
+                )
+            ).toBeFalsy();
+            expect(
+                new EditorModel({ selectionCells: Set(['1-0', '1-1', '1-2', '1-3']), rowCount: 100 }).lastSelection(
+                    1,
+                    3
+                )
+            ).toBeTruthy();
             // single cell should always be true
-            expect(new EditorModel({ selectionCells: Set(), selectedColIdx: 0, selectedRowIdx: 0, rowCount: 100 }).lastSelection(0, 0)).toBeTruthy();
-            expect(new EditorModel({ selectionCells: Set(), selectedColIdx: 100, selectedRowIdx: 100, rowCount: 100 }).lastSelection(100, 100)).toBeTruthy();
+            expect(
+                new EditorModel({
+                    selectionCells: Set(),
+                    selectedColIdx: 0,
+                    selectedRowIdx: 0,
+                    rowCount: 100,
+                }).lastSelection(0, 0)
+            ).toBeTruthy();
+            expect(
+                new EditorModel({
+                    selectionCells: Set(),
+                    selectedColIdx: 100,
+                    selectedRowIdx: 100,
+                    rowCount: 100,
+                }).lastSelection(100, 100)
+            ).toBeTruthy();
         });
 
         test('isInBounds', () => {

@@ -32,7 +32,7 @@ import {
     getSortedCellKeys,
     generateFillSequence,
 } from './actions';
-import {CellMessage, CellValues, ValueDescriptor} from './models';
+import { CellMessage, CellValues, ValueDescriptor } from './models';
 
 // FIXME, when the editableGridWithData file is read in, the objects are automatically
 //  converted to Maps, which means accessing them like objects doesn't work.  That's a problem.

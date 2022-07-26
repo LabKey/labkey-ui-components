@@ -4,7 +4,6 @@ import { List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Query } from '@labkey/api';
 
 import {
-    App,
     caseInsensitive,
     deleteRows,
     EditableGridLoaderFromSelection,
@@ -37,6 +36,8 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { UpdateGridTab } from '../editable/EditableGridPanelForUpdateWithLineage';
 
 import { IEditableGridLoader } from '../../models';
+
+import { isFreezerManagementEnabled } from '../../app/utils';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import { getOriginalParentsFromLineage, getUpdatedLineageRows } from './actions';
@@ -270,11 +271,11 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         const totalSamplesToUpdate = sampleIds.size;
         const noun = totalSamplesToUpdate === 1 ? 'sample' : 'samples';
 
-        if (!skipConfirmDiscard && App.isFreezerManagementEnabled() && discardStorageRows.length > 0) {
+        if (!skipConfirmDiscard && isFreezerManagementEnabled() && discardStorageRows.length > 0) {
             return new Promise(resolve => {
                 this.setState({
                     pendingUpdateDataRows: updateDataRows,
-                    showDiscardDialog: App.isFreezerManagementEnabled(),
+                    showDiscardDialog: isFreezerManagementEnabled(),
                     discardSamplesCount: discardStorageRows.length,
                     totalEditCount: totalSamplesToUpdate,
                 });

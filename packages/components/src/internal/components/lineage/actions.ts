@@ -8,7 +8,6 @@ import { fromJS, Map, OrderedSet } from 'immutable';
 import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
 import {
-    App,
     AppURL,
     caseInsensitive,
     ISelectRowsResult,
@@ -18,6 +17,8 @@ import {
     SCHEMAS,
     selectRowsDeprecated,
 } from '../../..';
+
+import { SAMPLES_KEY } from '../../app/constants';
 
 import {
     Lineage,
@@ -39,9 +40,9 @@ const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Descriptio
 
 export interface WithNodeInteraction {
     isNodeInGraph?: (node: Experiment.LineageItemBase) => boolean;
-    onNodeMouseOver?: (node: Experiment.LineageItemBase) => void;
-    onNodeMouseOut?: (node: Experiment.LineageItemBase) => void;
     onNodeClick?: (node: Experiment.LineageItemBase) => void;
+    onNodeMouseOut?: (node: Experiment.LineageItemBase) => void;
+    onNodeMouseOver?: (node: Experiment.LineageItemBase) => void;
 }
 
 const NodeInteractionContext = createContext<WithNodeInteraction>(undefined);
@@ -308,7 +309,7 @@ function computeSampleCounts(lineageResult: LineageResult, sampleSets: ISelectRo
 
         return {
             name: {
-                url: AppURL.create(App.SAMPLES_KEY, name).toHref(),
+                url: AppURL.create(SAMPLES_KEY, name).toHref(),
                 value: name,
             },
             sampleCount: {

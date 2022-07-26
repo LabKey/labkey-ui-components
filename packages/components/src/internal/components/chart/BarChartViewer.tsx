@@ -5,7 +5,6 @@ import { Filter, PermissionTypes } from '@labkey/api';
 
 import {
     Alert,
-    App,
     AppURL,
     AssayDesignEmptyAlert,
     getActionErrorMessage,
@@ -24,7 +23,7 @@ import {
 
 import { getDateFormat, isSampleFinderEnabled } from '../../app/utils';
 
-import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
+import { ASSAYS_KEY, FIND_SAMPLES_BY_FILTER_HREF, NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
 
 import { SAMPLE_FILTER_METRIC_AREA } from '../search/utils';
 
@@ -272,12 +271,12 @@ export const SampleButtons: FC<SampleButtonProps> = memo(props => {
     return (
         <div className="pull-right bar-chart-viewer-sample-buttons">
             {isSampleFinderEnabled() && (
-                <Button bsStyle="primary" onClick={onSampleFinder} href={App.FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
+                <Button bsStyle="primary" onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
                     Go to Sample Finder
                 </Button>
             )}
             <RequiresPermission perms={PermissionTypes.Insert}>
-                <Button bsStyle="success" className="button-left-spacing" href={App.NEW_SAMPLES_HREF.toHref()}>
+                <Button bsStyle="success" className="button-left-spacing" href={NEW_SAMPLES_HREF.toHref()}>
                     Add Samples
                 </Button>
             </RequiresPermission>

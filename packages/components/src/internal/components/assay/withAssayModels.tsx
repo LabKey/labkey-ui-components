@@ -5,7 +5,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 import {
     Alert,
-    App,
     AssayDefinitionModel,
     AssayProtocolModel,
     AssayStateModel,
@@ -19,6 +18,8 @@ import {
 } from '../../..';
 
 import { fetchProtocol } from '../domainproperties/assay/actions';
+
+import { userCanReadAssays } from '../../app/utils';
 
 import { clearAssayDefinitionCache, fetchAllAssays } from './actions';
 
@@ -272,7 +273,7 @@ export function assayPage<Props>(
         const hasProtocol = assayName !== undefined;
         const { user } = useServerContext();
 
-        if (!App.userCanReadAssays(user)) {
+        if (!userCanReadAssays(user)) {
             return <InsufficientPermissionsPage title="Assays" />;
         }
         if (

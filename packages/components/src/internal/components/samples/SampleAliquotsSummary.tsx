@@ -10,43 +10,44 @@ import {
     QueryConfig,
     isLoading,
     LoadingSpinner,
-    App,
     AppURL,
     ALIQUOT_FILTER_MODE,
     SchemaQuery,
     caseInsensitive,
 } from '../../..';
 
+import { SAMPLES_KEY } from '../../app/constants';
+
 import { getSampleAliquotsQueryConfig, getSampleAliquotsStats } from './actions';
 import { SampleAliquotsStats } from './models';
 import { SampleAliquotAssaysCount } from './SampleAliquotAssaysCount';
 
 interface OwnProps {
-    sampleLsid: string;
-    sampleId: string;
-    sampleSet: string;
     aliquotJobsQueryConfig: QueryConfig;
+    sampleId: string;
+    sampleLsid: string;
     sampleRow: any;
     sampleSchemaQuery?: SchemaQuery;
+    sampleSet: string;
 }
 
 type Props = OwnProps & InjectedQueryModels;
 
 interface SampleAliquotsSummaryWithModelsProps {
     aliquotsModel: QueryModel;
-    jobsModel?: QueryModel;
     hideAssayData?: boolean;
+    jobsModel?: QueryModel;
 }
 
 // exported for jest testing
 export class SampleAliquotsSummaryWithModels extends PureComponent<Props & SampleAliquotsSummaryWithModelsProps> {
     renderStats(stats: SampleAliquotsStats, hideAssayData?: boolean) {
-        const { sampleSet, sampleId, sampleRow, sampleSchemaQuery, aliquotJobsQueryConfig } = this.props;
-        const aliquotUrl = AppURL.create(App.SAMPLES_KEY, sampleSet, sampleId, 'Aliquots');
-        const jobUrl = AppURL.create(App.SAMPLES_KEY, sampleSet, sampleId, 'Jobs')
+        const { sampleSet, sampleId, sampleRow, sampleSchemaQuery } = this.props;
+        const aliquotUrl = AppURL.create(SAMPLES_KEY, sampleSet, sampleId, 'Aliquots');
+        const jobUrl = AppURL.create(SAMPLES_KEY, sampleSet, sampleId, 'Jobs')
             .addParam('sampleAliquotType', ALIQUOT_FILTER_MODE.aliquots)
             .toHref();
-        const assayDataUrl = AppURL.create(App.SAMPLES_KEY, sampleSet, sampleId, 'Assays')
+        const assayDataUrl = AppURL.create(SAMPLES_KEY, sampleSet, sampleId, 'Assays')
             .addParam('sampleAliquotType', ALIQUOT_FILTER_MODE.aliquots)
             .toHref();
 

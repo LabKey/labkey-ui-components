@@ -1,6 +1,6 @@
 import { Filter } from '@labkey/api';
 
-import { AppURL, App, SCHEMAS } from '../../..';
+import { AppURL, SCHEMAS } from '../../..';
 
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 

@@ -4,7 +4,6 @@ import { ActionURL, Filter, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import {
-    App,
     AppURL,
     caseInsensitive,
     downloadAttachment,
@@ -23,9 +22,11 @@ import {
     SCHEMAS,
 } from '../../..';
 
-import { isSampleStatusEnabled } from '../../app/utils';
+import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
+
+import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
 
 import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
@@ -37,7 +38,7 @@ export function getOmittedSampleTypeColumns(user: User): string[] {
     if (user.isGuest) {
         cols.push(SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD);
     }
-    if (!App.isFreezerManagementEnabled()) {
+    if (!isFreezerManagementEnabled()) {
         cols = cols.concat(SCHEMAS.INVENTORY.INVENTORY_COLS);
     }
 
@@ -66,7 +67,7 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
             deleteMsg += 'there was a problem loading the delete confirmation data.';
         } else {
             deleteMsg += 'it has either derived sample or assay data dependencies';
-            if (App.isSampleStatusEnabled()) {
+            if (isSampleStatusEnabled()) {
                 deleteMsg += ' or status that prevents deletion';
             }
             deleteMsg += '. Check the Lineage and Assays tabs for this sample to get more information.';
@@ -207,7 +208,7 @@ export function filterSampleRowsForOperation(
 }
 
 export function getSampleSetMenuItem(menu: ProductMenuModel, key: string): MenuItemModel {
-    const sampleSetsSection = menu ? menu.getSection(App.SAMPLES_KEY) : undefined;
+    const sampleSetsSection = menu ? menu.getSection(SAMPLES_KEY) : undefined;
     return sampleSetsSection
         ? sampleSetsSection.items.find(set => Utils.caseInsensitiveEquals(set.get('key'), key))
         : undefined;
@@ -279,7 +280,7 @@ export const getSampleTypeTemplateUrl = (
  * @param parent - Intended parent of derived samples. Format SCHEMA:QUERY:ID
  */
 export function getSampleWizardURL(targetSampleSet?: string, parent?: string): AppURL {
-    let url = App.NEW_SAMPLES_HREF;
+    let url = NEW_SAMPLES_HREF;
 
     if (targetSampleSet) {
         url = url.addParam('target', targetSampleSet);

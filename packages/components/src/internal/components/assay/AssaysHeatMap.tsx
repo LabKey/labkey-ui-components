@@ -1,17 +1,18 @@
 import React, { FC, memo, useMemo } from 'react';
 import { Filter } from '@labkey/api';
 
-import { Alert, AppURL, SCHEMAS, HeatMap, App, HeatMapCell } from '../../..';
+import { Alert, AppURL, SCHEMAS, HeatMap, HeatMapCell } from '../../..';
+import { ASSAYS_KEY } from '../../app/constants';
 
 interface Props {
-    navigate: (url: AppURL) => any;
     excludedAssayProviders?: string[];
+    navigate: (url: AppURL) => any;
 }
 
 const getAssayUrl = (provider: string, protocol: string, page?: string): AppURL => {
     if (provider && protocol) {
-        if (page) return AppURL.create(App.ASSAYS_KEY, provider, protocol, page);
-        return AppURL.create(App.ASSAYS_KEY, provider, protocol);
+        if (page) return AppURL.create(ASSAYS_KEY, provider, protocol, page);
+        return AppURL.create(ASSAYS_KEY, provider, protocol);
     }
     return undefined;
 };

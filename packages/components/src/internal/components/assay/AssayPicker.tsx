@@ -72,7 +72,6 @@ const getSelectedProvider = (providers: AssayProvider[], name: string): AssayPro
 
 export const AssayPicker: FC<AssayPickerProps> = memo(props => {
     const { showImport, showContainerSelect, onChange, selectedTab, excludedProviders, hasPremium } = props;
-    const { createNotification } = useNotificationsContext();
     const [providers, setProviders] = useState<AssayProvider[]>();
     const [containers, setContainers] = useState<{ [key: string]: string }>();
     const [assaySelectionModel, setAssaySelectionModel] = useImmer<AssayPickerSelectionModel>({
@@ -81,6 +80,14 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
         file: undefined,
         tab: undefined,
     });
+
+    // useNotificationsContext will not always be available depending on if the app wraps the NotificationsContext.Provider
+    let _createNotification;
+    try {
+        _createNotification = useNotificationsContext().createNotification;
+    } catch (e) {
+        // this is expected for LKS usages, so don't throw or console.error
+    }
 
     useEffect(() => {
         queryAssayProviders()
@@ -99,9 +106,9 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
             })
             .catch(error => {
                 console.error(error);
-                createNotification({ message: error, alertClass: 'danger' });
+                _createNotification?.({ message: error, alertClass: 'danger' });
             });
-    }, [createNotification, excludedProviders]);
+    }, [_createNotification, excludedProviders, setAssaySelectionModel]);
 
     useEffect(() => {
         onTabChange((selectedTab ?? AssayPickerTabs.STANDARD_ASSAY_TAB) as any);

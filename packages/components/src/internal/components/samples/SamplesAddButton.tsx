@@ -3,16 +3,17 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import {App, createProductUrlFromParts, RequiresPermission, SubMenuItem} from '../../..';
+import { createProductUrlFromParts, RequiresPermission, SubMenuItem } from '../../..';
+import { NEW_SAMPLES_HREF } from '../../app/constants';
 
 const SAMPLE_IMPORT_TAB_ID = 2;
 
 interface Props {
-    model: QueryModel;
-    hideImport?: boolean;
     asSubMenu?: boolean;
-    text?: string;
     bsStyle?: string;
+    hideImport?: boolean;
+    model: QueryModel;
+    text?: string;
     currentProductId?: string;
     targetProductId?: string;
 }
@@ -29,8 +30,8 @@ export const SamplesAddButton: FC<Props> = memo(props => {
         tab: SAMPLE_IMPORT_TAB_ID,
     };
 
-    let createSampleHref : any = App.NEW_SAMPLES_HREF.addParams(createUrlParam).toHref();
-    let importSampleHref : any  = App.NEW_SAMPLES_HREF.addParams(importUrlParam).toHref();
+    let createSampleHref : any = NEW_SAMPLES_HREF.addParams(createUrlParam).toHref();
+    let importSampleHref : any  = NEW_SAMPLES_HREF.addParams(importUrlParam).toHref();
     if (currentProductId && targetProductId && targetProductId !== currentProductId) {
         createSampleHref = createProductUrlFromParts(targetProductId, currentProductId, createUrlParam, App.SAMPLES_KEY, "new");
         importSampleHref = createProductUrlFromParts(targetProductId, currentProductId, importUrlParam, App.SAMPLES_KEY, "new");

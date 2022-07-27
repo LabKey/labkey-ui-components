@@ -4,7 +4,7 @@
  */
 import { fromJS, Map, Record, List } from 'immutable';
 
-import { App } from '../../..';
+import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 
 export class AuditDetailsModel extends Record({
     rowId: undefined,
@@ -141,7 +141,7 @@ export class TimelineEventModel extends Record({
     getIcon(): string {
         let icon = this.eventType;
 
-        if (App.ASSAYS_KEY === this.eventType) icon = 'assay';
+        if (ASSAYS_KEY === this.eventType) icon = 'assay';
         else if (this.eventType === 'inventory') {
             const summary = this.summary.toLowerCase();
             if (summary.indexOf('added to') > -1 || summary.indexOf('added location') > -1) icon = 'storage_insert';
@@ -151,7 +151,7 @@ export class TimelineEventModel extends Record({
             else if (summary.indexOf('checked out') > -1) icon = 'storage_checkout';
             else if (summary.indexOf('moved') > -1) icon = 'storage_move';
             // for storage update events not associated with check in, use samples icon
-            else icon = App.SAMPLES_KEY;
+            else icon = SAMPLES_KEY;
         }
 
         return icon;
@@ -160,6 +160,6 @@ export class TimelineEventModel extends Record({
 
 export interface TimelineGroupedEventInfo {
     firstEvent: TimelineEventModel;
-    lastEvent: TimelineEventModel;
     isCompleted: boolean;
+    lastEvent: TimelineEventModel;
 }

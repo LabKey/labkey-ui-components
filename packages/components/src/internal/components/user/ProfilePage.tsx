@@ -16,7 +16,9 @@ import { Notifications } from '../notifications/Notifications';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { App, useNotificationsContext } from '../../..';
+import { useNotificationsContext } from '../../..';
+
+import { getDateFormat } from '../../app/utils';
 
 import { UserDetailHeader } from './UserDetailHeader';
 import { getUserRoleDisplay } from './actions';
@@ -88,7 +90,7 @@ export const ProfilePage: FC<Props> = props => {
                 user={user}
                 title={user.displayName + "'s Profile"}
                 description={getUserRoleDisplay(user)}
-                dateFormat={App.getDateFormat().toUpperCase()}
+                dateFormat={getDateFormat().toUpperCase()}
                 renderButtons={
                     allowChangePassword ? <Button onClick={toggleChangePassword}>Change Password</Button> : null
                 }

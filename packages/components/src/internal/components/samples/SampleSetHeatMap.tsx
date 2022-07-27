@@ -1,13 +1,15 @@
 import React, { FC, memo, useMemo } from 'react';
 import { Filter } from '@labkey/api';
 
-import { AppURL, SCHEMAS, User, HeatMap, App, HeatMapCell } from '../../..';
+import { AppURL, SCHEMAS, User, HeatMap, HeatMapCell } from '../../..';
+
+import { SAMPLES_KEY } from '../../app/constants';
 
 import { SampleEmptyAlert } from './SampleEmptyAlert';
 
 const getCellUrl = (row: Record<string, any>): AppURL => {
     const protocolName = row.Protocol?.displayValue;
-    return protocolName ? AppURL.create(App.SAMPLES_KEY, protocolName.toLowerCase()) : undefined;
+    return protocolName ? AppURL.create(SAMPLES_KEY, protocolName.toLowerCase()) : undefined;
 };
 
 const getHeaderAndTotalUrl = (cell: HeatMapCell): AppURL => cell?.url;

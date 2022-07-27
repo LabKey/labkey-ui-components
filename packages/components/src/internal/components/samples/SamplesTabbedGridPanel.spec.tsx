@@ -3,9 +3,11 @@ import { fromJS } from 'immutable';
 import { ReactWrapper } from 'enzyme';
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { App, makeTestActions, makeTestQueryModel, QueryInfo, SchemaQuery, TabbedGridPanel } from '../../..';
+import { makeTestActions, makeTestQueryModel, QueryInfo, SchemaQuery, TabbedGridPanel } from '../../..';
 
 import { mountWithAppServerContext } from '../../testHelpers';
+
+import { TEST_USER_READER } from '../../userFixtures';
 
 import { SamplesEditableGrid } from './SamplesEditableGrid';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
@@ -15,7 +17,7 @@ const SQ = SchemaQuery.create('schema', 'query');
 const QI = QueryInfo.create({ title: 'Test title' });
 
 const DEFAULT_PROPS = {
-    user: App.TEST_USER_READER,
+    user: TEST_USER_READER,
     queryModels: {
         tab1: makeTestQueryModel(SQ, QI),
         tab2: makeTestQueryModel(SQ, QI),

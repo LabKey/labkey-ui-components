@@ -4,7 +4,6 @@ import { Filter, PermissionTypes } from '@labkey/api';
 
 import {
     Actions,
-    App,
     Page,
     QuerySort,
     RequiresPermission,
@@ -28,7 +27,7 @@ import { DisableableButton } from '../buttons/DisableableButton';
 
 import { userCanManagePicklists } from '../../app/utils';
 
-import { MY_PICKLISTS_HREF, TEAM_PICKLISTS_HREF } from '../../app/constants';
+import { MY_PICKLISTS_HREF, PICKLIST_KEY, TEAM_PICKLISTS_HREF } from '../../app/constants';
 
 import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 import { Picklist } from './models';
@@ -137,7 +136,7 @@ const PicklistGridImpl: FC<PicklistGridProps & InjectedQueryModels> = memo(props
             caption={PICKLISTS_CAPTION}
             context={
                 CreateButton !== undefined && (
-                    <CreateButton currentSubMenuKey={App.PICKLIST_KEY} pullRight actions={actions} />
+                    <CreateButton currentSubMenuKey={PICKLIST_KEY} pullRight actions={actions} />
                 )
             }
         >

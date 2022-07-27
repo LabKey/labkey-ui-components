@@ -15,18 +15,20 @@
  */
 import React, { PureComponent } from 'react';
 
-import { Alert, App, capitalizeFirstChar, ConfirmModal, SCHEMAS } from '../../..';
+import { capitalizeFirstChar, ConfirmModal } from '../../..';
 
 import { helpLinkNode } from '../../util/helpLinks';
+
+import { isSampleStatusEnabled } from '../../app/utils';
 
 import { EntityDataType, OperationConfirmationData } from './models';
 import { isSampleEntity } from './utils';
 
 interface Props {
-    onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
-    onCancel: () => any;
     confirmationData: OperationConfirmationData;
     entityDataType: EntityDataType;
+    onCancel: () => any;
+    onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
     verb?: string;
 }
 
@@ -41,7 +43,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         verb: 'deleted',
     };
 
-    getConfirmationProperties(): { message: any; title: string; canDelete: boolean } {
+    getConfirmationProperties(): { canDelete: boolean; message: any; title: string } {
         const { confirmationData, entityDataType, verb } = this.props;
         const { deleteHelpLinkTopic, nounSingular, nounPlural, dependencyText } = entityDataType;
         const capNounSingular = capitalizeFirstChar(nounSingular);
@@ -51,7 +53,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
 
         // TODO when experimental flag for sample status is removed, move this text into the SampleTypeDataType constant
         const _dependencyText =
-            App.isSampleStatusEnabled() && isSampleEntity(entityDataType)
+            isSampleStatusEnabled() && isSampleEntity(entityDataType)
                 ? dependencyText + ' or status that prevents deletion'
                 : dependencyText;
 

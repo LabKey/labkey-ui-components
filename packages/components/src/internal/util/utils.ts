@@ -505,7 +505,7 @@ export function getDisambiguatedSelectInputOptions(
     return options;
 }
 
-function isFloat(value: number | string): boolean {
+export function isFloat(value: number | string): boolean {
     return !isNaN(Number(value)) && !isNaN(parseFloat(value + ''));
 }
 

@@ -7,8 +7,9 @@ import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { processRequest } from '../../query/api';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
-import { App } from '../../../index';
 import { getPipelineLinkMsg, getWorkflowLinkMsg } from '../pipeline/utils';
+
+import { ASSAYS_KEY } from '../../app/constants';
 
 import { AssayUploadResultModel } from './models';
 
@@ -78,13 +79,7 @@ function getAssayImportSuccessMsg(
         const msg = `Successfully ${reimport ? 're-imported' : 'created'} assay run`;
         if (assayDefinition) {
             // Displayed if 'Save and Import Another Run' chosen
-            const href = AppURL.create(
-                App.ASSAYS_KEY,
-                assayDefinition.type,
-                assayDefinition.name,
-                'runs',
-                runId
-            ).toHref();
+            const href = AppURL.create(ASSAYS_KEY, assayDefinition.type, assayDefinition.name, 'runs', runId).toHref();
             return (
                 <>
                     {msg} <a href={href}>#{runId}</a>.{' '}

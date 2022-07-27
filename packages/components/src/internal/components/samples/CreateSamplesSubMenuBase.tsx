@@ -28,7 +28,7 @@ interface CreateSamplesSubMenuProps {
     parentType?: string;
     parentKey?: string;
     parentQueryModel?: QueryModel;
-    sampleWizardURL?: (targetSampleType?: string, parent?: string, currentProductId?: string, targetProductId?: string, selectionKey?: string) => AppURL;
+    sampleWizardURL?: (targetSampleType?: string, parent?: string, currentProductId?: string, targetProductId?: string, selectionKey?: string) => string | AppURL;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     allowPooledSamples?: boolean;
     selectedItems?: Record<string, any>;

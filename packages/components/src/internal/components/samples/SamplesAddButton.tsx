@@ -4,7 +4,7 @@ import { PermissionTypes } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { createProductUrlFromParts, RequiresPermission, SubMenuItem } from '../../..';
-import { NEW_SAMPLES_HREF } from '../../app/constants';
+import {NEW_SAMPLES_HREF, SAMPLES_KEY} from '../../app/constants';
 
 const SAMPLE_IMPORT_TAB_ID = 2;
 
@@ -45,14 +45,14 @@ export const SamplesAddButton: FC<Props> = memo(props => {
             targetProductId,
             currentProductId,
             createUrlParam,
-            App.SAMPLES_KEY,
+            SAMPLES_KEY,
             'new'
         );
         importSampleHref = createProductUrlFromParts(
             targetProductId,
             currentProductId,
             importUrlParam,
-            App.SAMPLES_KEY,
+            SAMPLES_KEY,
             'new'
         );
     }

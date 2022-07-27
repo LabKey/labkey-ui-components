@@ -99,21 +99,24 @@ export function resolveTypeName(data: any, category: string) {
 
 // exported for jest testing
 export function resolveIconSrc(data: any, category: string): string {
-    let iconSrc = '';
+    let iconSrc: string;
     if (data) {
         if (data.dataClass?.name) {
-            iconSrc = data.dataClass.name.toLowerCase();
+            // Issue 44917: Resolve search icon for uncategorized data classes
+            if (data.dataClass.category) {
+                iconSrc = data.dataClass.name.toLowerCase();
+            }
+            // else fallback to default
         } else if (data.sampleSet?.name) {
             iconSrc = 'samples';
         } else if (data.type) {
             const lcType = data.type.toLowerCase();
             if (lcType === 'sampleset') {
                 iconSrc = 'sample_set';
-            } else if (lcType.indexOf('dataclass') === 0) {
-                iconSrc = 'default'; // we don't have a generic "data class" icon; default works just fine.
-            } else {
+            } else if (lcType.indexOf('dataclass') !== 0) {
                 iconSrc = lcType;
             }
+            // else fallback to default
         }
     }
     if (!iconSrc && category) {

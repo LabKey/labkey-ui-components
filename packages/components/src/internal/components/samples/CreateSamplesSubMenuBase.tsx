@@ -20,6 +20,7 @@ import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
+    currentProductId?: string;
     getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     inlineItemsCount?: number;
@@ -29,12 +30,11 @@ interface CreateSamplesSubMenuProps {
     menuText?: string;
     navigate: (url: string | AppURL) => any;
     parentKey?: string;
-    parentType?: string;
     sampleWizardURL?: (targetSampleType?: string, parent?: string, currentProductId?: string, targetProductId?: string, selectionKey?: string) => string | AppURL;
     selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
     parentQueryModel?: QueryModel;
-    currentProductId?: string;
+    parentType?: string;
     targetProductId?: string;
 }
 
@@ -56,7 +56,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         selectedType,
         inlineItemsCount,
         currentProductId,
-        targetProductId
+        targetProductId,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -106,7 +106,15 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 return appURL;
             }
         },
-        [sampleWizardURL, getProductSampleWizardURL, useOnClick, parentKey, currentProductId, targetProductId, selectionKey]
+        [
+            sampleWizardURL,
+            getProductSampleWizardURL,
+            useOnClick,
+            parentKey,
+            currentProductId,
+            targetProductId,
+            selectionKey,
+        ]
     );
 
     const onCancel = useCallback(() => {

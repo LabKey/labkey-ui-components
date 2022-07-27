@@ -5,7 +5,8 @@ import { ActionURL, Filter, Utils } from '@labkey/api';
 import { User } from '../base/models/User';
 import {
     AppURL,
-    caseInsensitive, createProductUrlFromParts,
+    caseInsensitive,
+    createProductUrlFromParts,
     downloadAttachment,
     getQueryDetails,
     getSampleTypeDetails,
@@ -26,12 +27,11 @@ import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/uti
 
 import { OperationConfirmationData } from '../entities/models';
 
-import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
+import { NEW_SAMPLES_HREF, SAMPLES_KEY, SAMPLES_KEY } from '../../app/constants';
 
 import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
 import { SampleStatus } from './models';
-import {SAMPLES_KEY} from "../../app/constants";
 
 export function getOmittedSampleTypeColumns(user: User): string[] {
     let cols: string[] = [];
@@ -283,8 +283,15 @@ export const getSampleTypeTemplateUrl = (
  * @param targetProductId
  * @param selectionKey
  */
-export function getSampleWizardURL(targetSampleSet?: string, parent?: string, currentProductId?: string, targetProductId?: string, selectionKey?: string) : string | AppURL {
-    let params = {}, url;
+export function getSampleWizardURL(
+    targetSampleSet?: string,
+    parent?: string,
+    currentProductId?: string,
+    targetProductId?: string,
+    selectionKey?: string
+): string | AppURL {
+    let params = {},
+        url;
 
     if (targetSampleSet) {
         params['target'] = targetSampleSet;
@@ -294,13 +301,11 @@ export function getSampleWizardURL(targetSampleSet?: string, parent?: string, cu
         params['parent'] = parent;
     }
 
-    if (selectionKey)
-        params['selectionKey'] = selectionKey;
+    if (selectionKey) params['selectionKey'] = selectionKey;
 
     if (currentProductId && targetProductId && currentProductId !== targetProductId) {
         url = createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
-    }
-    else {
+    } else {
         url = NEW_SAMPLES_HREF.addParams(params).toHref();
     }
 

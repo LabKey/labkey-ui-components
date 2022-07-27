@@ -1,7 +1,7 @@
 import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import {AppURL, createProductUrlFromParts, QueryColumn, SchemaQuery, SCHEMAS, WHERE_FILTER_TYPE} from '..';
+import { AppURL, createProductUrlFromParts, QueryColumn, SchemaQuery, SCHEMAS, WHERE_FILTER_TYPE } from '..';
 
 import { AssayUploadTabs } from './constants';
 
@@ -108,12 +108,13 @@ export class AssayDefinitionModel extends Record({
         targetProductId?: string,
         ignoreFilter?: boolean
     ) {
-        let url, params = {};
+        let url,
+            params = {};
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
         if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
             params['rowId'] = this.id;
             if (dataTab) params['dataTab'] = dataTab;
-            if  (!ignoreFilter) {
+            if (!ignoreFilter) {
                 if (filterList && !filterList.isEmpty()) {
                     filterList.forEach(filter => {
                         // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it here
@@ -124,14 +125,20 @@ export class AssayDefinitionModel extends Record({
                         }
                     });
                 }
-
             }
             if (selectionKey) params['selectionKey'] = selectionKey;
             if (isPicklist) params['isPicklist'] = true;
             if (currentProductId && targetProductId && currentProductId !== targetProductId) {
-                url = createProductUrlFromParts(targetProductId, currentProductId, params, 'assays', this.type, this.name, 'upload').toString();
-            }
-            else {
+                url = createProductUrlFromParts(
+                    targetProductId,
+                    currentProductId,
+                    params,
+                    'assays',
+                    this.type,
+                    this.name,
+                    'upload'
+                ).toString();
+            } else {
                 url = AppURL.create('assays', this.type, this.name, 'upload').addParams(params);
                 url = url.toHref();
             }

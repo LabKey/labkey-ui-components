@@ -9,16 +9,16 @@ import { InjectedAssayModel, withAssayModels } from './withAssayModels';
 import { getImportItemsForAssayDefinitions } from './actions';
 
 interface Props extends SubMenuItemProps {
+    currentProductId?: string;
     disabled?: boolean;
+    ignoreFilter?: boolean;
     isLoaded?: boolean;
     nounPlural?: string;
     picklistName?: string;
     providerType?: string;
     queryModel: QueryModel;
     requireSelection: boolean;
-    currentProductId?: string;
     targetProductId?: string;
-    ignoreFilter?: boolean;
 }
 
 // exported for jest testing
@@ -43,13 +43,18 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             return [];
         }
 
-        return getImportItemsForAssayDefinitions(assayModel, queryModel, providerType, !!picklistName, currentProductId, targetProductId, ignoreFilter).reduce(
-            (subItems, href, assay) => {
-                subItems.push({ text: assay.name, href });
-                return subItems;
-            },
-            []
-        );
+        return getImportItemsForAssayDefinitions(
+            assayModel,
+            queryModel,
+            providerType,
+            !!picklistName,
+            currentProductId,
+            targetProductId,
+            ignoreFilter
+        ).reduce((subItems, href, assay) => {
+            subItems.push({ text: assay.name, href });
+            return subItems;
+        }, []);
     }, [assayModel, isLoaded, providerType, queryModel, currentProductId, targetProductId]);
 
     if (disabled) {

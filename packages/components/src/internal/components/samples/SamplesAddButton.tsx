@@ -11,18 +11,26 @@ const SAMPLE_IMPORT_TAB_ID = 2;
 interface Props {
     asSubMenu?: boolean;
     bsStyle?: string;
+    currentProductId?: string;
     hideImport?: boolean;
     model: QueryModel;
-    text?: string;
-    currentProductId?: string;
     targetProductId?: string;
+    text?: string;
 }
 
 export const SamplesAddButton: FC<Props> = memo(props => {
-    const { model, hideImport, asSubMenu, text = 'Add', bsStyle = 'default', currentProductId, targetProductId } = props;
+    const {
+        model,
+        hideImport,
+        asSubMenu,
+        text = 'Add',
+        bsStyle = 'default',
+        currentProductId,
+        targetProductId,
+    } = props;
     const { showInsertNewButton, showImportDataButton, queryInfo } = model;
     const cls = bsStyle === 'default' ? 'responsive-menu' : '';
-    const createUrlParam  = {
+    const createUrlParam = {
         target: queryInfo?.schemaQuery?.queryName,
     };
     const importUrlParam = {
@@ -30,11 +38,23 @@ export const SamplesAddButton: FC<Props> = memo(props => {
         tab: SAMPLE_IMPORT_TAB_ID,
     };
 
-    let createSampleHref : any = NEW_SAMPLES_HREF.addParams(createUrlParam).toHref();
-    let importSampleHref : any  = NEW_SAMPLES_HREF.addParams(importUrlParam).toHref();
+    let createSampleHref: any = NEW_SAMPLES_HREF.addParams(createUrlParam).toHref();
+    let importSampleHref: any = NEW_SAMPLES_HREF.addParams(importUrlParam).toHref();
     if (currentProductId && targetProductId && targetProductId !== currentProductId) {
-        createSampleHref = createProductUrlFromParts(targetProductId, currentProductId, createUrlParam, App.SAMPLES_KEY, "new");
-        importSampleHref = createProductUrlFromParts(targetProductId, currentProductId, importUrlParam, App.SAMPLES_KEY, "new");
+        createSampleHref = createProductUrlFromParts(
+            targetProductId,
+            currentProductId,
+            createUrlParam,
+            App.SAMPLES_KEY,
+            'new'
+        );
+        importSampleHref = createProductUrlFromParts(
+            targetProductId,
+            currentProductId,
+            importUrlParam,
+            App.SAMPLES_KEY,
+            'new'
+        );
     }
 
     // Issue 43113: If a queryInfo is associated with this create action then respect its settings for display

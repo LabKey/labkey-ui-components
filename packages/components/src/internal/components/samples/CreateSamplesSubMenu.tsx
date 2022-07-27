@@ -1,43 +1,57 @@
 import React, { FC, memo } from 'react';
 import { List } from 'immutable';
 
-import {getSampleWizardURL} from "./utils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {DisableableMenuItem} from "./DisableableMenuItem";
-import {CreateSamplesSubMenuBase} from "./CreateSamplesSubMenuBase";
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
 import {
-    App, AppURL,
+    App,
+    AppURL,
     getMenuItemForSectionKey,
     getMenuItemsForSection,
     MenuOption,
-    ProductMenuModel, QueryModel,
-    SampleCreationType
-} from "../../../index";
+    ProductMenuModel,
+    QueryModel,
+    SampleCreationType,
+} from '../../../index';
+
+import { getSampleWizardURL } from './utils';
+import { DisableableMenuItem } from './DisableableMenuItem';
+import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
 
 interface Props {
-    id?: string;
     allowPooledSamples?: boolean;
+    currentProductId?: string;
+    disabled?: boolean;
+    id?: string;
+    inlineItemsCount?: number;
+    isSelectingSamples: (schemaQuery: SchemaQuery) => boolean;
+    menu?: ProductMenuModel;
     menuCurrentChoice?: string;
     menuText?: string;
-    subMenuText?: string;
     navigate: (url: string | AppURL) => void;
-    parentType?: string;
     parentKey?: string;
-    parentQueryModel?: QueryModel;
-    disabled?: boolean;
-    selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
-    inlineItemsCount?: number;
-    menu?: ProductMenuModel;
-    isSelectingSamples: (schemaQuery: SchemaQuery) => boolean;
-    currentProductId?: string;
+    parentType?: string;
+    subMenuText?: string;
+    selectedItems?: Record<string, any>;
+    parentQueryModel?: QueryModel;
     targetProductId?: string;
 }
 
 const MAX_PARENTS_PER_SAMPLE = 20;
 
 export const CreateSamplesSubMenu: FC<Props> = memo(props => {
-    const { parentQueryModel, subMenuText, menuText, menuCurrentChoice, menu, disabled, isSelectingSamples, currentProductId, targetProductId } = props;
+    const {
+        parentQueryModel,
+        subMenuText,
+        menuText,
+        menuCurrentChoice,
+        menu,
+        disabled,
+        isSelectingSamples,
+        currentProductId,
+        targetProductId,
+    } = props;
     const itemKey = parentQueryModel?.queryInfo?.name;
 
     const getOptions = (
@@ -51,12 +65,7 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
             );
         }
 
-        const options = getMenuItemsForSection(
-            menu.getSection(App.SAMPLES_KEY),
-            useOnClick,
-            itemActionFn,
-            disabledMsg
-        );
+        const options = getMenuItemsForSection(menu.getSection(App.SAMPLES_KEY), useOnClick, itemActionFn, disabledMsg);
 
         if (options?.size === 0) {
             return List.of({ name: 'No sample types defined', disabled: true } as MenuOption);

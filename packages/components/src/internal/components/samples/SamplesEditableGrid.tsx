@@ -202,7 +202,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         }
     };
 
-    hasParentDataTypes = () : boolean => {
+    hasParentDataTypes = (): boolean => {
         const { parentDataTypes } = this.props;
         return parentDataTypes?.toArray()?.length > 0;
     };
@@ -490,7 +490,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         } = this.state;
         const allAliquots = this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
 
-        if ((determineLineage && this.hasParentDataTypes()) && !originalParents) return <LoadingSpinner />;
+        if (determineLineage && this.hasParentDataTypes() && !originalParents) return <LoadingSpinner />;
 
         const loaders = [];
         if (determineSampleData) {

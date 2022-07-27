@@ -47,6 +47,7 @@ interface Props extends InjectedQueryModels {
     // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     modelId?: string;
     onPrintLabel?: () => void;
+    onSampleTabSelect?: (modelId: string) => void;
     sampleAliquotType?: ALIQUOT_FILTER_MODE;
     // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
@@ -54,7 +55,6 @@ interface Props extends InjectedQueryModels {
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     user: User;
     withTitle?: boolean;
-    onSampleTabSelect?: (modelId: string) => void;
 }
 
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {

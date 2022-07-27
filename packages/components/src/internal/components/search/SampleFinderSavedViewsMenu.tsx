@@ -57,34 +57,26 @@ export const SampleFinderSavedViewsMenu: FC<Props> = memo(props => {
             const view = savedSearches.find(search => search.reportId === e.target.name);
             loadSearch(view);
         },
-        [savedSearches]
+        [loadSearch, savedSearches]
     );
 
     const onLoadSessionSearch = useCallback(() => {
         loadSearch({ isSession: true, reportName: sessionViewName });
-    }, [sessionViewName]);
+    }, [loadSearch, sessionViewName]);
 
-    const onSaveCurrentView = useCallback(e => {
+    const onSaveCurrentView = useCallback(() => {
         saveSearch(true);
-    }, []);
+    }, [saveSearch]);
 
-    const onSaveNewView = useCallback(
-        e => {
-            if (!currentView && !hasUnsavedChanges) return;
+    const onSaveNewView = useCallback(() => {
+        if (!currentView && !hasUnsavedChanges) return;
+        saveSearch(false);
+    }, [currentView, hasUnsavedChanges, saveSearch]);
 
-            saveSearch(false);
-        },
-        [currentView, currentView]
-    );
-
-    const onManageView = useCallback(
-        e => {
-            if (!hasSavedView) return;
-
-            manageSearches();
-        },
-        [hasSavedView]
-    );
+    const onManageView = useCallback(() => {
+        if (!hasSavedView) return;
+        manageSearches();
+    }, [hasSavedView, manageSearches]);
 
     return (
         <>

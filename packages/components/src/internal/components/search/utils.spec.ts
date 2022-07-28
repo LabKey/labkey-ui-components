@@ -325,7 +325,7 @@ describe('getSampleFinderCommonConfigs', () => {
                 Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),
                 Filter.create(
                     '*',
-                    `SELECT "TestQuery2".expObject() FROM Samples."TestQuery2"[ContainerFilter='CurrentAndFirstChildren'] WHERE "TestColumn" = 'value'`,
+                    'SELECT "TestQuery2".expObject() FROM Samples."TestQuery2"[ContainerFilter=\'CurrentAndFirstChildren\'] WHERE "TestColumn" = \'value\'',
                     IN_EXP_DESCENDANTS_OF_FILTER_TYPE
                 ),
             ],
@@ -1173,7 +1173,7 @@ describe('getExpDescendantOfSelectClause', () => {
     test('respects container filter', () => {
         const cf = Query.ContainerFilter.currentAndSubfoldersPlusShared;
         expect(getExpDescendantOfSelectClause(schemaQuery, [intEqFilter], cf)).toEqual(
-            `SELECT "SampleA".expObject() FROM Test."SampleA"[ContainerFilter='CurrentAndSubfoldersPlusShared'] WHERE "intField" = 1`
+            'SELECT "SampleA".expObject() FROM Test."SampleA"[ContainerFilter=\'CurrentAndSubfoldersPlusShared\'] WHERE "intField" = 1'
         );
     });
 });

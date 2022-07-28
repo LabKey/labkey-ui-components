@@ -1,4 +1,4 @@
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { fromJS, List, Map } from 'immutable';
 
@@ -317,14 +317,15 @@ describe('getSampleFinderCommonConfigs', () => {
                         filterArray: [cardFilter],
                     },
                 ],
-                false
+                false,
+                Query.ContainerFilter.currentAndFirstChildren
             )
         ).toStrictEqual({
             baseFilters: [
                 Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),
                 Filter.create(
                     '*',
-                    'SELECT "TestQuery2".expObject() FROM Samples."TestQuery2" WHERE "TestColumn" = \'value\'',
+                    'SELECT "TestQuery2".expObject() FROM Samples."TestQuery2"[ContainerFilter=\'CurrentAndFirstChildren\'] WHERE "TestColumn" = \'value\'',
                     IN_EXP_DESCENDANTS_OF_FILTER_TYPE
                 ),
             ],
@@ -1166,6 +1167,13 @@ describe('getExpDescendantOfSelectClause', () => {
         );
         expect(getExpDescendantOfSelectClause(schemaQueryWithSpace, [intEqFilter, booleanEqFilter])).toEqual(
             'SELECT "Sample Type A".expObject() FROM Test."Sample Type A" WHERE "intField" = 1 AND "Boolean Field" = TRUE'
+        );
+    });
+
+    test('respects container filter', () => {
+        const cf = Query.ContainerFilter.currentAndSubfoldersPlusShared;
+        expect(getExpDescendantOfSelectClause(schemaQuery, [intEqFilter], cf)).toEqual(
+            'SELECT "SampleA".expObject() FROM Test."SampleA"[ContainerFilter=\'CurrentAndSubfoldersPlusShared\'] WHERE "intField" = 1'
         );
     });
 });

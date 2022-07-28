@@ -96,9 +96,6 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         (key: string) => {
             let appURL: string | AppURL;
 
-            console.log(parentKey);
-            console.log(selectionKey);
-
             if (sampleWizardURL) {
                 appURL = sampleWizardURL(key, parentKey, currentProductId, targetProductId, selectionKey);
             } else if (getProductSampleWizardURL) {

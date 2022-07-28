@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.202.3
+*Released*: 28 July 2022
+* Sample Finder: support containerFilter on expDescendantOfSelectClause
+
 ### version 2.202.2
 *Released*: 28 July 2022
 * Issue 44917: Resolve search icon for uncategorized data classes

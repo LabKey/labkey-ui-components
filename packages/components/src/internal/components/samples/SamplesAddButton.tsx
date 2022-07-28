@@ -4,7 +4,7 @@ import { PermissionTypes } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { createProductUrlFromParts, RequiresPermission, SubMenuItem } from '../../..';
-import {NEW_SAMPLES_HREF, SAMPLES_KEY} from '../../app/constants';
+import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
 
 const SAMPLE_IMPORT_TAB_ID = 2;
 

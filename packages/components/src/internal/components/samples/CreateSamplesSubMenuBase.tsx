@@ -30,11 +30,17 @@ interface CreateSamplesSubMenuProps {
     menuText?: string;
     navigate: (url: string | AppURL) => any;
     parentKey?: string;
-    sampleWizardURL?: (targetSampleType?: string, parent?: string, currentProductId?: string, targetProductId?: string, selectionKey?: string) => string | AppURL;
-    selectedItems?: Record<string, any>;
-    selectedType?: SampleCreationType;
     parentQueryModel?: QueryModel;
     parentType?: string;
+    sampleWizardURL?: (
+        targetSampleType?: string,
+        parent?: string,
+        currentProductId?: string,
+        targetProductId?: string,
+        selectionKey?: string
+    ) => string | AppURL;
+    selectedItems?: Record<string, any>;
+    selectedType?: SampleCreationType;
     targetProductId?: string;
 }
 

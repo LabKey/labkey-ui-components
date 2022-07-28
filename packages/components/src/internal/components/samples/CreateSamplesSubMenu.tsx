@@ -30,11 +30,11 @@ interface Props {
     menuText?: string;
     navigate: (url: string | AppURL) => void;
     parentKey?: string;
-    selectedType?: SampleCreationType;
-    parentType?: string;
-    subMenuText?: string;
-    selectedItems?: Record<string, any>;
     parentQueryModel?: QueryModel;
+    parentType?: string;
+    selectedItems?: Record<string, any>;
+    selectedType?: SampleCreationType;
+    subMenuText?: string;
     targetProductId?: string;
 }
 

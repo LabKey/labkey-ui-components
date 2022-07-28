@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 45509: Remove inaccurate tool tip
+* Issue 45947: Don't allow saving views with reserved names
 
 
 ### version 2.202.1

@@ -52,8 +52,23 @@ describe('getSearchResultCardData', () => {
         expect(resultCardData).toStrictEqual({
             title: 'my title',
             iconDir: undefined,
-            iconSrc: 'default',
+            iconSrc: undefined,
             typeName: undefined,
+        });
+
+        const sourceData = {
+            dataClass: {
+                category: 'source',
+                name: 'mice',
+            },
+        };
+
+        const sourceCardData = getSearchResultCardData(sourceData, 'dataClass', 'bruno');
+        expect(sourceCardData).toStrictEqual({
+            title: 'bruno',
+            iconDir: undefined,
+            iconSrc: 'mice',
+            typeName: 'mice',
         });
     });
 

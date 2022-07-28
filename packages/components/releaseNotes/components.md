@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.202.2
+*Released*: 28 July 2022
+* Issue 44917: Resolve search icon for uncategorized data classes
+  * Resolve icons to the data class name value iff the data class is assigned a category (e.g. "registry", "source", etc).
+  * Fallback to default (via undefined) rather than explicitly processing as "default".
+
 ### version 2.202.1
 *Released*: 26 July 2022
 * Move `jest` and `enzyme` from devDependencies to dependencies

@@ -118,7 +118,7 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     }, [column, onCollapseColumn]);
 
     return (
-        <div className="list-group-item flex" key={colFieldKey}>
+        <div className="list-group-item flex" key={colFieldKey} data-fieldkey={colFieldKey}>
             {parentFieldKeys.map((parent, index) => (
                 <div className="field-expand-icon" key={colFieldKey + '|' + index} />
             ))}

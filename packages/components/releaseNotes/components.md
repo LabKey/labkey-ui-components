@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add customize view modal DOM element attribute for "data-fieldkey" to help test locators
+
 ### version 2.202.1
 *Released*: 26 July 2022
 * Move `jest` and `enzyme` from devDependencies to dependencies

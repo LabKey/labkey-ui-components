@@ -6,7 +6,6 @@ import { RequiresPermission } from '../base/Permissions';
 import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { AppURL } from '../../url/AppURL';
-import { ProductMenuModel } from '../navigation/model';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { SampleCreationType } from './models';

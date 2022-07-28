@@ -279,16 +279,16 @@ export const getSampleTypeTemplateUrl = (
  * Provides sample wizard URL for this application.
  * @param targetSampleSet - Intended sample type of newly created samples.
  * @param parent - Intended parent of derived samples. Format SCHEMA:QUERY:ID
+ * @param selectionKey
  * @param currentProductId
  * @param targetProductId
- * @param selectionKey
  */
 export function getSampleWizardURL(
     targetSampleSet?: string,
     parent?: string,
+    selectionKey?: string,
     currentProductId?: string,
-    targetProductId?: string,
-    selectionKey?: string
+    targetProductId?: string
 ): string | AppURL {
     let params = {},
         url;

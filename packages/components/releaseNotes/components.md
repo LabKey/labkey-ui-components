@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XX 2022
 * Multi-tab grids for Storage grids
   * Support getGridPanelDisplay for TabbedGridPanel
+  * Move CreateSamplesSubMenu and SamplesDeriveButtonBase here from LKSM
+  * Modify SamplesAddButton to support productId
 
 ### version 2.202.3
 *Released*: 28 July 2022

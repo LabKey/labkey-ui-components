@@ -44,11 +44,12 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
     );
 
     const setNameErrorMessage = useCallback(() => {
-        if (viewName.length > maxLength) {
-            setNameError(`Current length: ${viewName.length}; maximum length: ${maxLength}`);
+        const trimmed = viewName.trim();
+        if (trimmed.length > maxLength) {
+            setNameError(`Current length: ${trimmed.length}; maximum length: ${maxLength}`);
         }
-        else if (RESERVED_VIEW_NAMES.indexOf(viewName.toLowerCase()) >= 0)
-            setNameError(`View name '${viewName}' is reserved.`);
+        else if (RESERVED_VIEW_NAMES.indexOf(trimmed.toLowerCase()) >= 0)
+            setNameError(`View name '${trimmed}' is reserved.`);
         else
             setNameError(undefined);
     }, [maxLength, viewName]);

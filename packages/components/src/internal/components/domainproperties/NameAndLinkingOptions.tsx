@@ -24,8 +24,8 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface NameAndLinkingProps {
     appPropertiesOnly?: boolean;
-    domainIndex: number;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    domainIndex: number;
     field: DomainField;
     index: number;
     onChange: (string, any) => void;
@@ -98,7 +98,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        {!field.isUniqueIdField() && !domainFormDisplayOptions.hideImportAliases && (
+                        {!field.isUniqueIdField() && !domainFormDisplayOptions?.hideImportAliases && (
                             <>
                                 <div className="domain-field-label">
                                     <DomainFieldLabel

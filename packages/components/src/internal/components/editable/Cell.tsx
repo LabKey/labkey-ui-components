@@ -89,15 +89,13 @@ export class Cell extends React.PureComponent<Props, State> {
         this.displayEl = React.createRef();
     }
 
-    componentDidUpdate(): void {
+    componentDidUpdate(prevProps: Readonly<Props>): void {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
-            this.loadFilteredLookupKeys();
-        }
-    }
 
-    componentDidMount(): void {
-        this.loadFilteredLookupKeys();
+            if (!prevProps.selected)
+                this.loadFilteredLookupKeys();
+        }
     }
 
     loadFilteredLookupKeys = async (): Promise<void> => {

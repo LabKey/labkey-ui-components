@@ -94,7 +94,7 @@ export function getFinderViewColumnsConfig(
     };
 }
 
-export const SAMPLE_FINDER_VIEW_NAME = 'Sample Finder';
+export const SAMPLE_FINDER_VIEW_NAME = '~~samplefinder~~';
 
 function getSampleFinderConfigId(finderId: string, suffix: string): string {
     const { uuids } = getServerContext();

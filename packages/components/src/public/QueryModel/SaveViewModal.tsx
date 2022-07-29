@@ -13,7 +13,7 @@ import { isProductProjectsEnabled } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 
 const MAX_VIEW_NAME_LENGTH = 200;
-const RESERVED_VIEW_NAMES = ['default', 'my default', '~~details~~', '~~insert~~', '~~update~~'];
+const RESERVED_VIEW_NAMES = ['default', 'my default', '~~details~~', '~~insert~~', '~~update~~', '~~samplefinder~~'];
 
 interface ViewNameInputProps {
     autoFocus?: boolean;
@@ -65,7 +65,8 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
 
     const onViewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
         setViewName(evt.target.value);
-        const hasError = evt.target.value.length > maxLength || RESERVED_VIEW_NAMES.indexOf(evt.target.value.toLowerCase()) >= 0;
+        const trimmed = evt.target.value.trim();
+        const hasError = trimmed.length > maxLength || RESERVED_VIEW_NAMES.indexOf(trimmed) >= 0;
         setNameErrorMessage();
         onChange?.(evt.target.value, hasError);
     }, []);

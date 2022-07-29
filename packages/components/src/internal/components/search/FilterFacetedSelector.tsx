@@ -54,7 +54,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) >= 0) {
                     distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
                 }
-                if (canBeBlank)
+                if (canBeBlank && toShow.length > 0)
                     distinctValues.unshift(EMPTY_VALUE_DISPLAY);
 
                 // add [All] to first

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.202.3",
+  "version": "2.202.4-fb-issue45822Perf",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

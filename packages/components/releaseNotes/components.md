@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 45509: Remove inaccurate tool tip
 * Issue 45947: Don't allow saving views with reserved names
+* Issue 45866: Improve performance of FilterFacetedSelector by loading only 250 items and not searching with each click.
 
 ### version 2.202.3
 *Released*: 28 July 2022

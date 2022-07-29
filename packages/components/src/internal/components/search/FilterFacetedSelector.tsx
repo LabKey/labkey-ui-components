@@ -11,6 +11,8 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
 
+const MAX_DISTINCT_FILTER_OPTIONS = 250;
+
 interface Props {
     api?: ComponentsAPIWrapper;
     fieldFilters: Filter.IFilter[];
@@ -26,21 +28,30 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const [fieldDistinctValues, setFieldDistinctValues] = useState<string[]>(undefined);
     const [error, setError] = useState<string>(undefined);
     const [searchStr, setSearchStr] = useState<string>(undefined);
+    const [allShown, setAllShown] = useState<boolean>(true);
 
     useEffect(() => {
+        setDistinctValues(true);
+    }, [fieldKey]); // on fieldKey change, reload selection values
+
+    const setDistinctValues = useCallback((checkAllShown: boolean, searchStr?: string) => {
+        const filterArray = searchStr ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(fieldFilters) : fieldFilters;
         api.query
-            .selectDistinctRows(selectDistinctOptions)
+            .selectDistinctRows({...selectDistinctOptions, filterArray, maxRows: MAX_DISTINCT_FILTER_OPTIONS + 1})
             .then(result => {
-                const distinctValues = result.values.sort(naturalSort).map(val => {
+                if (checkAllShown)
+                    setAllShown(result.values.length <= MAX_DISTINCT_FILTER_OPTIONS);
+                const toShow = result.values.slice(0, MAX_DISTINCT_FILTER_OPTIONS);
+                const distinctValues = toShow.sort(naturalSort).map(val => {
                     if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
                     return val;
                 });
 
                 // move [blank] to first
-                if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) > 0) {
+                if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) >= 0) {
                     distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
-                    distinctValues.unshift(EMPTY_VALUE_DISPLAY);
                 }
+                distinctValues.unshift(EMPTY_VALUE_DISPLAY);
 
                 // add [All] to first
                 distinctValues.unshift(ALL_VALUE_DISPLAY);
@@ -51,7 +62,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 setFieldDistinctValues([]);
                 setError(resolveErrorMessage(error));
             });
-    }, [selectDistinctOptions, fieldKey]); // on fieldKey change, reload selection values
+    }, [selectDistinctOptions]);
 
     const checkedValues = useMemo(() => {
         return getCheckedFilterValues(fieldFilters?.[0], fieldDistinctValues);
@@ -64,6 +75,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 
     const onSearchStrChange = useCallback(e => {
         setSearchStr(e.target.value);
+        setDistinctValues(false, e.target.value);
     }, []);
 
     const onChange = useCallback(
@@ -98,7 +110,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             {error && <Alert>{error}</Alert>}
             {!fieldDistinctValues && <LoadingSpinner />}
             <div className="filter-faceted__panel">
-                {fieldDistinctValues?.length > showSearchLength && (
+                {(fieldDistinctValues?.length > showSearchLength || searchStr) && (
                     <div>
                         <input
                             id="filter-faceted__typeahead-input"
@@ -110,6 +122,15 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                         />
                     </div>
                 )}
+                {!allShown &&
+                    <Row>
+                        <Col xs={12} className="bottom-spacing">
+                            <div>There are more than {MAX_DISTINCT_FILTER_OPTIONS} distinct values. Use the filter box above
+                                to find additional values.
+                            </div>
+                        </Col>
+                    </Row>
+                }
                 <Row>
                     <Col xs={taggedValues?.length > 0 ? 6 : 12}>
                         <ul className="nav nav-stacked labkey-wizard-pills">

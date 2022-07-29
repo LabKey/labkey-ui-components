@@ -1859,6 +1859,7 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     hideConditionalFormatting?: boolean;
     hideFilePropertyType?: boolean;
+    hideImportAliases?: boolean;
     hideImportData?: boolean;
     hideImportExport?: boolean;
     hideInferFromFile?: boolean;

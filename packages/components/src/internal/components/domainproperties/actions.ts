@@ -65,6 +65,8 @@ import {
     PropDescType,
     UNIQUE_ID_TYPE,
     TEXT_CHOICE_TYPE,
+    SAMPLE_TYPE,
+    PARTICIPANT_TYPE,
     SMILES_TYPE,
 } from './PropDescType';
 import {
@@ -150,6 +152,7 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
                 resolve(DomainDesign.create(data.domainDesign ? data.domainDesign : data, undefined));
             },
             failure: error => {
+                console.error(error);
                 reject(error);
             },
         });
@@ -281,6 +284,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === TEXT_CHOICE_TYPE && !domain.allowTextChoiceProperties) {
+        return false;
+    }
+
+    if ((type === SAMPLE_TYPE || type === PARTICIPANT_TYPE) && !domain.allowSampleSubjectProperties) {
         return false;
     }
 

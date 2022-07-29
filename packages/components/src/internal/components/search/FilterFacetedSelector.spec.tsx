@@ -23,6 +23,7 @@ beforeAll(() => {
 
 const valuesListShort = ['ed', 'ned', '', 'ted', 'red', 'bed'];
 const allDisplayValuesShort = ['[All]', '[blank]', 'bed', 'ed', 'ned', 'red', 'ted'];
+const allWithoutBlankDisplayValuesShort = ['[All]', 'bed', 'ed', 'ned', 'red', 'ted'];
 const valuesListLong = [...valuesListShort, 'hop', '1', 'pop', 'all', 'ball', 'fall', 'wall'];
 const allDisplayValuesLong = [
     '[All]',
@@ -63,6 +64,7 @@ const DEFAULT_PROPS = {
     fieldFilters: null,
     selectDistinctOptions: null,
     showSearchLength: 10,
+    canBeBlank: true,
 };
 
 const DEFAULT_PROPS_LONG = {
@@ -75,6 +77,7 @@ const DEFAULT_PROPS_LONG = {
     fieldFilters: null,
     selectDistinctOptions: null,
     showSearchLength: 10,
+    canBeBlank: true,
 };
 
 describe('FilterFacetedSelector', () => {
@@ -98,8 +101,12 @@ describe('FilterFacetedSelector', () => {
                 expect(value).toEqual(allOptions[ind]);
 
                 const checkBox = valuesDiv.find('.form-check-input');
-                if (checkedOptions.indexOf(allOptions[ind]) > -1) expect(checkBox.props().checked).toBeTruthy();
-                else expect(checkBox.props().checked).toBeFalsy();
+                if (checkedOptions.indexOf(allOptions[ind]) > -1) {
+                    expect(checkBox.props().checked).toBeTruthy();
+                }
+                else {
+                    expect(checkBox.props().checked).toBeFalsy();
+                }
             }
         }
 
@@ -121,6 +128,18 @@ describe('FilterFacetedSelector', () => {
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
         validate(wrapper, allDisplayValuesShort, [], allDisplayValuesShort, false);
+
+        wrapper.unmount();
+    });
+
+    test('with no initial filter, not blank', async () => {
+        const wrapper = mount(<FilterFacetedSelector {...{...DEFAULT_PROPS, canBeBlank: false}}/>);
+
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(true);
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
+
+        validate(wrapper, allWithoutBlankDisplayValuesShort, [],  allWithoutBlankDisplayValuesShort, false);
 
         wrapper.unmount();
     });

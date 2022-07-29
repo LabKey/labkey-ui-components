@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.202.5
+*Released*: 29 July 2022
+* Issue 45822: incorrect unit types available when adding sample to storage
+    * avoid excessive loading until lookup cell is selected/focused
+
 ### version 2.202.4
 *Released*: 29 July 2022
 * Issue 45509: Remove inaccurate tool tip

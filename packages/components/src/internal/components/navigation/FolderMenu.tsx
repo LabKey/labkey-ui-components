@@ -6,9 +6,11 @@ import {
     Alert,
     AppContext,
     buildURL,
+    Container,
     isLoading,
     LoadingSpinner,
     LoadingState,
+    naturalSortByProperty,
     resolveErrorMessage,
     useAppContext,
     useServerContext,
@@ -22,6 +24,17 @@ interface FolderMenuItem {
     href: string;
     id: string;
     label: string;
+}
+
+function createFolderItem(folder: Container, controllerName: string): FolderMenuItem {
+    return {
+        href: buildURL(controllerName, `${ActionURL.getAction()}.view`, undefined, {
+            container: folder.path,
+            returnUrl: false,
+        }),
+        id: folder.id,
+        label: folder.title,
+    };
 }
 
 interface Props {
@@ -47,20 +60,21 @@ export const FolderMenu: FC<Props> = memo(({ appProperties }) => {
             try {
                 const folders = await api.security.fetchContainers({
                     // Container metadata does not always provide "type" so inspecting the
-                    // "parentPath" to determine project vs folder.
+                    // "parentPath" to determine top-level folder vs subfolder.
                     containerPath: container.parentPath === '/' ? container.path : container.parentPath,
                 });
 
-                const items_: FolderMenuItem[] = folders.map(folder => ({
-                    href: buildURL(controllerName, `${ActionURL.getAction()}.view`, undefined, {
-                        container: folder.path,
-                        returnUrl: false,
-                    }),
-                    id: folder.id,
-                    label: folder.title,
-                }));
+                const items_: FolderMenuItem[] = [];
+                const topLevelFolderIdx = folders.findIndex(f => f.parentPath === '/');
+                if (topLevelFolderIdx > -1) {
+                    // Remove top-level folder from array as it is always displayed as the first menu item
+                    const topLevelFolder = folders.splice(topLevelFolderIdx, 1)[0];
+                    items_.push(createFolderItem(topLevelFolder, controllerName));
+                }
 
-                setItems(items_);
+                // Issue 45805: sort folders by title as server-side sorting is insufficient
+                folders.sort(naturalSortByProperty('title'));
+                setItems(items_.concat(folders.map(folder => createFolderItem(folder, controllerName))));
             } catch (e) {
                 setError(`Error: ${resolveErrorMessage(e)}`);
             }

@@ -17,13 +17,14 @@ interface Props {
     api?: ComponentsAPIWrapper;
     fieldFilters: Filter.IFilter[];
     fieldKey: string;
+    canBeBlank: boolean;
     onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index) => void;
     selectDistinctOptions: Query.SelectDistinctOptions;
     showSearchLength?: number; // show search box if number of unique values > N
 }
 
 export const FilterFacetedSelector: FC<Props> = memo(props => {
-    const { api, selectDistinctOptions, fieldKey, fieldFilters, onFieldFilterUpdate, showSearchLength } = props;
+    const { api, canBeBlank, selectDistinctOptions, fieldKey, fieldFilters, onFieldFilterUpdate, showSearchLength } = props;
 
     const [fieldDistinctValues, setFieldDistinctValues] = useState<string[]>(undefined);
     const [error, setError] = useState<string>(undefined);
@@ -35,7 +36,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     }, [fieldKey]); // on fieldKey change, reload selection values
 
     const setDistinctValues = useCallback((checkAllShown: boolean, searchStr?: string) => {
-        const filterArray = searchStr ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(fieldFilters) : fieldFilters;
+        const filterArray = searchStr ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(selectDistinctOptions?.filterArray) : fieldFilters;
         api.query
             .selectDistinctRows({...selectDistinctOptions, filterArray, maxRows: MAX_DISTINCT_FILTER_OPTIONS + 1})
             .then(result => {
@@ -51,7 +52,8 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                 if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) >= 0) {
                     distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
                 }
-                distinctValues.unshift(EMPTY_VALUE_DISPLAY);
+                if (canBeBlank)
+                    distinctValues.unshift(EMPTY_VALUE_DISPLAY);
 
                 // add [All] to first
                 distinctValues.unshift(ALL_VALUE_DISPLAY);

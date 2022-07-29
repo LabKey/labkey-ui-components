@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Domain kind allowSampleSubjectProperties check to filter out relevant data types
   * Add DomainFormDisplayOptions prop for hideImportAliases
   * Minor update to styling prop for ContentGroup.tsx
+  * expose fetchDomainDetails() to be used in app to get domain details based on DomainKind
 
 ### version 2.202.3
 *Released*: 28 July 2022

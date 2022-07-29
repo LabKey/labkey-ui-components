@@ -160,17 +160,24 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
 }
 
 /**
- * @param domainId: Fetch domain details by Id. Priority param over schema and query name.
+ * @param domainId: Fetch domain details by Id, schemaName/queryName, or domain kind. Priority param over schema and query name.
  * @param schemaName: Schema of domain.
  * @param queryName: Query of domain.
+ * @param domainKind: (Optional) DomainKind of domain.
  * @return Promise wrapped Domain API call.
  */
-export function fetchDomainDetails(domainId: number, schemaName: string, queryName: string): Promise<DomainDetails> {
+export function fetchDomainDetails(
+    domainId: number,
+    schemaName: string,
+    queryName: string,
+    domainKind?: string
+): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
             domainId,
             schemaName,
             queryName,
+            domainKind,
             success: data => {
                 resolve(DomainDetails.create(Map<string, any>({ ...data })));
             },

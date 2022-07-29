@@ -480,6 +480,7 @@ import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/compo
 import {
     createFormInputId,
     fetchDomain,
+    fetchDomainDetails,
     saveDomain,
     setDomainFields,
 } from './internal/components/domainproperties/actions';
@@ -1210,6 +1211,7 @@ export {
     DomainForm,
     DomainFieldsDisplay,
     fetchDomain,
+    fetchDomainDetails,
     saveDomain,
     createFormInputId,
     setDomainFields,

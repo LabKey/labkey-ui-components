@@ -36,7 +36,9 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     }, [fieldKey]); // on fieldKey change, reload selection values
 
     const setDistinctValues = useCallback((checkAllShown: boolean, searchStr?: string) => {
-        const filterArray = searchStr ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(selectDistinctOptions?.filterArray) : fieldFilters;
+        const filterArray = searchStr
+            ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(selectDistinctOptions?.filterArray)
+            : selectDistinctOptions?.filterArray;
         api.query
             .selectDistinctRows({...selectDistinctOptions, filterArray, maxRows: MAX_DISTINCT_FILTER_OPTIONS + 1})
             .then(result => {

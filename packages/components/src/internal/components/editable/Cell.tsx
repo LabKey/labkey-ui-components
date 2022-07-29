@@ -93,8 +93,7 @@ export class Cell extends React.PureComponent<Props, State> {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
 
-            if (!prevProps.selected)
-                this.loadFilteredLookupKeys();
+            if (!prevProps.selected) this.loadFilteredLookupKeys();
         }
     }
 

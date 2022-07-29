@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.194.8
+*Released*: 29 July 2022
+* Issue 45975: useContainerUser resolving incorrect container
+
 ### version 2.194.7
 *Released*: 22 July 2022
 * Issue 45852: External links should include 'noopener' in 'ref' attribute

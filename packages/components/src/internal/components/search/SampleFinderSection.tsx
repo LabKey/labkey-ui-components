@@ -11,6 +11,7 @@ import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SAMPLE_DATA_EXPORT_CONFIG } from '../samples/constants';
 import {
     InjectedQueryModels,
+    QueryConfigMap,
     RequiresModelAndActions,
     withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
@@ -22,7 +23,6 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { Alert } from '../base/Alert';
 import { SampleGridButtonProps } from '../samples/models';
-import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { invalidateQueryDetailsCache } from '../../query/api';
 
 import { getAllEntityTypeOptions } from '../entities/actions';
@@ -149,28 +149,22 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         }
     }, []);
 
-    const getSelectionKeyPrefix = (): string => {
-        return 'sampleFinder-' + filterChangeCounter;
-    };
-
-    const updateFilters = (
-        filterChangeCounter: number,
-        filters: FilterProps[],
-        updateSession: boolean,
-        isViewDirty: boolean
-    ) => {
-        setFilters(filters);
-        setFilterChangeCounter(filterChangeCounter);
-        setViewDirty(isViewDirty);
-        if (updateSession) {
-            const currentTimestamp = new Date();
-            sessionStorage.setItem(
-                getLocalStorageKey(),
-                searchFiltersToJson(filters, filterChangeCounter, currentTimestamp)
-            );
-            setUnsavedSessionViewName('Searched ' + formatDateTime(currentTimestamp));
-        }
-    };
+    const updateFilters = useCallback(
+        (changeCounter: number, filterProps: FilterProps[], updateSession: boolean, isViewDirty: boolean) => {
+            setFilters(filterProps);
+            setFilterChangeCounter(changeCounter);
+            setViewDirty(isViewDirty);
+            if (updateSession) {
+                const currentTimestamp = new Date();
+                sessionStorage.setItem(
+                    getLocalStorageKey(),
+                    searchFiltersToJson(filterProps, changeCounter, currentTimestamp)
+                );
+                setUnsavedSessionViewName('Searched ' + formatDateTime(currentTimestamp));
+            }
+        },
+        []
+    );
 
     const onAddEntity = useCallback((entityType: EntityDataType) => {
         setChosenQueryName(undefined);
@@ -192,7 +186,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             onFilterEdit(index);
             setChosenField(fieldFilter.fieldKey);
         },
-        [filters]
+        [onFilterEdit]
     );
 
     const onFilterDelete = useCallback(
@@ -202,17 +196,19 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             if (currentView && newFilterCards?.length === 0) {
                 updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, false);
                 setCurrentView(undefined);
-            } else updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
+            } else {
+                updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
+            }
         },
-        [filters, filterChangeCounter, currentView]
+        [filters, filterChangeCounter, currentView, updateFilters]
     );
 
-    const onFilterClose = () => {
+    const onFilterClose = useCallback(() => {
         setChosenEntityType(undefined);
         setChosenQueryName(undefined);
         setChosenField(undefined);
         setCardDirty(false);
-    };
+    }, []);
 
     const onFind = useCallback(
         (
@@ -242,7 +238,16 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
             api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'filterModalApply');
         },
-        [filters, filterChangeCounter, onFilterEdit, onFilterDelete, chosenEntityType, cardDirty, currentView]
+        [
+            cardDirty,
+            filters,
+            onFilterClose,
+            updateFilters,
+            filterChangeCounter,
+            currentView?.entityId,
+            api.query,
+            chosenEntityType,
+        ]
     );
 
     const loadSearch = useCallback(
@@ -276,18 +281,15 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             setShowSaveViewDialog(false);
             setCurrentView(view);
         },
-        [createNotification, filterChangeCounter]
+        [createNotification, filterChangeCounter, updateFilters]
     );
 
-    const onSaveComplete = useCallback(
-        (view: FinderReport) => {
-            setShowSaveViewDialog(false);
-            setViewDirty(false);
-            setCurrentView(view);
-            setSavedViewChangeCounter(savedViewChangeCounter + 1);
-        },
-        [savedViewChangeCounter]
-    );
+    const onSaveComplete = useCallback((view: FinderReport) => {
+        setShowSaveViewDialog(false);
+        setViewDirty(false);
+        setCurrentView(view);
+        setSavedViewChangeCounter(counter => counter + 1);
+    }, []);
 
     const searchViewJson = useMemo(() => {
         return JSON.stringify({
@@ -312,22 +314,19 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 });
             }
         },
-        [currentView, filters, searchViewJson]
+        [createNotification, currentView, searchViewJson]
     );
 
     const manageSearches = useCallback(() => {
         setShowManageViewsDialog(true);
     }, []);
 
-    const onManageSearchesDone = useCallback(
-        (hasChange: boolean) => {
-            setShowManageViewsDialog(false);
-            if (hasChange) {
-                setSavedViewChangeCounter(savedViewChangeCounter + 1);
-            }
-        },
-        [savedViewChangeCounter]
-    );
+    const onManageSearchesDone = useCallback((hasChange: boolean) => {
+        setShowManageViewsDialog(false);
+        if (hasChange) {
+            setSavedViewChangeCounter(counter => counter + 1);
+        }
+    }, []);
 
     return (
         <Section
@@ -351,7 +350,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 />
             }
         >
-            {filters.length == 0 ? (
+            {filters.length === 0 ? (
                 <>
                     <FilterCards
                         className="empty"
@@ -377,7 +376,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                         {...gridProps}
                         cards={filters}
                         sampleTypeNames={sampleTypeNames}
-                        selectionKeyPrefix={getSelectionKeyPrefix()}
+                        selectionKeyPrefix={`sampleFinder-${filterChangeCounter}`}
                         filterChangeCounter={filterChangeCounter}
                     />
                 </>
@@ -514,7 +513,7 @@ const SampleFinderSamplesWithQueryModels = withQueryModels<SampleFinderSamplesGr
 
 const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
     const { cards, sampleTypeNames, selectionKeyPrefix, user, ...gridProps } = props;
-    const [queryConfigs, setQueryConfigs] = useState<{ [key: string]: QueryConfig }>(undefined);
+    const [queryConfigs, setQueryConfigs] = useState<QueryConfigMap>(undefined);
     const [errors, setErrors] = useState<string>(undefined);
 
     useEffect(() => {

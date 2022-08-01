@@ -27,11 +27,10 @@ import { camelCaseToTitleCase } from '../../util/utils';
 
 import { getConceptForCode } from '../ontology/actions';
 
-import { hasPremiumModule } from '../../app/utils';
+import { getCurrentAppProperties, hasPremiumModule } from '../../app/utils';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
-    DECIMAL_RANGE_URI,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_MEASURE,
@@ -1181,14 +1180,18 @@ export class DomainField
             details.push(period + detailsText);
             period = '. ';
         } else if (this.dataType.isLookup() && this.lookupSchema && this.lookupQuery) {
-            const params = { schemaName: this.lookupSchema, 'query.queryName': this.lookupQuery };
-            const href = ActionURL.buildURL('query', 'executeQuery.view', this.lookupContainer, params);
-            const link = <a href={href}> {this.lookupQuery} </a>;
+            // only show the query as a link in LKS, for now
+            let link;
+            if (!getCurrentAppProperties()) {
+                const params = { schemaName: this.lookupSchema, 'query.queryName': this.lookupQuery };
+                const href = ActionURL.buildURL('query', 'executeQuery.view', this.lookupContainer, params);
+                link = <a href={href}> {this.lookupQuery} </a>;
+            }
 
             details.push(
                 period + [this.lookupContainer || 'Current Folder', this.lookupSchema].join(' > '),
                 ' > ',
-                link
+                link ?? this.lookupQuery
             );
             period = '. ';
         } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {

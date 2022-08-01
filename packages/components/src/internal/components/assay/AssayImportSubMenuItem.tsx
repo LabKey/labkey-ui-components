@@ -55,7 +55,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             subItems.push({ text: assay.name, href });
             return subItems;
         }, []);
-    }, [assayModel, isLoaded, providerType, queryModel, currentProductId, targetProductId]);
+    }, [assayModel, isLoaded, providerType, queryModel, currentProductId, targetProductId, ignoreFilter]);
 
     if (disabled) {
         return <DisableableMenuItem operationPermitted={false}>{text}</DisableableMenuItem>;

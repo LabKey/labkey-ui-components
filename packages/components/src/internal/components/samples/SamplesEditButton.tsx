@@ -102,7 +102,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                                 nounPlural={SampleTypeDataType.nounPlural}
                             />
                         )}
-                        {user.canUpdate && <MenuItem divider />}
+                        {user.canUpdate && parentEntityDataTypes?.length > 0 && <MenuItem divider />}
                         {!combineParentTypes &&
                             user.canUpdate &&
                             parentEntityDataTypes.map(parentEntityDataType => {

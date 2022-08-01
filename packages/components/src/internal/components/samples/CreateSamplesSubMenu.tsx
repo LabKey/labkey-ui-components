@@ -12,7 +12,7 @@ import {
     ProductMenuModel,
     QueryModel,
     SampleCreationType,
-} from '../../../index';
+} from '../../..';
 
 import { getSampleWizardURL } from './utils';
 import { DisableableMenuItem } from './DisableableMenuItem';
@@ -24,7 +24,7 @@ interface Props {
     disabled?: boolean;
     id?: string;
     inlineItemsCount?: number;
-    isSelectingSamples: (schemaQuery: SchemaQuery) => boolean;
+    isSelectingSamples?: (schemaQuery: SchemaQuery) => boolean;
     menu?: ProductMenuModel;
     menuCurrentChoice?: string;
     menuText?: string;

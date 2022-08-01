@@ -24,7 +24,7 @@ interface CreateSamplesSubMenuProps {
     getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     inlineItemsCount?: number;
-    isSelectingSamples: (schemaQuery: SchemaQuery) => boolean;
+    isSelectingSamples?: (schemaQuery: SchemaQuery) => boolean;
     maxParentPerSample: number;
     menuCurrentChoice?: string;
     menuText?: string;
@@ -72,7 +72,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const schemaQuery = parentQueryModel?.schemaQuery;
 
     const selectingSampleParents = useMemo(() => {
-        return isSelectingSamples(schemaQuery);
+        return isSelectingSamples ? isSelectingSamples(schemaQuery) : true;
     }, [isSelectingSamples, schemaQuery]);
 
     let disabledMsg: string;

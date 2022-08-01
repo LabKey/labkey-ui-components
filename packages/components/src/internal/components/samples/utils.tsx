@@ -303,13 +303,7 @@ export function getSampleWizardURL(
 
     if (selectionKey) params['selectionKey'] = selectionKey;
 
-    if (currentProductId && targetProductId && currentProductId !== targetProductId) {
-        url = createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
-    } else {
-        url = NEW_SAMPLES_HREF.addParams(params).toHref();
-    }
-
-    return url;
+    return createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
 }
 
 export const downloadSampleTypeTemplate = (

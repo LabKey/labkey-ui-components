@@ -17,14 +17,22 @@ interface Props {
     user: User;
     metricFeatureArea?: string;
     asSubMenu?: boolean;
+    currentProductId?: string;
+    picklistProductId?: string;
 }
 
 export const PicklistButton: FC<Props> = memo(props => {
-    const { model, user, metricFeatureArea, asSubMenu } = props;
+    const { model, user, metricFeatureArea, asSubMenu, currentProductId, picklistProductId } = props;
 
     const items = (
         <>
-            <AddToPicklistMenuItem queryModel={model} user={user} metricFeatureArea={metricFeatureArea} />
+            <AddToPicklistMenuItem
+                queryModel={model}
+                user={user}
+                metricFeatureArea={metricFeatureArea}
+                currentProductId={currentProductId}
+                picklistProductId={picklistProductId}
+            />
             <PicklistCreationMenuItem
                 selectionKey={model?.id}
                 queryModel={model}
@@ -32,6 +40,8 @@ export const PicklistButton: FC<Props> = memo(props => {
                 key="picklist"
                 user={user}
                 metricFeatureArea={metricFeatureArea}
+                currentProductId={currentProductId}
+                picklistProductId={picklistProductId}
             />
         </>
     );

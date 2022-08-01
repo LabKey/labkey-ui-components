@@ -14,7 +14,7 @@ import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 interface Props {
     asSubMenu?: boolean;
     currentProductId?: string;
-    isSelectingSamples: (schemaQuery: SchemaQuery) => boolean;
+    isSelectingSamples?: (schemaQuery: SchemaQuery) => boolean;
     model: QueryModel;
     navigate: (url: string | AppURL) => any;
     targetProductId?: string;

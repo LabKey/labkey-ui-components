@@ -107,7 +107,7 @@ export class AssayDefinitionModel extends Record({
         currentProductId?: string,
         targetProductId?: string,
         ignoreFilter?: boolean
-    ) {
+    ): string {
         let url,
             params = {};
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
@@ -128,18 +128,16 @@ export class AssayDefinitionModel extends Record({
             }
             if (selectionKey) params['selectionKey'] = selectionKey;
             if (isPicklist) params['isPicklist'] = true;
-            if (currentProductId && targetProductId && currentProductId !== targetProductId) {
-                url = createProductUrlFromParts(
-                    targetProductId,
-                    currentProductId,
-                    params,
-                    'assays',
-                    this.type,
-                    this.name,
-                    'upload'
-                ).toString();
-            } else {
-                url = AppURL.create('assays', this.type, this.name, 'upload').addParams(params);
+            url = createProductUrlFromParts(
+                targetProductId,
+                currentProductId,
+                params,
+                'assays',
+                this.type,
+                this.name,
+                'upload'
+            );
+            if (url instanceof AppURL) {
                 url = url.toHref();
             }
         } else {

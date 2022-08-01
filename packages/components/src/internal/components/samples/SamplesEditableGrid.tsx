@@ -204,7 +204,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
     hasParentDataTypes = (): boolean => {
         const { parentDataTypes } = this.props;
-        return parentDataTypes?.toArray()?.length > 0;
+        return parentDataTypes?.size > 0;
     };
 
     updateAllTabRows = (updateDataRows: any[], skipConfirmDiscard?: boolean): Promise<any> => {

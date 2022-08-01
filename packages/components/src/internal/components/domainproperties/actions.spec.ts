@@ -59,6 +59,8 @@ import {
     BOOLEAN_TYPE,
     USERS_TYPE,
     TEXT_CHOICE_TYPE,
+    SAMPLE_TYPE,
+    PARTICIPANT_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -338,6 +340,7 @@ describe('domain properties actions', () => {
             allowAttachmentProperties: true,
             allowTimepointProperties: true,
             allowTextChoiceProperties: true,
+            allowSampleSubjectProperties: true,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeTruthy();
@@ -349,6 +352,8 @@ describe('domain properties actions', () => {
         expect(available.contains(VISIT_ID_TYPE)).toBeTruthy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
         expect(available.contains(TEXT_CHOICE_TYPE)).toBeTruthy();
+        expect(available.contains(SAMPLE_TYPE)).toBeTruthy();
+        expect(available.contains(PARTICIPANT_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, no optional allowed', () => {
@@ -358,6 +363,7 @@ describe('domain properties actions', () => {
             allowAttachmentProperties: false,
             allowTimepointProperties: false,
             allowTextChoiceProperties: false,
+            allowSampleSubjectProperties: false,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeFalsy();
@@ -369,6 +375,8 @@ describe('domain properties actions', () => {
         expect(available.contains(VISIT_ID_TYPE)).toBeFalsy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
         expect(available.contains(TEXT_CHOICE_TYPE)).toBeFalsy();
+        expect(available.contains(SAMPLE_TYPE)).toBeFalsy();
+        expect(available.contains(PARTICIPANT_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypesForOntology', async () => {

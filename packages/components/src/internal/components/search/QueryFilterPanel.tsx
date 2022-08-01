@@ -265,6 +265,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                 }}
                                                 fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
                                                 fieldKey={activeFieldKey}
+                                                canBeBlank={!activeField?.required && !activeField.nameExpression}
                                                 key={activeFieldKey}
                                                 onFieldFilterUpdate={(newFilters, index) =>
                                                     onFilterUpdate(activeField, newFilters, index)

@@ -122,20 +122,6 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
         }
     }, []);
 
-    // const inputItem = useMemo(()=>{
-    //     return <input
-    //         type="text"
-    //         className={className}
-    //         name={inputName}
-    //         placeholder={'Search ' + ontology.abbreviation}
-    //         onChange={onSearchChange}
-    //         onFocus={onSearchFocus}
-    //         onBlur={onSearchBlur}
-    //         onKeyUp={keyHandler}
-    //         value={searchTerm}
-    //     />;
-    // }, [initCode]);
-
     return (
         <div className="concept-search-container">
             <input
@@ -149,7 +135,6 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
                 onKeyUp={keyHandler}
                 value={searchTerm}
             />
-            {/*inputItem*/}
             {showResults && (
                 <OntologySearchResultsMenu
                     searchHits={searchHits}
@@ -232,7 +217,7 @@ interface OntologySearchInputProps
 }
 
 export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
-    const { ontologyId, searchPathChangeHandler,  initCode, ...rest } = props;
+    const { ontologyId, searchPathChangeHandler,  ...rest } = props;
     const [ontologyModel, setOntologyModel] = useState<OntologyModel>();
     const [error, setError] = useState<string>();
 
@@ -271,7 +256,6 @@ export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
                     ontology={ontologyModel}
                     searchPathClickHandler={onSearchClickHandler}
                     onChangeListener={onChangeHandler}
-                    initCode={initCode}
                 />
             )}
         </>

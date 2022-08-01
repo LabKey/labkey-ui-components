@@ -509,7 +509,9 @@ describe('getSampleWizardURL', () => {
     });
 
     test('targetSampleSet and parent and selectionKey', () => {
-        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1').toString()).toBe('#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1');
+        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1').toString()).toBe(
+            '#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1'
+        );
     });
 
     test('default props, with productId', () => {
@@ -517,19 +519,26 @@ describe('getSampleWizardURL', () => {
     });
 
     test('targetSampleSet, with productId', () => {
-        expect(getSampleWizardURL('target1', null, null, 'from', 'to').toString()).toBe('/labkey/to/app.view#/samples/new?target=target1');
+        expect(getSampleWizardURL('target1', null, null, 'from', 'to').toString()).toBe(
+            '/labkey/to/app.view#/samples/new?target=target1'
+        );
     });
 
     test('parent, with productId', () => {
-        expect(getSampleWizardURL(undefined, 'parent1', null, 'from', 'to').toString()).toBe('/labkey/to/app.view#/samples/new?parent=parent1');
+        expect(getSampleWizardURL(undefined, 'parent1', null, 'from', 'to').toString()).toBe(
+            '/labkey/to/app.view#/samples/new?parent=parent1'
+        );
     });
 
     test('targetSampleSet and parent, with productId', () => {
-        expect(getSampleWizardURL('target1', 'parent1', null, 'from', 'to').toString()).toBe('/labkey/to/app.view#/samples/new?target=target1&parent=parent1');
+        expect(getSampleWizardURL('target1', 'parent1', null, 'from', 'to').toString()).toBe(
+            '/labkey/to/app.view#/samples/new?target=target1&parent=parent1'
+        );
     });
 
     test('targetSampleSet and parent and selectionKey, with productId', () => {
-        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', 'from', 'to').toString()).toBe('/labkey/to/app.view#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1');
+        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', 'from', 'to').toString()).toBe(
+            '/labkey/to/app.view#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1'
+        );
     });
-
 });

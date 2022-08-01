@@ -2,15 +2,15 @@ import React from 'react';
 import { DropdownButton } from 'react-bootstrap';
 import { ReactWrapper } from 'enzyme';
 
+import { ProductMenuModel } from '../navigation/model';
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { mountWithServerContext } from '../../testHelpers';
+import { SubMenuItem } from '../menus/SubMenuItem';
+import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
 import { SamplesDeriveButtonBase } from './SamplesDeriveButtonBase';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
-import {ProductMenuModel} from "../navigation/model";
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {mountWithServerContext} from "../../testHelpers";
-import {SubMenuItem} from "../menus/SubMenuItem";
-import {TEST_USER_EDITOR, TEST_USER_READER} from "../../userFixtures";
 
 describe('SamplesDeriveButtonBase', () => {
     const DEFAULT_PROPS = {

@@ -13,12 +13,12 @@ import { PicklistCreationMenuItem } from './PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from './AddToPicklistMenuItem';
 
 interface Props {
-    model: QueryModel;
-    user: User;
-    metricFeatureArea?: string;
     asSubMenu?: boolean;
     currentProductId?: string;
+    metricFeatureArea?: string;
+    model: QueryModel;
     picklistProductId?: string;
+    user: User;
 }
 
 export const PicklistButton: FC<Props> = memo(props => {

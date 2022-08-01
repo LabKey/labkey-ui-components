@@ -10,13 +10,15 @@ import {
     ProductMenuModel,
     SampleCreationTypeModal,
     SchemaQuery,
-    SubMenu
+    SubMenu,
 } from '../../..';
 
+import { SAMPLES_KEY } from '../../app/constants';
+
+import { TEST_USER_APP_ADMIN } from '../../userFixtures';
+
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
-import {MAX_PARENTS_PER_SAMPLE} from "./CreateSamplesSubMenu";
-import {SAMPLES_KEY} from "../../app/constants";
-import {TEST_USER_APP_ADMIN} from "../../userFixtures";
+import { MAX_PARENTS_PER_SAMPLE } from './CreateSamplesSubMenu';
 
 const sampleOptions = [
     {
@@ -87,19 +89,21 @@ describe('CreateSamplesSubMenuBase', () => {
     });
 });
 
-let menu = new ProductMenuModel({currentProductId: 'jest-test'});
-menu = menu.setLoadedSections(List<MenuSectionModel>([
-    MenuSectionModel.create({
-        key: SAMPLES_KEY,
-        label: "Samples",
-        totalCount: 2,
-        items: [
-            {id: 100, key: "a", label: "SampleSetA"},
-            {id: 200, key: "b", label: "SampleSetAB"}
-        ],
-        sectionKey: SAMPLES_KEY,
-    })
-]));
+let menu = new ProductMenuModel({ currentProductId: 'jest-test' });
+menu = menu.setLoadedSections(
+    List<MenuSectionModel>([
+        MenuSectionModel.create({
+            key: SAMPLES_KEY,
+            label: 'Samples',
+            totalCount: 2,
+            items: [
+                { id: 100, key: 'a', label: 'SampleSetA' },
+                { id: 200, key: 'b', label: 'SampleSetAB' },
+            ],
+            sectionKey: SAMPLES_KEY,
+        }),
+    ])
+);
 
 const DEFAULT_PROPS_MENU = {
     menu,
@@ -110,7 +114,12 @@ const DEFAULT_PROPS_MENU = {
 };
 
 describe('CreateSamplesSubMenu', () => {
-    function validate(wrapper: ReactWrapper, optionCount: number, menuText = 'Create Samples', currentMenuChoice?: string): List<MenuOption> {
+    function validate(
+        wrapper: ReactWrapper,
+        optionCount: number,
+        menuText = 'Create Samples',
+        currentMenuChoice?: string
+    ): List<MenuOption> {
         expect(wrapper.find(SampleCreationTypeModal)).toHaveLength(0);
 
         const submenu = wrapper.find(SubMenu);
@@ -135,7 +144,7 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('useOnClick for parentKey', () => {
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS_MENU} parentKey={'123'} />);
+        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS_MENU} parentKey="123" />);
         const options = validate(wrapper, 2);
         expect(options.get(0).href).toBe(undefined);
         expect(options.get(0).onClick).toBeDefined();
@@ -144,11 +153,9 @@ describe('CreateSamplesSubMenu', () => {
 
     test('useOnClick for parentQueryModel with selection', () => {
         const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections: new Set('1') });
-        const wrapper = mount(<CreateSamplesSubMenu
-            {...DEFAULT_PROPS_MENU}
-            parentQueryModel={model}
-            isSelectingSamples={() => true}
-        />);
+        const wrapper = mount(
+            <CreateSamplesSubMenu {...DEFAULT_PROPS_MENU} parentQueryModel={model} isSelectingSamples={() => true} />
+        );
         const options = validate(wrapper, 2);
         expect(options.get(0).href).toBe(undefined);
         expect(options.get(0).onClick).toBeDefined();
@@ -167,7 +174,7 @@ describe('CreateSamplesSubMenu', () => {
     test('disabledMsg', () => {
         const selections = new Set<string>();
         for (var i = 0; i < MAX_PARENTS_PER_SAMPLE + 1; i++) {
-            selections.add(''+i);
+            selections.add('' + i);
         }
         const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections });
         const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS_MENU} parentQueryModel={model} />);

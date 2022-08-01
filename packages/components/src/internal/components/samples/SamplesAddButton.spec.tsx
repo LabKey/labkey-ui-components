@@ -20,7 +20,13 @@ describe('SamplesAddButton', () => {
         ),
     };
 
-    function validate(wrapper: ReactWrapper, allowInsert = true, allowImport = true, insertHref?: string, importHref?: string): void {
+    function validate(
+        wrapper: ReactWrapper,
+        allowInsert = true,
+        allowImport = true,
+        insertHref?: string,
+        importHref?: string
+    ): void {
         expect(wrapper.find(DropdownButton)).toHaveLength(allowInsert || allowImport ? 1 : 0);
         let menuCount = 0;
         if (allowInsert) menuCount++;
@@ -32,7 +38,9 @@ describe('SamplesAddButton', () => {
         }
         if (allowImport) {
             expect(wrapper.find(MenuItem).last().text()).toBe('Import from File');
-            expect(wrapper.find(MenuItem).last().prop('href')).toBe(importHref ?? '#/samples/new?target=undefined&tab=2');
+            expect(wrapper.find(MenuItem).last().prop('href')).toBe(
+                importHref ?? '#/samples/new?target=undefined&tab=2'
+            );
         }
     }
 
@@ -43,13 +51,17 @@ describe('SamplesAddButton', () => {
     });
 
     test('with currentProductId and targetProductId', () => {
-        const wrapper = mountWithServerContext(<SamplesAddButton
-                {...DEFAULT_PROPS}
-                currentProductId={'from'}
-                targetProductId={'to'}
-            />,
-            { user: TEST_USER_EDITOR });
-        validate(wrapper, true, true, '/labkey/to/app.view#/samples/new?target=undefined', '/labkey/to/app.view#/samples/new?target=undefined&tab=2');
+        const wrapper = mountWithServerContext(
+            <SamplesAddButton {...DEFAULT_PROPS} currentProductId="from" targetProductId="to" />,
+            { user: TEST_USER_EDITOR }
+        );
+        validate(
+            wrapper,
+            true,
+            true,
+            '/labkey/to/app.view#/samples/new?target=undefined',
+            '/labkey/to/app.view#/samples/new?target=undefined&tab=2'
+        );
         wrapper.unmount();
     });
 

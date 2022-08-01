@@ -290,8 +290,7 @@ export function getSampleWizardURL(
     currentProductId?: string,
     targetProductId?: string
 ): string | AppURL {
-    let params = {},
-        url;
+    let params = {};
 
     if (targetSampleSet) {
         params['target'] = targetSampleSet;

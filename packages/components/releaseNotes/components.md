@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.203.0
+*Released*: 2 August 2022
 * Workflow job template custom fields
   * Domain kind allowSampleSubjectProperties check to filter out relevant data types
   * Add DomainFormDisplayOptions prop for hideImportAliases

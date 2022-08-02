@@ -35,6 +35,13 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
     const [error, setError] = useState<string>();
     const [showResults, setShowResults] = useState<boolean>(false);
 
+    useEffect(() => {
+        if (searchTerm !== initCode)
+        {
+            setSearchTerm(initCode);
+        }
+    }, [initCode]) // Only trigger when the initCode value is changed, this can happen when the user selects a value via the picker
+
     const onSearchChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
             const { value } = evt.currentTarget;
@@ -210,7 +217,7 @@ interface OntologySearchInputProps
 }
 
 export const OntologySearchInput: FC<OntologySearchInputProps> = memo(props => {
-    const { ontologyId, searchPathChangeHandler, ...rest } = props;
+    const { ontologyId, searchPathChangeHandler,  ...rest } = props;
     const [ontologyModel, setOntologyModel] = useState<OntologyModel>();
     const [error, setError] = useState<string>();
 

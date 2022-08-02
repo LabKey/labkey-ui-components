@@ -412,7 +412,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             }
         });
 
-        saveDomain(updatedDomain, model.getDomainKind(), model.getOptions(), model.name, false, model.domain)
+        saveDomain(updatedDomain, model.getDomainKind(), model.getOptions(), model.name, false, true, model.domain)
             .then(response => {
                 this.setState(
                     produce((draftState: Draft<State>) => {

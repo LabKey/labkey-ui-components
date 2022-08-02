@@ -81,11 +81,11 @@ beforeAll(() => {
 });
 
 describe('domain properties actions', () => {
-    test('test create id', () => {
+    test('create id', () => {
         return expect(createFormInputId('marty', 0, 100)).toBe(DOMAIN_FIELD_PREFIX + '-marty-0-100');
     });
 
-    test('test get field type', () => {
+    test('get field type', () => {
         const field1 = DomainField.create({
             name: 'field1name',
             rangeURI: INT_RANGE_URI,
@@ -549,7 +549,7 @@ describe('domain properties actions', () => {
         expect(document.body.removeChild).toBeCalledWith(mockLink);
     });
 
-    test('processJsonImport ', () => {
+    test('processJsonImport', () => {
         const domain = DomainDesign.create({});
 
         const emptinessError = {

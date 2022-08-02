@@ -117,9 +117,14 @@ describe('NameAndLinkingOptions', () => {
     });
 
     test('hideImportAliases', () => {
-        const wrapper = mount(<NameAndLinkingOptions {...DEFAULT_PROPS} domainFormDisplayOptions={{
-            hideImportAliases: true,
-        }} />);
+        const wrapper = mount(
+            <NameAndLinkingOptions
+                {...DEFAULT_PROPS}
+                domainFormDisplayOptions={{
+                    hideImportAliases: true,
+                }}
+            />
+        );
         expect(
             wrapper.find({
                 id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1),

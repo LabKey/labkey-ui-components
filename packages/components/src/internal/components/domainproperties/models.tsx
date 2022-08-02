@@ -720,6 +720,7 @@ export interface IDomainField {
     defaultScale?: string;
     defaultValue?: string;
     defaultValueType?: string;
+    derivationDataScope?: string;
     description?: string;
     dimension?: boolean;
     disablePhiLevel?: boolean;
@@ -729,7 +730,6 @@ export interface IDomainField {
     importAliases?: string;
     isPrimaryKey: boolean;
     label?: string;
-    lockExistingField?: boolean;
     lockType: string;
     lookupContainer?: string;
     lookupQuery?: string;
@@ -760,7 +760,7 @@ export interface IDomainField {
     textChoiceValidator?: PropertyValidator;
     updatedField: boolean;
     visible: boolean;
-    derivationDataScope?: string;
+    lockExistingField?: boolean;
 }
 
 export class DomainField

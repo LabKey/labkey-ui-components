@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.194.9
+*Released*: 2 August 2022
 * Issue 45860: ConceptPicker doesn't apply selected value
 
 ### version 2.194.8

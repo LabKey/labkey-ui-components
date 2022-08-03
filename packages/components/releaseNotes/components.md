@@ -5,6 +5,35 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add customize view modal DOM element attribute for "data-fieldkey" to help test locators
 
+### version 2.203.0
+*Released*: 2 August 2022
+* Workflow job template custom fields
+  * Domain kind allowSampleSubjectProperties check to filter out relevant data types
+  * Add DomainFormDisplayOptions prop for hideImportAliases
+  * Minor update to styling prop for ContentGroup.tsx
+  * expose fetchDomainDetails() to be used in app to get domain details based on DomainKind
+
+### version 2.202.5
+*Released*: 29 July 2022
+* Issue 45822: incorrect unit types available when adding sample to storage
+    * avoid excessive loading until lookup cell is selected/focused
+
+### version 2.202.4
+*Released*: 29 July 2022
+* Issue 45509: Remove inaccurate tool tip
+* Issue 45947: Don't allow saving views with reserved names
+* Issue 45866: Improve performance of FilterFacetedSelector by loading only 250 items and not searching with each click.
+
+### version 2.202.3
+*Released*: 28 July 2022
+* Sample Finder: support containerFilter on expDescendantOfSelectClause
+
+### version 2.202.2
+*Released*: 28 July 2022
+* Issue 44917: Resolve search icon for uncategorized data classes
+  * Resolve icons to the data class name value iff the data class is assigned a category (e.g. "registry", "source", etc).
+  * Fallback to default (via undefined) rather than explicitly processing as "default".
+
 ### version 2.202.1
 *Released*: 26 July 2022
 * Move `jest` and `enzyme` from devDependencies to dependencies

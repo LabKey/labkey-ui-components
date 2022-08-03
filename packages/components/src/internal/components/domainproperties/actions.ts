@@ -65,6 +65,8 @@ import {
     PropDescType,
     UNIQUE_ID_TYPE,
     TEXT_CHOICE_TYPE,
+    SAMPLE_TYPE,
+    PARTICIPANT_TYPE,
     SMILES_TYPE,
 } from './PropDescType';
 import {
@@ -150,6 +152,7 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
                 resolve(DomainDesign.create(data.domainDesign ? data.domainDesign : data, undefined));
             },
             failure: error => {
+                console.error(error);
                 reject(error);
             },
         });
@@ -157,17 +160,24 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
 }
 
 /**
- * @param domainId: Fetch domain details by Id. Priority param over schema and query name.
+ * @param domainId: Fetch domain details by Id, schemaName/queryName, or domain kind. Priority param over schema and query name.
  * @param schemaName: Schema of domain.
  * @param queryName: Query of domain.
+ * @param domainKind: (Optional) DomainKind of domain.
  * @return Promise wrapped Domain API call.
  */
-export function fetchDomainDetails(domainId: number, schemaName: string, queryName: string): Promise<DomainDetails> {
+export function fetchDomainDetails(
+    domainId: number,
+    schemaName: string,
+    queryName: string,
+    domainKind?: string
+): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
             domainId,
             schemaName,
             queryName,
+            domainKind,
             success: data => {
                 resolve(DomainDetails.create(Map<string, any>({ ...data })));
             },
@@ -281,6 +291,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === TEXT_CHOICE_TYPE && !domain.allowTextChoiceProperties) {
+        return false;
+    }
+
+    if ((type === SAMPLE_TYPE || type === PARTICIPANT_TYPE) && !domain.allowSampleSubjectProperties) {
         return false;
     }
 

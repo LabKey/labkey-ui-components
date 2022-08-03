@@ -59,6 +59,8 @@ import {
     BOOLEAN_TYPE,
     USERS_TYPE,
     TEXT_CHOICE_TYPE,
+    SAMPLE_TYPE,
+    PARTICIPANT_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -79,11 +81,11 @@ beforeAll(() => {
 });
 
 describe('domain properties actions', () => {
-    test('test create id', () => {
+    test('create id', () => {
         return expect(createFormInputId('marty', 0, 100)).toBe(DOMAIN_FIELD_PREFIX + '-marty-0-100');
     });
 
-    test('test get field type', () => {
+    test('get field type', () => {
         const field1 = DomainField.create({
             name: 'field1name',
             rangeURI: INT_RANGE_URI,
@@ -338,6 +340,7 @@ describe('domain properties actions', () => {
             allowAttachmentProperties: true,
             allowTimepointProperties: true,
             allowTextChoiceProperties: true,
+            allowSampleSubjectProperties: true,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeTruthy();
@@ -349,6 +352,8 @@ describe('domain properties actions', () => {
         expect(available.contains(VISIT_ID_TYPE)).toBeTruthy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
         expect(available.contains(TEXT_CHOICE_TYPE)).toBeTruthy();
+        expect(available.contains(SAMPLE_TYPE)).toBeTruthy();
+        expect(available.contains(PARTICIPANT_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, no optional allowed', () => {
@@ -358,6 +363,7 @@ describe('domain properties actions', () => {
             allowAttachmentProperties: false,
             allowTimepointProperties: false,
             allowTextChoiceProperties: false,
+            allowSampleSubjectProperties: false,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeFalsy();
@@ -369,6 +375,8 @@ describe('domain properties actions', () => {
         expect(available.contains(VISIT_ID_TYPE)).toBeFalsy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
         expect(available.contains(TEXT_CHOICE_TYPE)).toBeFalsy();
+        expect(available.contains(SAMPLE_TYPE)).toBeFalsy();
+        expect(available.contains(PARTICIPANT_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypesForOntology', async () => {
@@ -541,7 +549,7 @@ describe('domain properties actions', () => {
         expect(document.body.removeChild).toBeCalledWith(mockLink);
     });
 
-    test('processJsonImport ', () => {
+    test('processJsonImport', () => {
         const domain = DomainDesign.create({});
 
         const emptinessError = {

@@ -69,7 +69,6 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                         <DomainFieldLabel
                             label="Name"
                             required={true}
-                            helpTipBody={`The name for this ${noun.toLowerCase()}. Note that this can\'t be changed after ${noun.toLowerCase()} creation.`}
                         />
                     </Col>
                     <Col xs={10}>

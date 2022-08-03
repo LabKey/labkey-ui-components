@@ -4,6 +4,7 @@ import { EntityDataType } from '../entities/models';
 import { JsonType } from '../domainproperties/PropDescType';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryConfigMap } from '../../../public/QueryModel/withQueryModels';
 import { SAMPLE_STATUS_REQUIRED_COLUMNS } from '../samples/constants';
 import { User } from '../base/models/User';
 
@@ -23,6 +24,8 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { getPrimaryAppProperties, isOntologyEnabled } from '../../app/utils';
 
 import { formatDateTime } from '../../util/Date';
+
+import { getContainerFilter } from '../../query/api';
 
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 import { SearchScope } from './constants';
@@ -91,7 +94,7 @@ export function getFinderViewColumnsConfig(
     };
 }
 
-export const SAMPLE_FINDER_VIEW_NAME = 'Sample Finder';
+export const SAMPLE_FINDER_VIEW_NAME = '~~samplefinder~~';
 
 function getSampleFinderConfigId(finderId: string, suffix: string): string {
     const { uuids } = getServerContext();
@@ -118,32 +121,37 @@ export function getLabKeySqlWhere(fieldFilters: FieldFilter[]): string {
     return 'WHERE ' + clauses.join(' AND ');
 }
 
-export function getExpDescendantOfSelectClause(schemaQuery: SchemaQuery, fieldFilters: FieldFilter[]): string {
+export function getExpDescendantOfSelectClause(
+    schemaQuery: SchemaQuery,
+    fieldFilters: FieldFilter[],
+    cf?: Query.ContainerFilter
+): string {
     const selectClauseWhere = getLabKeySqlWhere(fieldFilters);
     if (!selectClauseWhere) return null;
 
-    return (
-        'SELECT "' +
-        schemaQuery.queryName +
-        '".expObject() FROM ' +
-        schemaQuery.schemaName +
-        '."' +
-        schemaQuery.queryName +
-        '" ' +
-        selectClauseWhere
-    );
+    const { queryName, schemaName } = schemaQuery;
+    const cfClause = cf ? `[ContainerFilter='${cf}']` : '';
+
+    return `SELECT "${queryName}".expObject() FROM ${schemaName}."${queryName}"${cfClause} ${selectClauseWhere}`;
 }
 
-export function getExpDescendantOfFilter(schemaQuery: SchemaQuery, fieldFilters: FieldFilter[]): Filter.IFilter {
-    const selectClause = getExpDescendantOfSelectClause(schemaQuery, fieldFilters);
+export function getExpDescendantOfFilter(
+    schemaQuery: SchemaQuery,
+    fieldFilters: FieldFilter[],
+    cf?: Query.ContainerFilter
+): Filter.IFilter {
+    const selectClause = getExpDescendantOfSelectClause(schemaQuery, fieldFilters, cf);
+    if (!selectClause) return null;
 
-    if (selectClause) return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
-
-    return null;
+    return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
 }
 
 // exported for jest testing
-export function getSampleFinderCommonConfigs(cards: FilterProps[], useAncestors: boolean): Partial<QueryConfig> {
+export function getSampleFinderCommonConfigs(
+    cards: FilterProps[],
+    useAncestors: boolean,
+    cf?: Query.ContainerFilter
+): Partial<QueryConfig> {
     const baseFilters = [];
     const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
     cards.forEach(card => {
@@ -165,7 +173,7 @@ export function getSampleFinderCommonConfigs(cards: FilterProps[], useAncestors:
                 }
             });
 
-            const filter = getExpDescendantOfFilter(schemaQuery, card.filterArray);
+            const filter = getExpDescendantOfFilter(schemaQuery, card.filterArray, cf);
             if (filter) {
                 baseFilters.push(filter);
             }
@@ -184,10 +192,11 @@ export function getSampleFinderQueryConfigs(
     sampleTypeNames: string[],
     cards: FilterProps[],
     finderId: string
-): { [key: string]: QueryConfig } {
+): QueryConfigMap {
     const omittedColumns = getOmittedSampleTypeColumns(user);
     const allSamplesKey = getSampleFinderConfigId(finderId, 'exp/materials');
-    const configs: { [key: string]: QueryConfig } = {
+    const cf = getContainerFilter();
+    const configs: QueryConfigMap = {
         [allSamplesKey]: {
             id: allSamplesKey,
             title: 'All Samples',
@@ -197,12 +206,13 @@ export function getSampleFinderQueryConfigs(
                 SAMPLE_FINDER_VIEW_NAME
             ),
             omittedColumns: [...omittedColumns, 'Run'],
-            ...getSampleFinderCommonConfigs(cards, false),
+            ...getSampleFinderCommonConfigs(cards, false, cf),
         },
     };
 
-    const commonConfig = getSampleFinderCommonConfigs(cards, true);
     if (sampleTypeNames) {
+        const commonConfig = getSampleFinderCommonConfigs(cards, true, cf);
+
         for (const name of sampleTypeNames) {
             const id = getSampleFinderConfigId(finderId, 'samples/' + name);
             const schemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, name, SAMPLE_FINDER_VIEW_NAME);
@@ -216,6 +226,7 @@ export function getSampleFinderQueryConfigs(
             };
         }
     }
+
     return configs;
 }
 

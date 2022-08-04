@@ -51,10 +51,9 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
 
         if (!confirmationData) return undefined;
 
-
         const _dependencyText =
             isELNEnabledInLKSM()
-                ? dependencyText + ' or is referenced in an active notebook'
+                ? dependencyText + ' or references in an active notebook'
                 : dependencyText;
 
         const numCanDelete = confirmationData.allowed.length;

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX 2022
+* Projects - Cross-Folder Storage Actions
+    * Added ValueList component
+
 ### version 2.203.0
 *Released*: 2 August 2022
 * Workflow job template custom fields

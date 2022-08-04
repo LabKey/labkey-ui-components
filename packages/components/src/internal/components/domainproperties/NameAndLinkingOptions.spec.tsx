@@ -115,4 +115,22 @@ describe('NameAndLinkingOptions', () => {
         ).toHaveLength(0);
         wrapper.unmount();
     });
+
+    test('hideImportAliases', () => {
+        const wrapper = mount(
+            <NameAndLinkingOptions
+                {...DEFAULT_PROPS}
+                domainFormDisplayOptions={{
+                    hideImportAliases: true,
+                }}
+            />
+        );
+        expect(
+            wrapper.find({
+                id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1),
+                className: 'form-control',
+            })
+        ).toHaveLength(0);
+        wrapper.unmount();
+    });
 });

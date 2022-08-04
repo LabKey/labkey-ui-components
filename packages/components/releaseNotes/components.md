@@ -8,6 +8,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Move CreateSamplesSubMenu and SamplesDeriveButtonBase here from LKSM
   * Modify SamplesAddButton to support productId
 
+### version 2.203.0
+*Released*: 2 August 2022
+* Workflow job template custom fields
+  * Domain kind allowSampleSubjectProperties check to filter out relevant data types
+  * Add DomainFormDisplayOptions prop for hideImportAliases
+  * Minor update to styling prop for ContentGroup.tsx
+  * expose fetchDomainDetails() to be used in app to get domain details based on DomainKind
+
 ### version 2.202.5
 *Released*: 29 July 2022
 * Issue 45822: incorrect unit types available when adding sample to storage

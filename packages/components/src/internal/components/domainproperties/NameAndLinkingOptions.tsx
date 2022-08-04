@@ -18,16 +18,17 @@ import {
     DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
     DOMAIN_FIELD_URL,
 } from './constants';
-import { DomainField } from './models';
+import { DomainField, IDomainFormDisplayOptions } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface NameAndLinkingProps {
-    index: number;
+    appPropertiesOnly?: boolean;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainIndex: number;
     field: DomainField;
+    index: number;
     onChange: (string, any) => void;
-    appPropertiesOnly?: boolean;
 }
 
 export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
@@ -64,7 +65,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
     };
 
     render(): ReactNode {
-        const { index, field, domainIndex, appPropertiesOnly } = this.props;
+        const { index, field, domainIndex, appPropertiesOnly, domainFormDisplayOptions } = this.props;
 
         return (
             <div>
@@ -97,7 +98,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        {!field.isUniqueIdField() && (
+                        {!field.isUniqueIdField() && !domainFormDisplayOptions?.hideImportAliases && (
                             <>
                                 <div className="domain-field-label">
                                     <DomainFieldLabel

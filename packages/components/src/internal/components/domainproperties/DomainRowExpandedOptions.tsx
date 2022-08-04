@@ -268,6 +268,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                             field={field}
                             onChange={onChange}
                             appPropertiesOnly={appPropertiesOnly}
+                            domainFormDisplayOptions={domainFormDisplayOptions}
                         />
                     </Col>
                     {!isFieldFullyLocked(field.lockType) && (

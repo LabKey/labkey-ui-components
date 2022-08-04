@@ -27,11 +27,10 @@ import { camelCaseToTitleCase } from '../../util/utils';
 
 import { getConceptForCode } from '../ontology/actions';
 
-import { hasPremiumModule } from '../../app/utils';
+import { getCurrentAppProperties, hasPremiumModule } from '../../app/utils';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
-    DECIMAL_RANGE_URI,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_MEASURE,
@@ -123,6 +122,7 @@ interface IDomainDesign {
     allowAttachmentProperties: boolean;
     allowFileLinkProperties: boolean;
     allowFlagProperties: boolean;
+    allowSampleSubjectProperties: boolean;
     allowTextChoiceProperties: boolean;
     allowTimepointProperties: boolean;
     container: string;
@@ -154,6 +154,7 @@ export class DomainDesign
         allowFileLinkProperties: false,
         allowAttachmentProperties: false,
         allowFlagProperties: true,
+        allowSampleSubjectProperties: true,
         allowTextChoiceProperties: true,
         allowTimepointProperties: false,
         showDefaultValueSettings: false,
@@ -180,6 +181,7 @@ export class DomainDesign
     declare allowFileLinkProperties: boolean;
     declare allowAttachmentProperties: boolean;
     declare allowFlagProperties: boolean;
+    declare allowSampleSubjectProperties: boolean;
     declare allowTextChoiceProperties: boolean;
     declare allowTimepointProperties: boolean;
     declare showDefaultValueSettings: boolean;
@@ -718,6 +720,7 @@ export interface IDomainField {
     defaultScale?: string;
     defaultValue?: string;
     defaultValueType?: string;
+    derivationDataScope?: string;
     description?: string;
     dimension?: boolean;
     disablePhiLevel?: boolean;
@@ -727,7 +730,6 @@ export interface IDomainField {
     importAliases?: string;
     isPrimaryKey: boolean;
     label?: string;
-    lockExistingField?: boolean;
     lockType: string;
     lookupContainer?: string;
     lookupQuery?: string;
@@ -758,7 +760,7 @@ export interface IDomainField {
     textChoiceValidator?: PropertyValidator;
     updatedField: boolean;
     visible: boolean;
-    derivationDataScope?: string;
+    lockExistingField?: boolean;
 }
 
 export class DomainField
@@ -1178,14 +1180,18 @@ export class DomainField
             details.push(period + detailsText);
             period = '. ';
         } else if (this.dataType.isLookup() && this.lookupSchema && this.lookupQuery) {
-            const params = { schemaName: this.lookupSchema, 'query.queryName': this.lookupQuery };
-            const href = ActionURL.buildURL('query', 'executeQuery.view', this.lookupContainer, params);
-            const link = <a href={href}> {this.lookupQuery} </a>;
+            // only show the query as a link in LKS, for now
+            let link;
+            if (!getCurrentAppProperties()) {
+                const params = { schemaName: this.lookupSchema, 'query.queryName': this.lookupQuery };
+                const href = ActionURL.buildURL('query', 'executeQuery.view', this.lookupContainer, params);
+                link = <a href={href}> {this.lookupQuery} </a>;
+            }
 
             details.push(
                 period + [this.lookupContainer || 'Current Folder', this.lookupSchema].join(' > '),
                 ' > ',
-                link
+                link ?? this.lookupQuery
             );
             period = '. ';
         } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {
@@ -1859,6 +1865,7 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     hideConditionalFormatting?: boolean;
     hideFilePropertyType?: boolean;
+    hideImportAliases?: boolean;
     hideImportData?: boolean;
     hideImportExport?: boolean;
     hideInferFromFile?: boolean;

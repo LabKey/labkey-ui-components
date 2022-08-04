@@ -1489,6 +1489,22 @@ exports[`DomainRow Sample Field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -3732,6 +3748,22 @@ exports[`DomainRow client side warning on field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -5975,6 +6007,22 @@ exports[`DomainRow date time field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -8401,6 +8449,22 @@ exports[`DomainRow decimal field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -10578,6 +10642,22 @@ exports[`DomainRow participant id field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -12848,6 +12928,22 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -15206,6 +15302,22 @@ exports[`DomainRow string field test 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -17770,6 +17882,22 @@ exports[`DomainRow with empty domain form 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {

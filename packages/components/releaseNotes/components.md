@@ -4,7 +4,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 46025: Don't show "Source Events" as audit query for LKB
-* Add missing hyphen
 
 ### version 2.203.0
 *Released*: 2 August 2022

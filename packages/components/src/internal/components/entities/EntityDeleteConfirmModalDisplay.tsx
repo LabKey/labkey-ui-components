@@ -19,7 +19,7 @@ import { capitalizeFirstChar, ConfirmModal } from '../../..';
 
 import { helpLinkNode } from '../../util/helpLinks';
 
-import { isSampleStatusEnabled } from '../../app/utils';
+import { isELNEnabledInLKSM, isSampleStatusEnabled } from '../../app/utils';
 
 import { EntityDataType, OperationConfirmationData } from './models';
 import { isSampleEntity } from './utils';
@@ -51,10 +51,10 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
 
         if (!confirmationData) return undefined;
 
-        // TODO when experimental flag for sample status is removed, move this text into the SampleTypeDataType constant
+
         const _dependencyText =
-            isSampleStatusEnabled() && isSampleEntity(entityDataType)
-                ? dependencyText + ' or status that prevents deletion'
+            isELNEnabledInLKSM()
+                ? dependencyText + ' or is referenced in an active notebook'
                 : dependencyText;
 
         const numCanDelete = confirmationData.allowed.length;

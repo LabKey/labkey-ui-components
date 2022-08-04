@@ -22,7 +22,12 @@ import {
     SCHEMAS,
 } from '../../..';
 
-import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+import {
+    biologicsIsPrimaryApp,
+    isELNEnabledInLKSM,
+    isFreezerManagementEnabled,
+    isSampleStatusEnabled
+} from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
@@ -66,11 +71,11 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
         if (deleteInfoError) {
             deleteMsg += 'there was a problem loading the delete confirmation data.';
         } else {
-            deleteMsg += 'it has either derived sample or assay data dependencies';
-            if (isSampleStatusEnabled()) {
-                deleteMsg += ' or status that prevents deletion';
+            deleteMsg += 'it has either derived sample, job, or assay data dependencies, a status that prevent deletion';
+            if (!biologicsIsPrimaryApp() || isELNEnabledInLKSM()) {
+                deleteMsg += ', or is referenced in an active notebook'
             }
-            deleteMsg += '. Check the Lineage and Assays tabs for this sample to get more information.';
+            deleteMsg += '. Check the Lineage, Assays, and Jobs tabs for this sample to get more information.';
         }
     }
     return deleteMsg;

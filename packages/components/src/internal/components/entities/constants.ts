@@ -29,7 +29,7 @@ export const SampleTypeDataType: EntityDataType = {
     descriptionSingular: 'parent sample type',
     descriptionPlural: 'parent sample types',
     uniqueFieldKey: 'Name',
-    dependencyText: 'derived sample or assay data dependencies',
+    dependencyText: 'derived sample, job, or assay data dependencies or status that prevents deletion',
     deleteHelpLinkTopic: DELETE_SAMPLES_TOPIC,
     inputColumnName: 'Inputs/Materials/First',
     ancestorColumnName: 'Ancestors/Samples',

@@ -15,11 +15,11 @@ import { SAMPLE_FILTER_METRIC_AREA } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    title: ReactNode;
-    findNounPlural?: string;
-    onSearch?: (form: any) => void;
-    onFindByIds?: (sessionKey: string) => void;
     className?: string;
+    findNounPlural?: string;
+    onFindByIds?: (sessionKey: string) => void;
+    onSearch?: (form: any) => void;
+    title: ReactNode;
 }
 
 export const FindAndSearchDropdown: FC<Props> = memo(props => {

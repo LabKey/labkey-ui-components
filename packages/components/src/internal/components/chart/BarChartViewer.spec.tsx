@@ -8,7 +8,7 @@ import { SampleButtons } from './BarChartViewer';
 
 describe('SampleButtons', () => {
     test('with insert and sample finder enabled', () => {
-        LABKEY.moduleContext = { samplemanagement: {  } };
+        LABKEY.moduleContext = { samplemanagement: {} };
         const wrapper = mountWithServerContext(<SampleButtons />, { user: TEST_USER_AUTHOR });
         expect(wrapper.find(Button)).toHaveLength(2);
         expect(wrapper.find(Button).first().text()).toBe('Go to Sample Finder');
@@ -17,7 +17,7 @@ describe('SampleButtons', () => {
     });
 
     test('without insert and sample finder enabled', () => {
-        LABKEY.moduleContext = { samplemanagement: {  } };
+        LABKEY.moduleContext = { samplemanagement: {} };
         const wrapper = mountWithServerContext(<SampleButtons />, { user: TEST_USER_READER });
         expect(wrapper.find(Button)).toHaveLength(1);
         expect(wrapper.find(Button).first().text()).toBe('Go to Sample Finder');

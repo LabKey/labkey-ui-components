@@ -1,13 +1,11 @@
 import React, { FC, FormEvent, memo, ReactNode, useCallback, useMemo, useReducer, useRef, useState } from 'react';
 import moment from 'moment';
+import classNames from 'classnames';
 
 import { getDateFormat } from '../util/Date';
-
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
-
 import { DateInput } from './DateInput';
 import { useServerContext } from './base/ServerContext';
-import classNames from 'classnames';
 
 interface Props {
     allowBlank?: boolean;
@@ -18,8 +16,8 @@ interface Props {
     name: string;
     onChange?: (name: string, newValue: any) => void;
     placeholder?: string;
-    type: 'date' | 'text' | 'textarea';
-    value: any;
+    type: string;
+    value: any; // could be a primitive value or a RowValue (from internal/query/selectRows)
 }
 
 export const EditInlineField: FC<Props> = memo(props => {
@@ -27,10 +25,11 @@ export const EditInlineField: FC<Props> = memo(props => {
     const { container } = useServerContext();
     const dateFormat = getDateFormat(container);
     const isDate = type === 'date';
-    const isText = type === 'text';
     const isTextArea = type === 'textarea';
+    const isText = !isDate && !isTextArea;
     const inputRef = useRef(null);
-    const [dateValue, setDateValue] = useState<Date>(isDate && value !== undefined ? new Date(value) : undefined);
+    const _value = typeof value === 'object' ? value?.value : value;
+    const [dateValue, setDateValue] = useState<Date>(isDate && _value !== undefined ? new Date(_value) : undefined);
 
     // Utilizing useReducer here so multiple state attributes can be updated at once
     const [state, setState] = useReducer((currentState, newState) => ({ ...currentState, ...newState }), {
@@ -39,14 +38,17 @@ export const EditInlineField: FC<Props> = memo(props => {
     });
 
     const displayValue = useMemo<ReactNode>(() => {
+        if (value?.formattedValue) return value.formattedValue;
+        if (value?.displayValue) return value.displayValue;
+
         // value is of type "any" so it could be a number, boolean, etc. Use explicit value checks.
-        if (value !== undefined && value !== null && value !== '') {
-            if (isDate) return moment(value).format(dateFormat);
-            return value;
+        if (_value !== undefined && _value !== null && _value !== '') {
+            if (isDate) return moment(_value).format(dateFormat);
+            return _value?.toString();
         }
 
         return <span className="edit-inline-field__placeholder">{emptyText}</span>;
-    }, [dateFormat, emptyText, isDate, value]);
+    }, [dateFormat, emptyText, isDate, value, _value]);
 
     const getInputValue = useCallback((): any => {
         if (isDate) return dateValue?.valueOf();
@@ -64,11 +66,11 @@ export const EditInlineField: FC<Props> = memo(props => {
             return;
         }
 
-        if (inputValue !== value) {
+        if (inputValue !== _value) {
             onChange?.(name, inputValue);
         }
         setState({ editing: false });
-    }, [allowBlank, getInputValue, isDate, name, onChange, value]);
+    }, [allowBlank, getInputValue, isDate, name, onChange, _value]);
 
     const onBlur = useCallback((): void => {
         if (!state.ignoreBlur) {
@@ -139,11 +141,12 @@ export const EditInlineField: FC<Props> = memo(props => {
                         autoFocus
                         className="form-control"
                         cols={50}
-                        defaultValue={value}
+                        defaultValue={_value}
                         onBlur={onBlur}
                         onFocus={onTextAreaFocus}
                         onKeyDown={onKeyDown}
                         name={name}
+                        placeholder={placeholder}
                         ref={inputRef}
                         rows={5}
                     />
@@ -154,13 +157,14 @@ export const EditInlineField: FC<Props> = memo(props => {
                     <input
                         autoFocus
                         className="form-control"
-                        defaultValue={value}
+                        defaultValue={_value}
                         onBlur={onBlur}
                         onKeyDown={onKeyDown}
                         name={name}
+                        placeholder={placeholder}
                         ref={inputRef}
                         type="text"
-                        size={Math.max(value?.length, 20)}
+                        size={Math.max(_value?.length, 20)}
                         onInput={onInputChange}
                     />
                 </span>

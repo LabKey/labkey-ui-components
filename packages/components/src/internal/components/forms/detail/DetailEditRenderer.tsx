@@ -39,7 +39,7 @@ import { getUnFormattedNumber } from '../../../util/Date';
 import { SampleStatusRenderer } from '../../../renderers/SampleStatusRenderer';
 import { TextChoiceInput } from '../input/TextChoiceInput';
 
-import { _defaultRenderer, Renderer, RenderOptions } from './DetailDisplay';
+import { _defaultRenderer, EditRendererOptions, Renderer } from './DetailDisplay';
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is
@@ -57,7 +57,7 @@ function detailNonEditableRenderer(col: QueryColumn, data: any): ReactNode {
 // TODO: Merge this functionality with <QueryFormInputs />
 export function resolveDetailEditRenderer(
     col: QueryColumn,
-    options?: RenderOptions,
+    options?: EditRendererOptions,
     fileInputRenderer = detailNonEditableRenderer,
     onAdditionalFormDataChange?: (name: string, value: any) => any
 ): Renderer {
@@ -120,10 +120,12 @@ export function resolveDetailEditRenderer(
                         maxRows={10}
                         multiple={multiple}
                         name={col.name}
-                        placeholder="Select or type to search..."
+                        onBlur={options?.onBlur}
+                        placeholder={options?.placeholder ?? 'Select or type to search...'}
                         previewOptions={col.previewOptions}
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
+                        showLabel={!options?.hideLabel}
                         value={resolveDetailFieldValue(data, true)}
                         valueColumn={col.lookup.keyColumn}
                     />
@@ -138,7 +140,9 @@ export function resolveDetailEditRenderer(
                     inputClass="col-sm-12"
                     queryColumn={col}
                     value={value}
-                    placeholder="Select or type to search..."
+                    onBlur={options?.onBlur}
+                    placeholder={options?.placeholder ?? 'Select or type to search...'}
+                    showLabel={!options?.hideLabel}
                 />
             );
         }

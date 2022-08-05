@@ -24,6 +24,12 @@ export interface RenderOptions {
     containerPath?: string;
 }
 
+export interface EditRendererOptions extends RenderOptions {
+    hideLabel?: boolean;
+    onBlur?: () => void;
+    placeholder?: string;
+}
+
 export type DetailRenderer = (
     column: QueryColumn,
     options?: RenderOptions,

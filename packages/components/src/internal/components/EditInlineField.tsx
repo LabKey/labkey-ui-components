@@ -1,16 +1,20 @@
 import React, { FC, FormEvent, memo, ReactNode, useCallback, useMemo, useReducer, useRef, useState } from 'react';
 import moment from 'moment';
 import classNames from 'classnames';
+import Formsy from 'formsy-react';
 
-import { getDateFormat } from '../util/Date';
+import { getColDateFormat, getDateFormat, getJsonDateTimeFormatString } from '../util/Date';
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
 import { DateInput } from './DateInput';
 import { useServerContext } from './base/ServerContext';
+import { QueryColumn } from '../../public/QueryColumn';
+import { resolveDetailEditRenderer } from './forms/detail/DetailEditRenderer';
 
 interface Props {
     allowBlank?: boolean;
     allowEdit?: boolean;
     className?: string;
+    column?: QueryColumn;
     emptyText?: string;
     label?: string;
     name: string;
@@ -18,10 +22,24 @@ interface Props {
     placeholder?: string;
     type: string;
     value: any; // could be a primitive value or a RowValue (from internal/query/selectRows)
+    useJsonDateFormat?: boolean;
 }
 
 export const EditInlineField: FC<Props> = memo(props => {
-    const { allowBlank, allowEdit, className, emptyText, label, name, onChange, placeholder, type, value } = props;
+    const {
+        allowBlank,
+        allowEdit,
+        className,
+        emptyText,
+        label,
+        name,
+        onChange,
+        placeholder,
+        type,
+        value,
+        column,
+        useJsonDateFormat,
+    } = props;
     const { container } = useServerContext();
     const dateFormat = getDateFormat(container);
     const isDate = type === 'date';
@@ -30,6 +48,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
     const [dateValue, setDateValue] = useState<Date>(isDate && _value !== undefined ? new Date(_value) : undefined);
+    const [columnBasedValue, setColumnBasedValue] = useState();
 
     // Utilizing useReducer here so multiple state attributes can be updated at once
     const [state, setState] = useReducer((currentState, newState) => ({ ...currentState, ...newState }), {
@@ -51,9 +70,13 @@ export const EditInlineField: FC<Props> = memo(props => {
     }, [dateFormat, emptyText, isDate, value, _value]);
 
     const getInputValue = useCallback((): any => {
-        if (isDate) return dateValue?.valueOf();
+        if (isDate) {
+            if (useJsonDateFormat) return getJsonDateTimeFormatString(dateValue);
+            return dateValue?.valueOf();
+        }
+        if (column) return columnBasedValue;
         return inputRef.current?.value;
-    }, [dateValue, isDate]);
+    }, [dateValue, isDate, columnBasedValue, column, useJsonDateFormat]);
 
     const onCancel = (): void => {
         setState({ editing: false, ignoreBlur: true });
@@ -88,6 +111,10 @@ export const EditInlineField: FC<Props> = memo(props => {
         setDateValue(date);
     }, []);
 
+    const onFormsyColumnChange = useCallback((data: Record<string, any>) => {
+        setColumnBasedValue(data[column.fieldKey]);
+    }, [column]);
+
     const onKeyDown = useEnterEscape(saveEdit, onCancel);
 
     // This is used in conjunction with the input-resizer class  to get the input field to resize based on the size of the value.
@@ -120,8 +147,6 @@ export const EditInlineField: FC<Props> = memo(props => {
         }
     }, []);
 
-    // TODO: Pass through the dateFormat to the <DateInput/> so the format is consistent between viewing and editing.
-    // See note on <DateInput/> regarding supporting date formats.
     return (
         <div className={className}>
             {state.editing && isDate && (
@@ -133,6 +158,8 @@ export const EditInlineField: FC<Props> = memo(props => {
                     onChange={onDateChange}
                     placeholderText={placeholder}
                     selected={dateValue}
+                    showTimeSelect={!!column}
+                    dateFormat={getColDateFormat(column, column ? undefined : getDateFormat())}
                 />
             )}
             {state.editing && isTextArea && (
@@ -152,7 +179,12 @@ export const EditInlineField: FC<Props> = memo(props => {
                     />
                 </span>
             )}
-            {state.editing && isText && (
+            {state.editing && column && !isDate && (
+                <Formsy className="form-horizontal" onChange={onFormsyColumnChange}>
+                    {resolveDetailEditRenderer(column, { hideLabel: true, onBlur, placeholder })(value)}
+                </Formsy>
+            )}
+            {state.editing && !column && isText && (
                 <span className="input-group input-sizer">
                     <input
                         autoFocus

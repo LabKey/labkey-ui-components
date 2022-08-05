@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD August 2022
 * Workflow job creation and update with custom fields
   * EditInlineField updates to support value as RowValue from selectRows response
+  * EditInlineField to support QueryColumn and use resolveDetailEditRenderer()
 
 ### version 2.203.0
 *Released*: 2 August 2022

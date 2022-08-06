@@ -94,7 +94,9 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         onSampleTabSelect?.(tab);
     }, []);
     const activeModel = useMemo(() => queryModels[activeTabId], [activeTabId, queryModels]);
-    const { hasSelections, selections } = activeModel;
+    const hasSelections = activeModel?.hasSelections;
+    const selections = activeModel?.selections;
+    const activeModelId = useMemo(() => activeModel?.id, [activeModel]);
     const selection = useMemo(() => List(Array.from(selections ?? [])), [selections]);
     const hasValidMaxSelection = useMemo(() => {
         const selSize = selections?.size ?? 0;
@@ -169,11 +171,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             setShowBulkUpdate(false);
             setSelectionData(submitForEdit ? data : undefined);
             if (!submitForEdit) {
-                actions.loadModel(activeModel.id, true);
+                actions.loadModel(activeModelId, true);
                 afterSampleActionComplete?.();
             }
         },
-        [actions, activeModel.id, afterSampleActionComplete]
+        [actions, activeModelId, afterSampleActionComplete]
     );
 
     const resetState = useCallback(() => {
@@ -201,11 +203,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const _afterSampleActionComplete = useCallback(
         (hasDelete?: boolean) => {
             dismissNotifications();
-            actions.loadModel(activeModel.id, true);
+            actions.loadModel(activeModelId, true);
             afterSampleActionComplete?.(hasDelete);
             resetState();
         },
-        [actions, activeModel.id, afterSampleActionComplete, resetState]
+        [actions, activeModelId, afterSampleActionComplete, resetState]
     );
 
     const afterSampleDelete = useCallback(
@@ -216,11 +218,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     ids.push(row['RowId']);
                 });
             }
-            actions.replaceSelections(activeModel.id, ids);
+            actions.replaceSelections(activeModelId, ids);
 
             _afterSampleActionComplete(true);
         },
-        [actions, activeModel, _afterSampleActionComplete]
+        [actions, activeModelId, _afterSampleActionComplete]
     );
 
     const onUpdateRows = useCallback(

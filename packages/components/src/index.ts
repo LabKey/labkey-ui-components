@@ -29,6 +29,7 @@ import {
     getAssayImportNotificationMsg,
     getServerFilePreview,
     inferDomainFromFile,
+    getAssayRunDeleteMessage,
 } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
@@ -451,6 +452,7 @@ import {
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getSampleOperationConfirmationData,
+    getOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
     DataClassDataType,
@@ -1092,6 +1094,7 @@ export {
     getSampleOperationConfirmationData,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
+    getOperationConfirmationData,
     createEntityParentKey,
     getUniqueIdColumnMetadata,
     // search related items
@@ -1227,6 +1230,7 @@ export {
     DOMAIN_RANGE_VALIDATOR,
     DomainDetails,
     inferDomainFromFile,
+    getAssayRunDeleteMessage,
     getServerFilePreview,
     InferDomainResponse,
     BasePropertiesPanel,

@@ -51,7 +51,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
 
         const _dependencyText =
             isELNEnabled()
-                ? dependencyText + ' or references in an active notebook'
+                ?  (dependencyText ? dependencyText + ' or' : '') + ' references in one or more active notebooks'
                 : dependencyText;
 
         const numCanDelete = confirmationData.allowed.length;
@@ -98,9 +98,9 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 '. ';
             firstText += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
             firstText += (numCannotDelete === 1 ? ' it has ' : ' they have ') + _dependencyText + '.';
-            text.push(firstText);
+            text.push(<React.Fragment key={"commonText"}>{firstText}</React.Fragment>);
             if (getDeletionDescription)
-                text.push(getDeletionDescription(numCanDelete));
+                text.push(<React.Fragment key={"customText"}><br/><br/>{getDeletionDescription(numCanDelete)}</React.Fragment>);
         }
         const message = (
             <span>

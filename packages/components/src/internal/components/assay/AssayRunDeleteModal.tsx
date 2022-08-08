@@ -5,11 +5,11 @@ import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 import { AssayRunDataType } from '../entities/constants';
 
 interface Props {
-    onConfirmDelete?: (rowsToDelete: any[]) => void;
     afterDelete: () => void;
     afterDeleteFailure: () => void;
     containerPath?: string;
     onCancel: () => void;
+    onConfirmDelete?: (rowsToDelete: any[]) => void;
     selectedRowId?: string;
     selectionKey?: string;
 }
@@ -28,7 +28,7 @@ export const AssayRunDeleteModal: FC<Props> = props => {
             return;
         }
 
-        onConfirmDelete(rowsToDelete);
+        onConfirmDelete?.(rowsToDelete);
         setNumToDelete(rowsToDelete.length);
         setShowProgress(true);
 

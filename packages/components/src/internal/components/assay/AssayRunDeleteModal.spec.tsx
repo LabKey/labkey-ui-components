@@ -10,7 +10,6 @@ describe('<AssayRunDeleteModal/>', () => {
             <AssayRunDeleteModal
                 afterDelete={jest.fn()}
                 afterDeleteFailure={jest.fn()}
-                numToDelete={1}
                 onCancel={jest.fn()}
             />
         );

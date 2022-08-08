@@ -30,7 +30,7 @@ export const AssayRunDataType: EntityDataType = {
     descriptionSingular: 'assay run',
     descriptionPlural: 'assay runs',
     uniqueFieldKey: 'RowId',
-    dependencyText: 'dependencies'
+    dependencyText: undefined
 };
 
 export const SampleTypeDataType: EntityDataType = {

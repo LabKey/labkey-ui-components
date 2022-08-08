@@ -85,7 +85,8 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 text += ' because they have ' + _dependencyText + '.';
             }
         } else {
-            text =
+            text = [];
+            let firstText =
                 "You've selected " +
                 totalNum +
                 ' ' +
@@ -95,14 +96,16 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 ' can be ' +
                 verb +
                 '. ';
-            text += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
-            text += (numCannotDelete === 1 ? ' it has ' : ' they have ') + _dependencyText + '.';
-            text += getDeletionDescription(numCanDelete);
+            firstText += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
+            firstText += (numCannotDelete === 1 ? ' it has ' : ' they have ') + _dependencyText + '.';
+            text.push(firstText);
+            if (getDeletionDescription)
+                text.push(getDeletionDescription(numCanDelete));
         }
         const message = (
             <span>
                 {text}
-                {numCannotDelete > 0 && <>&nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink></>}
+                {numCannotDelete > 0 && deleteHelpLinkTopic && <>&nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink>)</>}
                 {numCanDelete > 0 && (
                     <p className="top-spacing">
                         <strong>Deletion cannot be undone.</strong> Do you want to proceed?

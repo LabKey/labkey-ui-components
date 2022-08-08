@@ -31,7 +31,7 @@ import {
     OperationConfirmationData,
 } from './models';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
-import { isSampleEntity } from './utils';
+import { isDataClassEntity, isSampleEntity } from './utils';
 
 export function getOperationConfirmationData(
     selectionKey: string,
@@ -85,9 +85,9 @@ export function getDeleteConfirmationData(
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
     }
-    return getOperationConfirmationData(selectionKey, dataType, rowIds, {
+    return getOperationConfirmationData(selectionKey, dataType, rowIds, isDataClassEntity(dataType) ? {
         dataOperation: DataOperation.Delete
-    });
+    } : undefined);
 }
 
 export function getSampleOperationConfirmationData(

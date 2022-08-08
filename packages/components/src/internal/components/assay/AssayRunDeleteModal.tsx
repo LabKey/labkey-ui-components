@@ -61,7 +61,7 @@ export const AssayRunDeleteModal: FC<Props> = props => {
     };
 
     const getDeletionDescription = (numToDelete: number) => {
-        const noun = useMemo<string>(() => (numToDelete === 1 ? ' assay run' : ' assay runs'), [numToDelete]);
+        const noun = numToDelete === 1 ? ' assay run' : ' assay runs';
 
         return (
             <>

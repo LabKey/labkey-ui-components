@@ -21,16 +21,16 @@ export const AssayRunDataType: EntityDataType = {
     listingSchemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUNS,
     instanceSchemaName: SCHEMAS.ASSAY_TABLES.SCHEMA,
     operationConfirmationActionName: ASSAY_RUN_OPERATION_CONFIRMATION_ACTION,
-    nounSingular: 'assay run',
-    nounPlural: 'assay runs',
+    nounSingular: 'run',
+    nounPlural: 'runs',
     typeNounSingular: 'Assay Design',
     typeNounAsParentSingular: 'Assay Design',
     nounAsParentPlural: 'Assay Runs',
     nounAsParentSingular: 'Assay Run',
     descriptionSingular: 'assay run',
     descriptionPlural: 'assay runs',
-    uniqueFieldKey: 'Name',
-    dependencyText: 'references'
+    uniqueFieldKey: 'RowId',
+    dependencyText: 'dependencies'
 };
 
 export const SampleTypeDataType: EntityDataType = {

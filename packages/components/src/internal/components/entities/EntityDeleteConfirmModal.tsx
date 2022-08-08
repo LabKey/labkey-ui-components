@@ -28,6 +28,7 @@ interface Props {
     rowIds?: string[];
     selectionKey?: string;
     verb?: string;
+    getDeletionDescription?: (numToDelete: number) => React.ReactNode;
 }
 
 interface State {

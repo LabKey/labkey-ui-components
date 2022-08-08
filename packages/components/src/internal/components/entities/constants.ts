@@ -12,7 +12,26 @@ import { EntityDataType } from './models';
 
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
+export const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunOperationConfirmationData.api';
 export const ENTITY_CREATION_METRIC = 'entityCreation';
+
+export const AssayRunDataType: EntityDataType = {
+    deleteHelpLinkTopic: undefined, // TODO
+    typeListingSchemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
+    listingSchemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUNS,
+    instanceSchemaName: SCHEMAS.ASSAY_TABLES.SCHEMA,
+    operationConfirmationActionName: ASSAY_RUN_OPERATION_CONFIRMATION_ACTION,
+    nounSingular: 'assay run',
+    nounPlural: 'assay runs',
+    typeNounSingular: 'Assay Design',
+    typeNounAsParentSingular: 'Assay Design',
+    nounAsParentPlural: 'Assay Runs',
+    nounAsParentSingular: 'Assay Run',
+    descriptionSingular: 'assay run',
+    descriptionPlural: 'assay runs',
+    uniqueFieldKey: 'Name',
+    dependencyText: 'references'
+};
 
 export const SampleTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,

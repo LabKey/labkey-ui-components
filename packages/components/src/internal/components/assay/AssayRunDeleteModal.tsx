@@ -1,26 +1,35 @@
 import React, { FC, useMemo, useState } from 'react';
 
-import { ConfirmModal, deleteAssayRuns, Progress, useNotificationsContext } from '../../..';
+import { deleteAssayRuns, EntityDeleteConfirmModal, Progress, useNotificationsContext } from '../../..';
 import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
+import { AssayRunDataType } from '../entities/constants';
 
 interface Props {
+    onConfirmDelete?: (rowsToDelete: any[]) => void;
     afterDelete: () => void;
     afterDeleteFailure: () => void;
     containerPath?: string;
-    numToDelete: number;
     onCancel: () => void;
     selectedRowId?: string;
     selectionKey?: string;
 }
 
 export const AssayRunDeleteModal: FC<Props> = props => {
-    const { afterDelete, afterDeleteFailure, containerPath, numToDelete, onCancel, selectionKey, selectedRowId } =
+    const { afterDelete, afterDeleteFailure, containerPath, onCancel, onConfirmDelete, selectionKey, selectedRowId } =
         props;
     const { createNotification } = useNotificationsContext();
+    const [numToDelete, setNumToDelete] = useState<number>(undefined);
     const [showProgress, setShowProgress] = useState<boolean>(false);
     const noun = useMemo<string>(() => (numToDelete === 1 ? ' assay run' : ' assay runs'), [numToDelete]);
 
-    const onConfirm = async (): Promise<void> => {
+    const onConfirm = async (rowsToDelete: any[], rowsToKeep: any[]): Promise<void> => {
+        if (rowsToDelete.length == 0) {
+            afterDelete();
+            return;
+        }
+
+        onConfirmDelete(rowsToDelete);
+        setNumToDelete(rowsToDelete.length);
         setShowProgress(true);
 
         try {
@@ -51,24 +60,28 @@ export const AssayRunDeleteModal: FC<Props> = props => {
         }
     };
 
+    const getDeletionDescription = (numToDelete: number) => {
+        const noun = useMemo<string>(() => (numToDelete === 1 ? ' assay run' : ' assay runs'), [numToDelete]);
+
+        return (
+            <>
+                The entirety of the {numToDelete > 1 ? numToDelete : ''} {noun} and any of{' '}
+                {numToDelete === 1 ? 'its' : 'their'} previously replaced versions will be permanently deleted.
+            </>
+        )
+    }
+
     return (
         <>
             {!showProgress && (
-                <ConfirmModal
-                    cancelButtonText="Cancel"
-                    confirmButtonText="Yes, Delete"
+                <EntityDeleteConfirmModal
                     onCancel={onCancel}
                     onConfirm={onConfirm}
-                    title={'Permanently delete ' + numToDelete + noun + '?'}
-                >
-                    <span>
-                        The entirety of the {numToDelete > 1 ? numToDelete : ''} selected {noun} and any of{' '}
-                        {numToDelete === 1 ? 'its' : 'their'} previously replaced versions will be permanently deleted.
-                        <p className="top-spacing">
-                            <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                        </p>
-                    </span>
-                </ConfirmModal>
+                    entityDataType={AssayRunDataType}
+                    selectionKey={selectionKey}
+                    rowIds={[selectedRowId]}
+                    getDeletionDescription={getDeletionDescription}
+                />
             )}
             <Progress
                 estimate={numToDelete * 10}

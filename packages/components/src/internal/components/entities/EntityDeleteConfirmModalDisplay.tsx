@@ -15,9 +15,7 @@
  */
 import React, { PureComponent } from 'react';
 
-import { capitalizeFirstChar, ConfirmModal } from '../../..';
-
-import { helpLinkNode } from '../../util/helpLinks';
+import { capitalizeFirstChar, ConfirmModal, HelpLink } from '../../..';
 
 import { isELNEnabled } from '../../app/utils';
 
@@ -29,6 +27,7 @@ interface Props {
     onCancel: () => any;
     onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
     verb?: string;
+    getDeletionDescription?: (numToDelete: number) => React.ReactNode;
 }
 
 /**
@@ -43,7 +42,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
     };
 
     getConfirmationProperties(): { canDelete: boolean; message: any; title: string } {
-        const { confirmationData, entityDataType, verb } = this.props;
+        const { confirmationData, entityDataType, verb, getDeletionDescription } = this.props;
         const { deleteHelpLinkTopic, nounSingular, nounPlural, dependencyText } = entityDataType;
         const capNounSingular = capitalizeFirstChar(nounSingular);
         const capNounPlural = capitalizeFirstChar(nounPlural);
@@ -70,8 +69,12 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 nounPlural +
                 ' are no longer valid.';
         } else if (numCannotDelete === 0) {
-            text = totalNum === 1 ? 'The selected ' : totalNum === 2 ? 'Both ' : 'All ' + totalNum + ' ';
-            text += totalNoun + ' will be permanently ' + verb + '.';
+            if (getDeletionDescription) {
+                text = getDeletionDescription(totalNum);
+            } else {
+                text = totalNum === 1 ? 'The selected ' : totalNum === 2 ? 'Both ' : 'All ' + totalNum + ' ';
+                text += totalNoun + ' will be permanently ' + verb + '.';
+            }
         } else if (numCanDelete === 0) {
             if (totalNum === 1) {
                 text =
@@ -94,11 +97,12 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 '. ';
             text += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
             text += (numCannotDelete === 1 ? ' it has ' : ' they have ') + _dependencyText + '.';
+            text += getDeletionDescription(numCanDelete);
         }
         const message = (
             <span>
                 {text}
-                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(deleteHelpLinkTopic, 'more info')})</>}
+                {numCannotDelete > 0 && <>&nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink></>}
                 {numCanDelete > 0 && (
                     <p className="top-spacing">
                         <strong>Deletion cannot be undone.</strong> Do you want to proceed?

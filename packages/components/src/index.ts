@@ -456,6 +456,7 @@ import {
     DataClassDataType,
     ParentEntityRequiredColumns,
     SampleTypeDataType,
+    AssayRunDataType,
 } from './internal/components/entities/constants';
 import { createEntityParentKey, getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
@@ -1042,6 +1043,7 @@ export {
     getDeleteSharedSampleTypeUrl,
     SampleTypeDataType,
     DataClassDataType,
+    AssayRunDataType,
     ParentEntityRequiredColumns,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,

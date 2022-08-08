@@ -24,7 +24,7 @@ import {
 
 import {
     biologicsIsPrimaryApp,
-    isELNEnabledInLKSM,
+    isELNEnabled,
     isFreezerManagementEnabled,
     isSampleStatusEnabled
 } from '../../app/utils';
@@ -72,7 +72,7 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
             deleteMsg += 'there was a problem loading the delete confirmation data.';
         } else {
             deleteMsg += 'it has either derived sample, job, or assay data dependencies, a status that prevent deletion';
-            if (!biologicsIsPrimaryApp() || isELNEnabledInLKSM()) {
+            if (isELNEnabled()) {
                 deleteMsg += ', or is referenced in an active notebook'
             }
             deleteMsg += '. Check the Lineage, Assays, and Jobs tabs for this sample to get more information.';

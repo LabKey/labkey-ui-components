@@ -215,7 +215,7 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
     }
 }
 
-export function isELNEnabledInLKSM(moduleContext?: any): boolean {
+export function isELNEnabled(moduleContext?: any): boolean {
     return hasModule('LabBook', moduleContext);
 }
 
@@ -477,7 +477,7 @@ export function getMenuSectionConfigs(
             [PICKLIST_KEY]: getPicklistsSectionConfig(appBase),
         });
 
-        if (userCanReadNotebooks(user) && isELNEnabledInLKSM(moduleContext)) {
+        if (userCanReadNotebooks(user) && isELNEnabled(moduleContext)) {
             configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
         }
         sectionConfigs = sectionConfigs.push(configs);

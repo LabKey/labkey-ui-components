@@ -19,10 +19,9 @@ import { capitalizeFirstChar, ConfirmModal } from '../../..';
 
 import { helpLinkNode } from '../../util/helpLinks';
 
-import { isELNEnabledInLKSM, isSampleStatusEnabled } from '../../app/utils';
+import { isELNEnabled } from '../../app/utils';
 
 import { EntityDataType, OperationConfirmationData } from './models';
-import { isSampleEntity } from './utils';
 
 interface Props {
     confirmationData: OperationConfirmationData;
@@ -52,7 +51,7 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
         if (!confirmationData) return undefined;
 
         const _dependencyText =
-            isELNEnabledInLKSM()
+            isELNEnabled()
                 ? dependencyText + ' or references in an active notebook'
                 : dependencyText;
 

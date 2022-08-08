@@ -29,7 +29,7 @@ import {
     hasPremiumModule,
     isBiologicsEnabled,
     isCommunityDistribution,
-    isELNEnabledInLKSM,
+    isELNEnabled,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
     isProductNavigationEnabled,
@@ -376,15 +376,15 @@ describe('utils', () => {
         expect(userCanEditStorageData(TEST_USER_STORAGE_EDITOR)).toBeTruthy();
     });
 
-    test('isELNEnabledInLKSM', () => {
+    test('isELNEnabled', () => {
         LABKEY.moduleContext = {
             api: { moduleNames: [] },
         };
-        expect(isELNEnabledInLKSM()).toBeFalsy();
+        expect(isELNEnabled()).toBeFalsy();
         LABKEY.moduleContext = {
             api: { moduleNames: ['labbook'] },
         };
-        expect(isELNEnabledInLKSM()).toBeTruthy();
+        expect(isELNEnabled()).toBeTruthy();
     });
 
     test('isSampleManagerEnabled', () => {

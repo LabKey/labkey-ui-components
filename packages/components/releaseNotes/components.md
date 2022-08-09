@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.204.0
+*Released*: 9 August 2022
+* Merge release22.8-SNAPSHOT into develop
+
 ### version 2.203.0
 *Released*: 2 August 2022
 * Workflow job template custom fields

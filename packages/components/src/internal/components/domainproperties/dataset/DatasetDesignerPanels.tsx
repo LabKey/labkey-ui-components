@@ -392,9 +392,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const participantIdMapCol = this._participantId;
         const sequenceNumMapCol = this._sequenceNum;
 
-        // if there is a domain error and we are mapping columns, the row indices will be incorrect so don't include them
-        const addRowIndexes = !(participantIdMapCol || sequenceNumMapCol);
-
         // filter out the selected column mapping files as those will be created in the base domain fields
         const updatedDomain = model.domain.merge({
             fields: model.domain.fields
@@ -415,7 +412,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             }
         });
 
-        saveDomain(updatedDomain, model.getDomainKind(), model.getOptions(), model.name, false, addRowIndexes)
+        saveDomain(updatedDomain, model.getDomainKind(), model.getOptions(), model.name, false, true, model.domain)
             .then(response => {
                 this.setState(
                     produce((draftState: Draft<State>) => {

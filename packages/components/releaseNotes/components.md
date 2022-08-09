@@ -111,10 +111,24 @@ Added SearchScope enum and ContainerFilter mapping utility method
 * Issue 45149: "Assay Results" tabbed grid can remove tabs if you filter a grid to zero rows
   * store in state the set of queryModels with data after all have loaded
 
+### version 2.194.10
+*Released*: 2 August 2022
+* Misc dataset domain designer issue fixes
+  * Issue 45942: While creating a new dataset via infer from fields, clicking Add Field results in JS error
+  * Issue 45704: Multiple error messages provide less detail than a single error message during dataset creation
+
+### version 2.194.9
+*Released*: 2 August 2022
+* Issue 45860: ConceptPicker doesn't apply selected value
+
+### version 2.194.8
+*Released*: 29 July 2022
+* Issue 45975: useContainerUser resolving incorrect container
+
 ### version 2.194.7
 *Released*: 22 July 2022
 * Issue 45852: External links should include 'noopener' in 'ref' attribute
-    * round 2: this was missed from the changes in 2.194.6
+  * round 2: this was missed from the changes in 2.194.6
 
 ### version 2.194.6
 *Released*: 14 July 2022

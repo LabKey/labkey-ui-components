@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.202.7
 *Released*: 9 August 2022
-* Pull forward fixes from release22.7-SNAPSHOT
+* Merge release22.7-SNAPSHOT to release22.8-SNAPSHOT
 
 ### version 2.202.6
 *Released*: 4 August 2022

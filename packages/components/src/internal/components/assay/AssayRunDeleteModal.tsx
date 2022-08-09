@@ -48,7 +48,7 @@ export const AssayRunDeleteModal: FC<Props> = props => {
                     : '';
 
             afterDelete();
-            createNotification(deleteSuccessMessage(noun, numToDelete, additionalInfo));
+            createNotification(deleteSuccessMessage(noun, rowsToDelete.length, additionalInfo));
         } catch (error) {
             console.error(error);
             setShowProgress(false);

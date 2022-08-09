@@ -71,9 +71,12 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
         if (deleteInfoError) {
             deleteMsg += 'there was a problem loading the delete confirmation data.';
         } else {
-            deleteMsg += 'it has either derived sample, job, or assay data dependencies, a status that prevent deletion';
+            deleteMsg += 'it has either derived sample, job, or assay data dependencies, ';
             if (isELNEnabled()) {
-                deleteMsg += ', or is referenced in one or more active notebooks'
+                deleteMsg += 'status that prevents deletion, or is referenced in one or more active notebooks'
+            }
+            else {
+                deleteMsg += 'or status that prevents deletion'
             }
             deleteMsg += '. Check the Lineage, Assays, and Jobs tabs for this sample to get more information.';
         }

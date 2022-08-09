@@ -58,7 +58,7 @@ export function getOperationConfirmationData(
             params = Object.assign(params, extraParams);
         }
         return Ajax.request({
-            url: buildURL('experiment', dataType.operationConfirmationActionName),
+            url: buildURL(dataType.operationConfirmationControllerName, dataType.operationConfirmationActionName),
             method: 'POST',
             jsonData: params,
             success: Utils.getCallbackWrapper(response => {

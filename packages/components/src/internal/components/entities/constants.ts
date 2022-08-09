@@ -12,7 +12,7 @@ import { EntityDataType } from './models';
 
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
-export const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunOperationConfirmationData.api';
+export const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunDeletionConfirmationData.api';
 export const ENTITY_CREATION_METRIC = 'entityCreation';
 
 export const AssayRunDataType: EntityDataType = {
@@ -20,6 +20,7 @@ export const AssayRunDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
     listingSchemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUNS,
     instanceSchemaName: SCHEMAS.ASSAY_TABLES.SCHEMA,
+    operationConfirmationControllerName: 'assay',
     operationConfirmationActionName: ASSAY_RUN_OPERATION_CONFIRMATION_ACTION,
     nounSingular: 'run',
     nounPlural: 'runs',
@@ -38,6 +39,7 @@ export const SampleTypeDataType: EntityDataType = {
     listingSchemaQuery: SCHEMAS.EXP_TABLES.MATERIALS,
     instanceSchemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
     appUrlPrefixParts: ['samples'],
+    operationConfirmationControllerName: 'experiment',
     operationConfirmationActionName: SAMPLE_OPERATION_CONFIRMATION_ACTION,
     nounSingular: 'sample',
     nounPlural: 'samples',
@@ -64,6 +66,7 @@ export const DataClassDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
     listingSchemaQuery: SCHEMAS.EXP_TABLES.DATA,
     instanceSchemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
+    operationConfirmationControllerName: 'experiment',
     operationConfirmationActionName: DATA_OPERATION_CONFIRMATION_ACTION,
     nounSingular: 'data',
     nounPlural: 'data',

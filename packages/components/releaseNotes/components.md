@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Update messaging about deletion restrictions
+* Restrict deletions of entities, including assay runs referenced in ELNs
 
 ### version 2.203.0
 *Released*: 2 August 2022

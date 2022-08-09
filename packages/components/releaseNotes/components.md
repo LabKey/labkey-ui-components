@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.204.1
+*Released*: 9 August 2022
+* Projects - Cross-Folder Storage Actions
+    * Added ValueList component
+
 ### version 2.204.0
 *Released*: 9 August 2022
 * Merge release22.8-SNAPSHOT into develop

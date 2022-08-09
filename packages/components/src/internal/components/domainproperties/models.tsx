@@ -730,6 +730,7 @@ export interface IDomainField {
     importAliases?: string;
     isPrimaryKey: boolean;
     label?: string;
+    lockExistingField?: boolean;
     lockType: string;
     lookupContainer?: string;
     lookupQuery?: string;
@@ -739,7 +740,6 @@ export interface IDomainField {
     lookupValidator?: PropertyValidator;
     measure?: boolean;
     mvEnabled?: boolean;
-    name: string;
     original: Partial<IDomainField>;
     primaryKey?: boolean;
     principalConceptCode?: string;
@@ -760,7 +760,7 @@ export interface IDomainField {
     textChoiceValidator?: PropertyValidator;
     updatedField: boolean;
     visible: boolean;
-    lockExistingField?: boolean;
+    name: string;
 }
 
 export class DomainField

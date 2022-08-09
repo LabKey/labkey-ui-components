@@ -1,10 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.XX
-*Released*: XX 2022
+### version 2.204.1
+*Released*: 9 August 2022
 * Projects - Cross-Folder Storage Actions
     * Added ValueList component
+
+### version 2.204.0
+*Released*: 9 August 2022
+* Merge release22.8-SNAPSHOT into develop
 
 ### version 2.203.0
 *Released*: 2 August 2022
@@ -13,6 +17,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add DomainFormDisplayOptions prop for hideImportAliases
   * Minor update to styling prop for ContentGroup.tsx
   * expose fetchDomainDetails() to be used in app to get domain details based on DomainKind
+
+### version 2.202.7
+*Released*: 9 August 2022
+* Merge release22.7-SNAPSHOT to release22.8-SNAPSHOT
+
+### version 2.202.6
+*Released*: 4 August 2022
+* Remove conditional code to expose Sample Finder
 
 ### version 2.202.5
 *Released*: 29 July 2022
@@ -120,10 +132,24 @@ Added SearchScope enum and ContainerFilter mapping utility method
 * Issue 45149: "Assay Results" tabbed grid can remove tabs if you filter a grid to zero rows
   * store in state the set of queryModels with data after all have loaded
 
+### version 2.194.10
+*Released*: 2 August 2022
+* Misc dataset domain designer issue fixes
+  * Issue 45942: While creating a new dataset via infer from fields, clicking Add Field results in JS error
+  * Issue 45704: Multiple error messages provide less detail than a single error message during dataset creation
+
+### version 2.194.9
+*Released*: 2 August 2022
+* Issue 45860: ConceptPicker doesn't apply selected value
+
+### version 2.194.8
+*Released*: 29 July 2022
+* Issue 45975: useContainerUser resolving incorrect container
+
 ### version 2.194.7
 *Released*: 22 July 2022
 * Issue 45852: External links should include 'noopener' in 'ref' attribute
-    * round 2: this was missed from the changes in 2.194.6
+  * round 2: this was missed from the changes in 2.194.6
 
 ### version 2.194.6
 *Released*: 14 July 2022

@@ -22,7 +22,6 @@ import {
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN,
-    EXPERIMENTAL_SAMPLE_FINDER,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
@@ -183,13 +182,6 @@ export function biologicsIsPrimaryApp(moduleContext?: any): boolean {
 
 export function isSampleStatusEnabled(): boolean {
     return hasModule('SampleManagement');
-}
-
-export function isSampleFinderEnabled(moduleContext?: any): boolean {
-    return (
-        !biologicsIsPrimaryApp(moduleContext) ||
-        (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_SAMPLE_FINDER] === true
-    );
 }
 
 export function getCurrentAppProperties(): AppProperties {

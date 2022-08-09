@@ -20,7 +20,6 @@ export const AssayRunDeleteModal: FC<Props> = props => {
     const { createNotification } = useNotificationsContext();
     const [numToDelete, setNumToDelete] = useState<number>(undefined);
     const [showProgress, setShowProgress] = useState<boolean>(false);
-    const noun = useMemo<string>(() => (numToDelete === 1 ? ' assay run' : ' assay runs'), [numToDelete]);
 
     const onConfirm = async (rowsToDelete: any[], rowsToKeep: any[]): Promise<void> => {
         if (rowsToDelete.length == 0) {
@@ -31,7 +30,7 @@ export const AssayRunDeleteModal: FC<Props> = props => {
         onConfirmDelete?.(rowsToDelete);
         setNumToDelete(rowsToDelete.length);
         setShowProgress(true);
-
+        const noun = rowsToDelete.length === 1 ? ' assay run' : ' assay runs';
         try {
             const response = await deleteAssayRuns(selectionKey, selectedRowId, true, containerPath);
 
@@ -86,7 +85,7 @@ export const AssayRunDeleteModal: FC<Props> = props => {
             <Progress
                 estimate={numToDelete * 10}
                 modal={true}
-                title={`Deleting ${numToDelete}${noun}`}
+                title={`Deleting ${numToDelete}${numToDelete === 1 ? ' assay run' : ' assay runs'}`}
                 toggle={showProgress}
             />
         </>

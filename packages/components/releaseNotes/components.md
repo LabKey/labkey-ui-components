@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.202.7
+*Released*: 9 August 2022
+* Pull forward fixes from release22.7-SNAPSHOT
+
 ### version 2.202.6
 *Released*: 4 August 2022
 * Remove conditional code to expose Sample Finder

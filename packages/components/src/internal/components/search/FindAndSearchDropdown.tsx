@@ -3,7 +3,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { capitalizeFirstChar } from '../../util/utils';
 
-import { getCurrentAppProperties, getPrimaryAppProperties, isSampleFinderEnabled } from '../../app/utils';
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../samples/constants';
 import { FindField } from '../samples/models';
 import { createProductUrl } from '../../url/AppURL';
@@ -15,11 +15,11 @@ import { SAMPLE_FILTER_METRIC_AREA } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    title: ReactNode;
-    findNounPlural?: string;
-    onSearch?: (form: any) => void;
-    onFindByIds?: (sessionKey: string) => void;
     className?: string;
+    findNounPlural?: string;
+    onFindByIds?: (sessionKey: string) => void;
+    onSearch?: (form: any) => void;
+    title: ReactNode;
 }
 
 export const FindAndSearchDropdown: FC<Props> = memo(props => {
@@ -72,21 +72,19 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
                         </MenuItem>
                     </>
                 )}
-                {isSampleFinderEnabled() && (
-                    <MenuItem
-                        key="sampleFinder"
-                        onClick={onSampleFinder}
-                        href={
-                            createProductUrl(
-                                getPrimaryAppProperties()?.productId,
-                                getCurrentAppProperties()?.productId,
-                                FIND_SAMPLES_BY_FILTER_HREF.toHref()
-                            ) as string
-                        }
-                    >
-                        <i className="fa fa-sitemap" /> Sample Finder
-                    </MenuItem>
-                )}
+                <MenuItem
+                    key="sampleFinder"
+                    onClick={onSampleFinder}
+                    href={
+                        createProductUrl(
+                            getPrimaryAppProperties()?.productId,
+                            getCurrentAppProperties()?.productId,
+                            FIND_SAMPLES_BY_FILTER_HREF.toHref()
+                        ) as string
+                    }
+                >
+                    <i className="fa fa-sitemap" /> Sample Finder
+                </MenuItem>
                 {!!onSearch && (
                     <MenuItem key="search" onClick={onSearch}>
                         <i className="fa fa-search" /> Search

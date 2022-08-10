@@ -47,7 +47,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     const isText = !isDate && !isTextArea;
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
-    const [dateValue, setDateValue] = useState<Date>(isDate && _value !== undefined ? new Date(_value) : undefined);
+    const [dateValue, setDateValue] = useState<Date>(isDate && _value ? new Date(_value) : undefined);
     const [columnBasedValue, setColumnBasedValue] = useState();
 
     // Utilizing useReducer here so multiple state attributes can be updated at once

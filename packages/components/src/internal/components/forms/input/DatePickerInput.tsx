@@ -185,7 +185,10 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         return (
             <div className="form-group row">
                 {renderFieldLabel ? (
-                    <label className={labelClassName}>{renderFieldLabel(queryColumn)}</label>
+                    <label className={labelClassName}>
+                        {renderFieldLabel(queryColumn)}
+                        {queryColumn?.required && <span className="required-symbol"> *</span>}
+                    </label>
                 ) : (
                     <FieldLabel
                         label={label}

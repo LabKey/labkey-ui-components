@@ -154,6 +154,7 @@ import { getMenuItemForSectionKey, getMenuItemsForSection } from './internal/com
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 import { Setting } from './internal/components/base/Setting';
+import { ValueList } from './internal/components/base/ValueList';
 
 import { EditorModel, createGridModelId } from './internal/models';
 import {
@@ -1372,6 +1373,7 @@ export {
     SelectView,
     SelectViewInput,
     Setting,
+    ValueList,
     // base models, enums, constants
     Container,
     User,

@@ -2,7 +2,7 @@ import { List } from 'immutable';
 
 import { SCHEMAS } from '../../schemas';
 
-import { DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
+import { DELETE_ASSAY_RUNS_TOPIC, DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
 
 import { SAMPLE_TYPE_KEY } from '../../app/constants';
 
@@ -16,7 +16,7 @@ export const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunDeletionConfi
 export const ENTITY_CREATION_METRIC = 'entityCreation';
 
 export const AssayRunDataType: EntityDataType = {
-    deleteHelpLinkTopic: undefined, // TODO
+    deleteHelpLinkTopic: DELETE_ASSAY_RUNS_TOPIC,
     typeListingSchemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
     listingSchemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUNS,
     instanceSchemaName: SCHEMAS.ASSAY_TABLES.SCHEMA,

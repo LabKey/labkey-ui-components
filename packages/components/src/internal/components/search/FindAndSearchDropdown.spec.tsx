@@ -64,26 +64,4 @@ describe('FindAndSearchDropdown', () => {
         expect(items.at(1).text().trim()).toBe('Find Tests by ID');
         expect(items.at(2).text().trim()).toBe('Sample Finder');
     });
-
-    test('without sample finder', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Bio/biologics-app.view#',
-            }
-        );
-        LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['biologics', 'study', 'premium'],
-            },
-            biologics: {}
-        };
-        const wrapper = mount(
-            <FindAndSearchDropdown title="Test title" findNounPlural="tests" onFindByIds={jest.fn} />
-        );
-        const items = wrapper.find(MenuItem);
-        expect(items).toHaveLength(2);
-        expect(items.at(0).text().trim()).toBe('Find Tests by Barcode');
-        expect(items.at(1).text().trim()).toBe('Find Tests by ID');
-    });
 });

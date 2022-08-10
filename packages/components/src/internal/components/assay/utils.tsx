@@ -126,7 +126,7 @@ export function getAssayRunDeleteMessage(canDelete: boolean, deleteInfoError: bo
         if (deleteInfoError) {
             deleteMsg += 'there was a problem loading the delete confirmation data.';
         } else {
-            deleteMsg += 'it is referenced in one or more active notebooks.'
+            deleteMsg += 'it has references in one or more active notebooks.'
         }
     }
     return deleteMsg;

@@ -10,6 +10,7 @@ import {
     getUsers,
     createGroup,
     deleteGroup,
+    addGroupMembers,
 } from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
 import { naturalSortByProperty } from '../../..';
@@ -27,6 +28,7 @@ export interface SecurityAPIWrapper {
     getUsers: (groupId: number) => Promise<any>;
     createGroup: (groupName: string, projectPath: string) => Promise<any>;
     deleteGroup: (id: number, projectPath: string) => Promise<any>;
+    addGroupMembers: (groupId: number, principalIds: any[], projectPath: string) => Promise<any>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
 }
 
@@ -50,6 +52,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
     getUsers = getUsers;
     createGroup = createGroup;
     deleteGroup = deleteGroup;
+    addGroupMembers = addGroupMembers;
     getUserLimitSettings = getUserLimitSettings;
 }
 
@@ -76,6 +79,7 @@ export function getSecurityTestAPIWrapper(
         getUsers: mockFn(),
         createGroup: mockFn(),
         deleteGroup: mockFn(),
+        addGroupMembers: mockFn(),
         getUserLimitSettings: mockFn(),
         ...overrides,
     };

@@ -75,9 +75,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const { api } = useAppContext<AppContext>();
     const { dismissNotifications, createNotification } = useNotificationsContext();
     const { container, user } = useServerContext();
-    const projectPath = useMemo(() => {
-        return getProjectPath(container.path); // typing weirdness
-    }, [container]);
+    const projectPath = useMemo(() => getProjectPath(container.path), [container]); // probably move this into fn
 
     const loaded = !isLoading(loadingState);
 
@@ -136,6 +134,13 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             delete newGroupMembership[deletedGroup];
         });
 
+        // Add new members
+        Object.keys(groupMembership).map(async groupId => {
+            const currentMembers = groupMembership[groupId].members.groups.concat(groupMembership[groupId].members.users).map(member => member.id);
+            const oldMembers = new Set(savedGroupMembership[groupId]?.members.groups.concat(savedGroupMembership[groupId]?.members.users).map(member => member.id));
+            const addedMembers = currentMembers.filter(id => !oldMembers.has(id));
+            await api.security.addGroupMembers(parseInt(groupId), addedMembers, projectPath);
+        });
 
         // Save updated state
         setIsDirty(false);
@@ -168,6 +173,17 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         setGroupMembership(newGroupMembership);
     }, [groupMembership]);
 
+    const addUser = useCallback((userId: number, principalId: string, principalName: string, principalType: string) => {
+        const newGroupMembership = {...groupMembership};
+        const group = newGroupMembership[principalId];
+        const groupPrincipal = principalType === 'g' ? group.members.groups : group.members.users;
+
+        const newGroupPrincipal = [...groupPrincipal, {name: principalName, id: userId}];
+        const newGroupStuff = {...groupMembership, [principalId]: {groupName: group.groupName, members: principalType === 'g' ? {groups: newGroupPrincipal, users: group.members.users } : {groups: group.members.groups, users: newGroupPrincipal}}};
+
+        setGroupMembership(newGroupStuff);
+    }, [groupMembership]);
+
     const usersAndGroups = useMemo(() => {
         return principals.filter(principal => principal.type === 'u' || principal.userId > 0) as List<Principal>; // typing weirdness
     }, [principals]);
@@ -181,7 +197,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             description={description}
             hasPermission={user.isAdmin}
             renderButtons={renderButtons}
-            title={'Group Management'}
+            title='Group Management'
             user={user}
         >
             {!loaded && <LoadingSpinner />}
@@ -196,6 +212,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
                     addGroup={addGroup}
                     deleteGroup={deleteGroup}
+                    addUser={addUser}
                     save={save}
 
                 />

@@ -6,7 +6,7 @@ import {AppContext, useAppContext} from "../../AppContext";
 import {resolveErrorMessage} from "../../util/messaging";
 import {LoadingState} from "../../../public/LoadingState";
 import {RemovableButton} from "../permissions/RemovableButton";
-import {Principal, SecurityAssignment} from "../permissions/models";
+import {Principal, SecurityAssignment, SecurityPolicy, SecurityRole} from "../permissions/models";
 import {SelectInput} from "../forms/input/SelectInput";
 import {getPrincipals} from "../security/actions";
 import {List} from "immutable";
@@ -19,6 +19,7 @@ export interface GroupProps {
     onClickAssignment: (selectedUserId: number) => void;
     selectedPrincipalId: number;
     deleteGroup: any;
+    addUser: any;
     setDirty: any;
 }
 
@@ -31,8 +32,12 @@ export const Group: FC<GroupProps> = memo(props => {
         onClickAssignment,
         selectedPrincipalId,
         deleteGroup,
+        addUser,
         setDirty
     } = props;
+
+    const [dropdownPrincipalId, setDropdownPrincipalId] = useState<number>();
+
 
     const generateClause = useCallback(() => {
         return (
@@ -64,6 +69,16 @@ export const Group: FC<GroupProps> = memo(props => {
         deleteGroup(id);
         setDirty(true);
     }, [deleteGroup]);
+
+    const principalsToAdd = useMemo(() => {
+        const addedPrincipalIds = new Set(members.groups.concat(members.users).map(principal => principal.id));
+        return usersAndGroups.filter(principal => !addedPrincipalIds.has(principal.get('userId')) && principal.get('userId') !== parseInt(id));
+    }, [members, usersAndGroups, id]);
+
+    const addAssignment = useCallback((name: string, formValue: any, selected: Principal) => {
+        console.log("selected", selected.toJS());
+        addUser(selected.get('userId'), id, selected.get('displayName'), selected.get('type'));
+    },[id, addUser]);
 
     return (
         <ExpandableContainer
@@ -100,12 +115,12 @@ export const Group: FC<GroupProps> = memo(props => {
 
                 <SelectInput
                     autoValue={false}
-                    options={usersAndGroups.toArray()}
-                    placeholder={'Add member...'}
+                    options={principalsToAdd.toArray()}
+                    placeholder='Add member...'
                     inputClass="col-xs-12"
                     valueKey="userId"
                     labelKey="name"
-                    onChange={() => {}}
+                    onChange={addAssignment}
                     selectedOptions={null}
                 />
             </div>

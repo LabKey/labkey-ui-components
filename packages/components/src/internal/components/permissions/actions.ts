@@ -187,6 +187,23 @@ export function deleteGroup(groupId: number, projectPath: string): Promise<any> 
     });
 }
 
+export function addGroupMembers(groupId: number, principalIds: any[], projectPath: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Security.addGroupMembers({
+            groupId,
+            principalIds,
+            containerPath: projectPath,
+            success: (data) => {
+                resolve(data);
+            },
+            failure: error => {
+                console.error('Failed to add group member(s)', error);
+                reject(error);
+            },
+        });
+    });
+}
+
 export type UserLimitSettings = {
     activeUsers: number;
     messageHtml: string;

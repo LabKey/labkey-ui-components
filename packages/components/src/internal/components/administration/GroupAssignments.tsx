@@ -14,6 +14,7 @@ export interface GroupAssignmentsProps {
 
     addGroup: any;
     deleteGroup: any;
+    addUser: any;
     save: any;
 
     rolesByUniqueName: Map<string, SecurityRole>; // taken from InjectedPermissionsPage
@@ -32,6 +33,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         usersAndGroups,
         addGroup,
         deleteGroup,
+        addUser,
         save
 } = props;
 
@@ -82,6 +84,11 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         setNewGroupName("");
     }, [newGroupName]);
 
+    const onAddPrincipal = useCallback((userId: number, principalId: string, principalName: string, principalType: string) => {
+        setSelectedPrincipalId(userId);
+        addUser(userId, principalId, principalName, principalType);
+        setDirty(true);
+    }, [addUser]);
 
     return (
         <Row>
@@ -128,6 +135,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                                 selectedPrincipalId={selectedPrincipalId}
                                 deleteGroup={deleteGroup}
                                 setDirty={setDirty}
+                                addUser={onAddPrincipal}
                             />
                         )}
 

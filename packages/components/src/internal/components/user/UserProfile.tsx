@@ -5,7 +5,7 @@
 import React, { PureComponent } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
-import { ActionURL } from '@labkey/api';
+import {ActionURL, Filter} from '@labkey/api';
 
 import { QueryInfoForm } from '../forms/QueryInfoForm';
 import {
@@ -18,10 +18,10 @@ import {
     QueryInfo,
     QueryColumn,
     SCHEMAS,
-    User,
+    User, resolveErrorMessage, selectRows,
 } from '../../..';
 
-import { getUserDetailsRowData, updateUserDetails } from './actions';
+import {getUserDetailsRowData, updateUserDetails} from './actions';
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',
@@ -45,6 +45,7 @@ interface State {
     removeCurrentAvatar: boolean;
     reloadRequired: boolean;
     hasError: boolean;
+    groups: string;
 }
 
 interface Props {
@@ -64,10 +65,11 @@ export class UserProfile extends PureComponent<Props, State> {
             removeCurrentAvatar: false,
             reloadRequired: false,
             hasError: false,
+            groups: undefined
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount = async (): Promise<void> => {
         getQueryDetails(SCHEMAS.CORE_TABLES.USERS)
             .then(queryInfo => {
                 this.setState(() => ({ queryInfo }));
@@ -76,6 +78,24 @@ export class UserProfile extends PureComponent<Props, State> {
                 console.error(reason);
                 this.setState(() => ({ hasError: true }));
             });
+
+        // factor into fn, getUserGroups, containerPath has a default param, put at top of file
+        // make sure to have default implementation for the tests
+        try {
+            const response = await selectRows({
+                schemaQuery: SCHEMAS.CORE_TABLES.USERS,
+                filterArray: [Filter.create('UserId', this.props.userProperties.userid)],
+                columns: ['Groups'],
+                maxRows: 1,
+            });
+            const groupsData = response.rows[0].Groups as any; //todo: flag for typing
+            const groups = groupsData.map((group) => group.displayValue).join(", ");
+            this.setState(() => ({ groups }));
+
+        } catch (e) {
+            console.error(resolveErrorMessage(e) ?? 'Failed to load group data');
+            this.setState(() => ({ hasError: true }));
+        }
     }
 
     columnFilter = (col: QueryColumn): boolean => {
@@ -116,6 +136,17 @@ export class UserProfile extends PureComponent<Props, State> {
 
     renderSectionTitle(title: string) {
         return <p className="user-section-header">{title}</p>;
+    }
+
+    footer() {
+        return(
+            <div className="form-group row">
+                <label className="control-label col-sm-3 text-left col-xs-12"> Groups </label>
+                <div className="col-sm-9 col-md-9 col-xs-12">
+                    {this.state.groups}
+                </div>
+            </div>
+        );
     }
 
     renderForm() {
@@ -170,6 +201,7 @@ export class UserProfile extends PureComponent<Props, State> {
                     onSuccess={this.onSuccess}
                     onHide={onCancel}
                     disabledFields={DISABLED_FIELDS}
+                    footer={this.footer()}
                     showErrorsAtBottom
                 />
             </>

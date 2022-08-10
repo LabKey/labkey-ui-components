@@ -174,6 +174,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     {this.renderUserProp('Last Login', 'lastLogin', true)}
 
                     <EffectiveRolesList {...this.props} />
+                    {/* Flagging below TODO*/}
                     {/* TODO when groups are implemented, add "Member of" for users*/}
 
                     {!isSelf && onUsersStateChangeComplete && this.renderButtons()}

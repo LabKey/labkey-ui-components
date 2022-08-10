@@ -2,7 +2,15 @@ import { Security } from '@labkey/api';
 import { Map } from 'immutable';
 
 import { Container } from '../base/models/Container';
-import { fetchContainerSecurityPolicy, UserLimitSettings, getUserLimitSettings } from '../permissions/actions';
+import {
+    fetchContainerSecurityPolicy,
+    UserLimitSettings,
+    getUserLimitSettings,
+    fetchGroupPermissions,
+    getUsers,
+    createGroup,
+    deleteGroup,
+} from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
 import { naturalSortByProperty } from '../../..';
 
@@ -15,6 +23,10 @@ export interface SecurityAPIWrapper {
         principalsById: Map<number, Principal>,
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
+    fetchGroups: () => Promise<any>;
+    getUsers: (groupId: number) => Promise<any>;
+    createGroup: (groupName: string, projectPath: string) => Promise<any>;
+    deleteGroup: (id: number, projectPath: string) => Promise<any>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
 }
 
@@ -34,6 +46,10 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
     fetchPolicy = fetchContainerSecurityPolicy;
+    fetchGroups = fetchGroupPermissions;
+    getUsers = getUsers;
+    createGroup = createGroup;
+    deleteGroup = deleteGroup;
     getUserLimitSettings = getUserLimitSettings;
 }
 
@@ -56,6 +72,10 @@ export function getSecurityTestAPIWrapper(
     return {
         fetchContainers: mockFn(),
         fetchPolicy: mockFn(),
+        fetchGroups: mockFn(),
+        getUsers: mockFn(),
+        createGroup: mockFn(),
+        deleteGroup: mockFn(),
         getUserLimitSettings: mockFn(),
         ...overrides,
     };

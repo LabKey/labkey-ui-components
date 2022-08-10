@@ -296,6 +296,7 @@ import { loadNameExpressionOptions } from './internal/components/settings/action
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { BasePermissions } from './internal/components/administration/BasePermissions';
+import { GroupManagement } from './internal/components/administration/GroupManagement';
 import { showPremiumFeatures } from './internal/components/administration/utils';
 import {
     HOSTED_APPLICATION_SECURITY_ROLES,
@@ -1108,6 +1109,7 @@ export {
     AdministrationSubNav,
     UserManagementPage,
     BasePermissions,
+    GroupManagement,
     SECURITY_ROLE_DESCRIPTIONS,
     HOSTED_APPLICATION_SECURITY_ROLES,
     showPremiumFeatures,

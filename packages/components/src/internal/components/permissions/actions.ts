@@ -4,7 +4,7 @@
  */
 import { List, Map, fromJS } from 'immutable';
 
-import { ActionURL, Ajax, Filter, Security, Utils } from '@labkey/api';
+import {ActionURL, Ajax, Filter, Query, Security, Utils} from '@labkey/api';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../..';
 
@@ -119,6 +119,68 @@ export function fetchContainerSecurityPolicy(
             },
             failure: error => {
                 console.error('Failed to fetch security policy', error);
+                reject(error);
+            },
+        });
+    });
+}
+
+// ToDo: Add optional params
+export function fetchGroupPermissions(): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Security.getGroupPermissions({
+            success: (data) => {
+                resolve(data);
+            },
+            failure: error => {
+                console.error('Failed to fetch group permissions', error);
+                reject(error);
+            },
+        });
+    });
+}
+
+export function getUsers(groupId: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Security.getUsers({
+            groupId,
+            success: (data) => {
+                resolve(data);
+            },
+            failure: error => {
+                console.error('Failed to fetch group users', error);
+                reject(error);
+            },
+        });
+    });
+}
+
+export function createGroup(groupName: string, projectPath: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Security.createGroup({
+            groupName,
+            containerPath: projectPath,
+            success: (data) => {
+                resolve(data);
+            },
+            failure: error => {
+                console.error('Failed to create group', error);
+                reject(error);
+            },
+        });
+    });
+}
+
+export function deleteGroup(groupId: number, projectPath: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Security.deleteGroup({
+            groupId,
+            containerPath: projectPath,
+            success: (data) => {
+                resolve(data);
+            },
+            failure: error => {
+                console.error('Failed to delete group', error);
                 reject(error);
             },
         });

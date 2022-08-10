@@ -90,6 +90,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         [onChange, policy]
     );
 
+    console.log("policy", policy.toJS());
+
     const onInheritChange = useCallback(() => {
         setDirty(true);
         setInherited(!inherited);
@@ -196,6 +198,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         </Button>
     );
 
+    console.log("policy", policy.toJS());
+
     return (
         <Row>
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
@@ -257,7 +261,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             {showDetailsPanel && (
                 <Col xs={12} md={4}>
                     {selectedPrincipal?.type === 'g' ? (
-                        <GroupDetailsPanel
+                        <GroupDetailsPanel // flag--is this being used anywhere?
                             principal={selectedPrincipal}
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
@@ -266,7 +270,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                         <UserDetailsPanel
                             userId={selectedUserId}
                             policy={policy}
-                            rootPolicy={rootPolicy}
+                            rootPolicy={rootPolicy}  // ToDo: delete unused prop
                             rolesByUniqueName={rolesByUniqueName}
                         />
                     )}

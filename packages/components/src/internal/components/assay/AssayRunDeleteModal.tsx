@@ -1,38 +1,37 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 
-import { deleteAssayRuns, EntityDeleteConfirmModal, Progress, useNotificationsContext } from '../../..';
+import { EntityDeleteConfirmModal, Progress, useNotificationsContext } from '../../..';
 import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 import { AssayRunDataType } from '../entities/constants';
+import { deleteAssayRuns } from './actions';
 
 interface Props {
     afterDelete: () => void;
     afterDeleteFailure: () => void;
     containerPath?: string;
     onCancel: () => void;
-    onConfirmDelete?: (rowsToDelete: any[]) => void;
     selectedRowId?: string;
     selectionKey?: string;
 }
 
 export const AssayRunDeleteModal: FC<Props> = props => {
-    const { afterDelete, afterDeleteFailure, containerPath, onCancel, onConfirmDelete, selectionKey, selectedRowId } =
+    const { afterDelete, afterDeleteFailure, containerPath, onCancel, selectionKey, selectedRowId } =
         props;
     const { createNotification } = useNotificationsContext();
     const [numToDelete, setNumToDelete] = useState<number>(undefined);
     const [showProgress, setShowProgress] = useState<boolean>(false);
 
-    const onConfirm = async (rowsToDelete: any[], rowsToKeep: any[]): Promise<void> => {
+    const onConfirm = async (rowsToDelete: any[]): Promise<void> => {
         if (rowsToDelete.length == 0) {
             afterDelete();
             return;
         }
 
-        onConfirmDelete?.(rowsToDelete);
         setNumToDelete(rowsToDelete.length);
         setShowProgress(true);
         const noun = rowsToDelete.length === 1 ? ' assay run' : ' assay runs';
         try {
-            const response = await deleteAssayRuns(selectionKey, selectedRowId, true, containerPath);
+            const response = await deleteAssayRuns(undefined, rowsToDelete, true, containerPath);
 
             const numRunsCascadeDeleted = response.hasOwnProperty('runIdsCascadeDeleted')
                 ? response.runIdsCascadeDeleted.length

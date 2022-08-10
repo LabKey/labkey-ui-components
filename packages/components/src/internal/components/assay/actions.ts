@@ -233,12 +233,12 @@ function collectFiles(source: Record<string, any>): FileMap {
 
 export function deleteAssayRuns(
     selectionKey?: string,
-    rowId?: string,
+    rowIds?: string[],
     cascadeDeleteReplacedRuns = false,
     containerPath?: string
 ): Promise<any> {
     return new Promise((resolve, reject) => {
-        const jsonData: any = selectionKey ? { dataRegionSelectionKey: selectionKey } : { singleObjectRowId: rowId };
+        const jsonData: any = selectionKey ? { dataRegionSelectionKey: selectionKey } : { rowIds: rowIds };
         jsonData.cascade = cascadeDeleteReplacedRuns;
 
         return Ajax.request({

@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Restrict deletions of entities, including assay runs referenced in ELNs
+* Update `deleteAssayRuns` interface to accept an array of rowIds instead of a single rowId (and remove from index.ts)
 
 ### version 2.204.1
 *Released*: 9 August 2022

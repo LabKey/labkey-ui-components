@@ -117,7 +117,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
             // DATE or CONTINUOUS
             return model.domain.fields
                 .filter(
-                    field => field.rangeURI.toLowerCase() === 'xsd:datetime' || field.rangeURI === DATETIME_RANGE_URI
+                    field => field.rangeURI?.toLowerCase() === 'xsd:datetime' || field.rangeURI === DATETIME_RANGE_URI
                 )
                 .toList();
         }

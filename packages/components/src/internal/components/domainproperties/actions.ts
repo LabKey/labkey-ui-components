@@ -347,6 +347,8 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
  * @param options: Options for creating new Domain
  * @param name: Name of new Domain
  * @param includeWarnings: Set this to true if warnings are desired
+ * @param addRowIndexes: Boolean indicating if rowIndices should be added to the error message objects
+ * @param originalDomain: Original DomainDesign (before filtering out of locked/mapped fields), to be used for addRowIndexes = true
  * @return Promise wrapped Domain API call.
  */
 export function saveDomain(
@@ -355,7 +357,8 @@ export function saveDomain(
     options?: any,
     name?: string,
     includeWarnings?: boolean,
-    addRowIndexes?: boolean
+    addRowIndexes?: boolean,
+    originalDomain?: DomainDesign
 ): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         function successHandler(response) {
@@ -374,7 +377,7 @@ export function saveDomain(
             }
 
             const exception = DomainException.create(response, SEVERITY_LEVEL_ERROR);
-            const badDomain = setDomainException(domain, exception, addRowIndexes);
+            const badDomain = setDomainException(domain, exception, addRowIndexes, originalDomain);
             reject(badDomain);
         }
 
@@ -894,10 +897,11 @@ export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>)
 export function setDomainException(
     domain: DomainDesign,
     exception: DomainException,
-    addRowIndexes = true
+    addRowIndexes = true,
+    originalDomain?: DomainDesign
 ): DomainDesign {
     const exceptionWithRowIndexes = addRowIndexes
-        ? DomainException.addRowIndexesToErrors(domain, exception)
+        ? DomainException.addRowIndexesToErrors(originalDomain ?? domain, exception)
         : exception;
     const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
     return domain.set('domainException', exceptionWithAllErrors ? exceptionWithAllErrors : exception) as DomainDesign;

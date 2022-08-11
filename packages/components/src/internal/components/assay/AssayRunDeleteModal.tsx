@@ -1,30 +1,37 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 
-import { ConfirmModal, deleteAssayRuns, Progress, useNotificationsContext } from '../../..';
+import { EntityDeleteConfirmModal, Progress, useNotificationsContext } from '../../..';
 import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
+import { AssayRunDataType } from '../entities/constants';
+import { deleteAssayRuns } from './actions';
 
 interface Props {
     afterDelete: () => void;
     afterDeleteFailure: () => void;
     containerPath?: string;
-    numToDelete: number;
     onCancel: () => void;
     selectedRowId?: string;
     selectionKey?: string;
 }
 
 export const AssayRunDeleteModal: FC<Props> = props => {
-    const { afterDelete, afterDeleteFailure, containerPath, numToDelete, onCancel, selectionKey, selectedRowId } =
+    const { afterDelete, afterDeleteFailure, containerPath, onCancel, selectionKey, selectedRowId } =
         props;
     const { createNotification } = useNotificationsContext();
+    const [numToDelete, setNumToDelete] = useState<number>(undefined);
     const [showProgress, setShowProgress] = useState<boolean>(false);
-    const noun = useMemo<string>(() => (numToDelete === 1 ? ' assay run' : ' assay runs'), [numToDelete]);
 
-    const onConfirm = async (): Promise<void> => {
+    const onConfirm = async (rowsToDelete: any[]): Promise<void> => {
+        if (rowsToDelete.length == 0) {
+            afterDelete();
+            return;
+        }
+
+        setNumToDelete(rowsToDelete.length);
         setShowProgress(true);
-
+        const noun = rowsToDelete.length === 1 ? ' assay run' : ' assay runs';
         try {
-            const response = await deleteAssayRuns(selectionKey, selectedRowId, true, containerPath);
+            const response = await deleteAssayRuns(undefined, rowsToDelete, true, containerPath);
 
             const numRunsCascadeDeleted = response.hasOwnProperty('runIdsCascadeDeleted')
                 ? response.runIdsCascadeDeleted.length
@@ -39,7 +46,7 @@ export const AssayRunDeleteModal: FC<Props> = props => {
                     : '';
 
             afterDelete();
-            createNotification(deleteSuccessMessage(noun, numToDelete, additionalInfo));
+            createNotification(deleteSuccessMessage(noun, rowsToDelete.length, additionalInfo));
         } catch (error) {
             console.error(error);
             setShowProgress(false);
@@ -51,29 +58,33 @@ export const AssayRunDeleteModal: FC<Props> = props => {
         }
     };
 
+    const getDeletionDescription = (numToDelete: number) => {
+        const noun = numToDelete === 1 ? ' assay run' : ' assay runs';
+
+        return (
+            <>
+                The entirety of the {numToDelete > 1 ? numToDelete : ''} {noun} and any of{' '}
+                {numToDelete === 1 ? 'its' : 'their'} previously replaced versions will be permanently deleted.
+            </>
+        )
+    }
+
     return (
         <>
             {!showProgress && (
-                <ConfirmModal
-                    cancelButtonText="Cancel"
-                    confirmButtonText="Yes, Delete"
+                <EntityDeleteConfirmModal
                     onCancel={onCancel}
                     onConfirm={onConfirm}
-                    title={'Permanently delete ' + numToDelete + noun + '?'}
-                >
-                    <span>
-                        The entirety of the {numToDelete > 1 ? numToDelete : ''} selected {noun} and any of{' '}
-                        {numToDelete === 1 ? 'its' : 'their'} previously replaced versions will be permanently deleted.
-                        <p className="top-spacing">
-                            <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                        </p>
-                    </span>
-                </ConfirmModal>
+                    entityDataType={AssayRunDataType}
+                    selectionKey={selectionKey}
+                    rowIds={[selectedRowId]}
+                    getDeletionDescription={getDeletionDescription}
+                />
             )}
             <Progress
                 estimate={numToDelete * 10}
                 modal={true}
-                title={`Deleting ${numToDelete}${noun}`}
+                title={`Deleting ${numToDelete}${numToDelete === 1 ? ' assay run' : ' assay runs'}`}
                 toggle={showProgress}
             />
         </>

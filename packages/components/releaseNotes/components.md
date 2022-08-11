@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.205.0
+*Released*: 11 August 2022
+* Restrict deletions of entities, including assay runs referenced in ELNs
+* Update `deleteAssayRuns` interface to accept an array of rowIds instead of a single rowId (and remove from index.ts)
+
 ### version 2.204.1
 *Released*: 9 August 2022
 * Projects - Cross-Folder Storage Actions

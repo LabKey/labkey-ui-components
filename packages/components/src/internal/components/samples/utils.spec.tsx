@@ -57,7 +57,7 @@ describe('getSampleDeleteMessage', () => {
         const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
         expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
         expect(wrapper.text()).toContain(
-            'This sample cannot be deleted because it has either derived sample or assay data dependencies.'
+            'This sample cannot be deleted because it has either derived sample, job, or assay data dependencies, or status that prevents deletion.'
         );
     });
 
@@ -66,15 +66,6 @@ describe('getSampleDeleteMessage', () => {
         const wrapper = mount(<span>{getSampleDeleteMessage(false, true)}</span>);
         expect(wrapper.text()).toContain(
             'This sample cannot be deleted because there was a problem loading the delete confirmation data.'
-        );
-    });
-
-    test('cannot delete, status enabled', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-        const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
-        expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
-        expect(wrapper.text()).toContain(
-            'This sample cannot be deleted because it has either derived sample or assay data dependencies or status that prevents deletion.'
         );
     });
 });

@@ -24,15 +24,14 @@ import {
 } from '../../..';
 
 import {
-    biologicsIsPrimaryApp,
     isELNEnabled,
     isFreezerManagementEnabled,
-    isSampleStatusEnabled
+    isSampleStatusEnabled,
 } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
-import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
+import { SAMPLES_KEY } from '../../app/constants';
 
 import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
@@ -74,10 +73,9 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
         } else {
             deleteMsg += 'it has either derived sample, job, or assay data dependencies, ';
             if (isELNEnabled()) {
-                deleteMsg += 'status that prevents deletion, or references in one or more active notebooks'
-            }
-            else {
-                deleteMsg += 'or status that prevents deletion'
+                deleteMsg += 'status that prevents deletion, or references in one or more active notebooks';
+            } else {
+                deleteMsg += 'or status that prevents deletion';
             }
             deleteMsg += '. Check the Lineage, Assays, and Jobs tabs for this sample to get more information.';
         }
@@ -298,7 +296,7 @@ export function getSampleWizardURL(
     currentProductId?: string,
     targetProductId?: string
 ): string | AppURL {
-    let params = {};
+    const params = {};
 
     if (targetSampleSet) {
         params['target'] = targetSampleSet;

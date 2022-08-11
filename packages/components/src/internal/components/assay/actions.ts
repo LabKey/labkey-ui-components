@@ -238,7 +238,7 @@ export function deleteAssayRuns(
     containerPath?: string
 ): Promise<any> {
     return new Promise((resolve, reject) => {
-        const jsonData: any = selectionKey ? { dataRegionSelectionKey: selectionKey } : { rowIds: rowIds };
+        const jsonData: any = selectionKey ? { dataRegionSelectionKey: selectionKey } : { rowIds };
         jsonData.cascade = cascadeDeleteReplacedRuns;
 
         return Ajax.request({

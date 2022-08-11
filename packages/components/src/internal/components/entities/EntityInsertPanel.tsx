@@ -72,7 +72,7 @@ import { BulkAddData } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
 
-import { getCurrentProductName, isSampleManagerEnabled } from '../../app/utils';
+import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
@@ -694,7 +694,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     renderAliquotResetMsg = (): ReactNode => {
         return (
             <Alert bsStyle="info" className="notification-container">
-                Parent and source types cannot be changed when creating aliquots.{' '}
+                Parent {sampleManagerIsPrimaryApp() ? 'and source' : ''} types cannot be changed when creating aliquots.{' '}
                 <a className="pull-right" onClick={this.resetCreationType}>
                     Clear Aliquots and Reset.
                 </a>

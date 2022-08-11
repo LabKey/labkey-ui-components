@@ -28,6 +28,7 @@ interface Props {
     rowIds?: string[];
     selectionKey?: string;
     verb?: string;
+    getDeletionDescription?: (numToDelete: number) => React.ReactNode;
 }
 
 interface State {
@@ -86,7 +87,7 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
     };
 
     render() {
-        const { onConfirm, onCancel, entityDataType } = this.props;
+        const { onConfirm, onCancel, entityDataType, getDeletionDescription } = this.props;
 
         if (this.state.isLoading) {
             return (
@@ -116,6 +117,7 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
                 onCancel={onCancel}
                 verb={this.props.verb}
                 entityDataType={entityDataType}
+                getDeletionDescription={getDeletionDescription}
             />
         );
     }

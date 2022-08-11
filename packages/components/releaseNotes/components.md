@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 46025: Don't show "Source Events" as audit query for LKB
+* Issue 46030: Don't reference "source types" in LKB aliquoting grid
+* Issue 46026: Make chevron in expandable container also clickable
 
 ### version 2.204.1
 *Released*: 9 August 2022

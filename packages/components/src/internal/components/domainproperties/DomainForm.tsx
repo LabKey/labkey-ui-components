@@ -126,13 +126,15 @@ interface IDomainFormInput {
     onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => any;
     onToggle?: (collapsed: boolean, callback?: () => any) => any;
     panelStatus?: DomainPanelStatus;
+    queryName?: string; // Alternate queryName to use for text choice distinct value query if schema/query not set on domain prop
+    schemaName?: string; // Alternate schemaName to use for text choice distinct value query if schema/query not set on domain prop
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     showHeader?: boolean;
     successBsStyle?: string;
+    testMode?: boolean;
     todoIconHelpMsg?: string;
     useTheme?: boolean;
     validate?: boolean;
-    testMode?: boolean;
 }
 
 interface IDomainFormState {
@@ -1234,6 +1236,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
+            schemaName,
+            queryName,
         } = this.props;
         const { expandedRowIndex, expandTransition, fieldDetails, maxPhiLevel, dragId, availableTypes, search } =
             this.state;
@@ -1286,8 +1290,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 }
                                                 domainFormDisplayOptions={domainFormDisplayOptions}
                                                 domainContainerPath={domain.container}
-                                                schemaName={domain.schemaName}
-                                                queryName={domain.queryName}
+                                                schemaName={schemaName ?? domain.schemaName}
+                                                queryName={queryName ?? domain.queryName}
                                             />
                                         );
                                     })}

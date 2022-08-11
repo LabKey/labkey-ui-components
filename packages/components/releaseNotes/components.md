@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Workflow job creation and update with custom fields
   * EditInlineField updates to support value as RowValue from selectRows response
   * EditInlineField to support QueryColumn and use resolveDetailEditRenderer()
+  * DomainForm addition of schemaName/queryName props to be used for text choice distinct value query
 
 ### version 2.204.1
 *Released*: 9 August 2022

@@ -79,6 +79,11 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
     exportFilename?: string;
     getAdvancedExportOptions?: (tabId: string) => { [key: string]: any };
     /**
+     * return the custom GridPanel for an active tab
+     * @param activeGridId
+     */
+    getGridPanelDisplay?: (activeGridId: string) => React.ReactNode;
+    /**
      * Optional, if used the TabbedGridPanel will act as a controlled component, requiring you to always pass the
      * activeModelId. If not passed the TabbedGridPanel will maintain the activeModelId state internally.
      * @param string
@@ -94,6 +99,7 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      * Defaults to false.
      */
     showRowCountOnTabs?: boolean;
+
     /**
      * Array of model ids representing the order you want the tabs in. This component will only render Tabs and
      * GridPanels for Query Models in the TabOrder array.
@@ -122,6 +128,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         exportFilename,
         advancedExportOptions,
         getAdvancedExportOptions,
+        getGridPanelDisplay,
         ...rest
     } = props;
     const { createNotification } = useNotificationsContext();
@@ -195,7 +202,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     const activeModel = queryModels[activeId];
     const hasTabs = tabOrder.length > 1 || alwaysShowTabs;
 
-    const gridDisplay = (
+    const gridDisplay = getGridPanelDisplay?.(activeId) ?? (
         <GridPanel
             allowViewCustomization={allowViewCustomization}
             key={activeId}

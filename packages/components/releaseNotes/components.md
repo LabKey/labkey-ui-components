@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.206.0
+*Released*: 11 August 2022
+* Multi-tab grids for Storage grids
+    * Support getGridPanelDisplay for TabbedGridPanel
+    * Move CreateSamplesSubMenu and SamplesDeriveButtonBase here from LKSM
+    * Modify SamplesAddButton to support productId
+
 ### version 2.205.0
 *Released*: 11 August 2022
 * Restrict deletions of entities, including assay runs referenced in ELNs

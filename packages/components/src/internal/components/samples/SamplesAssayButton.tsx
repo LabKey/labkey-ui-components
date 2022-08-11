@@ -13,13 +13,17 @@ import { isSamplesSchema } from './utils';
 
 interface Props {
     asSubMenu?: boolean;
+    currentProductId?: string;
+    ignoreFilter?: boolean;
     isPicklist?: boolean;
     model: QueryModel;
     providerType?: string;
+    targetProductId?: string;
 }
 
 export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props => {
-    const { model, providerType, asSubMenu, assayModel, isPicklist } = props;
+    const { model, providerType, asSubMenu, assayModel, isPicklist, currentProductId, targetProductId, ignoreFilter } =
+        props;
 
     if (!isSamplesSchema(model?.schemaQuery) && !isPicklist) return null;
 
@@ -32,6 +36,9 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
             picklistName={picklistName}
             requireSelection={false}
             text={asSubMenu ? 'Import Assay Data' : null} // using null will render the submenu items inline in this button
+            currentProductId={currentProductId}
+            targetProductId={targetProductId}
+            ignoreFilter={ignoreFilter}
         />
     );
 

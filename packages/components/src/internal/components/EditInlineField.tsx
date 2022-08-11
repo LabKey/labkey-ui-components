@@ -21,8 +21,8 @@ interface Props {
     onChange?: (name: string, newValue: any) => void;
     placeholder?: string;
     type: string;
-    value: any; // could be a primitive value or a RowValue (from internal/query/selectRows)
     useJsonDateFormat?: boolean;
+    value: any; // could be a primitive value or a RowValue (from internal/query/selectRows)
 }
 
 export const EditInlineField: FC<Props> = memo(props => {

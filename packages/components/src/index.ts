@@ -29,6 +29,7 @@ import {
     getAssayImportNotificationMsg,
     getServerFilePreview,
     inferDomainFromFile,
+    getAssayRunDeleteMessage,
 } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
@@ -153,6 +154,7 @@ import { getMenuItemForSectionKey, getMenuItemsForSection } from './internal/com
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 import { Setting } from './internal/components/base/Setting';
+import { ValueList } from './internal/components/base/ValueList';
 
 import { EditorModel, createGridModelId } from './internal/models';
 import {
@@ -328,6 +330,8 @@ import { SamplesEditButton } from './internal/components/samples/SamplesEditButt
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
+import { CreateSamplesSubMenu } from './internal/components/samples/CreateSamplesSubMenu';
+import { SamplesDeriveButtonBase } from './internal/components/samples/SamplesDeriveButtonBase';
 import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSamplesSubMenuBase';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
@@ -383,7 +387,6 @@ import {
     allowReimportAssayRun,
     clearAssayDefinitionCache,
     deleteAssayDesign,
-    deleteAssayRuns,
     fetchAllAssays,
     GENERAL_ASSAY_PROVIDER_NAME,
     importAssayRun,
@@ -451,11 +454,13 @@ import {
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getSampleOperationConfirmationData,
+    getOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
     DataClassDataType,
     ParentEntityRequiredColumns,
     SampleTypeDataType,
+    AssayRunDataType,
 } from './internal/components/entities/constants';
 import { createEntityParentKey, getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
@@ -616,7 +621,7 @@ import {
     hasModule,
     hasPremiumModule,
     isBiologicsEnabled,
-    isELNEnabledInLKSM,
+    isELNEnabled,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
     isProjectContainer,
@@ -729,7 +734,7 @@ const App = {
     CloseEventCode,
     getCurrentAppProperties,
     registerWebSocketListeners,
-    isELNEnabledInLKSM,
+    isELNEnabled,
     isFreezerManagementEnabled,
     isRequestsEnabled,
     isSampleManagerEnabled,
@@ -1042,6 +1047,7 @@ export {
     getDeleteSharedSampleTypeUrl,
     SampleTypeDataType,
     DataClassDataType,
+    AssayRunDataType,
     ParentEntityRequiredColumns,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
@@ -1058,6 +1064,8 @@ export {
     SampleDetailEditing,
     SampleCreationTypeModal,
     CreateSamplesSubMenuBase,
+    CreateSamplesSubMenu,
+    SamplesDeriveButtonBase,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
     GridAliquotViewSelector,
@@ -1090,6 +1098,7 @@ export {
     getSampleOperationConfirmationData,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
+    getOperationConfirmationData,
     createEntityParentKey,
     getUniqueIdColumnMetadata,
     // search related items
@@ -1133,7 +1142,6 @@ export {
     AssayReimportRunButton,
     importAssayRun,
     deleteAssayDesign,
-    deleteAssayRuns,
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
@@ -1225,6 +1233,7 @@ export {
     DOMAIN_RANGE_VALIDATOR,
     DomainDetails,
     inferDomainFromFile,
+    getAssayRunDeleteMessage,
     getServerFilePreview,
     InferDomainResponse,
     BasePropertiesPanel,
@@ -1366,6 +1375,7 @@ export {
     SelectView,
     SelectViewInput,
     Setting,
+    ValueList,
     // base models, enums, constants
     Container,
     User,

@@ -21,7 +21,7 @@ import {
     User,
 } from '../../..';
 
-import { getDateFormat, isSampleFinderEnabled } from '../../app/utils';
+import { getDateFormat } from '../../app/utils';
 
 import { ASSAYS_KEY, FIND_SAMPLES_BY_FILTER_HREF, NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
 
@@ -270,11 +270,9 @@ export const SampleButtons: FC<SampleButtonProps> = memo(props => {
 
     return (
         <div className="pull-right bar-chart-viewer-sample-buttons">
-            {isSampleFinderEnabled() && (
-                <Button bsStyle="primary" onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
-                    Go to Sample Finder
-                </Button>
-            )}
+            <Button bsStyle="primary" onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF.toHref()}>
+                Go to Sample Finder
+            </Button>
             <RequiresPermission perms={PermissionTypes.Insert}>
                 <Button bsStyle="success" className="button-left-spacing" href={NEW_SAMPLES_HREF.toHref()}>
                     Add Samples

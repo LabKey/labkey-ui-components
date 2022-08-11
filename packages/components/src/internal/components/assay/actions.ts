@@ -233,12 +233,12 @@ function collectFiles(source: Record<string, any>): FileMap {
 
 export function deleteAssayRuns(
     selectionKey?: string,
-    rowId?: string,
+    rowIds?: string[],
     cascadeDeleteReplacedRuns = false,
     containerPath?: string
 ): Promise<any> {
     return new Promise((resolve, reject) => {
-        const jsonData: any = selectionKey ? { dataRegionSelectionKey: selectionKey } : { singleObjectRowId: rowId };
+        const jsonData: any = selectionKey ? { dataRegionSelectionKey: selectionKey } : { rowIds };
         jsonData.cascade = cascadeDeleteReplacedRuns;
 
         return Ajax.request({
@@ -261,7 +261,10 @@ export function getImportItemsForAssayDefinitions(
     assayStateModel: AssayStateModel,
     sampleModel?: QueryModel,
     providerType?: string,
-    isPicklist?: boolean
+    isPicklist?: boolean,
+    currentProductId?: string,
+    targetProductId?: string,
+    ignoreFilter?: boolean
 ): OrderedMap<AssayDefinitionModel, string> {
     let targetSQ;
     const selectionKey = sampleModel?.id;
@@ -281,7 +284,10 @@ export function getImportItemsForAssayDefinitions(
                 // Check for the existence of the "queryInfo" before getting filters from the model.
                 // This avoids `QueryModel` throwing an error when the "queryInfo" is not yet available.
                 sampleModel?.queryInfo ? List(sampleModel.filters) : undefined,
-                isPicklist
+                isPicklist,
+                currentProductId,
+                targetProductId,
+                ignoreFilter
             );
             return items.set(assay, href);
         }, OrderedMap<AssayDefinitionModel, string>());

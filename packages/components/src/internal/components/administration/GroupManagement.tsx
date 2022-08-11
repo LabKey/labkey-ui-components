@@ -30,20 +30,19 @@ const constructGroupMembership = (groupsData, groupRows) => {
         const userDisplayName = curr['UserId/DisplayName'];
         const isGroup = !userDisplayName;
         // consider efficiency of below line. Maybe make groupsData a map
-        const member = {name: userDisplayName ?? groupsData.find((group) => group.id === curr.UserId).name, id: curr.UserId};
+        const member = {name: userDisplayName ?? groupsData.find((group) => group.id === curr.UserId).name, id: curr.UserId, type: isGroup ? 'g' : 'u'};
         if (curr.GroupId in prev) {
-            isGroup ? prev[groupId].members.groups.push(member) : prev[groupId].members.users.push(member);
+            prev[groupId].members.push(member);
             return prev;
         } else {
-            const membersValue = isGroup ? {groups: [member], users:[]} : {groups: [], users:[member]};
-            prev[groupId] = {groupName: curr['GroupId/Name'], members: membersValue};
+            prev[groupId] = {groupName: curr['GroupId/Name'], members: [member]};
             return prev;
         }
     }, {});
 
     groupsData.forEach(group => {
         if (!(group.id in groupsWithMembers)) {
-            groupsWithMembers[group.id] = {groupName: group.name, members: {groups: [], users: []}}
+            groupsWithMembers[group.id] = {groupName: group.name, members: []}
         }
     });
 
@@ -136,10 +135,11 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
         // Add new members
         Object.keys(groupMembership).map(async groupId => {
-            const currentMembers = groupMembership[groupId].members.groups.concat(groupMembership[groupId].members.users).map(member => member.id);
-            const oldMembers = new Set(savedGroupMembership[groupId]?.members.groups.concat(savedGroupMembership[groupId]?.members.users).map(member => member.id));
+            const currentMembers = groupMembership[groupId].members.map(member => member.id);
+            const oldMembers = new Set(savedGroupMembership[groupId]?.members.map(member => member.id));
             const addedMembers = currentMembers.filter(id => !oldMembers.has(id));
-            await api.security.addGroupMembers(parseInt(groupId), addedMembers, projectPath);
+            if (addedMembers.length)
+                await api.security.addGroupMembers(parseInt(groupId), addedMembers, projectPath);
         });
 
         // Save updated state
@@ -163,7 +163,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     }, []);
 
     const addGroup = useCallback((name: string) => {
-        setGroupMembership({...groupMembership, [name]: {groupName: name, members: {groups: [], users: []}}});
+        setGroupMembership({...groupMembership, [name]: {groupName: name, members: []}});
     }, [groupMembership]);
 
     const deleteGroup = useCallback((id: string) => {
@@ -174,14 +174,13 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     }, [groupMembership]);
 
     const addUser = useCallback((userId: number, principalId: string, principalName: string, principalType: string) => {
-        const newGroupMembership = {...groupMembership};
-        const group = newGroupMembership[principalId];
-        const groupPrincipal = principalType === 'g' ? group.members.groups : group.members.users;
+        const group = groupMembership[principalId];
+        const newMember = {name: principalName, id: userId, type: principalType};
+        setGroupMembership({...groupMembership, [principalId]: {groupName: group.groupName, members: [...group.members, newMember] }});
+    }, [groupMembership]);
 
-        const newGroupPrincipal = [...groupPrincipal, {name: principalName, id: userId}];
-        const newGroupStuff = {...groupMembership, [principalId]: {groupName: group.groupName, members: principalType === 'g' ? {groups: newGroupPrincipal, users: group.members.users } : {groups: group.members.groups, users: newGroupPrincipal}}};
+    const removeMember = useCallback((userId: number, principalId: string, principalName: string, principalType: string) => {
 
-        setGroupMembership(newGroupStuff);
     }, [groupMembership]);
 
     const usersAndGroups = useMemo(() => {

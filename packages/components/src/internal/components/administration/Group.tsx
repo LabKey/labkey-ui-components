@@ -20,6 +20,7 @@ export interface GroupProps {
     selectedPrincipalId: number;
     deleteGroup: any;
     addUser: any;
+    onRemoveMember: any;
     setDirty: any;
 }
 
@@ -33,11 +34,9 @@ export const Group: FC<GroupProps> = memo(props => {
         selectedPrincipalId,
         deleteGroup,
         addUser,
+        onRemoveMember,
         setDirty
     } = props;
-
-    const [dropdownPrincipalId, setDropdownPrincipalId] = useState<number>();
-
 
     const generateClause = useCallback(() => {
         return (
@@ -48,9 +47,8 @@ export const Group: FC<GroupProps> = memo(props => {
     },[]);
 
     const generateLinks = useCallback(() => {
-        const usersCount = members.users.length ?? 0;
-        const groupsCount = members.groups.length ?? 0;
-
+        const usersCount = members.filter(member => member.type === 'u').length;
+        const groupsCount = members.length - usersCount;
 
         return (
             <span className="container-expandable-heading">
@@ -62,7 +60,7 @@ export const Group: FC<GroupProps> = memo(props => {
     }, [members]);
 
     const canDeleteGroup = useMemo(() => {
-        return members.users.length !== 0 || members.groups.length !== 0;
+        return members.length !== 0;
     }, [members]);
 
     const onDeleteGroup = useCallback(() => {
@@ -71,12 +69,11 @@ export const Group: FC<GroupProps> = memo(props => {
     }, [deleteGroup]);
 
     const principalsToAdd = useMemo(() => {
-        const addedPrincipalIds = new Set(members.groups.concat(members.users).map(principal => principal.id));
+        const addedPrincipalIds = new Set(members.map(principal => principal.id));
         return usersAndGroups.filter(principal => !addedPrincipalIds.has(principal.get('userId')) && principal.get('userId') !== parseInt(id));
     }, [members, usersAndGroups, id]);
 
     const addAssignment = useCallback((name: string, formValue: any, selected: Principal) => {
-        console.log("selected", selected.toJS());
         addUser(selected.get('userId'), id, selected.get('displayName'), selected.get('type'));
     },[id, addUser]);
 
@@ -99,14 +96,14 @@ export const Group: FC<GroupProps> = memo(props => {
                 </Button>
 
                 <div className="group-assignments-row">
-                    {(members.groups.concat(members.users)).map(principal => (
-                        <li key={principal.id} className="permissions-member-li">
+                    {members.map(member => (
+                        <li key={member.id} className="permissions-member-li">
                             <RemovableButton
-                                id={principal.id}
-                                display={principal.name}
+                                id={member.id}
+                                display={member.name}
                                 onClick={(userId) => {onClickAssignment(userId)}}
-                                onRemove={() => {}}
-                                bsStyle={selectedPrincipalId === principal.id ? 'primary' : undefined}
+                                onRemove={(memberId) => {onRemoveMember(memberId, id)}}
+                                bsStyle={selectedPrincipalId === member.id ? 'primary' : undefined}
                                 added={false}
                             />
                         </li>

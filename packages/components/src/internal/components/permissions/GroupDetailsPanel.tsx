@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, {FC, memo, useCallback} from 'react';
+import React, {FC, memo, useCallback, useMemo} from 'react';
 import {Col, Panel, Row} from 'react-bootstrap';
 import { Map } from 'immutable';
 
@@ -35,6 +35,13 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
         );
     }, []);
 
+    const {usersCount, groupsCount} = useMemo(() => {
+        const usersCount = members.filter(member => member.type === 'u').length;
+        const groupsCount = (members.length - usersCount).toString();
+
+        return {usersCount, groupsCount}
+    }, [members]);
+
     return (
         <Panel>
             <Panel.Heading>Group Details</Panel.Heading>
@@ -43,8 +50,8 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
                     <>
                         <p className="principal-title-primary">{principal.displayName}</p>
 
-                        {renderUserProp("Member Count", members.users.length)}
-                        {renderUserProp("Group Count", members.groups.length)}
+                        {renderUserProp("Member Count", usersCount)}
+                        {renderUserProp("Group Count", groupsCount)}
 
                         <hr className="principal-hr" />
 

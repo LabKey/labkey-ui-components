@@ -90,6 +90,10 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         setDirty(true);
     }, [addUser]);
 
+    const onRemoveMember = useCallback((memberId: number, groupId: string, ) => {
+
+    }, []);
+
     return (
         <Row>
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
@@ -124,7 +128,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                             </Button>
                         </div>
 
-                        {Object.keys(groupMembership).map((k, i) =>
+                        {Object.keys(groupMembership).map((k) =>
                             <Group
                                 key={k}
                                 id={k}
@@ -134,6 +138,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                                 members={groupMembership[k].members}
                                 selectedPrincipalId={selectedPrincipalId}
                                 deleteGroup={deleteGroup}
+                                onRemoveMember={onRemoveMember}
                                 setDirty={setDirty}
                                 addUser={onAddPrincipal}
                             />

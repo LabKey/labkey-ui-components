@@ -3,7 +3,7 @@ import { Col, Panel, FormControl, Row, Button } from 'react-bootstrap';
 import { BarTenderConfiguration, BarTenderResponse } from "./models";
 import { fetchBarTenderConfiguration, saveBarTenderConfiguration } from "./actions";
 import { printBarTenderLabels } from "./actions";
-import { LabelPrintingProviderProps } from './LabelPrintingContextProvider';
+import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
 import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR } from "./constants";
 import { Alert } from '../base/Alert';
 import { HelpLink } from '../../util/helpLinks';
@@ -36,7 +36,7 @@ const FAILED_NOTIFICATION_MESSAGE = 'Failed to connect to BarTender web service.
 const UNKNOWN_STATUS_MESSAGE = 'Unrecognized status code returned from BarTender service';
 const FAILED_TO_SAVE_MESSAGE = 'Failed to save connection configuration';
 
-export class BarTenderSettingsForm extends React.PureComponent<Props, State> {
+export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State> {
 
     private btTestConnectionTemplate = (label:string):string => {
         //Should be able to run connection test w/o a default label set.
@@ -276,7 +276,7 @@ export class BarTenderSettingsForm extends React.PureComponent<Props, State> {
                                     </Alert>
                                 </div>
                             )}
-                            { connectionValidated && BarTenderSettingsForm.renderConnectionValidated() }
+                            { connectionValidated && BarTenderSettingsFormImpl.renderConnectionValidated() }
                             { connectionValidated === false && this.renderConnectionFailedValidation() }
                             {this.renderURLInput()}
                             {this.renderLabelInput()}
@@ -313,5 +313,4 @@ export class BarTenderSettingsForm extends React.PureComponent<Props, State> {
     }
 }
 
-// TODO Remove
-// export const BarTenderSettingsForm = connect<CommonStateProps, any, any>(mapCommonStateToProps)(LabelPrintingProvider(BarTenderSettingsFormImpl))
+export const BarTenderSettingsForm = withLabelPrintingContext(BarTenderSettingsFormImpl);

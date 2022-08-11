@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ComponentType, FC, useContext } from 'react';
 import { userCanPrintLabels } from './utils';
 import { User } from '../base/models/User';
 import { fetchBarTenderConfiguration } from './actions';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 interface Props {
     user: User;
@@ -15,8 +16,7 @@ interface State {
 
 export type LabelPrintingProviderProps = State;
 
-const Context = React.createContext<State>(undefined);
-const LabelPrintingContextProvider = Context.Provider;
+const LabelPrintingContext = React.createContext<LabelPrintingProviderProps>(undefined);
 
 export const LabelPrintingProvider = (Component: React.ComponentType) => {
     return class LabelPrintingProviderImpl extends React.Component<Props, State> {
@@ -45,10 +45,23 @@ export const LabelPrintingProvider = (Component: React.ComponentType) => {
 
         render() {
             return (
-                <LabelPrintingContextProvider value={this.state}>
+                <LabelPrintingContext.Provider value={this.state}>
                     <Component {...this.props} {...this.state}/>
-                </LabelPrintingContextProvider>
+                </LabelPrintingContext.Provider>
             )
         }
     }
+}
+
+export const useLabelPrintingContext = (): State => {
+    return useContext(LabelPrintingContext);
+};
+
+export function withLabelPrintingContext<T>(Component: ComponentType<T & State>): ComponentType<T> {
+    return props => {
+        const context = useLabelPrintingContext();
+        return (
+            <Component {...props} {...context} />
+        );
+    };
 }

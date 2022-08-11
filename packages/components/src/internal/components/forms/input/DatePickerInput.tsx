@@ -59,7 +59,8 @@ interface DatePickerInputState extends DisableableInputState {
     selectedDate: any;
 }
 
-class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePickerInputState> {
+// export for jest testing
+export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePickerInputState> {
     static defaultProps = {
         allowDisable: false,
         initiallyDisabled: false,

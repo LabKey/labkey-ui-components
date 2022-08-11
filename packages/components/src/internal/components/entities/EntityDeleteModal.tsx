@@ -67,6 +67,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                     alertClass: 'danger',
                     message: deleteErrorMessage(noun),
                 });
+                onCancel(); // close the modal so the error notification is more apparent.
             }
         },
         [afterDelete, auditBehavior, beforeDelete, createNotification, entityDataType, queryModel.schemaQuery]

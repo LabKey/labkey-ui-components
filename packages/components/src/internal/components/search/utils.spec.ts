@@ -541,7 +541,7 @@ const card = {
 
 const cardJSON =
     '{"filters":[{"entityDataType":{"typeListingSchemaQuery":{"schemaName":"TestListing","queryName":"query"},"listingSchemaQuery":{"schemaName":"Test","queryName":"query"},' +
-    '"instanceSchemaName":"TestSchema","operationConfirmationActionName":"test-delete-confirmation.api",' +
+    '"instanceSchemaName":"TestSchema","operationConfirmationControllerName":"controller","operationConfirmationActionName":"test-delete-confirmation.api",' +
     '"nounSingular":"test","nounPlural":"tests","nounAsParentSingular":"test Parent",' +
     '"nounAsParentPlural":"test Parents","typeNounSingular":"Test Type","typeNounAsParentSingular":"Test Parent Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name",' +
     '"dependencyText":"test data dependencies","deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","ancestorColumnName":"Ancestors/Samples","inputTypeValueField":"lsid",' +
@@ -558,7 +558,7 @@ const cardWithEntityTypeFilter = {
 
 const cardWithEntityTypeFilterJSON =
     '{"filters":[{"entityDataType":{"typeListingSchemaQuery":{"schemaName":"TestListing","queryName":"query"},"listingSchemaQuery":{"schemaName":"Test","queryName":"query"},' +
-    '"instanceSchemaName":"TestSchema","operationConfirmationActionName":"test-delete-confirmation.api",' +
+    '"instanceSchemaName":"TestSchema","operationConfirmationControllerName":"controller","operationConfirmationActionName":"test-delete-confirmation.api",' +
     '"nounSingular":"test","nounPlural":"tests","nounAsParentSingular":"test Parent","nounAsParentPlural":"test Parents",' +
     '"typeNounSingular":"Test Type","typeNounAsParentSingular":"Test Parent Type","descriptionSingular":"parent test type","descriptionPlural":"parent test types","uniqueFieldKey":"Name","dependencyText":"test data dependencies",' +
     '"deleteHelpLinkTopic":"viewSampleSets#delete","inputColumnName":"Inputs/Materials/First","ancestorColumnName":"Ancestors/Samples","inputTypeValueField":"lsid","insertColumnNamePrefix":"MaterialInputs/","editTypeAppUrlPrefix":"Test",' +

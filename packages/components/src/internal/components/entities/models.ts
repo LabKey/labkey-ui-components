@@ -571,7 +571,7 @@ export interface IEntityTypeDetails extends IEntityDetails {
  *     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
  */
 export interface EntityDataType {
-    ancestorColumnName: string;
+    ancestorColumnName?: string;
     appUrlPrefixParts?: string[];
     containerFilter?: Query.ContainerFilter;
     deleteHelpLinkTopic: string;
@@ -582,11 +582,11 @@ export interface EntityDataType {
     exprColumnsWithSubSelect?: string[];
     filterArray?: Filter.IFilter[];
     filterCardHeaderClass?: string;
-    importFileAction: string;
+    importFileAction?: string;
     importFileController?: string;
-    inputColumnName: string;
-    inputTypeValueField: string;
-    insertColumnNamePrefix: string;
+    inputColumnName?: string;
+    inputTypeValueField?: string;
+    insertColumnNamePrefix?: string;
     instanceSchemaName: string;
     isFromSharedContainer?: boolean;
     listingSchemaQuery: SchemaQuery;
@@ -594,6 +594,7 @@ export interface EntityDataType {
     nounAsParentSingular: string;
     nounPlural: string;
     nounSingular: string;
+    operationConfirmationControllerName: string;
     operationConfirmationActionName: string;
     typeListingSchemaQuery: SchemaQuery;
     typeNounAsParentSingular: string;

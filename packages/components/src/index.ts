@@ -29,6 +29,7 @@ import {
     getAssayImportNotificationMsg,
     getServerFilePreview,
     inferDomainFromFile,
+    getAssayRunDeleteMessage,
 } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
@@ -386,7 +387,6 @@ import {
     allowReimportAssayRun,
     clearAssayDefinitionCache,
     deleteAssayDesign,
-    deleteAssayRuns,
     fetchAllAssays,
     GENERAL_ASSAY_PROVIDER_NAME,
     importAssayRun,
@@ -454,11 +454,13 @@ import {
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getSampleOperationConfirmationData,
+    getOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
     DataClassDataType,
     ParentEntityRequiredColumns,
     SampleTypeDataType,
+    AssayRunDataType,
 } from './internal/components/entities/constants';
 import { createEntityParentKey, getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
@@ -619,7 +621,7 @@ import {
     hasModule,
     hasPremiumModule,
     isBiologicsEnabled,
-    isELNEnabledInLKSM,
+    isELNEnabled,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
     isProjectContainer,
@@ -732,7 +734,7 @@ const App = {
     CloseEventCode,
     getCurrentAppProperties,
     registerWebSocketListeners,
-    isELNEnabledInLKSM,
+    isELNEnabled,
     isFreezerManagementEnabled,
     isRequestsEnabled,
     isSampleManagerEnabled,
@@ -1045,6 +1047,7 @@ export {
     getDeleteSharedSampleTypeUrl,
     SampleTypeDataType,
     DataClassDataType,
+    AssayRunDataType,
     ParentEntityRequiredColumns,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
@@ -1095,6 +1098,7 @@ export {
     getSampleOperationConfirmationData,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
+    getOperationConfirmationData,
     createEntityParentKey,
     getUniqueIdColumnMetadata,
     // search related items
@@ -1138,7 +1142,6 @@ export {
     AssayReimportRunButton,
     importAssayRun,
     deleteAssayDesign,
-    deleteAssayRuns,
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
@@ -1230,6 +1233,7 @@ export {
     DOMAIN_RANGE_VALIDATOR,
     DomainDetails,
     inferDomainFromFile,
+    getAssayRunDeleteMessage,
     getServerFilePreview,
     InferDomainResponse,
     BasePropertiesPanel,

@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 46025: Don't show "Source Events" as audit query for LKB
 * Issue 46030: Don't reference "source types" in LKB aliquoting grid
 * Issue 46026: Make chevron in expandable container also clickable
+* Issue 46027: Don't show storage and lineage tabs when editing media data
 
 ### version 2.205.0
 *Released*: 11 August 2022

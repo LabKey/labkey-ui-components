@@ -269,14 +269,16 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         initAliquotMode: activeActiveAliquotMode,
     };
 
+    const isMedia = activeModel.queryInfo?.isMedia;
+
     return (
         <>
             {isEditing || selectionData ? (
                 <SamplesEditableGrid
                     {...(samplesEditableGridProps as SamplesEditableGridProps)}
                     determineSampleData={user.canUpdate}
-                    determineLineage={user.canUpdate}
-                    determineStorage={userCanEditStorageData(user)}
+                    determineLineage={user.canUpdate && !isMedia}
+                    determineStorage={userCanEditStorageData(user) && !isMedia}
                     displayQueryModel={activeModel}
                     editableGridUpdateData={editableGridUpdateData}
                     onGridEditCancel={resetState}

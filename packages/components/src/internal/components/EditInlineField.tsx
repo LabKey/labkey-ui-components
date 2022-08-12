@@ -20,6 +20,7 @@ interface Props {
     name: string;
     onChange?: (name: string, newValue: any) => void;
     placeholder?: string;
+    tooltip?: string; // only shown when component has a label and is allowEdit
     type: string;
     useJsonDateFormat?: boolean;
     value: any; // could be a primitive value or a RowValue (from internal/query/selectRows)
@@ -39,12 +40,14 @@ export const EditInlineField: FC<Props> = memo(props => {
         value,
         column,
         useJsonDateFormat,
+        tooltip,
     } = props;
     const { container } = useServerContext();
     const dateFormat = getDateFormat(container);
     const isDate = type === 'date';
     const isTextArea = type === 'textarea';
     const isText = !isDate && !isTextArea;
+    const inputType = type === 'int' || type === 'float' ? 'number' : 'text';
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
     const [dateValue, setDateValue] = useState<Date>(isDate && _value ? new Date(_value) : undefined);
@@ -195,8 +198,8 @@ export const EditInlineField: FC<Props> = memo(props => {
                         name={name}
                         placeholder={placeholder}
                         ref={inputRef}
-                        type="text"
-                        size={Math.max(_value?.length, 20)}
+                        type={inputType}
+                        size={Math.max(_value?.length ?? 0, 20)}
                         onInput={onInputChange}
                     />
                 </span>
@@ -204,7 +207,11 @@ export const EditInlineField: FC<Props> = memo(props => {
             {!state.editing && (
                 <>
                     {label && (
-                        <span className="edit-inline-field__label" unselectable="on">
+                        <span
+                            className="edit-inline-field__label"
+                            unselectable="on"
+                            title={allowEdit ? tooltip : undefined}
+                        >
                             {label}:
                         </span>
                     )}

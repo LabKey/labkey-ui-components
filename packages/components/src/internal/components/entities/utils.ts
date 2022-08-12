@@ -227,3 +227,7 @@ export function getUpdatedLineageRowsForBulkEdit(
 export function isSampleEntity(dataType: EntityDataType) {
     return dataType.instanceSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA;
 }
+
+export function isDataClassEntity(dataType: EntityDataType) {
+    return dataType.instanceSchemaName === SCHEMAS.DATA_CLASSES.SCHEMA;
+}

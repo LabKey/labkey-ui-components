@@ -424,6 +424,7 @@ export const TestTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SchemaQuery.create('TestListing', 'query'),
     listingSchemaQuery: SchemaQuery.create('Test', 'query'),
     instanceSchemaName: 'TestSchema',
+    operationConfirmationControllerName: 'controller',
     operationConfirmationActionName: 'test-delete-confirmation.api',
     nounSingular: 'test',
     nounPlural: 'tests',

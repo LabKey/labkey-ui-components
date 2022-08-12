@@ -17,7 +17,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
-import { SampleTypeDataType } from './constants';
+import { AssayRunDataType, SampleTypeDataType } from './constants';
 import { OperationConfirmationData } from './models';
 
 describe('<EntityDeleteConfirmModal/>', () => {
@@ -205,6 +205,98 @@ describe('<EntityDeleteConfirmModal/>', () => {
         expect(wrapper.find('.modal-title').text()).toBe('Cannot Delete Sample');
         expect(
             wrapper.find('.modal-body').text().indexOf("The sample you've selected cannot be deleted")
+        ).toBeGreaterThan(-1);
+    });
+
+    test('ELN enabled', () => {
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'labbook'] } };
+        const component = (
+            <EntityDeleteConfirmModalDisplay
+                confirmationData={
+                    new OperationConfirmationData({
+                        allowed: [],
+                        notAllowed: [
+                            {
+                                Name: 'D-2.3.1',
+                                RowId: 351,
+                            },
+                        ],
+                    })
+                }
+                onCancel={jest.fn()}
+                onConfirm={jest.fn()}
+                entityDataType={SampleTypeDataType}
+            />
+        );
+        const wrapper = mount(component);
+        expect(wrapper.find('.modal-title').text()).toBe('Cannot Delete Sample');
+        expect(
+            wrapper.find('.modal-body').text().indexOf("The sample you've selected cannot be deleted")
+        ).toBeGreaterThan(-1);
+        expect(
+            wrapper.find('.modal-body').text().indexOf("references in one or more active notebooks")
+        ).toBeGreaterThan(-1);
+    });
+
+    test('Adding deletion description, cannot delete', () => {
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'labbook'] } };
+        const component = (
+            <EntityDeleteConfirmModalDisplay
+                confirmationData={
+                    new OperationConfirmationData({
+                        allowed: [],
+                        notAllowed: [351, 451],
+                    })
+                }
+                onCancel={jest.fn()}
+                onConfirm={jest.fn()}
+                entityDataType={AssayRunDataType}
+                getDeletionDescription={(numToDelete) => {return `Added description for ${numToDelete} runs.`;}}
+            />
+        );
+        const wrapper = mount(component);
+        expect(wrapper.find('.modal-title').text()).toBe('No Runs Can Be Deleted');
+        const body = wrapper.find('.modal-body');
+        expect(
+            body.text().indexOf("Neither of the 2 runs you've selected can be deleted")
+        ).toBeGreaterThan(-1);
+        expect(
+            body.text().indexOf("references in one or more active notebooks")
+        ).toBeGreaterThan(-1);
+        // added description not added if nothing can be deleted
+        expect(
+            body.text().indexOf("Added description for 2 runs.")
+        ).toBe(-1);
+    });
+
+    test('Adding deletion description, can delete', () => {
+        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'labbook'] } };
+        const component = (
+            <EntityDeleteConfirmModalDisplay
+                confirmationData={
+                    new OperationConfirmationData({
+                        allowed: [251],
+                        notAllowed: [351, 451],
+                    })
+                }
+                onCancel={jest.fn()}
+                onConfirm={jest.fn()}
+                entityDataType={AssayRunDataType}
+                getDeletionDescription={(numToDelete) => {return `Added description for ${numToDelete} runs.`;}}
+            />
+        );
+        const wrapper = mount(component);
+        expect(wrapper.find('.modal-title').text()).toBe('Permanently Delete 1 Run?');
+        const body = wrapper.find('.modal-body');
+        expect(
+            body.text().indexOf("only 1 can be deleted")
+        ).toBeGreaterThan(-1);
+        expect(
+            body.text().indexOf("references in one or more active notebooks")
+        ).toBeGreaterThan(-1);
+        // added description not added if nothing can be deleted
+        expect(
+            body.text().indexOf("Added description for 1 runs.")
         ).toBeGreaterThan(-1);
     });
 

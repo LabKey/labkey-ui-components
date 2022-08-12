@@ -12,6 +12,7 @@ import { getPipelineLinkMsg, getWorkflowLinkMsg } from '../pipeline/utils';
 import { ASSAYS_KEY } from '../../app/constants';
 
 import { AssayUploadResultModel } from './models';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 export function inferDomainFromFile(
     file: File,
@@ -114,4 +115,19 @@ export function getAssayImportNotificationMsg(
             {!assayDefinition ? getWorkflowLinkMsg(workflowJobId, workflowTaskId) : null}
         </span>
     );
+}
+
+export function getAssayRunDeleteMessage(canDelete: boolean, deleteInfoError: boolean): ReactNode {
+    let deleteMsg;
+    if (canDelete === undefined) {
+        deleteMsg = <LoadingSpinner msg="Loading delete confirmation data..." />;
+    } else if (!canDelete) {
+        deleteMsg = 'This assay run cannot be deleted because ';
+        if (deleteInfoError) {
+            deleteMsg += 'there was a problem loading the delete confirmation data.';
+        } else {
+            deleteMsg += 'it has references in one or more active notebooks.'
+        }
+    }
+    return deleteMsg;
 }

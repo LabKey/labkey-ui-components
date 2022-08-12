@@ -22,7 +22,6 @@ import {
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN,
-    EXPERIMENTAL_SAMPLE_FINDER,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
@@ -185,13 +184,6 @@ export function isSampleStatusEnabled(): boolean {
     return hasModule('SampleManagement');
 }
 
-export function isSampleFinderEnabled(moduleContext?: any): boolean {
-    return (
-        !biologicsIsPrimaryApp(moduleContext) ||
-        (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_SAMPLE_FINDER] === true
-    );
-}
-
 export function getCurrentAppProperties(): AppProperties {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController) return undefined;
@@ -215,7 +207,7 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
     }
 }
 
-export function isELNEnabledInLKSM(moduleContext?: any): boolean {
+export function isELNEnabled(moduleContext?: any): boolean {
     return hasModule('LabBook', moduleContext);
 }
 
@@ -477,7 +469,7 @@ export function getMenuSectionConfigs(
             [PICKLIST_KEY]: getPicklistsSectionConfig(appBase),
         });
 
-        if (userCanReadNotebooks(user) && isELNEnabledInLKSM(moduleContext)) {
+        if (userCanReadNotebooks(user) && isELNEnabled(moduleContext)) {
             configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
         }
         sectionConfigs = sectionConfigs.push(configs);

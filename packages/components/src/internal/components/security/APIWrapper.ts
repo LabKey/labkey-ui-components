@@ -13,7 +13,6 @@ import {
     addGroupMembers,
 } from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
-import { naturalSortByProperty } from '../../..';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 
@@ -57,11 +56,9 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
 }
 
 function recurseContainerHierarchy(data: Security.ContainerHierarchy, container: Container): Container[] {
-    return (
-        data.children
-            .reduce((containers, c) => containers.concat(recurseContainerHierarchy(c, new Container(c))), [container])
-            // Issue 45805: sort folders by title as server-side sorting is insufficient
-            .sort(naturalSortByProperty('title'))
+    return data.children.reduce(
+        (containers, c) => containers.concat(recurseContainerHierarchy(c, new Container(c))),
+        [container]
     );
 }
 

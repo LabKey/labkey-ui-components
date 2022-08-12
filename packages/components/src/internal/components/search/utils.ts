@@ -31,6 +31,7 @@ import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSes
 import { SearchScope } from './constants';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
+export const FIND_SAMPLE_BY_ID_METRIC_AREA = "findSamplesById";
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[], enabledEntityTypes: string[]): string {
     const hintText = 'Start by adding ';
@@ -874,4 +875,12 @@ export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): Se
         default:
             return SearchScope.FolderAndSubfolders;
     }
+}
+
+export function sampleTypesEqual(a: string[], b: string[]) : boolean {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+
+    return a.sort().join(";") === b.sort().join(";");
 }

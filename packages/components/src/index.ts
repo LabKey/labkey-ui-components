@@ -287,6 +287,7 @@ import { EntityLineageEditMenuItem } from './internal/components/entities/Entity
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
 import { GenerateEntityResponse, OperationConfirmationData } from './internal/components/entities/models';
+import { FindSamplesByIdsTabbedGridPanel } from './internal/components/search/FindSamplesByIdsTabbedGridPanel';
 import { SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
@@ -1102,6 +1103,7 @@ export {
     createEntityParentKey,
     getUniqueIdColumnMetadata,
     // search related items
+    FindSamplesByIdsTabbedGridPanel,
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,

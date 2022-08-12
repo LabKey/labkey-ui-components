@@ -3,6 +3,7 @@ import { Ajax, Query, Utils } from '@labkey/api';
 
 import {
     buildURL,
+    caseInsensitive,
     DataViewInfoTypes,
     IDataViewInfo,
     incrementClientSideMetricCount,
@@ -10,6 +11,7 @@ import {
     QueryModel,
     resolveErrorMessage,
     SchemaQuery,
+    selectRows,
     URLResolver,
 } from '../../..';
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
@@ -283,5 +285,29 @@ export function loadFinderSearch(view: FinderReport): Promise<any> {
             }),
             failure: Utils.getCallbackWrapper(json => reject(json), null, false),
         });
+    });
+}
+
+export function getSampleTypesFromFindByIdQuery(schemaQuery: SchemaQuery): Promise<{ [key: string]: number[] }> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaQuery: schemaQuery
+        }).then(response => {
+            const sampleTypesRows = {};
+            if (response.rows) {
+                response.rows.forEach(row => {
+                    const sampleType = caseInsensitive(row, 'SampleSet')?.displayValue;
+                    const sampleRowId = caseInsensitive(row, 'RowId')?.value;
+                    if (!sampleTypesRows[sampleType])
+                        sampleTypesRows[sampleType] = [];
+                    sampleTypesRows[sampleType].push(sampleRowId);
+                });
+                resolve(sampleTypesRows);
+            }
+        })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            })
     });
 }

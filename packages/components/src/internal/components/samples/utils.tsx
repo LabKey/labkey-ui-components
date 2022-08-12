@@ -6,6 +6,7 @@ import { User } from '../base/models/User';
 import {
     AppURL,
     caseInsensitive,
+    createProductUrlFromParts,
     downloadAttachment,
     getQueryDetails,
     getSampleTypeDetails,
@@ -23,15 +24,14 @@ import {
 } from '../../..';
 
 import {
-    biologicsIsPrimaryApp,
     isELNEnabled,
     isFreezerManagementEnabled,
-    isSampleStatusEnabled
+    isSampleStatusEnabled,
 } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
-import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
+import { SAMPLES_KEY } from '../../app/constants';
 
 import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
 
@@ -73,10 +73,9 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
         } else {
             deleteMsg += 'it has either derived sample, job, or assay data dependencies, ';
             if (isELNEnabled()) {
-                deleteMsg += 'status that prevents deletion, or references in one or more active notebooks'
-            }
-            else {
-                deleteMsg += 'or status that prevents deletion'
+                deleteMsg += 'status that prevents deletion, or references in one or more active notebooks';
+            } else {
+                deleteMsg += 'or status that prevents deletion';
             }
             deleteMsg += '. Check the Lineage, Assays, and Jobs tabs for this sample to get more information.';
         }
@@ -286,19 +285,30 @@ export const getSampleTypeTemplateUrl = (
  * Provides sample wizard URL for this application.
  * @param targetSampleSet - Intended sample type of newly created samples.
  * @param parent - Intended parent of derived samples. Format SCHEMA:QUERY:ID
+ * @param selectionKey
+ * @param currentProductId
+ * @param targetProductId
  */
-export function getSampleWizardURL(targetSampleSet?: string, parent?: string): AppURL {
-    let url = NEW_SAMPLES_HREF;
+export function getSampleWizardURL(
+    targetSampleSet?: string,
+    parent?: string,
+    selectionKey?: string,
+    currentProductId?: string,
+    targetProductId?: string
+): string | AppURL {
+    const params = {};
 
     if (targetSampleSet) {
-        url = url.addParam('target', targetSampleSet);
+        params['target'] = targetSampleSet;
     }
 
     if (parent) {
-        url = url.addParam('parent', parent);
+        params['parent'] = parent;
     }
 
-    return url;
+    if (selectionKey) params['selectionKey'] = selectionKey;
+
+    return createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
 }
 
 export const downloadSampleTypeTemplate = (

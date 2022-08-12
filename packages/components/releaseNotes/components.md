@@ -8,6 +8,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 46026: Make chevron in expandable container also clickable
 * Issue 46027: Don't show storage and lineage tabs when editing media data
 
+### version 2.206.0
+*Released*: 11 August 2022
+* Multi-tab grids for Storage grids
+    * Support getGridPanelDisplay for TabbedGridPanel
+    * Move CreateSamplesSubMenu and SamplesDeriveButtonBase here from LKSM
+    * Modify SamplesAddButton to support productId
+
 ### version 2.205.0
 *Released*: 11 August 2022
 * Restrict deletions of entities, including assay runs referenced in ELNs

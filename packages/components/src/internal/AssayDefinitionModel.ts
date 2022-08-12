@@ -1,7 +1,7 @@
 import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { AppURL, QueryColumn, SchemaQuery, SCHEMAS, WHERE_FILTER_TYPE } from '..';
+import { AppURL, createProductUrlFromParts, QueryColumn, SchemaQuery, SCHEMAS, WHERE_FILTER_TYPE } from '..';
 
 import { AssayUploadTabs } from './constants';
 
@@ -103,26 +103,43 @@ export class AssayDefinitionModel extends Record({
         dataTab?: AssayUploadTabs,
         selectionKey?: string,
         filterList?: List<Filter.IFilter>,
-        isPicklist?: boolean
-    ) {
-        let url;
+        isPicklist?: boolean,
+        currentProductId?: string,
+        targetProductId?: string,
+        ignoreFilter?: boolean
+    ): string {
+        let url,
+            params = {};
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
         if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
-            url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
-            if (dataTab) url = url.addParam('dataTab', dataTab);
-            if (filterList && !filterList.isEmpty()) {
-                filterList.forEach(filter => {
-                    // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it here
-                    // CONSIDER:  Applications might want to be able to register their own filter types
-                    const urlSuffix = filter.getFilterType().getURLSuffix();
-                    if (!urlSuffix || Filter.getFilterTypeForURLSuffix(urlSuffix)) {
-                        url = url.addParam(filter.getURLParameterName(), filter.getURLParameterValue());
-                    }
-                });
+            params['rowId'] = this.id;
+            if (dataTab) params['dataTab'] = dataTab;
+            if (!ignoreFilter) {
+                if (filterList && !filterList.isEmpty()) {
+                    filterList.forEach(filter => {
+                        // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it here
+                        // CONSIDER:  Applications might want to be able to register their own filter types
+                        const urlSuffix = filter.getFilterType().getURLSuffix();
+                        if (!urlSuffix || Filter.getFilterTypeForURLSuffix(urlSuffix)) {
+                            params[filter.getURLParameterName()] = filter.getURLParameterValue();
+                        }
+                    });
+                }
             }
-            if (selectionKey) url = url.addParam('selectionKey', selectionKey);
-            if (isPicklist) url = url.addParam('isPicklist', true);
-            url = url.toHref();
+            if (selectionKey) params['selectionKey'] = selectionKey;
+            if (isPicklist) params['isPicklist'] = true;
+            url = createProductUrlFromParts(
+                targetProductId,
+                currentProductId,
+                params,
+                'assays',
+                this.type,
+                this.name,
+                'upload'
+            );
+            if (url instanceof AppURL) {
+                url = url.toHref();
+            }
         } else {
             url = this.links.get(AssayLink.IMPORT);
         }

@@ -193,13 +193,18 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
     initLineageEditableGrid = async (): Promise<void> => {
         const { determineLineage, parentDataTypes } = this.props;
-        if (determineLineage) {
+        if (determineLineage && this.hasParentDataTypes()) {
             const { originalParents, parentTypeOptions } = await getOriginalParentsFromLineage(
                 this.props.sampleLineage,
                 parentDataTypes.toArray()
             );
             this.setState(() => ({ originalParents, parentTypeOptions }));
         }
+    };
+
+    hasParentDataTypes = (): boolean => {
+        const { parentDataTypes } = this.props;
+        return parentDataTypes?.size > 0;
     };
 
     updateAllTabRows = (updateDataRows: any[], skipConfirmDiscard?: boolean): Promise<any> => {
@@ -485,7 +490,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         } = this.state;
         const allAliquots = this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
 
-        if (determineLineage && !originalParents) return <LoadingSpinner />;
+        if (determineLineage && this.hasParentDataTypes() && !originalParents) return <LoadingSpinner />;
 
         const loaders = [];
         if (determineSampleData) {
@@ -536,7 +541,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             );
         }
 
-        if (determineLineage) {
+        if (determineLineage && this.hasParentDataTypes()) {
             const { queryInfoColumns, updateColumns } = getLineageEditorUpdateColumns(
                 displayQueryModel,
                 originalParents

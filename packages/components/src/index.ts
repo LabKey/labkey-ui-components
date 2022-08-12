@@ -330,6 +330,8 @@ import { SamplesEditButton } from './internal/components/samples/SamplesEditButt
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
+import { CreateSamplesSubMenu } from './internal/components/samples/CreateSamplesSubMenu';
+import { SamplesDeriveButtonBase } from './internal/components/samples/SamplesDeriveButtonBase';
 import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSamplesSubMenuBase';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
@@ -1062,6 +1064,8 @@ export {
     SampleDetailEditing,
     SampleCreationTypeModal,
     CreateSamplesSubMenuBase,
+    CreateSamplesSubMenu,
+    SamplesDeriveButtonBase,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
     GridAliquotViewSelector,

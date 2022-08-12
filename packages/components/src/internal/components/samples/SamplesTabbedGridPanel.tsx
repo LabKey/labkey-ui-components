@@ -47,6 +47,7 @@ interface Props extends InjectedQueryModels {
     // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     modelId?: string;
     onPrintLabel?: () => void;
+    onSampleTabSelect?: (modelId: string) => void;
     sampleAliquotType?: ALIQUOT_FILTER_MODE;
     // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
@@ -76,6 +77,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         gridButtonProps,
         getSampleAuditBehaviorType,
         getIsDirty,
+        onSampleTabSelect,
         setIsDirty,
         tabbedGridPanelProps,
         withTitle,
@@ -89,9 +91,12 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const [activeTabId, setActiveTabId] = useState<string>(initialTabId ?? tabs[0]);
     const onTabSelect = useCallback((tab: string) => {
         setActiveTabId(tab);
+        onSampleTabSelect?.(tab);
     }, []);
     const activeModel = useMemo(() => queryModels[activeTabId], [activeTabId, queryModels]);
-    const { hasSelections, selections } = activeModel;
+    const hasSelections = activeModel?.hasSelections;
+    const selections = activeModel?.selections;
+    const activeModelId = useMemo(() => activeModel?.id, [activeModel]);
     const selection = useMemo(() => List(Array.from(selections ?? [])), [selections]);
     const hasValidMaxSelection = useMemo(() => {
         const selSize = selections?.size ?? 0;
@@ -166,11 +171,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             setShowBulkUpdate(false);
             setSelectionData(submitForEdit ? data : undefined);
             if (!submitForEdit) {
-                actions.loadModel(activeModel.id, true);
+                actions.loadModel(activeModelId, true);
                 afterSampleActionComplete?.();
             }
         },
-        [actions, activeModel.id, afterSampleActionComplete]
+        [actions, activeModelId, afterSampleActionComplete]
     );
 
     const resetState = useCallback(() => {
@@ -178,7 +183,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         setSelectionData(undefined);
         setIsEditing(false);
         setShowBulkUpdate(false);
-        setIsDirty(false);
+        setIsDirty?.(false);
     }, []);
 
     const toggleEditWithGridUpdate = useCallback(() => {
@@ -198,11 +203,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const _afterSampleActionComplete = useCallback(
         (hasDelete?: boolean) => {
             dismissNotifications();
-            actions.loadModel(activeModel.id, true);
+            actions.loadModel(activeModelId, true);
             afterSampleActionComplete?.(hasDelete);
             resetState();
         },
-        [actions, activeModel.id, afterSampleActionComplete, resetState]
+        [actions, activeModelId, afterSampleActionComplete, resetState]
     );
 
     const afterSampleDelete = useCallback(
@@ -213,11 +218,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     ids.push(row['RowId']);
                 });
             }
-            actions.replaceSelections(activeModel.id, ids);
+            actions.replaceSelections(activeModelId, ids);
 
             _afterSampleActionComplete(true);
         },
-        [actions, activeModel, _afterSampleActionComplete]
+        [actions, activeModelId, _afterSampleActionComplete]
     );
 
     const onUpdateRows = useCallback(

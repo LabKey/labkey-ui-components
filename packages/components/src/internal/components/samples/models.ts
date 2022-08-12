@@ -177,6 +177,7 @@ export interface SampleGridButtonProps {
     createBtnParentKey?: string;
     createBtnParentType?: string;
     excludedMenuKeys?: SamplesEditButtonSections[];
+    includesMedia?: boolean;
     initAliquotMode?: ALIQUOT_FILTER_MODE;
     metricFeatureArea?: string;
     navigate?: (url: string | AppURL) => void;

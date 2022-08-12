@@ -120,6 +120,7 @@ export function resolveDetailEditRenderer(
                         maxRows={10}
                         multiple={multiple}
                         name={col.name}
+                        autoFocus={options?.autoFocus}
                         onBlur={options?.onBlur}
                         placeholder={options?.placeholder ?? 'Select or type to search...'}
                         previewOptions={col.previewOptions}
@@ -140,6 +141,7 @@ export function resolveDetailEditRenderer(
                     inputClass="col-sm-12"
                     queryColumn={col}
                     value={value}
+                    autoFocus={options?.autoFocus}
                     onBlur={options?.onBlur}
                     placeholder={options?.placeholder ?? 'Select or type to search...'}
                     showLabel={!options?.hideLabel}

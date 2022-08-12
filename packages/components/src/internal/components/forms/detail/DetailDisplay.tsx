@@ -25,6 +25,7 @@ export interface RenderOptions {
 }
 
 export interface EditRendererOptions extends RenderOptions {
+    autoFocus?: boolean;
     hideLabel?: boolean;
     onBlur?: () => void;
     placeholder?: string;

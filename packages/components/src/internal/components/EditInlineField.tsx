@@ -181,7 +181,7 @@ export const EditInlineField: FC<Props> = memo(props => {
             )}
             {state.editing && column && !isDate && (
                 <Formsy className="form-horizontal" onChange={onFormsyColumnChange}>
-                    {resolveDetailEditRenderer(column, { hideLabel: true, onBlur, placeholder })(value)}
+                    {resolveDetailEditRenderer(column, { hideLabel: true, autoFocus: true, onBlur, placeholder })(value)}
                 </Formsy>
             )}
             {state.editing && !column && isText && (

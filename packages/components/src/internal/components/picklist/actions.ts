@@ -442,7 +442,7 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
     if (loadSampleTypes) {
         const listSampleTypeData = await selectRowsDeprecated({
             schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
-            sql: `SELECT DISTINCT SampleID.SampleSet FROM "${picklist.name}" WHERE SampleID.SampleSet IS NOT NULL`,
+            sql: `SELECT DISTINCT SampleID.SampleSet, SampleID.SampleSet.Category FROM "${picklist.name}" WHERE SampleID.SampleSet IS NOT NULL`,
         });
 
         picklist = picklist.mutate({
@@ -450,6 +450,11 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
                 .map(row => caseInsensitive(row, 'SampleSet')?.displayValue)
                 .filter(value => !!value),
         });
+        picklist = picklist.mutate({
+            hasMedia: !!Object.values(listSampleTypeData.models[listSampleTypeData.key])
+                .find(row => caseInsensitive(row, 'Category')?.value === 'media')
+        });
+
     }
 
     return picklist;

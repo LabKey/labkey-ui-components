@@ -22,6 +22,7 @@ export class Picklist {
     readonly Description: string;
     readonly ItemCount: number;
     readonly sampleTypes?: string[];
+    readonly hasMedia?: boolean;
 
     static create(data: any) {
         return new Picklist({

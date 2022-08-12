@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * EditInlineField to support QueryColumn and use resolveDetailEditRenderer()
   * DomainForm addition of schemaName/queryName props to be used for text choice distinct value query
 
+### version 2.206.1
+*Released*: 12 August 2022
+* Add customize view modal DOM element attribute for "data-fieldkey" to help test locators
+
 ### version 2.206.0
 *Released*: 11 August 2022
 * Multi-tab grids for Storage grids

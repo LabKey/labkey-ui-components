@@ -1,46 +1,60 @@
-import React, {ComponentType, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState} from 'react';
-
+import React, { ComponentType, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { WithRouterProps } from 'react-router';
 
-import {FIND_BY_IDS_QUERY_PARAM, SAMPLE_DATA_EXPORT_CONFIG, SAMPLE_STATUS_REQUIRED_COLUMNS} from "../samples/constants";
-import {FindSamplesByIdHeaderPanel} from "../samples/FindSamplesByIdHeaderPanel";
-import {getFindSamplesByIdData} from "../samples/actions";
-import {getLocation, pushParameter, replaceParameter, resetParameters} from "../../util/URL";
-import {createGridModelId} from "../../models";
+import { AuditBehaviorTypes, Filter } from '@labkey/api';
+
+import {
+    FIND_BY_IDS_QUERY_PARAM,
+    SAMPLE_DATA_EXPORT_CONFIG,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
+} from '../samples/constants';
+import { FindSamplesByIdHeaderPanel } from '../samples/FindSamplesByIdHeaderPanel';
+import { getFindSamplesByIdData } from '../samples/actions';
+import { getLocation, pushParameter, replaceParameter, resetParameters } from '../../util/URL';
+import { createGridModelId } from '../../models';
 import {
     InjectedQueryModels,
     RequiresModelAndActions,
     withQueryModels,
-} from "../../../public/QueryModel/withQueryModels";
-import {LoadingState} from "../../../public/LoadingState";
-import {Page} from "../base/Page";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {QuerySort} from "../../../public/QuerySort";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {SCHEMAS} from "../../schemas";
-import {SampleGridButtonProps} from "../samples/models";
-import {SamplesEditableGridProps} from "../samples/SamplesEditableGrid";
-import {User} from "../base/models/User";
-import {AuditBehaviorTypes, Filter} from "@labkey/api";
-import {SamplesTabbedGridPanel} from "../samples/SamplesTabbedGridPanel";
-import {SamplesEditButtonSections} from "../samples/utils";
-import {FIND_SAMPLE_BY_ID_METRIC_AREA, sampleTypesEqual} from "./utils";
-import {getSampleTypesFromFindByIdQuery} from "./actions";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+} from '../../../public/QueryModel/withQueryModels';
+import { LoadingState } from '../../../public/LoadingState';
+import { Page } from '../base/Page';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QuerySort } from '../../../public/QuerySort';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SCHEMAS } from '../../schemas';
+import { SampleGridButtonProps } from '../samples/models';
+import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
+import { User } from '../base/models/User';
+import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
+import { SamplesEditButtonSections } from '../samples/utils';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { FIND_SAMPLE_BY_ID_METRIC_AREA } from './utils';
+import { getSampleTypesFromFindByIdQuery } from './actions';
+import {arrayEquals} from "../../util/utils";
 
-const TYPE_GRID_PREFIX = "find-by-id-";
+const TYPE_GRID_PREFIX = 'find-by-id-';
 
 interface FindSamplesByIdsTabProps extends InjectedQueryModels {
     allSamplesModel: QueryModel;
     getGridPanelDisplay?: (activeGridId: string) => React.ReactNode;
-    sampleGridIds?: string[]
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
+    sampleGridIds?: string[];
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
     user: User;
 }
 
 export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(props => {
-    const { actions, allSamplesModel, sampleGridIds, queryModels, getGridPanelDisplay, gridButtons, user, samplesEditableGridProps } = props;
+    const {
+        actions,
+        allSamplesModel,
+        sampleGridIds,
+        queryModels,
+        getGridPanelDisplay,
+        gridButtons,
+        user,
+        samplesEditableGridProps,
+    } = props;
 
     const afterSampleActionComplete = useCallback((): void => {
         actions.loadAllModels(true);
@@ -48,15 +62,12 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
 
     const getSampleAuditBehaviorType = useCallback(() => AuditBehaviorTypes.DETAILED, []);
 
-    const getAdvancedExportOptions = useCallback(
-        (tabId: string): { [key: string]: any } => {
-            return SAMPLE_DATA_EXPORT_CONFIG;
-        },
-        []
-    );
+    const getAdvancedExportOptions = useCallback((tabId: string): { [key: string]: any } => {
+        return SAMPLE_DATA_EXPORT_CONFIG;
+    }, []);
 
     const allQueryModels = useMemo(() => {
-        let models = {};
+        const models = {};
         models[allSamplesModel.id] = allSamplesModel;
         sampleGridIds.forEach(sampleGridId => {
             models[sampleGridId] = queryModels[sampleGridId];
@@ -86,7 +97,7 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                     exportFilename: 'SamplesFoundById',
                     allowViewCustomization: false,
                     showViewMenu: false,
-                    getGridPanelDisplay: getGridPanelDisplay,
+                    getGridPanelDisplay,
                 }}
                 user={user}
             />
@@ -94,7 +105,7 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
     );
 });
 
-export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = memo((props) => {
+export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = memo(props => {
     const { actions, allSamplesModel } = props;
 
     const [sampleGridIds, setSampleGridIds] = useState<string[]>(undefined);
@@ -102,68 +113,60 @@ export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = mem
     useEffect(() => {
         const gridIds = [];
 
-        getSampleTypesFromFindByIdQuery(allSamplesModel.schemaQuery).then((sampleTypesRows) => {
-            if (sampleTypesRows) {
-                Object.keys(sampleTypesRows).forEach(sampleType => {
-                    const sampleSchemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType);
+        getSampleTypesFromFindByIdQuery(allSamplesModel.schemaQuery)
+            .then(sampleTypesRows => {
+                if (sampleTypesRows) {
+                    Object.keys(sampleTypesRows).forEach(sampleType => {
+                        const sampleSchemaQuery = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType);
 
-                    const sampleGridId = createGridModelId(
-                        TYPE_GRID_PREFIX,
-                        sampleSchemaQuery
-                    );
+                        const sampleGridId = createGridModelId(TYPE_GRID_PREFIX, sampleSchemaQuery);
 
-                    const filter = Filter.create('RowId', sampleTypesRows[sampleType], Filter.Types.IN);
+                        const filter = Filter.create('RowId', sampleTypesRows[sampleType], Filter.Types.IN);
 
-                    if (!sampleGridIds || sampleGridIds.indexOf(sampleGridId) === -1) {
-                        const queryConfig = {
-                            id: sampleGridId,
-                            schemaQuery: sampleSchemaQuery,
-                            baseFilters: [filter],
-                            bindURL: false,
-                            title: sampleType
-                        };
+                        if (!sampleGridIds || sampleGridIds.indexOf(sampleGridId) === -1) {
+                            const queryConfig = {
+                                id: sampleGridId,
+                                schemaQuery: sampleSchemaQuery,
+                                baseFilters: [filter],
+                                bindURL: false,
+                                title: sampleType,
+                            };
 
-                        actions.addModel(queryConfig, true, false);
-                    }
+                            actions.addModel(queryConfig, true, false);
+                        }
 
-                    gridIds.push(sampleGridId);
-                });
-            }
-            if (!sampleTypesEqual(gridIds, sampleGridIds)) {
-                setSampleGridIds(gridIds);
-            }
-
-        }).catch((error) => {
-            console.error("There was a problem retrieving sample types");
-        });
+                        gridIds.push(sampleGridId);
+                    });
+                }
+                if (!arrayEquals(gridIds, sampleGridIds)) {
+                    setSampleGridIds(gridIds);
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem retrieving sample types');
+            });
     }, [sampleGridIds, allSamplesModel.id]);
 
-    if (!sampleGridIds)
-        return <LoadingSpinner/>;
+    if (!sampleGridIds) return <LoadingSpinner />;
 
-    return (
-        <FindSamplesByIdsTabbedGridPanelImpl
-            {...props}
-            sampleGridIds={sampleGridIds}
-        />
-    )
+    return <FindSamplesByIdsTabbedGridPanelImpl {...props} sampleGridIds={sampleGridIds} />;
 });
 
 interface OwnProps {
+    getGridPanelDisplay?: (activeGridId: string) => React.ReactNode;
     gridButtons: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
+    onListModelAdd?: (listModelId: string) => void;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
     user: User;
-    getGridPanelDisplay?: (activeGridId: string) => React.ReactNode;
-    onListModelAdd?: (listModelId: string) => void;
 }
 
 type Props = OwnProps & InjectedQueryModels & WithRouterProps;
 
-const FindSamplesByIdsPageBaseImpl: FC<Props>  = memo(props => {
+const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
     const { queryModels, actions, location, onListModelAdd } = props;
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [error, setError] = useState<ReactNode>(undefined);
-    const [missingIds, setMissingIds] = useState<{[key:string] : string[]}>(undefined);
+    const [missingIds, setMissingIds] = useState<{ [key: string]: string[] }>(undefined);
     const [headerModelId, setHeaderModelId] = useState<string>(undefined);
     const [sampleListModelId, setSampleListModelId] = useState<string>(undefined);
     const [findByIdsKey, setFindByIdsKey] = useState<string>(location.query?.findByIdsKey);
@@ -174,14 +177,11 @@ const FindSamplesByIdsPageBaseImpl: FC<Props>  = memo(props => {
     }, [location.query?.findByIdsKey]);
 
     useEffect(() => {
-        if (!sampleListModelId)
-            return;
+        if (!sampleListModelId) return;
 
         const model = queryModels[sampleListModelId];
-        if (model && !model.isLoading && model.rowCount > 0)
-            actions.selectAllRows(sampleListModelId);
-
-    }, [sampleListModelId, queryModels[sampleListModelId]?.isLoading])
+        if (model && !model.isLoading && model.rowCount > 0) actions.selectAllRows(sampleListModelId);
+    }, [sampleListModelId, queryModels[sampleListModelId]?.isLoading]);
 
     const init = (findByIdsKey: string) => {
         setFindByIdsKey(findByIdsKey);
@@ -191,41 +191,44 @@ const FindSamplesByIdsPageBaseImpl: FC<Props>  = memo(props => {
         }
 
         let listSchemaQuery;
-        getFindSamplesByIdData(findByIdsKey).then(data => {
-            const { queryName, missingIds, ids } = data;
-            setLoadingState(LoadingState.LOADED);
-            setMissingIds(missingIds);
-            setIds(ids);
-            if (queryName) {
-                listSchemaQuery = SchemaQuery.create(SCHEMAS.EXP_TABLES.SCHEMA, queryName);
-                // add model twice, one used for header, one for tabbed grid, so that header doesn't reload when switching tabs
+        getFindSamplesByIdData(findByIdsKey)
+            .then(data => {
+                const { queryName, missingIds, ids } = data;
+                setLoadingState(LoadingState.LOADED);
+                setMissingIds(missingIds);
+                setIds(ids);
+                if (queryName) {
+                    listSchemaQuery = SchemaQuery.create(SCHEMAS.EXP_TABLES.SCHEMA, queryName);
+                    // add model twice, one used for header, one for tabbed grid, so that header doesn't reload when switching tabs
 
-                let listId = createGridModelId('find-samples-by-id', listSchemaQuery)
-                setSampleListModelId(listId);
-                onListModelAdd?.(listId);
+                    const listId = createGridModelId('find-samples-by-id', listSchemaQuery);
+                    setSampleListModelId(listId);
+                    onListModelAdd?.(listId);
 
-                let headerId = createGridModelId('find-samples-by-id-header', listSchemaQuery)
-                setHeaderModelId(headerId);
+                    const headerId = createGridModelId('find-samples-by-id-header', listSchemaQuery);
+                    setHeaderModelId(headerId);
 
-                [listId, headerId].forEach(id => {
-                    actions.addModel({
-                        id: id,
-                        schemaQuery: listSchemaQuery,
-                        requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
-                        sorts: [new QuerySort({ fieldKey: 'Ordinal' })],
-                        title: id === listId ? 'All Samples' : undefined
-                    }, true);
-                })
-
-            }
-
-        }).catch(error => {
-            setError(error);
-            setMissingIds(undefined);
-            setIds(undefined);
-            setFindByIdsKey(undefined);
-            setLoadingState(LoadingState.LOADED);
-        });
+                    [listId, headerId].forEach(id => {
+                        actions.addModel(
+                            {
+                                id,
+                                schemaQuery: listSchemaQuery,
+                                requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
+                                sorts: [new QuerySort({ fieldKey: 'Ordinal' })],
+                                title: id === listId ? 'All Samples' : undefined,
+                            },
+                            true
+                        );
+                    });
+                }
+            })
+            .catch(error => {
+                setError(error);
+                setMissingIds(undefined);
+                setIds(undefined);
+                setFindByIdsKey(undefined);
+                setLoadingState(LoadingState.LOADED);
+            });
     };
 
     const onFindSamples = (updatedKey: string) => {
@@ -248,7 +251,7 @@ const FindSamplesByIdsPageBaseImpl: FC<Props>  = memo(props => {
         resetParameters();
     };
 
-    let listModel : QueryModel, headerModel : QueryModel;
+    let listModel: QueryModel, headerModel: QueryModel;
     if (sampleListModelId) {
         listModel = queryModels[sampleListModelId];
     }
@@ -258,7 +261,7 @@ const FindSamplesByIdsPageBaseImpl: FC<Props>  = memo(props => {
     }
 
     return (
-        <Page title={"Find Samples in Bulk"}>
+        <Page title="Find Samples in Bulk">
             <FindSamplesByIdHeaderPanel
                 listModel={headerModel}
                 loadingState={loadingState}
@@ -268,14 +271,9 @@ const FindSamplesByIdsPageBaseImpl: FC<Props>  = memo(props => {
                 ids={ids}
                 error={error}
                 sessionKey={findByIdsKey}
-                workWithSamplesMsg={"Add the selected samples to a new or existing job to continue working with them."}
+                workWithSamplesMsg="Add the selected samples to a new or existing job to continue working with them."
             />
-            {listModel && !error && (
-                <FindSamplesByIdsTabbedGridPanel
-                    {...props}
-                    allSamplesModel={listModel}
-                />
-            )}
+            {listModel && !error && <FindSamplesByIdsTabbedGridPanel {...props} allSamplesModel={listModel} />}
         </Page>
     );
 });

@@ -40,7 +40,7 @@ import {
     parseCsvString,
     parseScientificInt,
     toLowerSafe,
-    unorderedEqual
+    unorderedEqual, arrayEquals
 } from './utils';
 
 const emptyList = List<string>();
@@ -1511,3 +1511,41 @@ describe('quoteValueWithDelimiters', () => {
     })
 })
 
+describe('arrayEquals', () => {
+    test('ignore order, case sensitive', () => {
+        expect(arrayEquals(undefined, undefined)).toBeTruthy();
+        expect(arrayEquals(undefined, null)).toBeTruthy();
+        expect(arrayEquals([], [])).toBeTruthy();
+        expect(arrayEquals(null, [])).toBeFalsy();
+        expect(arrayEquals(['a'], null)).toBeFalsy();
+        expect(arrayEquals(['a'], ['a'])).toBeTruthy();
+        expect(arrayEquals(['a'], ['A'])).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['a'])).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['b', 'a'])).toBeTruthy();
+        expect(arrayEquals(['a', 'b'], ['A', 'b'])).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['B', 'A'])).toBeFalsy();
+    });
+
+    test("ignore order, case insensitive", () => {
+        expect(arrayEquals(['a'], null, true, true)).toBeFalsy();
+        expect(arrayEquals(['a'], ['a'], true, true)).toBeTruthy();
+        expect(arrayEquals(['a'], ['A'], true, true)).toBeTruthy();
+        expect(arrayEquals(['a', 'b'], ['a'], true, true)).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['b', 'a'], true, true)).toBeTruthy();
+        expect(arrayEquals(['a', 'b'], ['A', 'b'], true, true)).toBeTruthy();
+        expect(arrayEquals(['a', 'b'], ['B', 'A'], true, true)).toBeTruthy();
+    });
+
+    test("don't ignore order, case sensitive", () => {
+        expect(arrayEquals(['a'], null, false)).toBeFalsy();
+        expect(arrayEquals(null, [], false)).toBeFalsy();
+        expect(arrayEquals([], [], false)).toBeTruthy();
+        expect(arrayEquals(['a'], ['a'], false)).toBeTruthy();
+        expect(arrayEquals(['a'], ['A'], false)).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['a'], false)).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['a', 'b'], false)).toBeTruthy();
+        expect(arrayEquals(['a', 'b'], ['b', 'a'], false)).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['A', 'b'], false)).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['B', 'A'], false)).toBeFalsy();
+    });
+});

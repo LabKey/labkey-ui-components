@@ -291,23 +291,23 @@ export function loadFinderSearch(view: FinderReport): Promise<any> {
 export function getSampleTypesFromFindByIdQuery(schemaQuery: SchemaQuery): Promise<{ [key: string]: number[] }> {
     return new Promise((resolve, reject) => {
         selectRows({
-            schemaQuery: schemaQuery
-        }).then(response => {
-            const sampleTypesRows = {};
-            if (response.rows) {
-                response.rows.forEach(row => {
-                    const sampleType = caseInsensitive(row, 'SampleSet')?.displayValue;
-                    const sampleRowId = caseInsensitive(row, 'RowId')?.value;
-                    if (!sampleTypesRows[sampleType])
-                        sampleTypesRows[sampleType] = [];
-                    sampleTypesRows[sampleType].push(sampleRowId);
-                });
-                resolve(sampleTypesRows);
-            }
+            schemaQuery,
         })
+            .then(response => {
+                const sampleTypesRows = {};
+                if (response.rows) {
+                    response.rows.forEach(row => {
+                        const sampleType = caseInsensitive(row, 'SampleSet')?.displayValue;
+                        const sampleRowId = caseInsensitive(row, 'RowId')?.value;
+                        if (!sampleTypesRows[sampleType]) sampleTypesRows[sampleType] = [];
+                        sampleTypesRows[sampleType].push(sampleRowId);
+                    });
+                    resolve(sampleTypesRows);
+                }
+            })
             .catch(reason => {
                 console.error(reason);
                 reject(resolveErrorMessage(reason));
-            })
+            });
     });
 }

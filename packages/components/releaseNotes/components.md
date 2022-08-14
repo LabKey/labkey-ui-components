@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX August 2022
+* Multi-tab grids for Find Sample by Ids grids
+  * Added FindSamplesByIdsPageBase
+
+
 ### version 2.206.1
 *Released*: 12 August 2022
 * Add customize view modal DOM element attribute for "data-fieldkey" to help test locators

@@ -782,7 +782,7 @@ export function quoteValueWithDelimiters(value: any, delimiter: string) {
 
 export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseInsensitive?: boolean): boolean {
     if (a === b) return true;
-    if (a== null && b == null) return true;
+    if (a == null && b == null) return true;
     if (a == null || b == null) return false;
     if (a.length !== b.length) return false;
 

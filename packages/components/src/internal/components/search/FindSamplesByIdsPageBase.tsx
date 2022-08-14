@@ -29,9 +29,11 @@ import { User } from '../base/models/User';
 import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SamplesEditButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { arrayEquals } from '../../util/utils';
+
 import { FIND_SAMPLE_BY_ID_METRIC_AREA } from './utils';
 import { getSampleTypesFromFindByIdQuery } from './actions';
-import {arrayEquals} from "../../util/utils";
 
 const TYPE_GRID_PREFIX = 'find-by-id-';
 

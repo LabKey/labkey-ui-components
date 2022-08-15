@@ -97,8 +97,6 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                     alwaysShowTabs: true,
                     getAdvancedExportOptions,
                     exportFilename: 'SamplesFoundById',
-                    allowViewCustomization: false,
-                    showViewMenu: false,
                     getGridPanelDisplay,
                 }}
                 user={user}
@@ -273,7 +271,7 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
                 ids={ids}
                 error={error}
                 sessionKey={findByIdsKey}
-                workWithSamplesMsg="Add the selected samples to a new or existing job to continue working with them."
+                workWithSamplesMsg="Work with the selected samples in the grid now or save them to a picklist for later use."
             />
             {listModel && !error && <FindSamplesByIdsTabbedGridPanel {...props} allSamplesModel={listModel} />}
         </Page>

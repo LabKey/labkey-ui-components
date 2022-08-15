@@ -1,10 +1,11 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import DatePicker from "react-datepicker";
+import DatePicker from 'react-datepicker';
+
+import { QueryColumn } from '../../../../public/QueryColumn';
+import { FieldLabel } from '../FieldLabel';
 
 import { DatePickerInputImpl } from './DatePickerInput';
-import {QueryColumn} from "../../../../public/QueryColumn";
-import {FieldLabel} from "../FieldLabel";
 
 beforeAll(() => {
     LABKEY.container = {
@@ -41,7 +42,9 @@ describe('DatePickerInput', () => {
     });
 
     test('with name and placeholderText props', () => {
-        const wrapper = mount(<DatePickerInputImpl {...DEFAULT_PROPS} name="name" placeholderText="placeholder text" />);
+        const wrapper = mount(
+            <DatePickerInputImpl {...DEFAULT_PROPS} name="name" placeholderText="placeholder text" />
+        );
         validate(wrapper);
         expect(wrapper.find(DatePicker).prop('name')).toBe('name');
         expect(wrapper.find(DatePicker).prop('placeholderText')).toBe('placeholder text');

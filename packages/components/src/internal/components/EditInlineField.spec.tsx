@@ -1,11 +1,14 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
+import { mountWithServerContext } from '../testHelpers';
+
+import { QueryColumn } from '../../public/QueryColumn';
+
 import { EditInlineField } from './EditInlineField';
-import {mountWithServerContext} from "../testHelpers";
-import {DateInput} from "./DateInput";
-import {QueryColumn} from "../../public/QueryColumn";
-import {TextChoiceInput} from "./forms/input/TextChoiceInput";
+import { DateInput } from './DateInput';
+
+import { TextChoiceInput } from './forms/input/TextChoiceInput';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -94,7 +97,10 @@ describe('EditInlineField', () => {
 
     test('with RowValue, formattedValue', () => {
         const wrapper = mountWithServerContext(
-            <EditInlineField {...DEFAULT_PROPS} value={{ value: 1, displayValue: 'Test1', formattedValue: 'Test1.0' }} />,
+            <EditInlineField
+                {...DEFAULT_PROPS}
+                value={{ value: 1, displayValue: 'Test1', formattedValue: 'Test1.0' }}
+            />,
             SERVER_CONTEXT
         );
         validate(wrapper);

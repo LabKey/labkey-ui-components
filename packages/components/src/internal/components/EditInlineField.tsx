@@ -5,9 +5,11 @@ import Formsy from 'formsy-react';
 
 import { getColDateFormat, getDateFormat, getJsonDateTimeFormatString } from '../util/Date';
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
+
+import { QueryColumn } from '../../public/QueryColumn';
+
 import { DateInput } from './DateInput';
 import { useServerContext } from './base/ServerContext';
-import { QueryColumn } from '../../public/QueryColumn';
 import { resolveDetailEditRenderer } from './forms/detail/DetailEditRenderer';
 
 interface Props {
@@ -114,9 +116,12 @@ export const EditInlineField: FC<Props> = memo(props => {
         setDateValue(date);
     }, []);
 
-    const onFormsyColumnChange = useCallback((data: Record<string, any>) => {
-        setColumnBasedValue(data[column.fieldKey]);
-    }, [column]);
+    const onFormsyColumnChange = useCallback(
+        (data: Record<string, any>) => {
+            setColumnBasedValue(data[column.fieldKey]);
+        },
+        [column]
+    );
 
     const onKeyDown = useEnterEscape(saveEdit, onCancel);
 
@@ -184,7 +189,9 @@ export const EditInlineField: FC<Props> = memo(props => {
             )}
             {state.editing && column && !isDate && (
                 <Formsy className="form-horizontal" onChange={onFormsyColumnChange}>
-                    {resolveDetailEditRenderer(column, { hideLabel: true, autoFocus: true, onBlur, placeholder })(value)}
+                    {resolveDetailEditRenderer(column, { hideLabel: true, autoFocus: true, onBlur, placeholder })(
+                        value
+                    )}
                 </Formsy>
             )}
             {state.editing && !column && isText && (
@@ -216,7 +223,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                         </span>
                     )}
                     <span
-                        className={classNames({'edit-inline-field__toggle': allowEdit, 'ws-pre-wrap': isTextArea})}
+                        className={classNames({ 'edit-inline-field__toggle': allowEdit, 'ws-pre-wrap': isTextArea })}
                         onClick={toggleEdit}
                         onKeyDown={toggleKeyDown}
                         tabIndex={1}

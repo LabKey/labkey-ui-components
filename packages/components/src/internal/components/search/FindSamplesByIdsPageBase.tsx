@@ -183,6 +183,22 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
         if (model && !model.isLoading && model.rowCount > 0) actions.selectAllRows(sampleListModelId);
     }, [sampleListModelId, queryModels[sampleListModelId]?.isLoading]);
 
+    const listModel = useMemo(() => {
+        if (sampleListModelId) {
+            return queryModels[sampleListModelId];
+        }
+
+        return undefined;
+    }, [sampleListModelId, queryModels]);
+
+    const headerModel = useMemo(() => {
+        if (headerModelId) {
+            return queryModels[headerModelId];
+        }
+
+        return undefined;
+    }, [headerModelId, queryModels]);
+
     const init = (findByIdsKey: string) => {
         setFindByIdsKey(findByIdsKey);
         if (!findByIdsKey) {
@@ -245,20 +261,12 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
     const onClearSamples = () => {
         actions.replaceSelections(sampleListModelId, []);
         setSampleListModelId(undefined);
+        setHeaderModelId(undefined);
         setMissingIds(undefined);
         setFindByIdsKey(undefined);
         setIds(undefined);
         resetParameters();
     };
-
-    let listModel: QueryModel, headerModel: QueryModel;
-    if (sampleListModelId) {
-        listModel = queryModels[sampleListModelId];
-    }
-
-    if (headerModelId) {
-        headerModel = queryModels[headerModelId];
-    }
 
     return (
         <Page title="Find Samples in Bulk">

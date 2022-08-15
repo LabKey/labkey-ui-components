@@ -69,6 +69,7 @@ exports[`<ExpandableContainer/> default props 1`] = `
     >
       <i
         className="fa fa-chevron-right"
+        onClick={[Function]}
       />
     </div>
     <div

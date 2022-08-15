@@ -705,7 +705,7 @@ exports[`AssayPicker AssayPicker 1`] = `
                                             className="margin-bottom"
                                           >
                                             <b>
-                                              Use Instrument Specific Data Format
+                                              Use Instrument-Specific Data Format
                                             </b>
                                           </div>
                                           <div

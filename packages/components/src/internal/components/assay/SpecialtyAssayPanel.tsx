@@ -53,7 +53,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                     {selected && options?.length > 0 && (
                         <>
                             <div className="margin-bottom">
-                                <b>Use Instrument Specific Data Format</b>
+                                <b>Use Instrument-Specific Data Format</b>
                             </div>
                             <div className="margin-bottom">
                                 <select

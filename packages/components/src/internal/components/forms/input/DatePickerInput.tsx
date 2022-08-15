@@ -59,7 +59,8 @@ interface DatePickerInputState extends DisableableInputState {
     selectedDate: any;
 }
 
-class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePickerInputState> {
+// export for jest testing
+export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePickerInputState> {
     static defaultProps = {
         allowDisable: false,
         initiallyDisabled: false,
@@ -185,7 +186,10 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         return (
             <div className="form-group row">
                 {renderFieldLabel ? (
-                    <label className={labelClassName}>{renderFieldLabel(queryColumn)}</label>
+                    <label className={labelClassName}>
+                        {renderFieldLabel(queryColumn)}
+                        {queryColumn?.required && <span className="required-symbol"> *</span>}
+                    </label>
                 ) : (
                     <FieldLabel
                         label={label}

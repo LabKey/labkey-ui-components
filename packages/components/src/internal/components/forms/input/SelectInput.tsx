@@ -422,7 +422,12 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
                 const description_ = description ?? `Select ${multiple ? 'one or more values for' : 'a'} ${label}`;
 
                 if (renderFieldLabel) {
-                    return <label className={labelClass}>{renderFieldLabel(undefined, label, description_)}</label>;
+                    return (
+                        <label className={labelClass}>
+                            {renderFieldLabel(undefined, label, description_)}
+                            {required && <span className="required-symbol"> *</span>}
+                        </label>
+                    );
                 }
 
                 return (

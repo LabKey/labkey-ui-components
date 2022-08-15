@@ -24,6 +24,13 @@ export interface RenderOptions {
     containerPath?: string;
 }
 
+export interface EditRendererOptions extends RenderOptions {
+    autoFocus?: boolean;
+    hideLabel?: boolean;
+    onBlur?: () => void;
+    placeholder?: string;
+}
+
 export type DetailRenderer = (
     column: QueryColumn,
     options?: RenderOptions,

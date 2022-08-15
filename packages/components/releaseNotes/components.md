@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD August 2022
+### version 2.207.0
+*Released*: 15 August 2022
 * Workflow job creation and update with custom fields
   * EditInlineField updates to support value as RowValue from selectRows response
   * EditInlineField to support QueryColumn and use resolveDetailEditRenderer()

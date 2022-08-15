@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 46026: Make chevron in expandable container also clickable
 * Issue 46027: Don't show storage and lineage tabs when editing media data
 
+### version 2.206.1
+*Released*: 12 August 2022
+* Add customize view modal DOM element attribute for "data-fieldkey" to help test locators
+
 ### version 2.206.0
 *Released*: 11 August 2022
 * Multi-tab grids for Storage grids

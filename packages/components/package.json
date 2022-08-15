@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.206.1-miscTrivialFixes.7",
+  "version": "2.206.2-miscTrivialFixes.8",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

@@ -11,6 +11,7 @@ export interface SelectRowsOptions
 
 export interface RowValue {
     displayValue?: any;
+    formattedValue?: any;
     url?: string;
     value: any;
 }

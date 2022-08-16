@@ -21,6 +21,7 @@ interface Props {
 
 export const GroupDetailsPanel: FC<Props> = memo(props => {
     const {principal, members} = props;
+    console.log("props", props);
 
     const renderUserProp = useCallback((title: string, prop: string) => {
         return (

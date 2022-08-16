@@ -111,6 +111,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const save = useCallback(async () => {
         // Add new groups
         const addedGroups = Object.keys(groupMembership).filter(groupId => !(groupId in savedGroupMembership));
+        console.log("addedGroups", addedGroups);
         const newlyAddedGroupIds = await Promise.all(addedGroups.map(async (groupName) => {
             const createGroupResponse = await api.security.createGroup(groupName, projectPath);
             const newGroupId = createGroupResponse.id;
@@ -125,6 +126,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
         // Delete deleted groups
         const deletedGroups = Object.keys(savedGroupMembership).filter(groupId => !(groupId in groupMembership));
+        console.log("deletedGroups", deletedGroups);
         const deletedGroupIds = await Promise.all(deletedGroups.map(async (groupId) => {
             const createGroupResponse = await api.security.deleteGroup(parseInt(groupId), projectPath);
             return createGroupResponse.deleted;
@@ -134,10 +136,11 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         });
 
         // Add new members
-        Object.keys(groupMembership).map(async groupId => {
-            const currentMembers = groupMembership[groupId].members.map(member => member.id);
+        Object.keys(newGroupMembership).map(async groupId => {
+            const currentMembers = newGroupMembership[groupId].members.map(member => member.id);
             const oldMembers = new Set(savedGroupMembership[groupId]?.members.map(member => member.id));
             const addedMembers = currentMembers.filter(id => !oldMembers.has(id));
+            console.log("addedMembers", addedMembers);
             if (addedMembers.length)
                 await api.security.addGroupMembers(parseInt(groupId), addedMembers, projectPath);
         });
@@ -179,9 +182,20 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         setGroupMembership({...groupMembership, [principalId]: {groupName: group.groupName, members: [...group.members, newMember] }});
     }, [groupMembership]);
 
-    const removeMember = useCallback((userId: number, principalId: string, principalName: string, principalType: string) => {
-
+    const removeMember = useCallback((memberId: number, groupId: string) => {
+        const newGroupMembership = Object.keys(groupMembership).map(gId => {
+            if (gId === groupId) {
+                const group = groupMembership[gId];
+                const newMembers = group.members.filter(member => member.id !== memberId);
+                return {groupName: group.groupName, members: [...newMembers] }
+            } else {
+                return groupMembership[gId];
+            }
+        });
+        setGroupMembership(newGroupMembership);
     }, [groupMembership]);
+
+    console.log("groupMembership", groupMembership);
 
     const usersAndGroups = useMemo(() => {
         return principals.filter(principal => principal.type === 'u' || principal.userId > 0) as List<Principal>; // typing weirdness
@@ -212,6 +226,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                     addGroup={addGroup}
                     deleteGroup={deleteGroup}
                     addUser={addUser}
+                    removeMember={removeMember}
                     save={save}
 
                 />

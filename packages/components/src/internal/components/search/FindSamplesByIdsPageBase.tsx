@@ -34,6 +34,7 @@ import { arrayEquals } from '../../util/utils';
 
 import { FIND_SAMPLE_BY_ID_METRIC_AREA } from './utils';
 import { getSampleTypesFromFindByIdQuery } from './actions';
+import { resolveErrorMessage } from "../../util/messaging";
 
 const TYPE_GRID_PREFIX = 'find-by-id-';
 
@@ -75,7 +76,7 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
             models[sampleGridId] = queryModels[sampleGridId];
         });
         return models;
-    }, [allSamplesModel.id, sampleGridIds, queryModels]);
+    }, [allSamplesModel, sampleGridIds, queryModels]);
 
     return (
         <>
@@ -144,7 +145,7 @@ export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = mem
                 }
             })
             .catch(error => {
-                console.error('There was a problem retrieving sample types');
+                console.error('There was a problem retrieving sample types.');
             });
     }, [sampleGridIds, allSamplesModel.id]);
 
@@ -240,7 +241,7 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
                 }
             })
             .catch(error => {
-                setError(error);
+                setError(resolveErrorMessage(error));
                 setMissingIds(undefined);
                 setIds(undefined);
                 setFindByIdsKey(undefined);
@@ -249,7 +250,7 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
     };
 
     const onFindSamples = (updatedKey: string) => {
-        if (updatedKey != findByIdsKey) {
+        if (updatedKey !== findByIdsKey) {
             if (findByIdsKey) {
                 replaceParameter(getLocation(), FIND_BY_IDS_QUERY_PARAM, updatedKey);
             } else {

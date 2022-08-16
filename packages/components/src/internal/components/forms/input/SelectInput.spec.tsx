@@ -80,7 +80,7 @@ describe('SelectInput', () => {
     function validateFieldLabel(component: any, hasFieldLabel: boolean, labelText?: string): void {
         expect(component.find(FieldLabel)).toHaveLength(hasFieldLabel ? 1 : 0);
         if (labelText !== undefined) {
-            expect(component.find('label').text().startsWith(labelText)).toBeTruthy();
+            expect(component.find('label').text().trim()).toBe(labelText);
         } else {
             expect(component.find('label')).toHaveLength(0);
         }
@@ -95,6 +95,9 @@ describe('SelectInput', () => {
 
         component.setProps({ renderFieldLabel: () => <div>{customLabel}</div> });
         validateFieldLabel(component, false, customLabel);
+
+        component.setProps({ required: true });
+        validateFieldLabel(component, false, customLabel + ' *');
 
         component.setProps({ showLabel: false });
         validateFieldLabel(component, false);

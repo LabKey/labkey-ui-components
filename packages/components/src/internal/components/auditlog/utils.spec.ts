@@ -24,7 +24,7 @@ describe('utils', () => {
             biologics: {},
         };
         auditQueries = getAuditQueries();
-        expect(auditQueries.length).toBe(13);
+        expect(auditQueries.length).toBe(12);
         expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(5);
 
         LABKEY.moduleContext = {};

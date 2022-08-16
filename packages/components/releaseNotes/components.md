@@ -1,6 +1,24 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.207.1
+*Released*: 15 August 2022
+* Issue 46025: Don't show "Source Events" as audit query for LKB
+* Issue 46030: Don't reference "source types" in LKB aliquoting grid
+* Issue 46026: Make chevron in expandable container also clickable
+* Issue 46027: Don't show storage and lineage tabs when editing media data
+
+### version 2.207.0
+*Released*: 15 August 2022
+* Workflow job creation and update with custom fields
+  * EditInlineField updates to support value as RowValue from selectRows response
+  * EditInlineField to support QueryColumn and use resolveDetailEditRenderer()
+  * DomainForm addition of schemaName/queryName props to be used for text choice distinct value query
+
+### version 2.206.1
+*Released*: 12 August 2022
+* Add customize view modal DOM element attribute for "data-fieldkey" to help test locators
+
 ### version 2.206.0
 *Released*: 11 August 2022
 * Multi-tab grids for Storage grids

@@ -97,6 +97,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                 {renderFieldLabel ? (
                     <label className="control-label col-sm-3 text-left col-xs-12">
                         {renderFieldLabel(queryColumn)}
+                        {queryColumn?.required && <span className="required-symbol"> *</span>}
                     </label>
                 ) : (
                     <FieldLabel

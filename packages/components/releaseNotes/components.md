@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Relased*: TBD
+* LKSM Starter edition
+  * Add helper methods for checking if workflow and assay features are enabled
+
 ### version 2.207.1
 *Released*: 15 August 2022
 * Issue 46025: Don't show "Source Events" as audit query for LKB

@@ -90,6 +90,11 @@ export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu'
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
 export const EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN = 'experimental-grid-lock-left-column';
 
+export enum FeatureFlags {
+    Assays = 'Assays',
+    Workflow = 'Workflow',
+}
+
 export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     productId: BIOLOGICS_PRODUCT_ID,
     name: BIOLOGICS_PRODUCT_NAME,
@@ -116,3 +121,4 @@ export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {
     controllerName: FREEZER_MANAGER_CONTROLLER_NAME,
     moduleName: 'inventory',
 };
+

@@ -426,6 +426,7 @@ import { EntityDeleteConfirmModal } from './internal/components/entities/EntityD
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
+import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
@@ -629,6 +630,8 @@ import {
     hasModule,
     hasPremiumModule,
     isBiologicsEnabled,
+    isAssayEnabled,
+    isWorkflowEnabled,
     isELNEnabled,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
@@ -742,6 +745,8 @@ const App = {
     CloseEventCode,
     getCurrentAppProperties,
     registerWebSocketListeners,
+    isAssayEnabled,
+    isWorkflowEnabled,
     isELNEnabled,
     isFreezerManagementEnabled,
     isRequestsEnabled,
@@ -1200,6 +1205,7 @@ export {
     MenuSectionModel,
     MenuItemModel,
     NavigationBar,
+    SEARCH_PLACEHOLDER,
     ProductNavigationMenu,
     FindByIdsModal,
     SubNav,

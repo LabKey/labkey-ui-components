@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Relased*: TBD
 * LKSM Starter edition
   * Add helper methods for checking if workflow and assay features are enabled
+  * Update `getAuditQueries` to return the proper set of queries for the various products
 
 ### version 2.207.1
 *Released*: 15 August 2022

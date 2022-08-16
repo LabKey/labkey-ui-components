@@ -7,9 +7,13 @@ import { Map } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { AppURL } from '../../..';
-import { isBiologicsEnabled, isSampleManagerEnabled } from '../../app/utils';
+import { isBiologicsEnabled, isSampleManagerEnabled, isSampleManagerProfessionalEnabled } from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
-import { COMMON_AUDIT_QUERIES, SAMPLE_MANAGER_AUDIT_QUERIES } from '../samples/constants';
+import {
+    STARTER_AUDIT_QUERIES,
+    SAMPLE_MANAGER_PROFESSIONAL_AUDIT_QUERIES,
+    COMMON_PROFESSIONAL_AUDIT_QUERIES
+} from '../samples/constants';
 
 export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;
@@ -19,7 +23,13 @@ export type AuditQuery = {
 };
 
 export function getAuditQueries(): AuditQuery[] {
-    return isBiologicsEnabled() ? COMMON_AUDIT_QUERIES : (isSampleManagerEnabled() ? SAMPLE_MANAGER_AUDIT_QUERIES : []);
+    if (isBiologicsEnabled())
+        return COMMON_PROFESSIONAL_AUDIT_QUERIES;
+    if (isSampleManagerProfessionalEnabled())
+        return SAMPLE_MANAGER_PROFESSIONAL_AUDIT_QUERIES;
+    if (isSampleManagerEnabled())
+        return STARTER_AUDIT_QUERIES;
+    return [];
 }
 
 export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {

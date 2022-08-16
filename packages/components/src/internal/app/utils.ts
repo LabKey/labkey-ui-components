@@ -165,6 +165,10 @@ export function isSampleManagerEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.samplemanagement !== undefined;
 }
 
+export function isSampleManagerProfessionalEnabled(moduleContext?: any): boolean {
+    return isSampleManagerEnabled(moduleContext) && isWorkflowEnabled(moduleContext)
+}
+
 export function isBiologicsEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.biologics !== undefined;
 }

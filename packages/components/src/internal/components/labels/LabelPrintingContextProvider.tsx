@@ -2,7 +2,6 @@ import React, { ComponentType, FC, useContext } from 'react';
 import { userCanPrintLabels } from './utils';
 import { User } from '../base/models/User';
 import { fetchBarTenderConfiguration } from './actions';
-import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 interface Props {
     user: User;

@@ -4,13 +4,14 @@ import { BarTenderConfiguration, BarTenderResponse } from "./models";
 import { fetchBarTenderConfiguration, saveBarTenderConfiguration } from "./actions";
 import { printBarTenderLabels } from "./actions";
 import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
-import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR } from "./constants";
+import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE, LABEL_NOT_FOUND_ERROR } from './constants';
 import { Alert } from '../base/Alert';
 import { HelpLink } from '../../util/helpLinks';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface OwnProps {
-    title: string,
+    title?: string,
+    titleCls?: string,
     onChange: () => void;
     onSuccess: () => void;
     onConfigSuccess?: () => any
@@ -257,7 +258,7 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
     };
 
     render(): React.ReactNode {
-        const { title, } = this.props;
+        const { title = BARTENDER_CONFIGURATION_TITLE, titleCls} = this.props;
         const { dirty, connectionValidated, } = this.state;
 
         return (
@@ -265,7 +266,7 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
                 <Col xs={12}>
                     <Panel title={title}>
                         <Panel.Heading >
-                            <div>{title}</div>
+                            <div className={titleCls}>{title}</div>
                         </Panel.Heading>
                         <Panel.Body >
                             {dirty && (

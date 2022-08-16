@@ -613,7 +613,7 @@ import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveF
 import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
 import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
-import { LabelPrintingProvider, LabelPrintingProviderProps, withLabelPrintingContext } from './internal/components/labels/LabelPrintingContextProvider';
+import { LabelPrintingProvider, LabelPrintingProviderProps, withLabelPrintingContext, useLabelPrintingContext } from './internal/components/labels/LabelPrintingContextProvider';
 
 
 import {
@@ -1492,6 +1492,7 @@ export {
     LabelPrintingProvider,
     PrintLabelsModal,
     withLabelPrintingContext,
+    useLabelPrintingContext,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

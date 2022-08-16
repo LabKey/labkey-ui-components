@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.207.2
+*Released*: ?? August 2022
+*  Issue 46102: EditableDetailPanel cannot clear Multi Value Foreign Key Columns
+
 ### version 2.207.1
 *Released*: 15 August 2022
 * Issue 46025: Don't show "Source Events" as audit query for LKB

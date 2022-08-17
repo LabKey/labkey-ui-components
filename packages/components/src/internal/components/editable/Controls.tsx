@@ -126,7 +126,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         const title = addText + ' ' + (count === 1 ? nounSingular : nounPlural);
         const disabledMsg = invalidCountMsg ? invalidCountMsg : ('Maximum number of ' + nounPlural + ' reached.');
         return (
-            <span className="input-group-btn" style={{ zIndex: 1 }}>
+            <span className="input-group-btn">
                 <Button
                     bsStyle="primary"
                     title={disable ? disabledMsg : undefined}

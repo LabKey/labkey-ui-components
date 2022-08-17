@@ -1,27 +1,31 @@
-import React, {FC, memo, useCallback, useEffect, useMemo, useState} from "react";
-import {Button, Col, Row} from 'react-bootstrap';
-import {GroupAssignmentsProps} from "./GroupAssignments";
-import {ExpandableContainer} from "../ExpandableContainer";
-import {AppContext, useAppContext} from "../../AppContext";
-import {resolveErrorMessage} from "../../util/messaging";
-import {LoadingState} from "../../../public/LoadingState";
-import {RemovableButton} from "../permissions/RemovableButton";
-import {Principal, SecurityAssignment, SecurityPolicy, SecurityRole} from "../permissions/models";
-import {SelectInput} from "../forms/input/SelectInput";
-import {getPrincipals} from "../security/actions";
-import {List} from "immutable";
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
+
+import { List } from 'immutable';
+
+import { ExpandableContainer } from '../ExpandableContainer';
+
+import { AppContext, useAppContext } from '../../AppContext';
+import { resolveErrorMessage } from '../../util/messaging';
+import { LoadingState } from '../../../public/LoadingState';
+import { RemovableButton } from '../permissions/RemovableButton';
+import { Principal, SecurityAssignment, SecurityPolicy, SecurityRole } from '../permissions/models';
+import { SelectInput } from '../forms/input/SelectInput';
+import { getPrincipals } from '../security/actions';
+
+import { GroupAssignmentsProps } from './GroupAssignments';
 
 export interface GroupProps {
-    name: string;
-    id: any;
-    usersAndGroups: List<Principal>;
-    members: any;
-    onClickAssignment: (selectedUserId: number) => void;
-    selectedPrincipalId: number;
-    deleteGroup: any;
     addUser: any;
+    deleteGroup: any;
+    id: any;
+    members: any;
+    name: string;
+    onClickAssignment: (selectedUserId: number) => void;
     onRemoveMember: any;
+    selectedPrincipalId: number;
     setDirty: any;
+    usersAndGroups: List<Principal>;
 }
 
 export const Group: FC<GroupProps> = memo(props => {
@@ -35,7 +39,7 @@ export const Group: FC<GroupProps> = memo(props => {
         deleteGroup,
         addUser,
         onRemoveMember,
-        setDirty
+        setDirty,
     } = props;
 
     const generateClause = useCallback(() => {
@@ -44,7 +48,7 @@ export const Group: FC<GroupProps> = memo(props => {
                 <span className="permissions-title"> {name} </span>
             </div>
         );
-    },[]);
+    }, []);
 
     const generateLinks = useCallback(() => {
         const usersCount = members.filter(member => member.type === 'u').length;
@@ -70,12 +74,17 @@ export const Group: FC<GroupProps> = memo(props => {
 
     const principalsToAdd = useMemo(() => {
         const addedPrincipalIds = new Set(members.map(principal => principal.id));
-        return usersAndGroups.filter(principal => !addedPrincipalIds.has(principal.get('userId')) && principal.get('userId') !== parseInt(id));
+        return usersAndGroups.filter(
+            principal => !addedPrincipalIds.has(principal.get('userId')) && principal.get('userId') !== parseInt(id)
+        );
     }, [members, usersAndGroups, id]);
 
-    const addAssignment = useCallback((name: string, formValue: any, selected: Principal) => {
-        addUser(selected.get('userId'), id, selected.get('displayName'), selected.get('type'));
-    },[id, addUser]);
+    const addAssignment = useCallback(
+        (name: string, formValue: any, selected: Principal) => {
+            addUser(selected.get('userId'), id, selected.get('displayName'), selected.get('type'));
+        },
+        [id, addUser]
+    );
 
     return (
         <ExpandableContainer
@@ -101,8 +110,12 @@ export const Group: FC<GroupProps> = memo(props => {
                             <RemovableButton
                                 id={member.id}
                                 display={member.name}
-                                onClick={(userId) => {onClickAssignment(userId)}}
-                                onRemove={(memberId) => {onRemoveMember(memberId, id)}}
+                                onClick={userId => {
+                                    onClickAssignment(userId);
+                                }}
+                                onRemove={memberId => {
+                                    onRemoveMember(memberId, id);
+                                }}
                                 bsStyle={selectedPrincipalId === member.id ? 'primary' : undefined}
                                 added={false}
                             />
@@ -113,7 +126,7 @@ export const Group: FC<GroupProps> = memo(props => {
                 <SelectInput
                     autoValue={false}
                     options={principalsToAdd.toArray()}
-                    placeholder='Add member...'
+                    placeholder="Add member..."
                     inputClass="col-xs-12"
                     valueKey="userId"
                     labelKey="name"
@@ -121,8 +134,6 @@ export const Group: FC<GroupProps> = memo(props => {
                     selectedOptions={null}
                 />
             </div>
-
         </ExpandableContainer>
-        );
+    );
 });
-

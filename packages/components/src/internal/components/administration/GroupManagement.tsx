@@ -1,24 +1,31 @@
-import React, {FC, memo, useCallback, useEffect, useMemo, useState} from "react";
-import {BasePermissionsCheckPage} from "../permissions/BasePermissionsCheckPage";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {Alert} from "../base/Alert";
-import {isLoading, LoadingState} from "../../../public/LoadingState";
-import {useServerContext} from "../base/ServerContext";
-import {InjectedRouteLeaveProps, withRouteLeave} from "../../util/RouteLeave";
-import {resolveErrorMessage} from "../../util/messaging";
-import {AppContext, useAppContext} from "../../AppContext";
-import {ManageDropdownButton} from "../buttons/ManageDropdownButton";
-import {MenuItem} from "react-bootstrap";
-import {AppURL} from "../../url/AppURL";
-import {GroupAssignments} from "./GroupAssignments";
-import {Principal, SecurityPolicy} from "../permissions/models";
-import {InjectedPermissionsPage, withPermissionsPage} from "../permissions/withPermissionsPage";
-import {List, Map} from "immutable";
-import {getGroupMembership} from "../security/actions";
-import {getProjectPath} from "../../app/utils";
-import {useNotificationsContext} from "../notifications/NotificationsContext";
-import {showPremiumFeatures} from "./utils";
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
+import { MenuItem } from 'react-bootstrap';
+
+import { List, Map } from 'immutable';
+
+import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Alert } from '../base/Alert';
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { useServerContext } from '../base/ServerContext';
+import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
+import { resolveErrorMessage } from '../../util/messaging';
+import { AppContext, useAppContext } from '../../AppContext';
+import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
+import { AppURL } from '../../url/AppURL';
+
+import { Principal, SecurityPolicy } from '../permissions/models';
+
+import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
+
+import { getGroupMembership } from '../security/actions';
+import { getProjectPath } from '../../app/utils';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+
+import { GroupAssignments } from './GroupAssignments';
+
+import { showPremiumFeatures } from './utils';
 
 // todo: comment this up
 const constructGroupMembership = (groupsData, groupRows) => {
@@ -30,25 +37,28 @@ const constructGroupMembership = (groupsData, groupRows) => {
         const userDisplayName = curr['UserId/DisplayName'];
         const isGroup = !userDisplayName;
         // consider efficiency of below line. Maybe make groupsData a map
-        const member = {name: userDisplayName ?? groupsData.find((group) => group.id === curr.UserId).name, id: curr.UserId, type: isGroup ? 'g' : 'u'};
+        const member = {
+            name: userDisplayName ?? groupsData.find(group => group.id === curr.UserId).name,
+            id: curr.UserId,
+            type: isGroup ? 'g' : 'u',
+        };
         if (curr.GroupId in prev) {
             prev[groupId].members.push(member);
             return prev;
         } else {
-            prev[groupId] = {groupName: curr['GroupId/Name'], members: [member]};
+            prev[groupId] = { groupName: curr['GroupId/Name'], members: [member] };
             return prev;
         }
     }, {});
 
     groupsData.forEach(group => {
         if (!(group.id in groupsWithMembers)) {
-            groupsWithMembers[group.id] = {groupName: group.name, members: []}
+            groupsWithMembers[group.id] = { groupName: group.name, members: [] };
         }
     });
 
     return groupsWithMembers;
 };
-
 
 interface OwnProps {
     rolesMap: Map<string, string>;
@@ -57,13 +67,7 @@ interface OwnProps {
 type GroupPermissionsProps = OwnProps & InjectedRouteLeaveProps & InjectedPermissionsPage;
 
 export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
-    const {
-        setIsDirty,
-        inactiveUsersById,
-        principalsById,
-        rolesByUniqueName,
-        principals
-    } = props;
+    const { setIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [savedGroupMembership, setSavedGroupMembership] = useState<any>();
@@ -78,11 +82,12 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
     const loaded = !isLoading(loadingState);
 
-    const loadGroups = useCallback(async() => {
+    const loadGroups = useCallback(async () => {
         setError(undefined);
         setIsDirty(false);
 
-        if (user.isAdmin) { // TODO: is this correct gating?
+        if (user.isAdmin) {
+            // TODO: is this correct gating?
             setLoadingState(LoadingState.LOADING);
             try {
                 const fetchedGroups = await api.security.fetchGroups();
@@ -111,14 +116,16 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const save = useCallback(async () => {
         // Add new groups
         const addedGroups = Object.keys(groupMembership).filter(groupId => !(groupId in savedGroupMembership));
-        console.log("addedGroups", addedGroups);
-        const newlyAddedGroupIds = await Promise.all(addedGroups.map(async (groupName) => {
-            const createGroupResponse = await api.security.createGroup(groupName, projectPath);
-            const newGroupId = createGroupResponse.id;
-            return {id: newGroupId, name: groupName};
-        }));
+        console.log('addedGroups', addedGroups);
+        const newlyAddedGroupIds = await Promise.all(
+            addedGroups.map(async groupName => {
+                const createGroupResponse = await api.security.createGroup(groupName, projectPath);
+                const newGroupId = createGroupResponse.id;
+                return { id: newGroupId, name: groupName };
+            })
+        );
         // (Replace old name keys with new id keys)
-        const newGroupMembership = {...groupMembership};
+        const newGroupMembership = { ...groupMembership };
         newlyAddedGroupIds.forEach(addedGroup => {
             newGroupMembership[addedGroup.id] = newGroupMembership[addedGroup.name];
             delete newGroupMembership[addedGroup.name];
@@ -126,11 +133,13 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
         // Delete deleted groups
         const deletedGroups = Object.keys(savedGroupMembership).filter(groupId => !(groupId in groupMembership));
-        console.log("deletedGroups", deletedGroups);
-        const deletedGroupIds = await Promise.all(deletedGroups.map(async (groupId) => {
-            const createGroupResponse = await api.security.deleteGroup(parseInt(groupId), projectPath);
-            return createGroupResponse.deleted;
-        }));
+        console.log('deletedGroups', deletedGroups);
+        const deletedGroupIds = await Promise.all(
+            deletedGroups.map(async groupId => {
+                const createGroupResponse = await api.security.deleteGroup(parseInt(groupId), projectPath);
+                return createGroupResponse.deleted;
+            })
+        );
         deletedGroupIds.forEach(deletedGroup => {
             delete newGroupMembership[deletedGroup];
         });
@@ -140,9 +149,8 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             const currentMembers = newGroupMembership[groupId].members.map(member => member.id);
             const oldMembers = new Set(savedGroupMembership[groupId]?.members.map(member => member.id));
             const addedMembers = currentMembers.filter(id => !oldMembers.has(id));
-            console.log("addedMembers", addedMembers);
-            if (addedMembers.length)
-                await api.security.addGroupMembers(parseInt(groupId), addedMembers, projectPath);
+            console.log('addedMembers', addedMembers);
+            if (addedMembers.length) await api.security.addGroupMembers(parseInt(groupId), addedMembers, projectPath);
         });
 
         // Save updated state
@@ -165,37 +173,52 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         );
     }, []);
 
-    const addGroup = useCallback((name: string) => {
-        setGroupMembership({...groupMembership, [name]: {groupName: name, members: []}});
-    }, [groupMembership]);
+    const addGroup = useCallback(
+        (name: string) => {
+            setGroupMembership({ ...groupMembership, [name]: { groupName: name, members: [] } });
+        },
+        [groupMembership]
+    );
 
-    const deleteGroup = useCallback((id: string) => {
-        const newGroupMembership = {...groupMembership};
-        delete newGroupMembership[id];
+    const deleteGroup = useCallback(
+        (id: string) => {
+            const newGroupMembership = { ...groupMembership };
+            delete newGroupMembership[id];
 
-        setGroupMembership(newGroupMembership);
-    }, [groupMembership]);
+            setGroupMembership(newGroupMembership);
+        },
+        [groupMembership]
+    );
 
-    const addUser = useCallback((userId: number, principalId: string, principalName: string, principalType: string) => {
-        const group = groupMembership[principalId];
-        const newMember = {name: principalName, id: userId, type: principalType};
-        setGroupMembership({...groupMembership, [principalId]: {groupName: group.groupName, members: [...group.members, newMember] }});
-    }, [groupMembership]);
+    const addUser = useCallback(
+        (userId: number, principalId: string, principalName: string, principalType: string) => {
+            const group = groupMembership[principalId];
+            const newMember = { name: principalName, id: userId, type: principalType };
+            setGroupMembership({
+                ...groupMembership,
+                [principalId]: { groupName: group.groupName, members: [...group.members, newMember] },
+            });
+        },
+        [groupMembership]
+    );
 
-    const removeMember = useCallback((memberId: number, groupId: string) => {
-        const newGroupMembership = Object.keys(groupMembership).map(gId => {
-            if (gId === groupId) {
-                const group = groupMembership[gId];
-                const newMembers = group.members.filter(member => member.id !== memberId);
-                return {groupName: group.groupName, members: [...newMembers] }
-            } else {
-                return groupMembership[gId];
-            }
-        });
-        setGroupMembership(newGroupMembership);
-    }, [groupMembership]);
+    const removeMember = useCallback(
+        (memberId: number, groupId: string) => {
+            const newGroupMembership = Object.keys(groupMembership).map(gId => {
+                if (gId === groupId) {
+                    const group = groupMembership[gId];
+                    const newMembers = group.members.filter(member => member.id !== memberId);
+                    return { groupName: group.groupName, members: [...newMembers] };
+                } else {
+                    return groupMembership[gId];
+                }
+            });
+            setGroupMembership(newGroupMembership);
+        },
+        [groupMembership]
+    );
 
-    console.log("groupMembership", groupMembership);
+    console.log('groupMembership', groupMembership);
 
     const usersAndGroups = useMemo(() => {
         return principals.filter(principal => principal.type === 'u' || principal.userId > 0) as List<Principal>; // typing weirdness
@@ -210,7 +233,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             description={description}
             hasPermission={user.isAdmin}
             renderButtons={renderButtons}
-            title='Group Management'
+            title="Group Management"
             user={user}
         >
             {!loaded && <LoadingSpinner />}
@@ -222,13 +245,11 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                     rolesByUniqueName={rolesByUniqueName}
                     principalsById={principalsById}
                     usersAndGroups={usersAndGroups}
-
                     addGroup={addGroup}
                     deleteGroup={deleteGroup}
                     addUser={addUser}
                     removeMember={removeMember}
                     save={save}
-
                 />
             )}
         </BasePermissionsCheckPage>

@@ -5,7 +5,7 @@
 import React, { PureComponent } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
-import {ActionURL, Filter} from '@labkey/api';
+import { ActionURL, Filter } from '@labkey/api';
 
 import { QueryInfoForm } from '../forms/QueryInfoForm';
 import {
@@ -18,10 +18,12 @@ import {
     QueryInfo,
     QueryColumn,
     SCHEMAS,
-    User, resolveErrorMessage, selectRows,
+    User,
+    resolveErrorMessage,
+    selectRows,
 } from '../../..';
 
-import {getUserDetailsRowData, updateUserDetails} from './actions';
+import { getUserDetailsRowData, updateUserDetails } from './actions';
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',
@@ -65,7 +67,7 @@ export class UserProfile extends PureComponent<Props, State> {
             removeCurrentAvatar: false,
             reloadRequired: false,
             hasError: false,
-            groups: undefined
+            groups: undefined,
         };
     }
 
@@ -88,15 +90,14 @@ export class UserProfile extends PureComponent<Props, State> {
                 columns: ['Groups'],
                 maxRows: 1,
             });
-            const groupsData = response.rows[0].Groups as any; //todo: flag for typing
-            const groups = groupsData.map((group) => group.displayValue).join(", ");
+            const groupsData = response.rows[0].Groups as any; // todo: flag for typing
+            const groups = groupsData.map(group => group.displayValue).join(', ');
             this.setState(() => ({ groups }));
-
         } catch (e) {
             console.error(resolveErrorMessage(e) ?? 'Failed to load group data');
             this.setState(() => ({ hasError: true }));
         }
-    }
+    };
 
     columnFilter = (col: QueryColumn): boolean => {
         // make sure all columns are set as shownInInsertView and those that are marked as editable are not also readOnly
@@ -139,12 +140,10 @@ export class UserProfile extends PureComponent<Props, State> {
     }
 
     footer() {
-        return(
+        return (
             <div className="form-group row">
                 <label className="control-label col-sm-3 text-left col-xs-12"> Groups </label>
-                <div className="col-sm-9 col-md-9 col-xs-12">
-                    {this.state.groups}
-                </div>
+                <div className="col-sm-9 col-md-9 col-xs-12">{this.state.groups}</div>
             </div>
         );
     }

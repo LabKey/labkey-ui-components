@@ -23,13 +23,13 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
     containerId: string;
     /** UserId to disable to prevent removing assignments for that id */
     disabledId?: number;
-    title?: string;
     onChange: (policy: SecurityPolicy) => void;
     onSuccess: () => void;
     policy: SecurityPolicy;
     /** Subset list of role uniqueNames to show in this component usage */
     rolesToShow?: List<string>;
     showDetailsPanel?: boolean;
+    title?: string;
     /** Specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage */
     typeToShow?: string;
 }
@@ -90,7 +90,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         [onChange, policy]
     );
 
-    console.log("policy", policy.toJS());
+    console.log('policy', policy.toJS());
 
     const onInheritChange = useCallback(() => {
         setDirty(true);
@@ -198,7 +198,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         </Button>
     );
 
-    console.log("policy", policy.toJS());
+    console.log('policy', policy.toJS());
 
     return (
         <Row>
@@ -270,7 +270,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                         <UserDetailsPanel
                             userId={selectedUserId}
                             policy={policy}
-                            rootPolicy={rootPolicy}  // ToDo: delete unused prop
+                            rootPolicy={rootPolicy} // ToDo: delete unused prop
                             rolesByUniqueName={rolesByUniqueName}
                         />
                     )}

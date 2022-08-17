@@ -1,25 +1,31 @@
-import React, {ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState} from "react";
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Checkbox, Col, Panel, Row } from 'react-bootstrap';
-import {Alert} from "../base/Alert";
-import {Group} from "./Group";
-import {Principal, SecurityPolicy, SecurityRole} from "../permissions/models";
-import {UserDetailsPanel} from "../user/UserDetailsPanel";
-import {List, Map} from "immutable";
-import {GroupDetailsPanel} from "../permissions/GroupDetailsPanel";
+
+import { List, Map } from 'immutable';
+
+import { Alert } from '../base/Alert';
+
+import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
+import { UserDetailsPanel } from '../user/UserDetailsPanel';
+import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
+
+import { Group } from './Group';
 
 export interface GroupAssignmentsProps {
-    showDetailsPanel?: boolean; // TODO
+    addGroup: any;
+    addUser: any;
+    deleteGroup: any;
+
+    // TODO
     groupMembership: any;
     policy: SecurityPolicy;
-
-    addGroup: any;
-    deleteGroup: any;
-    addUser: any;
-    removeMember: any;
-    save: any;
-
-    rolesByUniqueName: Map<string, SecurityRole>; // taken from InjectedPermissionsPage
+    // taken from InjectedPermissionsPage
     principalsById: Map<number, Principal>;
+    removeMember: any;
+    rolesByUniqueName: Map<string, SecurityRole>;
+
+    save: any;
+    showDetailsPanel?: boolean;
 
     usersAndGroups: List<Principal>;
 }
@@ -36,14 +42,14 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         deleteGroup,
         addUser,
         removeMember,
-        save
-} = props;
+        save,
+    } = props;
 
     const [dirty, setDirty] = useState<boolean>();
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [errorMsg, setErrorMsg] = useState<string>();
     const [selectedPrincipalId, setSelectedPrincipalId] = useState<number>();
-    const [newGroupName, setNewGroupName] = useState<string>("");
+    const [newGroupName, setNewGroupName] = useState<string>('');
 
     const onSave = useCallback(() => {
         setErrorMsg(undefined);
@@ -70,33 +76,46 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         return principalsById?.get(selectedPrincipalId);
     }, [principalsById, selectedPrincipalId]);
 
-    const onChangeNewGroupName = useCallback((event: ChangeEvent<HTMLInputElement>) => setNewGroupName(event.target.value), [newGroupName]);
+    const onChangeNewGroupName = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => setNewGroupName(event.target.value),
+        [newGroupName]
+    );
 
     const onAddNewGroup = useCallback(() => {
         setErrorMsg(undefined);
 
         const trimmedName = newGroupName.trim();
-        if (trimmedName in groupMembership || Object.values(groupMembership).some(group => group['groupName'] === trimmedName)) { //todo flag for typing
+        if (
+            trimmedName in groupMembership ||
+            Object.values(groupMembership).some(group => group['groupName'] === trimmedName)
+        ) {
+            // todo flag for typing
             setErrorMsg(`Group ${trimmedName} already exists.`);
         } else {
             setDirty(true);
             addGroup(trimmedName);
         }
 
-        setNewGroupName("");
+        setNewGroupName('');
     }, [newGroupName]);
 
-    const onAddPrincipal = useCallback((userId: number, principalId: string, principalName: string, principalType: string) => {
-        setSelectedPrincipalId(userId);
-        addUser(userId, principalId, principalName, principalType);
-        setDirty(true);
-    }, [addUser]);
+    const onAddPrincipal = useCallback(
+        (userId: number, principalId: string, principalName: string, principalType: string) => {
+            setSelectedPrincipalId(userId);
+            addUser(userId, principalId, principalName, principalType);
+            setDirty(true);
+        },
+        [addUser]
+    );
 
-    const onRemoveMember = useCallback((memberId: number, groupId: string) => {
-        setSelectedPrincipalId(undefined);
-        removeMember(memberId, groupId);
-        setDirty(true);
-    }, [removeMember]);
+    const onRemoveMember = useCallback(
+        (memberId: number, groupId: string) => {
+            setSelectedPrincipalId(undefined);
+            removeMember(memberId, groupId);
+            setDirty(true);
+        },
+        [removeMember]
+    );
 
     return (
         <Row>
@@ -125,14 +144,14 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                             <Button
                                 className="alert-button"
                                 bsStyle="info"
-                                disabled={newGroupName.trim() === ""}
+                                disabled={newGroupName.trim() === ''}
                                 onClick={onAddNewGroup}
                             >
                                 Create Group
                             </Button>
                         </div>
 
-                        {Object.keys(groupMembership).map((k) =>
+                        {Object.keys(groupMembership).map(k => (
                             <Group
                                 key={k}
                                 id={k}
@@ -146,7 +165,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                                 setDirty={setDirty}
                                 addUser={onAddPrincipal}
                             />
-                        )}
+                        ))}
 
                         {/* todo: styling instead of br */}
                         <br />
@@ -172,8 +191,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                         />
                     )}
                 </Col>
-                )}
+            )}
         </Row>
-        );
+    );
 });
-

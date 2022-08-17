@@ -18,19 +18,19 @@ import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 
 interface Props {
-    userId: number;
-    policy?: SecurityPolicy;
-    rootPolicy?: SecurityPolicy;
-    rolesByUniqueName?: Map<string, SecurityRole>;
     allowDelete?: boolean;
     allowResetPassword?: boolean;
     onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => any;
+    policy?: SecurityPolicy;
+    rolesByUniqueName?: Map<string, SecurityRole>;
+    rootPolicy?: SecurityPolicy;
+    userId: number;
 }
 
 interface State {
     loading: boolean;
-    userProperties: {};
-    showDialog: string; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
+    showDialog: string;
+    userProperties: {}; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
 }
 
 export class UserDetailsPanel extends React.PureComponent<Props, State> {

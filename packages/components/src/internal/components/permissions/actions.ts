@@ -4,7 +4,7 @@
  */
 import { List, Map, fromJS } from 'immutable';
 
-import {ActionURL, Ajax, Filter, Query, Security, Utils} from '@labkey/api';
+import { ActionURL, Ajax, Filter, Query, Security, Utils } from '@labkey/api';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../..';
 
@@ -129,7 +129,7 @@ export function fetchContainerSecurityPolicy(
 export function fetchGroupPermissions(): Promise<any> {
     return new Promise((resolve, reject) => {
         Security.getGroupPermissions({
-            success: (data) => {
+            success: data => {
                 resolve(data);
             },
             failure: error => {
@@ -144,7 +144,7 @@ export function getUsers(groupId: number): Promise<any> {
     return new Promise((resolve, reject) => {
         Security.getUsers({
             groupId,
-            success: (data) => {
+            success: data => {
                 resolve(data);
             },
             failure: error => {
@@ -160,7 +160,7 @@ export function createGroup(groupName: string, projectPath: string): Promise<any
         Security.createGroup({
             groupName,
             containerPath: projectPath,
-            success: (data) => {
+            success: data => {
                 resolve(data);
             },
             failure: error => {
@@ -176,7 +176,7 @@ export function deleteGroup(groupId: number, projectPath: string): Promise<any> 
         Security.deleteGroup({
             groupId,
             containerPath: projectPath,
-            success: (data) => {
+            success: data => {
                 resolve(data);
             },
             failure: error => {
@@ -193,7 +193,7 @@ export function addGroupMembers(groupId: number, principalIds: any[], projectPat
             groupId,
             principalIds,
             containerPath: projectPath,
-            success: (data) => {
+            success: data => {
                 resolve(data);
             },
             failure: error => {
@@ -209,8 +209,8 @@ export type UserLimitSettings = {
     messageHtml: string;
     remainingUsers: number;
     success: boolean;
-    userLimitLevel: number;
     userLimit: boolean;
+    userLimitLevel: number;
 };
 
 export function getUserLimitSettings(): Promise<UserLimitSettings> {

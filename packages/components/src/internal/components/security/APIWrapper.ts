@@ -17,18 +17,18 @@ import { Principal, SecurityPolicy } from '../permissions/models';
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 
 export interface SecurityAPIWrapper {
+    addGroupMembers: (groupId: number, principalIds: any[], projectPath: string) => Promise<any>;
+    createGroup: (groupName: string, projectPath: string) => Promise<any>;
+    deleteGroup: (id: number, projectPath: string) => Promise<any>;
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
+    fetchGroups: () => Promise<any>;
     fetchPolicy: (
         containerId: string,
         principalsById: Map<number, Principal>,
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
-    fetchGroups: () => Promise<any>;
-    getUsers: (groupId: number) => Promise<any>;
-    createGroup: (groupName: string, projectPath: string) => Promise<any>;
-    deleteGroup: (id: number, projectPath: string) => Promise<any>;
-    addGroupMembers: (groupId: number, principalIds: any[], projectPath: string) => Promise<any>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
+    getUsers: (groupId: number) => Promise<any>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {

@@ -1,5 +1,6 @@
-import {Query} from "@labkey/api";
-import {OntologyModel} from "../ontology/models";
+import { Query } from '@labkey/api';
+
+import { OntologyModel } from '../ontology/models';
 
 // maybe should tuck into permissions actions.... I mean it's such a similar call
 export function getPrincipals(): Promise<any> {

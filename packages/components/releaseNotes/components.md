@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* TabbedGridPanel update for display of panel title when grid has tabs
+
 ### version 2.207.0
 *Released*: 15 August 2022
 * Workflow job creation and update with custom fields

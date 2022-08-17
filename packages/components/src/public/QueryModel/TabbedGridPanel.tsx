@@ -84,6 +84,11 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      */
     getGridPanelDisplay?: (activeGridId: string) => React.ReactNode;
     /**
+     * return the showViewMenu value for an active tab
+     * @param activeGridId
+     */
+    getShowViewMenu?: (activeGridId: string) => boolean;
+    /**
      * Optional, if used the TabbedGridPanel will act as a controlled component, requiring you to always pass the
      * activeModelId. If not passed the TabbedGridPanel will maintain the activeModelId state internally.
      * @param string
@@ -129,6 +134,8 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         advancedExportOptions,
         getAdvancedExportOptions,
         getGridPanelDisplay,
+        showViewMenu,
+        getShowViewMenu,
         ...rest
     } = props;
     const { createNotification } = useNotificationsContext();
@@ -202,6 +209,11 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     const activeModel = queryModels[activeId];
     const hasTabs = tabOrder.length > 1 || alwaysShowTabs;
 
+    const showViewConfig = {}; // showViewMenu default to true in GridPanel
+    if (getShowViewMenu || showViewMenu !== undefined) {
+        showViewConfig['showViewMenu'] = getShowViewMenu ? getShowViewMenu(activeId) : showViewMenu;
+    }
+
     const gridDisplay = getGridPanelDisplay?.(activeId) ?? (
         <GridPanel
             allowViewCustomization={allowViewCustomization}
@@ -214,6 +226,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
             advancedExportOptions={
                 getAdvancedExportOptions ? getAdvancedExportOptions(activeId) : advancedExportOptions
             }
+            {...showViewConfig}
             {...rest}
         />
     );

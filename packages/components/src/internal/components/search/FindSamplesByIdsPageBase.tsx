@@ -78,6 +78,13 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
         return models;
     }, [allSamplesModel, sampleGridIds, queryModels]);
 
+    const getShowViewMenu = useCallback((activeGridId: string) => {
+        if (!activeGridId || activeGridId === allSamplesModel?.id)
+            return false;
+
+        return true;
+    }, [allSamplesModel]);
+
     return (
         <>
             <SamplesTabbedGridPanel
@@ -100,6 +107,7 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                     getAdvancedExportOptions,
                     exportFilename: 'SamplesFoundById',
                     getGridPanelDisplay,
+                    getShowViewMenu
                 }}
                 user={user}
             />
@@ -203,6 +211,7 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
 
     const init = (findByIdsKey: string) => {
         setFindByIdsKey(findByIdsKey);
+        setError(undefined);
         if (!findByIdsKey) {
             setLoadingState(LoadingState.LOADED);
             return;

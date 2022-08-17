@@ -239,6 +239,11 @@ export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
     const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
     if (lcSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) return true;
 
+    return isAllSamplesSchema(schemaQuery);
+}
+
+export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
+    const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
     const lcQueryName = schemaQuery?.queryName?.toLowerCase();
     if (
         lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA &&

@@ -92,6 +92,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                         })}
                     >
                         <i
+                            onClick={(hasOnClick || isExpandable) ? this.handleClick : undefined}
                             className={classNames('fa', {
                                 'fa-chevron-down': visible,
                                 'fa-chevron-right': !visible,

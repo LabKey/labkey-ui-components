@@ -1,7 +1,7 @@
 # @labkey/build
 
 ### version 6.1.6
-*Released*: ?? August 2022
+*Released*: 18 August 2022
 * Pin versions to latest equivalent version
 
 ### version 6.1.5

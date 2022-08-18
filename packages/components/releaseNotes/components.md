@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.207.2
-*Released*: ?? August 2022
+*Released*: 18 August 2022
 * Issue 46102: EditableDetailPanel cannot clear Multi Value Foreign Key Columns
 * Pin dependencies to latest equivalent version
 

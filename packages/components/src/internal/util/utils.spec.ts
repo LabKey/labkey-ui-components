@@ -40,7 +40,8 @@ import {
     parseCsvString,
     parseScientificInt,
     toLowerSafe,
-    unorderedEqual
+    unorderedEqual,
+    arrayEquals,
 } from './utils';
 
 const emptyList = List<string>();
@@ -1446,11 +1447,11 @@ describe('parseCsvString', () => {
         expect(parseCsvString('a\tb\tc', '\t')).toStrictEqual(['a', 'b', 'c']);
     });
 
-    test("quote as delimiter", () => {
+    test('quote as delimiter', () => {
         expect(() => parseCsvString('a"b"c"', '"')).toThrow('Unsupported delimiter: "');
-    })
+    });
 
-    test("quoted values", () => {
+    test('quoted values', () => {
         expect(parseCsvString('a,"b","c,d"', ',')).toStrictEqual(['a', '"b"', '"c,d"']);
         expect(parseCsvString(',"b","c,d"', ',')).toStrictEqual(['', '"b"', '"c,d"']);
         expect(parseCsvString('a,"b","c', ',')).toStrictEqual(['a', '"b"', '"c']);
@@ -1458,40 +1459,40 @@ describe('parseCsvString', () => {
         expect(parseCsvString('"b"', ',')).toStrictEqual(['"b"']);
     });
 
-    test("double quotes", () => {
-        expect(parseCsvString('a,"b\"\"b2","c,d"', ',')).toStrictEqual(['a', '"b\"\"b2"', '"c,d"']);
-        expect(parseCsvString('"b\"\"b2\"\"b3\"\""', ',')).toStrictEqual(['"b\"\"b2\"\"b3\"\""']);
+    test('double quotes', () => {
+        expect(parseCsvString('a,"b""b2","c,d"', ',')).toStrictEqual(['a', '"b""b2"', '"c,d"']);
+        expect(parseCsvString('"b""b2""b3"""', ',')).toStrictEqual(['"b""b2""b3"""']);
     });
 
-    test("remove quotes", () => {
+    test('remove quotes', () => {
         expect(parseCsvString('a,"b","c,d"', ',', true)).toStrictEqual(['a', 'b', 'c,d']);
         expect(parseCsvString(',"b","c,d"', ',', true)).toStrictEqual(['', 'b', 'c,d']);
         expect(parseCsvString('a,"b","c', ',', true)).toStrictEqual(['a', 'b', 'c']);
         expect(parseCsvString('a,"b",c"', ',', true)).toStrictEqual(['a', 'b', 'c"']);
         expect(parseCsvString('"b"', ',', true)).toStrictEqual(['b']);
-        expect(parseCsvString('a,"b\"\"b2","c,d"',',', true)).toStrictEqual(['a', 'b"b2', 'c,d']);
-        expect(parseCsvString('"b\"\"b2\"\"b3\"\""',',', true)).toStrictEqual(['b"b2"b3"']);
+        expect(parseCsvString('a,"b""b2","c,d"', ',', true)).toStrictEqual(['a', 'b"b2', 'c,d']);
+        expect(parseCsvString('"b""b2""b3"""', ',', true)).toStrictEqual(['b"b2"b3"']);
     });
 });
 
 describe('quoteValueWithDelimiters', () => {
     test('no value', () => {
-        expect(quoteValueWithDelimiters(undefined, ",")).toBeUndefined();
+        expect(quoteValueWithDelimiters(undefined, ',')).toBeUndefined();
         expect(quoteValueWithDelimiters(null, ';')).toBeNull();
         expect(quoteValueWithDelimiters('', ' ')).toBe('');
     });
 
-    test("non-string value", () => {
+    test('non-string value', () => {
         expect(quoteValueWithDelimiters(4, ',')).toBe(4);
         expect(quoteValueWithDelimiters(4, undefined)).toBe(4);
-        expect(quoteValueWithDelimiters({value: "4,5"}, undefined)).toStrictEqual({value: "4,5"});
+        expect(quoteValueWithDelimiters({ value: '4,5' }, undefined)).toStrictEqual({ value: '4,5' });
         expect(quoteValueWithDelimiters([4, 5, 6], ',')).toStrictEqual([4, 5, 6]);
-    })
+    });
 
     test('invalid delimiter', () => {
-        expect(() => quoteValueWithDelimiters("value", undefined)).toThrow("Delimiter is required.")
-        expect(() => quoteValueWithDelimiters("value", null)).toThrow("Delimiter is required.")
-        expect(() => quoteValueWithDelimiters("value", '')).toThrow("Delimiter is required.")
+        expect(() => quoteValueWithDelimiters('value', undefined)).toThrow('Delimiter is required.');
+        expect(() => quoteValueWithDelimiters('value', null)).toThrow('Delimiter is required.');
+        expect(() => quoteValueWithDelimiters('value', '')).toThrow('Delimiter is required.');
     });
 
     test('without delimiter in value', () => {
@@ -1505,9 +1506,47 @@ describe('quoteValueWithDelimiters', () => {
         expect(quoteValueWithDelimiters('ab, "cd,e"', ',')).toBe('"ab, ""cd,e"""');
     });
 
-    test("round trip", () => {
+    test('round trip', () => {
         const initialString = 'ab "cd,e"';
         expect(parseCsvString(quoteValueWithDelimiters(initialString, ','), ',', true)).toStrictEqual([initialString]);
-    })
-})
+    });
+});
 
+describe('arrayEquals', () => {
+    test('ignore order, case sensitive', () => {
+        expect(arrayEquals(undefined, undefined)).toBeTruthy();
+        expect(arrayEquals(undefined, null)).toBeTruthy();
+        expect(arrayEquals([], [])).toBeTruthy();
+        expect(arrayEquals(null, [])).toBeFalsy();
+        expect(arrayEquals(['a'], null)).toBeFalsy();
+        expect(arrayEquals(['a'], ['a'])).toBeTruthy();
+        expect(arrayEquals(['a'], ['A'])).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['a'])).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['b', 'a'])).toBeTruthy();
+        expect(arrayEquals(['a', 'b'], ['A', 'b'])).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['B', 'A'])).toBeFalsy();
+    });
+
+    test('ignore order, case insensitive', () => {
+        expect(arrayEquals(['a'], null, true, true)).toBeFalsy();
+        expect(arrayEquals(['a'], ['a'], true, true)).toBeTruthy();
+        expect(arrayEquals(['a'], ['A'], true, true)).toBeTruthy();
+        expect(arrayEquals(['a', 'b'], ['a'], true, true)).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['b', 'a'], true, true)).toBeTruthy();
+        expect(arrayEquals(['a', 'b'], ['A', 'b'], true, true)).toBeTruthy();
+        expect(arrayEquals(['a', 'b'], ['B', 'A'], true, true)).toBeTruthy();
+    });
+
+    test("don't ignore order, case sensitive", () => {
+        expect(arrayEquals(['a'], null, false)).toBeFalsy();
+        expect(arrayEquals(null, [], false)).toBeFalsy();
+        expect(arrayEquals([], [], false)).toBeTruthy();
+        expect(arrayEquals(['a'], ['a'], false)).toBeTruthy();
+        expect(arrayEquals(['a'], ['A'], false)).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['a'], false)).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['a', 'b'], false)).toBeTruthy();
+        expect(arrayEquals(['a', 'b'], ['b', 'a'], false)).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['A', 'b'], false)).toBeFalsy();
+        expect(arrayEquals(['a', 'b'], ['B', 'A'], false)).toBeFalsy();
+    });
+});

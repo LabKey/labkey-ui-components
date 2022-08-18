@@ -176,6 +176,7 @@ export interface SampleGridButtonProps {
     afterSampleDelete?: (rowsToKeep: any[]) => void;
     createBtnParentKey?: string;
     createBtnParentType?: string;
+    excludeAddButton?: boolean;
     excludedMenuKeys?: SamplesEditButtonSections[];
     includesMedia?: boolean;
     initAliquotMode?: ALIQUOT_FILTER_MODE;

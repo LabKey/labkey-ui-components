@@ -7,6 +7,7 @@ import { AppURL } from '../url/AppURL';
 import { imageURL } from '../url/ActionURL';
 
 import { AppProperties } from './models';
+import { SAMPLE_MANAGER_SEARCH_PLACEHOLDER, SEARCH_PLACEHOLDER } from '../components/navigation/constants';
 
 // These ids should match what is used by the MenuProviders in the Java code so we can avoid toLowerCase comparisons.
 export const LKS_PRODUCT_ID = 'LabKeyServer';
@@ -106,6 +107,7 @@ export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     logoBadgeImageUrl: imageURL('biologics/images', 'lk-bio-logo-badge.svg'),
     controllerName: BIOLOGICS_CONTROLLER_NAME,
     moduleName: 'biologics',
+    searchPlaceholder: SEARCH_PLACEHOLDER,
 };
 
 export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
@@ -115,6 +117,7 @@ export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
     logoBadgeImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-WHITE.svg'),
     controllerName: SAMPLE_MANAGER_CONTROLLER_NAME,
     moduleName: 'sampleManagement',
+    searchPlaceholder: SAMPLE_MANAGER_SEARCH_PLACEHOLDER,
 };
 
 export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {

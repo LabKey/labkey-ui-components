@@ -37,7 +37,7 @@ import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
 
 import { FolderMenu } from './FolderMenu';
-import { SEARCH_PLACEHOLDER } from './constants';
+import { getPrimaryAppProperties } from '../../app/utils';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -70,7 +70,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         onFindByIds,
         onSignIn,
         onSignOut,
-        searchPlaceholder = SEARCH_PLACEHOLDER,
+        searchPlaceholder = getPrimaryAppProperties().searchPlaceholder,
         showFolderMenu,
         showNavMenu,
         showNotifications,

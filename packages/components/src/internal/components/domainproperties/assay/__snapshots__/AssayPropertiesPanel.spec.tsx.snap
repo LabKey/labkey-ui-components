@@ -458,10 +458,14 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                   onMouseOver={[Function]}
                                 >
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className="label-help-icon"
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -478,15 +482,20 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size="1x"
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     style={Object {}}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -732,10 +741,14 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                   onMouseOver={[Function]}
                                 >
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className="label-help-icon"
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -752,15 +765,20 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size="1x"
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     style={Object {}}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -1005,10 +1023,14 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                   onMouseOver={[Function]}
                                 >
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className="label-help-icon"
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -1025,15 +1047,20 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size="1x"
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     style={Object {}}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -1805,10 +1832,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -1825,15 +1856,20 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -2079,10 +2115,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -2099,15 +2139,20 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -2352,10 +2397,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -2372,15 +2421,20 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -2668,10 +2722,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -2688,15 +2746,20 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -2950,10 +3013,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -2970,15 +3037,20 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -3745,10 +3817,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -3765,15 +3841,20 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -4019,10 +4100,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -4039,15 +4124,20 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -4292,10 +4382,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -4312,15 +4406,20 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -4608,10 +4707,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -4628,15 +4731,20 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -4890,10 +4998,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -4910,15 +5022,20 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -5371,10 +5488,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -5391,15 +5512,20 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -5566,10 +5692,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -5586,15 +5716,20 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -5760,10 +5895,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -5780,15 +5919,20 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -5997,10 +6141,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -6017,15 +6165,20 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -6200,10 +6353,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -6220,15 +6377,20 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -6960,10 +7122,14 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -6980,15 +7146,20 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -7234,10 +7405,14 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -7254,15 +7429,20 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -7507,10 +7687,14 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -7527,15 +7711,20 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg

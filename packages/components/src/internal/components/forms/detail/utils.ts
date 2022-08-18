@@ -29,22 +29,28 @@ export function extractChanges(
     Object.keys(formValues).forEach(field => {
         // If nested value, will need to do deeper check
         if (List.isList(currentData.get(field))) {
+            const existingValue = currentData.get(field);
+            const changedValue = formValues[field];
+
             // If the submitted value and existing value are empty, do not update field
-            if (!formValues[field] && currentData.get(field).size === 0) {
+            if (!changedValue && existingValue.size === 0) {
                 return false;
             }
             // If the submitted value is empty and there is an existing value, should update field
-            else if (!formValues[field] && currentData.get(field).size > 0) {
-                changedValues[field] = formValues[field];
+            else if (!changedValue && existingValue.size > 0) {
+                // Issue 46102
+                // Do not set the field to changedValue, it may be undefined, which causes us to treat the value as if
+                // it has not changed, making it impossible to clear the value.
+                changedValues[field] = [];
             } else {
                 // If submitted value array and existing value array are different size, should update field
-                if (formValues[field].length !== currentData.get(field).size) {
-                    changedValues[field] = formValues[field];
+                if (changedValue.length !== existingValue.size) {
+                    changedValues[field] = changedValue;
                 }
                 // If submitted value array and existing array are the same size, need to compare full contents
-                else if (formValues[field].length === currentData.get(field).size) {
-                    if (!arrayListIsEqual(formValues[field], currentData.get(field))) {
-                        changedValues[field] = formValues[field];
+                else if (changedValue.length === existingValue.size) {
+                    if (!arrayListIsEqual(changedValue, existingValue)) {
+                        changedValues[field] = changedValue;
                     }
                 }
             }

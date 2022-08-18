@@ -22,7 +22,7 @@ import {
     EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
-    FeatureFlags,
+    ProductFeature,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
@@ -221,16 +221,15 @@ export function isRequestsEnabled(moduleContext?: any): boolean {
 }
 
 export function isAssayEnabled(moduleContext?: any): boolean {
-    return hasModule('assay', moduleContext) && isFeatureEnabled(FeatureFlags.Assays, moduleContext);
+    return hasModule('assay', moduleContext) && isFeatureEnabled(ProductFeature.Assay, moduleContext);
 }
 
 export function isWorkflowEnabled(moduleContext?: any): boolean {
-    return hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) && isFeatureEnabled(FeatureFlags.Workflow, moduleContext);
+    return hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) && isFeatureEnabled(ProductFeature.Workflow, moduleContext);
 }
 
-export function isFeatureEnabled(flag: FeatureFlags, moduleContext?: any): boolean {
-    // return true;
-    return (moduleContext ?? getServerContext().moduleContext)?.productFeatures?.[flag] === true;
+export function isFeatureEnabled(flag: ProductFeature, moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.core?.productFeatures.indexOf(flag) >= 0;
 }
 
 export function isSampleAliquotSelectorEnabled(moduleContext?: any): boolean {

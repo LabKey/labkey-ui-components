@@ -26,6 +26,7 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
+import { GroupMembership} from "./models";
 
 // todo: comment this up
 const constructGroupMembership = (groupsData, groupRows) => {
@@ -70,53 +71,49 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const { setIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
-    const [savedGroupMembership, setSavedGroupMembership] = useState<any>();
-    const [groupMembership, setGroupMembership] = useState<any>();
-
+    const [savedGroupMembership, setSavedGroupMembership] = useState<GroupMembership>();
+    const [groupMembership, setGroupMembership] = useState<GroupMembership>();
     const [policy, setPolicy] = useState<SecurityPolicy>();
 
     const { api } = useAppContext<AppContext>();
     const { dismissNotifications, createNotification } = useNotificationsContext();
     const { container, user } = useServerContext();
-    const projectPath = useMemo(() => getProjectPath(container.path), [container]); // probably move this into fn
 
+    const projectPath = useMemo(() => getProjectPath(container.path), [container]);
     const loaded = !isLoading(loadingState);
 
     const loadGroups = useCallback(async () => {
         setError(undefined);
         setIsDirty(false);
 
-        if (user.isAdmin) {
-            // TODO: is this correct gating?
-            setLoadingState(LoadingState.LOADING);
-            try {
-                const fetchedGroups = await api.security.fetchGroups();
-                const groupsData = fetchedGroups?.container?.groups.filter(group => group.isProjectGroup);
+        setLoadingState(LoadingState.LOADING);
+        try {
+            // Used in DetailsPanels
+            const policyState = await api.security.fetchPolicy(container.id, principalsById, inactiveUsersById);
 
-                const policy = await api.security.fetchPolicy(container.id, principalsById, inactiveUsersById);
-                setPolicy(policy);
+            // Assemble single cohesive data structure representing group data
+            const fetchedGroups = await api.security.fetchGroups();
+            const groupsData = fetchedGroups?.container?.groups.filter(group => group.isProjectGroup);
+            const groupRows = await getGroupMembership();
+            const groupMembershipState = constructGroupMembership(groupsData, groupRows);
 
-                const groupRows = await getGroupMembership();
-                const groupMembership = constructGroupMembership(groupsData, groupRows);
-
-                setSavedGroupMembership(groupMembership);
-                setGroupMembership(groupMembership);
-            } catch (e) {
-                setError(resolveErrorMessage(e) ?? 'Failed to load group data');
-            }
+            setPolicy(policyState);
+            setSavedGroupMembership(groupMembershipState);
+            setGroupMembership(groupMembershipState);
+        } catch (e) {
+            setError(resolveErrorMessage(e) ?? 'Failed to load group data');
         }
 
         setLoadingState(LoadingState.LOADED);
-    }, [api.security, setIsDirty, user]);
+    }, [api.security, container.id, inactiveUsersById, principalsById, setIsDirty]);
 
     useEffect(() => {
         loadGroups();
-    }, []);
+    }, [loadGroups]);
 
     const save = useCallback(async () => {
-        // Add new groups
+        // Create new groups
         const addedGroups = Object.keys(groupMembership).filter(groupId => !(groupId in savedGroupMembership));
-        console.log('addedGroups', addedGroups);
         const newlyAddedGroupIds = await Promise.all(
             addedGroups.map(async groupName => {
                 const createGroupResponse = await api.security.createGroup(groupName, projectPath);
@@ -131,12 +128,11 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             delete newGroupMembership[addedGroup.name];
         });
 
-        // Delete deleted groups
+        // Delete groups
         const deletedGroups = Object.keys(savedGroupMembership).filter(groupId => !(groupId in groupMembership));
-        console.log('deletedGroups', deletedGroups);
         const deletedGroupIds = await Promise.all(
             deletedGroups.map(async groupId => {
-                const createGroupResponse = await api.security.deleteGroup(parseInt(groupId), projectPath);
+                const createGroupResponse = await api.security.deleteGroup(parseInt(groupId, 10), projectPath);
                 return createGroupResponse.deleted;
             })
         );
@@ -149,8 +145,17 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             const currentMembers = newGroupMembership[groupId].members.map(member => member.id);
             const oldMembers = new Set(savedGroupMembership[groupId]?.members.map(member => member.id));
             const addedMembers = currentMembers.filter(id => !oldMembers.has(id));
-            console.log('addedMembers', addedMembers);
-            if (addedMembers.length) await api.security.addGroupMembers(parseInt(groupId), addedMembers, projectPath);
+            if (addedMembers.length)
+                await api.security.addGroupMembers(parseInt(groupId, 10), addedMembers, projectPath);
+        });
+
+        // Delete members
+        Object.keys(newGroupMembership).map(async groupId => {
+            const currentMembers = new Set(newGroupMembership[groupId].members.map(member => member.id));
+            const oldMembers = savedGroupMembership[groupId]?.members.map(member => member.id);
+            const deletedMembers = oldMembers?.filter(id => !currentMembers.has(id));
+            if (deletedMembers.length)
+                await api.security.removeGroupMembers(parseInt(groupId, 10), deletedMembers, projectPath);
         });
 
         // Save updated state
@@ -173,7 +178,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         );
     }, []);
 
-    const addGroup = useCallback(
+    const createGroup = useCallback(
         (name: string) => {
             setGroupMembership({ ...groupMembership, [name]: { groupName: name, members: [] } });
         },
@@ -190,13 +195,13 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         [groupMembership]
     );
 
-    const addUser = useCallback(
-        (userId: number, principalId: string, principalName: string, principalType: string) => {
-            const group = groupMembership[principalId];
-            const newMember = { name: principalName, id: userId, type: principalType };
+    const addMembers = useCallback(
+        (groupId: string, principalId: number, principalName: string, principalType: string) => {
+            const group = groupMembership[groupId];
+            const newMember = { name: principalName, id: principalId, type: principalType };
             setGroupMembership({
                 ...groupMembership,
-                [principalId]: { groupName: group.groupName, members: [...group.members, newMember] },
+                [groupId]: { groupName: group.groupName, members: [...group.members, newMember] },
             });
         },
         [groupMembership]
@@ -204,21 +209,21 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
     const removeMember = useCallback(
         (memberId: number, groupId: string) => {
-            const newGroupMembership = Object.keys(groupMembership).map(gId => {
-                if (gId === groupId) {
-                    const group = groupMembership[gId];
-                    const newMembers = group.members.filter(member => member.id !== memberId);
-                    return { groupName: group.groupName, members: [...newMembers] };
-                } else {
-                    return groupMembership[gId];
-                }
-            });
+            const newGroupMembership = Object.fromEntries(
+                Object.entries(groupMembership).map(([k, v]) => {
+                    const thing = v as any;
+                    if (k === groupId) {
+                        const newMembers = thing.members.filter(member => member.id !== memberId);
+                        return [k, { ...thing, members: [...newMembers] }];
+                    } else {
+                        return [k, thing];
+                    }
+                })
+            );
             setGroupMembership(newGroupMembership);
         },
         [groupMembership]
     );
-
-    console.log('groupMembership', groupMembership);
 
     const usersAndGroups = useMemo(() => {
         return principals.filter(principal => principal.type === 'u' || principal.userId > 0) as List<Principal>; // typing weirdness
@@ -245,9 +250,10 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                     rolesByUniqueName={rolesByUniqueName}
                     principalsById={principalsById}
                     usersAndGroups={usersAndGroups}
-                    addGroup={addGroup}
+
+                    createGroup={createGroup}
                     deleteGroup={deleteGroup}
-                    addUser={addUser}
+                    addMembers={addMembers}
                     removeMember={removeMember}
                     save={save}
                 />

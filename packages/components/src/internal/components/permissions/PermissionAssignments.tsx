@@ -90,8 +90,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         [onChange, policy]
     );
 
-    console.log('policy', policy.toJS());
-
     const onInheritChange = useCallback(() => {
         setDirty(true);
         setInherited(!inherited);
@@ -197,8 +195,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             Save
         </Button>
     );
-
-    console.log('policy', policy.toJS());
 
     return (
         <Row>

@@ -16,7 +16,7 @@ import { getPrincipals } from '../security/actions';
 import { GroupAssignmentsProps } from './GroupAssignments';
 
 export interface GroupProps {
-    addUser: any;
+    addMember: any;
     deleteGroup: any;
     id: any;
     members: any;
@@ -37,7 +37,7 @@ export const Group: FC<GroupProps> = memo(props => {
         onClickAssignment,
         selectedPrincipalId,
         deleteGroup,
-        addUser,
+        addMember,
         onRemoveMember,
         setDirty,
     } = props;
@@ -79,11 +79,11 @@ export const Group: FC<GroupProps> = memo(props => {
         );
     }, [members, usersAndGroups, id]);
 
-    const addAssignment = useCallback(
+    const onSelectMember = useCallback(
         (name: string, formValue: any, selected: Principal) => {
-            addUser(selected.get('userId'), id, selected.get('displayName'), selected.get('type'));
+            addMember(id, selected.get('userId'), selected.get('displayName'), selected.get('type'));
         },
-        [id, addUser]
+        [id, addMember]
     );
 
     return (
@@ -130,7 +130,7 @@ export const Group: FC<GroupProps> = memo(props => {
                     inputClass="col-xs-12"
                     valueKey="userId"
                     labelKey="name"
-                    onChange={addAssignment}
+                    onChange={onSelectMember}
                     selectedOptions={null}
                 />
             </div>

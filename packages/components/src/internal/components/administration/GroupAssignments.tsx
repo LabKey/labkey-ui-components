@@ -12,8 +12,8 @@ import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 import { Group } from './Group';
 
 export interface GroupAssignmentsProps {
-    addGroup: any;
-    addUser: any;
+    createGroup: any;
+    addMembers: any;
     deleteGroup: any;
 
     // TODO
@@ -38,9 +38,9 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         rolesByUniqueName,
         principalsById,
         usersAndGroups,
-        addGroup,
+        createGroup,
         deleteGroup,
-        addUser,
+        addMembers,
         removeMember,
         save,
     } = props;
@@ -93,19 +93,19 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
             setErrorMsg(`Group ${trimmedName} already exists.`);
         } else {
             setDirty(true);
-            addGroup(trimmedName);
+            createGroup(trimmedName);
         }
 
         setNewGroupName('');
     }, [newGroupName]);
 
-    const onAddPrincipal = useCallback(
-        (userId: number, principalId: string, principalName: string, principalType: string) => {
-            setSelectedPrincipalId(userId);
-            addUser(userId, principalId, principalName, principalType);
+    const onAddMember = useCallback(
+        (groupId: string, principalId: number, principalName: string, principalType: string) => {
+            setSelectedPrincipalId(principalId);
+            addMembers(groupId, principalId, principalName, principalType);
             setDirty(true);
         },
-        [addUser]
+        [addMembers]
     );
 
     const onRemoveMember = useCallback(
@@ -163,7 +163,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                                 deleteGroup={deleteGroup}
                                 onRemoveMember={onRemoveMember}
                                 setDirty={setDirty}
-                                addUser={onAddPrincipal}
+                                addMember={onAddMember}
                             />
                         ))}
 

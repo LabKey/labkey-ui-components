@@ -16,7 +16,7 @@
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
 
-import { User } from '../../..';
+import { SEARCH_PLACEHOLDER, User } from '../../..';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
@@ -70,7 +70,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         onFindByIds,
         onSignIn,
         onSignOut,
-        searchPlaceholder = getPrimaryAppProperties().searchPlaceholder,
+        searchPlaceholder = getPrimaryAppProperties()?.searchPlaceholder ?? SEARCH_PLACEHOLDER,
         showFolderMenu,
         showNavMenu,
         showNotifications,

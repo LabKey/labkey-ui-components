@@ -613,8 +613,11 @@ import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveF
 import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
 import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
-import { LabelPrintingProvider, LabelPrintingProviderProps, withLabelPrintingContext, useLabelPrintingContext } from './internal/components/labels/LabelPrintingContextProvider';
-
+import {
+    LabelPrintingProviderProps,
+    withLabelPrintingContext,
+    useLabelPrintingContext,
+} from './internal/components/labels/LabelPrintingContextProvider';
 
 import {
     AppReducers,
@@ -1489,7 +1492,6 @@ export {
     SubNavWithContext,
     //BarTender
     BarTenderSettingsForm,
-    LabelPrintingProvider,
     PrintLabelsModal,
     withLabelPrintingContext,
     useLabelPrintingContext,

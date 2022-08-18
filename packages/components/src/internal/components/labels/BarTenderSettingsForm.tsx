@@ -258,17 +258,16 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
     };
 
     render(): React.ReactNode {
-        const { title = BARTENDER_CONFIGURATION_TITLE, titleCls} = this.props;
-        const { dirty, connectionValidated, } = this.state;
+        const { title = BARTENDER_CONFIGURATION_TITLE, titleCls } = this.props;
+        const { dirty, connectionValidated } = this.state;
 
         return (
             <Row>
                 <Col xs={12}>
                     <Panel title={title}>
-                        <Panel.Heading >
-                            <div className={titleCls}>{title}</div>
-                        </Panel.Heading>
-                        <Panel.Body >
+                        {!titleCls && <Panel.Heading>{title}</Panel.Heading>}
+                        <Panel.Body>
+                            {titleCls && <h4 className={titleCls}>{title}</h4>}
                             {dirty && (
                                 <div className="permissions-save-alert">
                                     <Alert bsStyle="info">

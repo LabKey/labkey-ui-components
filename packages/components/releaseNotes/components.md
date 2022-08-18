@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.208.0
+*Released*: 18 August 2022
+* Multi-tab grids for Find Sample by Ids grids
+  * Added FindSamplesByIdsPageBase
+
 ### version 2.207.2
 *Released*: 18 August 2022
 * Issue 46102: EditableDetailPanel cannot clear Multi Value Foreign Key Columns

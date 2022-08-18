@@ -31,6 +31,7 @@ import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSes
 import { SearchScope } from './constants';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
+export const FIND_SAMPLE_BY_ID_METRIC_AREA = 'findSamplesById';
 
 export function getFinderStartText(parentEntityDataTypes: EntityDataType[], enabledEntityTypes: string[]): string {
     const hintText = 'Start by adding ';

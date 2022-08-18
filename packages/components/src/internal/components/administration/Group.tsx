@@ -48,7 +48,7 @@ export const Group: FC<GroupProps> = memo(props => {
                 <span className="permissions-title"> {name} </span>
             </div>
         );
-    }, []);
+    }, [name]);
 
     const generateLinks = useCallback(() => {
         const usersCount = members.filter(member => member.type === 'u').length;
@@ -70,7 +70,7 @@ export const Group: FC<GroupProps> = memo(props => {
     const onDeleteGroup = useCallback(() => {
         deleteGroup(id);
         setDirty(true);
-    }, [deleteGroup]);
+    }, [deleteGroup, id, setDirty]);
 
     const principalsToAdd = useMemo(() => {
         const addedPrincipalIds = new Set(members.map(principal => principal.id));
@@ -94,7 +94,7 @@ export const Group: FC<GroupProps> = memo(props => {
             useGreyTheme={true}
             isExpandable={true}
         >
-            <div className="permissions-role-container">
+            <div className="group-membership-container">
                 <Button
                     className="pull-right alert-button"
                     bsStyle="danger"
@@ -104,9 +104,9 @@ export const Group: FC<GroupProps> = memo(props => {
                     Delete Empty Group
                 </Button>
 
-                <div className="group-assignments-row">
+                <div className="group-member-row">
                     {members.map(member => (
-                        <li key={member.id} className="permissions-member-li">
+                        <li key={member.id} className="group-member-row__member">
                             <RemovableButton
                                 id={member.id}
                                 display={member.name}
@@ -114,7 +114,7 @@ export const Group: FC<GroupProps> = memo(props => {
                                     onClickAssignment(userId);
                                 }}
                                 onRemove={memberId => {
-                                    onRemoveMember(memberId, id);
+                                    onRemoveMember(id, memberId);
                                 }}
                                 bsStyle={selectedPrincipalId === member.id ? 'primary' : undefined}
                                 added={false}

@@ -29,7 +29,7 @@ import { showPremiumFeatures } from './utils';
 import { GroupMembership} from "./models";
 
 // todo: comment this up
-const constructGroupMembership = (groupsData, groupRows) => {
+const constructGroupMembership = (groupsData, groupRows): GroupMembership => {
     const groupsWithMembers = groupRows.reduce((prev, curr) => {
         const groupId = curr['GroupId'];
         if (groupId === -1) {
@@ -208,15 +208,14 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     );
 
     const removeMember = useCallback(
-        (memberId: number, groupId: string) => {
+        (groupId: string, memberId: number) => {
             const newGroupMembership = Object.fromEntries(
-                Object.entries(groupMembership).map(([k, v]) => {
-                    const thing = v as any;
-                    if (k === groupId) {
-                        const newMembers = thing.members.filter(member => member.id !== memberId);
-                        return [k, { ...thing, members: [...newMembers] }];
+                Object.entries(groupMembership).map(([id, group]) => {
+                    if (id === groupId) {
+                        const newMembers = group.members.filter(member => member.id !== memberId);
+                        return [id, { ...group, members: [...newMembers] }];
                     } else {
-                        return [k, thing];
+                        return [id, group];
                     }
                 })
             );
@@ -226,7 +225,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     );
 
     const usersAndGroups = useMemo(() => {
-        return principals.filter(principal => principal.type === 'u' || principal.userId > 0) as List<Principal>; // typing weirdness
+        return principals.filter(principal => principal.type === 'u' || principal.userId > 0) as List<Principal>;
     }, [principals]);
 
     const description = useMemo(() => {
@@ -250,7 +249,6 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                     rolesByUniqueName={rolesByUniqueName}
                     principalsById={principalsById}
                     usersAndGroups={usersAndGroups}
-
                     createGroup={createGroup}
                     deleteGroup={deleteGroup}
                     addMembers={addMembers}

@@ -96,30 +96,3 @@
     margin-top: 5px;
     margin-bottom: 20px;
 }
-
-//todo: move
-.group-assignments-row {
-    padding: 0 0 15px 0;
-    min-height: 49px;
-}
-
-.group-assignment-panel {
-    padding-top: 15px;
-
-    & > .row {
-        margin: 15px 0 0 0;
-    }
-
-    & .container-expandable-heading--clause {
-        margin-left: 55px !important;
-    }
-}
-
-.create-group {
-    display: flex;
-}
-
-.create-group-input {
-    //width: 300px;
-    margin-right: 15px;
-}

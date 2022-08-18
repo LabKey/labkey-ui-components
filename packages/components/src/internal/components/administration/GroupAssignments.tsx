@@ -10,23 +10,19 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 
 import { Group } from './Group';
+import {GroupMembership} from "./models";
 
 export interface GroupAssignmentsProps {
-    createGroup: any;
-    addMembers: any;
-    deleteGroup: any;
-
-    // TODO
-    groupMembership: any;
+    addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
+    createGroup: (name: string) => void;
+    deleteGroup: (id: string) => void;
+    groupMembership: GroupMembership;
     policy: SecurityPolicy;
-    // taken from InjectedPermissionsPage
     principalsById: Map<number, Principal>;
-    removeMember: any;
+    removeMember: (groupId: string, memberId: number) => void;
     rolesByUniqueName: Map<string, SecurityRole>;
-
-    save: any;
+    save: () => Promise<void>;
     showDetailsPanel?: boolean;
-
     usersAndGroups: List<Principal>;
 }
 
@@ -59,7 +55,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
 
     const saveButton = (
         <Button
-            className="pull-right alert-button permissions-assignment-save-btn"
+            className="pull-right alert-button group-management-save-btn"
             bsStyle="success"
             disabled={submitting || !dirty}
             onClick={onSave}
@@ -78,18 +74,17 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
 
     const onChangeNewGroupName = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => setNewGroupName(event.target.value),
-        [newGroupName]
+        []
     );
 
-    const onAddNewGroup = useCallback(() => {
+    const onCreateGroup = useCallback(() => {
         setErrorMsg(undefined);
 
         const trimmedName = newGroupName.trim();
         if (
             trimmedName in groupMembership ||
-            Object.values(groupMembership).some(group => group['groupName'] === trimmedName)
+            Object.values(groupMembership).some(group => group.groupName === trimmedName)
         ) {
-            // todo flag for typing
             setErrorMsg(`Group ${trimmedName} already exists.`);
         } else {
             setDirty(true);
@@ -97,7 +92,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         }
 
         setNewGroupName('');
-    }, [newGroupName]);
+    }, [createGroup, groupMembership, newGroupName]);
 
     const onAddMember = useCallback(
         (groupId: string, principalId: number, principalName: string, principalType: string) => {
@@ -109,9 +104,9 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     );
 
     const onRemoveMember = useCallback(
-        (memberId: number, groupId: string) => {
+        (groupId: string, memberId: number) => {
             setSelectedPrincipalId(undefined);
-            removeMember(memberId, groupId);
+            removeMember(groupId, memberId);
             setDirty(true);
         },
         [removeMember]
@@ -124,7 +119,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                     <Panel.Heading> Application Groups and Assignments </Panel.Heading>
                     <Panel.Body className="group-assignment-panel">
                         {dirty && (
-                            <div className="permissions-save-alert">
+                            <div className="group-save-alert">
                                 <Alert bsStyle="info">
                                     You have unsaved changes.
                                     {saveButton}
@@ -134,9 +129,8 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
 
                         <div className="create-group">
                             <input
-                                className="form-control create-group-input"
+                                className="form-control create-group__input"
                                 placeholder="New group name"
-                                name="create-group"
                                 value={newGroupName}
                                 onChange={onChangeNewGroupName}
                             />
@@ -145,20 +139,20 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                                 className="alert-button"
                                 bsStyle="info"
                                 disabled={newGroupName.trim() === ''}
-                                onClick={onAddNewGroup}
+                                onClick={onCreateGroup}
                             >
                                 Create Group
                             </Button>
                         </div>
 
-                        {Object.keys(groupMembership).map(k => (
+                        {Object.keys(groupMembership).map(id => (
                             <Group
-                                key={k}
-                                id={k}
-                                name={groupMembership[k].groupName}
+                                key={id}
+                                id={id}
+                                name={groupMembership[id].groupName}
                                 usersAndGroups={usersAndGroups}
                                 onClickAssignment={showDetails}
-                                members={groupMembership[k].members}
+                                members={groupMembership[id].members}
                                 selectedPrincipalId={selectedPrincipalId}
                                 deleteGroup={deleteGroup}
                                 onRemoveMember={onRemoveMember}
@@ -167,10 +161,10 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                             />
                         ))}
 
-                        {/* todo: styling instead of br */}
-                        <br />
-                        {errorMsg && <Alert>{errorMsg}</Alert>}
-                        {saveButton}
+                        <div className="group-assignment-panel__footer">
+                            {errorMsg && <Alert>{errorMsg}</Alert>}
+                            {saveButton}
+                        </div>
                     </Panel.Body>
                 </Panel>
             </Col>

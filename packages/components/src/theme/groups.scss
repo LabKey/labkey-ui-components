@@ -1,0 +1,41 @@
+
+.group-save-alert {
+    margin-top: 15px;
+}
+
+.group-assignment-panel {
+    padding-top: 15px;
+
+    & > .row {
+        margin: 15px 0 0 0;
+    }
+
+    & .container-expandable-heading--clause {
+        margin-left: 55px !important;
+    }
+}
+
+.create-group {
+    display: flex;
+}
+
+.create-group__input {
+    margin-right: 15px;
+}
+
+.group-assignment-panel__footer {
+    margin-top: 16px;
+}
+
+.group-membership-container {
+    padding: 15px;
+}
+
+.group-member-row {
+    padding: 0 0 15px 0;
+    min-height: 49px;
+}
+
+.group-member-row__member {
+    display: block;
+}

@@ -199,7 +199,7 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
     includeColumn: ['AliquotedFromLSID'],
 };
 
-export const STARTER_AUDIT_QUERIES = [
+export const COMMON_AUDIT_QUERIES = [
     { value: 'attachmentauditevent', label: 'Attachment Events' },
     { value: 'domainauditevent', label: 'Domain Events' },
     { value: 'domainpropertyauditevent', label: 'Domain Property Events' },
@@ -216,13 +216,6 @@ export const STARTER_AUDIT_QUERIES = [
     { value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders },
 ];
 
-export const COMMON_PROFESSIONAL_AUDIT_QUERIES = [
-    ...STARTER_AUDIT_QUERIES,
-    { value: 'experimentauditevent', label: 'Assay Events' },
-    { value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true },
-].sort(naturalSortByProperty('label'));
-
-export const SAMPLE_MANAGER_PROFESSIONAL_AUDIT_QUERIES = [
-    ...COMMON_PROFESSIONAL_AUDIT_QUERIES,
-    { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true },
-].sort(naturalSortByProperty('label'));
+export const ASSAY_AUDIT_QUERY = { value: 'experimentauditevent', label: 'Assay Events' };
+export const WORKFLOW_AUDIT_QUERY = { value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true };
+export const SOURCE_AUDIT_QUERY = { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true };

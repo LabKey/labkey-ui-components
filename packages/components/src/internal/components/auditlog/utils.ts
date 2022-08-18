@@ -6,13 +6,14 @@ import React, { ReactNode } from 'react';
 import { Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { AppURL } from '../../..';
-import { isBiologicsEnabled, isSampleManagerEnabled, isSampleManagerProfessionalEnabled } from '../../app/utils';
+import { AppURL, naturalSortByProperty } from '../../..';
+import { isAssayEnabled, isSampleManagerEnabled, isWorkflowEnabled } from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 import {
-    STARTER_AUDIT_QUERIES,
-    SAMPLE_MANAGER_PROFESSIONAL_AUDIT_QUERIES,
-    COMMON_PROFESSIONAL_AUDIT_QUERIES
+    ASSAY_AUDIT_QUERY,
+    COMMON_AUDIT_QUERIES,
+    SOURCE_AUDIT_QUERY,
+    WORKFLOW_AUDIT_QUERY
 } from '../samples/constants';
 
 export type AuditQuery = {
@@ -23,13 +24,14 @@ export type AuditQuery = {
 };
 
 export function getAuditQueries(): AuditQuery[] {
-    if (isBiologicsEnabled())
-        return COMMON_PROFESSIONAL_AUDIT_QUERIES;
-    if (isSampleManagerProfessionalEnabled())
-        return SAMPLE_MANAGER_PROFESSIONAL_AUDIT_QUERIES;
+    let queries = [...COMMON_AUDIT_QUERIES];
+    if (isWorkflowEnabled())
+        queries.push(WORKFLOW_AUDIT_QUERY);
+    if (isAssayEnabled())
+        queries.push(ASSAY_AUDIT_QUERY)
     if (isSampleManagerEnabled())
-        return STARTER_AUDIT_QUERIES;
-    return [];
+        queries.push(SOURCE_AUDIT_QUERY);
+    return queries.sort(naturalSortByProperty('label'));
 }
 
 export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {

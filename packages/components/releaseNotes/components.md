@@ -4,7 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD August 2022
 * BarTender integration for LKB
-  * ...TODO fill in details
+  * Move withLabelPrintingContext, PrintLabelsModal, BarTenderSettingsForm from LKSM
+  * Move label printing related actions, constants, models, SCSS from LKSM
+  * Add LabelPrintingProvider to AppContexts
   * FindSamplesByIdsPageBase update to support conditionally add support for label printing
 
 ### version 2.208.0

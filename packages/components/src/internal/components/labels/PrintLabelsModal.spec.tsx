@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button, ModalTitle } from 'react-bootstrap';
 import { mount } from 'enzyme';
+
 import { PrintLabelsModalImpl } from './PrintLabelsModal';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { LoadingState } from '../../../public/LoadingState';
 import { SelectInput } from '../forms/input/SelectInput';
 import { Alert } from '../base/Alert';
-//import { Alert, LoadingState, makeTestActions, makeTestQueryModel, SchemaQuery, SelectInput } from '@labkey/components';
 
 
 describe("<PrintLabelsModal/>", () => {

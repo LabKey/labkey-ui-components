@@ -1,4 +1,5 @@
 import React, { ComponentType, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
+
 import { userCanPrintLabels } from './utils';
 import { fetchBarTenderConfiguration } from './actions';
 import { useServerContext } from '../base/ServerContext';

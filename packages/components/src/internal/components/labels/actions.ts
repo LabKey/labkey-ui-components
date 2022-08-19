@@ -1,11 +1,12 @@
 import { ActionURL, Ajax, Utils } from '@labkey/api';
+
 import { BarTenderConfiguration, BarTenderResponse } from './models';
-import { SM_CONTROLLER_NAME } from './constants';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { getQueryModelExportParams } from '../../../public/QueryModel/utils';
 import { EXPORT_TYPES } from '../../constants';
 import { SAMPLE_EXPORT_CONFIG } from '../samples/constants';
 import { buildURL } from '../../url/AppURL';
+import { SAMPLE_MANAGER_CONTROLLER_NAME } from '../../app/constants';
 
 /**
  * Parse the response from the BarTenderConfiguration apis
@@ -23,7 +24,7 @@ function handleBarTenderConfigurationResponse(response: any): BarTenderConfigura
 export function fetchBarTenderConfiguration(): Promise<BarTenderConfiguration> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL(SM_CONTROLLER_NAME, 'getBarTenderConfiguration.api'),
+            url: ActionURL.buildURL(SAMPLE_MANAGER_CONTROLLER_NAME, 'getBarTenderConfiguration.api'),
             method: 'GET',
             success: Utils.getCallbackWrapper(response => resolve(handleBarTenderConfigurationResponse(response))),
             failure: Utils.getCallbackWrapper(resp => {
@@ -43,7 +44,7 @@ export function saveBarTenderConfiguration(btConfig: BarTenderConfiguration): Pr
         const params = { serviceURL: btConfig.serviceURL, defaultLabel: btConfig.defaultLabel };
 
         Ajax.request({
-            url: ActionURL.buildURL(SM_CONTROLLER_NAME, 'saveBarTenderConfiguration.api'),
+            url: ActionURL.buildURL(SAMPLE_MANAGER_CONTROLLER_NAME, 'saveBarTenderConfiguration.api'),
             method: 'POST',
             jsonData: params,
             success: Utils.getCallbackWrapper(response => resolve(handleBarTenderConfigurationResponse(response))),
@@ -97,7 +98,7 @@ export function printGridLabels(sampleModel: QueryModel, labelFormat: string, nu
     const params = getQueryModelExportParams(sampleModel, EXPORT_TYPES.LABEL, {...SAMPLE_EXPORT_CONFIG, ['query.showRows']: ['SELECTED'], labelFormat, numCopies})
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL(SM_CONTROLLER_NAME, "printBarTenderLabels.api", undefined, { returnUrl: false }),
+            url: buildURL(SAMPLE_MANAGER_CONTROLLER_NAME, "printBarTenderLabels.api", undefined, { returnUrl: false }),
             method: 'GET',
             params,
             success: (request: XMLHttpRequest) =>  {

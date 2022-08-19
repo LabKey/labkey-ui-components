@@ -1,18 +1,9 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
-// import {
-//     Alert,
-//     HelpLink,
-//     InjectedQueryModels,
-//     LabelHelpTip,
-//     LoadingSpinner,
-//     QuerySelect,
-//     SchemaQuery,
-//     withQueryModels
-// } from '@labkey/components';
-import {BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR} from './constants';
+
+import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR } from './constants';
 import { printGridLabels } from './actions';
-import { BarTenderResponse } from "./models";
+import { BarTenderResponse } from './models';
 import { HelpLink } from '../../util/helpLinks';
 import { QuerySelect } from '../forms/QuerySelect';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Col, Panel, FormControl, Row, Button } from 'react-bootstrap';
-import { BarTenderConfiguration, BarTenderResponse } from "./models";
-import { fetchBarTenderConfiguration, saveBarTenderConfiguration } from "./actions";
-import { printBarTenderLabels } from "./actions";
+
+import { BarTenderConfiguration, BarTenderResponse } from './models';
+import { fetchBarTenderConfiguration, saveBarTenderConfiguration, printBarTenderLabels } from './actions';
 import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE, LABEL_NOT_FOUND_ERROR } from './constants';
 import { Alert } from '../base/Alert';

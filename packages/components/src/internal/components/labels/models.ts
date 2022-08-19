@@ -1,4 +1,4 @@
-import {immerable} from "immer";
+import { immerable } from 'immer';
 
 export interface BarTenderConfigurationModel {
     serviceURL?: string,

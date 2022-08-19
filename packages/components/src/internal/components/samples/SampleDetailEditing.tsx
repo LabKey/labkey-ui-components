@@ -33,6 +33,7 @@ import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from 
 interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
     sampleSet: string;
+    noun?: string;
 }
 
 interface State {
@@ -146,7 +147,7 @@ class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContext
 
     render() {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { sampleSet, ...editableDetailPanelProps } = this.props;
+        const { noun, sampleSet, ...editableDetailPanelProps } = this.props;
         const { hasError, sampleTypeDomainFields } = this.state;
         const { model, title } = editableDetailPanelProps;
         let { detailHeader } = editableDetailPanelProps;
@@ -192,7 +193,7 @@ class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContext
                 />
                 {isAliquot && (
                     <Panel>
-                        <Panel.Heading>Original Sample Details</Panel.Heading>
+                        <Panel.Heading>Original {noun ?? 'Sample'} Details</Panel.Heading>
                         <Panel.Body>
                             {root?.value !== parent?.value && (
                                 <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table">

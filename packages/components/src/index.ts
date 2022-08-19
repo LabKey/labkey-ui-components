@@ -1534,6 +1534,7 @@ export type {
     IParentOption,
     MaterialOutput,
     EntityChoice,
+    EntityParentType
 } from './internal/components/entities/models';
 export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
 export type { InjectedPermissionsPage } from './internal/components/permissions/withPermissionsPage';

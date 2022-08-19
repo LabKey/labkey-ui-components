@@ -29,6 +29,8 @@ interface CreateSamplesSubMenuProps {
     menuCurrentChoice?: string;
     menuText?: string;
     navigate: (url: string | AppURL) => any;
+    noun?: string;
+    nounPlural?: string;
     parentKey?: string;
     parentQueryModel?: QueryModel;
     parentType?: string;
@@ -63,6 +65,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         inlineItemsCount,
         currentProductId,
         targetProductId,
+        noun,
+        nounPlural
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -179,6 +183,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     onSubmit={onSampleCreationSubmit}
                     selectionKey={selectedItems ? undefined : selectionKey}
                     selectedItems={selectedItems}
+                    noun={noun}
+                    nounPlural={nounPlural}
                 />
             )}
         </>

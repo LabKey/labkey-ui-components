@@ -51,11 +51,11 @@ import {
     QueryColumn,
     QueryInfo,
     QueryModel,
-    resolveErrorMessage,
+    resolveErrorMessage, resolveSchemaQuery,
     SAMPLE_STATE_COLUMN_NAME,
     SampleCreationType,
     SampleCreationTypeModel,
-    SampleTypeDataType,
+    SampleTypeDataType, SchemaQuery,
     SelectInput,
     User,
     useServerContext,
@@ -72,7 +72,7 @@ import { BulkAddData } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
 
-import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
+import { getCurrentProductName, isSampleManagerEnabled } from '../../app/utils';
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
@@ -176,6 +176,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
     getIsDirty?: () => boolean;
+    gridInsertOnly?: boolean;
     hideParentEntityButtons?: boolean; // Used if you have an initial parent but don't want to enable ability to change it
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
@@ -189,11 +190,12 @@ interface OwnProps {
     onCancel?: () => void;
     onChangeInsertOption?: (isMerge: boolean) => void;
     onFileChange?: (files?: string[]) => void;
-    onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
+    onParentChange?: (parentTypes: Map<string, List<EntityParentType>>, currentTarget: string) => void;
     onTargetChange?: (target: string) => void;
+    originalParents?: string[];
     parentDataTypes?: List<EntityDataType>;
     saveToPipeline?: boolean;
-    selectedParents?: string[];
+    selectedParents?: Map<string, List<EntityParentType>>;
     selectedTarget?: string; // controlling target from a parent component
     setIsDirty?: (isDirty: boolean) => void;
 }
@@ -291,12 +293,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     componentDidUpdate(prevProps: Readonly<Props>): void {
         if (
             prevProps.entityDataType !== this.props.entityDataType ||
-            prevProps.selectedParents !== this.props.selectedParents
+            prevProps.originalParents !== this.props.originalParents
         ) {
             this.init();
         }
 
-        if (this.props.importOnly && this.props.tab !== EntityInsertPanelTabs.First)
+        if ((this.props.importOnly || this.props.gridInsertOnly) && this.props.tab !== EntityInsertPanelTabs.First)
             this.props.selectStep(EntityInsertPanelTabs.First);
     }
 
@@ -308,6 +310,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         if (this.props.importOnly) {
             return ['Import ' + this.capNounPlural + ' from File'];
         }
+
+        if (this.props.gridInsertOnly) {
+            return ['Create ' + this.capNounPlural + ' from Grid'];
+        }
+
         return ['Create ' + this.capNounPlural + ' from Grid', 'Import ' + this.capNounPlural + ' from File'];
     };
 
@@ -322,7 +329,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             target,
             isItemSamples,
             selectedTarget,
-            selectedParents,
+            originalParents,
+            selectedParents
         } = this.props;
 
         const { creationType } = this.state;
@@ -353,7 +361,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             insertModel.getTargetEntityTypeValue() === selected &&
             insertModel.selectionKey === selectionKey &&
             (insertModel.originalParents === parents ||
-                insertModel.originalParents === selectedParents ||
+                insertModel.originalParents === originalParents ||
                 !allowParents)
         ) {
             return;
@@ -366,7 +374,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             entityDataType,
             initialEntityType: selected,
             numPerParent,
-            originalParents: allowParents ? parents ?? selectedParents : undefined,
+            originalParents: allowParents ? parents ?? originalParents : undefined,
             selectionKey,
         });
 
@@ -384,6 +392,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 allowParents,
                 isItemSamples
             );
+
+            if (selectedParents)
+                partialModel['entityParents'] = selectedParents;
 
             this.gridInit(insertModel.merge(partialModel) as EntityIdCreationModel);
         } catch {
@@ -607,7 +618,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 editorModel: updatedModels.editorModels[0],
             }),
             () => {
-                this.props.onParentChange?.(updates.entityParents);
+                this.props.onParentChange?.(updates.entityParents, this.state.insertModel.targetEntityType.value);
             }
         );
     }
@@ -694,7 +705,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     renderAliquotResetMsg = (): ReactNode => {
         return (
             <Alert bsStyle="info" className="notification-container">
-                Parent {sampleManagerIsPrimaryApp() ? 'and source' : ''} types cannot be changed when creating aliquots.{' '}
+                Parent and source types cannot be changed when creating aliquots.{' '}
                 <a className="pull-right" onClick={this.resetCreationType}>
                     Clear Aliquots and Reset.
                 </a>

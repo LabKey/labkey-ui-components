@@ -100,10 +100,14 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
                       onMouseOver={[Function]}
                     >
                       <FontAwesomeIcon
+                        beat={false}
+                        beatFade={false}
                         border={false}
+                        bounce={false}
                         className="label-help-icon"
+                        fade={false}
                         fixedWidth={false}
-                        flip={null}
+                        flip={false}
                         icon={
                           Object {
                             "icon": Array [
@@ -120,15 +124,20 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
                         inverse={false}
                         listItem={false}
                         mask={null}
+                        maskId={null}
                         pull={null}
                         pulse={false}
                         rotation={null}
+                        shake={false}
                         size="1x"
                         spin={false}
+                        spinPulse={false}
+                        spinReverse={false}
                         style={Object {}}
                         swapOpacity={false}
                         symbol={false}
                         title=""
+                        titleId={null}
                         transform={null}
                       >
                         <svg

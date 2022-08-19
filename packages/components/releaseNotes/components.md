@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * TabbedGridPanel update for display of panel title when grid has tabs
 
+### version 2.208.0
+*Released*: 18 August 2022
+* Multi-tab grids for Find Sample by Ids grids
+  * Added FindSamplesByIdsPageBase
+
+### version 2.207.2
+*Released*: 18 August 2022
+* Issue 46102: EditableDetailPanel cannot clear Multi Value Foreign Key Columns
+* Pin dependencies to latest equivalent version
+
 ### version 2.207.1
 *Released*: 15 August 2022
 * Issue 46025: Don't show "Source Events" as audit query for LKB

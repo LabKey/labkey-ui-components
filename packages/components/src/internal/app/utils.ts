@@ -165,10 +165,6 @@ export function isSampleManagerEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.samplemanagement !== undefined;
 }
 
-export function isSampleManagerProfessionalEnabled(moduleContext?: any): boolean {
-    return isSampleManagerEnabled(moduleContext) && isWorkflowEnabled(moduleContext)
-}
-
 export function isBiologicsEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.biologics !== undefined;
 }
@@ -476,15 +472,14 @@ export function getMenuSectionConfigs(
         moduleContext,
         isBioPrimary && isRequestsEnabled(moduleContext) ? 7 : 12
     );
-    const workflowConfig = isWorkflowEnabled(moduleContext) ? getWorkflowSectionConfig(appBase) : undefined;
 
     if (inSMApp) {
         if (storageConfig) {
             sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
         }
         let configs = Map<string, MenuSectionConfig>({});
-        if (workflowConfig) {
-            configs = configs.set(WORKFLOW_KEY, workflowConfig);
+        if (isWorkflowEnabled(moduleContext)) {
+            configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig(appBase));
         }
         configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase));
 

@@ -1,6 +1,5 @@
 import React, { ComponentType, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { WithRouterProps } from 'react-router';
-
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
 import {
@@ -25,26 +24,25 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
 import { SampleGridButtonProps } from '../samples/models';
 import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
-import { User } from '../base/models/User';
 import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SamplesEditButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-
 import { arrayEquals } from '../../util/utils';
-
 import { FIND_SAMPLE_BY_ID_METRIC_AREA } from './utils';
 import { getSampleTypesFromFindByIdQuery } from './actions';
-import { resolveErrorMessage } from "../../util/messaging";
+import { resolveErrorMessage } from '../../util/messaging';
+import { useLabelPrintingContext } from '../labels/LabelPrintingContextProvider';
+import { PrintLabelsModal } from '../labels/PrintLabelsModal';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+import { useServerContext } from '../base/ServerContext';
 
 const TYPE_GRID_PREFIX = 'find-by-id-';
 
 interface FindSamplesByIdsTabProps extends InjectedQueryModels {
     allSamplesModel: QueryModel;
-    getGridPanelDisplay?: (activeGridId: string) => React.ReactNode;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     sampleGridIds?: string[];
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
-    user: User;
 }
 
 export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(props => {
@@ -53,11 +51,13 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
         allSamplesModel,
         sampleGridIds,
         queryModels,
-        getGridPanelDisplay,
         gridButtons,
-        user,
         samplesEditableGridProps,
     } = props;
+    const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
+    const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
+    const { user } = useServerContext();
+    const { createNotification } = useNotificationsContext();
 
     const afterSampleActionComplete = useCallback((): void => {
         actions.loadAllModels(true);
@@ -78,12 +78,24 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
         return models;
     }, [allSamplesModel, sampleGridIds, queryModels]);
 
-    const getShowViewMenu = useCallback((activeGridId: string) => {
-        if (!activeGridId || activeGridId === allSamplesModel?.id)
-            return false;
+    const onPrintLabel = (modelId: string): void => {
+        const _model = allQueryModels[modelId] ?? allSamplesModel;
+        setPrintDialogModel(_model);
+    };
 
-        return true;
-    }, [allSamplesModel]);
+    const onCancelPrint = (): void => {
+        setPrintDialogModel(undefined);
+    };
+
+    const afterPrint = (numSamples: number, numLabels: number): void => {
+        setPrintDialogModel(undefined);
+        createNotification(
+            'Successfully printed ' +
+                numLabels +
+                (numSamples === 0 ? ' blank ' : '') +
+                (numLabels > 1 ? ' labels.' : ' label.')
+        );
+    };
 
     return (
         <>
@@ -96,6 +108,8 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                 actions={actions}
                 getSampleAuditBehaviorType={getSampleAuditBehaviorType}
                 samplesEditableGridProps={samplesEditableGridProps}
+                canPrintLabels={canPrintLabels}
+                onPrintLabel={onPrintLabel}
                 gridButtons={gridButtons}
                 gridButtonProps={{
                     excludedMenuKeys: [SamplesEditButtonSections.IMPORT],
@@ -106,11 +120,23 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                     alwaysShowTabs: true,
                     getAdvancedExportOptions,
                     exportFilename: 'SamplesFoundById',
-                    getGridPanelDisplay,
-                    getShowViewMenu
+                    showViewMenu: false,
                 }}
                 user={user}
             />
+            {printDialogModel && allSamplesModel && (
+                <PrintLabelsModal
+                    show={true}
+                    onCancel={onCancelPrint}
+                    afterPrint={afterPrint}
+                    schemaName={allSamplesModel.schemaName}
+                    queryName={allSamplesModel.queryName}
+                    sampleIds={[...printDialogModel.selections]}
+                    labelTemplate={labelTemplate}
+                    printServiceUrl={printServiceUrl}
+                    showSelection={true}
+                />
+            )}
         </>
     );
 });
@@ -163,17 +189,14 @@ export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = mem
 });
 
 interface OwnProps {
-    getGridPanelDisplay?: (activeGridId: string) => React.ReactNode;
     gridButtons: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
-    onListModelAdd?: (listModelId: string) => void;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
-    user: User;
 }
 
 type Props = OwnProps & InjectedQueryModels & WithRouterProps;
 
 const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
-    const { queryModels, actions, location, onListModelAdd } = props;
+    const { queryModels, actions, location } = props;
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [error, setError] = useState<ReactNode>(undefined);
     const [missingIds, setMissingIds] = useState<{ [key: string]: string[] }>(undefined);
@@ -230,7 +253,6 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
 
                     const listId = createGridModelId('find-samples-by-id', listSchemaQuery);
                     setSampleListModelId(listId);
-                    onListModelAdd?.(listId);
 
                     const headerId = createGridModelId('find-samples-by-id-header', listSchemaQuery);
                     setHeaderModelId(headerId);
@@ -297,4 +319,4 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
     );
 });
 
-export const FindSamplesByIdsPageBase = withQueryModels<Props>(FindSamplesByIdsPageBaseImpl);
+export const FindSamplesByIdsPageBase = withQueryModels<OwnProps & WithRouterProps>(FindSamplesByIdsPageBaseImpl);

@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD August 2022
 * BarTender integration for LKB
   * ...TODO fill in details
+  * FindSamplesByIdsPageBase update to support conditionally add support for label printing
 
 ### version 2.208.0
 *Released*: 18 August 2022

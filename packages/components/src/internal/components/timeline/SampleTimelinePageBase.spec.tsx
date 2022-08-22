@@ -11,9 +11,9 @@ import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
 import { TimelineEventModel } from '../auditlog/models';
 import { SampleStateType } from '../samples/constants';
 
-import { SampleTimelinePageBaseImpl } from './SampleTimelinePageBase';
-
 import { sleep } from '../../testHelpers';
+
+import { SampleTimelinePageBaseImpl } from './SampleTimelinePageBase';
 
 describe('<SampleTimelinePageBase/>', () => {
     const dummyData = SampleTimelineJson;
@@ -56,28 +56,36 @@ describe('<SampleTimelinePageBase/>', () => {
     });
 
     test('With selected sample registration event', async () => {
-        const tree = renderer.create(<SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={registrationEvent} />);
+        const tree = renderer.create(
+            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={registrationEvent} />
+        );
         await sleep();
         expect(tree).toMatchSnapshot();
         tree.unmount();
     });
 
     test('With selected sample update event', async () => {
-        const tree = renderer.create(<SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={sampleUpdateEvent} />);
+        const tree = renderer.create(
+            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={sampleUpdateEvent} />
+        );
         await sleep();
         expect(tree).toMatchSnapshot();
         tree.unmount();
     });
 
     test('With selected assay re-import event', async () => {
-        const tree = renderer.create(<SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={assayReimportEvent} />);
+        const tree = renderer.create(
+            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={assayReimportEvent} />
+        );
         await sleep();
         expect(tree).toMatchSnapshot();
         tree.unmount();
     });
 
     test('With selected job', async () => {
-        const tree = renderer.create(<SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={jobCompleted} />);
+        const tree = renderer.create(
+            <SampleTimelinePageBaseImpl {...DEFAULT_PROPS} initialSelectedEvent={jobCompleted} />
+        );
         await sleep();
         expect(tree).toMatchSnapshot();
         tree.unmount();

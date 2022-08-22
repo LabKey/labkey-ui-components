@@ -81,8 +81,7 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
             const timelineEvents = await api.samples.getTimelineEvents(sampleId, timezoneAbbr);
             setEvents(timelineEvents);
             setTimelineLoaded(true);
-        }
-        catch (error) {
+        } catch (error) {
             setTimelineLoaded(true);
             setError(error);
         }

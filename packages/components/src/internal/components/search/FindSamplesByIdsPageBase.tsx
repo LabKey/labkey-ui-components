@@ -28,13 +28,15 @@ import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SamplesEditButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { arrayEquals } from '../../util/utils';
-import { FIND_SAMPLE_BY_ID_METRIC_AREA } from './utils';
-import { getSampleTypesFromFindByIdQuery } from './actions';
+
 import { resolveErrorMessage } from '../../util/messaging';
 import { useLabelPrintingContext } from '../labels/LabelPrintingContextProvider';
 import { PrintLabelsModal } from '../labels/PrintLabelsModal';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { useServerContext } from '../base/ServerContext';
+
+import { getSampleTypesFromFindByIdQuery } from './actions';
+import { FIND_SAMPLE_BY_ID_METRIC_AREA } from './utils';
 
 const TYPE_GRID_PREFIX = 'find-by-id-';
 
@@ -46,14 +48,7 @@ interface FindSamplesByIdsTabProps extends InjectedQueryModels {
 }
 
 export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(props => {
-    const {
-        actions,
-        allSamplesModel,
-        sampleGridIds,
-        queryModels,
-        gridButtons,
-        samplesEditableGridProps,
-    } = props;
+    const { actions, allSamplesModel, sampleGridIds, queryModels, gridButtons, samplesEditableGridProps } = props;
     const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
     const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
     const { user } = useServerContext();

@@ -1,9 +1,6 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR } from './constants';
-import { printGridLabels } from './actions';
-import { BarTenderResponse } from './models';
 import { HelpLink } from '../../util/helpLinks';
 import { QuerySelect } from '../forms/QuerySelect';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
@@ -12,38 +9,42 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-interface Props  {
-    show: boolean
+import { BarTenderResponse } from './models';
+import { printGridLabels } from './actions';
+import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR } from './constants';
+
+interface Props {
     afterPrint?: (numSamples: number, numLabels: number) => void;
+    labelTemplate: string;
     onCancel?: (any) => void;
-    schemaName: string
-    queryName: string
-    sampleIds: string[]
-    showSelection: boolean
-    labelTemplate: string
-    printServiceUrl: string
+    printServiceUrl: string;
+    queryName: string;
+    sampleIds: string[];
+    schemaName: string;
+    show: boolean;
+    showSelection: boolean;
 }
 
 interface State {
-    submitting: boolean
-    error: any
-    numCopies: number
-    labelTemplate: string
-    sampleCount: number
+    error: any;
+    labelTemplate: string;
+    numCopies: number;
+    sampleCount: number;
+    submitting: boolean;
 }
 
-const PRINT_ERROR_MESSAGE = "There was a problem printing the labels for the selected samples. Verify the label template chosen is still valid and the connection to BarTender has been configured properly.";
+const PRINT_ERROR_MESSAGE =
+    'There was a problem printing the labels for the selected samples. Verify the label template chosen is still valid and the connection to BarTender has been configured properly.';
 
 export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQueryModels, State> {
-
-    _modelId = "sampleModel";
+    _modelId = 'sampleModel';
 
     constructor(props: Props & InjectedQueryModels) {
         super(props);
 
         // because of a timing issue with the clearSelections on componentWillUnmount, use distinct model ids for single sample vs grid selection case
         if (!props.showSelection) {
-            this._modelId = "singleSampleModel";
+            this._modelId = 'singleSampleModel';
         }
 
         this.state = {
@@ -52,14 +53,18 @@ export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQu
             numCopies: 1,
             labelTemplate: props.labelTemplate,
             sampleCount: props.sampleIds.length,
-        }
+        };
     }
 
     componentDidMount() {
-        this.props.actions.addModel({
-            id: this._modelId,
-            schemaQuery: SchemaQuery.create(this.props.schemaName, this.props.queryName)
-        }, true, true);
+        this.props.actions.addModel(
+            {
+                id: this._modelId,
+                schemaQuery: SchemaQuery.create(this.props.schemaName, this.props.queryName),
+            },
+            true,
+            true
+        );
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -77,82 +82,85 @@ export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQu
     }
 
     getSampleCount() {
-        return this.state.sampleCount
+        return this.state.sampleCount;
     }
 
-    onCopyCountChange = (event) => {
+    onCopyCountChange = event => {
         let numCopies = parseInt(event.target.value);
 
         if (isNaN(numCopies)) {
             numCopies = undefined;
         }
 
-        this.setState(() => ({numCopies}));
-    }
+        this.setState(() => ({ numCopies }));
+    };
 
-    onLabelTemplateChange = (event) => {
-        let labelTemplate = event.target.value;
-        this.setState(() => ({labelTemplate}));
-    }
+    onLabelTemplateChange = event => {
+        const labelTemplate = event.target.value;
+        this.setState(() => ({ labelTemplate }));
+    };
 
     onConfirmPrint = () => {
-        this.setState(() => ({ error: undefined, submitting: true}))
+        this.setState(() => ({ error: undefined, submitting: true }));
         const labelTemplate = this.state.labelTemplate.trim();
         printGridLabels(this.getModel(), labelTemplate, this.state.numCopies, this.props.printServiceUrl)
             .then((btResponse: BarTenderResponse): void => {
                 if (btResponse.ranToCompletion()) {
                     this.onLabelPrintSuccess();
-                }
-                else if (btResponse.faulted() && btResponse.isLabelUnavailableError(labelTemplate)) {
+                } else if (btResponse.faulted() && btResponse.isLabelUnavailableError(labelTemplate)) {
                     this.onLabelPrintError(btResponse.getFaultMessage(), LABEL_NOT_FOUND_ERROR);
-                }
-                else {
+                } else {
                     this.onLabelPrintError(btResponse.getFaultMessage());
                 }
             })
-            .catch((reason) => {
+            .catch(reason => {
                 this.onLabelPrintError(reason);
             });
-    }
+    };
 
-    onLabelPrintSuccess = ():void => {
+    onLabelPrintSuccess = (): void => {
         const { afterPrint } = this.props;
         const { sampleCount } = this.state;
 
-        this.setState(() => ({submitting: false}));
+        this.setState(() => ({ submitting: false }));
         if (afterPrint) {
-            afterPrint(sampleCount, sampleCount > 0 ? this.state.numCopies * sampleCount: this.state.numCopies);
+            afterPrint(sampleCount, sampleCount > 0 ? this.state.numCopies * sampleCount : this.state.numCopies);
         }
     };
 
-    onLabelPrintError = (reason: string, errorMessage?: string):void => {
+    onLabelPrintError = (reason: string, errorMessage?: string): void => {
         console.error(reason);
-        this.setState( () => ({
+        this.setState(() => ({
             submitting: false,
-            error: errorMessage || PRINT_ERROR_MESSAGE
+            error: errorMessage || PRINT_ERROR_MESSAGE,
         }));
     };
 
-    getTitle() : string {
-        let numSamples = this.getSampleCount();
+    getTitle(): string {
+        const numSamples = this.getSampleCount();
 
         if (numSamples === 0) {
-            return "Print Labels with BarTender";
-        }
-        else {
-            return "Print Labels for " + numSamples + (numSamples === 1 ? " Sample" : " Samples") + " with BarTender";
+            return 'Print Labels with BarTender';
+        } else {
+            return 'Print Labels for ' + numSamples + (numSamples === 1 ? ' Sample' : ' Samples') + ' with BarTender';
         }
     }
 
     changeSampleSelection = (name: string, value: string) => {
-        const sampleIds = value ? value.split(",") : []
-        this.setState(() => ({sampleCount: sampleIds.length}));
-        this.props.actions.replaceSelections(this._modelId,  sampleIds)
-    }
+        const sampleIds = value ? value.split(',') : [];
+        this.setState(() => ({ sampleCount: sampleIds.length }));
+        this.props.actions.replaceSelections(this._modelId, sampleIds);
+    };
 
-    isReadyForPrint() : boolean {
+    isReadyForPrint(): boolean {
         const { labelTemplate, numCopies } = this.state;
-        return labelTemplate !== undefined && labelTemplate.trim().length > 0 && numCopies !== undefined && numCopies > 0 && this.getSampleCount() > 0;
+        return (
+            labelTemplate !== undefined &&
+            labelTemplate.trim().length > 0 &&
+            numCopies !== undefined &&
+            numCopies > 0 &&
+            this.getSampleCount() > 0
+        );
     }
 
     renderForm() {
@@ -162,20 +170,17 @@ export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQu
 
         let message;
         if (sampleCount === 0) {
-            message = "Select samples to print labels for.";
-        }
-        else if (showSelection) {
+            message = 'Select samples to print labels for.';
+        } else if (showSelection) {
             message = "Confirm you've selected the samples you want and the proper label template.";
-        }
-        else {
-            message = "Choose the number of copies of the label for this sample to print and confirm the label template.";
+        } else {
+            message =
+                'Choose the number of copies of the label for this sample to print and confirm the label template.';
         }
 
         return (
             <>
-                <div className="bottom-spacing">
-                {message}
-                </div>
+                <div className="bottom-spacing">{message}</div>
                 <div>
                     <b>Number of copies</b>
                     <input
@@ -202,9 +207,9 @@ export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQu
                                 previewOptions={true}
                                 required={false}
                                 schemaQuery={SchemaQuery.create(schemaName, queryName)}
-                                displayColumn={"Name"}
-                                valueColumn={"RowId"}
-                                value={this.props.sampleIds.join(",")}
+                                displayColumn="Name"
+                                valueColumn="RowId"
+                                value={this.props.sampleIds.join(',')}
                             />
                         </div>
                     )}
@@ -212,7 +217,10 @@ export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQu
                         <b>
                             Label template
                             <LabelHelpTip title="BarTender Label Template">
-                                <p>Provide the label template to use with BarTender. The path should be relative to the default folder configured in the BarTender web service.</p>
+                                <p>
+                                    Provide the label template to use with BarTender. The path should be relative to the
+                                    default folder configured in the BarTender web service.
+                                </p>
                             </LabelHelpTip>
                         </b>
                         <input
@@ -225,7 +233,7 @@ export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQu
                     </div>
                 </div>
             </>
-        )
+        );
     }
 
     render() {
@@ -241,30 +249,36 @@ export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQu
 
                 <Modal.Body>
                     <Alert>{error}</Alert>
-                    {submitting ?
-                        <LoadingSpinner msg={"Printing ..."}/>
-                        :
-                        sampleModel && !sampleModel.isLoading ? this.renderForm() : <LoadingSpinner/>
-                    }
+                    {submitting ? (
+                        <LoadingSpinner msg="Printing ..." />
+                    ) : sampleModel && !sampleModel.isLoading ? (
+                        this.renderForm()
+                    ) : (
+                        <LoadingSpinner />
+                    )}
                 </Modal.Body>
 
                 <Modal.Footer>
                     {onCancel && (
-                        <Button bsClass={'btn btn-default pull-left'} onClick={onCancel}>
+                        <Button bsClass="btn btn-default pull-left" onClick={onCancel}>
                             Cancel
                         </Button>
                     )}
-                    <div className={"pull-right"}>
-                        <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">BarTender help</HelpLink>
-                        <Button bsClass={'btn btn-success'}
-                                onClick={this.onConfirmPrint}
-                                disabled={submitting || !this.isReadyForPrint()}>
+                    <div className="pull-right">
+                        <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
+                            BarTender help
+                        </HelpLink>
+                        <Button
+                            bsClass="btn btn-success"
+                            onClick={this.onConfirmPrint}
+                            disabled={submitting || !this.isReadyForPrint()}
+                        >
                             Yes, Print
                         </Button>
                     </div>
                 </Modal.Footer>
             </Modal>
-        )
+        );
     }
 }
 

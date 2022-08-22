@@ -55,10 +55,13 @@ describe('BarTenderSettingsForm', () => {
                 {...DEFAULT_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
                     labelprinting: getLabelPrintingTestAPIWrapper(jest.fn, {
-                        fetchBarTenderConfiguration: () => Promise.resolve(new BarTenderConfiguration({
-                            defaultLabel: 'testDefaultLabel',
-                            serviceURL: 'testServerURL'
-                        })),
+                        fetchBarTenderConfiguration: () =>
+                            Promise.resolve(
+                                new BarTenderConfiguration({
+                                    defaultLabel: 'testDefaultLabel',
+                                    serviceURL: 'testServerURL',
+                                })
+                            ),
                     }),
                 })}
             />

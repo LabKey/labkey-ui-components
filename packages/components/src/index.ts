@@ -1493,7 +1493,7 @@ export {
     // SubNavWithContext
     useSubNavContext,
     SubNavWithContext,
-    //BarTender
+    // BarTender
     BarTenderSettingsForm,
     PrintLabelsModal,
     withLabelPrintingContext,
@@ -1593,4 +1593,4 @@ export type { HorizontalBarData } from './internal/components/chart/HorizontalBa
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
 export type { EditableGridPanelForUpdateWithLineageProps } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-export type { LabelPrintingProviderProps } from './internal/components/labels/LabelPrintingContextProvider'
+export type { LabelPrintingProviderProps } from './internal/components/labels/LabelPrintingContextProvider';

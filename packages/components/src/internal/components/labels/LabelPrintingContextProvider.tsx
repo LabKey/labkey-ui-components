@@ -1,9 +1,11 @@
 import React, { ComponentType, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
 
+import { useServerContext } from '../base/ServerContext';
+
+import { isSampleManagerEnabled } from '../../app/utils';
+
 import { userCanPrintLabels } from './utils';
 import { fetchBarTenderConfiguration } from './actions';
-import { useServerContext } from '../base/ServerContext';
-import { isSampleManagerEnabled } from '../../app/utils';
 
 interface State {
     canPrintLabels: boolean;
@@ -43,7 +45,9 @@ export const LabelPrintingProvider: FC = memo(({ children }) => {
     return <LabelPrintingContext.Provider value={labelContext}>{children}</LabelPrintingContext.Provider>;
 });
 
-export function withLabelPrintingContext<T>(Component: ComponentType<T & LabelPrintingProviderProps>): ComponentType<T> {
+export function withLabelPrintingContext<T>(
+    Component: ComponentType<T & LabelPrintingProviderProps>
+): ComponentType<T> {
     return props => {
         const context = useLabelPrintingContext();
         return <Component {...props} {...context} />;

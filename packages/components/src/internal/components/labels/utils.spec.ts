@@ -1,5 +1,6 @@
-import { userCanPrintLabels } from './utils';
 import { TEST_USER_GUEST, TEST_USER_READER, TEST_USER_EDITOR, TEST_USER_APP_ADMIN } from '../../userFixtures';
+
+import { userCanPrintLabels } from './utils';
 
 describe('userCanPrintLabels', () => {
     test('guest', () => {

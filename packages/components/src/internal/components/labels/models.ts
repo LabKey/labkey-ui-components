@@ -1,8 +1,8 @@
 import { immerable } from 'immer';
 
 export interface BarTenderConfigurationModel {
-    serviceURL?: string,
-    defaultLabel?: string,
+    defaultLabel?: string;
+    serviceURL?: string;
 }
 
 export class BarTenderConfiguration implements BarTenderConfigurationModel {
@@ -21,10 +21,9 @@ export class BarTenderConfiguration implements BarTenderConfigurationModel {
 }
 
 enum BarTenderResponseStatus {
-    RanToCompletion='RanToCompletion',
-    Faulted = 'Faulted'
+    Faulted = 'Faulted',
+    RanToCompletion = 'RanToCompletion',
 }
-
 
 /*
 BarTender Web Service responses settings configured as:
@@ -57,21 +56,21 @@ Label Template not found:
     }
  */
 export interface BarTenderResponseModel {
-    Version: string,
-    Status: string,
-    WaitStatus: string,
-    Messages: Array<BarTenderMessages>,
+    Messages: BarTenderMessages[];
+    Status: string;
+    Version: string;
+    WaitStatus: string;
 }
 
 export interface BarTenderMessages {
-    ActionName?: string,
-    Level: number,
-    Text?: string,
+    ActionName?: string;
+    Level: number;
+    Text?: string;
 }
 
 export class BarTenderResponse implements BarTenderResponseModel {
     [immerable] = true;
-    readonly Messages: Array<BarTenderMessages>;
+    readonly Messages: BarTenderMessages[];
     readonly Status: string;
     readonly Version: string;
     readonly WaitStatus: string;
@@ -91,11 +90,11 @@ export class BarTenderResponse implements BarTenderResponseModel {
     }
 
     getFaultMessage(): string {
-        return this.Messages.map(msg => msg.Text).join("\n");
+        return this.Messages.map(msg => msg.Text).join('\n');
     }
 
     isLabelUnavailableError(label: string): boolean {
-        //best we can do is to look in the error message as this doesn't have a specific property to indicate this error
+        // best we can do is to look in the error message as this doesn't have a specific property to indicate this error
         const message = this.getFaultMessage();
         return message.indexOf(BarTenderResponse.LABEL_NOT_FOUND_MSG) >= 0;
     }

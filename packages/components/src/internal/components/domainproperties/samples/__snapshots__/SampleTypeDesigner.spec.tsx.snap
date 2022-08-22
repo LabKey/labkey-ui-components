@@ -1048,6 +1048,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "entity": EntityServerAPIWrapper {
           "getDataOperationConfirmationData": [Function],
         },
+        "labelprinting": LabelPrintingServerAPIWrapper {
+          "fetchBarTenderConfiguration": [Function],
+        },
         "picklist": PicklistServerAPIWrapper {
           "getPicklistCountsBySampleType": [Function],
           "getPicklistDeleteData": [Function],

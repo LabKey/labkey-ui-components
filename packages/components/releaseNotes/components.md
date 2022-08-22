@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.209.0
+*Released*: 22 August 2022
+* BarTender integration for LKB
+  * Move withLabelPrintingContext, PrintLabelsModal, BarTenderSettingsForm from LKSM
+  * Move label printing related actions, constants, models, SCSS from LKSM
+  * Add LabelPrintingProvider to AppContexts
+  * FindSamplesByIdsPageBase update to support conditionally add support for label printing
+
 ### version 2.208.0
 *Released*: 18 August 2022
 * Multi-tab grids for Find Sample by Ids grids

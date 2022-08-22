@@ -1069,6 +1069,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "getSampleStatuses": [Function],
           "getSampleStorageId": [Function],
           "getSelectionLineageData": [Function],
+          "getTimelineEvents": [Function],
           "loadFinderSearches": [Function],
         },
         "security": ServerSecurityAPIWrapper {

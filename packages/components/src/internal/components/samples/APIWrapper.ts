@@ -87,7 +87,7 @@ export function getSamplesTestAPIWrapper(
         getSampleStorageId: mockFn(),
         getFieldLookupFromSelection: mockFn(),
         loadFinderSearches: mockFn(),
-        getTimelineEvents: mockFn,
+        getTimelineEvents: mockFn(),
         ...overrides,
     };
 }

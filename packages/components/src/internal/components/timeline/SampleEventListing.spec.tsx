@@ -8,6 +8,16 @@ import DUMMY_TIMELINE from '../../../test/data/SampleTimeline.json';
 
 import { SampleEventListing } from './SampleEventListing';
 
+beforeAll(() => {
+    LABKEY.container = {
+        formats: {
+            dateFormat: 'yyyy-MM-dd',
+            dateTimeFormat: 'yyyy-MM-dd HH:mm',
+            numberFormat: null,
+        },
+    };
+});
+
 describe('<SampleEventListing/>', () => {
     const dummyData = DUMMY_TIMELINE;
     const events: TimelineEventModel[] = [];

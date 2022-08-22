@@ -3,6 +3,7 @@ import React, { ComponentType, FC, memo, useContext, useEffect, useMemo, useStat
 import { userCanPrintLabels } from './utils';
 import { fetchBarTenderConfiguration } from './actions';
 import { useServerContext } from '../base/ServerContext';
+import { isSampleManagerEnabled } from '../../app/utils';
 
 interface State {
     canPrintLabels: boolean;
@@ -25,14 +26,14 @@ export const LabelPrintingProvider: FC = memo(({ children }) => {
     const { user } = useServerContext();
 
     useEffect(() => {
-        if (userCanPrintLabels(user)) {
+        if (userCanPrintLabels(user) && isSampleManagerEnabled()) {
             fetchBarTenderConfiguration().then(btConfiguration => {
                 setLabelTemplate(btConfiguration.defaultLabel);
                 setCanPrintLabels(!!btConfiguration.serviceURL);
                 setPrintServiceUrl(btConfiguration.serviceURL);
             });
         }
-    }, []);
+    }, [user]);
 
     const labelContext = useMemo<LabelPrintingProviderProps>(
         () => ({ labelTemplate, printServiceUrl, canPrintLabels }),

@@ -614,6 +614,13 @@ import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveFromPicklistButton';
 import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
+import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
+import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
+import {
+    LabelPrintingProviderProps,
+    withLabelPrintingContext,
+    useLabelPrintingContext,
+} from './internal/components/labels/LabelPrintingContextProvider';
 
 import {
     AppReducers,
@@ -1491,6 +1498,11 @@ export {
     // SubNavWithContext
     useSubNavContext,
     SubNavWithContext,
+    // BarTender
+    BarTenderSettingsForm,
+    PrintLabelsModal,
+    withLabelPrintingContext,
+    useLabelPrintingContext,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1586,3 +1598,4 @@ export type { HorizontalBarData } from './internal/components/chart/HorizontalBa
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
 export type { EditableGridPanelForUpdateWithLineageProps } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
+export type { LabelPrintingProviderProps } from './internal/components/labels/LabelPrintingContextProvider';

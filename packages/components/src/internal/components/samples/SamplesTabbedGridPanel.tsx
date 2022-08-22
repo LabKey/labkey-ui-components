@@ -46,7 +46,7 @@ interface Props extends InjectedQueryModels {
     initialTabId?: string;
     // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     modelId?: string;
-    onPrintLabel?: () => void;
+    onPrintLabel?: (modelId?: string) => void;
     onSampleTabSelect?: (modelId: string) => void;
     sampleAliquotType?: ALIQUOT_FILTER_MODE;
     // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component

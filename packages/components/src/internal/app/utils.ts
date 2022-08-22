@@ -209,7 +209,7 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
 }
 
 export function isELNEnabled(moduleContext?: any): boolean {
-    return hasModule('LabBook', moduleContext);
+    return hasModule('LabBook', moduleContext) && isFeatureEnabled(ProductFeature.ELN, moduleContext);
 }
 
 export function isRequestsEnabled(moduleContext?: any): boolean {

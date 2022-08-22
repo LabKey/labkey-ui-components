@@ -7,7 +7,7 @@ import { Map } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { AppURL, naturalSortByProperty } from '../../..';
-import { isAssayEnabled, isSampleManagerEnabled, isWorkflowEnabled } from '../../app/utils';
+import { isAssayEnabled, isSampleManagerEnabled, isWorkflowEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 import {
     ASSAY_AUDIT_QUERY,
@@ -29,7 +29,7 @@ export function getAuditQueries(): AuditQuery[] {
         queries.push(WORKFLOW_AUDIT_QUERY);
     if (isAssayEnabled())
         queries.push(ASSAY_AUDIT_QUERY)
-    if (isSampleManagerEnabled())
+    if (isSampleManagerEnabled() && sampleManagerIsPrimaryApp())
         queries.push(SOURCE_AUDIT_QUERY);
     return queries.sort(naturalSortByProperty('label'));
 }

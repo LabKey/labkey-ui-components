@@ -1095,7 +1095,7 @@ export {
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
     SampleTypeInsightsPanel,
-    //timeline
+    // timeline
     SampleTimelinePageBase,
     // entities
     EntityTypeDeleteConfirmModal,

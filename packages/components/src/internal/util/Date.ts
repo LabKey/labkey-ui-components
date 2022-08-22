@@ -179,19 +179,16 @@ export function getNextDateStr(currentDateStr: string): string {
     return '' + year + '-' + twoDigit(month) + '-' + twoDigit(day);
 }
 
-//TODO add jest
+// TODO add jest
 export function filterDate(date: Date, start: Date, end: Date) {
-    let dateOnly = new Date(date.getTime());
+    const dateOnly = new Date(date.getTime());
     dateOnly.setHours(0, 0, 0, 0);
 
-    if (start == null && end == null)
-        return true;
+    if (start == null && end == null) return true;
 
-    if (start != null && end == null)
-        return dateOnly >= start;
+    if (start != null && end == null) return dateOnly >= start;
 
-    if (start == null && end != null)
-        return dateOnly <= end;
+    if (start == null && end != null) return dateOnly <= end;
 
-    return dateOnly >= start && dateOnly <= end
+    return dateOnly >= start && dateOnly <= end;
 }

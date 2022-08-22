@@ -10,6 +10,8 @@ import { FinderReport } from '../search/models';
 
 import { loadFinderSearches } from '../search/actions';
 
+import { TimelineEventModel } from '../auditlog/models';
+
 import {
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
@@ -22,12 +24,28 @@ import {
 } from './actions';
 import { SampleState } from './models';
 import { SampleOperation } from './constants';
-import { TimelineEventModel } from "../auditlog/models";
 
 export interface SamplesAPIWrapper {
+    getFieldLookupFromSelection: (
+        schemaName: string,
+        queryName: string,
+        selected: any[],
+        fieldKey: string
+    ) => Promise<string[]>;
+
     getSampleAliquotRows: (sampleId: number | string) => Promise<Array<Record<string, any>>>;
 
     getSampleAssayResultViewConfigs: () => Promise<SampleAssayResultViewConfig[]>;
+
+    getSampleOperationConfirmationData: (
+        operation: SampleOperation,
+        selectionKey: string,
+        rowIds?: number[] | string[]
+    ) => Promise<OperationConfirmationData>;
+
+    getSampleStatuses: () => Promise<SampleState[]>;
+
+    getSampleStorageId: (sampleRowId: number) => Promise<number>;
 
     getSelectionLineageData: (
         selection: List<any>,
@@ -36,26 +54,9 @@ export interface SamplesAPIWrapper {
         columns?: string[]
     ) => Promise<ISelectRowsResult>;
 
-    getSampleStatuses: () => Promise<SampleState[]>;
-
-    getSampleOperationConfirmationData: (
-        operation: SampleOperation,
-        selectionKey: string,
-        rowIds?: number[] | string[]
-    ) => Promise<OperationConfirmationData>;
-
-    getSampleStorageId: (sampleRowId: number) => Promise<number>;
-
-    getFieldLookupFromSelection: (
-        schemaName: string,
-        queryName: string,
-        selected: any[],
-        fieldKey: string
-    ) => Promise<string[]>;
+    getTimelineEvents: (sampleId: number, timezone?: string) => Promise<TimelineEventModel[]>;
 
     loadFinderSearches: () => Promise<FinderReport[]>;
-
-    getTimelineEvents: (sampleId : number, timezone?: string) => Promise<TimelineEventModel[]>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {

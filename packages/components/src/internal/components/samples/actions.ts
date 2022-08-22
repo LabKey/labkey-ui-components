@@ -644,8 +644,10 @@ export function getGroupedSampleDisplayColumns(
                 aliquotHeaderDisplayColumns.push(col);
             }
             // display parent meta for aliquot
-            else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1
-            || sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
+            else if (
+                sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1 ||
+                sampleTypeDomainFields.independentFields.indexOf(colName) > -1
+            ) {
                 aliquotHeaderDisplayColumns.push(col);
             }
         } else {
@@ -1048,7 +1050,9 @@ export function exportTimelineGrid(
     sampleEventIds: number[],
     assayEventIds: number[]
 ): void {
-    const url = ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'ExportTimelineGrid', undefined, { returnUrl: false });
+    const url = ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'ExportTimelineGrid', undefined, {
+        returnUrl: false,
+    });
     const form = new FormData();
     form.append('sampleId', sampleId.toString(10));
     form.append('recentFirst', recentFirst.toString());
@@ -1063,29 +1067,32 @@ export function exportTimelineGrid(
 }
 
 // optional timezone param used for teamcity jest test only
-export function getTimelineEvents(sampleId : number, timezone?: string) : Promise<TimelineEventModel[]> {
+export function getTimelineEvents(sampleId: number, timezone?: string): Promise<TimelineEventModel[]> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getTimeline.api'),
             method: 'GET',
-            params: {sampleId},
-            success: Utils.getCallbackWrapper((response) => {
+            params: { sampleId },
+            success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
-                    let events : TimelineEventModel[] = [];
+                    const events: TimelineEventModel[] = [];
                     if (response.events) {
-                        (response.events as []).forEach((event) => events.push(TimelineEventModel.create(event, timezone)));
+                        (response.events as []).forEach(event =>
+                            events.push(TimelineEventModel.create(event, timezone))
+                        );
                     }
                     resolve(events);
-                }
-                else {
-                    console.error("Sample timeline is empty. Timeline audit may have been disabled.");
-                    reject("There was a problem retrieving the sample timeline. Timeline audit may have been disabled.");
+                } else {
+                    console.error('Sample timeline is empty. Timeline audit may have been disabled.');
+                    reject(
+                        'There was a problem retrieving the sample timeline. Timeline audit may have been disabled.'
+                    );
                 }
             }),
-            failure: Utils.getCallbackWrapper((error) => {
-                console.error("Problem retrieving the sample timeline", error);
-                reject("There was a problem retrieving the sample timeline.");
-            })
+            failure: Utils.getCallbackWrapper(error => {
+                console.error('Problem retrieving the sample timeline', error);
+                reject('There was a problem retrieving the sample timeline.');
+            }),
         });
     });
 }

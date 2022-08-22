@@ -1,46 +1,45 @@
-import React from "react";
+import React from 'react';
 import { Button, Row, Col, Panel, DropdownButton, MenuItem, Checkbox } from 'react-bootstrap';
-import DatePicker from "react-datepicker";
+import DatePicker from 'react-datepicker';
 
 import { Security } from '@labkey/api';
 
-import {UserSelectInput} from "../forms/input/UserSelectInput";
-import {Tip} from "../base/Tip";
-import {Alert} from "../base/Alert";
+import { UserSelectInput } from '../forms/input/UserSelectInput';
+import { Tip } from '../base/Tip';
+import { Alert } from '../base/Alert';
 import {
     App,
     ExpandableFilterToggle,
     filterDate,
     TimelineEventModel,
     TimelineGroupedEventInfo,
-    TimelineView
-} from "../../../index";
-import {exportTimelineGrid} from "../samples/actions";
-
+    TimelineView,
+} from '../../../index';
+import { exportTimelineGrid } from '../samples/actions';
 
 interface Props {
-    sampleId: number
-    sampleName: string
-    events?: TimelineEventModel[]
-    onEventSelection: (selectedEvent: TimelineEventModel) => any
-    selectedEvent?: TimelineEventModel
-    showUserLinks?: boolean
+    events?: TimelineEventModel[];
+    onEventSelection: (selectedEvent: TimelineEventModel) => any;
+    sampleId: number;
+    sampleName: string;
+    selectedEvent?: TimelineEventModel;
+    showUserLinks?: boolean;
 }
 
 interface State {
-    showRecentFirst?: boolean
-    filterExpanded?: boolean
-    includeSampleEvent?: boolean,
-    includeAssayEvent?: boolean,
-    includeJobEvent?: boolean,
-    includeStorageEvent: boolean,
-    filterStartDate?: any
-    filterEndDate?: any
-    filterCreatedBy?: number,
-    filteredEvents?: TimelineEventModel[]
+    filterCreatedBy?: number;
+    filterEndDate?: any;
+    filterExpanded?: boolean;
+    filterStartDate?: any;
+    filteredEvents?: TimelineEventModel[];
+    includeAssayEvent?: boolean;
+    includeJobEvent?: boolean;
+    includeSampleEvent?: boolean;
+    includeStorageEvent: boolean;
+    showRecentFirst?: boolean;
 }
 
-const defaultFilterState : State = {
+const defaultFilterState: State = {
     includeSampleEvent: false,
     includeAssayEvent: false,
     includeJobEvent: false,
@@ -48,58 +47,57 @@ const defaultFilterState : State = {
     filterStartDate: undefined,
     filterEndDate: undefined,
     filterCreatedBy: undefined,
-    filteredEvents: undefined
+    filteredEvents: undefined,
 };
 
 export class SampleEventListing extends React.Component<Props, State> {
-
     constructor(props: Props) {
         super(props);
 
         this.state = {
             showRecentFirst: false,
             filterExpanded: false,
-            ...defaultFilterState
-        }
+            ...defaultFilterState,
+        };
     }
 
-    static isJobEvent(event: TimelineEventModel) : boolean {
-        return event.eventType === 'workflow'
+    static isJobEvent(event: TimelineEventModel): boolean {
+        return event.eventType === 'workflow';
     }
 
-    static isJobCompletionEvent(event: TimelineEventModel) : boolean {
-        return SampleEventListing.isJobEvent(event) && (event.summary === 'Completed job' || event.summary ===  'Completed final task and job');
+    static isJobCompletionEvent(event: TimelineEventModel): boolean {
+        return (
+            SampleEventListing.isJobEvent(event) &&
+            (event.summary === 'Completed job' || event.summary === 'Completed final task and job')
+        );
     }
 
-    static isStorageEvent(event: TimelineEventModel) : boolean {
-        return event.eventType === 'inventory'
+    static isStorageEvent(event: TimelineEventModel): boolean {
+        return event.eventType === 'inventory';
     }
 
-    static isStorageAddEvent(event: TimelineEventModel) : boolean {
-        return SampleEventListing.isStorageEvent(event) && (event.summary === 'Item added to storage');
+    static isStorageAddEvent(event: TimelineEventModel): boolean {
+        return SampleEventListing.isStorageEvent(event) && event.summary === 'Item added to storage';
     }
 
-    static isStorageDiscardEvent(event: TimelineEventModel) : boolean {
-        return SampleEventListing.isStorageEvent(event) && (event.summary === 'Item discarded from storage');
+    static isStorageDiscardEvent(event: TimelineEventModel): boolean {
+        return SampleEventListing.isStorageEvent(event) && event.summary === 'Item discarded from storage';
     }
 
-    static isAssayEvent(event: TimelineEventModel) : boolean {
-        return event.eventType === 'assays'
+    static isAssayEvent(event: TimelineEventModel): boolean {
+        return event.eventType === 'assays';
     }
 
     selectEvent = (selectedEvent: TimelineEventModel) => {
         this.props.onEventSelection(selectedEvent);
     };
 
-    determineEntityConnectionInfo() : TimelineGroupedEventInfo[] {
+    determineEntityConnectionInfo(): TimelineGroupedEventInfo[] {
         const { selectedEvent, events } = this.props;
-        if (!selectedEvent)
-            return null;
+        if (!selectedEvent) return null;
 
-        if (SampleEventListing.isStorageEvent(selectedEvent))
-            return this.determineStorageStatus();
-        else if (SampleEventListing.isJobEvent(selectedEvent))
-            return this.determineJobStatus();
+        if (SampleEventListing.isStorageEvent(selectedEvent)) return this.determineStorageStatus();
+        else if (SampleEventListing.isJobEvent(selectedEvent)) return this.determineJobStatus();
 
         return null;
     }
@@ -107,22 +105,20 @@ export class SampleEventListing extends React.Component<Props, State> {
     determineStorageStatus(): TimelineGroupedEventInfo[] {
         const { events } = this.props;
 
-        let groups : TimelineGroupedEventInfo[] = [];
-        let addEvent: TimelineEventModel = undefined;
-        let lastEvent: TimelineEventModel = undefined;
-        events.forEach((event) => {
+        const groups: TimelineGroupedEventInfo[] = [];
+        let addEvent: TimelineEventModel;
+        let lastEvent: TimelineEventModel;
+        events.forEach(event => {
             if (SampleEventListing.isStorageEvent(event)) {
-                if (!addEvent)
-                    addEvent = event;
-                else
-                    lastEvent = event;
+                if (!addEvent) addEvent = event;
+                else lastEvent = event;
 
                 if (SampleEventListing.isStorageDiscardEvent(event)) {
                     groups.push({
                         firstEvent: addEvent,
-                        lastEvent: lastEvent,
-                        isCompleted: true
-                    })
+                        lastEvent,
+                        isCompleted: true,
+                    });
                     addEvent = undefined;
                     lastEvent = undefined;
                 }
@@ -132,44 +128,43 @@ export class SampleEventListing extends React.Component<Props, State> {
         if (addEvent) {
             groups.push({
                 firstEvent: addEvent,
-                lastEvent: lastEvent,
-                isCompleted: lastEvent ? SampleEventListing.isStorageDiscardEvent(lastEvent) : false
-            })
+                lastEvent,
+                isCompleted: lastEvent ? SampleEventListing.isStorageDiscardEvent(lastEvent) : false,
+            });
         }
 
         return groups;
-    };
+    }
 
     determineJobStatus(): TimelineGroupedEventInfo[] {
         const { selectedEvent, events } = this.props;
-        if (!selectedEvent)
-            return null;
+        if (!selectedEvent) return null;
 
-        let jobInitEvent: TimelineEventModel = undefined;
-        let jobLastEvent: TimelineEventModel = undefined;
-        events.forEach((event) => {
+        let jobInitEvent: TimelineEventModel;
+        let jobLastEvent: TimelineEventModel;
+        events.forEach(event => {
             if (SampleEventListing.isJobEvent(event) && event.isSameEntity(selectedEvent)) {
                 if (!jobInitEvent) {
                     jobInitEvent = event;
-                }
-                else
-                    jobLastEvent = event;
+                } else jobLastEvent = event;
             }
         });
 
-        return [{
-            firstEvent: jobInitEvent,
-            lastEvent: jobLastEvent,
-            isCompleted: jobLastEvent ? SampleEventListing.isJobCompletionEvent(jobLastEvent) : false
-        }]
-    };
+        return [
+            {
+                firstEvent: jobInitEvent,
+                lastEvent: jobLastEvent,
+                isCompleted: jobLastEvent ? SampleEventListing.isJobCompletionEvent(jobLastEvent) : false,
+            },
+        ];
+    }
 
     toggleFilterPanel = () => {
-        this.setState((state)=> {
+        this.setState(state => {
             return {
-                filterExpanded: !state.filterExpanded
-            }
-        })
+                filterExpanded: !state.filterExpanded,
+            };
+        });
     };
 
     renderFilterToggle() {
@@ -182,7 +177,7 @@ export class SampleEventListing extends React.Component<Props, State> {
                 toggleFilterPanel={this.toggleFilterPanel}
                 resetFilter={this.resetFilter}
             />
-        )
+        );
     }
 
     renderHeader() {
@@ -190,23 +185,23 @@ export class SampleEventListing extends React.Component<Props, State> {
         return (
             <div>
                 <Row>
-                    <Col xs={7} className={'font-large timeline-title'}>
+                    <Col xs={7} className="font-large timeline-title">
                         {`Event Timeline for ${sampleName}`}
                     </Col>
                     <Col xs={5}>
-                        <span className={'pull-right'}>
+                        <span className="pull-right">
                             {this.renderSorterDropdown()}
                             {this.renderExportBtn()}
                         </span>
                     </Col>
                 </Row>
-                <hr/>
+                <hr />
             </div>
-        )
+        );
     }
 
     setSort = (showRecentFirst: boolean) => {
-        this.setState(() => ({showRecentFirst}));
+        this.setState(() => ({ showRecentFirst }));
     };
 
     renderSorterDropdown() {
@@ -214,20 +209,16 @@ export class SampleEventListing extends React.Component<Props, State> {
         const selectedSortOption = showRecentFirst ? 'Show Recent first' : 'Show Oldest first';
 
         return (
-            <DropdownButton id={'job-tasks-comments-sort-btn'} title={selectedSortOption} className={'button-right-spacing'}>
-                <MenuItem
-                    key={'oldest'}
-                    onClick={() => this.setSort(false)}
-                    active={!showRecentFirst}
-                >
-                    {'Oldest first'}
+            <DropdownButton
+                id="job-tasks-comments-sort-btn"
+                title={selectedSortOption}
+                className="button-right-spacing"
+            >
+                <MenuItem key="oldest" onClick={() => this.setSort(false)} active={!showRecentFirst}>
+                    Oldest first
                 </MenuItem>
-                <MenuItem
-                    key={'recent'}
-                    onClick={() => this.setSort(true)}
-                    active={showRecentFirst}
-                >
-                    {'Recent first'}
+                <MenuItem key="recent" onClick={() => this.setSort(true)} active={showRecentFirst}>
+                    Recent first
                 </MenuItem>
             </DropdownButton>
         );
@@ -236,23 +227,23 @@ export class SampleEventListing extends React.Component<Props, State> {
     renderExportBtn() {
         return (
             <Tip caption="Export">
-                <Button onClick={this.doExport}><i className={'fa fa-download'}/></Button>
+                <Button onClick={this.doExport}>
+                    <i className="fa fa-download" />
+                </Button>
             </Tip>
-        )
+        );
     }
 
     doExport = () => {
-        const { sampleId} = this.props;
+        const { sampleId } = this.props;
         const { showRecentFirst } = this.state;
 
-        let sampleEventIds : number[] = [];
-        let assayEventIds : number[] = [];
+        const sampleEventIds: number[] = [];
+        const assayEventIds: number[] = [];
         if (this.hasFilter()) {
             this.getFilteredEvents().forEach(event => {
-                if (SampleEventListing.isAssayEvent(event))
-                    assayEventIds.push(event.rowId);
-                else
-                    sampleEventIds.push(event.rowId);
+                if (SampleEventListing.isAssayEvent(event)) assayEventIds.push(event.rowId);
+                else sampleEventIds.push(event.rowId);
             });
         }
 
@@ -265,76 +256,99 @@ export class SampleEventListing extends React.Component<Props, State> {
             <div>
                 {this.renderFilterToggle()}
                 {filterExpanded && this.renderExpandedFilterPanel()}
-                <hr/>
+                <hr />
             </div>
-        )
+        );
     }
 
-    onStartDateChange = (date) => {
+    onStartDateChange = date => {
         this.setState(() => ({
-                filterStartDate: date
-            })
-        );
+            filterStartDate: date,
+        }));
     };
 
-    onEndDateChange = (date) => {
+    onEndDateChange = date => {
         this.setState(() => ({
-                filterEndDate: date
-            })
-        );
+            filterEndDate: date,
+        }));
     };
 
     onSelectChange = (name, formValue, data) => {
         const value = formValue === undefined && data ? data.id : formValue;
-        let filter = {};
+        const filter = {};
         filter[name] = value;
-        this.setState(() => (filter));
+        this.setState(() => filter);
     };
 
-    onEventTypeChange = (event) => {
-        let filter = {};
+    onEventTypeChange = event => {
+        const filter = {};
         filter[event.target.name] = event.target.checked;
-        this.setState(() => (filter))
+        this.setState(() => filter);
     };
 
     hasFilter = () => {
-        const { includeSampleEvent, includeAssayEvent, includeJobEvent, includeStorageEvent, filterCreatedBy, filterStartDate, filterEndDate } = this.state;
-        return includeSampleEvent || includeAssayEvent || includeJobEvent || includeStorageEvent
-            || filterCreatedBy != undefined || filterStartDate != undefined || filterEndDate != undefined;
+        const {
+            includeSampleEvent,
+            includeAssayEvent,
+            includeJobEvent,
+            includeStorageEvent,
+            filterCreatedBy,
+            filterStartDate,
+            filterEndDate,
+        } = this.state;
+        return (
+            includeSampleEvent ||
+            includeAssayEvent ||
+            includeJobEvent ||
+            includeStorageEvent ||
+            filterCreatedBy != undefined ||
+            filterStartDate != undefined ||
+            filterEndDate != undefined
+        );
     };
 
     resetFilter = () => {
-        this.setState(() => (defaultFilterState))
+        this.setState(() => defaultFilterState);
     };
 
     renderExpandedFilterPanel() {
-        const { includeSampleEvent, includeAssayEvent, includeJobEvent, includeStorageEvent, filterCreatedBy, filterStartDate, filterEndDate } = this.state;
+        const {
+            includeSampleEvent,
+            includeAssayEvent,
+            includeJobEvent,
+            includeStorageEvent,
+            filterCreatedBy,
+            filterStartDate,
+            filterEndDate,
+        } = this.state;
 
         return (
-            <Row className={'top-spacing'}>
+            <Row className="top-spacing">
                 <Col xs={3}>
-                    <div className={'list__bold-text'}>Filter Events: </div>
-                    <Checkbox checked={includeSampleEvent} onChange={this.onEventTypeChange}
-                              name={'includeSampleEvent'}>
+                    <div className="list__bold-text">Filter Events: </div>
+                    <Checkbox checked={includeSampleEvent} onChange={this.onEventTypeChange} name="includeSampleEvent">
                         Sample Events
                     </Checkbox>
-                    <Checkbox checked={includeAssayEvent} onChange={this.onEventTypeChange}
-                              name={'includeAssayEvent'}>
+                    <Checkbox checked={includeAssayEvent} onChange={this.onEventTypeChange} name="includeAssayEvent">
                         Assay Events
                     </Checkbox>
-                    <Checkbox checked={includeJobEvent} onChange={this.onEventTypeChange}
-                              name={'includeJobEvent'}>
+                    <Checkbox checked={includeJobEvent} onChange={this.onEventTypeChange} name="includeJobEvent">
                         Job Events
                     </Checkbox>
-                    <Checkbox checked={includeStorageEvent} onChange={this.onEventTypeChange}
-                              name={'includeStorageEvent'}>
+                    <Checkbox
+                        checked={includeStorageEvent}
+                        onChange={this.onEventTypeChange}
+                        name="includeStorageEvent"
+                    >
                         Storage Events
                     </Checkbox>
                 </Col>
                 <Col xs={6}>
-                    <div className={'list__bold-text'}>Filter By: </div>
-                    <Row className={'margin-top'}>
-                        <Col className={'bottom-spacing-less'} xs={3}>User: </Col>
+                    <div className="list__bold-text">Filter By: </div>
+                    <Row className="margin-top">
+                        <Col className="bottom-spacing-less" xs={3}>
+                            User:{' '}
+                        </Col>
                         <Col xs={9}>
                             <UserSelectInput
                                 permissions={Security.effectivePermissions.read}
@@ -349,40 +363,44 @@ export class SampleEventListing extends React.Component<Props, State> {
                         </Col>
                     </Row>
                     <Row>
-                        <Col className={'bottom-spacing-less'} xs={3}>Date: </Col>
+                        <Col className="bottom-spacing-less" xs={3}>
+                            Date:{' '}
+                        </Col>
                         <Col xs={4}>
                             <DatePicker
-                                autoComplete={'off'}
-                                className={'form-control'}
-                                wrapperClassName={'row'}
+                                autoComplete="off"
+                                className="form-control"
+                                wrapperClassName="row"
                                 selectsStart
                                 isClearable
                                 selected={filterStartDate}
                                 startDate={filterStartDate}
                                 endDate={filterEndDate}
-                                name={'startDate'}
+                                name="startDate"
                                 onChange={this.onStartDateChange}
-                                placeholderText={'From'}
-                                dateFormat={App.getDateFormat()}/>
+                                placeholderText="From"
+                                dateFormat={App.getDateFormat()}
+                            />
                         </Col>
                         <Col xs={5}>
                             <Row>
-                                <Col xs={3}/>
+                                <Col xs={3} />
                                 <Col xs={9}>
                                     <DatePicker
-                                        autoComplete={'off'}
-                                        className={'form-control'}
-                                        wrapperClassName={'row'}
+                                        autoComplete="off"
+                                        className="form-control"
+                                        wrapperClassName="row"
                                         selectsEnd
                                         isClearable
                                         selected={filterEndDate}
                                         startDate={filterStartDate}
                                         endDate={filterEndDate}
-                                        name={'endDate'}
+                                        name="endDate"
                                         onChange={this.onEndDateChange}
-                                        placeholderText={'To'}
+                                        placeholderText="To"
                                         minDate={filterStartDate}
-                                        dateFormat={App.getDateFormat()}/>
+                                        dateFormat={App.getDateFormat()}
+                                    />
                                 </Col>
                             </Row>
                         </Col>
@@ -390,59 +408,62 @@ export class SampleEventListing extends React.Component<Props, State> {
                 </Col>
                 <Col xs={3}>
                     <span className="pull-right timeline-filter-btn-group">
-                        <Button
-                            bsStyle="default"
-                            disabled={!this.hasFilter()}
-                            onClick={this.resetFilter}
-                        >
+                        <Button bsStyle="default" disabled={!this.hasFilter()} onClick={this.resetFilter}>
                             Clear
                         </Button>
-                        <span className="timeline-filter-btn-spacer"/>
-                        <Button
-                            className={'timeline-filter-apply-btn'}
-                            bsStyle="primary"
-                            onClick={this.doFilter}
-                        >
+                        <span className="timeline-filter-btn-spacer" />
+                        <Button className="timeline-filter-apply-btn" bsStyle="primary" onClick={this.doFilter}>
                             Apply
                         </Button>
                     </span>
                 </Col>
-
             </Row>
-        )
+        );
     }
 
     doFilter = () => {
         const { events, selectedEvent } = this.props;
-        const { includeSampleEvent, includeAssayEvent, includeJobEvent, includeStorageEvent, filterCreatedBy, filterStartDate, filterEndDate } = this.state;
+        const {
+            includeSampleEvent,
+            includeAssayEvent,
+            includeJobEvent,
+            includeStorageEvent,
+            filterCreatedBy,
+            filterStartDate,
+            filterEndDate,
+        } = this.state;
 
-        if (!this.hasFilter()){
+        if (!this.hasFilter()) {
             this.setState(() => ({
-                    filteredEvents: events
-                })
-            );
+                filteredEvents: events,
+            }));
             return;
         }
 
-        const includeAllEvents = (includeSampleEvent && includeAssayEvent && includeJobEvent && includeStorageEvent)
-            || (!includeSampleEvent && !includeAssayEvent && !includeJobEvent && !includeStorageEvent); //when no item is checked it's treated as no filter.
-        const filterEventType = (type) => {
-            if (includeAllEvents)
-                return true;
-            return (type === App.SAMPLES_KEY && includeSampleEvent)
-                || (type === App.ASSAYS_KEY && includeAssayEvent)
-                || (type === App.WORKFLOW_KEY && includeJobEvent)
-                || (type === 'inventory' && includeStorageEvent);
+        const includeAllEvents =
+            (includeSampleEvent && includeAssayEvent && includeJobEvent && includeStorageEvent) ||
+            (!includeSampleEvent && !includeAssayEvent && !includeJobEvent && !includeStorageEvent); // when no item is checked it's treated as no filter.
+        const filterEventType = type => {
+            if (includeAllEvents) return true;
+            return (
+                (type === App.SAMPLES_KEY && includeSampleEvent) ||
+                (type === App.ASSAYS_KEY && includeAssayEvent) ||
+                (type === App.WORKFLOW_KEY && includeJobEvent) ||
+                (type === 'inventory' && includeStorageEvent)
+            );
         };
 
-        const filterUser = (userId) => {
-            if (filterCreatedBy === undefined)
-                return true;
+        const filterUser = userId => {
+            if (filterCreatedBy === undefined) return true;
             return filterCreatedBy === userId;
         };
 
-        const filteredEvents = events.filter((event) => {
-            return filterEventType(event.eventType) && filterUser(event.eventUserId) && filterDate(event.eventTimestamp, filterStartDate, filterEndDate);
+        const filteredEvents = events.filter(event => {
+            return (
+                filterEventType(event.eventType) &&
+                filterUser(event.eventUserId) &&
+                filterDate(event.eventTimestamp, filterStartDate, filterEndDate)
+            );
         });
 
         let isStaleSelection = false;
@@ -451,14 +472,15 @@ export class SampleEventListing extends React.Component<Props, State> {
             filteredEvents.forEach(event => {
                 if (event.rowId === selectedEvent.rowId && event.eventType === selectedEvent.eventType) {
                     isStaleSelection = false;
-                    return;
                 }
-            })
+            });
         }
 
-        this.setState(() => ({
-                filteredEvents
-            }), () => {
+        this.setState(
+            () => ({
+                filteredEvents,
+            }),
+            () => {
                 if (isStaleSelection) {
                     this.selectEvent(undefined);
                 }
@@ -476,8 +498,7 @@ export class SampleEventListing extends React.Component<Props, State> {
     renderTimelineGrid() {
         const { showRecentFirst } = this.state;
         const filteredEvents = this.getFilteredEvents();
-        if (filteredEvents.length === 0)
-            return <Alert bsStyle="warning">No events match this filter criteria</Alert>;
+        if (filteredEvents.length === 0) return <Alert bsStyle="warning">No events match this filter criteria</Alert>;
 
         const sortedEvents = [...filteredEvents].sort((a, b) => {
             return showRecentFirst ? b.eventTimestamp - a.eventTimestamp : a.eventTimestamp - b.eventTimestamp;
@@ -496,10 +517,10 @@ export class SampleEventListing extends React.Component<Props, State> {
                     />
                 </Col>
             </Row>
-        )
+        );
     }
 
-    render () {
+    render() {
         return (
             <Panel>
                 <Panel.Body>

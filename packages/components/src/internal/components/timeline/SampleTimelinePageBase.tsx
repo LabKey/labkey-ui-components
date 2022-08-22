@@ -31,8 +31,8 @@ import { SampleEventListing } from './SampleEventListing';
 
 interface OwnProps {
     api?: ComponentsAPIWrapper;
+    // for jest test only
     initialSelectedEvent?: TimelineEventModel;
-
     renderAdditionalCurrentStatus?: (
         jobsModel: QueryModel,
         renderCurrentStatusDetailRowFn: (label: string, valueNode: any) => ReactNode
@@ -42,17 +42,13 @@ interface OwnProps {
     sampleJobsGridConfig: QueryConfig;
     sampleName: string;
     sampleSet: string;
-
-    // for jest test on teamcity
-    // sampleJobsModel?: QueryModel
     sampleStatus: SampleStatus;
-
-    skipAuditDetailUserLoading?: boolean;
-
     // for jest test
+    skipAuditDetailUserLoading?: boolean;
+    // for jest test on teamcity
     timezoneAbbr?: string;
 
-    user: User; // for jest test only
+    user: User;
 }
 
 // export for jest

@@ -25,6 +25,8 @@ import {
 } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
 
+import { Location } from '../../util/URL';
+import { createQueryConfigFilteredBySample, getSelectedData, getSelection } from '../../actions';
 
 import { caseInsensitive, findMissingValues, quoteValueWithDelimiters } from '../../util/utils';
 
@@ -54,7 +56,6 @@ import { getSelectedPicklistSamples } from '../picklist/actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
 import { naturalSort, naturalSortByProperty } from '../../../public/sort';
-import { createQueryConfigFilteredBySample, getSelectedData } from '../../actions';
 import { SHARED_CONTAINER_PATH } from '../../constants';
 import { AssayStateModel } from '../assay/models';
 import { createGridModelId } from '../../models';

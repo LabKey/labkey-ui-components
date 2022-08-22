@@ -9,19 +9,17 @@ import { ASSAYS_KEY, ProductFeature, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from 
 
 import { getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './utils';
 import { ASSAY_AUDIT_QUERY, SOURCE_AUDIT_QUERY, WORKFLOW_AUDIT_QUERY } from '../samples/constants';
+import {
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT
+} from '../../../test/data/constants';
 
 describe ('getAuditQueries', () => {
 
     test('LKS starter', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'inventory', 'assay', 'premium'],
-            },
-            samplemanagement: {},
-            inventory: {},
-            core: {
-                productFeatures: [ProductFeature.Assay]
-            }
+            ... TEST_LKS_STARTER_MODULE_CONTEXT
         };
         let auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(12);
@@ -33,14 +31,7 @@ describe ('getAuditQueries', () => {
 
     test('LKSM starter', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'inventory'],
-            },
-            samplemanagement: {},
-            inventory: {},
-            core: {
-                productFeatures: []
-            }
+            ...TEST_LKSM_STARTER_MODULE_CONTEXT
         };
         let auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(11);
@@ -52,14 +43,7 @@ describe ('getAuditQueries', () => {
 
     test("LKSM professional", () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'inventory', 'assay', 'labbook'],
-            },
-            samplemanagement: {},
-            inventory: {},
-            core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay]
-            }
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
         };
         let auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(13);

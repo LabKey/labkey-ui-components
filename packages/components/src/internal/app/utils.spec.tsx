@@ -59,23 +59,17 @@ import {
     SOURCES_KEY,
     WORKFLOW_KEY,
 } from './constants';
+import {
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT
+} from '../../test/data/constants';
 
 describe('getMenuSectionConfigs', () => {
 
     test('LKS starter enabled', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'inventory', 'assay', 'premium'],
-            },
-            samplemanagement: {
-                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            },
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            },
-            core: {
-                productFeatures: [ProductFeature.Assay]
-            }
+            ...TEST_LKS_STARTER_MODULE_CONTEXT
         };
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager');
 
@@ -101,18 +95,7 @@ describe('getMenuSectionConfigs', () => {
 
     test('sampleManager starter enabled', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'inventory'],
-            },
-            samplemanagement: {
-                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            },
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            },
-            core: {
-                productFeatures: []
-            }
+            ...TEST_LKSM_STARTER_MODULE_CONTEXT
         };
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
 
@@ -132,20 +115,9 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([3, NOTEBOOKS_KEY])).toBeFalsy();
     });
 
-    test('sampleManager premium enabled', () => {
+    test('sampleManager professional enabled', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'inventory', 'assay', 'labbook'],
-            },
-            samplemanagement: {
-                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            },
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            },
-            core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN ]
-            }
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
         };
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager');
 
@@ -287,18 +259,7 @@ describe('getMenuSectionConfigs', () => {
 
     test('SM starter enabled, FM current app', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'study', 'premium'],
-            },
-            samplemanagement: {
-                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            },
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            },
-            core: {
-                productFeatures: [ ]
-            }
+            ...TEST_LKSM_STARTER_MODULE_CONTEXT
         };
 
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId);
@@ -320,20 +281,9 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([3, PICKLIST_KEY, 'headerURL'])).toEqual('/labkey/samplemanager/app.view#/picklist');
     });
 
-    test('SM premium, SM current app, storage editor', () => {
+    test('SM professional, SM current app, storage editor', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'study', 'premium', 'assay', 'labbook'],
-            },
-            samplemanagement: {
-                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            },
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            },
-            core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN ]
-            }
+           ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
         };
 
         const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
@@ -353,20 +303,9 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([2, NOTEBOOKS_KEY])).toBeFalsy();
     });
 
-    test('SM premium, ELN, and FM enabled, SM current app, reader', () => {
+    test('SM professional, SM current app, reader', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'study', 'premium', 'labbook', 'assay'],
-            },
-            samplemanagement: {
-                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            },
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            },
-            core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN ]
-            }
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
         };
 
         const configs = getMenuSectionConfigs(TEST_USER_READER, 'sampleManager');

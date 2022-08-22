@@ -19,11 +19,12 @@ import {
     SampleStatusTag,
     TimelineEventModel
 } from "../../../index";
-import {getTimelineEvents} from "./actions";
 import {SampleEventListing} from "./SampleEventListing";
 import {Iterable} from "immutable";
+import {ComponentsAPIWrapper, getDefaultAPIWrapper} from "../../APIWrapper";
 
 interface OwnProps {
+    api?: ComponentsAPIWrapper;
     sampleJobsGridConfig: QueryConfig;
 
     sampleId: number
@@ -39,14 +40,17 @@ interface OwnProps {
     sampleJobsGidId?: string
 
     renderAdditionalCurrentStatus?: (jobsModel: QueryModel, renderCurrentStatusDetailRowFn: (label: string, valueNode: any) => ReactNode ) => ReactNode;
+
+    initialSelectedEvent?: TimelineEventModel // for jest test only
 }
 
-const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = memo(props => {
-    const { sampleId, sampleName, sampleSet, sampleStatus, timezoneAbbr, user, skipAuditDetailUserLoading, renderAdditionalCurrentStatus, queryModels, sampleJobsGidId } = props;
+// export for jest
+export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = memo(props => {
+    const { api, initialSelectedEvent, sampleId, sampleName, sampleSet, sampleStatus, timezoneAbbr, user, skipAuditDetailUserLoading, renderAdditionalCurrentStatus, queryModels, sampleJobsGidId } = props;
 
     const [events, setEvents] = useState<TimelineEventModel[]>(undefined);
     const [timelineLoaded, setTimelineLoaded] = useState<boolean>(false);
-    const [selectedEvent, setSelectedEvent] = useState<TimelineEventModel>(undefined);
+    const [selectedEvent, setSelectedEvent] = useState<TimelineEventModel>(initialSelectedEvent);
     const [error, setError] = useState<React.ReactNode>(undefined);
 
     useEffect(() => {
@@ -57,7 +61,7 @@ const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = memo(prop
         setTimelineLoaded(false);
         setEvents(undefined);
 
-        getTimelineEvents(sampleId, timezoneAbbr).then((events) => {
+        api.samples.getTimelineEvents(sampleId, timezoneAbbr).then((events) => {
             setTimelineLoaded(true);
             setEvents(events);
         }).catch((error) => {
@@ -182,7 +186,7 @@ const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = memo(prop
 
     const renderCurrentStatusDetails = () => {
         const sampleJobsModel = queryModels[sampleJobsGidId];
-        if (!sampleJobsModel || isLoading(sampleJobsModel.rowsLoadingState))
+        if (renderAdditionalCurrentStatus && (!sampleJobsModel || isLoading(sampleJobsModel.rowsLoadingState)))
             return (<LoadingSpinner/>);
 
         const registrationEvent = events[0];
@@ -252,7 +256,7 @@ const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = memo(prop
     )
 });
 
-export const SampleTimelinePageWithQueryModel = withQueryModels<OwnProps>(SampleTimelinePageBaseImpl);
+const SampleTimelinePageWithQueryModel = withQueryModels<OwnProps>(SampleTimelinePageBaseImpl);
 
 export const SampleTimelinePageBase: FC<OwnProps> = memo(props => {
     const { sampleJobsGridConfig } = props;
@@ -269,4 +273,9 @@ export const SampleTimelinePageBase: FC<OwnProps> = memo(props => {
         />
     );
 });
+
+SampleTimelinePageBase.defaultProps = {
+    api: getDefaultAPIWrapper(),
+};
+
 

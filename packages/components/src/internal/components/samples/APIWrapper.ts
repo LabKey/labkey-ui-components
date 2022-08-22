@@ -17,10 +17,12 @@ import {
     getSelectionLineageData,
     getSampleStatuses,
     getSampleStorageId,
+    getTimelineEvents,
     SampleAssayResultViewConfig,
 } from './actions';
 import { SampleState } from './models';
 import { SampleOperation } from './constants';
+import { TimelineEventModel } from "../auditlog/models";
 
 export interface SamplesAPIWrapper {
     getSampleAliquotRows: (sampleId: number | string) => Promise<Array<Record<string, any>>>;
@@ -52,6 +54,8 @@ export interface SamplesAPIWrapper {
     ) => Promise<string[]>;
 
     loadFinderSearches: () => Promise<FinderReport[]>;
+
+    getTimelineEvents: (sampleId : number, timezone?: string) => Promise<TimelineEventModel[]>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
@@ -63,6 +67,7 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleStorageId = getSampleStorageId;
     getFieldLookupFromSelection = getFieldLookupFromSelection;
     loadFinderSearches = loadFinderSearches;
+    getTimelineEvents = getTimelineEvents;
 }
 
 /**
@@ -81,6 +86,7 @@ export function getSamplesTestAPIWrapper(
         getSampleStorageId: mockFn(),
         getFieldLookupFromSelection: mockFn(),
         loadFinderSearches: mockFn(),
+        getTimelineEvents: mockFn,
         ...overrides,
     };
 }

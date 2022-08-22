@@ -1,0 +1,866 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
+<Memo()
+  actions={
+    Object {
+      "addModel": [Function],
+      "clearSelections": [Function],
+      "loadAllModels": [Function],
+      "loadCharts": [Function],
+      "loadFirstPage": [Function],
+      "loadLastPage": [Function],
+      "loadModel": [Function],
+      "loadNextPage": [Function],
+      "loadPreviousPage": [Function],
+      "loadRows": [Function],
+      "replaceSelections": [Function],
+      "selectAllRows": [Function],
+      "selectPage": [Function],
+      "selectReport": [Function],
+      "selectRow": [Function],
+      "setFilters": [Function],
+      "setMaxRows": [Function],
+      "setOffset": [Function],
+      "setSchemaQuery": [Function],
+      "setSelections": [Function],
+      "setSorts": [Function],
+      "setView": [Function],
+    }
+  }
+  api={
+    Object {
+      "domain": Object {
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      },
+      "entity": Object {
+        "getDataOperationConfirmationData": [MockFunction],
+      },
+      "picklist": Object {
+        "getPicklistCountsBySampleType": [Function],
+        "getPicklistDeleteData": [Function],
+        "getPicklistFromId": [Function],
+      },
+      "query": Object {
+        "getEntityTypeOptions": [MockFunction],
+        "getGridViews": [MockFunction],
+        "getQueryDetails": [MockFunction],
+        "incrementClientSideMetricCount": [MockFunction],
+        "selectDistinctRows": [MockFunction],
+        "selectRows": [MockFunction],
+      },
+      "samples": Object {
+        "getFieldLookupFromSelection": [MockFunction],
+        "getSampleAliquotRows": [MockFunction],
+        "getSampleAssayResultViewConfigs": [MockFunction],
+        "getSampleOperationConfirmationData": [MockFunction],
+        "getSampleStatuses": [MockFunction],
+        "getSampleStorageId": [MockFunction],
+        "getSelectionLineageData": [MockFunction],
+        "getTimelineEvents": [Function],
+        "loadFinderSearches": [MockFunction],
+      },
+      "security": Object {
+        "fetchContainers": [MockFunction],
+        "fetchPolicy": [MockFunction],
+        "getUserLimitSettings": [MockFunction],
+      },
+    }
+  }
+  initialSelectedEvent={
+    Immutable.Record {
+      "rowId": 1549,
+      "eventType": "assays",
+      "subEventType": undefined,
+      "summary": "Assay Data Re-Import Run",
+      "user": Immutable.Map {
+        "value": 1005,
+        "urlType": "user",
+        "displayValue": "Vader",
+      },
+      "eventUserId": 1005,
+      "timestamp": Immutable.Map {
+        "value": "2020-04-09 23:57:36.941",
+        "formattedValue": "2020-04-09 23:57",
+      },
+      "eventTimestamp": 2020-04-09T23:57:36.941Z,
+      "entity": Immutable.Map {
+        "value": Immutable.List [
+          "xlsx assay",
+          233,
+        ],
+        "urlType": "assayRun",
+        "displayValue": "XLSX Assay",
+      },
+      "entitySeparator": undefined,
+      "metadata": Immutable.List [
+        Immutable.Map {
+          "field": "Assay",
+          "value": Immutable.Map {
+            "value": "xlsx assay",
+            "urlType": "assays",
+            "displayValue": "XLSX Assay",
+          },
+        },
+        Immutable.Map {
+          "field": "Assay ID",
+          "value": Immutable.Map {
+            "value": Immutable.List [
+              "xlsx assay",
+              233,
+            ],
+            "urlType": "assayRun",
+            "displayValue": "XLSX Assay_2019-10-16_11-54-56",
+          },
+        },
+        Immutable.Map {
+          "field": "Completed By",
+          "value": Immutable.Map {
+            "value": 1005,
+            "urlType": "user",
+            "displayValue": "Vader",
+          },
+        },
+        Immutable.Map {
+          "field": "Date",
+          "value": Immutable.Map {
+            "value": "2020-04-09 23:57:36.941",
+            "formattedValue": "2020-04-09 23:57",
+          },
+        },
+      ],
+      "oldData": undefined,
+      "newData": undefined,
+    }
+  }
+  queryModels={Object {}}
+  sampleId={86873}
+  sampleJobsGidId="test"
+  sampleName="S-20200404-1"
+  sampleSet="Samples"
+  sampleStatus={
+    Object {
+      "description": "Description for testing",
+      "label": "Available for Testing",
+      "statusType": "Available",
+    }
+  }
+  skipAuditDetailUserLoading={true}
+  timezoneAbbr="UTC"
+  user={
+    Immutable.Record {
+      "id": 1005,
+      "canDelete": true,
+      "canDeleteOwn": true,
+      "canInsert": true,
+      "canUpdate": true,
+      "canUpdateOwn": true,
+      "displayName": "FolderAdminDisplayName",
+      "email": "guest",
+      "phone": null,
+      "avatar": "/labkey/_images/defaultavatar.png",
+      "isAdmin": true,
+      "isAnalyst": true,
+      "isDeveloper": true,
+      "isGuest": false,
+      "isRootAdmin": false,
+      "isSignedIn": true,
+      "isSystemAdmin": false,
+      "isTrusted": true,
+      "maxAllowedPhi": undefined,
+      "permissionsList": Immutable.List [
+        "org.labkey.api.security.permissions.DeletePermission",
+        "org.labkey.api.security.permissions.ReadPermission",
+        "org.labkey.api.security.permissions.DesignDataClassPermission",
+        "org.labkey.api.security.permissions.DesignSampleTypePermission",
+        "org.labkey.api.inventory.security.StorageDesignPermission",
+        "org.labkey.api.assay.security.DesignAssayPermission",
+        "org.labkey.api.security.permissions.InsertPermission",
+        "org.labkey.api.security.permissions.UpdatePermission",
+        "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+        "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+        "org.labkey.api.security.permissions.AdminPermission",
+        "org.labkey.api.security.permissions.NotebookReadPermission",
+        "org.labkey.api.security.permissions.DataClassReadPermission",
+        "org.labkey.api.security.permissions.AssayReadPermission",
+        "org.labkey.api.security.permissions.MediaReadPermission",
+      ],
+    }
+  }
+>
+  <LoadingSpinner
+    msg="Loading..."
+    wrapperClassName=""
+  >
+    <span
+      className=""
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-spinner fa-pulse"
+      />
+       
+      Loading...
+    </span>
+  </LoadingSpinner>
+</Memo()>
+`;
+
+exports[`<SampleTimelinePageBase/> With selected job 1`] = `
+<Memo()
+  actions={
+    Object {
+      "addModel": [Function],
+      "clearSelections": [Function],
+      "loadAllModels": [Function],
+      "loadCharts": [Function],
+      "loadFirstPage": [Function],
+      "loadLastPage": [Function],
+      "loadModel": [Function],
+      "loadNextPage": [Function],
+      "loadPreviousPage": [Function],
+      "loadRows": [Function],
+      "replaceSelections": [Function],
+      "selectAllRows": [Function],
+      "selectPage": [Function],
+      "selectReport": [Function],
+      "selectRow": [Function],
+      "setFilters": [Function],
+      "setMaxRows": [Function],
+      "setOffset": [Function],
+      "setSchemaQuery": [Function],
+      "setSelections": [Function],
+      "setSorts": [Function],
+      "setView": [Function],
+    }
+  }
+  api={
+    Object {
+      "domain": Object {
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      },
+      "entity": Object {
+        "getDataOperationConfirmationData": [MockFunction],
+      },
+      "picklist": Object {
+        "getPicklistCountsBySampleType": [Function],
+        "getPicklistDeleteData": [Function],
+        "getPicklistFromId": [Function],
+      },
+      "query": Object {
+        "getEntityTypeOptions": [MockFunction],
+        "getGridViews": [MockFunction],
+        "getQueryDetails": [MockFunction],
+        "incrementClientSideMetricCount": [MockFunction],
+        "selectDistinctRows": [MockFunction],
+        "selectRows": [MockFunction],
+      },
+      "samples": Object {
+        "getFieldLookupFromSelection": [MockFunction],
+        "getSampleAliquotRows": [MockFunction],
+        "getSampleAssayResultViewConfigs": [MockFunction],
+        "getSampleOperationConfirmationData": [MockFunction],
+        "getSampleStatuses": [MockFunction],
+        "getSampleStorageId": [MockFunction],
+        "getSelectionLineageData": [MockFunction],
+        "getTimelineEvents": [Function],
+        "loadFinderSearches": [MockFunction],
+      },
+      "security": Object {
+        "fetchContainers": [MockFunction],
+        "fetchPolicy": [MockFunction],
+        "getUserLimitSettings": [MockFunction],
+      },
+    }
+  }
+  initialSelectedEvent={
+    Immutable.Record {
+      "rowId": 548,
+      "eventType": "workflow",
+      "subEventType": undefined,
+      "summary": "Completed job",
+      "user": Immutable.Map {
+        "value": 1005,
+        "urlType": "user",
+        "displayValue": "Vader",
+      },
+      "eventUserId": 1005,
+      "timestamp": Immutable.Map {
+        "value": "2020-04-09 20:57:36.941",
+        "formattedValue": "2020-04-09 20:57",
+      },
+      "eventTimestamp": 2020-04-09T20:57:36.941Z,
+      "entity": Immutable.Map {
+        "value": 687,
+        "urlType": "workflow",
+        "displayValue": "job-1",
+      },
+      "entitySeparator": undefined,
+      "metadata": Immutable.List [
+        Immutable.Map {
+          "field": "Job Name",
+          "value": Immutable.Map {
+            "value": 687,
+            "urlType": "workflow",
+            "displayValue": "job-1",
+          },
+        },
+        Immutable.Map {
+          "field": "Job Owner",
+          "value": Immutable.Map {
+            "value": 1005,
+            "urlType": "user",
+            "displayValue": "Vader",
+          },
+        },
+        Immutable.Map {
+          "field": "Job Status",
+          "value": "Completed",
+        },
+      ],
+      "oldData": undefined,
+      "newData": undefined,
+    }
+  }
+  queryModels={Object {}}
+  sampleId={86873}
+  sampleJobsGidId="test"
+  sampleName="S-20200404-1"
+  sampleSet="Samples"
+  sampleStatus={
+    Object {
+      "description": "Description for testing",
+      "label": "Available for Testing",
+      "statusType": "Available",
+    }
+  }
+  skipAuditDetailUserLoading={true}
+  timezoneAbbr="UTC"
+  user={
+    Immutable.Record {
+      "id": 1005,
+      "canDelete": true,
+      "canDeleteOwn": true,
+      "canInsert": true,
+      "canUpdate": true,
+      "canUpdateOwn": true,
+      "displayName": "FolderAdminDisplayName",
+      "email": "guest",
+      "phone": null,
+      "avatar": "/labkey/_images/defaultavatar.png",
+      "isAdmin": true,
+      "isAnalyst": true,
+      "isDeveloper": true,
+      "isGuest": false,
+      "isRootAdmin": false,
+      "isSignedIn": true,
+      "isSystemAdmin": false,
+      "isTrusted": true,
+      "maxAllowedPhi": undefined,
+      "permissionsList": Immutable.List [
+        "org.labkey.api.security.permissions.DeletePermission",
+        "org.labkey.api.security.permissions.ReadPermission",
+        "org.labkey.api.security.permissions.DesignDataClassPermission",
+        "org.labkey.api.security.permissions.DesignSampleTypePermission",
+        "org.labkey.api.inventory.security.StorageDesignPermission",
+        "org.labkey.api.assay.security.DesignAssayPermission",
+        "org.labkey.api.security.permissions.InsertPermission",
+        "org.labkey.api.security.permissions.UpdatePermission",
+        "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+        "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+        "org.labkey.api.security.permissions.AdminPermission",
+        "org.labkey.api.security.permissions.NotebookReadPermission",
+        "org.labkey.api.security.permissions.DataClassReadPermission",
+        "org.labkey.api.security.permissions.AssayReadPermission",
+        "org.labkey.api.security.permissions.MediaReadPermission",
+      ],
+    }
+  }
+>
+  <LoadingSpinner
+    msg="Loading..."
+    wrapperClassName=""
+  >
+    <span
+      className=""
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-spinner fa-pulse"
+      />
+       
+      Loading...
+    </span>
+  </LoadingSpinner>
+</Memo()>
+`;
+
+exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] = `
+<Memo()
+  actions={
+    Object {
+      "addModel": [Function],
+      "clearSelections": [Function],
+      "loadAllModels": [Function],
+      "loadCharts": [Function],
+      "loadFirstPage": [Function],
+      "loadLastPage": [Function],
+      "loadModel": [Function],
+      "loadNextPage": [Function],
+      "loadPreviousPage": [Function],
+      "loadRows": [Function],
+      "replaceSelections": [Function],
+      "selectAllRows": [Function],
+      "selectPage": [Function],
+      "selectReport": [Function],
+      "selectRow": [Function],
+      "setFilters": [Function],
+      "setMaxRows": [Function],
+      "setOffset": [Function],
+      "setSchemaQuery": [Function],
+      "setSelections": [Function],
+      "setSorts": [Function],
+      "setView": [Function],
+    }
+  }
+  api={
+    Object {
+      "domain": Object {
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      },
+      "entity": Object {
+        "getDataOperationConfirmationData": [MockFunction],
+      },
+      "picklist": Object {
+        "getPicklistCountsBySampleType": [Function],
+        "getPicklistDeleteData": [Function],
+        "getPicklistFromId": [Function],
+      },
+      "query": Object {
+        "getEntityTypeOptions": [MockFunction],
+        "getGridViews": [MockFunction],
+        "getQueryDetails": [MockFunction],
+        "incrementClientSideMetricCount": [MockFunction],
+        "selectDistinctRows": [MockFunction],
+        "selectRows": [MockFunction],
+      },
+      "samples": Object {
+        "getFieldLookupFromSelection": [MockFunction],
+        "getSampleAliquotRows": [MockFunction],
+        "getSampleAssayResultViewConfigs": [MockFunction],
+        "getSampleOperationConfirmationData": [MockFunction],
+        "getSampleStatuses": [MockFunction],
+        "getSampleStorageId": [MockFunction],
+        "getSelectionLineageData": [MockFunction],
+        "getTimelineEvents": [Function],
+        "loadFinderSearches": [MockFunction],
+      },
+      "security": Object {
+        "fetchContainers": [MockFunction],
+        "fetchPolicy": [MockFunction],
+        "getUserLimitSettings": [MockFunction],
+      },
+    }
+  }
+  queryModels={Object {}}
+  sampleId={86873}
+  sampleJobsGidId="test"
+  sampleName="S-20200404-1"
+  sampleSet="Samples"
+  sampleStatus={
+    Object {
+      "description": "Description for testing",
+      "label": "Available for Testing",
+      "statusType": "Available",
+    }
+  }
+  skipAuditDetailUserLoading={true}
+  timezoneAbbr="UTC"
+  user={
+    Immutable.Record {
+      "id": 1005,
+      "canDelete": true,
+      "canDeleteOwn": true,
+      "canInsert": true,
+      "canUpdate": true,
+      "canUpdateOwn": true,
+      "displayName": "FolderAdminDisplayName",
+      "email": "guest",
+      "phone": null,
+      "avatar": "/labkey/_images/defaultavatar.png",
+      "isAdmin": true,
+      "isAnalyst": true,
+      "isDeveloper": true,
+      "isGuest": false,
+      "isRootAdmin": false,
+      "isSignedIn": true,
+      "isSystemAdmin": false,
+      "isTrusted": true,
+      "maxAllowedPhi": undefined,
+      "permissionsList": Immutable.List [
+        "org.labkey.api.security.permissions.DeletePermission",
+        "org.labkey.api.security.permissions.ReadPermission",
+        "org.labkey.api.security.permissions.DesignDataClassPermission",
+        "org.labkey.api.security.permissions.DesignSampleTypePermission",
+        "org.labkey.api.inventory.security.StorageDesignPermission",
+        "org.labkey.api.assay.security.DesignAssayPermission",
+        "org.labkey.api.security.permissions.InsertPermission",
+        "org.labkey.api.security.permissions.UpdatePermission",
+        "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+        "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+        "org.labkey.api.security.permissions.AdminPermission",
+        "org.labkey.api.security.permissions.NotebookReadPermission",
+        "org.labkey.api.security.permissions.DataClassReadPermission",
+        "org.labkey.api.security.permissions.AssayReadPermission",
+        "org.labkey.api.security.permissions.MediaReadPermission",
+      ],
+    }
+  }
+>
+  <LoadingSpinner
+    msg="Loading..."
+    wrapperClassName=""
+  >
+    <span
+      className=""
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-spinner fa-pulse"
+      />
+       
+      Loading...
+    </span>
+  </LoadingSpinner>
+</Memo()>
+`;
+
+exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
+<Memo()
+  actions={
+    Object {
+      "addModel": [Function],
+      "clearSelections": [Function],
+      "loadAllModels": [Function],
+      "loadCharts": [Function],
+      "loadFirstPage": [Function],
+      "loadLastPage": [Function],
+      "loadModel": [Function],
+      "loadNextPage": [Function],
+      "loadPreviousPage": [Function],
+      "loadRows": [Function],
+      "replaceSelections": [Function],
+      "selectAllRows": [Function],
+      "selectPage": [Function],
+      "selectReport": [Function],
+      "selectRow": [Function],
+      "setFilters": [Function],
+      "setMaxRows": [Function],
+      "setOffset": [Function],
+      "setSchemaQuery": [Function],
+      "setSelections": [Function],
+      "setSorts": [Function],
+      "setView": [Function],
+    }
+  }
+  api={
+    Object {
+      "domain": Object {
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      },
+      "entity": Object {
+        "getDataOperationConfirmationData": [MockFunction],
+      },
+      "picklist": Object {
+        "getPicklistCountsBySampleType": [Function],
+        "getPicklistDeleteData": [Function],
+        "getPicklistFromId": [Function],
+      },
+      "query": Object {
+        "getEntityTypeOptions": [MockFunction],
+        "getGridViews": [MockFunction],
+        "getQueryDetails": [MockFunction],
+        "incrementClientSideMetricCount": [MockFunction],
+        "selectDistinctRows": [MockFunction],
+        "selectRows": [MockFunction],
+      },
+      "samples": Object {
+        "getFieldLookupFromSelection": [MockFunction],
+        "getSampleAliquotRows": [MockFunction],
+        "getSampleAssayResultViewConfigs": [MockFunction],
+        "getSampleOperationConfirmationData": [MockFunction],
+        "getSampleStatuses": [MockFunction],
+        "getSampleStorageId": [MockFunction],
+        "getSelectionLineageData": [MockFunction],
+        "getTimelineEvents": [Function],
+        "loadFinderSearches": [MockFunction],
+      },
+      "security": Object {
+        "fetchContainers": [MockFunction],
+        "fetchPolicy": [MockFunction],
+        "getUserLimitSettings": [MockFunction],
+      },
+    }
+  }
+  initialSelectedEvent={
+    Immutable.Record {
+      "rowId": 462023,
+      "eventType": "samples",
+      "subEventType": undefined,
+      "summary": "Sample updated",
+      "user": Immutable.Map {
+        "value": 1005,
+        "urlType": "user",
+        "displayValue": "Vader",
+      },
+      "eventUserId": 1005,
+      "timestamp": Immutable.Map {
+        "value": "2020-04-05 21:57:36.941",
+        "formattedValue": "2020-04-05 21:57",
+      },
+      "eventTimestamp": 2020-04-05T21:57:36.941Z,
+      "entity": undefined,
+      "entitySeparator": undefined,
+      "metadata": undefined,
+      "oldData": Immutable.Map {
+        "description": "des",
+        "modified": "2020-04-05T21:56:54.584-07:00",
+      },
+      "newData": Immutable.Map {
+        "description": "desc",
+        "modified": "2020-04-05T21:57:36.915-07:00",
+      },
+    }
+  }
+  queryModels={Object {}}
+  sampleId={86873}
+  sampleJobsGidId="test"
+  sampleName="S-20200404-1"
+  sampleSet="Samples"
+  sampleStatus={
+    Object {
+      "description": "Description for testing",
+      "label": "Available for Testing",
+      "statusType": "Available",
+    }
+  }
+  skipAuditDetailUserLoading={true}
+  timezoneAbbr="UTC"
+  user={
+    Immutable.Record {
+      "id": 1005,
+      "canDelete": true,
+      "canDeleteOwn": true,
+      "canInsert": true,
+      "canUpdate": true,
+      "canUpdateOwn": true,
+      "displayName": "FolderAdminDisplayName",
+      "email": "guest",
+      "phone": null,
+      "avatar": "/labkey/_images/defaultavatar.png",
+      "isAdmin": true,
+      "isAnalyst": true,
+      "isDeveloper": true,
+      "isGuest": false,
+      "isRootAdmin": false,
+      "isSignedIn": true,
+      "isSystemAdmin": false,
+      "isTrusted": true,
+      "maxAllowedPhi": undefined,
+      "permissionsList": Immutable.List [
+        "org.labkey.api.security.permissions.DeletePermission",
+        "org.labkey.api.security.permissions.ReadPermission",
+        "org.labkey.api.security.permissions.DesignDataClassPermission",
+        "org.labkey.api.security.permissions.DesignSampleTypePermission",
+        "org.labkey.api.inventory.security.StorageDesignPermission",
+        "org.labkey.api.assay.security.DesignAssayPermission",
+        "org.labkey.api.security.permissions.InsertPermission",
+        "org.labkey.api.security.permissions.UpdatePermission",
+        "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+        "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+        "org.labkey.api.security.permissions.AdminPermission",
+        "org.labkey.api.security.permissions.NotebookReadPermission",
+        "org.labkey.api.security.permissions.DataClassReadPermission",
+        "org.labkey.api.security.permissions.AssayReadPermission",
+        "org.labkey.api.security.permissions.MediaReadPermission",
+      ],
+    }
+  }
+>
+  <LoadingSpinner
+    msg="Loading..."
+    wrapperClassName=""
+  >
+    <span
+      className=""
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-spinner fa-pulse"
+      />
+       
+      Loading...
+    </span>
+  </LoadingSpinner>
+</Memo()>
+`;
+
+exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
+<Memo()
+  actions={
+    Object {
+      "addModel": [Function],
+      "clearSelections": [Function],
+      "loadAllModels": [Function],
+      "loadCharts": [Function],
+      "loadFirstPage": [Function],
+      "loadLastPage": [Function],
+      "loadModel": [Function],
+      "loadNextPage": [Function],
+      "loadPreviousPage": [Function],
+      "loadRows": [Function],
+      "replaceSelections": [Function],
+      "selectAllRows": [Function],
+      "selectPage": [Function],
+      "selectReport": [Function],
+      "selectRow": [Function],
+      "setFilters": [Function],
+      "setMaxRows": [Function],
+      "setOffset": [Function],
+      "setSchemaQuery": [Function],
+      "setSelections": [Function],
+      "setSorts": [Function],
+      "setView": [Function],
+    }
+  }
+  api={
+    Object {
+      "domain": Object {
+        "getDomainNamePreviews": [MockFunction],
+        "getGenId": [MockFunction],
+        "hasExistingDomainData": [MockFunction],
+        "setGenId": [MockFunction],
+        "validateDomainNameExpressions": [MockFunction],
+      },
+      "entity": Object {
+        "getDataOperationConfirmationData": [MockFunction],
+      },
+      "picklist": Object {
+        "getPicklistCountsBySampleType": [Function],
+        "getPicklistDeleteData": [Function],
+        "getPicklistFromId": [Function],
+      },
+      "query": Object {
+        "getEntityTypeOptions": [MockFunction],
+        "getGridViews": [MockFunction],
+        "getQueryDetails": [MockFunction],
+        "incrementClientSideMetricCount": [MockFunction],
+        "selectDistinctRows": [MockFunction],
+        "selectRows": [MockFunction],
+      },
+      "samples": Object {
+        "getFieldLookupFromSelection": [MockFunction],
+        "getSampleAliquotRows": [MockFunction],
+        "getSampleAssayResultViewConfigs": [MockFunction],
+        "getSampleOperationConfirmationData": [MockFunction],
+        "getSampleStatuses": [MockFunction],
+        "getSampleStorageId": [MockFunction],
+        "getSelectionLineageData": [MockFunction],
+        "getTimelineEvents": [Function],
+        "loadFinderSearches": [MockFunction],
+      },
+      "security": Object {
+        "fetchContainers": [MockFunction],
+        "fetchPolicy": [MockFunction],
+        "getUserLimitSettings": [MockFunction],
+      },
+    }
+  }
+  queryModels={Object {}}
+  sampleId={86873}
+  sampleJobsGidId="test"
+  sampleName="S-20200404-1"
+  sampleSet="Samples"
+  sampleStatus={
+    Object {
+      "description": "Description for testing",
+      "label": "Available for Testing",
+      "statusType": "Available",
+    }
+  }
+  skipAuditDetailUserLoading={true}
+  timezoneAbbr="UTC"
+  user={
+    Immutable.Record {
+      "id": 1005,
+      "canDelete": true,
+      "canDeleteOwn": true,
+      "canInsert": true,
+      "canUpdate": true,
+      "canUpdateOwn": true,
+      "displayName": "FolderAdminDisplayName",
+      "email": "guest",
+      "phone": null,
+      "avatar": "/labkey/_images/defaultavatar.png",
+      "isAdmin": true,
+      "isAnalyst": true,
+      "isDeveloper": true,
+      "isGuest": false,
+      "isRootAdmin": false,
+      "isSignedIn": true,
+      "isSystemAdmin": false,
+      "isTrusted": true,
+      "maxAllowedPhi": undefined,
+      "permissionsList": Immutable.List [
+        "org.labkey.api.security.permissions.DeletePermission",
+        "org.labkey.api.security.permissions.ReadPermission",
+        "org.labkey.api.security.permissions.DesignDataClassPermission",
+        "org.labkey.api.security.permissions.DesignSampleTypePermission",
+        "org.labkey.api.inventory.security.StorageDesignPermission",
+        "org.labkey.api.assay.security.DesignAssayPermission",
+        "org.labkey.api.security.permissions.InsertPermission",
+        "org.labkey.api.security.permissions.UpdatePermission",
+        "org.labkey.api.lists.permissions.ManagePicklistsPermission",
+        "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
+        "org.labkey.api.security.permissions.AdminPermission",
+        "org.labkey.api.security.permissions.NotebookReadPermission",
+        "org.labkey.api.security.permissions.DataClassReadPermission",
+        "org.labkey.api.security.permissions.AssayReadPermission",
+        "org.labkey.api.security.permissions.MediaReadPermission",
+      ],
+    }
+  }
+>
+  <LoadingSpinner
+    msg="Loading..."
+    wrapperClassName=""
+  >
+    <span
+      className=""
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-spinner fa-pulse"
+      />
+       
+      Loading...
+    </span>
+  </LoadingSpinner>
+</Memo()>
+`;

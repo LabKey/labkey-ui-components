@@ -15,11 +15,7 @@ import {
     TimelineGroupedEventInfo,
     TimelineView
 } from "../../../index";
-import {exportTimelineGrid} from "./actions";
-
-//
-// import { exportTimelineGrid } from "../actions";
-// import { filterDate } from "../../App/actions";
+import {exportTimelineGrid} from "../samples/actions";
 
 
 interface Props {

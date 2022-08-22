@@ -16,11 +16,14 @@
 import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { AssayProtocolModel, caseInsensitive, fetchProtocol, getQueryDetails, SCHEMAS, selectRows } from '../..';
-
-import { SAMPLE_MANAGEMENT } from '../schemas';
+import { SAMPLE_MANAGEMENT, SCHEMAS } from '../schemas';
 
 import { AppURL, spliceURL } from './AppURL';
+import { fetchProtocol } from '../components/domainproperties/assay/actions';
+import { AssayProtocolModel } from '../components/domainproperties/assay/models';
+import { selectRows } from '../query/selectRows';
+import { caseInsensitive } from '../util/utils';
+import { getQueryDetails } from '../query/api';
 
 export interface AppRouteResolver {
     matches: (route: string) => boolean;

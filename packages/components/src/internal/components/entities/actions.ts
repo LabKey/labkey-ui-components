@@ -1,22 +1,6 @@
 import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
-import {
-    buildURL,
-    caseInsensitive,
-    getFilterForSampleOperation,
-    getSelected,
-    importData,
-    InsertOptions,
-    isSamplesSchema,
-    naturalSort,
-    QueryInfo,
-    SampleCreationType,
-    SampleOperation,
-    SchemaQuery,
-    selectRowsDeprecated,
-    SHARED_CONTAINER_PATH,
-} from '../../..';
 
 import { getSelectedItemSamples } from '../samples/actions';
 
@@ -32,6 +16,17 @@ import {
 } from './models';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
 import { isDataClassEntity, isSampleEntity } from './utils';
+import { buildURL } from '../../url/AppURL';
+import { SampleOperation } from '../samples/constants';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
+import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
+import { caseInsensitive } from '../../util/utils';
+import { SampleCreationType } from '../samples/models';
+import { getSelected } from '../../actions';
+import { SHARED_CONTAINER_PATH } from '../../constants';
+import { naturalSort } from '../../../public/sort';
+import { QueryInfo } from '../../../public/QueryInfo';
 
 export function getOperationConfirmationData(
     selectionKey: string,

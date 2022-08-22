@@ -31,7 +31,6 @@ import {
     isBiologicsEnabled,
     isCommunityDistribution,
     isELNEnabled,
-    isFeatureEnabled,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
     isProductNavigationEnabled,
@@ -71,7 +70,7 @@ describe('getMenuSectionConfigs', () => {
         LABKEY.moduleContext = {
             ...TEST_LKS_STARTER_MODULE_CONTEXT
         };
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager');
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
 
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();

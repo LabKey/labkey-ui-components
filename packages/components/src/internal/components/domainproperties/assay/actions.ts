@@ -19,10 +19,11 @@ import { Ajax, Utils } from '@labkey/api';
 import { SEVERITY_LEVEL_ERROR } from '../constants';
 import { DomainException } from '../models';
 
-import { buildURL, Container } from '../../../..';
 import { setDomainException } from '../actions';
 
 import { AssayProtocolModel } from './models';
+import { buildURL } from '../../../url/AppURL';
+import { Container } from '../../base/models/Container';
 
 export function fetchProtocol(
     protocolId?: number,

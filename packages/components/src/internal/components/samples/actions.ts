@@ -24,38 +24,9 @@ import {
     IEntityTypeOption,
 } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
-import {
-    AssayStateModel,
-    buildURL,
-    caseInsensitive,
-    createQueryConfigFilteredBySample,
-    DomainDetails,
-    FindField,
-    getContainerFilter,
-    getSelectedData,
-    getSelection,
-    createGridModelId,
-    ISelectRowsResult,
-    Location,
-    naturalSort,
-    naturalSortByProperty,
-    QueryColumn,
-    QueryConfig,
-    QueryModel,
-    quoteValueWithDelimiters,
-    resolveErrorMessage,
-    SAMPLE_ID_FIND_FIELD,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
-    SchemaQuery,
-    SCHEMAS,
-    selectDistinctRows,
-    selectRowsDeprecated,
-    SHARED_CONTAINER_PATH,
-    UNIQUE_ID_FIND_FIELD,
-    getSelectedPicklistSamples,
-} from '../../..';
 
-import { findMissingValues } from '../../util/utils';
+
+import { caseInsensitive, findMissingValues, quoteValueWithDelimiters } from '../../util/utils';
 
 import { ParentEntityLineageColumns } from '../entities/constants';
 import { getInitialParentChoices } from '../entities/utils';
@@ -65,10 +36,28 @@ import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domain
 import { isSampleStatusEnabled } from '../../app/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-import { EXP_TABLES } from '../../schemas';
+import { EXP_TABLES, SCHEMAS } from '../../schemas';
 
-import { GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
-import { IS_ALIQUOT_COL } from './constants';
+import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
+import {
+    IS_ALIQUOT_COL,
+    SAMPLE_ID_FIND_FIELD,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
+    UNIQUE_ID_FIND_FIELD
+} from './constants';
+import { getContainerFilter, ISelectRowsResult, selectDistinctRows, selectRowsDeprecated } from '../../query/api';
+import { buildURL } from '../../url/AppURL';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { DomainDetails } from '../domainproperties/models';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { getSelectedPicklistSamples } from '../picklist/actions';
+import { resolveErrorMessage } from '../../util/messaging';
+import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
+import { naturalSort, naturalSortByProperty } from '../../../public/sort';
+import { createQueryConfigFilteredBySample, getSelectedData } from '../../actions';
+import { SHARED_CONTAINER_PATH } from '../../constants';
+import { AssayStateModel } from '../assay/models';
+import { createGridModelId } from '../../models';
 
 export function initSampleSetSelects(
     isUpdate: boolean,

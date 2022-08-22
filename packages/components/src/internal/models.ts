@@ -15,15 +15,17 @@
  */
 import { fromJS, Iterable, List, Map, Record, Set } from 'immutable';
 
-import { AppURL, DataViewInfoTypes, QueryColumn, QueryInfo, QueryModel, resolveSchemaQuery, SchemaQuery } from '..';
-
-import { encodePart } from '../public/SchemaQuery';
+import { encodePart, resolveSchemaQuery, SchemaQuery } from '../public/SchemaQuery';
 
 import { genCellKey, getSortedCellKeys, parseCellKey } from './actions';
 import { getQueryColumnRenderers } from './global';
-import { GRID_EDIT_INDEX } from './constants';
+import { DataViewInfoTypes, GRID_EDIT_INDEX } from './constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
 import { quoteValueWithDelimiters } from './util/utils';
+import { AppURL } from './url/AppURL';
+import { QueryInfo } from '../public/QueryInfo';
+import { QueryColumn } from '../public/QueryColumn';
+import { QueryModel } from '../public/QueryModel/QueryModel';
 
 export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];

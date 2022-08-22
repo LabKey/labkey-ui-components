@@ -20,7 +20,7 @@ export const LABKEY_SERVER_PRODUCT_NAME = 'LabKey Server';
 const FREEZER_MANAGER_PRODUCT_NAME = 'Freezer Manager';
 
 const BIOLOGICS_CONTROLLER_NAME = 'biologics';
-export const SAMPLE_MANAGER_CONTROLLER_NAME = 'sampleManager';
+const SAMPLE_MANAGER_CONTROLLER_NAME = 'sampleManager';
 const FREEZER_MANAGER_CONTROLLER_NAME = 'freezerManager';
 
 export const ASSAYS_KEY = 'assays';

@@ -2,20 +2,22 @@ import React from 'react';
 import { Col, Panel, FormControl, Row, Button } from 'react-bootstrap';
 
 import { BarTenderConfiguration, BarTenderResponse } from './models';
-import { fetchBarTenderConfiguration, saveBarTenderConfiguration, printBarTenderLabels } from './actions';
+import { saveBarTenderConfiguration, printBarTenderLabels } from './actions';
 import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE, LABEL_NOT_FOUND_ERROR } from './constants';
 import { Alert } from '../base/Alert';
 import { HelpLink } from '../../util/helpLinks';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 interface OwnProps {
-    title?: string,
-    titleCls?: string,
+    api?: ComponentsAPIWrapper;
+    title?: string;
+    titleCls?: string;
     onChange: () => void;
     onSuccess: () => void;
-    onConfigSuccess?: () => any
-    onConfigFailure?: () => any
+    onConfigSuccess?: () => any;
+    onConfigFailure?: () => any;
 }
 
 interface State {
@@ -37,20 +39,24 @@ const FAILED_NOTIFICATION_MESSAGE = 'Failed to connect to BarTender web service.
 const UNKNOWN_STATUS_MESSAGE = 'Unrecognized status code returned from BarTender service';
 const FAILED_TO_SAVE_MESSAGE = 'Failed to save connection configuration';
 
+// exported for jest testing
 export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State> {
+    static defaultProps = {
+        api: getDefaultAPIWrapper(),
+    };
 
     private btTestConnectionTemplate = (label:string):string => {
         //Should be able to run connection test w/o a default label set.
-        const formatNode = label ?  `<Format>${label}</Format>` : '';
+        const formatNode = label ? `<Format>${label}</Format>` : '';
 
         return `<XMLScript Version="2.0">
-    <Command Name="Job1">
-        <FormatSetup>
-            ${formatNode}
-        </FormatSetup>
-    </Command>
-</XMLScript>`;
-    }
+            <Command Name="Job1">
+                <FormatSetup>
+                    ${formatNode}
+                </FormatSetup>
+            </Command>
+        </XMLScript>`;
+    };
 
     constructor(props: Props) {
         super(props);
@@ -72,8 +78,7 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
     }
 
     load = (): void => {
-
-        fetchBarTenderConfiguration().then(
+        this.props.api.labelprinting.fetchBarTenderConfiguration().then(
             btConfiguration => {
                 this.setState(() => ({
                     btServiceURL: btConfiguration.serviceURL,

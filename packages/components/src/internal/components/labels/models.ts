@@ -16,7 +16,7 @@ export class BarTenderConfiguration implements BarTenderConfigurationModel {
     }
 
     isConfigured(): boolean {
-        return this.serviceURL !== null && this.serviceURL.trim() !== '';
+        return this.serviceURL !== undefined && this.serviceURL !== null && this.serviceURL.trim() !== '';
     }
 }
 

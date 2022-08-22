@@ -51,11 +51,13 @@ import {
     QueryColumn,
     QueryInfo,
     QueryModel,
-    resolveErrorMessage, resolveSchemaQuery,
+    resolveErrorMessage,
+    resolveSchemaQuery,
     SAMPLE_STATE_COLUMN_NAME,
     SampleCreationType,
     SampleCreationTypeModel,
-    SampleTypeDataType, SchemaQuery,
+    SampleTypeDataType,
+    SchemaQuery,
     SelectInput,
     User,
     useServerContext,
@@ -196,9 +198,10 @@ interface OwnProps {
     parentDataTypes?: List<EntityDataType>;
     saveToPipeline?: boolean;
     selectedParents?: Map<string, List<EntityParentType>>;
-    selectedTarget?: string; // controlling target from a parent component
+    selectedTab?: number;
+    selectedTarget?: string;
+    // selectedTarget allows controlling target from a parent component
     setIsDirty?: (isDirty: boolean) => void;
-    selectedTab?: number
 }
 
 interface FromLocationProps {
@@ -326,7 +329,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             isItemSamples,
             selectedTarget,
             originalParents,
-            selectedParents
+            selectedParents,
         } = this.props;
 
         const { creationType } = this.state;
@@ -389,8 +392,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 isItemSamples
             );
 
-            if (selectedParents)
-                partialModel['entityParents'] = selectedParents;
+            if (selectedParents) partialModel['entityParents'] = selectedParents;
 
             this.gridInit(insertModel.merge(partialModel) as EntityIdCreationModel);
         } catch {
@@ -766,7 +768,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { originalQueryInfo } = this.state;
 
         const requiredProperties = [];
-        originalQueryInfo.columns.forEach((column) => {
+        originalQueryInfo.columns.forEach(column => {
             if (
                 column.required &&
                 column.shownInInsertView &&
@@ -987,7 +989,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel, creationType, dataModel, editorModel } = this.state;
-        const { containerFilter, creationTypeOptions, maxEntities, nounPlural, onBulkAdd, getIsDirty, setIsDirty } = this.props;
+        const { containerFilter, creationTypeOptions, maxEntities, nounPlural, onBulkAdd, getIsDirty, setIsDirty } =
+            this.props;
         const columnMetadata = this.getColumnMetadata();
         const isLoaded = (dataModel && !dataModel?.isLoading) ?? false;
 

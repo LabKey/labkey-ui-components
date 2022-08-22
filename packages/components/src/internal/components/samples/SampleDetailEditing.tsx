@@ -32,8 +32,8 @@ import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from 
 
 interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
-    sampleSet: string;
     noun?: string;
+    sampleSet: string;
 }
 
 interface State {

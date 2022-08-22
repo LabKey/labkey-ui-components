@@ -18,25 +18,26 @@ import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
 
 interface Props {
-    show: boolean;
-    options: SampleCreationTypeModel[];
-    parentCount: number;
-    showIcons: boolean;
+    api?: ComponentsAPIWrapper;
+    noun?: string;
+    // noun used in modal submit button
+    nounPlural?: string;
     onCancel: () => void;
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
-    api?: ComponentsAPIWrapper;
-    selectionKey?: string;
+    options: SampleCreationTypeModel[];
+    parentCount: number;
     selectedItems?: Record<string, any>;
-    noun?: string; // Used in modal submit button
-    nounPlural?: string; // Used in modal title
+    selectionKey?: string;
+    show: boolean;
+    showIcons: boolean; // Used in modal title
 }
 
 interface State extends Record<string, any> {
-    numPerParent: number;
     creationType: SampleCreationType;
-    submitting: boolean;
-    statusData: OperationConfirmationData;
     errorMessage: string;
+    numPerParent: number;
+    statusData: OperationConfirmationData;
+    submitting: boolean;
 }
 
 export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
@@ -198,7 +199,9 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
         const canSubmit = !submitting && this.isValidNumPerParent();
-        const title = `${(statusData?.noneAllowed ? 'Cannot ' : '')}Create ${nounPlural ?? 'Samples'} from Selected ${parentNoun}`;
+        const title = `${statusData?.noneAllowed ? 'Cannot ' : ''}Create ${
+            nounPlural ?? 'Samples'
+        } from Selected ${parentNoun}`;
         return (
             <Modal show={show} onHide={this.onCancel}>
                 <Modal.Header closeButton>

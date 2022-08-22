@@ -643,8 +643,10 @@ export function getGroupedSampleDisplayColumns(
                 aliquotHeaderDisplayColumns.push(col);
             }
             // display parent meta for aliquot
-            else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1
-            || sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
+            else if (
+                sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1 ||
+                sampleTypeDomainFields.independentFields.indexOf(colName) > -1
+            ) {
                 aliquotHeaderDisplayColumns.push(col);
             }
         } else {

@@ -66,7 +66,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         currentProductId,
         targetProductId,
         noun,
-        nounPlural
+        nounPlural,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();

@@ -3,8 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.XX
 *Released*: XX August 2022
-* Multi-tab grids for Find Sample by Ids grids
-    * Extract and move SampleTimelinePageBase, SampleEventListing and timeline utils here from LKSM
+* Sample Timeline in LKB
+  * Extract and move SampleTimelinePageBase, SampleEventListing and timeline utils here from LKSM
 
 ### version 2.208.0
 *Released*: 18 August 2022

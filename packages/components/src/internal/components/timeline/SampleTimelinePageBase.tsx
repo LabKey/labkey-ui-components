@@ -73,25 +73,24 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
     const [selectedEvent, setSelectedEvent] = useState<TimelineEventModel>(initialSelectedEvent);
     const [error, setError] = useState<React.ReactNode>(undefined);
 
-    useEffect(() => {
-        loadTimeline(sampleId);
-    }, [sampleId]);
-
-    const loadTimeline = (sampleId: number) => {
+    const loadTimeline = async () => {
         setTimelineLoaded(false);
         setEvents(undefined);
 
-        api.samples
-            .getTimelineEvents(sampleId, timezoneAbbr)
-            .then(events => {
-                setTimelineLoaded(true);
-                setEvents(events);
-            })
-            .catch(error => {
-                setTimelineLoaded(true);
-                setError(error);
-            });
+        try {
+            const timelineEvents = await api.samples.getTimelineEvents(sampleId, timezoneAbbr);
+            setEvents(timelineEvents);
+            setTimelineLoaded(true);
+        }
+        catch (error) {
+            setTimelineLoaded(true);
+            setError(error);
+        }
     };
+
+    useEffect(() => {
+        loadTimeline();
+    }, [sampleId]);
 
     const onEventSelection = selectedEvent => {
         setSelectedEvent(selectedEvent);
@@ -290,17 +289,15 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
     if (events.length === 0) return <Alert bsStyle="danger">Unable to load timeline events</Alert>;
 
     return (
-        <>
-            <Row>
-                <Col xs={12} md={8}>
-                    {renderEventListing()}
-                </Col>
-                <Col xs={12} md={4}>
-                    {renderCurrentStatus()}
-                    {renderEventDetails()}
-                </Col>
-            </Row>
-        </>
+        <Row>
+            <Col xs={12} md={8}>
+                {renderEventListing()}
+            </Col>
+            <Col xs={12} md={4}>
+                {renderCurrentStatus()}
+                {renderEventDetails()}
+            </Col>
+        </Row>
     );
 });
 

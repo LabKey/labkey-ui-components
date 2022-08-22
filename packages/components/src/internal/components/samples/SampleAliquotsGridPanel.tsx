@@ -207,7 +207,7 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
         'sample-aliquots',
         SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery())
     );
-    const omitted = [...getOmittedSampleTypeColumns(user), ...omittedColumns];
+    const omitted = omittedColumns ? [...getOmittedSampleTypeColumns(user), ...omittedColumns] : getOmittedSampleTypeColumns(user);
 
     const queryConfigs = {
         [id]: getSampleAliquotsQueryConfig(

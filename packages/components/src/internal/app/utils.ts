@@ -225,7 +225,7 @@ export function isWorkflowEnabled(moduleContext?: any): boolean {
 }
 
 export function isFeatureEnabled(flag: ProductFeature, moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.core?.productFeatures.indexOf(flag) >= 0;
+    return (moduleContext ?? getServerContext().moduleContext)?.core?.productFeatures?.indexOf(flag) >= 0;
 }
 
 export function isSampleAliquotSelectorEnabled(moduleContext?: any): boolean {

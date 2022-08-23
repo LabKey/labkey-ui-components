@@ -14,7 +14,7 @@ import { QueryModel } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
 import { TabbedGridPanel } from './TabbedGridPanel';
 import { makeTestActions, makeTestQueryModel } from './testUtils';
-import {GridPanel} from "./GridPanel";
+import { GridPanel } from './GridPanel';
 
 let MIXTURES_QUERY_INFO: QueryInfo;
 let MIXTURES_DATA: RowsResponse;
@@ -127,7 +127,13 @@ describe('TabbedGridPanel', () => {
         wrapper.unmount();
 
         wrapper = mountWithAppServerContext(
-            <TabbedGridPanel tabOrder={tabOrder} title={title} queryModels={queryModels} actions={actions} asPanel={false} />
+            <TabbedGridPanel
+                tabOrder={tabOrder}
+                title={title}
+                queryModels={queryModels}
+                actions={actions}
+                asPanel={false}
+            />
         );
 
         // When asPanel is false we don't use those classes

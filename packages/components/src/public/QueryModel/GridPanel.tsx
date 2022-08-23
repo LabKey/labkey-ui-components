@@ -78,7 +78,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     loadOnMount?: boolean;
     onChartClicked?: (chart: DataViewInfo) => boolean;
     onCreateReportClicked?: (type: DataViewInfoTypes) => void;
-    onExport?: { [key: string]: () => any };
+    onExport?: { [key: string]: (modelId?: string) => any };
     pageSizes?: number[];
     showButtonBar?: boolean;
     showChartMenu?: boolean;

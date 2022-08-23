@@ -139,7 +139,7 @@ import {
     NotificationsContextProvider,
 } from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
-import { formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
+import { formatDate, formatDateTime, getDateFormat, parseDate, filterDate } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
@@ -346,6 +346,8 @@ import { SampleAliquotDetailHeader } from './internal/components/samples/SampleA
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 import { SampleActionsButton } from './internal/components/samples/SampleActionsButton';
+
+import { SampleTimelinePageBase } from './internal/components/timeline/SampleTimelinePageBase';
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
@@ -1100,6 +1102,8 @@ export {
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
     SampleTypeInsightsPanel,
+    // timeline
+    SampleTimelinePageBase,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -1296,6 +1300,7 @@ export {
     // util functions
     getDateFormat,
     getDisambiguatedSelectInputOptions,
+    filterDate,
     formatDate,
     formatDateTime,
     parseDate,

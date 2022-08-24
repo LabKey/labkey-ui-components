@@ -497,6 +497,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                       styles={
                                         Object {
                                           "menu": [Function],
+                                          "menuPortal": [Function],
                                           "multiValue": [Function],
                                           "multiValueLabel": [Function],
                                           "multiValueRemove": [Function],
@@ -560,6 +561,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                         styles={
                                           Object {
                                             "menu": [Function],
+                                            "menuPortal": [Function],
                                             "multiValue": [Function],
                                             "multiValueLabel": [Function],
                                             "multiValueRemove": [Function],
@@ -644,6 +646,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                               "screenReaderStatus": [Function],
                                               "styles": Object {
                                                 "menu": [Function],
+                                                "menuPortal": [Function],
                                                 "multiValue": [Function],
                                                 "multiValueLabel": [Function],
                                                 "multiValueRemove": [Function],
@@ -1033,6 +1036,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                     "screenReaderStatus": [Function],
                                                     "styles": Object {
                                                       "menu": [Function],
+                                                      "menuPortal": [Function],
                                                       "multiValue": [Function],
                                                       "multiValueLabel": [Function],
                                                       "multiValueRemove": [Function],
@@ -1434,6 +1438,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                     "screenReaderStatus": [Function],
                                                     "styles": Object {
                                                       "menu": [Function],
+                                                      "menuPortal": [Function],
                                                       "multiValue": [Function],
                                                       "multiValueLabel": [Function],
                                                       "multiValueRemove": [Function],
@@ -1834,6 +1839,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                           "screenReaderStatus": [Function],
                                                           "styles": Object {
                                                             "menu": [Function],
+                                                            "menuPortal": [Function],
                                                             "multiValue": [Function],
                                                             "multiValueLabel": [Function],
                                                             "multiValueRemove": [Function],
@@ -2221,6 +2227,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": Object {
                                                                   "menu": [Function],
+                                                                  "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
@@ -2619,6 +2626,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": Object {
                                                                   "menu": [Function],
+                                                                  "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
@@ -2741,6 +2749,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                   "screenReaderStatus": [Function],
                                                                   "styles": Object {
                                                                     "menu": [Function],
+                                                                    "menuPortal": [Function],
                                                                     "multiValue": [Function],
                                                                     "multiValueLabel": [Function],
                                                                     "multiValueRemove": [Function],
@@ -3218,6 +3227,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                           "screenReaderStatus": [Function],
                                                           "styles": Object {
                                                             "menu": [Function],
+                                                            "menuPortal": [Function],
                                                             "multiValue": [Function],
                                                             "multiValueLabel": [Function],
                                                             "multiValueRemove": [Function],
@@ -3600,6 +3610,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": Object {
                                                                   "menu": [Function],
+                                                                  "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
@@ -3993,6 +4004,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": Object {
                                                                   "menu": [Function],
+                                                                  "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],

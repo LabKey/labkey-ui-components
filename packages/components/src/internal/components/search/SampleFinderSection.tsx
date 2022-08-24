@@ -58,7 +58,7 @@ interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
     getIsDirty?: () => boolean;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
-    gridButtonProps?: any;
+    gridButtonProps?: SampleGridButtonProps;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     sampleTypeNames: string[];
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
@@ -415,7 +415,7 @@ interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
 }
 
 export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
-    const { actions, columnDisplayNames, queryModels, gridButtons } = props;
+    const { actions, columnDisplayNames, queryModels, gridButtons, gridButtonProps } = props;
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -494,6 +494,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 queryModels={queryModels}
                 gridButtons={gridButtons}
                 gridButtonProps={{
+                    ...gridButtonProps,
                     excludedMenuKeys: [SamplesEditButtonSections.IMPORT],
                     metricFeatureArea: SAMPLE_FILTER_METRIC_AREA,
                 }}

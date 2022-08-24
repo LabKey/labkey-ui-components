@@ -107,7 +107,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
                         </DisableableButton>
                     </RequiresPermission>
                 )}
-                <ResponsiveMenuButtonGroup user={user} items={moreItems} />
+                <ResponsiveMenuButtonGroup user={user} items={moreItems} subMenuWidth={800} />
             </div>
         </RequiresPermission>
     );

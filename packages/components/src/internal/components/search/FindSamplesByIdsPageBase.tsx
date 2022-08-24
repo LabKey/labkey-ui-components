@@ -43,12 +43,13 @@ const TYPE_GRID_PREFIX = 'find-by-id-';
 interface FindSamplesByIdsTabProps extends InjectedQueryModels {
     allSamplesModel: QueryModel;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
+    gridButtonProps?: SampleGridButtonProps;
     sampleGridIds?: string[];
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
 }
 
 export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(props => {
-    const { actions, allSamplesModel, sampleGridIds, queryModels, gridButtons, samplesEditableGridProps } = props;
+    const { actions, allSamplesModel, sampleGridIds, queryModels, gridButtons, gridButtonProps, samplesEditableGridProps } = props;
     const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
     const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
     const { user } = useServerContext();
@@ -107,6 +108,7 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                 onPrintLabel={onPrintLabel}
                 gridButtons={gridButtons}
                 gridButtonProps={{
+                    ...gridButtonProps,
                     excludedMenuKeys: [SamplesEditButtonSections.IMPORT],
                     metricFeatureArea: FIND_SAMPLE_BY_ID_METRIC_AREA,
                     excludeAddButton: true,
@@ -185,6 +187,7 @@ export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = mem
 
 interface OwnProps {
     gridButtons: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
+    gridButtonProps?: SampleGridButtonProps;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
 }
 

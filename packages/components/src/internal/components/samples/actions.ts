@@ -59,6 +59,7 @@ import { naturalSort, naturalSortByProperty } from '../../../public/sort';
 import { SHARED_CONTAINER_PATH } from '../../constants';
 import { AssayStateModel } from '../assay/models';
 import { createGridModelId } from '../../models';
+import { TimelineEventModel } from '../auditlog/models';
 
 export function initSampleSetSelects(
     isUpdate: boolean,

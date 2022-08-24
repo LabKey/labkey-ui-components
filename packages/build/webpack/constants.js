@@ -175,6 +175,7 @@ module.exports = {
     watchPort,
     TS_CHECKER_CONFIG,
     TS_CHECKER_DEV_CONFIG,
+    BABEL_PLUGINS,
     context: path.resolve(lkModule, '..'),
     extensions: {
         TYPESCRIPT: [ '.jsx', '.js', '.tsx', '.ts' ]

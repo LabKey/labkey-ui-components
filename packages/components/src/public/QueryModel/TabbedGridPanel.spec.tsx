@@ -14,6 +14,7 @@ import { QueryModel } from './QueryModel';
 import { RowsResponse } from './QueryModelLoader';
 import { TabbedGridPanel } from './TabbedGridPanel';
 import { makeTestActions, makeTestQueryModel } from './testUtils';
+import { GridPanel } from './GridPanel';
 
 let MIXTURES_QUERY_INFO: QueryInfo;
 let MIXTURES_DATA: RowsResponse;
@@ -114,18 +115,32 @@ describe('TabbedGridPanel', () => {
 
     test('asPanel', () => {
         const title = 'My Tabbed Grid';
-        const wrapper = mountWithAppServerContext(
+        let wrapper = mountWithAppServerContext(
             <TabbedGridPanel tabOrder={tabOrder} title={title} queryModels={queryModels} actions={actions} />
         );
 
         // When asPanel is true, we use appropriate styling classes
         expect(wrapper.find('.tabbed-grid-panel.panel-default').exists()).toEqual(true);
         expect(wrapper.find('.tabbed-grid-panel.panel').exists()).toEqual(true);
+        expect(wrapper.find('.panel-heading').text()).toBe(title);
+        expect(wrapper.find(GridPanel).prop('title')).toBe(undefined);
+        wrapper.unmount();
+
+        wrapper = mountWithAppServerContext(
+            <TabbedGridPanel
+                tabOrder={tabOrder}
+                title={title}
+                queryModels={queryModels}
+                actions={actions}
+                asPanel={false}
+            />
+        );
 
         // When asPanel is false we don't use those classes
-        wrapper.setProps({ asPanel: false });
         expect(wrapper.find('.tabbed-grid-panel.panel-default').exists()).toEqual(false);
         expect(wrapper.find('.tabbed-grid-panel.panel').exists()).toEqual(false);
+        expect(wrapper.find('.panel-heading').text()).toBe(title);
+        expect(wrapper.find(GridPanel).prop('title')).toBe(title);
     });
 
     test('single model', () => {

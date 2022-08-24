@@ -136,3 +136,19 @@
 .old-audit-value, .new-audit-value {
     word-break: break-all;
 }
+
+.timeline-title {
+    color: $gray;
+}
+
+.timeline-filter-btn-group {
+    padding-top: 85px;
+}
+
+.timeline-filter-btn-spacer {
+    padding-right: 10px;
+}
+
+.timeline-container {
+    overflow-x: scroll;
+}

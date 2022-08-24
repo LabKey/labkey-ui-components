@@ -178,6 +178,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
     getIsDirty?: () => boolean;
+    gridInsertOnly?: boolean;
     hideParentEntityButtons?: boolean; // Used if you have an initial parent but don't want to enable ability to change it
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
@@ -191,7 +192,7 @@ interface OwnProps {
     onCancel?: () => void;
     onChangeInsertOption?: (isMerge: boolean) => void;
     onFileChange?: (files?: string[]) => void;
-    onParentChange?: (parentTypes: Map<string, List<EntityParentType>>, currentTarget: string) => void;
+    onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
     onTabChange?: (tab: number) => void;
     onTargetChange?: (target: string) => void;
     originalParents?: string[];
@@ -302,7 +303,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             this.init();
         }
 
-        if (this.props.importOnly && this.props.tab !== EntityInsertPanelTabs.First)
+        if ((this.props.importOnly || this.props.gridInsertOnly) && this.props.tab !== EntityInsertPanelTabs.First)
             this.props.selectStep(EntityInsertPanelTabs.First);
     }
 
@@ -314,6 +315,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         if (this.props.importOnly) {
             return ['Import ' + this.capNounPlural + ' from File'];
         }
+
+        if (this.props.gridInsertOnly) {
+            return ['Create ' + this.capNounPlural + ' from Grid'];
+        }
+
         return ['Create ' + this.capNounPlural + ' from Grid', 'Import ' + this.capNounPlural + ' from File'];
     };
 
@@ -616,7 +622,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 editorModel: updatedModels.editorModels[0],
             }),
             () => {
-                this.props.onParentChange?.(updates.entityParents, this.state.insertModel.targetEntityType.value);
+                this.props.onParentChange?.(updates.entityParents);
             }
         );
     }

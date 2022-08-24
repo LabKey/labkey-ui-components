@@ -293,7 +293,12 @@ import { EntityInsertPanel } from './internal/components/entities/EntityInsertPa
 import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
-import { GenerateEntityResponse, OperationConfirmationData } from './internal/components/entities/models';
+import {
+    GenerateEntityResponse,
+    OperationConfirmationData,
+    EntityIdCreationModel,
+    EntityParentType,
+} from './internal/components/entities/models';
 import { FindSamplesByIdsPageBase } from './internal/components/search/FindSamplesByIdsPageBase';
 import { SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
@@ -1102,6 +1107,8 @@ export {
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
     GenerateEntityResponse,
+    EntityIdCreationModel,
+    EntityParentType,
     OperationConfirmationData,
     AddEntityButton,
     RemoveEntityButton,
@@ -1537,7 +1544,6 @@ export type {
     IParentOption,
     MaterialOutput,
     EntityChoice,
-    EntityParentType,
 } from './internal/components/entities/models';
 export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
 export type { InjectedPermissionsPage } from './internal/components/permissions/withPermissionsPage';

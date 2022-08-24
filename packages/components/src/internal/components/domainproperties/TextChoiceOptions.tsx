@@ -31,7 +31,6 @@ const VALUE_IN_USE = (
         body={IN_USE_TIP}
         id="text-choice-value-lock-icon"
         title={IN_USE_TITLE}
-        unlocked
     />
 );
 

@@ -16,22 +16,7 @@
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 
-import {
-    AssayDefinitionModel,
-    buildURL,
-    caseInsensitive,
-    EditorModelProps,
-    IGridResponse,
-    invalidateQueryDetailsCache,
-    QueryColumn,
-    QueryConfig,
-    QueryInfo,
-    resolveKey,
-    SchemaQuery,
-    ViewInfo,
-} from '..';
-
-import { selectRowsDeprecated } from './query/api';
+import { invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
 import { Location } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
@@ -49,14 +34,23 @@ import {
     CellValues,
     DataViewInfo,
     EditorModel,
+    EditorModelProps,
+    IGridResponse,
     ValueDescriptor,
     VisualizationConfigModel,
 } from './models';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 
-import { isFloat, isInteger, parseCsvString, parseScientificInt } from './util/utils';
+import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 import { hasModule } from './app/utils';
+import { buildURL } from './url/AppURL';
+import { QueryColumn } from '../public/QueryColumn';
+import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
+import { QueryInfo } from '../public/QueryInfo';
+import { AssayDefinitionModel } from './AssayDefinitionModel';
+import { QueryConfig } from '../public/QueryModel/QueryModel';
+import { ViewInfo } from './ViewInfo';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;

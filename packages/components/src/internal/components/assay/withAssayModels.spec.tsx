@@ -16,6 +16,7 @@ import {
 import { sleep } from '../../testHelpers';
 
 import { AssayLoader } from './withAssayModels';
+import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../../test/data/constants';
 
 const WithAssayModelsComponentImpl: FC<InjectedAssayModel> = () => <div />;
 
@@ -33,6 +34,10 @@ const createMockAssayLoader = (actions?: Partial<AssayLoader>): AssayLoader => {
 };
 
 describe('withAssayModels', () => {
+    beforeAll(() => {
+        LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT }
+    });
+
     test('load definitions', () => {
         // Arrange
         const assayLoader = createMockAssayLoader();
@@ -187,6 +192,10 @@ describe('withAssayModels', () => {
 });
 
 describe('withAssayModelsFromLocation', () => {
+    beforeAll(() => {
+        LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT }
+    });
+
     test('sets "assayName" from location', async () => {
         // Arrange
         const expectedAssayName = 'SomeAssay';

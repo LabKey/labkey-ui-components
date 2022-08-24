@@ -11,13 +11,15 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
 import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
-import { caseInsensitive, OperationConfirmationData, SCHEMAS } from '../../..';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
 import { isProductProjectsEnabled } from '../../app/utils';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
+import { SCHEMAS } from '../../schemas';
+import { OperationConfirmationData } from '../entities/models';
+import { caseInsensitive } from '../../util/utils';
 
 export function getPicklistsForInsert(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {

@@ -7,6 +7,7 @@ import { AppURL } from '../url/AppURL';
 import { imageURL } from '../url/ActionURL';
 
 import { AppProperties } from './models';
+import { SAMPLE_MANAGER_SEARCH_PLACEHOLDER, SEARCH_PLACEHOLDER } from '../components/navigation/constants';
 
 // These ids should match what is used by the MenuProviders in the Java code so we can avoid toLowerCase comparisons.
 export const LKS_PRODUCT_ID = 'LabKeyServer';
@@ -90,6 +91,15 @@ export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu'
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
 export const EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN = 'experimental-grid-lock-left-column';
 
+// The enum values here should align with the ProductFeature.java enum values (some not currently used but included for completeness)
+export enum ProductFeature {
+    Assay = 'Assay',
+    ELN = 'ELN',
+    FreezerManagement = 'FreezerManagement',
+    SampleManagement = 'SampleManagement',
+    Workflow = 'Workflow',
+}
+
 export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     productId: BIOLOGICS_PRODUCT_ID,
     name: BIOLOGICS_PRODUCT_NAME,
@@ -97,6 +107,7 @@ export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     logoBadgeImageUrl: imageURL('biologics/images', 'lk-bio-logo-badge.svg'),
     controllerName: BIOLOGICS_CONTROLLER_NAME,
     moduleName: 'biologics',
+    searchPlaceholder: SEARCH_PLACEHOLDER,
 };
 
 export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
@@ -106,6 +117,7 @@ export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
     logoBadgeImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-WHITE.svg'),
     controllerName: SAMPLE_MANAGER_CONTROLLER_NAME,
     moduleName: 'sampleManagement',
+    searchPlaceholder: SAMPLE_MANAGER_SEARCH_PLACEHOLDER,
 };
 
 export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {
@@ -116,3 +128,4 @@ export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {
     controllerName: FREEZER_MANAGER_CONTROLLER_NAME,
     moduleName: 'inventory',
 };
+

@@ -17,9 +17,9 @@ import React, { Component, ReactNode } from 'react';
 import { List, Record } from 'immutable';
 import classNames from 'classnames';
 
-import { AppURL, naturalSort, createProductUrlFromParts } from '../../..';
-
 import { MenuItemModel, MenuSectionModel } from './model';
+import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+import { naturalSort } from '../../../public/sort';
 
 function getHref(url: AppURL | string): string {
     return typeof url === 'string' ? url : url.toHref();

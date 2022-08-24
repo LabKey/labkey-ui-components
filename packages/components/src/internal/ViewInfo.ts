@@ -1,7 +1,6 @@
 import { List, Record } from 'immutable';
 import { Filter } from '@labkey/api';
-
-import { QuerySort } from '..';
+import { QuerySort } from '../public/QuerySort';
 
 function getFiltersFromView(rawViewInfo): List<Filter.IFilter> {
     const filters = List<Filter.IFilter>().asMutable();

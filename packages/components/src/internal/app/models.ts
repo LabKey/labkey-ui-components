@@ -50,4 +50,5 @@ export interface AppProperties {
     moduleName: string;
     name: string;
     productId: string;
+    searchPlaceholder?: string;
 }

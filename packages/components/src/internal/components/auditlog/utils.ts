@@ -6,10 +6,15 @@ import React, { ReactNode } from 'react';
 import { Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { AppURL } from '../../..';
-import { isBiologicsEnabled, isSampleManagerEnabled } from '../../app/utils';
+import { AppURL, naturalSortByProperty } from '../../..';
+import { isAssayEnabled, isSampleManagerEnabled, isWorkflowEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
-import { COMMON_AUDIT_QUERIES, SAMPLE_MANAGER_AUDIT_QUERIES } from '../samples/constants';
+import {
+    ASSAY_AUDIT_QUERY,
+    COMMON_AUDIT_QUERIES,
+    SOURCE_AUDIT_QUERY,
+    WORKFLOW_AUDIT_QUERY
+} from '../samples/constants';
 
 export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;
@@ -19,7 +24,14 @@ export type AuditQuery = {
 };
 
 export function getAuditQueries(): AuditQuery[] {
-    return isBiologicsEnabled() ? COMMON_AUDIT_QUERIES : (isSampleManagerEnabled() ? SAMPLE_MANAGER_AUDIT_QUERIES : []);
+    let queries = [...COMMON_AUDIT_QUERIES];
+    if (isWorkflowEnabled())
+        queries.push(WORKFLOW_AUDIT_QUERY);
+    if (isAssayEnabled())
+        queries.push(ASSAY_AUDIT_QUERY)
+    if (isSampleManagerEnabled() && sampleManagerIsPrimaryApp())
+        queries.push(SOURCE_AUDIT_QUERY);
+    return queries.sort(naturalSortByProperty('label'));
 }
 
 export function getEventDataValueDisplay(d: any, showLink = true): ReactNode {

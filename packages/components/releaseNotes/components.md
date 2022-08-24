@@ -9,6 +9,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Issue 45746: Show more grid options menus at narrower screen widths when possible
   * Issue 45965: Use "locked" lock icon to mean locked in Text Choice field editor
 
+### version 2.211.0
+*Relased*: 24 August 2022
+* LKSM Starter edition
+  * Add helper methods for checking if workflow and assay features are enabled
+  * Update `getAuditQueries` to return the proper set of queries for the various products
+
 ### version 2.210.0
 *Released*: 23 August 2022
 * Sample Timeline in LKB

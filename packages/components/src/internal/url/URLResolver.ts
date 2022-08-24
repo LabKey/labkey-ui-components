@@ -16,12 +16,12 @@
 import { fromJS, List, Map, OrderedSet } from 'immutable';
 import { ActionURL, Experiment, Filter, getServerContext } from '@labkey/api';
 
-import { AppURL, createProductUrl, ListResolver } from '../..';
 import { LineageLinkMetadata } from '../components/lineage/types';
 
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../app/constants';
 
-import { AppRouteResolver } from './AppURLResolver';
+import { AppRouteResolver, ListResolver } from './AppURLResolver';
+import { AppURL, createProductUrl } from './AppURL';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
 

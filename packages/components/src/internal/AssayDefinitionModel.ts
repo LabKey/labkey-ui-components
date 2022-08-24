@@ -1,9 +1,13 @@
 import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { AppURL, createProductUrlFromParts, QueryColumn, SchemaQuery, SCHEMAS, WHERE_FILTER_TYPE } from '..';
 
 import { AssayUploadTabs } from './constants';
+import { QueryColumn } from '../public/QueryColumn';
+import { AppURL, createProductUrlFromParts } from './url/AppURL';
+import { SchemaQuery } from '../public/SchemaQuery';
+import { SCHEMAS } from './schemas';
+import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
 
 export enum AssayDomainTypes {
     BATCH = 'Batch',

@@ -19,7 +19,7 @@ import {
 
 import { fetchProtocol } from '../domainproperties/assay/actions';
 
-import { userCanReadAssays } from '../../app/utils';
+import { isAssayEnabled, userCanReadAssays } from '../../app/utils';
 
 import { clearAssayDefinitionCache, fetchAllAssays } from './actions';
 
@@ -104,8 +104,15 @@ export function withAssayModels<Props>(
         };
 
         load = async (): Promise<void> => {
-            await this.loadDefinitions();
-            await this.loadProtocol();
+            if (!isAssayEnabled()) {
+                this.updateModel({
+                    definitions: [],
+                    definitionsLoadingState: LoadingState.LOADED,
+                });
+            } else {
+                await this.loadDefinitions();
+                await this.loadProtocol();
+            }
         };
 
         loadDefinitions = async (): Promise<void> => {

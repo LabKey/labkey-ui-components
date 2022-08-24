@@ -19,6 +19,7 @@ import { mount } from 'enzyme';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { AssayRunDataType, SampleTypeDataType } from './constants';
 import { OperationConfirmationData } from './models';
+import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../../test/data/constants';
 
 describe('<EntityDeleteConfirmModal/>', () => {
     test('Can delete 1', () => {
@@ -209,7 +210,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
     });
 
     test('ELN enabled', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'labbook'] } };
+        LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
         const component = (
             <EntityDeleteConfirmModalDisplay
                 confirmationData={
@@ -239,7 +240,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
     });
 
     test('Adding deletion description, cannot delete', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'labbook'] } };
+        LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
         const component = (
             <EntityDeleteConfirmModalDisplay
                 confirmationData={
@@ -270,7 +271,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
     });
 
     test('Adding deletion description, can delete', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'labbook'] } };
+        LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
         const component = (
             <EntityDeleteConfirmModalDisplay
                 confirmationData={

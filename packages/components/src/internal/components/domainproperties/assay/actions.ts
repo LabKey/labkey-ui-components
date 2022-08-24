@@ -19,10 +19,12 @@ import { Ajax, Utils } from '@labkey/api';
 import { SEVERITY_LEVEL_ERROR } from '../constants';
 import { DomainException } from '../models';
 
-import { buildURL, Container } from '../../../..';
 import { setDomainException } from '../actions';
 
 import { AssayProtocolModel } from './models';
+import { buildURL } from '../../../url/AppURL';
+import { Container } from '../../base/models/Container';
+import { isAssayEnabled } from '../../../app/utils';
 
 export function fetchProtocol(
     protocolId?: number,
@@ -113,6 +115,9 @@ export function setAssayDomainException(model: AssayProtocolModel, exception: Do
 }
 
 export function getValidPublishTargets(containerPath?: string): Promise<List<Container>> {
+    if (!isAssayEnabled()) {
+        return Promise.resolve(List<Container>());
+    }
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('assay', 'getValidPublishTargets.api', undefined, {

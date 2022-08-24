@@ -21,6 +21,7 @@ import { QueryFormInputs, LabelOverlay } from '../../..';
 import { AssayTaskInput } from '../forms/input/AssayTaskInput';
 
 import { AssayPropertiesPanelProps } from './models';
+import { isWorkflowEnabled } from '../../app/utils';
 
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
     const { model, onChange, title = 'Run Details', showQuerySelectPreviewOptions } = props;
@@ -62,12 +63,14 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                         rows={2}
                         value={model.comment}
                     />
-                    <AssayTaskInput
-                        assayId={model.assayDef.id}
-                        isDetailInput={false}
-                        name="workflowtask"
-                        value={model.workflowTask}
-                    />
+                    {isWorkflowEnabled() && (
+                        <AssayTaskInput
+                            assayId={model.assayDef.id}
+                            isDetailInput={false}
+                            name="workflowtask"
+                            value={model.workflowTask}
+                        />
+                    )}
                     {model.runColumns.size !== 0 && (
                         <QueryFormInputs
                             fieldValues={model.runProperties.toObject()}

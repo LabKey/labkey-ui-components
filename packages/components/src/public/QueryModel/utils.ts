@@ -7,11 +7,13 @@ import { Filter } from '@labkey/api';
 
 import { List } from 'immutable';
 
-import { EXPORT_TYPES, QueryColumn, QueryModel, QuerySort } from '../..';
-
 import { ExportOptions, getExportParams } from '../../internal/actions';
 
 import { ActionValue } from './grid/actions/Action';
+import { QuerySort } from '../QuerySort';
+import { QueryModel } from './QueryModel';
+import { QueryColumn } from '../QueryColumn';
+import { EXPORT_TYPES } from '../../internal/constants';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;

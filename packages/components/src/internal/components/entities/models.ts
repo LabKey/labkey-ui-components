@@ -18,23 +18,17 @@ import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
 
 import { immerable } from 'immer';
 
-import {
-    capitalizeFirstChar,
-    caseInsensitive,
-    EditorModel,
-    generateId,
-    insertRows,
-    InsertRowsResponse,
-    QueryColumn,
-    QueryInfo,
-    QueryModel,
-    SampleCreationType,
-    SchemaQuery,
-    SCHEMAS,
-    SelectInputOption,
-} from '../../..';
-import { decodePart, encodePart } from '../../../public/SchemaQuery';
+import { decodePart, encodePart, SchemaQuery } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
+import { SelectInputOption } from '../forms/input/SelectInput';
+import { capitalizeFirstChar, caseInsensitive, generateId } from '../../util/utils';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { SCHEMAS } from '../../schemas';
+import { SampleCreationType } from '../samples/models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { EditorModel } from '../../models';
+import { insertRows, InsertRowsResponse } from '../../query/api';
+import { QueryInfo } from '../../../public/QueryInfo';
 
 export interface EntityInputProps {
     role: string;

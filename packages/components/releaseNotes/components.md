@@ -1,6 +1,23 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.210.0
+*Released*: 23 August 2022
+* Sample Timeline in LKB
+  * Extract and move SampleTimelinePageBase, SampleEventListing and timeline utils here from LKSM
+
+### version 2.209.1
+*Released*: 23 August 2022
+* TabbedGridPanel update for display of panel title when grid has tabs
+
+### version 2.209.0
+*Released*: 22 August 2022
+* BarTender integration for LKB
+  * Move withLabelPrintingContext, PrintLabelsModal, BarTenderSettingsForm from LKSM
+  * Move label printing related actions, constants, models, SCSS from LKSM
+  * Add LabelPrintingProvider to AppContexts
+  * FindSamplesByIdsPageBase update to support conditionally add support for label printing
+
 ### version 2.208.0
 *Released*: 18 August 2022
 * Multi-tab grids for Find Sample by Ids grids

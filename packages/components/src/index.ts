@@ -139,7 +139,7 @@ import {
     NotificationsContextProvider,
 } from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
-import { formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
+import { formatDate, formatDateTime, getDateFormat, parseDate, filterDate } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
@@ -351,6 +351,8 @@ import { SampleAliquotDetailHeader } from './internal/components/samples/SampleA
 import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 import { SampleActionsButton } from './internal/components/samples/SampleActionsButton';
+
+import { SampleTimelinePageBase } from './internal/components/timeline/SampleTimelinePageBase';
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
@@ -617,6 +619,13 @@ import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveFromPicklistButton';
 import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
+import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
+import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
+import {
+    LabelPrintingProviderProps,
+    withLabelPrintingContext,
+    useLabelPrintingContext,
+} from './internal/components/labels/LabelPrintingContextProvider';
 
 import {
     AppReducers,
@@ -1098,6 +1107,8 @@ export {
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
     SampleTypeInsightsPanel,
+    // timeline
+    SampleTimelinePageBase,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -1296,6 +1307,7 @@ export {
     // util functions
     getDateFormat,
     getDisambiguatedSelectInputOptions,
+    filterDate,
     formatDate,
     formatDateTime,
     parseDate,
@@ -1493,6 +1505,11 @@ export {
     // SubNavWithContext
     useSubNavContext,
     SubNavWithContext,
+    // BarTender
+    BarTenderSettingsForm,
+    PrintLabelsModal,
+    withLabelPrintingContext,
+    useLabelPrintingContext,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1588,3 +1605,4 @@ export type { HorizontalBarData } from './internal/components/chart/HorizontalBa
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
 export type { EditableGridPanelForUpdateWithLineageProps } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
+export type { LabelPrintingProviderProps } from './internal/components/labels/LabelPrintingContextProvider';

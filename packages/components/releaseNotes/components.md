@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 46137: Use current view to get selected data for editing in bulk and in the grid
 
+### version 2.211.1
+*Released*: 25 August 2022
+* Issue 46148: Add multitabbed grid view to Stored Items table
+  * Allow TabbedGridPanel excel handler to be used by getGridPanelDisplay
+
 ### version 2.211.0
 *Released*: 24 August 2022
 * LKSM Starter edition

@@ -95,10 +95,14 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                       onMouseOver={[Function]}
                     >
                       <FontAwesomeIcon
+                        beat={false}
+                        beatFade={false}
                         border={false}
+                        bounce={false}
                         className="label-help-icon"
+                        fade={false}
                         fixedWidth={false}
-                        flip={null}
+                        flip={false}
                         icon={
                           Object {
                             "icon": Array [
@@ -115,15 +119,20 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                         inverse={false}
                         listItem={false}
                         mask={null}
+                        maskId={null}
                         pull={null}
                         pulse={false}
                         rotation={null}
+                        shake={false}
                         size="1x"
                         spin={false}
+                        spinPulse={false}
+                        spinReverse={false}
                         style={Object {}}
                         swapOpacity={false}
                         symbol={false}
                         title=""
+                        titleId={null}
                         transform={null}
                       >
                         <svg
@@ -814,10 +823,14 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                   >
                     Text Color
                     <FontAwesomeIcon
+                      beat={false}
+                      beatFade={false}
                       border={false}
+                      bounce={false}
                       className="domain-color-caret"
+                      fade={false}
                       fixedWidth={false}
-                      flip={null}
+                      flip={false}
                       icon={
                         Object {
                           "icon": Array [
@@ -834,14 +847,19 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                       inverse={false}
                       listItem={false}
                       mask={null}
+                      maskId={null}
                       pull={null}
                       pulse={false}
                       rotation={null}
+                      shake={false}
                       size="lg"
                       spin={false}
+                      spinPulse={false}
+                      spinReverse={false}
                       swapOpacity={false}
                       symbol={false}
                       title=""
+                      titleId={null}
                       transform={null}
                     >
                       <svg
@@ -912,10 +930,14 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                   >
                     Fill Color
                     <FontAwesomeIcon
+                      beat={false}
+                      beatFade={false}
                       border={false}
+                      bounce={false}
                       className="domain-color-caret"
+                      fade={false}
                       fixedWidth={false}
-                      flip={null}
+                      flip={false}
                       icon={
                         Object {
                           "icon": Array [
@@ -932,14 +954,19 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                       inverse={false}
                       listItem={false}
                       mask={null}
+                      maskId={null}
                       pull={null}
                       pulse={false}
                       rotation={null}
+                      shake={false}
                       size="lg"
                       spin={false}
+                      spinPulse={false}
+                      spinReverse={false}
                       swapOpacity={false}
                       symbol={false}
                       title=""
+                      titleId={null}
                       transform={null}
                     >
                       <svg
@@ -1122,10 +1149,14 @@ exports[`ConditionalFormatOptions Format 2 - collapsed 1`] = `
           onClick={[Function]}
         >
           <FontAwesomeIcon
+            beat={false}
+            beatFade={false}
             border={false}
+            bounce={false}
             className=""
+            fade={false}
             fixedWidth={false}
-            flip={null}
+            flip={false}
             icon={
               Object {
                 "icon": Array [
@@ -1142,14 +1173,19 @@ exports[`ConditionalFormatOptions Format 2 - collapsed 1`] = `
             inverse={false}
             listItem={false}
             mask={null}
+            maskId={null}
             pull={null}
             pulse={false}
             rotation={null}
+            shake={false}
             size={null}
             spin={false}
+            spinPulse={false}
+            spinReverse={false}
             swapOpacity={false}
             symbol={false}
             title=""
+            titleId={null}
             transform={null}
           >
             <svg

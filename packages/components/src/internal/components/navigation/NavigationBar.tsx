@@ -16,7 +16,7 @@
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
 
-import { User } from '../../..';
+import { SEARCH_PLACEHOLDER, User } from '../../..';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
@@ -37,6 +37,7 @@ import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
 
 import { FolderMenu } from './FolderMenu';
+import { getPrimaryAppProperties } from '../../app/utils';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -69,7 +70,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         onFindByIds,
         onSignIn,
         onSignOut,
-        searchPlaceholder = 'Search for samples, assays, ...',
+        searchPlaceholder = getPrimaryAppProperties()?.searchPlaceholder ?? SEARCH_PLACEHOLDER,
         showFolderMenu,
         showNavMenu,
         showNotifications,

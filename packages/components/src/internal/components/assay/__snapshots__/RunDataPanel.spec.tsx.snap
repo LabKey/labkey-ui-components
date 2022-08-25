@@ -4784,6 +4784,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       onSubmit={[Function]}
                       onValid={[Function]}
                       onValidSubmit={[Function]}
+                      preventDefaultSubmit={true}
                       preventExternalInvalidation={false}
                       resetValue={[Function]}
                       setValidations={[Function]}
@@ -4809,6 +4810,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                               "col-sm-12",
                             ]
                           }
+                          innerRef={null}
                           label=""
                           labelClassName={
                             Array [
@@ -4846,6 +4848,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                             hasValue={[Function]}
                             help=""
                             id=""
+                            innerRef={null}
                             isFormDisabled={[Function]}
                             isFormSubmitted={[Function]}
                             isPristine={[Function]}
@@ -14407,6 +14410,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                       onSubmit={[Function]}
                       onValid={[Function]}
                       onValidSubmit={[Function]}
+                      preventDefaultSubmit={true}
                       preventExternalInvalidation={false}
                       resetValue={[Function]}
                       setValidations={[Function]}
@@ -14432,6 +14436,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                               "col-sm-12",
                             ]
                           }
+                          innerRef={null}
                           label=""
                           labelClassName={
                             Array [
@@ -14469,6 +14474,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                             hasValue={[Function]}
                             help=""
                             id=""
+                            innerRef={null}
                             isFormDisabled={[Function]}
                             isFormSubmitted={[Function]}
                             isPristine={[Function]}

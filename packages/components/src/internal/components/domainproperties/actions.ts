@@ -15,32 +15,21 @@
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { Ajax, Domain, Experiment, Query, Security, Utils, Filter } from '@labkey/api';
-
-import {
-    buildURL,
-    ConceptModel,
-    Container,
-    DomainDetails,
-    naturalSortByProperty,
-    QueryColumn,
-    SchemaDetails,
-    SchemaQuery,
-    SCHEMAS,
-} from '../../..';
+import { Ajax, Domain, Experiment, Filter, Query, Security, Utils } from '@labkey/api';
 
 import { processSchemas } from '../../query/api';
 
 import { SimpleResponse } from '../files/models';
 
-import { OntologyModel } from '../ontology/models';
+import { ConceptModel, OntologyModel } from '../ontology/models';
 
 import { isCommunityDistribution } from '../../app/utils';
 
 import {
-    DEFAULT_TEXT_CHOICE_VALIDATOR,
     decodeLookup,
+    DEFAULT_TEXT_CHOICE_VALIDATOR,
     DomainDesign,
+    DomainDetails,
     DomainException,
     DomainField,
     DomainFieldError,
@@ -49,25 +38,25 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
+    isValidTextChoiceValue,
     NameExpressionsValidationResults,
     QueryInfoLite,
     updateSampleField,
-    isValidTextChoiceValue,
 } from './models';
 import {
     ATTACHMENT_TYPE,
     FILE_TYPE,
     FLAG_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
+    PARTICIPANT_TYPE,
     PROP_DESC_TYPES,
+    PropDescType,
+    SAMPLE_TYPE,
+    SMILES_TYPE,
+    TEXT_CHOICE_TYPE,
+    UNIQUE_ID_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
-    PropDescType,
-    UNIQUE_ID_TYPE,
-    TEXT_CHOICE_TYPE,
-    SAMPLE_TYPE,
-    PARTICIPANT_TYPE,
-    SMILES_TYPE,
 } from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -85,6 +74,13 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
+import { Container } from '../base/models/Container';
+import { naturalSortByProperty } from '../../../public/sort';
+import { SchemaDetails } from '../../SchemaDetails';
+import { buildURL } from '../../url/AppURL';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SCHEMAS } from '../../schemas';
 
 let sharedCache = Map<string, Promise<any>>();
 

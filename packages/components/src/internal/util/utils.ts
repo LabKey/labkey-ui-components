@@ -779,3 +779,15 @@ export function quoteValueWithDelimiters(value: any, delimiter: string) {
     }
     return '"' + value + '"';
 }
+
+export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseInsensitive?: boolean): boolean {
+    if (a === b) return true;
+    if (a == null && b == null) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+
+    const aStr = ignoreOrder ? a.sort().join(';') : a.join(';');
+    const bStr = ignoreOrder ? b.sort().join(';') : b.join(';');
+
+    return caseInsensitive ? aStr.toLowerCase() === bStr.toLowerCase() : aStr === bStr;
+}

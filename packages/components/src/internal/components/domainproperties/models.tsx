@@ -19,11 +19,9 @@ import React, { ReactNode } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
 
-import { createFormInputId, GridColumn, SCHEMAS, valueIsEmpty } from '../../..';
-
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
-import { camelCaseToTitleCase } from '../../util/utils';
+import { camelCaseToTitleCase, valueIsEmpty } from '../../util/utils';
 
 import { getConceptForCode } from '../ontology/actions';
 
@@ -84,6 +82,9 @@ import {
 } from './propertiesUtil';
 import { INT_LIST, VAR_LIST } from './list/constants';
 import { DomainRowWarning } from './DomainRowWarning';
+import { GridColumn } from '../base/models/GridColumn';
+import { createFormInputId } from './actions';
+import { SCHEMAS } from '../../schemas';
 
 export interface IFieldChange {
     id: string;

@@ -27,6 +27,7 @@ import {
     getProjectPath,
     getStorageSectionConfig,
     hasPremiumModule,
+    isAssayEnabled,
     isBiologicsEnabled,
     isCommunityDistribution,
     isELNEnabled,
@@ -36,6 +37,7 @@ import {
     isProjectContainer,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
+    isWorkflowEnabled,
     sampleManagerIsPrimaryApp,
     userCanDesignLocations,
     userCanDesignSourceTypes,
@@ -47,46 +49,99 @@ import {
     EXPERIMENTAL_REQUESTS_MENU,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
-    MEDIA_KEY,
     NOTEBOOKS_KEY,
-    REGISTRY_KEY,
+    PICKLIST_KEY,
+    ProductFeature,
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
     SOURCES_KEY,
-    USER_KEY,
     WORKFLOW_KEY,
 } from './constants';
+import {
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT
+} from '../../test/data/constants';
 
 describe('getMenuSectionConfigs', () => {
-    test('sampleManager enabled', () => {
+
+    test('LKS starter enabled', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'study', 'premium'],
-            },
-            samplemanagement: {
-                productId: 'SampleManager',
-            },
+            ...TEST_LKS_STARTER_MODULE_CONTEXT
+        };
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
+
+        expect(configs.size).toBe(5);
+        expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
+        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
+
+        expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+
+        expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
+        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
+
+        expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
+        expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+
+        expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+        expect(configs.hasIn([4, WORKFLOW_KEY])).toBeFalsy();
+        expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeFalsy();
+
+    });
+
+    test('sampleManager starter enabled', () => {
+        LABKEY.moduleContext = {
+            ...TEST_LKSM_STARTER_MODULE_CONTEXT
+        };
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
+
+        expect(configs.size).toBe(4);
+        expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
+        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
+
+        expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+
+        expect(configs.hasIn([2, FREEZERS_KEY])).toBeTruthy();
+        expect(configs.getIn([2, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+
+        expect(configs.hasIn([3, PICKLIST_KEY])).toBeTruthy();
+        expect(configs.getIn([3, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+        expect(configs.hasIn([3, WORKFLOW_KEY])).toBeFalsy();
+        expect(configs.hasIn([3, NOTEBOOKS_KEY])).toBeFalsy();
+    });
+
+    test('sampleManager professional enabled', () => {
+        LABKEY.moduleContext = {
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
         };
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager');
 
-        expect(configs.size).toBe(4);
-        expect(configs.hasIn([0, 'sources'])).toBeTruthy();
-        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
+        expect(configs.size).toBe(5);
+        expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
+        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
 
-        expect(configs.hasIn([1, 'samples'])).toBeTruthy();
-        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
 
-        expect(configs.hasIn([2, 'assays'])).toBeTruthy();
-        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
+        expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
+        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
 
-        expect(configs.hasIn([3, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([3, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
+        expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
+        expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
 
-        expect(configs.hasIn([3, 'picklist'])).toBeTruthy();
-        expect(configs.getIn([3, 'picklist', 'headerURL'])).toEqual("#/picklist");
+        expect(configs.hasIn([4, WORKFLOW_KEY])).toBeTruthy();
+        expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
 
-        expect(configs.hasIn([3, 'user'])).toBeFalsy();
+        expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+
+        expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual("#/notebooks");
+
     });
 
     test('freezerManager enabled', () => {
@@ -98,91 +153,16 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId);
 
         expect(configs.size).toBe(2);
-        expect(configs.hasIn([0, 'freezers'])).toBeTruthy();
-        expect(configs.getIn([0, 'freezers', 'seeAllURL'])).toEqual('#/home');
+        expect(configs.hasIn([0, FREEZERS_KEY])).toBeTruthy();
+        expect(configs.getIn([0, FREEZERS_KEY, 'seeAllURL'])).toEqual('#/home');
 
         expect(configs.hasIn([1, 'user'])).toBeTruthy();
-    });
-
-    test('SM and FM enabled, SM current app', () => {
-        LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'study', 'premium'],
-            },
-            samplemanagement: {
-                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            },
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            },
-        };
-
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager');
-        expect(configs.size).toBe(5);
-        expect(configs.hasIn([0, 'sources'])).toBeTruthy();
-        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
-
-        expect(configs.hasIn([1, 'samples'])).toBeTruthy();
-        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
-
-        expect(configs.hasIn([2, 'assays'])).toBeTruthy();
-        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
-
-        expect(configs.hasIn([3, 'freezers'])).toBeTruthy();
-        expect(configs.getIn([3, 'freezers', 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
-
-        expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
-
-        expect(configs.hasIn([4, 'picklist'])).toBeTruthy();
-        expect(configs.getIn([4, 'picklist', 'headerURL'])).toEqual("#/picklist");
-
-        expect(configs.hasIn([4, 'user'])).toBeFalsy();
-    });
-
-    test('SM, ELN, and FM enabled, SM current app', () => {
-        LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'study', 'premium', 'labbook'],
-            },
-            samplemanagement: {
-                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            },
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            },
-        };
-
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager');
-        expect(configs.size).toBe(5);
-        expect(configs.hasIn([0, 'sources'])).toBeTruthy();
-        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
-
-        expect(configs.hasIn([1, 'samples'])).toBeTruthy();
-        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
-
-        expect(configs.hasIn([2, 'assays'])).toBeTruthy();
-        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
-
-        expect(configs.hasIn([3, 'freezers'])).toBeTruthy();
-        expect(configs.getIn([3, 'freezers', 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
-
-        expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
-
-        expect(configs.hasIn([4, 'picklist'])).toBeTruthy();
-        expect(configs.getIn([4, 'picklist', 'headerURL'])).toEqual("#/picklist");
-
-        expect(configs.hasIn([4, 'notebooks'])).toBeTruthy();
-        expect(configs.getIn([4, 'notebooks', 'headerURL'])).toEqual("#/notebooks");
-
-        expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
     test('SM, ELN, and FM enabled, LKB current app', () => {
         LABKEY.moduleContext = {
             api: {
-                moduleNames: ['biologics', 'samplemanagement', 'study', 'premium', 'labbook'],
+                moduleNames: ['biologics', 'samplemanagement', 'study', 'premium', 'professional', 'labbook', 'assay'],
             },
             samplemanagement: {
                 productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
@@ -192,6 +172,9 @@ describe('getMenuSectionConfigs', () => {
             },
             biologics: {
                 productId: BIOLOGICS_APP_PROPERTIES.productId,
+            },
+            core: {
+                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN ]
             }
         };
 
@@ -200,34 +183,34 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([0, 'registry'])).toBeTruthy();
         expect(configs.getIn([0, 'registry', 'seeAllURL'])).toEqual('#/registry');
 
-        expect(configs.hasIn([1, 'samples'])).toBeTruthy();
-        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
 
-        expect(configs.hasIn([2, 'assays'])).toBeTruthy();
-        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
+        expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
+        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
 
-        expect(configs.hasIn([3, 'freezers'])).toBeTruthy();
-        expect(configs.getIn([3, 'freezers', 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
+        expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
 
-        expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
+        expect(configs.hasIn([4, WORKFLOW_KEY])).toBeTruthy();
+        expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
 
-        expect(configs.hasIn([4, 'picklist'])).toBeTruthy();
-        expect(configs.getIn([4, 'picklist', 'headerURL'])).toEqual("#/picklist");
+        expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
 
         expect(configs.hasIn([4, 'media'])).toBeTruthy();
         expect(configs.getIn([4, 'media', 'headerURL'])).toEqual("#/media");
 
-        expect(configs.hasIn([4, 'notebooks'])).toBeTruthy();
-        expect(configs.getIn([4, 'notebooks', 'headerURL'])).toEqual("#/notebooks");
+        expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual("#/notebooks");
 
         expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
-    test('SM and FM enabled, FM current app, no ELN', () => {
+    test('LKB with requests enabled', () => {
         LABKEY.moduleContext = {
             api: {
-                moduleNames: ['samplemanagement', 'study', 'premium'],
+                moduleNames: ['biologics', 'samplemanagement', 'study', 'premium', 'professional', 'labbook', 'assay'],
             },
             samplemanagement: {
                 productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
@@ -235,100 +218,117 @@ describe('getMenuSectionConfigs', () => {
             inventory: {
                 productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
             },
+            biologics: {
+                productId: BIOLOGICS_APP_PROPERTIES.productId,
+                [EXPERIMENTAL_REQUESTS_MENU]: true
+            },
+            core: {
+                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN ]
+            }
+        };
+
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId);
+        expect(configs.size).toBe(5);
+        expect(configs.hasIn([0, 'registry'])).toBeTruthy();
+        expect(configs.getIn([0, 'registry', 'seeAllURL'])).toEqual('#/registry');
+
+        expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+
+        expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
+        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
+
+        expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
+        expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.getIn([3, REQUESTS_KEY])).toBeDefined();
+
+        expect(configs.hasIn([4, WORKFLOW_KEY])).toBeTruthy();
+        expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
+
+        expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+
+        expect(configs.hasIn([4, 'media'])).toBeTruthy();
+        expect(configs.getIn([4, 'media', 'headerURL'])).toEqual("#/media");
+
+        expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual("#/notebooks");
+
+    })
+
+    test('SM starter enabled, FM current app', () => {
+        LABKEY.moduleContext = {
+            ...TEST_LKSM_STARTER_MODULE_CONTEXT
         };
 
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId);
-        expect(configs.size).toBe(5);
-        expect(configs.hasIn([0, 'sources'])).toBeTruthy();
-        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual(
+        expect(configs.size).toBe(4);
+        expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
+        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual(
             '/labkey/samplemanager/app.view#/sources?viewAs=grid'
         );
 
-        expect(configs.hasIn([1, 'samples'])).toBeTruthy();
-        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual(
+        expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual(
             '/labkey/samplemanager/app.view#/samples?viewAs=cards'
         );
 
-        expect(configs.hasIn([2, 'assays'])).toBeTruthy();
-        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/assays?viewAs=grid');
+        expect(configs.hasIn([2, FREEZERS_KEY])).toBeTruthy();
+        expect(configs.getIn([2, FREEZERS_KEY, 'seeAllURL'])).toEqual('#/home');
 
-        expect(configs.hasIn([3, 'freezers'])).toBeTruthy();
-        expect(configs.getIn([3, 'freezers', 'seeAllURL'])).toEqual('#/home');
-
-        expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/workflow');
-
-        expect(configs.hasIn([4, 'picklist'])).toBeTruthy();
-        expect(configs.getIn([4, 'picklist', 'headerURL'])).toEqual('/labkey/samplemanager/app.view#/picklist');
-
-        expect(configs.hasIn([4, 'user'])).toBeFalsy();
+        expect(configs.hasIn([3, PICKLIST_KEY])).toBeTruthy();
+        expect(configs.getIn([3, PICKLIST_KEY, 'headerURL'])).toEqual('/labkey/samplemanager/app.view#/picklist');
     });
 
-    test('SM and FM enabled, SM current app, storage editor', () => {
+    test('SM professional, SM current app, storage editor', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'study', 'premium'],
-            },
-            samplemanagement: {
-                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            },
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            },
+           ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
         };
 
-        const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, 'sampleManager');
+        const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
         expect(configs.size).toBe(3);
-        expect(configs.hasIn([0, 'samples'])).toBeTruthy();
-        expect(configs.getIn([0, 'samples', 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.hasIn([0, SAMPLES_KEY])).toBeTruthy();
+        expect(configs.getIn([0, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
 
-        expect(configs.hasIn([1, 'freezers'])).toBeTruthy();
-        expect(configs.getIn([1, 'freezers', 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.hasIn([1, FREEZERS_KEY])).toBeTruthy();
+        expect(configs.getIn([1, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
 
-        expect(configs.hasIn([2, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([2, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
+        expect(configs.hasIn([2, WORKFLOW_KEY])).toBeTruthy();
+        expect(configs.getIn([2, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
 
-        expect(configs.hasIn([2, 'picklist'])).toBeTruthy();
-        expect(configs.getIn([2, 'picklist', 'headerURL'])).toEqual("#/picklist");
+        expect(configs.hasIn([2, PICKLIST_KEY])).toBeTruthy();
+        expect(configs.getIn([2, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
 
-        expect(configs.hasIn([2, 'user'])).toBeFalsy();
+        expect(configs.hasIn([2, NOTEBOOKS_KEY])).toBeFalsy();
     });
 
-    test('SM, ELN, and FM enabled, SM current app, reader', () => {
+    test('SM professional, SM current app, reader', () => {
         LABKEY.moduleContext = {
-            api: {
-                moduleNames: ['samplemanagement', 'study', 'premium', 'labbook'],
-            },
-            samplemanagement: {
-                productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
-            },
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            },
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
         };
 
         const configs = getMenuSectionConfigs(TEST_USER_READER, 'sampleManager');
         expect(configs.size).toBe(5);
-        expect(configs.hasIn([0, 'sources'])).toBeTruthy();
-        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
+        expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
+        expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
 
-        expect(configs.hasIn([1, 'samples'])).toBeTruthy();
-        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
+        expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
+        expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
 
-        expect(configs.hasIn([2, 'assays'])).toBeTruthy();
-        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
+        expect(configs.hasIn([2, ASSAYS_KEY])).toBeTruthy();
+        expect(configs.getIn([2, ASSAYS_KEY, 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
 
-        expect(configs.hasIn([3, 'freezers'])).toBeTruthy();
-        expect(configs.getIn([3, 'freezers', 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.hasIn([3, FREEZERS_KEY])).toBeTruthy();
+        expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
 
-        expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('#/workflow');
+        expect(configs.hasIn([4, WORKFLOW_KEY])).toBeTruthy();
+        expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
 
-        expect(configs.hasIn([4, 'picklist'])).toBeTruthy();
-        expect(configs.getIn([4, 'picklist', 'headerURL'])).toEqual("#/picklist");
+        expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
 
-        expect(configs.hasIn([4, 'notebooks'])).toBeTruthy();
-        expect(configs.getIn([4, 'notebooks', 'headerURL'])).toEqual("#/notebooks");
+        expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual("#/notebooks");
     });
 });
 
@@ -383,8 +383,68 @@ describe('utils', () => {
         expect(isELNEnabled()).toBeFalsy();
         LABKEY.moduleContext = {
             api: { moduleNames: ['labbook'] },
+            core: {
+                productFeatures: [ProductFeature.ELN ]
+            }
         };
         expect(isELNEnabled()).toBeTruthy();
+    });
+
+    test('isAssayEnabled', () => {
+        LABKEY.moduleContext = {
+            api: { moduleNames: [] },
+        };
+        expect(isAssayEnabled()).toBe(false);
+        LABKEY.moduleContext = {
+            api: { moduleNames: ['assay'] },
+            core: {
+                productFeatures: []
+            }
+        };
+        expect(isAssayEnabled()).toBe(false);
+        LABKEY.moduleContext = {
+            api: { moduleNames: [] },
+            core: {
+                productFeatures: [ProductFeature.Assay]
+            }
+        };
+        expect(isAssayEnabled()).toBe(false);
+        LABKEY.moduleContext = {
+            api: { moduleNames: ['assay'] },
+            core: {
+                productFeatures: [ProductFeature.Assay ]
+            }
+        };
+        expect(isAssayEnabled()).toBe(true);
+
+    });
+
+    test('isWorkflowEnabled', () => {
+        LABKEY.moduleContext = {
+            api: { moduleNames: [] },
+        };
+        expect(isWorkflowEnabled()).toBe(false);
+        LABKEY.moduleContext = {
+            api: { moduleNames: ['samplemanagement'] },
+            core: {
+                productFeatures: []
+            }
+        };
+        expect(isWorkflowEnabled()).toBe(false);
+        LABKEY.moduleContext = {
+            api: { moduleNames: [] },
+            core: {
+                productFeatures: [ProductFeature.Workflow]
+            }
+        };
+        expect(isWorkflowEnabled()).toBe(false);
+        LABKEY.moduleContext = {
+            api: { moduleNames: ['samplemanagement'] },
+            core: {
+                productFeatures: [ProductFeature.Workflow ]
+            }
+        };
+        expect(isWorkflowEnabled()).toBe(true);
     });
 
     test('isSampleManagerEnabled', () => {
@@ -889,144 +949,5 @@ describe('addAssaySectionConfig', () => {
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
         expect(sectionConfig.emptyURL).toBe('/labkey/test/app.view#/assayDesign/new');
         expect(sectionConfig.emptyURLText).toBe('Create an assay design');
-    });
-});
-
-describe('getMenuSectionConfigs', () => {
-    const { location } = window;
-
-    beforeAll(() => {
-        LABKEY.moduleContext = {};
-        delete window.location;
-    });
-
-    afterAll(() => {
-        window.location = location;
-    });
-
-    test('Sample Manager', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Samples/sampleManager-app.view#',
-            }
-        );
-        const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
-            api: { moduleNames: ['labbook'] },
-            inventory: {},
-            samplemanagement: { },
-        });
-        expect(configs.size).toBe(5);
-        expect(configs.getIn([0, SOURCES_KEY])).toBeDefined();
-        expect(configs.getIn([1, SAMPLES_KEY])).toBeDefined();
-        expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
-        expect(configs.getIn([3, FREEZERS_KEY])).toBeDefined();
-        expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([4, NOTEBOOKS_KEY])).toBeDefined();
-        expect(configs.getIn([4, USER_KEY])).toBeUndefined();
-    });
-
-    test('Sample Manager, without ELN', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Samples/sampleManager-app.view#',
-            }
-        );
-        const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
-            api: { moduleNames: [] },
-            inventory: {},
-            samplemanagement: { },
-        });
-        expect(configs.size).toBe(5);
-        expect(configs.getIn([0, SOURCES_KEY])).toBeDefined();
-        expect(configs.getIn([1, SAMPLES_KEY])).toBeDefined();
-        expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
-        expect(configs.getIn([3, FREEZERS_KEY])).toBeDefined();
-        expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([4, NOTEBOOKS_KEY])).toBeUndefined();
-        expect(configs.getIn([4, USER_KEY])).toBeUndefined();
-    });
-
-    test('Biologics primary, in Sample Manager', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Biologics/samplemanager-app.view#',
-            }
-        );
-        const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
-            api: { moduleNames: ['labbook'] },
-            inventory: {},
-            biologics: {},
-        });
-        expect(configs.size).toBe(5);
-        expect(configs.getIn([0, SOURCES_KEY])).toBeDefined();
-        expect(configs.getIn([1, SAMPLES_KEY])).toBeDefined();
-        expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
-        expect(configs.getIn([3, FREEZERS_KEY])).toBeDefined();
-        expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([4, NOTEBOOKS_KEY])).toBeDefined();
-        expect(configs.getIn([4, USER_KEY])).toBeUndefined();
-    });
-
-    test('Biologics', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Biologics/biologics-app.view#',
-            }
-        );
-        const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
-            inventory: {},
-            samplemanagement: {},
-            biologics: {},
-        });
-        expect(configs.size).toBe(5);
-        expect(configs.getIn([0, REGISTRY_KEY])).toBeDefined();
-        expect(configs.getIn([1, SAMPLES_KEY])).toBeDefined();
-        expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
-        expect(configs.getIn([3, FREEZERS_KEY])).toBeDefined();
-        expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([4, MEDIA_KEY])).toBeDefined();
-        expect(configs.getIn([4, NOTEBOOKS_KEY])).toBeDefined();
-    });
-
-    test('Biologics with Requests', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Biologics/biologics-app.view#',
-            }
-        );
-        const configs = getMenuSectionConfigs(TEST_USER_READER, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
-            inventory: {},
-            samplemanagement: {},
-            biologics: { [EXPERIMENTAL_REQUESTS_MENU]: true },
-        });
-        expect(configs.size).toBe(5);
-        expect(configs.getIn([0, REGISTRY_KEY])).toBeDefined();
-        expect(configs.getIn([1, SAMPLES_KEY])).toBeDefined();
-        expect(configs.getIn([2, ASSAYS_KEY])).toBeDefined();
-        expect(configs.getIn([3, REQUESTS_KEY])).toBeDefined();
-        expect(configs.getIn([3, FREEZERS_KEY])).toBeDefined();
-        expect(configs.getIn([4, WORKFLOW_KEY])).toBeDefined();
-        expect(configs.getIn([4, MEDIA_KEY])).toBeDefined();
-        expect(configs.getIn([4, NOTEBOOKS_KEY])).toBeDefined();
-    });
-
-    test('Freezer Manager', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Cold Storage/freezermanager-app.view#',
-            }
-        );
-        const configs = getMenuSectionConfigs(TEST_USER_READER, FREEZER_MANAGER_APP_PROPERTIES.productId, {
-            inventory: {},
-        });
-        expect(configs.size).toBe(2);
-        expect(configs.getIn([0, FREEZERS_KEY])).toBeDefined();
-        expect(configs.getIn([1, USER_KEY])).toBeDefined();
     });
 });

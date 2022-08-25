@@ -12,7 +12,7 @@ interface ExportMenuProps {
     model: QueryModel;
     advancedOptions?: { [key: string]: any };
     supportedTypes?: Set<EXPORT_TYPES>;
-    onExport?: { [key: string]: () => any };
+    onExport?: { [key: string]: (modelId?: string) => any };
 }
 
 export interface ExportOption {
@@ -45,7 +45,7 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
     const exportCallback = useCallback((option: ExportOption) => {
         const {type} = option;
         if (onExport?.[type]) {
-            onExport[type]?.();
+            onExport[type]?.(id);
         }
         else {
             exportHandler(option);
@@ -106,7 +106,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
         const {type} = option;
         const exportParams = getQueryModelExportParams(model, type, advancedOptions);
         if (onExport && onExport[type]) {
-            onExport[type]();
+            onExport[type](model.id);
         } else {
             exportRows(type, exportParams);
         }

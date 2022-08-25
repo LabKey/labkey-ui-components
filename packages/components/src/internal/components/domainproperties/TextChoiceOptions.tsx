@@ -48,10 +48,10 @@ const VALUE_LOCKED = (
 
 interface Props extends ITypeDependentProps {
     field: DomainField;
-    queryName?: string;
-    schemaName?: string;
     lockedForDomain?: boolean;
     lockedSqlFragment?: string;
+    queryName?: string;
+    schemaName?: string;
 }
 
 interface ImplProps extends Props {
@@ -59,9 +59,9 @@ interface ImplProps extends Props {
     // to some domain types) and row count for the given value
     fieldValues: Record<string, Record<string, any>>;
     loading: boolean;
+    maxValueCount?: number;
     replaceValues: (newValues: string[], valueUpdates?: Record<string, string>) => void;
     validValues: string[];
-    maxValueCount?: number;
 }
 
 // exported for jest testing

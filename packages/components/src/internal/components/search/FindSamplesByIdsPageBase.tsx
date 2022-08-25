@@ -42,14 +42,22 @@ const TYPE_GRID_PREFIX = 'find-by-id-';
 
 interface FindSamplesByIdsTabProps extends InjectedQueryModels {
     allSamplesModel: QueryModel;
-    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     gridButtonProps?: SampleGridButtonProps;
+    gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     sampleGridIds?: string[];
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
 }
 
 export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(props => {
-    const { actions, allSamplesModel, sampleGridIds, queryModels, gridButtons, gridButtonProps, samplesEditableGridProps } = props;
+    const {
+        actions,
+        allSamplesModel,
+        sampleGridIds,
+        queryModels,
+        gridButtons,
+        gridButtonProps,
+        samplesEditableGridProps,
+    } = props;
     const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
     const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
     const { user } = useServerContext();
@@ -186,8 +194,8 @@ export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = mem
 });
 
 interface OwnProps {
-    gridButtons: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     gridButtonProps?: SampleGridButtonProps;
+    gridButtons: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
 }
 

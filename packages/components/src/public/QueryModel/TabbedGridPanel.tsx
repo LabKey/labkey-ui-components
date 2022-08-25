@@ -82,7 +82,10 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      * return the custom GridPanel for an active tab
      * @param activeGridId
      */
-    getGridPanelDisplay?: (activeGridId: string, exportHandlers: { [key: string]: (modelId?: string) => any }) => React.ReactNode;
+    getGridPanelDisplay?: (
+        activeGridId: string,
+        exportHandlers: { [key: string]: (modelId?: string) => any }
+    ) => React.ReactNode;
     /**
      * return the showViewMenu value for an active tab
      * @param activeGridId

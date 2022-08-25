@@ -1,8 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 46137: Use current view to get selected data for editing in bulk and in the grid
+
 ### version 2.211.0
-*Relased*: 24 August 2022
+*Released*: 24 August 2022
 * LKSM Starter edition
   * Add helper methods for checking if workflow and assay features are enabled
   * Update `getAuditQueries` to return the proper set of queries for the various products

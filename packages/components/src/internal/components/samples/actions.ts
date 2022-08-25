@@ -158,6 +158,7 @@ export function fetchSamples(
     return selectRowsDeprecated({
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,
+        viewName: schemaQuery.viewName,
         columns: ['RowId', displayValueKey, valueKey],
         filterArray,
     }).then(response => {
@@ -680,6 +681,7 @@ export function getSelectedItemSamples(selectedItemIds: string[]): Promise<numbe
             SCHEMAS.INVENTORY.ITEMS.queryName,
             selectedItemIds,
             'RowId, MaterialId',
+            undefined,
             undefined,
             undefined,
             undefined

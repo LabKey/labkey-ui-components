@@ -54,11 +54,12 @@ export interface GetQueryDetailsOptions {
     lookup?: QueryLookup;
     queryName: string;
     schemaName: string;
+    viewName?: string;
 }
 
 export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
-    const { containerPath, queryName, schemaName, fk, lookup } = options;
-    const schemaQuery = SchemaQuery.create(schemaName, queryName);
+    const { containerPath, queryName, schemaName, viewName, fk, lookup } = options;
+    const schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
     const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
 
     if (!queryDetailsCache[key]) {
@@ -375,7 +376,7 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
     return new Promise((resolve, reject) => {
         let schemaQuery, key;
         if (userConfig.queryName) {
-            schemaQuery = SchemaQuery.create(userConfig.schemaName, userConfig.queryName);
+            schemaQuery = SchemaQuery.create(userConfig.schemaName, userConfig.queryName, userConfig.viewName);
             key = resolveSchemaQuery(schemaQuery);
         }
 

@@ -69,7 +69,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns)) as List<QueryColumn>)
             : undefined;
         const columnString = columns?.map(c => c.fieldKey).join(',');
-        const { schemaName, name } = queryInfo;
+        const { schemaName, name, schemaQuery } = queryInfo;
 
         try {
             const { data, dataIds } = await getSelectedData(
@@ -77,7 +77,9 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 name,
                 Array.from(selectedIds),
                 columnString,
-                sortString
+                sortString,
+                undefined,
+                schemaQuery.viewName
             );
             this.setState({
                 dataForSelection: data,

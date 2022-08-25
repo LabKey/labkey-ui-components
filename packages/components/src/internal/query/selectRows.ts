@@ -34,10 +34,10 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
         schemaQuery,
         ...selectRowsOptions
     } = options;
-    const { queryName, schemaName } = schemaQuery;
+    const { queryName, schemaName, viewName } = schemaQuery;
 
     const [queryInfo, resolved] = await Promise.all([
-        getQueryDetails({ containerPath: options.containerPath, queryName, schemaName }),
+        getQueryDetails({ containerPath: options.containerPath, queryName, schemaName, viewName }),
         new Promise<any>((resolve, reject) => {
             Query.selectRows({
                 ...selectRowsOptions,
@@ -47,6 +47,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
                 queryName,
                 requiredVersion: 17.1,
                 schemaName,
+                viewName,
                 success: json => {
                     resolve(new URLResolver().resolveSelectRows(json));
                 },

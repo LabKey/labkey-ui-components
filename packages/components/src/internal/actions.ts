@@ -594,7 +594,8 @@ export function getSelectedData(
     columns?: string,
     sorts?: string,
     queryParameters?: { [key: string]: any },
-    keyColumn = 'RowId'
+    viewName?: string,
+    keyColumn = 'RowId',
 ): Promise<IGridResponse> {
     const filterArray = [];
     filterArray.push(Filter.create(keyColumn, selections, Filter.Types.IN));
@@ -603,6 +604,7 @@ export function getSelectedData(
         selectRowsDeprecated({
             schemaName,
             queryName,
+            viewName,
             filterArray,
             parameters: queryParameters,
             sort: sorts,

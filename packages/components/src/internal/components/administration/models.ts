@@ -1,4 +1,4 @@
-interface Member {
+export interface Member {
     id: number;
     name: string;
     type: string;

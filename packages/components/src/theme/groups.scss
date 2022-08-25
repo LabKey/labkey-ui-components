@@ -39,3 +39,22 @@
 .group-member-row__member {
     display: block;
 }
+
+.group-detail-label {
+    color: $gray;
+    padding-bottom: 15px;
+}
+
+.group-detail-value {
+    overflow-wrap: break-word;
+    padding-bottom: 15px;
+}
+
+.groups-ul {
+    padding-left: 15px;
+}
+
+.group-hr {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}

@@ -2,21 +2,43 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, useCallback, useMemo } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 
-import moment from 'moment';
+import { Filter, Query } from '@labkey/api';
 
-import { caseInsensitive } from '../../util/utils';
+import { resolveErrorMessage } from '../../util/messaging';
+import { Member } from '../administration/models';
 
-import { getDateTimeFormat } from '../../util/Date';
-
-import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { EffectiveRolesList } from './EffectiveRolesList';
 
+import { Principal, SecurityPolicy, SecurityRole } from './models';
+
+function getWhenCreated(id: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+        Query.selectRows({
+            method: 'POST',
+            schemaName: 'auditLog',
+            queryName: 'GroupAuditEvent',
+            columns: 'Date,group/UserId',
+            filterArray: [Filter.create('group/UserId', id, Filter.Types.EQUAL)],
+            containerFilter: Query.ContainerFilter.allFolders,
+            sort: '-Date',
+            maxRows: 1,
+            success: response => {
+                resolve(response.rows.length ? response.rows[0].Date : '');
+            },
+            failure: error => {
+                console.error('Failed to fetch group memberships', error);
+                reject(error);
+            },
+        });
+    });
+}
+
 interface Props {
-    members?: any;
+    members?: Member[];
     policy: SecurityPolicy;
     principal: Principal;
     rolesByUniqueName: Map<string, SecurityRole>;
@@ -24,20 +46,49 @@ interface Props {
 
 export const GroupDetailsPanel: FC<Props> = memo(props => {
     const { principal, members } = props;
-    console.log('props', props);
+    const [created, setCreated] = useState<string>('');
+
+    const loadWhenCreated = useCallback(async () => {
+        try {
+            const createdState = await getWhenCreated(principal.get('userId'));
+            setCreated(createdState.slice(0, -7));
+        } catch (e) {
+            console.error(resolveErrorMessage(e) ?? 'Failed to when group created');
+        }
+    }, [principal]);
+
+    useEffect(() => {
+        loadWhenCreated();
+    }, [loadWhenCreated]);
 
     const renderUserProp = useCallback((title: string, prop: string) => {
         return (
             <Row>
-                <Col xs={4} className="principal-detail-label">
+                <Col xs={4} className="group-detail-label">
                     {title}:
                 </Col>
-                <Col xs={8} className="principal-detail-value">
+                <Col xs={8} className="group-detail-value">
                     {prop}
                 </Col>
             </Row>
         );
     }, []);
+
+    const renderMembersList = useCallback(() => {
+        return members.length === 0 ? (
+            <></>
+        ) : (
+            <>
+                <hr className="group-hr" />
+                <div className="group-detail-label">Members:</div>
+                <ul className="groups-ul">
+                    {members.map(member => (
+                        <li key={member.id}>{member.name}</li>
+                    ))}
+                </ul>
+            </>
+        );
+    }, [members]);
 
     const { usersCount, groupsCount } = useMemo(() => {
         const usersCount = members.filter(member => member.type === 'u').length;
@@ -54,13 +105,14 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
                     <>
                         <p className="principal-title-primary">{principal.displayName}</p>
 
-                        {renderUserProp('Member Count', usersCount)}
+                        {renderUserProp('User Count', usersCount.toString())}
                         {renderUserProp('Group Count', groupsCount)}
 
-                        <hr className="principal-hr" />
+                        <hr className="group-hr" />
+                        {renderUserProp('Created', created)}
 
                         <EffectiveRolesList {...props} userId={principal.userId} />
-                        {/* TODO when groups are implemented, "Members" for groups*/}
+                        {renderMembersList()}
                     </>
                 ) : (
                     <div>No group selected.</div>

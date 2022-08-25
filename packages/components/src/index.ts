@@ -21,12 +21,12 @@ import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { GridColumn } from './internal/components/base/models/GridColumn';
 import {
+    decodePart,
+    encodePart,
     getSchemaQuery,
     resolveKey,
     resolveSchemaQuery,
     SchemaQuery,
-    encodePart,
-    decodePart,
 } from './public/SchemaQuery';
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
@@ -34,9 +34,9 @@ import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
 import {
     getAssayImportNotificationMsg,
+    getAssayRunDeleteMessage,
     getServerFilePreview,
     inferDomainFromFile,
-    getAssayRunDeleteMessage,
 } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
@@ -86,11 +86,11 @@ import {
 } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import {
+    deleteErrorMessage,
+    deleteSuccessMessage,
     getActionErrorMessage,
     getConfirmDeleteMessage,
     resolveErrorMessage,
-    deleteSuccessMessage,
-    deleteErrorMessage,
 } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
 import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
@@ -134,9 +134,9 @@ import { FileTree } from './internal/components/files/FileTree';
 import { Notifications } from './internal/components/notifications/Notifications';
 import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/components/notifications/actions';
 import {
+    NotificationsContextProvider,
     useNotificationsContext,
     withNotificationsContext,
-    NotificationsContextProvider,
 } from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
 import { formatDate, formatDateTime, getDateFormat, parseDate, filterDate } from './internal/util/Date';
@@ -163,7 +163,7 @@ import { Footer } from './internal/components/base/Footer';
 import { Setting } from './internal/components/base/Setting';
 import { ValueList } from './internal/components/base/ValueList';
 
-import { EditorModel, createGridModelId } from './internal/models';
+import { createGridModelId, EditorModel } from './internal/models';
 import {
     clearSelected,
     createQueryConfigFilteredBySample,
@@ -227,7 +227,9 @@ import {
     EditableGridPanelForUpdateWithLineage,
     UpdateGridTab,
 } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+import {
+    LineageEditableGridLoaderFromSelection
+} from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -434,6 +436,7 @@ import { EntityDeleteConfirmModal } from './internal/components/entities/EntityD
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
+import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
@@ -469,14 +472,14 @@ import {
     extractEntityTypeOptionFromRow,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
-    getSampleOperationConfirmationData,
     getOperationConfirmationData,
+    getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
+    AssayRunDataType,
     DataClassDataType,
     ParentEntityRequiredColumns,
     SampleTypeDataType,
-    AssayRunDataType,
 } from './internal/components/entities/constants';
 import { createEntityParentKey, getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
@@ -544,10 +547,10 @@ import { RangeValidationOptions } from './internal/components/domainproperties/v
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import {
     makeQueryInfo,
-    mountWithAppServerContextOptions,
-    mountWithServerContextOptions,
     mountWithAppServerContext,
+    mountWithAppServerContextOptions,
     mountWithServerContext,
+    mountWithServerContextOptions,
     sleep,
     waitForLifecycle,
     wrapDraggable,
@@ -636,23 +639,25 @@ import {
 
 import {
     CloseEventCode,
+    getCurrentAppProperties,
     getDateFormat as getAppDateFormat,
     getDateTimeFormat as getAppDateTimeFormat,
     getPrimaryAppProperties,
-    getCurrentAppProperties,
     getProjectPath,
     hasModule,
     hasPremiumModule,
+    isAssayEnabled,
     isBiologicsEnabled,
     isELNEnabled,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
+    isProductProjectsEnabled,
     isProjectContainer,
     isRequestsEnabled,
     isSampleAliquotSelectorEnabled,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
-    isProductProjectsEnabled,
+    isWorkflowEnabled,
     registerWebSocketListeners,
     sampleManagerIsPrimaryApp,
     useMenuSectionConfigs,
@@ -744,6 +749,11 @@ import { Thread } from './internal/announcements/Thread';
 import { ThreadBlock } from './internal/announcements/ThreadBlock';
 import { ThreadEditor } from './internal/announcements/ThreadEditor';
 import { useNotAuthorized, useNotFound } from './internal/hooks';
+import {
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT
+} from './test/data/constants';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -757,6 +767,8 @@ const App = {
     CloseEventCode,
     getCurrentAppProperties,
     registerWebSocketListeners,
+    isAssayEnabled,
+    isWorkflowEnabled,
     isELNEnabled,
     isFreezerManagementEnabled,
     isRequestsEnabled,
@@ -842,6 +854,9 @@ const App = {
     TEST_USER_APP_ADMIN,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     MEDIA_KEY,
     REGISTRY_KEY,
     ELN_KEY,
@@ -1221,6 +1236,7 @@ export {
     MenuSectionModel,
     MenuItemModel,
     NavigationBar,
+    SEARCH_PLACEHOLDER,
     ProductNavigationMenu,
     FindByIdsModal,
     SubNav,

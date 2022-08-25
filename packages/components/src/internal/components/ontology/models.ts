@@ -1,6 +1,6 @@
 import { immerable } from 'immer';
+import { caseInsensitive } from '../../util/utils';
 
-import { caseInsensitive } from '../../..';
 
 export const ONTOLOGY_ROOT_CODE_PREFIX = 'labkey_ontology:';
 

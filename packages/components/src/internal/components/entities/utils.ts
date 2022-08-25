@@ -1,14 +1,5 @@
 import { List, Map, Set } from 'immutable';
 
-import {
-    caseInsensitive,
-    EditableColumnMetadata,
-    naturalSort,
-    parseCsvString,
-    QueryInfo,
-    SchemaQuery,
-    SCHEMAS,
-} from '../../..';
 
 import { getCurrentProductName } from '../../app/utils';
 
@@ -17,6 +8,12 @@ import { ParentIdData } from '../samples/actions';
 import { DELIMITER } from '../forms/constants';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
+import { naturalSort } from '../../../public/sort';
+import { caseInsensitive, parseCsvString } from '../../util/utils';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { EditableColumnMetadata } from '../editable/EditableGrid';
+import { SCHEMAS } from '../../schemas';
 
 export function parentValuesDiffer(
     sortedOriginalParents: List<EntityChoice>,

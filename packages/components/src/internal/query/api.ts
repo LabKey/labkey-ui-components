@@ -18,21 +18,15 @@ import { normalize, schema } from 'normalizr';
 import { Filter, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
-import { resolveKeyFromJson } from '../../public/SchemaQuery';
-import { isProjectContainer, isProductProjectsEnabled } from '../app/utils';
-import {
-    caseInsensitive,
-    QueryColumn,
-    QueryInfo,
-    QueryInfoStatus,
-    QueryLookup,
-    resolveSchemaQuery,
-    SchemaDetails,
-    SchemaQuery,
-    URLResolver,
-    ViewInfo,
-} from '../..';
-import { quoteValueWithDelimiters } from '../util/utils';
+import { resolveKeyFromJson, resolveSchemaQuery, SchemaQuery } from '../../public/SchemaQuery';
+import { isProductProjectsEnabled, isProjectContainer } from '../app/utils';
+
+import { caseInsensitive, quoteValueWithDelimiters } from '../util/utils';
+import { QueryInfo, QueryInfoStatus } from '../../public/QueryInfo';
+import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
+import { ViewInfo } from '../ViewInfo';
+import { URLResolver } from '../url/URLResolver';
+import { SchemaDetails } from '../SchemaDetails';
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 

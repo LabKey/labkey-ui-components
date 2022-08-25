@@ -3,39 +3,35 @@ import React, { ReactNode } from 'react';
 import { ActionURL, Filter, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
-import {
-    AppURL,
-    caseInsensitive,
-    createProductUrlFromParts,
-    downloadAttachment,
-    getQueryDetails,
-    getSampleTypeDetails,
-    LoadingSpinner,
-    MenuItemModel,
-    ProductMenuModel,
-    QueryInfo,
-    SAMPLE_EXPORT_CONFIG,
-    SAMPLE_INSERT_EXTRA_COLUMNS,
-    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
-    SAMPLE_STATE_TYPE_COLUMN_NAME,
-    SampleStateType,
-    SchemaQuery,
-    SCHEMAS,
-} from '../../..';
 
-import {
-    isELNEnabled,
-    isFreezerManagementEnabled,
-    isSampleStatusEnabled,
-} from '../../app/utils';
+import { isELNEnabled, isFreezerManagementEnabled, isSampleStatusEnabled, } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
 import { SAMPLES_KEY } from '../../app/constants';
 
-import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
+import {
+    operationRestrictionMessage,
+    permittedOps,
+    SAMPLE_EXPORT_CONFIG,
+    SAMPLE_INSERT_EXTRA_COLUMNS,
+    SAMPLE_STATE_COLUMN_NAME,
+    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SampleOperation,
+    SampleStateType
+} from './constants';
 
 import { SampleStatus } from './models';
+import { SCHEMAS } from '../../schemas';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { caseInsensitive, downloadAttachment } from '../../util/utils';
+import { MenuItemModel, ProductMenuModel } from '../navigation/model';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+import { getQueryDetails } from '../../query/api';
+import { getSampleTypeDetails } from './actions';
 
 export function getOmittedSampleTypeColumns(user: User): string[] {
     let cols: string[] = [];

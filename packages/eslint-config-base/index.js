@@ -20,7 +20,7 @@ module.exports = {
         'plugin:jest/recommended',
         'plugin:typescript-sort-keys/recommended',
     ],
-    plugins: ['prettier', 'import', '@typescript-eslint', 'only-warn', 'jest', 'typescript-sort-keys'],
+    plugins: ['dependencies', 'prettier', 'import', '@typescript-eslint', 'only-warn', 'jest', 'typescript-sort-keys'],
     globals: {
         LABKEY: 'readonly',
     },
@@ -196,7 +196,7 @@ module.exports = {
         'import/no-internal-modules': 'off',
         'import/no-webpack-loader-syntax': 'error',
         'import/no-self-import': 'error',
-        'import/no-cycle': 'warn',
+        'dependencies/no-cycle': 'warn',
         'import/no-useless-path-segments': 'error',
         'import/no-relative-parent-imports': 'off',
 

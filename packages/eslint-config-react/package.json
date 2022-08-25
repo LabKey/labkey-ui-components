@@ -1,6 +1,6 @@
 {
   "name": "@labkey/eslint-config-react",
-  "version": "0.0.12",
+  "version": "0.0.13-fb-es-modules.0",
   "description": "shareable eslint config for typescript and react",
   "main": "index.js",
   "files": [
@@ -13,7 +13,7 @@
   "author": "kevink@labkey.com",
   "license": "Apache-2.0",
   "dependencies": {
-    "@labkey/eslint-config-base": "0.0.12",
+    "@labkey/eslint-config-base": "0.0.13-fb-es-modules.0",
     "eslint-plugin-react": "7.30.0",
     "eslint-plugin-react-hooks": "4.5.0"
   }

@@ -13,7 +13,7 @@ import {
     SampleCreationType,
     SampleCreationTypeModal,
     SampleCreationTypeModel,
-    SchemaQuery,
+    SchemaQuery, SCHEMAS,
     SubMenu,
 } from '../../..';
 import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
@@ -29,8 +29,6 @@ interface CreateSamplesSubMenuProps {
     menuCurrentChoice?: string;
     menuText?: string;
     navigate: (url: string | AppURL) => any;
-    noun?: string;
-    nounPlural?: string;
     parentKey?: string;
     parentQueryModel?: QueryModel;
     parentType?: string;
@@ -65,8 +63,6 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         inlineItemsCount,
         currentProductId,
         targetProductId,
-        noun,
-        nounPlural,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -157,6 +153,18 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
             ...ALIQUOT_CREATION,
             selected: !selectedType || selectedType === SampleCreationType.Aliquots,
         });
+    }
+
+    let noun = 'Sample';
+    let nounPlural = 'Samples';
+
+    if (selectedOption?.toLowerCase() === SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase()) {
+        noun = 'Mixture Batch';
+        nounPlural = 'Mixture Batches'
+    }
+    else if (selectedOption?.toLowerCase() === SCHEMAS.SAMPLE_SETS.RAW_MATERIALS.queryName.toLowerCase()) {
+        noun = 'Raw Material';
+        nounPlural = 'Raw Materials'
     }
 
     return (

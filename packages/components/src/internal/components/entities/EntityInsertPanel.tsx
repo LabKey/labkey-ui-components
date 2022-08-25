@@ -20,7 +20,7 @@ import { AuditBehaviorTypes, Query, Utils } from '@labkey/api';
 
 import { Link } from 'react-router';
 
-import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS } from '../../constants';
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
 import {
     Alert,
@@ -52,12 +52,10 @@ import {
     QueryInfo,
     QueryModel,
     resolveErrorMessage,
-    resolveSchemaQuery,
     SAMPLE_STATE_COLUMN_NAME,
     SampleCreationType,
     SampleCreationTypeModel,
     SampleTypeDataType,
-    SchemaQuery,
     SelectInput,
     User,
     useServerContext,
@@ -74,7 +72,7 @@ import { BulkAddData } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
 
-import { getCurrentProductName, isSampleManagerEnabled } from '../../app/utils';
+import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
@@ -200,8 +198,8 @@ interface OwnProps {
     saveToPipeline?: boolean;
     selectedParents?: Map<string, List<EntityParentType>>;
     selectedTab?: number;
-    selectedTarget?: string;
     // selectedTarget allows controlling target from a parent component
+    selectedTarget?: string;
     setIsDirty?: (isDirty: boolean) => void;
 }
 
@@ -709,7 +707,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     renderAliquotResetMsg = (): ReactNode => {
         return (
             <Alert bsStyle="info" className="notification-container">
-                Parent and source types cannot be changed when creating aliquots.{' '}
+                Parent {sampleManagerIsPrimaryApp() ? 'and source' : ''} types cannot be changed when creating aliquots.{' '}
                 <a className="pull-right" onClick={this.resetCreationType}>
                     Clear Aliquots and Reset.
                 </a>

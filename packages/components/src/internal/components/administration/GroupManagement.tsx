@@ -4,6 +4,7 @@ import { MenuItem } from 'react-bootstrap';
 
 import { List, Map } from 'immutable';
 
+import { Filter, Query } from '@labkey/api';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
@@ -19,14 +20,54 @@ import { Principal, SecurityPolicy } from '../permissions/models';
 
 import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
-import { getGroupMembership } from '../security/actions';
 import { getProjectPath } from '../../app/utils';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
+import { CreatedModified } from '../base/CreatedModified';
 import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
-import { GroupMembership} from "./models";
+import { GroupMembership } from './models';
+
+function getGroupMembership(): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Query.selectRows({
+            method: 'POST',
+            schemaName: 'core',
+            queryName: 'Members',
+            columns: 'UserId,GroupId,GroupId/Name,UserId/DisplayName',
+            success: response => {
+                resolve(response.rows);
+            },
+            failure: error => {
+                console.error('Failed to fetch group memberships', error);
+                reject(error);
+            },
+        });
+    });
+}
+
+function getLastModified(project: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        Query.selectRows({
+            method: 'POST',
+            schemaName: 'auditLog',
+            queryName: 'GroupAuditEvent',
+            columns: 'Date,Project',
+            filterArray: [Filter.create('ProjectId/Name', project, Filter.Types.EQUAL)],
+            containerFilter: Query.ContainerFilter.allFolders,
+            sort: '-Date',
+            maxRows: 1,
+            success: response => {
+                resolve(response.rows.length ? response.rows[0].Date : '');
+            },
+            failure: error => {
+                console.error('Failed to fetch group memberships', error);
+                reject(error);
+            },
+        });
+    });
+}
 
 // todo: comment this up
 const constructGroupMembership = (groupsData, groupRows): GroupMembership => {
@@ -73,6 +114,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [savedGroupMembership, setSavedGroupMembership] = useState<GroupMembership>();
     const [groupMembership, setGroupMembership] = useState<GroupMembership>();
+    const [lastModified, setLastModified] = useState<string>();
     const [policy, setPolicy] = useState<SecurityPolicy>();
 
     const { api } = useAppContext<AppContext>();
@@ -88,6 +130,10 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
         setLoadingState(LoadingState.LOADING);
         try {
+            // Used in renderButtons()
+            const lastModifiedState = await getLastModified(projectPath.slice(0, -1));
+            setLastModified(lastModifiedState);
+
             // Used in DetailsPanels
             const policyState = await api.security.fetchPolicy(container.id, principalsById, inactiveUsersById);
 
@@ -105,7 +151,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         }
 
         setLoadingState(LoadingState.LOADED);
-    }, [api.security, container.id, inactiveUsersById, principalsById, setIsDirty]);
+    }, [api.security, container.id, inactiveUsersById, principalsById, projectPath, setIsDirty]);
 
     useEffect(() => {
         loadGroups();
@@ -168,15 +214,17 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     }, [savedGroupMembership, groupMembership, projectPath]);
 
     const renderButtons = useCallback(() => {
+        const row = { Modified: { value: lastModified } };
+
         return (
             <>
-                {/* TODO: needs modified date...?*/}
+                <CreatedModified row={row} />
                 <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
                     <MenuItem href={AppURL.create('audit', 'groupauditevent').toHref()}>View Audit History</MenuItem>
                 </ManageDropdownButton>
             </>
         );
-    }, []);
+    }, [lastModified]);
 
     const createGroup = useCallback(
         (name: string) => {

@@ -5,7 +5,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Panel, Row, Col, Button } from 'react-bootstrap';
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
 import { SecurityPolicy, SecurityRole, getUserProperties, LoadingSpinner, caseInsensitive } from '../../..';
@@ -29,8 +29,8 @@ interface Props {
 
 interface State {
     loading: boolean;
-    showDialog: string;
-    userProperties: {}; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
+    showDialog: string; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
+    userProperties: {};
 }
 
 export class UserDetailsPanel extends React.PureComponent<Props, State> {

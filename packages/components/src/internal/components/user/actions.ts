@@ -1,24 +1,12 @@
 import moment from 'moment';
 import { Map, OrderedMap } from 'immutable';
-import { Ajax, Filter, PermissionRoles, PermissionTypes, Query, Security, Utils } from '@labkey/api';
+import { Ajax, PermissionRoles, PermissionTypes, Security, Utils } from '@labkey/api';
 
-import {
-    buildURL,
-    caseInsensitive,
-    hasAllPermissions,
-    resolveErrorMessage,
-    SchemaQuery,
-    SCHEMAS,
-    selectRows,
-    SHARED_CONTAINER_PATH,
-    User,
-} from '../../..';
+import { buildURL, caseInsensitive, hasAllPermissions, SchemaQuery, SHARED_CONTAINER_PATH, User } from '../../..';
 
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
 
 import { processRequest } from '../../query/api';
-
-import { OntologyModel } from '../ontology/models';
 
 import { ChangePasswordModel } from './models';
 

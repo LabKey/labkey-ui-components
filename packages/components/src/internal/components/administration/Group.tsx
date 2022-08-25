@@ -1,19 +1,14 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import React, { FC, memo, useCallback, useMemo } from 'react';
+import { Button } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
 import { ExpandableContainer } from '../ExpandableContainer';
 
-import { AppContext, useAppContext } from '../../AppContext';
-import { resolveErrorMessage } from '../../util/messaging';
-import { LoadingState } from '../../../public/LoadingState';
 import { RemovableButton } from '../permissions/RemovableButton';
-import { Principal, SecurityAssignment, SecurityPolicy, SecurityRole } from '../permissions/models';
+import { Principal } from '../permissions/models';
 import { SelectInput } from '../forms/input/SelectInput';
-import { getPrincipals } from '../security/actions';
 
-import { GroupAssignmentsProps } from './GroupAssignments';
 
 export interface GroupProps {
     addMember: any;

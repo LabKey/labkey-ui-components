@@ -69,8 +69,6 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const isRoot = getServerContext().project.rootId === containerId;
     const showAssignments = (!isRoot && user.isAdmin) || user.isRootAdmin;
 
-    console.log("isRoot", isRoot);
-
     const loadPolicy = useCallback(async () => {
         setError(undefined);
         setIsDirty(false);
@@ -110,6 +108,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
 
     const renderButtons = useCallback(() => {
         const row = policy ? { Modified: { value: policy.modified } } : {};
+        console.log("policy.modified", row);
 
         return (
             <>

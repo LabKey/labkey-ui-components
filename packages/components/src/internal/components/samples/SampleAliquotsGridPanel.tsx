@@ -29,6 +29,8 @@ import { getOmittedSampleTypeColumns } from './utils';
 import { getSampleAliquotsQueryConfig } from './actions';
 import { JobsButton, SampleStorageButton } from './models';
 
+const SUB_MENU_WIDTH = 800;
+
 interface AliquotGridButtonsProps {
     JobsButtonComponent?: JobsButton;
     StorageButtonComponent?: SampleStorageButton;
@@ -107,7 +109,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
                         </DisableableButton>
                     </RequiresPermission>
                 )}
-                <ResponsiveMenuButtonGroup user={user} items={moreItems} subMenuWidth={800} />
+                <ResponsiveMenuButtonGroup user={user} items={moreItems} subMenuWidth={SUB_MENU_WIDTH} />
             </div>
         </RequiresPermission>
     );

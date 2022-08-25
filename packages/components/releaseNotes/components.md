@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD August 2022
+### version 2.211.2
+*Released*: 25 August 2022
 * Misc grid menu and button fixes for 22.9
   * Issue 45958: Safari dropdown / scroll bar z-index issue for editable grid
   * Issue 45666: Sample grid "More" menu is puzzling when no other menu is present

@@ -24,12 +24,20 @@ describe('resolveSchemaQuery', () => {
 });
 
 describe('getSchemaQuery', () => {
-    test('no decoding required', () => {
-        const expected = new SchemaQuery({
+    test('no decoding required, no view', () => {
+        expect(getSchemaQuery('name/query')).toEqual(new SchemaQuery({
             schemaName: 'name',
             queryName: 'query',
-        });
-        expect(getSchemaQuery('name/query')).toEqual(expected);
+        }));
+        expect(getSchemaQuery('name/query/view')).toEqual(new SchemaQuery({
+            schemaName: 'name',
+            queryName: 'query',
+            viewName: 'view'
+        }));
+    });
+
+    test('no decoding required, with view', () => {
+
     });
 
     test('decoding required', () => {
@@ -43,6 +51,13 @@ describe('getSchemaQuery', () => {
             new SchemaQuery({
                 schemaName: 'one.two.three$',
                 queryName: 'q1',
+            })
+        );
+        expect(getSchemaQuery('one$ptwo$pthree$d/q1/view$s2$d')).toEqual(
+            new SchemaQuery({
+                schemaName: 'one.two.three$',
+                queryName: 'q1',
+                viewName: 'view/2$'
             })
         );
     });

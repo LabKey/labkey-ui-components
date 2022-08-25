@@ -4,6 +4,8 @@ const APP_SELECTION_PREFIX = 'appkey';
 
 // 36009: Case-insensitive variant of QueryKey.decodePart
 export function decodePart(s: string): string {
+    if (!s) return s;
+
     return s
         .replace(/\$P/gi, '.')
         .replace(/\$C/gi, ',')
@@ -16,6 +18,8 @@ export function decodePart(s: string): string {
 
 // 36009: Case-insensitive variant of QueryKey.encodePart
 export function encodePart(s: string): string {
+    if (!s) return s;
+
     return s
         .replace(/\$/gi, '$D')
         .replace(/\//gi, '$S')
@@ -132,5 +136,6 @@ export function resolveSchemaQuery(schemaQuery: SchemaQuery): string {
 
 export function getSchemaQuery(encodedKey: string): SchemaQuery {
     const [encodedSchema, encodedQuery, encodedViewName] = encodedKey.split('/');
+
     return SchemaQuery.create(decodePart(encodedSchema), decodePart(encodedQuery), decodePart(encodedViewName));
 }

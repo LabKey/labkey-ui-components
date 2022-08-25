@@ -28,7 +28,7 @@ import { QueryColumn } from '../public/QueryColumn';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 
 export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
-    const parts = [gridId, resolveSchemaQuery(schemaQuery)];
+    const parts = [gridId, schemaQuery.getKey()];
 
     if (schemaQuery && schemaQuery.viewName) {
         parts.push(schemaQuery.viewName);

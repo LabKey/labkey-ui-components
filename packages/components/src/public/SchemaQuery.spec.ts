@@ -12,6 +12,15 @@ describe('resolveSchemaQuery', () => {
         });
         expect(resolveSchemaQuery(schemaQuery)).toBe('name/my favorite query');
     });
+
+    test('schema with view', () => {
+        const schemaQuery = new SchemaQuery({
+            schemaName: 'name',
+            queryName: 'my favorite query',
+            viewName: 'view2'
+        });
+        expect(resolveSchemaQuery(schemaQuery)).toBe('name/my favorite query/view2');
+    });
 });
 
 describe('getSchemaQuery', () => {
@@ -56,6 +65,8 @@ describe('resolveKeyFromJson', () => {
     test('schema name with one part', () => {
         expect(resolveKeyFromJson({ schemaName: ['partOne'], queryName: 'q/Name' })).toBe('partone/q$sname');
         expect(resolveKeyFromJson({ schemaName: ['p&rtOne'], queryName: '//$Name' })).toBe('p$dartone/$s$s$dname');
+        expect(resolveKeyFromJson({ schemaName: ['p&rtOne'], queryName: '//$Name', viewName: 'view' })).toBe('p$dartone/$s$s$dname/view');
+        expect(resolveKeyFromJson({ schemaName: ['p&rtOne'], queryName: '//$Name', viewName: 'new/view$' })).toBe('p$dartone/$s$s$dname/new$sview$d');
     });
 
     test('schema name with multiple parts', () => {

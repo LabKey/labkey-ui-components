@@ -235,14 +235,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         if (model.selectionsLoadingState === LoadingState.LOADED) {
             this.updateSelectedUserId(this.getLastSelectedId());
         } else {
-            getSelected(
-                model.id,
-                model.schemaName,
-                model.queryName,
-                List.of(...model.filters),
-                model.containerPath,
-                model.queryParameters
-            ).then(response => {
+            getSelected(model.id, model.schemaName, model.queryName, List.of(...model.filters), model.containerPath, model.queryParameters).then(response => {
                 const selectedUserId =
                     response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;
                 this.updateSelectedUserId(selectedUserId);

@@ -23,7 +23,7 @@ import { flattenValuesFromRow, offsetFromString, querySortsFromString, searchFil
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
- * schemaName-queryName-viewName or schemaName-queryName if viewName is undefined.
+ * schemaName.queryName.
  *
  * @param schemaQuery: SchemaQuery
  */
@@ -763,6 +763,13 @@ export class QueryModel {
      */
     get hasSelections(): boolean {
         return this.selections?.size > 0;
+    }
+
+    /**
+     * Id to attach to selections, which are specific to a view
+     */
+    get selectionId(): string {
+        return this.id + (this.viewName ? '/' + this.viewName : '');
     }
 
     /**

@@ -265,6 +265,7 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
             return {};
         }
 
+        // use detail view to assure we get the value even if the default view is filtered
         return {
             model: {
                 baseFilters: parentLSIDs?.length > 0 ? [Filter.create('LSID', parentLSIDs, Filter.Types.IN)] : [],

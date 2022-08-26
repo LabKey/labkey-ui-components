@@ -9,12 +9,14 @@ interface ResponsiveMenuItem {
 }
 
 interface Props {
+    asSubMenu?: boolean;
     items: ResponsiveMenuItem[];
+    subMenuWidth?: number;
     user: User;
 }
 
 export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
-    const { items, user } = props;
+    const { items, user, subMenuWidth = 1600, asSubMenu = true } = props;
     const [width, setWidth] = useState<number>(window.innerWidth);
     useEffect(() => {
         function handleResize() {
@@ -25,7 +27,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
     });
 
     // bootstrap v3 doesn't support hidden-xl/visible-xl, so use the width=1600 check as a proxy
-    const asSubMenu = useMemo(() => width < 1600, [width]);
+    const _asSubMenu = useMemo(() => asSubMenu && width < subMenuWidth, [asSubMenu, width, subMenuWidth]);
 
     const buttons = items.filter(item => hasPermissions(user, [item.perm], false)).map(item => item.button);
 
@@ -33,8 +35,8 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
 
     return (
         <>
-            {!asSubMenu && buttons}
-            {asSubMenu && (
+            {!_asSubMenu && buttons}
+            {_asSubMenu && (
                 <DropdownButton id="responsive-menu-button-group" title="More" className="responsive-menu">
                     {buttons.map((item, index) => {
                         return (

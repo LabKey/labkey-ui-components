@@ -30,6 +30,7 @@ const _customStyles = {
     // ReactSelect v1 had a zIndex value of "1000" where as ReactSelect v4.3.1 has a value of "2"
     // which results in layout conflicts in our apps. This reverts to the v1 value.
     menu: provided => ({ ...provided, zIndex: 1000 }),
+    menuPortal: provided => ({ ...provided, zIndex: 9999 }), // Issue 45958 Safari scrollbar renders over menu
     multiValue: (styles, state) => ({ ...styles, backgroundColor: state.isDisabled ? '#E1E1E1' : '#F2F9FC' }),
     multiValueLabel: (styles, state) => ({ ...styles, color: state.isDisabled ? '#555' : '#08C' }),
     multiValueRemove: (styles, state) => {

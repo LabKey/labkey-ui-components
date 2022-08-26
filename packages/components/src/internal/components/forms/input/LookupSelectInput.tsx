@@ -18,14 +18,15 @@ import { fromJS, Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
 import {
+    generateId,
     ISelectRowsResult,
-    selectRowsDeprecated,
     LoadingSpinner,
+    naturalSort,
     QueryColumn,
     QueryLookup,
-    generateId,
-    naturalSort,
     resolveKey,
+    selectRowsDeprecated,
+    ViewInfo,
 } from '../../../..';
 import { LabelOverlay } from '../LabelOverlay';
 
@@ -135,7 +136,8 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
         this.setState(() => ({ isLoading: true }));
 
         const { schemaName, queryName } = queryColumn.lookup;
-        selectRowsDeprecated({ containerFilter, containerPath, schemaName, queryName, filterArray, sort })
+        // using Details view name to assure we get values even when the default view is filtered.
+        selectRowsDeprecated({ containerFilter, containerPath, schemaName, queryName, viewName: ViewInfo.DETAIL_NAME, filterArray, sort })
             .then(response => {
                 this.setState(() => ({
                     isLoading: false,

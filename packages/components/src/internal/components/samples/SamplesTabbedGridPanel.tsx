@@ -285,6 +285,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     determineLineage={user.canUpdate && !isMedia}
                     determineStorage={userCanEditStorageData(user) && !isMedia}
                     displayQueryModel={activeModel}
+                    viewName={activeModel.viewName}
                     editableGridUpdateData={editableGridUpdateData}
                     onGridEditCancel={resetState}
                     onGridEditComplete={onGridEditComplete}
@@ -321,6 +322,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     sampleSet={activeModel.schemaQuery.queryName}
                     sampleSetLabel={activeModel.queryInfo.title}
                     queryModel={activeModel}
+                    viewName={activeModel.viewName}
                     hasValidMaxSelection={hasValidMaxSelection}
                     onCancel={resetState}
                     onBulkUpdateError={onBulkUpdateError}

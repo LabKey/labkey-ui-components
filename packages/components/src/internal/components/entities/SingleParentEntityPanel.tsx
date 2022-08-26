@@ -102,7 +102,8 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
 
         let parentSchemaQuery;
         if (chosenType && parentTypeOptions) {
-            parentSchemaQuery = SchemaQuery.create(chosenType.schema, chosenType.query);
+            // use the detail view, so we get all parents, even if the default view has been filtered
+            parentSchemaQuery = SchemaQuery.create(chosenType.schema, chosenType.query, ViewInfo.DETAIL_NAME);
         }
 
         let value = chosenValue ?? undefined;

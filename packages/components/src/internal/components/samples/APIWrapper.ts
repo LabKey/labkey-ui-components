@@ -51,6 +51,7 @@ export interface SamplesAPIWrapper {
         selection: List<any>,
         schema: string,
         query: string,
+        viewName: string,
         columns?: string[]
     ) => Promise<ISelectRowsResult>;
 

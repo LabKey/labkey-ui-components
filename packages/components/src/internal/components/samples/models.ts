@@ -77,6 +77,7 @@ export interface SamplesSelectionProviderProps {
     determineStorage?: boolean;
     sampleSet: string;
     selection: List<any>;
+    viewName: string;
 }
 
 export interface SamplesSelectionResultProps {

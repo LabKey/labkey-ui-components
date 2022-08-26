@@ -90,6 +90,8 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 const itemCount = await fetchItemCount(itemCountSQ, itemCountFilters);
 
                 const { queryName, schemaName, sort } = this.getSelectedChartGroup();
+                // default view is fine here; using custom query that is assumed not to be customized or customized
+                // to specifically affect this view.
                 const response = await selectRowsDeprecated({ schemaName, queryName, sort });
 
                 this.setState(state => ({

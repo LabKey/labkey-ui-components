@@ -7,6 +7,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 46121: Use details view for getting parent details on details pages to avoid data that my have been filtered out
 * Issue 46098: Get all sample types when getting type count
 
+### version 2.211.2
+*Released*: 25 August 2022
+* Misc grid menu and button fixes for 22.9
+  * Issue 45958: Safari dropdown / scroll bar z-index issue for editable grid
+  * Issue 45666: Sample grid "More" menu is puzzling when no other menu is present
+  * Issue 45746: Show more grid options menus at narrower screen widths when possible
+  * Issue 45965: Use "locked" lock icon to mean locked in Text Choice field editor
+
 ### version 2.211.1
 *Released*: 25 August 2022
 * Issue 46148: Add multitabbed grid view to Stored Items table

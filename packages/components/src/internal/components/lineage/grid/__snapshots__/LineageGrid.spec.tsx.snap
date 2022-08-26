@@ -408,7 +408,7 @@ exports[`<LineageGrid/> with data 1`] = `
           </thead>
           <tbody>
             <tr
-              className=""
+              className="grid-row-alternate"
             >
               <td
                 style={
@@ -526,7 +526,7 @@ exports[`<LineageGrid/> with data 1`] = `
               />
             </tr>
             <tr
-              className=""
+              className="grid-row"
             >
               <td
                 style={
@@ -651,7 +651,7 @@ exports[`<LineageGrid/> with data 1`] = `
               />
             </tr>
             <tr
-              className=""
+              className="grid-row-alternate"
             >
               <td
                 style={
@@ -774,7 +774,7 @@ exports[`<LineageGrid/> with data 1`] = `
               />
             </tr>
             <tr
-              className=""
+              className="grid-row"
             >
               <td
                 style={
@@ -897,7 +897,7 @@ exports[`<LineageGrid/> with data 1`] = `
               />
             </tr>
             <tr
-              className=""
+              className="grid-row-alternate"
             >
               <td
                 style={
@@ -1020,7 +1020,7 @@ exports[`<LineageGrid/> with data 1`] = `
               />
             </tr>
             <tr
-              className=""
+              className="grid-row"
             >
               <td
                 style={
@@ -1143,7 +1143,7 @@ exports[`<LineageGrid/> with data 1`] = `
               />
             </tr>
             <tr
-              className=""
+              className="grid-row-alternate"
             >
               <td
                 style={
@@ -1266,7 +1266,7 @@ exports[`<LineageGrid/> with data 1`] = `
               />
             </tr>
             <tr
-              className=""
+              className="grid-row"
             >
               <td
                 style={
@@ -1389,7 +1389,7 @@ exports[`<LineageGrid/> with data 1`] = `
               />
             </tr>
             <tr
-              className=""
+              className="grid-row-alternate"
             >
               <td
                 style={
@@ -1512,7 +1512,7 @@ exports[`<LineageGrid/> with data 1`] = `
               />
             </tr>
             <tr
-              className=""
+              className="grid-row"
             >
               <td
                 style={

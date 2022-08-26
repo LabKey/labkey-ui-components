@@ -184,12 +184,10 @@
 
         th {
             background-color: $white;
-        }
-    }
 
-    /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
-    table thead th {
-        background-clip: padding-box
+            /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+            background-clip: padding-box;
+        }
     }
 }
 
@@ -199,6 +197,9 @@
         position: sticky;
         left: -1px;
         z-index: 1;
+
+        /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+        background-clip: padding-box;
     }
 }
 .grid-panel__grid.grid-panel__lock-left-with-checkboxes .table-responsive {
@@ -206,19 +207,8 @@
         position: sticky;
         left: 22px;
         z-index: 1;
-    }
-    thead th:nth-child(1), thead th:nth-child(2) {
-        background-color: $white;
-    }
-    tr td:nth-child(1), tr td:nth-child(2) {
-        background-color: $table-bg-accent;
-    }
-}
-.grid-panel__grid.grid-panel__lock-left-without-checkboxes .table-responsive {
-    thead th:nth-child(1) {
-        background-color: $white;
-    }
-    tr td:nth-child(1) {
-        background-color: $table-bg-accent;
+
+        /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+        background-clip: padding-box;
     }
 }

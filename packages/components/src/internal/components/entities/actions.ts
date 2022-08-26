@@ -109,6 +109,7 @@ function getSelectedParents(
         return selectRowsDeprecated({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
+            viewName: schemaQuery.viewName,
             columns,
             filterArray,
         })

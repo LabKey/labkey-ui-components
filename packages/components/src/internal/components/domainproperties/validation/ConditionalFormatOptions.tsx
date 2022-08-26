@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { CompactPicker } from 'react-color';
 
-import { createFormInputId, createFormInputName, getNameFromId } from '../actions';
+import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
     DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR,
     DOMAIN_CONDITION_FORMAT_TEXT_COLOR,

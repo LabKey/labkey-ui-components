@@ -494,12 +494,12 @@ import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
 import {
-    createFormInputId,
     fetchDomain,
     fetchDomainDetails,
     saveDomain,
     setDomainFields,
 } from './internal/components/domainproperties/actions';
+import { createFormInputId } from './internal/components/domainproperties/utils';
 import {
     DomainDesign,
     DomainDetails,

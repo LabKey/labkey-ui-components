@@ -6,13 +6,14 @@ import { List } from 'immutable';
 import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, createFormInputName, fetchQueries } from './actions';
+import { fetchQueries } from './actions';
+import { createFormInputId, createFormInputName } from './utils';
 import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE } from './constants';
 import { encodeLookup, IDomainField, ITypeDependentProps, LookupInfo, SAMPLE_TYPE_OPTION_VALUE } from './models';
 
 import { SectionHeading } from './SectionHeading';
-import {isLoading, LoadingState} from "../../../public/LoadingState";
-import {LabelHelpTip} from "../base/LabelHelpTip";
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface SampleFieldProps extends ITypeDependentProps {
     original: Partial<IDomainField>;

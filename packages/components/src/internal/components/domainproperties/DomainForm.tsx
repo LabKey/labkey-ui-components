@@ -54,9 +54,7 @@ import {
     getDomainHeaderName,
     getDomainPanelClass,
     getDomainPanelHeaderId,
-    getIndexFromId,
     getMaxPhiLevel,
-    getNameFromId,
     handleDomainUpdates,
     mergeDomainFields,
     processJsonImport,
@@ -65,6 +63,7 @@ import {
     updateDomainPanelClassList,
     updateOntologyFieldProperties,
 } from './actions';
+import { getIndexFromId, getNameFromId } from './utils';
 import { DomainRow } from './DomainRow';
 import {
     BulkDeleteConfirmInfo,

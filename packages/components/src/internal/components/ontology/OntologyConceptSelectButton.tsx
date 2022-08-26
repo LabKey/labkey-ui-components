@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 
-import { createFormInputName } from '../domainproperties/actions';
+import { createFormInputName } from '../domainproperties/utils';
 import { DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT } from '../domainproperties/constants';
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
 import { DomainField } from '../domainproperties/models';

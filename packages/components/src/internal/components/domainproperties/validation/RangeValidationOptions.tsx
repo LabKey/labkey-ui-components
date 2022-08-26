@@ -5,7 +5,7 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { createFormInputId, createFormInputName, getNameFromId } from '../actions';
+import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
     DOMAIN_VALIDATOR_DESCRIPTION,
     DOMAIN_VALIDATOR_ERRORMESSAGE,
@@ -17,7 +17,7 @@ import { PropertyValidator } from '../models';
 import { PropDescType } from '../PropDescType';
 
 import { Filters } from './Filters';
-import {LabelHelpTip} from "../../base/LabelHelpTip";
+import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 interface RangeValidationOptionsProps {
     validator: any;

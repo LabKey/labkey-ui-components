@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './actions';
+import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 import {
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_LOOKUP_CONTAINER,

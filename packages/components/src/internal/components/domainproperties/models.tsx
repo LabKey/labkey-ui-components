@@ -83,7 +83,7 @@ import {
 import { INT_LIST, VAR_LIST } from './list/constants';
 import { DomainRowWarning } from './DomainRowWarning';
 import { GridColumn } from '../base/models/GridColumn';
-import { createFormInputId } from './actions';
+import { createFormInputId } from './utils';
 import { SCHEMAS } from '../../schemas';
 
 export interface IFieldChange {

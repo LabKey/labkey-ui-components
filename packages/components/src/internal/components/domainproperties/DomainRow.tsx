@@ -47,7 +47,8 @@ import {
     resolveAvailableTypes,
 } from './models';
 import { PropDescType } from './PropDescType';
-import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
+import { getCheckedValue } from './actions';
+import { createFormInputId, createFormInputName } from './utils';
 import {
     isFieldDeletable,
     isFieldFullyLocked,

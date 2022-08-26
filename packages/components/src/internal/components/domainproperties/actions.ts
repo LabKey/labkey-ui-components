@@ -66,7 +66,6 @@ import {
     DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
     DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
     DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
-    DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DOMAIN_FIELD_SAMPLE_TYPE,
     DOMAIN_FIELD_TYPE,
@@ -81,6 +80,7 @@ import { buildURL } from '../../url/AppURL';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
+import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -433,34 +433,6 @@ export function validateDomainNameExpressions(
             },
         });
     });
-}
-
-// This is used for testing
-export function createFormInputName(name: string): string {
-    return [DOMAIN_FIELD_PREFIX, name].join('-');
-}
-
-// TODO we should rename this to include the word "domain" in the name since it is exported from the package
-export function createFormInputId(name: string, domainIndex: number, rowIndex: number): string {
-    return [DOMAIN_FIELD_PREFIX, name, domainIndex, rowIndex].join('-');
-}
-
-export function getNameFromId(id: string): string {
-    const parts = id.split('-');
-    if (parts.length === 4) {
-        return parts[1];
-    }
-
-    return undefined;
-}
-
-export function getIndexFromId(id: string): number {
-    const parts = id.split('-');
-    if (parts.length === 4) {
-        return parseInt(parts[3]);
-    }
-
-    return -1;
 }
 
 export function createNewDomainField(domain: DomainDesign, fieldConfig: Partial<IDomainField> = {}): DomainField {

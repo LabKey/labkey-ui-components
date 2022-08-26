@@ -3,7 +3,7 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { Filter, Utils } from '@labkey/api';
 
-import { createFormInputId, createFormInputName, getNameFromId } from '../actions';
+import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
     DOMAIN_FILTER_HASANYVALUE,
     DOMAIN_FIRST_FILTER_TYPE,

@@ -4,7 +4,7 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { HelpLink, JavaDocsLink, NUMBER_FORMATS_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, createFormInputName } from './actions';
+import { createFormInputId, createFormInputName } from './utils';
 import { DEFAULT_SCALE_LINEAR, DEFAULT_SCALE_LOG, DOMAIN_FIELD_DEFAULT_SCALE, DOMAIN_FIELD_FORMAT } from './constants';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';

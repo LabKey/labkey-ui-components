@@ -13,7 +13,8 @@ import {
 
 import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { DATETIME_TYPE, PropDescType } from './PropDescType';
-import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
+import { getCheckedValue } from './actions';
+import { createFormInputId, createFormInputName, getNameFromId } from './utils';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_DEFAULT_TYPES,

@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { DomainFieldLabel } from './DomainFieldLabel';
-import { createFormInputId, createFormInputName } from './actions';
+import { createFormInputId, createFormInputName } from './utils';
 import { DOMAIN_FIELD_SCANNABLE_OPTION } from './constants';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { ITypeDependentProps } from './models';

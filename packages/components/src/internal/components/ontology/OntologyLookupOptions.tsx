@@ -5,7 +5,9 @@ import { List } from 'immutable';
 import { helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
-import { createFormInputId, fetchOntologies, getIndexFromId } from '../domainproperties/actions';
+import { fetchOntologies } from '../domainproperties/actions';
+import { getIndexFromId } from '../domainproperties/utils';
+import { createFormInputId } from '../domainproperties/utils';
 import {
     DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
     DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
@@ -14,13 +16,13 @@ import {
     DOMAIN_FIELD_SHOWNININSERTVIEW,
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
 } from '../domainproperties/constants';
-import {DomainField, IFieldChange, ITypeDependentProps} from '../domainproperties/models';
+import { DomainField, IFieldChange, ITypeDependentProps } from '../domainproperties/models';
 import { SectionHeading } from '../domainproperties/SectionHeading';
 
 import { OntologyModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 import { fetchParentPaths, getParentsConceptCodePath } from './actions';
-import {LabelHelpTip} from "../base/LabelHelpTip";
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 const LEARN_MORE = <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>;
 

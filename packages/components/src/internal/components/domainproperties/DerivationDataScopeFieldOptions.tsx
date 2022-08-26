@@ -3,7 +3,7 @@ import { Col, Radio, Row } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
 
-import { createFormInputId } from './actions';
+import { createFormInputId } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_DERIVATION_DATA_SCOPE } from './constants';
 import { IDerivationDataScope, ITypeDependentProps } from './models';

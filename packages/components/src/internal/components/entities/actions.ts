@@ -519,8 +519,6 @@ export function handleEntityFileImport(
             file,
             importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, null, {
                 ...importParameters,
-                schemaName: schemaQuery.getSchema(),
-                'query.queryName': schemaQuery.getQuery(),
             }),
             importLookupByAlternateKey: true,
             useAsync,

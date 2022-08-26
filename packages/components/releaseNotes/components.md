@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.211.1
+*Released*: 25 August 2022
+* upgrade Spring from 4.x to 5.x
+    * Remove redundant GET parameters from handleEntityFileImport util
+
 ### version 2.211.2
 *Released*: 25 August 2022
 * Misc grid menu and button fixes for 22.9

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/themes",
-  "version": "1.2.4-fb-tableLeftColLock.0",
+  "version": "1.2.4-fb-tableLeftColLock.1",
   "description": "Themes that come bundled with LabKey Server",
   "files": [
     "dist/"

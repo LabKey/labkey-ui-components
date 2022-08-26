@@ -1,8 +1,8 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
-### version TBD
-*Released*: TBD
+### version 1.3.0
+*Released*: 26 August 2022
 * Issue 45857: Add left column locking to misc LKS HTML tables
 
 ### version 1.2.4

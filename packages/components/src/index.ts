@@ -314,6 +314,7 @@ import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
+    downloadSampleTypeTemplate,
     fetchSamples,
     getDeleteSharedSampleTypeUrl,
     getEditSharedSampleTypeUrl,
@@ -352,7 +353,6 @@ import { AppContexts } from './internal/AppContexts';
 import { useContainerUser } from './internal/components/container/actions';
 
 import {
-    downloadSampleTypeTemplate,
     filterSampleRowsForOperation,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,

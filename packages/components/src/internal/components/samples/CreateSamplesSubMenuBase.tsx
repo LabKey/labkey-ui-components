@@ -13,7 +13,8 @@ import {
     SampleCreationType,
     SampleCreationTypeModal,
     SampleCreationTypeModel,
-    SchemaQuery, SCHEMAS,
+    SchemaQuery,
+    SCHEMAS,
     SubMenu,
 } from '../../..';
 import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
@@ -160,11 +161,10 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     if (selectedOption?.toLowerCase() === SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase()) {
         noun = 'Mixture Batch';
-        nounPlural = 'Mixture Batches'
-    }
-    else if (selectedOption?.toLowerCase() === SCHEMAS.SAMPLE_SETS.RAW_MATERIALS.queryName.toLowerCase()) {
+        nounPlural = 'Mixture Batches';
+    } else if (selectedOption?.toLowerCase() === SCHEMAS.SAMPLE_SETS.RAW_MATERIALS.queryName.toLowerCase()) {
         noun = 'Raw Material';
-        nounPlural = 'Raw Materials'
+        nounPlural = 'Raw Materials';
     }
 
     return (

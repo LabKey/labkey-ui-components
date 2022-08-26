@@ -18,7 +18,7 @@ import { Link } from 'react-router';
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { processSchemas } from '../../query/api';
+import { processSchemas } from '../../query/utils';
 import {GridColumn} from "../base/models/GridColumn";
 import {SchemaDetails} from "../../SchemaDetails";
 import {AppURL} from "../../url/AppURL";

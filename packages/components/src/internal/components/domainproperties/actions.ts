@@ -17,7 +17,7 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { Ajax, Domain, Experiment, Filter, Query, Security, Utils } from '@labkey/api';
 
-import { processSchemas } from '../../query/api';
+import { processSchemas } from '../../query/utils';
 
 import { SimpleResponse } from '../files/models';
 

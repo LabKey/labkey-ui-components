@@ -411,10 +411,16 @@ td.labkey-blank-cell, th.labkey-blank-cell {
     For tall HTML tables that have a header row as the first tr child, lock the header at the
     top of the browser window on vertical scroll.
 */
+table.labkey-data-region-header-lock thead,
 table.labkey-data-region-header-lock tr:first-child {
     position: sticky;
     top: -1px;
     z-index: 2;
+}
+table.labkey-data-region-header-lock thead th,
+table.labkey-data-region-header-lock tr:first-child th {
+    /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+    background-clip: padding-box;
 }
 /*
     For wide HTML tables, lock the left most column at the left side of the screen on horizontal scroll.
@@ -425,6 +431,9 @@ table.labkey-data-region-column-lock tr td:nth-child(1) {
     position: sticky;
     left: -1px;
     z-index: 1;
+
+    /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+    background-clip: padding-box;
 }
 
 .unselectable {

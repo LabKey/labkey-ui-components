@@ -17,7 +17,7 @@ import {
     SampleOperation,
     SchemaQuery,
     SelectInput,
-    User,
+    ViewInfo,
 } from '../../..';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
@@ -269,7 +269,9 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
                 baseFilters: parentLSIDs?.length > 0 ? [Filter.create('LSID', parentLSIDs, Filter.Types.IN)] : [],
                 bindURL: false,
                 containerPath,
-                schemaQuery: SchemaQuery.create(chosenType.schema, chosenType.query),
+                schemaQuery: SchemaQuery.create(chosenType.schema, chosenType.query, ViewInfo.DETAIL_NAME),
+                omittedColumns: ['Run'],
+                requiredColumns: ['Created', 'CreatedBy']
             },
         };
     }, [chosenType, containerPath, parentTypeOptions, parentLSIDs]);

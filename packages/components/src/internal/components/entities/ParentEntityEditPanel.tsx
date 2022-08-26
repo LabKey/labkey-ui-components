@@ -21,6 +21,7 @@ import {
     SchemaQuery,
     selectRowsDeprecated,
     updateRows,
+    ViewInfo,
 } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 
@@ -105,6 +106,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                     filterArray: [Filter.create('LSID', childLSID)],
                     queryName: childSchemaQuery.queryName,
                     schemaName: childSchemaQuery.schemaName,
+                    viewName: ViewInfo.DETAIL_NAME, // use the detail view because it won't be a filtered view that might exclude this entity.
                 });
 
                 const rows = models[key];

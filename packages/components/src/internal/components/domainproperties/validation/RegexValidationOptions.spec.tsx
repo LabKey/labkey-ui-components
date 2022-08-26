@@ -3,7 +3,7 @@ import React from 'react';
 
 import { PropertyValidator } from '../models';
 import { INTEGER_TYPE } from '../PropDescType';
-import { createFormInputId } from '../actions';
+import { createFormInputId } from '../utils';
 import {
     DOMAIN_VALIDATOR_DESCRIPTION,
     DOMAIN_VALIDATOR_ERRORMESSAGE,

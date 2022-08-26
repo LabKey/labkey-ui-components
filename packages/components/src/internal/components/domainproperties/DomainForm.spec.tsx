@@ -40,7 +40,8 @@ import {
     SAMPLE_TYPE_CONCEPT_URI,
     STRING_RANGE_URI,
 } from './constants';
-import { clearFieldDetails, createFormInputId, updateDomainField } from './actions';
+import { createFormInputId } from './utils';
+import { clearFieldDetails, updateDomainField } from './actions';
 
 import { DomainRow } from './DomainRow';
 import { INT_LIST } from './list/constants';

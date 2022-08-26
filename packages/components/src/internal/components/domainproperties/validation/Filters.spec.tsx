@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 
 import { JsonType } from '../PropDescType';
-import { createFormInputId } from '../actions';
+import { createFormInputId } from '../utils';
 import {
     DOMAIN_FIRST_FILTER_TYPE,
     DOMAIN_FIRST_FILTER_VALUE,

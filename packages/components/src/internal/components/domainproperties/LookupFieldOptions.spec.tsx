@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { MockLookupProvider } from '../../../test/components/Lookup';
 
-import { createFormInputId, createFormInputName } from './actions';
+import { createFormInputId, createFormInputName } from './utils';
 import {
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_LOOKUP_CONTAINER,

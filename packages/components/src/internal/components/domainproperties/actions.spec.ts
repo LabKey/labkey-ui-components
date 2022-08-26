@@ -19,8 +19,8 @@ import { Domain } from '@labkey/api';
 
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
+import { createFormInputId } from './utils';
 import {
-    createFormInputId,
     getAvailableTypes,
     getAvailableTypesForOntology,
     getBannerMessages,

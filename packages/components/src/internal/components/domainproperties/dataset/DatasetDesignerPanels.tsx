@@ -37,7 +37,7 @@ import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
-import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
+import { getStudySubjectProp, getStudyTimepointLabel } from './utils';
 import {importData} from "../../../query/api";
 import {buildURL} from "../../../url/AppURL";
 import {resolveErrorMessage} from "../../../util/messaging";

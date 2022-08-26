@@ -25,7 +25,7 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 import { DATETIME_RANGE_URI } from '../constants';
 
 import { DatasetModel } from './models';
-import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
+import { getStudySubjectProp, getStudyTimepointLabel } from './utils';
 import {DomainField} from "../models";
 import {SelectInput} from "../../forms/input/SelectInput";
 

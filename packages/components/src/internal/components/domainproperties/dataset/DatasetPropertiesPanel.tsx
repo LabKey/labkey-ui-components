@@ -37,7 +37,7 @@ import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { AdvancedSettings } from './DatasetPropertiesAdvancedSettings';
 import { BasicPropertiesFields, DataRowUniquenessContainer } from './DatasetPropertiesPanelFormElements';
 import { TIME_KEY_FIELD_KEY } from './constants';
-import { allowAsManagedField } from './actions';
+import { allowAsManagedField } from './utils';
 
 interface OwnProps {
     model: DatasetModel;

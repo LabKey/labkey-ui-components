@@ -30,9 +30,10 @@ import {
     TIME_KEY_FIELD_KEY,
     VISIT_DATE_TIP,
 } from './constants';
-import {SelectInputOption} from "../../forms/input/SelectInput";
-import {selectRowsDeprecated} from "../../../query/api";
-import {DomainDesign, DomainField} from "../models";
+import { SelectInputOption } from '../../forms/input/SelectInput';
+import { selectRowsDeprecated } from '../../../query/api';
+import { DomainDesign } from '../models';
+import { getStudySubjectProp } from './utils';
 
 export function fetchCategories(): Promise<List<SelectInputOption>> {
     return new Promise((resolve, reject) => {
@@ -199,20 +200,4 @@ export function fetchDatasetDesign(datasetId?: number): Promise<DatasetModel> {
                 reject(error);
             });
     });
-}
-
-export function allowAsManagedField(field: DomainField): boolean {
-    return (
-        field &&
-        field.dataType &&
-        (field.dataType.isString() || field.dataType.isNumeric() || field.dataType.isLookup())
-    );
-}
-
-export function getStudySubjectProp(prop: string): string {
-    return getServerContext().moduleContext.study.subject[prop];
-}
-
-export function getStudyTimepointLabel(): string {
-    return getServerContext().moduleContext.study.timepointType === 'VISIT' ? 'Visits' : 'Timepoints';
 }

@@ -24,7 +24,7 @@ import { DomainDesign, DomainField } from '../models';
 
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../constants';
 
-import { allowAsManagedField } from './actions';
+import { allowAsManagedField } from './utils';
 
 export interface DatasetAdvancedSettingsForm {
     datasetId?: number;

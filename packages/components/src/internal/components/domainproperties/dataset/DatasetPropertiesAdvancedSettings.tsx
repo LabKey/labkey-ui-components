@@ -10,7 +10,8 @@ import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
-import { fetchCohorts, getVisitDateColumns, getHelpTip, getStudySubjectProp } from './actions';
+import { fetchCohorts, getVisitDateColumns, getHelpTip } from './actions';
+import { getStudySubjectProp } from './utils';
 import { SHOW_IN_OVERVIEW } from './constants';
 import {SelectInput, SelectInputOption} from "../../forms/input/SelectInput";
 import {initQueryGridState} from "../../../global";

@@ -23,13 +23,8 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 import { SectionHeading } from '../SectionHeading';
 
 import { DatasetModel } from './models';
-import {
-    getAdditionalKeyFields,
-    fetchCategories,
-    getHelpTip,
-    getStudySubjectProp,
-    getStudyTimepointLabel,
-} from './actions';
+import { getAdditionalKeyFields, fetchCategories, getHelpTip } from './actions';
+import { getStudySubjectProp, getStudyTimepointLabel } from './utils';
 import { DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 
 import { TIME_KEY_FIELD_KEY } from './constants';

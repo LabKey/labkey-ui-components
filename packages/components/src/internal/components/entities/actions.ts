@@ -1,21 +1,8 @@
 import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
-
 import { getSelectedItemSamples } from '../samples/actions';
 
-import {
-    DisplayObject,
-    EntityDataType,
-    EntityIdCreationModel,
-    EntityParentType,
-    EntityTypeOption,
-    IEntityTypeOption,
-    IParentOption,
-    OperationConfirmationData,
-} from './models';
-import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
-import { isDataClassEntity, isSampleEntity } from './utils';
 import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -27,6 +14,19 @@ import { getSelected } from '../../actions';
 import { SHARED_CONTAINER_PATH } from '../../constants';
 import { naturalSort } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';
+
+import { isDataClassEntity, isSampleEntity } from './utils';
+import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
+import {
+    DisplayObject,
+    EntityDataType,
+    EntityIdCreationModel,
+    EntityParentType,
+    EntityTypeOption,
+    IEntityTypeOption,
+    IParentOption,
+    OperationConfirmationData,
+} from './models';
 
 export function getOperationConfirmationData(
     selectionKey: string,
@@ -80,9 +80,16 @@ export function getDeleteConfirmationData(
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
     }
-    return getOperationConfirmationData(selectionKey, dataType, rowIds, isDataClassEntity(dataType) ? {
-        dataOperation: DataOperation.Delete
-    } : undefined);
+    return getOperationConfirmationData(
+        selectionKey,
+        dataType,
+        rowIds,
+        isDataClassEntity(dataType)
+            ? {
+                  dataOperation: DataOperation.Delete,
+              }
+            : undefined
+    );
 }
 
 export function getSampleOperationConfirmationData(
@@ -519,8 +526,6 @@ export function handleEntityFileImport(
             file,
             importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, null, {
                 ...importParameters,
-                schemaName: schemaQuery.getSchema(),
-                'query.queryName': schemaQuery.getQuery(),
             }),
             importLookupByAlternateKey: true,
             useAsync,

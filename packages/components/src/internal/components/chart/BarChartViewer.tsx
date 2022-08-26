@@ -1,7 +1,7 @@
 import React, { FC, memo, PureComponent, useCallback } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
-import { Filter, PermissionTypes } from '@labkey/api';
+import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import {
     Alert,
@@ -39,6 +39,7 @@ async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFil
             filterArray,
             maxRows: 1,
             schemaQuery,
+            containerFilter: Query.ContainerFilter.currentPlusProjectAndShared
         });
         return response.rowCount;
     } catch (error) {

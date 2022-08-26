@@ -20,10 +20,10 @@ import DatePicker from 'react-datepicker';
 import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
-import { QueryColumn } from '../../../..';
 import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate } from '../../../util/Date';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import {QueryColumn} from "../../../../public/QueryColumn";
 
 export interface DatePickerInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;

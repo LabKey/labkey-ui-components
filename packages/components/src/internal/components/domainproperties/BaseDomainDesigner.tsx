@@ -3,12 +3,11 @@ import { List } from 'immutable';
 
 import { Button } from 'react-bootstrap';
 
-import { Alert } from '../../..';
-
 import { getDomainBottomErrorMessage, getDomainHeaderName, getUpdatedVisitedPanelsList } from './actions';
 import { SEVERITY_LEVEL_ERROR } from './constants';
 
 import { DomainDesign } from './models';
+import {Alert} from "../base/Alert";
 
 export interface InjectedBaseDomainDesignerProps {
     submitting: boolean;

@@ -3,14 +3,13 @@ import { TreeNode } from 'react-treebeard';
 
 import classNames from 'classnames';
 
-import { naturalSortByProperty, FileTree } from '../../..';
-
-import { DEFAULT_ROOT_PREFIX } from '../files/FileTree';
+import {DEFAULT_ROOT_PREFIX, FileTree} from '../files/FileTree';
 
 import { Header } from '../files/FileTreeHeader';
 
 import { PathModel } from './models';
 import { fetchChildPaths, fetchParentPaths } from './actions';
+import {naturalSortByProperty} from "../../../public/sort";
 
 export class OntologyPath {
     id: string;

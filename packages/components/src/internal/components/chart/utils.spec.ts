@@ -1,4 +1,3 @@
-import { AppURL, ISelectRowsResult } from '../../..';
 import AssayRunCountsRowsJson from '../../../test/data/AssayRunCounts-getQueryRows.json';
 
 import {
@@ -7,6 +6,8 @@ import {
     createHorizontalBarLegendData,
     processChartData,
 } from './utils';
+import {ISelectRowsResult} from "../../query/api";
+import {AppURL} from "../../url/AppURL";
 
 beforeEach(() => {
     LABKEY.vis = {};

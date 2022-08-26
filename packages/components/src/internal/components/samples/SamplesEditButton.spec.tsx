@@ -3,19 +3,6 @@ import { MenuItem } from 'react-bootstrap';
 import { ReactWrapper } from 'enzyme';
 
 import {
-    DataClassDataType,
-    LoadingState,
-    makeTestActions,
-    makeTestQueryModel,
-    ManageDropdownButton,
-    QueryInfo,
-    SamplesEditButtonSections,
-    SampleTypeDataType,
-    SchemaQuery,
-    SelectionMenuItem,
-} from '../../..';
-
-import {
     TEST_USER_AUTHOR,
     TEST_USER_EDITOR,
     TEST_USER_READER,
@@ -26,6 +13,14 @@ import { mountWithServerContext } from '../../testHelpers';
 import { SamplesEditButton } from './SamplesEditButton';
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { EntityLineageEditMenuItem } from '../entities/EntityLineageEditMenuItem';
+import {QueryInfo} from "../../../public/QueryInfo";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {ManageDropdownButton} from "../buttons/ManageDropdownButton";
+import {SelectionMenuItem} from "../menus/SelectionMenuItem";
+import {DataClassDataType, SampleTypeDataType} from "../entities/constants";
+import {makeTestActions, makeTestQueryModel} from "../../../public/QueryModel/testUtils";
+import {LoadingState} from "../../../public/LoadingState";
+import {SamplesEditButtonSections} from "./utils";
 
 describe('SamplesEditButton', () => {
     const queryInfo = new QueryInfo({

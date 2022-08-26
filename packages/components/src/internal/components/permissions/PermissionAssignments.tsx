@@ -7,8 +7,6 @@ import { Button, Checkbox, Col, Panel, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
-import { Alert, useServerContext, useAppContext, AppContext, resolveErrorMessage } from '../../..';
-
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
 import { isProjectContainer } from '../../app/utils';
@@ -17,6 +15,10 @@ import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { InjectedPermissionsPage } from './withPermissionsPage';
+import {useServerContext} from "../base/ServerContext";
+import {AppContext, useAppContext} from "../../AppContext";
+import {resolveErrorMessage} from "../../util/messaging";
+import {Alert} from "../base/Alert";
 
 // exported for testing
 export interface PermissionAssignmentsProps extends InjectedPermissionsPage {

@@ -3,7 +3,8 @@ import classNames from 'classnames';
 
 import { ServerActivity, ServerActivityData } from './model';
 import { formatDateTime, parseDate } from '../../util/Date';
-import { capitalizeFirstChar, resolveErrorMessage } from "../../..";
+import { resolveErrorMessage } from '../../util/messaging';
+import { capitalizeFirstChar } from '../../util/utils';
 
 interface Props {
     serverActivity: ServerActivity;

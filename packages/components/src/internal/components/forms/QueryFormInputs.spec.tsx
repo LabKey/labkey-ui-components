@@ -21,8 +21,6 @@ import { mount } from 'enzyme';
 
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
-import { getQueryDetails, QueryColumn, SchemaQuery } from '../../..';
-
 import { QueryFormInputs } from './QueryFormInputs';
 import { TextInput } from './input/TextInput';
 import { CheckboxInput } from './input/CheckboxInput';
@@ -31,6 +29,9 @@ import { SelectInput } from './input/SelectInput';
 import { DatePickerInput } from './input/DatePickerInput';
 import { TextChoiceInput } from './input/TextChoiceInput';
 import { FieldLabel } from './FieldLabel';
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {getQueryDetails} from "../../query/api";
+import {QueryColumn} from "../../../public/QueryColumn";
 
 beforeAll(() => {
     initUnitTestMocks();

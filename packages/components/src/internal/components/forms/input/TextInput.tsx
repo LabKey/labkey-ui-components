@@ -18,9 +18,8 @@ import { Input } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { QueryColumn } from '../../../..';
-
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import {QueryColumn} from "../../../../public/QueryColumn";
 
 export interface TextInputProps extends DisableableInputProps {
     changeDebounceInterval?: number;

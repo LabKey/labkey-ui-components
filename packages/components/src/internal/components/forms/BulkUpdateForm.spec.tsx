@@ -1,10 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { QueryColumn, QueryInfo, SchemaQuery } from '../../..';
-
 import { BulkUpdateForm } from './BulkUpdateForm';
 import { QueryInfoForm } from './QueryInfoForm';
+import {QueryColumn} from "../../../public/QueryColumn";
+import {QueryInfo} from "../../../public/QueryInfo";
+import {SchemaQuery} from "../../../public/SchemaQuery";
 
 const COLUMN_CAN_UPDATE = new QueryColumn({
     fieldKey: 'update',

@@ -6,7 +6,6 @@ import { List } from 'immutable';
 import { SectionHeading } from '../SectionHeading';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
-import { LoadingSpinner, Principal, SelectInput } from '../../../..';
 
 import { IssuesListDefModel, IssuesRelatedFolder } from './models';
 import {
@@ -17,6 +16,9 @@ import {
     ISSUES_LIST_RELATED_FOLDER_TIP,
 } from './constants';
 import { getProjectGroups, getRelatedFolders, getUsersForGroup } from './actions';
+import {Principal} from "../../permissions/models";
+import {LoadingSpinner} from "../../base/LoadingSpinner";
+import {SelectInput} from "../../forms/input/SelectInput";
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;

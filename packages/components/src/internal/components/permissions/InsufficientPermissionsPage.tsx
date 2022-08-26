@@ -4,9 +4,9 @@
  */
 import React from 'react';
 
-import { Page, PageHeader } from '../../..';
-
 import { InsufficientPermissionsAlert } from './InsufficientPermissionsAlert';
+import {Page} from "../base/Page";
+import {PageHeader} from "../base/PageHeader";
 
 interface Props {
     title: string;

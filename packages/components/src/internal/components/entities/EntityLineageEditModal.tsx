@@ -6,23 +6,9 @@ import { Button, Modal } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import {
-    Alert,
-    capitalizeFirstChar,
-    caseInsensitive,
-    getOperationNotPermittedMessage,
-    LoadingSpinner,
-    Progress,
-    QueryModel,
-    resolveErrorMessage,
-    SampleOperation,
-    updateRows,
-    useNotificationsContext,
-} from '../../..';
-
 import { getOriginalParentsFromLineage } from '../samples/actions';
 
-import { IS_ALIQUOT_COL } from '../samples/constants';
+import {IS_ALIQUOT_COL, SampleOperation} from '../samples/constants';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
@@ -31,6 +17,15 @@ import { getEntityNoun, getUpdatedLineageRowsForBulkEdit, isSampleEntity } from 
 
 import { DataOperation, ParentEntityLineageColumns } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
+import {useNotificationsContext} from "../notifications/NotificationsContext";
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {capitalizeFirstChar, caseInsensitive} from "../../util/utils";
+import {updateRows} from "../../query/api";
+import {resolveErrorMessage} from "../../util/messaging";
+import {getOperationNotPermittedMessage} from "../samples/utils";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {Alert} from "../base/Alert";
+import {Progress} from "../base/Progress";
 
 interface Props {
     api?: ComponentsAPIWrapper;

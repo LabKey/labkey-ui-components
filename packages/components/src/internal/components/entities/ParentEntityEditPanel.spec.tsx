@@ -6,12 +6,16 @@ import { Button } from 'react-bootstrap';
 
 import PanelHeading from 'react-bootstrap/lib/PanelHeading';
 
-import { Alert, DataClassDataType, LoadingSpinner, QueryInfo, SchemaQuery } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { EntityChoice } from './models';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {QueryInfo} from "../../../public/QueryInfo";
+import {DataClassDataType} from "./constants";
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 beforeAll(() => {
     initUnitTestMocks();

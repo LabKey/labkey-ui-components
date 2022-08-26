@@ -1,9 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext } from '@labkey/api';
-
 import classNames from 'classnames';
-
-import { buildURL } from '../../..';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
@@ -16,6 +13,7 @@ import {
     TO_LKS_TAB_METRIC,
 } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
+import { buildURL } from '../../url/AppURL';
 
 interface ProductLKSDrawerProps {
     api?: ComponentsAPIWrapper;

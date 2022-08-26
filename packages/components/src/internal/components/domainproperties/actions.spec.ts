@@ -17,8 +17,6 @@ import { List } from 'immutable';
 
 import { Domain } from '@labkey/api';
 
-import { ConceptModel, IFieldChange, QueryColumn } from '../../..';
-
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import {
@@ -43,7 +41,7 @@ import {
     updateDataType,
     updateDomainField,
 } from './actions';
-import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainDesign, DomainException, DomainField } from './models';
+import {DEFAULT_TEXT_CHOICE_VALIDATOR, DomainDesign, DomainException, DomainField, IFieldChange} from './models';
 import {
     ATTACHMENT_TYPE,
     DATETIME_TYPE,
@@ -75,6 +73,8 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
 } from './constants';
+import {QueryColumn} from "../../../public/QueryColumn";
+import {ConceptModel} from "../ontology/models";
 
 beforeAll(() => {
     initUnitTestMocks();

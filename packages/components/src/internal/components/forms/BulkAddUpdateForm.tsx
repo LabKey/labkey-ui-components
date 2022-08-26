@@ -1,11 +1,10 @@
 import React, { FC, useMemo } from 'react';
 import { List, Map } from 'immutable';
 
-import { capitalizeFirstChar, EditorModel } from '../../..';
-
-import { getCommonDataValues } from '../../util/utils';
+import {capitalizeFirstChar, getCommonDataValues} from '../../util/utils';
 
 import { QueryInfoForm, QueryInfoFormProps } from './QueryInfoForm';
+import {EditorModel} from "../../models";
 
 interface Props extends Omit<QueryInfoFormProps, 'fieldValues'> {
     data: Map<any, Map<string, any>>;

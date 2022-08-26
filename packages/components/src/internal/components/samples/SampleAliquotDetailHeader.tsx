@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 
-import { DefaultRenderer, getSampleStatus, QueryColumn, SampleStatusTag } from '../../..';
 import { isSampleStatusEnabled } from '../../app/utils';
 
 import { SAMPLE_STATE_COLUMN_NAME } from './constants';
+import {QueryColumn} from "../../../public/QueryColumn";
+import {DefaultRenderer} from "../../renderers/DefaultRenderer";
+import {SampleStatusTag} from "./SampleStatusTag";
+import {getSampleStatus} from "./utils";
 
 interface SampleAliquotDetailHeaderProps {
     aliquotHeaderDisplayColumns: List<QueryColumn>;

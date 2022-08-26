@@ -15,8 +15,6 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { capitalizeFirstChar, QueryColumn, QueryInfo, uncapitalizeFirstChar, withTransformedKeys } from '../..';
-
 import { BOOLEAN_TYPE, DATE_TYPE, INTEGER_TYPE, TEXT_TYPE } from '../components/domainproperties/PropDescType';
 
 import {
@@ -41,8 +39,10 @@ import {
     parseScientificInt,
     toLowerSafe,
     unorderedEqual,
-    arrayEquals,
+    arrayEquals, capitalizeFirstChar, uncapitalizeFirstChar, withTransformedKeys,
 } from './utils';
+import {QueryColumn} from "../../public/QueryColumn";
+import {QueryInfo} from "../../public/QueryInfo";
 
 const emptyList = List<string>();
 

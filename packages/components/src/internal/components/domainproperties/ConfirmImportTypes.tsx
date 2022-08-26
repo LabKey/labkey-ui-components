@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-
-import { ConfirmModal } from '../../..';
+import {ConfirmModal} from "../base/ConfirmModal";
 
 interface Props {
     error: any;

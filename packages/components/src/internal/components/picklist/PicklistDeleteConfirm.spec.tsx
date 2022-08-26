@@ -2,8 +2,6 @@ import React from 'react';
 
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, LoadingSpinner, makeTestQueryModel, SchemaQuery } from '../../..';
-
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { ConfirmModal } from '../base/ConfirmModal';
@@ -15,6 +13,10 @@ import { Picklist } from './models';
 
 import { getPicklistTestAPIWrapper } from './APIWrapper';
 import { getTestAPIWrapper } from '../../APIWrapper';
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
+import {SchemaQuery} from "../../../public/SchemaQuery";
 
 describe('PicklistDeleteConfirmMessage', () => {
     function validateText(

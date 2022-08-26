@@ -6,7 +6,6 @@ import React, { ReactNode } from 'react';
 import { Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { AppURL, naturalSortByProperty } from '../../..';
 import { isAssayEnabled, isSampleManagerEnabled, isWorkflowEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 import {
@@ -15,6 +14,8 @@ import {
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY
 } from '../samples/constants';
+import {naturalSortByProperty} from "../../../public/sort";
+import {AppURL} from "../../url/AppURL";
 
 export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;

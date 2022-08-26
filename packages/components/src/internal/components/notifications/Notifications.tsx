@@ -16,13 +16,13 @@
 import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import moment from 'moment';
 
-import { getDateFormat, useServerContext } from '../../..';
-
 import { NotificationItemModel, Persistence } from './model';
 import { setTrialBannerDismissSessionKey } from './actions';
 
 import { NotificationItem } from './NotificationItem';
 import { useNotificationsContext } from './NotificationsContext';
+import {useServerContext} from "../base/ServerContext";
+import {getDateFormat} from "../../util/Date";
 
 interface NotificationListProps {
     alertClass: string;

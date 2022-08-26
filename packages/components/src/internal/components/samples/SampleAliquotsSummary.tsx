@@ -2,25 +2,20 @@ import React, { PureComponent } from 'react';
 import { Panel } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
-// These need to be direct imports from files to avoid circular dependencies in index.ts
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-
-import {
-    QueryModel,
-    QueryConfig,
-    isLoading,
-    LoadingSpinner,
-    AppURL,
-    ALIQUOT_FILTER_MODE,
-    SchemaQuery,
-    caseInsensitive,
-} from '../../..';
-
 import { SAMPLES_KEY } from '../../app/constants';
 
 import { getSampleAliquotsQueryConfig, getSampleAliquotsStats } from './actions';
 import { SampleAliquotsStats } from './models';
 import { SampleAliquotAssaysCount } from './SampleAliquotAssaysCount';
+import {QueryConfig, QueryModel} from "../../../public/QueryModel/QueryModel";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {AppURL} from "../../url/AppURL";
+import {ALIQUOT_FILTER_MODE} from "./SampleAliquotViewSelector";
+import {caseInsensitive} from "../../util/utils";
+import {isLoading} from "../../../public/LoadingState";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 interface OwnProps {
     aliquotJobsQueryConfig: QueryConfig;

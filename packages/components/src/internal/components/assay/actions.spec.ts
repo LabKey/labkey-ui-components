@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AssayStateModel, GENERAL_ASSAY_PROVIDER_NAME, makeTestQueryModel, QueryInfo, SchemaQuery } from '../../..';
 import { initQueryGridState } from '../../global';
 import { ASSAY_DEFINITION_MODEL, TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
 
@@ -21,7 +20,16 @@ import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.j
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
-import { allowReimportAssayRun, getImportItemsForAssayDefinitions, getRunPropertiesFileName } from './actions';
+import {
+    allowReimportAssayRun,
+    GENERAL_ASSAY_PROVIDER_NAME,
+    getImportItemsForAssayDefinitions,
+    getRunPropertiesFileName
+} from './actions';
+import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {AssayStateModel} from "./models";
+import {QueryInfo} from "../../../public/QueryInfo";
 
 beforeAll(() => {
     initQueryGridState();

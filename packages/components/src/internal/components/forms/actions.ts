@@ -17,25 +17,24 @@ import { Filter, PermissionTypes, Security, User, Utils } from '@labkey/api';
 import { fromJS, Map } from 'immutable';
 import { useCallback, useEffect, useState } from 'react';
 
-import {
-    getQueryDetails,
-    ISelectRowsResult,
-    LoadingState,
-    naturalSortByProperty,
-    QueryInfo,
-    QueryModel,
-    QuerySelectOwnProps,
-    resolveDetailFieldValue,
-    SelectInputOption,
-    selectRowsDeprecated,
-    updateRows,
-} from '../../..';
-
 import { similaritySortFactory } from '../../util/similaritySortFactory';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
-import { quoteValueColumnWithDelimiters, searchRows } from '../../query/api';
+import {
+    getQueryDetails,
+    ISelectRowsResult,
+    quoteValueColumnWithDelimiters,
+    searchRows,
+    selectRowsDeprecated, updateRows
+} from '../../query/api';
 import { parseCsvString } from '../../util/utils';
+import {QueryInfo} from "../../../public/QueryInfo";
+import {QuerySelectOwnProps} from "./QuerySelect";
+import {SelectInputOption} from "./input/SelectInput";
+import {resolveDetailFieldValue} from "./renderers";
+import {naturalSortByProperty} from "../../../public/sort";
+import {LoadingState} from "../../../public/LoadingState";
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
 
 const emptyMap = Map<string, any>();
 

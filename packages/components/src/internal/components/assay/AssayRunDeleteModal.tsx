@@ -1,9 +1,11 @@
 import React, { FC, useState } from 'react';
 
-import { EntityDeleteConfirmModal, Progress, useNotificationsContext } from '../../..';
 import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 import { AssayRunDataType } from '../entities/constants';
 import { deleteAssayRuns } from './actions';
+import {useNotificationsContext} from "../notifications/NotificationsContext";
+import {EntityDeleteConfirmModal} from "../entities/EntityDeleteConfirmModal";
+import {Progress} from "../base/Progress";
 
 interface Props {
     afterDelete: () => void;

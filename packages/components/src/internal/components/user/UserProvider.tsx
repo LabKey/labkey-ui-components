@@ -3,8 +3,9 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { useEffect, useState } from 'react';
-
-import { getUserProperties, LoadingPage, User } from '../../..';
+import {User} from "../base/models/User";
+import {getUserProperties} from "./actions";
+import {LoadingPage} from "../base/LoadingPage";
 
 interface Props {
     user: User;

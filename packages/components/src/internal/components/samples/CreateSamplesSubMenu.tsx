@@ -3,20 +3,16 @@ import { List } from 'immutable';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import {
-    App,
-    AppURL,
-    getMenuItemForSectionKey,
-    getMenuItemsForSection,
-    MenuOption,
-    ProductMenuModel,
-    QueryModel,
-    SampleCreationType,
-} from '../../..';
-
 import { getSampleWizardURL } from './utils';
 import { DisableableMenuItem } from './DisableableMenuItem';
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
+import {ProductMenuModel} from "../navigation/model";
+import {AppURL} from "../../url/AppURL";
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {SampleCreationType} from "./models";
+import {MenuOption} from "../menus/SubMenu";
+import {getMenuItemForSectionKey, getMenuItemsForSection} from "../buttons/utils";
+import {SAMPLES_KEY} from "../../app/constants";
 
 interface Props {
     allowPooledSamples?: boolean;
@@ -65,7 +61,7 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
             );
         }
 
-        const options = getMenuItemsForSection(menu.getSection(App.SAMPLES_KEY), useOnClick, itemActionFn, disabledMsg);
+        const options = getMenuItemsForSection(menu.getSection(SAMPLES_KEY), useOnClick, itemActionFn, disabledMsg);
 
         if (options?.size === 0) {
             return List.of({ name: 'No sample types defined', disabled: true } as MenuOption);

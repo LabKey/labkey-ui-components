@@ -2,9 +2,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { fromJS, List } from 'immutable';
 
-import { QueryColumn } from '../../..';
-
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
+import {QueryColumn} from "../../../public/QueryColumn";
 
 describe('<SampleAliquotDetailHeader/>', () => {
     const COLUMN_ALIQUOT = new QueryColumn({

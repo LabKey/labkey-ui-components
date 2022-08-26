@@ -1,10 +1,10 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 
-import { Alert, LoadingSpinner } from '../../..';
-
 import { PathModel } from './models';
 import { fetchAlternatePaths } from './actions';
 import { ConceptPathDisplay } from './ConceptPathDisplay';
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 export interface ConceptPathInfoProps {
     selectedCode?: string;

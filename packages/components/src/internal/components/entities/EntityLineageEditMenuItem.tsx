@@ -3,10 +3,10 @@ import { MenuItem } from 'react-bootstrap';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { capitalizeFirstChar, QueryModel, SelectionMenuItem } from '../../..';
-
 import { EntityDataType } from './models';
 import { EntityLineageEditModal } from './EntityLineageEditModal';
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {SelectionMenuItem} from "../menus/SelectionMenuItem";
 
 interface Props {
     queryModel: QueryModel;

@@ -6,11 +6,10 @@ import { Treebeard, animations } from 'react-treebeard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
-import { LoadingSpinner } from '../../..';
-
 import { FileTree, EMPTY_FILE_NAME, LOADING_FILE_NAME } from './FileTree';
 import { fetchFileTestTree } from './FileTreeTest';
 import { FileNodeIcon, Header } from './FileTreeHeader';
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 const waitForLoad = jest.fn(component => Promise.resolve(!component.state().loading));
 

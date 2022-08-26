@@ -3,24 +3,6 @@ import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
 import { Filter, PermissionTypes } from '@labkey/api';
 
-import {
-    Alert,
-    AppURL,
-    AssayDesignEmptyAlert,
-    getActionErrorMessage,
-    ISelectRowsResult,
-    LoadingSpinner,
-    RequiresPermission,
-    SampleEmptyAlert,
-    SampleTypeEmptyAlert,
-    SchemaQuery,
-    Section,
-    selectRows,
-    selectRowsDeprecated,
-    Tip,
-    User,
-} from '../../..';
-
 import { getDateFormat } from '../../app/utils';
 
 import { ASSAYS_KEY, FIND_SAMPLES_BY_FILTER_HREF, NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
@@ -32,6 +14,19 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';
 import { ChartConfig, ChartData, ChartSelector } from './types';
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {selectRows} from "../../query/selectRows";
+import {AppURL} from "../../url/AppURL";
+import {User} from "../base/models/User";
+import {ISelectRowsResult, selectRowsDeprecated} from "../../query/api";
+import {Alert} from "../base/Alert";
+import {getActionErrorMessage} from "../../util/messaging";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {SampleEmptyAlert, SampleTypeEmptyAlert} from "../samples/SampleEmptyAlert";
+import {AssayDesignEmptyAlert} from "../assay/AssayDesignEmptyAlert";
+import {Section} from "../base/Section";
+import {Tip} from "../base/Tip";
+import {RequiresPermission} from "../base/Permissions";
 
 async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFilter[] = []): Promise<number> {
     try {

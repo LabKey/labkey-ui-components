@@ -3,11 +3,11 @@ import React from 'react';
 
 import { Button, Checkbox } from 'react-bootstrap';
 
-import { ConfirmModal, LoadingSpinner } from '../../..';
-
 import { waitForLifecycle } from '../../testHelpers';
 
 import { NameIdSettingsForm } from './NameIdSettings';
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {ConfirmModal} from "../base/ConfirmModal";
 
 describe('NameIdSettings', () => {
     let DEFAULT_PROPS;

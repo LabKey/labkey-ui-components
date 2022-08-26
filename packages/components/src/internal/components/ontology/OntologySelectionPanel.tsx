@@ -1,10 +1,12 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
-import { LoadingSpinner, Alert, SelectInput, buildURL } from '../../..';
-
 import { fetchChildPaths, ONTOLOGY_CONTROLLER } from './actions';
 import { PathModel } from './models';
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {buildURL} from "../../url/AppURL";
+import {SelectInput} from "../forms/input/SelectInput";
 
 interface OntologySelectionPanelProps {
     onOntologySelection: (name: string, value: string, model: PathModel) => void;

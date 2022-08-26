@@ -7,16 +7,13 @@ import { AuditBehaviorTypes, Query } from '@labkey/api';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
 import { DetailRenderer } from '../../internal/components/forms/detail/DetailDisplay';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
-
-import {
-    Alert,
-    DetailPanel,
-    FileInput,
-    QueryColumn,
-    RequiresModelAndActions,
-    resolveErrorMessage,
-    updateRows,
-} from '../..';
+import {RequiresModelAndActions} from "./withQueryModels";
+import {QueryColumn} from "../QueryColumn";
+import {FileInput} from "../../internal/components/forms/input/FileInput";
+import {updateRows} from "../../internal/query/api";
+import {resolveErrorMessage} from "../../internal/util/messaging";
+import {Alert} from "../../internal/components/base/Alert";
+import {DetailPanel} from "./DetailPanel";
 
 export interface EditableDetailPanelProps extends RequiresModelAndActions {
     appEditable?: boolean;

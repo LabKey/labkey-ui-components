@@ -2,23 +2,18 @@ import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { ActionURL } from '@labkey/api';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
-import {
-    Alert,
-    AppContext,
-    buildURL,
-    Container,
-    isLoading,
-    LoadingSpinner,
-    LoadingState,
-    naturalSortByProperty,
-    resolveErrorMessage,
-    useAppContext,
-    useServerContext,
-} from '../../..';
-
 import { getCurrentAppProperties } from '../../app/utils';
 import { blurActiveElement } from '../../util/utils';
 import { AppProperties } from '../../app/models';
+import {Container} from "../base/models/Container";
+import {buildURL} from "../../url/AppURL";
+import {isLoading, LoadingState} from "../../../public/LoadingState";
+import {AppContext, useAppContext} from "../../AppContext";
+import {useServerContext} from "../base/ServerContext";
+import {naturalSortByProperty} from "../../../public/sort";
+import {resolveErrorMessage} from "../../util/messaging";
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 interface FolderMenuItem {
     href: string;

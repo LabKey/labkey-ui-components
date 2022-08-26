@@ -1,10 +1,11 @@
 import React from "react";
 import { Input } from 'formsy-react-components';
+import Formsy from 'formsy-react';
+
 import { QueryInfoQuantity } from "./QueryInfoQuantity";
 import { mount, ReactWrapper } from "enzyme";
 import { RadioGroupInput } from "./input/RadioGroupInput";
-import { DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION } from "../../../index";
-import Formsy from 'formsy-react';
+import { DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION } from '../samples/models';
 
 describe("<QueryInfoQuantity>", () => {
     function validate(wrapper: ReactWrapper, optionCount: number, includeCount: boolean ) {

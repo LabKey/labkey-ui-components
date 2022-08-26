@@ -1,8 +1,9 @@
 import { List } from 'immutable';
 
-import { MenuSectionModel, MenuItemModel, AppURL, MenuOption } from '../../..';
-
 import { getMenuItemsForSection } from './utils';
+import {AppURL} from "../../url/AppURL";
+import {MenuItemModel, MenuSectionModel} from "../navigation/model";
+import {MenuOption} from "../menus/SubMenu";
 
 const ITEM_ACTION_FN = () => {
     return AppURL.create('test');

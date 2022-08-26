@@ -4,14 +4,12 @@ import { Button, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { LabelHelpTip, ListModel, SelectInput } from '../../../..';
-
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { helpLinkNode } from '../../../util/helpLinks';
 
 import { CheckBox } from './ListPropertiesPanelFormElements';
-import { AdvancedSettingsForm } from './models';
+import {AdvancedSettingsForm, ListModel} from './models';
 import {
     CUSTOM_TEMPLATE_TIP,
     DATA_INDEXING_TIP,
@@ -19,6 +17,8 @@ import {
     DOCUMENT_TITLE_TIP,
     SEARCH_INDEXING_TIP,
 } from './constants';
+import {SelectInput} from "../../forms/input/SelectInput";
+import {LabelHelpTip} from "../../base/LabelHelpTip";
 
 interface DisplayTitleProps {
     model: ListModel;

@@ -3,6 +3,9 @@ import React from 'react';
 import { Filter } from '@labkey/api';
 
 import { mount } from 'enzyme';
+import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+
+import { TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 
 import {
     filterSampleRowsForOperation,
@@ -10,25 +13,21 @@ import {
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     getSampleDeleteMessage,
+    getSampleStatus,
+    getSampleStatusType,
+    getSampleTypeTemplateUrl,
     getSampleWizardURL,
     isSampleOperationPermitted,
     isSamplesSchema,
-    LoadingSpinner,
-    OperationConfirmationData,
-    QueryInfo,
-    SAMPLE_STATE_TYPE_COLUMN_NAME,
-    SAMPLE_STORAGE_COLUMNS,
-    SampleOperation,
     SamplesEditButtonSections,
-    SampleStateType,
-    SchemaQuery,
-    SCHEMAS,
-} from '../../..';
-import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
-
-import { TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
-
-import { getSampleStatus, getSampleStatusType, getSampleTypeTemplateUrl, shouldIncludeMenuItem } from './utils';
+    shouldIncludeMenuItem
+} from './utils';
+import {SCHEMAS} from "../../schemas";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {SAMPLE_STATE_TYPE_COLUMN_NAME, SAMPLE_STORAGE_COLUMNS, SampleOperation, SampleStateType} from "./constants";
+import {OperationConfirmationData} from "../entities/models";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {QueryInfo} from "../../../public/QueryInfo";
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;

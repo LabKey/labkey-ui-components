@@ -15,9 +15,8 @@
  */
 import { Set } from 'immutable';
 
-import { AppURL } from '../../..';
-
 import { addDateRangeFilter, ALL_MONTHS, last12Months, monthSort } from './utils';
+import {AppURL} from "../../url/AppURL";
 
 describe('HeatMap utils', () => {
     test('addDateRangeFilter', () => {

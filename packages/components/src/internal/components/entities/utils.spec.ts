@@ -1,17 +1,19 @@
 import { List } from 'immutable';
 
-import { createEntityParentKey, DataClassDataType, makeQueryInfo, SampleTypeDataType, SchemaQuery } from '../../..';
-
 import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 
 import { EntityChoice, IEntityTypeOption } from './models';
 import {
+    createEntityParentKey,
     getEntityDescription,
     getEntityNoun,
     getInitialParentChoices,
     getUpdatedLineageRowsForBulkEdit,
     parentValuesDiffer,
 } from './utils';
+import {DataClassDataType, SampleTypeDataType} from "./constants";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {makeQueryInfo} from "../../testHelpers";
 
 describe('getInitialParentChoices', () => {
     const parentTypeOptions = List<IEntityTypeOption>([

@@ -1,9 +1,8 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { ConfirmModal } from '../../..';
-
 import { AssayDesignDeleteConfirmModal } from './AssayDesignDeleteConfirmModal';
+import {ConfirmModal} from "../base/ConfirmModal";
 
 describe('<AssayDesignDeleteConfirmModal/>', () => {
     test('without name or runs', () => {

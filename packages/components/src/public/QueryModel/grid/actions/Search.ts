@@ -16,9 +16,8 @@
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { QueryColumn } from '../../../..';
-
 import { Action, ActionOption, ActionValue, Value } from './Action';
+import {QueryColumn} from "../../../QueryColumn";
 
 export class SearchAction implements Action {
     isDefaultAction = true;

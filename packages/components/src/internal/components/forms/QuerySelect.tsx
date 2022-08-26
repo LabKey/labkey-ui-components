@@ -17,13 +17,13 @@ import React, { FC, PureComponent, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { Filter, Query, Utils } from '@labkey/api';
 
-import { resolveErrorMessage, SchemaQuery } from '../../..';
-
 import { SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
 import { QuerySelectModel } from './model';
 import { DELIMITER } from './constants';
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {resolveErrorMessage} from "../../util/messaging";
 
 function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
     const { rawSelectedValue } = model;

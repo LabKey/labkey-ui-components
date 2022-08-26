@@ -14,21 +14,16 @@ import classNames from 'classnames';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { User } from '@labkey/api';
 
-import {
-    generateId,
-    handleFileInputChange,
-    isLoading,
-    Key,
-    LoadingSpinner,
-    LoadingState,
-    resolveErrorMessage,
-    UserAvatar,
-} from '../..';
-
 import { Attachment, AnnouncementModel } from './model';
 import { RemoveAttachmentModal, ThreadAttachments } from './ThreadAttachments';
 
 import { AnnouncementsAPIWrapper } from './APIWrapper';
+import {generateId, handleFileInputChange} from "../util/utils";
+import {isLoading, LoadingState} from "../../public/LoadingState";
+import {resolveErrorMessage} from "../util/messaging";
+import {LoadingSpinner} from "../components/base/LoadingSpinner";
+import {Key} from "../../public/useEnterEscape";
+import {UserAvatar} from "../components/UserAvatars";
 
 // Check if a line starts with any spaces, a number, followed by a period and a space.
 const orderedBulletRe = /^\s*\d+. /;

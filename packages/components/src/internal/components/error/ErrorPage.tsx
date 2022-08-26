@@ -1,7 +1,7 @@
 import React, { ErrorInfo } from 'react';
 import { ExperimentalFeatures, getServerContext } from '@labkey/api';
-
-import { Page, PageHeader } from '../../..';
+import {Page} from "../base/Page";
+import {PageHeader} from "../base/PageHeader";
 
 interface ErrorPageProps {
     error: Error;

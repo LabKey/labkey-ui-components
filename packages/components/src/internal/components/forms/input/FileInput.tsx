@@ -21,9 +21,9 @@ import { withFormsy } from 'formsy-react';
 import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';
 
-import { FileColumnRenderer, QueryColumn } from '../../../..';
-
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import {QueryColumn} from "../../../../public/QueryColumn";
+import {FileColumnRenderer} from "../../../renderers/FileColumnRenderer";
 
 interface Props extends DisableableInputProps {
     addLabelAsterisk?: boolean;

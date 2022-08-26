@@ -3,13 +3,16 @@ import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, FormControl } from 'react-bootstrap';
 
-import { Alert, ConfirmModal, LabelHelpTip, LoadingSpinner, RequiresPermission } from '../../..';
-
 import { sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { invalidateFullQueryDetailsCache } from '../../query/api';
 
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
+import {RequiresPermission} from "../base/Permissions";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {LabelHelpTip} from "../base/LabelHelpTip";
+import {ConfirmModal} from "../base/ConfirmModal";
+import {Alert} from "../base/Alert";
 
 const TITLE = 'ID/Name Settings';
 

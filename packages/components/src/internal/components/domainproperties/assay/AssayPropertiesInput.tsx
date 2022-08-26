@@ -2,8 +2,6 @@ import React, { FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { Container, buildURL, RemoveEntityButton, AddEntityButton } from '../../../..';
-
 import {
     ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
     CONFIGURE_SCRIPTING_TOPIC,
@@ -18,6 +16,10 @@ import { getValidPublishTargets } from './actions';
 
 import { AssayProtocolModel } from './models';
 import { FORM_IDS } from './AssayPropertiesPanel';
+import {buildURL} from "../../../url/AppURL";
+import {Container} from "../../base/models/Container";
+import {AddEntityButton} from "../../buttons/AddEntityButton";
+import {RemoveEntityButton} from "../../buttons/RemoveEntityButton";
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps {
     appPropertiesOnly?: boolean;

@@ -2,7 +2,6 @@ import React, { PureComponent, ReactNode, FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { DomainField, IFieldChange, LabelHelpTip } from '../../..';
 import { helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
@@ -15,12 +14,13 @@ import {
     DOMAIN_FIELD_SHOWNININSERTVIEW,
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
 } from '../domainproperties/constants';
-import { ITypeDependentProps } from '../domainproperties/models';
+import {DomainField, IFieldChange, ITypeDependentProps} from '../domainproperties/models';
 import { SectionHeading } from '../domainproperties/SectionHeading';
 
 import { OntologyModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 import { fetchParentPaths, getParentsConceptCodePath } from './actions';
+import {LabelHelpTip} from "../base/LabelHelpTip";
 
 const LEARN_MORE = <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>;
 

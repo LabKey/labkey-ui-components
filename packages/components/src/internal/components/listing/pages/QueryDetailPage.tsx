@@ -4,19 +4,15 @@
  */
 import React, { FC, PureComponent, memo, ReactNode, useMemo } from 'react';
 import { Link, WithRouterProps } from 'react-router';
-
-import {
-    AppURL,
-    BreadcrumbCreate,
-    DetailPanel,
-    InjectedQueryModels,
-    LoadingSpinner,
-    Page,
-    PageHeader,
-    SchemaQuery,
-    SCHEMAS,
-    withQueryModels,
-} from '../../../..';
+import {InjectedQueryModels, withQueryModels} from "../../../../public/QueryModel/withQueryModels";
+import {AppURL} from "../../../url/AppURL";
+import {BreadcrumbCreate} from "../../navigation/BreadcrumbCreate";
+import {Page} from "../../base/Page";
+import {PageHeader} from "../../base/PageHeader";
+import {DetailPanel} from "../../../../public/QueryModel/DetailPanel";
+import {SCHEMAS} from "../../../schemas";
+import {SchemaQuery} from "../../../../public/SchemaQuery";
+import {LoadingSpinner} from "../../base/LoadingSpinner";
 
 interface BodyProps {
     id: string;

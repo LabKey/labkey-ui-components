@@ -8,7 +8,6 @@ import { Panel, Row, Col, Button } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
-import { SecurityPolicy, SecurityRole, getUserProperties, LoadingSpinner, caseInsensitive } from '../../..';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
 import { getDateTimeFormat } from '../../util/Date';
@@ -16,6 +15,10 @@ import { getDateTimeFormat } from '../../util/Date';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
+import {SecurityPolicy, SecurityRole} from "../permissions/models";
+import {getUserProperties} from "./actions";
+import {caseInsensitive} from "../../util/utils";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 interface Props {
     userId: number;

@@ -2,10 +2,9 @@ import React, { Component, ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 import { Map, Set, List } from 'immutable';
 
-import { FileAttachmentForm } from '../../..';
-
 import { IFile } from './models';
 import { FilesListing } from './FilesListing';
+import {FileAttachmentForm} from "../../../public/files/FileAttachmentForm";
 
 interface Props {
     addFileText?: string;

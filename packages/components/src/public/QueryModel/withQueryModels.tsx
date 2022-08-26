@@ -8,11 +8,14 @@ import { Draft, produce } from 'immer';
 // eslint-disable-next-line import/named
 import { withRouter, WithRouterProps } from 'react-router';
 
-import { LoadingState, naturalSort, QuerySort, resolveErrorMessage, SchemaQuery } from '../..';
-
 import { QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import { filterArraysEqual, sortArraysEqual } from './utils';
+import {SchemaQuery} from "../SchemaQuery";
+import {QuerySort} from "../QuerySort";
+import {LoadingState} from "../LoadingState";
+import {naturalSort} from "../sort";
+import {resolveErrorMessage} from "../../internal/util/messaging";
 
 export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;

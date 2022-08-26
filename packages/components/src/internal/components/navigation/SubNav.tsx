@@ -19,9 +19,10 @@ import React, { ReactNode, FC, useRef, useState, useCallback, useEffect } from '
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { AppURL, useAppContext, useServerContext } from '../../..';
-
 import NavItem, { ParentNavItem } from './NavItem';
+import {AppURL} from "../../url/AppURL";
+import {useAppContext} from "../../AppContext";
+import {useServerContext} from "../base/ServerContext";
 
 interface Props {
     ignoreShow?: boolean; // Forces the SubNav to always be hidden in "scrolled" mode

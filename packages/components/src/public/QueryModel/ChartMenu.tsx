@@ -1,7 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
-import { DataViewInfoTypes } from '../..';
 import { ChartMenuItem } from '../../internal/components/chart/ChartMenuItem';
 import { DataViewInfo } from '../../internal/models';
 
@@ -11,6 +10,7 @@ import { blurActiveElement } from '../../internal/util/utils';
 import { getQueryMetadata } from '../../internal/global';
 
 import { RequiresModelAndActions } from './withQueryModels';
+import {DataViewInfoTypes} from "../../internal/constants";
 
 interface Props extends RequiresModelAndActions {
     hideEmptyChartMenu: boolean;

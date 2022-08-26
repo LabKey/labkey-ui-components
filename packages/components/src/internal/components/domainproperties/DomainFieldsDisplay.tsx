@@ -17,9 +17,9 @@ import React from 'react';
 import { Panel } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { Grid, GridColumn } from '../../..';
-
 import { DomainDesign } from './models';
+import {GridColumn} from "../base/models/GridColumn";
+import {Grid} from "../base/Grid";
 
 export const DOMAIN_FIELD_COLS = List([
     new GridColumn({

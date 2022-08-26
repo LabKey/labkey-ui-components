@@ -3,11 +3,13 @@ import { MenuItem } from 'react-bootstrap';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { EntityDeleteModal, SampleTypeDataType, QueryModel, SelectionMenuItem } from '../../..';
-
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { MAX_SELECTED_SAMPLES } from './constants';
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {SelectionMenuItem} from "../menus/SelectionMenuItem";
+import {EntityDeleteModal} from "../entities/EntityDeleteModal";
+import {SampleTypeDataType} from "../entities/constants";
 
 interface Props {
     api?: ComponentsAPIWrapper;

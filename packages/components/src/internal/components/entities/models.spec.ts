@@ -15,15 +15,16 @@
  */
 import { List, Map } from 'immutable';
 
-import { IParentOption, QueryColumn, SampleTypeDataType, SCHEMAS } from '../../..';
-
 import {
     EntityIdCreationModel,
     EntityParentType,
     EntityTypeOption,
     getParentEntities,
-    getParentOptions,
+    getParentOptions, IParentOption,
 } from './models';
+import {SCHEMAS} from "../../schemas";
+import {QueryColumn} from "../../../public/QueryColumn";
+import {SampleTypeDataType} from "./constants";
 
 describe('EntityParentType', () => {
     test('generateColumn captionSuffix', () => {

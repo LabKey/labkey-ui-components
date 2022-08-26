@@ -3,9 +3,12 @@ import { MenuItem, OverlayTrigger } from 'react-bootstrap';
 import { mount } from 'enzyme';
 
 import { TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
-import { GENERAL_ASSAY_PROVIDER_NAME, makeTestQueryModel, SchemaQuery, SubMenuItem } from '../../..';
 
 import { AssayImportSubMenuItemImpl } from './AssayImportSubMenuItem';
+import {SubMenuItem} from "../menus/SubMenuItem";
+import {GENERAL_ASSAY_PROVIDER_NAME} from "./actions";
+import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
+import {SchemaQuery} from "../../../public/SchemaQuery";
 
 const DEFAULT_PROPS = {
     assayModel: TEST_ASSAY_STATE_MODEL,

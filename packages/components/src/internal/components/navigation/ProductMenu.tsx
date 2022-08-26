@@ -18,12 +18,11 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
 
-import { LoadingSpinner } from '../../..';
-
 import { blurActiveElement } from '../../util/utils';
 
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 interface ProductMenuProps {
     model: ProductMenuModel;

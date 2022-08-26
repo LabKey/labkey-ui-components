@@ -3,12 +3,13 @@ import { Dropdown, MenuItem, Modal } from 'react-bootstrap';
 import moment from 'moment';
 import { User, UserWithPermissions } from '@labkey/api';
 
-import { Alert, resolveErrorMessage } from '../..';
 import { UserAvatar } from '../components/UserAvatars';
 
 import { AnnouncementModel } from './model';
 import { ThreadEditor, ThreadEditorProps } from './ThreadEditor';
 import { ThreadAttachments } from './ThreadAttachments';
+import {resolveErrorMessage} from "../util/messaging";
+import {Alert} from "../components/base/Alert";
 
 interface DeleteThreadModalProps {
     cancel: () => void;

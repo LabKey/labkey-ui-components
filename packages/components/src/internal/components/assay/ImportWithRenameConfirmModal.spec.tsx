@@ -2,9 +2,8 @@ import React from 'react';
 
 import { mount } from 'enzyme';
 
-import { ConfirmModal } from '../../..';
-
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
+import {ConfirmModal} from "../base/ConfirmModal";
 
 describe('<ImportWithRenameConfirmModal/>', () => {
     test('without folder type or product name', () => {

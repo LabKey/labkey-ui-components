@@ -15,9 +15,10 @@
  */
 import { ActionURL, Ajax, Filter, getServerContext, Utils } from '@labkey/api';
 
-import { buildURL, resolveErrorMessage, selectRowsDeprecated } from '../../..';
-
 import { ServerActivity, ServerActivityData } from './model';
+import {buildURL} from "../../url/AppURL";
+import {resolveErrorMessage} from "../../util/messaging";
+import {selectRowsDeprecated} from "../../query/api";
 
 /**
  * Used to notify the server that the trial banner has been dismissed

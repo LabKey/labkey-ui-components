@@ -1,11 +1,12 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-import { Alert, LabelHelpTip, naturalSort } from '../../..';
-
 import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode } from './actions';
 import { ConceptPathDisplay } from './ConceptPathDisplay';
+import {Alert} from "../base/Alert";
+import {naturalSort} from "../../../public/sort";
+import {LabelHelpTip} from "../base/LabelHelpTip";
 
 const CURRENT_PATH_TITLE = 'Current Path';
 

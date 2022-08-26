@@ -2,8 +2,6 @@ import React from 'react';
 import { Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { LabelHelpTip } from '../../..';
-
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './actions';
 import {
     DOMAIN_FIELD_FULLY_LOCKED,
@@ -15,6 +13,7 @@ import {
 } from './constants';
 import { DomainField, IFieldChange, ITypeDependentProps, PropertyValidator } from './models';
 import { FolderSelect, SchemaSelect, TargetTableSelect } from './Lookup/Fields';
+import {LabelHelpTip} from "../base/LabelHelpTip";
 
 interface LookupFieldProps extends ITypeDependentProps {
     field: DomainField;

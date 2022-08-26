@@ -19,13 +19,12 @@ import { Query } from '@labkey/api';
 import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
 
-import { QueryColumn } from '../../..';
-
 import { AssayTaskInput } from './input/AssayTaskInput';
 
 import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
 import { SampleStatusInput } from './input/SampleStatusInput';
+import {QueryColumn} from "../../../public/QueryColumn";
 
 type InputRenderer = (
     col: QueryColumn,

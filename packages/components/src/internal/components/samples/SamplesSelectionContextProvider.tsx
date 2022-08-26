@@ -4,8 +4,6 @@
  */
 import React, { ComponentType, ReactNode } from 'react';
 
-import { LoadingSpinner, SampleOperation, SCHEMAS } from '../../..';
-
 import { getSampleOperationConfirmationData } from '../entities/actions';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
@@ -16,6 +14,9 @@ import {
     getSampleSelectionStorageData,
     getSelectionLineageData,
 } from './actions';
+import {SampleOperation} from "./constants";
+import {SCHEMAS} from "../../schemas";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 const Context = React.createContext<SamplesSelectionResultProps>(undefined);
 const SamplesSelectionContextProvider = Context.Provider;

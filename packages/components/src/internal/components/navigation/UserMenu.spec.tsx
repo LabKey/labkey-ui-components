@@ -18,10 +18,9 @@ import { List } from 'immutable';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { User } from '../../..';
-
 import { UserMenu } from './UserMenu';
 import { MenuSectionModel, ProductMenuModel } from './model';
+import {User} from "../base/models/User";
 
 beforeAll(() => {
     LABKEY.devMode = false;

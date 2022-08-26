@@ -17,9 +17,8 @@ import React, { CSSProperties, FC, memo, ReactNode, useMemo } from 'react';
 import { Map, Set } from 'immutable';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { naturalSort } from '../../..';
-
 import { HeatMapCell, HeatMapDisplayCell, HeatMapProps } from './HeatMap';
+import {naturalSort} from "../../../public/sort";
 
 interface DisplayCell {
     onClick?: () => void;

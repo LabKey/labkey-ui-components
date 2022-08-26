@@ -16,8 +16,6 @@
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
 
-import { SEARCH_PLACEHOLDER, User } from '../../..';
-
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
 
@@ -38,6 +36,8 @@ import { ProductMenuModel } from './model';
 
 import { FolderMenu } from './FolderMenu';
 import { getPrimaryAppProperties } from '../../app/utils';
+import {User} from "../base/models/User";
+import {SEARCH_PLACEHOLDER} from "./constants";
 
 interface NavigationBarProps {
     brand?: ReactNode;

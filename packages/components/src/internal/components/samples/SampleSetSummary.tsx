@@ -2,10 +2,13 @@ import React, { FC, memo, useMemo, useState } from 'react';
 
 import { Filter, PermissionTypes, Query } from '@labkey/api';
 
-import { GridPanelWithModel, SCHEMAS, AppURL, User, SelectViewInput, SelectView, hasAnyPermissions } from '../../..';
-
 import { SampleSetCards } from './SampleSetCards';
 import { SampleSetHeatMap } from './SampleSetHeatMap';
+import {SelectView, SelectViewInput} from "../base/SelectViewInput";
+import {SCHEMAS} from "../../schemas";
+import {AppURL} from "../../url/AppURL";
+import {hasAnyPermissions, User} from "../base/models/User";
+import {GridPanelWithModel} from "../../../public/QueryModel/GridPanel";
 
 const SAMPLE_TYPE_VIEWS = [SelectView.Cards, SelectView.Grid, SelectView.Heatmap];
 

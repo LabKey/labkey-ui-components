@@ -18,10 +18,12 @@ import { Utils } from '@labkey/api';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
-import { EditorModel, LoadingState, QueryModel } from '../../..';
 import { AssayUploadTabs } from '../../constants';
 
 import { AssayWizardModel, parseDataTextToRunRows } from './AssayWizardModel';
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {LoadingState} from "../../../public/LoadingState";
+import {EditorModel} from "../../models";
 
 const DATA_TEXT = 'test1\ttest2\n1\t2';
 

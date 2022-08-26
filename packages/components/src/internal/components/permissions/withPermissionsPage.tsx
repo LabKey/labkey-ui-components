@@ -6,9 +6,7 @@ import React, { ComponentType, PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Security } from '@labkey/api';
 
-import { LoadingPage, resolveErrorMessage, SecurityRole } from '../../..';
-
-import { Principal } from './models';
+import {Principal, SecurityRole} from './models';
 import {
     getPrincipals,
     getInactiveUsers,
@@ -16,6 +14,8 @@ import {
     getRolesByUniqueName,
     processGetRolesResponse,
 } from './actions';
+import {resolveErrorMessage} from "../../util/messaging";
+import {LoadingPage} from "../base/LoadingPage";
 
 export interface InjectedPermissionsPage {
     error: string;

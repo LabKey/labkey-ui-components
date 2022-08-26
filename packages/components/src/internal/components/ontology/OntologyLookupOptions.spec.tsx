@@ -2,7 +2,6 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { DomainField } from '../../..';
 import { sleep } from '../../testHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
@@ -12,6 +11,7 @@ import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 
 import { OntologyLookupOptions } from './OntologyLookupOptions';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
+import {DomainField} from "../domainproperties/models";
 
 const field1 = DomainField.create({
     name: 'field1',

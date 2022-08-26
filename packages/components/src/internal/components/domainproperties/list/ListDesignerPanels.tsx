@@ -2,8 +2,6 @@ import React from 'react';
 import { List } from 'immutable';
 import { Domain } from '@labkey/api';
 
-import { buildURL, importData, Progress, resolveErrorMessage } from '../../../..';
-
 import { DomainDesign, DomainFieldIndexChange, IAppDomainHeader } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';
@@ -17,6 +15,10 @@ import ConfirmImportTypes from '../ConfirmImportTypes';
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { ListModel } from './models';
 import { ListPropertiesPanel } from './ListPropertiesPanel';
+import {importData} from "../../../query/api";
+import {buildURL} from "../../../url/AppURL";
+import {resolveErrorMessage} from "../../../util/messaging";
+import {Progress} from "../../base/Progress";
 
 interface Props {
     initModel?: ListModel;

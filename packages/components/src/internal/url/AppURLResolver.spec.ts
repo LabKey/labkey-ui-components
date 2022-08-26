@@ -15,13 +15,12 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { AppURL, ExperimentRunResolver } from '../..';
-
 import { initMockServerContext, registerDefaultURLMappers } from '../testHelpers';
 
-import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './AppURLResolver';
+import {AssayResolver, AssayRunResolver, ExperimentRunResolver, ListResolver, SamplesResolver} from './AppURLResolver';
 import { URLResolver } from './URLResolver';
 import {initUnitTestMocks} from "../../test/testHelperMocks";
+import {AppURL} from "./AppURL";
 
 beforeAll(() => {
     initUnitTestMocks();

@@ -9,12 +9,6 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SAMPLE_DATA_EXPORT_CONFIG } from '../samples/constants';
-import {
-    InjectedQueryModels,
-    QueryConfigMap,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
 import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 
@@ -53,6 +47,13 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
+
+import {
+    InjectedQueryModels,
+    QueryConfigMap,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../../../public/QueryModel/withQueryModels';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };

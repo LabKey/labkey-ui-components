@@ -11,11 +11,6 @@ import { FindSamplesByIdHeaderPanel } from '../samples/FindSamplesByIdHeaderPane
 import { getFindSamplesByIdData } from '../samples/actions';
 import { getLocation, pushParameter, replaceParameter, resetParameters } from '../../util/URL';
 import { createGridModelId } from '../../models';
-import {
-    InjectedQueryModels,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../../../public/QueryModel/withQueryModels';
 import { LoadingState } from '../../../public/LoadingState';
 import { Page } from '../base/Page';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -37,6 +32,12 @@ import { useServerContext } from '../base/ServerContext';
 
 import { getSampleTypesFromFindByIdQuery } from './actions';
 import { FIND_SAMPLE_BY_ID_METRIC_AREA } from './utils';
+
+import {
+    InjectedQueryModels,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../../../public/QueryModel/withQueryModels';
 
 const TYPE_GRID_PREFIX = 'find-by-id-';
 

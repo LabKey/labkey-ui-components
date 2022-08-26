@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { ConfirmModal } from '../../..';
+import {ConfirmModal} from "../base/ConfirmModal";
 
 interface Props {
     onConfirm: () => any;

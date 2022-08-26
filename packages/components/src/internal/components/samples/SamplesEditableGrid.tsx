@@ -3,47 +3,38 @@ import { List, Map, OrderedMap } from 'immutable';
 
 import { AuditBehaviorTypes, Query } from '@labkey/api';
 
-import {
-    caseInsensitive,
-    deleteRows,
-    EditableGridLoaderFromSelection,
-    EditorModel,
-    EntityDataType,
-    getLineageEditorUpdateColumns,
-    getSelectedData,
-    IEntityTypeOption,
-    IGridResponse,
-    invalidateLineageResults,
-    LineageEditableGridLoaderFromSelection,
-    LoadingSpinner,
-    NO_UPDATES_MESSAGE,
-    NotificationsContextProps,
-    QueryColumn,
-    QueryInfo,
-    QueryModel,
-    resolveErrorMessage,
-    SampleStateType,
-    SchemaQuery,
-    SCHEMAS,
-    User,
-    withNotificationsContext,
-} from '../../..';
-
-import { EntityChoice } from '../entities/models';
+import {EntityChoice, EntityDataType, IEntityTypeOption} from '../entities/models';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { UpdateGridTab } from '../editable/EditableGridPanelForUpdateWithLineage';
 
-import { IEditableGridLoader } from '../../models';
+import {EditorModel, IEditableGridLoader, IGridResponse} from '../../models';
 
 import { isFreezerManagementEnabled } from '../../app/utils';
 
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
-import { getOriginalParentsFromLineage, getUpdatedLineageRows } from './actions';
+import {getLineageEditorUpdateColumns, getOriginalParentsFromLineage, getUpdatedLineageRows} from './actions';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {NotificationsContextProps, withNotificationsContext} from "../notifications/NotificationsContext";
+import {User} from "../base/models/User";
+import {SampleStateType} from "./constants";
+import {caseInsensitive} from "../../util/utils";
+import {NO_UPDATES_MESSAGE} from "../../constants";
+import {deleteRows} from "../../query/api";
+import {SCHEMAS} from "../../schemas";
+import {resolveErrorMessage} from "../../util/messaging";
+import {invalidateLineageResults} from "../lineage/actions";
+import {QueryColumn} from "../../../public/QueryColumn";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {EditableGridLoaderFromSelection} from "../editable/EditableGridLoaderFromSelection";
+import {QueryInfo} from "../../../public/QueryInfo";
+import {LineageEditableGridLoaderFromSelection} from "../editable/LineageEditableGridLoaderFromSelection";
+import {getSelectedData} from "../../actions";
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;

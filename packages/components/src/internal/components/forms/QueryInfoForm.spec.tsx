@@ -20,12 +20,12 @@ import { mount, shallow } from 'enzyme';
 import { Button, Modal, ModalTitle } from 'react-bootstrap';
 
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
-import { getQueryDetails, SchemaQuery } from '../../..';
-
 import { TextInput } from './input/TextInput';
 import { QueryFormInputs } from './QueryFormInputs';
 import { QueryInfoForm } from './QueryInfoForm';
 import { QueryInfoQuantity } from './QueryInfoQuantity';
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {getQueryDetails} from "../../query/api";
 
 beforeAll(() => {
     initUnitTestMocks();

@@ -15,11 +15,12 @@
  */
 import React, { PureComponent } from 'react';
 
-import { capitalizeFirstChar, ConfirmModal, HelpLink } from '../../..';
-
 import { isELNEnabled } from '../../app/utils';
 
 import { EntityDataType, OperationConfirmationData } from './models';
+import {capitalizeFirstChar} from "../../util/utils";
+import {HelpLink} from "../../util/helpLinks";
+import {ConfirmModal} from "../base/ConfirmModal";
 
 interface Props {
     confirmationData: OperationConfirmationData;

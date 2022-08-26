@@ -18,21 +18,17 @@ import { Map, OrderedMap } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
-import {
-    DisableableMenuItem,
-    GRID_CHECKBOX_OPTIONS,
-    GridColumn,
-    LabelHelpTip,
-    QueryColumn,
-    QueryModel,
-    useEnterEscape,
-} from '..';
-
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
 import { CustomToggle } from './components/base/CustomToggle';
 import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
-import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE } from './constants';
+import {APP_FIELD_CANNOT_BE_REMOVED_MESSAGE, GRID_CHECKBOX_OPTIONS} from './constants';
+import {QueryColumn} from "../public/QueryColumn";
+import {useEnterEscape} from "../public/useEnterEscape";
+import {GridColumn} from "./components/base/models/GridColumn";
+import {QueryModel} from "../public/QueryModel/QueryModel";
+import {LabelHelpTip} from "./components/base/LabelHelpTip";
+import {DisableableMenuItem} from "./components/samples/DisableableMenuItem";
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();

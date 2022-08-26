@@ -19,8 +19,6 @@ import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 
-import { DeleteIcon, DragDropHandle, FieldExpansionToggle, naturalSortByProperty } from '../../..';
-
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_FIELD_ADV,
@@ -61,6 +59,10 @@ import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
 import { DomainRowWarning } from './DomainRowWarning';
 import { ConfirmDataTypeChangeModal } from './ConfirmDataTypeChangeModal';
+import {naturalSortByProperty} from "../../../public/sort";
+import {DeleteIcon} from "../base/DeleteIcon";
+import {DragDropHandle} from "../base/DragDropHandle";
+import {FieldExpansionToggle} from "../base/FieldExpansionToggle";
 
 export interface DomainRowProps {
     appPropertiesOnly?: boolean;

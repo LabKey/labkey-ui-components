@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
 import { Utils } from '@labkey/api';
 
-import { ConfirmModal, Alert, resolveErrorMessage } from '../../..';
-
 import { deleteUsers } from './actions';
+import {resolveErrorMessage} from "../../util/messaging";
+import {ConfirmModal} from "../base/ConfirmModal";
+import {Alert} from "../base/Alert";
 
 interface Props {
     userIds: number[];

@@ -5,10 +5,12 @@
 import { List, Map } from 'immutable';
 import { Experiment, Utils } from '@labkey/api';
 
-import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../../..';
-
 import { LineageItemWithMetadata, LineageLink, LineageNode } from './models';
 import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {imageURL} from "../../url/ActionURL";
+import {Theme} from "../base/SVGIcon";
+import {SCHEMAS} from "../../schemas";
 
 export const DEFAULT_ICON_URL = 'default';
 const BACKUP_IMAGE_ROOT = 'https://labkey.org/_images/';

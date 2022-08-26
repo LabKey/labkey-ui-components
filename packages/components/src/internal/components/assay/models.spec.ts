@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../../..';
 import { TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
+import {GENERAL_ASSAY_PROVIDER_NAME} from "./actions";
 
 describe('AssayStateModel', () => {
     test('getById', () => {

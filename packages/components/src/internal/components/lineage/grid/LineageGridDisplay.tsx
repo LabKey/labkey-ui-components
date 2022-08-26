@@ -6,13 +6,15 @@ import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { Alert, AppURL, getLocation, Grid, GridProps } from '../../../..';
-
 import { LineageGridModel } from '../models';
 import { DEFAULT_LINEAGE_DISTANCE } from '../constants';
 import { LINEAGE_DIRECTIONS } from '../types';
 import { getPageNumberChangeURL } from '../actions';
 import { LineageDepthLimitMessage } from '../LineageGraph';
+import {getLocation} from "../../../util/URL";
+import {AppURL} from "../../../url/AppURL";
+import {Alert} from "../../base/Alert";
+import {Grid, GridProps} from "../../base/Grid";
 
 interface LineagePagingProps {
     model: LineageGridModel;

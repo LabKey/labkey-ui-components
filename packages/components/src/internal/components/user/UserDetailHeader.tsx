@@ -1,8 +1,9 @@
 import React, { FC, ReactNode, useMemo } from 'react';
 
-import { Container, PageDetailHeader, User } from '../../..';
-
 import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
+import {Container} from "../base/models/Container";
+import {User} from "../base/models/User";
+import {PageDetailHeader} from "../forms/PageDetailHeader";
 
 interface Props {
     container?: Partial<Container>;

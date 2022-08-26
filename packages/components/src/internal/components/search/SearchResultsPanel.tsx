@@ -16,12 +16,12 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 
-import { LoadingSpinner, Alert } from '../../..';
-
 import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 
 import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsModel } from './models';
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {Alert} from "../base/Alert";
 
 interface Props {
     model: SearchResultsModel;

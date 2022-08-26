@@ -15,11 +15,12 @@
  */
 import React, { PureComponent } from 'react';
 
-import { ConfirmModal, LoadingSpinner, Alert } from '../../..';
-
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { getDeleteConfirmationData } from './actions';
 import { EntityDataType, OperationConfirmationData } from './models';
+import {ConfirmModal} from "../base/ConfirmModal";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {Alert} from "../base/Alert";
 
 interface Props {
     onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;

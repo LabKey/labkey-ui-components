@@ -1,10 +1,15 @@
 import { Filter } from '@labkey/api';
 
-import { GRID_CHECKBOX_OPTIONS, LoadingState, makeTestQueryModel, QueryInfo, QuerySort, SchemaQuery } from '../..';
 import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 
 import { QueryConfig, QueryModel } from './QueryModel';
+import {SchemaQuery} from "../SchemaQuery";
+import {QueryInfo} from "../QueryInfo";
+import {LoadingState} from "../LoadingState";
+import {QuerySort} from "../QuerySort";
+import {GRID_CHECKBOX_OPTIONS} from "../../internal/constants";
+import {makeTestQueryModel} from "./testUtils";
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;

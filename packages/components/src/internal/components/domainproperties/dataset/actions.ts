@@ -18,8 +18,6 @@ import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
 
 import { fromJS, List } from 'immutable';
 
-import { DomainDesign, DomainField, SelectInputOption, selectRowsDeprecated } from '../../../..';
-
 import { DatasetModel } from './models';
 import {
     COHORT_TIP,
@@ -32,6 +30,9 @@ import {
     TIME_KEY_FIELD_KEY,
     VISIT_DATE_TIP,
 } from './constants';
+import {SelectInputOption} from "../../forms/input/SelectInput";
+import {selectRowsDeprecated} from "../../../query/api";
+import {DomainDesign, DomainField} from "../models";
 
 export function fetchCategories(): Promise<List<SelectInputOption>> {
     return new Promise((resolve, reject) => {

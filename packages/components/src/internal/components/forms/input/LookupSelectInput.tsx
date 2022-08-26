@@ -17,19 +17,15 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
-import {
-    ISelectRowsResult,
-    selectRowsDeprecated,
-    LoadingSpinner,
-    QueryColumn,
-    QueryLookup,
-    generateId,
-    naturalSort,
-    resolveKey,
-} from '../../../..';
 import { LabelOverlay } from '../LabelOverlay';
 
 import { SelectInput, SelectInputProps } from './SelectInput';
+import {QueryColumn, QueryLookup} from "../../../../public/QueryColumn";
+import {naturalSort} from "../../../../public/sort";
+import {ISelectRowsResult, selectRowsDeprecated} from "../../../query/api";
+import {generateId} from "../../../util/utils";
+import {resolveKey} from "../../../../public/SchemaQuery";
+import {LoadingSpinner} from "../../base/LoadingSpinner";
 
 interface LookupSelectOption {
     label: string;

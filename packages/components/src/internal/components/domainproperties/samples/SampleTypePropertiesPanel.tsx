@@ -5,18 +5,6 @@ import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { getFormNameFromId } from '../entities/actions';
-import {
-    AddEntityButton,
-    ColorPickerInput,
-    Container,
-    generateId,
-    getHelpLink,
-    IDomainField,
-    IParentOption,
-    MetricUnitProps,
-    SCHEMAS,
-    SelectInput,
-} from '../../../..';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
@@ -24,7 +12,7 @@ import {
     DEFINE_SAMPLE_TYPE_TOPIC,
     DERIVE_SAMPLES_ALIAS_TOPIC,
     UNIQUE_IDS_TOPIC,
-    HelpLink,
+    HelpLink, getHelpLink,
 } from '../../../util/helpLinks';
 import { SampleSetParentAliasRow } from '../../samples/SampleSetParentAliasRow';
 import {
@@ -52,8 +40,16 @@ import { NameExpressionPreview } from '../NameExpressionPreview';
 
 import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
 
-import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
+import {AliquotNamePatternProps, IParentAlias, MetricUnitProps, SampleTypeModel} from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import {SCHEMAS} from "../../../schemas";
+import {IParentOption} from "../../entities/models";
+import {Container} from "../../base/models/Container";
+import {IDomainField} from "../models";
+import {generateId} from "../../../util/utils";
+import {AddEntityButton} from "../../buttons/AddEntityButton";
+import {ColorPickerInput} from "../../forms/input/ColorPickerInput";
+import {SelectInput} from "../../forms/input/SelectInput";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');

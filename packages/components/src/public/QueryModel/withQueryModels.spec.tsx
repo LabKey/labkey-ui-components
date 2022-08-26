@@ -3,17 +3,6 @@ import { mount } from 'enzyme';
 import { createMemoryHistory, InjectedRouter, Route, Router } from 'react-router';
 import { Filter } from '@labkey/api';
 
-import {
-    Actions,
-    LoadingState,
-    QueryInfo,
-    QueryModel,
-    QueryModelMap,
-    QuerySort,
-    SchemaQuery,
-    withQueryModels,
-} from '../..';
-
 import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../../internal/testHelpers';
 import { MockQueryModelLoader } from '../../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
@@ -22,6 +11,12 @@ import aminoAcidsQueryInfo from '../../test/data/assayAminoAcidsData-getQueryDet
 import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
 
 import { RowsResponse } from './QueryModelLoader';
+import {SchemaQuery} from "../SchemaQuery";
+import {QueryInfo} from "../QueryInfo";
+import {Actions, QueryModelMap, withQueryModels} from "./withQueryModels";
+import {QueryModel} from "./QueryModel";
+import {LoadingState} from "../LoadingState";
+import {QuerySort} from "../QuerySort";
 
 /**
  * Note: All of the tests in this file look a tad weird. We create a component that resets local variables on render

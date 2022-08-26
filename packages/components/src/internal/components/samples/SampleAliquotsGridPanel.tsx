@@ -2,32 +2,28 @@ import React, { FC, PureComponent } from 'react';
 import { List } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
-import {
-    DisableableButton,
-    EntityDeleteModal,
-    createGridModelId,
-    GridPanel,
-    PicklistButton,
-    QueryModel,
-    RequiresPermission,
-    ResponsiveMenuButtonGroup,
-    SamplesAssayButton,
-    SampleTypeDataType,
-    SchemaQuery,
-    SCHEMAS,
-    User,
-} from '../../..';
+import { getOmittedSampleTypeColumns } from './utils';
+import { getSampleAliquotsQueryConfig } from './actions';
+import { JobsButton, SampleStorageButton } from './models';
+import {User} from "../base/models/User";
+import {SamplesAssayButton} from "./SamplesAssayButton";
+import {PicklistButton} from "../picklist/PicklistButton";
+import {RequiresPermission} from "../base/Permissions";
+import {DisableableButton} from "../buttons/DisableableButton";
+import {ResponsiveMenuButtonGroup} from "../buttons/ResponsiveMenuButtonGroup";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {GridPanel} from "../../../public/QueryModel/GridPanel";
+import {EntityDeleteModal} from "../entities/EntityDeleteModal";
+import {SampleTypeDataType} from "../entities/constants";
+import {createGridModelId} from "../../models";
+import {SCHEMAS} from "../../schemas";
 
-// These need to be direct imports from files to avoid circular dependencies in index.ts
 import {
     InjectedQueryModels,
     RequiresModelAndActions,
     withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
-
-import { getOmittedSampleTypeColumns } from './utils';
-import { getSampleAliquotsQueryConfig } from './actions';
-import { JobsButton, SampleStorageButton } from './models';
 
 const SUB_MENU_WIDTH = 800;
 

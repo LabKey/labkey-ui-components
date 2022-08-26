@@ -1,14 +1,15 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, LabelHelpTip, LoadingSpinner } from '../../..';
-
 import { OntologyBrowserPanel, OntologyBrowserPanelImpl } from './OntologyBrowserPanel';
 import { OntologySelectionPanel } from './OntologySelectionPanel';
 import { OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
 import { OntologyTreePanel } from './OntologyTreePanel';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { ConceptModel, OntologyModel } from './models';
+import {Alert} from "../base/Alert";
+import {LabelHelpTip} from "../base/LabelHelpTip";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 describe('OntologyBrowserPanel', () => {
     function validate(wrapper: ReactWrapper, hasOntologyId: boolean): void {

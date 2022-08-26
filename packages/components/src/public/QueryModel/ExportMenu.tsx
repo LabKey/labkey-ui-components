@@ -1,11 +1,12 @@
 import React, { FC, memo, PureComponent, ReactNode, useCallback } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
-
 import { Set } from 'immutable';
 
-import { EXPORT_TYPES, getQueryModelExportParams, QueryModel, Tip } from '../..';
-
 import { exportRows } from '../../internal/actions';
+import {QueryModel} from "./QueryModel";
+import {EXPORT_TYPES} from "../../internal/constants";
+import {Tip} from "../../internal/components/base/Tip";
+import {getQueryModelExportParams} from "./utils";
 
 interface ExportMenuProps {
     // pageSizes is expected to be sorted (ascending)

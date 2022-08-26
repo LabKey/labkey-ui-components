@@ -1,14 +1,15 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { Alert, LabelHelpTip, LoadingSpinner } from '../../..';
-
 import { fetchAlternatePaths, fetchConceptForCode, getOntologyDetails } from './actions';
 import { ConceptModel, OntologyModel, PathModel } from './models';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { OntologyTreePanel } from './OntologyTreePanel';
 import { OntologySelectionPanel } from './OntologySelectionPanel';
 import { OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {Alert} from "../base/Alert";
+import {LabelHelpTip} from "../base/LabelHelpTip";
 
 export interface OntologyBrowserProps {
     asPanel?: boolean;

@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
-import { getEventDataValueDisplay, LabelHelpTip, SVGIcon } from '../../..';
-
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
+import {getEventDataValueDisplay} from "./utils";
+import {SVGIcon} from "../base/SVGIcon";
+import {LabelHelpTip} from "../base/LabelHelpTip";
 
 interface Props {
     events: TimelineEventModel[];

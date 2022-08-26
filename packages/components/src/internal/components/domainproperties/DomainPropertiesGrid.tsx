@@ -4,14 +4,15 @@ import { List } from 'immutable';
 
 import { Checkbox } from 'react-bootstrap';
 
-import { DomainDesign, Grid, GridColumn, IFieldChange } from '../../..';
 import { headerCell } from '../../renderers';
 
 import { GRID_SELECTION_INDEX } from '../../constants';
 
 import { compareStringsAlphabetically } from './propertiesUtil';
 
-import { DomainPropertiesGridColumn } from './models';
+import {DomainDesign, DomainPropertiesGridColumn, IFieldChange} from './models';
+import {GridColumn} from "../base/models/GridColumn";
+import {Grid} from "../base/Grid";
 
 interface DomainPropertiesGridProps {
     domain: DomainDesign;

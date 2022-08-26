@@ -3,8 +3,6 @@ import { List } from 'immutable';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
-import { LabelHelpTip } from '../../..';
-
 import {
     ADVANCED_FIELD_EDITOR_TOPIC,
     CHART_MEASURES_AND_DIMENSIONS_TOPIC,
@@ -35,6 +33,7 @@ import {
 } from './constants';
 
 import { DomainFieldLabel } from './DomainFieldLabel';
+import {LabelHelpTip} from "../base/LabelHelpTip";
 
 interface AdvancedSettingsProps {
     defaultDefaultValueType: string;

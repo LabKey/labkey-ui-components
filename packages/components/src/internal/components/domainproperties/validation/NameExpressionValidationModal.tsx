@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { ConfirmModal } from '../../../..';
+import {ConfirmModal} from "../../base/ConfirmModal";
 
 export interface Props {
     title?: string;

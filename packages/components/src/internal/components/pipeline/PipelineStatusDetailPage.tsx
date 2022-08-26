@@ -2,10 +2,13 @@ import React, { FC } from 'react';
 
 import classNames from 'classnames';
 
-import { Alert, LoadingSpinner, Page, PageHeader, Section } from '../../..';
-
 import { getPipelineStatusDetail } from './actions';
 import { PipelineLogEntry, PipelineStatusDetailModel } from './model';
+import {Section} from "../base/Section";
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {Page} from "../base/Page";
+import {PageHeader} from "../base/PageHeader";
 
 interface JobStatusRowProps {
     label: string;

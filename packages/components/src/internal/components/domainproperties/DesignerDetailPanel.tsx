@@ -1,9 +1,11 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 
-import { DetailPanel, RequiresModelAndActions, SchemaQuery } from '../../..';
 import { DetailDisplaySharedProps } from '../forms/detail/DetailDisplay';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import {RequiresModelAndActions} from "../../../public/QueryModel/withQueryModels";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {DetailPanel} from "../../../public/QueryModel/DetailPanel";
 
 interface Props extends DetailDisplaySharedProps, RequiresModelAndActions {
     api?: ComponentsAPIWrapper;

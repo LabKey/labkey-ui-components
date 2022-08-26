@@ -21,10 +21,13 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
-import { LoadingSpinner, SVGIcon, SchemaQuery, Alert } from '../../..';
 
 import { DataViewInfo, IDataViewInfo } from '../../models';
 import { DataViewInfoTypes, GRID_REPORTS, VISUALIZATION_REPORTS } from '../../constants';
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {Alert} from "../base/Alert";
+import {SVGIcon} from "../base/SVGIcon";
+import {SchemaQuery} from "../../../public/SchemaQuery";
 
 const ICONS = {
     [DataViewInfoTypes.AutomaticPlot]: 'xy_line',

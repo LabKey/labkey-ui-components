@@ -3,20 +3,14 @@ import { mount } from 'enzyme';
 import { List } from 'immutable';
 import { createMemoryHistory, InjectedRouter, Route, Router } from 'react-router';
 
-import {
-    AssayDefinitionModel,
-    AssayStateModel,
-    AssayProtocolModel,
-    InjectedAssayModel,
-    LoadingState,
-    withAssayModels,
-    withAssayModelsFromLocation,
-} from '../../..';
-
 import { sleep } from '../../testHelpers';
 
-import { AssayLoader } from './withAssayModels';
+import {AssayLoader, InjectedAssayModel, withAssayModels, withAssayModelsFromLocation} from './withAssayModels';
 import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../../test/data/constants';
+import {AssayDefinitionModel} from "../../AssayDefinitionModel";
+import {AssayStateModel} from "./models";
+import {LoadingState} from "../../../public/LoadingState";
+import {AssayProtocolModel} from "../domainproperties/assay/models";
 
 const WithAssayModelsComponentImpl: FC<InjectedAssayModel> = () => <div />;
 

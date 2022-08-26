@@ -1,11 +1,10 @@
 import React, { ReactNode } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
-import { LoadingSpinner } from '../../../index';
-
 import { markNotificationsAsRead } from './actions';
 import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 type Props = ServerNotificationsConfig;
 

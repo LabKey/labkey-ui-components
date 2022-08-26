@@ -1,8 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { LoadingSpinner, DomainFieldLabel, AddEntityButton } from '../../..';
-
 import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { waitForLifecycle } from '../../testHelpers';
@@ -10,6 +8,9 @@ import { waitForLifecycle } from '../../testHelpers';
 import { TextChoiceOptionsImpl } from './TextChoiceOptions';
 import { DomainField } from './models';
 import { SectionHeading } from './SectionHeading';
+import {DomainFieldLabel} from "./DomainFieldLabel";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {AddEntityButton} from "../buttons/AddEntityButton";
 
 describe('TextChoiceOptions', () => {
     const DEFAULT_PROPS = {

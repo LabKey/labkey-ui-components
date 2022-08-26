@@ -16,9 +16,8 @@
 import React, { FC, memo } from 'react';
 import Formsy from 'formsy-react';
 
-import { QueryFormInputs } from '../../..';
-
 import { AssayPropertiesPanelProps } from './models';
+import {QueryFormInputs} from "../forms/QueryFormInputs";
 
 export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
     const { model, onChange, title = 'Batch Details', showQuerySelectPreviewOptions } = props;

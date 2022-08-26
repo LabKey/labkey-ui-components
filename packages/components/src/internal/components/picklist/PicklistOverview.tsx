@@ -2,35 +2,11 @@ import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useSta
 import { Checkbox, MenuItem } from 'react-bootstrap';
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
-import {
-    AppURL,
-    InsufficientPermissionsPage,
-    invalidateLineageResults,
-    LoadingPage,
-    ManageDropdownButton,
-    NotFound,
-    Page,
-    PageDetailHeader,
-    QueryConfigMap,
-    RequiresModelAndActions,
-    resolveErrorMessage,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
-    SamplesEditableGridProps,
-    SamplesTabbedGridPanel,
-    SchemaQuery,
-    SCHEMAS,
-    useNotificationsContext,
-    User,
-} from '../../..';
-
-// These need to be direct imports from files to avoid circular dependencies in index.ts
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { ALIQUOTED_FROM_COL } from '../samples/constants';
+import {ALIQUOTED_FROM_COL, SAMPLE_STATUS_REQUIRED_COLUMNS} from '../samples/constants';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
@@ -39,6 +15,27 @@ import { Picklist, PICKLIST_SAMPLES_FILTER } from './models';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { PicklistEditModal } from './PicklistEditModal';
 import { PicklistGridButtons } from './PicklistGridButtons';
+import {AppURL} from "../../url/AppURL";
+import {SamplesEditableGridProps} from "../samples/SamplesEditableGrid";
+import {User} from "../base/models/User";
+import {useNotificationsContext} from "../notifications/NotificationsContext";
+import {resolveErrorMessage} from "../../util/messaging";
+import {invalidateLineageResults} from "../lineage/actions";
+import {Page} from "../base/Page";
+import {PageDetailHeader} from "../forms/PageDetailHeader";
+import {ManageDropdownButton} from "../buttons/ManageDropdownButton";
+import {SamplesTabbedGridPanel} from "../samples/SamplesTabbedGridPanel";
+import {SCHEMAS} from "../../schemas";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {LoadingPage} from "../base/LoadingPage";
+import {NotFound} from "../base/NotFound";
+import {InsufficientPermissionsPage} from "../permissions/InsufficientPermissionsPage";
+
+import {
+    InjectedQueryModels, QueryConfigMap,
+    RequiresModelAndActions,
+    withQueryModels
+} from '../../../public/QueryModel/withQueryModels';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';

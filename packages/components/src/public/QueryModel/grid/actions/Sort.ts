@@ -16,10 +16,11 @@
 import { List } from 'immutable';
 
 import { parseColumns, resolveFieldKey } from '../utils';
-import { QueryColumn, QuerySort } from '../../../..';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
 import { decodePart } from '../../../SchemaQuery';
+import {QueryColumn} from "../../../QueryColumn";
+import {QuerySort} from "../../../QuerySort";
 
 export class SortAction implements Action {
     iconCls = 'sort';

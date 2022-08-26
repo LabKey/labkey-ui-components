@@ -17,9 +17,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { AppURL } from '../../..';
-
 import { BreadcrumbCreate } from './BreadcrumbCreate';
+import {AppURL} from "../../url/AppURL";
 
 const createdModifiedRow = {
     Created: {

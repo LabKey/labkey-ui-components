@@ -7,22 +7,18 @@ import { List, Map } from 'immutable';
 import { Row, Col } from 'react-bootstrap';
 import { User as IUser } from '@labkey/api';
 
-import {
-    Alert,
-    AppURL,
-    capitalizeFirstChar,
-    getUsersWithPermissions,
-    Grid,
-    GridColumn,
-    isLoading,
-    LoadingSpinner,
-    LoadingState,
-    resolveErrorMessage,
-    User,
-} from '../../..';
-
 import { AuditDetailsModel } from './models';
 import { getEventDataValueDisplay } from './utils';
+import {User} from "../base/models/User";
+import {isLoading, LoadingState} from "../../../public/LoadingState";
+import {getUsersWithPermissions} from "../forms/actions";
+import {resolveErrorMessage} from "../../util/messaging";
+import {AppURL} from "../../url/AppURL";
+import {capitalizeFirstChar} from "../../util/utils";
+import {GridColumn} from "../base/models/GridColumn";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {Alert} from "../base/Alert";
+import {Grid} from "../base/Grid";
 
 interface Props {
     user: User;

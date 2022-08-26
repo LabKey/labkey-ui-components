@@ -2,13 +2,14 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Panel } from 'react-bootstrap';
 
-import { LabelHelpTip, LoadingSpinner } from '../../..';
-
 import { HorizontalBarSection } from '../chart/HorizontalBarSection';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { LoadingState } from '../../../public/LoadingState';
+
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {LabelHelpTip} from "../base/LabelHelpTip";
 
 import { INSIGHTS_MODEL_ID, SampleTypeInsightsPanelImpl, STATUS_COUNTS_MODEL_ID } from './SampleTypeInsightsPanel';
 

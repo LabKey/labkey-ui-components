@@ -1,7 +1,8 @@
 import React from 'react';
 import { Map } from 'immutable';
-
-import { ConfirmModal, buildURL, SampleOperation } from '../../..';
+import {SampleOperation} from "../samples/constants";
+import {buildURL} from "../../url/AppURL";
+import {ConfirmModal} from "../base/ConfirmModal";
 
 interface Props {
     onConfirm: () => any;

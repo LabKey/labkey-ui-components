@@ -5,8 +5,6 @@
 import React, { FC, memo, PureComponent } from 'react';
 import { Experiment } from '@labkey/api';
 
-import { Alert, LoadingSpinner } from '../../..';
-
 import { InjectedLineage, withLineage, WithLineageOptions } from './withLineage';
 import { NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
@@ -14,6 +12,8 @@ import { isBasicNode, VisGraphOptions, VisGraphNode, VisGraphNodeType } from './
 import { VisGraph } from './vis/VisGraph';
 import { LineageNodeDetailFactory } from './node/LineageNodeDetailFactory';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 interface LineageGraphOwnProps {
     members?: LINEAGE_DIRECTIONS;

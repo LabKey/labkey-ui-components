@@ -15,8 +15,7 @@
  */
 import React, { PureComponent } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
-
-import { QueryModel } from '../../..';
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
 
 interface Props {
     disabledMsg: string;

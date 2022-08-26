@@ -4,7 +4,6 @@ import { mount } from 'enzyme';
 import { Panel } from 'react-bootstrap';
 
 import { DomainDesign } from '../models';
-import { FileAttachmentForm } from '../../../..';
 
 import { sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
@@ -12,6 +11,7 @@ import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
 import { AssayDesignerPanels } from './AssayDesignerPanels';
+import {FileAttachmentForm} from "../../../../public/files/FileAttachmentForm";
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,

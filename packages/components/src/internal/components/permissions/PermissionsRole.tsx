@@ -11,7 +11,7 @@ import { ExpandableContainer } from '../ExpandableContainer';
 import { Principal, SecurityAssignment, SecurityRole } from './models';
 import { RemovableButton } from './RemovableButton';
 import { AddRoleAssignmentInput } from './AddRoleAssignmentInput';
-import { naturalSort } from '../../..';
+import {naturalSort} from "../../../public/sort";
 
 interface Props {
     role: SecurityRole;

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import { debounce, generateId } from '../../..';
 import { LABKEY_VIS } from '../../constants';
 
 import { ChartData } from './types';
 import { getBarChartPlotConfig } from './utils';
+import {debounce, generateId} from "../../util/utils";
 
 interface Props {
     barFillColors?: Record<string, string>;

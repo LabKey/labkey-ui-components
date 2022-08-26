@@ -22,12 +22,12 @@ import { List } from 'immutable';
 
 import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
-import { DomainField, SelectInput } from '../../../..';
-
 import { DATETIME_RANGE_URI } from '../constants';
 
 import { DatasetModel } from './models';
 import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
+import {DomainField} from "../models";
+import {SelectInput} from "../../forms/input/SelectInput";
 
 interface Props {
     model: DatasetModel;

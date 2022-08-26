@@ -1,10 +1,12 @@
 import { fromJS } from 'immutable';
 import { Filter, getServerContext } from '@labkey/api';
 
-import { AppURL, caseInsensitive, ISelectRowsResult, naturalSort } from '../../..';
-
 import { HorizontalBarData } from './HorizontalBarSection';
 import { ChartData } from './types';
+import {ISelectRowsResult} from "../../query/api";
+import {naturalSort} from "../../../public/sort";
+import {AppURL} from "../../url/AppURL";
+import {caseInsensitive} from "../../util/utils";
 
 interface ChartDataProps {
     barFillColors: Record<string, string>;

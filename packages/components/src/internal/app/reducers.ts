@@ -5,8 +5,6 @@
 import { Map } from 'immutable';
 import { handleActions } from 'redux-actions';
 
-import { ServerNotificationModel, ProductMenuModel } from '../..';
-
 import { AppModel, LogoutReason } from './models';
 import {
     SECURITY_LOGOUT,
@@ -26,6 +24,8 @@ import {
     SERVER_NOTIFICATIONS_LOADING_ERROR,
     SERVER_NOTIFICATIONS_LOADING_END,
 } from './constants';
+import {ProductMenuModel} from "../components/navigation/model";
+import {ServerNotificationModel} from "../components/notifications/model";
 
 export type AppReducerState = AppModel;
 

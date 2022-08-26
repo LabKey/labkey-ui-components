@@ -1,19 +1,16 @@
 import React, { FC, memo, useState, useEffect, useCallback } from 'react';
 
-import {
-    deleteAssayDesign,
-    AssayDefinitionModel,
-    LoadingModal,
-    Progress,
-    SchemaQuery,
-    isLoading,
-    AssayDesignDeleteConfirmModal,
-    useNotificationsContext,
-} from '../../..';
-
-// These need to be direct imports from files to avoid circular dependencies in index.ts
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
+import {AssayDefinitionModel} from "../../AssayDefinitionModel";
+import {useNotificationsContext} from "../notifications/NotificationsContext";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {deleteAssayDesign} from "./actions";
+import {isLoading} from "../../../public/LoadingState";
+import {LoadingModal} from "../base/LoadingModal";
+import {AssayDesignDeleteConfirmModal} from "./AssayDesignDeleteConfirmModal";
+import {Progress} from "../base/Progress";
+
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 const ASSAY_RUN_MODEL_ID = 'assay-runs-all';
 

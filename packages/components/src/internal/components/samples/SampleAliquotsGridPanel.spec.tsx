@@ -1,23 +1,19 @@
 import React from 'react';
 
-import {
-    EntityDeleteModal,
-    LoadingSpinner,
-    LoadingState,
-    ManageDropdownButton,
-    QueryInfo,
-    ResponsiveMenuButtonGroup,
-    SampleAliquotsGridPanel,
-    SchemaQuery,
-    SCHEMAS,
-} from '../../..';
-
 import { mountWithAppServerContext } from '../../testHelpers';
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { TEST_USER_EDITOR, TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
 
 import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {SCHEMAS} from "../../schemas";
+import {QueryInfo} from "../../../public/QueryInfo";
+import {ResponsiveMenuButtonGroup} from "../buttons/ResponsiveMenuButtonGroup";
+import {LoadingState} from "../../../public/LoadingState";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {EntityDeleteModal} from "../entities/EntityDeleteModal";
+import {ManageDropdownButton} from "../buttons/ManageDropdownButton";
 
 describe('SampleAliquotsGridPanel', () => {
     const SCHEMA_QUERY = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');

@@ -1,12 +1,13 @@
 import React, { FC, memo } from 'react';
 import { getServerContext } from '@labkey/api';
 
-import { Container, imageURL } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
 import { ProductAppMenuItem } from './ProductAppMenuItem';
 import { ProductModel } from './models';
 import { PRODUCT_ID_IMG_SRC_MAP } from './constants';
+import { imageURL } from '../../url/ActionURL';
+import { Container } from '../base/models/Container';
 
 export const DEFAULT_ICON_URL = imageURL('_images', 'mobile-logo-seattle.svg');
 export const DEFAULT_ICON_ALT_URL = imageURL('_images', 'mobile-logo-overcast.svg');

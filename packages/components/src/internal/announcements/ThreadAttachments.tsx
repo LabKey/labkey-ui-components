@@ -1,9 +1,8 @@
 import React, { FC, memo, useCallback } from 'react';
 import { Modal } from 'react-bootstrap';
 
-import { Alert } from '../..';
-
 import { Attachment, getAttachmentURL } from './model';
+import {Alert} from "../components/base/Alert";
 
 interface ThreadAttachmentProps {
     attachment: Attachment;

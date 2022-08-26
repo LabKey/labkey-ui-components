@@ -1,9 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext, Security } from '@labkey/api';
 
-import { Alert, LoadingSpinner, naturalSortByProperty } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
-
 import { hasPremiumModule } from '../../app/utils';
 
 import { getContainerTabs, getRegisteredProducts } from './actions';
@@ -13,6 +11,9 @@ import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductSectionsDrawer } from './ProductSectionsDrawer';
 import { ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductNavigationHeader } from './ProductNavigationHeader';
+import { naturalSortByProperty } from '../../../public/sort';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface ProductNavigationMenuProps {
     onCloseMenu?: () => void;

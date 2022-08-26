@@ -1,24 +1,24 @@
 import { List } from 'immutable';
 
-import {
-    DataViewInfoTypes,
-    getQueryDetails,
-    getSelected,
-    IDataViewInfo,
-    loadReports,
-    naturalSortByProperty,
-    QueryInfo,
-    replaceSelected,
-    selectRowsDeprecated,
-    setSelected,
-} from '../..';
 import { bindColumnRenderers } from '../../internal/renderers';
-import { clearSelected, fetchCharts, ISelectResponse, selectAll } from '../../internal/actions';
-import { VISUALIZATION_REPORTS } from '../../internal/constants';
+import {
+    clearSelected,
+    fetchCharts,
+    getSelected,
+    ISelectResponse,
+    replaceSelected,
+    selectAll,
+    setSelected
+} from '../../internal/actions';
+import {DataViewInfoTypes, VISUALIZATION_REPORTS} from '../../internal/constants';
 
-import { DataViewInfo } from '../../internal/models';
+import {DataViewInfo, IDataViewInfo} from '../../internal/models';
 
 import { GridMessage, QueryModel } from './QueryModel';
+import {QueryInfo} from "../QueryInfo";
+import {getQueryDetails, selectRowsDeprecated} from "../../internal/query/api";
+import {naturalSortByProperty} from "../sort";
+import {loadReports} from "../../internal/query/reports";
 
 export interface RowsResponse {
     messages: GridMessage[];

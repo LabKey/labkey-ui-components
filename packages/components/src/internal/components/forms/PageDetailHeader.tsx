@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-
-import { SVGIcon } from '../../..';
+import {SVGIcon} from "../base/SVGIcon";
 
 export interface PageDetailHeaderProps {
     description?: ReactNode;

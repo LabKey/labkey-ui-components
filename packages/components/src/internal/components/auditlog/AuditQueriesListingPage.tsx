@@ -7,16 +7,23 @@ import { fromJS, List, Map } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { Query } from '@labkey/api';
 
-import { resetParameters, SchemaQuery, User, Alert, LoadingSpinner, Page, PageHeader, SelectInput } from '../../..';
-
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import { AuditDetails } from './AuditDetails';
 import { AuditDetailsModel } from './models';
 import { getAuditDetail } from './actions';
 import { AuditQuery, getAuditQueries } from './utils';
+import {User} from "../base/models/User";
+import {resetParameters} from "../../util/URL";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {Page} from "../base/Page";
+import {PageHeader} from "../base/PageHeader";
+import {SelectInput} from "../forms/input/SelectInput";
+
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 interface OwnProps {
     params: any;

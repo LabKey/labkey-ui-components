@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 
-import { User, LabelHelpTip, Alert, resolveErrorMessage } from '../../..';
-
 import { ChangePasswordModel } from './models';
 import { changePassword, getPasswordRuleInfo } from './actions';
+import {User} from "../base/models/User";
+import {resolveErrorMessage} from "../../util/messaging";
+import {LabelHelpTip} from "../base/LabelHelpTip";
+import {Alert} from "../base/Alert";
 
 interface Props {
     user: User;

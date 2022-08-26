@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 import { List, Map } from 'immutable';
-
-import { DomainField } from '../../..';
+import {DomainField} from "../domainproperties/models";
 
 export interface FileAttachmentFormModel {
     addAttachedFile?: (any) => any;

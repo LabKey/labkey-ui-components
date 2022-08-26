@@ -17,9 +17,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { AppURL } from '../../..';
-
 import { Breadcrumb } from './Breadcrumb';
+import {AppURL} from "../../url/AppURL";
 
 describe('<Breadcrumb/>', () => {
     test('with one link', () => {

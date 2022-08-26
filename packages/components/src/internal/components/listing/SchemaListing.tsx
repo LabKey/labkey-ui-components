@@ -18,19 +18,16 @@ import { Link } from 'react-router';
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import {
-    Alert,
-    AppURL,
-    Grid,
-    GridColumn,
-    isLoading,
-    LoadingSpinner,
-    LoadingState,
-    naturalSortByProperty,
-    resolveErrorMessage,
-    SchemaDetails,
-} from '../../..';
 import { processSchemas } from '../../query/api';
+import {GridColumn} from "../base/models/GridColumn";
+import {SchemaDetails} from "../../SchemaDetails";
+import {AppURL} from "../../url/AppURL";
+import {naturalSortByProperty} from "../../../public/sort";
+import {isLoading, LoadingState} from "../../../public/LoadingState";
+import {resolveErrorMessage} from "../../util/messaging";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {Alert} from "../base/Alert";
+import {Grid} from "../base/Grid";
 
 const columns = List([
     new GridColumn({

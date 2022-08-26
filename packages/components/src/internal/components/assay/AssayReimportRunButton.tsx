@@ -1,8 +1,9 @@
 import React, { FC, memo } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { AppURL, AssayContextConsumer, AssayLink } from '../../..';
-import { applyURL } from '../../url/AppURL';
+import { AssayContextConsumer } from './withAssayModels';
+import {applyURL, AppURL} from '../../url/AppURL';
+import {AssayLink} from "../../AssayDefinitionModel";
 
 interface AssayReImportRunButtonProps {
     runId: string | number;

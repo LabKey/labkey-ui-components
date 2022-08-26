@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Filter } from '@labkey/api';
-
-import { AppURL, SchemaQuery } from '../../..';
+import {AppURL} from "../../url/AppURL";
+import {SchemaQuery} from "../../../public/SchemaQuery";
 
 export interface ChartData {
     count: number;

@@ -1,6 +1,7 @@
-import { ActionURL, Ajax, Utils } from "@labkey/api";
-import { PipelineStatusDetailModel } from "./model";
-import { resolveErrorMessage } from "../../..";
+import { ActionURL, Ajax, Utils } from '@labkey/api';
+
+import { PipelineStatusDetailModel } from './model';
+import { resolveErrorMessage } from '../../util/messaging';
 
 export function getPipelineStatusDetail(rowId: number, offset?: number, count?: number ): Promise<PipelineStatusDetailModel> {
     return new Promise((resolve, reject) => {

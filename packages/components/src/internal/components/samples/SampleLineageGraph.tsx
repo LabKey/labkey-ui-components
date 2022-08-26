@@ -2,16 +2,15 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Button, Checkbox, DropdownButton, Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
+import { DEFAULT_LINEAGE_DISTANCE, SAMPLE_ALIQUOT_PROTOCOL_LSID } from '../lineage/constants';
+import {LineageDepthLimitMessage, LineageGraph} from '../lineage/LineageGraph';
+import {VisGraphNode} from "../lineage/vis/VisGraphGenerator";
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
     LineageFilter,
-    LineageGraph,
-    LineageGroupingOptions,
-    VisGraphNode,
-} from '../../..';
-import { DEFAULT_LINEAGE_DISTANCE, SAMPLE_ALIQUOT_PROTOCOL_LSID } from '../lineage/constants';
-import { LineageDepthLimitMessage } from '../lineage/LineageGraph';
+    LineageGroupingOptions
+} from "../lineage/types";
 
 interface Props {
     containerPath?: string;

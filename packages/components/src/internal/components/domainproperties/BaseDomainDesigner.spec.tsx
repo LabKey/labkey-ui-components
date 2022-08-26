@@ -2,11 +2,10 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount } from 'enzyme';
 
-import { Alert } from '../../..';
-
 import { BaseDomainDesigner } from './BaseDomainDesigner';
 import { DomainDesign } from './models';
 import { SEVERITY_LEVEL_ERROR } from './constants';
+import {Alert} from "../base/Alert";
 
 const BASE_PROPS = {
     hasValidProperties: true,

@@ -5,7 +5,6 @@ import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
-import { DatePickerInput, OntologyBrowserFilterPanel } from '../../..';
 
 import { getJsonDateTimeFormatString, isDateTimeCol } from '../../util/Date';
 
@@ -19,6 +18,8 @@ import {
     getUpdatedFilterSelection,
 } from './utils';
 import { FieldFilterOption, FilterSelection } from './models';
+import {DatePickerInput} from "../forms/input/DatePickerInput";
+import {OntologyBrowserFilterPanel} from "../ontology/OntologyBrowserFilterPanel";
 
 interface Props {
     field: QueryColumn;

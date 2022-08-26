@@ -1,8 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
-
-import { generateId } from '../../..';
+import {generateId} from "../../util/utils";
 
 export enum ALIQUOT_FILTER_MODE {
     all = 'all',

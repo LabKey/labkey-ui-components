@@ -1,13 +1,9 @@
 import { immerable } from 'immer';
 
-import { AppURL } from '../../..';
 import { isProductNavigationEnabled } from '../../app/utils';
-import {
-    BIOLOGICS_APP_PROPERTIES,
-    SAMPLE_MANAGER_APP_PROPERTIES,
-} from '../../app/constants';
-
+import { BIOLOGICS_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { APPLICATION_SECTION_METRIC, BIOLOGICS_SECTION_METRIC, SAMPLE_MANAGER_SECTION_METRIC } from './constants';
+import { AppURL } from '../../url/AppURL';
 
 export class ProductModel {
     [immerable] = true;

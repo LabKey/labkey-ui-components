@@ -1,6 +1,5 @@
 import { fromJS, List, Record } from 'immutable';
-
-import { QueryColumn } from '../index';
+import {QueryColumn} from "./QueryColumn";
 
 export class InferDomainResponse extends Record({
     data: List<any>(),

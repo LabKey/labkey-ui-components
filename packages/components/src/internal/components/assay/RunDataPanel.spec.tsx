@@ -1,8 +1,6 @@
-import { mount } from 'enzyme';
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { FormTabs, LoadingState, QueryModel, withFormSteps, WithFormStepsProps } from '../../..';
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 import { AssayUploadTabs } from '../../constants';
 import { EditorModel } from '../../models';
@@ -11,6 +9,9 @@ import { mountWithServerContext } from '../../testHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { RunDataPanel } from './RunDataPanel';
+import {FormTabs, withFormSteps, WithFormStepsProps} from "../forms/FormStep";
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {LoadingState} from "../../../public/LoadingState";
 
 const MODEL_ID_NOT_LOADED = 'not loaded';
 const MODEL_ID_LOADED = 'loaded';

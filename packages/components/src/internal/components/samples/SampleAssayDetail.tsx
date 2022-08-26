@@ -2,36 +2,32 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState }
 import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
 import { Filter, getServerContext } from '@labkey/api';
 
-import {
-    Alert,
-    ALIQUOT_FILTER_MODE,
-    AssayStateModel,
-    caseInsensitive,
-    InjectedAssayModel,
-    isLoading,
-    isSampleOperationPermitted,
-    LoadingSpinner,
-    naturalSortByProperty,
-    QueryModel,
-    RequiresModelAndActions,
-    SampleAliquotViewSelector,
-    SampleOperation,
-    SchemaQuery,
-    TabbedGridPanel,
-    useNotificationsContext,
-    User,
-} from '../../..';
-
-import { withAssayModels } from '../assay/withAssayModels';
+import {InjectedAssayModel, withAssayModels} from '../assay/withAssayModels';
 import { getImportItemsForAssayDefinitions } from '../assay/actions';
-
-// These need to be direct imports from files to avoid circular dependencies in index.ts
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
-import { getSampleStatusType } from './utils';
+import {getSampleStatusType, isSampleOperationPermitted} from './utils';
+import {ALIQUOT_FILTER_MODE, SampleAliquotViewSelector} from "./SampleAliquotViewSelector";
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {User} from "../base/models/User";
+import {AssayStateModel} from "../assay/models";
+import {naturalSortByProperty} from "../../../public/sort";
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {SampleOperation} from "./constants";
+import {TabbedGridPanel} from "../../../public/QueryModel/TabbedGridPanel";
+import {useNotificationsContext} from "../notifications/NotificationsContext";
+import {isLoading} from "../../../public/LoadingState";
+import {caseInsensitive} from "../../util/utils";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+
+import {
+    InjectedQueryModels,
+    RequiresModelAndActions,
+    withQueryModels
+} from '../../../public/QueryModel/withQueryModels';
 
 interface Props {
     api?: ComponentsAPIWrapper;

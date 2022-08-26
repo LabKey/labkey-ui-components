@@ -5,9 +5,8 @@
 import React, { PureComponent } from 'react';
 import { List } from 'immutable';
 
-import { SelectInput } from '../../..';
-
 import { Principal, SecurityRole } from './models';
+import {SelectInput} from "../forms/input/SelectInput";
 
 interface Props {
     role: SecurityRole;

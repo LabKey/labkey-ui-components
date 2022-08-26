@@ -5,10 +5,11 @@ import { Query, Utils } from '@labkey/api';
 import { getSelectedData } from '../../actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import { getCommonDataValues, getUpdatedData } from '../../util/utils';
-import { capitalizeFirstChar, QueryColumn, QueryInfo, SchemaQuery } from '../../..';
-
+import {capitalizeFirstChar, getCommonDataValues, getUpdatedData} from '../../util/utils';
 import { QueryInfoForm } from './QueryInfoForm';
+import {QueryInfo} from "../../../public/QueryInfo";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {QueryColumn} from "../../../public/QueryColumn";
 
 interface Props {
     canSubmitForEdit: boolean;

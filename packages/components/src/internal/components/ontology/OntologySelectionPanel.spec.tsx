@@ -1,10 +1,11 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, LoadingSpinner, SelectInput } from '../../..';
-
 import { OntologySelectionPanelImpl } from './OntologySelectionPanel';
 import { PathModel } from './models';
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {SelectInput} from "../forms/input/SelectInput";
 
 const DEFAULT_PROPS = {
     error: undefined,

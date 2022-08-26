@@ -15,9 +15,8 @@
  */
 import React, { FC, memo } from 'react';
 
-import { CreatedModified } from '../../..';
-
 import { Breadcrumb } from './Breadcrumb';
+import {CreatedModified} from "../base/CreatedModified";
 
 interface Props {
     row?: Record<string, any>;

@@ -17,8 +17,6 @@ import { List, Map, OrderedMap, fromJS } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { EditorModel, EXPORT_TYPES, makeTestQueryModel, QueryColumn, QueryInfo, SchemaQuery } from '..';
-
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 
 import {
@@ -32,7 +30,12 @@ import {
     getSortedCellKeys,
     generateFillSequence,
 } from './actions';
-import { CellMessage, CellValues, ValueDescriptor } from './models';
+import {CellMessage, CellValues, EditorModel, ValueDescriptor} from './models';
+import {SchemaQuery} from "../public/SchemaQuery";
+import {makeTestQueryModel} from "../public/QueryModel/testUtils";
+import {QueryInfo} from "../public/QueryInfo";
+import {QueryColumn} from "../public/QueryColumn";
+import {EXPORT_TYPES} from "./constants";
 
 // FIXME, when the editableGridWithData file is read in, the objects are automatically
 //  converted to Maps, which means accessing them like objects doesn't work.  That's a problem.

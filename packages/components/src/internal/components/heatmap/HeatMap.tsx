@@ -19,13 +19,15 @@ import { Filter, Query } from '@labkey/api';
 
 import { Link } from 'react-router';
 
-import { addDateRangeFilter, AppURL, generateId, LoadingSpinner, naturalSort, SchemaQuery } from '../../..';
-
-// These need to be direct imports from files to avoid circular dependencies in index.ts
-import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-
-import { last12Months, monthSort } from './utils';
+import {addDateRangeFilter, last12Months, monthSort} from './utils';
 import { HeatMapDisplay } from './HeatMapDisplay';
+import {AppURL} from "../../url/AppURL";
+import {naturalSort} from "../../../public/sort";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {generateId} from "../../util/utils";
+
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 export interface HeatMapCell {
     monthName: string;

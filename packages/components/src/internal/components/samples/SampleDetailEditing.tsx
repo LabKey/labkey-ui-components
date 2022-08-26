@@ -4,21 +4,6 @@ import { Alert, Panel } from 'react-bootstrap';
 
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
-import {
-    caseInsensitive,
-    DefaultRenderer,
-    deleteRows,
-    DetailPanelWithModel,
-    getActionErrorMessage,
-    LoadingSpinner,
-    QueryConfig,
-    resolveErrorMessage,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
-    SampleAliquotDetailHeader,
-    SchemaQuery,
-    SCHEMAS,
-} from '../../..';
-
 import { EditableDetailPanel, EditableDetailPanelProps } from '../../../public/QueryModel/EditableDetailPanel';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
@@ -27,8 +12,18 @@ import { withNotificationsContext, NotificationsContextProps } from '../notifica
 
 import { GroupedSampleFields } from './models';
 import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from './actions';
-import { IS_ALIQUOT_COL } from './constants';
+import {IS_ALIQUOT_COL, SAMPLE_STATUS_REQUIRED_COLUMNS} from './constants';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
+import {QueryConfig} from "../../../public/QueryModel/QueryModel";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {SCHEMAS} from "../../schemas";
+import {deleteRows} from "../../query/api";
+import {getActionErrorMessage, resolveErrorMessage} from "../../util/messaging";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {caseInsensitive} from "../../util/utils";
+import {SampleAliquotDetailHeader} from "./SampleAliquotDetailHeader";
+import {DefaultRenderer} from "../../renderers/DefaultRenderer";
+import {DetailPanelWithModel} from "../../../public/QueryModel/DetailPanel";
 
 interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;

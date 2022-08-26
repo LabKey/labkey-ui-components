@@ -6,8 +6,6 @@ import { Draft, immerable, produce } from 'immer';
 import { List, Map, Record } from 'immutable';
 import { Experiment, Utils } from '@labkey/api';
 
-import { GridColumn, LineageFilter, LoadingState, QueryInfo } from '../../..';
-
 import {
     DEFAULT_GROUPING_OPTIONS,
     DEFAULT_LINEAGE_DIRECTION,
@@ -19,10 +17,13 @@ import {
     LINEAGE_DIRECTIONS,
     LineageLinkMetadata,
     LineageOptions,
-    LineageIconMetadata,
+    LineageIconMetadata, LineageFilter,
 } from './types';
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
+import {QueryInfo} from "../../../public/QueryInfo";
+import {LoadingState} from "../../../public/LoadingState";
+import {GridColumn} from "../base/models/GridColumn";
 
 export function applyLineageOptions(options?: LineageOptions): LineageOptions {
     const _options = {

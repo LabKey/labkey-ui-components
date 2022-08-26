@@ -3,11 +3,13 @@ import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter } from '@labkey/api';
 
-import { AppURL, OperationConfirmationData, QueryModel, User } from '../../..';
-
 import { SampleStateType } from './constants';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SamplesEditButtonSections } from './utils';
+import {OperationConfirmationData} from "../entities/models";
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {User} from "../base/models/User";
+import {AppURL} from "../../url/AppURL";
 
 export enum SampleCreationType {
     Aliquots = 'Aliquots',

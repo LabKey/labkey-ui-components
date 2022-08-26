@@ -1,12 +1,11 @@
 import React, { ComponentType, PureComponent, ReactNode } from 'react';
 import { produce } from 'immer';
 
-import { LoadingState } from '../../..';
-
 import { loadLineageResult, loadSampleStats, loadSeedResult } from './actions';
 import { ILineage, Lineage } from './models';
 import { LineageOptions } from './types';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
+import {LoadingState} from "../../../public/LoadingState";
 
 export interface InjectedLineage {
     lineage: Lineage;

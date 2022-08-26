@@ -2,7 +2,6 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { Alert, Container, MenuSectionModel } from '../../..';
 import { FREEZERS_KEY, MEDIA_KEY, NOTEBOOKS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 import {
@@ -12,6 +11,9 @@ import {
 } from './ProductSectionsDrawer';
 import { ProductClickableItem } from './ProductClickableItem';
 import { ProductModel, ProductSectionModel } from './models';
+import {Container} from "../base/models/Container";
+import {Alert} from "../base/Alert";
+import {MenuSectionModel} from "../navigation/model";
 
 const TEST_SECTIONS = [
     new ProductSectionModel({ key: 'a', label: 'A', url: 'http://sectionA' }),

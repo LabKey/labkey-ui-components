@@ -1,7 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, LoadingSpinner } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
 import { getSelectedProduct, ProductNavigationMenuImpl } from './ProductNavigationMenu';
@@ -10,6 +9,8 @@ import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductSectionsDrawer } from './ProductSectionsDrawer';
 import { ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductModel } from './models';
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 const TEST_PRODUCTS = [
     new ProductModel({ productId: 'a', productName: 'A', moduleName: 'modA' }),

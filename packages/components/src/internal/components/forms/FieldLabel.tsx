@@ -4,11 +4,10 @@
  */
 import React, { Component, CSSProperties, ReactNode } from 'react';
 
-import { QueryColumn } from '../../..';
-
 import { ToggleWithInputField, ToggleWithInputFieldProps } from './input/ToggleWithInputField';
 import { getFieldEnabledFieldName } from './QueryFormInputs';
 import { LabelOverlay, LabelOverlayProps } from './LabelOverlay';
+import {QueryColumn} from "../../../public/QueryColumn";
 
 export interface FieldLabelProps {
     column?: QueryColumn;

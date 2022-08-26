@@ -1,8 +1,8 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { ColorResult, CompactPicker } from 'react-color';
 import classNames from 'classnames';
-
-import { ColorIcon, RemoveEntityButton } from '../../../..';
+import {ColorIcon} from "../../base/ColorIcon";
+import {RemoveEntityButton} from "../../buttons/RemoveEntityButton";
 
 interface Props {
     name?: string;

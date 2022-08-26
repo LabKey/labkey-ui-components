@@ -1,9 +1,10 @@
 import React, { FC, memo, useMemo, useCallback } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { Alert, GENERAL_ASSAY_PROVIDER_NAME, getHelpLink } from '../../..';
-
 import { AssayProvider } from './AssayPicker';
+import {GENERAL_ASSAY_PROVIDER_NAME} from "./actions";
+import {Alert} from "../base/Alert";
+import {getHelpLink} from "../../util/helpLinks";
 
 interface SpecialtyAssayPanelProps {
     hasPremium: boolean;

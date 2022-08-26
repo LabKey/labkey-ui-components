@@ -2,12 +2,11 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { fromJS } from 'immutable';
 
-import { QueryColumn } from '../..';
-
 import { FILELINK_RANGE_URI } from '../components/domainproperties/constants';
 
 import { FileColumnRenderer, getAttachmentTitleFromName } from './FileColumnRenderer';
 import { AttachmentCard } from './AttachmentCard';
+import {QueryColumn} from "../../public/QueryColumn";
 
 const DEFAULT_PROPS = {
     data: fromJS({ url: 'testurl', value: 'test.txt', displayValue: 'Test.txt' }),

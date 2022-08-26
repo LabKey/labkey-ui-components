@@ -3,14 +3,18 @@ import { mount } from 'enzyme';
 
 import { fromJS } from 'immutable';
 
-import { Alert, BulkUpdateForm, makeTestQueryModel, QueryColumn, QueryInfo, SchemaQuery } from '../../..';
-
 import { OperationConfirmationData } from '../entities/models';
 
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { SamplesBulkUpdateAlert, SamplesBulkUpdateFormBase } from './SamplesBulkUpdateForm';
 import { getSamplesTestAPIWrapper } from './APIWrapper';
+import {QueryColumn} from "../../../public/QueryColumn";
+import {QueryInfo} from "../../../public/QueryInfo";
+import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {BulkUpdateForm} from "../forms/BulkUpdateForm";
+import {Alert} from "../base/Alert";
 
 describe('SamplesBulkUpdateForm', () => {
     const COLUMN_DESCRIPTION = new QueryColumn({

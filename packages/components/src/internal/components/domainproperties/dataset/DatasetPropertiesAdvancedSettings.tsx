@@ -3,8 +3,6 @@ import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap'
 
 import { getServerContext } from '@labkey/api';
 
-import { initQueryGridState, LabelHelpTip, SelectInputOption, SelectInput } from '../../../..';
-
 import { helpLinkNode, DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
 
 import { SectionHeading } from '../SectionHeading';
@@ -14,6 +12,9 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { fetchCohorts, getVisitDateColumns, getHelpTip, getStudySubjectProp } from './actions';
 import { SHOW_IN_OVERVIEW } from './constants';
+import {SelectInput, SelectInputOption} from "../../forms/input/SelectInput";
+import {initQueryGridState} from "../../../global";
+import {LabelHelpTip} from "../../base/LabelHelpTip";
 
 interface DatasetSettingsSelectProps {
     name: string;

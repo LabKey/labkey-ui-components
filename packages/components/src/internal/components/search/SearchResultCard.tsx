@@ -15,9 +15,8 @@
  */
 import React, { FC, memo } from 'react';
 
-import { SVGIcon } from '../../..';
-
 import { SearchResultCardData } from './models';
+import {SVGIcon} from "../base/SVGIcon";
 
 interface SearchResultProps {
     cardData: SearchResultCardData;

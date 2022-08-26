@@ -17,8 +17,8 @@ import React, { Component, ReactNode } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 import { Query } from '@labkey/api';
-
-import { caseInsensitive, LoadingSpinner } from '../../..';
+import {caseInsensitive} from "../../util/utils";
+import {LoadingSpinner} from "./LoadingSpinner";
 
 interface IRowConfig {
     createdBy: string;

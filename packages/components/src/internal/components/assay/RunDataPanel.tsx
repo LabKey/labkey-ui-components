@@ -17,25 +17,11 @@ import React, { PureComponent, ReactNode } from 'react';
 import Formsy from 'formsy-react';
 import { Textarea } from 'formsy-react-components';
 import { List, Map } from 'immutable';
-
 import { Button } from 'react-bootstrap';
-
-import {
-    handleTabKeyOnTextArea,
-    FormStep,
-    FormTabs,
-    getActionErrorMessage,
-    LoadingSpinner,
-    FileAttachmentForm,
-    Alert,
-    FileSizeLimitProps,
-    QueryModel,
-    EditorModel,
-} from '../../..';
 
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { EditorModelProps } from '../../models';
+import {EditorModel, EditorModelProps} from '../../models';
 
 import { helpLinkNode, DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 import { EditableGridPanel } from '../editable/EditableGridPanel';
@@ -44,6 +30,14 @@ import { getServerFilePreview } from './utils';
 
 import { getRunPropertiesFileName } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
+import {FileSizeLimitProps} from "../../../public/files/models";
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import {getActionErrorMessage} from "../../util/messaging";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {FormStep, FormTabs} from "../forms/FormStep";
+import {FileAttachmentForm} from "../../../public/files/FileAttachmentForm";
+import {handleTabKeyOnTextArea} from "../forms/actions";
+import {Alert} from "../base/Alert";
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;

@@ -1,7 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { SecurityPolicy } from '../../..';
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
@@ -10,6 +9,7 @@ import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { JEST_SITE_ADMIN_USER_ID } from '../../../test/data/constants';
 
 import { UserDetailsPanel } from './UserDetailsPanel';
+import {SecurityPolicy} from "../permissions/models";
 
 beforeAll(() => {
     initUnitTestMocks();

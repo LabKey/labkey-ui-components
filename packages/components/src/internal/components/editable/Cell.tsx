@@ -23,12 +23,11 @@ import { cancelEvent, isCopy, isFillDown, isPaste, isSelectAll } from '../../eve
 import { CellMessage, ValueDescriptor } from '../../models';
 import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
-import { QueryColumn } from '../../..';
-
 import { getQueryColumnRenderers } from '../../global';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { DateInputCell, DateInputCellProps } from './DateInputCell';
+import {QueryColumn} from "../../../public/QueryColumn";
 
 export interface CellActions {
     clearSelection: () => void;

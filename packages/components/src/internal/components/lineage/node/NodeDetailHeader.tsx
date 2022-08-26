@@ -1,9 +1,8 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-import { SVGIcon, Theme } from '../../../..';
-
 import { LineageNode } from '../models';
 import { LineageDataLink } from '../LineageDataLink';
+import {SVGIcon, Theme} from "../../base/SVGIcon";
 
 export interface DetailHeaderProps {
     header: ReactNode;

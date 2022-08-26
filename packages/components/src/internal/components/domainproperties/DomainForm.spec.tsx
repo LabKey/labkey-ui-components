@@ -16,8 +16,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { Alert, FileAttachmentForm } from '../../..';
-
 import { ActionButton } from '../buttons/ActionButton';
 
 import { sleep } from '../../testHelpers';
@@ -46,6 +44,8 @@ import { clearFieldDetails, createFormInputId, updateDomainField } from './actio
 
 import { DomainRow } from './DomainRow';
 import { INT_LIST } from './list/constants';
+import {Alert} from "../base/Alert";
+import {FileAttachmentForm} from "../../../public/files/FileAttachmentForm";
 
 beforeAll(() => {
     initUnitTestMocks();

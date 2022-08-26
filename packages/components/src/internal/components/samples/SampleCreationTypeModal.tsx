@@ -2,20 +2,16 @@ import React from 'react';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
-import {
-    Alert,
-    filterSampleRowsForOperation,
-    getOperationNotPermittedMessage,
-    MAX_EDITABLE_GRID_ROWS,
-    SampleOperation,
-} from '../../..';
-
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { OperationConfirmationData } from '../entities/models';
 
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
+import {MAX_EDITABLE_GRID_ROWS} from "../../constants";
+import {filterSampleRowsForOperation, getOperationNotPermittedMessage} from "./utils";
+import {SampleOperation} from "./constants";
+import { Alert } from '../base/Alert';
 
 interface Props {
     show: boolean;

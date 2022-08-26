@@ -17,8 +17,8 @@ import {
 
 import { PropertyValidator } from '../models';
 import { PropDescType } from '../PropDescType';
-import { LabelHelpTip } from '../../../..';
 import { JavaDocsLink } from '../../../util/helpLinks';
+import {LabelHelpTip} from "../../base/LabelHelpTip";
 
 interface RegexValidationOptionsProps {
     validator: any;

@@ -3,7 +3,6 @@ import { Map } from 'immutable';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import { Alert, FileAttachmentForm } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import DomainForm from '../DomainForm';
 
@@ -14,6 +13,8 @@ import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner } from './SampleTypeDesigner';
+import {FileAttachmentForm} from "../../../../public/files/FileAttachmentForm";
+import {Alert} from "../../base/Alert";
 
 const BASE_PROPS = {
     appPropertiesOnly: true,

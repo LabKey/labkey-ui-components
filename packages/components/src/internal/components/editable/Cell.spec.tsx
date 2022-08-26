@@ -18,8 +18,6 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { List } from 'immutable';
 
-import { QueryColumn } from '../../..';
-
 import { ValueDescriptor } from '../../models';
 
 import { CELL_SELECTION_HANDLE_CLASSNAME } from '../../constants';
@@ -27,6 +25,7 @@ import { CELL_SELECTION_HANDLE_CLASSNAME } from '../../constants';
 import { Cell } from './Cell';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
+import {QueryColumn} from "../../../public/QueryColumn";
 
 let actions;
 

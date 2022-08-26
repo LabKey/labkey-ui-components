@@ -2,16 +2,18 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
-import { Alert, AppURL, createProductUrl, MenuSectionModel, ProductMenuModel } from '../../..';
 import { FREEZERS_KEY, MEDIA_KEY, NOTEBOOKS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 import { getAppProductIds } from '../../app/utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { Alert } from '../base/Alert';
 import { ProductModel, ProductSectionModel } from './models';
 import { APPLICATION_NAVIGATION_METRIC, SECTION_KEYS_TO_SKIP } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
+import { MenuSectionModel, ProductMenuModel } from '../navigation/model';
+import { AppURL, createProductUrl } from '../../url/AppURL';
 
 interface ProductAppsDrawerProps {
     api?: ComponentsAPIWrapper;

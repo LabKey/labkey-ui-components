@@ -4,7 +4,6 @@ import { Col, Panel, Row } from 'react-bootstrap';
 
 import { Iterable } from 'immutable';
 
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { User } from '../base/models/User';
@@ -13,21 +12,26 @@ import { NotFound } from '../base/NotFound';
 
 import { AuditDetails } from '../auditlog/AuditDetails';
 import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
-import {
-    App,
-    getEventDataValueDisplay,
-    getTimelineEntityUrl,
-    isLoading,
-    LoadingSpinner,
-    parseCsvString,
-    SampleStatus,
-    SampleStatusTag,
-    TimelineEventModel,
-} from '../../../index';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { SampleEventListing } from './SampleEventListing';
+import {TimelineEventModel} from "../auditlog/models";
+import {SampleStatus} from "../samples/models";
+import {parseCsvString} from "../../util/utils";
+import {
+    BOXES_KEY,
+    FREEZER_MANAGER_APP_PROPERTIES,
+    SAMPLE_MANAGER_APP_PROPERTIES,
+    SAMPLES_KEY,
+    SOURCES_KEY
+} from "../../app/constants";
+import {isLoading} from "../../../public/LoadingState";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {getEventDataValueDisplay, getTimelineEntityUrl} from "../auditlog/utils";
+import {SampleStatusTag} from "../samples/SampleStatusTag";
+
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 interface OwnProps {
     api?: ComponentsAPIWrapper;
@@ -142,14 +146,14 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
 
     const auditDetailValueRenderer = (field: string, value: string, displayValue: any): any => {
         if (field.toLowerCase() === 'sampleid') {
-            const sampleLink = AppURL.create(App.SAMPLES_KEY, sampleSet, sampleId).toHref();
+            const sampleLink = AppURL.create(SAMPLES_KEY, sampleSet, sampleId).toHref();
             return <a href={sampleLink}>{value}</a>;
         }
 
         if (value && value.startsWith('materialinputs/')) {
-            return getMaterialDataInputDisplay(App.SAMPLES_KEY, field.toLowerCase(), value, 'materialinputs/');
+            return getMaterialDataInputDisplay(SAMPLES_KEY, field.toLowerCase(), value, 'materialinputs/');
         } else if (value && value.startsWith('datainputs/')) {
-            return getMaterialDataInputDisplay(App.SOURCES_KEY, field.toLowerCase(), value, 'datainputs/');
+            return getMaterialDataInputDisplay(SOURCES_KEY, field.toLowerCase(), value, 'datainputs/');
         }
 
         return displayValue;
@@ -163,10 +167,10 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                 if (boxId && label) {
                     let boxLink;
                     boxLink = createProductUrlFromParts(
-                        App.FREEZER_MANAGER.productId,
-                        App.SAMPLE_MANAGER.productId,
+                        FREEZER_MANAGER_APP_PROPERTIES.productId,
+                        SAMPLE_MANAGER_APP_PROPERTIES.productId,
                         undefined,
-                        App.BOXES_KEY,
+                        BOXES_KEY,
                         boxId
                     );
                     return <a href={boxLink}>{label}</a>;
@@ -180,10 +184,10 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
                     let cellLink;
                     const params = { detailsTab: 'history', row, col };
                     cellLink = createProductUrlFromParts(
-                        App.FREEZER_MANAGER.productId,
-                        App.SAMPLE_MANAGER.productId,
+                        FREEZER_MANAGER_APP_PROPERTIES.productId,
+                        SAMPLE_MANAGER_APP_PROPERTIES.productId,
                         params,
-                        App.BOXES_KEY,
+                        BOXES_KEY,
                         boxId
                     );
                     return <a href={cellLink}>{label}</a>;

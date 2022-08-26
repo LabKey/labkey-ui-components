@@ -1,8 +1,9 @@
 import React, { FC, memo, useState } from 'react';
 
-import { AppURL, AssaysHeatMap, SelectViewInput, SelectView } from '../../..';
-
 import { StatusGrid } from './StatusGrid';
+import {SelectView, SelectViewInput} from "../base/SelectViewInput";
+import {AppURL} from "../../url/AppURL";
+import {AssaysHeatMap} from "./AssaysHeatMap";
 
 const ASSAY_VIEWS = [SelectView.Grid, SelectView.Heatmap];
 

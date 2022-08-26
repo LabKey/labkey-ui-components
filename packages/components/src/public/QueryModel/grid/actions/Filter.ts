@@ -16,8 +16,6 @@
 import { List, Map, Set } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { QueryColumn, QueryInfo } from '../../../..';
-
 import { decodePart } from '../../../SchemaQuery';
 
 import { JsonType } from '../../../../internal/components/domainproperties/PropDescType';
@@ -25,6 +23,8 @@ import { JsonType } from '../../../../internal/components/domainproperties/PropD
 import { getColFormattedDateValue } from '../../../../internal/util/Date';
 
 import { Action, ActionValue } from './Action';
+import {QueryColumn} from "../../../QueryColumn";
+import {QueryInfo} from "../../../QueryInfo";
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances

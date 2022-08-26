@@ -4,8 +4,6 @@
  */
 import { Edge } from 'vis-network';
 
-import { LoadingState } from '../../..';
-
 import {
     collapsedNodesTest1,
     collapsedNodesTest2,
@@ -18,6 +16,7 @@ import {
 import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from './types';
 import { Lineage, LineageResult } from './models';
 import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator';
+import {LoadingState} from "../../../public/LoadingState";
 
 describe('Lineage Graph', () => {
     // expression1 -> run1 -> child1

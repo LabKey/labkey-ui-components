@@ -18,9 +18,14 @@ import { Link } from 'react-router';
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { Alert, AppURL, Grid, GridColumn, LoadingSpinner, naturalSortByProperty, QueryInfo } from '../../..';
-
 import { SchemaListing } from './SchemaListing';
+import {GridColumn} from "../base/models/GridColumn";
+import {QueryInfo} from "../../../public/QueryInfo";
+import {AppURL} from "../../url/AppURL";
+import {naturalSortByProperty} from "../../../public/sort";
+import {Grid} from "../base/Grid";
+import {Alert} from "../base/Alert";
+import {LoadingSpinner} from "../base/LoadingSpinner";
 
 const columns = List([
     new GridColumn({

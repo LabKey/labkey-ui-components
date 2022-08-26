@@ -4,7 +4,6 @@ import { List } from 'immutable';
 
 import { Domain } from '@labkey/api';
 
-import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, loadNameExpressionOptions, resolveErrorMessage } from '../../../..';
 import { DomainDesign, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';
@@ -20,6 +19,9 @@ import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';
+import {loadNameExpressionOptions} from "../../settings/actions";
+import {DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS} from "../constants";
+import {resolveErrorMessage} from "../../../util/messaging";
 
 interface Props {
     api?: ComponentsAPIWrapper;

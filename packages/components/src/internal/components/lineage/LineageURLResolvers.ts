@@ -1,9 +1,8 @@
 import { ActionURL, Experiment, Filter } from '@labkey/api';
 
-import { URLResolver } from '../../..';
-
 import { LineageLinkMetadata, LineageOptions, LineageURLResolvers } from './types';
 import { LineageNode } from './models';
+import {URLResolver} from "../../url/URLResolver";
 
 export interface LineageURLResolver {
     resolveItem: (item: Experiment.LineageItemBase) => LineageLinkMetadata;

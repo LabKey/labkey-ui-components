@@ -9,8 +9,6 @@ import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.js
 
 import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
 
-import { Alert } from '../../../..';
-
 import { DomainPanelStatus } from '../models';
 
 import { ListModel } from './models';
@@ -18,6 +16,7 @@ import { ListModel } from './models';
 import { ListPropertiesPanel, ListPropertiesPanelImpl } from './ListPropertiesPanel';
 import { AllowableActions, BasicPropertiesFields } from './ListPropertiesPanelFormElements';
 import { AdvancedSettings } from './ListPropertiesAdvancedSettings';
+import {Alert} from "../../base/Alert";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);

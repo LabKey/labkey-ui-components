@@ -17,13 +17,12 @@ import React from 'react';
 import { mount } from 'enzyme';
 import mock, { proxy } from 'xhr-mock';
 
-import { ConfirmModal } from '../../..';
-
 import { sleep } from '../../testHelpers';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { SampleTypeDataType } from './constants';
+import {ConfirmModal} from "../base/ConfirmModal";
 
 beforeAll(() => {
     mock.setup();

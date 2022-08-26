@@ -29,8 +29,6 @@ import { DomainDesign, DomainField, DomainFieldIndexChange } from '../models';
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
 
-import { buildURL, importData, Progress, resolveErrorMessage } from '../../../..';
-
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_NOT_LOCKED } from '../constants';
 
 import ConfirmImportTypes from '../ConfirmImportTypes';
@@ -40,6 +38,10 @@ import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
 import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
+import {importData} from "../../../query/api";
+import {buildURL} from "../../../url/AppURL";
+import {resolveErrorMessage} from "../../../util/messaging";
+import {Progress} from "../../base/Progress";
 
 const KEY_FIELD_MAPPING_ERROR = 'Your Additional Key Field must not be one of the Column Mapping fields.';
 const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the Column Mapping fields.';

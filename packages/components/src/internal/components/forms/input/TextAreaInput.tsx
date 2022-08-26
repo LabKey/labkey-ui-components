@@ -18,9 +18,8 @@ import { Textarea } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { QueryColumn } from '../../../..';
-
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import {QueryColumn} from "../../../../public/QueryColumn";
 
 interface TextAreaInputProps extends DisableableInputProps {
     cols?: number;

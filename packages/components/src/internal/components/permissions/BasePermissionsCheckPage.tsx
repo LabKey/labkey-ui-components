@@ -3,8 +3,12 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, ReactNode } from 'react';
-
-import { InsufficientPermissionsPage, LoadingSpinner, Page, PageDetailHeader, Notifications, User } from '../../..';
+import {User} from "../base/models/User";
+import {InsufficientPermissionsPage} from "./InsufficientPermissionsPage";
+import {LoadingSpinner} from "../base/LoadingSpinner";
+import {Page} from "../base/Page";
+import {PageDetailHeader} from "../forms/PageDetailHeader";
+import {Notifications} from "../notifications/Notifications";
 
 interface Props {
     user: User;

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { AssayPicker, AssayPickerTabs, sleep } from '../../..';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { initAssayPickerOptions } from '../../../test/mock';
-import { mountWithAppServerContext } from '../../testHelpers';
+import {mountWithAppServerContext, sleep} from '../../testHelpers';
+import {AssayPicker, AssayPickerTabs} from "./AssayPicker";
 
 beforeAll(() => {
     initUnitTestMocks([initAssayPickerOptions]);

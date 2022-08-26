@@ -673,32 +673,6 @@ export function getGroupedSampleDisplayColumns(
     };
 }
 
-export function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
-    return new Promise((resolve, reject) => {
-        getSelectedData(
-            SCHEMAS.INVENTORY.ITEMS.schemaName,
-            SCHEMAS.INVENTORY.ITEMS.queryName,
-            selectedItemIds,
-            'RowId, MaterialId',
-            undefined,
-            undefined,
-            undefined
-        )
-            .then(response => {
-                const { data } = response;
-                const sampleIds = [];
-                data.forEach(row => {
-                    sampleIds.push(row.getIn(['MaterialId', 'value']));
-                });
-                resolve(sampleIds);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(reason);
-            });
-    });
-}
-
 export function getEditSharedSampleTypeUrl(typeId: number): string {
     return ActionURL.buildURL('experiment', 'editSampleType', SHARED_CONTAINER_PATH, {
         RowId: typeId,

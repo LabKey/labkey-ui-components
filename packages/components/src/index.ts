@@ -327,7 +327,6 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSampleTypes,
-    getSelectedItemSamples,
     getSelectionLineageData,
     getUpdatedLineageRows,
 } from './internal/components/samples/actions';
@@ -469,6 +468,7 @@ import {
     getDataOperationConfirmationData,
     getOperationConfirmationData,
     getSampleOperationConfirmationData,
+    getSelectedItemSamples,
 } from './internal/components/entities/actions';
 import {
     AssayRunDataType,

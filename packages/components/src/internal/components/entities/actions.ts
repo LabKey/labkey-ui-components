@@ -1,9 +1,6 @@
 import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
-
-import { getSelectedItemSamples } from '../samples/actions';
-
 import {
     DisplayObject,
     EntityDataType,
@@ -23,10 +20,11 @@ import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
 import { caseInsensitive } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
-import { getSelected } from '../../actions';
+import {getSelected, getSelectedData} from '../../actions';
 import { SHARED_CONTAINER_PATH } from '../../constants';
 import { naturalSort } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';
+import {SCHEMAS} from "../../schemas";
 
 export function getOperationConfirmationData(
     selectionKey: string,
@@ -121,6 +119,32 @@ function getSelectedParents(
             })
             .catch(reason => {
                 console.error("There was a problem getting the selected parents' data", reason);
+                reject(reason);
+            });
+    });
+}
+
+export function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
+    return new Promise((resolve, reject) => {
+        getSelectedData(
+            SCHEMAS.INVENTORY.ITEMS.schemaName,
+            SCHEMAS.INVENTORY.ITEMS.queryName,
+            selectedItemIds,
+            'RowId, MaterialId',
+            undefined,
+            undefined,
+            undefined
+        )
+            .then(response => {
+                const { data } = response;
+                const sampleIds = [];
+                data.forEach(row => {
+                    sampleIds.push(row.getIn(['MaterialId', 'value']));
+                });
+                resolve(sampleIds);
+            })
+            .catch(reason => {
+                console.error(reason);
                 reject(reason);
             });
     });

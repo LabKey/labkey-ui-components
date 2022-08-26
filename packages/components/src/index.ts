@@ -257,11 +257,8 @@ import {
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
 import { resolveDetailFieldValue, resolveRenderer } from './internal/components/forms/renderers';
-import {
-    getQueryFormLabelFieldName,
-    isQueryFormLabelField,
-    QueryFormInputs,
-} from './internal/components/forms/QueryFormInputs';
+import { getQueryFormLabelFieldName, isQueryFormLabelField } from './internal/components/forms/utils';
+import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';

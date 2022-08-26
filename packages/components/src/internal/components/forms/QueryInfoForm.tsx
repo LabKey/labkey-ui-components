@@ -20,13 +20,14 @@ import Formsy from 'formsy-react';
 import { Utils } from '@labkey/api';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import { getFieldEnabledFieldName, QueryFormInputs, QueryFormInputsProps } from './QueryFormInputs';
+import { QueryFormInputs, QueryFormInputsProps } from './QueryFormInputs';
 import { QueryInfoQuantity } from './QueryInfoQuantity';
 import {SampleCreationTypeModel} from "../samples/models";
 import {QueryInfo} from "../../../public/QueryInfo";
 import {formatDateTime} from "../../util/Date";
 import {Tip} from "../base/Tip";
 import {LoadingSpinner} from "../base/LoadingSpinner";
+import {getFieldEnabledFieldName} from "./utils";
 
 export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFieldsEnabledChange'> {
     asModal?: boolean;

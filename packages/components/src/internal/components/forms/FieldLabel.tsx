@@ -5,7 +5,7 @@
 import React, { Component, CSSProperties, ReactNode } from 'react';
 
 import { ToggleWithInputField, ToggleWithInputFieldProps } from './input/ToggleWithInputField';
-import { getFieldEnabledFieldName } from './QueryFormInputs';
+import { getFieldEnabledFieldName } from './utils';
 import { LabelOverlay, LabelOverlayProps } from './LabelOverlay';
 import {QueryColumn} from "../../../public/QueryColumn";
 

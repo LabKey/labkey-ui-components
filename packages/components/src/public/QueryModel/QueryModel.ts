@@ -4,16 +4,17 @@ import { Filter, Query } from '@labkey/api';
 
 import {
     caseInsensitive,
+    encodePart,
     GRID_CHECKBOX_OPTIONS,
     isLoading,
     LoadingState,
     naturalSort,
+    PaginationData,
     QueryColumn,
     QueryInfo,
     QuerySort,
     SchemaQuery,
     ViewInfo,
-    PaginationData,
 } from '../..';
 import { GRID_SELECTION_INDEX } from '../../internal/constants';
 
@@ -769,7 +770,7 @@ export class QueryModel {
      * Id to attach to selections, which are specific to a view
      */
     get selectionId(): string {
-        return this.id + (this.viewName ? '/' + this.viewName : '');
+        return this.id + (this.viewName ? '/' + encodePart(this.viewName).toLowerCase() : '');
     }
 
     /**

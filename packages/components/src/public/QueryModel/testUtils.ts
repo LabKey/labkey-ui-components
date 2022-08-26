@@ -1,4 +1,8 @@
-import { Actions, LoadingState, QueryInfo, QueryModel, SchemaQuery } from '../..';
+import {SchemaQuery} from "../SchemaQuery";
+import {QueryInfo} from "../QueryInfo";
+import {QueryModel} from "./QueryModel";
+import {LoadingState} from "../LoadingState";
+import {Actions} from "./withQueryModels";
 
 /**
  * @ignore

@@ -823,10 +823,11 @@ const findLookupValues = async (
     const lookup = column.lookup;
     const { keyColumn } = column.lookup;
     const displayColumn = resolveDisplayColumn(column);
-    // TODO should this use the default view, with possible filtering, or not?
+
     const selectRowsOptions: any = {
         schemaName: lookup.schemaName,
         queryName: lookup.queryName,
+        viewName: ViewInfo.DETAIL_NAME, // Use the detail view so values that may be filtered out of the default view show up.
         columns: [displayColumn, keyColumn].join(','),
         containerPath: lookup.containerPath,
         maxRows: -1,

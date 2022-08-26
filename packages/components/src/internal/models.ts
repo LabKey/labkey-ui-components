@@ -17,7 +17,7 @@ import { fromJS, Iterable, List, Map, Record, Set } from 'immutable';
 
 import { encodePart, resolveSchemaQuery, SchemaQuery } from '../public/SchemaQuery';
 
-import { genCellKey, getSortedCellKeys, parseCellKey } from './actions';
+import { genCellKey, getSortedCellKeys, parseCellKey } from './utils';
 import { getQueryColumnRenderers } from './global';
 import { DataViewInfoTypes, GRID_EDIT_INDEX } from './constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';

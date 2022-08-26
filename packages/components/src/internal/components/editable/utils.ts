@@ -4,7 +4,8 @@ import { Utils, UtilsDOM } from '@labkey/api';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { EditorModel, EditorModelProps, ValueDescriptor } from '../../models';
-import { genCellKey, getLookupValueDescriptors } from '../../actions';
+import { getLookupValueDescriptors } from '../../actions';
+import { genCellKey } from '../../utils';
 
 import { LoadingState } from '../../../public/LoadingState';
 import { QueryInfo } from '../../../public/QueryInfo';

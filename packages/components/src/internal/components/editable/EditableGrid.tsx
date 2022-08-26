@@ -27,12 +27,11 @@ import {
     copyEvent,
     dragFillEvent,
     endDrag,
-    genCellKey,
     inDrag,
-    parseCellKey,
     pasteEvent,
     updateGridFromBulkForm,
 } from '../../actions';
+import { genCellKey, parseCellKey } from '../../utils';
 
 import { headerSelectionCell } from '../../renderers';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';

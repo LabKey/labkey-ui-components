@@ -15,7 +15,7 @@ import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 import { getValidPublishTargets } from './actions';
 
 import { AssayProtocolModel } from './models';
-import { FORM_IDS } from './AssayPropertiesPanel';
+import { FORM_IDS } from './constants';
 import {buildURL} from "../../../url/AppURL";
 import {Container} from "../../base/models/Container";
 import {AddEntityButton} from "../../buttons/AddEntityButton";

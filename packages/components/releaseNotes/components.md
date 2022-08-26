@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 45857: Improve styling for left column locking in app grids (experimental feature)
+
 ### version 2.211.2
 *Released*: 25 August 2022
 * Misc grid menu and button fixes for 22.9

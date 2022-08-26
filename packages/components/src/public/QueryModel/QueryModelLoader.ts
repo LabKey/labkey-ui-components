@@ -1,6 +1,6 @@
-import { List } from 'immutable';
+import React from "react";
+import {List, Map, OrderedMap} from 'immutable';
 
-import { bindColumnRenderers } from '../../internal/renderers';
 import {
     clearSelected,
     fetchCharts,
@@ -19,6 +19,29 @@ import {QueryInfo} from "../QueryInfo";
 import {getQueryDetails, selectRowsDeprecated} from "../../internal/query/api";
 import {naturalSortByProperty} from "../sort";
 import {loadReports} from "../../internal/query/reports";
+import {QueryColumn} from "../QueryColumn";
+import {getQueryColumnRenderers} from "../../internal/global";
+import {DefaultRenderer} from "../../internal/renderers/DefaultRenderer";
+
+export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
+    if (columns) {
+        const columnRenderers: Map<string, any> = getQueryColumnRenderers();
+
+        return columns.map(queryCol => {
+            let node = DefaultRenderer;
+            if (queryCol && queryCol.columnRenderer && columnRenderers.has(queryCol.columnRenderer.toLowerCase())) {
+                node = columnRenderers.get(queryCol.columnRenderer.toLowerCase());
+            }
+
+            // TODO: Just generate one function per type
+            return queryCol.set('cell', (data, row, col, rowIndex, columnIndex) => {
+                return React.createElement(node, { data, row, col: queryCol, rowIndex, columnIndex });
+            });
+        }) as OrderedMap<string, QueryColumn>;
+    }
+
+    return columns;
+}
 
 export interface RowsResponse {
     messages: GridMessage[];

@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Map, OrderedMap } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
-import { DefaultRenderer } from './renderers/DefaultRenderer';
-import { getQueryColumnRenderers } from './global';
 import { CustomToggle } from './components/base/CustomToggle';
 import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
 import {APP_FIELD_CANNOT_BE_REMOVED_MESSAGE, GRID_CHECKBOX_OPTIONS} from './constants';
@@ -425,24 +422,4 @@ export function headerSelectionCell(
             type="checkbox"
         />
     );
-}
-
-export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
-    if (columns) {
-        const columnRenderers: Map<string, any> = getQueryColumnRenderers();
-
-        return columns.map(queryCol => {
-            let node = DefaultRenderer;
-            if (queryCol && queryCol.columnRenderer && columnRenderers.has(queryCol.columnRenderer.toLowerCase())) {
-                node = columnRenderers.get(queryCol.columnRenderer.toLowerCase());
-            }
-
-            // TODO: Just generate one function per type
-            return queryCol.set('cell', (data, row, col, rowIndex, columnIndex) => {
-                return React.createElement(node, { data, row, col: queryCol, rowIndex, columnIndex });
-            });
-        }) as OrderedMap<string, QueryColumn>;
-    }
-
-    return columns;
 }

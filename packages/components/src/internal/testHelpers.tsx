@@ -5,10 +5,9 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { mount, MountRendererProps, ReactWrapper } from 'enzyme';
 import { LabKey, Query } from '@labkey/api';
 
-import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
+import { RowsResponse, bindColumnRenderers } from '../public/QueryModel/QueryModelLoader';
 
 import { applyQueryMetadata, handleSelectRowsResponse } from './query/api';
-import { bindColumnRenderers } from './renderers';
 import { URL_MAPPERS, URLService } from './url/URLResolver';
 import { AppContext, AppContextProvider } from './AppContext';
 import { getTestAPIWrapper } from './APIWrapper';

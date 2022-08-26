@@ -3,8 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Issue 46137: Use current view to get selected data for editing in bulk and in the grid
-* Issue 46121: Use details view for getting parent details on details pages to avoid data that my have been filtered out
+* Fix problems related to grid customization (Issues 46137 and 46121)
+  * Use viewName in more places so data corresponds to the current view
+  * Use Detail view instead of default view in places where we need to be sure certain values are found, even if the default view is filtered
+  * Add `selectionKey` method in `QueryModel` that includes viewName
+  * add `getKey` method to `SchemaQuery` and deprecate resolveSchemaQuery
 * Issue 46098: Get all sample types when getting type count
 
 ### version 2.211.2

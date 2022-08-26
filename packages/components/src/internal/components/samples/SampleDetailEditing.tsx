@@ -193,13 +193,13 @@ class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContext
                 />
                 {isAliquot && (
                     <Panel>
-                        <Panel.Heading>Original {noun ?? 'Sample'} Details</Panel.Heading>
+                        <Panel.Heading>{`Original ${noun ?? 'Sample'}`} Details</Panel.Heading>
                         <Panel.Body>
                             {root?.value !== parent?.value && (
                                 <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-meta-table">
                                     <tbody>
                                         <tr key="originalSample">
-                                            <td>Original {noun ?? 'sample'}</td>
+                                            <td>{`Original ${noun ?? 'sample'}`}</td>
                                             <td>
                                                 <DefaultRenderer data={fromJS(root)} />
                                             </td>

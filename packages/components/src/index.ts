@@ -256,8 +256,8 @@ import {
 } from './internal/renderers/ImportAliasRenderer';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
-import { resolveDetailFieldValue, resolveRenderer } from './internal/components/forms/renderers';
-import { getQueryFormLabelFieldName, isQueryFormLabelField } from './internal/components/forms/utils';
+import { resolveRenderer } from './internal/components/forms/renderers';
+import { getQueryFormLabelFieldName, isQueryFormLabelField, resolveDetailFieldValue } from './internal/components/forms/utils';
 import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';

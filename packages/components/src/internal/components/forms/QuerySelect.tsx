@@ -18,7 +18,7 @@ import { fromJS, List, Map } from 'immutable';
 import { Filter, Query, Utils } from '@labkey/api';
 
 import { SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
-import { resolveDetailFieldValue } from './renderers';
+import { resolveDetailFieldValue } from './utils';
 import { initSelect } from './actions';
 import { QuerySelectModel } from './model';
 import { DELIMITER } from './constants';

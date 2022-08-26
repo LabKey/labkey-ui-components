@@ -19,7 +19,8 @@ import { Checkbox, Input, Textarea } from 'formsy-react-components';
 import { LabelOverlay } from '../LabelOverlay';
 
 import { QuerySelect } from '../QuerySelect';
-import { resolveDetailFieldValue, resolveRenderer } from '../renderers';
+import { resolveRenderer } from '../renderers';
+import { resolveDetailFieldValue } from '../utils';
 
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 

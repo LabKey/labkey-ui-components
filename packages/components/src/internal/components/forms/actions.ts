@@ -25,13 +25,14 @@ import {
     ISelectRowsResult,
     quoteValueColumnWithDelimiters,
     searchRows,
-    selectRowsDeprecated, updateRows
+    selectRowsDeprecated,
+    updateRows,
 } from '../../query/api';
 import { parseCsvString } from '../../util/utils';
 import {QueryInfo} from "../../../public/QueryInfo";
 import {QuerySelectOwnProps} from "./QuerySelect";
 import {SelectInputOption} from "./input/SelectInput";
-import {resolveDetailFieldValue} from "./renderers";
+import {resolveDetailFieldValue} from "./utils";
 import {naturalSortByProperty} from "../../../public/sort";
 import {LoadingState} from "../../../public/LoadingState";
 import {QueryModel} from "../../../public/QueryModel/QueryModel";

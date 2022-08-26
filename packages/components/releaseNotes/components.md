@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 46137: Use current view to get selected data for editing in bulk and in the grid
+* Issue 46121: Use details view for getting parent details on details pages to avoid data that my have been filtered out
+* Issue 46098: Get all sample types when getting type count
 
 ### version 2.211.1
 *Released*: 25 August 2022

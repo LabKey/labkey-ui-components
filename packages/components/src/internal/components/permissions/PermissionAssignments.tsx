@@ -17,6 +17,8 @@ import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { InjectedPermissionsPage } from './withPermissionsPage';
+import {constructGroupMembership, getGroupRows} from "../administration/actions";
+import {GroupMembership} from "../administration/models";
 
 // exported for testing
 export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
@@ -26,12 +28,11 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
     onChange: (policy: SecurityPolicy) => void;
     onSuccess: () => void;
     policy: SecurityPolicy;
+    groupMembership: GroupMembership;
     /** Subset list of role uniqueNames to show in this component usage */
     rolesToShow?: List<string>;
     showDetailsPanel?: boolean;
     title?: string;
-    /** Specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage */
-    typeToShow?: string;
 }
 
 export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props => {
@@ -39,6 +40,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         containerId,
         disabledId,
         error,
+        groupMembership,
         inactiveUsersById,
         onChange,
         onSuccess,
@@ -50,7 +52,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         rolesToShow,
         showDetailsPanel = true,
         title = 'Security Roles and Assignments',
-        typeToShow,
     } = props;
     const [dirty, setDirty] = useState<boolean>();
     const [inherited, setInherited] = useState<boolean>(() => policy.isInheritFromParent());
@@ -245,7 +246,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                                 principals={principals}
                                 role={role}
                                 selectedUserId={selectedUserId}
-                                typeToShow={typeToShow}
                             />
                         ))}
                         <br />
@@ -261,6 +261,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                             principal={selectedPrincipal}
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
+                            members={groupMembership[selectedPrincipal?.userId].members}
                         />
                     ) : (
                         <UserDetailsPanel

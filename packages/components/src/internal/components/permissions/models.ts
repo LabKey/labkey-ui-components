@@ -34,13 +34,10 @@ export class Principal extends Record({
 
     static filterAndSort(
         principals: List<Principal>,
-        typeToShow: string,
         excludeUserIds?: List<number>
     ): List<Principal> {
         return (
             principals
-                // filter for a specific typeToShow
-                .filter(principal => typeToShow === undefined || principal.type === typeToShow)
                 // filter out any principals that are already members of this role
                 .filter(principal => excludeUserIds === undefined || !excludeUserIds.contains(principal.userId))
                 // finally sort by display name

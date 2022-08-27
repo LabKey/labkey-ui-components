@@ -1,11 +1,13 @@
 import { List, Map } from 'immutable';
 
-import { Security } from '@labkey/api';
+import {Query, Security} from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
+import {GroupMembership} from "./models";
+import {Row} from "../../query/selectRows";
 
 export function getUpdatedPolicyRoles(
     roles: List<SecurityRole>,
@@ -83,3 +85,58 @@ export function updateSecurityPolicy(
         });
     });
 }
+
+// right place?
+export const getGroupRows = (): Promise<Row[]> => {
+    return new Promise((resolve, reject) => {
+        Query.selectRows({
+            method: 'POST',
+            schemaName: 'core',
+            queryName: 'Members',
+            columns: 'UserId,GroupId,GroupId/Name,UserId/DisplayName,UserId/Email',
+            success: response => {
+                resolve(response.rows);
+            },
+            failure: error => {
+                console.error('Failed to fetch group memberships', error);
+                reject(error);
+            },
+        });
+    });
+};
+
+// right place?
+// comment this up
+export const constructGroupMembership = (groupsData, groupRows): GroupMembership => {
+    const groupsWithMembers = groupRows.reduce((prev, curr) => {
+        const groupId = curr['GroupId'];
+        if (groupId === -1) {
+            return prev;
+        }
+        const userDisplayName = curr['UserId/DisplayName'];
+        const userDisplayValue = `${curr['UserId/Email']} (${userDisplayName})`;
+        const isGroup = !userDisplayName;
+
+        // consider efficiency of below line. Maybe make groupsData a map
+        const member = {
+            name: isGroup ? groupsData.find(group => group.id === curr.UserId).name : userDisplayValue,
+            id: curr.UserId,
+            type: isGroup ? 'g' : 'u',
+        };
+        if (curr.GroupId in prev) {
+            prev[groupId].members.push(member);
+            return prev;
+        } else {
+            prev[groupId] = { groupName: curr['GroupId/Name'], members: [member] };
+            return prev;
+        }
+    }, {});
+
+    groupsData.forEach(group => {
+        if (!(group.id in groupsWithMembers)) {
+            groupsWithMembers[group.id] = { groupName: group.name, members: [] };
+        }
+    });
+
+    return groupsWithMembers;
+};

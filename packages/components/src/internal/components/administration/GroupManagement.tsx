@@ -29,24 +29,7 @@ import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
-
-function getGroupMembership(): Promise<Row[]> {
-    return new Promise((resolve, reject) => {
-        Query.selectRows({
-            method: 'POST',
-            schemaName: 'core',
-            queryName: 'Members',
-            columns: 'UserId,GroupId,GroupId/Name,UserId/DisplayName,UserId/Email',
-            success: response => {
-                resolve(response.rows);
-            },
-            failure: error => {
-                console.error('Failed to fetch group memberships', error);
-                reject(error);
-            },
-        });
-    });
-}
+import {constructGroupMembership, getGroupRows} from "./actions";
 
 function getLastModified(project: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -69,41 +52,6 @@ function getLastModified(project: string): Promise<string> {
         });
     });
 }
-
-// todo: comment this up
-const constructGroupMembership = (groupsData, groupRows): GroupMembership => {
-    const groupsWithMembers = groupRows.reduce((prev, curr) => {
-        const groupId = curr['GroupId'];
-        if (groupId === -1) {
-            return prev;
-        }
-        const userDisplayName = curr['UserId/DisplayName'];
-        const userDisplayValue = `${curr['UserId/Email']} (${userDisplayName})`;
-        const isGroup = !userDisplayName;
-
-        // consider efficiency of below line. Maybe make groupsData a map
-        const member = {
-            name: isGroup ? groupsData.find(group => group.id === curr.UserId).name : userDisplayValue,
-            id: curr.UserId,
-            type: isGroup ? 'g' : 'u',
-        };
-        if (curr.GroupId in prev) {
-            prev[groupId].members.push(member);
-            return prev;
-        } else {
-            prev[groupId] = { groupName: curr['GroupId/Name'], members: [member] };
-            return prev;
-        }
-    }, {});
-
-    groupsData.forEach(group => {
-        if (!(group.id in groupsWithMembers)) {
-            groupsWithMembers[group.id] = { groupName: group.name, members: [] };
-        }
-    });
-
-    return groupsWithMembers;
-};
 
 interface OwnProps {
     rolesMap: Map<string, string>;
@@ -143,7 +91,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             // Assemble single cohesive data structure representing group data
             const fetchedGroups = await api.security.fetchGroups();
             const groupsData = fetchedGroups?.container?.groups.filter(group => group.isProjectGroup);
-            const groupRows = await getGroupMembership();
+            const groupRows = await getGroupRows();
             const groupMembershipState = constructGroupMembership(groupsData, groupRows);
 
             setPolicy(policyState);

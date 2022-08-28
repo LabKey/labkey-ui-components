@@ -8,6 +8,8 @@ import { ActionURL, Ajax, Filter, Query, Security, Utils } from '@labkey/api';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
+import {QueryInfo} from "../../../public/QueryInfo";
+import {CreateGroupResponse} from "@labkey/api/dist/labkey/security/Group";
 
 export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -124,12 +126,18 @@ export function fetchContainerSecurityPolicy(
     });
 }
 
-// ToDo: Add optional params
-export function fetchGroupPermissions(): Promise<any> {
+export interface FetchedGroup {
+    id: number;
+    isProjectGroup: boolean;
+    type: string;
+    name: string;
+}
+export function fetchGroupPermissions(projectPath: string): Promise<FetchedGroup[]> {
     return new Promise((resolve, reject) => {
         Security.getGroupPermissions({
+            containerPath: projectPath,
             success: data => {
-                resolve(data);
+                resolve(data?.container?.groups);
             },
             failure: error => {
                 console.error('Failed to fetch group permissions', error);
@@ -139,22 +147,7 @@ export function fetchGroupPermissions(): Promise<any> {
     });
 }
 
-export function getUsers(groupId: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-        Security.getUsers({
-            groupId,
-            success: data => {
-                resolve(data);
-            },
-            failure: error => {
-                console.error('Failed to fetch group users', error);
-                reject(error);
-            },
-        });
-    });
-}
-
-export function createGroup(groupName: string, projectPath: string): Promise<any> {
+export function createGroup(groupName: string, projectPath: string): Promise<CreateGroupResponse> {
     return new Promise((resolve, reject) => {
         Security.createGroup({
             groupName,
@@ -170,7 +163,10 @@ export function createGroup(groupName: string, projectPath: string): Promise<any
     });
 }
 
-export function deleteGroup(groupId: number, projectPath: string): Promise<any> {
+export interface DeleteGroupResponse {
+    deleted: number;
+}
+export function deleteGroup(groupId: number, projectPath: string): Promise<DeleteGroupResponse> {
     return new Promise((resolve, reject) => {
         Security.deleteGroup({
             groupId,
@@ -186,7 +182,10 @@ export function deleteGroup(groupId: number, projectPath: string): Promise<any> 
     });
 }
 
-export function addGroupMembers(groupId: number, principalIds: any[], projectPath: string): Promise<any> {
+export interface AddGroupMembersResponse {
+    added: number[];
+}
+export function addGroupMembers(groupId: number, principalIds: number[], projectPath: string): Promise<AddGroupMembersResponse> {
     return new Promise((resolve, reject) => {
         Security.addGroupMembers({
             groupId,
@@ -203,7 +202,10 @@ export function addGroupMembers(groupId: number, principalIds: any[], projectPat
     });
 }
 
-export function removeGroupMembers(groupId: number, principalIds: any[], projectPath: string): Promise<any> {
+export interface RemoveGroupMembersResponse {
+    removed: number[];
+}
+export function removeGroupMembers(groupId: number, principalIds: number[], projectPath: string): Promise<RemoveGroupMembersResponse> {
     return new Promise((resolve, reject) => {
         Security.removeGroupMembers({
             groupId,

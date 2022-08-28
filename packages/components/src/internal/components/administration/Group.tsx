@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useMemo } from 'react';
+import React, {Dispatch, FC, memo, SetStateAction, useCallback, useMemo} from 'react';
 import { Button } from 'react-bootstrap';
 
 import { List } from 'immutable';
@@ -8,18 +8,19 @@ import { ExpandableContainer } from '../ExpandableContainer';
 import { RemovableButton } from '../permissions/RemovableButton';
 import { Principal } from '../permissions/models';
 import { SelectInput } from '../forms/input/SelectInput';
+import {Member} from "./models";
 
 
 export interface GroupProps {
-    addMember: any;
-    deleteGroup: any;
-    id: any;
-    members: any;
+    addMember: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
+    deleteGroup: (id: string) => void;
+    id: string;
+    members: Member[];
     name: string;
     onClickAssignment: (selectedUserId: number) => void;
-    onRemoveMember: any;
+    onRemoveMember: (groupId: string, memberId: number) => void;
     selectedPrincipalId: number;
-    setDirty: any;
+    setDirty: Dispatch<SetStateAction<boolean>>;
     usersAndGroups: List<Principal>;
 }
 
@@ -81,6 +82,20 @@ export const Group: FC<GroupProps> = memo(props => {
         [id, addMember]
     );
 
+    const onClick = useCallback(
+        userId => {
+            onClickAssignment(userId);
+        },
+        [onClickAssignment]
+    );
+
+    const onRemove = useCallback(
+        memberId => {
+            onRemoveMember(id, memberId);
+        },
+        [id, onRemoveMember]
+    );
+
     return (
         <ExpandableContainer
             clause={generateClause()}
@@ -105,12 +120,8 @@ export const Group: FC<GroupProps> = memo(props => {
                             <RemovableButton
                                 id={member.id}
                                 display={member.name}
-                                onClick={userId => {
-                                    onClickAssignment(userId);
-                                }}
-                                onRemove={memberId => {
-                                    onRemoveMember(id, memberId);
-                                }}
+                                onClick={onClick}
+                                onRemove={onRemove}
                                 bsStyle={selectedPrincipalId === member.id ? 'primary' : undefined}
                                 added={false}
                             />

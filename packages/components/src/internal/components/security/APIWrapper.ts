@@ -7,30 +7,29 @@ import {
     UserLimitSettings,
     getUserLimitSettings,
     fetchGroupPermissions,
-    getUsers,
     createGroup,
     deleteGroup,
     addGroupMembers,
-    removeGroupMembers,
+    removeGroupMembers, FetchedGroup, AddGroupMembersResponse, DeleteGroupResponse, RemoveGroupMembersResponse,
 } from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
+import {CreateGroupResponse} from "@labkey/api/dist/labkey/security/Group";
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 
 export interface SecurityAPIWrapper {
-    addGroupMembers: (groupId: number, principalIds: any[], projectPath: string) => Promise<any>;
-    createGroup: (groupName: string, projectPath: string) => Promise<any>;
-    deleteGroup: (id: number, projectPath: string) => Promise<any>;
-    removeGroupMembers: (groupId: number, principalIds: any[], projectPath: string) => Promise<any>;
+    addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
+    createGroup: (groupName: string, projectPath: string) => Promise<CreateGroupResponse>;
+    deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
+    removeGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<RemoveGroupMembersResponse>;
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
-    fetchGroups: () => Promise<any>;
+    fetchGroups: (projectPath: string) => Promise<FetchedGroup[]>;
     fetchPolicy: (
         containerId: string,
         principalsById: Map<number, Principal>,
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
-    getUsers: (groupId: number) => Promise<any>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
@@ -50,7 +49,6 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
     };
     fetchPolicy = fetchContainerSecurityPolicy;
     fetchGroups = fetchGroupPermissions;
-    getUsers = getUsers;
     createGroup = createGroup;
     deleteGroup = deleteGroup;
     addGroupMembers = addGroupMembers;
@@ -76,7 +74,6 @@ export function getSecurityTestAPIWrapper(
         fetchContainers: mockFn(),
         fetchPolicy: mockFn(),
         fetchGroups: mockFn(),
-        getUsers: mockFn(),
         createGroup: mockFn(),
         deleteGroup: mockFn(),
         addGroupMembers: mockFn(),

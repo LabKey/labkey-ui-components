@@ -89,8 +89,8 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             const policyState = await api.security.fetchPolicy(container.id, principalsById, inactiveUsersById);
 
             // Assemble single cohesive data structure representing group data
-            const fetchedGroups = await api.security.fetchGroups();
-            const groupsData = fetchedGroups?.container?.groups.filter(group => group.isProjectGroup);
+            const fetchedGroups = await api.security.fetchGroups(projectPath);
+            const groupsData = fetchedGroups.filter(group => group.isProjectGroup);
             const groupRows = await getGroupRows();
             const groupMembershipState = constructGroupMembership(groupsData, groupRows);
 
@@ -152,7 +152,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                 const currentMembers = new Set(newGroupMembership[groupId].members.map(member => member.id));
                 const oldMembers = savedGroupMembership[groupId]?.members.map(member => member.id);
                 const deletedMembers = oldMembers?.filter(id => !currentMembers.has(id));
-                if (deletedMembers.length)
+                if (deletedMembers?.length)
                     await api.security.removeGroupMembers(parseInt(groupId, 10), deletedMembers, projectPath);
             });
 

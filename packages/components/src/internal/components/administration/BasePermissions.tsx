@@ -34,6 +34,7 @@ import {
     getUpdatedPolicyRolesByUniqueName
 } from './actions';
 import {GroupMembership} from "./models";
+import {getProjectPath} from "../../app/utils";
 
 interface OwnProps {
     containerId: string;
@@ -71,7 +72,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const [groupMembership, setGroupMembership] = useState<GroupMembership>();
     const { api } = useAppContext<AppContext>();
     const { dismissNotifications, createNotification } = useNotificationsContext();
-    const { user } = useServerContext();
+    const { container, user } = useServerContext();
     const loaded = !isLoading(loadingState);
     const isRoot = getServerContext().project.rootId === containerId;
     const showAssignments = (!isRoot && user.isAdmin) || user.isRootAdmin;
@@ -79,8 +80,8 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     // Assemble single cohesive data structure representing group data
     const loadGroupMembership = useCallback(async () => {
         try {
-            const fetchedGroups = await api.security.fetchGroups();
-            const groupsData = fetchedGroups?.container?.groups.filter(group => group.isProjectGroup);
+            const fetchedGroups = await api.security.fetchGroups(getProjectPath(container.path));
+            const groupsData = fetchedGroups.filter(group => group.isProjectGroup);
             const groupRows = await getGroupRows();
             const groupMembershipState = constructGroupMembership(groupsData, groupRows);
             setGroupMembership(groupMembershipState);

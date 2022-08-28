@@ -90,7 +90,7 @@ export class UserProfile extends PureComponent<Props, State> {
                 columns: ['Groups'],
                 maxRows: 1,
             });
-            const groupsData = response.rows[0].Groups as any; // todo: flag for typing
+            const groupsData = response.rows[0].Groups as unknown as Array<{ displayValue: string; value: number }>; // todo: flag for typing
             const groups = groupsData.map(group => group.displayValue).join(', ');
             this.setState(() => ({ groups }));
         } catch (e) {

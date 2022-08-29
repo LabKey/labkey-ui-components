@@ -1,21 +1,22 @@
 import React, { ReactNode } from 'react';
 import { Utils } from '@labkey/api';
 
+import { resolveErrorMessage } from '../../util/messaging';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { Alert } from '../base/Alert';
+
 import { updateUsersActiveState } from './actions';
-import {resolveErrorMessage} from "../../util/messaging";
-import {ConfirmModal} from "../base/ConfirmModal";
-import {Alert} from "../base/Alert";
 
 interface Props {
-    userIds: number[];
-    reactivate: boolean;
-    onComplete: (response: any) => any;
     onCancel: () => any;
+    onComplete: (response: any) => any;
+    reactivate: boolean;
+    userIds: number[];
 }
 
 interface State {
-    submitting: boolean;
     error: React.ReactNode;
+    submitting: boolean;
 }
 
 export class UserActivateChangeConfirmModal extends React.Component<Props, State> {

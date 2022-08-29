@@ -6,12 +6,13 @@ import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/
 
 import { processRequest } from '../../query/api';
 
+import { buildURL } from '../../url/AppURL';
+import { hasAllPermissions, User } from '../base/models/User';
+import { caseInsensitive } from '../../util/utils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SHARED_CONTAINER_PATH } from '../../constants';
+
 import { ChangePasswordModel } from './models';
-import {buildURL} from "../../url/AppURL";
-import {hasAllPermissions, User} from "../base/models/User";
-import {caseInsensitive} from "../../util/utils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {SHARED_CONTAINER_PATH} from "../../constants";
 
 export function getUserProperties(userId: number): Promise<any> {
     return new Promise((resolve, reject) => {

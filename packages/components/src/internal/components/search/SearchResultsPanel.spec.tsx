@@ -19,12 +19,14 @@ import { mount } from 'enzyme';
 
 import entitiesJSON from '../../../test/data/searchResults.json';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { Alert } from '../base/Alert';
+
 import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsPanel } from './SearchResultsPanel';
 import { SearchResultsModel } from './models';
 import { getProcessedSearchHits } from './actions';
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {Alert} from "../base/Alert";
 
 describe('<SearchResultsPanel/>', () => {
     test('loading', () => {

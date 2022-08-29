@@ -17,15 +17,20 @@ import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMem
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
+import { QueryColumn } from '../public/QueryColumn';
+
+import { useEnterEscape } from '../public/useEnterEscape';
+
+import { QueryModel } from '../public/QueryModel/QueryModel';
+
 import { CustomToggle } from './components/base/CustomToggle';
 import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
-import {APP_FIELD_CANNOT_BE_REMOVED_MESSAGE, GRID_CHECKBOX_OPTIONS} from './constants';
-import {QueryColumn} from "../public/QueryColumn";
-import {useEnterEscape} from "../public/useEnterEscape";
-import {GridColumn} from "./components/base/models/GridColumn";
-import {QueryModel} from "../public/QueryModel/QueryModel";
-import {LabelHelpTip} from "./components/base/LabelHelpTip";
-import {DisableableMenuItem} from "./components/samples/DisableableMenuItem";
+import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE, GRID_CHECKBOX_OPTIONS } from './constants';
+
+import { GridColumn } from './components/base/models/GridColumn';
+
+import { LabelHelpTip } from './components/base/LabelHelpTip';
+import { DisableableMenuItem } from './components/samples/DisableableMenuItem';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();

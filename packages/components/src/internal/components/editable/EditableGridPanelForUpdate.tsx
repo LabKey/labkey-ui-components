@@ -6,15 +6,17 @@ import { capitalizeFirstChar } from '../../util/utils';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { EditorModel, EditorModelProps } from '../../models';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { Alert } from '../base/Alert';
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
+
+import { EditableGridPanel } from './EditableGridPanel';
+import { EditableGridLoaderFromSelection } from './EditableGridLoaderFromSelection';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
-import {EditableGridLoaderFromSelection} from "./EditableGridLoaderFromSelection";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {EditorModel, EditorModelProps} from "../../models";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {EditableGridPanel} from "./EditableGridPanel";
-import {Alert} from "../base/Alert";
-import {WizardNavButtons} from "../buttons/WizardNavButtons";
 
 interface Props {
     containerFilter?: Query.ContainerFilter;

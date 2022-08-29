@@ -1,8 +1,10 @@
-import {SchemaQuery} from "../SchemaQuery";
-import {QueryInfo} from "../QueryInfo";
-import {QueryModel} from "./QueryModel";
-import {LoadingState} from "../LoadingState";
-import {Actions} from "./withQueryModels";
+import { SchemaQuery } from '../SchemaQuery';
+import { QueryInfo } from '../QueryInfo';
+
+import { LoadingState } from '../LoadingState';
+
+import { QueryModel } from './QueryModel';
+import { Actions } from './withQueryModels';
 
 /**
  * @ignore

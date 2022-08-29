@@ -7,33 +7,35 @@ import { AuditBehaviorTypes, Query } from '@labkey/api';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
 import { DetailRenderer } from '../../internal/components/forms/detail/DetailDisplay';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
-import {RequiresModelAndActions} from "./withQueryModels";
-import {QueryColumn} from "../QueryColumn";
-import {FileInput} from "../../internal/components/forms/input/FileInput";
-import {updateRows} from "../../internal/query/api";
-import {resolveErrorMessage} from "../../internal/util/messaging";
-import {Alert} from "../../internal/components/base/Alert";
-import {DetailPanel} from "./DetailPanel";
+
+import { QueryColumn } from '../QueryColumn';
+import { FileInput } from '../../internal/components/forms/input/FileInput';
+import { updateRows } from '../../internal/query/api';
+import { resolveErrorMessage } from '../../internal/util/messaging';
+import { Alert } from '../../internal/components/base/Alert';
+
+import { RequiresModelAndActions } from './withQueryModels';
+import { DetailPanel } from './DetailPanel';
 
 export interface EditableDetailPanelProps extends RequiresModelAndActions {
     appEditable?: boolean;
     asSubPanel?: boolean;
     auditBehavior?: AuditBehaviorTypes;
-    cancelText?: string;
     canUpdate: boolean;
+    cancelText?: string;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     detailEditRenderer?: DetailRenderer;
     detailHeader?: ReactNode;
     detailRenderer?: DetailRenderer;
     editColumns?: QueryColumn[];
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
     onEditToggle?: (editing: boolean) => void;
     onUpdate: () => void;
     queryColumns?: QueryColumn[];
     submitText?: string;
     title?: string;
     useEditIcon?: boolean;
-    onAdditionalFormDataChange?: (name: string, value: any) => any;
 }
 
 interface State {

@@ -8,10 +8,12 @@ import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
+import { OperationConfirmationData } from '../entities/models';
+
+import { Alert } from '../base/Alert';
+
 import { PicklistEditModal } from './PicklistEditModal';
-import {OperationConfirmationData} from "../entities/models";
-import {Picklist} from "./models";
-import {Alert} from "../base/Alert";
+import { Picklist } from './models';
 
 describe('PicklistEditModal', () => {
     const allAllowedStatus = new OperationConfirmationData({

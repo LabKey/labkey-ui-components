@@ -11,6 +11,8 @@ import {
     MISSING_VALUES_TOPIC,
 } from '../../util/helpLinks';
 
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { DATETIME_TYPE, PropDescType } from './PropDescType';
 import { getCheckedValue } from './actions';
@@ -34,7 +36,6 @@ import {
 } from './constants';
 
 import { DomainFieldLabel } from './DomainFieldLabel';
-import {LabelHelpTip} from "../base/LabelHelpTip";
 
 interface AdvancedSettingsProps {
     defaultDefaultValueType: string;

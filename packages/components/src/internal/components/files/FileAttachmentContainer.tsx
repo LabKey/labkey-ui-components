@@ -20,10 +20,11 @@ import { Utils } from '@labkey/api';
 
 import { Map, Set } from 'immutable';
 
+import { FileSizeLimitProps } from '../../../public/files/models';
+
 import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
 import { ALL_FILES_LIMIT_KEY } from './models';
-import {FileSizeLimitProps} from "../../../public/files/models";
 
 interface FileAttachmentContainerProps {
     acceptedFormats?: string; // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'

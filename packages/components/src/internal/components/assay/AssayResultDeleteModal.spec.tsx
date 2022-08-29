@@ -2,8 +2,9 @@ import React from 'react';
 
 import { mountWithAppServerContext } from '../../testHelpers';
 
+import { SCHEMAS } from '../../schemas';
+
 import { AssayResultDeleteModal } from './AssayResultDeleteModal';
-import {SCHEMAS} from "../../schemas";
 
 describe('<AssayResultDeleteModal/>', () => {
     test('Show progress', () => {

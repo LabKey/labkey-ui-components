@@ -2,9 +2,10 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { fromJS } from 'immutable';
 
+import { QueryColumn } from '../../../../public/QueryColumn';
+
 import { AliasInput } from './AliasInput';
-import {QueryColumn} from "../../../../public/QueryColumn";
-import {SelectInput} from "./SelectInput";
+import { SelectInput } from './SelectInput';
 
 describe('AliasInput', () => {
     const fieldKey = 'Alias';

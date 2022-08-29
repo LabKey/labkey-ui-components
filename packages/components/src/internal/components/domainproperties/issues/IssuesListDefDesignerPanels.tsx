@@ -7,10 +7,11 @@ import { getDomainPanelStatus, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
 import { DomainDesign } from '../models';
 
+import { resolveErrorMessage } from '../../../util/messaging';
+
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesListDefModel } from './models';
 import { saveIssueListDefOptions } from './actions';
-import {resolveErrorMessage} from "../../../util/messaging";
 
 interface Props {
     initModel?: IssuesListDefModel;

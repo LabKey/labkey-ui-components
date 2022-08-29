@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React, { FC } from 'react';
-import {Alert} from "../base/Alert";
+
+import { Alert } from '../base/Alert';
 
 export const InsufficientPermissionsAlert: FC = () => <Alert>You do not have permissions for this action.</Alert>;

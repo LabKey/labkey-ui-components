@@ -5,23 +5,24 @@ import { AuditBehaviorTypes } from '@labkey/api';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+import { EntityDeleteModal } from '../entities/EntityDeleteModal';
+import { SampleTypeDataType } from '../entities/constants';
+
 import { MAX_SELECTED_SAMPLES } from './constants';
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {SelectionMenuItem} from "../menus/SelectionMenuItem";
-import {EntityDeleteModal} from "../entities/EntityDeleteModal";
-import {SampleTypeDataType} from "../entities/constants";
 
 interface Props {
-    api?: ComponentsAPIWrapper;
-    queryModel: QueryModel;
-    itemText?: string;
-    verb?: string;
-    beforeSampleDelete?: () => any;
     afterSampleDelete?: (rowsToKeep?: any[]) => any;
+    api?: ComponentsAPIWrapper;
     auditBehavior?: AuditBehaviorTypes;
+    beforeSampleDelete?: () => any;
+    itemText?: string;
     maxDeleteRows?: number;
-    selectionMenuId?: string;
     metricFeatureArea?: string;
+    queryModel: QueryModel;
+    selectionMenuId?: string;
+    verb?: string;
 }
 
 export const SampleDeleteMenuItem: FC<Props> = memo(props => {

@@ -11,27 +11,31 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
 import { isProjectContainer } from '../../app/utils';
 
+import { useServerContext } from '../base/ServerContext';
+
+import { AppContext, useAppContext } from '../../AppContext';
+
+import { resolveErrorMessage } from '../../util/messaging';
+
+import { Alert } from '../base/Alert';
+
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { InjectedPermissionsPage } from './withPermissionsPage';
-import {useServerContext} from "../base/ServerContext";
-import {AppContext, useAppContext} from "../../AppContext";
-import {resolveErrorMessage} from "../../util/messaging";
-import {Alert} from "../base/Alert";
 
 // exported for testing
 export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
     containerId: string;
     /** UserId to disable to prevent removing assignments for that id */
     disabledId?: number;
-    title?: string;
     onChange: (policy: SecurityPolicy) => void;
     onSuccess: () => void;
     policy: SecurityPolicy;
     /** Subset list of role uniqueNames to show in this component usage */
     rolesToShow?: List<string>;
     showDetailsPanel?: boolean;
+    title?: string;
     /** Specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage */
     typeToShow?: string;
 }

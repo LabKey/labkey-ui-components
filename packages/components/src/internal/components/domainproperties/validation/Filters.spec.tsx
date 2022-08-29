@@ -64,7 +64,7 @@ describe('Filters', () => {
         filters.unmount();
     });
 
-    test('Test Expressions', () => {
+    test('Expressions', () => {
         const validatorIndex = 1;
         const domainIndex = 1;
         const expression1 = 'format.column~isblank=';

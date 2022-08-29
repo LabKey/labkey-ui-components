@@ -4,9 +4,10 @@ import { List } from 'immutable';
 
 import getValidPublishTargetsJson from '../../../test/data/assay-getValidPublishTargets.json';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Container } from '../base/models/Container';
+
 import { AutoLinkToStudyDropdown } from './AutoLinkToStudyDropdown';
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {Container} from "../base/models/Container";
 
 const CONTAINERS = List(getValidPublishTargetsJson.containers.map(c => new Container(c)));
 const BASE_PROPS = {

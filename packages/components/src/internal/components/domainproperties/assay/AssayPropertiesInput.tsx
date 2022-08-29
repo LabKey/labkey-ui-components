@@ -12,14 +12,14 @@ import { DomainFieldLabel, DomainFieldLabelProps } from '../DomainFieldLabel';
 
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
-import { getValidPublishTargets } from './actions';
+import { buildURL } from '../../../url/AppURL';
+import { Container } from '../../base/models/Container';
+import { AddEntityButton } from '../../buttons/AddEntityButton';
+import { RemoveEntityButton } from '../../buttons/RemoveEntityButton';
 
 import { AssayProtocolModel } from './models';
 import { FORM_IDS } from './constants';
-import {buildURL} from "../../../url/AppURL";
-import {Container} from "../../base/models/Container";
-import {AddEntityButton} from "../../buttons/AddEntityButton";
-import {RemoveEntityButton} from "../../buttons/RemoveEntityButton";
+import { getValidPublishTargets } from './actions';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps {
     appPropertiesOnly?: boolean;
@@ -48,9 +48,9 @@ AssayPropertiesInput.defaultProps = {
 };
 
 interface InputProps {
+    appPropertiesOnly?: boolean;
     model: AssayProtocolModel;
     onChange: (evt) => void;
-    appPropertiesOnly?: boolean;
 }
 
 export function NameInput(props: InputProps) {

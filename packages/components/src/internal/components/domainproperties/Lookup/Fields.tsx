@@ -8,9 +8,10 @@ import { PropDescType } from '../PropDescType';
 import { createFormInputName } from '../utils';
 import { DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_LOOKUP_SCHEMA } from '../constants';
 
-import { ILookupContext, LookupContextConsumer } from './Context';
 import { Container } from '../../base/models/Container';
 import { SchemaDetails } from '../../../SchemaDetails';
+
+import { ILookupContext, LookupContextConsumer } from './Context';
 
 interface ILookupProps {
     context: ILookupContext;

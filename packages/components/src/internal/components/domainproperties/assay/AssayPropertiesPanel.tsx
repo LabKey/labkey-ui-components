@@ -35,11 +35,11 @@ import {
 import { BOOLEAN_FIELDS, FORM_ID_PREFIX, PROPERTIES_HEADER_ID } from './constants';
 
 interface OwnProps {
-    model: AssayProtocolModel;
-    onChange: (model: AssayProtocolModel) => any;
     appPropertiesOnly?: boolean;
     asPanel?: boolean;
     helpTopic?: string;
+    model: AssayProtocolModel;
+    onChange: (model: AssayProtocolModel) => any;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps;

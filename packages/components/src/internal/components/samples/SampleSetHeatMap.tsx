@@ -3,11 +3,12 @@ import { Filter } from '@labkey/api';
 
 import { SAMPLES_KEY } from '../../app/constants';
 
+import { AppURL } from '../../url/AppURL';
+import { HeatMap, HeatMapCell } from '../heatmap/HeatMap';
+import { User } from '../base/models/User';
+import { SCHEMAS } from '../../schemas';
+
 import { SampleEmptyAlert } from './SampleEmptyAlert';
-import {AppURL} from "../../url/AppURL";
-import {HeatMap, HeatMapCell} from "../heatmap/HeatMap";
-import {User} from "../base/models/User";
-import {SCHEMAS} from "../../schemas";
 
 const getCellUrl = (row: Record<string, any>): AppURL => {
     const protocolName = row.Protocol?.displayValue;

@@ -5,9 +5,10 @@ import { Button, Checkbox } from 'react-bootstrap';
 
 import { waitForLifecycle } from '../../testHelpers';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { ConfirmModal } from '../base/ConfirmModal';
+
 import { NameIdSettingsForm } from './NameIdSettings';
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {ConfirmModal} from "../base/ConfirmModal";
 
 describe('NameIdSettings', () => {
     let DEFAULT_PROPS;

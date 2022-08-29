@@ -1,5 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import {SelectInput, SelectInputOption, SelectInputProps} from "../forms/input/SelectInput";
+
+import { SelectInput, SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
 const SELECT_VIEWS = '__select_views__';
 

@@ -51,17 +51,18 @@ import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 
 import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
 
-import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
-import { Cell, CellActions } from './Cell';
+import { GridColumn } from '../base/models/GridColumn';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { DeleteIcon } from '../base/DeleteIcon';
+import { Key } from '../../../public/useEnterEscape';
+import { cancelEvent } from '../../events';
+import { Grid } from '../base/Grid';
+import { Alert } from '../base/Alert';
+
 import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
-import {GridColumn} from "../base/models/GridColumn";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {QueryColumn} from "../../../public/QueryColumn";
-import {DeleteIcon} from "../base/DeleteIcon";
-import {Key} from "../../../public/useEnterEscape";
-import {cancelEvent} from "../../events";
-import {Grid} from "../base/Grid";
-import {Alert} from "../base/Alert";
+import { Cell, CellActions } from './Cell';
+import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');

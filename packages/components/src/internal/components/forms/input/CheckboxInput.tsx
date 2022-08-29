@@ -19,8 +19,9 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
+import { QueryColumn } from '../../../../public/QueryColumn';
+
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
-import {QueryColumn} from "../../../../public/QueryColumn";
 
 interface CheckboxInputProps extends DisableableInputProps {
     formsy?: boolean;

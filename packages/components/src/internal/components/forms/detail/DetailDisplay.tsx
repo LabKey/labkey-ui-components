@@ -7,14 +7,15 @@ import { DETAIL_TABLE_CLASSES } from '../constants';
 
 import { decodePart } from '../../../../public/SchemaQuery';
 
+import { QueryColumn } from '../../../../public/QueryColumn';
+import { DefaultRenderer } from '../../../renderers/DefaultRenderer';
+import { LabelHelpTip } from '../../base/LabelHelpTip';
+
 import {
     resolveDetailEditRenderer,
     resolveDetailRenderer,
     titleRenderer as defaultTitleRenderer,
 } from './DetailEditRenderer';
-import {QueryColumn} from "../../../../public/QueryColumn";
-import {DefaultRenderer} from "../../../renderers/DefaultRenderer";
-import {LabelHelpTip} from "../../base/LabelHelpTip";
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 

@@ -5,15 +5,15 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 import { getCurrentAppProperties } from '../../app/utils';
 import { blurActiveElement } from '../../util/utils';
 import { AppProperties } from '../../app/models';
-import {Container} from "../base/models/Container";
-import {buildURL} from "../../url/AppURL";
-import {isLoading, LoadingState} from "../../../public/LoadingState";
-import {AppContext, useAppContext} from "../../AppContext";
-import {useServerContext} from "../base/ServerContext";
-import {naturalSortByProperty} from "../../../public/sort";
-import {resolveErrorMessage} from "../../util/messaging";
-import {Alert} from "../base/Alert";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { Container } from '../base/models/Container';
+import { buildURL } from '../../url/AppURL';
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { AppContext, useAppContext } from '../../AppContext';
+import { useServerContext } from '../base/ServerContext';
+import { naturalSortByProperty } from '../../../public/sort';
+import { resolveErrorMessage } from '../../util/messaging';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface FolderMenuItem {
     href: string;

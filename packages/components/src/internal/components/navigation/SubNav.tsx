@@ -19,10 +19,11 @@ import React, { ReactNode, FC, useRef, useState, useCallback, useEffect } from '
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
+import { AppURL } from '../../url/AppURL';
+import { useAppContext } from '../../AppContext';
+import { useServerContext } from '../base/ServerContext';
+
 import NavItem, { ParentNavItem } from './NavItem';
-import {AppURL} from "../../url/AppURL";
-import {useAppContext} from "../../AppContext";
-import {useServerContext} from "../base/ServerContext";
 
 interface Props {
     ignoreShow?: boolean; // Forces the SubNav to always be hidden in "scrolled" mode
@@ -87,7 +88,9 @@ export const SubNav: FC<Props> = ({ ignoreShow, noun, tabs }) => {
         calculateIsScrollable();
     }, [calculateIsScrollable, tabs]);
 
-    const className = classNames('navbar navbar-inverse no-margin-bottom sub-nav', { 'sub-nav--ignore-show': ignoreShow });
+    const className = classNames('navbar navbar-inverse no-margin-bottom sub-nav', {
+        'sub-nav--ignore-show': ignoreShow,
+    });
 
     return (
         <nav className={className}>

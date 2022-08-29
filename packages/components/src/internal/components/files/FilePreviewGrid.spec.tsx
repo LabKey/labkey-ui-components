@@ -2,8 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { fromJS, List } from 'immutable';
 
+import { GridColumn } from '../base/models/GridColumn';
+
 import { FilePreviewGrid } from './FilePreviewGrid';
-import {GridColumn} from "../base/models/GridColumn";
 
 const DATA = fromJS([
     {

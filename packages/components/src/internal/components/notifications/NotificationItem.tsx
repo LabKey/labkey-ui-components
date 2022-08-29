@@ -16,7 +16,7 @@
 import React, { FC, useCallback } from 'react';
 
 import { NotificationItemModel } from './model';
-import {useNotificationsContext} from "./NotificationsContext";
+import { useNotificationsContext } from './NotificationsContext';
 
 interface ItemProps {
     item: NotificationItemModel;

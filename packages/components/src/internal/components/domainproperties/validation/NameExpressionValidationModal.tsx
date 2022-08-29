@@ -1,13 +1,14 @@
 import React from 'react';
-import {ConfirmModal} from "../../base/ConfirmModal";
+
+import { ConfirmModal } from '../../base/ConfirmModal';
 
 export interface Props {
-    title?: string;
-    warnings: string[];
+    onConfirm: () => any;
+    onHide: () => any;
     previews: string[];
     show: boolean;
-    onHide: () => any;
-    onConfirm: () => any;
+    title?: string;
+    warnings: string[];
 }
 
 const nameExpressionWarningPrefix = 'Name Pattern warning: ';

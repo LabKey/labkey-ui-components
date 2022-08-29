@@ -28,13 +28,14 @@ import {
 import { FilePreviewGrid } from '../../internal/components/files/FilePreviewGrid';
 import { SimpleResponse } from '../../internal/components/files/models';
 
-import { FileSizeLimitProps, FileGridPreviewProps } from './models';
+import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
+import { InferDomainResponse } from '../InferDomainResponse';
+import { inferDomainFromFile } from '../../internal/components/assay/utils';
+import { FormSection } from '../../internal/components/base/FormSection';
+import { Progress } from '../../internal/components/base/Progress';
+
 import { TemplateDownloadButton } from './TemplateDownloadButton';
-import {LoadingSpinner} from "../../internal/components/base/LoadingSpinner";
-import {InferDomainResponse} from "../InferDomainResponse";
-import {inferDomainFromFile} from "../../internal/components/assay/utils";
-import {FormSection} from "../../internal/components/base/FormSection";
-import {Progress} from "../../internal/components/base/Progress";
+import { FileSizeLimitProps, FileGridPreviewProps } from './models';
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'

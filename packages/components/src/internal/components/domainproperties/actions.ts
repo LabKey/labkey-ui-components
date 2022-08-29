@@ -25,6 +25,44 @@ import { ConceptModel, OntologyModel } from '../ontology/models';
 
 import { isCommunityDistribution } from '../../app/utils';
 
+import { Container } from '../base/models/Container';
+import { naturalSortByProperty } from '../../../public/sort';
+import { SchemaDetails } from '../../SchemaDetails';
+import { buildURL } from '../../url/AppURL';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SCHEMAS } from '../../schemas';
+
+import {
+    DOMAIN_FIELD_CLIENT_SIDE_ERROR,
+    DOMAIN_FIELD_LOOKUP_CONTAINER,
+    DOMAIN_FIELD_LOOKUP_QUERY,
+    DOMAIN_FIELD_LOOKUP_SCHEMA,
+    DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
+    DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
+    DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
+    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
+    DOMAIN_FIELD_SAMPLE_TYPE,
+    DOMAIN_FIELD_TYPE,
+    MAX_TEXT_LENGTH,
+    SEVERITY_LEVEL_ERROR,
+    SEVERITY_LEVEL_WARN,
+} from './constants';
+import {
+    ATTACHMENT_TYPE,
+    FILE_TYPE,
+    FLAG_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
+    PARTICIPANT_TYPE,
+    PROP_DESC_TYPES,
+    PropDescType,
+    SAMPLE_TYPE,
+    SMILES_TYPE,
+    TEXT_CHOICE_TYPE,
+    UNIQUE_ID_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
+} from './PropDescType';
 import {
     decodeLookup,
     DEFAULT_TEXT_CHOICE_VALIDATOR,
@@ -43,43 +81,6 @@ import {
     QueryInfoLite,
     updateSampleField,
 } from './models';
-import {
-    ATTACHMENT_TYPE,
-    FILE_TYPE,
-    FLAG_TYPE,
-    ONTOLOGY_LOOKUP_TYPE,
-    PARTICIPANT_TYPE,
-    PROP_DESC_TYPES,
-    PropDescType,
-    SAMPLE_TYPE,
-    SMILES_TYPE,
-    TEXT_CHOICE_TYPE,
-    UNIQUE_ID_TYPE,
-    VISIT_DATE_TYPE,
-    VISIT_ID_TYPE,
-} from './PropDescType';
-import {
-    DOMAIN_FIELD_CLIENT_SIDE_ERROR,
-    DOMAIN_FIELD_LOOKUP_CONTAINER,
-    DOMAIN_FIELD_LOOKUP_QUERY,
-    DOMAIN_FIELD_LOOKUP_SCHEMA,
-    DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
-    DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
-    DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
-    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
-    DOMAIN_FIELD_SAMPLE_TYPE,
-    DOMAIN_FIELD_TYPE,
-    MAX_TEXT_LENGTH,
-    SEVERITY_LEVEL_ERROR,
-    SEVERITY_LEVEL_WARN,
-} from './constants';
-import { Container } from '../base/models/Container';
-import { naturalSortByProperty } from '../../../public/sort';
-import { SchemaDetails } from '../../SchemaDetails';
-import { buildURL } from '../../url/AppURL';
-import { QueryColumn } from '../../../public/QueryColumn';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { SCHEMAS } from '../../schemas';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 
 let sharedCache = Map<string, Promise<any>>();

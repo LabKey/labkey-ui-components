@@ -26,19 +26,19 @@ import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface ConditionalFormattingAndValidationProps {
-    index: number;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainIndex: number;
     field: DomainField;
+    index: number;
     onChange: (string, any) => any;
     showingModal: (boolean) => any;
     successBsStyle?: string;
-    domainFormDisplayOptions?: IDomainFormDisplayOptions;
 }
 
 interface ConditionalFormattingAndValidationState {
     showCondFormat: boolean;
-    showRegex: boolean;
     showRange: boolean;
+    showRegex: boolean;
 }
 
 export class ConditionalFormattingAndValidation extends React.PureComponent<

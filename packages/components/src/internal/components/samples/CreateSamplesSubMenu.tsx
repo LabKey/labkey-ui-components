@@ -3,16 +3,18 @@ import { List } from 'immutable';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { getSampleWizardURL } from './utils';
-import { DisableableMenuItem } from './DisableableMenuItem';
+import { ProductMenuModel } from '../navigation/model';
+import { AppURL } from '../../url/AppURL';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { MenuOption } from '../menus/SubMenu';
+import { getMenuItemForSectionKey, getMenuItemsForSection } from '../buttons/utils';
+import { SAMPLES_KEY } from '../../app/constants';
+
+import { SampleCreationType } from './models';
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
-import {ProductMenuModel} from "../navigation/model";
-import {AppURL} from "../../url/AppURL";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {SampleCreationType} from "./models";
-import {MenuOption} from "../menus/SubMenu";
-import {getMenuItemForSectionKey, getMenuItemsForSection} from "../buttons/utils";
-import {SAMPLES_KEY} from "../../app/constants";
+import { DisableableMenuItem } from './DisableableMenuItem';
+import { getSampleWizardURL } from './utils';
 
 interface Props {
     allowPooledSamples?: boolean;

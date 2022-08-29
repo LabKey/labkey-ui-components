@@ -1,7 +1,7 @@
 import { fromJS, Map, OrderedMap, Record, Set } from 'immutable';
 
 import { DomainDesign, DomainDetails, IDomainField } from '../models';
-import {IParentOption} from "../../entities/models";
+import { IParentOption } from '../../entities/models';
 
 export class SampleTypeModel extends Record({
     rowId: undefined,
@@ -143,14 +143,14 @@ export interface IParentAlias {
 
 export interface MetricUnitProps {
     includeMetricUnitProperty?: boolean;
-    metricUnitLabel?: string;
-    metricUnitRequired?: boolean;
     metricUnitHelpMsg?: string;
+    metricUnitLabel?: string;
     metricUnitOptions?: any[];
+    metricUnitRequired?: boolean;
 }
 
 export interface AliquotNamePatternProps {
-    showAliquotNameExpression?: boolean;
     aliquotNameExpressionInfoUrl?: string;
     aliquotNameExpressionPlaceholder?: string;
+    showAliquotNameExpression?: boolean;
 }

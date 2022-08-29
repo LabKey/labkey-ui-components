@@ -8,15 +8,18 @@ import {
     UpdateGridTab,
 } from '../editable/EditableGridPanelForUpdateWithLineage';
 
+import { EditableGridLoaderFromSelection } from '../editable/EditableGridLoaderFromSelection';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { EntityDataType, IEntityTypeOption } from '../entities/models';
+
+import { QueryColumn } from '../../../public/QueryColumn';
+import { EditableColumnMetadata } from '../editable/EditableGrid';
+
+import { SampleTypeDataType } from '../entities/constants';
+
+import { SAMPLE_STATE_COLUMN_NAME } from './constants';
+import { GroupedSampleFields } from './models';
 import { SampleStatusLegend } from './SampleStatusLegend';
-import {EditableGridLoaderFromSelection} from "../editable/EditableGridLoaderFromSelection";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {EntityDataType, IEntityTypeOption} from "../entities/models";
-import {GroupedSampleFields} from "./models";
-import {QueryColumn} from "../../../public/QueryColumn";
-import {EditableColumnMetadata} from "../editable/EditableGrid";
-import {SAMPLE_STATE_COLUMN_NAME} from "./constants";
-import {SampleTypeDataType} from "../entities/constants";
 
 interface Props {
     idField: string;

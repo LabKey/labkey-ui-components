@@ -227,9 +227,7 @@ import {
     EditableGridPanelForUpdateWithLineage,
     UpdateGridTab,
 } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import {
-    LineageEditableGridLoaderFromSelection
-} from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -257,7 +255,11 @@ import {
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
 import { resolveRenderer } from './internal/components/forms/renderers';
-import { getQueryFormLabelFieldName, isQueryFormLabelField, resolveDetailFieldValue } from './internal/components/forms/utils';
+import {
+    getQueryFormLabelFieldName,
+    isQueryFormLabelField,
+    resolveDetailFieldValue,
+} from './internal/components/forms/utils';
 import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';
@@ -744,7 +746,7 @@ import { useNotAuthorized, useNotFound } from './internal/hooks';
 import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-    TEST_LKSM_STARTER_MODULE_CONTEXT
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from './test/data/constants';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version

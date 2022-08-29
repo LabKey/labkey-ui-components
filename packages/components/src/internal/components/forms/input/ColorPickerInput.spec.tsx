@@ -1,7 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
-import {ColorPickerInput} from "./ColorPickerInput";
+
+import { ColorPickerInput } from './ColorPickerInput';
 
 describe('ColorPickerInput', () => {
     test('default props', () => {

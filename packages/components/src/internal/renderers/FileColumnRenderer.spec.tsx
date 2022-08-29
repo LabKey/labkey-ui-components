@@ -4,9 +4,10 @@ import { fromJS } from 'immutable';
 
 import { FILELINK_RANGE_URI } from '../components/domainproperties/constants';
 
+import { QueryColumn } from '../../public/QueryColumn';
+
 import { FileColumnRenderer, getAttachmentTitleFromName } from './FileColumnRenderer';
 import { AttachmentCard } from './AttachmentCard';
-import {QueryColumn} from "../../public/QueryColumn";
 
 const DEFAULT_PROPS = {
     data: fromJS({ url: 'testurl', value: 'test.txt', displayValue: 'Test.txt' }),

@@ -2,15 +2,17 @@ import React, { FC, memo, useMemo } from 'react';
 
 import { Filter, Query } from '@labkey/api';
 
-import {Cards, ICardProps} from '../base/Cards';
+import { Cards, ICardProps } from '../base/Cards';
 
-import {caseInsensitive} from "../../util/utils";
-import {naturalSort} from "../../../public/sort";
-import {SampleTypeEmptyAlert} from "./SampleEmptyAlert";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {SCHEMAS} from "../../schemas";
+import { caseInsensitive } from '../../util/utils';
+import { naturalSort } from '../../../public/sort';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { SCHEMAS } from '../../schemas';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
+import { SampleTypeEmptyAlert } from './SampleEmptyAlert';
 
 const getSampleSetCount = (row: Record<string, any>): number => {
     return caseInsensitive(row, 'SampleCount').value;

@@ -21,6 +21,10 @@ import { ActionButton } from '../buttons/ActionButton';
 import { sleep } from '../../testHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
+import { Alert } from '../base/Alert';
+
+import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
+
 import { DomainDesign } from './models';
 import DomainForm, { DomainFormImpl } from './DomainForm';
 import {
@@ -45,8 +49,6 @@ import { clearFieldDetails, updateDomainField } from './actions';
 
 import { DomainRow } from './DomainRow';
 import { INT_LIST } from './list/constants';
-import {Alert} from "../base/Alert";
-import {FileAttachmentForm} from "../../../public/files/FileAttachmentForm";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -523,7 +525,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('test hideInferFromFile false click domain-form-manual-btn', async () => {
+    test('hideInferFromFile false click domain-form-manual-btn', async () => {
         const component = <DomainFormContainer hideInferFromFile={false} testMode={true} />;
         const wrapper = mount(component);
         await sleep();

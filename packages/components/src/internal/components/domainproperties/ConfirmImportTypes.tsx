@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
-import {ConfirmModal} from "../base/ConfirmModal";
+
+import { ConfirmModal } from '../base/ConfirmModal';
 
 interface Props {
-    error: any;
-    show: boolean;
-    onConfirm: () => void;
-    onCancel: () => void;
     designerType: string;
+    error: any;
+    onCancel: () => void;
+    onConfirm: () => void;
+    show: boolean;
 }
 
 export default class ConfirmImportTypes extends PureComponent<Props> {

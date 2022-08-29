@@ -10,13 +10,17 @@ import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 import aminoAcidsQueryInfo from '../../test/data/assayAminoAcidsData-getQueryDetails.json';
 import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
 
+import { SchemaQuery } from '../SchemaQuery';
+import { QueryInfo } from '../QueryInfo';
+
+import { LoadingState } from '../LoadingState';
+
+import { QuerySort } from '../QuerySort';
+
+import { Actions, QueryModelMap, withQueryModels } from './withQueryModels';
+import { QueryModel } from './QueryModel';
+
 import { RowsResponse } from './QueryModelLoader';
-import {SchemaQuery} from "../SchemaQuery";
-import {QueryInfo} from "../QueryInfo";
-import {Actions, QueryModelMap, withQueryModels} from "./withQueryModels";
-import {QueryModel} from "./QueryModel";
-import {LoadingState} from "../LoadingState";
-import {QuerySort} from "../QuerySort";
 
 /**
  * Note: All of the tests in this file look a tad weird. We create a component that resets local variables on render

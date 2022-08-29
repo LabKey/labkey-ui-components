@@ -15,9 +15,10 @@
  */
 import { List } from 'immutable';
 
+import { QueryInfo } from '../../../QueryInfo';
+import { QueryColumn } from '../../../QueryColumn';
+
 import { Action, ActionOption, ActionValue, Value } from './Action';
-import {QueryInfo} from "../../../QueryInfo";
-import {QueryColumn} from "../../../QueryColumn";
 
 export class ViewAction implements Action {
     static NAME = 'view';

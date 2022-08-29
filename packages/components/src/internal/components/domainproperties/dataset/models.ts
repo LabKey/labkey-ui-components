@@ -27,35 +27,35 @@ import { DOMAIN_FIELD_FULLY_LOCKED } from '../constants';
 import { allowAsManagedField } from './utils';
 
 export interface DatasetAdvancedSettingsForm {
-    datasetId?: number;
     cohortId?: number;
-    tag?: string;
+    datasetId?: number;
     showByDefault?: boolean;
+    tag?: string;
     visitDatePropertyName?: string;
 }
 
 export interface IDatasetModel {
+    category?: string;
+    cohortId?: number;
+    dataSharing?: string;
+    datasetId?: number;
+    definitionIsShared?: boolean;
+    demographicData: boolean;
+    description?: string;
     domain: DomainDesign;
     domainId: number;
-    exception: string;
-    datasetId?: number;
     entityId?: string;
-    name: string;
-    category?: string;
-    visitDatePropertyName?: string;
-    keyPropertyName?: string;
+    exception: string;
     keyPropertyManaged: boolean;
-    demographicData: boolean;
-    label?: string;
-    cohortId?: number;
+    keyPropertyName?: string;
     tag?: string;
+    visitDatePropertyName?: string;
     showByDefault: boolean;
-    description?: string;
-    dataSharing?: string;
-    definitionIsShared?: boolean;
     sourceName?: string;
-    sourceUrl?: string;
     sourceType?: string;
+    name: string;
+    sourceUrl?: string;
+    label?: string;
     useTimeKeyField?: boolean;
 }
 

@@ -5,12 +5,13 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
 import { LineageLink, LineageResult } from './models';
 import { createLineageNodeCollections, isAliquotNodeCollection } from './vis/VisGraphGenerator';
 import { DetailsListNodes } from './node/DetailsList';
 import { InjectedLineage, withLineage } from './withLineage';
-import {LoadingSpinner} from "../base/LoadingSpinner";
 
 interface LineageSummaryOwnProps extends LineageOptions {
     highlightNode?: string;

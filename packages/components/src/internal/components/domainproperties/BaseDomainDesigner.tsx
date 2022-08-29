@@ -3,29 +3,30 @@ import { List } from 'immutable';
 
 import { Button } from 'react-bootstrap';
 
+import { Alert } from '../base/Alert';
+
 import { getDomainBottomErrorMessage, getDomainHeaderName, getUpdatedVisitedPanelsList } from './actions';
 import { SEVERITY_LEVEL_ERROR } from './constants';
 
 import { DomainDesign } from './models';
-import {Alert} from "../base/Alert";
 
 export interface InjectedBaseDomainDesignerProps {
-    submitting: boolean;
     currentPanelIndex: number;
-    visitedPanels: List<number>;
-    validatePanel: number;
     firstState: boolean;
-    setSubmitting: (submitting: boolean, callback?: () => void) => void;
-    onTogglePanel: (index: number, collapsed: boolean, callback: () => void) => void;
     onFinish: (isValid: boolean, save: () => void) => void;
+    onTogglePanel: (index: number, collapsed: boolean, callback: () => void) => void;
+    setSubmitting: (submitting: boolean, callback?: () => void) => void;
+    submitting: boolean;
+    validatePanel: number;
+    visitedPanels: List<number>;
 }
 
 interface State {
-    submitting: boolean;
     currentPanelIndex: number;
-    visitedPanels: List<number>;
-    validatePanel: number;
     firstState: boolean;
+    submitting: boolean;
+    validatePanel: number;
+    visitedPanels: List<number>;
 }
 
 export function withBaseDomainDesigner<Props>(
@@ -128,16 +129,16 @@ export function withBaseDomainDesigner<Props>(
 }
 
 interface BaseDomainDesignerProps {
-    name: string;
-    exception: string;
     domains: List<DomainDesign>;
-    visitedPanels: List<number>;
-    submitting: boolean;
+    exception: string;
     hasValidProperties: boolean;
+    name: string;
     onCancel: () => void;
     onFinish: () => void;
-    successBsStyle?: string;
     saveBtnText?: string;
+    submitting: boolean;
+    successBsStyle?: string;
+    visitedPanels: List<number>;
 }
 
 export class BaseDomainDesigner extends PureComponent<BaseDomainDesignerProps> {

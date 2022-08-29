@@ -11,10 +11,12 @@ import { DomainDetails } from '../models';
 import { sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
+import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
+
+import { Alert } from '../../base/Alert';
+
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner } from './SampleTypeDesigner';
-import {FileAttachmentForm} from "../../../../public/files/FileAttachmentForm";
-import {Alert} from "../../base/Alert";
 
 const BASE_PROPS = {
     appPropertiesOnly: true,

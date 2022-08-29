@@ -21,15 +21,15 @@ import { JavaDocsLink } from '../../../util/helpLinks';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 interface RegexValidationOptionsProps {
-    validator: any;
-    index: number;
-    domainIndex: number;
-    validatorIndex: number;
-    expanded: boolean;
-    onExpand: (index: number) => any;
     dataType: PropDescType;
+    domainIndex: number;
+    expanded: boolean;
+    index: number;
     onChange: (validator: PropertyValidator, index: number) => any;
     onDelete: (index: number) => any;
+    onExpand: (index: number) => any;
+    validator: any;
+    validatorIndex: number;
 }
 
 export class RegexValidationOptions extends React.PureComponent<RegexValidationOptionsProps> {

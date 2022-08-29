@@ -2,9 +2,10 @@ import { Filter } from '@labkey/api';
 
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app/constants';
 
+import { AppURL } from '../../url/AppURL';
+import { SCHEMAS } from '../../schemas';
+
 import { ChartConfig, ChartSelector } from './types';
-import {AppURL} from "../../url/AppURL";
-import {SCHEMAS} from "../../schemas";
 
 const CHART_SELECTORS: Record<string, ChartSelector> = {
     All: { name: 'TotalCount', label: 'All' },

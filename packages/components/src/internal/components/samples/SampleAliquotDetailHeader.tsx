@@ -3,11 +3,12 @@ import { List, Map, OrderedMap } from 'immutable';
 
 import { isSampleStatusEnabled } from '../../app/utils';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+import { DefaultRenderer } from '../../renderers/DefaultRenderer';
+
 import { SAMPLE_STATE_COLUMN_NAME } from './constants';
-import {QueryColumn} from "../../../public/QueryColumn";
-import {DefaultRenderer} from "../../renderers/DefaultRenderer";
-import {SampleStatusTag} from "./SampleStatusTag";
-import {getSampleStatus} from "./utils";
+import { SampleStatusTag } from './SampleStatusTag';
+import { getSampleStatus } from './utils';
 
 interface SampleAliquotDetailHeaderProps {
     aliquotHeaderDisplayColumns: List<QueryColumn>;
@@ -58,7 +59,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                             <tr key="aliquotedstatus">
                                 <td>Aliquot status</td>
                                 <td>
-                                    <SampleStatusTag status={getSampleStatus(newRow.toJS())}/>
+                                    <SampleStatusTag status={getSampleStatus(newRow.toJS())} />
                                 </td>
                             </tr>
                         )}

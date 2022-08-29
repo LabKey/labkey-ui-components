@@ -4,7 +4,8 @@ import { mount } from 'enzyme';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 import { selectOptionByText, SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
-import {SampleSetSummary} from "./SampleSetSummary";
+
+import { SampleSetSummary } from './SampleSetSummary';
 
 beforeAll(() => {
     initUnitTestMocks();

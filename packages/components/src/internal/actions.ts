@@ -16,6 +16,14 @@
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 
+import { QueryColumn } from '../public/QueryColumn';
+
+import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
+
+import { QueryInfo } from '../public/QueryInfo';
+
+import { QueryConfig } from '../public/QueryModel/QueryModel';
+
 import { invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
 import { Location } from './util/URL';
 import {
@@ -45,11 +53,9 @@ import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt
 import { resolveErrorMessage } from './util/messaging';
 import { hasModule } from './app/utils';
 import { buildURL } from './url/AppURL';
-import { QueryColumn } from '../public/QueryColumn';
-import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
-import { QueryInfo } from '../public/QueryInfo';
+
 import { AssayDefinitionModel } from './AssayDefinitionModel';
-import { QueryConfig } from '../public/QueryModel/QueryModel';
+
 import { ViewInfo } from './ViewInfo';
 import { decimalDifference, genCellKey, getSortedCellKeys, parseCellKey } from './utils';
 

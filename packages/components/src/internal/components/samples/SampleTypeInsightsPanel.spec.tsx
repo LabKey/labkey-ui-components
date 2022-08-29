@@ -8,8 +8,8 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { LoadingState } from '../../../public/LoadingState';
 
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {LabelHelpTip} from "../base/LabelHelpTip";
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { INSIGHTS_MODEL_ID, SampleTypeInsightsPanelImpl, STATUS_COUNTS_MODEL_ID } from './SampleTypeInsightsPanel';
 

@@ -19,19 +19,14 @@ import { Filter } from '@labkey/api';
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 
-import {
-    addColumns,
-    changeColumn,
-    removeColumn,
-    getExportParams,
-    generateFillSequence,
-} from './actions';
-import {CellMessage, CellValues, EditorModel, ValueDescriptor} from './models';
-import {SchemaQuery} from "../public/SchemaQuery";
-import {makeTestQueryModel} from "../public/QueryModel/testUtils";
-import {QueryInfo} from "../public/QueryInfo";
-import {QueryColumn} from "../public/QueryColumn";
-import {EXPORT_TYPES} from "./constants";
+import { SchemaQuery } from '../public/SchemaQuery';
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { QueryInfo } from '../public/QueryInfo';
+import { QueryColumn } from '../public/QueryColumn';
+
+import { CellMessage, CellValues, EditorModel, ValueDescriptor } from './models';
+import { addColumns, changeColumn, removeColumn, getExportParams, generateFillSequence } from './actions';
+import { EXPORT_TYPES } from './constants';
 
 // FIXME, when the editableGridWithData file is read in, the objects are automatically
 //  converted to Maps, which means accessing them like objects doesn't work.  That's a problem.

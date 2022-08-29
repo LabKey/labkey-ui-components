@@ -15,8 +15,9 @@
  */
 import React, { createContext, FC, useContext, useReducer } from 'react';
 import { LabKey } from '@labkey/api';
-import {Container} from "./models/Container";
-import {User} from "./models/User";
+
+import { Container } from './models/Container';
+import { User } from './models/User';
 
 export interface ServerContext extends LabKey {
     container: Container;

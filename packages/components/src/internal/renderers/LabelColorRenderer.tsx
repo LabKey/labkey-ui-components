@@ -15,7 +15,8 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import { Map } from 'immutable';
-import {ColorIcon} from "../components/base/ColorIcon";
+
+import { ColorIcon } from '../components/base/ColorIcon';
 
 interface Props {
     data: Map<any, any>;

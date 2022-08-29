@@ -1,12 +1,13 @@
 import { fromJS } from 'immutable';
 import { Filter, getServerContext } from '@labkey/api';
 
-import { HorizontalBarData } from './HorizontalBarSection';
+import { ISelectRowsResult } from '../../query/api';
+import { naturalSort } from '../../../public/sort';
+import { AppURL } from '../../url/AppURL';
+import { caseInsensitive } from '../../util/utils';
+
 import { ChartData } from './types';
-import {ISelectRowsResult} from "../../query/api";
-import {naturalSort} from "../../../public/sort";
-import {AppURL} from "../../url/AppURL";
-import {caseInsensitive} from "../../util/utils";
+import { HorizontalBarData } from './HorizontalBarSection';
 
 interface ChartDataProps {
     barFillColors: Record<string, string>;
@@ -16,9 +17,9 @@ interface ChartDataProps {
 interface ProcessChartOptions {
     colorPath?: string[];
     countPath?: string[];
+    groupPath?: string[];
     idPath?: string[];
     namePath?: string[];
-    groupPath?: string[];
 }
 
 export function processChartData(response: ISelectRowsResult, options?: ProcessChartOptions): ChartDataProps {
@@ -53,13 +54,13 @@ export function processChartData(response: ISelectRowsResult, options?: ProcessC
 }
 
 interface PercentageBarProps {
-    queryKey: string;
-    name: string;
-    label: string;
-    useForSubtitle?: boolean;
-    className?: string;
     appURL?: AppURL;
+    className?: string;
     filled?: boolean;
+    label: string;
+    name: string;
+    queryKey: string;
+    useForSubtitle?: boolean;
 }
 
 export function createPercentageBarData(
@@ -122,8 +123,8 @@ export function createPercentageBarData(
 }
 
 export interface HorizontalBarLegendData {
-    circleColor: string;
     backgroundColor: string;
+    circleColor: string;
     legendLabel: string;
     locked?: boolean;
 }
@@ -151,16 +152,16 @@ export function createHorizontalBarLegendData(data: HorizontalBarData[]): Horizo
 }
 
 interface BarChartPlotConfigProps {
+    barFillColors?: Record<string, any>;
+    data: any[];
+    defaultBorderColor?: string;
+    defaultFillColor?: string;
+    grouped?: boolean;
+    height?: number;
+    onClick?: (evt: any, row: any) => void;
     renderTo: string;
     title: string;
-    height?: number;
     width: number;
-    defaultFillColor?: string;
-    defaultBorderColor?: string;
-    data: any[];
-    barFillColors?: Record<string, any>;
-    onClick?: (evt: any, row: any) => void;
-    grouped?: boolean;
 }
 
 export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<string, any> {

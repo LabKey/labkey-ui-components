@@ -15,6 +15,14 @@ import {
 } from '../userFixtures';
 
 import {
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
+} from '../../test/data/constants';
+
+import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
+
+import {
     addAssaysSectionConfig,
     addSamplesSectionConfig,
     addSourcesSectionConfig,
@@ -56,18 +64,11 @@ import {
     SOURCES_KEY,
     WORKFLOW_KEY,
 } from './constants';
-import {
-    TEST_LKS_STARTER_MODULE_CONTEXT,
-    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-    TEST_LKSM_STARTER_MODULE_CONTEXT
-} from '../../test/data/constants';
-import {MenuSectionConfig} from "../components/navigation/ProductMenuSection";
 
 describe('getMenuSectionConfigs', () => {
-
     test('LKS starter enabled', () => {
         LABKEY.moduleContext = {
-            ...TEST_LKS_STARTER_MODULE_CONTEXT
+            ...TEST_LKS_STARTER_MODULE_CONTEXT,
         };
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
 
@@ -85,15 +86,14 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([3, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
 
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
         expect(configs.hasIn([4, WORKFLOW_KEY])).toBeFalsy();
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeFalsy();
-
     });
 
     test('sampleManager starter enabled', () => {
         LABKEY.moduleContext = {
-            ...TEST_LKSM_STARTER_MODULE_CONTEXT
+            ...TEST_LKSM_STARTER_MODULE_CONTEXT,
         };
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
 
@@ -108,14 +108,14 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([2, FREEZERS_KEY, 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
 
         expect(configs.hasIn([3, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([3, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+        expect(configs.getIn([3, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
         expect(configs.hasIn([3, WORKFLOW_KEY])).toBeFalsy();
         expect(configs.hasIn([3, NOTEBOOKS_KEY])).toBeFalsy();
     });
 
     test('sampleManager professional enabled', () => {
         LABKEY.moduleContext = {
-            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         };
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager');
 
@@ -136,11 +136,10 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
 
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
 
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
-        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual("#/notebooks");
-
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual('#/notebooks');
     });
 
     test('freezerManager enabled', () => {
@@ -173,8 +172,8 @@ describe('getMenuSectionConfigs', () => {
                 productId: BIOLOGICS_APP_PROPERTIES.productId,
             },
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN ]
-            }
+                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN],
+            },
         };
 
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId);
@@ -195,13 +194,13 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
 
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
 
         expect(configs.hasIn([4, 'media'])).toBeTruthy();
-        expect(configs.getIn([4, 'media', 'headerURL'])).toEqual("#/media");
+        expect(configs.getIn([4, 'media', 'headerURL'])).toEqual('#/media');
 
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
-        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual("#/notebooks");
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual('#/notebooks');
 
         expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
@@ -219,11 +218,11 @@ describe('getMenuSectionConfigs', () => {
             },
             biologics: {
                 productId: BIOLOGICS_APP_PROPERTIES.productId,
-                [EXPERIMENTAL_REQUESTS_MENU]: true
+                [EXPERIMENTAL_REQUESTS_MENU]: true,
             },
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN ]
-            }
+                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN],
+            },
         };
 
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId);
@@ -245,19 +244,18 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
 
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
 
         expect(configs.hasIn([4, 'media'])).toBeTruthy();
-        expect(configs.getIn([4, 'media', 'headerURL'])).toEqual("#/media");
+        expect(configs.getIn([4, 'media', 'headerURL'])).toEqual('#/media');
 
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
-        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual("#/notebooks");
-
-    })
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual('#/notebooks');
+    });
 
     test('SM starter enabled, FM current app', () => {
         LABKEY.moduleContext = {
-            ...TEST_LKSM_STARTER_MODULE_CONTEXT
+            ...TEST_LKSM_STARTER_MODULE_CONTEXT,
         };
 
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId);
@@ -281,7 +279,7 @@ describe('getMenuSectionConfigs', () => {
 
     test('SM professional, SM current app, storage editor', () => {
         LABKEY.moduleContext = {
-           ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         };
 
         const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
@@ -296,14 +294,14 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([2, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
 
         expect(configs.hasIn([2, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([2, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+        expect(configs.getIn([2, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
 
         expect(configs.hasIn([2, NOTEBOOKS_KEY])).toBeFalsy();
     });
 
     test('SM professional, SM current app, reader', () => {
         LABKEY.moduleContext = {
-            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         };
 
         const configs = getMenuSectionConfigs(TEST_USER_READER, 'sampleManager');
@@ -324,10 +322,10 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.getIn([4, WORKFLOW_KEY, 'seeAllURL'])).toEqual('#/workflow');
 
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
-        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual("#/picklist");
+        expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
 
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
-        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual("#/notebooks");
+        expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual('#/notebooks');
     });
 });
 
@@ -383,8 +381,8 @@ describe('utils', () => {
         LABKEY.moduleContext = {
             api: { moduleNames: ['labbook'] },
             core: {
-                productFeatures: [ProductFeature.ELN ]
-            }
+                productFeatures: [ProductFeature.ELN],
+            },
         };
         expect(isELNEnabled()).toBeTruthy();
     });
@@ -397,25 +395,24 @@ describe('utils', () => {
         LABKEY.moduleContext = {
             api: { moduleNames: ['assay'] },
             core: {
-                productFeatures: []
-            }
+                productFeatures: [],
+            },
         };
         expect(isAssayEnabled()).toBe(false);
         LABKEY.moduleContext = {
             api: { moduleNames: [] },
             core: {
-                productFeatures: [ProductFeature.Assay]
-            }
+                productFeatures: [ProductFeature.Assay],
+            },
         };
         expect(isAssayEnabled()).toBe(false);
         LABKEY.moduleContext = {
             api: { moduleNames: ['assay'] },
             core: {
-                productFeatures: [ProductFeature.Assay ]
-            }
+                productFeatures: [ProductFeature.Assay],
+            },
         };
         expect(isAssayEnabled()).toBe(true);
-
     });
 
     test('isWorkflowEnabled', () => {
@@ -426,22 +423,22 @@ describe('utils', () => {
         LABKEY.moduleContext = {
             api: { moduleNames: ['samplemanagement'] },
             core: {
-                productFeatures: []
-            }
+                productFeatures: [],
+            },
         };
         expect(isWorkflowEnabled()).toBe(false);
         LABKEY.moduleContext = {
             api: { moduleNames: [] },
             core: {
-                productFeatures: [ProductFeature.Workflow]
-            }
+                productFeatures: [ProductFeature.Workflow],
+            },
         };
         expect(isWorkflowEnabled()).toBe(false);
         LABKEY.moduleContext = {
             api: { moduleNames: ['samplemanagement'] },
             core: {
-                productFeatures: [ProductFeature.Workflow ]
-            }
+                productFeatures: [ProductFeature.Workflow],
+            },
         };
         expect(isWorkflowEnabled()).toBe(true);
     });

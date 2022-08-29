@@ -40,12 +40,12 @@ import { TIME_KEY_FIELD_KEY } from './constants';
 import { allowAsManagedField } from './utils';
 
 interface OwnProps {
+    keyPropertyIndex?: number;
     model: DatasetModel;
     onChange: (model: DatasetModel) => void;
-    successBsStyle?: string;
-    keyPropertyIndex?: number;
-    visitDatePropertyIndex?: number;
     onIndexChange?: (keyPropertyIndex?: number, visitDatePropertyIndex?: number) => void;
+    successBsStyle?: string;
+    visitDatePropertyIndex?: number;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps;

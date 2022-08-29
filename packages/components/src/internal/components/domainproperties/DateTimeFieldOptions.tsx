@@ -11,8 +11,8 @@ import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface DateTimeFieldProps extends ITypeDependentProps {
-    format: string;
     excludeFromShifting: boolean;
+    format: string;
 }
 
 export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps> {

@@ -46,9 +46,7 @@ describe('<PageDetailHeader/>', () => {
     });
 
     test('prefer iconUrl', () => {
-        const component = (
-            <PageDetailHeader title="Title" iconUrl="iconUrl" iconDir="iconDir" iconSrc="iconSrc" />
-        );
+        const component = <PageDetailHeader title="Title" iconUrl="iconUrl" iconDir="iconDir" iconSrc="iconSrc" />;
 
         const wrapper = mount(component);
         const srcAttr = wrapper.find('img').getDOMNode().getAttribute('src');

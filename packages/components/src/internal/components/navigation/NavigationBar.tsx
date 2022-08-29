@@ -27,6 +27,10 @@ import { SearchBox } from '../search/SearchBox';
 
 import { FindAndSearchDropdown } from '../search/FindAndSearchDropdown';
 
+import { getPrimaryAppProperties } from '../../app/utils';
+
+import { User } from '../base/models/User';
+
 import { HeaderWrapper } from './HeaderWrapper';
 
 import { ProductMenu } from './ProductMenu';
@@ -35,17 +39,16 @@ import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
 
 import { FolderMenu } from './FolderMenu';
-import { getPrimaryAppProperties } from '../../app/utils';
-import {User} from "../base/models/User";
-import {SEARCH_PLACEHOLDER} from "./constants";
+
+import { SEARCH_PLACEHOLDER } from './constants';
 
 interface NavigationBarProps {
     brand?: ReactNode;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
     model: ProductMenuModel;
     notificationsConfig?: ServerNotificationsConfig;
-    onSearch?: (form: any) => void;
     onFindByIds?: (sessionkey: string) => void;
+    onSearch?: (form: any) => void;
     searchPlaceholder?: string;
     showFolderMenu?: boolean;
     showNavMenu?: boolean;

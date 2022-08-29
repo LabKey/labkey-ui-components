@@ -11,10 +11,10 @@ import { DEFAULT_LINEAGE_DISTANCE } from '../constants';
 import { LINEAGE_DIRECTIONS } from '../types';
 import { getPageNumberChangeURL } from '../actions';
 import { LineageDepthLimitMessage } from '../LineageGraph';
-import {getLocation} from "../../../util/URL";
-import {AppURL} from "../../../url/AppURL";
-import {Alert} from "../../base/Alert";
-import {Grid, GridProps} from "../../base/Grid";
+import { getLocation } from '../../../util/URL';
+import { AppURL } from '../../../url/AppURL';
+import { Alert } from '../../base/Alert';
+import { Grid, GridProps } from '../../base/Grid';
 
 interface LineagePagingProps {
     model: LineageGridModel;

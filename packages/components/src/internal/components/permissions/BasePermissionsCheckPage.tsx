@@ -3,20 +3,23 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, ReactNode } from 'react';
-import {User} from "../base/models/User";
-import {InsufficientPermissionsPage} from "./InsufficientPermissionsPage";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {Page} from "../base/Page";
-import {PageDetailHeader} from "../forms/PageDetailHeader";
-import {Notifications} from "../notifications/Notifications";
+
+import { User } from '../base/models/User';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Page } from '../base/Page';
+import { PageDetailHeader } from '../forms/PageDetailHeader';
+import { Notifications } from '../notifications/Notifications';
+
+import { InsufficientPermissionsPage } from './InsufficientPermissionsPage';
 
 interface Props {
-    user: User;
-    title: string;
-    subTitle?: ReactNode;
     description?: ReactNode;
     hasPermission: boolean;
     renderButtons?: () => ReactNode;
+    subTitle?: ReactNode;
+    title: string;
+    user: User;
 }
 
 export const BasePermissionsCheckPage: FC<Props> = memo(props => {

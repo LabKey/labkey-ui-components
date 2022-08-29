@@ -18,6 +18,12 @@ import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { Query, Utils } from '@labkey/api';
 
+import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
+
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { caseInsensitive } from '../../util/utils';
+
 import { resolveRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';
 import { TextInput } from './input/TextInput';
@@ -26,10 +32,8 @@ import { TextAreaInput } from './input/TextAreaInput';
 import { FileInput } from './input/FileInput';
 import { DatePickerInput } from './input/DatePickerInput';
 import { TextChoiceInput } from './input/TextChoiceInput';
-import {insertColumnFilter, QueryColumn} from "../../../public/QueryColumn";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {caseInsensitive} from "../../util/utils";
-import {getQueryFormLabelFieldName, isQueryFormLabelField} from "./utils";
+
+import { getQueryFormLabelFieldName, isQueryFormLabelField } from './utils';
 
 export interface QueryFormInputsProps {
     allowFieldDisable?: boolean;

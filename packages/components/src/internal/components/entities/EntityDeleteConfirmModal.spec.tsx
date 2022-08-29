@@ -19,10 +19,11 @@ import mock, { proxy } from 'xhr-mock';
 
 import { sleep } from '../../testHelpers';
 
+import { ConfirmModal } from '../base/ConfirmModal';
+
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { SampleTypeDataType } from './constants';
-import {ConfirmModal} from "../base/ConfirmModal";
 
 beforeAll(() => {
     mock.setup();

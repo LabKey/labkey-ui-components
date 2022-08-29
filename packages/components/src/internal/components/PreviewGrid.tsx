@@ -1,24 +1,28 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
-import {SchemaQuery} from "../../public/SchemaQuery";
-import {QueryInfo} from "../../public/QueryInfo";
-import {LoadingSpinner} from "./base/LoadingSpinner";
-import {Grid} from "./base/Grid";
-import {resolveErrorMessage} from "../util/messaging";
-import {getQueryDetails, selectRowsDeprecated} from "../query/api";
+
+import { SchemaQuery } from '../../public/SchemaQuery';
+import { QueryInfo } from '../../public/QueryInfo';
+
+import { resolveErrorMessage } from '../util/messaging';
+
+import { getQueryDetails, selectRowsDeprecated } from '../query/api';
+
+import { LoadingSpinner } from './base/LoadingSpinner';
+import { Grid } from './base/Grid';
 
 interface PreviewGridProps {
-    schemaQuery: SchemaQuery;
     numCols: number;
     numRows: number;
+    schemaQuery: SchemaQuery;
 }
 
 interface PreviewGridState {
-    queryInfo: QueryInfo;
     data: any;
-    loading: boolean;
     error: string;
+    loading: boolean;
+    queryInfo: QueryInfo;
 }
 
 type StatelessPreviewGridProps = PreviewGridProps & PreviewGridState;

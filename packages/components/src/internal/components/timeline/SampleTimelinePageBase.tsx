@@ -15,23 +15,24 @@ import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { SampleEventListing } from './SampleEventListing';
-import {TimelineEventModel} from "../auditlog/models";
-import {SampleStatus} from "../samples/models";
-import {parseCsvString} from "../../util/utils";
+import { TimelineEventModel } from '../auditlog/models';
+import { SampleStatus } from '../samples/models';
+import { parseCsvString } from '../../util/utils';
 import {
     BOXES_KEY,
     FREEZER_MANAGER_APP_PROPERTIES,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
-    SOURCES_KEY
-} from "../../app/constants";
-import {isLoading} from "../../../public/LoadingState";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {getEventDataValueDisplay, getTimelineEntityUrl} from "../auditlog/utils";
-import {SampleStatusTag} from "../samples/SampleStatusTag";
+    SOURCES_KEY,
+} from '../../app/constants';
+import { isLoading } from '../../../public/LoadingState';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { getEventDataValueDisplay, getTimelineEntityUrl } from '../auditlog/utils';
+import { SampleStatusTag } from '../samples/SampleStatusTag';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
+import { SampleEventListing } from './SampleEventListing';
 
 interface OwnProps {
     api?: ComponentsAPIWrapper;

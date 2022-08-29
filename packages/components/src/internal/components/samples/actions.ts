@@ -40,13 +40,6 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { EXP_TABLES, SCHEMAS } from '../../schemas';
 
-import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
-import {
-    IS_ALIQUOT_COL,
-    SAMPLE_ID_FIND_FIELD,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
-    UNIQUE_ID_FIND_FIELD,
-} from './constants';
 import {
     getContainerFilter,
     getQueryDetails,
@@ -67,6 +60,14 @@ import { AssayStateModel } from '../assay/models';
 import { createGridModelId } from '../../models';
 import { TimelineEventModel } from '../auditlog/models';
 import { QueryInfo } from '../../../public/QueryInfo';
+
+import {
+    IS_ALIQUOT_COL,
+    SAMPLE_ID_FIND_FIELD,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
+    UNIQUE_ID_FIND_FIELD,
+} from './constants';
+import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 
 export function initSampleSetSelects(
     isUpdate: boolean,

@@ -4,8 +4,9 @@ import { LineageOptions } from '../types';
 import { Lineage } from '../models';
 import { isBasicNode, isClusterNode, isCombinedNode, VisGraphNodeType } from '../vis/VisGraphGenerator';
 
+import { LoadingSpinner } from '../../base/LoadingSpinner';
+
 import { ClusterNodeDetail, LineageNodeDetail } from './LineageNodeDetail';
-import {LoadingSpinner} from "../../base/LoadingSpinner";
 
 export interface LineageNodeDetailFactoryProps {
     highlightNode: string;

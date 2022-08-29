@@ -10,20 +10,21 @@ import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 
 import { TEST_USER_EDITOR, TEST_USER_PROJECT_ADMIN, TEST_USER_READER } from '../../internal/userFixtures';
 
-import { ActionValue } from './grid/actions/Action';
+import { SchemaQuery } from '../SchemaQuery';
+import { QueryInfo } from '../QueryInfo';
+import { LoadingState } from '../LoadingState';
+import { Grid } from '../../internal/components/base/Grid';
 
+import { ViewInfo } from '../../internal/ViewInfo';
+import { QuerySort } from '../QuerySort';
+import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
+
+import { QueryModel } from './QueryModel';
+import { GridPanel, GridTitle } from './GridPanel';
+import { makeTestActions, makeTestQueryModel } from './testUtils';
 import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';
-import { makeTestActions, makeTestQueryModel } from './testUtils';
-import {GridPanel, GridTitle} from './GridPanel';
-import {SchemaQuery} from "../SchemaQuery";
-import {QueryInfo} from "../QueryInfo";
-import {LoadingState} from "../LoadingState";
-import {Grid} from "../../internal/components/base/Grid";
-import {QueryModel} from "./QueryModel";
-import {ViewInfo} from "../../internal/ViewInfo";
-import {QuerySort} from "../QuerySort";
-import {GRID_CHECKBOX_OPTIONS} from "../../internal/constants";
+import { ActionValue } from './grid/actions/Action';
 
 // The wrapper's return type for mount<GridPanel>(<GridPanel ... />)
 type GridPanelWrapper = ReactWrapper<Readonly<GridPanel['props']>, Readonly<GridPanel['state']>, GridPanel>;

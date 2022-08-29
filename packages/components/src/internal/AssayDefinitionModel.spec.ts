@@ -1,7 +1,9 @@
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
 import assayDefNoSampleIdJSON from '../test/data/assayDefinitionModelNoSampleId.json';
-import { AssayDefinitionModel, AssayDomainTypes } from './AssayDefinitionModel';
+
 import { SchemaQuery } from '../public/SchemaQuery';
+
+import { AssayDefinitionModel, AssayDomainTypes } from './AssayDefinitionModel';
 
 describe('AssayDefinitionModel', () => {
     test('with getSampleColumn()', () => {

@@ -3,18 +3,20 @@ import { getServerContext } from '@labkey/api';
 
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
+import { imageURL } from '../../url/ActionURL';
+
+import { Container } from '../base/models/Container';
+
 import { ProductAppMenuItem } from './ProductAppMenuItem';
 import { ProductModel } from './models';
 import { PRODUCT_ID_IMG_SRC_MAP } from './constants';
-import { imageURL } from '../../url/ActionURL';
-import { Container } from '../base/models/Container';
 
 export const DEFAULT_ICON_URL = imageURL('_images', 'mobile-logo-seattle.svg');
 export const DEFAULT_ICON_ALT_URL = imageURL('_images', 'mobile-logo-overcast.svg');
 
 interface ProductAppsDrawerProps {
-    products: ProductModel[];
     onClick: (productId: string, project?: Container) => void;
+    products: ProductModel[];
 }
 
 export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {

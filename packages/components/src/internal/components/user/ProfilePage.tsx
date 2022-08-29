@@ -18,6 +18,8 @@ import { useServerContext } from '../base/ServerContext';
 
 import { getDateFormat } from '../../app/utils';
 
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+
 import { UserDetailHeader } from './UserDetailHeader';
 import { getUserRoleDisplay } from './actions';
 
@@ -25,7 +27,6 @@ import { UserProfile } from './UserProfile';
 import { ChangePasswordModal } from './ChangePasswordModal';
 
 import { useUserProperties } from './UserProvider';
-import {useNotificationsContext} from "../notifications/NotificationsContext";
 
 interface Props {
     goBack: (n?: number) => any;

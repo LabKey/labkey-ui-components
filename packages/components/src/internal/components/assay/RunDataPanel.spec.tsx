@@ -8,10 +8,11 @@ import { EditorModel } from '../../models';
 import { mountWithServerContext } from '../../testHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
+import { FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { LoadingState } from '../../../public/LoadingState';
+
 import { RunDataPanel } from './RunDataPanel';
-import {FormTabs, withFormSteps, WithFormStepsProps} from "../forms/FormStep";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {LoadingState} from "../../../public/LoadingState";
 
 const MODEL_ID_NOT_LOADED = 'not loaded';
 const MODEL_ID_LOADED = 'loaded';

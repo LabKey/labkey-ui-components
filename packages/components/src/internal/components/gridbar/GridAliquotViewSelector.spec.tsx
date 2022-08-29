@@ -7,9 +7,10 @@ import { Filter } from '@labkey/api';
 
 import { IS_ALIQUOT_COL } from '../samples/constants';
 
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
 
 describe('<GridAliquotViewSelector/>', () => {
     beforeEach(() => {

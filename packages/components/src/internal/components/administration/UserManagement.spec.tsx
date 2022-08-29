@@ -15,8 +15,9 @@ import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
 
-import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 import { InjectedPermissionsPage } from '../permissions/withPermissionsPage';
+
+import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 
 declare const LABKEY: LabKey;
 

@@ -1,18 +1,19 @@
 import React from 'react';
 import { Map } from 'immutable';
-import {SampleOperation} from "../samples/constants";
-import {buildURL} from "../../url/AppURL";
-import {ConfirmModal} from "../base/ConfirmModal";
+
+import { SampleOperation } from '../samples/constants';
+import { buildURL } from '../../url/AppURL';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 interface Props {
-    onConfirm: () => any;
-    onCancel: () => any;
-    rowId: number;
-    noun: string;
-    isSample?: boolean;
     deleteConfirmationActionName?: string;
-    showDependenciesLink: boolean;
+    isSample?: boolean;
     isShared?: boolean;
+    noun: string;
+    onCancel: () => any;
+    onConfirm: () => any;
+    rowId: number;
+    showDependenciesLink: boolean;
 }
 
 export class EntityTypeDeleteConfirmModal extends React.Component<Props, any> {

@@ -1,30 +1,33 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { Alert } from '../base/Alert';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { fetchAlternatePaths, fetchConceptForCode, getOntologyDetails } from './actions';
 import { ConceptModel, OntologyModel, PathModel } from './models';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { OntologyTreePanel } from './OntologyTreePanel';
 import { OntologySelectionPanel } from './OntologySelectionPanel';
 import { OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {Alert} from "../base/Alert";
-import {LabelHelpTip} from "../base/LabelHelpTip";
 
 export interface OntologyBrowserProps {
     asPanel?: boolean;
-    initOntologyId?: string;
-    initConceptCode?: string;
+    filterChangeHandler?: (filter: PathModel) => void;
+    filters?: Map<string, PathModel>;
+    hideConceptInfo?: boolean;
     initConcept?: ConceptModel;
+    initConceptCode?: string;
+    initOntologyId?: string;
     initPath?: PathModel;
     onPathSelect?: (path: PathModel, concept: ConceptModel) => void;
-    hideConceptInfo?: boolean;
-    filters?: Map<string, PathModel>;
-    filterChangeHandler?: (filter: PathModel) => void;
 }
 
-export const OntologyBrowserPage: FC<OntologyBrowserProps> = memo( props => {
-    const {initConceptCode, ...rest} = props;
+export const OntologyBrowserPage: FC<OntologyBrowserProps> = memo(props => {
+    const { initConceptCode, ...rest } = props;
     const [concept, setConcept] = useState<ConceptModel>();
     const [loading, setLoading] = useState<boolean>();
     const [error, setError] = useState<string>();
@@ -37,17 +40,20 @@ export const OntologyBrowserPage: FC<OntologyBrowserProps> = memo( props => {
                     const loadingConcept = await fetchConceptForCode(initConceptCode);
                     setConcept(loadingConcept);
                     setLoading(false);
-
                 } catch (e) {
-                    setError('Error: unable to load ontology concept information for ' + initConceptCode + ', code not found.');
+                    setError(
+                        'Error: unable to load ontology concept information for ' +
+                            initConceptCode +
+                            ', code not found.'
+                    );
                     setConcept(null);
                     setLoading(false);
                 }
-            }) ();
+            })();
         }
     }, [initConceptCode]);
 
-    if (loading){
+    if (loading) {
         return <LoadingSpinner />;
     }
 
@@ -158,15 +164,15 @@ OntologyBrowserPanel.defaultProps = {
 };
 
 interface OntologyBrowserPanelImplProps {
+    alternatePath?: PathModel;
+    asPanel: boolean;
+    filters?: Map<string, PathModel>;
+    hideConceptInfo?: boolean;
+    onFilterChange?: (changedNode: PathModel) => void;
     ontology: OntologyModel;
     selectedConcept?: ConceptModel;
-    alternatePath?: PathModel;
     selectedPath?: PathModel;
     setSelectedPath: (path: PathModel, isAlternatePath?: boolean) => void;
-    asPanel: boolean;
-    hideConceptInfo?: boolean;
-    filters?: Map<string, PathModel>;
-    onFilterChange?: (changedNode: PathModel) => void;
 }
 
 // exported for jest testing

@@ -4,6 +4,8 @@ import classNames from 'classnames';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { buildURL } from '../../url/AppURL';
+
 import { ContainerTabModel } from './models';
 import {
     APPLICATION_NAVIGATION_METRIC,
@@ -13,12 +15,11 @@ import {
     TO_LKS_TAB_METRIC,
 } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
-import { buildURL } from '../../url/AppURL';
 
 interface ProductLKSDrawerProps {
     api?: ComponentsAPIWrapper;
-    showHome: boolean;
     disableLKSContainerLink?: boolean;
+    showHome: boolean;
     tabs: ContainerTabModel[];
 }
 

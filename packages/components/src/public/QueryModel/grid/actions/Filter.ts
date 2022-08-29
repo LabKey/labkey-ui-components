@@ -22,9 +22,10 @@ import { JsonType } from '../../../../internal/components/domainproperties/PropD
 
 import { getColFormattedDateValue } from '../../../../internal/util/Date';
 
+import { QueryColumn } from '../../../QueryColumn';
+import { QueryInfo } from '../../../QueryInfo';
+
 import { Action, ActionValue } from './Action';
-import {QueryColumn} from "../../../QueryColumn";
-import {QueryInfo} from "../../../QueryInfo";
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances

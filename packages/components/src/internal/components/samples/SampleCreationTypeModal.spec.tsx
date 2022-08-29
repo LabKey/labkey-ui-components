@@ -7,13 +7,15 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { waitForLifecycle } from '../../testHelpers';
 
+import { OperationConfirmationData } from '../entities/models';
+
+import { Alert } from '../base/Alert';
+
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
-import {ALIQUOT_CREATION, DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION, SampleCreationType} from './models';
+import { ALIQUOT_CREATION, DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION, SampleCreationType } from './models';
 
 import { getSamplesTestAPIWrapper } from './APIWrapper';
-import {OperationConfirmationData} from "../entities/models";
-import {Alert} from "../base/Alert";
 
 describe('<SampleCreationTypeModal/>', () => {
     function validateOption(wrapper: ReactWrapper, selected: boolean, type: SampleCreationType) {

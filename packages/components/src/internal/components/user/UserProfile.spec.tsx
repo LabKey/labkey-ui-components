@@ -5,11 +5,12 @@ import { Button } from 'react-bootstrap';
 import { TEST_USER_READER } from '../../userFixtures';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
+import { getQueryDetails } from '../../query/api';
+import { SCHEMAS } from '../../schemas';
+import { FileInput } from '../forms/input/FileInput';
+import { TextInput } from '../forms/input/TextInput';
+
 import { UserProfile } from './UserProfile';
-import {getQueryDetails} from "../../query/api";
-import {SCHEMAS} from "../../schemas";
-import {FileInput} from "../forms/input/FileInput";
-import {TextInput} from "../forms/input/TextInput";
 
 beforeAll(() => {
     initUnitTestMocks();

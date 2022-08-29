@@ -16,10 +16,10 @@
 import { List, Map } from 'immutable';
 
 import { getSelectedData } from '../../actions';
-import {EditorModel, IEditableGridLoader, IGridResponse} from '../../models';
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {QueryColumn} from "../../../public/QueryColumn";
+import { EditorModel, IEditableGridLoader, IGridResponse } from '../../models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { QueryColumn } from '../../../public/QueryColumn';
 
 export class EditableGridLoaderFromSelection implements IEditableGridLoader {
     id: string;

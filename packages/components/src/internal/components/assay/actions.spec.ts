@@ -20,16 +20,18 @@ import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.j
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { AssayStateModel } from './models';
 import {
     allowReimportAssayRun,
     GENERAL_ASSAY_PROVIDER_NAME,
     getImportItemsForAssayDefinitions,
-    getRunPropertiesFileName
+    getRunPropertiesFileName,
 } from './actions';
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {AssayStateModel} from "./models";
-import {QueryInfo} from "../../../public/QueryInfo";
 
 beforeAll(() => {
     initQueryGridState();

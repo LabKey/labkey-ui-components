@@ -22,9 +22,10 @@ import { isSampleManagerEnabled } from '../../../app/utils';
 
 import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
 
+import { QuerySelect } from '../../forms/QuerySelect';
+import { SCHEMAS } from '../../../schemas';
+
 import { DataClassModel } from './models';
-import {QuerySelect} from "../../forms/QuerySelect";
-import {SCHEMAS} from "../../../schemas";
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {
@@ -33,27 +34,27 @@ const FORM_IDS = {
 };
 
 interface OwnProps extends BasePropertiesPanelProps {
-    model: DataClassModel;
-    onChange: (model: DataClassModel) => void;
     appPropertiesOnly?: boolean;
     headerText?: string;
     helpTopic?: string;
+    model: DataClassModel;
+    nameExpressionGenIdProps?: NameExpressionGenIdProps;
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
-    nounSingular?: string;
-    nounPlural?: string;
-    previewName?: string;
-    onNameFieldHover?: () => any;
     namePreviewsLoading?: boolean;
-    nameExpressionGenIdProps?: NameExpressionGenIdProps;
+    nounPlural?: string;
+    nounSingular?: string;
+    onChange: (model: DataClassModel) => void;
+    onNameFieldHover?: () => any;
+    previewName?: string;
 }
 
 type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
 
 interface State {
     isValid: boolean;
-    prefix: string;
     loadingError: string;
+    prefix: string;
 }
 
 // Note: exporting this class for jest test case

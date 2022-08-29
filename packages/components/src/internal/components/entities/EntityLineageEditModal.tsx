@@ -8,24 +8,24 @@ import { List } from 'immutable';
 
 import { getOriginalParentsFromLineage } from '../samples/actions';
 
-import {IS_ALIQUOT_COL, SampleOperation} from '../samples/constants';
+import { IS_ALIQUOT_COL, SampleOperation } from '../samples/constants';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { EntityChoice, EntityDataType, OperationConfirmationData } from './models';
-import { getEntityNoun, getUpdatedLineageRowsForBulkEdit, isSampleEntity } from './utils';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { capitalizeFirstChar, caseInsensitive } from '../../util/utils';
+import { updateRows } from '../../query/api';
+import { resolveErrorMessage } from '../../util/messaging';
+import { getOperationNotPermittedMessage } from '../samples/utils';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Alert } from '../base/Alert';
+import { Progress } from '../base/Progress';
 
 import { DataOperation, ParentEntityLineageColumns } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-import {useNotificationsContext} from "../notifications/NotificationsContext";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {capitalizeFirstChar, caseInsensitive} from "../../util/utils";
-import {updateRows} from "../../query/api";
-import {resolveErrorMessage} from "../../util/messaging";
-import {getOperationNotPermittedMessage} from "../samples/utils";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {Alert} from "../base/Alert";
-import {Progress} from "../base/Progress";
+import { getEntityNoun, getUpdatedLineageRowsForBulkEdit, isSampleEntity } from './utils';
+import { EntityChoice, EntityDataType, OperationConfirmationData } from './models';
 
 interface Props {
     api?: ComponentsAPIWrapper;

@@ -2,28 +2,30 @@ import React, { FC, PureComponent } from 'react';
 import { List } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
-import { getOmittedSampleTypeColumns } from './utils';
-import { getSampleAliquotsQueryConfig } from './actions';
-import { JobsButton, SampleStorageButton } from './models';
-import {User} from "../base/models/User";
-import {SamplesAssayButton} from "./SamplesAssayButton";
-import {PicklistButton} from "../picklist/PicklistButton";
-import {RequiresPermission} from "../base/Permissions";
-import {DisableableButton} from "../buttons/DisableableButton";
-import {ResponsiveMenuButtonGroup} from "../buttons/ResponsiveMenuButtonGroup";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {GridPanel} from "../../../public/QueryModel/GridPanel";
-import {EntityDeleteModal} from "../entities/EntityDeleteModal";
-import {SampleTypeDataType} from "../entities/constants";
-import {createGridModelId} from "../../models";
-import {SCHEMAS} from "../../schemas";
+import { User } from '../base/models/User';
+
+import { PicklistButton } from '../picklist/PicklistButton';
+import { RequiresPermission } from '../base/Permissions';
+import { DisableableButton } from '../buttons/DisableableButton';
+import { ResponsiveMenuButtonGroup } from '../buttons/ResponsiveMenuButtonGroup';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { GridPanel } from '../../../public/QueryModel/GridPanel';
+import { EntityDeleteModal } from '../entities/EntityDeleteModal';
+import { SampleTypeDataType } from '../entities/constants';
+import { createGridModelId } from '../../models';
+import { SCHEMAS } from '../../schemas';
 
 import {
     InjectedQueryModels,
     RequiresModelAndActions,
     withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
+
+import { SamplesAssayButton } from './SamplesAssayButton';
+import { JobsButton, SampleStorageButton } from './models';
+import { getSampleAliquotsQueryConfig } from './actions';
+import { getOmittedSampleTypeColumns } from './utils';
 
 const SUB_MENU_WIDTH = 800;
 

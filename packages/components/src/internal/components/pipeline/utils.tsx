@@ -6,6 +6,7 @@ import { WORKFLOW_KEY } from '../../app/constants';
 import { ProductMenuModel } from '../navigation/model';
 import { AssayUploadResultModel } from '../assay/models';
 import { Tip } from '../base/Tip';
+
 import { ACTIVE_JOB_INDICATOR_CLS } from './constants';
 
 export function hasActivePipelineJob(menu: ProductMenuModel, sectionKey: string, itemLabel: string): boolean {

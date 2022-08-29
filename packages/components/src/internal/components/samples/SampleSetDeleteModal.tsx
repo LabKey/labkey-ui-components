@@ -1,11 +1,13 @@
 import React, { FC, useCallback, useState } from 'react';
 
 import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
-import {useNotificationsContext} from "../notifications/NotificationsContext";
-import {SHARED_CONTAINER_PATH} from "../../constants";
-import {deleteSampleSet} from "./actions";
-import {EntityTypeDeleteConfirmModal} from "../entities/EntityTypeDeleteConfirmModal";
-import {Progress} from "../base/Progress";
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+import { SHARED_CONTAINER_PATH } from '../../constants';
+
+import { EntityTypeDeleteConfirmModal } from '../entities/EntityTypeDeleteConfirmModal';
+import { Progress } from '../base/Progress';
+
+import { deleteSampleSet } from './actions';
 
 interface Props {
     afterDelete?: (success: boolean) => void;

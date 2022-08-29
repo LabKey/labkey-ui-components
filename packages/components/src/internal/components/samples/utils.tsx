@@ -4,11 +4,21 @@ import { ActionURL, Filter, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 
-import { isELNEnabled, isFreezerManagementEnabled, isSampleStatusEnabled, } from '../../app/utils';
+import { isELNEnabled, isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
 import { SAMPLES_KEY } from '../../app/constants';
+
+import { SCHEMAS } from '../../schemas';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { caseInsensitive } from '../../util/utils';
+import { MenuItemModel, ProductMenuModel } from '../navigation/model';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+
+import { SampleStatus } from './models';
 
 import {
     operationRestrictionMessage,
@@ -19,17 +29,8 @@ import {
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SampleOperation,
-    SampleStateType
+    SampleStateType,
 } from './constants';
-
-import { SampleStatus } from './models';
-import { SCHEMAS } from '../../schemas';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { caseInsensitive } from '../../util/utils';
-import { MenuItemModel, ProductMenuModel } from '../navigation/model';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 
 export function getOmittedSampleTypeColumns(user: User): string[] {
     let cols: string[] = [];

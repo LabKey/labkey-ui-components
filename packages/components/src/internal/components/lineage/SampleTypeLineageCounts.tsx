@@ -5,9 +5,10 @@
 import React, { FunctionComponent, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 
+import { GridColumn } from '../base/models/GridColumn';
+import { Grid } from '../base/Grid';
+
 import { InjectedLineage, withLineage } from './withLineage';
-import {GridColumn} from "../base/models/GridColumn";
-import {Grid} from "../base/Grid";
 
 class CountsWithLineageImpl extends PureComponent<InjectedLineage> {
     private readonly columns = List([

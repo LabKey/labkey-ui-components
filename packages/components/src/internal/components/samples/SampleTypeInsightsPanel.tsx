@@ -9,11 +9,11 @@ import { SAMPLES_KEY } from '../../app/constants';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { isLoading } from '../../../public/LoadingState';
 import { QuerySort } from '../../../public/QuerySort';
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {AppURL} from "../../url/AppURL";
-import {LabelHelpTip} from "../base/LabelHelpTip";
-import {SCHEMAS} from "../../schemas";
-import {caseInsensitive} from "../../util/utils";
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { AppURL } from '../../url/AppURL';
+import { LabelHelpTip } from '../base/LabelHelpTip';
+import { SCHEMAS } from '../../schemas';
+import { caseInsensitive } from '../../util/utils';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
@@ -134,7 +134,7 @@ export const SampleTypeInsightsPanel: FC<OwnProps> = memo(props => {
     const queryConfigs = {
         [INSIGHTS_MODEL_ID]: {
             id: INSIGHTS_MODEL_ID,
-            schemaQuery:  SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_TYPE_INSIGHTS,
+            schemaQuery: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_TYPE_INSIGHTS,
             baseFilters: [Filter.create('SampleSet/Name', props.sampleSet)],
         },
         [STATUS_COUNTS_MODEL_ID]: {

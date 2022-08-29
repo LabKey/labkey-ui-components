@@ -6,12 +6,13 @@ import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { mountWithAppServerContext } from '../../testHelpers';
 
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { DisableableButton } from '../buttons/DisableableButton';
+import { ConfirmModal } from '../base/ConfirmModal';
+
+import { Picklist } from './models';
 import { RemoveFromPicklistButton } from './RemoveFromPicklistButton';
-import {Picklist} from "./models";
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {DisableableButton} from "../buttons/DisableableButton";
-import {ConfirmModal} from "../base/ConfirmModal";
 
 beforeAll(() => {
     LABKEY.moduleContext = {

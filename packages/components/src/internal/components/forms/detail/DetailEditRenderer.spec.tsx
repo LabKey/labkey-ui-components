@@ -9,17 +9,18 @@ import { AliasInput } from '../input/AliasInput';
 
 import { TextChoiceInput } from '../input/TextChoiceInput';
 
+import { QueryColumn } from '../../../../public/QueryColumn';
+import { LabelOverlay } from '../LabelOverlay';
+import { FileInput } from '../input/FileInput';
+import { DatePickerInput } from '../input/DatePickerInput';
+import { QuerySelect } from '../QuerySelect';
+import { AppendUnits } from '../../../renderers/AppendUnits';
+import { AliasRenderer } from '../../../renderers/AliasRenderer';
+import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
+import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
+import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
+
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
-import {QueryColumn} from "../../../../public/QueryColumn";
-import {LabelOverlay} from "../LabelOverlay";
-import {FileInput} from "../input/FileInput";
-import {DatePickerInput} from "../input/DatePickerInput";
-import {QuerySelect} from "../QuerySelect";
-import {AppendUnits} from "../../../renderers/AppendUnits";
-import {AliasRenderer} from "../../../renderers/AliasRenderer";
-import {MultiValueRenderer} from "../../../renderers/MultiValueRenderer";
-import {LabelColorRenderer} from "../../../renderers/LabelColorRenderer";
-import {FileColumnRenderer} from "../../../renderers/FileColumnRenderer";
 
 describe('titleRenderer', () => {
     test('editable', () => {

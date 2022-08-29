@@ -17,10 +17,11 @@ import { List } from 'immutable';
 
 import { parseColumns, resolveFieldKey } from '../utils';
 
-import { Action, ActionOption, ActionValue, Value } from './Action';
 import { decodePart } from '../../../SchemaQuery';
-import {QueryColumn} from "../../../QueryColumn";
-import {QuerySort} from "../../../QuerySort";
+import { QueryColumn } from '../../../QueryColumn';
+import { QuerySort } from '../../../QuerySort';
+
+import { Action, ActionOption, ActionValue, Value } from './Action';
 
 export class SortAction implements Action {
     iconCls = 'sort';
@@ -40,7 +41,7 @@ export class SortAction implements Action {
     static parseTokens(
         tokens: string[],
         columns: List<QueryColumn>
-    ): { columnName: string; dir: string; column?: QueryColumn } {
+    ): { column?: QueryColumn; columnName: string; dir: string } {
         const options = {
             column: undefined,
             columnName: undefined,

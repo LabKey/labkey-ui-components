@@ -6,8 +6,9 @@ import { IParentAlias } from '../domainproperties/samples/models';
 
 import { SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
 
+import { IParentOption } from '../entities/models';
+
 import { SampleSetParentAliasRow } from './SampleSetParentAliasRow';
-import {IParentOption} from "../entities/models";
 
 describe('<SampleSetParentAliasRow/>', () => {
     test('Ignore empty values', () => {

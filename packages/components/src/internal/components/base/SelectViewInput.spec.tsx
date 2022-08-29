@@ -5,7 +5,9 @@ import { selectOptionByText } from '../forms/input/SelectInputTestUtils';
 
 import {
     clearSelectViewsInLocalStorage,
-    getSelectViewsInLocalStorage, SelectView, SelectViewInput,
+    getSelectViewsInLocalStorage,
+    SelectView,
+    SelectViewInput,
     setSelectViewInLocalStorage,
 } from './SelectViewInput';
 

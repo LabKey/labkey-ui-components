@@ -17,11 +17,12 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
-import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
+import { loadNameExpressionOptions } from '../../settings/actions';
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
+import { resolveErrorMessage } from '../../../util/messaging';
+
 import { DataClassModel, DataClassModelConfig } from './models';
-import {loadNameExpressionOptions} from "../../settings/actions";
-import {DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS} from "../constants";
-import {resolveErrorMessage} from "../../../util/messaging";
+import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 
 interface Props {
     api?: ComponentsAPIWrapper;

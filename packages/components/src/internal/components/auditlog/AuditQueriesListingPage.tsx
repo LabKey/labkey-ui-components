@@ -10,20 +10,21 @@ import { Query } from '@labkey/api';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 
-import { AuditDetails } from './AuditDetails';
-import { AuditDetailsModel } from './models';
-import { getAuditDetail } from './actions';
-import { AuditQuery, getAuditQueries } from './utils';
-import {User} from "../base/models/User";
-import {resetParameters} from "../../util/URL";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {Alert} from "../base/Alert";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {Page} from "../base/Page";
-import {PageHeader} from "../base/PageHeader";
-import {SelectInput} from "../forms/input/SelectInput";
+import { User } from '../base/models/User';
+import { resetParameters } from '../../util/URL';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Page } from '../base/Page';
+import { PageHeader } from '../base/PageHeader';
+import { SelectInput } from '../forms/input/SelectInput';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
+import { AuditQuery, getAuditQueries } from './utils';
+import { getAuditDetail } from './actions';
+import { AuditDetailsModel } from './models';
+import { AuditDetails } from './AuditDetails';
 
 interface OwnProps {
     params: any;
@@ -33,11 +34,11 @@ interface OwnProps {
 type Props = OwnProps & InjectedQueryModels;
 
 interface State {
-    selected: string;
-    selectedRowId: number;
     auditQueries: AuditQuery[];
     detail?: AuditDetailsModel;
     error?: ReactNode;
+    selected: string;
+    selectedRowId: number;
 }
 
 class AuditQueriesListingPageImpl extends PureComponent<Props, State> {

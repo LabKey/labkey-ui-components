@@ -1,5 +1,6 @@
 import React, { FC, memo, ReactNode } from 'react';
-import {LabelHelpTip} from "../base/LabelHelpTip";
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface Props {
     cls?: string;

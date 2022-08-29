@@ -8,10 +8,11 @@ import { DomainDesign } from '../models';
 import { sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
+import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
+
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
 import { AssayDesignerPanels } from './AssayDesignerPanels';
-import {FileAttachmentForm} from "../../../../public/files/FileAttachmentForm";
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,

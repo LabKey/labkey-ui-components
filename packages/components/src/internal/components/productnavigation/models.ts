@@ -2,8 +2,10 @@ import { immerable } from 'immer';
 
 import { isProductNavigationEnabled } from '../../app/utils';
 import { BIOLOGICS_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
-import { APPLICATION_SECTION_METRIC, BIOLOGICS_SECTION_METRIC, SAMPLE_MANAGER_SECTION_METRIC } from './constants';
+
 import { AppURL } from '../../url/AppURL';
+
+import { APPLICATION_SECTION_METRIC, BIOLOGICS_SECTION_METRIC, SAMPLE_MANAGER_SECTION_METRIC } from './constants';
 
 export class ProductModel {
     [immerable] = true;
@@ -23,11 +25,9 @@ export class ProductModel {
     get navigationMetric() {
         if (this.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
             return SAMPLE_MANAGER_SECTION_METRIC;
-        }
-        else if (this.productId === BIOLOGICS_APP_PROPERTIES.productId) {
+        } else if (this.productId === BIOLOGICS_APP_PROPERTIES.productId) {
             return BIOLOGICS_SECTION_METRIC;
-        }
-        else {
+        } else {
             return APPLICATION_SECTION_METRIC;
         }
     }

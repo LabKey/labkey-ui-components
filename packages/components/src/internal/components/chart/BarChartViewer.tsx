@@ -11,22 +11,23 @@ import { SAMPLE_FILTER_METRIC_AREA } from '../search/utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { processChartData } from './utils';
-import { BaseBarChart } from './BaseBarChart';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { selectRows } from '../../query/selectRows';
+import { AppURL } from '../../url/AppURL';
+import { User } from '../base/models/User';
+import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
+import { Alert } from '../base/Alert';
+import { getActionErrorMessage } from '../../util/messaging';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { SampleEmptyAlert, SampleTypeEmptyAlert } from '../samples/SampleEmptyAlert';
+import { AssayDesignEmptyAlert } from '../assay/AssayDesignEmptyAlert';
+import { Section } from '../base/Section';
+import { Tip } from '../base/Tip';
+import { RequiresPermission } from '../base/Permissions';
+
 import { ChartConfig, ChartData, ChartSelector } from './types';
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {selectRows} from "../../query/selectRows";
-import {AppURL} from "../../url/AppURL";
-import {User} from "../base/models/User";
-import {ISelectRowsResult, selectRowsDeprecated} from "../../query/api";
-import {Alert} from "../base/Alert";
-import {getActionErrorMessage} from "../../util/messaging";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {SampleEmptyAlert, SampleTypeEmptyAlert} from "../samples/SampleEmptyAlert";
-import {AssayDesignEmptyAlert} from "../assay/AssayDesignEmptyAlert";
-import {Section} from "../base/Section";
-import {Tip} from "../base/Tip";
-import {RequiresPermission} from "../base/Permissions";
+import { BaseBarChart } from './BaseBarChart';
+import { processChartData } from './utils';
 
 async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFilter[] = []): Promise<number> {
     try {

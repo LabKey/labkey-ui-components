@@ -1,6 +1,21 @@
 import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
+import { buildURL } from '../../url/AppURL';
+import { SampleOperation } from '../samples/constants';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
+import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
+import { caseInsensitive } from '../../util/utils';
+import { SampleCreationType } from '../samples/models';
+import { getSelected, getSelectedData } from '../../actions';
+import { SHARED_CONTAINER_PATH } from '../../constants';
+import { naturalSort } from '../../../public/sort';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { SCHEMAS } from '../../schemas';
+
+import { isDataClassEntity, isSampleEntity } from './utils';
+import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
 import {
     DisplayObject,
     EntityDataType,
@@ -11,20 +26,6 @@ import {
     IParentOption,
     OperationConfirmationData,
 } from './models';
-import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
-import { isDataClassEntity, isSampleEntity } from './utils';
-import { buildURL } from '../../url/AppURL';
-import { SampleOperation } from '../samples/constants';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
-import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
-import { caseInsensitive } from '../../util/utils';
-import { SampleCreationType } from '../samples/models';
-import {getSelected, getSelectedData} from '../../actions';
-import { SHARED_CONTAINER_PATH } from '../../constants';
-import { naturalSort } from '../../../public/sort';
-import { QueryInfo } from '../../../public/QueryInfo';
-import {SCHEMAS} from "../../schemas";
 
 export function getOperationConfirmationData(
     selectionKey: string,
@@ -78,9 +79,16 @@ export function getDeleteConfirmationData(
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
     }
-    return getOperationConfirmationData(selectionKey, dataType, rowIds, isDataClassEntity(dataType) ? {
-        dataOperation: DataOperation.Delete
-    } : undefined);
+    return getOperationConfirmationData(
+        selectionKey,
+        dataType,
+        rowIds,
+        isDataClassEntity(dataType)
+            ? {
+                  dataOperation: DataOperation.Delete,
+              }
+            : undefined
+    );
 }
 
 export function getSampleOperationConfirmationData(

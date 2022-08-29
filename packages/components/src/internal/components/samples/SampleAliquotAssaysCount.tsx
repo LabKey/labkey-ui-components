@@ -1,12 +1,13 @@
 import React, { FC, memo, useMemo } from 'react';
 
-import { getSampleAssayQueryConfigs } from './actions';
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {isLoading} from "../../../public/LoadingState";
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { isLoading } from '../../../public/LoadingState';
 
-import {InjectedAssayModel, withAssayModels} from '../assay/withAssayModels';
+import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
+import { getSampleAssayQueryConfigs } from './actions';
 
 const SampleAliquotAssaysCountBodyImpl: FC<InjectedQueryModels> = memo(props => {
     const { queryModels } = props;
@@ -33,8 +34,8 @@ const SampleAliquotAssaysCountBodyImpl: FC<InjectedQueryModels> = memo(props => 
 const SampleAliquotAssaysCountBody = withQueryModels<any>(SampleAliquotAssaysCountBodyImpl);
 
 interface Props {
-    sampleId: string;
     aliquotIds: number[];
+    sampleId: string;
     sampleSchemaQuery: SchemaQuery;
 }
 

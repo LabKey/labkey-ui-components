@@ -8,8 +8,8 @@ import { isFieldFullyLocked } from './propertiesUtil';
 import { ITypeDependentProps } from './models';
 
 export interface ScannableProps extends ITypeDependentProps {
-    scannable?: boolean;
     appPropertiesOnly?: boolean;
+    scannable?: boolean;
     showScannableOption?: boolean;
 }
 

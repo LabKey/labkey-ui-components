@@ -8,8 +8,12 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { helpLinkNode } from '../../../util/helpLinks';
 
+import { SelectInput } from '../../forms/input/SelectInput';
+
+import { LabelHelpTip } from '../../base/LabelHelpTip';
+
 import { CheckBox } from './ListPropertiesPanelFormElements';
-import {AdvancedSettingsForm, ListModel} from './models';
+import { AdvancedSettingsForm, ListModel } from './models';
 import {
     CUSTOM_TEMPLATE_TIP,
     DATA_INDEXING_TIP,
@@ -17,8 +21,6 @@ import {
     DOCUMENT_TITLE_TIP,
     SEARCH_INDEXING_TIP,
 } from './constants';
-import {SelectInput} from "../../forms/input/SelectInput";
-import {LabelHelpTip} from "../../base/LabelHelpTip";
 
 interface DisplayTitleProps {
     model: ListModel;
@@ -53,8 +55,8 @@ export class DisplayTitle extends React.PureComponent<DisplayTitleProps> {
 }
 
 interface DiscussionLinksProps {
-    onRadioChange: (evt: any) => any;
     discussionSetting: number;
+    onRadioChange: (evt: any) => any;
 }
 
 class DiscussionLinks extends React.PureComponent<DiscussionLinksProps> {
@@ -82,8 +84,8 @@ class DiscussionLinks extends React.PureComponent<DiscussionLinksProps> {
 
 interface TitleIndexFieldProps {
     name: string;
-    titleTemplate: string;
     onInputChange: (evt: any) => any;
+    titleTemplate: string;
 }
 
 class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
@@ -142,11 +144,11 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
 }
 
 interface IndexFieldProps {
-    name: string;
-    onRadioChange: (evt: any) => any;
-    onInputChange: (evt: any) => any;
     bodySetting: number;
     bodyTemplate: string;
+    name: string;
+    onInputChange: (evt: any) => any;
+    onRadioChange: (evt: any) => any;
 }
 
 export class IndexField extends React.PureComponent<IndexFieldProps> {
@@ -184,12 +186,12 @@ export class IndexField extends React.PureComponent<IndexFieldProps> {
 }
 
 interface SingleDocumentIndexFieldsProps {
-    onRadioChange: (evt: any) => any;
-    onInputChange: (evt: any) => any;
-    entireListTitleTemplate: string;
-    entireListIndexSetting: number;
     entireListBodySetting: number;
     entireListBodyTemplate: string;
+    entireListIndexSetting: number;
+    entireListTitleTemplate: string;
+    onInputChange: (evt: any) => any;
+    onRadioChange: (evt: any) => any;
 }
 
 export class SingleDocumentIndexFields extends React.PureComponent<SingleDocumentIndexFieldsProps> {
@@ -230,11 +232,11 @@ export class SingleDocumentIndexFields extends React.PureComponent<SingleDocumen
 }
 
 interface SeparateDocumentIndexFieldsProps {
-    onRadioChange: (evt: any) => any;
-    onInputChange: (evt: any) => any;
-    eachItemTitleTemplate: string;
     eachItemBodySetting: number;
     eachItemBodyTemplate: string;
+    eachItemTitleTemplate: string;
+    onInputChange: (evt: any) => any;
+    onRadioChange: (evt: any) => any;
 }
 
 export class SeparateDocumentIndexFields extends React.PureComponent<SeparateDocumentIndexFieldsProps> {
@@ -263,14 +265,14 @@ export class SeparateDocumentIndexFields extends React.PureComponent<SeparateDoc
 }
 
 interface CollapsibleFieldsProps {
+    checked: boolean;
+    collapseFields: () => void;
+    expandFields: (expandedSection: string) => void;
     expanded: boolean;
     fields: JSX.Element;
-    title: string;
-    expandFields: (expandedSection: string) => void;
-    collapseFields: () => void;
     identifier: string;
-    checked: boolean;
     onCheckboxChange: (name: string, checked: boolean) => void;
+    title: string;
 }
 
 class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
@@ -319,12 +321,12 @@ class CollapsibleFields extends React.PureComponent<CollapsibleFieldsProps> {
 }
 
 interface SearchIndexingProps {
-    onRadioChange: (evt: any) => any;
-    onInputChange: (evt: any) => any;
-    onCheckboxChange: (name, checked) => void;
-    entireListIndexSettings: any;
     eachItemIndexSettings: any;
+    entireListIndexSettings: any;
     fileAttachmentIndex: boolean;
+    onCheckboxChange: (name, checked) => void;
+    onInputChange: (evt: any) => any;
+    onRadioChange: (evt: any) => any;
 }
 
 interface SearchIndexingState {
@@ -417,9 +419,9 @@ export class SearchIndexing extends React.PureComponent<SearchIndexingProps, Sea
 
 interface SettingsContainerProps {
     fieldComponent: JSX.Element;
-    title: string;
     tipBody: string | JSX.Element;
     tipTitle?: string;
+    title: string;
 }
 
 class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
@@ -440,10 +442,10 @@ class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
 }
 
 interface AdvancedSettingsProps {
-    model: ListModel;
-    title: string;
     applyAdvancedProperties: (advancedSettingsForm: AdvancedSettingsForm) => void;
+    model: ListModel;
     successBsStyle?: string;
+    title: string;
 }
 
 interface AdvancedSettingsState extends AdvancedSettingsForm {

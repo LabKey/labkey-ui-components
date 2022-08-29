@@ -13,15 +13,15 @@ import { OntologyBrowserModal } from './OntologyBrowserModal';
 import { fetchConceptForCode, fetchPathModel } from './actions';
 
 export interface OntologyConceptSelectButtonProps {
-    id: string;
+    error?: string;
     field: DomainField;
-    title?: string;
-    valueProp: string;
-    valueIsPath: boolean;
+    id: string;
     onChange: (id: string, path: PathModel, concept: ConceptModel) => void;
     successBsStyle?: string;
-    error?: string;
+    title?: string;
     useFieldSourceOntology?: boolean;
+    valueIsPath: boolean;
+    valueProp: string;
 }
 
 export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> = memo(props => {

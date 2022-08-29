@@ -1,13 +1,14 @@
 import { ReactNode } from 'react';
 import { Filter } from '@labkey/api';
-import {AppURL} from "../../url/AppURL";
-import {SchemaQuery} from "../../../public/SchemaQuery";
+
+import { AppURL } from '../../url/AppURL';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export interface ChartData {
     count: number;
+    id?: string | number;
     x: string;
     xSub?: string;
-    id?: string | number;
 }
 
 export interface ChartSelector {
@@ -19,17 +20,17 @@ export interface ChartSelector {
 export interface ChartConfig {
     charts: ChartSelector[];
     colorPath?: string[];
-    groupPath?: string[];
-    showSampleButtons?: boolean;
     emptyStateMsg?: ReactNode;
     filterDataRegionName?: string;
     getAppURL?: (data: ChartData, evt?: any) => AppURL;
+    groupPath?: string[];
     itemCountFilters?: Filter.IFilter[];
     itemCountSQ: SchemaQuery;
     key: string;
     label: string;
     namePath?: string[];
     queryName: string;
+    showSampleButtons?: boolean;
     schemaName: string;
     sort?: string;
 }

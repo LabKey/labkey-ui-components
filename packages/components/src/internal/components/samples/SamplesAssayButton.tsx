@@ -7,10 +7,11 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { AssayImportSubMenuItem } from '../assay/AssayImportSubMenuItem';
 import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
 
+import { isLoading } from '../../../public/LoadingState';
+import { RequiresPermission } from '../base/Permissions';
+import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
+
 import { isSamplesSchema } from './utils';
-import {isLoading} from "../../../public/LoadingState";
-import {RequiresPermission} from "../base/Permissions";
-import {ResponsiveMenuButton} from "../buttons/ResponsiveMenuButton";
 
 interface Props {
     asSubMenu?: boolean;

@@ -7,6 +7,8 @@ import { LabKey, Query } from '@labkey/api';
 
 import { RowsResponse, bindColumnRenderers } from '../public/QueryModel/QueryModelLoader';
 
+import { QueryInfo } from '../public/QueryInfo';
+
 import { applyQueryMetadata, handleSelectRowsResponse } from './query/api';
 import { URL_MAPPERS, URLService } from './url/URLResolver';
 import { AppContext, AppContextProvider } from './AppContext';
@@ -16,9 +18,8 @@ import {
     NotificationsContextProvider,
     NotificationsContextState,
 } from './components/notifications/NotificationsContext';
-import {initQueryGridState} from "./global";
-import {QueryInfo} from "../public/QueryInfo";
-import {ServerContext, ServerContextProvider} from "./components/base/ServerContext";
+import { initQueryGridState } from './global';
+import { ServerContext, ServerContextProvider } from './components/base/ServerContext';
 
 declare let LABKEY: LabKey;
 

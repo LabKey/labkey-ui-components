@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { imageURL } from '../../url/ActionURL';
+
 import { iconURL, Theme } from './SVGIcon';
-import {imageURL} from "../../url/ActionURL";
 
 describe('iconURL', () => {
     const iconDir = 'testDir';

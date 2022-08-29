@@ -1,8 +1,9 @@
 import { List } from 'immutable';
 
+import { QueryColumn } from '../../QueryColumn';
+
 import { ActionValue } from './actions/Action';
 import { Change, ChangeType } from './model';
-import {QueryColumn} from "../../QueryColumn";
 
 /**
  * From the supplied columnName this method will determine which columns in the "columns" list

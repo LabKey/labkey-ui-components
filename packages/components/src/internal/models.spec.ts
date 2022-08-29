@@ -17,11 +17,12 @@ import { fromJS, List, Map, Set } from 'immutable';
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 
-import { CellMessage, EditorModel, getPkData, ValueDescriptor } from './models';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryColumn } from '../public/QueryColumn';
 import { QueryInfo } from '../public/QueryInfo';
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+
+import { CellMessage, EditorModel, getPkData, ValueDescriptor } from './models';
 
 const schemaQ = new SchemaQuery({
     schemaName: 'samples',

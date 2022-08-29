@@ -6,13 +6,15 @@ import { SAMPLES_KEY } from '../../app/constants';
 
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
+import { MenuOption, SubMenu } from '../menus/SubMenu';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { MenuSectionModel, ProductMenuModel } from '../navigation/model';
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+
+import { SampleCreationTypeModal } from './SampleCreationTypeModal';
+import { CreateSamplesSubMenu, MAX_PARENTS_PER_SAMPLE } from './CreateSamplesSubMenu';
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
-import {CreateSamplesSubMenu, MAX_PARENTS_PER_SAMPLE} from './CreateSamplesSubMenu';
-import {MenuOption, SubMenu} from "../menus/SubMenu";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {SampleCreationTypeModal} from "./SampleCreationTypeModal";
-import {MenuSectionModel, ProductMenuModel} from "../navigation/model";
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
 
 const sampleOptions = [
     {

@@ -13,8 +13,8 @@ import { SchemaQuery } from '../../public/SchemaQuery';
 import { downloadAttachment } from '../util/utils';
 
 interface Props {
-    row?: Map<any, any>;
     excludeColumns?: string[];
+    row?: Map<any, any>;
 }
 
 export class SampleTypeTemplateDownloadRenderer extends React.PureComponent<Props> {

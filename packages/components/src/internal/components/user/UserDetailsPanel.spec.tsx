@@ -8,8 +8,9 @@ import { sleep } from '../../testHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { JEST_SITE_ADMIN_USER_ID } from '../../../test/data/constants';
 
+import { SecurityPolicy } from '../permissions/models';
+
 import { UserDetailsPanel } from './UserDetailsPanel';
-import {SecurityPolicy} from "../permissions/models";
 
 beforeAll(() => {
     initUnitTestMocks();

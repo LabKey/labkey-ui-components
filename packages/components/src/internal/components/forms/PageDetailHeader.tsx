@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import {SVGIcon} from "../base/SVGIcon";
+
+import { SVGIcon } from '../base/SVGIcon';
 
 export interface PageDetailHeaderProps {
     description?: ReactNode;
@@ -33,17 +34,8 @@ export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
     };
 
     render(): ReactNode {
-        const {
-            children,
-            description,
-            iconAltText,
-            iconUrl,
-            iconDir,
-            iconSrc,
-            leftColumns,
-            subTitle,
-            title,
-        } = this.props;
+        const { children, description, iconAltText, iconUrl, iconDir, iconSrc, leftColumns, subTitle, title } =
+            this.props;
         const hasIcon = iconUrl || iconSrc;
 
         return (

@@ -27,6 +27,13 @@ import { useAppContext } from '../../AppContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
+import {
+    InjectedQueryModels,
+    QueryConfigMap,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../../../public/QueryModel/withQueryModels';
+
 import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';
 import {
@@ -47,13 +54,6 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
-
-import {
-    InjectedQueryModels,
-    QueryConfigMap,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../../../public/QueryModel/withQueryModels';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };

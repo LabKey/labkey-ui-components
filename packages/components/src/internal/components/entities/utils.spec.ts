@@ -2,6 +2,10 @@ import { List } from 'immutable';
 
 import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { makeQueryInfo } from '../../testHelpers';
+
 import { EntityChoice, IEntityTypeOption } from './models';
 import {
     createEntityParentKey,
@@ -11,9 +15,7 @@ import {
     getUpdatedLineageRowsForBulkEdit,
     parentValuesDiffer,
 } from './utils';
-import {DataClassDataType, SampleTypeDataType} from "./constants";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {makeQueryInfo} from "../../testHelpers";
+import { DataClassDataType, SampleTypeDataType } from './constants';
 
 describe('getInitialParentChoices', () => {
     const parentTypeOptions = List<IEntityTypeOption>([

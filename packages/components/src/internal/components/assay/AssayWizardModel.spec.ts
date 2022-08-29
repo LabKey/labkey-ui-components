@@ -20,10 +20,11 @@ import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
 import { AssayUploadTabs } from '../../constants';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { LoadingState } from '../../../public/LoadingState';
+import { EditorModel } from '../../models';
+
 import { AssayWizardModel, parseDataTextToRunRows } from './AssayWizardModel';
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {LoadingState} from "../../../public/LoadingState";
-import {EditorModel} from "../../models";
 
 const DATA_TEXT = 'test1\ttest2\n1\t2';
 

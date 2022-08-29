@@ -3,10 +3,12 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 
+import { DomainField } from '../domainproperties/models';
+
+import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
+
 import { OntologyConceptAnnotation } from './OntologyConceptAnnotation';
 import { OntologyBrowserModal } from './OntologyBrowserModal';
-import {DomainField} from "../domainproperties/models";
-import {DomainFieldLabel} from "../domainproperties/DomainFieldLabel";
 
 const DEFAULT_PROPS = {
     id: 'testId',

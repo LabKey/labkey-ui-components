@@ -2,9 +2,10 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Modal } from 'react-bootstrap';
 
+import { LoadingSpinner } from '../components/base/LoadingSpinner';
+import { LoadingState } from '../../public/LoadingState';
+
 import { AttachmentCard } from './AttachmentCard';
-import {LoadingSpinner} from "../components/base/LoadingSpinner";
-import {LoadingState} from "../../public/LoadingState";
 
 const DEFAULT_PROPS = {
     attachment: { name: 'name.txt', iconFontCls: 'fa-test' },

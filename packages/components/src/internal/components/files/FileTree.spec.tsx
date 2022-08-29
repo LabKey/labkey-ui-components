@@ -6,10 +6,11 @@ import { Treebeard, animations } from 'react-treebeard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { FileTree, EMPTY_FILE_NAME, LOADING_FILE_NAME } from './FileTree';
 import { fetchFileTestTree } from './FileTreeTest';
 import { FileNodeIcon, Header } from './FileTreeHeader';
-import {LoadingSpinner} from "../base/LoadingSpinner";
 
 const waitForLoad = jest.fn(component => Promise.resolve(!component.state().loading));
 
@@ -120,7 +121,9 @@ describe('FileNodeIcon', () => {
         expect(wrapper.find(FontAwesomeIcon).prop('className')).toBe('filetree-folder-icon');
         wrapper.unmount();
 
-        wrapper = mount(<FileNodeIcon {...DEFAULT_PROPS} useFileIconCls node={{ data: { iconFontCls: 'test-cls' } }} />);
+        wrapper = mount(
+            <FileNodeIcon {...DEFAULT_PROPS} useFileIconCls node={{ data: { iconFontCls: 'test-cls' } }} />
+        );
         expect(wrapper.find('i')).toHaveLength(1);
         expect(wrapper.find(FontAwesomeIcon)).toHaveLength(0);
         expect(wrapper.find('i').prop('className')).toBe('test-cls filetree-folder-icon');
@@ -219,7 +222,9 @@ describe('Header', () => {
     });
 
     test('loading node', () => {
-        const wrapper = mount(<Header {...DEFAULT_PROPS} isLoading={true} node={{ id: 'test|' + LOADING_FILE_NAME }} />);
+        const wrapper = mount(
+            <Header {...DEFAULT_PROPS} isLoading={true} node={{ id: 'test|' + LOADING_FILE_NAME }} />
+        );
         validate(wrapper, true, true);
         wrapper.unmount();
     });

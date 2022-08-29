@@ -9,13 +9,15 @@ import PanelHeading from 'react-bootstrap/lib/PanelHeading';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
-import { EntityChoice } from './models';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { DataClassDataType } from './constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {DataClassDataType} from "./constants";
-import {Alert} from "../base/Alert";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { EntityChoice } from './models';
 
 beforeAll(() => {
     initUnitTestMocks();

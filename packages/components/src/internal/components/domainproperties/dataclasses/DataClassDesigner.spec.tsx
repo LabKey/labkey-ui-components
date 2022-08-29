@@ -9,16 +9,18 @@ import DomainForm from '../DomainForm';
 import { sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
+import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
+
+import { Alert } from '../../base/Alert';
+
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';
 import { DataClassDesigner } from './DataClassDesigner';
-import {FileAttachmentForm} from "../../../../public/files/FileAttachmentForm";
-import {Alert} from "../../base/Alert";
 
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
-    loadNameExpressionOptions: jest.fn(async () => ({ prefix: "", allowUserSpecifiedNames: true })),
+    loadNameExpressionOptions: jest.fn(async () => ({ prefix: '', allowUserSpecifiedNames: true })),
     testMode: true,
 };
 

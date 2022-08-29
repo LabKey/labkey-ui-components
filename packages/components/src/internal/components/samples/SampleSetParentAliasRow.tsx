@@ -10,19 +10,19 @@ import { IParentAlias } from '../domainproperties/samples/models';
 import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
 
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
-import {IParentOption} from "../entities/models";
-import {SelectInput} from "../forms/input/SelectInput";
-import {RemoveEntityButton} from "../buttons/RemoveEntityButton";
+import { IParentOption } from '../entities/models';
+import { SelectInput } from '../forms/input/SelectInput';
+import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 
 interface IParentAliasRow {
-    id: string;
-    parentAlias: IParentAlias;
     aliasCaption: string;
-    parentTypeCaption: string;
     helpMsg: string;
-    parentOptions?: IParentOption[];
+    id: string;
     onAliasChange: (id: string, alias: string, newValue: any) => void;
     onRemove: (index: string) => void;
+    parentAlias: IParentAlias;
+    parentOptions?: IParentOption[];
+    parentTypeCaption: string;
     updateDupeParentAliases?: (id: string) => void;
 }
 

@@ -17,8 +17,9 @@ import React, { CSSProperties, FC, memo, ReactNode, useMemo } from 'react';
 import { Map, Set } from 'immutable';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
+import { naturalSort } from '../../../public/sort';
+
 import { HeatMapCell, HeatMapDisplayCell, HeatMapProps } from './HeatMap';
-import {naturalSort} from "../../../public/sort";
 
 interface DisplayCell {
     onClick?: () => void;
@@ -40,8 +41,8 @@ interface HeatMapDisplayProps extends HeatMapProps {
     onCellClick?: (cell: HeatMapCell) => void;
     onHeaderClick?: (header: string, data: HeatMapCell[], index: number) => void;
     xSort?: SortComparator;
-    ySort?: SortComparator;
     yAxisColumns: Record<string, HeatMapDisplayCell>;
+    ySort?: SortComparator;
     yTotalCellRenderer?: (cell: HeatMapDisplayCell) => ReactNode;
 }
 

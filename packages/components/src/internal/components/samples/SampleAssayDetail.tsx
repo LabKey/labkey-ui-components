@@ -2,32 +2,34 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState }
 import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
 import { Filter, getServerContext } from '@labkey/api';
 
-import {InjectedAssayModel, withAssayModels} from '../assay/withAssayModels';
+import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
 import { getImportItemsForAssayDefinitions } from '../assay/actions';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
-import {getSampleStatusType, isSampleOperationPermitted} from './utils';
-import {ALIQUOT_FILTER_MODE, SampleAliquotViewSelector} from "./SampleAliquotViewSelector";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {User} from "../base/models/User";
-import {AssayStateModel} from "../assay/models";
-import {naturalSortByProperty} from "../../../public/sort";
-import {Alert} from "../base/Alert";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {SampleOperation} from "./constants";
-import {TabbedGridPanel} from "../../../public/QueryModel/TabbedGridPanel";
-import {useNotificationsContext} from "../notifications/NotificationsContext";
-import {isLoading} from "../../../public/LoadingState";
-import {caseInsensitive} from "../../util/utils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { User } from '../base/models/User';
+import { AssayStateModel } from '../assay/models';
+import { naturalSortByProperty } from '../../../public/sort';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+import { isLoading } from '../../../public/LoadingState';
+import { caseInsensitive } from '../../util/utils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import {
     InjectedQueryModels,
     RequiresModelAndActions,
-    withQueryModels
+    withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
+
+import { SampleOperation } from './constants';
+import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+import { getSampleStatusType, isSampleOperationPermitted } from './utils';
+import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
 
 interface Props {
     api?: ComponentsAPIWrapper;

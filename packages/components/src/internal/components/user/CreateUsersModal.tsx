@@ -3,9 +3,9 @@ import { Checkbox, FormControl, Modal } from 'react-bootstrap';
 import { Security } from '@labkey/api';
 
 import { UserLimitSettings } from '../permissions/actions';
-import {SelectInput} from "../forms/input/SelectInput";
-import {WizardNavButtons} from "../buttons/WizardNavButtons";
-import {Alert} from "../base/Alert";
+import { SelectInput } from '../forms/input/SelectInput';
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
+import { Alert } from '../base/Alert';
 
 interface Props {
     onCancel: () => void;
@@ -20,11 +20,11 @@ interface Props {
 
 interface State {
     emailText: string;
-    sendEmail: boolean;
+    error: string;
+    isSubmitting: boolean;
     optionalMessage: string;
     roles: string[];
-    isSubmitting: boolean;
-    error: string;
+    sendEmail: boolean;
 }
 
 const DEFAULT_STATE = {

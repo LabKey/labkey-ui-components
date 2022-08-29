@@ -22,10 +22,11 @@ import { ValueDescriptor } from '../../models';
 
 import { CELL_SELECTION_HANDLE_CLASSNAME } from '../../constants';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+
 import { Cell } from './Cell';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
-import {QueryColumn} from "../../../public/QueryColumn";
 
 let actions;
 

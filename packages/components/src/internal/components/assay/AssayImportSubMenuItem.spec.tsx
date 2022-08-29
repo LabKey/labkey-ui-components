@@ -4,11 +4,13 @@ import { mount } from 'enzyme';
 
 import { TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
 
+import { SubMenuItem } from '../menus/SubMenuItem';
+
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { GENERAL_ASSAY_PROVIDER_NAME } from './actions';
 import { AssayImportSubMenuItemImpl } from './AssayImportSubMenuItem';
-import {SubMenuItem} from "../menus/SubMenuItem";
-import {GENERAL_ASSAY_PROVIDER_NAME} from "./actions";
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
 
 const DEFAULT_PROPS = {
     assayModel: TEST_ASSAY_STATE_MODEL,

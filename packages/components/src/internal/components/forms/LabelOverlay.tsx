@@ -16,10 +16,11 @@
 import React from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+import { generateId } from '../../util/utils';
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { HelpTipRenderer } from './HelpTipRenderer';
-import {QueryColumn} from "../../../public/QueryColumn";
-import {generateId} from "../../util/utils";
-import {LabelHelpTip} from "../base/LabelHelpTip";
 
 export interface LabelOverlayProps {
     inputId?: string;

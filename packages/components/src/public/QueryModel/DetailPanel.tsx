@@ -18,10 +18,12 @@ import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../../internal/components/forms/detail/DetailDisplay';
-import {InjectedQueryModels, RequiresModelAndActions, withQueryModels} from "./withQueryModels";
-import {QueryColumn} from "../QueryColumn";
-import {LoadingSpinner} from "../../internal/components/base/LoadingSpinner";
-import {QueryConfig} from "./QueryModel";
+
+import { QueryColumn } from '../QueryColumn';
+import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
+
+import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
+import { QueryConfig } from './QueryModel';
 
 interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
     editColumns?: QueryColumn[];

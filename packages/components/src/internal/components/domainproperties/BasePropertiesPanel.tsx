@@ -1,25 +1,26 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 
+import { Alert } from '../base/Alert';
+
 import { DomainPanelStatus } from './models';
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from './actions';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { PROPERTIES_PANEL_ERROR_MSG, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from './constants';
 import { InjectedDomainPropertiesPanelCollapseProps } from './DomainPropertiesPanelCollapse';
-import {Alert} from "../base/Alert";
 
 export interface BasePropertiesPanelProps {
     panelStatus: DomainPanelStatus;
-    warning?: string;
-    validate: boolean;
     useTheme: boolean;
+    validate: boolean;
+    warning?: string;
 }
 
 interface OwnProps {
     headerId: string;
+    isValid: boolean;
     title: string;
     titlePrefix: string;
-    isValid: boolean;
     updateValidStatus: (model?: any) => any;
 }
 

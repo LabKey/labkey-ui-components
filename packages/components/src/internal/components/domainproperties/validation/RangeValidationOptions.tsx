@@ -16,20 +16,21 @@ import {
 import { PropertyValidator } from '../models';
 import { PropDescType } from '../PropDescType';
 
-import { Filters } from './Filters';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
+import { Filters } from './Filters';
+
 interface RangeValidationOptionsProps {
-    validator: any;
-    index: number;
-    domainIndex: number;
-    validatorIndex: number;
-    mvEnabled: boolean;
-    expanded: boolean;
     dataType: PropDescType;
-    onExpand?: (index: number) => void;
+    domainIndex: number;
+    expanded: boolean;
+    index: number;
+    mvEnabled: boolean;
     onChange: (validator: PropertyValidator, index: number) => void;
     onDelete: (index: number) => void;
+    onExpand?: (index: number) => void;
+    validator: any;
+    validatorIndex: number;
 }
 
 export class RangeValidationOptions extends PureComponent<RangeValidationOptionsProps> {

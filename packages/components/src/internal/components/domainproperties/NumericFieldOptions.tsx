@@ -11,8 +11,8 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 import { ScannableOption, ScannableProps } from './ScannableOption';
 
 interface NumericFieldProps extends ScannableProps {
-    format: string;
     defaultScale: string;
+    format: string;
 }
 
 export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> {

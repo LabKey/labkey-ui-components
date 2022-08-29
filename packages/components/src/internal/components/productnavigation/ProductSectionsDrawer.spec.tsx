@@ -4,6 +4,12 @@ import { List } from 'immutable';
 
 import { FREEZERS_KEY, MEDIA_KEY, NOTEBOOKS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
+import { Container } from '../base/models/Container';
+
+import { Alert } from '../base/Alert';
+
+import { MenuSectionModel } from '../navigation/model';
+
 import {
     getProductSectionUrl,
     parseProductMenuSectionResponse,
@@ -11,9 +17,6 @@ import {
 } from './ProductSectionsDrawer';
 import { ProductClickableItem } from './ProductClickableItem';
 import { ProductModel, ProductSectionModel } from './models';
-import {Container} from "../base/models/Container";
-import {Alert} from "../base/Alert";
-import {MenuSectionModel} from "../navigation/model";
 
 const TEST_SECTIONS = [
     new ProductSectionModel({ key: 'a', label: 'A', url: 'http://sectionA' }),
@@ -108,7 +111,7 @@ describe('ProductSectionsDrawer', () => {
         expect(sections[3].key).toBe(WORKFLOW_KEY);
     });
 
-    test("parseProductMenuSectionResponse, LKB sorting", () => {
+    test('parseProductMenuSectionResponse, LKB sorting', () => {
         const modelSections = List<MenuSectionModel>([
             new MenuSectionModel({ key: 's1', productId: 'a', label: 'S1' }),
             new MenuSectionModel({ key: WORKFLOW_KEY, productId: 'a', label: 'Workflow' }),

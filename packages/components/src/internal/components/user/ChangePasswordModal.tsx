@@ -1,24 +1,25 @@
 import React from 'react';
 import { Button, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 
-import { ChangePasswordModel } from './models';
+import { User } from '../base/models/User';
+import { resolveErrorMessage } from '../../util/messaging';
+import { LabelHelpTip } from '../base/LabelHelpTip';
+import { Alert } from '../base/Alert';
+
 import { changePassword, getPasswordRuleInfo } from './actions';
-import {User} from "../base/models/User";
-import {resolveErrorMessage} from "../../util/messaging";
-import {LabelHelpTip} from "../base/LabelHelpTip";
-import {Alert} from "../base/Alert";
+import { ChangePasswordModel } from './models';
 
 interface Props {
-    user: User;
-    onSuccess: () => void;
     onHide: () => void;
+    onSuccess: () => void;
+    user: User;
 }
 
 interface State {
+    error: string;
     model: ChangePasswordModel;
     passwordRule: string;
     submitting: boolean;
-    error: string;
 }
 
 export class ChangePasswordModal extends React.Component<Props, State> {

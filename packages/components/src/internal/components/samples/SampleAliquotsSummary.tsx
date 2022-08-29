@@ -4,18 +4,20 @@ import { Filter } from '@labkey/api';
 
 import { SAMPLES_KEY } from '../../app/constants';
 
-import { getSampleAliquotsQueryConfig, getSampleAliquotsStats } from './actions';
-import { SampleAliquotsStats } from './models';
-import { SampleAliquotAssaysCount } from './SampleAliquotAssaysCount';
-import {QueryConfig, QueryModel} from "../../../public/QueryModel/QueryModel";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {AppURL} from "../../url/AppURL";
-import {ALIQUOT_FILTER_MODE} from "./SampleAliquotViewSelector";
-import {caseInsensitive} from "../../util/utils";
-import {isLoading} from "../../../public/LoadingState";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { AppURL } from '../../url/AppURL';
+
+import { caseInsensitive } from '../../util/utils';
+import { isLoading } from '../../../public/LoadingState';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
+import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
+import { SampleAliquotAssaysCount } from './SampleAliquotAssaysCount';
+import { SampleAliquotsStats } from './models';
+import { getSampleAliquotsQueryConfig, getSampleAliquotsStats } from './actions';
 
 interface OwnProps {
     aliquotJobsQueryConfig: QueryConfig;

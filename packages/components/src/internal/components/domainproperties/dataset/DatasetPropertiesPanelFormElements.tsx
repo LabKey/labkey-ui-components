@@ -33,8 +33,8 @@ type Option = any;
 
 interface BasicPropertiesInputsProps {
     model: DatasetModel;
-    onInputChange: (any) => void;
     onCategoryChange?: any;
+    onInputChange: (any) => void;
 }
 
 interface BasicPropertiesInputsState {
@@ -156,9 +156,9 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
 }
 
 interface DataRowUniquenessElementsProps {
-    onRadioChange: (evt: any) => any;
     dataRowSetting: number;
     isFromAssay: boolean;
+    onRadioChange: (evt: any) => any;
 }
 
 class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessElementsProps> {
@@ -205,11 +205,11 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
 }
 
 interface DataRowUniquenessContainerProps {
-    model: DatasetModel;
-    onRadioChange: (e: any) => any;
-    onCheckBoxChange: (any) => void;
-    onSelectChange: (name, formValue, selected) => void;
     keyPropertyIndex?: number;
+    model: DatasetModel;
+    onCheckBoxChange: (any) => void;
+    onRadioChange: (e: any) => any;
+    onSelectChange: (name, formValue, selected) => void;
 }
 
 export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessContainerProps> {

@@ -3,17 +3,19 @@ import { MenuItem } from 'react-bootstrap';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+
 import { EntityDataType } from './models';
 import { EntityLineageEditModal } from './EntityLineageEditModal';
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {SelectionMenuItem} from "../menus/SelectionMenuItem";
 
 interface Props {
-    queryModel: QueryModel;
-    childEntityDataType: EntityDataType;
-    parentEntityDataTypes: EntityDataType[];
     auditBehavior?: AuditBehaviorTypes;
+    childEntityDataType: EntityDataType;
     onSuccess?: () => void;
+    parentEntityDataTypes: EntityDataType[];
+    queryModel: QueryModel;
 }
 
 export const EntityLineageEditMenuItem: FC<Props> = memo(props => {

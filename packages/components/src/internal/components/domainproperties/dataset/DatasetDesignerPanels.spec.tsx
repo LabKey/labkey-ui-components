@@ -24,10 +24,11 @@ import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
+import { Alert } from '../../base/Alert';
+
 import { DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
-import {Alert} from "../../base/Alert";
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -67,7 +68,7 @@ describe('Dataset Designer', () => {
         designerPanels.unmount();
     });
 
-    test('Test for alert/message', () => {
+    test('for alert/message', () => {
         const wrapped = mount(
             <DatasetDesignerPanels
                 initModel={newDatasetModel}

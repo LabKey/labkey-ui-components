@@ -4,8 +4,8 @@ import { Security } from '@labkey/api';
 
 import { fetchContainers, fetchQueries, fetchSchemas } from '../actions';
 import { QueryInfoLite } from '../models';
-import {Container} from "../../base/models/Container";
-import {SchemaDetails} from "../../../SchemaDetails";
+import { Container } from '../../base/models/Container';
+import { SchemaDetails } from '../../../SchemaDetails';
 
 export interface ILookupContext {
     activeContainer: Container;

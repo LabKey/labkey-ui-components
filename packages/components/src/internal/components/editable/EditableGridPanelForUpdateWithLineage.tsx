@@ -9,24 +9,27 @@ import {
     EntityParentTypeSelectors,
     removeEntityParentType,
 } from '../entities/EntityParentTypeSelectors';
-import {EntityDataType, EntityParentType, IEntityTypeOption, IParentOption} from '../entities/models';
+import { EntityDataType, EntityParentType, IEntityTypeOption, IParentOption } from '../entities/models';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+import { EditorModel, EditorModelProps } from '../../models';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
+import { Alert } from '../base/Alert';
+
+import { EditableGridPanel } from './EditableGridPanel';
+import { EditableGridLoaderFromSelection } from './EditableGridLoaderFromSelection';
+import { SharedEditableGridPanelProps } from './EditableGrid';
 import {
     applyEditableGridChangesToModels,
     EditableGridModels,
     getUpdatedDataFromEditableGrid,
     initEditableGridModels,
 } from './utils';
-import { SharedEditableGridPanelProps } from './EditableGrid';
-import {QueryColumn} from "../../../public/QueryColumn";
-import {EditableGridLoaderFromSelection} from "./EditableGridLoaderFromSelection";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {useNotificationsContext} from "../notifications/NotificationsContext";
-import {EditorModel, EditorModelProps} from "../../models";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {EditableGridPanel} from "./EditableGridPanel";
-import {WizardNavButtons} from "../buttons/WizardNavButtons";
-import {Alert} from "../base/Alert";
 
 export enum UpdateGridTab {
     Samples,
@@ -53,13 +56,13 @@ export interface EditableGridPanelForUpdateWithLineageProps
     onComplete: () => void;
     parentDataTypes: List<EntityDataType>;
     parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+    pluralNoun?: string;
     queryModel: QueryModel;
     selectionData?: Map<string, any>;
+    setIsDirty?: (isDirty: boolean) => void;
     singularNoun?: string;
     targetEntityDataType: EntityDataType;
     updateAllTabRows: (updateData: any[]) => Promise<boolean>;
-    setIsDirty?: (isDirty: boolean) => void;
-    pluralNoun?: string;
 }
 
 export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdateWithLineageProps> = memo(props => {

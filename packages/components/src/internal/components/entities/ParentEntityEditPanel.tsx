@@ -11,20 +11,22 @@ import { getParentTypeDataForLineage } from '../samples/actions';
 
 import { DELIMITER } from '../forms/constants';
 
-import {EntityChoice, EntityDataType, IEntityTypeOption} from './models';
-import { SingleParentEntityPanel } from './SingleParentEntityPanel';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { selectRowsDeprecated, updateRows } from '../../query/api';
+import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
+import { capitalizeFirstChar, caseInsensitive } from '../../util/utils';
+import { naturalSortByProperty } from '../../../public/sort';
+import { Progress } from '../base/Progress';
+import { AddEntityButton } from '../buttons/AddEntityButton';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { ParentEntityRequiredColumns } from './constants';
 import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from './utils';
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {ParentEntityRequiredColumns} from "./constants";
-import {selectRowsDeprecated, updateRows} from "../../query/api";
-import {getActionErrorMessage, resolveErrorMessage} from "../../util/messaging";
-import {capitalizeFirstChar, caseInsensitive} from "../../util/utils";
-import {naturalSortByProperty} from "../../../public/sort";
-import {Progress} from "../base/Progress";
-import {AddEntityButton} from "../buttons/AddEntityButton";
-import {Alert} from "../base/Alert";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { SingleParentEntityPanel } from './SingleParentEntityPanel';
+import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 interface Props {
     auditBehavior?: AuditBehaviorTypes;
@@ -40,7 +42,7 @@ interface Props {
     onChangeParent?: (currentParents: List<EntityChoice>) => void;
     onEditToggle?: (editing: boolean) => void;
     onUpdate?: () => void;
-    parentDataTypes: EntityDataType[];    // Note: the first data type in the array will be used for labels, nouns, etc...
+    parentDataTypes: EntityDataType[]; // Note: the first data type in the array will be used for labels, nouns, etc...
     submitText?: string;
     title?: string;
 }

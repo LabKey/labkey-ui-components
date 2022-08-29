@@ -8,11 +8,11 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
 import { BarTenderResponse } from './models';
 import { printGridLabels } from './actions';
 import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR } from './constants';
-
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 interface Props {
     afterPrint?: (numSamples: number, numLabels: number) => void;

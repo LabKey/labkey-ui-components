@@ -3,13 +3,14 @@ import { TreeNode } from 'react-treebeard';
 
 import classNames from 'classnames';
 
-import {DEFAULT_ROOT_PREFIX, FileTree} from '../files/FileTree';
+import { DEFAULT_ROOT_PREFIX, FileTree } from '../files/FileTree';
 
 import { Header } from '../files/FileTreeHeader';
 
+import { naturalSortByProperty } from '../../../public/sort';
+
 import { PathModel } from './models';
 import { fetchChildPaths, fetchParentPaths } from './actions';
-import {naturalSortByProperty} from "../../../public/sort";
 
 export class OntologyPath {
     id: string;
@@ -44,12 +45,12 @@ export const FilterIcon = props => {
 };
 
 interface OntologyTreeProps {
-    root: PathModel;
-    onNodeSelection: (path: PathModel) => void;
     alternatePath?: PathModel;
-    showFilterIcon?: boolean;
     filters?: Map<string, PathModel>;
     onFilterChange?: (changedNode: PathModel) => void;
+    onNodeSelection: (path: PathModel) => void;
+    root: PathModel;
+    showFilterIcon?: boolean;
 }
 
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
@@ -83,8 +84,9 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
     const loadData = useCallback(
         async (ontologyPath: string = root.path): Promise<PathNode[]> => {
             const ontPath = await fetchChildPaths(ontologyPath);
-            return ontPath?.children?.sort(naturalSortByProperty<PathModel>('label')).map(
-                (child: PathModel): PathNode => {
+            return ontPath?.children
+                ?.sort(naturalSortByProperty<PathModel>('label'))
+                .map((child: PathModel): PathNode => {
                     return {
                         id: child.path,
                         name: child.label,
@@ -93,8 +95,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
                         toggled: child.path === alternatePath?.path,
                         data: child,
                     };
-                }
-            );
+                });
         },
         // Needs to trigger for filters to ensure PathModels are loaded and update the FilterDialog values.
         [root, filters]

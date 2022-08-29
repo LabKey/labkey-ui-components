@@ -11,9 +11,10 @@ import { SampleStateType } from '../samples/constants';
 
 import { sleep } from '../../testHelpers';
 
-import { SampleTimelinePageBaseImpl } from './SampleTimelinePageBase';
 import { makeTestActions } from '../../../public/QueryModel/testUtils';
 import { TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
+
+import { SampleTimelinePageBaseImpl } from './SampleTimelinePageBase';
 
 describe('<SampleTimelinePageBase/>', () => {
     const dummyData = SampleTimelineJson;

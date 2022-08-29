@@ -11,26 +11,26 @@ import {
     DOMAIN_REGEX_VALIDATOR,
     DOMAIN_REGEX_VALIDATORS,
 } from '../constants';
-import {AddEntityButton} from "../../buttons/AddEntityButton";
+import { AddEntityButton } from '../../buttons/AddEntityButton';
 
 export interface ValidatorModalProps {
-    title: string;
     addName: string;
-    index: number;
-    show: boolean;
-    type: string;
-    mvEnabled: boolean;
     dataType: PropDescType;
-    validators: List<PropertyValidator | ConditionalFormat>;
-    onHide: () => any;
+    index: number;
+    mvEnabled: boolean;
     onApply: (validators: List<PropertyValidator | ConditionalFormat>, type: string) => any;
+    onHide: () => any;
+    show: boolean;
     successBsStyle?: string;
+    title: string;
+    type: string;
+    validators: List<PropertyValidator | ConditionalFormat>;
 }
 
 interface ValidatorModalState {
-    hidden?: boolean;
-    expanded: number;
     collapsing: boolean;
+    expanded: number;
+    hidden?: boolean;
     validators: List<PropertyValidator | ConditionalFormat>;
 }
 

@@ -9,25 +9,28 @@ import { SectionHeading } from '../SectionHeading';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { SelectInput, SelectInputOption } from '../../forms/input/SelectInput';
+
+import { initQueryGridState } from '../../../global';
+
+import { LabelHelpTip } from '../../base/LabelHelpTip';
+
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { fetchCohorts, getVisitDateColumns, getHelpTip } from './actions';
 import { getStudySubjectProp } from './utils';
 import { SHOW_IN_OVERVIEW } from './constants';
-import {SelectInput, SelectInputOption} from "../../forms/input/SelectInput";
-import {initQueryGridState} from "../../../global";
-import {LabelHelpTip} from "../../base/LabelHelpTip";
 
 interface DatasetSettingsSelectProps {
-    name: string;
-    label: string;
-    helpTip?: ReactNode;
-    selectedValue?: any;
-    selectOptions: any;
-    onSelectChange: (name, formValue, selected) => void;
-    labelKey?: string;
-    valueKey?: string;
-    disabled?: boolean;
     clearable?: boolean;
+    disabled?: boolean;
+    helpTip?: ReactNode;
+    label: string;
+    labelKey?: string;
+    name: string;
+    onSelectChange: (name, formValue, selected) => void;
+    selectOptions: any;
+    selectedValue?: any;
+    valueKey?: string;
 }
 
 export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSelectProps> {
@@ -72,15 +75,15 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
 }
 
 interface DatasetSettingsInputProps {
-    name: string;
-    label: string;
-    helpTip: ReactNode;
-    value?: any;
-    placeholder?: string;
-    onValueChange: (evt: any) => any;
     disabled: boolean;
+    helpTip: ReactNode;
+    label: string;
+    name: string;
+    onValueChange: (evt: any) => any;
+    placeholder?: string;
     required: boolean;
     showInAdvancedSettings: boolean;
+    value?: any;
 }
 
 export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInputProps> {
@@ -114,18 +117,18 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
 }
 
 interface AdvancedSettingsProps {
-    model: DatasetModel;
-    title: string;
     applyAdvancedProperties: (datasetAdvancedSettingsForm: DatasetAdvancedSettingsForm) => void;
-    visitDatePropertyIndex?: number;
+    model: DatasetModel;
     successBsStyle?: string;
+    title: string;
+    visitDatePropertyIndex?: number;
 }
 
 interface AdvancedSettingsState extends DatasetAdvancedSettingsForm {
-    modalOpen?: boolean;
     availableCohorts?: SelectInputOption | SelectInputOption[];
-    visitDateColumns?: SelectInputOption | SelectInputOption[];
     dataSharing?: string;
+    modalOpen?: boolean;
+    visitDateColumns?: SelectInputOption | SelectInputOption[];
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {

@@ -9,10 +9,11 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
 
+import { AppContext } from '../../AppContext';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Alert } from '../base/Alert';
+
 import { FolderMenu } from './FolderMenu';
-import {AppContext} from "../../AppContext";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {Alert} from "../base/Alert";
 
 describe('FolderMenu', () => {
     function getDefaultProps() {

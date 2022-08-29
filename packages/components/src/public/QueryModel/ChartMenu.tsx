@@ -9,8 +9,9 @@ import { blurActiveElement } from '../../internal/util/utils';
 
 import { getQueryMetadata } from '../../internal/global';
 
+import { DataViewInfoTypes } from '../../internal/constants';
+
 import { RequiresModelAndActions } from './withQueryModels';
-import {DataViewInfoTypes} from "../../internal/constants";
 
 interface Props extends RequiresModelAndActions {
     hideEmptyChartMenu: boolean;

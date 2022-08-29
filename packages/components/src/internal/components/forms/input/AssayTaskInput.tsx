@@ -1,9 +1,11 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { Filter } from '@labkey/api';
-import {selectRowsDeprecated} from "../../../query/api";
-import {LoadingSpinner} from "../../base/LoadingSpinner";
-import {Alert} from "../../base/Alert";
-import {SelectInput} from "./SelectInput";
+
+import { selectRowsDeprecated } from '../../../query/api';
+import { LoadingSpinner } from '../../base/LoadingSpinner';
+import { Alert } from '../../base/Alert';
+
+import { SelectInput } from './SelectInput';
 
 interface InputOption {
     label: string;

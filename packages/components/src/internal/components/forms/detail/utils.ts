@@ -1,6 +1,7 @@
 import { List, Map } from 'immutable';
 import { Utils } from '@labkey/api';
-import {QueryInfo} from "../../../../public/QueryInfo";
+
+import { QueryInfo } from '../../../../public/QueryInfo';
 
 function arrayListIsEqual(valueArr: Array<string | number>, nestedModelList: List<Map<string, any>>): boolean {
     let matched = 0;

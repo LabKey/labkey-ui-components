@@ -18,19 +18,19 @@ export const NO_FILTER_TYPE = 'None';
 
 interface FiltersProps {
     domainIndex: number;
-    validatorIndex: number;
     expression?: string;
-    mvEnabled: boolean;
-    type: JsonType;
-    range?: boolean;
-    prefix?: string;
+    firstFilterTooltip?: ReactNode;
     firstFilterTypeLabel?: string;
     firstFilterValueLabel?: string;
+    mvEnabled: boolean;
+    onChange: (expression: string) => any;
+    prefix?: string;
+    range?: boolean;
+    secondFilterTooltip?: ReactNode;
     secondFilterTypeLabel?: string;
     secondFilterValueLabel?: string;
-    firstFilterTooltip?: ReactNode;
-    secondFilterTooltip?: ReactNode;
-    onChange: (expression: string) => any;
+    type: JsonType;
+    validatorIndex: number;
 }
 
 interface FiltersState {

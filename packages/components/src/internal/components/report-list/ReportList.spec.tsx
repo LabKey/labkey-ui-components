@@ -20,10 +20,11 @@ import { mount } from 'enzyme';
 
 import exampleData from '../../../test/data/example_browse_data_tree_api.json';
 
+import { AppURL } from '../../url/AppURL';
+import { flattenBrowseDataTreeResponse } from '../../query/reports';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { ReportItemModal, ReportList, ReportListItem } from './ReportList';
-import {AppURL} from "../../url/AppURL";
-import {flattenBrowseDataTreeResponse} from "../../query/reports";
-import {LoadingSpinner} from "../base/LoadingSpinner";
 
 const history = createMemoryHistory();
 

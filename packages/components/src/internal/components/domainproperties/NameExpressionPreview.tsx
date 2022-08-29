@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import {LoadingSpinner} from "../base/LoadingSpinner";
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 export interface NameExpressionPreviewProps {
     isPreviewLoading?: boolean;

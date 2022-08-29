@@ -2,12 +2,12 @@ import React from 'react';
 import { Panel } from 'react-bootstrap';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
-import {caseInsensitive} from "../../util/utils";
-import {AppURL} from "../../url/AppURL";
+import { caseInsensitive } from '../../util/utils';
+import { AppURL } from '../../url/AppURL';
 
 interface Props {
-    hasBatchProperties?: boolean;
     assay: AssayDefinitionModel;
+    hasBatchProperties?: boolean;
     replacedRunProperties: Record<string, any>;
 }
 

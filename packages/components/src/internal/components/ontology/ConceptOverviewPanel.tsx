@@ -1,12 +1,15 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
+import { Alert } from '../base/Alert';
+
+import { naturalSort } from '../../../public/sort';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode } from './actions';
 import { ConceptPathDisplay } from './ConceptPathDisplay';
-import {Alert} from "../base/Alert";
-import {naturalSort} from "../../../public/sort";
-import {LabelHelpTip} from "../base/LabelHelpTip";
 
 const CURRENT_PATH_TITLE = 'Current Path';
 
@@ -43,8 +46,8 @@ export const OntologyConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(
 
 interface ConceptOverviewPanelImplProps {
     concept: ConceptModel;
-    selectedPath?: PathModel;
     conceptNotFoundText?: string;
+    selectedPath?: PathModel;
 }
 
 // exported for jest testing
@@ -111,8 +114,8 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
 
 interface ConceptOverviewModalProps {
     concept: ConceptModel;
-    path?: PathModel;
     error?: string;
+    path?: PathModel;
 }
 
 /**

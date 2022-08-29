@@ -16,22 +16,23 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { UserLimitSettings } from '../permissions/actions';
 
-import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
-import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
-import { UserDetailsPanel } from './UserDetailsPanel';
-import { CreateUsersModal } from './CreateUsersModal';
-import {User} from "../base/models/User";
-import {SecurityPolicy, SecurityRole} from "../permissions/models";
-import {SCHEMAS} from "../../schemas";
-import {isLoading, LoadingState} from "../../../public/LoadingState";
-import {DisableableButton} from "../buttons/DisableableButton";
-import {ManageDropdownButton} from "../buttons/ManageDropdownButton";
-import {SelectionMenuItem} from "../menus/SelectionMenuItem";
-import {GridPanel} from "../../../public/QueryModel/GridPanel";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {capitalizeFirstChar} from "../../util/utils";
+import { User } from '../base/models/User';
+import { SecurityPolicy, SecurityRole } from '../permissions/models';
+import { SCHEMAS } from '../../schemas';
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { DisableableButton } from '../buttons/DisableableButton';
+import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
+import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+import { GridPanel } from '../../../public/QueryModel/GridPanel';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { capitalizeFirstChar } from '../../util/utils';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
+import { CreateUsersModal } from './CreateUsersModal';
+import { UserDetailsPanel } from './UserDetailsPanel';
+import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
+import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 
 const OMITTED_COLUMNS = [
     'phone',

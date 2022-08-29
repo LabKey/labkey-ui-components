@@ -7,6 +7,12 @@ import { SectionHeading } from '../SectionHeading';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { Principal } from '../../permissions/models';
+
+import { LoadingSpinner } from '../../base/LoadingSpinner';
+
+import { SelectInput } from '../../forms/input/SelectInput';
+
 import { IssuesListDefModel, IssuesRelatedFolder } from './models';
 import {
     ISSUES_LIST_DEF_SORT_DIRECTION_TIP,
@@ -16,9 +22,6 @@ import {
     ISSUES_LIST_RELATED_FOLDER_TIP,
 } from './constants';
 import { getProjectGroups, getRelatedFolders, getUsersForGroup } from './actions';
-import {Principal} from "../../permissions/models";
-import {LoadingSpinner} from "../../base/LoadingSpinner";
-import {SelectInput} from "../../forms/input/SelectInput";
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -39,11 +42,11 @@ interface AssignmentOptionsState {
 
 // For AssignedToGroupInput & DefaultUserAssignmentInput components
 interface AssignmentOptionsInputProps {
-    model: IssuesListDefModel;
-    onSelect: (name: string, value: any) => any;
     coreGroups?: List<Principal>;
     coreUsers?: List<Principal>;
+    model: IssuesListDefModel;
     onGroupChange?: (groupId: number) => any;
+    onSelect: (name: string, value: any) => any;
     relatedFolders?: List<IssuesRelatedFolder>;
 }
 

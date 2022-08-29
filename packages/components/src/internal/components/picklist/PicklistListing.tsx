@@ -10,17 +10,14 @@ import { userCanManagePicklists } from '../../app/utils';
 
 import { MY_PICKLISTS_HREF, PICKLIST_KEY, TEAM_PICKLISTS_HREF } from '../../app/constants';
 
-import { deletePicklists, getPicklistListingContainerFilter } from './actions';
-import { Picklist } from './models';
-import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
-import {User} from "../base/models/User";
-import {RequiresPermission} from "../base/Permissions";
-import {useNotificationsContext} from "../notifications/NotificationsContext";
-import {Section} from "../base/Section";
-import {TabbedGridPanel} from "../../../public/QueryModel/TabbedGridPanel";
-import {QuerySort} from "../../../public/QuerySort";
-import {SCHEMAS} from "../../schemas";
-import {Page} from "../base/Page";
+import { User } from '../base/models/User';
+import { RequiresPermission } from '../base/Permissions';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+import { Section } from '../base/Section';
+import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
+import { QuerySort } from '../../../public/QuerySort';
+import { SCHEMAS } from '../../schemas';
+import { Page } from '../base/Page';
 
 import {
     Actions,
@@ -28,6 +25,10 @@ import {
     RequiresModelAndActions,
     withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
+
+import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
+import { Picklist } from './models';
+import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';

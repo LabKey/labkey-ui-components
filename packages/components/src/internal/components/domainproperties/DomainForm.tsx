@@ -22,7 +22,7 @@ import { Sticky, StickyContainer } from 'react-sticky';
 
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
-import {blurActiveElement, valueIsEmpty} from '../../util/utils';
+import { blurActiveElement, valueIsEmpty } from '../../util/utils';
 
 import { SimpleResponse } from '../files/models';
 
@@ -35,6 +35,18 @@ import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
 import { hasModule } from '../../app/utils';
+
+import { ConfirmModal } from '../base/ConfirmModal';
+
+import { AddEntityButton } from '../buttons/AddEntityButton';
+
+import { Alert } from '../base/Alert';
+
+import { QueryColumn } from '../../../public/QueryColumn';
+
+import { InferDomainResponse } from '../../../public/InferDomainResponse';
+
+import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -91,12 +103,6 @@ import {
     isFieldDeletable,
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
-import {ConfirmModal} from "../base/ConfirmModal";
-import {AddEntityButton} from "../buttons/AddEntityButton";
-import {Alert} from "../base/Alert";
-import {QueryColumn} from "../../../public/QueryColumn";
-import {InferDomainResponse} from "../../../public/InferDomainResponse";
-import {FileAttachmentForm} from "../../../public/files/FileAttachmentForm";
 
 interface IDomainFormInput {
     appDomainHeaderRenderer?: HeaderRenderer;

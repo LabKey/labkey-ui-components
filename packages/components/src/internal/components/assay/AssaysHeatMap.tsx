@@ -2,10 +2,10 @@ import React, { FC, memo, useMemo } from 'react';
 import { Filter } from '@labkey/api';
 
 import { ASSAYS_KEY } from '../../app/constants';
-import {AppURL} from "../../url/AppURL";
-import {HeatMap, HeatMapCell} from "../heatmap/HeatMap";
-import {Alert} from "../base/Alert";
-import {SCHEMAS} from "../../schemas";
+import { AppURL } from '../../url/AppURL';
+import { HeatMap, HeatMapCell } from '../heatmap/HeatMap';
+import { Alert } from '../base/Alert';
+import { SCHEMAS } from '../../schemas';
 
 interface Props {
     excludedAssayProviders?: string[];

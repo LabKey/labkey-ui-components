@@ -2,6 +2,10 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
+import { Alert } from '../base/Alert';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import {
     ConceptOverviewTooltip,
     ConceptOverviewPanelImpl,
@@ -10,8 +14,6 @@ import {
 } from './ConceptOverviewPanel';
 import { ConceptPathDisplay } from './ConceptPathDisplay';
 import { ConceptModel, PathModel } from './models';
-import {Alert} from "../base/Alert";
-import {LabelHelpTip} from "../base/LabelHelpTip";
 
 const TEST_CONCEPT = new ConceptModel({ code: 'a', label: 'b', description: 'c' });
 const TEST_PATH = new PathModel({});

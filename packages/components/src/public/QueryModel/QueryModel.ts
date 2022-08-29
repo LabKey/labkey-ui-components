@@ -2,20 +2,21 @@ import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
-import {GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX} from '../../internal/constants';
+import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
 
 import { DataViewInfo } from '../../internal/models';
 
+import { SchemaQuery } from '../SchemaQuery';
+import { QuerySort } from '../QuerySort';
+import { isLoading, LoadingState } from '../LoadingState';
+import { QueryInfo } from '../QueryInfo';
+import { ViewInfo } from '../../internal/ViewInfo';
+import { QueryColumn } from '../QueryColumn';
+import { caseInsensitive } from '../../internal/util/utils';
+import { naturalSort } from '../sort';
+import { PaginationData } from '../../internal/components/pagination/Pagination';
+
 import { flattenValuesFromRow, offsetFromString, querySortsFromString, searchFiltersFromString } from './utils';
-import {SchemaQuery} from "../SchemaQuery";
-import {QuerySort} from "../QuerySort";
-import {isLoading, LoadingState} from "../LoadingState";
-import {QueryInfo} from "../QueryInfo";
-import {ViewInfo} from "../../internal/ViewInfo";
-import {QueryColumn} from "../QueryColumn";
-import {caseInsensitive} from "../../internal/util/utils";
-import {naturalSort} from "../sort";
-import {PaginationData} from "../../internal/components/pagination/Pagination";
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
@@ -32,8 +33,8 @@ const sortStringMapper = (s: QuerySort): string => s.toRequestString();
 
 export interface GridMessage {
     area: string;
-    type: string;
     content: string;
+    type: string;
 }
 
 export interface QueryConfig {

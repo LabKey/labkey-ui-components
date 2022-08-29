@@ -1,7 +1,8 @@
 import React from 'react';
 import { fromJS } from 'immutable';
 import renderer from 'react-test-renderer';
-import {DefaultRenderer} from "./DefaultRenderer";
+
+import { DefaultRenderer } from './DefaultRenderer';
 
 describe('DefaultRenderer', () => {
     test('undefined', () => {

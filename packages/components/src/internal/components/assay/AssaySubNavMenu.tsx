@@ -7,9 +7,11 @@ import { List } from 'immutable';
 import { WithRouterProps } from 'react-router';
 
 import { ASSAYS_KEY } from '../../app/constants';
-import {AppURL} from "../../url/AppURL";
-import {InjectedAssayModel, withAssayModelsFromLocation} from "./withAssayModels";
-import {ITab, SubNav} from "../navigation/SubNav";
+import { AppURL } from '../../url/AppURL';
+
+import { ITab, SubNav } from '../navigation/SubNav';
+
+import { InjectedAssayModel, withAssayModelsFromLocation } from './withAssayModels';
 
 const BATCHES_TAB = 'Batches';
 const TABS_WITHOUT_BATCHES = List<string>(['Overview', 'Runs', 'Results']);

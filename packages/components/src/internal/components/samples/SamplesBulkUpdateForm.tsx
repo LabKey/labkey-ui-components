@@ -9,21 +9,23 @@ import { userCanEditStorageData } from '../../app/utils';
 
 import { withNotificationsContext, NotificationsContextProps } from '../notifications/NotificationsContext';
 
-import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
-import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { User } from '../base/models/User';
+import { Alert } from '../base/Alert';
+
+import { QueryInfo } from '../../../public/QueryInfo';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { SCHEMAS } from '../../schemas';
+import { deleteRows } from '../../query/api';
+import { resolveErrorMessage } from '../../util/messaging';
+import { BulkUpdateForm } from '../forms/BulkUpdateForm';
+
+import { SampleOperation } from './constants';
+import { getOperationNotPermittedMessage } from './utils';
 import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from './DiscardConsumedSamplesPanel';
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {User} from "../base/models/User";
-import {Alert} from "../base/Alert";
-import {getOperationNotPermittedMessage} from "./utils";
-import {SampleOperation} from "./constants";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {QueryColumn} from "../../../public/QueryColumn";
-import {SCHEMAS} from "../../schemas";
-import {deleteRows} from "../../query/api";
-import {resolveErrorMessage} from "../../util/messaging";
-import {BulkUpdateForm} from "../forms/BulkUpdateForm";
+import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
+import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 
 interface OwnProps {
     containerFilter?: Query.ContainerFilter;

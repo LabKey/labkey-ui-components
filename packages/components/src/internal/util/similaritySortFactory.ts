@@ -1,4 +1,4 @@
-import {naturalSort} from "../../public/sort";
+import { naturalSort } from '../../public/sort';
 
 function indexOf(source: string, token: string, caseSensitive?: boolean): number {
     if (!source || !token) return -1;

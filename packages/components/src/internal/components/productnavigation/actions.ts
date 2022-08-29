@@ -1,7 +1,8 @@
 import { Ajax, Utils, ActionURL } from '@labkey/api';
 
-import { ContainerTabModel, ProductModel } from './models';
 import { resolveErrorMessage } from '../../util/messaging';
+
+import { ContainerTabModel, ProductModel } from './models';
 
 export function getRegisteredProducts(): Promise<ProductModel[]> {
     return new Promise((resolve, reject) => {

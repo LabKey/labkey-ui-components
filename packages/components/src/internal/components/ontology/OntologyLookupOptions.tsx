@@ -6,8 +6,7 @@ import { helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
 import { fetchOntologies } from '../domainproperties/actions';
-import { getIndexFromId } from '../domainproperties/utils';
-import { createFormInputId } from '../domainproperties/utils';
+import { getIndexFromId, createFormInputId } from '../domainproperties/utils';
 import {
     DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
     DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
@@ -19,17 +18,18 @@ import {
 import { DomainField, IFieldChange, ITypeDependentProps } from '../domainproperties/models';
 import { SectionHeading } from '../domainproperties/SectionHeading';
 
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { OntologyModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 import { fetchParentPaths, getParentsConceptCodePath } from './actions';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 
 const LEARN_MORE = <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>;
 
 interface Props extends ITypeDependentProps {
     domainContainerPath: string;
-    field: DomainField;
     domainFields: List<DomainField>;
+    field: DomainField;
     onMultiChange: (changes: List<IFieldChange>) => void;
 }
 
@@ -246,13 +246,13 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
 }
 
 interface OntologyTextDomainFieldSelectProps {
-    field: DomainField;
     domainFields: List<DomainField>;
-    lockType: string;
-    id: string;
-    value: string;
+    field: DomainField;
     filterValue: string;
+    id: string;
+    lockType: string;
     onFieldChange: (evt: any) => void;
+    value: string;
 }
 
 const OntologyTextDomainFieldSelect: FC<OntologyTextDomainFieldSelectProps> = memo(props => {

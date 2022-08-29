@@ -18,18 +18,20 @@ import { Panel } from 'react-bootstrap';
 
 import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { Alert } from '../base/Alert';
+
 import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsModel } from './models';
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {Alert} from "../base/Alert";
 
 interface Props {
-    model: SearchResultsModel;
     emptyResultDisplay?: React.ReactNode;
-    iconUrl?: string;
     hideHeader?: boolean;
     hidePanelFrame?: boolean;
+    iconUrl?: string;
     maxHitSize?: number;
+    model: SearchResultsModel;
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {

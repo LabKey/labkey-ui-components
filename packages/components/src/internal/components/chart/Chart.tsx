@@ -19,8 +19,8 @@ import { Filter } from '@labkey/api';
 import { DataViewInfo, VisualizationConfigModel } from '../../models';
 import { getVisualizationConfig } from '../../actions';
 import { LABKEY_VIS } from '../../constants';
-import {debounce, generateId} from "../../util/utils";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { debounce, generateId } from '../../util/utils';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface Props {
     chart: DataViewInfo;

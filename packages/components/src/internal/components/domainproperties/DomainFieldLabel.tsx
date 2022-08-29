@@ -1,7 +1,8 @@
 import React, { FC, ReactNode } from 'react';
 
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { getSplitSentence } from './actions';
-import {LabelHelpTip} from "../base/LabelHelpTip";
 
 export interface DomainFieldLabelProps {
     helpTipBody?: ReactNode;

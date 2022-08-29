@@ -24,8 +24,8 @@ import { getServerContext, Utils } from '@labkey/api';
 import { FieldLabel } from '../FieldLabel';
 
 import { DELIMITER } from '../constants';
-import {QueryColumn} from "../../../../public/QueryColumn";
-import {generateId} from "../../../util/utils";
+import { QueryColumn } from '../../../../public/QueryColumn';
+import { generateId } from '../../../util/utils';
 
 const _customStyles = {
     // ReactSelect v1 had a zIndex value of "1000" where as ReactSelect v4.3.1 has a value of "2"

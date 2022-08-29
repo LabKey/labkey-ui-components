@@ -8,9 +8,10 @@ import { DomainPanelStatus } from '../models';
 import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
 import getDomainDetailsJSON from '../../../../test/data/issuesListDef-getDomainDetails.json';
 
+import { Alert } from '../../base/Alert';
+
 import { IssuesListDefModel } from './models';
 import { IssuesListDefPropertiesPanel, IssuesListDefPropertiesPanelImpl } from './IssuesListDefPropertiesPanel';
-import {Alert} from "../../base/Alert";
 
 const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
 

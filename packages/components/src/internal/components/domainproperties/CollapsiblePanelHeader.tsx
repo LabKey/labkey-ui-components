@@ -4,23 +4,24 @@ import { Panel } from 'react-bootstrap';
 import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { DomainPanelStatus } from './models';
-import {LabelHelpTip} from "../base/LabelHelpTip";
 
 interface Props {
-    id: string;
-    title: string;
-    titlePrefix?: string;
     collapsed: boolean;
     collapsible: boolean;
     controlledCollapse: boolean;
     headerDetails?: string;
-    todoIconHelpMsg?: string;
     iconHelpMsg?: string;
+    id: string;
+    isValid: boolean;
     panelStatus: DomainPanelStatus;
+    title: string;
+    titlePrefix?: string;
+    todoIconHelpMsg?: string;
     togglePanel: (evt: any, collapsed?: boolean) => any;
     useTheme: boolean;
-    isValid: boolean;
 }
 
 export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {

@@ -21,25 +21,26 @@ import {
 import { PropertyValidator } from '../models';
 import { PropDescType } from '../PropDescType';
 
-import { Filters } from './Filters';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
+import { Filters } from './Filters';
+
 interface ConditionalFormatOptionsProps {
-    validator: any;
-    index: number;
-    domainIndex: number;
-    validatorIndex: number;
-    mvEnabled: boolean;
-    expanded: boolean;
     dataType: PropDescType;
-    onExpand: (index: number) => any;
+    domainIndex: number;
+    expanded: boolean;
+    index: number;
+    mvEnabled: boolean;
     onChange: (validator: PropertyValidator, index: number) => any;
     onDelete: (index: number) => any;
+    onExpand: (index: number) => any;
+    validator: any;
+    validatorIndex: number;
 }
 
 interface ConditionalFormatState {
-    showTextColor: boolean;
     showFillColor: boolean;
+    showTextColor: boolean;
 }
 
 export class ConditionalFormatOptions extends React.PureComponent<

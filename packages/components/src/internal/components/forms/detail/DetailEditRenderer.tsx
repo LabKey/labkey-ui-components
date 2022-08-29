@@ -29,15 +29,16 @@ import { getUnFormattedNumber } from '../../../util/Date';
 import { SampleStatusRenderer } from '../../../renderers/SampleStatusRenderer';
 import { TextChoiceInput } from '../input/TextChoiceInput';
 
+import { QueryColumn } from '../../../../public/QueryColumn';
+import { DatePickerInput } from '../input/DatePickerInput';
+import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
+import { AliasRenderer } from '../../../renderers/AliasRenderer';
+import { AppendUnits } from '../../../renderers/AppendUnits';
+import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
+import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
+import { SampleTypeImportAliasRenderer, SourceTypeImportAliasRenderer } from '../../../renderers/ImportAliasRenderer';
+
 import { _defaultRenderer, EditRendererOptions, Renderer } from './DetailDisplay';
-import {QueryColumn} from "../../../../public/QueryColumn";
-import {DatePickerInput} from "../input/DatePickerInput";
-import {MultiValueRenderer} from "../../../renderers/MultiValueRenderer";
-import {AliasRenderer} from "../../../renderers/AliasRenderer";
-import {AppendUnits} from "../../../renderers/AppendUnits";
-import {LabelColorRenderer} from "../../../renderers/LabelColorRenderer";
-import {FileColumnRenderer} from "../../../renderers/FileColumnRenderer";
-import {SampleTypeImportAliasRenderer, SourceTypeImportAliasRenderer} from "../../../renderers/ImportAliasRenderer";
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is

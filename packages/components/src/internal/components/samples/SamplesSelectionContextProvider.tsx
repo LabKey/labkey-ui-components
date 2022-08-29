@@ -6,6 +6,10 @@ import React, { ComponentType, ReactNode } from 'react';
 
 import { getSampleOperationConfirmationData } from '../entities/actions';
 
+import { SCHEMAS } from '../../schemas';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 import {
     getAliquotSampleIds,
@@ -14,9 +18,7 @@ import {
     getSampleSelectionStorageData,
     getSelectionLineageData,
 } from './actions';
-import {SampleOperation} from "./constants";
-import {SCHEMAS} from "../../schemas";
-import {LoadingSpinner} from "../base/LoadingSpinner";
+import { SampleOperation } from './constants';
 
 const Context = React.createContext<SamplesSelectionResultProps>(undefined);
 const SamplesSelectionContextProvider = Context.Provider;

@@ -17,9 +17,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { List } from 'immutable';
 
+import { AppURL } from '../../url/AppURL';
+
 import { MenuSectionModel } from './model';
 import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
-import {AppURL} from "../../url/AppURL";
 
 describe('ProductMenuSection render', () => {
     const sampleSetItems = List<MenuSectionModel>([

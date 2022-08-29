@@ -3,14 +3,14 @@ import { Experiment, Filter } from '@labkey/api';
 import { List, Map } from 'immutable';
 
 import { Renderer } from '../../forms/detail/DetailDisplay';
-import {LoadingSpinner} from "../../base/LoadingSpinner";
-import {Alert} from "../../base/Alert";
-import {DetailPanel} from "../../../../public/QueryModel/DetailPanel";
-import {SchemaQuery} from "../../../../public/SchemaQuery";
-import {ViewInfo} from "../../../ViewInfo";
-import {QueryColumn} from "../../../../public/QueryColumn";
-import {resolveDetailRenderer} from "../../forms/detail/DetailEditRenderer";
-import {InjectedQueryModels, QueryConfigMap, withQueryModels} from "../../../../public/QueryModel/withQueryModels";
+import { LoadingSpinner } from '../../base/LoadingSpinner';
+import { Alert } from '../../base/Alert';
+import { DetailPanel } from '../../../../public/QueryModel/DetailPanel';
+import { SchemaQuery } from '../../../../public/SchemaQuery';
+import { ViewInfo } from '../../../ViewInfo';
+import { QueryColumn } from '../../../../public/QueryColumn';
+import { resolveDetailRenderer } from '../../forms/detail/DetailEditRenderer';
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
 
 const ADDITIONAL_DETAIL_FIELDS = ['properties'];
 

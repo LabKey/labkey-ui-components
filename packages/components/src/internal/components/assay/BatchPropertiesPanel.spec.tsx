@@ -6,13 +6,14 @@ import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
 import { CheckboxInput } from '../forms/input/CheckboxInput';
 
-import { AssayWizardModel } from './AssayWizardModel';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { QueryFormInputs } from '../forms/QueryFormInputs';
+import { TextInput } from '../forms/input/TextInput';
+import { DatePickerInput } from '../forms/input/DatePickerInput';
+import { SelectInput } from '../forms/input/SelectInput';
+
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
-import {QueryColumn} from "../../../public/QueryColumn";
-import {QueryFormInputs} from "../forms/QueryFormInputs";
-import {TextInput} from "../forms/input/TextInput";
-import {DatePickerInput} from "../forms/input/DatePickerInput";
-import {SelectInput} from "../forms/input/SelectInput";
+import { AssayWizardModel } from './AssayWizardModel';
 
 beforeAll(() => {
     LABKEY.container = {

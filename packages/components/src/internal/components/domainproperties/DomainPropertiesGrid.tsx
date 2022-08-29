@@ -8,30 +8,32 @@ import { headerCell } from '../../renderers';
 
 import { GRID_SELECTION_INDEX } from '../../constants';
 
+import { GridColumn } from '../base/models/GridColumn';
+
+import { Grid } from '../base/Grid';
+
 import { compareStringsAlphabetically } from './propertiesUtil';
 
-import {DomainDesign, DomainPropertiesGridColumn, IFieldChange} from './models';
-import {GridColumn} from "../base/models/GridColumn";
-import {Grid} from "../base/Grid";
+import { DomainDesign, DomainPropertiesGridColumn, IFieldChange } from './models';
 
 interface DomainPropertiesGridProps {
-    domain: DomainDesign;
     actions: {
-        toggleSelectAll: () => void;
-        scrollFunction: (i: number) => void;
         onFieldsChange: (changes: List<IFieldChange>, index: number, expand: boolean) => void;
+        scrollFunction: (i: number) => void;
+        toggleSelectAll: () => void;
     };
+    appPropertiesOnly?: boolean;
+    domain: DomainDesign;
+    hasOntologyModule: boolean;
     search: string;
     selectAll: boolean;
-    appPropertiesOnly?: boolean;
-    hasOntologyModule: boolean;
 }
 
 interface DomainPropertiesGridState {
-    gridData: List<any>;
     gridColumns?: List<GridColumn | DomainPropertiesGridColumn>;
-    visibleGridData: List<any>;
+    gridData: List<any>;
     search: string;
+    visibleGridData: List<any>;
 }
 
 export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGridProps, DomainPropertiesGridState> {

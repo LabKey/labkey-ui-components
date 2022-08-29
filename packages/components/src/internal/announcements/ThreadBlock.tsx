@@ -5,11 +5,13 @@ import { User, UserWithPermissions } from '@labkey/api';
 
 import { UserAvatar } from '../components/UserAvatars';
 
+import { resolveErrorMessage } from '../util/messaging';
+
+import { Alert } from '../components/base/Alert';
+
 import { AnnouncementModel } from './model';
 import { ThreadEditor, ThreadEditorProps } from './ThreadEditor';
 import { ThreadAttachments } from './ThreadAttachments';
-import {resolveErrorMessage} from "../util/messaging";
-import {Alert} from "../components/base/Alert";
 
 interface DeleteThreadModalProps {
     cancel: () => void;

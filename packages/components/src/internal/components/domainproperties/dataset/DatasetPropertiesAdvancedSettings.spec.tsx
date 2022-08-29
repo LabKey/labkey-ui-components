@@ -23,9 +23,10 @@ import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.jso
 import getDatasetDesignSharedStudy from '../../../../test/data/dataset-getDatasetDesignSharedStudy.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
 
+import { SelectInput } from '../../forms/input/SelectInput';
+
 import { AdvancedSettings, DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 import { DatasetModel } from './models';
-import {SelectInput} from "../../forms/input/SelectInput";
 
 const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
 const datasetModel = DatasetModel.create(null, getDatasetDesign);

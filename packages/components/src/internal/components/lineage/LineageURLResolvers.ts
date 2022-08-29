@@ -1,12 +1,13 @@
 import { ActionURL, Experiment, Filter } from '@labkey/api';
 
+import { URLResolver } from '../../url/URLResolver';
+
 import { LineageLinkMetadata, LineageOptions, LineageURLResolvers } from './types';
 import { LineageNode } from './models';
-import {URLResolver} from "../../url/URLResolver";
 
 export interface LineageURLResolver {
-    resolveItem: (item: Experiment.LineageItemBase) => LineageLinkMetadata;
     resolveGroupedNodes: (nodes: LineageNode[]) => string;
+    resolveItem: (item: Experiment.LineageItemBase) => LineageLinkMetadata;
 }
 
 export class AppLineageURLResolver implements LineageURLResolver {

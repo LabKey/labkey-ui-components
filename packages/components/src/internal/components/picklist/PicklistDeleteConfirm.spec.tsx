@@ -8,15 +8,16 @@ import { ConfirmModal } from '../base/ConfirmModal';
 
 import { waitForLifecycle } from '../../testHelpers';
 
-import { PicklistDeleteConfirm, PicklistDeleteConfirmMessage } from './PicklistDeleteConfirm';
-import { Picklist } from './models';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { getPicklistTestAPIWrapper } from './APIWrapper';
-import { getTestAPIWrapper } from '../../APIWrapper';
-import {Alert} from "../base/Alert";
-import {LoadingSpinner} from "../base/LoadingSpinner";
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
+
+import { Picklist } from './models';
+import { PicklistDeleteConfirm, PicklistDeleteConfirmMessage } from './PicklistDeleteConfirm';
 
 describe('PicklistDeleteConfirmMessage', () => {
     function validateText(

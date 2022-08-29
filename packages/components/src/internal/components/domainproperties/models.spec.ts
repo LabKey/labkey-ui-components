@@ -21,6 +21,10 @@ import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { initOnotologyMocks } from '../../../test/mock';
 
+import { GridColumn } from '../base/models/GridColumn';
+
+import { ConceptModel } from '../ontology/models';
+
 import {
     ATTACHMENT_TYPE,
     AUTOINT_TYPE,
@@ -53,7 +57,8 @@ import {
     getValidValuesDetailStr,
     getValidValuesFromArray,
     isPropertyTypeAllowed,
-    isValidTextChoiceValue, PropertyValidator,
+    isValidTextChoiceValue,
+    PropertyValidator,
     PropertyValidatorProperties,
 } from './models';
 import {
@@ -73,8 +78,6 @@ import {
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
 } from './constants';
-import {GridColumn} from "../base/models/GridColumn";
-import {ConceptModel} from "../ontology/models";
 
 beforeAll(() => {
     initUnitTestMocks([initOnotologyMocks]);

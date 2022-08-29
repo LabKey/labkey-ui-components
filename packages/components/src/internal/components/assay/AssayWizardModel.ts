@@ -4,13 +4,13 @@ import { AssayDOM } from '@labkey/api';
 import { AssayUploadTabs } from '../../constants';
 import { generateNameWithTimestamp } from '../../util/Date';
 import { loadEditorModelData } from '../editable/utils';
-import {QueryColumn} from "../../../public/QueryColumn";
-import {AssayDefinitionModel, AssayDomainTypes} from "../../AssayDefinitionModel";
-import {FileAttachmentFormModel} from "../files/models";
-import {AppURL} from "../../url/AppURL";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {EditorModel} from "../../models";
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
+import { QueryColumn } from '../../../public/QueryColumn';
+import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
+import { FileAttachmentFormModel } from '../files/models';
+import { AppURL } from '../../url/AppURL';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { EditorModel } from '../../models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 // exported for jest testing
 export function parseDataTextToRunRows(rawData: string): any[] {

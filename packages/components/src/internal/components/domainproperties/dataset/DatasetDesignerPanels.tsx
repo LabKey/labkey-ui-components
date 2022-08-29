@@ -33,15 +33,19 @@ import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_NOT_LOCKED } from '../constants
 
 import ConfirmImportTypes from '../ConfirmImportTypes';
 
+import { importData } from '../../../query/api';
+
+import { buildURL } from '../../../url/AppURL';
+
+import { resolveErrorMessage } from '../../../util/messaging';
+
+import { Progress } from '../../base/Progress';
+
 import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
 import { getStudySubjectProp, getStudyTimepointLabel } from './utils';
-import {importData} from "../../../query/api";
-import {buildURL} from "../../../url/AppURL";
-import {resolveErrorMessage} from "../../../util/messaging";
-import {Progress} from "../../base/Progress";
 
 const KEY_FIELD_MAPPING_ERROR = 'Your Additional Key Field must not be one of the Column Mapping fields.';
 const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the Column Mapping fields.';
@@ -60,13 +64,13 @@ interface Props {
 }
 
 interface State {
-    model: DatasetModel;
     file: File;
-    shouldImportData: boolean;
-    keyPropertyIndex?: number;
-    visitDatePropertyIndex?: number;
-    savedModel: DatasetModel;
     importError: any;
+    keyPropertyIndex?: number;
+    model: DatasetModel;
+    savedModel: DatasetModel;
+    shouldImportData: boolean;
+    visitDatePropertyIndex?: number;
 }
 
 export class DatasetDesignerPanelImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {

@@ -22,8 +22,9 @@ import { Utils } from '@labkey/api';
 import { FieldLabel } from '../FieldLabel';
 import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate } from '../../../util/Date';
 
+import { QueryColumn } from '../../../../public/QueryColumn';
+
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
-import {QueryColumn} from "../../../../public/QueryColumn";
 
 export interface DatePickerInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;

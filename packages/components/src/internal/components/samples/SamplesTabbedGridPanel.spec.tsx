@@ -7,13 +7,14 @@ import { mountWithAppServerContext } from '../../testHelpers';
 
 import { TEST_USER_READER } from '../../userFixtures';
 
-import { SamplesEditableGrid } from './SamplesEditableGrid';
-import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
+
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {makeTestActions, makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {TabbedGridPanel} from "../../../public/QueryModel/TabbedGridPanel";
+import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
+import { SamplesEditableGrid } from './SamplesEditableGrid';
 
 const SQ = SchemaQuery.create('schema', 'query');
 const QI = QueryInfo.create({ title: 'Test title' });

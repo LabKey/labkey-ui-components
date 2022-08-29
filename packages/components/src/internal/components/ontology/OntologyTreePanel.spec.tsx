@@ -1,9 +1,10 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
+import { FileTree } from '../files/FileTree';
+
 import { FilterIcon, OntologyTreePanel } from './OntologyTreePanel';
 import { PathModel } from './models';
-import {FileTree} from "../files/FileTree";
 
 const DEFAULT_PROPS = {
     root: new PathModel({ label: 'test label' }),

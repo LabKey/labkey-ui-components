@@ -4,7 +4,8 @@ import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { selectOptionByText, SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
 import { mountWithAppServerContext } from '../../testHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';
-import {AssayTypeSummary} from "./AssayTypeSummary";
+
+import { AssayTypeSummary } from './AssayTypeSummary';
 
 beforeAll(() => {
     initUnitTestMocks();

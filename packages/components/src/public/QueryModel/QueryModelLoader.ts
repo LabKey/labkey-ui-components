@@ -1,5 +1,5 @@
-import React from "react";
-import {List, Map, OrderedMap} from 'immutable';
+import React from 'react';
+import { List, Map, OrderedMap } from 'immutable';
 
 import {
     clearSelected,
@@ -8,20 +8,21 @@ import {
     ISelectResponse,
     replaceSelected,
     selectAll,
-    setSelected
+    setSelected,
 } from '../../internal/actions';
-import {DataViewInfoTypes, VISUALIZATION_REPORTS} from '../../internal/constants';
+import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../internal/constants';
 
-import {DataViewInfo, IDataViewInfo} from '../../internal/models';
+import { DataViewInfo, IDataViewInfo } from '../../internal/models';
+
+import { QueryInfo } from '../QueryInfo';
+import { getQueryDetails, selectRowsDeprecated } from '../../internal/query/api';
+import { naturalSortByProperty } from '../sort';
+import { loadReports } from '../../internal/query/reports';
+import { QueryColumn } from '../QueryColumn';
+import { getQueryColumnRenderers } from '../../internal/global';
+import { DefaultRenderer } from '../../internal/renderers/DefaultRenderer';
 
 import { GridMessage, QueryModel } from './QueryModel';
-import {QueryInfo} from "../QueryInfo";
-import {getQueryDetails, selectRowsDeprecated} from "../../internal/query/api";
-import {naturalSortByProperty} from "../sort";
-import {loadReports} from "../../internal/query/reports";
-import {QueryColumn} from "../QueryColumn";
-import {getQueryColumnRenderers} from "../../internal/global";
-import {DefaultRenderer} from "../../internal/renderers/DefaultRenderer";
 
 export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
     if (columns) {

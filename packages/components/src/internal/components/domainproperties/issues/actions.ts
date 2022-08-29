@@ -4,9 +4,10 @@ import { List } from 'immutable';
 
 import { DuplicateFilesResponse } from '../../assay/actions';
 
+import { Principal } from '../../permissions/models';
+import { buildURL } from '../../../url/AppURL';
+
 import { IssuesListDefModel, IssuesListDefOptionsConfig, IssuesRelatedFolder } from './models';
-import {Principal} from "../../permissions/models";
-import {buildURL} from "../../../url/AppURL";
 
 export function fetchIssuesListDefDesign(issueDefName?: string): Promise<IssuesListDefModel> {
     return new Promise((resolve, reject) => {

@@ -1583,7 +1583,7 @@ export type {
     SampleGridButtonProps,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
-export type { AppRouteResolver } from './internal/url/AppURLResolver';
+export type { AppRouteResolver } from './internal/url/models';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';

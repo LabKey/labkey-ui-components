@@ -20,8 +20,9 @@ import { LineageLinkMetadata } from '../components/lineage/types';
 
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../app/constants';
 
-import { AppRouteResolver, ListResolver } from './AppURLResolver';
 import { AppURL, createProductUrl } from './AppURL';
+import { AppRouteResolver } from './models';
+import { encodeListResolverPath } from './utils';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
 
@@ -351,7 +352,7 @@ const LIST_MAPPERS = [
                     const parts = ['q', 'lists', params.name, params.pk];
                     return AppURL.create(...parts);
                 } else if (params.listId && urlParts?.containerPath) {
-                    const resolverPath = ListResolver.encodeResolverPath(urlParts.containerPath);
+                    const resolverPath = encodeListResolverPath(urlParts.containerPath);
                     const parts = ['q', 'lists', resolverPath, params.listId, params.pk];
                     return AppURL.create(...parts);
                 }
@@ -369,7 +370,7 @@ const LIST_MAPPERS = [
                     const parts = ['q', 'lists', params.name];
                     return AppURL.create(...parts);
                 } else if (params.listId && urlParts?.containerPath) {
-                    const resolverPath = ListResolver.encodeResolverPath(urlParts.containerPath);
+                    const resolverPath = encodeListResolverPath(urlParts.containerPath);
                     const parts = ['q', 'lists', resolverPath, params.listId];
                     return AppURL.create(...parts);
                 }

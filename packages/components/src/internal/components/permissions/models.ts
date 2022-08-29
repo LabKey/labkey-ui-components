@@ -37,8 +37,8 @@ export class Principal extends Record({
             principals
                 // filter out any principals that are already members of this role
                 .filter(principal => excludeUserIds === undefined || !excludeUserIds.contains(principal.userId))
-                // finally sort by display name
-                .sortBy(principal => principal.displayName)
+                // finally sort by type (group or user) and then display name
+                .sort((p1, p2) => p1.type.localeCompare(p2.type) || p1.displayName.localeCompare(p2.displayName))
                 .toList()
         );
     }

@@ -46,13 +46,17 @@
     color: $list-group-disabled-text-color
 }
 
-.group-member-row {
-    padding: 0 0 15px 0;
-    min-height: 49px;
-}
-
 .group-member-row__member {
     display: block;
+}
+
+.group-membership-container__member-buttons {
+    padding-bottom: 15px;
+}
+
+.group-membership-container__action-container {
+    padding: 30px 15px 0 15px;
+    border-top:lightgrey 1px solid;
 }
 
 .group-detail-label {

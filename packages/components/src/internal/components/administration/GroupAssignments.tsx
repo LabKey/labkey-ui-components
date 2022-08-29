@@ -112,6 +112,12 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         return principalsById?.get(selectedPrincipalId);
     }, [principalsById, selectedPrincipalId]);
 
+    const orderedGroupMembership = useMemo(() => {
+        return Object.keys(groupMembership).sort((id1, id2) =>
+            groupMembership[id1].groupName.localeCompare(groupMembership[id2].groupName)
+        );
+    }, [groupMembership]);
+
     return (
         <Row>
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
@@ -145,7 +151,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                             </Button>
                         </div>
 
-                        {Object.keys(groupMembership).map(id => (
+                        {orderedGroupMembership.map(id => (
                             <Group
                                 key={id}
                                 id={id}

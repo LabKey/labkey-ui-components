@@ -59,6 +59,20 @@ export const Group: FC<GroupProps> = memo(props => {
         );
     }, [members]);
 
+    const onClick = useCallback(
+        (userId: number) => {
+            onClickAssignment(userId);
+        },
+        [onClickAssignment]
+    );
+
+    const onRemove = useCallback(
+        (memberId: number) => {
+            onRemoveMember(id, memberId);
+        },
+        [id, onRemoveMember]
+    );
+
     const generateMemberButtons = useCallback(
         (member: Member[], title: string) => {
             return (
@@ -85,7 +99,7 @@ export const Group: FC<GroupProps> = memo(props => {
                 </Col>
             );
         },
-        [name]
+        [onClick, onRemove, selectedPrincipalId]
     );
 
     const canDeleteGroup = useMemo(() => {
@@ -100,7 +114,7 @@ export const Group: FC<GroupProps> = memo(props => {
     const principalsToAdd = useMemo(() => {
         const addedPrincipalIds = new Set(members.map(principal => principal.id));
         return usersAndGroups.filter(
-            principal => !addedPrincipalIds.has(principal.get('userId')) && principal.get('userId') !== parseInt(id)
+            principal => !addedPrincipalIds.has(principal.get('userId')) && principal.get('userId') !== parseInt(id, 10)
         );
     }, [members, usersAndGroups, id]);
 
@@ -109,20 +123,6 @@ export const Group: FC<GroupProps> = memo(props => {
             addMember(id, selected.get('userId'), selected.get('displayName'), selected.get('type'));
         },
         [id, addMember]
-    );
-
-    const onClick = useCallback(
-        userId => {
-            onClickAssignment(userId);
-        },
-        [onClickAssignment]
-    );
-
-    const onRemove = useCallback(
-        memberId => {
-            onRemoveMember(id, memberId);
-        },
-        [id, onRemoveMember]
     );
 
     const { groups, users } = useMemo(() => {
@@ -141,30 +141,36 @@ export const Group: FC<GroupProps> = memo(props => {
             isExpandable={true}
         >
             <div className="group-membership-container">
-                <div className="group-membership-container__delete-button">
-                    <Button
-                        className="pull-right alert-button"
-                        bsStyle="danger"
-                        disabled={canDeleteGroup}
-                        onClick={onDeleteGroup}
-                    >
-                        Delete Empty Group
-                    </Button>
-                </div>
+                <Row className="group-membership-container__member-buttons">
+                    {generateMemberButtons(groups, 'Groups')}
+                    {generateMemberButtons(users, 'Users')}
+                </Row>
 
-                {generateMemberButtons(groups, 'Groups')}
-                {generateMemberButtons(users, 'Users')}
+                <Row className="group-membership-container__action-container">
+                    <Col xs={12} sm={6}>
+                        <SelectInput
+                            autoValue={false}
+                            options={principalsToAdd.toArray()}
+                            placeholder="Add member..."
+                            inputClass="col-xs-12"
+                            valueKey="userId"
+                            labelKey="name"
+                            onChange={onSelectMember}
+                            selectedOptions={null}
+                        />
+                    </Col>
 
-                <SelectInput
-                    autoValue={false}
-                    options={principalsToAdd.toArray()}
-                    placeholder="Add member..."
-                    inputClass="col-xs-12"
-                    valueKey="userId"
-                    labelKey="name"
-                    onChange={onSelectMember}
-                    selectedOptions={null}
-                />
+                    <Col xs={12} sm={6}>
+                        <Button
+                            className="pull-right alert-button"
+                            bsStyle="danger"
+                            disabled={canDeleteGroup}
+                            onClick={onDeleteGroup}
+                        >
+                            Delete Empty Group
+                        </Button>
+                    </Col>
+                </Row>
             </div>
         </ExpandableContainer>
     );

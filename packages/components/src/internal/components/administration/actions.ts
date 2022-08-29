@@ -9,6 +9,7 @@ import { Row } from '../../query/selectRows';
 
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
 import { GroupMembership } from './models';
+import {FetchedGroup} from "../permissions/actions";
 
 export function getUpdatedPolicyRoles(
     roles: List<SecurityRole>,
@@ -87,7 +88,6 @@ export function updateSecurityPolicy(
     });
 }
 
-// right place?
 export const getGroupRows = (): Promise<Row[]> => {
     return new Promise((resolve, reject) => {
         Query.selectRows({
@@ -106,9 +106,18 @@ export const getGroupRows = (): Promise<Row[]> => {
     });
 };
 
-// right place?
-// comment this up
-export const constructGroupMembership = (groupsData, groupRows): GroupMembership => {
+// groupsData is an array of objects, each representing a group.
+// groupRows is an array of data rows that correlate users with groups. See core.Members, the table it obtains data from.
+// From this, we construct an object of the form:
+// {<id of group>:
+//      {
+//          groupName: <group name>,
+//          members: [{name: <member name>, id: <member id>, type: <member type, 'g' or 'u'>}, ...]
+//       },
+//       ...
+// }
+// Where the members array is sorted by type, and then by name
+export const constructGroupMembership = (groupsData: FetchedGroup[], groupRows): GroupMembership => {
     const groupsWithMembers = groupRows.reduce((prev, curr) => {
         const groupId = curr['GroupId'];
         if (groupId === -1) {
@@ -118,7 +127,6 @@ export const constructGroupMembership = (groupsData, groupRows): GroupMembership
         const userDisplayValue = `${curr['UserId/Email']} (${userDisplayName})`;
         const isGroup = !userDisplayName;
 
-        // consider efficiency of below line. Maybe make groupsData a map
         const member = {
             name: isGroup ? groupsData.find(group => group.id === curr.UserId).name : userDisplayValue,
             id: curr.UserId,
@@ -126,6 +134,7 @@ export const constructGroupMembership = (groupsData, groupRows): GroupMembership
         };
         if (curr.GroupId in prev) {
             prev[groupId].members.push(member);
+            prev[groupId].members.sort((member1, member2) => member1.name.localeCompare(member2.name));
             return prev;
         } else {
             prev[groupId] = { groupName: curr['GroupId/Name'], members: [member] };
@@ -133,6 +142,7 @@ export const constructGroupMembership = (groupsData, groupRows): GroupMembership
         }
     }, {});
 
+    // If a group has no members—is in groupsData but not groupRows—add it as well
     groupsData.forEach(group => {
         if (!(group.id in groupsWithMembers)) {
             groupsWithMembers[group.id] = { groupName: group.name, members: [] };

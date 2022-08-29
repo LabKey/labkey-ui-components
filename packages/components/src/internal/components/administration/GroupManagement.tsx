@@ -25,7 +25,6 @@ import { getProjectPath } from '../../app/utils';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { CreatedModified } from '../base/CreatedModified';
-import { Row } from '../../query/selectRows';
 
 import { GroupAssignments } from './GroupAssignments';
 
@@ -213,9 +212,10 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         (groupId: string, principalId: number, principalName: string, principalType: string) => {
             const group = groupMembership[groupId];
             const newMember = { name: principalName, id: principalId, type: principalType };
+            const members = [...group.members, newMember].sort((m1, m2) => m1.name.localeCompare(m2.name));
             setGroupMembership({
                 ...groupMembership,
-                [groupId]: { groupName: group.groupName, members: [...group.members, newMember] },
+                [groupId]: { groupName: group.groupName, members },
             });
         },
         [groupMembership]
@@ -239,7 +239,11 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     );
 
     const usersAndGroups = useMemo(() => {
-        return principals.filter(principal => principal.type === 'u' || principal.userId > 0) as List<Principal>;
+        return principals
+            .filter(principal => principal.type === 'u' || principal.userId > 0)
+            .sort(
+                (p1, p2) => p1.type.localeCompare(p2.type) || p1.displayName.localeCompare(p2.displayName)
+            ) as List<Principal>;
     }, [principals]);
 
     const description = useMemo(() => {

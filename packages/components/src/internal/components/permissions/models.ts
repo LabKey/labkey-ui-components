@@ -32,10 +32,7 @@ export class Principal extends Record({
         return new Principal({ userId, name, type, displayName });
     }
 
-    static filterAndSort(
-        principals: List<Principal>,
-        excludeUserIds?: List<number>
-    ): List<Principal> {
+    static filterAndSort(principals: List<Principal>, excludeUserIds?: List<number>): List<Principal> {
         return (
             principals
                 // filter out any principals that are already members of this role
@@ -235,10 +232,10 @@ export class SecurityPolicy extends Record({
 }
 
 export interface PermissionsProviderProps {
-    roles?: List<SecurityRole>;
-    rolesByUniqueName?: Map<string, SecurityRole>;
+    error?: string;
+    inactiveUsersById?: Map<number, Principal>;
     principals?: List<Principal>;
     principalsById?: Map<number, Principal>;
-    inactiveUsersById?: Map<number, Principal>;
-    error?: string;
+    roles?: List<SecurityRole>;
+    rolesByUniqueName?: Map<string, SecurityRole>;
 }

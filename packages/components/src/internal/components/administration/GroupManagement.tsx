@@ -5,6 +5,7 @@ import { MenuItem } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 
 import { Filter, Query } from '@labkey/api';
+
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
@@ -24,12 +25,13 @@ import { getProjectPath } from '../../app/utils';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { CreatedModified } from '../base/CreatedModified';
-import { Row } from "../../query/selectRows";
+import { Row } from '../../query/selectRows';
+
 import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
-import {constructGroupMembership, getGroupRows} from "./actions";
+import { constructGroupMembership, getGroupRows } from './actions';
 
 function getLastModified(project: string): Promise<string> {
     return new Promise((resolve, reject) => {

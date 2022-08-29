@@ -1,4 +1,4 @@
-import React, {Dispatch, FC, memo, SetStateAction, useCallback, useMemo} from 'react';
+import React, { Dispatch, FC, memo, SetStateAction, useCallback, useMemo } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 
 import { List } from 'immutable';
@@ -8,8 +8,8 @@ import { ExpandableContainer } from '../ExpandableContainer';
 import { RemovableButton } from '../permissions/RemovableButton';
 import { Principal } from '../permissions/models';
 import { SelectInput } from '../forms/input/SelectInput';
-import {Member} from "./models";
 
+import { Member } from './models';
 
 export interface GroupProps {
     addMember: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
@@ -59,29 +59,34 @@ export const Group: FC<GroupProps> = memo(props => {
         );
     }, [members]);
 
-    const generateMemberButtons = useCallback((member: Member[], title: string) => {
-        return (
-            <Col xs={12} sm={6}>
-                <div>{title}</div>
-                <ul className="group-members-ul">
-                    {member.length > 0 ? member.map(group => (
-                            <li key={group.id} className="group-member-row__member">
-                                <RemovableButton
-                                    id={group.id}
-                                    display={group.name}
-                                    onClick={onClick}
-                                    onRemove={onRemove}
-                                    bsStyle={selectedPrincipalId === group.id ? 'primary' : undefined}
-                                    added={false}
-                                />
-                            </li>
-                        )) :
-                        <li className="group-member-li group-member-none">None</li>
-                    }
-                </ul>
-            </Col>
-        );
-    }, [name]);
+    const generateMemberButtons = useCallback(
+        (member: Member[], title: string) => {
+            return (
+                <Col xs={12} sm={6}>
+                    <div>{title}</div>
+                    <ul className="group-members-ul">
+                        {member.length > 0 ? (
+                            member.map(group => (
+                                <li key={group.id} className="group-member-row__member">
+                                    <RemovableButton
+                                        id={group.id}
+                                        display={group.name}
+                                        onClick={onClick}
+                                        onRemove={onRemove}
+                                        bsStyle={selectedPrincipalId === group.id ? 'primary' : undefined}
+                                        added={false}
+                                    />
+                                </li>
+                            ))
+                        ) : (
+                            <li className="group-member-li group-member-none">None</li>
+                        )}
+                    </ul>
+                </Col>
+            );
+        },
+        [name]
+    );
 
     const canDeleteGroup = useMemo(() => {
         return members.length !== 0;
@@ -120,8 +125,11 @@ export const Group: FC<GroupProps> = memo(props => {
         [id, onRemoveMember]
     );
 
-    const {groups, users} = useMemo(() => {
-        return {groups: members.filter(member => member.type === 'g'), users: members.filter(member => member.type === 'u') }
+    const { groups, users } = useMemo(() => {
+        return {
+            groups: members.filter(member => member.type === 'g'),
+            users: members.filter(member => member.type === 'u'),
+        };
     }, [members]);
 
     return (

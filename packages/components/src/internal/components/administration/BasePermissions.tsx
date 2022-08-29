@@ -27,14 +27,15 @@ import { AppContext, useAppContext } from '../../AppContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
+import { getProjectPath } from '../../app/utils';
+
 import {
     constructGroupMembership,
     getGroupRows,
     getUpdatedPolicyRoles,
-    getUpdatedPolicyRolesByUniqueName
+    getUpdatedPolicyRolesByUniqueName,
 } from './actions';
-import {GroupMembership} from "./models";
-import {getProjectPath} from "../../app/utils";
+import { GroupMembership } from './models';
 
 interface OwnProps {
     containerId: string;
@@ -107,7 +108,15 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
         }
 
         setLoadingState(LoadingState.LOADED);
-    }, [api.security, containerId, inactiveUsersById, loadGroupMembership, principalsById, setIsDirty, showAssignments]);
+    }, [
+        api.security,
+        containerId,
+        inactiveUsersById,
+        loadGroupMembership,
+        principalsById,
+        setIsDirty,
+        showAssignments,
+    ]);
 
     useEffect(() => {
         loadPolicy();

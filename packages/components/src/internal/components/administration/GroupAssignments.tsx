@@ -10,7 +10,7 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 
 import { Group } from './Group';
-import {GroupMembership} from "./models";
+import { GroupMembership } from './models';
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;

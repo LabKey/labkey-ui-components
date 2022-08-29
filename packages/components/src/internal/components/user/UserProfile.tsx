@@ -42,19 +42,19 @@ const USER_AVATAR_FILE = 'user_avatar_file';
 const DEFAULT_AVATAR_PATH = '/_images/defaultavatar.png';
 
 interface State {
-    queryInfo: QueryInfo;
     avatar: File;
-    removeCurrentAvatar: boolean;
-    reloadRequired: boolean;
-    hasError: boolean;
     groups: string;
+    hasError: boolean;
+    queryInfo: QueryInfo;
+    reloadRequired: boolean;
+    removeCurrentAvatar: boolean;
 }
 
 interface Props {
+    onCancel: () => void;
+    onSuccess: (result: {}, shouldReload: boolean) => void;
     user: User;
     userProperties: Record<string, any>;
-    onSuccess: (result: {}, shouldReload: boolean) => void;
-    onCancel: () => void;
 }
 
 export class UserProfile extends PureComponent<Props, State> {

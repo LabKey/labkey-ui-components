@@ -13,22 +13,22 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
 import { isProjectContainer } from '../../app/utils';
 
+import { GroupMembership } from '../administration/models';
+
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { InjectedPermissionsPage } from './withPermissionsPage';
-import {constructGroupMembership, getGroupRows} from "../administration/actions";
-import {GroupMembership} from "../administration/models";
 
 // exported for testing
 export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
     containerId: string;
     /** UserId to disable to prevent removing assignments for that id */
     disabledId?: number;
+    groupMembership: GroupMembership;
     onChange: (policy: SecurityPolicy) => void;
     onSuccess: () => void;
     policy: SecurityPolicy;
-    groupMembership: GroupMembership;
     /** Subset list of role uniqueNames to show in this component usage */
     rolesToShow?: List<string>;
     showDetailsPanel?: boolean;

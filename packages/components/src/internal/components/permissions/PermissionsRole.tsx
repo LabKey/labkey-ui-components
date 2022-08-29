@@ -8,21 +8,22 @@ import { List } from 'immutable';
 
 import { ExpandableContainer } from '../ExpandableContainer';
 
+import { naturalSort } from '../../..';
+
 import { Principal, SecurityAssignment, SecurityRole } from './models';
 import { RemovableButton } from './RemovableButton';
 import { AddRoleAssignmentInput } from './AddRoleAssignmentInput';
-import { naturalSort } from '../../..';
 
 interface Props {
-    role: SecurityRole;
     assignments: List<SecurityAssignment>;
-    principals: List<Principal>;
-    onAddAssignment?: (principal: Principal, role: SecurityRole) => any;
-    onRemoveAssignment?: (userId: number, role: SecurityRole) => any;
-    onClickAssignment: (userId: number) => any;
-    selectedUserId: number;
     disabledId?: number;
     initExpanded?: boolean;
+    onAddAssignment?: (principal: Principal, role: SecurityRole) => any;
+    onClickAssignment: (userId: number) => any;
+    onRemoveAssignment?: (userId: number, role: SecurityRole) => any;
+    principals: List<Principal>;
+    role: SecurityRole;
+    selectedUserId: number;
 }
 
 export class PermissionsRole extends React.PureComponent<Props, any> {

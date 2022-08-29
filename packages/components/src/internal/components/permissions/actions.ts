@@ -6,10 +6,13 @@ import { fromJS, List, Map } from 'immutable';
 
 import { ActionURL, Ajax, Filter, Query, Security, Utils } from '@labkey/api';
 
-import { Principal, SecurityPolicy, SecurityRole } from './models';
+import { CreateGroupResponse } from '@labkey/api/dist/labkey/security/Group';
+
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
-import {QueryInfo} from "../../../public/QueryInfo";
-import {CreateGroupResponse} from "@labkey/api/dist/labkey/security/Group";
+
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { Principal, SecurityPolicy, SecurityRole } from './models';
 
 export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -129,8 +132,8 @@ export function fetchContainerSecurityPolicy(
 export interface FetchedGroup {
     id: number;
     isProjectGroup: boolean;
-    type: string;
     name: string;
+    type: string;
 }
 export function fetchGroupPermissions(projectPath: string): Promise<FetchedGroup[]> {
     return new Promise((resolve, reject) => {
@@ -185,7 +188,11 @@ export function deleteGroup(groupId: number, projectPath: string): Promise<Delet
 export interface AddGroupMembersResponse {
     added: number[];
 }
-export function addGroupMembers(groupId: number, principalIds: number[], projectPath: string): Promise<AddGroupMembersResponse> {
+export function addGroupMembers(
+    groupId: number,
+    principalIds: number[],
+    projectPath: string
+): Promise<AddGroupMembersResponse> {
     return new Promise((resolve, reject) => {
         Security.addGroupMembers({
             groupId,
@@ -205,7 +212,11 @@ export function addGroupMembers(groupId: number, principalIds: number[], project
 export interface RemoveGroupMembersResponse {
     removed: number[];
 }
-export function removeGroupMembers(groupId: number, principalIds: number[], projectPath: string): Promise<RemoveGroupMembersResponse> {
+export function removeGroupMembers(
+    groupId: number,
+    principalIds: number[],
+    projectPath: string
+): Promise<RemoveGroupMembersResponse> {
     return new Promise((resolve, reject) => {
         Security.removeGroupMembers({
             groupId,

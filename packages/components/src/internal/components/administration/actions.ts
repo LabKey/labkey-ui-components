@@ -1,13 +1,14 @@
 import { List, Map } from 'immutable';
 
-import {Query, Security} from '@labkey/api';
+import { Query, Security } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
+import { Row } from '../../query/selectRows';
+
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
-import {GroupMembership} from "./models";
-import {Row} from "../../query/selectRows";
+import { GroupMembership } from './models';
 
 export function getUpdatedPolicyRoles(
     roles: List<SecurityRole>,

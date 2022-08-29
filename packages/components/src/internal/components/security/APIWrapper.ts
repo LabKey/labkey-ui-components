@@ -1,6 +1,8 @@
 import { Security } from '@labkey/api';
 import { Map } from 'immutable';
 
+import { CreateGroupResponse } from '@labkey/api/dist/labkey/security/Group';
+
 import { Container } from '../base/models/Container';
 import {
     fetchContainerSecurityPolicy,
@@ -10,10 +12,13 @@ import {
     createGroup,
     deleteGroup,
     addGroupMembers,
-    removeGroupMembers, FetchedGroup, AddGroupMembersResponse, DeleteGroupResponse, RemoveGroupMembersResponse,
+    removeGroupMembers,
+    FetchedGroup,
+    AddGroupMembersResponse,
+    DeleteGroupResponse,
+    RemoveGroupMembersResponse,
 } from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
-import {CreateGroupResponse} from "@labkey/api/dist/labkey/security/Group";
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 
@@ -21,7 +26,6 @@ export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
     createGroup: (groupName: string, projectPath: string) => Promise<CreateGroupResponse>;
     deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
-    removeGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<RemoveGroupMembersResponse>;
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
     fetchGroups: (projectPath: string) => Promise<FetchedGroup[]>;
     fetchPolicy: (
@@ -30,6 +34,11 @@ export interface SecurityAPIWrapper {
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
+    removeGroupMembers: (
+        groupId: number,
+        principalIds: number[],
+        projectPath: string
+    ) => Promise<RemoveGroupMembersResponse>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {

@@ -184,5 +184,6 @@ export interface SampleGridButtonProps {
     navigate?: (url: string | AppURL) => void;
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     showBulkUpdate?: () => void;
+    subMenuWidth?: number;
     toggleEditWithGridUpdate?: () => void;
 }

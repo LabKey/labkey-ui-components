@@ -845,7 +845,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
             />
             <tbody>
               <tr
-                className=""
+                className="grid-row-alternate"
               >
                 <td
                   style={
@@ -871,7 +871,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                 </td>
               </tr>
               <tr
-                className=""
+                className="grid-row"
               >
                 <td
                   style={
@@ -897,7 +897,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                 </td>
               </tr>
               <tr
-                className=""
+                className="grid-row-alternate"
               >
                 <td
                   style={
@@ -923,7 +923,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                 </td>
               </tr>
               <tr
-                className=""
+                className="grid-row"
               >
                 <td
                   style={
@@ -1810,7 +1810,7 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
             />
             <tbody>
               <tr
-                className=""
+                className="grid-row-alternate"
               >
                 <td
                   style={
@@ -1836,7 +1836,7 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                 </td>
               </tr>
               <tr
-                className=""
+                className="grid-row"
               >
                 <td
                   style={
@@ -1862,7 +1862,7 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                 </td>
               </tr>
               <tr
-                className=""
+                className="grid-row-alternate"
               >
                 <td
                   style={

@@ -1,6 +1,28 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.211.4
+*Released*: 26 August 2022
+* upgrade Spring from 4.x to 5.x
+    * Remove redundant GET parameters from handleEntityFileImport util
+
+### version 2.211.3
+*Released*: 26 August 2022
+* Issue 45857: Improve styling for left column locking in app grids (experimental feature)
+
+### version 2.211.2
+*Released*: 25 August 2022
+* Misc grid menu and button fixes for 22.9
+  * Issue 45958: Safari dropdown / scroll bar z-index issue for editable grid
+  * Issue 45666: Sample grid "More" menu is puzzling when no other menu is present
+  * Issue 45746: Show more grid options menus at narrower screen widths when possible
+  * Issue 45965: Use "locked" lock icon to mean locked in Text Choice field editor
+
+### version 2.211.1
+*Released*: 25 August 2022
+* Issue 46148: Add multitabbed grid view to Stored Items table
+  * Allow TabbedGridPanel excel handler to be used by getGridPanelDisplay
+
 ### version 2.211.0
 *Relased*: 24 August 2022
 * LKSM Starter edition

@@ -16,7 +16,7 @@
 import React from 'react';
 import { fromJS } from 'immutable';
 
-import { resolveDetailFieldValue } from './renderers';
+import { resolveDetailFieldValue } from './utils';
 
 describe('resolveDetailFieldValue', () => {
     test('data value undefined', () => {

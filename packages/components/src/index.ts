@@ -273,8 +273,8 @@ import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
+import { resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
 
-import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
 import {
     getUsersWithPermissions,
     handleInputTab,

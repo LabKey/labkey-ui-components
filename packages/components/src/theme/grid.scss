@@ -6,8 +6,14 @@
   text-align: left;
 }
 
-.table-striped > tbody > tr.grid-row-highlight {
-  background-color: $yellow-shadow;
+.table-striped > tbody > tr.grid-row td {
+    background-color: $white;
+}
+.table-striped > tbody > tr.grid-row-alternate td {
+    background-color: $table-bg-accent;
+}
+.table-striped > tbody > tr.grid-row-highlight td {
+  background-color: $grid-action-item-hover-bg;
 }
 
 .panel.fixed-panel {

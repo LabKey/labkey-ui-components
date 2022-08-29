@@ -272,7 +272,14 @@ class GridBody extends PureComponent<GridBodyProps> {
         // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
         // "textAlign" property correctly for <td> elements.
         return (
-            <tr key={key} className={classNames({ 'grid-row-highlight': highlight })}>
+            <tr
+                key={key}
+                className={classNames({
+                    'grid-row-highlight': highlight,
+                    'grid-row-alternate': r % 2 === 0,
+                    'grid-row': r % 2 === 1,
+                })}
+            >
                 {columns.map((column: GridColumn, c: number) =>
                     column.tableCell ? (
                         column.cell(row.get(column.index), row, column, r, c)

@@ -88,7 +88,7 @@ exports[`Grid component hide tooltip 1`] = `
     </thead>
     <tbody>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -126,7 +126,7 @@ exports[`Grid component hide tooltip 1`] = `
         />
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -164,7 +164,7 @@ exports[`Grid component hide tooltip 1`] = `
         />
       </tr>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -202,7 +202,7 @@ exports[`Grid component hide tooltip 1`] = `
         />
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -403,7 +403,7 @@ exports[`Grid component render with messages 1`] = `
     </thead>
     <tbody>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -434,7 +434,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -465,7 +465,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -496,7 +496,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -601,7 +601,7 @@ exports[`Grid component render with non-default properties 1`] = `
     </thead>
     <tbody>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -632,7 +632,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -663,7 +663,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -694,7 +694,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -799,7 +799,7 @@ exports[`Grid component rendering with data 1`] = `
     </thead>
     <tbody>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -830,7 +830,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -861,7 +861,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -892,7 +892,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -997,7 +997,7 @@ exports[`Grid component rendering with data and columns 1`] = `
     </thead>
     <tbody>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -1028,7 +1028,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -1059,7 +1059,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -1090,7 +1090,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -1354,7 +1354,7 @@ exports[`Grid component with phi data 1`] = `
     </thead>
     <tbody>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -1413,7 +1413,7 @@ exports[`Grid component with phi data 1`] = `
         />
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={
@@ -1472,7 +1472,7 @@ exports[`Grid component with phi data 1`] = `
         />
       </tr>
       <tr
-        className=""
+        className="grid-row-alternate"
       >
         <td
           style={
@@ -1531,7 +1531,7 @@ exports[`Grid component with phi data 1`] = `
         />
       </tr>
       <tr
-        className=""
+        className="grid-row"
       >
         <td
           style={

@@ -68,10 +68,6 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         setSelectedPrincipalId(selectedPrincipalId);
     }, []);
 
-    const selectedPrincipal = useMemo(() => {
-        return principalsById?.get(selectedPrincipalId);
-    }, [principalsById, selectedPrincipalId]);
-
     const onChangeNewGroupName = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => setNewGroupName(event.target.value),
         []
@@ -111,6 +107,10 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         },
         [removeMember]
     );
+
+    const selectedPrincipal = useMemo(() => {
+        return principalsById?.get(selectedPrincipalId);
+    }, [principalsById, selectedPrincipalId]);
 
     return (
         <Row>

@@ -1,5 +1,5 @@
 import React, {Dispatch, FC, memo, SetStateAction, useCallback, useMemo} from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
@@ -59,6 +59,30 @@ export const Group: FC<GroupProps> = memo(props => {
         );
     }, [members]);
 
+    const generateMemberButtons = useCallback((member: Member[], title: string) => {
+        return (
+            <Col xs={12} sm={6}>
+                <div>{title}</div>
+                <ul className="group-members-ul">
+                    {member.length > 0 ? member.map(group => (
+                            <li key={group.id} className="group-member-row__member">
+                                <RemovableButton
+                                    id={group.id}
+                                    display={group.name}
+                                    onClick={onClick}
+                                    onRemove={onRemove}
+                                    bsStyle={selectedPrincipalId === group.id ? 'primary' : undefined}
+                                    added={false}
+                                />
+                            </li>
+                        )) :
+                        <li className="group-member-li group-member-none">None</li>
+                    }
+                </ul>
+            </Col>
+        );
+    }, [name]);
+
     const canDeleteGroup = useMemo(() => {
         return members.length !== 0;
     }, [members]);
@@ -96,6 +120,10 @@ export const Group: FC<GroupProps> = memo(props => {
         [id, onRemoveMember]
     );
 
+    const {groups, users} = useMemo(() => {
+        return {groups: members.filter(member => member.type === 'g'), users: members.filter(member => member.type === 'u') }
+    }, [members]);
+
     return (
         <ExpandableContainer
             clause={generateClause()}
@@ -105,29 +133,19 @@ export const Group: FC<GroupProps> = memo(props => {
             isExpandable={true}
         >
             <div className="group-membership-container">
-                <Button
-                    className="pull-right alert-button"
-                    bsStyle="danger"
-                    disabled={canDeleteGroup}
-                    onClick={onDeleteGroup}
-                >
-                    Delete Empty Group
-                </Button>
-
-                <div className="group-member-row">
-                    {members.map(member => (
-                        <li key={member.id} className="group-member-row__member">
-                            <RemovableButton
-                                id={member.id}
-                                display={member.name}
-                                onClick={onClick}
-                                onRemove={onRemove}
-                                bsStyle={selectedPrincipalId === member.id ? 'primary' : undefined}
-                                added={false}
-                            />
-                        </li>
-                    ))}
+                <div className="group-membership-container__delete-button">
+                    <Button
+                        className="pull-right alert-button"
+                        bsStyle="danger"
+                        disabled={canDeleteGroup}
+                        onClick={onDeleteGroup}
+                    >
+                        Delete Empty Group
+                    </Button>
                 </div>
+
+                {generateMemberButtons(groups, 'Groups')}
+                {generateMemberButtons(users, 'Users')}
 
                 <SelectInput
                     autoValue={false}

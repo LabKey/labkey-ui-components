@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.213.3
+*Released*: ? September 2022
+* QuerySelect: Allow optionRenderer prop to be passed
+
 ### version 2.213.2
 *Released*: 6 September 2022
 * Make sure assay functionality is enabled in community edition

@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 
 import { MenuItem } from 'react-bootstrap';
 
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 
 import { Filter, Query } from '@labkey/api';
 
@@ -54,11 +54,7 @@ function getLastModified(project: string): Promise<string> {
     });
 }
 
-interface OwnProps {
-    rolesMap: Map<string, string>;
-}
-
-type GroupPermissionsProps = OwnProps & InjectedRouteLeaveProps & InjectedPermissionsPage;
+type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
 export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const { setIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
@@ -278,4 +274,4 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     );
 });
 
-export const GroupManagement = withRouteLeave<OwnProps>(withPermissionsPage(GroupManagementImpl));
+export const GroupManagement = withRouteLeave<{}>(withPermissionsPage(GroupManagementImpl));

@@ -28,6 +28,7 @@ import {
 } from './AppURLResolver';
 import { URLResolver } from './URLResolver';
 import { AppURL } from './AppURL';
+import { encodeListResolverPath } from './utils';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -508,20 +509,20 @@ describe('App Route Resolvers', () => {
 
         return Promise.all([
             listResolver
-                .fetch(['q', 'lists', ListResolver.encodeResolverPath('/BULLS'), 'jordan', 4])
+                .fetch(['q', 'lists', encodeListResolverPath('/BULLS'), 'jordan', 4])
                 .then((result: boolean) => {
                     expect(result).toBe(true);
                 }),
-            listResolver.fetch(['q', 'lists', ListResolver.encodeResolverPath('/BULLS'), 23]).then((url: AppURL) => {
+            listResolver.fetch(['q', 'lists', encodeListResolverPath('/BULLS'), 23]).then((url: AppURL) => {
                 expect(url.toString()).toBe('/q/lists/Jordan');
             }),
             listResolver
-                .fetch(['q', 'lists', ListResolver.encodeResolverPath('/lakers'), '8', 'mamba'])
+                .fetch(['q', 'lists', encodeListResolverPath('/lakers'), '8', 'mamba'])
                 .then((url: AppURL) => {
                     expect(url.toString()).toBe('/q/lists/KObE/mamba');
                 }),
             listResolver
-                .fetch(['q', 'lists', ListResolver.encodeResolverPath('/JaZz'), '7', 17, '?'])
+                .fetch(['q', 'lists', encodeListResolverPath('/JaZz'), '7', 17, '?'])
                 .then((url: AppURL) => {
                     expect(url.toString()).toBe('/q/lists/PistolPete/17/%3F');
                 }),

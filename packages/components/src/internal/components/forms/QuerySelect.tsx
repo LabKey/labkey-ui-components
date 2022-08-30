@@ -23,7 +23,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
 import { resolveDetailFieldValue } from './utils';
-import { initSelect } from './actions';
+import { initSelect } from './model';
 import { QuerySelectModel } from './model';
 import { DELIMITER } from './constants';
 

@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add `selectionKey` method in `QueryModel` that includes viewName
   * add `getKey` method to `SchemaQuery` and deprecate resolveSchemaQuery
 * Issue 46098: Get all sample types when getting type count
+* Update `QueryModel.isLoading` to return false if there are load errors
 
 ### version 2.211.4
 *Released*: 26 August 2022

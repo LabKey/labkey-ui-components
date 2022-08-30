@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 46210: Details panel editing removes file attachments when other fields are edited
+
 ### version 2.211.4
 *Released*: 26 August 2022
 * upgrade Spring from 4.x to 5.x

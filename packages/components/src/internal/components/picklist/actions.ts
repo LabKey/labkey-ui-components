@@ -308,7 +308,7 @@ export interface PicklistDeletionData {
 export function getPicklistDeleteData(model: QueryModel, user: User): Promise<PicklistDeletionData> {
     return new Promise((resolve, reject) => {
         const columnString = 'Name,listId,category,createdBy';
-        getSelectedData(model.schemaName, model.queryName, [...model.selections], columnString, undefined, undefined, model.currentView.name, 'ListId')
+        getSelectedData(model.schemaName, model.queryName, [...model.selections], columnString, undefined, undefined, undefined, 'ListId')
             .then(response => {
                 const { data } = response;
                 let numNotDeletable = 0;

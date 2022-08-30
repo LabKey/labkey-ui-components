@@ -3,9 +3,10 @@ import React from 'react';
 
 import { Button, Checkbox } from 'react-bootstrap';
 
-import { ConfirmModal, LoadingSpinner } from '../../..';
-
 import { waitForLifecycle } from '../../testHelpers';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 import { NameIdSettingsForm } from './NameIdSettings';
 

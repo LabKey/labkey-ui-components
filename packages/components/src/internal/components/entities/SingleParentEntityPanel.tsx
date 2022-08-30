@@ -4,33 +4,27 @@ import { List } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import {
-    Alert,
-    AppURL,
-    capitalizeFirstChar,
-    caseInsensitive,
-    EntityDataType,
-    GridPanel,
-    QueryModel,
-    QuerySelect,
-    RemoveEntityButton,
-    SampleOperation,
-    SchemaQuery,
-    SelectInput,
-    ViewInfo,
-} from '../../..';
-
-import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-
 import { DELIMITER, DETAIL_TABLE_CLASSES } from '../forms/constants';
 
 import { isSampleStatusEnabled } from '../../app/utils';
 import { getFilterForSampleOperation } from '../samples/utils';
 
-import { quoteValueWithDelimiters } from '../../util/utils';
+import { capitalizeFirstChar, caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 
-import { IEntityTypeOption } from './models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { Alert } from '../base/Alert';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SampleOperation } from '../samples/constants';
+import { SelectInput } from '../forms/input/SelectInput';
+import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
+import { QuerySelect } from '../forms/QuerySelect';
+import { AppURL } from '../../url/AppURL';
+import { GridPanel } from '../../../public/QueryModel/GridPanel';
+
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
 import { isSampleEntity } from './utils';
+import { EntityDataType, IEntityTypeOption } from './models';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;

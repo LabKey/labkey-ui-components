@@ -8,18 +8,16 @@ import { Col, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
 import { QueryInfoForm } from '../forms/QueryInfoForm';
-import {
-    Alert,
-    FileInput,
-    getActionErrorMessage,
-    getQueryDetails,
-    insertColumnFilter,
-    LoadingSpinner,
-    QueryInfo,
-    QueryColumn,
-    SCHEMAS,
-    User,
-} from '../../..';
+
+import { QueryInfo } from '../../../public/QueryInfo';
+import { User } from '../base/models/User';
+import { getQueryDetails } from '../../query/api';
+import { SCHEMAS } from '../../schemas';
+import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
+import { FileInput } from '../forms/input/FileInput';
+import { Alert } from '../base/Alert';
+import { getActionErrorMessage } from '../../util/messaging';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { getUserDetailsRowData, updateUserDetails } from './actions';
 
@@ -40,18 +38,18 @@ const USER_AVATAR_FILE = 'user_avatar_file';
 const DEFAULT_AVATAR_PATH = '/_images/defaultavatar.png';
 
 interface State {
-    queryInfo: QueryInfo;
     avatar: File;
-    removeCurrentAvatar: boolean;
-    reloadRequired: boolean;
     hasError: boolean;
+    queryInfo: QueryInfo;
+    reloadRequired: boolean;
+    removeCurrentAvatar: boolean;
 }
 
 interface Props {
+    onCancel: () => void;
+    onSuccess: (result: {}, shouldReload: boolean) => void;
     user: User;
     userProperties: Record<string, any>;
-    onSuccess: (result: {}, shouldReload: boolean) => void;
-    onCancel: () => void;
 }
 
 export class UserProfile extends PureComponent<Props, State> {

@@ -17,7 +17,7 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { Ajax, Domain, Experiment, Filter, Query, Security, Utils } from '@labkey/api';
 
-import { processSchemas } from '../../query/api';
+import { processSchemas } from '../../query/utils';
 
 import { SimpleResponse } from '../files/models';
 
@@ -25,6 +25,44 @@ import { ConceptModel, OntologyModel } from '../ontology/models';
 
 import { isCommunityDistribution } from '../../app/utils';
 
+import { Container } from '../base/models/Container';
+import { naturalSortByProperty } from '../../../public/sort';
+import { SchemaDetails } from '../../SchemaDetails';
+import { buildURL } from '../../url/AppURL';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SCHEMAS } from '../../schemas';
+
+import {
+    DOMAIN_FIELD_CLIENT_SIDE_ERROR,
+    DOMAIN_FIELD_LOOKUP_CONTAINER,
+    DOMAIN_FIELD_LOOKUP_QUERY,
+    DOMAIN_FIELD_LOOKUP_SCHEMA,
+    DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
+    DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
+    DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
+    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
+    DOMAIN_FIELD_SAMPLE_TYPE,
+    DOMAIN_FIELD_TYPE,
+    MAX_TEXT_LENGTH,
+    SEVERITY_LEVEL_ERROR,
+    SEVERITY_LEVEL_WARN,
+} from './constants';
+import {
+    ATTACHMENT_TYPE,
+    FILE_TYPE,
+    FLAG_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
+    PARTICIPANT_TYPE,
+    PROP_DESC_TYPES,
+    PropDescType,
+    SAMPLE_TYPE,
+    SMILES_TYPE,
+    TEXT_CHOICE_TYPE,
+    UNIQUE_ID_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
+} from './PropDescType';
 import {
     decodeLookup,
     DEFAULT_TEXT_CHOICE_VALIDATOR,
@@ -43,44 +81,7 @@ import {
     QueryInfoLite,
     updateSampleField,
 } from './models';
-import {
-    ATTACHMENT_TYPE,
-    FILE_TYPE,
-    FLAG_TYPE,
-    ONTOLOGY_LOOKUP_TYPE,
-    PARTICIPANT_TYPE,
-    PROP_DESC_TYPES,
-    PropDescType,
-    SAMPLE_TYPE,
-    SMILES_TYPE,
-    TEXT_CHOICE_TYPE,
-    UNIQUE_ID_TYPE,
-    VISIT_DATE_TYPE,
-    VISIT_ID_TYPE,
-} from './PropDescType';
-import {
-    DOMAIN_FIELD_CLIENT_SIDE_ERROR,
-    DOMAIN_FIELD_LOOKUP_CONTAINER,
-    DOMAIN_FIELD_LOOKUP_QUERY,
-    DOMAIN_FIELD_LOOKUP_SCHEMA,
-    DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
-    DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
-    DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
-    DOMAIN_FIELD_PREFIX,
-    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
-    DOMAIN_FIELD_SAMPLE_TYPE,
-    DOMAIN_FIELD_TYPE,
-    MAX_TEXT_LENGTH,
-    SEVERITY_LEVEL_ERROR,
-    SEVERITY_LEVEL_WARN,
-} from './constants';
-import { Container } from '../base/models/Container';
-import { naturalSortByProperty } from '../../../public/sort';
-import { SchemaDetails } from '../../SchemaDetails';
-import { buildURL } from '../../url/AppURL';
-import { QueryColumn } from '../../../public/QueryColumn';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { SCHEMAS } from '../../schemas';
+import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -433,34 +434,6 @@ export function validateDomainNameExpressions(
             },
         });
     });
-}
-
-// This is used for testing
-export function createFormInputName(name: string): string {
-    return [DOMAIN_FIELD_PREFIX, name].join('-');
-}
-
-// TODO we should rename this to include the word "domain" in the name since it is exported from the package
-export function createFormInputId(name: string, domainIndex: number, rowIndex: number): string {
-    return [DOMAIN_FIELD_PREFIX, name, domainIndex, rowIndex].join('-');
-}
-
-export function getNameFromId(id: string): string {
-    const parts = id.split('-');
-    if (parts.length === 4) {
-        return parts[1];
-    }
-
-    return undefined;
-}
-
-export function getIndexFromId(id: string): number {
-    const parts = id.split('-');
-    if (parts.length === 4) {
-        return parseInt(parts[3]);
-    }
-
-    return -1;
 }
 
 export function createNewDomainField(domain: DomainDesign, fieldConfig: Partial<IDomainField> = {}): DomainField {

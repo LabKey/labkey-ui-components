@@ -1,8 +1,9 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Dropdown, MenuItem, Modal } from 'react-bootstrap';
 
-import { isLoading, isImage, LoadingSpinner, LoadingState } from '../..';
-import { formatBytes } from '../util/utils';
+import { formatBytes, isImage } from '../util/utils';
+import { isLoading, LoadingState } from '../../public/LoadingState';
+import { LoadingSpinner } from '../components/base/LoadingSpinner';
 
 const now = (): number => new Date().valueOf();
 
@@ -17,11 +18,11 @@ export interface IAttachment {
 }
 
 interface Props {
-    noun?: string;
-    attachment: IAttachment;
-    imageURL?: string;
-    imageCls?: string;
     allowRemove?: boolean;
+    attachment: IAttachment;
+    imageCls?: string;
+    imageURL?: string;
+    noun?: string;
     onDownload?: (attachment: IAttachment) => void;
     onRemove?: (attachment: IAttachment) => void;
 }

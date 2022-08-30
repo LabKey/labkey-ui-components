@@ -19,33 +19,36 @@ import { Filter, Query } from '@labkey/api';
 
 import { Link } from 'react-router';
 
-import { addDateRangeFilter, AppURL, generateId, LoadingSpinner, naturalSort, SchemaQuery } from '../../..';
+import { AppURL } from '../../url/AppURL';
+import { naturalSort } from '../../../public/sort';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { generateId } from '../../util/utils';
 
-// These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { last12Months, monthSort } from './utils';
 import { HeatMapDisplay } from './HeatMapDisplay';
+import { addDateRangeFilter, last12Months, monthSort } from './utils';
 
 export interface HeatMapCell {
-    monthName: string;
-    monthNum: number;
-    yearNum: number;
-    title: string;
-    providerName: string;
-    protocolName: string;
-    monthTotal: string;
     completeTotal: string;
     inRangeTotal: string;
+    monthName: string;
+    monthNum: number;
+    monthTotal: string;
+    protocolName: string;
+    providerName: string;
+    title: string;
     url: AppURL;
+    yearNum: number;
 }
 
 export interface HeatMapDisplayCell {
+    completeTotal: string;
+    headerUrl: AppURL;
+    inRangeTotal: string;
     name: string;
     renderYCell: (cell: HeatMapDisplayCell) => ReactNode;
-    completeTotal: string;
-    inRangeTotal: string;
-    headerUrl: AppURL;
     totalUrl: AppURL;
 }
 

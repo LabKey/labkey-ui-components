@@ -2,18 +2,14 @@ import React, { FC, memo, useMemo } from 'react';
 import { Experiment, Filter } from '@labkey/api';
 import { List, Map } from 'immutable';
 
-import {
-    Alert,
-    DetailPanel,
-    LoadingSpinner,
-    QueryColumn,
-    resolveDetailRenderer,
-    SchemaQuery,
-    ViewInfo,
-} from '../../../..';
-
+import { Renderer, resolveDetailRenderer } from '../../forms/detail/DetailDisplay';
+import { LoadingSpinner } from '../../base/LoadingSpinner';
+import { Alert } from '../../base/Alert';
+import { DetailPanel } from '../../../../public/QueryModel/DetailPanel';
+import { SchemaQuery } from '../../../../public/SchemaQuery';
+import { ViewInfo } from '../../../ViewInfo';
+import { QueryColumn } from '../../../../public/QueryColumn';
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
-import { Renderer } from '../../forms/detail/DetailDisplay';
 
 const ADDITIONAL_DETAIL_FIELDS = ['properties'];
 

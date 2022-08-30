@@ -1,8 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { App, makeTestActions } from '../../../index';
-
 import SampleTimelineJson from '../../../test/data/SampleTimeline.json';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
@@ -12,6 +10,9 @@ import { TimelineEventModel } from '../auditlog/models';
 import { SampleStateType } from '../samples/constants';
 
 import { sleep } from '../../testHelpers';
+
+import { makeTestActions } from '../../../public/QueryModel/testUtils';
+import { TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
 
 import { SampleTimelinePageBaseImpl } from './SampleTimelinePageBase';
 
@@ -33,7 +34,7 @@ describe('<SampleTimelinePageBase/>', () => {
         sampleSet: 'Samples',
         sampleId: 86873,
         sampleName: 'S-20200404-1',
-        user: App.TEST_USER_FOLDER_ADMIN,
+        user: TEST_USER_FOLDER_ADMIN,
         skipAuditDetailUserLoading: true,
         timezoneAbbr: 'UTC',
         sampleStatus: {

@@ -16,7 +16,7 @@
 import React, { FC, memo } from 'react';
 import Formsy from 'formsy-react';
 
-import { QueryFormInputs } from '../../..';
+import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 import { AssayPropertiesPanelProps } from './models';
 

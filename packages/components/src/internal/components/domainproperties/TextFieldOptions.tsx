@@ -1,13 +1,12 @@
 import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
-import { createFormInputId, createFormInputName, getNameFromId } from './actions';
+import { createFormInputId, createFormInputName, getNameFromId } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';
 import {
     DOMAIN_FIELD_CUSTOM_LENGTH,
     DOMAIN_FIELD_MAX_LENGTH,
     DOMAIN_FIELD_SCALE,
-    DOMAIN_FIELD_SCANNABLE_OPTION,
     MAX_TEXT_LENGTH,
     UNLIMITED_TEXT_LENGTH,
 } from './constants';

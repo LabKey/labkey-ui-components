@@ -16,7 +16,9 @@
 import React from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { QueryColumn, LabelHelpTip, generateId } from '../../..';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { generateId } from '../../util/utils';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { HelpTipRenderer } from './HelpTipRenderer';
 

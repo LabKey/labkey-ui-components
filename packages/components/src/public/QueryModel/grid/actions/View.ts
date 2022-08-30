@@ -15,7 +15,8 @@
  */
 import { List } from 'immutable';
 
-import { QueryColumn, QueryInfo } from '../../../..';
+import { QueryInfo } from '../../../QueryInfo';
+import { QueryColumn } from '../../../QueryColumn';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
 

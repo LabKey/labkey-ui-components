@@ -4,8 +4,9 @@
  */
 import React, { Component, ReactNode } from 'react';
 
-import { Page, PageHeader } from '../../../..';
 import { SchemaListing } from '../SchemaListing';
+import { Page } from '../../base/Page';
+import { PageHeader } from '../../base/PageHeader';
 
 export class SchemaListingPage extends Component {
     render = (): ReactNode => {

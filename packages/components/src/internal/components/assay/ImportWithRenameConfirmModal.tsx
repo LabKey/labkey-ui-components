@@ -1,16 +1,16 @@
 import React, { FC, memo } from 'react';
 
-import { ConfirmModal } from '../../..';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 interface Props {
-    onConfirm: () => void;
-    onCancel: () => void;
-    originalName: string;
-    newName: string;
     folderType?: string;
+    newName: string;
+    onCancel: () => void;
+    onConfirm: () => void;
+    originalName: string;
 }
 
-export const ImportWithRenameConfirmModal: FC<Props> = memo((props) => {
+export const ImportWithRenameConfirmModal: FC<Props> = memo(props => {
     const { folderType, newName, onConfirm, onCancel, originalName } = props;
 
     return (

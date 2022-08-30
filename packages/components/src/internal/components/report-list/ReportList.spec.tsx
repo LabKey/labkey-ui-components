@@ -18,8 +18,11 @@ import renderer from 'react-test-renderer';
 import { createMemoryHistory, Route, Router } from 'react-router';
 import { mount } from 'enzyme';
 
-import { flattenBrowseDataTreeResponse, LoadingSpinner, AppURL } from '../../..';
 import exampleData from '../../../test/data/example_browse_data_tree_api.json';
+
+import { AppURL } from '../../url/AppURL';
+import { flattenBrowseDataTreeResponse } from '../../query/reports';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ReportItemModal, ReportList, ReportListItem } from './ReportList';
 

@@ -18,9 +18,10 @@ import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
 
 import { fromJS, List } from 'immutable';
 
-import { DomainDesign, DomainField, SelectInputOption, selectRowsDeprecated } from '../../../..';
+import { SelectInputOption } from '../../forms/input/SelectInput';
+import { selectRowsDeprecated } from '../../../query/api';
+import { DomainDesign } from '../models';
 
-import { DatasetModel } from './models';
 import {
     COHORT_TIP,
     DATASET_CATEGORY_TIP,
@@ -32,6 +33,8 @@ import {
     TIME_KEY_FIELD_KEY,
     VISIT_DATE_TIP,
 } from './constants';
+import { DatasetModel } from './models';
+import { getStudySubjectProp } from './utils';
 
 export function fetchCategories(): Promise<List<SelectInputOption>> {
     return new Promise((resolve, reject) => {
@@ -198,20 +201,4 @@ export function fetchDatasetDesign(datasetId?: number): Promise<DatasetModel> {
                 reject(error);
             });
     });
-}
-
-export function allowAsManagedField(field: DomainField): boolean {
-    return (
-        field &&
-        field.dataType &&
-        (field.dataType.isString() || field.dataType.isNumeric() || field.dataType.isLookup())
-    );
-}
-
-export function getStudySubjectProp(prop: string): string {
-    return getServerContext().moduleContext.study.subject[prop];
-}
-
-export function getStudyTimepointLabel(): string {
-    return getServerContext().moduleContext.study.timepointType === 'VISIT' ? 'Visits' : 'Timepoints';
 }

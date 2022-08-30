@@ -18,26 +18,26 @@ import { Textarea } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { QueryColumn } from '../../../..';
+import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 interface TextAreaInputProps extends DisableableInputProps {
+    addLabelAsterisk?: boolean;
+    allowDisable?: boolean;
     cols?: number;
     elementWrapperClassName?: any[] | string;
+    initiallyDisabled?: boolean;
     label?: any;
     labelClassName?: any[] | string;
     name?: string;
-    queryColumn: QueryColumn;
-    rowClassName?: any[] | string;
-    rows?: number;
-    showLabel?: boolean;
-    allowDisable?: boolean;
-    initiallyDisabled?: boolean;
-    value?: any;
-    addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     onChange?: any;
+    queryColumn: QueryColumn;
+    rows?: number;
+    value?: any;
+    rowClassName?: any[] | string;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    showLabel?: boolean;
 }
 
 export class TextAreaInput extends DisableableInput<TextAreaInputProps, DisableableInputState> {

@@ -20,8 +20,9 @@ import { Filter, Query } from '@labkey/api';
 
 import { ValueDescriptor } from '../../models';
 import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
-import { QueryColumn, QuerySelect } from '../../..';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { QuerySelect } from '../forms/QuerySelect';
 
 const customStyles = {
     control: provided => ({

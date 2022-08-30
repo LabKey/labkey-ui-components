@@ -19,7 +19,9 @@ import React, { ReactNode, FC, useRef, useState, useCallback, useEffect } from '
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { AppURL, useAppContext, useServerContext } from '../../..';
+import { AppURL } from '../../url/AppURL';
+import { useAppContext } from '../../AppContext';
+import { useServerContext } from '../base/ServerContext';
 
 import NavItem, { ParentNavItem } from './NavItem';
 
@@ -86,7 +88,9 @@ export const SubNav: FC<Props> = ({ ignoreShow, noun, tabs }) => {
         calculateIsScrollable();
     }, [calculateIsScrollable, tabs]);
 
-    const className = classNames('navbar navbar-inverse no-margin-bottom sub-nav', { 'sub-nav--ignore-show': ignoreShow });
+    const className = classNames('navbar navbar-inverse no-margin-bottom sub-nav', {
+        'sub-nav--ignore-show': ignoreShow,
+    });
 
     return (
         <nav className={className}>

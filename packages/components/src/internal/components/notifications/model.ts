@@ -18,7 +18,7 @@ import { Record } from 'immutable';
 
 import { Draft, immerable, produce } from 'immer';
 
-import { generateId } from '../../util/utils'; // // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
+import { generateId } from '../../util/utils';
 
 type MessageFunction<T> = (props?: T, data?: any) => React.ReactNode;
 

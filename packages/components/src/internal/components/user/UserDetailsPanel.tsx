@@ -8,29 +8,35 @@ import { Panel, Row, Col, Button } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
-import { SecurityPolicy, SecurityRole, getUserProperties, LoadingSpinner, caseInsensitive } from '../../..';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
 import { getDateTimeFormat } from '../../util/Date';
 
+import { SecurityPolicy, SecurityRole } from '../permissions/models';
+
+import { caseInsensitive } from '../../util/utils';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
+import { getUserProperties } from './actions';
 
 interface Props {
-    userId: number;
-    policy?: SecurityPolicy;
-    rootPolicy?: SecurityPolicy;
-    rolesByUniqueName?: Map<string, SecurityRole>;
     allowDelete?: boolean;
     allowResetPassword?: boolean;
     onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => any;
+    policy?: SecurityPolicy;
+    rolesByUniqueName?: Map<string, SecurityRole>;
+    rootPolicy?: SecurityPolicy;
+    userId: number;
 }
 
 interface State {
     loading: boolean;
-    userProperties: {};
-    showDialog: string; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
+    showDialog: string;
+    userProperties: {}; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
 }
 
 export class UserDetailsPanel extends React.PureComponent<Props, State> {

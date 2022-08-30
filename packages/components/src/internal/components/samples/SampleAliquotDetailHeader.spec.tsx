@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { fromJS, List } from 'immutable';
 
-import { QueryColumn } from '../../..';
+import { QueryColumn } from '../../../public/QueryColumn';
 
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
 

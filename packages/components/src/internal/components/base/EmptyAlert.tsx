@@ -1,7 +1,10 @@
 import React, { FC, memo, useMemo } from 'react';
 import classNames from 'classnames';
 
-import { Alert, AppURL, hasAllPermissions, User } from '../../..';
+import { AppURL } from '../../url/AppURL';
+
+import { Alert } from './Alert';
+import { hasAllPermissions, User } from './models/User';
 
 interface EmptyAlertProps {
     actionURL?: AppURL;

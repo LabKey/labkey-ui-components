@@ -10,7 +10,7 @@ import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 import { hasModule } from '../../app/utils';
 
 import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, createFormInputName } from './actions';
+import { createFormInputId, createFormInputName } from './utils';
 import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,

@@ -1,12 +1,14 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 
-import { Alert, Grid, GridColumn, InferDomainResponse } from '../../..';
 import { FileGridPreviewProps } from '../../../public/files/models';
+import { GridColumn } from '../base/models/GridColumn';
+import { Alert } from '../base/Alert';
+import { Grid } from '../base/Grid';
 
 type Props = FileGridPreviewProps & {
-    data: List<Map<string, any>>;
     columns?: List<GridColumn>;
+    data: List<Map<string, any>>;
     errorMsg?: string;
 };
 

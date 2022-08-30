@@ -9,12 +9,6 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SAMPLE_DATA_EXPORT_CONFIG } from '../samples/constants';
-import {
-    InjectedQueryModels,
-    QueryConfigMap,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
 import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 
@@ -32,6 +26,13 @@ import { formatDateTime } from '../../util/Date';
 import { useAppContext } from '../../AppContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
+
+import {
+    InjectedQueryModels,
+    QueryConfigMap,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../../../public/QueryModel/withQueryModels';
 
 import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';

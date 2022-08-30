@@ -3,9 +3,12 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
 
-import { QueryModel, ViewInfo } from '../..';
 import { blurActiveElement } from '../../internal/util/utils';
 import { getQueryMetadata } from '../../internal/global';
+
+import { ViewInfo } from '../../internal/ViewInfo';
+
+import { QueryModel } from './QueryModel';
 
 interface ViewMenuProps {
     allowViewCustomization: boolean;

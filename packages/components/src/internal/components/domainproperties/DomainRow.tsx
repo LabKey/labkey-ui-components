@@ -19,7 +19,13 @@ import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 
-import { DeleteIcon, DragDropHandle, FieldExpansionToggle, naturalSortByProperty } from '../../..';
+import { naturalSortByProperty } from '../../../public/sort';
+
+import { DeleteIcon } from '../base/DeleteIcon';
+
+import { DragDropHandle } from '../base/DragDropHandle';
+
+import { FieldExpansionToggle } from '../base/FieldExpansionToggle';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -49,7 +55,8 @@ import {
     resolveAvailableTypes,
 } from './models';
 import { PropDescType } from './PropDescType';
-import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
+import { getCheckedValue } from './actions';
+import { createFormInputId, createFormInputName } from './utils';
 import {
     isFieldDeletable,
     isFieldFullyLocked,
@@ -72,8 +79,8 @@ export interface DomainRowProps {
     domainId?: number;
     domainIndex: number;
     dragging: boolean;
-    expanded: boolean;
     expandTransition: number;
+    expanded: boolean;
     field: DomainField;
     fieldDetailsInfo?: Record<string, string>;
     fieldError?: DomainFieldError;
@@ -93,10 +100,10 @@ export interface DomainRowProps {
 
 interface DomainRowState {
     closing: boolean;
+    dataTypeChangeToConfirm: string;
     isDragDisabled: boolean;
     showAdv: boolean;
     showingModal: boolean;
-    dataTypeChangeToConfirm: string;
 }
 
 /**

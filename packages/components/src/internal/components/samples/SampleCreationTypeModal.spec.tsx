@@ -3,21 +3,17 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { Button, ModalBody, ModalTitle } from 'react-bootstrap';
 
-import {
-    Alert,
-    ALIQUOT_CREATION,
-    DERIVATIVE_CREATION,
-    OperationConfirmationData,
-    POOLED_SAMPLE_CREATION,
-} from '../../..';
-
 import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { waitForLifecycle } from '../../testHelpers';
 
+import { OperationConfirmationData } from '../entities/models';
+
+import { Alert } from '../base/Alert';
+
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
-import { SampleCreationType } from './models';
+import { ALIQUOT_CREATION, DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION, SampleCreationType } from './models';
 
 import { getSamplesTestAPIWrapper } from './APIWrapper';
 

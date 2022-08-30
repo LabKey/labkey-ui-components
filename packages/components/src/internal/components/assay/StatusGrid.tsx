@@ -8,9 +8,10 @@ import { SCHEMAS } from '../../schemas';
 
 import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
 
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { hasAnyPermissions } from '../base/models/User';
 import { useServerContext } from '../base/ServerContext';
+
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 const ACTIVE_GRID_ID = 'active';
 const ALL_GRID_ID = 'all';

@@ -26,7 +26,6 @@ import { QueryInfo, QueryInfoStatus } from '../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { ViewInfo } from '../ViewInfo';
 import { URLResolver } from '../url/URLResolver';
-import { SchemaDetails } from '../SchemaDetails';
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 
@@ -1015,29 +1014,4 @@ export function selectDistinctRows(options: Query.SelectDistinctOptions): Promis
             },
         });
     });
-}
-
-/**
- * Recursively processes raw schema information into a Map<string, SchemaDetails>.
- * Schemas are mapped by their "fullyQualifiedName".
- * @private
- */
-export function processSchemas(schemas: any, allSchemas?: Map<string, SchemaDetails>): Map<string, SchemaDetails> {
-    let top = false;
-    if (allSchemas === undefined) {
-        top = true;
-        allSchemas = Map<string, SchemaDetails>().asMutable();
-    }
-
-    for (const schemaName in schemas) {
-        if (schemas.hasOwnProperty(schemaName)) {
-            const schema = schemas[schemaName];
-            allSchemas.set(schema.fullyQualifiedName.toLowerCase(), SchemaDetails.create(schema));
-            if (schema.schemas !== undefined) {
-                processSchemas(schema.schemas, allSchemas);
-            }
-        }
-    }
-
-    return top ? allSchemas.asImmutable() : allSchemas;
 }

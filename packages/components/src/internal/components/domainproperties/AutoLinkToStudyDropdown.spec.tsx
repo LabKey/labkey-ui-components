@@ -2,8 +2,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { List } from 'immutable';
 
-import { Container, LoadingSpinner } from '../../..';
 import getValidPublishTargetsJson from '../../../test/data/assay-getValidPublishTargets.json';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Container } from '../base/models/Container';
 
 import { AutoLinkToStudyDropdown } from './AutoLinkToStudyDropdown';
 

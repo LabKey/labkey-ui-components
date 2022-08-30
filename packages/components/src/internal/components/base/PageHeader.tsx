@@ -15,7 +15,7 @@
  */
 import React, { FC } from 'react';
 
-import { Notifications } from '../../..';
+import { Notifications } from '../notifications/Notifications';
 
 export interface PageHeaderProps {
     iconCls?: string;

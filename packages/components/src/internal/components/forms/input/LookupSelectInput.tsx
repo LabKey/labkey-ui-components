@@ -17,18 +17,14 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
-import {
-    generateId,
-    ISelectRowsResult,
-    LoadingSpinner,
-    naturalSort,
-    QueryColumn,
-    QueryLookup,
-    resolveKey,
-    selectRowsDeprecated,
-    ViewInfo,
-} from '../../../..';
 import { LabelOverlay } from '../LabelOverlay';
+
+import { QueryColumn, QueryLookup } from '../../../../public/QueryColumn';
+import { naturalSort } from '../../../../public/sort';
+import { ISelectRowsResult, selectRowsDeprecated } from '../../../query/api';
+import { generateId } from '../../../util/utils';
+import { resolveKey } from '../../../../public/SchemaQuery';
+import { LoadingSpinner } from '../../base/LoadingSpinner';
 
 import { SelectInput, SelectInputProps } from './SelectInput';
 
@@ -75,8 +71,8 @@ interface OwnProps extends SelectInputProps {
     containerPath?: string;
     filterArray?: Filter.IFilter[];
     queryColumn: QueryColumn;
-    sort?: string;
     selectedRows?: ISelectRowsResult;
+    sort?: string;
 }
 
 export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps> {

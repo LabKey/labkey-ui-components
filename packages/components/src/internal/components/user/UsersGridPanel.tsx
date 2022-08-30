@@ -7,21 +7,6 @@ import { List, Map } from 'immutable';
 import { Col, MenuItem, Row } from 'react-bootstrap';
 import { ActionURL, Filter } from '@labkey/api';
 
-import {
-    capitalizeFirstChar,
-    DisableableButton,
-    GridPanel,
-    isLoading,
-    LoadingSpinner,
-    LoadingState,
-    ManageDropdownButton,
-    SCHEMAS,
-    SecurityPolicy,
-    SecurityRole,
-    SelectionMenuItem,
-    User,
-} from '../../..';
-
 import { getLocation, getRouteFromLocationHash, replaceParameter } from '../../util/URL';
 import { getBrowserHistory } from '../../util/global';
 
@@ -29,14 +14,25 @@ import { getSelected } from '../../actions';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-
 import { UserLimitSettings } from '../permissions/actions';
 
-import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
-import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
-import { UserDetailsPanel } from './UserDetailsPanel';
+import { User } from '../base/models/User';
+import { SecurityPolicy, SecurityRole } from '../permissions/models';
+import { SCHEMAS } from '../../schemas';
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { DisableableButton } from '../buttons/DisableableButton';
+import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
+import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+import { GridPanel } from '../../../public/QueryModel/GridPanel';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { capitalizeFirstChar } from '../../util/utils';
+
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
 import { CreateUsersModal } from './CreateUsersModal';
+import { UserDetailsPanel } from './UserDetailsPanel';
+import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
+import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 
 const OMITTED_COLUMNS = [
     'phone',

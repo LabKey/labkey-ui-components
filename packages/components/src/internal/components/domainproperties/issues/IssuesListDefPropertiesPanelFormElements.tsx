@@ -6,7 +6,12 @@ import { List } from 'immutable';
 import { SectionHeading } from '../SectionHeading';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
-import { LoadingSpinner, Principal, SelectInput } from '../../../..';
+
+import { Principal } from '../../permissions/models';
+
+import { LoadingSpinner } from '../../base/LoadingSpinner';
+
+import { SelectInput } from '../../forms/input/SelectInput';
 
 import { IssuesListDefModel, IssuesRelatedFolder } from './models';
 import {
@@ -37,11 +42,11 @@ interface AssignmentOptionsState {
 
 // For AssignedToGroupInput & DefaultUserAssignmentInput components
 interface AssignmentOptionsInputProps {
-    model: IssuesListDefModel;
-    onSelect: (name: string, value: any) => any;
     coreGroups?: List<Principal>;
     coreUsers?: List<Principal>;
+    model: IssuesListDefModel;
     onGroupChange?: (groupId: number) => any;
+    onSelect: (name: string, value: any) => any;
     relatedFolders?: List<IssuesRelatedFolder>;
 }
 

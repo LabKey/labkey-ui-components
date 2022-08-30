@@ -10,7 +10,7 @@ import {
 } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, createFormInputName } from './actions';
+import { createFormInputId, createFormInputName } from './utils';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_COND_FORMAT,
@@ -26,19 +26,19 @@ import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface ConditionalFormattingAndValidationProps {
-    index: number;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainIndex: number;
     field: DomainField;
+    index: number;
     onChange: (string, any) => any;
     showingModal: (boolean) => any;
     successBsStyle?: string;
-    domainFormDisplayOptions?: IDomainFormDisplayOptions;
 }
 
 interface ConditionalFormattingAndValidationState {
     showCondFormat: boolean;
-    showRegex: boolean;
     showRange: boolean;
+    showRegex: boolean;
 }
 
 export class ConditionalFormattingAndValidation extends React.PureComponent<

@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { LineageDepthLimitMessage } from '../../../index';
+import { LineageDepthLimitMessage } from './LineageGraph';
 
 describe('LineageDepthLimitMessage', () => {
     test('default properties', () => {

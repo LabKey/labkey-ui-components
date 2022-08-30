@@ -1,14 +1,17 @@
 import React, { FC, memo } from 'react';
 import { Query } from '@labkey/api';
 
-import { LoadingSpinner, caseInsensitive, SCHEMAS } from '../../..';
-
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { QuerySort } from '../../../public/QuerySort';
 import { isLoading } from '../../../public/LoadingState';
 
-import { getSampleStatus } from './utils';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { caseInsensitive } from '../../util/utils';
+import { SCHEMAS } from '../../schemas';
+
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
 import { SampleStatusTag } from './SampleStatusTag';
+import { getSampleStatus } from './utils';
 
 export const SAMPLE_STATUS_LEGEND = 'SampleStatusLegend';
 

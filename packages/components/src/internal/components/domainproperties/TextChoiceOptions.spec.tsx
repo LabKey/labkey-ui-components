@@ -1,15 +1,18 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { LoadingSpinner, DomainFieldLabel, AddEntityButton } from '../../..';
-
 import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { waitForLifecycle } from '../../testHelpers';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { AddEntityButton } from '../buttons/AddEntityButton';
+
 import { TextChoiceOptionsImpl } from './TextChoiceOptions';
 import { DomainField } from './models';
 import { SectionHeading } from './SectionHeading';
+import { DomainFieldLabel } from './DomainFieldLabel';
 
 describe('TextChoiceOptions', () => {
     const DEFAULT_PROPS = {
@@ -247,7 +250,9 @@ describe('TextChoiceOptions', () => {
     test('search', async () => {
         const wrapper = mount(<TextChoiceOptionsImpl {...DEFAULT_PROPS} validValues={['a', 'aa', 'aaa', 'b']} />);
         validate(wrapper, false, 4);
-        wrapper.find('input.domain-text-choices-search').simulate('change', { target: { name: 'value', value: ' a ' } });
+        wrapper
+            .find('input.domain-text-choices-search')
+            .simulate('change', { target: { name: 'value', value: ' a ' } });
         await waitForLifecycle(wrapper);
         let values = wrapper.find(ChoicesListItem);
         expect(values).toHaveLength(3);

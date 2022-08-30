@@ -1,19 +1,21 @@
 import React from 'react';
 
-import { ConfirmModal, Alert, resolveErrorMessage } from '../../..';
+import { resolveErrorMessage } from '../../util/messaging';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { Alert } from '../base/Alert';
 
 import { resetPassword } from './actions';
 
 interface Props {
     email: string;
     hasLogin: boolean;
-    onComplete: (response: any) => any;
     onCancel: () => any;
+    onComplete: (response: any) => any;
 }
 
 interface State {
-    submitting: boolean;
     error: React.ReactNode;
+    submitting: boolean;
 }
 
 export class UserResetPasswordConfirmModal extends React.Component<Props, State> {

@@ -3,23 +3,22 @@ import { mount } from 'enzyme';
 import { createMemoryHistory, InjectedRouter, Route, Router } from 'react-router';
 import { Filter } from '@labkey/api';
 
-import {
-    Actions,
-    LoadingState,
-    QueryInfo,
-    QueryModel,
-    QueryModelMap,
-    QuerySort,
-    SchemaQuery,
-    withQueryModels,
-} from '../..';
-
 import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../../internal/testHelpers';
 import { MockQueryModelLoader } from '../../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 import aminoAcidsQueryInfo from '../../test/data/assayAminoAcidsData-getQueryDetails.json';
 import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
+
+import { SchemaQuery } from '../SchemaQuery';
+import { QueryInfo } from '../QueryInfo';
+
+import { LoadingState } from '../LoadingState';
+
+import { QuerySort } from '../QuerySort';
+
+import { Actions, QueryModelMap, withQueryModels } from './withQueryModels';
+import { QueryModel } from './QueryModel';
 
 import { RowsResponse } from './QueryModelLoader';
 

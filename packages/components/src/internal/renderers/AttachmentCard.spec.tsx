@@ -2,7 +2,8 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Modal } from 'react-bootstrap';
 
-import { LoadingSpinner, LoadingState } from '../..';
+import { LoadingSpinner } from '../components/base/LoadingSpinner';
+import { LoadingState } from '../../public/LoadingState';
 
 import { AttachmentCard } from './AttachmentCard';
 

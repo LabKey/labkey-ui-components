@@ -4,13 +4,11 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { ActionURL, Ajax, Filter, Query, Security, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, Security, Utils } from '@labkey/api';
 
 import { CreateGroupResponse } from '@labkey/api/dist/labkey/security/Group';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
-
-import { QueryInfo } from '../../../public/QueryInfo';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 

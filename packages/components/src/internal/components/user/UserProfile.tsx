@@ -38,6 +38,17 @@ const DISABLED_FIELDS = List<string>(['email']);
 const USER_AVATAR_FILE = 'user_avatar_file';
 const DEFAULT_AVATAR_PATH = '/_images/defaultavatar.png';
 
+const getUserGroups = async (userid: string): Promise<string> => {
+    const response = await selectRows({
+        schemaQuery: SCHEMAS.CORE_TABLES.USERS,
+        filterArray: [Filter.create('UserId', userid)],
+        columns: ['Groups'],
+        maxRows: 1,
+    });
+    const groupsData = response.rows[0].Groups as unknown as Array<{ displayValue: string; value: number }>;
+    return groupsData.map(group => group.displayValue).join(', ');
+};
+
 interface State {
     avatar: File;
     groups: string;
@@ -79,14 +90,7 @@ export class UserProfile extends PureComponent<Props, State> {
             });
 
         try {
-            const response = await selectRows({
-                schemaQuery: SCHEMAS.CORE_TABLES.USERS,
-                filterArray: [Filter.create('UserId', this.props.userProperties.userid)],
-                columns: ['Groups'],
-                maxRows: 1,
-            });
-            const groupsData = response.rows[0].Groups as unknown as Array<{ displayValue: string; value: number }>; // todo: flag for typing
-            const groups = groupsData.map(group => group.displayValue).join(', ');
+            const groups = await getUserGroups(this.props.userProperties.userid);
             this.setState(() => ({ groups }));
         } catch (e) {
             console.error(resolveErrorMessage(e) ?? 'Failed to load group data');

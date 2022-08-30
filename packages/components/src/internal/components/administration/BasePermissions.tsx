@@ -89,7 +89,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
         } catch (e) {
             setError(resolveErrorMessage(e) ?? 'Failed to load group data');
         }
-    }, [api.security]);
+    }, [api.security, container.path]);
 
     const loadPolicy = useCallback(async () => {
         setError(undefined);

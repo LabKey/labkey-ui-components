@@ -7,9 +7,10 @@ import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
 import { Row } from '../../query/selectRows';
 
+import { FetchedGroup } from '../permissions/actions';
+
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
 import { GroupMembership } from './models';
-import {FetchedGroup} from "../permissions/actions";
 
 export function getUpdatedPolicyRoles(
     roles: List<SecurityRole>,

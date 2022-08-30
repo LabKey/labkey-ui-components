@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Checkbox, Col, Panel, Row } from 'react-bootstrap';
+import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
+import { Button, Col, Panel, Row } from 'react-bootstrap';
 
 import { List, Map } from 'immutable';
 

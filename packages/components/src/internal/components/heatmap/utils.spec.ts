@@ -15,7 +15,7 @@
  */
 import { Set } from 'immutable';
 
-import { AppURL } from '../../..';
+import { AppURL } from '../../url/AppURL';
 
 import { addDateRangeFilter, ALL_MONTHS, last12Months, monthSort } from './utils';
 

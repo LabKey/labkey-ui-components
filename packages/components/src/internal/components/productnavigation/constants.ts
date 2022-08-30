@@ -1,14 +1,8 @@
-import { List } from 'immutable';
-
 import { ActionURL } from '@labkey/api';
 
-import { getHelpLink, imageURL } from '../../..';
-
-import {
-    BIOLOGICS_APP_PROPERTIES,
-    SAMPLE_MANAGER_APP_PROPERTIES,
-} from '../../app/constants';
-import { HELP_LINK_REFERRER } from '../../util/helpLinks';
+import { BIOLOGICS_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
+import { getHelpLink, HELP_LINK_REFERRER } from '../../util/helpLinks';
+import { imageURL } from '../../url/ActionURL';
 
 // list of section keys to skip for the section rendering
 export const SECTION_KEYS_TO_SKIP = ['user', 'biologicsWorkflow'];

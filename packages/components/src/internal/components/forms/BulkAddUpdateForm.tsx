@@ -1,9 +1,9 @@
 import React, { FC, useMemo } from 'react';
 import { List, Map } from 'immutable';
 
-import { capitalizeFirstChar, EditorModel } from '../../..';
+import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
 
-import { getCommonDataValues } from '../../util/utils';
+import { EditorModel } from '../../models';
 
 import { QueryInfoForm, QueryInfoFormProps } from './QueryInfoForm';
 

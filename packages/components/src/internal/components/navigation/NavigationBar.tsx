@@ -16,8 +16,6 @@
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
 
-import { SEARCH_PLACEHOLDER, User } from '../../..';
-
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
 
@@ -29,6 +27,10 @@ import { SearchBox } from '../search/SearchBox';
 
 import { FindAndSearchDropdown } from '../search/FindAndSearchDropdown';
 
+import { getPrimaryAppProperties } from '../../app/utils';
+
+import { User } from '../base/models/User';
+
 import { HeaderWrapper } from './HeaderWrapper';
 
 import { ProductMenu } from './ProductMenu';
@@ -37,15 +39,16 @@ import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
 
 import { FolderMenu } from './FolderMenu';
-import { getPrimaryAppProperties } from '../../app/utils';
+
+import { SEARCH_PLACEHOLDER } from './constants';
 
 interface NavigationBarProps {
     brand?: ReactNode;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
     model: ProductMenuModel;
     notificationsConfig?: ServerNotificationsConfig;
-    onSearch?: (form: any) => void;
     onFindByIds?: (sessionkey: string) => void;
+    onSearch?: (form: any) => void;
     searchPlaceholder?: string;
     showFolderMenu?: boolean;
     showNavMenu?: boolean;

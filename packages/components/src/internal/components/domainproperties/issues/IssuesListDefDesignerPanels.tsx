@@ -4,9 +4,10 @@ import produce, { Draft } from 'immer';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 import { getDomainPanelStatus, saveDomain } from '../actions';
-import { resolveErrorMessage } from '../../../..';
 import DomainForm from '../DomainForm';
 import { DomainDesign } from '../models';
+
+import { resolveErrorMessage } from '../../../util/messaging';
 
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesListDefModel } from './models';

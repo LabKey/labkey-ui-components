@@ -1,7 +1,6 @@
 import React from 'react';
 import { List } from 'immutable';
 
-import { Container, SchemaDetails } from '../..';
 import { ILookupContext, LookupContextProvider } from '../../internal/components/domainproperties/Lookup/Context';
 import { handleSchemas, processContainers, processQueries } from '../../internal/components/domainproperties/actions';
 import { QueryInfoLite } from '../../internal/components/domainproperties/models';
@@ -9,7 +8,8 @@ import { QueryInfoLite } from '../../internal/components/domainproperties/models
 import containerData from '../data/project-getContainers.json';
 import queryData from '../data/query-getQueries.json';
 import schemaData from '../data/query-getSchemas.json';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { Container } from '../../internal/components/base/models/Container';
+import { SchemaDetails } from '../../internal/SchemaDetails';
 
 export class MockLookupProvider extends React.Component<any, ILookupContext> {
     constructor(props) {
@@ -38,4 +38,3 @@ export class MockLookupProvider extends React.Component<any, ILookupContext> {
         return <LookupContextProvider value={this.state}>{this.props.children}</LookupContextProvider>;
     }
 }
-

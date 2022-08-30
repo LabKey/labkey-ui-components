@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import { List } from 'immutable';
 
-import { createFormInputId } from './actions';
+import { createFormInputId } from './utils';
 import {
     DOMAIN_EDITABLE_DEFAULT,
     DOMAIN_FIELD_DEFAULT_VALUE_TYPE,

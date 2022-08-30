@@ -18,11 +18,12 @@ import { Input } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { QueryColumn } from '../../../..';
+import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 export interface TextInputProps extends DisableableInputProps {
+    addLabelAsterisk?: boolean;
     changeDebounceInterval?: number;
     elementWrapperClassName?: any[] | string;
     label?: any;
@@ -31,13 +32,12 @@ export interface TextInputProps extends DisableableInputProps {
     onChange?: any;
     placeholder?: string;
     queryColumn: QueryColumn;
-    rowClassName?: any[] | string;
-    showLabel?: boolean;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     startFocused?: boolean;
     validatePristine?: boolean;
     value?: string;
-    addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    rowClassName?: any[] | string;
+    showLabel?: boolean;
 }
 
 interface TextInputState extends DisableableInputState {

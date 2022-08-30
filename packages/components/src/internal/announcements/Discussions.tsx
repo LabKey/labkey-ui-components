@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { UserWithPermissions } from '@labkey/api';
 
-import { resolveErrorMessage } from '../../index';
+import { resolveErrorMessage } from '../util/messaging';
 
 import { AnnouncementsAPIWrapper, getDefaultAnnouncementsAPIWrapper } from './APIWrapper';
 import { AnnouncementModel } from './model';
@@ -12,8 +12,8 @@ interface Props {
     api?: AnnouncementsAPIWrapper;
     autoLoad?: boolean;
     containerPath?: string;
-    discussionSrcIdentifier: string;
     discussionSrcEntityType?: string;
+    discussionSrcIdentifier: string;
     nounPlural?: string;
     nounSingular?: string;
     readOnly?: boolean;

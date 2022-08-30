@@ -18,7 +18,7 @@ import { List } from 'immutable';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { User } from '../../..';
+import { User } from '../base/models/User';
 
 import { UserMenu } from './UserMenu';
 import { MenuSectionModel, ProductMenuModel } from './model';

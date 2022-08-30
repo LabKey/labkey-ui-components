@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { createFormInputId } from './actions';
+import { createFormInputId } from './utils';
 import { DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { DateTimeFieldOptions } from './DateTimeFieldOptions';
 

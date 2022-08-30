@@ -2,21 +2,20 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import {
-    Alert,
-    EditableGridLoaderFromSelection,
-    EditableGridPanel,
-    EditorModel,
-    EditorModelProps,
-    LoadingSpinner,
-    QueryModel,
-    SchemaQuery,
-    WizardNavButtons,
-} from '../../..';
 import { capitalizeFirstChar } from '../../util/utils';
 
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { EditorModel, EditorModelProps } from '../../models';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { Alert } from '../base/Alert';
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
+
+import { EditableGridPanel } from './EditableGridPanel';
+import { EditableGridLoaderFromSelection } from './EditableGridLoaderFromSelection';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid, initEditableGridModels } from './utils';
 
 interface Props {

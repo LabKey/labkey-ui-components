@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { FileTree } from '../../..';
+import { FileTree } from '../files/FileTree';
 
 import { FilterIcon, OntologyTreePanel } from './OntologyTreePanel';
 import { PathModel } from './models';

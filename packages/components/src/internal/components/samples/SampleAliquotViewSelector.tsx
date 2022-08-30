@@ -2,7 +2,7 @@ import React, { Component, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { generateId } from '../../..';
+import { generateId } from '../../util/utils';
 
 export enum ALIQUOT_FILTER_MODE {
     all = 'all',
@@ -13,11 +13,11 @@ export enum ALIQUOT_FILTER_MODE {
 
 interface Props {
     aliquotFilterMode: ALIQUOT_FILTER_MODE;
-    updateAliquotFilter: (newMode?: ALIQUOT_FILTER_MODE) => any;
-    headerLabel?: string;
-    samplesLabel?: string;
     aliquotsLabel?: string;
     allLabel?: string;
+    headerLabel?: string;
+    samplesLabel?: string;
+    updateAliquotFilter: (newMode?: ALIQUOT_FILTER_MODE) => any;
 }
 
 export class SampleAliquotViewSelector extends Component<Props> {

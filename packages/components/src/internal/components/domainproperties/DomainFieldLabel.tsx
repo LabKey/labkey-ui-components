@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 
-import { LabelHelpTip } from '../../..';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { getSplitSentence } from './actions';
 

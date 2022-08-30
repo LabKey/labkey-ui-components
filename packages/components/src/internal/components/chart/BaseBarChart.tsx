@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
-import { debounce, generateId } from '../../..';
 import { LABKEY_VIS } from '../../constants';
+
+import { debounce, generateId } from '../../util/utils';
 
 import { ChartData } from './types';
 import { getBarChartPlotConfig } from './utils';
@@ -12,9 +13,9 @@ interface Props {
     data: ChartData[];
     defaultBorderColor?: string;
     defaultFillColor?: string;
+    grouped?: boolean;
     onClick?: (evt: any, row: any) => void;
     title: string;
-    grouped?: boolean;
 }
 
 export class BaseBarChart extends Component<Props> {

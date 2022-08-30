@@ -4,15 +4,22 @@
  */
 import React, { FC, memo, ReactNode } from 'react';
 
-import { InsufficientPermissionsPage, LoadingSpinner, Page, PageDetailHeader, Notifications, User } from '../../..';
+import { User } from '../base/models/User';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Page } from '../base/Page';
+import { PageDetailHeader } from '../forms/PageDetailHeader';
+import { Notifications } from '../notifications/Notifications';
+
+import { InsufficientPermissionsPage } from './InsufficientPermissionsPage';
 
 interface Props {
-    user: User;
-    title: string;
-    subTitle?: ReactNode;
     description?: ReactNode;
     hasPermission: boolean;
     renderButtons?: () => ReactNode;
+    subTitle?: ReactNode;
+    title: string;
+    user: User;
 }
 
 export const BasePermissionsCheckPage: FC<Props> = memo(props => {

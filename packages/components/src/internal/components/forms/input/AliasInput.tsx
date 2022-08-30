@@ -1,14 +1,17 @@
 import React, { FC, memo, useCallback, useMemo } from 'react';
 import { Map } from 'immutable';
 
-import { caseInsensitive, generateId, QueryColumn, SelectInput } from '../../../..';
+import { QueryColumn } from '../../../../public/QueryColumn';
+import { caseInsensitive, generateId } from '../../../util/utils';
+
+import { SelectInput } from './SelectInput';
 
 interface Props {
     allowDisable?: boolean;
     col: QueryColumn;
     data?: any;
-    isDetailInput?: boolean;
     initiallyDisabled?: boolean;
+    isDetailInput?: boolean;
     onToggleDisable?: (disabled: boolean) => void;
 }
 

@@ -1,15 +1,17 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 
-import { Alert, LoadingSpinner } from '../../..';
+import { Alert } from '../base/Alert';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { PathModel } from './models';
 import { fetchAlternatePaths } from './actions';
 import { ConceptPathDisplay } from './ConceptPathDisplay';
 
 export interface ConceptPathInfoProps {
+    alternatePathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
     selectedCode?: string;
     selectedPath?: PathModel;
-    alternatePathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
 }
 
 export const ConceptPathInfo: FC<ConceptPathInfoProps> = memo(props => {

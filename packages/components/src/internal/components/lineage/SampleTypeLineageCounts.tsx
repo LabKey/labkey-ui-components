@@ -5,7 +5,8 @@
 import React, { FunctionComponent, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 
-import { Grid, GridColumn } from '../../..';
+import { GridColumn } from '../base/models/GridColumn';
+import { Grid } from '../base/Grid';
 
 import { InjectedLineage, withLineage } from './withLineage';
 

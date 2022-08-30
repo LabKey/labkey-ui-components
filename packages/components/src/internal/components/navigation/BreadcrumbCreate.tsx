@@ -15,7 +15,7 @@
  */
 import React, { FC, memo } from 'react';
 
-import { CreatedModified } from '../../..';
+import { CreatedModified } from '../base/CreatedModified';
 
 import { Breadcrumb } from './Breadcrumb';
 

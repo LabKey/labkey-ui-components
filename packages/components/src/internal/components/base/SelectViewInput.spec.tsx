@@ -1,12 +1,13 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { SelectView, SelectViewInput } from '../../..';
 import { selectOptionByText } from '../forms/input/SelectInputTestUtils';
 
 import {
     clearSelectViewsInLocalStorage,
     getSelectViewsInLocalStorage,
+    SelectView,
+    SelectViewInput,
     setSelectViewInLocalStorage,
 } from './SelectViewInput';
 

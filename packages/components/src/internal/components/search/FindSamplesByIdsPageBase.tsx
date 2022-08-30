@@ -11,11 +11,6 @@ import { FindSamplesByIdHeaderPanel } from '../samples/FindSamplesByIdHeaderPane
 import { getFindSamplesByIdData } from '../samples/actions';
 import { getLocation, pushParameter, replaceParameter, resetParameters } from '../../util/URL';
 import { createGridModelId } from '../../models';
-import {
-    InjectedQueryModels,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../../../public/QueryModel/withQueryModels';
 import { LoadingState } from '../../../public/LoadingState';
 import { Page } from '../base/Page';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -34,6 +29,12 @@ import { useLabelPrintingContext } from '../labels/LabelPrintingContextProvider'
 import { PrintLabelsModal } from '../labels/PrintLabelsModal';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { useServerContext } from '../base/ServerContext';
+
+import {
+    InjectedQueryModels,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../../../public/QueryModel/withQueryModels';
 
 import { getSampleTypesFromFindByIdQuery } from './actions';
 import { FIND_SAMPLE_BY_ID_METRIC_AREA } from './utils';

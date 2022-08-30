@@ -1,11 +1,14 @@
 import React, { FC, memo, PureComponent, ReactNode, useCallback } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
-
 import { Set } from 'immutable';
 
-import { EXPORT_TYPES, getQueryModelExportParams, QueryModel, Tip } from '../..';
-
 import { exportRows } from '../../internal/actions';
+
+import { EXPORT_TYPES } from '../../internal/constants';
+import { Tip } from '../../internal/components/base/Tip';
+
+import { QueryModel } from './QueryModel';
+import { getQueryModelExportParams } from './utils';
 
 interface ExportMenuProps {
     // pageSizes is expected to be sorted (ascending)
@@ -16,10 +19,10 @@ interface ExportMenuProps {
 }
 
 export interface ExportOption {
-    type: EXPORT_TYPES;
+    hidden?: boolean;
     icon: string;
     label: string;
-    hidden?: boolean;
+    type: EXPORT_TYPES;
 }
 
 const exportOptions = [
@@ -30,27 +33,29 @@ const exportOptions = [
     // Note: EXPORT_TYPES and exportRows (used in export function below) also include support for FASTA and GENBANK,
     // but they were never used in the QueryGridPanel version of export. We're explicitly not supporting them in
     // this implementation until we need them.
-] as Array<ExportOption>;
+] as ExportOption[];
 
-export interface ExportMenuImplProps extends Omit<ExportMenuProps, "model"> {
-    id: string;
+export interface ExportMenuImplProps extends Omit<ExportMenuProps, 'model'> {
+    exportHandler: (option: ExportOption) => void;
     hasData: boolean;
     hasSelections?: boolean;
-    exportHandler: (option: ExportOption) => void;
+    id: string;
 }
 
 const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
     const { id, hasData, supportedTypes, hasSelections, exportHandler, onExport } = props;
 
-    const exportCallback = useCallback((option: ExportOption) => {
-        const {type} = option;
-        if (onExport?.[type]) {
-            onExport[type]?.(id);
-        }
-        else {
-            exportHandler(option);
-        }
-    }, [exportHandler, onExport])
+    const exportCallback = useCallback(
+        (option: ExportOption) => {
+            const { type } = option;
+            if (onExport?.[type]) {
+                onExport[type]?.(id);
+            } else {
+                exportHandler(option);
+            }
+        },
+        [exportHandler, onExport]
+    );
 
     return (
         hasData && (
@@ -74,9 +79,7 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
                                 return (
                                     <React.Fragment key={option.type}>
                                         <MenuItem divider />
-                                        <MenuItem header>
-                                            Export and Print {hasSelections ? 'Selected' : ''}
-                                        </MenuItem>
+                                        <MenuItem header>Export and Print {hasSelections ? 'Selected' : ''}</MenuItem>
                                         <MenuItem onClick={() => exportCallback(option)}>
                                             <span className={`fa ${option.icon} export-menu-icon`} />
                                             &nbsp; {option.label}
@@ -103,7 +106,7 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
 export class ExportMenu extends PureComponent<ExportMenuProps> {
     export = (option: ExportOption): void => {
         const { model, advancedOptions, onExport } = this.props;
-        const {type} = option;
+        const { type } = option;
         const exportParams = getQueryModelExportParams(model, type, advancedOptions);
         if (onExport && onExport[type]) {
             onExport[type](model.id);
@@ -114,10 +117,16 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
 
     render(): ReactNode {
         const { model, ...rest } = this.props;
-        const { id, hasData, hasSelections, } = model;
+        const { id, hasData, hasSelections } = model;
 
         return (
-            <ExportMenuImpl {...rest} id={id} hasData={hasData} hasSelections={hasSelections} exportHandler={this.export} />
+            <ExportMenuImpl
+                {...rest}
+                id={id}
+                hasData={hasData}
+                hasSelections={hasSelections}
+                exportHandler={this.export}
+            />
         );
     }
 }

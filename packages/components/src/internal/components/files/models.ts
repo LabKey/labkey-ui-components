@@ -15,7 +15,7 @@
  */
 import { List, Map } from 'immutable';
 
-import { DomainField } from '../../..';
+import { DomainField } from '../domainproperties/models';
 
 export interface FileAttachmentFormModel {
     addAttachedFile?: (any) => any;
@@ -39,8 +39,8 @@ export interface IFile {
     description: string;
     downloadUrl: string;
     href: string;
-    id: string;
     iconFontCls: string;
+    id: string;
     isCollection: boolean;
     isLeaf: boolean;
     lastModified: string;
@@ -75,10 +75,10 @@ export const DEFAULT_FILE: IFile = {
 };
 
 export interface SimpleResponse {
-    success: boolean;
-    msg?: string;
-    loading?: boolean;
     fields?: List<DomainField>;
+    loading?: boolean;
+    msg?: string;
+    success: boolean;
 }
 
 export const ALL_FILES_LIMIT_KEY = 'all';

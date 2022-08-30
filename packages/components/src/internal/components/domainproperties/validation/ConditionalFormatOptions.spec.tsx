@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { createFormInputId } from '../actions';
+import { createFormInputId } from '../utils';
 import {
     DOMAIN_FIRST_FILTER_VALUE,
     DOMAIN_SECOND_FILTER_VALUE,

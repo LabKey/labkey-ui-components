@@ -18,7 +18,8 @@ import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
-import { createFormInputId, getTextChoiceInUseValues } from './actions';
+import { getTextChoiceInUseValues } from './actions';
+import { createFormInputId } from './utils';
 
 const MIN_VALUES_FOR_SEARCH_COUNT = 2;
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;

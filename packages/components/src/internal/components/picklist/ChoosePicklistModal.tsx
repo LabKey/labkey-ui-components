@@ -18,7 +18,9 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 
-import { useAppContext, useNotificationsContext } from '../../..';
+import { useAppContext } from '../../AppContext';
+
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { Picklist } from './models';
 import { addSamplesToPicklist, getPicklistsForInsert, getPicklistUrl, SampleTypeCount } from './actions';

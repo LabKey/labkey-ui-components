@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version TBD
-*Released*: TBD
+### version 6.1.7
+*Released*: 30 August 2022
 * Add CircularDependencyPlugin to package.config.js
 
 ### version 6.1.6

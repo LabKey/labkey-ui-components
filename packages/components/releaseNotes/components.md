@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.212.0
+*Released*: 30 August 2022
 * Remove circular dependencies
   * refactor all imports from index.ts
   * refactor files to remove circular dependencies pointed out by webpack plugin

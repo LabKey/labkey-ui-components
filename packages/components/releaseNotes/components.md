@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Remove experimental feature flag for App grid lock left col on horizontal scroll
+
 ### version 2.212.0
 *Released*: 30 August 2022
 * Remove circular dependencies

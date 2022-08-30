@@ -20,8 +20,6 @@ import {
 
 import { hasServerContext, useServerContext } from '../../internal/components/base/ServerContext';
 
-import { isGridLockLeftColumnEnabled } from '../../internal/app/utils';
-
 import { Pagination } from '../../internal/components/pagination/Pagination';
 
 import { ViewInfo } from '../../internal/ViewInfo';
@@ -1082,7 +1080,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         let loadingMessage;
         const gridIsLoading = !hasGridError && isLoading;
         const selectionsAreLoading = !hasError && allowSelections && isLoadingSelections;
-        const lockLeftCol = isGridLockLeftColumnEnabled();
 
         if (gridIsLoading) {
             loadingMessage = 'Loading data...';
@@ -1146,10 +1143,9 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         )}
 
                         <div
-                            className={classNames('grid-panel__grid', {
-                                'grid-panel__lock-left': lockLeftCol,
-                                'grid-panel__lock-left-with-checkboxes': lockLeftCol && allowSelections,
-                                'grid-panel__lock-left-without-checkboxes': lockLeftCol && !allowSelections,
+                            className={classNames('grid-panel__grid ', 'grid-panel__lock-left', {
+                                'grid-panel__lock-left-with-checkboxes': allowSelections,
+                                'grid-panel__lock-left-without-checkboxes': !allowSelections,
                             })}
                         >
                             {hasError && <Alert>{errorMsg || queryInfoError || rowsError || selectionsError}</Alert>}

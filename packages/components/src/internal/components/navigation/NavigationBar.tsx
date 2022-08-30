@@ -16,8 +16,6 @@
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
 
-import { User } from '../../..';
-
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
 
@@ -29,6 +27,10 @@ import { SearchBox } from '../search/SearchBox';
 
 import { FindAndSearchDropdown } from '../search/FindAndSearchDropdown';
 
+import { getPrimaryAppProperties } from '../../app/utils';
+
+import { User } from '../base/models/User';
+
 import { HeaderWrapper } from './HeaderWrapper';
 
 import { ProductMenu } from './ProductMenu';
@@ -38,13 +40,15 @@ import { ProductMenuModel } from './model';
 
 import { FolderMenu } from './FolderMenu';
 
+import { SEARCH_PLACEHOLDER } from './constants';
+
 interface NavigationBarProps {
     brand?: ReactNode;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
     model: ProductMenuModel;
     notificationsConfig?: ServerNotificationsConfig;
-    onSearch?: (form: any) => void;
     onFindByIds?: (sessionkey: string) => void;
+    onSearch?: (form: any) => void;
     searchPlaceholder?: string;
     showFolderMenu?: boolean;
     showNavMenu?: boolean;
@@ -69,7 +73,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         onFindByIds,
         onSignIn,
         onSignOut,
-        searchPlaceholder = 'Search for samples, assays, ...',
+        searchPlaceholder = getPrimaryAppProperties()?.searchPlaceholder ?? SEARCH_PLACEHOLDER,
         showFolderMenu,
         showNavMenu,
         showNotifications,

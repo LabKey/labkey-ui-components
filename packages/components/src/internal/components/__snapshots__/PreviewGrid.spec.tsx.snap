@@ -116,7 +116,7 @@ null"
       </thead>
       <tbody>
         <tr
-          className=""
+          className="grid-row-alternate"
         >
           <td
             style={
@@ -162,7 +162,7 @@ null"
           </td>
         </tr>
         <tr
-          className=""
+          className="grid-row"
         >
           <td
             style={
@@ -208,7 +208,7 @@ null"
           </td>
         </tr>
         <tr
-          className=""
+          className="grid-row-alternate"
         >
           <td
             style={
@@ -321,7 +321,7 @@ null"
       </thead>
       <tbody>
         <tr
-          className=""
+          className="grid-row-alternate"
         >
           <td
             style={
@@ -345,7 +345,7 @@ null"
           />
         </tr>
         <tr
-          className=""
+          className="grid-row"
         >
           <td
             style={

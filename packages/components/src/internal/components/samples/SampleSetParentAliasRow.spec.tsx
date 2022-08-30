@@ -2,10 +2,11 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { IParentOption } from '../../..';
 import { IParentAlias } from '../domainproperties/samples/models';
 
 import { SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
+
+import { IParentOption } from '../entities/models';
 
 import { SampleSetParentAliasRow } from './SampleSetParentAliasRow';
 

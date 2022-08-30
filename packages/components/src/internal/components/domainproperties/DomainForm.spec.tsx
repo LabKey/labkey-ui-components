@@ -16,12 +16,14 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { Alert, FileAttachmentForm } from '../../..';
-
 import { ActionButton } from '../buttons/ActionButton';
 
 import { sleep } from '../../testHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
+
+import { Alert } from '../base/Alert';
+
+import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 
 import { DomainDesign } from './models';
 import DomainForm, { DomainFormImpl } from './DomainForm';
@@ -42,7 +44,8 @@ import {
     SAMPLE_TYPE_CONCEPT_URI,
     STRING_RANGE_URI,
 } from './constants';
-import { clearFieldDetails, createFormInputId, updateDomainField } from './actions';
+import { createFormInputId } from './utils';
+import { clearFieldDetails, updateDomainField } from './actions';
 
 import { DomainRow } from './DomainRow';
 import { INT_LIST } from './list/constants';
@@ -522,7 +525,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('test hideInferFromFile false click domain-form-manual-btn', async () => {
+    test('hideInferFromFile false click domain-form-manual-btn', async () => {
         const component = <DomainFormContainer hideInferFromFile={false} testMode={true} />;
         const wrapper = mount(component);
         await sleep();

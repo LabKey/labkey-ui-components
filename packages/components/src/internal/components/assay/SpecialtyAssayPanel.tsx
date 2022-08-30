@@ -1,9 +1,12 @@
 import React, { FC, memo, useMemo, useCallback } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { Alert, GENERAL_ASSAY_PROVIDER_NAME, getHelpLink } from '../../..';
+import { Alert } from '../base/Alert';
+
+import { getHelpLink } from '../../util/helpLinks';
 
 import { AssayProvider } from './AssayPicker';
+import { GENERAL_ASSAY_PROVIDER_NAME } from './actions';
 
 interface SpecialtyAssayPanelProps {
     hasPremium: boolean;
@@ -53,7 +56,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                     {selected && options?.length > 0 && (
                         <>
                             <div className="margin-bottom">
-                                <b>Use Instrument Specific Data Format</b>
+                                <b>Use Instrument-Specific Data Format</b>
                             </div>
                             <div className="margin-bottom">
                                 <select

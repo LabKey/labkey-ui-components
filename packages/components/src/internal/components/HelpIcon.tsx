@@ -1,7 +1,7 @@
 import React, { FC, memo, MouseEvent, useCallback, useMemo } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { generateId } from '../..';
+import { generateId } from '../util/utils';
 
 interface Props {
     placement?: 'top' | 'right' | 'bottom' | 'left';

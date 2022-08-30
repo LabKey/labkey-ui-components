@@ -22,12 +22,14 @@ import { List } from 'immutable';
 
 import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
-import { DomainField, SelectInput } from '../../../..';
-
 import { DATETIME_RANGE_URI } from '../constants';
 
+import { DomainField } from '../models';
+
+import { SelectInput } from '../../forms/input/SelectInput';
+
 import { DatasetModel } from './models';
-import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
+import { getStudySubjectProp, getStudyTimepointLabel } from './utils';
 
 interface Props {
     model: DatasetModel;
@@ -117,7 +119,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
             // DATE or CONTINUOUS
             return model.domain.fields
                 .filter(
-                    field => field.rangeURI.toLowerCase() === 'xsd:datetime' || field.rangeURI === DATETIME_RANGE_URI
+                    field => field.rangeURI?.toLowerCase() === 'xsd:datetime' || field.rangeURI === DATETIME_RANGE_URI
                 )
                 .toList();
         }

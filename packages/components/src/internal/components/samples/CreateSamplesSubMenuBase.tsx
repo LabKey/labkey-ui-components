@@ -1,39 +1,47 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
+import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
+import { MenuOption, SubMenu } from '../menus/SubMenu';
+import { AppURL } from '../../url/AppURL';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import {
     ALIQUOT_CREATION,
-    AppURL,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
-    isSamplesSchema,
-    MenuOption,
     POOLED_SAMPLE_CREATION,
-    QueryModel,
     SampleCreationType,
-    SampleCreationTypeModal,
     SampleCreationTypeModel,
-    SchemaQuery,
-    SubMenu,
-} from '../../..';
-import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
+} from './models';
+import { isSamplesSchema } from './utils';
+import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
+    currentProductId?: string;
     getOptions: (useOnClick: boolean, disabledMsg: string, itemActionFn: (key: string) => any) => List<MenuOption>;
     getProductSampleWizardURL?: (targetSampleType?: string, parent?: string, selectionKey?: string) => string | AppURL;
     inlineItemsCount?: number;
-    isSelectingSamples: (schemaQuery: SchemaQuery) => boolean;
+    isSelectingSamples?: (schemaQuery: SchemaQuery) => boolean;
     maxParentPerSample: number;
     menuCurrentChoice?: string;
     menuText?: string;
     navigate: (url: string | AppURL) => any;
     parentKey?: string;
+    parentQueryModel?: QueryModel;
     parentType?: string;
-    sampleWizardURL?: (targetSampleType?: string, parent?: string) => AppURL;
+    sampleWizardURL?: (
+        targetSampleType?: string,
+        parent?: string,
+        currentProductId?: string,
+        targetProductId?: string,
+        selectionKey?: string
+    ) => string | AppURL;
     selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
-    parentQueryModel?: QueryModel;
+    targetProductId?: string;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -53,6 +61,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         selectedItems,
         selectedType,
         inlineItemsCount,
+        currentProductId,
+        targetProductId,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -62,7 +72,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const schemaQuery = parentQueryModel?.schemaQuery;
 
     const selectingSampleParents = useMemo(() => {
-        return isSelectingSamples(schemaQuery);
+        return isSelectingSamples ? isSelectingSamples(schemaQuery) : true;
     }, [isSelectingSamples, schemaQuery]);
 
     let disabledMsg: string;
@@ -87,8 +97,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
             let appURL: string | AppURL;
 
             if (sampleWizardURL) {
-                appURL = sampleWizardURL(key, parentKey);
-                if (selectionKey) appURL = appURL.addParam('selectionKey', selectionKey);
+                appURL = sampleWizardURL(key, parentKey, selectionKey, currentProductId, targetProductId);
             } else if (getProductSampleWizardURL) {
                 appURL = getProductSampleWizardURL(key, parentKey, selectionKey);
             }
@@ -100,7 +109,15 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 return appURL;
             }
         },
-        [sampleWizardURL, getProductSampleWizardURL, useOnClick, parentKey, selectionKey]
+        [
+            sampleWizardURL,
+            getProductSampleWizardURL,
+            useOnClick,
+            parentKey,
+            currentProductId,
+            targetProductId,
+            selectionKey,
+        ]
     );
 
     const onCancel = useCallback(() => {

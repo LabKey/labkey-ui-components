@@ -3,34 +3,34 @@ import React, { ReactNode } from 'react';
 import { ActionURL, Filter, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
-import {
-    AppURL,
-    caseInsensitive,
-    downloadAttachment,
-    getQueryDetails,
-    getSampleTypeDetails,
-    LoadingSpinner,
-    MenuItemModel,
-    ProductMenuModel,
-    QueryInfo,
-    SAMPLE_EXPORT_CONFIG,
-    SAMPLE_INSERT_EXTRA_COLUMNS,
-    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
-    SAMPLE_STATE_TYPE_COLUMN_NAME,
-    SampleStateType,
-    SchemaQuery,
-    SCHEMAS,
-} from '../../..';
 
-import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+import { isELNEnabled, isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
-import { NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
+import { SAMPLES_KEY } from '../../app/constants';
 
-import { operationRestrictionMessage, permittedOps, SAMPLE_STATE_COLUMN_NAME, SampleOperation } from './constants';
+import { SCHEMAS } from '../../schemas';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { caseInsensitive } from '../../util/utils';
+import { MenuItemModel, ProductMenuModel } from '../navigation/model';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 
 import { SampleStatus } from './models';
+
+import {
+    operationRestrictionMessage,
+    permittedOps,
+    SAMPLE_EXPORT_CONFIG,
+    SAMPLE_INSERT_EXTRA_COLUMNS,
+    SAMPLE_STATE_COLUMN_NAME,
+    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SampleOperation,
+    SampleStateType,
+} from './constants';
 
 export function getOmittedSampleTypeColumns(user: User): string[] {
     let cols: string[] = [];
@@ -66,11 +66,13 @@ export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: bool
         if (deleteInfoError) {
             deleteMsg += 'there was a problem loading the delete confirmation data.';
         } else {
-            deleteMsg += 'it has either derived sample or assay data dependencies';
-            if (isSampleStatusEnabled()) {
-                deleteMsg += ' or status that prevents deletion';
+            deleteMsg += 'it has either derived sample, job, or assay data dependencies, ';
+            if (isELNEnabled()) {
+                deleteMsg += 'status that prevents deletion, or references in one or more active notebooks';
+            } else {
+                deleteMsg += 'or status that prevents deletion';
             }
-            deleteMsg += '. Check the Lineage and Assays tabs for this sample to get more information.';
+            deleteMsg += '. Check the Lineage, Assays, and Jobs tabs for this sample to get more information.';
         }
     }
     return deleteMsg;
@@ -232,6 +234,11 @@ export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
     const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
     if (lcSchemaName === SCHEMAS.SAMPLE_SETS.SCHEMA) return true;
 
+    return isAllSamplesSchema(schemaQuery);
+}
+
+export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
+    const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
     const lcQueryName = schemaQuery?.queryName?.toLowerCase();
     if (
         lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA &&
@@ -278,40 +285,28 @@ export const getSampleTypeTemplateUrl = (
  * Provides sample wizard URL for this application.
  * @param targetSampleSet - Intended sample type of newly created samples.
  * @param parent - Intended parent of derived samples. Format SCHEMA:QUERY:ID
+ * @param selectionKey
+ * @param currentProductId
+ * @param targetProductId
  */
-export function getSampleWizardURL(targetSampleSet?: string, parent?: string): AppURL {
-    let url = NEW_SAMPLES_HREF;
+export function getSampleWizardURL(
+    targetSampleSet?: string,
+    parent?: string,
+    selectionKey?: string,
+    currentProductId?: string,
+    targetProductId?: string
+): string | AppURL {
+    const params = {};
 
     if (targetSampleSet) {
-        url = url.addParam('target', targetSampleSet);
+        params['target'] = targetSampleSet;
     }
 
     if (parent) {
-        url = url.addParam('parent', parent);
+        params['parent'] = parent;
     }
 
-    return url;
-}
+    if (selectionKey) params['selectionKey'] = selectionKey;
 
-export const downloadSampleTypeTemplate = (
-    schemaQuery: SchemaQuery,
-    getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>, excludeColumns?: string[]) => string,
-    excludeColumns?: string[]
-): void => {
-    const promises = [];
-    promises.push(
-        getQueryDetails({
-            schemaName: schemaQuery.schemaName,
-            queryName: schemaQuery.queryName,
-        })
-    );
-    promises.push(getSampleTypeDetails(schemaQuery));
-    Promise.all(promises)
-        .then(results => {
-            const [queryInfo, domainDetails] = results;
-            downloadAttachment(getUrl(queryInfo, domainDetails.options?.get('importAliases'), excludeColumns), true);
-        })
-        .catch(reason => {
-            console.error('Unable to download sample type template', reason);
-        });
-};
+    return createProductUrlFromParts(targetProductId, currentProductId, params, SAMPLES_KEY, 'new');
+}

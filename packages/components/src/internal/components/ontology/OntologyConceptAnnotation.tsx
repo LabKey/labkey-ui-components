@@ -1,15 +1,17 @@
 import React, { ReactNode, FC, memo, useCallback } from 'react';
 
-import { DomainField, DomainFieldLabel } from '../../..';
-
 import { helpLinkNode, ONTOLOGY_CONCEPT_TOPIC } from '../../util/helpLinks';
+
+import { DomainField } from '../domainproperties/models';
+
+import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 
 import { ConceptModel, PathModel } from './models';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';
 
 interface OntologyConceptAnnotationProps {
-    id: string;
     field: DomainField;
+    id: string;
     onChange: (id: string, value: any) => void;
     successBsStyle?: string;
 }

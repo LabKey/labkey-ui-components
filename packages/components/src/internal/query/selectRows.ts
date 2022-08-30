@@ -1,8 +1,9 @@
 import { Query } from '@labkey/api';
 
-import { QueryInfo, SchemaQuery, URLResolver } from '../..';
-
 import { getContainerFilter, getQueryDetails } from './api';
+import { SchemaQuery } from '../../public/SchemaQuery';
+import { QueryInfo } from '../../public/QueryInfo';
+import { URLResolver } from '../url/URLResolver';
 
 export interface SelectRowsOptions
     extends Omit<Query.SelectRowsOptions, 'queryName' | 'requiredVersion' | 'schemaName' | 'scope'> {
@@ -11,6 +12,7 @@ export interface SelectRowsOptions
 
 export interface RowValue {
     displayValue?: any;
+    formattedValue?: any;
     url?: string;
     value: any;
 }

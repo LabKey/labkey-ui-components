@@ -1,8 +1,11 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, LoadingSpinner } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
+
+import { Alert } from '../base/Alert';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { getSelectedProduct, ProductNavigationMenuImpl } from './ProductNavigationMenu';
 import { ProductNavigationHeader } from './ProductNavigationHeader';

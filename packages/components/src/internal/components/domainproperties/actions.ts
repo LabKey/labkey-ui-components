@@ -15,58 +15,24 @@
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { Ajax, Domain, Experiment, Query, Security, Utils, Filter } from '@labkey/api';
+import { Ajax, Domain, Experiment, Filter, Query, Security, Utils } from '@labkey/api';
 
-import {
-    buildURL,
-    ConceptModel,
-    Container,
-    DomainDetails,
-    naturalSortByProperty,
-    QueryColumn,
-    SchemaDetails,
-    SchemaQuery,
-    SCHEMAS,
-} from '../../..';
-
-import { processSchemas } from '../../query/api';
+import { processSchemas } from '../../query/utils';
 
 import { SimpleResponse } from '../files/models';
 
-import { OntologyModel } from '../ontology/models';
+import { ConceptModel, OntologyModel } from '../ontology/models';
 
 import { isCommunityDistribution } from '../../app/utils';
 
-import {
-    DEFAULT_TEXT_CHOICE_VALIDATOR,
-    decodeLookup,
-    DomainDesign,
-    DomainException,
-    DomainField,
-    DomainFieldError,
-    DomainFieldIndexChange,
-    DomainPanelStatus,
-    IBannerMessage,
-    IDomainField,
-    IFieldChange,
-    NameExpressionsValidationResults,
-    QueryInfoLite,
-    updateSampleField,
-    isValidTextChoiceValue,
-} from './models';
-import {
-    ATTACHMENT_TYPE,
-    FILE_TYPE,
-    FLAG_TYPE,
-    ONTOLOGY_LOOKUP_TYPE,
-    PROP_DESC_TYPES,
-    VISIT_DATE_TYPE,
-    VISIT_ID_TYPE,
-    PropDescType,
-    UNIQUE_ID_TYPE,
-    TEXT_CHOICE_TYPE,
-    SMILES_TYPE,
-} from './PropDescType';
+import { Container } from '../base/models/Container';
+import { naturalSortByProperty } from '../../../public/sort';
+import { SchemaDetails } from '../../SchemaDetails';
+import { buildURL } from '../../url/AppURL';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SCHEMAS } from '../../schemas';
+
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -75,7 +41,6 @@ import {
     DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
     DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
     DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
-    DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DOMAIN_FIELD_SAMPLE_TYPE,
     DOMAIN_FIELD_TYPE,
@@ -83,6 +48,40 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
+import {
+    ATTACHMENT_TYPE,
+    FILE_TYPE,
+    FLAG_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
+    PARTICIPANT_TYPE,
+    PROP_DESC_TYPES,
+    PropDescType,
+    SAMPLE_TYPE,
+    SMILES_TYPE,
+    TEXT_CHOICE_TYPE,
+    UNIQUE_ID_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
+} from './PropDescType';
+import {
+    decodeLookup,
+    DEFAULT_TEXT_CHOICE_VALIDATOR,
+    DomainDesign,
+    DomainDetails,
+    DomainException,
+    DomainField,
+    DomainFieldError,
+    DomainFieldIndexChange,
+    DomainPanelStatus,
+    IBannerMessage,
+    IDomainField,
+    IFieldChange,
+    isValidTextChoiceValue,
+    NameExpressionsValidationResults,
+    QueryInfoLite,
+    updateSampleField,
+} from './models';
+import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -150,6 +149,7 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
                 resolve(DomainDesign.create(data.domainDesign ? data.domainDesign : data, undefined));
             },
             failure: error => {
+                console.error(error);
                 reject(error);
             },
         });
@@ -157,17 +157,24 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
 }
 
 /**
- * @param domainId: Fetch domain details by Id. Priority param over schema and query name.
+ * @param domainId: Fetch domain details by Id, schemaName/queryName, or domain kind. Priority param over schema and query name.
  * @param schemaName: Schema of domain.
  * @param queryName: Query of domain.
+ * @param domainKind: (Optional) DomainKind of domain.
  * @return Promise wrapped Domain API call.
  */
-export function fetchDomainDetails(domainId: number, schemaName: string, queryName: string): Promise<DomainDetails> {
+export function fetchDomainDetails(
+    domainId: number,
+    schemaName: string,
+    queryName: string,
+    domainKind?: string
+): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
             domainId,
             schemaName,
             queryName,
+            domainKind,
             success: data => {
                 resolve(DomainDetails.create(Map<string, any>({ ...data })));
             },
@@ -284,6 +291,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
         return false;
     }
 
+    if ((type === SAMPLE_TYPE || type === PARTICIPANT_TYPE) && !domain.allowSampleSubjectProperties) {
+        return false;
+    }
+
     if (type === SMILES_TYPE) {
         return false;
     }
@@ -333,6 +344,8 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
  * @param options: Options for creating new Domain
  * @param name: Name of new Domain
  * @param includeWarnings: Set this to true if warnings are desired
+ * @param addRowIndexes: Boolean indicating if rowIndices should be added to the error message objects
+ * @param originalDomain: Original DomainDesign (before filtering out of locked/mapped fields), to be used for addRowIndexes = true
  * @return Promise wrapped Domain API call.
  */
 export function saveDomain(
@@ -341,7 +354,8 @@ export function saveDomain(
     options?: any,
     name?: string,
     includeWarnings?: boolean,
-    addRowIndexes?: boolean
+    addRowIndexes?: boolean,
+    originalDomain?: DomainDesign
 ): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         function successHandler(response) {
@@ -360,7 +374,7 @@ export function saveDomain(
             }
 
             const exception = DomainException.create(response, SEVERITY_LEVEL_ERROR);
-            const badDomain = setDomainException(domain, exception, addRowIndexes);
+            const badDomain = setDomainException(domain, exception, addRowIndexes, originalDomain);
             reject(badDomain);
         }
 
@@ -420,34 +434,6 @@ export function validateDomainNameExpressions(
             },
         });
     });
-}
-
-// This is used for testing
-export function createFormInputName(name: string): string {
-    return [DOMAIN_FIELD_PREFIX, name].join('-');
-}
-
-// TODO we should rename this to include the word "domain" in the name since it is exported from the package
-export function createFormInputId(name: string, domainIndex: number, rowIndex: number): string {
-    return [DOMAIN_FIELD_PREFIX, name, domainIndex, rowIndex].join('-');
-}
-
-export function getNameFromId(id: string): string {
-    const parts = id.split('-');
-    if (parts.length === 4) {
-        return parts[1];
-    }
-
-    return undefined;
-}
-
-export function getIndexFromId(id: string): number {
-    const parts = id.split('-');
-    if (parts.length === 4) {
-        return parseInt(parts[3]);
-    }
-
-    return -1;
 }
 
 export function createNewDomainField(domain: DomainDesign, fieldConfig: Partial<IDomainField> = {}): DomainField {
@@ -880,10 +866,11 @@ export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>)
 export function setDomainException(
     domain: DomainDesign,
     exception: DomainException,
-    addRowIndexes = true
+    addRowIndexes = true,
+    originalDomain?: DomainDesign
 ): DomainDesign {
     const exceptionWithRowIndexes = addRowIndexes
-        ? DomainException.addRowIndexesToErrors(domain, exception)
+        ? DomainException.addRowIndexesToErrors(originalDomain ?? domain, exception)
         : exception;
     const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
     return domain.set('domainException', exceptionWithAllErrors ? exceptionWithAllErrors : exception) as DomainDesign;

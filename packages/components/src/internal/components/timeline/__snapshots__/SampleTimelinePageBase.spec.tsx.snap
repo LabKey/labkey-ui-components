@@ -1,0 +1,4747 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-md-8 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-body"
+      >
+        <div>
+          <div
+            className="row"
+          >
+            <div
+              className="font-large timeline-title col-xs-7"
+            >
+              Event Timeline for S-20200404-1
+            </div>
+            <div
+              className="col-xs-5"
+            >
+              <span
+                className="pull-right"
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="button-right-spacing dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="job-tasks-comments-sort-btn"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Show Oldest first
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="job-tasks-comments-sort-btn"
+                    className="dropdown-menu"
+                    role="menu"
+                  >
+                    <li
+                      className="active"
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Oldest first
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Recent first
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <button
+                  className="btn btn-default"
+                  disabled={false}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="button"
+                >
+                  <i
+                    className="fa fa-download"
+                  />
+                </button>
+              </span>
+            </div>
+          </div>
+          <hr />
+        </div>
+        <div>
+          <div
+            className="show-hide-filter-toggle"
+            onClick={[Function]}
+          >
+            Show filters 
+            <i
+              className="fa fa-chevron-right"
+            />
+          </div>
+          <hr />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="timeline-container col-lg-12"
+          >
+            <table
+              className="timeline-grid"
+            >
+              <tbody>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-04 21:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="samples"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/samples.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Sample Registered
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-04 22:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/687"
+                      >
+                        job-1
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-05 21:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="samples"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/samples.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Sample updated
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-08 22:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="assay"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/assay.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Assay Data Uploaded
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/assays/general/xlsx%20assay"
+                      >
+                        XLSX Assay
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 18:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/688"
+                      >
+                        job-3
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 19:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Removed from job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/688"
+                      >
+                        job-3
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 20:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Completed job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/687"
+                      >
+                        job-1
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row timeline-row-selected"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 23:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="assay"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/assay_orange.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Assay Data Re-Import Run
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/assays/general/xlsx%20assay/runs/233"
+                      >
+                        XLSX Assay
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-10 02:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/689"
+                      >
+                        job-4
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="col-md-4 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Current Status
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Registered By
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/q/core/siteusers/1005"
+              >
+                Vader
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Registration Date
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              2020-04-04 21:57
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Sample Status
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            />
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/workflow/689"
+              >
+                Added to job
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event Handled By
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/q/core/siteusers/1038"
+              >
+                Test Lab User
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event Date
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              2020-04-10 02:57
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Event Details
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div
+          className="margin-bottom display-light row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            Assay Data Re-Import Run
+          </div>
+        </div>
+        <div
+          className="table-responsive"
+        >
+          <div
+            className="grid-messages"
+          />
+          <table
+            className="table table-striped table-bordered"
+          >
+            <thead
+              style={
+                Object {
+                  "display": "none",
+                }
+              }
+            />
+            <tbody>
+              <tr
+                className="grid-row-alternate"
+              >
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  Assay
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <a
+                    href="#/assays/general/xlsx%20assay"
+                  >
+                    XLSX Assay
+                  </a>
+                </td>
+              </tr>
+              <tr
+                className="grid-row"
+              >
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  Assay ID
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <a
+                    href="#/assays/general/xlsx%20assay/runs/233"
+                  >
+                    XLSX Assay_2019-10-16_11-54-56
+                  </a>
+                </td>
+              </tr>
+              <tr
+                className="grid-row-alternate"
+              >
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  Completed By
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <a
+                    href="#/q/core/siteusers/1005"
+                  >
+                    Vader
+                  </a>
+                </td>
+              </tr>
+              <tr
+                className="grid-row"
+              >
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  Date
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  2020-04-09 23:57
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SampleTimelinePageBase/> With selected job 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-md-8 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-body"
+      >
+        <div>
+          <div
+            className="row"
+          >
+            <div
+              className="font-large timeline-title col-xs-7"
+            >
+              Event Timeline for S-20200404-1
+            </div>
+            <div
+              className="col-xs-5"
+            >
+              <span
+                className="pull-right"
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="button-right-spacing dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="job-tasks-comments-sort-btn"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Show Oldest first
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="job-tasks-comments-sort-btn"
+                    className="dropdown-menu"
+                    role="menu"
+                  >
+                    <li
+                      className="active"
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Oldest first
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Recent first
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <button
+                  className="btn btn-default"
+                  disabled={false}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="button"
+                >
+                  <i
+                    className="fa fa-download"
+                  />
+                </button>
+              </span>
+            </div>
+          </div>
+          <hr />
+        </div>
+        <div>
+          <div
+            className="show-hide-filter-toggle"
+            onClick={[Function]}
+          >
+            Show filters 
+            <i
+              className="fa fa-chevron-right"
+            />
+          </div>
+          <hr />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="timeline-container col-lg-12"
+          >
+            <table
+              className="timeline-grid"
+            >
+              <tbody>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-04 21:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="samples"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/samples.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Sample Registered
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-04 22:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div
+                          className="timeline-vline vline-short"
+                        />
+                        <div>
+                          <span
+                            className="timeline-circle"
+                          />
+                          <span
+                            className="timeline-hline hline-short"
+                          />
+                        </div>
+                        <div
+                          className="timeline-vline vline-short line-highlight"
+                        />
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/687"
+                      >
+                        job-1
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-05 21:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long line-highlight"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="samples"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/samples.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Sample updated
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-08 22:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long line-highlight"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="assay"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/assay.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Assay Data Uploaded
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/assays/general/xlsx%20assay"
+                      >
+                        XLSX Assay
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 18:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long line-highlight"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/688"
+                      >
+                        job-3
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 19:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long line-highlight"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Removed from job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/688"
+                      >
+                        job-3
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row timeline-row-selected"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 20:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div
+                          className="timeline-vline vline-short line-highlight"
+                        />
+                        <div>
+                          <span
+                            className="timeline-circle"
+                          />
+                          <span
+                            className="timeline-hline hline-short"
+                          />
+                        </div>
+                        <div
+                          className="timeline-vline vline-short"
+                        />
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow_orange.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Completed job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/687"
+                      >
+                        job-1
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 23:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="assay"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/assay.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Assay Data Re-Import Run
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/assays/general/xlsx%20assay/runs/233"
+                      >
+                        XLSX Assay
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-10 02:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/689"
+                      >
+                        job-4
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="col-md-4 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Current Status
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Registered By
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/q/core/siteusers/1005"
+              >
+                Vader
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Registration Date
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              2020-04-04 21:57
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Sample Status
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            />
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/workflow/689"
+              >
+                Added to job
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event Handled By
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/q/core/siteusers/1038"
+              >
+                Test Lab User
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event Date
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              2020-04-10 02:57
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Event Details
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div
+          className="margin-bottom display-light row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            Completed job
+          </div>
+        </div>
+        <div
+          className="table-responsive"
+        >
+          <div
+            className="grid-messages"
+          />
+          <table
+            className="table table-striped table-bordered"
+          >
+            <thead
+              style={
+                Object {
+                  "display": "none",
+                }
+              }
+            />
+            <tbody>
+              <tr
+                className="grid-row-alternate"
+              >
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  Job Name
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <a
+                    href="#/workflow/687"
+                  >
+                    job-1
+                  </a>
+                </td>
+              </tr>
+              <tr
+                className="grid-row"
+              >
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  Job Owner
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <a
+                    href="#/q/core/siteusers/1005"
+                  >
+                    Vader
+                  </a>
+                </td>
+              </tr>
+              <tr
+                className="grid-row-alternate"
+              >
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  Job Status
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  Completed
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-md-8 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-body"
+      >
+        <div>
+          <div
+            className="row"
+          >
+            <div
+              className="font-large timeline-title col-xs-7"
+            >
+              Event Timeline for S-20200404-1
+            </div>
+            <div
+              className="col-xs-5"
+            >
+              <span
+                className="pull-right"
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="button-right-spacing dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="job-tasks-comments-sort-btn"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Show Oldest first
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="job-tasks-comments-sort-btn"
+                    className="dropdown-menu"
+                    role="menu"
+                  >
+                    <li
+                      className="active"
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Oldest first
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Recent first
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <button
+                  className="btn btn-default"
+                  disabled={false}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="button"
+                >
+                  <i
+                    className="fa fa-download"
+                  />
+                </button>
+              </span>
+            </div>
+          </div>
+          <hr />
+        </div>
+        <div>
+          <div
+            className="show-hide-filter-toggle"
+            onClick={[Function]}
+          >
+            Show filters 
+            <i
+              className="fa fa-chevron-right"
+            />
+          </div>
+          <hr />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="timeline-container col-lg-12"
+          >
+            <table
+              className="timeline-grid"
+            >
+              <tbody>
+                <tr
+                  className="timeline-event-row timeline-row-selected"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-04 21:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="samples"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/samples_orange.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Sample Registered
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-04 22:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/687"
+                      >
+                        job-1
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-05 21:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="samples"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/samples.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Sample updated
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-08 22:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="assay"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/assay.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Assay Data Uploaded
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/assays/general/xlsx%20assay"
+                      >
+                        XLSX Assay
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 18:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/688"
+                      >
+                        job-3
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 19:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Removed from job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/688"
+                      >
+                        job-3
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 20:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Completed job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/687"
+                      >
+                        job-1
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 23:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="assay"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/assay.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Assay Data Re-Import Run
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/assays/general/xlsx%20assay/runs/233"
+                      >
+                        XLSX Assay
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-10 02:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/689"
+                      >
+                        job-4
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="col-md-4 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Current Status
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Registered By
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/q/core/siteusers/1005"
+              >
+                Vader
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Registration Date
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              2020-04-04 21:57
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Sample Status
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            />
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/workflow/689"
+              >
+                Added to job
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event Handled By
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/q/core/siteusers/1038"
+              >
+                Test Lab User
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event Date
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              2020-04-10 02:57
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Event Details
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div
+          className="margin-bottom display-light row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            Sample Registered
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              ModifiedBy
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              1005
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              LSID
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              urn:lsid:labkey.com:Sample.101.test2:S-20200404-1
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              _rowNumber
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              1
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              Created
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              2020-04-04T21:56:54.637-07:00
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              Modified
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              2020-04-04T21:56:54.637-07:00
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              GenId
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              7
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              Name
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              S-20200404-1
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              Folder
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              fac9522f-d271-1037-ab94-32fda5aa448a
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              MaterialInputs/Test
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              abc
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              RowId
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              86873
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              CpasType
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              urn:lsid:labkey.com:SampleSet.Folder-101:test2
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              Description
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              des
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              CreatedBy
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="new-audit-value"
+            >
+              1005
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-md-8 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-body"
+      >
+        <div>
+          <div
+            className="row"
+          >
+            <div
+              className="font-large timeline-title col-xs-7"
+            >
+              Event Timeline for S-20200404-1
+            </div>
+            <div
+              className="col-xs-5"
+            >
+              <span
+                className="pull-right"
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="button-right-spacing dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="job-tasks-comments-sort-btn"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Show Oldest first
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="job-tasks-comments-sort-btn"
+                    className="dropdown-menu"
+                    role="menu"
+                  >
+                    <li
+                      className="active"
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Oldest first
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Recent first
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <button
+                  className="btn btn-default"
+                  disabled={false}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="button"
+                >
+                  <i
+                    className="fa fa-download"
+                  />
+                </button>
+              </span>
+            </div>
+          </div>
+          <hr />
+        </div>
+        <div>
+          <div
+            className="show-hide-filter-toggle"
+            onClick={[Function]}
+          >
+            Show filters 
+            <i
+              className="fa fa-chevron-right"
+            />
+          </div>
+          <hr />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="timeline-container col-lg-12"
+          >
+            <table
+              className="timeline-grid"
+            >
+              <tbody>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-04 21:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="samples"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/samples.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Sample Registered
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-04 22:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/687"
+                      >
+                        job-1
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row timeline-row-selected"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-05 21:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="samples"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/samples_orange.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Sample updated
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-08 22:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="assay"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/assay.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Assay Data Uploaded
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/assays/general/xlsx%20assay"
+                      >
+                        XLSX Assay
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 18:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/688"
+                      >
+                        job-3
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 19:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Removed from job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/688"
+                      >
+                        job-3
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 20:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Completed job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/687"
+                      >
+                        job-1
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 23:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="assay"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/assay.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Assay Data Re-Import Run
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/assays/general/xlsx%20assay/runs/233"
+                      >
+                        XLSX Assay
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-10 02:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/689"
+                      >
+                        job-4
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="col-md-4 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Current Status
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Registered By
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/q/core/siteusers/1005"
+              >
+                Vader
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Registration Date
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              2020-04-04 21:57
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Sample Status
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            />
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/workflow/689"
+              >
+                Added to job
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event Handled By
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/q/core/siteusers/1038"
+              >
+                Test Lab User
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event Date
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              2020-04-10 02:57
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Event Details
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div
+          className="margin-bottom display-light row"
+        >
+          <div
+            className="col-xs-12"
+          >
+            Sample updated
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              Description
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="display-light old-audit-value right-spacing"
+            >
+              des
+            </span>
+            <i
+              className="fa fa-long-arrow-right right-spacing"
+            />
+            <span
+              className="new-audit-value"
+            >
+              desc
+            </span>
+          </div>
+        </div>
+        <div
+          className="margin-bottom row"
+        >
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="audit-detail-row-label right-spacing"
+            >
+              Modified
+              :
+            </span>
+          </div>
+          <div
+            className="left-spacing right-spacing"
+          >
+            <span
+              className="display-light old-audit-value right-spacing"
+            >
+              2020-04-05T21:56:54.584-07:00
+            </span>
+            <i
+              className="fa fa-long-arrow-right right-spacing"
+            />
+            <span
+              className="new-audit-value"
+            >
+              2020-04-05T21:57:36.915-07:00
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SampleTimelinePageBase/> Without selected event 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-md-8 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-body"
+      >
+        <div>
+          <div
+            className="row"
+          >
+            <div
+              className="font-large timeline-title col-xs-7"
+            >
+              Event Timeline for S-20200404-1
+            </div>
+            <div
+              className="col-xs-5"
+            >
+              <span
+                className="pull-right"
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="button-right-spacing dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="job-tasks-comments-sort-btn"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Show Oldest first
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="job-tasks-comments-sort-btn"
+                    className="dropdown-menu"
+                    role="menu"
+                  >
+                    <li
+                      className="active"
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Oldest first
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        Recent first
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <button
+                  className="btn btn-default"
+                  disabled={false}
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="button"
+                >
+                  <i
+                    className="fa fa-download"
+                  />
+                </button>
+              </span>
+            </div>
+          </div>
+          <hr />
+        </div>
+        <div>
+          <div
+            className="show-hide-filter-toggle"
+            onClick={[Function]}
+          >
+            Show filters 
+            <i
+              className="fa fa-chevron-right"
+            />
+          </div>
+          <hr />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="timeline-container col-lg-12"
+          >
+            <table
+              className="timeline-grid"
+            >
+              <tbody>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-04 21:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="samples"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/samples.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Sample Registered
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-04 22:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/687"
+                      >
+                        job-1
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-05 21:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="samples"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/samples.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Sample updated
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-08 22:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="assay"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/assay.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Assay Data Uploaded
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/assays/general/xlsx%20assay"
+                      >
+                        XLSX Assay
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 18:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/688"
+                      >
+                        job-3
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 19:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Removed from job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/688"
+                      >
+                        job-3
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 20:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Completed job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/687"
+                      >
+                        job-1
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-09 23:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="assay"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/assay.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Assay Data Re-Import Run
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/assays/general/xlsx%20assay/runs/233"
+                      >
+                        XLSX Assay
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1005"
+                        >
+                          Vader
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  className="timeline-event-row"
+                  onClick={[Function]}
+                >
+                  <td
+                    className="display-light timeline-timestamp-col"
+                  >
+                    2020-04-10 02:57
+                  </td>
+                  <td
+                    className="icon-col"
+                  >
+                    <div>
+                      <div
+                        className="timeline-line"
+                      >
+                        <div>
+                          <span
+                            className="timeline-vline vline-long"
+                          />
+                          <span
+                            className="timeline-hline hline-long"
+                          />
+                        </div>
+                      </div>
+                      <img
+                        alt="workflow"
+                        className="timeline-event-icon"
+                        height="100%"
+                        src="/labkey/_images/workflow.svg"
+                        width="100%"
+                      />
+                    </div>
+                  </td>
+                  <td
+                    className="detail-col"
+                  >
+                    <div>
+                      Added to job
+                      <span>
+                         - 
+                      </span>
+                      <a
+                        href="#/workflow/689"
+                      >
+                        job-4
+                      </a>
+                    </div>
+                    <div>
+                      <div
+                        className="field-text-nowrap"
+                      >
+                        <a
+                          href="#/q/core/siteusers/1038"
+                        >
+                          Test Lab User
+                        </a>
+                      </div>
+                       
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="col-md-4 col-xs-12"
+  >
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Current Status
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Registered By
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/q/core/siteusers/1005"
+              >
+                Vader
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Registration Date
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              2020-04-04 21:57
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Sample Status
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            />
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/workflow/689"
+              >
+                Added to job
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event Handled By
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              <a
+                href="#/q/core/siteusers/1038"
+              >
+                Test Lab User
+              </a>
+            </span>
+          </div>
+        </div>
+        <div
+          className="bottom-spacing row"
+        >
+          <div
+            className="col-xs-6"
+          >
+            Last Event Date
+          </div>
+          <div
+            className="col-xs-6"
+          >
+            <span
+              className="pull-right field-hide-overflow"
+            >
+              2020-04-10 02:57
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="panel panel-default"
+    >
+      <div
+        className="panel-heading"
+      >
+        Event Details
+      </div>
+      <div
+        className="panel-body"
+      >
+        <div>
+          No event selected
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

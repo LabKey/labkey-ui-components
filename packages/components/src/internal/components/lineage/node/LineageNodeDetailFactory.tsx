@@ -1,10 +1,10 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-import { LoadingSpinner } from '../../../..';
-
 import { LineageOptions } from '../types';
 import { Lineage } from '../models';
 import { isBasicNode, isClusterNode, isCombinedNode, VisGraphNodeType } from '../vis/VisGraphGenerator';
+
+import { LoadingSpinner } from '../../base/LoadingSpinner';
 
 import { ClusterNodeDetail, LineageNodeDetail } from './LineageNodeDetail';
 

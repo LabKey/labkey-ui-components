@@ -6,7 +6,11 @@ import { Draft, immerable, produce } from 'immer';
 import { List, Map, Record } from 'immutable';
 import { Experiment, Utils } from '@labkey/api';
 
-import { GridColumn, LineageFilter, LoadingState, QueryInfo } from '../../..';
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { LoadingState } from '../../../public/LoadingState';
+
+import { GridColumn } from '../base/models/GridColumn';
 
 import {
     DEFAULT_GROUPING_OPTIONS,
@@ -20,6 +24,7 @@ import {
     LineageLinkMetadata,
     LineageOptions,
     LineageIconMetadata,
+    LineageFilter,
 } from './types';
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
@@ -100,9 +105,9 @@ export interface ProvenanceMap {
 }
 
 interface LineageIOConfig extends Experiment.LineageIOConfig {
-    provenanceMap?: ProvenanceMap[];
     objectInputs?: Experiment.LineageItemBase[];
     objectOutputs?: Experiment.LineageItemBase[];
+    provenanceMap?: ProvenanceMap[];
 }
 
 export interface LineageIOWithMetadata extends LineageIOConfig {

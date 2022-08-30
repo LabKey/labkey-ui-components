@@ -2,16 +2,18 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { Alert, QuerySelect } from '../../../..';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
 
 import { DomainPanelStatus } from '../models';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 
-import { DataClassPropertiesPanel, DataClassPropertiesPanelImpl } from './DataClassPropertiesPanel';
-import { DataClassModel } from './models';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
+import { QuerySelect } from '../../forms/QuerySelect';
+import { Alert } from '../../base/Alert';
+
+import { DataClassModel } from './models';
+import { DataClassPropertiesPanel, DataClassPropertiesPanelImpl } from './DataClassPropertiesPanel';
 
 beforeAll(() => {
     initUnitTestMocks();

@@ -20,19 +20,9 @@ import { Button, Checkbox, Col, Form, FormControl, Panel, Row } from 'react-boot
 import classNames from 'classnames';
 import { Sticky, StickyContainer } from 'react-sticky';
 
-import {
-    AddEntityButton,
-    Alert,
-    ConfirmModal,
-    FileAttachmentForm,
-    InferDomainResponse,
-    QueryColumn,
-    valueIsEmpty,
-} from '../../..';
-
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
-import { blurActiveElement } from '../../util/utils';
+import { blurActiveElement, valueIsEmpty } from '../../util/utils';
 
 import { SimpleResponse } from '../files/models';
 
@@ -45,6 +35,18 @@ import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
 import { hasModule } from '../../app/utils';
+
+import { ConfirmModal } from '../base/ConfirmModal';
+
+import { AddEntityButton } from '../buttons/AddEntityButton';
+
+import { Alert } from '../base/Alert';
+
+import { QueryColumn } from '../../../public/QueryColumn';
+
+import { InferDomainResponse } from '../../../public/InferDomainResponse';
+
+import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -64,9 +66,7 @@ import {
     getDomainHeaderName,
     getDomainPanelClass,
     getDomainPanelHeaderId,
-    getIndexFromId,
     getMaxPhiLevel,
-    getNameFromId,
     handleDomainUpdates,
     mergeDomainFields,
     processJsonImport,
@@ -75,6 +75,7 @@ import {
     updateDomainPanelClassList,
     updateOntologyFieldProperties,
 } from './actions';
+import { getIndexFromId, getNameFromId } from './utils';
 import { DomainRow } from './DomainRow';
 import {
     BulkDeleteConfirmInfo,
@@ -126,13 +127,15 @@ interface IDomainFormInput {
     onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => any;
     onToggle?: (collapsed: boolean, callback?: () => any) => any;
     panelStatus?: DomainPanelStatus;
+    queryName?: string; // the queryName to use for text choice distinct value query, overrides schema/query on domain prop
+    schemaName?: string; // the schemaName to use for text choice distinct value query, overrides schema/query on domain prop
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     showHeader?: boolean;
     successBsStyle?: string;
+    testMode?: boolean;
     todoIconHelpMsg?: string;
     useTheme?: boolean;
     validate?: boolean;
-    testMode?: boolean;
 }
 
 interface IDomainFormState {
@@ -1234,6 +1237,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
+            schemaName,
+            queryName,
         } = this.props;
         const { expandedRowIndex, expandTransition, fieldDetails, maxPhiLevel, dragId, availableTypes, search } =
             this.state;
@@ -1286,8 +1291,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 }
                                                 domainFormDisplayOptions={domainFormDisplayOptions}
                                                 domainContainerPath={domain.container}
-                                                schemaName={domain.schemaName}
-                                                queryName={domain.queryName}
+                                                schemaName={schemaName ?? domain.schemaName}
+                                                queryName={queryName ?? domain.queryName}
                                             />
                                         );
                                     })}

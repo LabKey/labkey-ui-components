@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 
 import { OntologyConceptAnnotation } from '../ontology/OntologyConceptAnnotation';
 
-import { createFormInputId } from './actions';
+import { createFormInputId } from './utils';
 import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,
@@ -107,6 +107,24 @@ describe('NameAndLinkingOptions', () => {
 
     test('uniqueId field', () => {
         const wrapper = mount(<NameAndLinkingOptions {...DEFAULT_PROPS} field={uniqueIdField} />);
+        expect(
+            wrapper.find({
+                id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1),
+                className: 'form-control',
+            })
+        ).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test('hideImportAliases', () => {
+        const wrapper = mount(
+            <NameAndLinkingOptions
+                {...DEFAULT_PROPS}
+                domainFormDisplayOptions={{
+                    hideImportAliases: true,
+                }}
+            />
+        );
         expect(
             wrapper.find({
                 id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1),

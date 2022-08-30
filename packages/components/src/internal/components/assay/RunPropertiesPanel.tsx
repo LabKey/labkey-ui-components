@@ -17,8 +17,11 @@ import React, { FC, memo, useMemo } from 'react';
 import Formsy from 'formsy-react';
 import { Input, Textarea } from 'formsy-react-components';
 
-import { QueryFormInputs, LabelOverlay } from '../../..';
 import { AssayTaskInput } from '../forms/input/AssayTaskInput';
+
+import { isWorkflowEnabled } from '../../app/utils';
+import { LabelOverlay } from '../forms/LabelOverlay';
+import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 import { AssayPropertiesPanelProps } from './models';
 
@@ -62,12 +65,14 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                         rows={2}
                         value={model.comment}
                     />
-                    <AssayTaskInput
-                        assayId={model.assayDef.id}
-                        isDetailInput={false}
-                        name="workflowtask"
-                        value={model.workflowTask}
-                    />
+                    {isWorkflowEnabled() && (
+                        <AssayTaskInput
+                            assayId={model.assayDef.id}
+                            isDetailInput={false}
+                            name="workflowtask"
+                            value={model.workflowTask}
+                        />
+                    )}
                     {model.runColumns.size !== 0 && (
                         <QueryFormInputs
                             fieldValues={model.runProperties.toObject()}

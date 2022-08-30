@@ -4,31 +4,33 @@ import { Filter } from '@labkey/api';
 
 import { mount } from 'enzyme';
 
+import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+
+import { TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
+
+import { SCHEMAS } from '../../schemas';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { OperationConfirmationData } from '../entities/models';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { SAMPLE_STATE_TYPE_COLUMN_NAME, SAMPLE_STORAGE_COLUMNS, SampleOperation, SampleStateType } from './constants';
 import {
     filterSampleRowsForOperation,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     getSampleDeleteMessage,
+    getSampleStatus,
+    getSampleStatusType,
+    getSampleTypeTemplateUrl,
     getSampleWizardURL,
     isSampleOperationPermitted,
     isSamplesSchema,
-    LoadingSpinner,
-    OperationConfirmationData,
-    QueryInfo,
-    SAMPLE_STATE_TYPE_COLUMN_NAME,
-    SAMPLE_STORAGE_COLUMNS,
-    SampleOperation,
     SamplesEditButtonSections,
-    SampleStateType,
-    SchemaQuery,
-    SCHEMAS,
-} from '../../..';
-import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
-
-import { TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
-
-import { getSampleStatus, getSampleStatusType, getSampleTypeTemplateUrl, shouldIncludeMenuItem } from './utils';
+    shouldIncludeMenuItem,
+} from './utils';
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
@@ -57,7 +59,7 @@ describe('getSampleDeleteMessage', () => {
         const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
         expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
         expect(wrapper.text()).toContain(
-            'This sample cannot be deleted because it has either derived sample or assay data dependencies.'
+            'This sample cannot be deleted because it has either derived sample, job, or assay data dependencies, or status that prevents deletion.'
         );
     });
 
@@ -66,15 +68,6 @@ describe('getSampleDeleteMessage', () => {
         const wrapper = mount(<span>{getSampleDeleteMessage(false, true)}</span>);
         expect(wrapper.text()).toContain(
             'This sample cannot be deleted because there was a problem loading the delete confirmation data.'
-        );
-    });
-
-    test('cannot delete, status enabled', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-        const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
-        expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
-        expect(wrapper.text()).toContain(
-            'This sample cannot be deleted because it has either derived sample or assay data dependencies or status that prevents deletion.'
         );
     });
 });
@@ -506,5 +499,39 @@ describe('getSampleWizardURL', () => {
 
     test('targetSampleSet and parent', () => {
         expect(getSampleWizardURL('target1', 'parent1').toHref()).toBe('#/samples/new?target=target1&parent=parent1');
+    });
+
+    test('targetSampleSet and parent and selectionKey', () => {
+        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1').toHref()).toBe(
+            '#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1'
+        );
+    });
+
+    test('default props, with productId', () => {
+        expect(getSampleWizardURL(null, null, null, 'from', 'to').toString()).toBe('/labkey/to/app.view#/samples/new');
+    });
+
+    test('targetSampleSet, with productId', () => {
+        expect(getSampleWizardURL('target1', null, null, 'from', 'to').toString()).toBe(
+            '/labkey/to/app.view#/samples/new?target=target1'
+        );
+    });
+
+    test('parent, with productId', () => {
+        expect(getSampleWizardURL(undefined, 'parent1', null, 'from', 'to').toString()).toBe(
+            '/labkey/to/app.view#/samples/new?parent=parent1'
+        );
+    });
+
+    test('targetSampleSet and parent, with productId', () => {
+        expect(getSampleWizardURL('target1', 'parent1', null, 'from', 'to').toString()).toBe(
+            '/labkey/to/app.view#/samples/new?target=target1&parent=parent1'
+        );
+    });
+
+    test('targetSampleSet and parent and selectionKey, with productId', () => {
+        expect(getSampleWizardURL('target1', 'parent1', 'grid-1|samples|type1', 'from', 'to').toString()).toBe(
+            '/labkey/to/app.view#/samples/new?target=target1&parent=parent1&selectionKey=grid-1%7Csamples%7Ctype1'
+        );
     });
 });

@@ -2,32 +2,32 @@ import React, { FC, PureComponent } from 'react';
 import { List } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
-import {
-    DisableableButton,
-    EntityDeleteModal,
-    createGridModelId,
-    GridPanel,
-    PicklistButton,
-    QueryModel,
-    RequiresPermission,
-    ResponsiveMenuButtonGroup,
-    SamplesAssayButton,
-    SampleTypeDataType,
-    SchemaQuery,
-    SCHEMAS,
-    User,
-} from '../../..';
+import { User } from '../base/models/User';
 
-// These need to be direct imports from files to avoid circular dependencies in index.ts
+import { PicklistButton } from '../picklist/PicklistButton';
+import { RequiresPermission } from '../base/Permissions';
+import { DisableableButton } from '../buttons/DisableableButton';
+import { ResponsiveMenuButtonGroup } from '../buttons/ResponsiveMenuButtonGroup';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { GridPanel } from '../../../public/QueryModel/GridPanel';
+import { EntityDeleteModal } from '../entities/EntityDeleteModal';
+import { SampleTypeDataType } from '../entities/constants';
+import { createGridModelId } from '../../models';
+import { SCHEMAS } from '../../schemas';
+
 import {
     InjectedQueryModels,
     RequiresModelAndActions,
     withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
 
-import { getOmittedSampleTypeColumns } from './utils';
-import { getSampleAliquotsQueryConfig } from './actions';
+import { SamplesAssayButton } from './SamplesAssayButton';
 import { JobsButton, SampleStorageButton } from './models';
+import { getSampleAliquotsQueryConfig } from './actions';
+import { getOmittedSampleTypeColumns } from './utils';
+
+const SUB_MENU_WIDTH = 800;
 
 interface AliquotGridButtonsProps {
     JobsButtonComponent?: JobsButton;
@@ -107,7 +107,7 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
                         </DisableableButton>
                     </RequiresPermission>
                 )}
-                <ResponsiveMenuButtonGroup user={user} items={moreItems} />
+                <ResponsiveMenuButtonGroup user={user} items={moreItems} subMenuWidth={SUB_MENU_WIDTH} />
             </div>
         </RequiresPermission>
     );

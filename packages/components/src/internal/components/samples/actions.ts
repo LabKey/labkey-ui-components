@@ -24,38 +24,11 @@ import {
     IEntityTypeOption,
 } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
-import {
-    AssayStateModel,
-    buildURL,
-    caseInsensitive,
-    createQueryConfigFilteredBySample,
-    DomainDetails,
-    FindField,
-    getContainerFilter,
-    getSelectedData,
-    getSelection,
-    createGridModelId,
-    ISelectRowsResult,
-    Location,
-    naturalSort,
-    naturalSortByProperty,
-    QueryColumn,
-    QueryConfig,
-    QueryModel,
-    quoteValueWithDelimiters,
-    resolveErrorMessage,
-    SAMPLE_ID_FIND_FIELD,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
-    SchemaQuery,
-    SCHEMAS,
-    selectDistinctRows,
-    selectRowsDeprecated,
-    SHARED_CONTAINER_PATH,
-    UNIQUE_ID_FIND_FIELD,
-    getSelectedPicklistSamples,
-} from '../../..';
 
-import { findMissingValues } from '../../util/utils';
+import { Location } from '../../util/URL';
+import { createQueryConfigFilteredBySample, getSelectedData, getSelection } from '../../actions';
+
+import { caseInsensitive, downloadAttachment, findMissingValues, quoteValueWithDelimiters } from '../../util/utils';
 
 import { ParentEntityLineageColumns } from '../entities/constants';
 import { getInitialParentChoices } from '../entities/utils';
@@ -65,10 +38,36 @@ import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domain
 import { isSampleStatusEnabled } from '../../app/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-import { EXP_TABLES } from '../../schemas';
+import { EXP_TABLES, SCHEMAS } from '../../schemas';
 
-import { GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
-import { IS_ALIQUOT_COL } from './constants';
+import {
+    getContainerFilter,
+    getQueryDetails,
+    ISelectRowsResult,
+    selectDistinctRows,
+    selectRowsDeprecated,
+} from '../../query/api';
+import { buildURL } from '../../url/AppURL';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { DomainDetails } from '../domainproperties/models';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { getSelectedPicklistSamples } from '../picklist/actions';
+import { resolveErrorMessage } from '../../util/messaging';
+import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
+import { naturalSort, naturalSortByProperty } from '../../../public/sort';
+import { SHARED_CONTAINER_PATH } from '../../constants';
+import { AssayStateModel } from '../assay/models';
+import { createGridModelId } from '../../models';
+import { TimelineEventModel } from '../auditlog/models';
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import {
+    IS_ALIQUOT_COL,
+    SAMPLE_ID_FIND_FIELD,
+    SAMPLE_STATUS_REQUIRED_COLUMNS,
+    UNIQUE_ID_FIND_FIELD,
+} from './constants';
+import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 
 export function initSampleSetSelects(
     isUpdate: boolean,
@@ -643,8 +642,10 @@ export function getGroupedSampleDisplayColumns(
                 aliquotHeaderDisplayColumns.push(col);
             }
             // display parent meta for aliquot
-            else if (sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1
-            || sampleTypeDomainFields.independentFields.indexOf(colName) > -1) {
+            else if (
+                sampleTypeDomainFields.aliquotFields.indexOf(colName) > -1 ||
+                sampleTypeDomainFields.independentFields.indexOf(colName) > -1
+            ) {
                 aliquotHeaderDisplayColumns.push(col);
             }
         } else {
@@ -678,32 +679,6 @@ export function getGroupedSampleDisplayColumns(
         displayColumns,
         editColumns,
     };
-}
-
-export function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
-    return new Promise((resolve, reject) => {
-        getSelectedData(
-            SCHEMAS.INVENTORY.ITEMS.schemaName,
-            SCHEMAS.INVENTORY.ITEMS.queryName,
-            selectedItemIds,
-            'RowId, MaterialId',
-            undefined,
-            undefined,
-            undefined
-        )
-            .then(response => {
-                const { data } = response;
-                const sampleIds = [];
-                data.forEach(row => {
-                    sampleIds.push(row.getIn(['MaterialId', 'value']));
-                });
-                resolve(sampleIds);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(reason);
-            });
-    });
 }
 
 export function getEditSharedSampleTypeUrl(typeId: number): string {
@@ -1040,3 +1015,79 @@ export async function getFieldLookupFromSelection(
 
     return [...sampleIds];
 }
+
+export function exportTimelineGrid(
+    sampleId: number,
+    recentFirst = false,
+    sampleEventIds: number[],
+    assayEventIds: number[]
+): void {
+    const url = ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'ExportTimelineGrid', undefined, {
+        returnUrl: false,
+    });
+    const form = new FormData();
+    form.append('sampleId', sampleId.toString(10));
+    form.append('recentFirst', recentFirst.toString());
+    sampleEventIds?.forEach(id => form.append('sampleEventIds', id.toString(10)));
+    assayEventIds?.forEach(id => form.append('assayEventIds', id.toString(10)));
+    Ajax.request({
+        downloadFile: true,
+        form,
+        method: 'POST',
+        url: url.toString(),
+    });
+}
+
+// optional timezone param used for teamcity jest test only
+export function getTimelineEvents(sampleId: number, timezone?: string): Promise<TimelineEventModel[]> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'getTimeline.api'),
+            method: 'GET',
+            params: { sampleId },
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    const events: TimelineEventModel[] = [];
+                    if (response.events) {
+                        (response.events as []).forEach(event =>
+                            events.push(TimelineEventModel.create(event, timezone))
+                        );
+                    }
+                    resolve(events);
+                } else {
+                    console.error('Sample timeline is empty. Timeline audit may have been disabled.');
+                    reject(
+                        'There was a problem retrieving the sample timeline. Timeline audit may have been disabled.'
+                    );
+                }
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error('Problem retrieving the sample timeline', error);
+                reject('There was a problem retrieving the sample timeline.');
+            }),
+        });
+    });
+}
+
+export const downloadSampleTypeTemplate = (
+    schemaQuery: SchemaQuery,
+    getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>, excludeColumns?: string[]) => string,
+    excludeColumns?: string[]
+): void => {
+    const promises = [];
+    promises.push(
+        getQueryDetails({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+        })
+    );
+    promises.push(getSampleTypeDetails(schemaQuery));
+    Promise.all(promises)
+        .then(results => {
+            const [queryInfo, domainDetails] = results;
+            downloadAttachment(getUrl(queryInfo, domainDetails.options?.get('importAliases'), excludeColumns), true);
+        })
+        .catch(reason => {
+            console.error('Unable to download sample type template', reason);
+        });
+};

@@ -5,6 +5,133 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update width of megamenu to be responsive
 
+### version 2.212.0
+*Released*: 30 August 2022
+* Remove circular dependencies
+  * refactor all imports from index.ts
+  * refactor files to remove circular dependencies pointed out by webpack plugin
+
+### version 2.211.4
+*Released*: 26 August 2022
+* upgrade Spring from 4.x to 5.x
+    * Remove redundant GET parameters from handleEntityFileImport util
+
+### version 2.211.3
+*Released*: 26 August 2022
+* Issue 45857: Improve styling for left column locking in app grids (experimental feature)
+
+### version 2.211.2
+*Released*: 25 August 2022
+* Misc grid menu and button fixes for 22.9
+  * Issue 45958: Safari dropdown / scroll bar z-index issue for editable grid
+  * Issue 45666: Sample grid "More" menu is puzzling when no other menu is present
+  * Issue 45746: Show more grid options menus at narrower screen widths when possible
+  * Issue 45965: Use "locked" lock icon to mean locked in Text Choice field editor
+
+### version 2.211.1
+*Released*: 25 August 2022
+* Issue 46148: Add multitabbed grid view to Stored Items table
+  * Allow TabbedGridPanel excel handler to be used by getGridPanelDisplay
+
+### version 2.211.0
+*Relased*: 24 August 2022
+* LKSM Starter edition
+  * Add helper methods for checking if workflow and assay features are enabled
+  * Update `getAuditQueries` to return the proper set of queries for the various products
+
+### version 2.210.0
+*Released*: 23 August 2022
+* Sample Timeline in LKB
+  * Extract and move SampleTimelinePageBase, SampleEventListing and timeline utils here from LKSM
+
+### version 2.209.1
+*Released*: 23 August 2022
+* TabbedGridPanel update for display of panel title when grid has tabs
+
+### version 2.209.0
+*Released*: 22 August 2022
+* BarTender integration for LKB
+  * Move withLabelPrintingContext, PrintLabelsModal, BarTenderSettingsForm from LKSM
+  * Move label printing related actions, constants, models, SCSS from LKSM
+  * Add LabelPrintingProvider to AppContexts
+  * FindSamplesByIdsPageBase update to support conditionally add support for label printing
+
+### version 2.208.0
+*Released*: 18 August 2022
+* Multi-tab grids for Find Sample by Ids grids
+  * Added FindSamplesByIdsPageBase
+
+### version 2.207.2
+*Released*: 18 August 2022
+* Issue 46102: EditableDetailPanel cannot clear Multi Value Foreign Key Columns
+* Pin dependencies to latest equivalent version
+
+### version 2.207.1
+*Released*: 15 August 2022
+* Issue 46025: Don't show "Source Events" as audit query for LKB
+* Issue 46030: Don't reference "source types" in LKB aliquoting grid
+* Issue 46026: Make chevron in expandable container also clickable
+* Issue 46027: Don't show storage and lineage tabs when editing media data
+
+### version 2.207.0
+*Released*: 15 August 2022
+* Workflow job creation and update with custom fields
+  * EditInlineField updates to support value as RowValue from selectRows response
+  * EditInlineField to support QueryColumn and use resolveDetailEditRenderer()
+  * DomainForm addition of schemaName/queryName props to be used for text choice distinct value query
+
+### version 2.206.1
+*Released*: 12 August 2022
+* Add customize view modal DOM element attribute for "data-fieldkey" to help test locators
+
+### version 2.206.0
+*Released*: 11 August 2022
+* Multi-tab grids for Storage grids
+    * Support getGridPanelDisplay for TabbedGridPanel
+    * Move CreateSamplesSubMenu and SamplesDeriveButtonBase here from LKSM
+    * Modify SamplesAddButton to support productId
+
+### version 2.205.0
+*Released*: 11 August 2022
+* Restrict deletions of entities, including assay runs referenced in ELNs
+* Update `deleteAssayRuns` interface to accept an array of rowIds instead of a single rowId (and remove from index.ts)
+
+### version 2.204.1
+*Released*: 9 August 2022
+* Projects - Cross-Folder Storage Actions
+    * Added ValueList component
+
+### version 2.204.0
+*Released*: 9 August 2022
+* Merge release22.8-SNAPSHOT into develop
+
+### version 2.203.0
+*Released*: 2 August 2022
+* Workflow job template custom fields
+  * Domain kind allowSampleSubjectProperties check to filter out relevant data types
+  * Add DomainFormDisplayOptions prop for hideImportAliases
+  * Minor update to styling prop for ContentGroup.tsx
+  * expose fetchDomainDetails() to be used in app to get domain details based on DomainKind
+
+### version 2.202.7
+*Released*: 9 August 2022
+* Merge release22.7-SNAPSHOT to release22.8-SNAPSHOT
+
+### version 2.202.6
+*Released*: 4 August 2022
+* Remove conditional code to expose Sample Finder
+
+### version 2.202.5
+*Released*: 29 July 2022
+* Issue 45822: incorrect unit types available when adding sample to storage
+    * avoid excessive loading until lookup cell is selected/focused
+
+### version 2.202.4
+*Released*: 29 July 2022
+* Issue 45509: Remove inaccurate tool tip
+* Issue 45947: Don't allow saving views with reserved names
+* Issue 45866: Improve performance of FilterFacetedSelector by loading only 250 items and not searching with each click.
+
 ### version 2.202.3
 *Released*: 28 July 2022
 * Sample Finder: support containerFilter on expDescendantOfSelectClause
@@ -100,10 +227,24 @@ Added SearchScope enum and ContainerFilter mapping utility method
 * Issue 45149: "Assay Results" tabbed grid can remove tabs if you filter a grid to zero rows
   * store in state the set of queryModels with data after all have loaded
 
+### version 2.194.10
+*Released*: 2 August 2022
+* Misc dataset domain designer issue fixes
+  * Issue 45942: While creating a new dataset via infer from fields, clicking Add Field results in JS error
+  * Issue 45704: Multiple error messages provide less detail than a single error message during dataset creation
+
+### version 2.194.9
+*Released*: 2 August 2022
+* Issue 45860: ConceptPicker doesn't apply selected value
+
+### version 2.194.8
+*Released*: 29 July 2022
+* Issue 45975: useContainerUser resolving incorrect container
+
 ### version 2.194.7
 *Released*: 22 July 2022
 * Issue 45852: External links should include 'noopener' in 'ref' attribute
-    * round 2: this was missed from the changes in 2.194.6
+  * round 2: this was missed from the changes in 2.194.6
 
 ### version 2.194.6
 *Released*: 14 July 2022

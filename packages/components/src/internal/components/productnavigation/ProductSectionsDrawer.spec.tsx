@@ -2,8 +2,13 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { Alert, Container, MenuSectionModel } from '../../..';
 import { FREEZERS_KEY, MEDIA_KEY, NOTEBOOKS_KEY, WORKFLOW_KEY } from '../../app/constants';
+
+import { Container } from '../base/models/Container';
+
+import { Alert } from '../base/Alert';
+
+import { MenuSectionModel } from '../navigation/model';
 
 import {
     getProductSectionUrl,
@@ -106,7 +111,7 @@ describe('ProductSectionsDrawer', () => {
         expect(sections[3].key).toBe(WORKFLOW_KEY);
     });
 
-    test("parseProductMenuSectionResponse, LKB sorting", () => {
+    test('parseProductMenuSectionResponse, LKB sorting', () => {
         const modelSections = List<MenuSectionModel>([
             new MenuSectionModel({ key: 's1', productId: 'a', label: 'S1' }),
             new MenuSectionModel({ key: WORKFLOW_KEY, productId: 'a', label: 'Workflow' }),

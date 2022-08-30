@@ -9,12 +9,6 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SAMPLE_DATA_EXPORT_CONFIG } from '../samples/constants';
-import {
-    InjectedQueryModels,
-    QueryConfigMap,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../../../public/QueryModel/withQueryModels';
 import { User } from '../base/models/User';
 import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 
@@ -32,6 +26,13 @@ import { formatDateTime } from '../../util/Date';
 import { useAppContext } from '../../AppContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
+
+import {
+    InjectedQueryModels,
+    QueryConfigMap,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../../../public/QueryModel/withQueryModels';
 
 import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';
@@ -58,7 +59,7 @@ interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
     getIsDirty?: () => boolean;
     getSampleAuditBehaviorType: () => AuditBehaviorTypes;
-    gridButtonProps?: any;
+    gridButtonProps?: SampleGridButtonProps;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     sampleTypeNames: string[];
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
@@ -415,7 +416,7 @@ interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
 }
 
 export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
-    const { actions, columnDisplayNames, queryModels, gridButtons } = props;
+    const { actions, columnDisplayNames, queryModels, gridButtons, gridButtonProps } = props;
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -494,6 +495,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 queryModels={queryModels}
                 gridButtons={gridButtons}
                 gridButtonProps={{
+                    ...gridButtonProps,
                     excludedMenuKeys: [SamplesEditButtonSections.IMPORT],
                     metricFeatureArea: SAMPLE_FILTER_METRIC_AREA,
                 }}

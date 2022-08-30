@@ -19,10 +19,10 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
-    EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN,
-    EXPERIMENTAL_SAMPLE_FINDER,
+    ProductFeature,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
@@ -185,13 +185,6 @@ export function isSampleStatusEnabled(): boolean {
     return hasModule('SampleManagement');
 }
 
-export function isSampleFinderEnabled(moduleContext?: any): boolean {
-    return (
-        !biologicsIsPrimaryApp(moduleContext) ||
-        (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_SAMPLE_FINDER] === true
-    );
-}
-
 export function getCurrentAppProperties(): AppProperties {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController) return undefined;
@@ -215,12 +208,24 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
     }
 }
 
-export function isELNEnabledInLKSM(moduleContext?: any): boolean {
-    return hasModule('LabBook', moduleContext);
+export function isELNEnabled(moduleContext?: any): boolean {
+    return hasModule('LabBook', moduleContext) && isFeatureEnabled(ProductFeature.ELN, moduleContext);
 }
 
 export function isRequestsEnabled(moduleContext?: any): boolean {
     return (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
+}
+
+export function isAssayEnabled(moduleContext?: any): boolean {
+    return hasModule('assay', moduleContext) && isFeatureEnabled(ProductFeature.Assay, moduleContext);
+}
+
+export function isWorkflowEnabled(moduleContext?: any): boolean {
+    return hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) && isFeatureEnabled(ProductFeature.Workflow, moduleContext);
+}
+
+export function isFeatureEnabled(flag: ProductFeature, moduleContext?: any): boolean {
+    return (moduleContext ?? getServerContext().moduleContext)?.core?.productFeatures?.indexOf(flag) >= 0;
 }
 
 export function isSampleAliquotSelectorEnabled(moduleContext?: any): boolean {
@@ -456,7 +461,9 @@ export function getMenuSectionConfigs(
     }
     if (isBioOrSM) {
         sectionConfigs = addSamplesSectionConfig(user, appBase, sectionConfigs);
-        sectionConfigs = addAssaysSectionConfig(user, appBase, sectionConfigs);
+        if (isAssayEnabled(moduleContext)) {
+            sectionConfigs = addAssaysSectionConfig(user, appBase, sectionConfigs);
+        }
     }
 
     const storageConfig = getStorageSectionConfig(
@@ -465,19 +472,18 @@ export function getMenuSectionConfigs(
         moduleContext,
         isBioPrimary && isRequestsEnabled(moduleContext) ? 7 : 12
     );
-    const workflowConfig = getWorkflowSectionConfig(appBase);
 
     if (inSMApp) {
         if (storageConfig) {
             sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
         }
+        let configs = Map<string, MenuSectionConfig>({});
+        if (isWorkflowEnabled(moduleContext)) {
+            configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig(appBase));
+        }
+        configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig(appBase));
 
-        let configs = Map({
-            [WORKFLOW_KEY]: workflowConfig,
-            [PICKLIST_KEY]: getPicklistsSectionConfig(appBase),
-        });
-
-        if (userCanReadNotebooks(user) && isELNEnabledInLKSM(moduleContext)) {
+        if (userCanReadNotebooks(user) && isELNEnabled(moduleContext)) {
             configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig(appBase));
         }
         sectionConfigs = sectionConfigs.push(configs);

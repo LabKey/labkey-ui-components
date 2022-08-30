@@ -23,9 +23,9 @@ import { cancelEvent, isCopy, isFillDown, isPaste, isSelectAll } from '../../eve
 import { CellMessage, ValueDescriptor } from '../../models';
 import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
-import { QueryColumn } from '../../..';
-
 import { getQueryColumnRenderers } from '../../global';
+
+import { QueryColumn } from '../../../public/QueryColumn';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { DateInputCell, DateInputCellProps } from './DateInputCell';
@@ -89,15 +89,12 @@ export class Cell extends React.PureComponent<Props, State> {
         this.displayEl = React.createRef();
     }
 
-    componentDidUpdate(): void {
+    componentDidUpdate(prevProps: Readonly<Props>): void {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
-            this.loadFilteredLookupKeys();
-        }
-    }
 
-    componentDidMount(): void {
-        this.loadFilteredLookupKeys();
+            if (!prevProps.selected) this.loadFilteredLookupKeys();
+        }
     }
 
     loadFilteredLookupKeys = async (): Promise<void> => {

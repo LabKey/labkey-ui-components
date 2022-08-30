@@ -3,24 +3,22 @@ import { List } from 'immutable';
 import { produce } from 'immer';
 import { withRouter, WithRouterProps } from 'react-router';
 
-import {
-    Alert,
-    AssayDefinitionModel,
-    AssayProtocolModel,
-    AssayStateModel,
-    getActionErrorMessage,
-    InsufficientPermissionsPage,
-    isLoading,
-    LoadingPage,
-    LoadingState,
-    NotFound,
-    useServerContext,
-} from '../../..';
-
 import { fetchProtocol } from '../domainproperties/assay/actions';
 
-import { userCanReadAssays } from '../../app/utils';
+import { isAssayEnabled, userCanReadAssays } from '../../app/utils';
 
+import { AssayDefinitionModel } from '../../AssayDefinitionModel';
+import { AssayProtocolModel } from '../domainproperties/assay/models';
+
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { useServerContext } from '../base/ServerContext';
+import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
+import { LoadingPage } from '../base/LoadingPage';
+import { NotFound } from '../base/NotFound';
+import { Alert } from '../base/Alert';
+import { getActionErrorMessage } from '../../util/messaging';
+
+import { AssayStateModel } from './models';
 import { clearAssayDefinitionCache, fetchAllAssays } from './actions';
 
 export interface AssayLoader {
@@ -104,8 +102,15 @@ export function withAssayModels<Props>(
         };
 
         load = async (): Promise<void> => {
-            await this.loadDefinitions();
-            await this.loadProtocol();
+            if (!isAssayEnabled()) {
+                this.updateModel({
+                    definitions: [],
+                    definitionsLoadingState: LoadingState.LOADED,
+                });
+            } else {
+                await this.loadDefinitions();
+                await this.loadProtocol();
+            }
         };
 
         loadDefinitions = async (): Promise<void> => {

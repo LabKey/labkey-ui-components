@@ -3,11 +3,14 @@ import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter } from '@labkey/api';
 
-import { OperationConfirmationData, QueryModel, User } from '../../..';
+import { OperationConfirmationData } from '../entities/models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { User } from '../base/models/User';
+import { AppURL } from '../../url/AppURL';
 
-import { SampleStateType } from './constants';
-import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SamplesEditButtonSections } from './utils';
+import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
+import { SampleStateType } from './constants';
 
 export enum SampleCreationType {
     Aliquots = 'Aliquots',
@@ -176,10 +179,14 @@ export interface SampleGridButtonProps {
     afterSampleDelete?: (rowsToKeep: any[]) => void;
     createBtnParentKey?: string;
     createBtnParentType?: string;
+    excludeAddButton?: boolean;
     excludedMenuKeys?: SamplesEditButtonSections[];
+    includesMedia?: boolean;
     initAliquotMode?: ALIQUOT_FILTER_MODE;
     metricFeatureArea?: string;
+    navigate?: (url: string | AppURL) => void;
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     showBulkUpdate?: () => void;
+    subMenuWidth?: number;
     toggleEditWithGridUpdate?: () => void;
 }

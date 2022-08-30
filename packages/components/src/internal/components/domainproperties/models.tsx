@@ -19,19 +19,20 @@ import React, { ReactNode } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
 
-import { createFormInputId, GridColumn, SCHEMAS, valueIsEmpty } from '../../..';
-
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
-import { camelCaseToTitleCase } from '../../util/utils';
+import { camelCaseToTitleCase, valueIsEmpty } from '../../util/utils';
 
 import { getConceptForCode } from '../ontology/actions';
 
-import { hasPremiumModule } from '../../app/utils';
+import { getCurrentAppProperties, hasPremiumModule } from '../../app/utils';
+
+import { GridColumn } from '../base/models/GridColumn';
+
+import { SCHEMAS } from '../../schemas';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
-    DECIMAL_RANGE_URI,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_MEASURE,
@@ -85,6 +86,7 @@ import {
 } from './propertiesUtil';
 import { INT_LIST, VAR_LIST } from './list/constants';
 import { DomainRowWarning } from './DomainRowWarning';
+import { createFormInputId } from './utils';
 
 export interface IFieldChange {
     id: string;
@@ -123,6 +125,7 @@ interface IDomainDesign {
     allowAttachmentProperties: boolean;
     allowFileLinkProperties: boolean;
     allowFlagProperties: boolean;
+    allowSampleSubjectProperties: boolean;
     allowTextChoiceProperties: boolean;
     allowTimepointProperties: boolean;
     container: string;
@@ -154,6 +157,7 @@ export class DomainDesign
         allowFileLinkProperties: false,
         allowAttachmentProperties: false,
         allowFlagProperties: true,
+        allowSampleSubjectProperties: true,
         allowTextChoiceProperties: true,
         allowTimepointProperties: false,
         showDefaultValueSettings: false,
@@ -180,6 +184,7 @@ export class DomainDesign
     declare allowFileLinkProperties: boolean;
     declare allowAttachmentProperties: boolean;
     declare allowFlagProperties: boolean;
+    declare allowSampleSubjectProperties: boolean;
     declare allowTextChoiceProperties: boolean;
     declare allowTimepointProperties: boolean;
     declare showDefaultValueSettings: boolean;
@@ -718,6 +723,7 @@ export interface IDomainField {
     defaultScale?: string;
     defaultValue?: string;
     defaultValueType?: string;
+    derivationDataScope?: string;
     description?: string;
     dimension?: boolean;
     disablePhiLevel?: boolean;
@@ -747,7 +753,6 @@ export interface IDomainField {
     rangeURI: string;
     rangeValidators: List<PropertyValidator>;
     recommendedVariable?: boolean;
-    regexValidators: List<PropertyValidator>;
     required?: boolean;
     scale?: number;
     scannable?: boolean;
@@ -758,7 +763,7 @@ export interface IDomainField {
     textChoiceValidator?: PropertyValidator;
     updatedField: boolean;
     visible: boolean;
-    derivationDataScope?: string;
+    regexValidators: List<PropertyValidator>;
 }
 
 export class DomainField
@@ -1178,14 +1183,18 @@ export class DomainField
             details.push(period + detailsText);
             period = '. ';
         } else if (this.dataType.isLookup() && this.lookupSchema && this.lookupQuery) {
-            const params = { schemaName: this.lookupSchema, 'query.queryName': this.lookupQuery };
-            const href = ActionURL.buildURL('query', 'executeQuery.view', this.lookupContainer, params);
-            const link = <a href={href}> {this.lookupQuery} </a>;
+            // only show the query as a link in LKS, for now
+            let link;
+            if (!getCurrentAppProperties()) {
+                const params = { schemaName: this.lookupSchema, 'query.queryName': this.lookupQuery };
+                const href = ActionURL.buildURL('query', 'executeQuery.view', this.lookupContainer, params);
+                link = <a href={href}> {this.lookupQuery} </a>;
+            }
 
             details.push(
                 period + [this.lookupContainer || 'Current Folder', this.lookupSchema].join(' > '),
                 ' > ',
-                link
+                link ?? this.lookupQuery
             );
             period = '. ';
         } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {
@@ -1859,6 +1868,7 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     hideConditionalFormatting?: boolean;
     hideFilePropertyType?: boolean;
+    hideImportAliases?: boolean;
     hideImportData?: boolean;
     hideImportExport?: boolean;
     hideInferFromFile?: boolean;

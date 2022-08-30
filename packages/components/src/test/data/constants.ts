@@ -16,21 +16,24 @@
 import { List } from 'immutable';
 import { Filter, PermissionRoles, Project } from '@labkey/api';
 
-import {
-    AssayDefinitionModel,
-    AssayDomainTypes,
-    AssayStateModel,
-    Container,
-    EntityDataType,
-    GENERAL_ASSAY_PROVIDER_NAME,
-    IFile,
-    LoadingState,
-    QueryInfo,
-    SchemaQuery,
-} from '../..';
 import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
 
 import { DELETE_SAMPLES_TOPIC } from '../../internal/util/helpLinks';
+
+import {
+    FREEZER_MANAGER_APP_PROPERTIES,
+    ProductFeature,
+    SAMPLE_MANAGER_APP_PROPERTIES,
+} from '../../internal/app/constants';
+import { AssayDefinitionModel, AssayDomainTypes } from '../../internal/AssayDefinitionModel';
+import { QueryInfo } from '../../public/QueryInfo';
+import { IFile } from '../../internal/components/files/models';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../../internal/components/assay/actions';
+import { LoadingState } from '../../public/LoadingState';
+import { AssayStateModel } from '../../internal/components/assay/models';
+import { Container } from '../../internal/components/base/models/Container';
+import { SchemaQuery } from '../../public/SchemaQuery';
+import { EntityDataType } from '../../internal/components/entities/models';
 
 import assayWizardJSON from './assayWizardModel.json';
 
@@ -424,6 +427,7 @@ export const TestTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SchemaQuery.create('TestListing', 'query'),
     listingSchemaQuery: SchemaQuery.create('Test', 'query'),
     instanceSchemaName: 'TestSchema',
+    operationConfirmationControllerName: 'controller',
     operationConfirmationActionName: 'test-delete-confirmation.api',
     nounSingular: 'test',
     nounPlural: 'tests',
@@ -448,4 +452,49 @@ export const TestTypeDataType: EntityDataType = {
 export const TestTypeDataTypeWithEntityFilter: EntityDataType = {
     ...TestTypeDataType,
     filterArray: [Filter.create('Category', 'Source')],
+};
+
+export const TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT = {
+    api: {
+        moduleNames: ['samplemanagement', 'inventory', 'assay', 'labbook'],
+    },
+    samplemanagement: {
+        productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
+    },
+    inventory: {
+        productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
+    },
+    core: {
+        productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay],
+    },
+};
+
+export const TEST_LKSM_STARTER_MODULE_CONTEXT = {
+    api: {
+        moduleNames: ['samplemanagement', 'inventory'],
+    },
+    samplemanagement: {
+        productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
+    },
+    inventory: {
+        productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
+    },
+    core: {
+        productFeatures: [],
+    },
+};
+
+export const TEST_LKS_STARTER_MODULE_CONTEXT = {
+    api: {
+        moduleNames: ['samplemanagement', 'inventory', 'assay', 'premium'],
+    },
+    samplemanagement: {
+        productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
+    },
+    inventory: {
+        productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
+    },
+    core: {
+        productFeatures: [ProductFeature.Assay],
+    },
 };

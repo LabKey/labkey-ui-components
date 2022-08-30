@@ -672,10 +672,14 @@ exports[`DomainRow Sample Field 1`] = `
                               >
                                 <DragDropHandle>
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className=""
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -692,14 +696,19 @@ exports[`DomainRow Sample Field 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size={null}
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -768,10 +777,14 @@ exports[`DomainRow Sample Field 1`] = `
                                     title="Show additional field properties"
                                   >
                                     <FontAwesomeIcon
+                                      beat={false}
+                                      beatFade={false}
                                       border={false}
+                                      bounce={false}
                                       className=""
+                                      fade={false}
                                       fixedWidth={false}
-                                      flip={null}
+                                      flip={false}
                                       icon={
                                         Object {
                                           "icon": Array [
@@ -788,14 +801,19 @@ exports[`DomainRow Sample Field 1`] = `
                                       inverse={false}
                                       listItem={false}
                                       mask={null}
+                                      maskId={null}
                                       pull={null}
                                       pulse={false}
                                       rotation={null}
+                                      shake={false}
                                       size="lg"
                                       spin={false}
+                                      spinPulse={false}
+                                      spinReverse={false}
                                       swapOpacity={false}
                                       symbol={false}
                                       title=""
+                                      titleId={null}
                                       transform={null}
                                     >
                                       <svg
@@ -1017,10 +1035,14 @@ exports[`DomainRow Sample Field 1`] = `
                                           title="Remove field"
                                         >
                                           <FontAwesomeIcon
+                                            beat={false}
+                                            beatFade={false}
                                             border={false}
+                                            bounce={false}
                                             className="domain-field-delete-icon"
+                                            fade={false}
                                             fixedWidth={false}
-                                            flip={null}
+                                            flip={false}
                                             icon={
                                               Object {
                                                 "icon": Array [
@@ -1037,14 +1059,19 @@ exports[`DomainRow Sample Field 1`] = `
                                             inverse={false}
                                             listItem={false}
                                             mask={null}
+                                            maskId={null}
                                             pull={null}
                                             pulse={false}
                                             rotation={null}
+                                            shake={false}
                                             size={null}
                                             spin={false}
+                                            spinPulse={false}
+                                            spinReverse={false}
                                             swapOpacity={false}
                                             symbol={false}
                                             title=""
+                                            titleId={null}
                                             transform={null}
                                           >
                                             <svg
@@ -1319,10 +1346,14 @@ exports[`DomainRow Sample Field 1`] = `
                                                             onMouseOver={[Function]}
                                                           >
                                                             <FontAwesomeIcon
+                                                              beat={false}
+                                                              beatFade={false}
                                                               border={false}
+                                                              bounce={false}
                                                               className="label-help-icon"
+                                                              fade={false}
                                                               fixedWidth={false}
-                                                              flip={null}
+                                                              flip={false}
                                                               icon={
                                                                 Object {
                                                                   "icon": Array [
@@ -1339,15 +1370,20 @@ exports[`DomainRow Sample Field 1`] = `
                                                               inverse={false}
                                                               listItem={false}
                                                               mask={null}
+                                                              maskId={null}
                                                               pull={null}
                                                               pulse={false}
                                                               rotation={null}
+                                                              shake={false}
                                                               size="1x"
                                                               spin={false}
+                                                              spinPulse={false}
+                                                              spinReverse={false}
                                                               style={Object {}}
                                                               swapOpacity={false}
                                                               symbol={false}
                                                               title=""
+                                                              titleId={null}
                                                               transform={null}
                                                             >
                                                               <svg
@@ -1489,6 +1525,22 @@ exports[`DomainRow Sample Field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -1720,10 +1772,14 @@ exports[`DomainRow Sample Field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -1740,15 +1796,20 @@ exports[`DomainRow Sample Field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -1853,10 +1914,14 @@ exports[`DomainRow Sample Field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -1873,15 +1938,20 @@ exports[`DomainRow Sample Field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -2155,10 +2225,14 @@ exports[`DomainRow Sample Field 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -2175,15 +2249,20 @@ exports[`DomainRow Sample Field 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -2969,10 +3048,14 @@ exports[`DomainRow client side warning on field 1`] = `
                               >
                                 <DragDropHandle>
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className=""
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -2989,14 +3072,19 @@ exports[`DomainRow client side warning on field 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size={null}
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -3065,10 +3153,14 @@ exports[`DomainRow client side warning on field 1`] = `
                                     title="Show additional field properties"
                                   >
                                     <FontAwesomeIcon
+                                      beat={false}
+                                      beatFade={false}
                                       border={false}
+                                      bounce={false}
                                       className=""
+                                      fade={false}
                                       fixedWidth={false}
-                                      flip={null}
+                                      flip={false}
                                       icon={
                                         Object {
                                           "icon": Array [
@@ -3085,14 +3177,19 @@ exports[`DomainRow client side warning on field 1`] = `
                                       inverse={false}
                                       listItem={false}
                                       mask={null}
+                                      maskId={null}
                                       pull={null}
                                       pulse={false}
                                       rotation={null}
+                                      shake={false}
                                       size="lg"
                                       spin={false}
+                                      spinPulse={false}
+                                      spinReverse={false}
                                       swapOpacity={false}
                                       symbol={false}
                                       title=""
+                                      titleId={null}
                                       transform={null}
                                     >
                                       <svg
@@ -3375,10 +3472,14 @@ exports[`DomainRow client side warning on field 1`] = `
                                           customStyle={Object {}}
                                           iconComponent={
                                             <FontAwesomeIcon
+                                              beat={false}
+                                              beatFade={false}
                                               border={false}
+                                              bounce={false}
                                               className="domain-warning-icon"
+                                              fade={false}
                                               fixedWidth={false}
-                                              flip={null}
+                                              flip={false}
                                               icon={
                                                 Object {
                                                   "icon": Array [
@@ -3395,14 +3496,19 @@ exports[`DomainRow client side warning on field 1`] = `
                                               inverse={false}
                                               listItem={false}
                                               mask={null}
+                                              maskId={null}
                                               pull={null}
                                               pulse={false}
                                               rotation={null}
+                                              shake={false}
                                               size={null}
                                               spin={false}
+                                              spinPulse={false}
+                                              spinReverse={false}
                                               swapOpacity={false}
                                               symbol={false}
                                               title=""
+                                              titleId={null}
                                               transform={null}
                                             />
                                           }
@@ -3416,10 +3522,14 @@ exports[`DomainRow client side warning on field 1`] = `
                                             onMouseOver={[Function]}
                                           >
                                             <FontAwesomeIcon
+                                              beat={false}
+                                              beatFade={false}
                                               border={false}
+                                              bounce={false}
                                               className="domain-warning-icon"
+                                              fade={false}
                                               fixedWidth={false}
-                                              flip={null}
+                                              flip={false}
                                               icon={
                                                 Object {
                                                   "icon": Array [
@@ -3436,14 +3546,19 @@ exports[`DomainRow client side warning on field 1`] = `
                                               inverse={false}
                                               listItem={false}
                                               mask={null}
+                                              maskId={null}
                                               pull={null}
                                               pulse={false}
                                               rotation={null}
+                                              shake={false}
                                               size={null}
                                               spin={false}
+                                              spinPulse={false}
+                                              spinReverse={false}
                                               swapOpacity={false}
                                               symbol={false}
                                               title=""
+                                              titleId={null}
                                               transform={null}
                                             >
                                               <svg
@@ -3505,10 +3620,14 @@ exports[`DomainRow client side warning on field 1`] = `
                                           title="Remove field"
                                         >
                                           <FontAwesomeIcon
+                                            beat={false}
+                                            beatFade={false}
                                             border={false}
+                                            bounce={false}
                                             className="domain-field-delete-icon"
+                                            fade={false}
                                             fixedWidth={false}
-                                            flip={null}
+                                            flip={false}
                                             icon={
                                               Object {
                                                 "icon": Array [
@@ -3525,14 +3644,19 @@ exports[`DomainRow client side warning on field 1`] = `
                                             inverse={false}
                                             listItem={false}
                                             mask={null}
+                                            maskId={null}
                                             pull={null}
                                             pulse={false}
                                             rotation={null}
+                                            shake={false}
                                             size={null}
                                             spin={false}
+                                            spinPulse={false}
+                                            spinReverse={false}
                                             swapOpacity={false}
                                             symbol={false}
                                             title=""
+                                            titleId={null}
                                             transform={null}
                                           >
                                             <svg
@@ -3732,6 +3856,22 @@ exports[`DomainRow client side warning on field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -3963,10 +4103,14 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -3983,15 +4127,20 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -4096,10 +4245,14 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -4116,15 +4269,20 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -4398,10 +4556,14 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -4418,15 +4580,20 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -5200,10 +5367,14 @@ exports[`DomainRow date time field 1`] = `
                               >
                                 <DragDropHandle>
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className=""
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -5220,14 +5391,19 @@ exports[`DomainRow date time field 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size={null}
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -5296,10 +5472,14 @@ exports[`DomainRow date time field 1`] = `
                                     title="Show additional field properties"
                                   >
                                     <FontAwesomeIcon
+                                      beat={false}
+                                      beatFade={false}
                                       border={false}
+                                      bounce={false}
                                       className=""
+                                      fade={false}
                                       fixedWidth={false}
-                                      flip={null}
+                                      flip={false}
                                       icon={
                                         Object {
                                           "icon": Array [
@@ -5316,14 +5496,19 @@ exports[`DomainRow date time field 1`] = `
                                       inverse={false}
                                       listItem={false}
                                       mask={null}
+                                      maskId={null}
                                       pull={null}
                                       pulse={false}
                                       rotation={null}
+                                      shake={false}
                                       size="lg"
                                       spin={false}
+                                      spinPulse={false}
+                                      spinReverse={false}
                                       swapOpacity={false}
                                       symbol={false}
                                       title=""
+                                      titleId={null}
                                       transform={null}
                                     >
                                       <svg
@@ -5519,10 +5704,14 @@ exports[`DomainRow date time field 1`] = `
                                           title="Remove field"
                                         >
                                           <FontAwesomeIcon
+                                            beat={false}
+                                            beatFade={false}
                                             border={false}
+                                            bounce={false}
                                             className="domain-field-delete-icon"
+                                            fade={false}
                                             fixedWidth={false}
-                                            flip={null}
+                                            flip={false}
                                             icon={
                                               Object {
                                                 "icon": Array [
@@ -5539,14 +5728,19 @@ exports[`DomainRow date time field 1`] = `
                                             inverse={false}
                                             listItem={false}
                                             mask={null}
+                                            maskId={null}
                                             pull={null}
                                             pulse={false}
                                             rotation={null}
+                                            shake={false}
                                             size={null}
                                             spin={false}
+                                            spinPulse={false}
+                                            spinReverse={false}
                                             swapOpacity={false}
                                             symbol={false}
                                             title=""
+                                            titleId={null}
                                             transform={null}
                                           >
                                             <svg
@@ -5834,10 +6028,14 @@ exports[`DomainRow date time field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -5854,15 +6052,20 @@ exports[`DomainRow date time field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -5975,6 +6178,22 @@ exports[`DomainRow date time field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -6206,10 +6425,14 @@ exports[`DomainRow date time field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -6226,15 +6449,20 @@ exports[`DomainRow date time field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -6339,10 +6567,14 @@ exports[`DomainRow date time field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -6359,15 +6591,20 @@ exports[`DomainRow date time field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -6641,10 +6878,14 @@ exports[`DomainRow date time field 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -6661,15 +6902,20 @@ exports[`DomainRow date time field 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -6780,10 +7026,14 @@ exports[`DomainRow date time field 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -6800,15 +7050,20 @@ exports[`DomainRow date time field 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -7582,10 +7837,14 @@ exports[`DomainRow decimal field 1`] = `
                               >
                                 <DragDropHandle>
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className=""
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -7602,14 +7861,19 @@ exports[`DomainRow decimal field 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size={null}
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -7678,10 +7942,14 @@ exports[`DomainRow decimal field 1`] = `
                                     title="Show additional field properties"
                                   >
                                     <FontAwesomeIcon
+                                      beat={false}
+                                      beatFade={false}
                                       border={false}
+                                      bounce={false}
                                       className=""
+                                      fade={false}
                                       fixedWidth={false}
-                                      flip={null}
+                                      flip={false}
                                       icon={
                                         Object {
                                           "icon": Array [
@@ -7698,14 +7966,19 @@ exports[`DomainRow decimal field 1`] = `
                                       inverse={false}
                                       listItem={false}
                                       mask={null}
+                                      maskId={null}
                                       pull={null}
                                       pulse={false}
                                       rotation={null}
+                                      shake={false}
                                       size="lg"
                                       spin={false}
+                                      spinPulse={false}
+                                      spinReverse={false}
                                       swapOpacity={false}
                                       symbol={false}
                                       title=""
+                                      titleId={null}
                                       transform={null}
                                     >
                                       <svg
@@ -7901,10 +8174,14 @@ exports[`DomainRow decimal field 1`] = `
                                           title="Remove field"
                                         >
                                           <FontAwesomeIcon
+                                            beat={false}
+                                            beatFade={false}
                                             border={false}
+                                            bounce={false}
                                             className="domain-field-delete-icon"
+                                            fade={false}
                                             fixedWidth={false}
-                                            flip={null}
+                                            flip={false}
                                             icon={
                                               Object {
                                                 "icon": Array [
@@ -7921,14 +8198,19 @@ exports[`DomainRow decimal field 1`] = `
                                             inverse={false}
                                             listItem={false}
                                             mask={null}
+                                            maskId={null}
                                             pull={null}
                                             pulse={false}
                                             rotation={null}
+                                            shake={false}
                                             size={null}
                                             spin={false}
+                                            spinPulse={false}
+                                            spinReverse={false}
                                             swapOpacity={false}
                                             symbol={false}
                                             title=""
+                                            titleId={null}
                                             transform={null}
                                           >
                                             <svg
@@ -8216,10 +8498,14 @@ exports[`DomainRow decimal field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -8236,15 +8522,20 @@ exports[`DomainRow decimal field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -8401,6 +8692,22 @@ exports[`DomainRow decimal field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -8632,10 +8939,14 @@ exports[`DomainRow decimal field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -8652,15 +8963,20 @@ exports[`DomainRow decimal field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -8765,10 +9081,14 @@ exports[`DomainRow decimal field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -8785,15 +9105,20 @@ exports[`DomainRow decimal field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -9067,10 +9392,14 @@ exports[`DomainRow decimal field 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -9087,15 +9416,20 @@ exports[`DomainRow decimal field 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -9206,10 +9540,14 @@ exports[`DomainRow decimal field 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -9226,15 +9564,20 @@ exports[`DomainRow decimal field 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -10008,10 +10351,14 @@ exports[`DomainRow participant id field 1`] = `
                               >
                                 <DragDropHandle>
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className=""
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -10028,14 +10375,19 @@ exports[`DomainRow participant id field 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size={null}
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -10104,10 +10456,14 @@ exports[`DomainRow participant id field 1`] = `
                                     title="Show additional field properties"
                                   >
                                     <FontAwesomeIcon
+                                      beat={false}
+                                      beatFade={false}
                                       border={false}
+                                      bounce={false}
                                       className=""
+                                      fade={false}
                                       fixedWidth={false}
-                                      flip={null}
+                                      flip={false}
                                       icon={
                                         Object {
                                           "icon": Array [
@@ -10124,14 +10480,19 @@ exports[`DomainRow participant id field 1`] = `
                                       inverse={false}
                                       listItem={false}
                                       mask={null}
+                                      maskId={null}
                                       pull={null}
                                       pulse={false}
                                       rotation={null}
+                                      shake={false}
                                       size="lg"
                                       spin={false}
+                                      spinPulse={false}
+                                      spinReverse={false}
                                       swapOpacity={false}
                                       symbol={false}
                                       title=""
+                                      titleId={null}
                                       transform={null}
                                     >
                                       <svg
@@ -10351,10 +10712,14 @@ exports[`DomainRow participant id field 1`] = `
                                           title="Remove field"
                                         >
                                           <FontAwesomeIcon
+                                            beat={false}
+                                            beatFade={false}
                                             border={false}
+                                            bounce={false}
                                             className="domain-field-delete-icon"
+                                            fade={false}
                                             fixedWidth={false}
-                                            flip={null}
+                                            flip={false}
                                             icon={
                                               Object {
                                                 "icon": Array [
@@ -10371,14 +10736,19 @@ exports[`DomainRow participant id field 1`] = `
                                             inverse={false}
                                             listItem={false}
                                             mask={null}
+                                            maskId={null}
                                             pull={null}
                                             pulse={false}
                                             rotation={null}
+                                            shake={false}
                                             size={null}
                                             spin={false}
+                                            spinPulse={false}
+                                            spinReverse={false}
                                             swapOpacity={false}
                                             symbol={false}
                                             title=""
+                                            titleId={null}
                                             transform={null}
                                           >
                                             <svg
@@ -10578,6 +10948,22 @@ exports[`DomainRow participant id field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -10809,10 +11195,14 @@ exports[`DomainRow participant id field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -10829,15 +11219,20 @@ exports[`DomainRow participant id field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -10942,10 +11337,14 @@ exports[`DomainRow participant id field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -10962,15 +11361,20 @@ exports[`DomainRow participant id field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -11244,10 +11648,14 @@ exports[`DomainRow participant id field 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -11264,15 +11672,20 @@ exports[`DomainRow participant id field 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -11383,10 +11796,14 @@ exports[`DomainRow participant id field 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -11403,15 +11820,20 @@ exports[`DomainRow participant id field 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -12197,10 +12619,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                               >
                                 <DragDropHandle>
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className=""
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -12217,14 +12643,19 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size={null}
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -12293,10 +12724,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     title="Show additional field properties"
                                   >
                                     <FontAwesomeIcon
+                                      beat={false}
+                                      beatFade={false}
                                       border={false}
+                                      bounce={false}
                                       className=""
+                                      fade={false}
                                       fixedWidth={false}
-                                      flip={null}
+                                      flip={false}
                                       icon={
                                         Object {
                                           "icon": Array [
@@ -12313,14 +12748,19 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       inverse={false}
                                       listItem={false}
                                       mask={null}
+                                      maskId={null}
                                       pull={null}
                                       pulse={false}
                                       rotation={null}
+                                      shake={false}
                                       size="lg"
                                       spin={false}
+                                      spinPulse={false}
+                                      spinReverse={false}
                                       swapOpacity={false}
                                       symbol={false}
                                       title=""
+                                      titleId={null}
                                       transform={null}
                                     >
                                       <svg
@@ -12621,10 +13061,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           title="Remove field"
                                         >
                                           <FontAwesomeIcon
+                                            beat={false}
+                                            beatFade={false}
                                             border={false}
+                                            bounce={false}
                                             className="domain-field-delete-icon"
+                                            fade={false}
                                             fixedWidth={false}
-                                            flip={null}
+                                            flip={false}
                                             icon={
                                               Object {
                                                 "icon": Array [
@@ -12641,14 +13085,19 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             inverse={false}
                                             listItem={false}
                                             mask={null}
+                                            maskId={null}
                                             pull={null}
                                             pulse={false}
                                             rotation={null}
+                                            shake={false}
                                             size={null}
                                             spin={false}
+                                            spinPulse={false}
+                                            spinReverse={false}
                                             swapOpacity={false}
                                             symbol={false}
                                             title=""
+                                            titleId={null}
                                             transform={null}
                                           >
                                             <svg
@@ -12848,6 +13297,22 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -13079,10 +13544,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -13099,15 +13568,20 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -13212,10 +13686,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -13232,15 +13710,20 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -13514,10 +13997,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -13534,15 +14021,20 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -14316,10 +14808,14 @@ exports[`DomainRow string field test 1`] = `
                               >
                                 <DragDropHandle>
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className=""
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -14336,14 +14832,19 @@ exports[`DomainRow string field test 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size={null}
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -14412,10 +14913,14 @@ exports[`DomainRow string field test 1`] = `
                                     title="Show additional field properties"
                                   >
                                     <FontAwesomeIcon
+                                      beat={false}
+                                      beatFade={false}
                                       border={false}
+                                      bounce={false}
                                       className=""
+                                      fade={false}
                                       fixedWidth={false}
-                                      flip={null}
+                                      flip={false}
                                       icon={
                                         Object {
                                           "icon": Array [
@@ -14432,14 +14937,19 @@ exports[`DomainRow string field test 1`] = `
                                       inverse={false}
                                       listItem={false}
                                       mask={null}
+                                      maskId={null}
                                       pull={null}
                                       pulse={false}
                                       rotation={null}
+                                      shake={false}
                                       size="lg"
                                       spin={false}
+                                      spinPulse={false}
+                                      spinReverse={false}
                                       swapOpacity={false}
                                       symbol={false}
                                       title=""
+                                      titleId={null}
                                       transform={null}
                                     >
                                       <svg
@@ -14659,10 +15169,14 @@ exports[`DomainRow string field test 1`] = `
                                           title="Remove field"
                                         >
                                           <FontAwesomeIcon
+                                            beat={false}
+                                            beatFade={false}
                                             border={false}
+                                            bounce={false}
                                             className="domain-field-delete-icon"
+                                            fade={false}
                                             fixedWidth={false}
-                                            flip={null}
+                                            flip={false}
                                             icon={
                                               Object {
                                                 "icon": Array [
@@ -14679,14 +15193,19 @@ exports[`DomainRow string field test 1`] = `
                                             inverse={false}
                                             listItem={false}
                                             mask={null}
+                                            maskId={null}
                                             pull={null}
                                             pulse={false}
                                             rotation={null}
+                                            shake={false}
                                             size={null}
                                             spin={false}
+                                            spinPulse={false}
+                                            spinReverse={false}
                                             swapOpacity={false}
                                             symbol={false}
                                             title=""
+                                            titleId={null}
                                             transform={null}
                                           >
                                             <svg
@@ -14962,10 +15481,14 @@ exports[`DomainRow string field test 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -14982,15 +15505,20 @@ exports[`DomainRow string field test 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -15206,6 +15734,22 @@ exports[`DomainRow string field test 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -15437,10 +15981,14 @@ exports[`DomainRow string field test 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -15457,15 +16005,20 @@ exports[`DomainRow string field test 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -15570,10 +16123,14 @@ exports[`DomainRow string field test 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -15590,15 +16147,20 @@ exports[`DomainRow string field test 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -15872,10 +16434,14 @@ exports[`DomainRow string field test 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -15892,15 +16458,20 @@ exports[`DomainRow string field test 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -16011,10 +16582,14 @@ exports[`DomainRow string field test 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -16031,15 +16606,20 @@ exports[`DomainRow string field test 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -16812,10 +17392,14 @@ exports[`DomainRow with empty domain form 1`] = `
                               >
                                 <DragDropHandle>
                                   <FontAwesomeIcon
+                                    beat={false}
+                                    beatFade={false}
                                     border={false}
+                                    bounce={false}
                                     className=""
+                                    fade={false}
                                     fixedWidth={false}
-                                    flip={null}
+                                    flip={false}
                                     icon={
                                       Object {
                                         "icon": Array [
@@ -16832,14 +17416,19 @@ exports[`DomainRow with empty domain form 1`] = `
                                     inverse={false}
                                     listItem={false}
                                     mask={null}
+                                    maskId={null}
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
+                                    shake={false}
                                     size={null}
                                     spin={false}
+                                    spinPulse={false}
+                                    spinReverse={false}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
+                                    titleId={null}
                                     transform={null}
                                   >
                                     <svg
@@ -16908,10 +17497,14 @@ exports[`DomainRow with empty domain form 1`] = `
                                     title="Show additional field properties"
                                   >
                                     <FontAwesomeIcon
+                                      beat={false}
+                                      beatFade={false}
                                       border={false}
+                                      bounce={false}
                                       className=""
+                                      fade={false}
                                       fixedWidth={false}
-                                      flip={null}
+                                      flip={false}
                                       icon={
                                         Object {
                                           "icon": Array [
@@ -16928,14 +17521,19 @@ exports[`DomainRow with empty domain form 1`] = `
                                       inverse={false}
                                       listItem={false}
                                       mask={null}
+                                      maskId={null}
                                       pull={null}
                                       pulse={false}
                                       rotation={null}
+                                      shake={false}
                                       size="lg"
                                       spin={false}
+                                      spinPulse={false}
+                                      spinReverse={false}
                                       swapOpacity={false}
                                       symbol={false}
                                       title=""
+                                      titleId={null}
                                       transform={null}
                                     >
                                       <svg
@@ -17223,10 +17821,14 @@ exports[`DomainRow with empty domain form 1`] = `
                                           title="Remove field"
                                         >
                                           <FontAwesomeIcon
+                                            beat={false}
+                                            beatFade={false}
                                             border={false}
+                                            bounce={false}
                                             className="domain-field-delete-icon"
+                                            fade={false}
                                             fixedWidth={false}
-                                            flip={null}
+                                            flip={false}
                                             icon={
                                               Object {
                                                 "icon": Array [
@@ -17243,14 +17845,19 @@ exports[`DomainRow with empty domain form 1`] = `
                                             inverse={false}
                                             listItem={false}
                                             mask={null}
+                                            maskId={null}
                                             pull={null}
                                             pulse={false}
                                             rotation={null}
+                                            shake={false}
                                             size={null}
                                             spin={false}
+                                            spinPulse={false}
+                                            spinReverse={false}
                                             swapOpacity={false}
                                             symbol={false}
                                             title=""
+                                            titleId={null}
                                             transform={null}
                                           >
                                             <svg
@@ -17526,10 +18133,14 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -17546,15 +18157,20 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -17770,6 +18386,22 @@ exports[`DomainRow with empty domain form 1`] = `
                                           className="col-xs-12"
                                         >
                                           <NameAndLinkingOptions
+                                            domainFormDisplayOptions={
+                                              Object {
+                                                "disableMvEnabled": false,
+                                                "hideAddFieldsButton": false,
+                                                "hideConditionalFormatting": false,
+                                                "hideFilePropertyType": false,
+                                                "hideImportData": false,
+                                                "hideImportExport": false,
+                                                "hideRequired": false,
+                                                "hideStudyPropertyTypes": false,
+                                                "hideTextOptions": false,
+                                                "hideValidators": false,
+                                                "isDragDisabled": false,
+                                                "phiLevelDisabled": false,
+                                              }
+                                            }
                                             domainIndex={1}
                                             field={
                                               Immutable.Record {
@@ -18001,10 +18633,14 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -18021,15 +18657,20 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -18134,10 +18775,14 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 onMouseOver={[Function]}
                                                               >
                                                                 <FontAwesomeIcon
+                                                                  beat={false}
+                                                                  beatFade={false}
                                                                   border={false}
+                                                                  bounce={false}
                                                                   className="label-help-icon"
+                                                                  fade={false}
                                                                   fixedWidth={false}
-                                                                  flip={null}
+                                                                  flip={false}
                                                                   icon={
                                                                     Object {
                                                                       "icon": Array [
@@ -18154,15 +18799,20 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                   inverse={false}
                                                                   listItem={false}
                                                                   mask={null}
+                                                                  maskId={null}
                                                                   pull={null}
                                                                   pulse={false}
                                                                   rotation={null}
+                                                                  shake={false}
                                                                   size="1x"
                                                                   spin={false}
+                                                                  spinPulse={false}
+                                                                  spinReverse={false}
                                                                   style={Object {}}
                                                                   swapOpacity={false}
                                                                   symbol={false}
                                                                   title=""
+                                                                  titleId={null}
                                                                   transform={null}
                                                                 >
                                                                   <svg
@@ -18436,10 +19086,14 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -18456,15 +19110,20 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg
@@ -18575,10 +19234,14 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                   onMouseOver={[Function]}
                                                                 >
                                                                   <FontAwesomeIcon
+                                                                    beat={false}
+                                                                    beatFade={false}
                                                                     border={false}
+                                                                    bounce={false}
                                                                     className="label-help-icon"
+                                                                    fade={false}
                                                                     fixedWidth={false}
-                                                                    flip={null}
+                                                                    flip={false}
                                                                     icon={
                                                                       Object {
                                                                         "icon": Array [
@@ -18595,15 +19258,20 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                     inverse={false}
                                                                     listItem={false}
                                                                     mask={null}
+                                                                    maskId={null}
                                                                     pull={null}
                                                                     pulse={false}
                                                                     rotation={null}
+                                                                    shake={false}
                                                                     size="1x"
                                                                     spin={false}
+                                                                    spinPulse={false}
+                                                                    spinReverse={false}
                                                                     style={Object {}}
                                                                     swapOpacity={false}
                                                                     symbol={false}
                                                                     title=""
+                                                                    titleId={null}
                                                                     transform={null}
                                                                   >
                                                                     <svg

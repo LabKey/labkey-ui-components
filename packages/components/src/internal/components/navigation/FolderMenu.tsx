@@ -2,26 +2,34 @@ import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { ActionURL } from '@labkey/api';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
-import {
-    Alert,
-    AppContext,
-    buildURL,
-    isLoading,
-    LoadingSpinner,
-    LoadingState,
-    resolveErrorMessage,
-    useAppContext,
-    useServerContext,
-} from '../../..';
-
 import { getCurrentAppProperties } from '../../app/utils';
 import { blurActiveElement } from '../../util/utils';
 import { AppProperties } from '../../app/models';
+import { Container } from '../base/models/Container';
+import { buildURL } from '../../url/AppURL';
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+import { AppContext, useAppContext } from '../../AppContext';
+import { useServerContext } from '../base/ServerContext';
+import { naturalSortByProperty } from '../../../public/sort';
+import { resolveErrorMessage } from '../../util/messaging';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface FolderMenuItem {
     href: string;
     id: string;
     label: string;
+}
+
+function createFolderItem(folder: Container, controllerName: string): FolderMenuItem {
+    return {
+        href: buildURL(controllerName, `${ActionURL.getAction()}.view`, undefined, {
+            container: folder.path,
+            returnUrl: false,
+        }),
+        id: folder.id,
+        label: folder.title,
+    };
 }
 
 interface Props {
@@ -47,20 +55,21 @@ export const FolderMenu: FC<Props> = memo(({ appProperties }) => {
             try {
                 const folders = await api.security.fetchContainers({
                     // Container metadata does not always provide "type" so inspecting the
-                    // "parentPath" to determine project vs folder.
+                    // "parentPath" to determine top-level folder vs subfolder.
                     containerPath: container.parentPath === '/' ? container.path : container.parentPath,
                 });
 
-                const items_: FolderMenuItem[] = folders.map(folder => ({
-                    href: buildURL(controllerName, `${ActionURL.getAction()}.view`, undefined, {
-                        container: folder.path,
-                        returnUrl: false,
-                    }),
-                    id: folder.id,
-                    label: folder.title,
-                }));
+                const items_: FolderMenuItem[] = [];
+                const topLevelFolderIdx = folders.findIndex(f => f.parentPath === '/');
+                if (topLevelFolderIdx > -1) {
+                    // Remove top-level folder from array as it is always displayed as the first menu item
+                    const topLevelFolder = folders.splice(topLevelFolderIdx, 1)[0];
+                    items_.push(createFolderItem(topLevelFolder, controllerName));
+                }
 
-                setItems(items_);
+                // Issue 45805: sort folders by title as server-side sorting is insufficient
+                folders.sort(naturalSortByProperty('title'));
+                setItems(items_.concat(folders.map(folder => createFolderItem(folder, controllerName))));
             } catch (e) {
                 setError(`Error: ${resolveErrorMessage(e)}`);
             }

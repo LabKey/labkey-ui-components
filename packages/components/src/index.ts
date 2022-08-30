@@ -20,13 +20,21 @@ import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionUR
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
 import { GridColumn } from './internal/components/base/models/GridColumn';
-import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
+import {
+    decodePart,
+    encodePart,
+    getSchemaQuery,
+    resolveKey,
+    resolveSchemaQuery,
+    SchemaQuery,
+} from './public/SchemaQuery';
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
 import { InferDomainResponse } from './public/InferDomainResponse';
 import {
     getAssayImportNotificationMsg,
+    getAssayRunDeleteMessage,
     getServerFilePreview,
     inferDomainFromFile,
 } from './internal/components/assay/utils';
@@ -78,11 +86,11 @@ import {
 } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import {
+    deleteErrorMessage,
+    deleteSuccessMessage,
     getActionErrorMessage,
     getConfirmDeleteMessage,
     resolveErrorMessage,
-    deleteSuccessMessage,
-    deleteErrorMessage,
 } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
 import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
@@ -126,12 +134,12 @@ import { FileTree } from './internal/components/files/FileTree';
 import { Notifications } from './internal/components/notifications/Notifications';
 import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/components/notifications/actions';
 import {
+    NotificationsContextProvider,
     useNotificationsContext,
     withNotificationsContext,
-    NotificationsContextProvider,
 } from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
-import { formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
+import { formatDate, formatDateTime, getDateFormat, parseDate, filterDate } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
@@ -153,8 +161,9 @@ import { getMenuItemForSectionKey, getMenuItemsForSection } from './internal/com
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 import { Setting } from './internal/components/base/Setting';
+import { ValueList } from './internal/components/base/ValueList';
 
-import { EditorModel, createGridModelId } from './internal/models';
+import { createGridModelId, EditorModel } from './internal/models';
 import {
     clearSelected,
     createQueryConfigFilteredBySample,
@@ -245,12 +254,13 @@ import {
 } from './internal/renderers/ImportAliasRenderer';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
-import { resolveDetailFieldValue, resolveRenderer } from './internal/components/forms/renderers';
+import { resolveRenderer } from './internal/components/forms/renderers';
 import {
     getQueryFormLabelFieldName,
     isQueryFormLabelField,
-    QueryFormInputs,
-} from './internal/components/forms/QueryFormInputs';
+    resolveDetailFieldValue,
+} from './internal/components/forms/utils';
+import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
@@ -263,8 +273,8 @@ import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
+import { resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
 
-import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
 import {
     getUsersWithPermissions,
     handleInputTab,
@@ -285,11 +295,12 @@ import { EntityLineageEditMenuItem } from './internal/components/entities/Entity
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
 import { GenerateEntityResponse, OperationConfirmationData } from './internal/components/entities/models';
+import { FindSamplesByIdsPageBase } from './internal/components/search/FindSamplesByIdsPageBase';
 import { SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { SampleFinderSection } from './internal/components/search/SampleFinderSection';
-import { getSearchScopeFromContainerFilter } from './internal/components/search/utils';
+import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
 import { ActiveUserLimit } from './internal/components/settings/ActiveUserLimit';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { loadNameExpressionOptions } from './internal/components/settings/actions';
@@ -305,6 +316,7 @@ import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
+    downloadSampleTypeTemplate,
     fetchSamples,
     getDeleteSharedSampleTypeUrl,
     getEditSharedSampleTypeUrl,
@@ -315,7 +327,6 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSampleTypes,
-    getSelectedItemSamples,
     getSelectionLineageData,
     getUpdatedLineageRows,
 } from './internal/components/samples/actions';
@@ -328,6 +339,8 @@ import { SamplesEditButton } from './internal/components/samples/SamplesEditButt
 import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
+import { CreateSamplesSubMenu } from './internal/components/samples/CreateSamplesSubMenu';
+import { SamplesDeriveButtonBase } from './internal/components/samples/SamplesDeriveButtonBase';
 import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSamplesSubMenuBase';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
@@ -335,12 +348,13 @@ import { SampleAliquotsSummary } from './internal/components/samples/SampleAliqu
 import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
 import { SampleActionsButton } from './internal/components/samples/SampleActionsButton';
 
+import { SampleTimelinePageBase } from './internal/components/timeline/SampleTimelinePageBase';
+
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
 import { useContainerUser } from './internal/components/container/actions';
 
 import {
-    downloadSampleTypeTemplate,
     filterSampleRowsForOperation,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
@@ -351,6 +365,7 @@ import {
     getSampleStatusType,
     getSampleTypeTemplateUrl,
     getSampleWizardURL,
+    isAllSamplesSchema,
     isSampleOperationPermitted,
     isSamplesSchema,
     SamplesEditButtonSections,
@@ -383,7 +398,6 @@ import {
     allowReimportAssayRun,
     clearAssayDefinitionCache,
     deleteAssayDesign,
-    deleteAssayRuns,
     fetchAllAssays,
     GENERAL_ASSAY_PROVIDER_NAME,
     importAssayRun,
@@ -415,6 +429,7 @@ import { EntityDeleteConfirmModal } from './internal/components/entities/EntityD
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
+import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
@@ -450,9 +465,12 @@ import {
     extractEntityTypeOptionFromRow,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
+    getOperationConfirmationData,
     getSampleOperationConfirmationData,
+    getSelectedItemSamples,
 } from './internal/components/entities/actions';
 import {
+    AssayRunDataType,
     DataClassDataType,
     ParentEntityRequiredColumns,
     SampleTypeDataType,
@@ -478,11 +496,12 @@ import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
 import {
-    createFormInputId,
     fetchDomain,
+    fetchDomainDetails,
     saveDomain,
     setDomainFields,
 } from './internal/components/domainproperties/actions';
+import { createFormInputId } from './internal/components/domainproperties/utils';
 import {
     DomainDesign,
     DomainDetails,
@@ -522,10 +541,10 @@ import { RangeValidationOptions } from './internal/components/domainproperties/v
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import {
     makeQueryInfo,
-    mountWithAppServerContextOptions,
-    mountWithServerContextOptions,
     mountWithAppServerContext,
+    mountWithAppServerContextOptions,
     mountWithServerContext,
+    mountWithServerContextOptions,
     sleep,
     waitForLifecycle,
     wrapDraggable,
@@ -597,6 +616,13 @@ import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveFromPicklistButton';
 import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
+import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
+import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
+import {
+    LabelPrintingProviderProps,
+    withLabelPrintingContext,
+    useLabelPrintingContext,
+} from './internal/components/labels/LabelPrintingContextProvider';
 
 import {
     AppReducers,
@@ -607,23 +633,25 @@ import {
 
 import {
     CloseEventCode,
+    getCurrentAppProperties,
     getDateFormat as getAppDateFormat,
     getDateTimeFormat as getAppDateTimeFormat,
     getPrimaryAppProperties,
-    getCurrentAppProperties,
     getProjectPath,
     hasModule,
     hasPremiumModule,
+    isAssayEnabled,
     isBiologicsEnabled,
-    isELNEnabledInLKSM,
+    isELNEnabled,
     isFreezerManagementEnabled,
     isPremiumProductEnabled,
+    isProductProjectsEnabled,
     isProjectContainer,
     isRequestsEnabled,
     isSampleAliquotSelectorEnabled,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
-    isProductProjectsEnabled,
+    isWorkflowEnabled,
     registerWebSocketListeners,
     sampleManagerIsPrimaryApp,
     useMenuSectionConfigs,
@@ -715,6 +743,11 @@ import { Thread } from './internal/announcements/Thread';
 import { ThreadBlock } from './internal/announcements/ThreadBlock';
 import { ThreadEditor } from './internal/announcements/ThreadEditor';
 import { useNotAuthorized, useNotFound } from './internal/hooks';
+import {
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
+} from './test/data/constants';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -728,7 +761,9 @@ const App = {
     CloseEventCode,
     getCurrentAppProperties,
     registerWebSocketListeners,
-    isELNEnabledInLKSM,
+    isAssayEnabled,
+    isWorkflowEnabled,
+    isELNEnabled,
     isFreezerManagementEnabled,
     isRequestsEnabled,
     isSampleManagerEnabled,
@@ -813,6 +848,9 @@ const App = {
     TEST_USER_APP_ADMIN,
     TEST_USER_STORAGE_DESIGNER,
     TEST_USER_STORAGE_EDITOR,
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     MEDIA_KEY,
     REGISTRY_KEY,
     ELN_KEY,
@@ -999,6 +1037,7 @@ export {
     filterSampleRowsForOperation,
     isSampleOperationPermitted,
     isSamplesSchema,
+    isAllSamplesSchema,
     getSampleSetMenuItem,
     getFilterForSampleOperation,
     getSampleDeleteMessage,
@@ -1041,6 +1080,7 @@ export {
     getDeleteSharedSampleTypeUrl,
     SampleTypeDataType,
     DataClassDataType,
+    AssayRunDataType,
     ParentEntityRequiredColumns,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
@@ -1057,6 +1097,8 @@ export {
     SampleDetailEditing,
     SampleCreationTypeModal,
     CreateSamplesSubMenuBase,
+    CreateSamplesSubMenu,
+    SamplesDeriveButtonBase,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
     GridAliquotViewSelector,
@@ -1074,6 +1116,8 @@ export {
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
     SampleTypeInsightsPanel,
+    // timeline
+    SampleTimelinePageBase,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -1089,9 +1133,12 @@ export {
     getSampleOperationConfirmationData,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
+    getOperationConfirmationData,
     createEntityParentKey,
     getUniqueIdColumnMetadata,
     // search related items
+    FIND_SAMPLE_BY_ID_METRIC_AREA,
+    FindSamplesByIdsPageBase,
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
@@ -1132,7 +1179,6 @@ export {
     AssayReimportRunButton,
     importAssayRun,
     deleteAssayDesign,
-    deleteAssayRuns,
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
@@ -1182,6 +1228,7 @@ export {
     MenuSectionModel,
     MenuItemModel,
     NavigationBar,
+    SEARCH_PLACEHOLDER,
     ProductNavigationMenu,
     FindByIdsModal,
     SubNav,
@@ -1210,6 +1257,7 @@ export {
     DomainForm,
     DomainFieldsDisplay,
     fetchDomain,
+    fetchDomainDetails,
     saveDomain,
     createFormInputId,
     setDomainFields,
@@ -1223,6 +1271,7 @@ export {
     DOMAIN_RANGE_VALIDATOR,
     DomainDetails,
     inferDomainFromFile,
+    getAssayRunDeleteMessage,
     getServerFilePreview,
     InferDomainResponse,
     BasePropertiesPanel,
@@ -1266,6 +1315,7 @@ export {
     // util functions
     getDateFormat,
     getDisambiguatedSelectInputOptions,
+    filterDate,
     formatDate,
     formatDateTime,
     parseDate,
@@ -1300,6 +1350,8 @@ export {
     SAMPLE_ALIQUOT_TOPIC,
     Key,
     useEnterEscape,
+    encodePart,
+    decodePart,
     // devTools functions
     applyDevTools,
     devToolsActive,
@@ -1364,6 +1416,7 @@ export {
     SelectView,
     SelectViewInput,
     Setting,
+    ValueList,
     // base models, enums, constants
     Container,
     User,
@@ -1460,6 +1513,11 @@ export {
     // SubNavWithContext
     useSubNavContext,
     SubNavWithContext,
+    // BarTender
+    BarTenderSettingsForm,
+    PrintLabelsModal,
+    withLabelPrintingContext,
+    useLabelPrintingContext,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1525,7 +1583,7 @@ export type {
     SampleGridButtonProps,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
-export type { AppRouteResolver } from './internal/url/AppURLResolver';
+export type { AppRouteResolver } from './internal/url/models';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
@@ -1555,3 +1613,4 @@ export type { HorizontalBarData } from './internal/components/chart/HorizontalBa
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
 export type { EditableGridPanelForUpdateWithLineageProps } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
+export type { LabelPrintingProviderProps } from './internal/components/labels/LabelPrintingContextProvider';

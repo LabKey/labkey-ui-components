@@ -1,21 +1,27 @@
 import React, { FC, useMemo } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { SubMenuItem, SubMenuItemProps, QueryModel, DisableableMenuItem } from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import { InjectedAssayModel, withAssayModels } from './withAssayModels';
+import { SubMenuItem, SubMenuItemProps } from '../menus/SubMenuItem';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
 import { getImportItemsForAssayDefinitions } from './actions';
 
+import { InjectedAssayModel, withAssayModels } from './withAssayModels';
+
 interface Props extends SubMenuItemProps {
+    currentProductId?: string;
     disabled?: boolean;
+    ignoreFilter?: boolean;
     isLoaded?: boolean;
     nounPlural?: string;
     picklistName?: string;
     providerType?: string;
     queryModel: QueryModel;
     requireSelection: boolean;
+    targetProductId?: string;
 }
 
 // exported for jest testing
@@ -30,6 +36,9 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         queryModel,
         requireSelection,
         text = 'Import Assay Data',
+        currentProductId,
+        targetProductId,
+        ignoreFilter,
     } = props;
 
     const items = useMemo(() => {
@@ -37,14 +46,19 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             return [];
         }
 
-        return getImportItemsForAssayDefinitions(assayModel, queryModel, providerType, !!picklistName).reduce(
-            (subItems, href, assay) => {
-                subItems.push({ text: assay.name, href });
-                return subItems;
-            },
-            []
-        );
-    }, [assayModel, isLoaded, providerType, queryModel]);
+        return getImportItemsForAssayDefinitions(
+            assayModel,
+            queryModel,
+            providerType,
+            !!picklistName,
+            currentProductId,
+            targetProductId,
+            ignoreFilter
+        ).reduce((subItems, href, assay) => {
+            subItems.push({ text: assay.name, href });
+            return subItems;
+        }, []);
+    }, [assayModel, isLoaded, providerType, queryModel, currentProductId, targetProductId, ignoreFilter]);
 
     if (disabled) {
         return <DisableableMenuItem operationPermitted={false}>{text}</DisableableMenuItem>;

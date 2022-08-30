@@ -15,18 +15,18 @@
  */
 import React, { PureComponent } from 'react';
 
-import { capitalizeFirstChar, ConfirmModal } from '../../..';
+import { isELNEnabled } from '../../app/utils';
 
-import { helpLinkNode } from '../../util/helpLinks';
-
-import { isSampleStatusEnabled } from '../../app/utils';
+import { capitalizeFirstChar } from '../../util/utils';
+import { HelpLink } from '../../util/helpLinks';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 import { EntityDataType, OperationConfirmationData } from './models';
-import { isSampleEntity } from './utils';
 
 interface Props {
     confirmationData: OperationConfirmationData;
     entityDataType: EntityDataType;
+    getDeletionDescription?: (numToDelete: number) => React.ReactNode;
     onCancel: () => any;
     onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
     verb?: string;
@@ -44,18 +44,16 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
     };
 
     getConfirmationProperties(): { canDelete: boolean; message: any; title: string } {
-        const { confirmationData, entityDataType, verb } = this.props;
+        const { confirmationData, entityDataType, verb, getDeletionDescription } = this.props;
         const { deleteHelpLinkTopic, nounSingular, nounPlural, dependencyText } = entityDataType;
         const capNounSingular = capitalizeFirstChar(nounSingular);
         const capNounPlural = capitalizeFirstChar(nounPlural);
 
         if (!confirmationData) return undefined;
 
-        // TODO when experimental flag for sample status is removed, move this text into the SampleTypeDataType constant
-        const _dependencyText =
-            isSampleStatusEnabled() && isSampleEntity(entityDataType)
-                ? dependencyText + ' or status that prevents deletion'
-                : dependencyText;
+        const _dependencyText = isELNEnabled()
+            ? (dependencyText ? dependencyText + ' or' : '') + ' references in one or more active notebooks'
+            : dependencyText;
 
         const numCanDelete = confirmationData.allowed.length;
         const numCannotDelete = confirmationData.notAllowed.length;
@@ -72,8 +70,12 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 nounPlural +
                 ' are no longer valid.';
         } else if (numCannotDelete === 0) {
-            text = totalNum === 1 ? 'The selected ' : totalNum === 2 ? 'Both ' : 'All ' + totalNum + ' ';
-            text += totalNoun + ' will be permanently ' + verb + '.';
+            if (getDeletionDescription) {
+                text = getDeletionDescription(totalNum);
+            } else {
+                text = totalNum === 1 ? 'The selected ' : totalNum === 2 ? 'Both ' : 'All ' + totalNum + ' ';
+                text += totalNoun + ' will be permanently ' + verb + '.';
+            }
         } else if (numCanDelete === 0) {
             if (totalNum === 1) {
                 text =
@@ -84,7 +86,8 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 text += ' because they have ' + _dependencyText + '.';
             }
         } else {
-            text =
+            text = [];
+            let firstText =
                 "You've selected " +
                 totalNum +
                 ' ' +
@@ -94,13 +97,26 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 ' can be ' +
                 verb +
                 '. ';
-            text += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
-            text += (numCannotDelete === 1 ? ' it has ' : ' they have ') + _dependencyText + '.';
+            firstText += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
+            firstText += (numCannotDelete === 1 ? ' it has ' : ' they have ') + _dependencyText + '.';
+            text.push(<React.Fragment key="commonText">{firstText}</React.Fragment>);
+            if (getDeletionDescription)
+                text.push(
+                    <React.Fragment key="customText">
+                        <br />
+                        <br />
+                        {getDeletionDescription(numCanDelete)}
+                    </React.Fragment>
+                );
         }
         const message = (
             <span>
                 {text}
-                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(deleteHelpLinkTopic, 'more info')})</>}
+                {numCannotDelete > 0 && deleteHelpLinkTopic && (
+                    <>
+                        &nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink>)
+                    </>
+                )}
                 {numCanDelete > 0 && (
                     <p className="top-spacing">
                         <strong>Deletion cannot be undone.</strong> Do you want to proceed?

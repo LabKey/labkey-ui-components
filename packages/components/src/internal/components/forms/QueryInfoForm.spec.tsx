@@ -20,7 +20,10 @@ import { mount, shallow } from 'enzyme';
 import { Button, Modal, ModalTitle } from 'react-bootstrap';
 
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
-import { getQueryDetails, SchemaQuery } from '../../..';
+
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { getQueryDetails } from '../../query/api';
 
 import { TextInput } from './input/TextInput';
 import { QueryFormInputs } from './QueryFormInputs';

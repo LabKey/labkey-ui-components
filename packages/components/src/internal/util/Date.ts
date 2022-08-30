@@ -18,7 +18,7 @@ import momentTZ from 'moment-timezone';
 import numeral from 'numeral';
 import { Container, getServerContext } from '@labkey/api';
 
-import { QueryColumn } from '../..';
+import { QueryColumn } from '../../public/QueryColumn';
 
 import { formatWithJDF, toMomentFormatString } from './jDateFormatParser';
 
@@ -177,4 +177,18 @@ export function getNextDateStr(currentDateStr: string): string {
     const day = nextDate.getDate();
 
     return '' + year + '-' + twoDigit(month) + '-' + twoDigit(day);
+}
+
+// TODO add jest
+export function filterDate(date: Date, start: Date, end: Date) {
+    const dateOnly = new Date(date.getTime());
+    dateOnly.setHours(0, 0, 0, 0);
+
+    if (start == null && end == null) return true;
+
+    if (start != null && end == null) return dateOnly >= start;
+
+    if (start == null && end != null) return dateOnly <= end;
+
+    return dateOnly >= start && dateOnly <= end;
 }

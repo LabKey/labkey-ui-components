@@ -1,8 +1,7 @@
 import { Ajax, Utils } from '@labkey/api';
 
 import { IDataViewInfo } from '../models';
-import { AppURL, buildURL } from '../..';
-import { SAMPLE_MANAGER_APP_PROPERTIES } from '../app/constants';
+import { AppURL, buildURL } from '../url/AppURL';
 
 export type ReportURLMapper = (report: IDataViewInfo) => AppURL;
 

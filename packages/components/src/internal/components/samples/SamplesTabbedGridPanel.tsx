@@ -2,32 +2,27 @@ import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from '
 import { Set, List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
-import {
-    EXPORT_TYPES,
-    GridAliquotViewSelector,
-    InjectedQueryModels,
-    invalidateLineageResults,
-    IS_ALIQUOT_COL,
-    MAX_EDITABLE_GRID_ROWS,
-    NO_UPDATES_MESSAGE,
-    RequiresModelAndActions,
-    resolveErrorMessage,
-    SampleTypeDataType,
-    SchemaQuery,
-    TabbedGridPanel,
-    updateRows,
-    useNotificationsContext,
-    User,
-} from '../../..';
-
-import { TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
+import { TabbedGridPanel, TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
 
 import { userCanEditStorageData } from '../../app/utils';
 
-import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
-import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
-import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
+import { EXPORT_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from '../../constants';
+import { InjectedQueryModels, RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
+import { User } from '../base/models/User';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { updateRows } from '../../query/api';
+import { invalidateLineageResults } from '../lineage/actions';
+import { SampleTypeDataType } from '../entities/constants';
+import { resolveErrorMessage } from '../../util/messaging';
+import { GridAliquotViewSelector } from '../gridbar/GridAliquotViewSelector';
+
+import { IS_ALIQUOT_COL } from './constants';
 import { SampleGridButtonProps } from './models';
+import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
+import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
+import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
@@ -46,7 +41,8 @@ interface Props extends InjectedQueryModels {
     initialTabId?: string;
     // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     modelId?: string;
-    onPrintLabel?: () => void;
+    onPrintLabel?: (modelId?: string) => void;
+    onSampleTabSelect?: (modelId: string) => void;
     sampleAliquotType?: ALIQUOT_FILTER_MODE;
     // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
@@ -76,6 +72,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         gridButtonProps,
         getSampleAuditBehaviorType,
         getIsDirty,
+        onSampleTabSelect,
         setIsDirty,
         tabbedGridPanelProps,
         withTitle,
@@ -89,9 +86,12 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const [activeTabId, setActiveTabId] = useState<string>(initialTabId ?? tabs[0]);
     const onTabSelect = useCallback((tab: string) => {
         setActiveTabId(tab);
+        onSampleTabSelect?.(tab);
     }, []);
     const activeModel = useMemo(() => queryModels[activeTabId], [activeTabId, queryModels]);
-    const { hasSelections, selections } = activeModel;
+    const hasSelections = activeModel?.hasSelections;
+    const selections = activeModel?.selections;
+    const activeModelId = useMemo(() => activeModel?.id, [activeModel]);
     const selection = useMemo(() => List(Array.from(selections ?? [])), [selections]);
     const hasValidMaxSelection = useMemo(() => {
         const selSize = selections?.size ?? 0;
@@ -166,11 +166,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             setShowBulkUpdate(false);
             setSelectionData(submitForEdit ? data : undefined);
             if (!submitForEdit) {
-                actions.loadModel(activeModel.id, true);
+                actions.loadModel(activeModelId, true);
                 afterSampleActionComplete?.();
             }
         },
-        [actions, activeModel.id, afterSampleActionComplete]
+        [actions, activeModelId, afterSampleActionComplete]
     );
 
     const resetState = useCallback(() => {
@@ -178,7 +178,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         setSelectionData(undefined);
         setIsEditing(false);
         setShowBulkUpdate(false);
-        setIsDirty(false);
+        setIsDirty?.(false);
     }, []);
 
     const toggleEditWithGridUpdate = useCallback(() => {
@@ -198,11 +198,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const _afterSampleActionComplete = useCallback(
         (hasDelete?: boolean) => {
             dismissNotifications();
-            actions.loadModel(activeModel.id, true);
+            actions.loadModel(activeModelId, true);
             afterSampleActionComplete?.(hasDelete);
             resetState();
         },
-        [actions, activeModel.id, afterSampleActionComplete, resetState]
+        [actions, activeModelId, afterSampleActionComplete, resetState]
     );
 
     const afterSampleDelete = useCallback(
@@ -213,11 +213,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     ids.push(row['RowId']);
                 });
             }
-            actions.replaceSelections(activeModel.id, ids);
+            actions.replaceSelections(activeModelId, ids);
 
             _afterSampleActionComplete(true);
         },
-        [actions, activeModel, _afterSampleActionComplete]
+        [actions, activeModelId, _afterSampleActionComplete]
     );
 
     const onUpdateRows = useCallback(
@@ -269,14 +269,16 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         initAliquotMode: activeActiveAliquotMode,
     };
 
+    const isMedia = activeModel.queryInfo?.isMedia;
+
     return (
         <>
             {isEditing || selectionData ? (
                 <SamplesEditableGrid
                     {...(samplesEditableGridProps as SamplesEditableGridProps)}
                     determineSampleData={user.canUpdate}
-                    determineLineage={user.canUpdate}
-                    determineStorage={userCanEditStorageData(user)}
+                    determineLineage={user.canUpdate && !isMedia}
+                    determineStorage={userCanEditStorageData(user) && !isMedia}
                     displayQueryModel={activeModel}
                     editableGridUpdateData={editableGridUpdateData}
                     onGridEditCancel={resetState}

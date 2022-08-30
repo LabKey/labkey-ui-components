@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mount } from 'enzyme';
 
-import { ConfirmModal } from '../../..';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 

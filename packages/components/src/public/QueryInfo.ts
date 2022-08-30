@@ -3,9 +3,13 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { insertColumnFilter, LastActionStatus, naturalSort, QueryColumn, QuerySort, SchemaQuery, ViewInfo } from '..';
-
 import { toLowerSafe } from '../internal/util/utils';
+import { insertColumnFilter, QueryColumn } from './QueryColumn';
+import { ViewInfo } from '../internal/ViewInfo';
+import { LastActionStatus } from '../internal/LastActionStatus';
+import { SchemaQuery } from './SchemaQuery';
+import { QuerySort } from './QuerySort';
+import { naturalSort } from './sort';
 
 export enum QueryInfoStatus {
     ok,

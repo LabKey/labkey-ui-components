@@ -4,13 +4,18 @@ import { mount } from 'enzyme';
 import { Input, Textarea } from 'formsy-react-components';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
-import { TextInput, DatePickerInput, SelectInput, QueryFormInputs, QueryColumn } from '../../..';
 
 import { CheckboxInput } from '../forms/input/CheckboxInput';
 
-import { AssayWizardModel } from './AssayWizardModel';
-import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { QueryFormInputs } from '../forms/QueryFormInputs';
+import { TextInput } from '../forms/input/TextInput';
+import { DatePickerInput } from '../forms/input/DatePickerInput';
+import { SelectInput } from '../forms/input/SelectInput';
+
+import { RunPropertiesPanel } from './RunPropertiesPanel';
+import { AssayWizardModel } from './AssayWizardModel';
 
 beforeAll(() => {
     initUnitTestMocks();

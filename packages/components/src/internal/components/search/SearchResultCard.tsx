@@ -15,15 +15,15 @@
  */
 import React, { FC, memo } from 'react';
 
-import { SVGIcon } from '../../..';
+import { SVGIcon } from '../base/SVGIcon';
 
 import { SearchResultCardData } from './models';
 
 interface SearchResultProps {
     cardData: SearchResultCardData;
+    iconUrl?: string;
     summary: string;
     url: string;
-    iconUrl?: string;
 }
 
 interface DetailProps {

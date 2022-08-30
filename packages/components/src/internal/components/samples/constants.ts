@@ -5,6 +5,7 @@ import { IDomainField } from '../domainproperties/models';
 import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
 
 import { FindField } from './models';
+import { naturalSortByProperty } from '../../../public/sort';
 
 export const SAMPLE_INVENTORY_ITEM_SELECTION_KEY = 'inventoryItems';
 
@@ -198,9 +199,8 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
     includeColumn: ['AliquotedFromLSID'],
 };
 
-export const SAMPLE_MANAGER_AUDIT_QUERIES = [
+export const COMMON_AUDIT_QUERIES = [
     { value: 'attachmentauditevent', label: 'Attachment Events' },
-    { value: 'experimentauditevent', label: 'Assay Events' },
     { value: 'domainauditevent', label: 'Domain Events' },
     { value: 'domainpropertyauditevent', label: 'Domain Property Events' },
     { value: 'queryupdateauditevent', label: 'Data Update Events', hasDetail: true },
@@ -213,7 +213,9 @@ export const SAMPLE_MANAGER_AUDIT_QUERIES = [
     },
     { value: 'samplesetauditevent', label: 'Sample Type Events' },
     { value: 'sampletimelineevent', label: 'Sample Timeline Events', hasDetail: true },
-    { value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true },
-    { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true },
     { value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders },
 ];
+
+export const ASSAY_AUDIT_QUERY = { value: 'experimentauditevent', label: 'Assay Events' };
+export const WORKFLOW_AUDIT_QUERY = { value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true };
+export const SOURCE_AUDIT_QUERY = { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true };

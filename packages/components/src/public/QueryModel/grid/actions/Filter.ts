@@ -16,13 +16,14 @@
 import { List, Map, Set } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { QueryColumn, QueryInfo } from '../../../..';
-
 import { decodePart } from '../../../SchemaQuery';
 
 import { JsonType } from '../../../../internal/components/domainproperties/PropDescType';
 
 import { getColFormattedDateValue } from '../../../../internal/util/Date';
+
+import { QueryColumn } from '../../../QueryColumn';
+import { QueryInfo } from '../../../QueryInfo';
 
 import { Action, ActionValue } from './Action';
 

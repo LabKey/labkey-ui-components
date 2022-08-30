@@ -18,17 +18,17 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
 
-import { LoadingSpinner } from '../../..';
-
 import { blurActiveElement } from '../../util/utils';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
 
 interface ProductMenuProps {
+    maxColumns?: number;
     model: ProductMenuModel;
     sectionConfigs?: List<Map<string, MenuSectionConfig>>;
-    maxColumns?: number;
 }
 
 export const ProductMenu: FC<ProductMenuProps> = memo(props => {

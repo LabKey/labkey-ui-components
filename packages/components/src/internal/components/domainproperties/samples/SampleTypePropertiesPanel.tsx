@@ -5,18 +5,6 @@ import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { getFormNameFromId } from '../entities/actions';
-import {
-    AddEntityButton,
-    ColorPickerInput,
-    Container,
-    generateId,
-    getHelpLink,
-    IDomainField,
-    IParentOption,
-    MetricUnitProps,
-    SCHEMAS,
-    SelectInput,
-} from '../../../..';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
@@ -25,6 +13,7 @@ import {
     DERIVE_SAMPLES_ALIAS_TOPIC,
     UNIQUE_IDS_TOPIC,
     HelpLink,
+    getHelpLink,
 } from '../../../util/helpLinks';
 import { SampleSetParentAliasRow } from '../../samples/SampleSetParentAliasRow';
 import {
@@ -52,8 +41,17 @@ import { NameExpressionPreview } from '../NameExpressionPreview';
 
 import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
 
-import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
+import { SCHEMAS } from '../../../schemas';
+import { IParentOption } from '../../entities/models';
+import { Container } from '../../base/models/Container';
+import { IDomainField } from '../models';
+import { generateId } from '../../../util/utils';
+import { AddEntityButton } from '../../buttons/AddEntityButton';
+import { ColorPickerInput } from '../../forms/input/ColorPickerInput';
+import { SelectInput } from '../../forms/input/SelectInput';
+
 import { UniqueIdBanner } from './UniqueIdBanner';
+import { AliquotNamePatternProps, IParentAlias, MetricUnitProps, SampleTypeModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
@@ -61,46 +59,46 @@ const ALIQUOT_NAME_PLACEHOLDER = 'Enter a naming pattern for aliquots (e.g., ${$
 
 // Splitting these out to clarify where they end-up
 interface OwnProps {
-    model: SampleTypeModel;
-    onAddUniqueIdField: (fieldConfig: Partial<IDomainField>) => void;
-    parentOptions: IParentOption[];
-    updateModel: (newModel: SampleTypeModel) => void;
-    onParentAliasChange: (id: string, field: string, newValue: any) => void;
-    onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
-    onRemoveParentAlias: (id: string) => void;
-    updateDupeParentAliases?: (id: string) => void;
-    showLinkToStudy?: boolean;
+    aliquotNamePatternProps?: AliquotNamePatternProps;
     appPropertiesOnly?: boolean;
+    dataClassAliasCaption?: string;
+    dataClassParentageLabel?: string;
+    dataClassTypeCaption?: string;
     headerText?: string;
     helpTopic?: string;
     includeDataClasses?: boolean;
+    metricUnitProps?: MetricUnitProps;
+    model: SampleTypeModel;
+    nameExpressionGenIdProps?: NameExpressionGenIdProps;
+    onRemoveParentAlias: (id: string) => void;
+    namePreviewsLoading?: boolean;
     useSeparateDataClassesAliasMenu?: boolean;
     sampleAliasCaption?: string;
     sampleTypeCaption?: string;
-    dataClassAliasCaption?: string;
-    dataClassTypeCaption?: string;
-    dataClassParentageLabel?: string;
-    metricUnitProps?: MetricUnitProps;
-    aliquotNamePatternProps?: AliquotNamePatternProps;
+    parentOptions: IParentOption[];
+    onParentAliasChange: (id: string, field: string, newValue: any) => void;
+    updateModel: (newModel: SampleTypeModel) => void;
+    showLinkToStudy?: boolean;
+    onAddUniqueIdField: (fieldConfig: Partial<IDomainField>) => void;
     namePreviews?: string[];
     onNameFieldHover?: () => any;
-    namePreviewsLoading?: boolean;
-    nameExpressionGenIdProps?: NameExpressionGenIdProps;
+    updateDupeParentAliases?: (id: string) => void;
+    onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
 }
 
 // Splitting these out to clarify where they end-up
 interface EntityProps {
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
-    nounSingular?: string;
     nounPlural?: string;
+    nounSingular?: string;
 }
 
 interface State {
-    isValid: boolean;
     containers: List<Container>;
-    prefix: string;
+    isValid: boolean;
     loadingError: string;
+    prefix: string;
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;

@@ -1,4 +1,4 @@
-import { naturalSort } from '../..';
+import { naturalSort } from '../../public/sort';
 
 import { contains, hasPrefix, similaritySortFactory } from './similaritySortFactory';
 

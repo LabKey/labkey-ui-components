@@ -15,16 +15,21 @@
  */
 import React, { PureComponent } from 'react';
 
-import { ConfirmModal, LoadingSpinner, Alert } from '../../..';
+import { ConfirmModal } from '../base/ConfirmModal';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { Alert } from '../base/Alert';
 
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { getDeleteConfirmationData } from './actions';
 import { EntityDataType, OperationConfirmationData } from './models';
 
 interface Props {
-    onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
-    onCancel: () => any;
     entityDataType: EntityDataType;
+    getDeletionDescription?: (numToDelete: number) => React.ReactNode;
+    onCancel: () => any;
+    onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
     rowIds?: string[];
     selectionKey?: string;
     verb?: string;
@@ -86,7 +91,7 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
     };
 
     render() {
-        const { onConfirm, onCancel, entityDataType } = this.props;
+        const { onConfirm, onCancel, entityDataType, getDeletionDescription } = this.props;
 
         if (this.state.isLoading) {
             return (
@@ -116,6 +121,7 @@ export class EntityDeleteConfirmModal extends PureComponent<Props, State> {
                 onCancel={onCancel}
                 verb={this.props.verb}
                 entityDataType={entityDataType}
+                getDeletionDescription={getDeletionDescription}
             />
         );
     }

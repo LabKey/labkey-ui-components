@@ -2,24 +2,30 @@ import React, { FC, memo } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
-import { RequiresPermission, ResponsiveMenuButton, isLoading } from '../../..';
-
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { AssayImportSubMenuItem } from '../assay/AssayImportSubMenuItem';
 import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
 
+import { isLoading } from '../../../public/LoadingState';
+import { RequiresPermission } from '../base/Permissions';
+import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
+
 import { isSamplesSchema } from './utils';
 
 interface Props {
     asSubMenu?: boolean;
+    currentProductId?: string;
+    ignoreFilter?: boolean;
     isPicklist?: boolean;
     model: QueryModel;
     providerType?: string;
+    targetProductId?: string;
 }
 
 export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props => {
-    const { model, providerType, asSubMenu, assayModel, isPicklist } = props;
+    const { model, providerType, asSubMenu, assayModel, isPicklist, currentProductId, targetProductId, ignoreFilter } =
+        props;
 
     if (!isSamplesSchema(model?.schemaQuery) && !isPicklist) return null;
 
@@ -32,6 +38,9 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
             picklistName={picklistName}
             requireSelection={false}
             text={asSubMenu ? 'Import Assay Data' : null} // using null will render the submenu items inline in this button
+            currentProductId={currentProductId}
+            targetProductId={targetProductId}
+            ignoreFilter={ignoreFilter}
         />
     );
 

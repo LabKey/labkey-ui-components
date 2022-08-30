@@ -11,13 +11,15 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
 import { AppURL, buildURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list/actions';
-import { caseInsensitive, OperationConfirmationData, SCHEMAS } from '../../..';
 
 import { PICKLIST_KEY } from '../../app/constants';
 
 import { isProductProjectsEnabled } from '../../app/utils';
 
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
+import { SCHEMAS } from '../../schemas';
+import { OperationConfirmationData } from '../entities/models';
+import { caseInsensitive } from '../../util/utils';
 
 export function getPicklistsForInsert(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
@@ -442,7 +444,7 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
     if (loadSampleTypes) {
         const listSampleTypeData = await selectRowsDeprecated({
             schemaName: SCHEMAS.PICKLIST_TABLES.SCHEMA,
-            sql: `SELECT DISTINCT SampleID.SampleSet FROM "${picklist.name}" WHERE SampleID.SampleSet IS NOT NULL`,
+            sql: `SELECT DISTINCT SampleID.SampleSet, SampleID.SampleSet.Category FROM "${picklist.name}" WHERE SampleID.SampleSet IS NOT NULL`,
         });
 
         picklist = picklist.mutate({
@@ -450,6 +452,11 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
                 .map(row => caseInsensitive(row, 'SampleSet')?.displayValue)
                 .filter(value => !!value),
         });
+        picklist = picklist.mutate({
+            hasMedia: !!Object.values(listSampleTypeData.models[listSampleTypeData.key])
+                .find(row => caseInsensitive(row, 'Category')?.value === 'media')
+        });
+
     }
 
     return picklist;

@@ -5,7 +5,7 @@ import { MockLookupProvider } from '../../../test/components/Lookup';
 
 import { ITargetTableSelectImplState, TargetTableSelectProps } from './Lookup/Fields';
 import { DomainField } from './models';
-import { createFormInputId, createFormInputName } from './actions';
+import { createFormInputId, createFormInputName } from './utils';
 import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_SAMPLE_TYPE, INT_RANGE_URI, SAMPLE_TYPE_CONCEPT_URI } from './constants';
 import { SampleFieldOptions } from './SampleFieldOptions';
 

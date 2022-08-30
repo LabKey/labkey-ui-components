@@ -1,25 +1,21 @@
 import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
-import {
-    buildURL,
-    caseInsensitive,
-    getFilterForSampleOperation,
-    getSelected,
-    importData,
-    InsertOptions,
-    isSamplesSchema,
-    naturalSort,
-    QueryInfo,
-    SampleCreationType,
-    SampleOperation,
-    SchemaQuery,
-    selectRowsDeprecated,
-    SHARED_CONTAINER_PATH,
-} from '../../..';
+import { buildURL } from '../../url/AppURL';
+import { SampleOperation } from '../samples/constants';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
+import { importData, InsertOptions, selectRowsDeprecated } from '../../query/api';
+import { caseInsensitive } from '../../util/utils';
+import { SampleCreationType } from '../samples/models';
+import { getSelected, getSelectedData } from '../../actions';
+import { SHARED_CONTAINER_PATH } from '../../constants';
+import { naturalSort } from '../../../public/sort';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { SCHEMAS } from '../../schemas';
 
-import { getSelectedItemSamples } from '../samples/actions';
-
+import { isDataClassEntity, isSampleEntity } from './utils';
+import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
 import {
     DisplayObject,
     EntityDataType,
@@ -30,8 +26,6 @@ import {
     IParentOption,
     OperationConfirmationData,
 } from './models';
-import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
-import { isSampleEntity } from './utils';
 
 export function getOperationConfirmationData(
     selectionKey: string,
@@ -58,7 +52,7 @@ export function getOperationConfirmationData(
             params = Object.assign(params, extraParams);
         }
         return Ajax.request({
-            url: buildURL('experiment', dataType.operationConfirmationActionName),
+            url: buildURL(dataType.operationConfirmationControllerName, dataType.operationConfirmationActionName),
             method: 'POST',
             jsonData: params,
             success: Utils.getCallbackWrapper(response => {
@@ -85,9 +79,16 @@ export function getDeleteConfirmationData(
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Delete, selectionKey, rowIds);
     }
-    return getOperationConfirmationData(selectionKey, dataType, rowIds, {
-        dataOperation: DataOperation.Delete
-    });
+    return getOperationConfirmationData(
+        selectionKey,
+        dataType,
+        rowIds,
+        isDataClassEntity(dataType)
+            ? {
+                  dataOperation: DataOperation.Delete,
+              }
+            : undefined
+    );
 }
 
 export function getSampleOperationConfirmationData(
@@ -126,6 +127,32 @@ function getSelectedParents(
             })
             .catch(reason => {
                 console.error("There was a problem getting the selected parents' data", reason);
+                reject(reason);
+            });
+    });
+}
+
+export function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
+    return new Promise((resolve, reject) => {
+        getSelectedData(
+            SCHEMAS.INVENTORY.ITEMS.schemaName,
+            SCHEMAS.INVENTORY.ITEMS.queryName,
+            selectedItemIds,
+            'RowId, MaterialId',
+            undefined,
+            undefined,
+            undefined
+        )
+            .then(response => {
+                const { data } = response;
+                const sampleIds = [];
+                data.forEach(row => {
+                    sampleIds.push(row.getIn(['MaterialId', 'value']));
+                });
+                resolve(sampleIds);
+            })
+            .catch(reason => {
+                console.error(reason);
                 reject(reason);
             });
     });
@@ -524,8 +551,6 @@ export function handleEntityFileImport(
             file,
             importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, null, {
                 ...importParameters,
-                schemaName: schemaQuery.getSchema(),
-                'query.queryName': schemaQuery.getQuery(),
             }),
             importLookupByAlternateKey: true,
             useAsync,

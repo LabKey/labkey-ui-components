@@ -20,8 +20,9 @@ import DatePicker from 'react-datepicker';
 import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
-import { QueryColumn } from '../../../..';
 import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate } from '../../../util/Date';
+
+import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -59,7 +60,8 @@ interface DatePickerInputState extends DisableableInputState {
     selectedDate: any;
 }
 
-class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePickerInputState> {
+// export for jest testing
+export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePickerInputState> {
     static defaultProps = {
         allowDisable: false,
         initiallyDisabled: false,
@@ -185,7 +187,10 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         return (
             <div className="form-group row">
                 {renderFieldLabel ? (
-                    <label className={labelClassName}>{renderFieldLabel(queryColumn)}</label>
+                    <label className={labelClassName}>
+                        {renderFieldLabel(queryColumn)}
+                        {queryColumn?.required && <span className="required-symbol"> *</span>}
+                    </label>
                 ) : (
                     <FieldLabel
                         label={label}

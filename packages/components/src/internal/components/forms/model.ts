@@ -16,7 +16,11 @@
 import { List, Map, Record } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
-import { ISelectRowsResult, QueryInfo, SchemaQuery } from '../../..';
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { ISelectRowsResult } from '../../query/api';
 
 import { SelectInputOption } from './input/SelectInput';
 import * as actions from './actions';

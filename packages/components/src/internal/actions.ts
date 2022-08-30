@@ -16,22 +16,15 @@
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 
-import {
-    AssayDefinitionModel,
-    buildURL,
-    caseInsensitive,
-    EditorModelProps,
-    IGridResponse,
-    invalidateQueryDetailsCache,
-    QueryColumn,
-    QueryConfig,
-    QueryInfo,
-    resolveKey,
-    SchemaQuery,
-    ViewInfo,
-} from '..';
+import { QueryColumn } from '../public/QueryColumn';
 
-import { selectRowsDeprecated } from './query/api';
+import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
+
+import { QueryInfo } from '../public/QueryInfo';
+
+import { QueryConfig } from '../public/QueryModel/QueryModel';
+
+import { invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
 import { Location } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
@@ -49,14 +42,22 @@ import {
     CellValues,
     DataViewInfo,
     EditorModel,
+    EditorModelProps,
+    IGridResponse,
     ValueDescriptor,
     VisualizationConfigModel,
 } from './models';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 
-import { isFloat, isInteger, parseCsvString, parseScientificInt } from './util/utils';
+import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 import { hasModule } from './app/utils';
+import { buildURL } from './url/AppURL';
+
+import { AssayDefinitionModel } from './AssayDefinitionModel';
+
+import { ViewInfo } from './ViewInfo';
+import { decimalDifference, genCellKey, getSortedCellKeys, parseCellKey } from './utils';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -690,32 +691,6 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
     });
 }
 
-export function genCellKey(colIdx: number, rowIdx: number): string {
-    return [colIdx, rowIdx].join('-');
-}
-
-export function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number } {
-    const [colIdx, rowIdx] = cellKey.split('-');
-
-    return {
-        colIdx: parseInt(colIdx, 10),
-        rowIdx: parseInt(rowIdx, 10),
-    };
-}
-
-// exported for jest testing
-export function getCellKeySortableIndex(cellKey: string, rowCount: number): number {
-    const { rowIdx, colIdx } = parseCellKey(cellKey);
-    return colIdx * rowCount + rowIdx;
-}
-
-// exported for jest testing
-export function getSortedCellKeys(cellKeys: string[], rowCount: number): string[] {
-    return cellKeys.sort((a, b) => {
-        return getCellKeySortableIndex(a, rowCount) - getCellKeySortableIndex(b, rowCount);
-    });
-}
-
 const dragLock = Map<string, boolean>().asMutable();
 let dragHandleInitSelection; // track the initial selection state if the drag event was initiated from the corner drag handle
 
@@ -1092,12 +1067,6 @@ export function generateFillSequence(
     });
 
     return cellValues;
-}
-
-// https://stackoverflow.com/questions/10713878/decimal-subtraction-problems-in-javascript
-function decimalDifference(first, second, subtract = true): number {
-    const multiplier = 10000; // this will only help/work to 4 decimal places
-    return (first * multiplier + (subtract ? -1 : 1) * second * multiplier) / multiplier;
 }
 
 export async function pasteEvent(

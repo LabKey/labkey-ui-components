@@ -79,6 +79,19 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
     exportFilename?: string;
     getAdvancedExportOptions?: (tabId: string) => { [key: string]: any };
     /**
+     * return the custom GridPanel for an active tab
+     * @param activeGridId
+     */
+    getGridPanelDisplay?: (
+        activeGridId: string,
+        exportHandlers: { [key: string]: (modelId?: string) => any }
+    ) => React.ReactNode;
+    /**
+     * return the showViewMenu value for an active tab
+     * @param activeGridId
+     */
+    getShowViewMenu?: (activeGridId: string) => boolean;
+    /**
      * Optional, if used the TabbedGridPanel will act as a controlled component, requiring you to always pass the
      * activeModelId. If not passed the TabbedGridPanel will maintain the activeModelId state internally.
      * @param string
@@ -94,6 +107,7 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      * Defaults to false.
      */
     showRowCountOnTabs?: boolean;
+
     /**
      * Array of model ids representing the order you want the tabs in. This component will only render Tabs and
      * GridPanels for Query Models in the TabOrder array.
@@ -122,6 +136,9 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         exportFilename,
         advancedExportOptions,
         getAdvancedExportOptions,
+        getGridPanelDisplay,
+        showViewMenu,
+        getShowViewMenu,
         ...rest
     } = props;
     const { createNotification } = useNotificationsContext();
@@ -195,7 +212,15 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     const activeModel = queryModels[activeId];
     const hasTabs = tabOrder.length > 1 || alwaysShowTabs;
 
-    const gridDisplay = (
+    const showViewConfig = {}; // showViewMenu default to true in GridPanel
+    if (getShowViewMenu || showViewMenu !== undefined) {
+        showViewConfig['showViewMenu'] = getShowViewMenu ? getShowViewMenu(activeId) : showViewMenu;
+    }
+
+    const panelTitle = rest.title;
+    if (asPanel && hasTabs) delete rest.title;
+
+    const gridDisplay = getGridPanelDisplay?.(activeId, exportHandlers) ?? (
         <GridPanel
             allowViewCustomization={allowViewCustomization}
             key={activeId}
@@ -207,6 +232,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
             advancedExportOptions={
                 getAdvancedExportOptions ? getAdvancedExportOptions(activeId) : advancedExportOptions
             }
+            {...showViewConfig}
             {...rest}
         />
     );
@@ -215,27 +241,26 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         <>
             {hasTabs && (
                 <div className={classNames('tabbed-grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
+                    {asPanel && panelTitle && <div className="panel-heading">{panelTitle}</div>}
                     <div className={classNames('tabbed-grid-panel__body', { 'panel-body': asPanel })}>
-                        {hasTabs && (
-                            <ul className="nav nav-tabs">
-                                {tabOrder.map(modelId => {
-                                    if (queryModels[modelId]) {
-                                        return (
-                                            <GridTab
-                                                key={modelId}
-                                                model={queryModels[modelId]}
-                                                isActive={activeId === modelId}
-                                                onSelect={onSelect}
-                                                pullRight={rightTabs.indexOf(modelId) > -1}
-                                                showRowCount={showRowCountOnTabs}
-                                            />
-                                        );
-                                    } else {
-                                        return null;
-                                    }
-                                })}
-                            </ul>
-                        )}
+                        <ul className="nav nav-tabs">
+                            {tabOrder.map(modelId => {
+                                if (queryModels[modelId]) {
+                                    return (
+                                        <GridTab
+                                            key={modelId}
+                                            model={queryModels[modelId]}
+                                            isActive={activeId === modelId}
+                                            onSelect={onSelect}
+                                            pullRight={rightTabs.indexOf(modelId) > -1}
+                                            showRowCount={showRowCountOnTabs}
+                                        />
+                                    );
+                                } else {
+                                    return null;
+                                }
+                            })}
+                        </ul>
                         {gridDisplay}
                     </div>
                 </div>

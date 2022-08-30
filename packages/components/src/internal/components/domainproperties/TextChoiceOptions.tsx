@@ -18,7 +18,8 @@ import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 import { TextChoiceAddValuesModal } from './TextChoiceAddValuesModal';
-import { createFormInputId, getTextChoiceInUseValues } from './actions';
+import { getTextChoiceInUseValues } from './actions';
+import { createFormInputId } from './utils';
 
 const MIN_VALUES_FOR_SEARCH_COUNT = 2;
 const HELP_TIP_BODY = <p>The set of values to be used as drop-down options to restrict data entry into this field.</p>;
@@ -31,7 +32,6 @@ const VALUE_IN_USE = (
         body={IN_USE_TIP}
         id="text-choice-value-lock-icon"
         title={IN_USE_TITLE}
-        unlocked
     />
 );
 
@@ -49,10 +49,10 @@ const VALUE_LOCKED = (
 
 interface Props extends ITypeDependentProps {
     field: DomainField;
-    queryName?: string;
-    schemaName?: string;
     lockedForDomain?: boolean;
     lockedSqlFragment?: string;
+    queryName?: string;
+    schemaName?: string;
 }
 
 interface ImplProps extends Props {
@@ -60,9 +60,9 @@ interface ImplProps extends Props {
     // to some domain types) and row count for the given value
     fieldValues: Record<string, Record<string, any>>;
     loading: boolean;
+    maxValueCount?: number;
     replaceValues: (newValues: string[], valueUpdates?: Record<string, string>) => void;
     validValues: string[];
-    maxValueCount?: number;
 }
 
 // exported for jest testing

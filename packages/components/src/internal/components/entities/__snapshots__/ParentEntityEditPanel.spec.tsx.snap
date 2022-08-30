@@ -18,7 +18,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
       Object {
         "ancestorColumnName": "Ancestors/OtherData",
         "deleteHelpLinkTopic": "dataClass",
-        "dependencyText": "derived sample dependencies",
+        "dependencyText": "derived data or sample dependencies",
         "descriptionPlural": "parent types",
         "descriptionSingular": "parent type",
         "filterCardHeaderClass": "filter-card__header-primary",
@@ -37,6 +37,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
         "nounPlural": "data",
         "nounSingular": "data",
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+        "operationConfirmationControllerName": "experiment",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -124,7 +125,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                     Object {
                       "ancestorColumnName": "Ancestors/OtherData",
                       "deleteHelpLinkTopic": "dataClass",
-                      "dependencyText": "derived sample dependencies",
+                      "dependencyText": "derived data or sample dependencies",
                       "descriptionPlural": "parent types",
                       "descriptionSingular": "parent type",
                       "filterCardHeaderClass": "filter-card__header-primary",
@@ -143,6 +144,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                       "nounPlural": "data",
                       "nounSingular": "data",
                       "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+                      "operationConfirmationControllerName": "experiment",
                       "typeListingSchemaQuery": Immutable.Record {
                         "schemaName": "exp",
                         "queryName": "DataClasses",
@@ -167,7 +169,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                       Object {
                         "ancestorColumnName": "Ancestors/OtherData",
                         "deleteHelpLinkTopic": "dataClass",
-                        "dependencyText": "derived sample dependencies",
+                        "dependencyText": "derived data or sample dependencies",
                         "descriptionPlural": "parent types",
                         "descriptionSingular": "parent type",
                         "filterCardHeaderClass": "filter-card__header-primary",
@@ -186,6 +188,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                         "nounPlural": "data",
                         "nounSingular": "data",
                         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+                        "operationConfirmationControllerName": "experiment",
                         "typeListingSchemaQuery": Immutable.Record {
                           "schemaName": "exp",
                           "queryName": "DataClasses",
@@ -224,7 +227,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                         Object {
                           "ancestorColumnName": "Ancestors/OtherData",
                           "deleteHelpLinkTopic": "dataClass",
-                          "dependencyText": "derived sample dependencies",
+                          "dependencyText": "derived data or sample dependencies",
                           "descriptionPlural": "parent types",
                           "descriptionSingular": "parent type",
                           "filterCardHeaderClass": "filter-card__header-primary",
@@ -243,6 +246,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                           "nounPlural": "data",
                           "nounSingular": "data",
                           "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+                          "operationConfirmationControllerName": "experiment",
                           "typeListingSchemaQuery": Immutable.Record {
                             "schemaName": "exp",
                             "queryName": "DataClasses",
@@ -295,7 +299,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                           Object {
                             "ancestorColumnName": "Ancestors/OtherData",
                             "deleteHelpLinkTopic": "dataClass",
-                            "dependencyText": "derived sample dependencies",
+                            "dependencyText": "derived data or sample dependencies",
                             "descriptionPlural": "parent types",
                             "descriptionSingular": "parent type",
                             "filterCardHeaderClass": "filter-card__header-primary",
@@ -314,6 +318,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                             "nounPlural": "data",
                             "nounSingular": "data",
                             "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+                            "operationConfirmationControllerName": "experiment",
                             "typeListingSchemaQuery": Immutable.Record {
                               "schemaName": "exp",
                               "queryName": "DataClasses",
@@ -492,6 +497,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                       styles={
                                         Object {
                                           "menu": [Function],
+                                          "menuPortal": [Function],
                                           "multiValue": [Function],
                                           "multiValueLabel": [Function],
                                           "multiValueRemove": [Function],
@@ -555,6 +561,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                         styles={
                                           Object {
                                             "menu": [Function],
+                                            "menuPortal": [Function],
                                             "multiValue": [Function],
                                             "multiValueLabel": [Function],
                                             "multiValueRemove": [Function],
@@ -639,6 +646,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                               "screenReaderStatus": [Function],
                                               "styles": Object {
                                                 "menu": [Function],
+                                                "menuPortal": [Function],
                                                 "multiValue": [Function],
                                                 "multiValueLabel": [Function],
                                                 "multiValueRemove": [Function],
@@ -1028,6 +1036,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                     "screenReaderStatus": [Function],
                                                     "styles": Object {
                                                       "menu": [Function],
+                                                      "menuPortal": [Function],
                                                       "multiValue": [Function],
                                                       "multiValueLabel": [Function],
                                                       "multiValueRemove": [Function],
@@ -1429,6 +1438,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                     "screenReaderStatus": [Function],
                                                     "styles": Object {
                                                       "menu": [Function],
+                                                      "menuPortal": [Function],
                                                       "multiValue": [Function],
                                                       "multiValueLabel": [Function],
                                                       "multiValueRemove": [Function],
@@ -1829,6 +1839,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                           "screenReaderStatus": [Function],
                                                           "styles": Object {
                                                             "menu": [Function],
+                                                            "menuPortal": [Function],
                                                             "multiValue": [Function],
                                                             "multiValueLabel": [Function],
                                                             "multiValueRemove": [Function],
@@ -2216,6 +2227,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": Object {
                                                                   "menu": [Function],
+                                                                  "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
@@ -2614,6 +2626,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": Object {
                                                                   "menu": [Function],
+                                                                  "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
@@ -2736,6 +2749,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                   "screenReaderStatus": [Function],
                                                                   "styles": Object {
                                                                     "menu": [Function],
+                                                                    "menuPortal": [Function],
                                                                     "multiValue": [Function],
                                                                     "multiValueLabel": [Function],
                                                                     "multiValueRemove": [Function],
@@ -3213,6 +3227,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                           "screenReaderStatus": [Function],
                                                           "styles": Object {
                                                             "menu": [Function],
+                                                            "menuPortal": [Function],
                                                             "multiValue": [Function],
                                                             "multiValueLabel": [Function],
                                                             "multiValueRemove": [Function],
@@ -3595,6 +3610,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": Object {
                                                                   "menu": [Function],
+                                                                  "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
@@ -3988,6 +4004,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                                                                 "screenReaderStatus": [Function],
                                                                 "styles": Object {
                                                                   "menu": [Function],
+                                                                  "menuPortal": [Function],
                                                                   "multiValue": [Function],
                                                                   "multiValueLabel": [Function],
                                                                   "multiValueRemove": [Function],
@@ -4767,7 +4784,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
       Object {
         "ancestorColumnName": "Ancestors/OtherData",
         "deleteHelpLinkTopic": "dataClass",
-        "dependencyText": "derived sample dependencies",
+        "dependencyText": "derived data or sample dependencies",
         "descriptionPlural": "parent types",
         "descriptionSingular": "parent type",
         "filterCardHeaderClass": "filter-card__header-primary",
@@ -4786,6 +4803,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
         "nounPlural": "data",
         "nounSingular": "data",
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+        "operationConfirmationControllerName": "experiment",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",
@@ -4884,7 +4902,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                     Object {
                       "ancestorColumnName": "Ancestors/OtherData",
                       "deleteHelpLinkTopic": "dataClass",
-                      "dependencyText": "derived sample dependencies",
+                      "dependencyText": "derived data or sample dependencies",
                       "descriptionPlural": "parent types",
                       "descriptionSingular": "parent type",
                       "filterCardHeaderClass": "filter-card__header-primary",
@@ -4903,6 +4921,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                       "nounPlural": "data",
                       "nounSingular": "data",
                       "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+                      "operationConfirmationControllerName": "experiment",
                       "typeListingSchemaQuery": Immutable.Record {
                         "schemaName": "exp",
                         "queryName": "DataClasses",
@@ -4927,7 +4946,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                       Object {
                         "ancestorColumnName": "Ancestors/OtherData",
                         "deleteHelpLinkTopic": "dataClass",
-                        "dependencyText": "derived sample dependencies",
+                        "dependencyText": "derived data or sample dependencies",
                         "descriptionPlural": "parent types",
                         "descriptionSingular": "parent type",
                         "filterCardHeaderClass": "filter-card__header-primary",
@@ -4946,6 +4965,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                         "nounPlural": "data",
                         "nounSingular": "data",
                         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+                        "operationConfirmationControllerName": "experiment",
                         "typeListingSchemaQuery": Immutable.Record {
                           "schemaName": "exp",
                           "queryName": "DataClasses",
@@ -4984,7 +5004,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                         Object {
                           "ancestorColumnName": "Ancestors/OtherData",
                           "deleteHelpLinkTopic": "dataClass",
-                          "dependencyText": "derived sample dependencies",
+                          "dependencyText": "derived data or sample dependencies",
                           "descriptionPlural": "parent types",
                           "descriptionSingular": "parent type",
                           "filterCardHeaderClass": "filter-card__header-primary",
@@ -5003,6 +5023,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                           "nounPlural": "data",
                           "nounSingular": "data",
                           "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+                          "operationConfirmationControllerName": "experiment",
                           "typeListingSchemaQuery": Immutable.Record {
                             "schemaName": "exp",
                             "queryName": "DataClasses",
@@ -5055,7 +5076,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                           Object {
                             "ancestorColumnName": "Ancestors/OtherData",
                             "deleteHelpLinkTopic": "dataClass",
-                            "dependencyText": "derived sample dependencies",
+                            "dependencyText": "derived data or sample dependencies",
                             "descriptionPlural": "parent types",
                             "descriptionSingular": "parent type",
                             "filterCardHeaderClass": "filter-card__header-primary",
@@ -5074,6 +5095,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                             "nounPlural": "data",
                             "nounSingular": "data",
                             "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+                            "operationConfirmationControllerName": "experiment",
                             "typeListingSchemaQuery": Immutable.Record {
                               "schemaName": "exp",
                               "queryName": "DataClasses",
@@ -5158,7 +5180,7 @@ exports[`ParentEntityEditPanel loading state 1`] = `
       Object {
         "ancestorColumnName": "Ancestors/OtherData",
         "deleteHelpLinkTopic": "dataClass",
-        "dependencyText": "derived sample dependencies",
+        "dependencyText": "derived data or sample dependencies",
         "descriptionPlural": "parent types",
         "descriptionSingular": "parent type",
         "filterCardHeaderClass": "filter-card__header-primary",
@@ -5177,6 +5199,7 @@ exports[`ParentEntityEditPanel loading state 1`] = `
         "nounPlural": "data",
         "nounSingular": "data",
         "operationConfirmationActionName": "getDataOperationConfirmationData.api",
+        "operationConfirmationControllerName": "experiment",
         "typeListingSchemaQuery": Immutable.Record {
           "schemaName": "exp",
           "queryName": "DataClasses",

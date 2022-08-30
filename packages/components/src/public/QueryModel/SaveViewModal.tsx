@@ -13,6 +13,7 @@ import { isProductProjectsEnabled } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 
 const MAX_VIEW_NAME_LENGTH = 200;
+const RESERVED_VIEW_NAMES = ['default', 'my default', '~~details~~', '~~insert~~', '~~update~~', '~~samplefinder~~'];
 
 interface ViewNameInputProps {
     autoFocus?: boolean;
@@ -37,29 +38,43 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
         maxLength = MAX_VIEW_NAME_LENGTH,
     } = props;
 
-    const [nameError, setNameError] = useState<boolean>(false);
+    const [nameError, setNameError] = useState<string>(undefined);
     const [viewName, setViewName] = useState<string>(
         view?.isDefault || view?.hidden ? '' : view?.name
     );
 
+    const setNameErrorMessage = useCallback(() => {
+        const trimmed = viewName.trim();
+        if (trimmed.length > maxLength) {
+            setNameError(`Current length: ${trimmed.length}; maximum length: ${maxLength}`);
+        }
+        else if (RESERVED_VIEW_NAMES.indexOf(trimmed.toLowerCase()) >= 0)
+            setNameError(`View name '${trimmed}' is reserved.`);
+        else
+            setNameError(undefined);
+    }, [maxLength, viewName]);
+
     useEffect(() => {
-        setNameError(!isDefaultView && viewName.length > maxLength)
+        if (!isDefaultView ) {
+            setNameErrorMessage()
+        }
     }, [isDefaultView, viewName]);
 
     const clearError = useCallback(() => {
-        setNameError(false);
+        setNameError(undefined);
     }, [setNameError]);
 
     const onViewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
         setViewName(evt.target.value);
-        const hasError = evt.target.value.length > maxLength;
-        setNameError(hasError);
+        const trimmed = evt.target.value.trim();
+        const hasError = trimmed.length > maxLength || RESERVED_VIEW_NAMES.indexOf(trimmed) >= 0;
+        setNameErrorMessage();
         onChange?.(evt.target.value, hasError);
     }, []);
 
     const _onBlur = useCallback(() => {
         if (viewName.length > maxLength) {
-            setNameError(true);
+            setNameErrorMessage();
             onBlur(viewName, true);
         } else {
             onBlur(viewName, false);
@@ -82,7 +97,7 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
                 disabled={isDefaultView}
                 type="text"
             />
-            {nameError && <span className="text-danger">Current length: {viewName.length}; maximum length: {maxLength}</span>}
+            {nameError && <span className="text-danger">{nameError}</span>}
         </>
     )
 });

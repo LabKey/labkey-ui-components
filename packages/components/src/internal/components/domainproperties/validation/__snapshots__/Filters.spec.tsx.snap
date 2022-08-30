@@ -791,7 +791,7 @@ exports[`Filters Empty Filters - string type 1`] = `
 </Filters>
 `;
 
-exports[`Filters Test Expressions 1`] = `
+exports[`Filters Expressions 1`] = `
 <Filters
   domainIndex={1}
   expression="format.column~isblank="

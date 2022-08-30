@@ -2,7 +2,6 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
-import { QuerySelect, SCHEMAS } from '../../../..';
 import { DEFINE_DATA_CLASS_TOPIC, DATA_CLASS_NAME_EXPRESSION_TOPIC, getHelpLink } from '../../../util/helpLinks';
 import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';
@@ -23,6 +22,9 @@ import { isSampleManagerEnabled } from '../../../app/utils';
 
 import { NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
 
+import { QuerySelect } from '../../forms/QuerySelect';
+import { SCHEMAS } from '../../../schemas';
+
 import { DataClassModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
@@ -32,27 +34,27 @@ const FORM_IDS = {
 };
 
 interface OwnProps extends BasePropertiesPanelProps {
-    model: DataClassModel;
-    onChange: (model: DataClassModel) => void;
     appPropertiesOnly?: boolean;
     headerText?: string;
     helpTopic?: string;
+    model: DataClassModel;
+    nameExpressionGenIdProps?: NameExpressionGenIdProps;
     nameExpressionInfoUrl?: string;
     nameExpressionPlaceholder?: string;
-    nounSingular?: string;
-    nounPlural?: string;
-    previewName?: string;
-    onNameFieldHover?: () => any;
     namePreviewsLoading?: boolean;
-    nameExpressionGenIdProps?: NameExpressionGenIdProps;
+    nounPlural?: string;
+    nounSingular?: string;
+    onChange: (model: DataClassModel) => void;
+    onNameFieldHover?: () => any;
+    previewName?: string;
 }
 
 type Props = OwnProps & InjectedDomainPropertiesPanelCollapseProps;
 
 interface State {
     isValid: boolean;
-    prefix: string;
     loadingError: string;
+    prefix: string;
 }
 
 // Note: exporting this class for jest test case

@@ -1,19 +1,22 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
-import { getEventDataValueDisplay, LabelHelpTip, SVGIcon } from '../../..';
+import { SVGIcon } from '../base/SVGIcon';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
+import { getEventDataValueDisplay } from './utils';
 
 interface Props {
     events: TimelineEventModel[];
-    selectionDisabled?: boolean;
+    getInfoBubbleContent?: (event: TimelineEventModel) => { content: ReactNode; title: string };
     onEventSelection?: (selectedEvent: TimelineEventModel) => any;
-    showRecentFirst: boolean;
-    selectedEvent?: TimelineEventModel;
-    showUserLinks?: boolean;
     selectedEntityConnectionInfo?: TimelineGroupedEventInfo[];
-    getInfoBubbleContent?: (event: TimelineEventModel) => { title: string; content: ReactNode };
+    selectedEvent?: TimelineEventModel;
+    selectionDisabled?: boolean;
+    showRecentFirst: boolean;
+    showUserLinks?: boolean;
 }
 
 export class TimelineView extends React.Component<Props, any> {

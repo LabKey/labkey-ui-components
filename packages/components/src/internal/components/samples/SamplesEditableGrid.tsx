@@ -3,47 +3,40 @@ import { List, Map, OrderedMap } from 'immutable';
 
 import { AuditBehaviorTypes, Query } from '@labkey/api';
 
-import {
-    caseInsensitive,
-    deleteRows,
-    EditableGridLoaderFromSelection,
-    EditorModel,
-    EntityDataType,
-    getLineageEditorUpdateColumns,
-    getSelectedData,
-    IEntityTypeOption,
-    IGridResponse,
-    invalidateLineageResults,
-    LineageEditableGridLoaderFromSelection,
-    LoadingSpinner,
-    NO_UPDATES_MESSAGE,
-    NotificationsContextProps,
-    QueryColumn,
-    QueryInfo,
-    QueryModel,
-    resolveErrorMessage,
-    SampleStateType,
-    SchemaQuery,
-    SCHEMAS,
-    User,
-    withNotificationsContext,
-} from '../../..';
-
-import { EntityChoice } from '../entities/models';
+import { EntityChoice, EntityDataType, IEntityTypeOption } from '../entities/models';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { UpdateGridTab } from '../editable/EditableGridPanelForUpdateWithLineage';
 
-import { IEditableGridLoader } from '../../models';
+import { EditorModel, IEditableGridLoader, IGridResponse } from '../../models';
 
 import { isFreezerManagementEnabled } from '../../app/utils';
 
-import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
-import { getOriginalParentsFromLineage, getUpdatedLineageRows } from './actions';
-import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
-import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
+import { User } from '../base/models/User';
+
+import { caseInsensitive } from '../../util/utils';
+import { NO_UPDATES_MESSAGE } from '../../constants';
+import { deleteRows } from '../../query/api';
+import { SCHEMAS } from '../../schemas';
+import { resolveErrorMessage } from '../../util/messaging';
+import { invalidateLineageResults } from '../lineage/actions';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { EditableGridLoaderFromSelection } from '../editable/EditableGridLoaderFromSelection';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { LineageEditableGridLoaderFromSelection } from '../editable/LineageEditableGridLoaderFromSelection';
+import { getSelectedData } from '../../actions';
+
+import { SampleStateType } from './constants';
 import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
+import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
+import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
+import { getLineageEditorUpdateColumns, getOriginalParentsFromLineage, getUpdatedLineageRows } from './actions';
+import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from './models';
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;
@@ -193,13 +186,18 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
     initLineageEditableGrid = async (): Promise<void> => {
         const { determineLineage, parentDataTypes } = this.props;
-        if (determineLineage) {
+        if (determineLineage && this.hasParentDataTypes()) {
             const { originalParents, parentTypeOptions } = await getOriginalParentsFromLineage(
                 this.props.sampleLineage,
                 parentDataTypes.toArray()
             );
             this.setState(() => ({ originalParents, parentTypeOptions }));
         }
+    };
+
+    hasParentDataTypes = (): boolean => {
+        const { parentDataTypes } = this.props;
+        return parentDataTypes?.size > 0;
     };
 
     updateAllTabRows = (updateDataRows: any[], skipConfirmDiscard?: boolean): Promise<any> => {
@@ -485,7 +483,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         } = this.state;
         const allAliquots = this.hasAliquots() && aliquots.length === displayQueryModel.selections.size;
 
-        if (determineLineage && !originalParents) return <LoadingSpinner />;
+        if (determineLineage && this.hasParentDataTypes() && !originalParents) return <LoadingSpinner />;
 
         const loaders = [];
         if (determineSampleData) {
@@ -536,7 +534,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
             );
         }
 
-        if (determineLineage) {
+        if (determineLineage && this.hasParentDataTypes()) {
             const { queryInfoColumns, updateColumns } = getLineageEditorUpdateColumns(
                 displayQueryModel,
                 originalParents

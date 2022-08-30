@@ -1,18 +1,20 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
-import { ServerActivity, ServerActivityData } from './model';
 import { formatDateTime, parseDate } from '../../util/Date';
-import { capitalizeFirstChar, resolveErrorMessage } from "../../..";
+import { resolveErrorMessage } from '../../util/messaging';
+import { capitalizeFirstChar } from '../../util/utils';
+
+import { ServerActivity, ServerActivityData } from './model';
 
 interface Props {
-    serverActivity: ServerActivity;
-    onViewAll: () => any;
+    actionLinkLabel: string;
     maxRows: number;
-    viewAllText: string;
     noActivityMsg: string;
     onRead: (id: number) => void;
-    actionLinkLabel: string
+    onViewAll: () => any;
+    serverActivity: ServerActivity;
+    viewAllText: string;
 }
 
 export class ServerActivityList extends React.PureComponent<Props> {
@@ -20,7 +22,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
         maxRows: 8,
         viewAllText: 'View all activity',
         noActivityMsg: 'No notifications available.',
-        actionLinkLabel: 'View details'
+        actionLinkLabel: 'View details',
     };
 
     markRead = (notificationId: number): void => {
@@ -28,49 +30,56 @@ export class ServerActivityList extends React.PureComponent<Props> {
     };
 
     renderNotificationContent = (content: string, isHtml?: boolean, isError?: boolean, isInProgress?: boolean) => {
-        const newlineIndex = content.toLowerCase().indexOf("\n");
-        const brIndex = content.toLowerCase().indexOf("<br>");
-        let subject : string = undefined, details : string = undefined;
+        const newlineIndex = content.toLowerCase().indexOf('\n');
+        const brIndex = content.toLowerCase().indexOf('<br>');
+        let subject: string, details: string;
         if (newlineIndex > 0 || brIndex > 0) {
             if (newlineIndex > 0) {
                 subject = content.substr(0, newlineIndex);
                 details = content.substring(newlineIndex + 1, content.length);
-            }
-            else {
+            } else {
                 subject = content.substr(0, brIndex);
                 details = content.substring(brIndex + 4, content.length);
             }
 
             const detailsDisplay = isError ? resolveErrorMessage(details) : details;
-            return (<>
-                {this.renderContent(subject, 'server-notifications-item-subject', isHtml)}
-                {detailsDisplay &&
-                    <>
-                        <br/>
-                        {this.renderContent(detailsDisplay, 'server-notifications-item-details', isHtml)}
-                    </>
-                }
-            </>);
-        }
-        else if (isInProgress) {
-            return this.renderContent(`A background import is processing: ${content}`, 'server-notifications-item-subject', isHtml);
+            return (
+                <>
+                    {this.renderContent(subject, 'server-notifications-item-subject', isHtml)}
+                    {detailsDisplay && (
+                        <>
+                            <br />
+                            {this.renderContent(detailsDisplay, 'server-notifications-item-details', isHtml)}
+                        </>
+                    )}
+                </>
+            );
+        } else if (isInProgress) {
+            return this.renderContent(
+                `A background import is processing: ${content}`,
+                'server-notifications-item-subject',
+                isHtml
+            );
         }
 
         return this.renderContent(content, 'server-notifications-item-subject', isHtml);
-    }
+    };
 
     renderContent = (content: string, clsName: string, isHtml: boolean) => {
-        if (isHtml)
-            return <span className={clsName} dangerouslySetInnerHTML={{ __html: content }} />;
+        if (isHtml) return <span className={clsName} dangerouslySetInnerHTML={{ __html: content }} />;
 
         return <span className={clsName}>{content}</span>;
-    }
+    };
 
     renderData(activity: ServerActivityData, key: number): ReactNode {
         const { actionLinkLabel } = this.props;
         const isUnread = activity.isUnread() && !activity.inProgress;
         return (
-            <li key={key} className={isUnread ? 'is-unread' : undefined} onClick={isUnread ? () => this.markRead(activity.RowId) : undefined}>
+            <li
+                key={key}
+                className={isUnread ? 'is-unread' : undefined}
+                onClick={isUnread ? () => this.markRead(activity.RowId) : undefined}
+            >
                 <i
                     className={classNames('fa', {
                         'fa-spinner fa-pulse': activity.inProgress,
@@ -78,16 +87,24 @@ export class ServerActivityList extends React.PureComponent<Props> {
                         'fa-check-circle is-complete': !activity.inProgress && !activity.hasError,
                     })}
                 />
-                <span className={classNames('server-notification-message', {
+                <span
+                    className={classNames('server-notification-message', {
                         'is-unread server-notifications-item': isUnread,
                     })}
                 >
-                    {this.renderNotificationContent(activity.Content, activity.isHTML(), activity.hasError, activity.inProgress)}
+                    {this.renderNotificationContent(
+                        activity.Content,
+                        activity.isHTML(),
+                        activity.hasError,
+                        activity.inProgress
+                    )}
                 </span>
                 <br />
                 {activity.ActionLinkUrl ? (
                     <span className="server-notifications-link">
-                        <a href={activity.ActionLinkUrl}>{capitalizeFirstChar(activity.ActionLinkText ? activity.ActionLinkText : actionLinkLabel)}</a>
+                        <a href={activity.ActionLinkUrl}>
+                            {capitalizeFirstChar(activity.ActionLinkText ? activity.ActionLinkText : actionLinkLabel)}
+                        </a>
                     </span>
                 ) : (
                     <span className="server-notification-data" title={activity.CreatedBy}>

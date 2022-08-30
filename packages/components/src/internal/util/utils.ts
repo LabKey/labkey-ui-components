@@ -17,7 +17,7 @@ import { Iterable, List, Map, Set } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 import { ChangeEvent } from 'react';
 
-import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular loading
+import { hasParameter, toggleParameter } from '../url/ActionURL';
 import { QueryInfo } from '../../public/QueryInfo';
 
 import { encodePart } from '../../public/SchemaQuery';
@@ -778,4 +778,16 @@ export function quoteValueWithDelimiters(value: any, delimiter: string) {
         value = value.replace(/"/g, '""');
     }
     return '"' + value + '"';
+}
+
+export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseInsensitive?: boolean): boolean {
+    if (a === b) return true;
+    if (a == null && b == null) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+
+    const aStr = ignoreOrder ? a.sort().join(';') : a.join(';');
+    const bStr = ignoreOrder ? b.sort().join(';') : b.join(';');
+
+    return caseInsensitive ? aStr.toLowerCase() === bStr.toLowerCase() : aStr === bStr;
 }

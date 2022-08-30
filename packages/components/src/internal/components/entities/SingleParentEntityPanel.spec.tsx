@@ -6,9 +6,9 @@ import { mount } from 'enzyme';
 
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
-import { GridPanel, SelectInput } from '../../..';
+import { SelectInput } from '../forms/input/SelectInput';
 
-import { TEST_USER_READER } from '../../userFixtures';
+import { GridPanel } from '../../../public/QueryModel/GridPanel';
 
 import { IEntityTypeOption } from './models';
 import { DataClassDataType } from './constants';

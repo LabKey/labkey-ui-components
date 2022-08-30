@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.212.1
+*Released*: 30 August 2022
+* Update width of megamenu to be responsive
+
 ### version 2.212.0
 *Released*: 30 August 2022
 * Remove circular dependencies

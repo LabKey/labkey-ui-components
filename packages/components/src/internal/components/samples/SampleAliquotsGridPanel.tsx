@@ -3,9 +3,9 @@ import { List } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
 import {
+    createGridModelId,
     DisableableButton,
     EntityDeleteModal,
-    createGridModelId,
     GridPanel,
     PicklistButton,
     QueryModel,
@@ -16,6 +16,7 @@ import {
     SchemaQuery,
     SCHEMAS,
     User,
+    ViewInfo,
 } from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
@@ -206,7 +207,7 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
     const { sampleLsid, schemaQuery, rootLsid, user } = props;
     const id = createGridModelId(
         'sample-aliquots',
-        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery())
+        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery(), ViewInfo.DETAIL_NAME)
     );
 
     const queryConfigs = {

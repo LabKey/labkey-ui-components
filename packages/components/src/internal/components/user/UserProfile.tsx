@@ -5,7 +5,7 @@
 import React, { PureComponent } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
-import { ActionURL, Filter } from '@labkey/api';
+import { ActionURL } from '@labkey/api';
 
 import { QueryInfoForm } from '../forms/QueryInfoForm';
 
@@ -18,9 +18,8 @@ import { FileInput } from '../forms/input/FileInput';
 import { Alert } from '../base/Alert';
 import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { selectRows } from '../../query/selectRows';
 
-import { getUserDetailsRowData, updateUserDetails } from './actions';
+import { getUserDetailsRowData, getUserGroups, updateUserDetails } from './actions';
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',
@@ -37,17 +36,6 @@ const FIELDS_TO_EXCLUDE = List<string>([
 const DISABLED_FIELDS = List<string>(['email']);
 const USER_AVATAR_FILE = 'user_avatar_file';
 const DEFAULT_AVATAR_PATH = '/_images/defaultavatar.png';
-
-const getUserGroups = async (userid: string): Promise<string> => {
-    const response = await selectRows({
-        schemaQuery: SCHEMAS.CORE_TABLES.USERS,
-        filterArray: [Filter.create('UserId', userid)],
-        columns: ['Groups'],
-        maxRows: 1,
-    });
-    const groupsData = response.rows[0].Groups as unknown as Array<{ displayValue: string; value: number }>;
-    return groupsData.map(group => group.displayValue).join(', ');
-};
 
 interface State {
     avatar: File;
@@ -90,7 +78,8 @@ export class UserProfile extends PureComponent<Props, State> {
             });
 
         try {
-            const groups = await getUserGroups(this.props.userProperties.userid);
+            const groupsResult = await getUserGroups(this.props.userProperties.userid);
+            const groups = groupsResult.join(', ');
             this.setState(() => ({ groups }));
         } catch (e) {
             console.error(resolveErrorMessage(e) ?? 'Failed to load group data');

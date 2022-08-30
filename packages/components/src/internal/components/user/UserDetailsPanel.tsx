@@ -21,7 +21,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
-import { getUserProperties } from './actions';
+import { getUserGroups, getUserProperties } from './actions';
 
 interface Props {
     allowDelete?: boolean;
@@ -34,6 +34,7 @@ interface Props {
 }
 
 interface State {
+    groups: string[];
     loading: boolean;
     showDialog: string;
     userProperties: {}; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
@@ -50,6 +51,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
+            groups: [],
             loading: false,
             userProperties: undefined,
             showDialog: undefined,
@@ -66,7 +68,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         }
     }
 
-    loadUserDetails() {
+    loadUserDetails = async (): Promise<void> => {
         const { userId } = this.props;
 
         if (userId) {
@@ -80,10 +82,17 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     console.error(error);
                     this.setState(() => ({ userProperties: undefined, loading: false }));
                 });
+
+            try {
+                const groups = await getUserGroups(userId);
+                this.setState(() => ({ groups }));
+            } catch (e) {
+                console.error(e);
+            }
         } else {
             this.setState(() => ({ userProperties: undefined }));
         }
-    }
+    };
 
     toggleDialog = (name: string) => {
         this.setState(() => ({ showDialog: name }));
@@ -115,6 +124,21 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     {value}
                 </Col>
             </Row>
+        );
+    }
+
+    renderGroups(): JSX.Element {
+        const { groups } = this.state;
+        return (
+            <>
+                <hr className="group-hr" />
+                <div className="group-detail-label">Member of:</div>
+                <ul className="permissions-ul">
+                    {groups.map(group => (
+                        <li key={group}>{group}</li>
+                    ))}
+                </ul>
+            </>
         );
     }
 
@@ -180,7 +204,8 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     {this.renderUserProp('Last Login', 'lastLogin', true)}
 
                     <EffectiveRolesList {...this.props} />
-                    {/* TODO when groups are implemented, add "Member of" for users*/}
+
+                    {this.renderGroups()}
 
                     {!isSelf && onUsersStateChangeComplete && this.renderButtons()}
                 </>

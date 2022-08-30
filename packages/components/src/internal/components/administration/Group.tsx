@@ -77,7 +77,7 @@ export const Group: FC<GroupProps> = memo(props => {
         (member: Member[], title: string) => {
             return (
                 <Col xs={12} sm={6}>
-                    <div>{title}</div>
+                    <div>{title}:</div>
                     <ul className="group-members-ul">
                         {member.length > 0 ? (
                             member.map(group => (

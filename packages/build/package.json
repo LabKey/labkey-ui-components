@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "6.1.6-fb-circDepsRemoval.0",
+  "version": "6.1.7",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

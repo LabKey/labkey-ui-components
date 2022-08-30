@@ -1,7 +1,13 @@
 import React, { Fragment, PureComponent, ReactNode } from 'react';
 
-import { LineageNodeCollection, LineageItemWithMetadata, LineageIOWithMetadata, LineageNode } from '../models';
-import { DEFAULT_ICON_URL, getLineageNodeTitle } from '../utils';
+import {
+    getLineageNodeTitle,
+    LineageNodeCollection,
+    LineageItemWithMetadata,
+    LineageIOWithMetadata,
+    LineageNode,
+} from '../models';
+import { DEFAULT_ICON_URL } from '../utils';
 import { NodeInteractionConsumer, WithNodeInteraction } from '../actions';
 import { LineageDataLink } from '../LineageDataLink';
 import { SVGIcon } from '../../base/SVGIcon';

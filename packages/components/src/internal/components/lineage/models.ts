@@ -18,6 +18,7 @@ import {
     DEFAULT_LINEAGE_DIRECTION,
     DEFAULT_LINEAGE_DISTANCE,
     DEFAULT_LINEAGE_OPTIONS,
+    LINEAGE_GRID_COLUMNS,
 } from './constants';
 import { getURLResolver } from './LineageURLResolvers';
 import {
@@ -29,8 +30,34 @@ import {
     LineageFilter,
     LINEAGE_GROUPING_GENERATIONS,
 } from './types';
-import { getLineageNodeTitle } from './utils';
-import { LINEAGE_GRID_COLUMNS } from './Tag';
+
+export function getLineageNodeTitle(node: LineageItemWithMetadata, asHTML = false): string {
+    // encodeHtml if we are generating html for vis.js to use as the node's tooltip title
+    const h = (s: string): string => (asHTML ? Utils.encodeHtml(s) : s);
+
+    let title = '';
+
+    if (node instanceof LineageNode) {
+        const { meta } = node;
+        if (meta && meta.displayType) {
+            title += h(meta.displayType) + ': ';
+        }
+
+        title += node.name;
+
+        if (meta && meta.aliases && meta.aliases.size) {
+            title += ' (' + meta.aliases.map(h).join(', ') + ')';
+        }
+
+        if (meta && meta.description) {
+            title += (asHTML ? '<br>' : '\n') + h(meta.description);
+        }
+    } else {
+        title = node.name;
+    }
+
+    return title;
+}
 
 export function applyLineageOptions(options?: LineageOptions): LineageOptions {
     const _options = {

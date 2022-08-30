@@ -47,10 +47,12 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     const [selectedPrincipalId, setSelectedPrincipalId] = useState<number>();
     const [newGroupName, setNewGroupName] = useState<string>('');
 
-    const onSave = useCallback(() => {
+    const onSave = useCallback(async () => {
+        setSubmitting(true);
         setErrorMsg(undefined);
-        save();
+        await save();
         setDirty(false);
+        setSubmitting(false);
     }, [save]);
 
     const saveButton = (

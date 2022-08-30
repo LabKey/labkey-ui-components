@@ -896,7 +896,7 @@ export function getSampleAliquotsQueryConfig(
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,
         omittedColumns: omitCols ? [...omitCols.toArray(), omitCol] : [omitCol],
-        requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
+        requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'StorageStatus'],
         baseFilters: [
             Filter.create('RootMaterialLSID', aliquotRootLsid ?? sampleLsid),
             Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF),

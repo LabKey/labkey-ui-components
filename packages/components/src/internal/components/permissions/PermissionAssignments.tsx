@@ -7,11 +7,17 @@ import { Button, Checkbox, Col, Panel, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
-import { Alert, useServerContext, useAppContext, AppContext, resolveErrorMessage } from '../../..';
-
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
 import { isProjectContainer } from '../../app/utils';
+
+import { useServerContext } from '../base/ServerContext';
+
+import { AppContext, useAppContext } from '../../AppContext';
+
+import { resolveErrorMessage } from '../../util/messaging';
+
+import { Alert } from '../base/Alert';
 
 import { GroupMembership } from '../administration/models';
 
@@ -33,6 +39,8 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
     rolesToShow?: List<string>;
     showDetailsPanel?: boolean;
     title?: string;
+    /** Specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage */
+    typeToShow?: string;
 }
 
 export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props => {

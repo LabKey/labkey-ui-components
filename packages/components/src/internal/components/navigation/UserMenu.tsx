@@ -18,7 +18,9 @@ import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
 import { getServerContext } from '@labkey/api';
 
-import { User, devToolsActive, toggleDevTools } from '../../..';
+import { User } from '../base/models/User';
+
+import { devToolsActive, toggleDevTools } from '../../util/utils';
 
 import { ProductMenuModel } from './model';
 import { signOut, signIn } from './actions';

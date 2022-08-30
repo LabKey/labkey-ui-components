@@ -3,12 +3,13 @@ import React, { FC } from 'react';
 import { FormControl } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { Container, LoadingSpinner } from '../../..';
+import { Container } from '../base/models/Container';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface Props {
+    autoLinkTarget: string;
     containers: List<Container>;
     onChange: (evt: any) => void;
-    autoLinkTarget: string;
     value: string;
 }
 

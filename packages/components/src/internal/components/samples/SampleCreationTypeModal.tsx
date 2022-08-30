@@ -2,39 +2,37 @@ import React from 'react';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
-import {
-    Alert,
-    filterSampleRowsForOperation,
-    getOperationNotPermittedMessage,
-    MAX_EDITABLE_GRID_ROWS,
-    SampleOperation,
-} from '../../..';
-
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { OperationConfirmationData } from '../entities/models';
 
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+
+import { Alert } from '../base/Alert';
+
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
+import { filterSampleRowsForOperation, getOperationNotPermittedMessage } from './utils';
+import { SampleOperation } from './constants';
 
 interface Props {
-    show: boolean;
-    options: SampleCreationTypeModel[];
-    parentCount: number;
-    showIcons: boolean;
+    api?: ComponentsAPIWrapper;
     onCancel: () => void;
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
-    api?: ComponentsAPIWrapper;
-    selectionKey?: string;
+    options: SampleCreationTypeModel[];
+    parentCount: number;
     selectedItems?: Record<string, any>;
+    selectionKey?: string;
+    show: boolean;
+    showIcons: boolean;
 }
 
 interface State extends Record<string, any> {
-    numPerParent: number;
     creationType: SampleCreationType;
-    submitting: boolean;
-    statusData: OperationConfirmationData;
     errorMessage: string;
+    numPerParent: number;
+    statusData: OperationConfirmationData;
+    submitting: boolean;
 }
 
 export class SampleCreationTypeModal extends React.PureComponent<Props, State> {

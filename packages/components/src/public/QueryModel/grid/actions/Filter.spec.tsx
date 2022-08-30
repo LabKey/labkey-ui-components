@@ -16,10 +16,12 @@
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { QueryColumn, QueryInfo } from '../../../..';
-
 import mixturesWithAliasesQueryInfo from '../../../../test/data/mixturesWithAliases-getQueryDetails.json';
 import { initUnitTests, makeQueryInfo } from '../../../../internal/testHelpers';
+
+import { QueryColumn } from '../../../QueryColumn';
+
+import { QueryInfo } from '../../../QueryInfo';
 
 import { FilterAction } from './Filter';
 import { ActionValue } from './Action';

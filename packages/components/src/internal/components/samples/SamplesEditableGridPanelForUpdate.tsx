@@ -1,18 +1,6 @@
 import React, { ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
-import {
-    EditableColumnMetadata,
-    EditableGridLoaderFromSelection,
-    EntityDataType,
-    GroupedSampleFields,
-    IEntityTypeOption,
-    QueryColumn,
-    QueryModel,
-    SAMPLE_STATE_COLUMN_NAME,
-    SampleTypeDataType,
-} from '../../..';
-
 import { getUniqueIdColumnMetadata } from '../entities/utils';
 
 import {
@@ -20,6 +8,17 @@ import {
     UpdateGridTab,
 } from '../editable/EditableGridPanelForUpdateWithLineage';
 
+import { EditableGridLoaderFromSelection } from '../editable/EditableGridLoaderFromSelection';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { EntityDataType, IEntityTypeOption } from '../entities/models';
+
+import { QueryColumn } from '../../../public/QueryColumn';
+import { EditableColumnMetadata } from '../editable/EditableGrid';
+
+import { SampleTypeDataType } from '../entities/constants';
+
+import { SAMPLE_STATE_COLUMN_NAME } from './constants';
+import { GroupedSampleFields } from './models';
 import { SampleStatusLegend } from './SampleStatusLegend';
 
 interface Props {

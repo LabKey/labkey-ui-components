@@ -5,15 +5,16 @@ import { Map } from 'immutable';
 import { Assay } from '@labkey/api';
 
 import { TemplateDownloadButton } from '../../public/files/TemplateDownloadButton';
-import { downloadSampleTypeTemplate, getSampleTypeTemplateUrl } from '../components/samples/utils';
+import { getSampleTypeTemplateUrl } from '../components/samples/utils';
+import { downloadSampleTypeTemplate } from '../components/samples/actions';
 import { SCHEMAS } from '../schemas';
 import { SchemaQuery } from '../../public/SchemaQuery';
 
 import { downloadAttachment } from '../util/utils';
 
 interface Props {
-    row?: Map<any, any>;
     excludeColumns?: string[];
+    row?: Map<any, any>;
 }
 
 export class SampleTypeTemplateDownloadRenderer extends React.PureComponent<Props> {

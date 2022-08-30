@@ -18,8 +18,11 @@ import { Utils } from '@labkey/api';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
-import { EditorModel, LoadingState, QueryModel } from '../../..';
 import { AssayUploadTabs } from '../../constants';
+
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { LoadingState } from '../../../public/LoadingState';
+import { EditorModel } from '../../models';
 
 import { AssayWizardModel, parseDataTextToRunRows } from './AssayWizardModel';
 

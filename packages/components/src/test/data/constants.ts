@@ -16,28 +16,26 @@
 import { List } from 'immutable';
 import { Filter, PermissionRoles, Project } from '@labkey/api';
 
-import {
-    AssayDefinitionModel,
-    AssayDomainTypes,
-    AssayStateModel,
-    Container,
-    EntityDataType,
-    GENERAL_ASSAY_PROVIDER_NAME,
-    IFile,
-    LoadingState,
-    QueryInfo,
-    SchemaQuery,
-} from '../..';
 import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
 
 import { DELETE_SAMPLES_TOPIC } from '../../internal/util/helpLinks';
 
-import assayWizardJSON from './assayWizardModel.json';
 import {
     FREEZER_MANAGER_APP_PROPERTIES,
     ProductFeature,
-    SAMPLE_MANAGER_APP_PROPERTIES
+    SAMPLE_MANAGER_APP_PROPERTIES,
 } from '../../internal/app/constants';
+import { AssayDefinitionModel, AssayDomainTypes } from '../../internal/AssayDefinitionModel';
+import { QueryInfo } from '../../public/QueryInfo';
+import { IFile } from '../../internal/components/files/models';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../../internal/components/assay/actions';
+import { LoadingState } from '../../public/LoadingState';
+import { AssayStateModel } from '../../internal/components/assay/models';
+import { Container } from '../../internal/components/base/models/Container';
+import { SchemaQuery } from '../../public/SchemaQuery';
+import { EntityDataType } from '../../internal/components/entities/models';
+
+import assayWizardJSON from './assayWizardModel.json';
 
 export const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
 export const ASSAY_WIZARD_MODEL = new AssayWizardModel({
@@ -467,8 +465,8 @@ export const TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT = {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
     },
     core: {
-        productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay]
-    }
+        productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay],
+    },
 };
 
 export const TEST_LKSM_STARTER_MODULE_CONTEXT = {
@@ -482,8 +480,8 @@ export const TEST_LKSM_STARTER_MODULE_CONTEXT = {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
     },
     core: {
-        productFeatures: []
-    }
+        productFeatures: [],
+    },
 };
 
 export const TEST_LKS_STARTER_MODULE_CONTEXT = {
@@ -497,6 +495,6 @@ export const TEST_LKS_STARTER_MODULE_CONTEXT = {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
     },
     core: {
-        productFeatures: [ProductFeature.Assay]
-    }
-}
+        productFeatures: [ProductFeature.Assay],
+    },
+};

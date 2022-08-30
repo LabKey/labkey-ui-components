@@ -4,7 +4,8 @@ import { Col, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 import { Map } from 'immutable';
 
-import { FileAttachmentForm, getHelpLink } from '../../..';
+import { getHelpLink } from '../../util/helpLinks';
+import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 
 interface AssayDesignUploadPanelProps {
     onFileChange: (files: Map<string, File>) => void;

@@ -16,7 +16,7 @@
 import React, { PureComponent } from 'react';
 import { Utils } from '@labkey/api';
 
-import { imageURL } from '../../..';
+import { imageURL } from '../../url/ActionURL';
 
 export enum Theme {
     DEFAULT,
@@ -110,7 +110,7 @@ export class SVGIcon extends PureComponent<Props> {
 
         return (
             <img
-                {...imgProps(this.props) as any}
+                {...(imgProps(this.props) as any)}
                 alt={alt ? alt : iconSrc + '-icon'}
                 src={iconURL(iconDir, iconSrc, this.getTheme())}
             />

@@ -5,10 +5,11 @@ import { mount } from 'enzyme';
 
 import DomainForm from '../DomainForm';
 
-import { Alert } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
+
+import { Alert } from '../../base/Alert';
 
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';

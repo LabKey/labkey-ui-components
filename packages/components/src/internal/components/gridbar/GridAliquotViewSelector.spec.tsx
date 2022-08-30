@@ -5,9 +5,10 @@ import { MenuItem } from 'react-bootstrap';
 
 import { Filter } from '@labkey/api';
 
-import { makeTestQueryModel, SchemaQuery } from '../../..';
-
 import { IS_ALIQUOT_COL } from '../samples/constants';
+
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 

@@ -17,12 +17,14 @@ import { List } from 'immutable';
 
 import { Domain } from '@labkey/api';
 
-import { ConceptModel, IFieldChange, QueryColumn } from '../../..';
-
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+
+import { ConceptModel } from '../ontology/models';
+
+import { createFormInputId } from './utils';
 import {
-    createFormInputId,
     getAvailableTypes,
     getAvailableTypesForOntology,
     getBannerMessages,
@@ -43,7 +45,7 @@ import {
     updateDataType,
     updateDomainField,
 } from './actions';
-import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainDesign, DomainException, DomainField } from './models';
+import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainDesign, DomainException, DomainField, IFieldChange } from './models';
 import {
     ATTACHMENT_TYPE,
     DATETIME_TYPE,

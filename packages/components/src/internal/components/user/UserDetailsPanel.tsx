@@ -8,14 +8,20 @@ import { Panel, Row, Col, Button } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
-import { SecurityPolicy, SecurityRole, getUserProperties, LoadingSpinner, caseInsensitive } from '../../..';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
 import { getDateTimeFormat } from '../../util/Date';
 
+import { SecurityPolicy, SecurityRole } from '../permissions/models';
+
+import { caseInsensitive } from '../../util/utils';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
+import { getUserProperties } from './actions';
 
 interface Props {
     allowDelete?: boolean;
@@ -29,8 +35,8 @@ interface Props {
 
 interface State {
     loading: boolean;
-    showDialog: string; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
-    userProperties: {};
+    showDialog: string;
+    userProperties: {}; // valid options are 'deactivate', 'reactivate', 'delete', 'reset', undefined
 }
 
 export class UserDetailsPanel extends React.PureComponent<Props, State> {

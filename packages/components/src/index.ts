@@ -254,12 +254,13 @@ import {
 } from './internal/renderers/ImportAliasRenderer';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
-import { resolveDetailFieldValue, resolveRenderer } from './internal/components/forms/renderers';
+import { resolveRenderer } from './internal/components/forms/renderers';
 import {
     getQueryFormLabelFieldName,
     isQueryFormLabelField,
-    QueryFormInputs,
-} from './internal/components/forms/QueryFormInputs';
+    resolveDetailFieldValue,
+} from './internal/components/forms/utils';
+import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput } from './internal/components/forms/input/SelectInput';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
@@ -272,8 +273,8 @@ import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
+import { resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
 
-import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
 import {
     getUsersWithPermissions,
     handleInputTab,
@@ -316,6 +317,7 @@ import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
+    downloadSampleTypeTemplate,
     fetchSamples,
     getDeleteSharedSampleTypeUrl,
     getEditSharedSampleTypeUrl,
@@ -326,7 +328,6 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSampleTypes,
-    getSelectedItemSamples,
     getSelectionLineageData,
     getUpdatedLineageRows,
 } from './internal/components/samples/actions';
@@ -355,7 +356,6 @@ import { AppContexts } from './internal/AppContexts';
 import { useContainerUser } from './internal/components/container/actions';
 
 import {
-    downloadSampleTypeTemplate,
     filterSampleRowsForOperation,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
@@ -468,6 +468,7 @@ import {
     getDataOperationConfirmationData,
     getOperationConfirmationData,
     getSampleOperationConfirmationData,
+    getSelectedItemSamples,
 } from './internal/components/entities/actions';
 import {
     AssayRunDataType,
@@ -496,12 +497,12 @@ import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
 import {
-    createFormInputId,
     fetchDomain,
     fetchDomainDetails,
     saveDomain,
     setDomainFields,
 } from './internal/components/domainproperties/actions';
+import { createFormInputId } from './internal/components/domainproperties/utils';
 import {
     DomainDesign,
     DomainDetails,
@@ -1584,7 +1585,7 @@ export type {
     SampleGridButtonProps,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
-export type { AppRouteResolver } from './internal/url/AppURLResolver';
+export type { AppRouteResolver } from './internal/url/models';
 export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';

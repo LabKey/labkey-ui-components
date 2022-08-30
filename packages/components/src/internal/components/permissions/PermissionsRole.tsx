@@ -8,7 +8,7 @@ import { List } from 'immutable';
 
 import { ExpandableContainer } from '../ExpandableContainer';
 
-import { naturalSort } from '../../..';
+import { naturalSort } from '../../../public/sort';
 
 import { Principal, SecurityAssignment, SecurityRole } from './models';
 import { RemovableButton } from './RemovableButton';

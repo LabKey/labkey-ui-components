@@ -2,15 +2,20 @@ import React, { FC, memo, useCallback, useState } from 'react';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { capitalizeFirstChar, ConfirmModal, Progress, deleteRows, QueryModel, useNotificationsContext } from '../../..';
-
 import { MAX_SELECTED_SAMPLES } from '../samples/constants';
 
 import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 
-import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
-import { EntityDataType } from './models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+import { deleteRows } from '../../query/api';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { capitalizeFirstChar } from '../../util/utils';
+import { Progress } from '../base/Progress';
+
 import { getEntityNoun } from './utils';
+import { EntityDataType } from './models';
+import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 
 interface Props {
     afterDelete: (rowsToKeep?: any[]) => any;

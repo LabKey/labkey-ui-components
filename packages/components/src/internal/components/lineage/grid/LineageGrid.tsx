@@ -5,7 +5,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 
-import { Location } from '../../../..';
+import { Location } from '../../../util/URL';
 
 import { createGridModel } from '../actions';
 import { LineageGridModel } from '../models';

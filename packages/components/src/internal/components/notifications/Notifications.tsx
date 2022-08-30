@@ -16,7 +16,9 @@
 import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import moment from 'moment';
 
-import { getDateFormat, useServerContext } from '../../..';
+import { useServerContext } from '../base/ServerContext';
+
+import { getDateFormat } from '../../util/Date';
 
 import { NotificationItemModel, Persistence } from './model';
 import { setTrialBannerDismissSessionKey } from './actions';

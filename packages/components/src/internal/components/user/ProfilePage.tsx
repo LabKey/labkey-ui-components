@@ -16,9 +16,9 @@ import { Notifications } from '../notifications/Notifications';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { useNotificationsContext } from '../../..';
-
 import { getDateFormat } from '../../app/utils';
+
+import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { UserDetailHeader } from './UserDetailHeader';
 import { getUserRoleDisplay } from './actions';

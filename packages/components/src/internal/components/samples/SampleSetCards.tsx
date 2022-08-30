@@ -2,12 +2,17 @@ import React, { FC, memo, useMemo } from 'react';
 
 import { Filter, Query } from '@labkey/api';
 
-import { Cards, caseInsensitive, naturalSort, LoadingSpinner, SampleTypeEmptyAlert, SCHEMAS } from '../../..';
+import { Cards, ICardProps } from '../base/Cards';
 
-import { ICardProps } from '../base/Cards';
+import { caseInsensitive } from '../../util/utils';
+import { naturalSort } from '../../../public/sort';
 
-// These need to be direct imports from files to avoid circular dependencies in index.ts
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { SCHEMAS } from '../../schemas';
+
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
+import { SampleTypeEmptyAlert } from './SampleEmptyAlert';
 
 const getSampleSetCount = (row: Record<string, any>): number => {
     return caseInsensitive(row, 'SampleCount').value;

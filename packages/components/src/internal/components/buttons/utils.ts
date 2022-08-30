@@ -1,6 +1,9 @@
 import { List } from 'immutable';
 
-import { AppURL, MenuOption, MenuSectionModel, naturalSort } from '../../..';
+import { MenuSectionModel } from '../navigation/model';
+import { MenuOption } from '../menus/SubMenu';
+import { naturalSort } from '../../../public/sort';
+import { AppURL } from '../../url/AppURL';
 
 export function getMenuItemsForSection(
     section: MenuSectionModel,

@@ -7,19 +7,20 @@ import { Draft, produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
 import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
-import {
-    AppURL,
-    caseInsensitive,
-    ISelectRowsResult,
-    Location,
-    naturalSort,
-    SchemaQuery,
-    SCHEMAS,
-    selectRowsDeprecated,
-} from '../../..';
-
 import { SAMPLES_KEY } from '../../app/constants';
 
+import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SCHEMAS } from '../../schemas';
+import { caseInsensitive } from '../../util/utils';
+import { AppURL } from '../../url/AppURL';
+import { naturalSort } from '../../../public/sort';
+import { Location } from '../../util/URL';
+
+import { getURLResolver, LineageURLResolver } from './LineageURLResolvers';
+import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
+import { LINEAGE_DIRECTIONS, LineageFilter, LineageLinkMetadata, LineageOptions } from './types';
+import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
 import {
     Lineage,
     LineageGridModel,
@@ -31,10 +32,6 @@ import {
     LineageResult,
     LineageRunStep,
 } from './models';
-import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
-import { LINEAGE_DIRECTIONS, LineageFilter, LineageLinkMetadata, LineageOptions } from './types';
-import { getLineageDepthFirstNodeList, resolveIconAndShapeForNode } from './utils';
-import { getURLResolver, LineageURLResolver } from './LineageURLResolvers';
 
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 

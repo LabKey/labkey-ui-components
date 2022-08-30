@@ -3,21 +3,24 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import { isLoading, LabelHelpTip, LoadingState } from '../../..';
-
 import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
+import { isLoading, LoadingState } from '../../../public/LoadingState';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, createFormInputName, fetchQueries } from './actions';
+import { fetchQueries } from './actions';
+import { createFormInputId, createFormInputName } from './utils';
 import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE } from './constants';
 import { encodeLookup, IDomainField, ITypeDependentProps, LookupInfo, SAMPLE_TYPE_OPTION_VALUE } from './models';
 
 import { SectionHeading } from './SectionHeading';
 
 interface SampleFieldProps extends ITypeDependentProps {
+    container: string;
     original: Partial<IDomainField>;
     value?: string;
-    container: string;
 }
 
 interface State {

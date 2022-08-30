@@ -3,7 +3,7 @@ import { Col, Radio, Row } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
 
-import { createFormInputId } from './actions';
+import { createFormInputId } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_DERIVATION_DATA_SCOPE } from './constants';
 import { IDerivationDataScope, ITypeDependentProps } from './models';
@@ -103,7 +103,9 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
             </Row>
             {hasScopeChange && config.scopeChangeWarning && (
                 <Row>
-                    <Alert bsStyle="warning" className="aliquot-alert-warning">{config.scopeChangeWarning}</Alert>
+                    <Alert bsStyle="warning" className="aliquot-alert-warning">
+                        {config.scopeChangeWarning}
+                    </Alert>
                 </Row>
             )}
         </div>

@@ -1597,10 +1597,10 @@
   resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.15.0.tgz#39911ac243ca3c2ada9f2ae07a43213e8907e00d"
   integrity sha1-OZEawkPKPCranyrgekMhPokH4A0=
 
-"@labkey/build@~6.1.6":
-  version "6.1.6"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.6.tgz#71b69ece111d28236dab26d8f417248a230d40f5"
-  integrity sha512-fKCiIs7AeOG4hsFu+asziyPmg0n8KAJfcitIYzIMEY+YdxgypeS1f38uy3FmNovi+bMti82hObHwo8aQS0s/1g==
+"@labkey/build@~6.1.7":
+  version "6.1.7"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.7.tgz#c3739c155a0ec302841332a8bc6ea69e23e25679"
+  integrity sha512-pvGP4q3n0iJmiJUkLmKlfyZPiUUjEXJ2ZmrB1n8t0cpbtoklut6+mYF1JMmklv5PP4xqtstZAdK5nsVZ4DhX1Q==
   dependencies:
     "@babel/core" "~7.17.8"
     "@babel/plugin-proposal-class-properties" "~7.16.7"
@@ -1611,6 +1611,7 @@
     "@hot-loader/react-dom" "~16.14.0"
     babel-loader "~8.2.4"
     bootstrap-sass "~3.4.3"
+    circular-dependency-plugin "~5.2.2"
     copy-webpack-plugin "~10.2.4"
     cross-env "~7.0.3"
     css-loader "~6.7.1"
@@ -2996,6 +2997,11 @@ ci-info@^3.2.0:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.3.2.tgz#6d2967ffa407466481c6c90b6e16b3098f080128"
   integrity sha512-xmDt/QIAdeZ9+nfdPsaBCpMvHNLFiLdjj59qjqn+6iPe6YmHGQ35sBnQ8uslRBXFmXkiZQOJRjvQeoGppoTjjg==
+
+circular-dependency-plugin@~5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/circular-dependency-plugin/-/circular-dependency-plugin-5.2.2.tgz#39e836079db1d3cf2f988dc48c5188a44058b600"
+  integrity sha512-g38K9Cm5WRwlaH6g03B9OEz/0qRizI+2I7n+Gz+L5DxXJAPAiWQvwlYNm1V1jkdpUv95bOe/ASm2vfi/G560jQ==
 
 cjs-module-lexer@^1.0.0:
   version "1.2.2"

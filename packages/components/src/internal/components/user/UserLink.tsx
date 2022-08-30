@@ -2,11 +2,12 @@ import React from 'react';
 import { List } from 'immutable';
 import { User as IUser } from '@labkey/api';
 
-import { AppURL, User } from '../../..';
+import { User } from '../base/models/User';
+import { AppURL } from '../../url/AppURL';
 
 interface Props {
-    currentUser: User;
     allUsers: List<IUser>;
+    currentUser: User;
     userId: string;
 }
 

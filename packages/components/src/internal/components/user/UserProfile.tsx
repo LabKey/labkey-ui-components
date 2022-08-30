@@ -8,20 +8,16 @@ import { Col, Row } from 'react-bootstrap';
 import { ActionURL, Filter } from '@labkey/api';
 
 import { QueryInfoForm } from '../forms/QueryInfoForm';
-import {
-    Alert,
-    FileInput,
-    getActionErrorMessage,
-    getQueryDetails,
-    insertColumnFilter,
-    LoadingSpinner,
-    QueryInfo,
-    QueryColumn,
-    SCHEMAS,
-    User,
-    resolveErrorMessage,
-    selectRows,
-} from '../../..';
+
+import { QueryInfo } from '../../../public/QueryInfo';
+import { User } from '../base/models/User';
+import { getQueryDetails } from '../../query/api';
+import { SCHEMAS } from '../../schemas';
+import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
+import { FileInput } from '../forms/input/FileInput';
+import { Alert } from '../base/Alert';
+import { getActionErrorMessage } from '../../util/messaging';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { getUserDetailsRowData, updateUserDetails } from './actions';
 

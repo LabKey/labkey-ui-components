@@ -1,19 +1,21 @@
 import React, { ReactNode } from 'react';
 import { Utils } from '@labkey/api';
 
-import { ConfirmModal, Alert, resolveErrorMessage } from '../../..';
+import { resolveErrorMessage } from '../../util/messaging';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { Alert } from '../base/Alert';
 
 import { deleteUsers } from './actions';
 
 interface Props {
-    userIds: number[];
-    onComplete: (response: any) => any;
     onCancel: () => any;
+    onComplete: (response: any) => any;
+    userIds: number[];
 }
 
 interface State {
-    submitting: boolean;
     error: ReactNode;
+    submitting: boolean;
 }
 
 export class UserDeleteConfirmModal extends React.Component<Props, State> {

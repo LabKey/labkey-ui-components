@@ -2,9 +2,9 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { PermissionTypes } from '@labkey/api';
 
-import { AppURL } from '../../..';
-
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
+
+import { AppURL } from '../../url/AppURL';
 
 import { EmptyAlert, EmptyAlertWithPermissions } from './EmptyAlert';
 

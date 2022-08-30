@@ -2,23 +2,19 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount, ReactWrapper } from 'enzyme';
 
-import {
-    CreateSamplesSubMenu,
-    makeTestQueryModel,
-    MenuOption,
-    MenuSectionModel,
-    ProductMenuModel,
-    SampleCreationTypeModal,
-    SchemaQuery,
-    SubMenu,
-} from '../../..';
-
 import { SAMPLES_KEY } from '../../app/constants';
 
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
+import { MenuOption, SubMenu } from '../menus/SubMenu';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { MenuSectionModel, ProductMenuModel } from '../navigation/model';
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+
+import { SampleCreationTypeModal } from './SampleCreationTypeModal';
+import { CreateSamplesSubMenu, MAX_PARENTS_PER_SAMPLE } from './CreateSamplesSubMenu';
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
-import { MAX_PARENTS_PER_SAMPLE } from './CreateSamplesSubMenu';
 
 const sampleOptions = [
     {

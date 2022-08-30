@@ -2,10 +2,14 @@ import React, { FC } from 'react';
 
 import classNames from 'classnames';
 
-import { Alert, LoadingSpinner, Page, PageHeader, Section } from '../../..';
+import { Section } from '../base/Section';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Page } from '../base/Page';
+import { PageHeader } from '../base/PageHeader';
 
-import { getPipelineStatusDetail } from './actions';
 import { PipelineLogEntry, PipelineStatusDetailModel } from './model';
+import { getPipelineStatusDetail } from './actions';
 
 interface JobStatusRowProps {
     label: string;
@@ -71,8 +75,8 @@ interface Props {
 }
 
 interface State {
-    model: PipelineStatusDetailModel;
     error: any;
+    model: PipelineStatusDetailModel;
 }
 
 export class PipelineStatusDetailPage extends React.PureComponent<Props, State> {

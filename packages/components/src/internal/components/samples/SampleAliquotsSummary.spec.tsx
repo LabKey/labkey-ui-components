@@ -1,7 +1,10 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { LoadingSpinner, LoadingState, makeTestActions, makeTestQueryModel, SchemaQuery } from '../../..';
+import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { LoadingState } from '../../../public/LoadingState';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { SampleAliquotsSummaryWithModels } from './SampleAliquotsSummary';
 

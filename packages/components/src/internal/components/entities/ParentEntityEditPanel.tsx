@@ -27,6 +27,7 @@ import { ParentEntityRequiredColumns } from './constants';
 import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from './utils';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
+import { ViewInfo } from '../../ViewInfo';
 
 interface Props {
     auditBehavior?: AuditBehaviorTypes;

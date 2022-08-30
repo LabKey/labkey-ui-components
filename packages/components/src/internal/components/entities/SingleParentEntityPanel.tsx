@@ -25,6 +25,7 @@ import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../p
 
 import { isSampleEntity } from './utils';
 import { EntityDataType, IEntityTypeOption } from './models';
+import { ViewInfo } from '../../ViewInfo';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;

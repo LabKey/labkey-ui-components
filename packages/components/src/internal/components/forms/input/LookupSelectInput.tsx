@@ -27,6 +27,7 @@ import { resolveKey } from '../../../../public/SchemaQuery';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 
 import { SelectInput, SelectInputProps } from './SelectInput';
+import { ViewInfo } from '../../../ViewInfo';
 
 interface LookupSelectOption {
     label: string;

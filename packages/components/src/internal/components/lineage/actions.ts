@@ -32,6 +32,7 @@ import {
     LineageResult,
     LineageRunStep,
 } from './models';
+import { ViewInfo } from '../../ViewInfo';
 
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 

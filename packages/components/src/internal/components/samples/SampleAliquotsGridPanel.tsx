@@ -26,6 +26,7 @@ import { SamplesAssayButton } from './SamplesAssayButton';
 import { JobsButton, SampleStorageButton } from './models';
 import { getSampleAliquotsQueryConfig } from './actions';
 import { getOmittedSampleTypeColumns } from './utils';
+import { ViewInfo } from '../../ViewInfo';
 
 const SUB_MENU_WIDTH = 800;
 

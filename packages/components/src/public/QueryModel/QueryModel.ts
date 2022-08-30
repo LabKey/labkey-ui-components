@@ -6,7 +6,7 @@ import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/cons
 
 import { DataViewInfo } from '../../internal/models';
 
-import { SchemaQuery } from '../SchemaQuery';
+import { encodePart, SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
 import { isLoading, LoadingState } from '../LoadingState';
 import { QueryInfo } from '../QueryInfo';

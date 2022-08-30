@@ -1597,10 +1597,10 @@
   resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.15.0.tgz#39911ac243ca3c2ada9f2ae07a43213e8907e00d"
   integrity sha1-OZEawkPKPCranyrgekMhPokH4A0=
 
-"@labkey/build@6.1.6-fb-circDepsRemoval.0":
-  version "6.1.6-fb-circDepsRemoval.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.6-fb-circDepsRemoval.0.tgz#40a66fde0e089b500455036ec52d2611667cb8ab"
-  integrity sha512-6GBcQFkV8i/+wyO3of4xj5Er8UjGhqVG1AS/4dUx+rYColm2Nw4Z8P7FvdL8sd+0t7r+X+RrewgHekJdVS9njw==
+"@labkey/build@~6.1.7":
+  version "6.1.7"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.1.7.tgz#c3739c155a0ec302841332a8bc6ea69e23e25679"
+  integrity sha512-pvGP4q3n0iJmiJUkLmKlfyZPiUUjEXJ2ZmrB1n8t0cpbtoklut6+mYF1JMmklv5PP4xqtstZAdK5nsVZ4DhX1Q==
   dependencies:
     "@babel/core" "~7.17.8"
     "@babel/plugin-proposal-class-properties" "~7.16.7"

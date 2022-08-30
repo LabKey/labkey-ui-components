@@ -17,25 +17,30 @@ import { Filter, PermissionTypes, Security, User, Utils } from '@labkey/api';
 import { fromJS, Map } from 'immutable';
 import { useCallback, useEffect, useState } from 'react';
 
+import { similaritySortFactory } from '../../util/similaritySortFactory';
+
 import {
     getQueryDetails,
     ISelectRowsResult,
-    LoadingState,
-    naturalSortByProperty,
-    QueryInfo,
-    QueryModel,
-    QuerySelectOwnProps,
-    resolveDetailFieldValue,
-    SelectInputOption,
+    quoteValueColumnWithDelimiters,
+    searchRows,
     selectRowsDeprecated,
     updateRows,
-} from '../../..';
+} from '../../query/api';
+import { parseCsvString } from '../../util/utils';
+import { QueryInfo } from '../../../public/QueryInfo';
 
-import { similaritySortFactory } from '../../util/similaritySortFactory';
+import { naturalSortByProperty } from '../../../public/sort';
+
+import { LoadingState } from '../../../public/LoadingState';
+
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { QuerySelectOwnProps } from './QuerySelect';
+import { SelectInputOption } from './input/SelectInput';
+import { resolveDetailFieldValue } from './utils';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
-import { quoteValueColumnWithDelimiters, searchRows } from '../../query/api';
-import { parseCsvString } from '../../util/utils';
 
 const emptyMap = Map<string, any>();
 
@@ -121,7 +126,11 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                             queryName,
                             filterArray: [filter],
                         }).then(data => {
-                            const selectedItems = fromJS(quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[data.key]);
+                            const selectedItems = fromJS(
+                                quoteValueColumnWithDelimiters(data, props.valueColumn, props.delimiter).models[
+                                    data.key
+                                ]
+                            );
 
                             model = model.merge({
                                 rawSelectedValue: props.value,
@@ -222,17 +231,23 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
     }
 
     // 35112: Explicitly request exact matches -- can be disabled via QuerySelectModel.addExactFilter = false
-    return searchRows({
-        containerFilter: model.containerFilter,
-        containerPath: model.containerPath,
-        schemaName: schemaQuery.getSchema(),
-        queryName: schemaQuery.getQuery(),
-        columns: getQueryColumnNames(model),
-        filterArray: allFilters,
-        sort: displayColumn,
-        maxRows,
-        includeTotalCount: 'f',
-    }, filterVal, model.valueColumn, model.delimiter, addExactFilter ? displayColumn : undefined);
+    return searchRows(
+        {
+            containerFilter: model.containerFilter,
+            containerPath: model.containerPath,
+            schemaName: schemaQuery.getSchema(),
+            queryName: schemaQuery.getQuery(),
+            columns: getQueryColumnNames(model),
+            filterArray: allFilters,
+            sort: displayColumn,
+            maxRows,
+            includeTotalCount: 'f',
+        },
+        filterVal,
+        model.valueColumn,
+        model.delimiter,
+        addExactFilter ? displayColumn : undefined
+    );
 }
 
 export function saveSearchResults(

@@ -2,30 +2,21 @@ import React from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { ReactWrapper } from 'enzyme';
 
-import {
-    DataClassDataType,
-    LoadingState,
-    makeTestActions,
-    makeTestQueryModel,
-    ManageDropdownButton,
-    QueryInfo,
-    SamplesEditButtonSections,
-    SampleTypeDataType,
-    SchemaQuery,
-    SelectionMenuItem,
-} from '../../..';
-
-import {
-    TEST_USER_AUTHOR,
-    TEST_USER_EDITOR,
-    TEST_USER_READER,
-    TEST_USER_STORAGE_EDITOR,
-} from '../../userFixtures';
+import { TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
 import { mountWithServerContext } from '../../testHelpers';
 
-import { SamplesEditButton } from './SamplesEditButton';
-import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { EntityLineageEditMenuItem } from '../entities/EntityLineageEditMenuItem';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
+import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+import { DataClassDataType, SampleTypeDataType } from '../entities/constants';
+import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { LoadingState } from '../../../public/LoadingState';
+
+import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
+import { SamplesEditButton } from './SamplesEditButton';
+import { SamplesEditButtonSections } from './utils';
 
 describe('SamplesEditButton', () => {
     const queryInfo = new QueryInfo({
@@ -69,10 +60,7 @@ describe('SamplesEditButton', () => {
 
     test('loading', () => {
         const wrapper = mountWithServerContext(
-            <SamplesEditButton
-                {...DEFAULT_PROPS}
-                model={makeTestQueryModel(SchemaQuery.create('schema', 'query'))}
-            />,
+            <SamplesEditButton {...DEFAULT_PROPS} model={makeTestQueryModel(SchemaQuery.create('schema', 'query'))} />,
             { user: TEST_USER_EDITOR }
         );
         validate(wrapper, false);

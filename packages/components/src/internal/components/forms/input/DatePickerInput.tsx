@@ -20,8 +20,9 @@ import DatePicker from 'react-datepicker';
 import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
-import { QueryColumn } from '../../../..';
 import { getColDateFormat, getJsonDateTimeFormatString, isDateTimeCol, parseDate } from '../../../util/Date';
+
+import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 

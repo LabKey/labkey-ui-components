@@ -5,7 +5,7 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { createFormInputId, createFormInputName, getNameFromId } from '../actions';
+import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
     DOMAIN_VALIDATOR_DESCRIPTION,
     DOMAIN_VALIDATOR_ERRORMESSAGE,
@@ -16,21 +16,21 @@ import {
 import { PropertyValidator } from '../models';
 import { PropDescType } from '../PropDescType';
 
-import { LabelHelpTip } from '../../../..';
+import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 import { Filters } from './Filters';
 
 interface RangeValidationOptionsProps {
-    validator: any;
-    index: number;
-    domainIndex: number;
-    validatorIndex: number;
-    mvEnabled: boolean;
-    expanded: boolean;
     dataType: PropDescType;
-    onExpand?: (index: number) => void;
+    domainIndex: number;
+    expanded: boolean;
+    index: number;
+    mvEnabled: boolean;
     onChange: (validator: PropertyValidator, index: number) => void;
     onDelete: (index: number) => void;
+    onExpand?: (index: number) => void;
+    validator: any;
+    validatorIndex: number;
 }
 
 export class RangeValidationOptions extends PureComponent<RangeValidationOptionsProps> {

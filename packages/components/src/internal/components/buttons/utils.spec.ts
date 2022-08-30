@@ -1,6 +1,8 @@
 import { List } from 'immutable';
 
-import { MenuSectionModel, MenuItemModel, AppURL, MenuOption } from '../../..';
+import { AppURL } from '../../url/AppURL';
+import { MenuItemModel, MenuSectionModel } from '../navigation/model';
+import { MenuOption } from '../menus/SubMenu';
 
 import { getMenuItemsForSection } from './utils';
 

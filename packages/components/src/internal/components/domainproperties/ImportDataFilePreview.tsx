@@ -7,13 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { convertRowDataIntoPreviewData } from '../files/actions';
 import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 import { FilePreviewGrid } from '../files/FilePreviewGrid';
-import { InferDomainResponse, DeleteIcon } from '../../..';
+import { InferDomainResponse } from '../../../public/InferDomainResponse';
+import { DeleteIcon } from '../base/DeleteIcon';
 
 interface Props {
-    noun: string;
-    filePreviewData: InferDomainResponse;
-    setFileImportData: (file: File, shouldImportData: boolean) => any;
     file: File;
+    filePreviewData: InferDomainResponse;
+    noun: string;
+    setFileImportData: (file: File, shouldImportData: boolean) => any;
 }
 
 interface State {

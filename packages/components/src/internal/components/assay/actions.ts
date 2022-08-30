@@ -16,21 +16,18 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
 
-import {
-    AssayDefinitionModel,
-    AssayStateModel,
-    buildURL,
-    caseInsensitive,
-    naturalSortByProperty,
-    SCHEMAS,
-    QueryModel,
-    User,
-} from '../../..';
-
 import { AssayUploadTabs } from '../../constants';
 
-import { AssayUploadResultModel } from './models';
+import { SCHEMAS } from '../../schemas';
+import { User } from '../base/models/User';
+import { AssayDefinitionModel } from '../../AssayDefinitionModel';
+import { buildURL } from '../../url/AppURL';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { naturalSortByProperty } from '../../../public/sort';
+import { caseInsensitive } from '../../util/utils';
+
 import { IAssayUploadOptions } from './AssayWizardModel';
+import { AssayStateModel, AssayUploadResultModel } from './models';
 
 export const GENERAL_ASSAY_PROVIDER_NAME = 'General';
 

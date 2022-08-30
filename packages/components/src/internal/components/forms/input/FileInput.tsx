@@ -21,7 +21,8 @@ import { withFormsy } from 'formsy-react';
 import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';
 
-import { FileColumnRenderer, QueryColumn } from '../../../..';
+import { QueryColumn } from '../../../../public/QueryColumn';
+import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -48,9 +49,9 @@ interface Props extends DisableableInputProps {
 
 interface State extends DisableableInputState {
     data: any;
-    isHover: boolean;
-    file: File;
     error: string;
+    file: File;
+    isHover: boolean;
 }
 
 class FileInputImpl extends DisableableInput<Props, State> {

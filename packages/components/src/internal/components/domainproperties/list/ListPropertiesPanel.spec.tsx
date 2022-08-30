@@ -9,9 +9,9 @@ import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.js
 
 import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
 
-import { Alert } from '../../../..';
-
 import { DomainPanelStatus } from '../models';
+
+import { Alert } from '../../base/Alert';
 
 import { ListModel } from './models';
 

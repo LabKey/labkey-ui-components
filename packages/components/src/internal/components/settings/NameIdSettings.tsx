@@ -3,11 +3,15 @@ import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, FormControl } from 'react-bootstrap';
 
-import { Alert, ConfirmModal, LabelHelpTip, LoadingSpinner, RequiresPermission } from '../../..';
-
 import { sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { invalidateFullQueryDetailsCache } from '../../query/api';
+
+import { RequiresPermission } from '../base/Permissions';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { LabelHelpTip } from '../base/LabelHelpTip';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { Alert } from '../base/Alert';
 
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
 
@@ -30,18 +34,18 @@ export const NameIdSettings: FC<NameIdSettingsProps> = memo(props => {
 });
 
 interface NameIdSettingsFormProps extends NameIdSettingsProps {
-    loadNameExpressionOptions: () => Promise<{ prefix: string; allowUserSpecifiedNames: boolean }>;
+    loadNameExpressionOptions: () => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
     saveNameExpressionOptions: (key: string, value: string | boolean) => Promise<void>;
 }
 
 interface State {
+    allowUserSpecifiedNames: boolean;
+    confirmModalOpen: boolean;
     error: string;
     loading: boolean;
     prefix: string;
-    savingPrefix: boolean;
-    allowUserSpecifiedNames: boolean;
     savingAllowUserSpecifiedNames: boolean;
-    confirmModalOpen: boolean;
+    savingPrefix: boolean;
 }
 
 const initialState: State = {

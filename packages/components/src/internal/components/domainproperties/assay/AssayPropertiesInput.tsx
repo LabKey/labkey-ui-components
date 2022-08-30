@@ -2,8 +2,6 @@ import React, { FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { Container, buildURL, RemoveEntityButton, AddEntityButton } from '../../../..';
-
 import {
     ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
     CONFIGURE_SCRIPTING_TOPIC,
@@ -14,10 +12,14 @@ import { DomainFieldLabel, DomainFieldLabelProps } from '../DomainFieldLabel';
 
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
-import { getValidPublishTargets } from './actions';
+import { buildURL } from '../../../url/AppURL';
+import { Container } from '../../base/models/Container';
+import { AddEntityButton } from '../../buttons/AddEntityButton';
+import { RemoveEntityButton } from '../../buttons/RemoveEntityButton';
 
 import { AssayProtocolModel } from './models';
-import { FORM_IDS } from './AssayPropertiesPanel';
+import { FORM_IDS } from './constants';
+import { getValidPublishTargets } from './actions';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps {
     appPropertiesOnly?: boolean;
@@ -46,9 +48,9 @@ AssayPropertiesInput.defaultProps = {
 };
 
 interface InputProps {
+    appPropertiesOnly?: boolean;
     model: AssayProtocolModel;
     onChange: (evt) => void;
-    appPropertiesOnly?: boolean;
 }
 
 export function NameInput(props: InputProps) {

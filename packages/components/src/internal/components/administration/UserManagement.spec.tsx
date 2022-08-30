@@ -9,13 +9,13 @@ import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPag
 import { UsersGridPanel } from '../user/UsersGridPanel';
 import { SecurityPolicy } from '../permissions/models';
 
-import { InjectedPermissionsPage } from '../../../index';
-
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 
 import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
+
+import { InjectedPermissionsPage } from '../permissions/withPermissionsPage';
 
 import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 

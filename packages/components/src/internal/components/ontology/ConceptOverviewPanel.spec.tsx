@@ -1,8 +1,10 @@
 import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, LabelHelpTip } from '../../..';
+import { Alert } from '../base/Alert';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import {
     ConceptOverviewTooltip,

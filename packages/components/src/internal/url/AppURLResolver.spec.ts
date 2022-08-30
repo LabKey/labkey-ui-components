@@ -15,13 +15,20 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { AppURL, ExperimentRunResolver } from '../..';
-
 import { initMockServerContext, registerDefaultURLMappers } from '../testHelpers';
 
-import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './AppURLResolver';
+import { initUnitTestMocks } from '../../test/testHelperMocks';
+
+import {
+    AssayResolver,
+    AssayRunResolver,
+    ExperimentRunResolver,
+    ListResolver,
+    SamplesResolver,
+} from './AppURLResolver';
 import { URLResolver } from './URLResolver';
-import {initUnitTestMocks} from "../../test/testHelperMocks";
+import { AppURL } from './AppURL';
+import { encodeListResolverPath } from './utils';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -284,19 +291,27 @@ describe('URL Resolvers', () => {
         );
 
         // validate ActionMapper('experiment', 'showDataClass') -- with lookup
-        expect(newResult.getIn(['rows', 1, 'LookupExpShowDataClass', 'url'])).toBe('/labkey/otherContainer/experiment-showDataClass.view?rowId=124');
+        expect(newResult.getIn(['rows', 1, 'LookupExpShowDataClass', 'url'])).toBe(
+            '/labkey/otherContainer/experiment-showDataClass.view?rowId=124'
+        );
 
         // validate ActionMapper('experiment', 'showData') -- no lookup
-        expect(newResult.getIn(['rows', 1, 'NonLookupExpShowData', 'url'])).toBe('/labkey/otherContainer/experiment-showData.view?rowId=124');
+        expect(newResult.getIn(['rows', 1, 'NonLookupExpShowData', 'url'])).toBe(
+            '/labkey/otherContainer/experiment-showData.view?rowId=124'
+        );
 
         // validate ActionMapper('experiment', 'showData') -- with lookup
-        expect(newResult.getIn(['rows', 1, 'LookupExpShowData', 'url'])).toBe('/labkey/otherContainer/experiment-showData.view?rowId=124');
+        expect(newResult.getIn(['rows', 1, 'LookupExpShowData', 'url'])).toBe(
+            '/labkey/otherContainer/experiment-showData.view?rowId=124'
+        );
 
         // validate LookupMapper('/q/')
         expect(newResult.getIn(['rows', 1, 'LookupColumn', 'url'])).toBe('/labkey/otherContainer/url-app?blam=2392');
 
         // validate LookupMapper('exp-dataclasses')
-        expect(newResult.getIn(['rows', 1, 'DataClassLookupColumn', 'url'])).toBe('/labkey/otherContainer/url-app?blam=19');
+        expect(newResult.getIn(['rows', 1, 'DataClassLookupColumn', 'url'])).toBe(
+            '/labkey/otherContainer/url-app?blam=19'
+        );
 
         // validate LookupMapper('issues')
         expect(newResult.getIn(['rows', 1, 'LookupIssues', 'url'])).toBe(
@@ -304,10 +319,14 @@ describe('URL Resolvers', () => {
         );
 
         // validate LookupMapper('exp-runs')
-        expect(newResult.getIn(['rows', 1, 'LookupExpRun', 'url'])).toBe('/labkey/otherContainer/assay-assayDetailRedirect.view?runId=584');
+        expect(newResult.getIn(['rows', 1, 'LookupExpRun', 'url'])).toBe(
+            '/labkey/otherContainer/assay-assayDetailRedirect.view?runId=584'
+        );
 
         // validate ActionMapper('assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253')
-        expect(newResult.getIn(['rows', 1, 'LookupExpRun2', 'url'])).toBe('/labkey/otherContainer/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253');
+        expect(newResult.getIn(['rows', 1, 'LookupExpRun2', 'url'])).toBe(
+            '/labkey/otherContainer/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253'
+        );
     });
 
     test('Should remap URLs within SelectRowsResult if url containers are sub-folders', () => {
@@ -490,20 +509,20 @@ describe('App Route Resolvers', () => {
 
         return Promise.all([
             listResolver
-                .fetch(['q', 'lists', ListResolver.encodeResolverPath('/BULLS'), 'jordan', 4])
+                .fetch(['q', 'lists', encodeListResolverPath('/BULLS'), 'jordan', 4])
                 .then((result: boolean) => {
                     expect(result).toBe(true);
                 }),
-            listResolver.fetch(['q', 'lists', ListResolver.encodeResolverPath('/BULLS'), 23]).then((url: AppURL) => {
+            listResolver.fetch(['q', 'lists', encodeListResolverPath('/BULLS'), 23]).then((url: AppURL) => {
                 expect(url.toString()).toBe('/q/lists/Jordan');
             }),
             listResolver
-                .fetch(['q', 'lists', ListResolver.encodeResolverPath('/lakers'), '8', 'mamba'])
+                .fetch(['q', 'lists', encodeListResolverPath('/lakers'), '8', 'mamba'])
                 .then((url: AppURL) => {
                     expect(url.toString()).toBe('/q/lists/KObE/mamba');
                 }),
             listResolver
-                .fetch(['q', 'lists', ListResolver.encodeResolverPath('/JaZz'), '7', 17, '?'])
+                .fetch(['q', 'lists', encodeListResolverPath('/JaZz'), '7', 17, '?'])
                 .then((url: AppURL) => {
                     expect(url.toString()).toBe('/q/lists/PistolPete/17/%3F');
                 }),

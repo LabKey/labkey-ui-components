@@ -3,22 +3,19 @@ import { Checkbox } from 'react-bootstrap';
 
 import { Filter } from '@labkey/api';
 
-import {
-    GridPanel,
-    InjectedQueryModels,
-    LoadingSpinner,
-    Page,
-    PageHeader,
-    QuerySort,
-    SchemaQuery,
-    withQueryModels,
-} from '../../..';
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QuerySort } from '../../../public/QuerySort';
+import { GridPanel } from '../../../public/QueryModel/GridPanel';
+import { PageHeader } from '../base/PageHeader';
+import { Page } from '../base/Page';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface Props {
     autoRefresh: boolean;
     baseFilters?: Filter.IFilter[];
     gridId?: string;
-    interval?: number;// in ms
+    interval?: number; // in ms
     title?: string;
 }
 

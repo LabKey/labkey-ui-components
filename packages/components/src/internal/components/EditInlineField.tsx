@@ -10,7 +10,7 @@ import { QueryColumn } from '../../public/QueryColumn';
 
 import { DateInput } from './DateInput';
 import { useServerContext } from './base/ServerContext';
-import { resolveDetailEditRenderer } from './forms/detail/DetailEditRenderer';
+import { resolveDetailEditRenderer } from './forms/detail/DetailDisplay';
 
 interface Props {
     allowBlank?: boolean;

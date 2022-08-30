@@ -1,15 +1,15 @@
 import { ReactNode } from 'react';
 
-import { InferDomainResponse } from '../..';
+import { InferDomainResponse } from '../InferDomainResponse';
 
 export interface FileSizeLimitProps {
-    maxSize?: {
-        value: number;
-        displayValue: string;
-    };
     maxPreviewSize?: {
-        value: number;
         displayValue: string;
+        value: number;
+    };
+    maxSize?: {
+        displayValue: string;
+        value: number;
     };
 }
 

@@ -3,8 +3,6 @@ import { List } from 'immutable';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
-import { LabelHelpTip } from '../../..';
-
 import {
     ADVANCED_FIELD_EDITOR_TOPIC,
     CHART_MEASURES_AND_DIMENSIONS_TOPIC,
@@ -13,9 +11,12 @@ import {
     MISSING_VALUES_TOPIC,
 } from '../../util/helpLinks';
 
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { DATETIME_TYPE, PropDescType } from './PropDescType';
-import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
+import { getCheckedValue } from './actions';
+import { createFormInputId, createFormInputName, getNameFromId } from './utils';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_DEFAULT_TYPES,

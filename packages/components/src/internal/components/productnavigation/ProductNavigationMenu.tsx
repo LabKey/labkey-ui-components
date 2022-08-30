@@ -1,10 +1,14 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext, Security } from '@labkey/api';
 
-import { Alert, LoadingSpinner, naturalSortByProperty } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
-
 import { hasPremiumModule } from '../../app/utils';
+
+import { naturalSortByProperty } from '../../../public/sort';
+
+import { Alert } from '../base/Alert';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { getContainerTabs, getRegisteredProducts } from './actions';
 import { ADMIN_LOOK_AND_FEEL_URL, PRODUCT_SERVICES_URL } from './constants';
@@ -15,8 +19,8 @@ import { ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductNavigationHeader } from './ProductNavigationHeader';
 
 interface ProductNavigationMenuProps {
-    onCloseMenu?: () => void;
     disableLKSContainerLink?: boolean;
+    onCloseMenu?: () => void;
 }
 
 export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
@@ -69,13 +73,13 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
 });
 
 interface ProductNavigationMenuImplProps extends ProductNavigationMenuProps {
-    error: string;
-    products: ProductModel[];
-    homeVisible: boolean;
     disableLKSContainerLink: boolean;
-    tabs: ContainerTabModel[];
-    selectedProductId: string;
+    error: string;
+    homeVisible: boolean;
     onSelection: (productId: string) => void;
+    products: ProductModel[];
+    selectedProductId: string;
+    tabs: ContainerTabModel[];
 }
 
 // exported for jest testing

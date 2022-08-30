@@ -2,32 +2,27 @@ import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from '
 import { Set, List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
-import {
-    EXPORT_TYPES,
-    GridAliquotViewSelector,
-    InjectedQueryModels,
-    invalidateLineageResults,
-    IS_ALIQUOT_COL,
-    MAX_EDITABLE_GRID_ROWS,
-    NO_UPDATES_MESSAGE,
-    RequiresModelAndActions,
-    resolveErrorMessage,
-    SampleTypeDataType,
-    SchemaQuery,
-    TabbedGridPanel,
-    updateRows,
-    useNotificationsContext,
-    User,
-} from '../../..';
-
-import { TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
+import { TabbedGridPanel, TabbedGridPanelProps } from '../../../public/QueryModel/TabbedGridPanel';
 
 import { userCanEditStorageData } from '../../app/utils';
 
-import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
-import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
-import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
+import { EXPORT_TYPES, MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from '../../constants';
+import { InjectedQueryModels, RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
+import { User } from '../base/models/User';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { updateRows } from '../../query/api';
+import { invalidateLineageResults } from '../lineage/actions';
+import { SampleTypeDataType } from '../entities/constants';
+import { resolveErrorMessage } from '../../util/messaging';
+import { GridAliquotViewSelector } from '../gridbar/GridAliquotViewSelector';
+
+import { IS_ALIQUOT_COL } from './constants';
 import { SampleGridButtonProps } from './models';
+import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
+import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
+import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 

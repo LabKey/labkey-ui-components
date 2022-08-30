@@ -17,7 +17,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { AppURL } from '../../..';
+import { AppURL } from '../../url/AppURL';
 
 import { BreadcrumbCreate } from './BreadcrumbCreate';
 

@@ -1,7 +1,11 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, LabelHelpTip, LoadingSpinner } from '../../..';
+import { Alert } from '../base/Alert';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { OntologyBrowserPanel, OntologyBrowserPanelImpl } from './OntologyBrowserPanel';
 import { OntologySelectionPanel } from './OntologySelectionPanel';

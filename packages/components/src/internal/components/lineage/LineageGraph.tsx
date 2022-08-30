@@ -5,7 +5,9 @@
 import React, { FC, memo, PureComponent } from 'react';
 import { Experiment } from '@labkey/api';
 
-import { Alert, LoadingSpinner } from '../../..';
+import { Alert } from '../base/Alert';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { InjectedLineage, withLineage, WithLineageOptions } from './withLineage';
 import { NodeInteractionProvider, WithNodeInteraction } from './actions';
@@ -150,9 +152,9 @@ export const LineageGraph = withLineage<LineageGraphOwnProps>((props: Props) => 
 
 interface LineageDepthLimitProps {
     className?: string;
+    isRoot?: boolean;
     maxDistance?: number;
     nodeName?: string;
-    isRoot?: boolean;
 }
 export const LineageDepthLimitMessage: FC<LineageDepthLimitProps> = memo(props => {
     const { className, maxDistance, isRoot, nodeName } = props;

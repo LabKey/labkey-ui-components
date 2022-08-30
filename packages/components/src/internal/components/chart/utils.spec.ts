@@ -1,5 +1,7 @@
-import { AppURL, ISelectRowsResult } from '../../..';
 import AssayRunCountsRowsJson from '../../../test/data/AssayRunCounts-getQueryRows.json';
+
+import { ISelectRowsResult } from '../../query/api';
+import { AppURL } from '../../url/AppURL';
 
 import {
     getBarChartPlotConfig,

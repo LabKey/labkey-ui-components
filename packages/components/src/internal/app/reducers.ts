@@ -5,7 +5,9 @@
 import { Map } from 'immutable';
 import { handleActions } from 'redux-actions';
 
-import { ServerNotificationModel, ProductMenuModel } from '../..';
+import { ProductMenuModel } from '../components/navigation/model';
+
+import { ServerNotificationModel } from '../components/notifications/model';
 
 import { AppModel, LogoutReason } from './models';
 import {

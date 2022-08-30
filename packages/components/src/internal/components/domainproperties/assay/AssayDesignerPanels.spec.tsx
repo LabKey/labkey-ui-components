@@ -4,10 +4,11 @@ import { mount } from 'enzyme';
 import { Panel } from 'react-bootstrap';
 
 import { DomainDesign } from '../models';
-import { FileAttachmentForm } from '../../../..';
 
 import { sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
+
+import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
 
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';

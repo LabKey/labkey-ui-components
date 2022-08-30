@@ -17,16 +17,13 @@ import React, { FC, memo, useMemo } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import {
-    InjectedQueryModels,
-    LoadingSpinner,
-    QueryColumn,
-    QueryConfig,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../..';
-
 import { DetailDisplay, DetailDisplaySharedProps } from '../../internal/components/forms/detail/DetailDisplay';
+
+import { QueryColumn } from '../QueryColumn';
+import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
+
+import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
+import { QueryConfig } from './QueryModel';
 
 interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
     editColumns?: QueryColumn[];

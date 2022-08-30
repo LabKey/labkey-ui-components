@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 
 import { OntologyConceptAnnotation } from '../ontology/OntologyConceptAnnotation';
 
-import { createFormInputId } from './actions';
+import { createFormInputId } from './utils';
 import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,

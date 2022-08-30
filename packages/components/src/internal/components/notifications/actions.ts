@@ -15,7 +15,9 @@
  */
 import { ActionURL, Ajax, Filter, getServerContext, Utils } from '@labkey/api';
 
-import { buildURL, resolveErrorMessage, selectRowsDeprecated } from '../../..';
+import { buildURL } from '../../url/AppURL';
+import { resolveErrorMessage } from '../../util/messaging';
+import { selectRowsDeprecated } from '../../query/api';
 
 import { ServerActivity, ServerActivityData } from './model';
 

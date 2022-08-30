@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
-import { LoadingSpinner } from '../../../index';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { markNotificationsAsRead } from './actions';
 import { ServerNotificationsConfig } from './model';

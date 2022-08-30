@@ -5,12 +5,11 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { mount, MountRendererProps, ReactWrapper } from 'enzyme';
 import { LabKey, Query } from '@labkey/api';
 
-import { initQueryGridState, QueryInfo, ServerContext, ServerContextProvider } from '..';
+import { RowsResponse, bindColumnRenderers } from '../public/QueryModel/QueryModelLoader';
 
-import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
+import { QueryInfo } from '../public/QueryInfo';
 
 import { applyQueryMetadata, handleSelectRowsResponse } from './query/api';
-import { bindColumnRenderers } from './renderers';
 import { URL_MAPPERS, URLService } from './url/URLResolver';
 import { AppContext, AppContextProvider } from './AppContext';
 import { getTestAPIWrapper } from './APIWrapper';
@@ -19,6 +18,8 @@ import {
     NotificationsContextProvider,
     NotificationsContextState,
 } from './components/notifications/NotificationsContext';
+import { initQueryGridState } from './global';
+import { ServerContext, ServerContextProvider } from './components/base/ServerContext';
 
 declare let LABKEY: LabKey;
 

@@ -17,8 +17,6 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { User } from '../../..';
-
 import { PageDetailHeader } from './PageDetailHeader';
 
 describe('<PageDetailHeader/>', () => {
@@ -48,9 +46,7 @@ describe('<PageDetailHeader/>', () => {
     });
 
     test('prefer iconUrl', () => {
-        const component = (
-            <PageDetailHeader title="Title" iconUrl="iconUrl" iconDir="iconDir" iconSrc="iconSrc" />
-        );
+        const component = <PageDetailHeader title="Title" iconUrl="iconUrl" iconDir="iconDir" iconSrc="iconSrc" />;
 
         const wrapper = mount(component);
         const srcAttr = wrapper.find('img').getDOMNode().getAttribute('src');

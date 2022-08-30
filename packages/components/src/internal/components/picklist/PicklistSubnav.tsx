@@ -1,8 +1,11 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { List } from 'immutable';
 
-import { AppURL, ITab, SubNav, useServerContext } from '../../..';
 import { PICKLIST_HOME_HREF, PICKLIST_KEY } from '../../app/constants';
+
+import { ITab, SubNav } from '../navigation/SubNav';
+import { useServerContext } from '../base/ServerContext';
+import { AppURL } from '../../url/AppURL';
 
 import { getPicklistFromId } from './actions';
 

@@ -1,10 +1,8 @@
 import { List } from 'immutable';
-import { Filter } from '@labkey/api';
 
-import { QueryColumn } from '../../..';
+import { QueryColumn } from '../../QueryColumn';
 
 import { ActionValue } from './actions/Action';
-import { SearchAction } from './actions/Search';
 import { Change, ChangeType } from './model';
 
 /**

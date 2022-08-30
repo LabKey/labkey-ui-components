@@ -51,7 +51,7 @@ import {
     SEVERITY_LEVEL_WARN,
 } from './constants';
 
-import { createFormInputId } from './actions';
+import { createFormInputId } from './utils';
 
 const wrapDraggable = element => {
     return (

@@ -2,17 +2,6 @@ import React, { FC, memo, useCallback } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
-import {
-    buildURL,
-    hasAnyPermissions,
-    ManageDropdownButton,
-    MAX_EDITABLE_GRID_ROWS,
-    RequiresPermission,
-    SampleTypeDataType,
-    SelectionMenuItem,
-    useServerContext,
-} from '../../..';
-
 import { EntityDataType } from '../entities/models';
 
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
@@ -21,10 +10,19 @@ import { EntityLineageEditMenuItem } from '../entities/EntityLineageEditMenuItem
 
 import { hasModule } from '../../app/utils';
 
-import { SampleGridButtonProps } from './models';
-import { getSampleTypeRowId } from './actions';
-import { SamplesEditButtonSections, shouldIncludeMenuItem } from './utils';
+import { useServerContext } from '../base/ServerContext';
+import { buildURL } from '../../url/AppURL';
+import { hasAnyPermissions } from '../base/models/User';
+import { RequiresPermission } from '../base/Permissions';
+import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
+import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+import { SampleTypeDataType } from '../entities/constants';
+
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
+import { SamplesEditButtonSections, shouldIncludeMenuItem } from './utils';
+import { getSampleTypeRowId } from './actions';
+import { SampleGridButtonProps } from './models';
 
 interface OwnProps {
     combineParentTypes?: boolean;

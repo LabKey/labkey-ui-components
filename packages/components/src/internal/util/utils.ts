@@ -17,7 +17,7 @@ import { Iterable, List, Map, Set } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 import { ChangeEvent } from 'react';
 
-import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular loading
+import { hasParameter, toggleParameter } from '../url/ActionURL';
 import { QueryInfo } from '../../public/QueryInfo';
 
 import { encodePart } from '../../public/SchemaQuery';

@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 
 import { JsonType } from '../PropDescType';
-import { createFormInputId } from '../actions';
+import { createFormInputId } from '../utils';
 import {
     DOMAIN_FIRST_FILTER_TYPE,
     DOMAIN_FIRST_FILTER_VALUE,
@@ -64,7 +64,7 @@ describe('Filters', () => {
         filters.unmount();
     });
 
-    test('Test Expressions', () => {
+    test('Expressions', () => {
         const validatorIndex = 1;
         const domainIndex = 1;
         const expression1 = 'format.column~isblank=';

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
-import { Alert, AppContext, LoadingSpinner } from '../../..';
-
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 import { BIOLOGICS_APP_PROPERTIES } from '../../app/constants';
@@ -10,6 +8,10 @@ import { BIOLOGICS_APP_PROPERTIES } from '../../app/constants';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
+
+import { AppContext } from '../../AppContext';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Alert } from '../base/Alert';
 
 import { FolderMenu } from './FolderMenu';
 

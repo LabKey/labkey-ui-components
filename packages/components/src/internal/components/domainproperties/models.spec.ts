@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ConceptModel, GridColumn, PropertyValidator } from '../../..';
-
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
 import { CONCEPT_CACHE } from '../ontology/actions';
@@ -22,6 +20,10 @@ import { CONCEPT_CACHE } from '../ontology/actions';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { initOnotologyMocks } from '../../../test/mock';
+
+import { GridColumn } from '../base/models/GridColumn';
+
+import { ConceptModel } from '../ontology/models';
 
 import {
     ATTACHMENT_TYPE,
@@ -56,6 +58,7 @@ import {
     getValidValuesFromArray,
     isPropertyTypeAllowed,
     isValidTextChoiceValue,
+    PropertyValidator,
     PropertyValidatorProperties,
 } from './models';
 import {

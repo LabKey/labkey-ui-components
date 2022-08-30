@@ -16,7 +16,11 @@
 import { fromJS, List, Map, Set } from 'immutable';
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
-import { QueryInfo, SchemaQuery, QueryColumn, makeTestQueryModel } from '..';
+
+import { SchemaQuery } from '../public/SchemaQuery';
+import { QueryColumn } from '../public/QueryColumn';
+import { QueryInfo } from '../public/QueryInfo';
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 
 import { CellMessage, EditorModel, getPkData, ValueDescriptor } from './models';
 

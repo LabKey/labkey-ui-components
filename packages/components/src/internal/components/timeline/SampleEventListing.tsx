@@ -7,15 +7,13 @@ import { Security } from '@labkey/api';
 import { UserSelectInput } from '../forms/input/UserSelectInput';
 import { Tip } from '../base/Tip';
 import { Alert } from '../base/Alert';
-import {
-    App,
-    ExpandableFilterToggle,
-    filterDate,
-    TimelineEventModel,
-    TimelineGroupedEventInfo,
-    TimelineView,
-} from '../../../index';
 import { exportTimelineGrid } from '../samples/actions';
+import { TimelineEventModel, TimelineGroupedEventInfo } from '../auditlog/models';
+import { ExpandableFilterToggle } from '../base/ExpandableFilterToggle';
+import { getDateFormat } from '../../app/utils';
+import { ASSAYS_KEY, SAMPLES_KEY, WORKFLOW_KEY } from '../../app/constants';
+import { filterDate } from '../../util/Date';
+import { TimelineView } from '../auditlog/TimelineView';
 
 interface Props {
     events?: TimelineEventModel[];
@@ -379,7 +377,7 @@ export class SampleEventListing extends React.Component<Props, State> {
                                 name="startDate"
                                 onChange={this.onStartDateChange}
                                 placeholderText="From"
-                                dateFormat={App.getDateFormat()}
+                                dateFormat={getDateFormat()}
                             />
                         </Col>
                         <Col xs={5}>
@@ -399,7 +397,7 @@ export class SampleEventListing extends React.Component<Props, State> {
                                         onChange={this.onEndDateChange}
                                         placeholderText="To"
                                         minDate={filterStartDate}
-                                        dateFormat={App.getDateFormat()}
+                                        dateFormat={getDateFormat()}
                                     />
                                 </Col>
                             </Row>
@@ -446,9 +444,9 @@ export class SampleEventListing extends React.Component<Props, State> {
         const filterEventType = type => {
             if (includeAllEvents) return true;
             return (
-                (type === App.SAMPLES_KEY && includeSampleEvent) ||
-                (type === App.ASSAYS_KEY && includeAssayEvent) ||
-                (type === App.WORKFLOW_KEY && includeJobEvent) ||
+                (type === SAMPLES_KEY && includeSampleEvent) ||
+                (type === ASSAYS_KEY && includeAssayEvent) ||
+                (type === WORKFLOW_KEY && includeJobEvent) ||
                 (type === 'inventory' && includeStorageEvent)
             );
         };

@@ -18,7 +18,13 @@ import { Link } from 'react-router';
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { Alert, AppURL, Grid, GridColumn, LoadingSpinner, naturalSortByProperty, QueryInfo } from '../../..';
+import { GridColumn } from '../base/models/GridColumn';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { AppURL } from '../../url/AppURL';
+import { naturalSortByProperty } from '../../../public/sort';
+import { Grid } from '../base/Grid';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { SchemaListing } from './SchemaListing';
 
@@ -59,15 +65,15 @@ function fetchGetQueries(schemaName: string): Promise<List<QueryInfo>> {
 }
 
 interface QueriesListingProps {
-    schemaName: string;
-    hideEmpty?: boolean;
     asPanel?: boolean;
+    hideEmpty?: boolean;
+    schemaName: string;
     title?: string;
 }
 
 interface QueriesListingState {
-    queries: List<QueryInfo>;
     error: string;
+    queries: List<QueryInfo>;
 }
 
 export class QueriesListing extends Component<QueriesListingProps, QueriesListingState> {

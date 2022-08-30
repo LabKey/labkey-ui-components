@@ -2,8 +2,12 @@ import React, { ReactNode } from 'react';
 import { Utils } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
-import { ACTIVE_JOB_INDICATOR_CLS, AssayUploadResultModel, ProductMenuModel, Tip } from '../../../index';
 import { WORKFLOW_KEY } from '../../app/constants';
+import { ProductMenuModel } from '../navigation/model';
+import { AssayUploadResultModel } from '../assay/models';
+import { Tip } from '../base/Tip';
+
+import { ACTIVE_JOB_INDICATOR_CLS } from './constants';
 
 export function hasActivePipelineJob(menu: ProductMenuModel, sectionKey: string, itemLabel: string): boolean {
     if (!menu.isLoaded) return false;

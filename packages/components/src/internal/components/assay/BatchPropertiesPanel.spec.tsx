@@ -3,12 +3,17 @@ import { OrderedMap } from 'immutable';
 import { mount } from 'enzyme';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
-import { TextInput, DatePickerInput, SelectInput, QueryFormInputs, QueryColumn } from '../../..';
 
 import { CheckboxInput } from '../forms/input/CheckboxInput';
 
-import { AssayWizardModel } from './AssayWizardModel';
+import { QueryColumn } from '../../../public/QueryColumn';
+import { QueryFormInputs } from '../forms/QueryFormInputs';
+import { TextInput } from '../forms/input/TextInput';
+import { DatePickerInput } from '../forms/input/DatePickerInput';
+import { SelectInput } from '../forms/input/SelectInput';
+
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
+import { AssayWizardModel } from './AssayWizardModel';
 
 beforeAll(() => {
     LABKEY.container = {

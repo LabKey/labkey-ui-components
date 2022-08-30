@@ -268,6 +268,7 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
                 containerPath,
                 schemaQuery: SchemaQuery.create(chosenType.schema, chosenType.query, ViewInfo.DETAIL_NAME),
                 omittedColumns: ['Run'],
+                requiredColumns: ['Name']
             },
         };
     }, [chosenType, containerPath, parentTypeOptions, parentLSIDs]);

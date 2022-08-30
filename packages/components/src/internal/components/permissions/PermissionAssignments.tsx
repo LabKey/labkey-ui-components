@@ -257,7 +257,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             {showDetailsPanel && (
                 <Col xs={12} md={4}>
                     {selectedPrincipal?.type === 'g' ? (
-                        <GroupDetailsPanel // flag--is this being used anywhere?
+                        <GroupDetailsPanel
                             principal={selectedPrincipal}
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
@@ -267,7 +267,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                         <UserDetailsPanel
                             userId={selectedUserId}
                             policy={policy}
-                            rootPolicy={rootPolicy} // ToDo: delete unused prop
+                            rootPolicy={rootPolicy}
                             rolesByUniqueName={rolesByUniqueName}
                         />
                     )}

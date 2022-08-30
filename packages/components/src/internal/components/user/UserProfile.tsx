@@ -81,8 +81,6 @@ export class UserProfile extends PureComponent<Props, State> {
                 this.setState(() => ({ hasError: true }));
             });
 
-        // factor into fn, getUserGroups, containerPath has a default param, put at top of file
-        // make sure to have default implementation for the tests
         try {
             const response = await selectRows({
                 schemaQuery: SCHEMAS.CORE_TABLES.USERS,

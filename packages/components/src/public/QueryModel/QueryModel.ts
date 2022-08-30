@@ -808,6 +808,9 @@ export class QueryModel {
      * True if either the query info or rows of the QueryModel are still loading.
      */
     get isLoading(): boolean {
+        if (this.hasLoadErrors)
+            return false;
+
         return isLoading(this.queryInfoLoadingState, this.rowsLoadingState);
     }
 

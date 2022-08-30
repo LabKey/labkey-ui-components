@@ -42,7 +42,7 @@ export class QueryLookup extends Record({
     static create(rawLookup): QueryLookup {
         return new QueryLookup(
             Object.assign({}, rawLookup, {
-                schemaQuery: SchemaQuery.create(rawLookup.schemaName, rawLookup.queryName),
+                schemaQuery: SchemaQuery.create(rawLookup.schemaName, rawLookup.queryName, rawLookup.viewName),
             })
         );
     }

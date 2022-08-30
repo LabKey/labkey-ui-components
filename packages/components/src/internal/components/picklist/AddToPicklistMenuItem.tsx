@@ -69,7 +69,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     }
 
     const useSelection = sampleIds === undefined;
-    const id = sampleIds ? undefined : queryModel?.id;
+    const selectionKey = sampleIds ? undefined : queryModel?.selectionKey;
     const numSelected = sampleIds ? sampleIds.length : queryModel.selections?.size;
 
     return (
@@ -98,7 +98,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     onCancel={closeAddToPicklist}
                     afterAddToPicklist={afterAddToPicklist}
                     user={user}
-                    selectionKey={id}
+                    selectionKey={selectionKey}
                     numSelected={numSelected}
                     sampleIds={sampleIds}
                     currentProductId={currentProductId}
@@ -110,7 +110,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
             )}
             {showCreatePicklist && (
                 <PicklistEditModal
-                    selectionKey={sampleFieldKey ? undefined : id} // If a sampleField is being used it, the id may not map correctly
+                    selectionKey={sampleFieldKey ? undefined : selectionKey} // If a sampleField is being used it, the id may not map correctly
                     selectedQuantity={numSelected}
                     sampleIds={sampleIds}
                     onFinish={afterCreatePicklist}

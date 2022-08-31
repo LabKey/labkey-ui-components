@@ -44,7 +44,9 @@ describe('extractChanges', () => {
         expect(extractChanges(QUERY_INFO, currentData, { fileInput: undefined }).fileInput).toBeUndefined();
         expect(extractChanges(QUERY_INFO, currentData, { fileInput: FILE }).fileInput).toBeUndefined();
         expect(extractChanges(QUERY_INFO, currentData, { fileInput: null }).fileInput).toBe(null);
-        expect(extractChanges(QUERY_INFO, currentData, { fileInput: new File([], 'fileEdit') }).fileInput).toBeDefined();
+        expect(
+            extractChanges(QUERY_INFO, currentData, { fileInput: new File([], 'fileEdit') }).fileInput
+        ).toBeDefined();
     });
 
     test('string input', () => {
@@ -65,12 +67,18 @@ describe('extractChanges', () => {
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: null }).dtInput).toBe(null);
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:03' }).dtInput).toBe(undefined);
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:04' }).dtInput).toBe(undefined);
-        expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:03:03' }).dtInput).toBe('2022-08-30 01:03:03');
-        expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-31 01:02:03' }).dtInput).toBe('2022-08-31 01:02:03');
+        expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:03:03' }).dtInput).toBe(
+            '2022-08-30 01:03:03'
+        );
+        expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-31 01:02:03' }).dtInput).toBe(
+            '2022-08-31 01:02:03'
+        );
 
         currentData = fromJS({ dtInput: { value: '2022-08-30' } });
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30' }).dtInput).toBe(undefined);
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-31' }).dtInput).toBe('2022-08-31');
-        expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:03' }).dtInput).toBe('2022-08-30 01:02:03');
+        expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:03' }).dtInput).toBe(
+            '2022-08-30 01:02:03'
+        );
     });
 });

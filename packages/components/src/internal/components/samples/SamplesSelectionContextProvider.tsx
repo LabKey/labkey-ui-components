@@ -89,9 +89,9 @@ export function SamplesSelectionProvider<T>(
         }
 
         loadAliquotData(): void {
-            const { determineSampleData, selection, sampleSet } = this.props;
+            const { determineSampleData, selection, sampleSet, viewName } = this.props;
             if (determineSampleData && selection && selection.size > 0) {
-                getAliquotSampleIds(selection, sampleSet)
+                getAliquotSampleIds(selection, sampleSet, viewName)
                     .then(aliquots => {
                         this.setState({
                             aliquots,
@@ -107,9 +107,9 @@ export function SamplesSelectionProvider<T>(
         }
 
         loadStorageData(): void {
-            const { selection, sampleSet, determineStorage } = this.props;
+            const { selection, sampleSet, determineStorage, viewName } = this.props;
             if (determineStorage && selection && selection.size > 0) {
-                getNotInStorageSampleIds(selection, sampleSet)
+                getNotInStorageSampleIds(selection, sampleSet, viewName)
                     .then(samples => {
                         this.setState({
                             noStorageSamples: samples,
@@ -137,9 +137,9 @@ export function SamplesSelectionProvider<T>(
         }
 
         loadLineageData(): void {
-            const { selection, sampleSet, determineLineage } = this.props;
+            const { selection, sampleSet, determineLineage, viewName } = this.props;
             if (determineLineage && selection && selection.size > 0) {
-                getSelectionLineageData(selection, SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)
+                getSelectionLineageData(selection, SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, viewName)
                     .then(response => {
                         const { key, models, orderedModels } = response;
                         this.setState(() => ({

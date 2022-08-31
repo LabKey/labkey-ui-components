@@ -150,12 +150,11 @@ export const PicklistDeleteConfirm: FC<Props> = memo(props => {
     return (
         <ConfirmModal
             title={'Delete ' + nounAndNumber}
-            onConfirm={deletionData?.numDeletable ? onConfirmDelete : undefined}
+            onConfirm={deletionData?.numDeletable && !errorMessage ? onConfirmDelete : undefined}
             onCancel={onCancel}
             confirmVariant="danger"
             confirmButtonText={'Yes, Delete ' + nounAndNumber}
             cancelButtonText="Cancel"
-            submitting={!!errorMessage} // disable submit button if there are errors
         >
             {errorMessage}
 

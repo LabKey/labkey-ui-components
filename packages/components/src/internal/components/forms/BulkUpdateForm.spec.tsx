@@ -46,6 +46,7 @@ const DEFAULT_PROPS = {
     onCancel: jest.fn,
     onSubmitForEdit: jest.fn,
     queryInfo: QUERY_INFO,
+    viewName: undefined,
     selectedIds: new Set<string>(),
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise.resolve(),
 };

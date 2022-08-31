@@ -82,7 +82,7 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
         const { containerFilter, containerPath, schemaQuery } = props;
 
         if (schemaQuery) {
-            const { queryName, schemaName } = schemaQuery;
+            const { queryName, schemaName, viewName } = schemaQuery;
 
             getQueryDetails({ schemaName, queryName, containerPath })
                 .then(queryInfo => {
@@ -124,6 +124,7 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                             containerPath,
                             schemaName,
                             queryName,
+                            viewName,
                             filterArray: [filter],
                         }).then(data => {
                             const selectedItems = fromJS(
@@ -237,6 +238,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
             containerPath: model.containerPath,
             schemaName: schemaQuery.getSchema(),
             queryName: schemaQuery.getQuery(),
+            viewName: schemaQuery.getView(),
             columns: getQueryColumnNames(model),
             filterArray: allFilters,
             sort: displayColumn,

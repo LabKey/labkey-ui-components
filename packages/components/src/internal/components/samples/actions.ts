@@ -69,6 +69,7 @@ import {
     UNIQUE_ID_FIND_FIELD,
 } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
+import { ViewInfo } from '../../ViewInfo';
 
 export function initSampleSetSelects(
     isUpdate: boolean,
@@ -167,6 +168,7 @@ export function fetchSamples(
     return selectRowsDeprecated({
         schemaName: schemaQuery.schemaName,
         queryName: schemaQuery.queryName,
+        viewName: schemaQuery.viewName,
         columns: ['RowId', displayValueKey, valueKey],
         filterArray,
     }).then(response => {
@@ -273,17 +275,18 @@ export function getGroupedSampleDomainFields(sampleType: string): Promise<Groupe
     });
 }
 
-export function getAliquotSampleIds(selection: List<any>, sampleType: string): Promise<any[]> {
-    return getFilteredSampleSelection(selection, sampleType, [Filter.create(IS_ALIQUOT_COL, true)]);
+export function getAliquotSampleIds(selection: List<any>, sampleType: string, viewName: string): Promise<any[]> {
+    return getFilteredSampleSelection(selection, sampleType, viewName, [Filter.create(IS_ALIQUOT_COL, true)]);
 }
 
-export function getNotInStorageSampleIds(selection: List<any>, sampleType: string): Promise<any[]> {
-    return getFilteredSampleSelection(selection, sampleType, [Filter.create('StorageStatus', 'Not in storage')]);
+export function getNotInStorageSampleIds(selection: List<any>, sampleType: string, viewName: string): Promise<any[]> {
+    return getFilteredSampleSelection(selection, sampleType, viewName, [Filter.create('StorageStatus', 'Not in storage')]);
 }
 
 function getFilteredSampleSelection(
     selection: List<any>,
     sampleType: string,
+    viewName: string,
     filters: Filter.IFilter[]
 ): Promise<any[]> {
     const sampleRowIds = getRowIdsFromSelection(selection);
@@ -297,6 +300,7 @@ function getFilteredSampleSelection(
         selectRowsDeprecated({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             queryName: sampleType,
+            viewName: viewName,
             columns: 'RowId',
             filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN), ...filters],
         })
@@ -377,6 +381,7 @@ export function getSelectionLineageData(
     selection: List<any>,
     schema: string,
     query: string,
+    viewName: string,
     columns?: string[]
 ): Promise<ISelectRowsResult> {
     const rowIds = getRowIdsFromSelection(selection);
@@ -388,6 +393,7 @@ export function getSelectionLineageData(
         selectRowsDeprecated({
             schemaName: schema,
             queryName: query,
+            viewName,
             columns: columns ?? List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
             filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
         })
@@ -582,6 +588,7 @@ export function getParentRowIdAndDataType(
             containerPath,
             schemaName: parentDataType.listingSchemaQuery.schemaName,
             queryName: parentDataType.listingSchemaQuery.queryName,
+            viewName: ViewInfo.DETAIL_NAME, // use this to avoid filters on the default view
             columns: 'LSID, RowId, DataClass, SampleSet', // only one of DataClass or SampleSet will exist
             filterArray: [Filter.create('LSID', parentIDs, Filter.Types.IN)],
         })
@@ -883,13 +890,14 @@ export function getSampleAliquotsQueryConfig(
 ): QueryConfig {
     const omitCol = IS_ALIQUOT_COL;
 
+    // use Detail view so we get all info even if default view has been filtered
     return {
-        id: createGridModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet)),
-        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
+        id: createGridModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME)),
+        schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME),
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,
         omittedColumns: omitCols ? [...omitCols, omitCol] : [omitCol],
-        requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
+        requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'StorageStatus'],
         baseFilters: [
             Filter.create('RootMaterialLSID', aliquotRootLsid ?? sampleLsid),
             Filter.create('Lsid', sampleLsid, Filter.Types.EXP_CHILD_OF),

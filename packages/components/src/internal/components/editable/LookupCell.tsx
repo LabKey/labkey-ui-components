@@ -23,6 +23,8 @@ import { LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QuerySelect } from '../forms/QuerySelect';
+import { ViewInfo } from '../../ViewInfo';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 const customStyles = {
     control: provided => ({
@@ -143,7 +145,8 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 disabled={disabled}
                 queryFilters={queryFilters}
                 multiple={isMultiple}
-                schemaQuery={lookup.schemaQuery}
+                // use detail view to assure we get values that may have been filtered out in the default view
+                schemaQuery={SchemaQuery.create(lookup.schemaQuery.schemaName, lookup.schemaQuery.queryName, ViewInfo.DETAIL_NAME)}
                 key={col.lookupKey}
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 containerPath={lookup.containerPath}

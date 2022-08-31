@@ -25,6 +25,7 @@ import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../p
 
 import { isSampleEntity } from './utils';
 import { EntityDataType, IEntityTypeOption } from './models';
+import { ViewInfo } from '../../ViewInfo';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -96,7 +97,8 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
 
         let parentSchemaQuery;
         if (chosenType && parentTypeOptions) {
-            parentSchemaQuery = SchemaQuery.create(chosenType.schema, chosenType.query);
+            // use the detail view, so we get all parents, even if the default view has been filtered
+            parentSchemaQuery = SchemaQuery.create(chosenType.schema, chosenType.query, ViewInfo.DETAIL_NAME);
         }
 
         let value = chosenValue ?? undefined;
@@ -258,12 +260,15 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
             return {};
         }
 
+        // use detail view to assure we get the value even if the default view is filtered
         return {
             model: {
                 baseFilters: parentLSIDs?.length > 0 ? [Filter.create('LSID', parentLSIDs, Filter.Types.IN)] : [],
                 bindURL: false,
                 containerPath,
-                schemaQuery: SchemaQuery.create(chosenType.schema, chosenType.query),
+                schemaQuery: SchemaQuery.create(chosenType.schema, chosenType.query, ViewInfo.DETAIL_NAME),
+                omittedColumns: ['Run'],
+                requiredColumns: ['Name']
             },
         };
     }, [chosenType, containerPath, parentTypeOptions, parentLSIDs]);

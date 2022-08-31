@@ -24,14 +24,15 @@ import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants
 import {
     Lineage,
     LineageGridModel,
+    LineageIOWithMetadata,
     LineageItemWithIOMetadata,
     LineageItemWithMetadata,
-    LineageIOWithMetadata,
     LineageNode,
     LineageNodeMetadata,
     LineageResult,
     LineageRunStep,
 } from './models';
+import { ViewInfo } from '../../ViewInfo';
 
 const LINEAGE_METADATA_COLUMNS = OrderedSet<string>(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
@@ -108,6 +109,7 @@ function fetchNodeMetadata(lineage: LineageResult): Array<Promise<ISelectRowsRes
                 containerPath: node.container,
                 schemaName: schemaQuery.schemaName,
                 queryName: schemaQuery.queryName,
+                viewName: ViewInfo.DETAIL_NAME, // use Detail view to assure we get all data, even when default view is filtered
                 // TODO: Is there a better way to determine set of columns? Can we follow convention for detail views?
                 // See LineageNodeMetadata (and it's usages) for why this is currently necessary
                 columns: LINEAGE_METADATA_COLUMNS.add(fieldKey).join(','),

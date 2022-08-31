@@ -66,7 +66,7 @@ describe('extractChanges', () => {
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: undefined }).dtInput).toBe(null);
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: null }).dtInput).toBe(null);
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:03' }).dtInput).toBe(undefined);
-        expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:04' }).dtInput).toBe(undefined);
+        expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:02:04' }).dtInput).toBe(undefined); // Issue 40139: date comparison only down to minute precision
         expect(extractChanges(QUERY_INFO, currentData, { dtInput: '2022-08-30 01:03:03' }).dtInput).toBe(
             '2022-08-30 01:03:03'
         );

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.212.3
+*Released*: 31 August 2022
 * Issue 46210: Details panel editing removes file attachments when other fields are edited
 * Fix for DatePickerInput handling of date format with 'YY' instead of 'YYYY'
 

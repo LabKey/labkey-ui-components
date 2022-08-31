@@ -160,6 +160,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getFileTemplateUrl?: (queryInfo: QueryInfo, importAliases: Record<string, string>) => string;
     getIsDirty?: () => boolean;
+    gridInsertOnly?: boolean;
     hideParentEntityButtons?: boolean; // Used if you have an initial parent but don't want to enable ability to change it
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
@@ -174,11 +175,15 @@ interface OwnProps {
     onChangeInsertOption?: (isMerge: boolean) => void;
     onFileChange?: (files?: string[]) => void;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
+    onTabChange?: (tab: number) => void;
     onTargetChange?: (target: string) => void;
+    originalParents?: string[];
     parentDataTypes?: List<EntityDataType>;
     saveToPipeline?: boolean;
-    selectedParents?: string[];
-    selectedTarget?: string; // controlling target from a parent component
+    selectedParents?: Map<string, List<EntityParentType>>;
+    selectedTab?: number;
+    // selectedTarget allows controlling target from a parent component
+    selectedTarget?: string;
     setIsDirty?: (isDirty: boolean) => void;
 }
 
@@ -275,12 +280,12 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     componentDidUpdate(prevProps: Readonly<Props>): void {
         if (
             prevProps.entityDataType !== this.props.entityDataType ||
-            prevProps.selectedParents !== this.props.selectedParents
+            prevProps.originalParents !== this.props.originalParents
         ) {
             this.init();
         }
 
-        if (this.props.importOnly && this.props.tab !== EntityInsertPanelTabs.First)
+        if ((this.props.importOnly || this.props.gridInsertOnly) && this.props.tab !== EntityInsertPanelTabs.First)
             this.props.selectStep(EntityInsertPanelTabs.First);
     }
 
@@ -292,6 +297,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         if (this.props.importOnly) {
             return ['Import ' + this.capNounPlural + ' from File'];
         }
+
+        if (this.props.gridInsertOnly) {
+            return ['Create ' + this.capNounPlural + ' from Grid'];
+        }
+
         return ['Create ' + this.capNounPlural + ' from Grid', 'Import ' + this.capNounPlural + ' from File'];
     };
 
@@ -306,6 +316,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             target,
             isItemSamples,
             selectedTarget,
+            originalParents,
             selectedParents,
         } = this.props;
 
@@ -337,7 +348,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             insertModel.getTargetEntityTypeValue() === selected &&
             insertModel.selectionKey === selectionKey &&
             (insertModel.originalParents === parents ||
-                insertModel.originalParents === selectedParents ||
+                insertModel.originalParents === originalParents ||
                 !allowParents)
         ) {
             return;
@@ -350,7 +361,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             entityDataType,
             initialEntityType: selected,
             numPerParent,
-            originalParents: allowParents ? parents ?? selectedParents : undefined,
+            originalParents: allowParents ? parents ?? originalParents : undefined,
             selectionKey,
         });
 
@@ -368,6 +379,8 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 allowParents,
                 isItemSamples
             );
+
+            if (selectedParents) partialModel['entityParents'] = selectedParents;
 
             this.gridInit(insertModel.merge(partialModel) as EntityIdCreationModel);
         } catch {
@@ -885,7 +898,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         return null;
     };
 
-    onTabChange = (): void => {
+    onTabChange = (tab): void => {
+        if (this.props.onTabChange) {
+            this.props.onTabChange(tab);
+        }
+
         this.setState({ error: undefined });
     };
 
@@ -1457,11 +1474,11 @@ export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(pr
             numPerParent,
             parents: parent?.split(';'),
             selectionKey,
-            tab: parseInt(tab, 10),
+            tab: entityInsertPanelProps.selectedTab ?? parseInt(tab, 10),
             target,
             isItemSamples,
         };
-    }, [location]);
+    }, [location, entityInsertPanelProps.selectedTab]);
 
     return <EntityInsertPanelFormSteps {...entityInsertPanelProps} {...fromLocationProps} user={user} />;
 });

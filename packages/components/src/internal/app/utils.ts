@@ -19,7 +19,6 @@ import { AppProperties } from './models';
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
-    EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     ProductFeature,
@@ -221,7 +220,10 @@ export function isAssayEnabled(moduleContext?: any): boolean {
 }
 
 export function isWorkflowEnabled(moduleContext?: any): boolean {
-    return hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) && isFeatureEnabled(ProductFeature.Workflow, moduleContext);
+    return (
+        hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) &&
+        isFeatureEnabled(ProductFeature.Workflow, moduleContext)
+    );
 }
 
 export function isFeatureEnabled(flag: ProductFeature, moduleContext?: any): boolean {
@@ -233,13 +235,6 @@ export function isSampleAliquotSelectorEnabled(moduleContext?: any): boolean {
         (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[
             EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR
         ] === true
-    );
-}
-
-export function isGridLockLeftColumnEnabled(moduleContext?: any): boolean {
-    return (
-        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[EXPERIMENTAL_GRID_LOCK_LEFT_COLUMN] ===
-        true
     );
 }
 

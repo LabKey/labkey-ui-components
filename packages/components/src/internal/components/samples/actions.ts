@@ -45,7 +45,7 @@ import {
     getQueryDetails,
     ISelectRowsResult,
     selectDistinctRows,
-    selectRowsDeprecated
+    selectRowsDeprecated,
 } from '../../query/api';
 
 import { buildURL } from '../../url/AppURL';

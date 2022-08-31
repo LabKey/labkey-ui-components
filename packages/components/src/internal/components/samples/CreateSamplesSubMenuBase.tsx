@@ -7,6 +7,9 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
+
+import { SCHEMAS } from '../../schemas';
+
 import { isSamplesSchema } from './utils';
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import {
@@ -15,10 +18,8 @@ import {
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
-    SampleCreationTypeModel
-} from "./models";
-
-import {SCHEMAS} from "../../schemas";
+    SampleCreationTypeModel,
+} from './models';
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;

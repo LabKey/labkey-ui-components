@@ -22,7 +22,6 @@ import {
 } from './constants';
 import { getURLResolver } from './LineageURLResolvers';
 import {
-    LineageGroupingOptions,
     LINEAGE_DIRECTIONS,
     LineageLinkMetadata,
     LineageOptions,

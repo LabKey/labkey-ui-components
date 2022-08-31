@@ -5,6 +5,20 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Implement Group Management
 
+### version 2.212.4
+*Released*: 31 August 2022
+* Remove experimental feature flag for App grid lock left col on horizontal scroll
+
+### version 2.212.3
+*Released*: 31 August 2022
+* Issue 46210: Details panel editing removes file attachments when other fields are edited
+* Fix for DatePickerInput handling of date format with 'YY' instead of 'YYYY'
+
+### version 2.212.2
+*Released*: 31 August 2022
+* Update EntityInsertPanel for dynamic parent options
+* Title and text options for sample creation/editing modal and detail panels
+
 ### version 2.212.1
 *Released*: 30 August 2022
 * Update width of megamenu to be responsive

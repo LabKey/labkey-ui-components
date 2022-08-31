@@ -66,7 +66,7 @@ export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string):
 
     // Moment.js and react datepicker date format is different
     // https://github.com/Hacker0x01/react-datepicker/issues/1609
-    return rawFormat.replace('YYYY', 'yyyy').replace('DD', 'dd');
+    return rawFormat.replace('YYYY', 'yyyy').replace('YY', 'yy').replace('DD', 'dd');
 }
 
 export function getColFormattedDateValue(column: QueryColumn, value: string): string {
@@ -95,7 +95,7 @@ export function parseDate(dateStr: string, dateFormat?: string): Date {
 
     // Moment.js and react datepicker date format is different
     // https://github.com/Hacker0x01/react-datepicker/issues/1609
-    const _dateFormat = dateFormat?.replace('yyyy', 'YYYY').replace('dd', 'DD');
+    const _dateFormat = dateFormat?.replace('yyyy', 'YYYY').replace('yy', 'YY').replace('dd', 'DD');
 
     if (_dateFormat) {
         const date = moment(dateStr, _dateFormat, true);

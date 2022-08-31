@@ -27,11 +27,11 @@ export function extractChanges(
     const changedValues = {};
     // Loop through submitted formValues and check against existing currentData from server
     Object.keys(formValues).forEach(field => {
-        // If nested value, will need to do deeper check
-        if (List.isList(currentData.get(field))) {
-            const existingValue = currentData.get(field);
-            const changedValue = formValues[field];
+        let existingValue = currentData.get(field);
+        const changedValue = formValues[field];
 
+        // If nested value, will need to do deeper check
+        if (List.isList(existingValue)) {
             // If the submitted value and existing value are empty, do not update field
             if (!changedValue && existingValue.size === 0) {
                 return false;
@@ -54,14 +54,15 @@ export function extractChanges(
                     }
                 }
             }
-        } else if (formValues[field] != currentData.getIn([field, 'value'])) {
+        } else if (changedValue != currentData.getIn([field, 'value'])) {
+            existingValue = currentData.getIn([field, 'value']);
             const column = queryInfo.getColumn(field);
-            let newValue = formValues[field];
+            let newValue = changedValue;
             // A date field needs to be checked specially
             if (column?.jsonType === 'date') {
                 // Ensure dates have same formatting
                 const newDate = new Date(newValue);
-                const origDate = new Date(currentData.getIn([field, 'value']));
+                const origDate = new Date(existingValue);
                 // If submitted value is same as existing date down to the minute (issue 40139), do not update
                 let newDateValue = newDate.setUTCSeconds(0, 0);
                 let origDateValue = origDate.setUTCSeconds(0, 0);
@@ -74,9 +75,14 @@ export function extractChanges(
                 if (newDateValue === origDateValue) {
                     return false;
                 }
-            } else if (column?.jsonType === 'string' && column?.inputType !== 'file') {
+            } else if (column?.inputType === 'file') {
+                // for file inputs, newValue of undefined means that it wasn't changed
+                if (newValue === undefined || existingValue === newValue) {
+                    return false;
+                }
+            } else if (column?.jsonType === 'string') {
                 newValue = newValue?.trim();
-                if (currentData.get(field) === newValue) {
+                if (existingValue === newValue) {
                     return false;
                 }
             }

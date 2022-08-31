@@ -47,6 +47,7 @@ import {
     selectDistinctRows,
     selectRowsDeprecated,
 } from '../../query/api';
+
 import { buildURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DomainDetails } from '../domainproperties/models';
@@ -878,7 +879,7 @@ export function getSampleAliquotsQueryConfig(
     sampleLsid: string,
     forGridView?: boolean,
     aliquotRootLsid?: string,
-    omitCols?: List<string>
+    omitCols?: string[]
 ): QueryConfig {
     const omitCol = IS_ALIQUOT_COL;
 
@@ -887,7 +888,7 @@ export function getSampleAliquotsQueryConfig(
         schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,
-        omittedColumns: omitCols ? [...omitCols.toArray(), omitCol] : [omitCol],
+        omittedColumns: omitCols ? [...omitCols, omitCol] : [omitCol],
         requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
         baseFilters: [
             Filter.create('RootMaterialLSID', aliquotRootLsid ?? sampleLsid),

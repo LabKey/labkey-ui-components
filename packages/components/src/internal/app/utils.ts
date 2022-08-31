@@ -220,7 +220,10 @@ export function isAssayEnabled(moduleContext?: any): boolean {
 }
 
 export function isWorkflowEnabled(moduleContext?: any): boolean {
-    return hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) && isFeatureEnabled(ProductFeature.Workflow, moduleContext);
+    return (
+        hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) &&
+        isFeatureEnabled(ProductFeature.Workflow, moduleContext)
+    );
 }
 
 export function isFeatureEnabled(flag: ProductFeature, moduleContext?: any): boolean {

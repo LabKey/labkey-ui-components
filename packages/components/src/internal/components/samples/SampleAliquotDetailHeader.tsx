@@ -55,7 +55,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
                         {this.renderDetailRow('Aliquoted by', createdBy, 'aliquotedby')}
                         {this.renderDetailRow('Aliquot date', created, 'aliquoteddate')}
                         {this.renderDetailRow('Aliquot description', description, 'aliquoteddescription')}
-                        {isSampleStatusEnabled() && (
+                        {isSampleStatusEnabled() && status !== undefined && (
                             <tr key="aliquotedstatus">
                                 <td>Aliquot status</td>
                                 <td>

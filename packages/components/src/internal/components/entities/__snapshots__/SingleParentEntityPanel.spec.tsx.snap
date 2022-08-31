@@ -5854,8 +5854,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "Run",
           ],
           "requiredColumns": Array [
-            "Created",
-            "CreatedBy",
+            "Name",
           ],
           "schemaQuery": Immutable.Record {
             "schemaName": "exp.data",
@@ -6012,8 +6011,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "Run",
             ],
             "requiredColumns": Array [
-              "Created",
-              "CreatedBy",
+              "Name",
             ],
             "schemaQuery": Immutable.Record {
               "schemaName": "exp.data",
@@ -6201,8 +6199,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "queryInfoLoadingState": "LOADING",
               "queryParameters": undefined,
               "requiredColumns": Array [
-                "Created",
-                "CreatedBy",
+                "Name",
               ],
               "rowCount": undefined,
               "rows": undefined,
@@ -6337,8 +6334,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "queryInfoLoadingState": "LOADING",
                 "queryParameters": undefined,
                 "requiredColumns": Array [
-                  "Created",
-                  "CreatedBy",
+                  "Name",
                 ],
                 "rowCount": undefined,
                 "rows": undefined,
@@ -6455,8 +6451,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "queryInfoLoadingState": "LOADING",
                     "queryParameters": undefined,
                     "requiredColumns": Array [
-                      "Created",
-                      "CreatedBy",
+                      "Name",
                     ],
                     "rowCount": undefined,
                     "rows": undefined,

@@ -131,6 +131,7 @@ describe('Date Utilities', () => {
         test('moment.js replacement', () => {
             const col = QueryColumn.create({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
             expect(getColDateFormat(col, 'YYYY-MM-DD')).toBe('yyyy-MM-dd');
+            expect(getColDateFormat(col, 'YY-MM-dd')).toBe('yy-MM-dd');
         });
 
         test('shortcut formats', () => {
@@ -198,6 +199,10 @@ describe('Date Utilities', () => {
             expect(parseDate('04/11/2022', 'yyyy-MM-dd').toString()).toContain('Apr 11 2022');
             expect(parseDate('4/11/2022', 'yyyy-MM-dd HH:ss').toString()).toContain('Apr 11 2022');
             expect(parseDate('04/11/2022', 'yyyy-MM-dd HH:ss').toString()).toContain('Apr 11 2022');
+            expect(parseDate('22-04-11', 'yy-MM-dd').toString()).toContain('Apr 11 2022');
+            expect(parseDate('22-04-11', 'YY-MM-DD').toString()).toContain('Apr 11 2022');
+            expect(parseDate('22/04/11', 'yy/MM/dd').toString()).toContain('Apr 11 2022');
+            expect(parseDate('22/04/11', 'YY/MM/DD').toString()).toContain('Apr 11 2022');
         });
     });
 });

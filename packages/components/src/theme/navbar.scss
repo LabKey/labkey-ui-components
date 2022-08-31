@@ -233,6 +233,40 @@ $nav-menu-btn-width: 85px;
   }
 }
 
+.navbar-left {
+    // For when 'Project' dropdown is not present
+    .navbar-item:first-child:nth-last-child(2),
+    .navbar-item:first-child:nth-last-child(2) ~ .navbar-item {
+        @media (min-width: 1200px) {
+            .product-menu-content {
+                width: 1000px;
+            }
+        }
+
+        @media (min-width: 1450px) {
+            .product-menu-content {
+                width: 1230px;
+            }
+        }
+    }
+
+    // For when 'Project' dropdown is present
+    .navbar-item:first-child:nth-last-child(3),
+    .navbar-item:first-child:nth-last-child(3) ~ .navbar-item {
+        @media (min-width: 1550px) {
+            .product-menu-content {
+                width: 1000px;
+            }
+        }
+
+        @media (min-width: 1775px) {
+            .product-menu-content {
+                width: 1230px;
+            }
+        }
+    }
+}
+
 .empty-section {
   font-style: italic;
   color: $light-gray;

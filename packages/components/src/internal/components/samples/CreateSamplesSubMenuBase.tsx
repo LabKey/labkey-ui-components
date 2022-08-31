@@ -1,12 +1,17 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
-import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
 import { MenuOption, SubMenu } from '../menus/SubMenu';
 import { AppURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
+
+import { SCHEMAS } from '../../schemas';
+
+import { isSamplesSchema } from './utils';
+import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
@@ -15,8 +20,6 @@ import {
     SampleCreationType,
     SampleCreationTypeModel,
 } from './models';
-import { isSamplesSchema } from './utils';
-import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
@@ -155,6 +158,17 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         });
     }
 
+    let noun = 'Sample';
+    let nounPlural = 'Samples';
+
+    if (selectedOption?.toLowerCase() === SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase()) {
+        noun = 'Mixture Batch';
+        nounPlural = 'Mixture Batches';
+    } else if (selectedOption?.toLowerCase() === SCHEMAS.SAMPLE_SETS.RAW_MATERIALS.queryName.toLowerCase()) {
+        noun = 'Raw Material';
+        nounPlural = 'Raw Materials';
+    }
+
     return (
         <>
             <SubMenu
@@ -179,6 +193,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     onSubmit={onSampleCreationSubmit}
                     selectionKey={selectedItems ? undefined : selectionKey}
                     selectedItems={selectedItems}
+                    noun={noun}
+                    nounPlural={nounPlural}
                 />
             )}
         </>

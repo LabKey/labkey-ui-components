@@ -6519,7 +6519,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                   </Memo()>
                 </div>
                 <div
-                  className="grid-panel__grid"
+                  className="grid-panel__grid  grid-panel__lock-left grid-panel__lock-left-without-checkboxes"
                 />
               </div>
             </div>

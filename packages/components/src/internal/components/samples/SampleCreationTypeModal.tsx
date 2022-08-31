@@ -17,6 +17,9 @@ import { SampleOperation } from './constants';
 
 interface Props {
     api?: ComponentsAPIWrapper;
+    // noun used in modal submit button
+    noun?: string;
+    nounPlural?: string;
     onCancel: () => void;
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
     options: SampleCreationTypeModel[];
@@ -189,12 +192,14 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     }
 
     render(): React.ReactNode {
-        const { show, parentCount } = this.props;
+        const { show, parentCount, noun, nounPlural } = this.props;
         const { submitting, statusData } = this.state;
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
         const canSubmit = !submitting && this.isValidNumPerParent();
-        const title = (statusData?.noneAllowed ? 'Cannot ' : '') + 'Create Samples from Selected ' + parentNoun;
+        const title = `${statusData?.noneAllowed ? 'Cannot ' : ''}Create ${
+            nounPlural ?? 'Samples'
+        } from Selected ${parentNoun}`;
         return (
             <Modal show={show} onHide={this.onCancel}>
                 <Modal.Header closeButton>
@@ -224,7 +229,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                                 Cancel
                             </Button>
                             <Button bsStyle="success" onClick={this.onConfirm} disabled={!canSubmit}>
-                                Go to Sample Creation Grid
+                                Go to {noun ?? 'Sample'} Creation Grid
                             </Button>
                         </>
                     )}

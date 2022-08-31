@@ -16,18 +16,21 @@ export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
     createGroup: (name: string) => void;
     deleteGroup: (id: string) => void;
+    errorMsg: string;
     groupMembership: GroupMembership;
     policy: SecurityPolicy;
     principalsById: Map<number, Principal>;
     removeMember: (groupId: string, memberId: number) => void;
     rolesByUniqueName: Map<string, SecurityRole>;
     save: () => Promise<void>;
+    setErrorMsg: (e: string) => void;
     showDetailsPanel?: boolean;
     usersAndGroups: List<Principal>;
 }
 
 export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     const {
+        errorMsg,
         groupMembership,
         showDetailsPanel = true,
         policy,
@@ -39,11 +42,11 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         addMembers,
         removeMember,
         save,
+        setErrorMsg,
     } = props;
 
     const [dirty, setDirty] = useState<boolean>();
     const [submitting, setSubmitting] = useState<boolean>(false);
-    const [errorMsg, setErrorMsg] = useState<string>();
     const [selectedPrincipalId, setSelectedPrincipalId] = useState<number>();
     const [newGroupName, setNewGroupName] = useState<string>('');
 
@@ -53,7 +56,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         await save();
         setDirty(false);
         setSubmitting(false);
-    }, [save]);
+    }, [save, setErrorMsg]);
 
     const saveButton = (
         <Button
@@ -90,7 +93,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         }
 
         setNewGroupName('');
-    }, [createGroup, groupMembership, newGroupName]);
+    }, [createGroup, groupMembership, newGroupName, setErrorMsg]);
 
     const onAddMember = useCallback(
         (groupId: string, principalId: number, principalName: string, principalType: string) => {

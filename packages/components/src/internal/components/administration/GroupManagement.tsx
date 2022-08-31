@@ -64,6 +64,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const [groupMembership, setGroupMembership] = useState<GroupMembership>();
     const [lastModified, setLastModified] = useState<string>();
     const [policy, setPolicy] = useState<SecurityPolicy>();
+    const [errorMsg, setErrorMsg] = useState<string>();
 
     const { api } = useAppContext<AppContext>();
     const { dismissNotifications, createNotification } = useNotificationsContext();
@@ -105,6 +106,10 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         loadGroups();
     }, [loadGroups]);
 
+    const onSetErrorMsg = useCallback((e: string) => {
+        setErrorMsg(e);
+    }, []);
+
     const save = useCallback(async () => {
         try {
             // Create new groups
@@ -136,13 +141,13 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             });
 
             // Add new members
-            Object.keys(newGroupMembership).map(async groupId => {
+            for (const groupId of Object.keys(newGroupMembership)) {
                 const currentMembers = newGroupMembership[groupId].members.map(member => member.id);
                 const oldMembers = new Set(savedGroupMembership[groupId]?.members.map(member => member.id));
                 const addedMembers = currentMembers.filter(id => !oldMembers.has(id));
                 if (addedMembers.length)
                     await api.security.addGroupMembers(parseInt(groupId, 10), addedMembers, projectPath);
-            });
+            }
 
             // Delete members
             Object.keys(newGroupMembership).map(async groupId => {
@@ -160,7 +165,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             dismissNotifications();
             createNotification('Successfully updated groups and assignments.');
         } catch (e) {
-            setError(resolveErrorMessage(e) ?? 'Failed to update groups.');
+            setErrorMsg(resolveErrorMessage(e) ?? 'Failed to update groups.');
         }
 
         setIsDirty(false);
@@ -268,6 +273,8 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                     addMembers={addMembers}
                     removeMember={removeMember}
                     save={save}
+                    errorMsg={errorMsg}
+                    setErrorMsg={onSetErrorMsg}
                 />
             )}
         </BasePermissionsCheckPage>

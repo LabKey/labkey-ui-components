@@ -1,5 +1,5 @@
 import React, { Dispatch, FC, memo, SetStateAction, useCallback, useMemo } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
@@ -8,6 +8,8 @@ import { ExpandableContainer } from '../ExpandableContainer';
 import { RemovableButton } from '../permissions/RemovableButton';
 import { Principal } from '../permissions/models';
 import { SelectInput } from '../forms/input/SelectInput';
+
+import { DisableableButton } from '../buttons/DisableableButton';
 
 import { Member } from './models';
 
@@ -47,13 +49,10 @@ export const Group: FC<GroupProps> = memo(props => {
     }, [name]);
 
     const generateLinks = useCallback(() => {
-        const usersCount = members.filter(member => member.type === 'u').length;
-        const groupsCount = members.length - usersCount;
-
         return (
             <span className="container-expandable-heading">
                 <span>
-                    {usersCount} member{usersCount !== 1 ? 's' : ''}, {groupsCount} group{groupsCount !== 1 ? 's' : ''}
+                    {members.length} member{members.length !== 1 ? 's' : ''}
                 </span>
             </span>
         );
@@ -103,7 +102,7 @@ export const Group: FC<GroupProps> = memo(props => {
     );
 
     const canDeleteGroup = useMemo(() => {
-        return members.length !== 0;
+        return members.length !== 0 ? undefined : 'To delete this group, first remove all members.';
     }, [members]);
 
     const onDeleteGroup = useCallback(() => {
@@ -113,9 +112,19 @@ export const Group: FC<GroupProps> = memo(props => {
 
     const principalsToAdd = useMemo(() => {
         const addedPrincipalIds = new Set(members.map(principal => principal.id));
-        return usersAndGroups.filter(
-            principal => !addedPrincipalIds.has(principal.get('userId')) && principal.get('userId') !== parseInt(id, 10)
-        );
+
+        return usersAndGroups
+            .filter(
+                principal =>
+                    !addedPrincipalIds.has(principal.get('userId')) && principal.get('userId') !== parseInt(id, 10)
+            )
+            .map(principal => {
+                if (principal.get('type') === 'u') {
+                    return principal;
+                } else {
+                    return principal.set('name', <b> {principal.get('name')} </b>);
+                }
+            });
     }, [members, usersAndGroups, id]);
 
     const onSelectMember = useCallback(
@@ -161,14 +170,14 @@ export const Group: FC<GroupProps> = memo(props => {
                     </Col>
 
                     <Col xs={12} sm={6}>
-                        <Button
+                        <DisableableButton
                             className="pull-right alert-button"
                             bsStyle="danger"
-                            disabled={canDeleteGroup}
+                            disabledMsg={canDeleteGroup}
                             onClick={onDeleteGroup}
                         >
                             Delete Empty Group
-                        </Button>
+                        </DisableableButton>
                     </Col>
                 </Row>
             </div>

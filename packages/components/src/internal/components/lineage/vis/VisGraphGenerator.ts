@@ -13,7 +13,7 @@ import { getURLResolver } from '../LineageURLResolvers';
 
 export type VisGraphNodeType = VisGraphNode | VisGraphCombinedNode | VisGraphClusterNode;
 
-export const DEFAULT_EDGE_PROPS = {
+const DEFAULT_EDGE_PROPS = {
     arrows: {
         to: {
             enabled: true,
@@ -33,7 +33,7 @@ export const DEFAULT_EDGE_PROPS = {
     },
 };
 
-export const DEFAULT_NODE_PROPS = {
+const DEFAULT_NODE_PROPS = {
     // ensure edge lines do not enter the image by setting useBorderImage to true and making the border
     // color be white (the same as the background) so that user does not see border box drawn around image
     color: {
@@ -139,7 +139,7 @@ export interface VisGraphCombinedNode extends Node {
 }
 
 // vis.js doesn't expose cluster nodes directly, so this is our shim
-export interface VisGraphClusterNode {
+interface VisGraphClusterNode {
     kind: 'cluster';
     id: string | number;
     nodesInCluster: VisGraphNodeType[];
@@ -157,7 +157,7 @@ export function isClusterNode(item: VisGraphNodeType): item is VisGraphClusterNo
     return item && item.kind === 'cluster';
 }
 
-export interface IVisGraphOptions {
+interface IVisGraphOptions {
     edges: DataSet<Edge>;
     initialSelection: string[];
     nodes: DataSet<VisGraphNode | VisGraphCombinedNode>;
@@ -643,7 +643,7 @@ function makeEdgeId(fromId, toId) {
 /**
  * Get all Edges that are connected to the id
  */
-export function findConnectedNodes(visEdges: Edge[], id: string, dir?: 'from' | 'to'): Edge[] {
+function findConnectedNodes(visEdges: Edge[], id: string, dir?: 'from' | 'to'): Edge[] {
     return visEdges.filter(e => {
         if (dir === 'from' && e.to === id) return true;
         if (dir === 'to' && e.from === id) return true;

@@ -17,11 +17,13 @@ import React, { FC, memo, useMemo } from 'react';
 import Formsy from 'formsy-react';
 import { Input, Textarea } from 'formsy-react-components';
 
-import { QueryFormInputs, LabelOverlay } from '../../..';
 import { AssayTaskInput } from '../forms/input/AssayTaskInput';
 
-import { AssayPropertiesPanelProps } from './models';
 import { isWorkflowEnabled } from '../../app/utils';
+import { LabelOverlay } from '../forms/LabelOverlay';
+import { QueryFormInputs } from '../forms/QueryFormInputs';
+
+import { AssayPropertiesPanelProps } from './models';
 
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
     const { model, onChange, title = 'Run Details', showQuerySelectPreviewOptions } = props;

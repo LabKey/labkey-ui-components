@@ -5,15 +5,15 @@
 import React, { PureComponent } from 'react';
 import { List } from 'immutable';
 
-import { SelectInput } from '../../..';
+import { SelectInput } from '../forms/input/SelectInput';
 
 import { Principal, SecurityRole } from './models';
 
 interface Props {
-    role: SecurityRole;
-    principals: List<Principal>;
     onSelect: (selected: Principal) => void;
     placeholder?: string;
+    principals: List<Principal>;
+    role: SecurityRole;
 }
 
 export class AddRoleAssignmentInput extends PureComponent<Props> {

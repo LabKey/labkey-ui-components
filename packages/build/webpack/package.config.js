@@ -8,6 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const constants = require('./constants');
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const IgnorePlugin = require('webpack').IgnorePlugin;
+const CircularDependencyPlugin = require('circular-dependency-plugin')
 
 const tsCheckerConfig = {
     ...constants.TS_CHECKER_CONFIG,
@@ -60,6 +61,11 @@ module.exports = {
         new IgnorePlugin({
             resourceRegExp: /^\.\/locale$/,
             contextRegExp: /moment$/,
+        }),
+        new CircularDependencyPlugin({
+            exclude: /node_modules/,
+            include: /src/,
+            failOnError: false, // TODO switch this to true once all circular dependencies are removed from packages
         }),
     ],
     externals: [

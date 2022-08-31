@@ -1,23 +1,24 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
+import { MenuOption, SubMenu } from '../menus/SubMenu';
+import { AppURL } from '../../url/AppURL';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
+import { isSamplesSchema } from './utils';
+import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import {
     ALIQUOT_CREATION,
-    AppURL,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
-    isSamplesSchema,
-    MenuOption,
     POOLED_SAMPLE_CREATION,
-    QueryModel,
     SampleCreationType,
-    SampleCreationTypeModal,
-    SampleCreationTypeModel,
-    SchemaQuery,
-    SCHEMAS,
-    SubMenu,
-} from '../../..';
-import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
+    SampleCreationTypeModel
+} from "./models";
+
+import {SCHEMAS} from "../../schemas";
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;

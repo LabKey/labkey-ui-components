@@ -1,6 +1,6 @@
 import { Ajax, Utils, ActionURL } from '@labkey/api';
 
-import { resolveErrorMessage } from '../../..';
+import { resolveErrorMessage } from '../../util/messaging';
 
 import { ContainerTabModel, ProductModel } from './models';
 

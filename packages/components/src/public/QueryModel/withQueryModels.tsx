@@ -8,11 +8,15 @@ import { Draft, produce } from 'immer';
 // eslint-disable-next-line import/named
 import { withRouter, WithRouterProps } from 'react-router';
 
-import { LoadingState, naturalSort, QuerySort, resolveErrorMessage, SchemaQuery } from '../..';
+import { SchemaQuery } from '../SchemaQuery';
+import { QuerySort } from '../QuerySort';
+import { LoadingState } from '../LoadingState';
+import { naturalSort } from '../sort';
+import { resolveErrorMessage } from '../../internal/util/messaging';
 
-import { QueryConfig, QueryModel } from './QueryModel';
-import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import { filterArraysEqual, sortArraysEqual } from './utils';
+import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
+import { QueryConfig, QueryModel } from './QueryModel';
 
 export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
@@ -41,13 +45,13 @@ export interface Actions {
 }
 
 export interface RequiresModelAndActions {
-    model: QueryModel;
     actions: Actions;
+    model: QueryModel;
 }
 
 export interface InjectedQueryModels {
-    queryModels: { [key: string]: QueryModel };
     actions: Actions;
+    queryModels: { [key: string]: QueryModel };
 }
 
 export type QueryConfigMap = { [id: string]: QueryConfig };

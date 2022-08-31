@@ -4,30 +4,27 @@ import { fromJS } from 'immutable';
 import { Filter } from '@labkey/api';
 import renderer from 'react-test-renderer';
 
-import {
-    Grid,
-    GRID_CHECKBOX_OPTIONS,
-    GridPanel,
-    LoadingState,
-    QueryInfo,
-    QueryModel,
-    QuerySort,
-    SchemaQuery,
-    ViewInfo,
-} from '../..';
-
 import { initUnitTests, makeQueryInfo, makeTestData, mountWithServerContext } from '../../internal/testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 
 import { TEST_USER_EDITOR, TEST_USER_PROJECT_ADMIN, TEST_USER_READER } from '../../internal/userFixtures';
 
-import { ActionValue } from './grid/actions/Action';
+import { SchemaQuery } from '../SchemaQuery';
+import { QueryInfo } from '../QueryInfo';
+import { LoadingState } from '../LoadingState';
+import { Grid } from '../../internal/components/base/Grid';
 
+import { ViewInfo } from '../../internal/ViewInfo';
+import { QuerySort } from '../QuerySort';
+import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
+
+import { QueryModel } from './QueryModel';
+import { GridPanel, GridTitle } from './GridPanel';
+import { makeTestActions, makeTestQueryModel } from './testUtils';
 import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';
-import { makeTestActions, makeTestQueryModel } from './testUtils';
-import { GridTitle } from './GridPanel';
+import { ActionValue } from './grid/actions/Action';
 
 // The wrapper's return type for mount<GridPanel>(<GridPanel ... />)
 type GridPanelWrapper = ReactWrapper<Readonly<GridPanel['props']>, Readonly<GridPanel['state']>, GridPanel>;

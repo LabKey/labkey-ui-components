@@ -18,7 +18,7 @@ import momentTZ from 'moment-timezone';
 import numeral from 'numeral';
 import { Container, getServerContext } from '@labkey/api';
 
-import { QueryColumn } from '../..';
+import { QueryColumn } from '../../public/QueryColumn';
 
 import { formatWithJDF, toMomentFormatString } from './jDateFormatParser';
 

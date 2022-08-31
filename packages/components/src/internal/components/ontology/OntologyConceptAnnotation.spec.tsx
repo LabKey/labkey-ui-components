@@ -1,9 +1,11 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { DomainField, DomainFieldLabel } from '../../..';
-
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
+
+import { DomainField } from '../domainproperties/models';
+
+import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 
 import { OntologyConceptAnnotation } from './OntologyConceptAnnotation';
 import { OntologyBrowserModal } from './OntologyBrowserModal';

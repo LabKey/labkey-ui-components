@@ -17,15 +17,18 @@ import { fromJS, Iterable, List, Map, Record, Set } from 'immutable';
 
 import { encodePart, resolveSchemaQuery, SchemaQuery } from '../public/SchemaQuery';
 
-import { genCellKey, getSortedCellKeys, parseCellKey } from './actions';
+import { QueryInfo } from '../public/QueryInfo';
+
+import { QueryColumn } from '../public/QueryColumn';
+
+import { QueryModel } from '../public/QueryModel/QueryModel';
+
+import { genCellKey, getSortedCellKeys, parseCellKey } from './utils';
 import { getQueryColumnRenderers } from './global';
 import { DataViewInfoTypes, GRID_EDIT_INDEX } from './constants';
 import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from './util/Date';
 import { quoteValueWithDelimiters } from './util/utils';
 import { AppURL } from './url/AppURL';
-import { QueryInfo } from '../public/QueryInfo';
-import { QueryColumn } from '../public/QueryColumn';
-import { QueryModel } from '../public/QueryModel/QueryModel';
 
 export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
@@ -416,9 +419,8 @@ export class EditorModel
                             values.size === 1 ? quoteValueWithDelimiters(values.first().display, ',') : undefined
                         );
                     } else {
-                        let val = undefined;
-                        if (values.size === 1)
-                            val = forExport ? values.first()?.display : values.first()?.raw;
+                        let val;
+                        if (values.size === 1) val = forExport ? values.first()?.display : values.first()?.raw;
                         row = row.set(col.name, val);
                     }
                 } else if (col.jsonType === 'date' && !displayValues) {

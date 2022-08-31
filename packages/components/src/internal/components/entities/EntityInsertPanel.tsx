@@ -22,53 +22,11 @@ import { Link } from 'react-router';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import {
-    Alert,
-    AppURL,
-    capitalizeFirstChar,
-    DomainDetails,
-    EditableColumnMetadata,
-    EditableGridPanel,
-    EditorModel,
-    EditorModelProps,
-    FileAttachmentForm,
-    FileSizeLimitProps,
-    FormStep,
-    FormTabs,
-    getActionErrorMessage,
-    getQueryDetails,
-    getSampleTypeDetails,
-    IGridLoader,
-    IGridResponse,
-    InferDomainResponse,
-    insertColumnFilter,
-    LabelHelpTip,
-    loadEditorModelData,
-    LoadingSpinner,
-    LoadingState,
-    Location,
-    Progress,
-    QueryColumn,
-    QueryInfo,
-    QueryModel,
-    resolveErrorMessage,
-    SAMPLE_STATE_COLUMN_NAME,
-    SampleCreationType,
-    SampleCreationTypeModel,
-    SampleTypeDataType,
-    SelectInput,
-    User,
-    useServerContext,
-    withFormSteps,
-    WithFormStepsProps,
-    WizardNavButtons,
-} from '../../..';
-
 import { PlacementType } from '../editable/Controls';
 
 import { DATA_IMPORT_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
-import { BulkAddData } from '../editable/EditableGrid';
+import { BulkAddData, EditableColumnMetadata } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPES } from '../domainproperties/constants';
 
@@ -76,7 +34,7 @@ import { getCurrentProductName, isSampleManagerEnabled, sampleManagerIsPrimaryAp
 
 import { fetchDomainDetails, getDomainNamePreviews } from '../domainproperties/actions';
 
-import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY } from '../samples/constants';
+import { SAMPLE_INVENTORY_ITEM_SELECTION_KEY, SAMPLE_STATE_COLUMN_NAME } from '../samples/constants';
 
 import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
 
@@ -84,8 +42,46 @@ import { SampleStatusLegend } from '../samples/SampleStatusLegend';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { applyEditableGridChangesToModels } from '../editable/utils';
+import { applyEditableGridChangesToModels, loadEditorModelData } from '../editable/utils';
 
+import { EditorModel, EditorModelProps, IGridLoader, IGridResponse } from '../../models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { LoadingState } from '../../../public/LoadingState';
+import { SampleCreationType, SampleCreationTypeModel } from '../samples/models';
+import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';
+import { User } from '../base/models/User';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { FileSizeLimitProps } from '../../../public/files/models';
+import { capitalizeFirstChar } from '../../util/utils';
+import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
+import { getQueryDetails } from '../../query/api';
+import { getSampleTypeDetails } from '../samples/actions';
+import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
+import { SelectInput } from '../forms/input/SelectInput';
+import { Alert } from '../base/Alert';
+import { EditableGridPanel } from '../editable/EditableGridPanel';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Progress } from '../base/Progress';
+import { InferDomainResponse } from '../../../public/InferDomainResponse';
+import { DomainDetails } from '../domainproperties/models';
+import { AppURL } from '../../url/AppURL';
+import { LabelHelpTip } from '../base/LabelHelpTip';
+import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
+import { useServerContext } from '../base/ServerContext';
+import { Location } from '../../util/URL';
+
+import { ENTITY_CREATION_METRIC, SampleTypeDataType } from './constants';
+import {
+    addEntityParentType,
+    removeEntityParentType,
+    EntityParentTypeSelectors,
+    changeEntityParentType,
+    EditorModelUpdatesWithParents,
+} from './EntityParentTypeSelectors';
+import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
+import { getUniqueIdColumnMetadata } from './utils';
+import { getEntityTypeData, handleEntityFileImport } from './actions';
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -94,18 +90,6 @@ import {
     IEntityTypeOption,
     IParentOption,
 } from './models';
-
-import { getUniqueIdColumnMetadata } from './utils';
-import { getEntityTypeData, handleEntityFileImport } from './actions';
-import { EntityInsertGridRequiredFieldAlert } from './EntityInsertGridRequiredFieldAlert';
-import {
-    addEntityParentType,
-    removeEntityParentType,
-    EntityParentTypeSelectors,
-    changeEntityParentType,
-    EditorModelUpdatesWithParents,
-} from './EntityParentTypeSelectors';
-import { ENTITY_CREATION_METRIC } from './constants';
 
 const ENTITY_GRID_ID = 'entity-insert-grid-data';
 const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate'];

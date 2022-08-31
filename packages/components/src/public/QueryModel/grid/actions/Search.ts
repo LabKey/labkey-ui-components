@@ -16,7 +16,7 @@
 import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { QueryColumn } from '../../../..';
+import { QueryColumn } from '../../../QueryColumn';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
 

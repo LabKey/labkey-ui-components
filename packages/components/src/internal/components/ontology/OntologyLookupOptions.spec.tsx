@@ -2,13 +2,14 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { DomainField } from '../../..';
 import { sleep } from '../../testHelpers';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 
 import { SectionHeading } from '../domainproperties/SectionHeading';
 import { INTEGER_TYPE, ONTOLOGY_LOOKUP_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
+
+import { DomainField } from '../domainproperties/models';
 
 import { OntologyLookupOptions } from './OntologyLookupOptions';
 import { OntologyConceptSelectButton } from './OntologyConceptSelectButton';

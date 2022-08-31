@@ -19,7 +19,7 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { QueryColumn } from '../../../..';
+import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 

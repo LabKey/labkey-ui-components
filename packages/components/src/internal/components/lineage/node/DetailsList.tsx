@@ -1,19 +1,18 @@
 import React, { Fragment, PureComponent, ReactNode } from 'react';
 
-import { SVGIcon } from '../../../..';
-
 import { LineageItemWithMetadata, LineageIOWithMetadata, LineageNode } from '../models';
 import { LineageNodeCollection } from '../vis/VisGraphGenerator';
 import { DEFAULT_ICON_URL, getLineageNodeTitle } from '../utils';
 import { NodeInteractionConsumer, WithNodeInteraction } from '../actions';
 import { LineageDataLink } from '../LineageDataLink';
+import { SVGIcon } from '../../base/SVGIcon';
 
 export interface DetailsListProps {
     collapsedCount?: number;
-    open?: boolean;
     headerLinks?: ReactNode[];
-    title: string;
+    open?: boolean;
     showCount?: boolean;
+    title: string;
 }
 
 interface DetailsListState {

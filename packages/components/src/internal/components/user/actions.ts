@@ -2,11 +2,15 @@ import moment from 'moment';
 import { Map, OrderedMap } from 'immutable';
 import { Ajax, PermissionRoles, PermissionTypes, Security, Utils } from '@labkey/api';
 
-import { buildURL, caseInsensitive, hasAllPermissions, SchemaQuery, SHARED_CONTAINER_PATH, User } from '../../..';
-
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
 
 import { processRequest } from '../../query/api';
+
+import { buildURL } from '../../url/AppURL';
+import { hasAllPermissions, User } from '../base/models/User';
+import { caseInsensitive } from '../../util/utils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SHARED_CONTAINER_PATH } from '../../constants';
 
 import { ChangePasswordModel } from './models';
 

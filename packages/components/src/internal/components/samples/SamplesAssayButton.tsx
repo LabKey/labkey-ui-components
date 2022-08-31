@@ -2,12 +2,14 @@ import React, { FC, memo } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
-import { RequiresPermission, ResponsiveMenuButton, isLoading } from '../../..';
-
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { AssayImportSubMenuItem } from '../assay/AssayImportSubMenuItem';
 import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
+
+import { isLoading } from '../../../public/LoadingState';
+import { RequiresPermission } from '../base/Permissions';
+import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
 import { isSamplesSchema } from './utils';
 

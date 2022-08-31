@@ -15,19 +15,21 @@
  */
 import React, { PureComponent } from 'react';
 
-import { capitalizeFirstChar, ConfirmModal, HelpLink } from '../../..';
-
 import { isELNEnabled } from '../../app/utils';
+
+import { capitalizeFirstChar } from '../../util/utils';
+import { HelpLink } from '../../util/helpLinks';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 import { EntityDataType, OperationConfirmationData } from './models';
 
 interface Props {
     confirmationData: OperationConfirmationData;
     entityDataType: EntityDataType;
+    getDeletionDescription?: (numToDelete: number) => React.ReactNode;
     onCancel: () => any;
     onConfirm: (rowsToDelete: any[], rowsToKeep: any[]) => any;
     verb?: string;
-    getDeletionDescription?: (numToDelete: number) => React.ReactNode;
 }
 
 /**
@@ -49,10 +51,9 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
 
         if (!confirmationData) return undefined;
 
-        const _dependencyText =
-            isELNEnabled()
-                ?  (dependencyText ? dependencyText + ' or' : '') + ' references in one or more active notebooks'
-                : dependencyText;
+        const _dependencyText = isELNEnabled()
+            ? (dependencyText ? dependencyText + ' or' : '') + ' references in one or more active notebooks'
+            : dependencyText;
 
         const numCanDelete = confirmationData.allowed.length;
         const numCannotDelete = confirmationData.notAllowed.length;
@@ -98,14 +99,24 @@ export class EntityDeleteConfirmModalDisplay extends PureComponent<Props> {
                 '. ';
             firstText += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
             firstText += (numCannotDelete === 1 ? ' it has ' : ' they have ') + _dependencyText + '.';
-            text.push(<React.Fragment key={"commonText"}>{firstText}</React.Fragment>);
+            text.push(<React.Fragment key="commonText">{firstText}</React.Fragment>);
             if (getDeletionDescription)
-                text.push(<React.Fragment key={"customText"}><br/><br/>{getDeletionDescription(numCanDelete)}</React.Fragment>);
+                text.push(
+                    <React.Fragment key="customText">
+                        <br />
+                        <br />
+                        {getDeletionDescription(numCanDelete)}
+                    </React.Fragment>
+                );
         }
         const message = (
             <span>
                 {text}
-                {numCannotDelete > 0 && deleteHelpLinkTopic && <>&nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink>)</>}
+                {numCannotDelete > 0 && deleteHelpLinkTopic && (
+                    <>
+                        &nbsp;(<HelpLink topic={deleteHelpLinkTopic}>more info</HelpLink>)
+                    </>
+                )}
                 {numCanDelete > 0 && (
                     <p className="top-spacing">
                         <strong>Deletion cannot be undone.</strong> Do you want to proceed?

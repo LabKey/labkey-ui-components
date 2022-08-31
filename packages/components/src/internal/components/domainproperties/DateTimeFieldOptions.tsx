@@ -4,15 +4,15 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { DATE_FORMATS_TOPIC, HelpLink, JavaDocsLink } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, createFormInputName, getNameFromId } from './actions';
+import { createFormInputId, createFormInputName, getNameFromId } from './utils';
 import { DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT } from './constants';
 import { ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface DateTimeFieldProps extends ITypeDependentProps {
-    format: string;
     excludeFromShifting: boolean;
+    format: string;
 }
 
 export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps> {

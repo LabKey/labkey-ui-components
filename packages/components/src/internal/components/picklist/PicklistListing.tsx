@@ -2,25 +2,6 @@ import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from '
 
 import { Filter, PermissionTypes } from '@labkey/api';
 
-import {
-    Actions,
-    Page,
-    QuerySort,
-    RequiresPermission,
-    SCHEMAS,
-    Section,
-    TabbedGridPanel,
-    useNotificationsContext,
-    User,
-} from '../../..';
-
-// These need to be direct imports from files to avoid circular dependencies in index.ts
-import {
-    InjectedQueryModels,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../../../public/QueryModel/withQueryModels';
-
 import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 
 import { DisableableButton } from '../buttons/DisableableButton';
@@ -29,9 +10,25 @@ import { userCanManagePicklists } from '../../app/utils';
 
 import { MY_PICKLISTS_HREF, PICKLIST_KEY, TEAM_PICKLISTS_HREF } from '../../app/constants';
 
-import { deletePicklists, getPicklistListingContainerFilter } from './actions';
-import { Picklist } from './models';
+import { User } from '../base/models/User';
+import { RequiresPermission } from '../base/Permissions';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+import { Section } from '../base/Section';
+import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
+import { QuerySort } from '../../../public/QuerySort';
+import { SCHEMAS } from '../../schemas';
+import { Page } from '../base/Page';
+
+import {
+    Actions,
+    InjectedQueryModels,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../../../public/QueryModel/withQueryModels';
+
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
+import { Picklist } from './models';
+import { deletePicklists, getPicklistListingContainerFilter } from './actions';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';

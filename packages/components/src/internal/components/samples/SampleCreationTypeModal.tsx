@@ -2,25 +2,23 @@ import React from 'react';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
-import {
-    Alert,
-    filterSampleRowsForOperation,
-    getOperationNotPermittedMessage,
-    MAX_EDITABLE_GRID_ROWS,
-    SampleOperation,
-} from '../../..';
-
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { OperationConfirmationData } from '../entities/models';
 
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+
+import { Alert } from '../base/Alert';
+
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
+import { filterSampleRowsForOperation, getOperationNotPermittedMessage } from './utils';
+import { SampleOperation } from './constants';
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    noun?: string;
     // noun used in modal submit button
+    noun?: string;
     nounPlural?: string;
     onCancel: () => void;
     onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
@@ -29,7 +27,7 @@ interface Props {
     selectedItems?: Record<string, any>;
     selectionKey?: string;
     show: boolean;
-    showIcons: boolean; // Used in modal title
+    showIcons: boolean;
 }
 
 interface State extends Record<string, any> {

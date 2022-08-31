@@ -3,8 +3,12 @@ import { mount } from 'enzyme';
 import { Button } from 'react-bootstrap';
 
 import { TEST_USER_READER } from '../../userFixtures';
-import { getQueryDetails, FileInput, SCHEMAS, TextInput } from '../../..';
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
+
+import { getQueryDetails } from '../../query/api';
+import { SCHEMAS } from '../../schemas';
+import { FileInput } from '../forms/input/FileInput';
+import { TextInput } from '../forms/input/TextInput';
 
 import { UserProfile } from './UserProfile';
 

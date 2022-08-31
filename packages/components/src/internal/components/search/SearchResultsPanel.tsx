@@ -16,20 +16,22 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 
-import { LoadingSpinner, Alert } from '../../..';
-
 import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { Alert } from '../base/Alert';
 
 import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsModel } from './models';
 
 interface Props {
-    model: SearchResultsModel;
     emptyResultDisplay?: React.ReactNode;
-    iconUrl?: string;
     hideHeader?: boolean;
     hidePanelFrame?: boolean;
+    iconUrl?: string;
     maxHitSize?: number;
+    model: SearchResultsModel;
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {

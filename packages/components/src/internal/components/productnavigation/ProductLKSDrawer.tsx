@@ -1,11 +1,10 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext } from '@labkey/api';
-
 import classNames from 'classnames';
 
-import { buildURL } from '../../..';
-
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { buildURL } from '../../url/AppURL';
 
 import { ContainerTabModel } from './models';
 import {
@@ -19,8 +18,8 @@ import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductLKSDrawerProps {
     api?: ComponentsAPIWrapper;
-    showHome: boolean;
     disableLKSContainerLink?: boolean;
+    showHome: boolean;
     tabs: ContainerTabModel[];
 }
 

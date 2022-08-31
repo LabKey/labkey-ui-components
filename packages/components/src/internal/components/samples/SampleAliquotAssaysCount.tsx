@@ -1,10 +1,11 @@
 import React, { FC, memo, useMemo } from 'react';
 
-import { InjectedAssayModel, isLoading, LoadingSpinner, SchemaQuery } from '../../..';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { isLoading } from '../../../public/LoadingState';
 
-// These need to be direct imports from files to avoid circular dependencies in index.ts
+import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-import { withAssayModels } from '../assay/withAssayModels';
 
 import { getSampleAssayQueryConfigs } from './actions';
 
@@ -33,8 +34,8 @@ const SampleAliquotAssaysCountBodyImpl: FC<InjectedQueryModels> = memo(props => 
 const SampleAliquotAssaysCountBody = withQueryModels<any>(SampleAliquotAssaysCountBodyImpl);
 
 interface Props {
-    sampleId: string;
     aliquotIds: number[];
+    sampleId: string;
     sampleSchemaQuery: SchemaQuery;
 }
 

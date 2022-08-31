@@ -20,7 +20,7 @@ import { Utils } from '@labkey/api';
 
 import { Map, Set } from 'immutable';
 
-import { FileSizeLimitProps } from '../../..';
+import { FileSizeLimitProps } from '../../../public/files/models';
 
 import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';

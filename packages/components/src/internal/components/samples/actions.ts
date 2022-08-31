@@ -28,7 +28,7 @@ import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
 import { Location } from '../../util/URL';
 import { createQueryConfigFilteredBySample, getSelectedData, getSelection } from '../../actions';
 
-import { caseInsensitive, findMissingValues, quoteValueWithDelimiters } from '../../util/utils';
+import { caseInsensitive, downloadAttachment, findMissingValues, quoteValueWithDelimiters } from '../../util/utils';
 
 import { ParentEntityLineageColumns } from '../entities/constants';
 import { getInitialParentChoices } from '../entities/utils';
@@ -40,7 +40,14 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { EXP_TABLES, SCHEMAS } from '../../schemas';
 
-import { getContainerFilter, ISelectRowsResult, selectDistinctRows, selectRowsDeprecated } from '../../query/api';
+import {
+    getContainerFilter,
+    getQueryDetails,
+    ISelectRowsResult,
+    selectDistinctRows,
+    selectRowsDeprecated
+} from '../../query/api';
+
 import { buildURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DomainDetails } from '../domainproperties/models';
@@ -53,6 +60,7 @@ import { SHARED_CONTAINER_PATH } from '../../constants';
 import { AssayStateModel } from '../assay/models';
 import { createGridModelId } from '../../models';
 import { TimelineEventModel } from '../auditlog/models';
+import { QueryInfo } from '../../../public/QueryInfo';
 
 import {
     IS_ALIQUOT_COL,
@@ -674,32 +682,6 @@ export function getGroupedSampleDisplayColumns(
     };
 }
 
-export function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
-    return new Promise((resolve, reject) => {
-        getSelectedData(
-            SCHEMAS.INVENTORY.ITEMS.schemaName,
-            SCHEMAS.INVENTORY.ITEMS.queryName,
-            selectedItemIds,
-            'RowId, MaterialId',
-            undefined,
-            undefined,
-            undefined
-        )
-            .then(response => {
-                const { data } = response;
-                const sampleIds = [];
-                data.forEach(row => {
-                    sampleIds.push(row.getIn(['MaterialId', 'value']));
-                });
-                resolve(sampleIds);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(reason);
-            });
-    });
-}
-
 export function getEditSharedSampleTypeUrl(typeId: number): string {
     return ActionURL.buildURL('experiment', 'editSampleType', SHARED_CONTAINER_PATH, {
         RowId: typeId,
@@ -1087,3 +1069,26 @@ export function getTimelineEvents(sampleId: number, timezone?: string): Promise<
         });
     });
 }
+
+export const downloadSampleTypeTemplate = (
+    schemaQuery: SchemaQuery,
+    getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>, excludeColumns?: string[]) => string,
+    excludeColumns?: string[]
+): void => {
+    const promises = [];
+    promises.push(
+        getQueryDetails({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+        })
+    );
+    promises.push(getSampleTypeDetails(schemaQuery));
+    Promise.all(promises)
+        .then(results => {
+            const [queryInfo, domainDetails] = results;
+            downloadAttachment(getUrl(queryInfo, domainDetails.options?.get('importAliases'), excludeColumns), true);
+        })
+        .catch(reason => {
+            console.error('Unable to download sample type template', reason);
+        });
+};

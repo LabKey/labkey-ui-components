@@ -3,11 +3,12 @@ import { Button, Modal } from 'react-bootstrap';
 
 import { HelpLink } from '../../util/helpLinks';
 import { QuerySelect } from '../forms/QuerySelect';
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import { BarTenderResponse } from './models';
 import { printGridLabels } from './actions';

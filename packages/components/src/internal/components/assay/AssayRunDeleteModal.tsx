@@ -1,8 +1,12 @@
 import React, { FC, useState } from 'react';
 
-import { EntityDeleteConfirmModal, Progress, useNotificationsContext } from '../../..';
 import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
 import { AssayRunDataType } from '../entities/constants';
+
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+import { EntityDeleteConfirmModal } from '../entities/EntityDeleteConfirmModal';
+import { Progress } from '../base/Progress';
+
 import { deleteAssayRuns } from './actions';
 
 interface Props {
@@ -15,8 +19,7 @@ interface Props {
 }
 
 export const AssayRunDeleteModal: FC<Props> = props => {
-    const { afterDelete, afterDeleteFailure, containerPath, onCancel, selectionKey, selectedRowId } =
-        props;
+    const { afterDelete, afterDeleteFailure, containerPath, onCancel, selectionKey, selectedRowId } = props;
     const { createNotification } = useNotificationsContext();
     const [numToDelete, setNumToDelete] = useState<number>(undefined);
     const [showProgress, setShowProgress] = useState<boolean>(false);
@@ -66,8 +69,8 @@ export const AssayRunDeleteModal: FC<Props> = props => {
                 The entirety of the {numToDelete > 1 ? numToDelete : ''} {noun} and any of{' '}
                 {numToDelete === 1 ? 'its' : 'their'} previously replaced versions will be permanently deleted.
             </>
-        )
-    }
+        );
+    };
 
     return (
         <>

@@ -1,9 +1,12 @@
 import React, { FC, memo, useMemo } from 'react';
 import { Filter } from '@labkey/api';
 
-import { AppURL, SCHEMAS, User, HeatMap, HeatMapCell } from '../../..';
-
 import { SAMPLES_KEY } from '../../app/constants';
+
+import { AppURL } from '../../url/AppURL';
+import { HeatMap, HeatMapCell } from '../heatmap/HeatMap';
+import { User } from '../base/models/User';
+import { SCHEMAS } from '../../schemas';
 
 import { SampleEmptyAlert } from './SampleEmptyAlert';
 

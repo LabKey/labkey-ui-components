@@ -1,9 +1,12 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button, Col, FormControl, Row } from 'react-bootstrap';
 
-import { Alert, ConfirmModal, LoadingSpinner, resolveErrorMessage, useNotificationsContext } from '../../..';
-
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { useNotificationsContext } from '../notifications/NotificationsContext';
+import { resolveErrorMessage } from '../../util/messaging';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Alert } from '../base/Alert';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 export interface NameExpressionGenIdProps {
     api?: ComponentsAPIWrapper;

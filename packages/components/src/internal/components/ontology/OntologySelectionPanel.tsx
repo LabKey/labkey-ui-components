@@ -1,14 +1,17 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
-import { LoadingSpinner, Alert, SelectInput, buildURL } from '../../..';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { buildURL } from '../../url/AppURL';
+import { SelectInput } from '../forms/input/SelectInput';
 
-import { fetchChildPaths, ONTOLOGY_CONTROLLER } from './actions';
 import { PathModel } from './models';
+import { fetchChildPaths, ONTOLOGY_CONTROLLER } from './actions';
 
 interface OntologySelectionPanelProps {
-    onOntologySelection: (name: string, value: string, model: PathModel) => void;
     asPanel: boolean;
+    onOntologySelection: (name: string, value: string, model: PathModel) => void;
 }
 
 export const OntologySelectionPanel: FC<OntologySelectionPanelProps> = memo(props => {

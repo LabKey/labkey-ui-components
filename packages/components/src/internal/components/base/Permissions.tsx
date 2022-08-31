@@ -15,7 +15,8 @@
  */
 import React, { FC, useMemo } from 'react';
 
-import { hasPermissions, User, useServerContext } from '../../..';
+import { hasPermissions, User } from './models/User';
+import { useServerContext } from './ServerContext';
 
 interface Props {
     /** Indicates if user.isAdmin should override check */

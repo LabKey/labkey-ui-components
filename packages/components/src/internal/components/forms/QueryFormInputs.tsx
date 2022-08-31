@@ -18,7 +18,11 @@ import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { Query, Utils } from '@labkey/api';
 
-import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo } from '../../..';
+import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
+
+import { QueryInfo } from '../../../public/QueryInfo';
+
+import { caseInsensitive } from '../../util/utils';
 
 import { resolveRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';
@@ -29,20 +33,7 @@ import { FileInput } from './input/FileInput';
 import { DatePickerInput } from './input/DatePickerInput';
 import { TextChoiceInput } from './input/TextChoiceInput';
 
-const LABEL_FIELD_SUFFIX = '::label';
-
-export const getQueryFormLabelFieldName = function (name: string): string {
-    return name + LABEL_FIELD_SUFFIX;
-};
-
-export const isQueryFormLabelField = function (name: string): boolean {
-    return name.endsWith(LABEL_FIELD_SUFFIX);
-};
-
-export const getFieldEnabledFieldName = function (column: QueryColumn, fieldName?: string): string {
-    const name = fieldName ? fieldName : column ? column.fieldKey : 'unknownField';
-    return name + '::enabled';
-};
+import { getQueryFormLabelFieldName, isQueryFormLabelField } from './utils';
 
 export interface QueryFormInputsProps {
     allowFieldDisable?: boolean;

@@ -2,13 +2,16 @@ import React from 'react';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import { Alert, FileAttachmentForm } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 import DomainForm from '../DomainForm';
 
 import { sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
+
+import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
+
+import { Alert } from '../../base/Alert';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';
@@ -17,7 +20,7 @@ import { DataClassDesigner } from './DataClassDesigner';
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
-    loadNameExpressionOptions: jest.fn(async () => ({ prefix: "", allowUserSpecifiedNames: true })),
+    loadNameExpressionOptions: jest.fn(async () => ({ prefix: '', allowUserSpecifiedNames: true })),
     testMode: true,
 };
 

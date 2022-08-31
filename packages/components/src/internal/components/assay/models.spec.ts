@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../../..';
 import { TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
+
+import { GENERAL_ASSAY_PROVIDER_NAME } from './actions';
 
 describe('AssayStateModel', () => {
     test('getById', () => {
@@ -38,7 +39,9 @@ describe('AssayStateModel', () => {
         });
         test('excluded list', () => {
             expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(undefined, ['NAb'])).toHaveLength(4);
-            expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(undefined, [GENERAL_ASSAY_PROVIDER_NAME])).toHaveLength(3);
+            expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(undefined, [GENERAL_ASSAY_PROVIDER_NAME])).toHaveLength(
+                3
+            );
         });
     });
 });

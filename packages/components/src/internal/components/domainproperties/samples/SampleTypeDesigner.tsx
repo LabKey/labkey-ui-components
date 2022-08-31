@@ -4,22 +4,6 @@ import { Domain } from '@labkey/api';
 
 import { DomainDesign, DomainDetails, IAppDomainHeader, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
-import {
-    Alert,
-    ConfirmModal,
-    generateId,
-    getHelpLink,
-    HelpLink,
-    initQueryGridState,
-    IParentOption,
-    ISelectRowsResult,
-    LabelHelpTip,
-    MetricUnitProps,
-    naturalSortByProperty,
-    resolveErrorMessage,
-    SAMPLE_ALIQUOT_TOPIC,
-    SCHEMAS,
-} from '../../../..';
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DERIVATION_DATA_SCOPES } from '../constants';
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
@@ -38,9 +22,20 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
-import { AliquotNamePatternProps, IParentAlias, SampleTypeModel } from './models';
-import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
+import { IParentOption } from '../../entities/models';
+import { SCHEMAS } from '../../../schemas';
+import { getHelpLink, HelpLink, SAMPLE_ALIQUOT_TOPIC } from '../../../util/helpLinks';
+import { initQueryGridState } from '../../../global';
+import { resolveErrorMessage } from '../../../util/messaging';
+import { ISelectRowsResult } from '../../../query/api';
+import { naturalSortByProperty } from '../../../../public/sort';
+import { generateId } from '../../../util/utils';
+import { ConfirmModal } from '../../base/ConfirmModal';
+import { Alert } from '../../base/Alert';
+
 import { UniqueIdBanner } from './UniqueIdBanner';
+import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
+import { AliquotNamePatternProps, IParentAlias, MetricUnitProps, SampleTypeModel } from './models';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -814,7 +809,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                         },
                     }}
                     newFieldConfig={{
-                        derivationDataScope: DERIVATION_DATA_SCOPES.PARENT_ONLY
+                        derivationDataScope: DERIVATION_DATA_SCOPES.PARENT_ONLY,
                     }}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}

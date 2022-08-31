@@ -17,45 +17,41 @@ import React, { PureComponent, ReactNode } from 'react';
 import Formsy from 'formsy-react';
 import { Textarea } from 'formsy-react-components';
 import { List, Map } from 'immutable';
-
 import { Button } from 'react-bootstrap';
-
-import {
-    handleTabKeyOnTextArea,
-    FormStep,
-    FormTabs,
-    getActionErrorMessage,
-    LoadingSpinner,
-    FileAttachmentForm,
-    Alert,
-    FileSizeLimitProps,
-    QueryModel,
-    EditorModel,
-} from '../../..';
 
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { EditorModelProps } from '../../models';
+import { EditorModel, EditorModelProps } from '../../models';
 
 import { helpLinkNode, DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 import { EditableGridPanel } from '../editable/EditableGridPanel';
 
-import { getServerFilePreview } from './utils';
+import { FileSizeLimitProps } from '../../../public/files/models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { getActionErrorMessage } from '../../util/messaging';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { FormStep, FormTabs } from '../forms/FormStep';
+import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
+import { handleTabKeyOnTextArea } from '../forms/actions';
+import { Alert } from '../base/Alert';
 
 import { getRunPropertiesFileName } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
+import { getServerFilePreview } from './utils';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;
 
 interface Props {
     acceptedPreviewFileFormats?: string;
-    allowBulkRemove?: boolean;
     allowBulkInsert?: boolean;
+    allowBulkRemove?: boolean;
     allowBulkUpdate?: boolean;
     currentStep: number;
     editorModel: EditorModel;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
+    getIsDirty?: () => boolean;
+    maxEditableGridRowMsg?: string;
     maxRows?: number;
     onFileChange: (attachments: Map<string, File>) => any;
     onFileRemoval: (attachmentName: string) => any;
@@ -67,19 +63,17 @@ interface Props {
     onTextChange: (value: any) => any;
     queryModel: QueryModel;
     runPropertiesRow?: Record<string, any>;
-    showTabs?: boolean;
-    title: string;
-    maxEditableGridRowMsg?: string;
-    wizardModel: AssayWizardModel;
-    getIsDirty?: () => boolean;
     setIsDirty?: (isDirty: boolean) => void;
+    wizardModel: AssayWizardModel;
+    title: string;
+    showTabs?: boolean;
 }
 
 interface PreviousRunData {
-    isLoading?: boolean;
-    isLoaded?: boolean;
     data?: InferDomainResponse;
     fileName?: string;
+    isLoaded?: boolean;
+    isLoading?: boolean;
 }
 
 interface State {
@@ -227,7 +221,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
             showTabs,
             wizardModel,
             getIsDirty,
-            setIsDirty
+            setIsDirty,
         } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || queryModel.isLoading;

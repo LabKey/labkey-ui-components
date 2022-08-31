@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { ConfirmModal } from '../../..';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 interface Props {
-    onConfirm: () => any;
-    onCancel: () => any;
     assayDesignName?: string;
     numRuns?: number;
+    onCancel: () => any;
+    onConfirm: () => any;
 }
 
 export class AssayDesignDeleteConfirmModal extends React.Component<Props, any> {

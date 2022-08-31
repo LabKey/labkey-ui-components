@@ -5,16 +5,13 @@
 import React, { FC, memo, useMemo } from 'react';
 import { Link, WithRouterProps } from 'react-router';
 
-import {
-    AppURL,
-    SchemaQuery,
-    Breadcrumb,
-    InjectedQueryModels,
-    GridPanel,
-    Page,
-    PageHeader,
-    withQueryModels,
-} from '../../../..';
+import { InjectedQueryModels, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
+import { Page } from '../../base/Page';
+import { Breadcrumb } from '../../navigation/Breadcrumb';
+import { AppURL } from '../../../url/AppURL';
+import { PageHeader } from '../../base/PageHeader';
+import { GridPanel } from '../../../../public/QueryModel/GridPanel';
+import { SchemaQuery } from '../../../../public/SchemaQuery';
 
 interface BodyProps {
     id: string;

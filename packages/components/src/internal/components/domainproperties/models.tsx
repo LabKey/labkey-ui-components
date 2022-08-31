@@ -27,6 +27,10 @@ import { getConceptForCode } from '../ontology/actions';
 
 import { getCurrentAppProperties, hasPremiumModule } from '../../app/utils';
 
+import { GridColumn } from '../base/models/GridColumn';
+
+import { SCHEMAS } from '../../schemas';
+
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
     DOMAIN_FIELD_DIMENSION,
@@ -82,9 +86,7 @@ import {
 } from './propertiesUtil';
 import { INT_LIST, VAR_LIST } from './list/constants';
 import { DomainRowWarning } from './DomainRowWarning';
-import { GridColumn } from '../base/models/GridColumn';
-import { createFormInputId } from './actions';
-import { SCHEMAS } from '../../schemas';
+import { createFormInputId } from './utils';
 
 export interface IFieldChange {
     id: string;
@@ -741,6 +743,7 @@ export interface IDomainField {
     lookupValidator?: PropertyValidator;
     measure?: boolean;
     mvEnabled?: boolean;
+    name: string;
     original: Partial<IDomainField>;
     primaryKey?: boolean;
     principalConceptCode?: string;
@@ -750,7 +753,6 @@ export interface IDomainField {
     rangeURI: string;
     rangeValidators: List<PropertyValidator>;
     recommendedVariable?: boolean;
-    regexValidators: List<PropertyValidator>;
     required?: boolean;
     scale?: number;
     scannable?: boolean;
@@ -761,7 +763,7 @@ export interface IDomainField {
     textChoiceValidator?: PropertyValidator;
     updatedField: boolean;
     visible: boolean;
-    name: string;
+    regexValidators: List<PropertyValidator>;
 }
 
 export class DomainField

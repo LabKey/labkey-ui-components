@@ -4,7 +4,11 @@
  */
 import React, { useEffect, useState } from 'react';
 
-import { getUserProperties, LoadingPage, User } from '../../..';
+import { User } from '../base/models/User';
+
+import { LoadingPage } from '../base/LoadingPage';
+
+import { getUserProperties } from './actions';
 
 interface Props {
     user: User;

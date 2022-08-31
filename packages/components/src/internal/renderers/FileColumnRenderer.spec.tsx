@@ -2,9 +2,9 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { fromJS } from 'immutable';
 
-import { QueryColumn } from '../..';
-
 import { FILELINK_RANGE_URI } from '../components/domainproperties/constants';
+
+import { QueryColumn } from '../../public/QueryColumn';
 
 import { FileColumnRenderer, getAttachmentTitleFromName } from './FileColumnRenderer';
 import { AttachmentCard } from './AttachmentCard';

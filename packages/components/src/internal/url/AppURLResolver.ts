@@ -24,11 +24,8 @@ import { AssayProtocolModel } from '../components/domainproperties/assay/models'
 import { selectRows } from '../query/selectRows';
 import { caseInsensitive } from '../util/utils';
 import { getQueryDetails } from '../query/api';
-
-export interface AppRouteResolver {
-    matches: (route: string) => boolean;
-    fetch: (parts: any[]) => Promise<AppURL | boolean>;
-}
+import { AppRouteResolver } from './models';
+import { decodeListResolverPath } from './utils';
 
 /**
  * Resolves Data Class routes dynamically
@@ -140,14 +137,6 @@ export class ListResolver implements AppRouteResolver {
     fetched: boolean;
     lists: Map<string, string>; // Map<containerPath|listId, listName>
 
-    static decodeResolverPath(resolverPath: string): string {
-        return resolverPath.replace('$CPS', '').replace('$CPE', '');
-    }
-
-    static encodeResolverPath(containerPath: string): string {
-        return ['$CPS', containerPath?.toLowerCase(), '$CPE'].join('');
-    }
-
     constructor(lists?: Map<string, string>) {
         this.fetched = false;
         this.lists = lists !== undefined ? lists : Map<string, string>();
@@ -162,7 +151,7 @@ export class ListResolver implements AppRouteResolver {
         const containerPathIndex = 2;
         const listIdIndex = 3;
         const listIdNum = parseInt(parts[listIdIndex], 10);
-        const containerPath = ListResolver.decodeResolverPath(
+        const containerPath = decodeListResolverPath(
             decodeURIComponent(parts[containerPathIndex])
         )?.toLowerCase();
         const key = [containerPath, listIdNum].join('|');

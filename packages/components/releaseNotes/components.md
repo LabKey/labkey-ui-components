@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.213.0
+*Released*: 31 August 2022
 * Fix problems related to grid customization (Issues 46137 and 46121)
   * Use viewName in more places so data corresponds to the current view
   * Use Detail view instead of default view in places where we need to be sure certain values are found, even if the default view is filtered

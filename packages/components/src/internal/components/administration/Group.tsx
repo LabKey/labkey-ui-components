@@ -102,7 +102,7 @@ export const Group: FC<GroupProps> = memo(props => {
     );
 
     const canDeleteGroup = useMemo(() => {
-        return members.length !== 0 ? undefined : 'To delete this group, first remove all members.';
+        return members.length !== 0 ? 'To delete this group, first remove all members.' : undefined;
     }, [members]);
 
     const onDeleteGroup = useCallback(() => {

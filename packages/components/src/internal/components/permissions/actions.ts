@@ -130,6 +130,7 @@ export function fetchContainerSecurityPolicy(
 export interface FetchedGroup {
     id: number;
     isProjectGroup: boolean;
+    isSystemGroup: boolean;
     name: string;
     type: string;
 }

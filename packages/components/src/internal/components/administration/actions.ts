@@ -108,30 +108,32 @@ export const getGroupRows = (): Promise<Row[]> => {
 };
 
 // groupsData is an array of objects, each representing a group.
-// groupRows is an array of data rows that correlate users with groups. See core.Members, the table it obtains data from.
+// groupRows is an array of data rows that correlate members with groups. See core.Members, the table it gets data from.
 // From this, we construct an object of the form:
 // {<id of group>:
 //      {
 //          groupName: <group name>,
-//          members: [{name: <member name>, id: <member id>, type: <member type, 'g' or 'u'>}, ...]
+//          members: [{name: <member name>, id: <member id>, type: <member type, 'g', 'sg', or 'u'>}, ...]
 //       },
 //       ...
 // }
-// Where the members array is sorted by type, and then by name
+// Where the members array is sorted by type, and then by name. The types stand for 'group,' 'site group,' and 'user'
 export const constructGroupMembership = (groupsData: FetchedGroup[], groupRows): GroupMembership => {
     const groupsWithMembers = groupRows.reduce((prev, curr) => {
         const groupId = curr['GroupId'];
-        if (groupId === -1) {
+        const i = groupsData.find(group => group.id === groupId);
+
+        if (groupId === -1 || !i.isProjectGroup) {
             return prev;
         }
         const userDisplayName = curr['UserId/DisplayName'];
         const userDisplayValue = `${curr['UserId/Email']} (${userDisplayName})`;
-        const isGroup = !userDisplayName;
+        const memberIsGroup = !userDisplayName;
 
         const member = {
-            name: isGroup ? groupsData.find(group => group.id === curr.UserId).name : userDisplayValue,
+            name: memberIsGroup ? groupsData.find(group => group.id === curr.UserId).name : userDisplayValue,
             id: curr.UserId,
-            type: isGroup ? 'g' : 'u',
+            type: memberIsGroup ? 'g' : 'u',
         };
         if (curr.GroupId in prev) {
             prev[groupId].members.push(member);
@@ -143,9 +145,10 @@ export const constructGroupMembership = (groupsData: FetchedGroup[], groupRows):
         }
     }, {});
 
-    // If a group has no members—is in groupsData but not groupRows—add it as well
+    // If a group has no members—is in groupsData but not groupRows—add it as well, unless it is a site group
     groupsData.forEach(group => {
-        if (!(group.id in groupsWithMembers)) {
+        const isProjectGroup = group.isProjectGroup;
+        if (!(group.id in groupsWithMembers) && isProjectGroup) {
             groupsWithMembers[group.id] = { groupName: group.name, members: [] };
         }
     });

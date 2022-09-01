@@ -88,7 +88,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
             // Assemble single cohesive data structure representing group data
             const fetchedGroups = await api.security.fetchGroups(projectPath);
-            const groupsData = fetchedGroups.filter(group => group.isProjectGroup);
+            const groupsData = fetchedGroups.filter(group => !group.isSystemGroup);
             const groupRows = await getGroupRows();
             const groupMembershipState = constructGroupMembership(groupsData, groupRows);
 
@@ -112,6 +112,19 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
     const save = useCallback(async () => {
         try {
+            // Delete groups
+            const deletedGroups = Object.keys(savedGroupMembership).filter(groupId => !(groupId in groupMembership));
+            const deletedGroupIds = await Promise.all(
+                deletedGroups.map(async groupId => {
+                    const createGroupResponse = await api.security.deleteGroup(parseInt(groupId, 10), projectPath);
+                    return createGroupResponse.deleted;
+                })
+            );
+            const newGroupMembership = { ...groupMembership };
+            deletedGroupIds.forEach(deletedGroup => {
+                delete newGroupMembership[deletedGroup];
+            });
+
             // Create new groups
             const addedGroups = Object.keys(groupMembership).filter(groupId => !(groupId in savedGroupMembership));
             const newlyAddedGroupIds = await Promise.all(
@@ -122,22 +135,9 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                 })
             );
             // (Replace old name keys with new id keys)
-            const newGroupMembership = { ...groupMembership };
             newlyAddedGroupIds.forEach(addedGroup => {
                 newGroupMembership[addedGroup.id] = newGroupMembership[addedGroup.name];
                 delete newGroupMembership[addedGroup.name];
-            });
-
-            // Delete groups
-            const deletedGroups = Object.keys(savedGroupMembership).filter(groupId => !(groupId in groupMembership));
-            const deletedGroupIds = await Promise.all(
-                deletedGroups.map(async groupId => {
-                    const createGroupResponse = await api.security.deleteGroup(parseInt(groupId, 10), projectPath);
-                    return createGroupResponse.deleted;
-                })
-            );
-            deletedGroupIds.forEach(deletedGroup => {
-                delete newGroupMembership[deletedGroup];
             });
 
             // Add new members

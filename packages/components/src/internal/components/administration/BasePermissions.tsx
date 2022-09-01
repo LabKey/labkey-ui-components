@@ -82,7 +82,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const loadGroupMembership = useCallback(async () => {
         try {
             const fetchedGroups = await api.security.fetchGroups(getProjectPath(container.path));
-            const groupsData = fetchedGroups.filter(group => group.isProjectGroup);
+            const groupsData = fetchedGroups.filter(group => !group.isSystemGroup);
             const groupRows = await getGroupRows();
             const groupMembershipState = constructGroupMembership(groupsData, groupRows);
             setGroupMembership(groupMembershipState);

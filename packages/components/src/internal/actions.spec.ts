@@ -25,7 +25,14 @@ import { QueryInfo } from '../public/QueryInfo';
 import { QueryColumn } from '../public/QueryColumn';
 
 import { CellMessage, CellValues, EditorModel, ValueDescriptor } from './models';
-import { addColumns, changeColumn, removeColumn, getExportParams, generateFillSequence } from './actions';
+import {
+    addColumns,
+    changeColumn,
+    removeColumn,
+    getExportParams,
+    generateFillSequence,
+    parseIntIfNumber,
+} from './actions';
 import { EXPORT_TYPES } from './constants';
 
 // FIXME, when the editableGridWithData file is read in, the objects are automatically
@@ -748,5 +755,28 @@ describe('generateFillSequence', () => {
         validate(editorModel, fillValues, '4-4', editorModel.getValueForCellKey('4-1'));
         validate(editorModel, fillValues, '4-5', editorModel.getValueForCellKey('4-2'));
         validate(editorModel, fillValues, '4-6', editorModel.getValueForCellKey('4-0'));
+    });
+});
+
+describe('parseIntIfNumber', () => {
+    test('empty', () => {
+        expect(parseIntIfNumber(undefined)).toBe(undefined);
+        expect(parseIntIfNumber(null)).toBe(null);
+        expect(parseIntIfNumber('')).toBe('');
+        expect(parseIntIfNumber(' ')).toBe(' ');
+    });
+
+    test('string', () => {
+        expect(parseIntIfNumber('0')).toBe(0);
+        expect(parseIntIfNumber('1')).toBe(1);
+        expect(parseIntIfNumber(' 1 ')).toBe(1);
+        expect(parseIntIfNumber('1_2')).toBe('1_2');
+    });
+
+    test('number', () => {
+        expect(parseIntIfNumber(0)).toBe(0);
+        expect(parseIntIfNumber(1)).toBe(1);
+        expect(parseIntIfNumber(1.2)).toBe(1);
+        expect(parseIntIfNumber(1.9)).toBe(1);
     });
 });

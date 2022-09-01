@@ -23,8 +23,9 @@ import { SampleGridButtonProps } from './models';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
-
-// import { PrintLabelsModal, QueryModel, useLabelPrintingContext} from '../../..';
+import { PrintLabelsModal } from '../labels/PrintLabelsModal';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { useLabelPrintingContext } from '../labels/LabelPrintingContextProvider';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 

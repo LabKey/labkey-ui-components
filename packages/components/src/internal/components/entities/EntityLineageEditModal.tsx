@@ -101,6 +101,7 @@ export const EntityLineageEditModal: FC<Props> = memo(props => {
                     List.of(...queryModel.selections),
                     queryModel.schemaName,
                     queryModel.queryName,
+                    queryModel.viewName,
                     List.of('RowId', 'Name', 'LSID', IS_ALIQUOT_COL).concat(ParentEntityLineageColumns).toArray()
                 );
 

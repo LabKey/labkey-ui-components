@@ -27,6 +27,7 @@ import { resolveKey } from '../../../../public/SchemaQuery';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 
 import { SelectInput, SelectInputProps } from './SelectInput';
+import { ViewInfo } from '../../../ViewInfo';
 
 interface LookupSelectOption {
     label: string;
@@ -132,7 +133,8 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
         this.setState(() => ({ isLoading: true }));
 
         const { schemaName, queryName } = queryColumn.lookup;
-        selectRowsDeprecated({ containerFilter, containerPath, schemaName, queryName, filterArray, sort })
+        // using Details view name to assure we get values even when the default view is filtered.
+        selectRowsDeprecated({ containerFilter, containerPath, schemaName, queryName, viewName: ViewInfo.DETAIL_NAME, filterArray, sort })
             .then(response => {
                 this.setState(() => ({
                     isLoading: false,

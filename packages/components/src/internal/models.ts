@@ -31,7 +31,7 @@ import { quoteValueWithDelimiters } from './util/utils';
 import { AppURL } from './url/AppURL';
 
 export function createGridModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
-    const parts = [gridId, resolveSchemaQuery(schemaQuery)];
+    const parts = [gridId, schemaQuery.getKey()];
 
     if (schemaQuery && schemaQuery.viewName) {
         parts.push(schemaQuery.viewName);

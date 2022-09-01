@@ -92,7 +92,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const useOnClick = parentKey !== undefined || (selectingSampleParents && selectedQuantity > 0);
 
     const selectionKey = useMemo(() => {
-        return parentQueryModel?.hasSelections ? parentQueryModel.id : null;
+        return parentQueryModel?.hasSelections ? parentQueryModel.selectionKey: null;
     }, [parentQueryModel]);
 
     const onSampleCreationMenuSelect = useCallback(

@@ -13,6 +13,7 @@ import { SHARED_CONTAINER_PATH } from '../../constants';
 import { naturalSort } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { SCHEMAS } from '../../schemas';
+import { ViewInfo } from '../../ViewInfo';
 
 import { isDataClassEntity, isSampleEntity } from './utils';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
@@ -115,6 +116,7 @@ function getSelectedParents(
         return selectRowsDeprecated({
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
+            viewName: schemaQuery.viewName,
             columns,
             filterArray,
         })
@@ -167,9 +169,11 @@ function getSelectedSampleParentsFromItems(itemIds: any[], isAliquotParent?: boo
                 if (opFilter) {
                     filterArray.push(opFilter);
                 }
+                // use Detail view to assure we get values even if the default view is filtered
                 return selectRowsDeprecated({
                     schemaName: 'exp',
                     queryName: 'materials',
+                    viewName: ViewInfo.DETAIL_NAME,
                     columns: 'LSID,Name,RowId,SampleSet',
                     filterArray,
                 })
@@ -420,6 +424,8 @@ export function getEntityTypeOptions(
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
     return new Promise((resolve, reject) => {
+        // use of default view here is ok. Assumed that view is overridden only if there is desire to
+        // hide types.
         selectRowsDeprecated({
             containerPath,
             schemaName: typeListingSchemaQuery.schemaName,

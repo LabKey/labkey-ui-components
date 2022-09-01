@@ -65,7 +65,8 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
                 selectedIds,
                 columnString,
                 sorts,
-                queryParameters
+                queryParameters,
+                schemaQuery.viewName
             )
                 .then(response => {
                     const { data, dataIds, totalRows } = response;

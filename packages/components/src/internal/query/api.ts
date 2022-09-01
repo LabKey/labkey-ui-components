@@ -18,7 +18,7 @@ import { normalize, schema } from 'normalizr';
 import { Filter, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
-import { resolveKeyFromJson, resolveSchemaQuery, SchemaQuery } from '../../public/SchemaQuery';
+import { resolveKeyFromJson, SchemaQuery } from '../../public/SchemaQuery';
 import { isProductProjectsEnabled, isProjectContainer } from '../app/utils';
 
 import { caseInsensitive, quoteValueWithDelimiters } from '../util/utils';
@@ -34,7 +34,7 @@ export function invalidateFullQueryDetailsCache(): void {
 }
 
 function getQueryDetailsCacheKey(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): string {
-    return '' + resolveSchemaQuery(schemaQuery) + (fk ? '|' + fk : '') + (containerPath ? '|' + containerPath : '');
+    return '' + schemaQuery.getKey() + (fk ? '|' + fk : '') + (containerPath ? '|' + containerPath : '');
 }
 
 export function invalidateQueryDetailsCache(schemaQuery: SchemaQuery, containerPath?: string, fk?: string): void {
@@ -53,11 +53,12 @@ export interface GetQueryDetailsOptions {
     lookup?: QueryLookup;
     queryName: string;
     schemaName: string;
+    viewName?: string;
 }
 
 export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
-    const { containerPath, queryName, schemaName, fk, lookup } = options;
-    const schemaQuery = SchemaQuery.create(schemaName, queryName);
+    const { containerPath, queryName, schemaName, viewName, fk, lookup } = options;
+    const schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
     const key = getQueryDetailsCacheKey(schemaQuery, containerPath, fk);
 
     if (!queryDetailsCache[key]) {
@@ -374,8 +375,8 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
     return new Promise((resolve, reject) => {
         let schemaQuery, key;
         if (userConfig.queryName) {
-            schemaQuery = SchemaQuery.create(userConfig.schemaName, userConfig.queryName);
-            key = resolveSchemaQuery(schemaQuery);
+            schemaQuery = SchemaQuery.create(userConfig.schemaName, userConfig.queryName, userConfig.viewName);
+            key = schemaQuery.getKey();
         }
 
         let hasDetails = false;
@@ -426,7 +427,7 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
 
                         if (saveInSession) {
                             resultSchemaQuery = SchemaQuery.create(userConfig.schemaName, json.queryName);
-                            key = resolveSchemaQuery(resultSchemaQuery);
+                            key = resultSchemaQuery.getKey();
                         } else {
                             resultSchemaQuery = schemaQuery;
                         }

@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Implement Group Management
 
+### version 2.213.0
+*Released*: 31 August 2022
+* Fix problems related to grid customization (Issues 46137 and 46121)
+  * Use viewName in more places so data corresponds to the current view
+  * Use Detail view instead of default view in places where we need to be sure certain values are found, even if the default view is filtered
+  * Add `selectionKey` method in `QueryModel` that includes viewName
+  * add `getKey` method to `SchemaQuery` and deprecate resolveSchemaQuery
+* Issue 46098: Get all sample types when getting type count
+* Update `QueryModel.isLoading` to return false if there are load errors
+
 ### version 2.212.4
 *Released*: 31 August 2022
 * Remove experimental feature flag for App grid lock left col on horizontal scroll
@@ -52,7 +62,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Allow TabbedGridPanel excel handler to be used by getGridPanelDisplay
 
 ### version 2.211.0
-*Relased*: 24 August 2022
+*Released*: 24 August 2022
 * LKSM Starter edition
   * Add helper methods for checking if workflow and assay features are enabled
   * Update `getAuditQueries` to return the proper set of queries for the various products

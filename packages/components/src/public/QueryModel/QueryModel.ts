@@ -6,7 +6,7 @@ import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/cons
 
 import { DataViewInfo } from '../../internal/models';
 
-import { SchemaQuery } from '../SchemaQuery';
+import { encodePart, SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
 import { isLoading, LoadingState } from '../LoadingState';
 import { QueryInfo } from '../QueryInfo';
@@ -20,7 +20,7 @@ import { flattenValuesFromRow, offsetFromString, querySortsFromString, searchFil
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
- * schemaName-queryName-viewName or schemaName-queryName if viewName is undefined.
+ * schemaName.queryName.
  *
  * @param schemaQuery: SchemaQuery
  */
@@ -763,6 +763,13 @@ export class QueryModel {
     }
 
     /**
+     * Key to attach to selections, which are specific to a view
+     */
+    get selectionKey(): string {
+        return this.id + (this.viewName ? '/' + encodePart(this.viewName).toLowerCase() : '');
+    }
+
+    /**
      * Return the selection ids as an array of integers.
      */
     getSelectedIdsAsInts(): number[] {
@@ -797,6 +804,9 @@ export class QueryModel {
      * True if either the query info or rows of the QueryModel are still loading.
      */
     get isLoading(): boolean {
+        if (this.hasLoadErrors)
+            return false;
+
         return isLoading(this.queryInfoLoadingState, this.rowsLoadingState);
     }
 

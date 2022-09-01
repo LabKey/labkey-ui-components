@@ -12,15 +12,32 @@ describe('resolveSchemaQuery', () => {
         });
         expect(resolveSchemaQuery(schemaQuery)).toBe('name/my favorite query');
     });
+
+    test('schema with view', () => {
+        const schemaQuery = new SchemaQuery({
+            schemaName: 'name',
+            queryName: 'my favorite query',
+            viewName: 'view2'
+        });
+        expect(resolveSchemaQuery(schemaQuery)).toBe('name/my favorite query/view2');
+    });
 });
 
 describe('getSchemaQuery', () => {
-    test('no decoding required', () => {
-        const expected = new SchemaQuery({
+    test('no decoding required, no view', () => {
+        expect(getSchemaQuery('name/query')).toEqual(new SchemaQuery({
             schemaName: 'name',
             queryName: 'query',
-        });
-        expect(getSchemaQuery('name/query')).toEqual(expected);
+        }));
+        expect(getSchemaQuery('name/query/view')).toEqual(new SchemaQuery({
+            schemaName: 'name',
+            queryName: 'query',
+            viewName: 'view'
+        }));
+    });
+
+    test('no decoding required, with view', () => {
+
     });
 
     test('decoding required', () => {
@@ -34,6 +51,13 @@ describe('getSchemaQuery', () => {
             new SchemaQuery({
                 schemaName: 'one.two.three$',
                 queryName: 'q1',
+            })
+        );
+        expect(getSchemaQuery('one$ptwo$pthree$d/q1/view$s2$d')).toEqual(
+            new SchemaQuery({
+                schemaName: 'one.two.three$',
+                queryName: 'q1',
+                viewName: 'view/2$'
             })
         );
     });
@@ -56,6 +80,8 @@ describe('resolveKeyFromJson', () => {
     test('schema name with one part', () => {
         expect(resolveKeyFromJson({ schemaName: ['partOne'], queryName: 'q/Name' })).toBe('partone/q$sname');
         expect(resolveKeyFromJson({ schemaName: ['p&rtOne'], queryName: '//$Name' })).toBe('p$dartone/$s$s$dname');
+        expect(resolveKeyFromJson({ schemaName: ['p&rtOne'], queryName: '//$Name', viewName: 'view' })).toBe('p$dartone/$s$s$dname/view');
+        expect(resolveKeyFromJson({ schemaName: ['p&rtOne'], queryName: '//$Name', viewName: 'new/view$' })).toBe('p$dartone/$s$s$dname/new$sview$d');
     });
 
     test('schema name with multiple parts', () => {

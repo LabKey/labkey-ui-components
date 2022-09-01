@@ -26,6 +26,7 @@ import { SamplesAssayButton } from './SamplesAssayButton';
 import { JobsButton, SampleStorageButton } from './models';
 import { getSampleAliquotsQueryConfig } from './actions';
 import { getOmittedSampleTypeColumns } from './utils';
+import { ViewInfo } from '../../ViewInfo';
 
 const SUB_MENU_WIDTH = 800;
 
@@ -206,7 +207,7 @@ export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props =
     const { sampleLsid, schemaQuery, rootLsid, user, omittedColumns } = props;
     const id = createGridModelId(
         'sample-aliquots',
-        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery())
+        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery(), ViewInfo.DETAIL_NAME)
     );
     const omitted = omittedColumns
         ? [...getOmittedSampleTypeColumns(user), ...omittedColumns]

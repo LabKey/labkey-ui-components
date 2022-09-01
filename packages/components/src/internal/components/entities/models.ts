@@ -29,6 +29,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { EditorModel } from '../../models';
 import { insertRows, InsertRowsResponse } from '../../query/api';
 import { QueryInfo } from '../../../public/QueryInfo';
+import { ViewInfo } from '../../ViewInfo';
 
 export interface EntityInputProps {
     role: string;
@@ -149,6 +150,7 @@ export class EntityParentType extends Record({
                 multiValued: this.isAliquotParent ? undefined : 'junction',
                 queryName: this.query,
                 schemaName: this.schema,
+                viewName: ViewInfo.DETAIL_NAME, // use the details view to assure we see values even if default view is filtered
                 table: this.isAliquotParent ? QueryColumn.MATERIAL_INPUTS : parentInputType,
             },
             name: parentColName,

@@ -1,7 +1,7 @@
 import React, { FC, memo, PureComponent, useCallback } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
-import { Filter, PermissionTypes } from '@labkey/api';
+import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import { getDateFormat } from '../../app/utils';
 
@@ -35,6 +35,7 @@ async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFil
             filterArray,
             maxRows: 1,
             schemaQuery,
+            containerFilter: Query.ContainerFilter.currentPlusProjectAndShared // Issue 46098
         });
         return response.rowCount;
     } catch (error) {
@@ -85,6 +86,8 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 const itemCount = await fetchItemCount(itemCountSQ, itemCountFilters);
 
                 const { queryName, schemaName, sort } = this.getSelectedChartGroup();
+                // default view is fine here; using custom query that is assumed not to be customized or customized
+                // to specifically affect this view.
                 const response = await selectRowsDeprecated({ schemaName, queryName, sort });
 
                 this.setState(state => ({

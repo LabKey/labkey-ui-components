@@ -5850,10 +5850,16 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           ],
           "bindURL": false,
           "containerPath": undefined,
+          "omittedColumns": Array [
+            "Run",
+          ],
+          "requiredColumns": Array [
+            "Name",
+          ],
           "schemaQuery": Immutable.Record {
             "schemaName": "exp.data",
             "queryName": "Second Source",
-            "viewName": undefined,
+            "viewName": "~~DETAILS~~",
           },
         },
       }
@@ -6001,10 +6007,16 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             ],
             "bindURL": false,
             "containerPath": undefined,
+            "omittedColumns": Array [
+              "Run",
+            ],
+            "requiredColumns": Array [
+              "Name",
+            ],
             "schemaQuery": Immutable.Record {
               "schemaName": "exp.data",
               "queryName": "Second Source",
-              "viewName": undefined,
+              "viewName": "~~DETAILS~~",
             },
           },
         }
@@ -6178,13 +6190,17 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "maxRows": 20,
               "messages": Array [],
               "offset": 0,
-              "omittedColumns": Array [],
+              "omittedColumns": Array [
+                "Run",
+              ],
               "orderedRows": undefined,
               "queryInfo": undefined,
               "queryInfoError": undefined,
               "queryInfoLoadingState": "LOADING",
               "queryParameters": undefined,
-              "requiredColumns": Array [],
+              "requiredColumns": Array [
+                "Name",
+              ],
               "rowCount": undefined,
               "rows": undefined,
               "rowsError": undefined,
@@ -6192,7 +6208,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "schemaQuery": Immutable.Record {
                 "schemaName": "exp.data",
                 "queryName": "Second Source",
-                "viewName": undefined,
+                "viewName": "~~DETAILS~~",
               },
               "selectedReportId": undefined,
               "selections": undefined,
@@ -6309,13 +6325,17 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "maxRows": 20,
                 "messages": Array [],
                 "offset": 0,
-                "omittedColumns": Array [],
+                "omittedColumns": Array [
+                  "Run",
+                ],
                 "orderedRows": undefined,
                 "queryInfo": undefined,
                 "queryInfoError": undefined,
                 "queryInfoLoadingState": "LOADING",
                 "queryParameters": undefined,
-                "requiredColumns": Array [],
+                "requiredColumns": Array [
+                  "Name",
+                ],
                 "rowCount": undefined,
                 "rows": undefined,
                 "rowsError": undefined,
@@ -6323,7 +6343,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "schemaQuery": Immutable.Record {
                   "schemaName": "exp.data",
                   "queryName": "Second Source",
-                  "viewName": undefined,
+                  "viewName": "~~DETAILS~~",
                 },
                 "selectedReportId": undefined,
                 "selections": undefined,
@@ -6422,13 +6442,17 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "maxRows": 20,
                     "messages": Array [],
                     "offset": 0,
-                    "omittedColumns": Array [],
+                    "omittedColumns": Array [
+                      "Run",
+                    ],
                     "orderedRows": undefined,
                     "queryInfo": undefined,
                     "queryInfoError": undefined,
                     "queryInfoLoadingState": "LOADING",
                     "queryParameters": undefined,
-                    "requiredColumns": Array [],
+                    "requiredColumns": Array [
+                      "Name",
+                    ],
                     "rowCount": undefined,
                     "rows": undefined,
                     "rowsError": undefined,
@@ -6436,7 +6460,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "schemaQuery": Immutable.Record {
                       "schemaName": "exp.data",
                       "queryName": "Second Source",
-                      "viewName": undefined,
+                      "viewName": "~~DETAILS~~",
                     },
                     "selectedReportId": undefined,
                     "selections": undefined,
@@ -6451,7 +6475,13 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 onRevertView={[Function]}
                 onSaveNewView={[Function]}
                 onSaveView={[Function]}
-              />
+              >
+                <div
+                  className="panel-heading view-header"
+                >
+                  ~~DETAILS~~
+                </div>
+              </Memo()>
               <div
                 className="grid-panel__body top-spacing"
               >

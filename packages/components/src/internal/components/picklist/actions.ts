@@ -212,8 +212,8 @@ export function getSelectedPicklistSamples(
             [PICKLIST_SAMPLE_ID_COLUMN, PICKLIST_KEY_COLUMN].join(','),
             undefined,
             undefined,
-            PICKLIST_KEY_COLUMN
-        )
+            undefined,
+            PICKLIST_KEY_COLUMN)
             .then(response => {
                 const { data } = response;
                 const sampleIds = [];
@@ -308,15 +308,7 @@ export interface PicklistDeletionData {
 export function getPicklistDeleteData(model: QueryModel, user: User): Promise<PicklistDeletionData> {
     return new Promise((resolve, reject) => {
         const columnString = 'Name,listId,category,createdBy';
-        getSelectedData(
-            model.schemaName,
-            model.queryName,
-            [...model.selections],
-            columnString,
-            undefined,
-            undefined,
-            'ListId'
-        )
+        getSelectedData(model.schemaName, model.queryName, [...model.selections], columnString, undefined, undefined, undefined, 'ListId')
             .then(response => {
                 const { data } = response;
                 let numNotDeletable = 0;

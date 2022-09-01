@@ -213,6 +213,7 @@ export class SamplesBulkUpdateFormBase extends React.PureComponent<Props, State>
                 itemLabel={sampleSetLabel}
                 queryInfo={this.getQueryInfo()}
                 selectedIds={queryModel.selections}
+                viewName={queryModel.viewName}
                 canSubmitForEdit={hasValidMaxSelection}
                 onCancel={onCancel}
                 onError={onBulkUpdateError}

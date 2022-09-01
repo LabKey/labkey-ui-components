@@ -29,6 +29,7 @@ interface Props {
     ) => any;
     pluralNoun?: string;
     queryInfo: QueryInfo;
+    viewName: string; // queryInfo.schemaQuery.viewName is likely undefined (i.e., not the current viewName)
     readOnlyColumns?: List<string>;
     selectedIds: Set<string>;
     shownInUpdateColumns?: boolean;
@@ -65,7 +66,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { onCancel, pluralNoun, queryInfo, readOnlyColumns, selectedIds, shownInUpdateColumns, sortString } =
+        const { onCancel, pluralNoun, queryInfo, readOnlyColumns, selectedIds, shownInUpdateColumns, sortString, viewName } =
             this.props;
         // Get all shownInUpdateView columns or undefined
         const columns = shownInUpdateColumns
@@ -80,7 +81,9 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 name,
                 Array.from(selectedIds),
                 columnString,
-                sortString
+                sortString,
+                undefined,
+                viewName
             );
             this.setState({
                 dataForSelection: data,

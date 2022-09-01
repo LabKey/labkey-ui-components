@@ -602,7 +602,7 @@ export function getSelectedData(
     sorts?: string,
     queryParameters?: { [key: string]: any },
     viewName?: string,
-    keyColumn = 'RowId',
+    keyColumn = 'RowId'
 ): Promise<IGridResponse> {
     const filterArray = [];
     filterArray.push(Filter.create(keyColumn, selections, Filter.Types.IN));

@@ -1,6 +1,7 @@
-import React, { FC, memo, useCallback } from 'react';
+import React, {FC, memo, useCallback, useState} from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
+
 
 import { EntityDataType } from '../entities/models';
 
@@ -23,6 +24,8 @@ import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { SamplesEditButtonSections, shouldIncludeMenuItem } from './utils';
 import { getSampleTypeRowId } from './actions';
 import { SampleGridButtonProps } from './models';
+import {getCrossFolderSelectionResult} from "../entities/actions";
+import {EntityCrossProjectSelectionConfirmModal} from "../entities/EntityCrossProjectSelectionConfirmModal";
 
 interface OwnProps {
     combineParentTypes?: boolean;
@@ -43,7 +46,38 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         model,
         metricFeatureArea,
     } = props;
+    const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
+
     const { user, moduleContext } = useServerContext();
+
+    const handleMenuClick = useCallback(async (onClick: () => void, errorMsg?: string): Promise<void> => {
+        if (model?.hasSelections) {
+            setCrossFolderSelectionResult(undefined);
+            const result = await getCrossFolderSelectionResult(model.id,'sample');
+            if (result.crossFolderSelectionCount > 0) {
+                setCrossFolderSelectionResult({
+                    ...result,
+                    title: errorMsg,
+                });
+            }
+            else {
+                onClick();
+            }
+        }
+
+    }, [model?.hasSelections, model.id]);
+
+    const onToggleEditWithGridUpdate = useCallback(() => {
+        handleMenuClick(toggleEditWithGridUpdate, "Cannot Edit Samples");
+    }, [toggleEditWithGridUpdate]);
+
+    const onShowBulkUpdate = useCallback(() => {
+        handleMenuClick(showBulkUpdate, "Cannot Edit Samples");
+    }, [showBulkUpdate]);
+
+    const dismissCrossFolderError = useCallback(() => {
+        setCrossFolderSelectionResult(undefined);
+    }, []);
 
     if (!model || model.isLoading) return null;
 
@@ -86,7 +120,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                         <SelectionMenuItem
                             id="update-samples-menu-item"
                             text="Edit in Grid"
-                            onClick={toggleEditWithGridUpdate}
+                            onClick={onToggleEditWithGridUpdate}
                             maxSelection={MAX_EDITABLE_GRID_ROWS}
                             queryModel={model}
                             nounPlural={SampleTypeDataType.nounPlural}
@@ -95,7 +129,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                             <SelectionMenuItem
                                 id="bulk-update-samples-menu-item"
                                 text="Edit in Bulk"
-                                onClick={showBulkUpdate}
+                                onClick={onShowBulkUpdate}
                                 queryModel={model}
                                 nounPlural={SampleTypeDataType.nounPlural}
                             />
@@ -111,6 +145,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                                         parentEntityDataTypes={[parentEntityDataType]}
                                         queryModel={model}
                                         onSuccess={afterSampleActionComplete}
+                                        handleClick={handleMenuClick}
                                     />
                                 );
                             })}
@@ -120,6 +155,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                                 parentEntityDataTypes={parentEntityDataTypes}
                                 queryModel={model}
                                 onSuccess={afterSampleActionComplete}
+                                handleClick={handleMenuClick}
                             />
                         )}
                     </RequiresPermission>
@@ -131,6 +167,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                             queryModel={model}
                             afterSampleDelete={afterSampleDelete}
                             metricFeatureArea={metricFeatureArea}
+                            handleClick={handleMenuClick}
                         />
                     </RequiresPermission>
                 )}
@@ -146,6 +183,16 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                     </RequiresPermission>
                 )}
             </ManageDropdownButton>
+            {crossFolderSelectionResult &&
+                <EntityCrossProjectSelectionConfirmModal
+                    crossFolderSelectionCount={crossFolderSelectionResult.crossFolderSelectionCount}
+                    currentFolderSelectionCount={crossFolderSelectionResult.currentFolderSelectionCount}
+                    onDismiss={dismissCrossFolderError}
+                    title={crossFolderSelectionResult.title}
+                    noun="sample"
+                    nounPlural="samples"
+                />
+            }
         </RequiresPermission>
     );
 });

@@ -27,10 +27,11 @@ interface Props {
     queryModel?: QueryModel;
     useSelected: boolean;
     verb?: string;
+    containerPath?: string;
 }
 
 export const EntityDeleteModal: FC<Props> = memo(props => {
-    const { auditBehavior, queryModel, onCancel, afterDelete, beforeDelete, useSelected, entityDataType, maxSelected } =
+    const { auditBehavior, containerPath, queryModel, onCancel, afterDelete, beforeDelete, useSelected, entityDataType, maxSelected } =
         props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
@@ -63,6 +64,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                     auditBehavior,
                     rows: rowsToDelete,
                     schemaQuery: queryModel.schemaQuery,
+                    containerPath: containerPath,
                 });
                 afterDelete(rowsToKeep);
                 createNotification(deleteSuccessMessage(noun, rowsToDelete.length, undefined));

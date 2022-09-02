@@ -430,6 +430,7 @@ import {
 } from './internal/components/lineage/types';
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
+import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
@@ -1125,6 +1126,7 @@ export {
     SampleTimelinePageBase,
     // entities
     EntityTypeDeleteConfirmModal,
+    EntityCrossProjectSelectionConfirmModal,
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,

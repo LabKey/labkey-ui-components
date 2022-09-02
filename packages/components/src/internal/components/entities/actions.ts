@@ -18,6 +18,7 @@ import { ViewInfo } from '../../ViewInfo';
 import { isDataClassEntity, isSampleEntity } from './utils';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
 import {
+    CrossFolderSelectionResult,
     DisplayObject,
     EntityDataType,
     EntityIdCreationModel,
@@ -593,3 +594,43 @@ export function getDataOperationConfirmationData(
         dataOperation: DataOperation[operation],
     });
 }
+
+export function getCrossFolderSelectionResult(
+    dataRegionSelectionKey: string,
+    dataType: 'sample' | 'data',
+    rowIds?: string[] | number[]
+): Promise<CrossFolderSelectionResult> {
+    if (!dataRegionSelectionKey && !rowIds?.length) {
+        return Promise.resolve(undefined);
+    }
+
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'getCrossFolderDataSelection.api'),
+            method: 'POST',
+            jsonData: {
+                dataRegionSelectionKey,
+                rowIds,
+                dataType,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                console.log(response);
+                if (response.success) {
+                    resolve({
+                        currentFolderSelectionCount: response.data.currentFolderSelectionCount,
+                        crossFolderSelectionCount: response.data.crossFolderSelectionCount
+                    });
+                } else {
+                    console.error('Error getting cross folder data selection result', response.exception);
+                    reject(response.exception);
+                }
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response ? response.exception : 'Unknown error getting cross folder data selection result.');
+            }),
+        });
+    });
+}
+
+

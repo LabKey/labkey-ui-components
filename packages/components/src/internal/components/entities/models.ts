@@ -652,3 +652,9 @@ export class OperationConfirmationData {
         return this.notAllowed.length > 0;
     }
 }
+
+export interface CrossFolderSelectionResult {
+    crossFolderSelectionCount: number;
+    currentFolderSelectionCount: number;
+    title?: string;
+}

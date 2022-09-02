@@ -18,6 +18,7 @@ interface Props {
     model: QueryModel;
     navigate: (url: string | AppURL) => any;
     targetProductId?: string;
+    sampleGridId?: string;
 }
 
 export const SamplesDeriveButtonBase: FC<Props> = memo(props => {

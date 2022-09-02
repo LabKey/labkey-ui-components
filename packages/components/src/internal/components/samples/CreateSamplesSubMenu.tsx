@@ -34,6 +34,7 @@ interface Props {
     selectedType?: SampleCreationType;
     subMenuText?: string;
     targetProductId?: string;
+    sampleGridId?: string;
 }
 
 export const MAX_PARENTS_PER_SAMPLE = 20;

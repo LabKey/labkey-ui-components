@@ -20,6 +20,8 @@ import {
     SampleCreationType,
     SampleCreationTypeModel,
 } from './models';
+import {getCrossFolderSelectionResult} from "../entities/actions";
+import {EntityCrossProjectSelectionConfirmModal} from "../entities/EntityCrossProjectSelectionConfirmModal";
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
@@ -45,6 +47,7 @@ interface CreateSamplesSubMenuProps {
     selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
     targetProductId?: string;
+    sampleGridId?: string;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -61,6 +64,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         sampleWizardURL,
         getProductSampleWizardURL,
         isSelectingSamples,
+        sampleGridId,
         selectedItems,
         selectedType,
         inlineItemsCount,
@@ -70,6 +74,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
     const [selectedOption, setSelectedOption] = useState<string>();
+    const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
 
     const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;
     const schemaQuery = parentQueryModel?.schemaQuery;
@@ -96,7 +101,30 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     }, [parentQueryModel]);
 
     const onSampleCreationMenuSelect = useCallback(
-        (key: string) => {
+        async (key: string) => {
+            // check cross folder selection
+            if (sampleGridId) {
+                setCrossFolderSelectionResult(undefined);
+                const result = await getCrossFolderSelectionResult(sampleGridId,'sample');
+
+                if (result.crossFolderSelectionCount > 0) {
+                    let verb = 'Aliquot';
+                    if (selectedType === SampleCreationType.PooledSamples) {
+                        verb = 'Pool';
+                    }
+                    else if (selectedType === SampleCreationType.Derivatives) {
+                        verb = 'Derive';
+                    }
+
+                    const totalSelectionCount = result.crossFolderSelectionCount + result.currentFolderSelectionCount;
+                    setCrossFolderSelectionResult({
+                        ...result,
+                        title: 'Cannot ' + verb + (totalSelectionCount > 1 ? ' Samples' : ' Sample'),
+                    });
+                    return;
+                }
+            }
+
             let appURL: string | AppURL;
 
             if (sampleWizardURL) {
@@ -120,6 +148,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
             currentProductId,
             targetProductId,
             selectionKey,
+            menuText,
+            selectedType,
         ]
     );
 
@@ -138,6 +168,10 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         },
         [navigate, sampleCreationURL]
     );
+
+    const dismissCrossFolderError = useCallback(() => {
+        setCrossFolderSelectionResult(undefined);
+    }, []);
 
     const sampleOptions = [
         {
@@ -197,6 +231,17 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     nounPlural={nounPlural}
                 />
             )}
+            {crossFolderSelectionResult &&
+                <EntityCrossProjectSelectionConfirmModal
+                    crossFolderSelectionCount={crossFolderSelectionResult.crossFolderSelectionCount}
+                    currentFolderSelectionCount={crossFolderSelectionResult.currentFolderSelectionCount}
+                    onDismiss={dismissCrossFolderError}
+                    title={crossFolderSelectionResult.title}
+                    noun="sample"
+                    nounPlural="samples"
+                />
+            }
+
         </>
     );
 });

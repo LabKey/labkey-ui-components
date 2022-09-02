@@ -614,7 +614,6 @@ export function getCrossFolderSelectionResult(
                 dataType,
             },
             success: Utils.getCallbackWrapper(response => {
-                console.log(response);
                 if (response.success) {
                     resolve({
                         currentFolderSelectionCount: response.data.currentFolderSelectionCount,

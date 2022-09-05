@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.214.0
+*Released*: 5 September 2022
 * Issue 45403: Include App specified samplesGridRequiredColumns in requiredColumns array for QueryConfig
 
 ### version 2.213.1

@@ -3,7 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Record, List, Map } from 'immutable';
-import {naturalSort} from "../../../public/sort";
+
+import { naturalSort } from '../../../public/sort';
 
 export class Principal extends Record({
     userId: undefined,

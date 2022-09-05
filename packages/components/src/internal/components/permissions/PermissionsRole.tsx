@@ -133,7 +133,9 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                                     );
                                                 })
                                         ) : (
-                                            <li className="permissions-groups-member-li permissions-groups-member-none">None</li>
+                                            <li className="permissions-groups-member-li permissions-groups-member-none">
+                                                None
+                                            </li>
                                         )}
                                     </ul>
                                 </Col>

@@ -9,9 +9,10 @@ import { Row } from '../../query/selectRows';
 
 import { FetchedGroup } from '../permissions/actions';
 
+import { naturalSort } from '../../../public/sort';
+
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
 import { GroupMembership } from './models';
-import {naturalSort} from "../../../public/sort";
 
 export function getUpdatedPolicyRoles(
     roles: List<SecurityRole>,

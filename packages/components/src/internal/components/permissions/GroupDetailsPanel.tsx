@@ -11,11 +11,12 @@ import { Filter, Query } from '@labkey/api';
 import { resolveErrorMessage } from '../../util/messaging';
 import { Member } from '../administration/models';
 
+import { UserProperties } from '../user/UserProperties';
+
 import { EffectiveRolesList } from './EffectiveRolesList';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
-import {UserProperties} from "../user/UserProperties";
-import {MembersList} from "./MembersList";
+import { MembersList } from './MembersList';
 
 function getWhenCreated(id: number): Promise<string> {
     return new Promise((resolve, reject) => {

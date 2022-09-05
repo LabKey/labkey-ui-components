@@ -26,12 +26,13 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { CreatedModified } from '../base/CreatedModified';
 
+import { naturalSort } from '../../../public/sort';
+
 import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
 import { getGroupMembership, getGroupMemberships } from './actions';
-import {naturalSort} from "../../../public/sort";
 
 function getLastModified(project: string): Promise<string> {
     return new Promise((resolve, reject) => {

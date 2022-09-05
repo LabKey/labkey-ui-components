@@ -9,9 +9,10 @@ import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 
+import { naturalSort } from '../../../public/sort';
+
 import { Group } from './Group';
 import { GroupMembership } from './models';
-import {naturalSort} from "../../../public/sort";
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;

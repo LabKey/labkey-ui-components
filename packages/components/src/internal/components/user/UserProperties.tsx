@@ -1,5 +1,5 @@
-import React, {FC, memo} from "react";
-import {Col, Row} from "react-bootstrap";
+import React, { FC, memo } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 interface Props {
     prop: string;

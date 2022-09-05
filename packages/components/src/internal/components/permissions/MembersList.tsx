@@ -1,5 +1,6 @@
-import React, {FC, memo} from "react";
-import {Member} from "../administration/models";
+import React, { FC, memo } from 'react';
+
+import { Member } from '../administration/models';
 
 interface Props {
     members: Member[];

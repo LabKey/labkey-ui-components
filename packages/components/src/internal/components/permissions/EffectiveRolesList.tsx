@@ -8,10 +8,10 @@ import { Map, List } from 'immutable';
 import { SecurityAssignment, SecurityPolicy, SecurityRole } from './models';
 
 interface Props {
-    userId: number;
     policy?: SecurityPolicy;
-    rootPolicy?: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
+    rootPolicy?: SecurityPolicy;
+    userId: number;
 }
 
 export class EffectiveRolesList extends React.PureComponent<Props, any> {

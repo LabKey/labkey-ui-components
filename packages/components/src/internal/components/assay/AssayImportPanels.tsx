@@ -75,6 +75,7 @@ import {
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     uploadAssayRunFiles,
 } from './actions';
+import { isPremiumProductEnabled } from "../../app/utils";
 
 const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
@@ -694,13 +695,14 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
         const isReimport = this.isReimport();
         const runContainerId = runPropsModel.getRowValue('Folder');
+        const folderNoun = isPremiumProductEnabled() ? 'project' : 'folder';
 
         if (isReimport && !allowReimportAssayRun(user, runContainerId, container.id)) {
             const runName = runPropsModel.getRowValue('Name');
             return (
                 <Alert>
-                    The run "{runName}" cannot be re-imported into this folder. This run is declared in a different
-                    folder and re-import of runs is only supported within the same folder.
+                    The run "{runName}" cannot be re-imported into this ${folderNoun}. This run is declared in a different
+                    ${folderNoun} and re-import of runs is only supported within the same ${folderNoun}.
                 </Alert>
             );
         }

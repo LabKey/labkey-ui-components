@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col, Panel, Row } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import { Filter, Query } from '@labkey/api';
@@ -14,6 +14,8 @@ import { Member } from '../administration/models';
 import { EffectiveRolesList } from './EffectiveRolesList';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
+import {UserProperties} from "../user/UserProperties";
+import {MembersList} from "./MembersList";
 
 function getWhenCreated(id: number): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -50,7 +52,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
 
     const loadWhenCreated = useCallback(async () => {
         try {
-            const createdState = await getWhenCreated(principal.get('userId'));
+            const createdState = await getWhenCreated(principal.userId);
             setCreated(createdState.slice(0, -7));
         } catch (e) {
             console.error(resolveErrorMessage(e) ?? 'Failed to when group created');
@@ -60,35 +62,6 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
     useEffect(() => {
         loadWhenCreated();
     }, [loadWhenCreated]);
-
-    const renderUserProp = useCallback((title: string, prop: string) => {
-        return (
-            <Row>
-                <Col xs={4} className="group-detail-label">
-                    {title}:
-                </Col>
-                <Col xs={8} className="group-detail-value">
-                    {prop}
-                </Col>
-            </Row>
-        );
-    }, []);
-
-    const renderMembersList = useCallback(() => {
-        return members.length === 0 ? (
-            <></>
-        ) : (
-            <>
-                <hr className="group-hr" />
-                <div className="group-detail-label">Members:</div>
-                <ul className="groups-ul">
-                    {members.map(member => (
-                        <li key={member.id}>{member.name}</li>
-                    ))}
-                </ul>
-            </>
-        );
-    }, [members]);
 
     const { usersCount, groupsCount } = useMemo(() => {
         const usersCount = members.filter(member => member.type === 'u').length;
@@ -105,14 +78,14 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
                     <>
                         <p className="principal-title-primary">{principal.displayName}</p>
 
-                        {renderUserProp('User Count', usersCount.toString())}
-                        {renderUserProp('Group Count', groupsCount)}
+                        <UserProperties prop={usersCount.toString()} title="User Count" />
+                        <UserProperties prop={groupsCount} title="Group Count" />
 
-                        <hr className="group-hr" />
-                        {renderUserProp('Created', created)}
+                        <hr className="principal-hr" />
+                        <UserProperties prop={created} title="Created" />
 
                         <EffectiveRolesList {...props} userId={principal.userId} />
-                        {renderMembersList()}
+                        <MembersList members={members} />
                     </>
                 ) : (
                     <div>No group selected.</div>

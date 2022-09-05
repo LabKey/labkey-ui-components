@@ -11,6 +11,7 @@ import { FetchedGroup } from '../permissions/actions';
 
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
 import { GroupMembership } from './models';
+import {naturalSort} from "../../../public/sort";
 
 export function getUpdatedPolicyRoles(
     roles: List<SecurityRole>,
@@ -89,7 +90,7 @@ export function updateSecurityPolicy(
     });
 }
 
-export const getGroupRows = (): Promise<Row[]> => {
+export const getGroupMemberships = (): Promise<Row[]> => {
     return new Promise((resolve, reject) => {
         Query.selectRows({
             method: 'POST',
@@ -107,8 +108,8 @@ export const getGroupRows = (): Promise<Row[]> => {
     });
 };
 
-// groupsData is an array of objects, each representing a group.
-// groupRows is an array of data rows that correlate members with groups. See core.Members, the table it gets data from.
+// groups is an array of objects, each representing a group.
+// groupMemberships is an array of data rows that correlate members with groups. See core.Members, the data source.
 // From this, we construct an object of the form:
 // {<id of group>:
 //      {
@@ -118,10 +119,10 @@ export const getGroupRows = (): Promise<Row[]> => {
 //       ...
 // }
 // Where the members array is sorted by type, and then by name. The types stand for 'group,' 'site group,' and 'user'
-export const constructGroupMembership = (groupsData: FetchedGroup[], groupRows): GroupMembership => {
-    const groupsWithMembers = groupRows.reduce((prev, curr) => {
+export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): GroupMembership => {
+    const groupsWithMembers = groupMemberships.reduce((prev, curr) => {
         const groupId = curr['GroupId'];
-        const i = groupsData.find(group => group.id === groupId);
+        const i = groups.find(group => group.id === groupId);
 
         if (groupId === -1 || !i.isProjectGroup) {
             return prev;
@@ -131,13 +132,13 @@ export const constructGroupMembership = (groupsData: FetchedGroup[], groupRows):
         const memberIsGroup = !userDisplayName;
 
         const member = {
-            name: memberIsGroup ? groupsData.find(group => group.id === curr.UserId).name : userDisplayValue,
+            name: memberIsGroup ? groups.find(group => group.id === curr.UserId).name : userDisplayValue,
             id: curr.UserId,
             type: memberIsGroup ? 'g' : 'u',
         };
         if (curr.GroupId in prev) {
             prev[groupId].members.push(member);
-            prev[groupId].members.sort((member1, member2) => member1.name.localeCompare(member2.name));
+            prev[groupId].members.sort((member1, member2) => naturalSort(member1.name, member2.name));
             return prev;
         } else {
             prev[groupId] = { groupName: curr['GroupId/Name'], members: [member] };
@@ -146,7 +147,7 @@ export const constructGroupMembership = (groupsData: FetchedGroup[], groupRows):
     }, {});
 
     // If a group has no members—is in groupsData but not groupRows—add it as well, unless it is a site group
-    groupsData.forEach(group => {
+    groups.forEach(group => {
         const isProjectGroup = group.isProjectGroup;
         if (!(group.id in groupsWithMembers) && isProjectGroup) {
             groupsWithMembers[group.id] = { groupName: group.name, members: [] };

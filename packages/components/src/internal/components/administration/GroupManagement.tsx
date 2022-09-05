@@ -30,7 +30,8 @@ import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
-import { constructGroupMembership, getGroupRows } from './actions';
+import { getGroupMembership, getGroupMemberships } from './actions';
+import {naturalSort} from "../../../public/sort";
 
 function getLastModified(project: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -88,9 +89,9 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
             // Assemble single cohesive data structure representing group data
             const fetchedGroups = await api.security.fetchGroups(projectPath);
-            const groupsData = fetchedGroups.filter(group => !group.isSystemGroup);
-            const groupRows = await getGroupRows();
-            const groupMembershipState = constructGroupMembership(groupsData, groupRows);
+            const groups = fetchedGroups.filter(group => !group.isSystemGroup);
+            const groupMemberships = await getGroupMemberships();
+            const groupMembershipState = getGroupMembership(groups, groupMemberships);
 
             setPolicy(policyState);
             setSavedGroupMembership(groupMembershipState);
@@ -192,12 +193,16 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         );
     }, [lastModified]);
 
-    const createGroup = useCallback(
-        (name: string) => {
-            setGroupMembership({ ...groupMembership, [name]: { groupName: name, members: [] } });
-        },
-        [groupMembership]
-    );
+    // const createGroup = useCallback(
+    //     (name: string) => {
+    //         setGroupMembership({ ...groupMembership, [name]: { groupName: name, members: [] } });
+    //     },
+    //     [groupMembership]
+    // );
+
+    const createGroup = useCallback((name: string) => {
+        setGroupMembership(current => ({ ...current, [name]: { groupName: name, members: [] } }));
+    }, []);
 
     const deleteGroup = useCallback(
         (id: string) => {
@@ -213,7 +218,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         (groupId: string, principalId: number, principalName: string, principalType: string) => {
             const group = groupMembership[groupId];
             const newMember = { name: principalName, id: principalId, type: principalType };
-            const members = [...group.members, newMember].sort((m1, m2) => m1.name.localeCompare(m2.name));
+            const members = [...group.members, newMember].sort((m1, m2) => naturalSort(m1.name, m2.name));
             setGroupMembership({
                 ...groupMembership,
                 [groupId]: { groupName: group.groupName, members },
@@ -243,7 +248,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         return principals
             .filter(principal => principal.type === 'u' || principal.userId > 0)
             .sort(
-                (p1, p2) => p1.type.localeCompare(p2.type) || p1.displayName.localeCompare(p2.displayName)
+                (p1, p2) => naturalSort(p1.type, p2.type) || naturalSort(p1.displayName, p2.displayName)
             ) as List<Principal>;
     }, [principals]);
 

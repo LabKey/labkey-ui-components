@@ -11,6 +11,7 @@ import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 
 import { Group } from './Group';
 import { GroupMembership } from './models';
+import {naturalSort} from "../../../public/sort";
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
@@ -69,8 +70,8 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         </Button>
     );
 
-    const showDetails = useCallback((selectedPrincipalId: number) => {
-        setSelectedPrincipalId(selectedPrincipalId);
+    const showDetails = useCallback((principalId: number) => {
+        setSelectedPrincipalId(principalId);
     }, []);
 
     const onChangeNewGroupName = useCallback(
@@ -114,12 +115,12 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     );
 
     const selectedPrincipal = useMemo(() => {
-        return principalsById?.get(selectedPrincipalId);
+        return principalsById.get(selectedPrincipalId);
     }, [principalsById, selectedPrincipalId]);
 
     const orderedGroupMembership = useMemo(() => {
         return Object.keys(groupMembership).sort((id1, id2) =>
-            groupMembership[id1].groupName.localeCompare(groupMembership[id2].groupName)
+            naturalSort(groupMembership[id1].groupName, groupMembership[id2].groupName)
         );
     }, [groupMembership]);
 
@@ -128,9 +129,9 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
                 <Panel>
                     <Panel.Heading> Application Groups and Assignments </Panel.Heading>
-                    <Panel.Body className="group-assignment-panel">
+                    <Panel.Body className="permissions-groups-assignment-panel group-assignment-panel">
                         {dirty && (
-                            <div className="group-save-alert">
+                            <div className="permissions-groups-save-alert">
                                 <Alert bsStyle="info">
                                     You have unsaved changes.
                                     {saveButton}

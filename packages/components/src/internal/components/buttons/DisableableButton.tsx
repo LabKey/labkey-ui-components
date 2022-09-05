@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const DisableableButton: FC<Props> = memo(props => {
-    const { bsStyle, className, disabledMsg, title, onClick, children } = props;
+    const { bsStyle, className = '', disabledMsg, title, onClick, children } = props;
 
     return (
         <>

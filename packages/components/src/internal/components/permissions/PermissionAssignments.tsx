@@ -210,9 +210,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
                 <Panel>
                     <Panel.Heading>{title}</Panel.Heading>
-                    <Panel.Body className="permissions-assignment-panel">
+                    <Panel.Body className="permissions-groups-assignment-panel permissions-assignment-panel">
                         {dirty && (
-                            <div className="permissions-save-alert">
+                            <div className="permissions-groups-save-alert">
                                 <Alert bsStyle="info">
                                     You have unsaved changes.
                                     {saveButton}
@@ -221,7 +221,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                         )}
 
                         {!dirty && inherited && (
-                            <div className="permissions-save-alert">
+                            <div className="permissions-groups-save-alert">
                                 <Alert bsStyle="info">
                                     Permissions for this container are being inherited from its parent.
                                 </Alert>

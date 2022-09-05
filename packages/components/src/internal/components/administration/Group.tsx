@@ -40,7 +40,7 @@ export const Group: FC<GroupProps> = memo(props => {
         setDirty,
     } = props;
 
-    const generateClause = useCallback(() => {
+    const generateClause = useMemo(() => {
         return (
             <div className="container-expandable-heading--clause">
                 <span className="permissions-title"> {name} </span>
@@ -48,7 +48,7 @@ export const Group: FC<GroupProps> = memo(props => {
         );
     }, [name]);
 
-    const generateLinks = useCallback(() => {
+    const generateLinks = useMemo(() => {
         return (
             <span className="container-expandable-heading">
                 <span>
@@ -73,26 +73,26 @@ export const Group: FC<GroupProps> = memo(props => {
     );
 
     const generateMemberButtons = useCallback(
-        (member: Member[], title: string) => {
+        (members: Member[], title: string) => {
             return (
                 <Col xs={12} sm={6}>
                     <div>{title}:</div>
-                    <ul className="group-members-ul">
-                        {member.length > 0 ? (
-                            member.map(group => (
-                                <li key={group.id} className="group-member-row__member">
+                    <ul className="permissions-groups-members-ul">
+                        {members.length > 0 ? (
+                            members.map(member => (
+                                <li key={member.id} className="permissions-groups-member-li">
                                     <RemovableButton
-                                        id={group.id}
-                                        display={group.name}
+                                        id={member.id}
+                                        display={member.name}
                                         onClick={onClick}
                                         onRemove={onRemove}
-                                        bsStyle={selectedPrincipalId === group.id ? 'primary' : undefined}
+                                        bsStyle={selectedPrincipalId === member.id ? 'primary' : undefined}
                                         added={false}
                                     />
                                 </li>
                             ))
                         ) : (
-                            <li className="group-member-li group-member-none">None</li>
+                            <li className="permissions-groups-member-li permissions-groups-member-none">None</li>
                         )}
                     </ul>
                 </Col>
@@ -101,7 +101,7 @@ export const Group: FC<GroupProps> = memo(props => {
         [onClick, onRemove, selectedPrincipalId]
     );
 
-    const canDeleteGroup = useMemo(() => {
+    const disabledMsg = useMemo(() => {
         return members.length !== 0 ? 'To delete this group, first remove all members.' : undefined;
     }, [members]);
 
@@ -114,22 +114,19 @@ export const Group: FC<GroupProps> = memo(props => {
         const addedPrincipalIds = new Set(members.map(principal => principal.id));
 
         return usersAndGroups
-            .filter(
-                principal =>
-                    !addedPrincipalIds.has(principal.get('userId')) && principal.get('userId') !== parseInt(id, 10)
-            )
+            .filter(principal => !addedPrincipalIds.has(principal.userId) && principal.userId !== parseInt(id, 10))
             .map(principal => {
-                if (principal.get('type') === 'u') {
+                if (principal.type === 'u') {
                     return principal;
                 } else {
-                    return principal.set('name', <b> {principal.get('name')} </b>);
+                    return principal.set('name', <strong> {principal.name} </strong>);
                 }
             });
     }, [members, usersAndGroups, id]);
 
     const onSelectMember = useCallback(
         (name: string, formValue: any, selected: Principal) => {
-            addMember(id, selected.get('userId'), selected.get('displayName'), selected.get('type'));
+            addMember(id, selected.userId, selected.displayName, selected.type);
         },
         [id, addMember]
     );
@@ -143,19 +140,19 @@ export const Group: FC<GroupProps> = memo(props => {
 
     return (
         <ExpandableContainer
-            clause={generateClause()}
-            links={generateLinks()}
+            clause={generateClause}
+            links={generateLinks}
             iconFaCls="users fa-3x"
             useGreyTheme={true}
             isExpandable={true}
         >
-            <div className="group-membership-container">
-                <Row className="group-membership-container__member-buttons">
+            <div className="permissions-groups-expandable-container">
+                <Row className="expandable-container__member-buttons">
                     {generateMemberButtons(groups, 'Groups')}
                     {generateMemberButtons(users, 'Users')}
                 </Row>
 
-                <Row className="group-membership-container__action-container">
+                <Row className="expandable-container__action-container">
                     <Col xs={12} sm={6}>
                         <SelectInput
                             autoValue={false}
@@ -173,7 +170,7 @@ export const Group: FC<GroupProps> = memo(props => {
                         <DisableableButton
                             className="pull-right alert-button"
                             bsStyle="danger"
-                            disabledMsg={canDeleteGroup}
+                            disabledMsg={disabledMsg}
                             onClick={onDeleteGroup}
                         >
                             Delete Empty Group

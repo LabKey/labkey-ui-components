@@ -1,20 +1,4 @@
 
-.group-save-alert {
-    margin-top: 15px;
-}
-
-.group-assignment-panel {
-    padding-top: 15px;
-
-    & > .row {
-        margin: 15px 0 0 0;
-    }
-
-    & .container-expandable-heading--clause {
-        margin-left: 55px !important;
-    }
-}
-
 .create-group {
     display: flex;
 }
@@ -23,57 +7,19 @@
     margin-right: 15px;
 }
 
+.group-assignment-panel {
+    padding-top: 15px;
+}
+
 .group-assignment-panel__footer {
     margin-top: 16px;
 }
 
-.group-membership-container {
-    padding: 15px;
-}
-
-.group-membership-container__delete-button {
-    height: 30px;
-}
-
-.group-members-ul {
-    padding-left: 0;
-}
-
-.group-member-li {
-    display: block;
-}
-.group-member-none {
-    color: $list-group-disabled-text-color
-}
-
-.group-member-row__member {
-    display: block;
-}
-
-.group-membership-container__member-buttons {
+.expandable-container__member-buttons {
     padding-bottom: 15px;
 }
 
-.group-membership-container__action-container {
+.expandable-container__action-container {
     padding: 30px 15px 0 15px;
     border-top:lightgrey 1px solid;
-}
-
-.group-detail-label {
-    color: $gray;
-    padding-bottom: 15px;
-}
-
-.group-detail-value {
-    overflow-wrap: break-word;
-    padding-bottom: 15px;
-}
-
-.groups-ul {
-    padding-left: 15px;
-}
-
-.group-hr {
-    margin-top: 5px;
-    margin-bottom: 20px;
 }

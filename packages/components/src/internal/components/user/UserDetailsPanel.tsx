@@ -131,9 +131,9 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         const { groups } = this.state;
         return (
             <>
-                <hr className="group-hr" />
-                <div className="group-detail-label">Member of:</div>
-                <ul className="permissions-ul">
+                <hr className="principal-hr" />
+                <div className="principal-detail-label">Member of:</div>
+                <ul className="permissions-groups-ul">
                     {groups.map(group => (
                         <li key={group}>{group}</li>
                     ))}

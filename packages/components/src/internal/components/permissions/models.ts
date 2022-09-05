@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Record, List, Map } from 'immutable';
+import {naturalSort} from "../../../public/sort";
 
 export class Principal extends Record({
     userId: undefined,
@@ -38,7 +39,7 @@ export class Principal extends Record({
                 // filter out any principals that are already members of this role
                 .filter(principal => excludeUserIds === undefined || !excludeUserIds.contains(principal.userId))
                 // finally sort by type (group or user) and then display name
-                .sort((p1, p2) => p1.type.localeCompare(p2.type) || p1.displayName.localeCompare(p2.displayName))
+                .sort((p1, p2) => naturalSort(p1.type, p2.type) || naturalSort(p1.displayName, p2.displayName))
                 .toList()
         );
     }

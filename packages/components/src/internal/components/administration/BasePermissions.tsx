@@ -30,8 +30,8 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { getProjectPath } from '../../app/utils';
 
 import {
-    constructGroupMembership,
-    getGroupRows,
+    getGroupMembership,
+    getGroupMemberships,
     getUpdatedPolicyRoles,
     getUpdatedPolicyRolesByUniqueName,
 } from './actions';
@@ -82,9 +82,9 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const loadGroupMembership = useCallback(async () => {
         try {
             const fetchedGroups = await api.security.fetchGroups(getProjectPath(container.path));
-            const groupsData = fetchedGroups.filter(group => !group.isSystemGroup);
-            const groupRows = await getGroupRows();
-            const groupMembershipState = constructGroupMembership(groupsData, groupRows);
+            const groups = fetchedGroups.filter(group => !group.isSystemGroup);
+            const groupMemberships = await getGroupMemberships();
+            const groupMembershipState = getGroupMembership(groups, groupMemberships);
             setGroupMembership(groupMembershipState);
         } catch (e) {
             setError(resolveErrorMessage(e) ?? 'Failed to load group data');
@@ -101,7 +101,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
             try {
                 const policy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
                 setPolicy(policy_);
-                loadGroupMembership();
+                await loadGroupMembership();
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
             }

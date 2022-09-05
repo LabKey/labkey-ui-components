@@ -84,7 +84,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                 isExpandable={true}
                 initExpanded={initExpanded}
             >
-                <div className="permissions-role-container">
+                <div className="permissions-groups-expandable-container">
                     {role.description && <div>{role.description}</div>}
                     <Row className="permissions-assignments-row">
                         {this.getTypesToShow().map(type => {
@@ -98,7 +98,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                             return (
                                 <Col xs={12} sm={6} key={key}>
                                     <div>{type === 'g' ? 'Groups:' : 'Users:'}</div>
-                                    <ul className="permissions-members-ul">
+                                    <ul className="permissions-groups-members-ul">
                                         {typeAssignments && typeAssignments.size > 0 ? (
                                             typeAssignments
                                                 .sortBy(assignment => assignment.displayName, naturalSort)
@@ -110,7 +110,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                                             : undefined;
 
                                                     return (
-                                                        <li key={key} className="permissions-member-li">
+                                                        <li key={key} className="permissions-groups-member-li">
                                                             <RemovableButton
                                                                 id={assignment.userId}
                                                                 display={SecurityAssignment.getDisplayName(assignment)}
@@ -133,7 +133,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                                     );
                                                 })
                                         ) : (
-                                            <li className="permissions-member-li permissions-member-none">None</li>
+                                            <li className="permissions-groups-member-li permissions-groups-member-none">None</li>
                                         )}
                                     </ul>
                                 </Col>

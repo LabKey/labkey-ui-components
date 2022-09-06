@@ -7,9 +7,9 @@ import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
 import { Row } from '../../query/selectRows';
 
-import { FetchedGroup } from '../permissions/actions';
-
 import { naturalSort } from '../../../public/sort';
+
+import { FetchedGroup } from '../security/APIWrapper';
 
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
 import { GroupMembership } from './models';

@@ -5,13 +5,13 @@ import { List } from 'immutable';
 
 import { ExpandableContainer } from '../ExpandableContainer';
 
-import { RemovableButton } from '../permissions/RemovableButton';
 import { Principal } from '../permissions/models';
 import { SelectInput } from '../forms/input/SelectInput';
 
 import { DisableableButton } from '../buttons/DisableableButton';
 
 import { Member } from './models';
+import { MemberButtons } from './MemberButtons';
 
 export interface GroupProps {
     addMember: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
@@ -72,35 +72,6 @@ export const Group: FC<GroupProps> = memo(props => {
         [id, onRemoveMember]
     );
 
-    const generateMemberButtons = useCallback(
-        (members: Member[], title: string) => {
-            return (
-                <Col xs={12} sm={6}>
-                    <div>{title}:</div>
-                    <ul className="permissions-groups-members-ul">
-                        {members.length > 0 ? (
-                            members.map(member => (
-                                <li key={member.id} className="permissions-groups-member-li">
-                                    <RemovableButton
-                                        id={member.id}
-                                        display={member.name}
-                                        onClick={onClick}
-                                        onRemove={onRemove}
-                                        bsStyle={selectedPrincipalId === member.id ? 'primary' : undefined}
-                                        added={false}
-                                    />
-                                </li>
-                            ))
-                        ) : (
-                            <li className="permissions-groups-member-li permissions-groups-member-none">None</li>
-                        )}
-                    </ul>
-                </Col>
-            );
-        },
-        [onClick, onRemove, selectedPrincipalId]
-    );
-
     const disabledMsg = useMemo(() => {
         return members.length !== 0 ? 'To delete this group, first remove all members.' : undefined;
     }, [members]);
@@ -148,8 +119,20 @@ export const Group: FC<GroupProps> = memo(props => {
         >
             <div className="permissions-groups-expandable-container">
                 <Row className="expandable-container__member-buttons">
-                    {generateMemberButtons(groups, 'Groups')}
-                    {generateMemberButtons(users, 'Users')}
+                    <MemberButtons
+                        members={groups}
+                        title="Groups"
+                        selectedPrincipalId={selectedPrincipalId}
+                        onClick={onClick}
+                        onRemove={onRemove}
+                    />
+                    <MemberButtons
+                        members={users}
+                        title="Users"
+                        selectedPrincipalId={selectedPrincipalId}
+                        onClick={onClick}
+                        onRemove={onRemove}
+                    />
                 </Row>
 
                 <Row className="expandable-container__action-container">

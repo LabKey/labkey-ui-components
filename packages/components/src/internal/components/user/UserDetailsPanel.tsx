@@ -22,6 +22,7 @@ import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 import { getUserGroups, getUserProperties } from './actions';
+import { MembersList } from './GroupsList';
 
 interface Props {
     allowDelete?: boolean;
@@ -127,21 +128,6 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         );
     }
 
-    renderGroups(): JSX.Element {
-        const { groups } = this.state;
-        return (
-            <>
-                <hr className="principal-hr" />
-                <div className="principal-detail-label">Member of:</div>
-                <ul className="permissions-groups-ul">
-                    {groups.map(group => (
-                        <li key={group}>{group}</li>
-                    ))}
-                </ul>
-            </>
-        );
-    }
-
     renderButtons() {
         const { allowDelete, allowResetPassword } = this.props;
         const isActive = caseInsensitive(this.state.userProperties, 'active');
@@ -174,7 +160,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
     renderBody() {
         const { onUsersStateChangeComplete, userId } = this.props;
-        const { loading, userProperties } = this.state;
+        const { loading, userProperties, groups } = this.state;
         const isSelf = userId === getServerContext().user.id;
 
         if (loading) {
@@ -205,7 +191,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
                     <EffectiveRolesList {...this.props} />
 
-                    {this.renderGroups()}
+                    <MembersList groups={groups} />
 
                     {!isSelf && onUsersStateChangeComplete && this.renderButtons()}
                 </>

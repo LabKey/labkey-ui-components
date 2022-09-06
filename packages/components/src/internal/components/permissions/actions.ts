@@ -6,8 +6,6 @@ import { fromJS, List, Map } from 'immutable';
 
 import { ActionURL, Ajax, Filter, Security, Utils } from '@labkey/api';
 
-import { CreateGroupResponse } from '@labkey/api/dist/labkey/security/Group';
-
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
@@ -121,111 +119,6 @@ export function fetchContainerSecurityPolicy(
             },
             failure: error => {
                 console.error('Failed to fetch security policy', error);
-                reject(error);
-            },
-        });
-    });
-}
-
-export interface FetchedGroup {
-    id: number;
-    isProjectGroup: boolean;
-    isSystemGroup: boolean;
-    name: string;
-    type: string;
-}
-export function fetchGroupPermissions(projectPath: string): Promise<FetchedGroup[]> {
-    return new Promise((resolve, reject) => {
-        Security.getGroupPermissions({
-            containerPath: projectPath,
-            success: data => {
-                resolve(data?.container?.groups);
-            },
-            failure: error => {
-                console.error('Failed to fetch group permissions', error);
-                reject(error);
-            },
-        });
-    });
-}
-
-export function createGroup(groupName: string, projectPath: string): Promise<CreateGroupResponse> {
-    return new Promise((resolve, reject) => {
-        Security.createGroup({
-            groupName,
-            containerPath: projectPath,
-            success: data => {
-                resolve(data);
-            },
-            failure: error => {
-                console.error('Failed to create group', error);
-                reject(error);
-            },
-        });
-    });
-}
-
-export interface DeleteGroupResponse {
-    deleted: number;
-}
-export function deleteGroup(groupId: number, projectPath: string): Promise<DeleteGroupResponse> {
-    return new Promise((resolve, reject) => {
-        Security.deleteGroup({
-            groupId,
-            containerPath: projectPath,
-            success: data => {
-                resolve(data);
-            },
-            failure: error => {
-                console.error('Failed to delete group', error);
-                reject(error);
-            },
-        });
-    });
-}
-
-export interface AddGroupMembersResponse {
-    added: number[];
-}
-export function addGroupMembers(
-    groupId: number,
-    principalIds: number[],
-    projectPath: string
-): Promise<AddGroupMembersResponse> {
-    return new Promise((resolve, reject) => {
-        Security.addGroupMembers({
-            groupId,
-            principalIds,
-            containerPath: projectPath,
-            success: data => {
-                resolve(data);
-            },
-            failure: error => {
-                console.error('Failed to add group member(s)', error);
-                reject(error);
-            },
-        });
-    });
-}
-
-export interface RemoveGroupMembersResponse {
-    removed: number[];
-}
-export function removeGroupMembers(
-    groupId: number,
-    principalIds: number[],
-    projectPath: string
-): Promise<RemoveGroupMembersResponse> {
-    return new Promise((resolve, reject) => {
-        Security.removeGroupMembers({
-            groupId,
-            principalIds,
-            containerPath: projectPath,
-            success: data => {
-                resolve(data);
-            },
-            failure: error => {
-                console.error('Failed to remove group member(s)', error);
                 reject(error);
             },
         });

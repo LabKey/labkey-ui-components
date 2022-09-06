@@ -4,23 +4,26 @@ import { Map } from 'immutable';
 import { CreateGroupResponse } from '@labkey/api/dist/labkey/security/Group';
 
 import { Container } from '../base/models/Container';
-import {
-    fetchContainerSecurityPolicy,
-    UserLimitSettings,
-    getUserLimitSettings,
-    fetchGroupPermissions,
-    createGroup,
-    deleteGroup,
-    addGroupMembers,
-    removeGroupMembers,
-    FetchedGroup,
-    AddGroupMembersResponse,
-    DeleteGroupResponse,
-    RemoveGroupMembersResponse,
-} from '../permissions/actions';
+import { fetchContainerSecurityPolicy, UserLimitSettings, getUserLimitSettings } from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
+export interface FetchedGroup {
+    id: number;
+    isProjectGroup: boolean;
+    isSystemGroup: boolean;
+    name: string;
+    type: string;
+}
+export interface DeleteGroupResponse {
+    deleted: number;
+}
+export interface AddGroupMembersResponse {
+    added: number[];
+}
+export interface RemoveGroupMembersResponse {
+    removed: number[];
+}
 
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
@@ -42,6 +45,59 @@ export interface SecurityAPIWrapper {
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
+    addGroupMembers = (
+        groupId: number,
+        principalIds: number[],
+        projectPath: string
+    ): Promise<AddGroupMembersResponse> => {
+        return new Promise((resolve, reject) => {
+            Security.addGroupMembers({
+                groupId,
+                principalIds,
+                containerPath: projectPath,
+                success: data => {
+                    resolve(data);
+                },
+                failure: error => {
+                    console.error('Failed to add group member(s)', error);
+                    reject(error);
+                },
+            });
+        });
+    };
+
+    createGroup = (groupName: string, projectPath: string): Promise<CreateGroupResponse> => {
+        return new Promise((resolve, reject) => {
+            Security.createGroup({
+                groupName,
+                containerPath: projectPath,
+                success: data => {
+                    resolve(data);
+                },
+                failure: error => {
+                    console.error('Failed to create group', error);
+                    reject(error);
+                },
+            });
+        });
+    };
+
+    deleteGroup = (groupId: number, projectPath: string): Promise<DeleteGroupResponse> => {
+        return new Promise((resolve, reject) => {
+            Security.deleteGroup({
+                groupId,
+                containerPath: projectPath,
+                success: data => {
+                    resolve(data);
+                },
+                failure: error => {
+                    console.error('Failed to delete group', error);
+                    reject(error);
+                },
+            });
+        });
+    };
+
     fetchContainers = (options: FetchContainerOptions): Promise<Container[]> => {
         return new Promise((resolve, reject) => {
             Security.getContainers({
@@ -56,13 +112,46 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
             });
         });
     };
+
+    fetchGroups = (projectPath: string): Promise<FetchedGroup[]> => {
+        return new Promise((resolve, reject) => {
+            Security.getGroupPermissions({
+                containerPath: projectPath,
+                success: data => {
+                    resolve(data?.container?.groups);
+                },
+                failure: error => {
+                    console.error('Failed to fetch group permissions', error);
+                    reject(error);
+                },
+            });
+        });
+    };
+
     fetchPolicy = fetchContainerSecurityPolicy;
-    fetchGroups = fetchGroupPermissions;
-    createGroup = createGroup;
-    deleteGroup = deleteGroup;
-    addGroupMembers = addGroupMembers;
-    removeGroupMembers = removeGroupMembers;
+
     getUserLimitSettings = getUserLimitSettings;
+
+    removeGroupMembers = (
+        groupId: number,
+        principalIds: number[],
+        projectPath: string
+    ): Promise<RemoveGroupMembersResponse> => {
+        return new Promise((resolve, reject) => {
+            Security.removeGroupMembers({
+                groupId,
+                principalIds,
+                containerPath: projectPath,
+                success: data => {
+                    resolve(data);
+                },
+                failure: error => {
+                    console.error('Failed to remove group member(s)', error);
+                    reject(error);
+                },
+            });
+        });
+    };
 }
 
 function recurseContainerHierarchy(data: Security.ContainerHierarchy, container: Container): Container[] {

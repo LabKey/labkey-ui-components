@@ -15,7 +15,6 @@
  */
 import { PermissionTypes } from '@labkey/api';
 import { mount } from 'enzyme';
-import { fromJS } from 'immutable';
 import React, { FC } from 'react';
 
 import { LoadingState } from '../../../public/LoadingState';
@@ -23,61 +22,9 @@ import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 import { waitForLifecycle } from '../../testHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { parseSelectedQuery, UsersLoader, useUsersWithPermissions } from './actions';
+import { UsersLoader, useUsersWithPermissions } from './actions';
 
 // Tested components
-import { QuerySelectModel } from './model';
-
-describe('form actions', () => {
-    const setSelectionModel = new QuerySelectModel({
-        displayColumn: 'DATA',
-        id: 'selection',
-        isInit: true,
-    });
-
-    const searchResults2 = fromJS({
-        '789': {
-            DATA: {
-                value: 'C-1',
-            },
-        },
-    });
-
-    const searchResults3 = fromJS({
-        '123': {
-            DATA: {
-                value: 'A-1',
-            },
-            NAME: {
-                value: 'Ron Swanson',
-            },
-        },
-
-        '456': {
-            DATA: {
-                value: 'B-1',
-            },
-            NAME: {
-                value: 'Swan Ronson',
-            },
-        },
-    });
-
-    test('Should parse a selected query', () => {
-        const parsed = parseSelectedQuery(setSelectionModel, searchResults2);
-
-        const parsedSelectionModel = new QuerySelectModel({
-            displayColumn: 'NAME',
-            delimiter: ';',
-        });
-
-        const parsed2 = parseSelectedQuery(parsedSelectionModel, searchResults3);
-
-        expect(parsed).toBe('C-1');
-        expect(parsed2).toBe('Ron Swanson;Swan Ronson');
-    });
-});
-
 describe('useUsersWithPermissions', () => {
     interface TestComponentProps {
         containerPath: string;

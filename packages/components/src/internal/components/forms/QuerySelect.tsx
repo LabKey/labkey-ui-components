@@ -23,7 +23,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
 import { resolveDetailFieldValue } from './utils';
-import { initSelect } from './actions';
+import { initSelect } from './model';
 import { QuerySelectModel } from './model';
 import { DELIMITER } from './constants';
 
@@ -120,7 +120,6 @@ type InheritedSelectInputProps = Omit<
     | 'labelKey'
     | 'loadOptions'
     | 'onChange' // overridden by QuerySelect. See onQSChange().
-    | 'optionRenderer'
     | 'options'
     | 'valueKey'
 >;
@@ -284,6 +283,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             multiple,
             onToggleDisable,
             openMenuOnFocus,
+            optionRenderer,
             previewOptions,
             required,
             showLoading,
@@ -335,7 +335,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     onFocus: this.onFocus,
                     openMenuOnFocus,
                     options: undefined, // prevent override
-                    optionRenderer: previewOptions ? this.optionRenderer : undefined,
+                    optionRenderer: previewOptions ? this.optionRenderer : optionRenderer,
                     selectedOptions: model.getSelectedOptions(),
                     value: getValue(model, this.props), // needed to initialize the Formsy "value" properly
                 }

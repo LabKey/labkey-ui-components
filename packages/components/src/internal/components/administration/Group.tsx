@@ -22,7 +22,6 @@ export interface GroupProps {
     onClickAssignment: (selectedUserId: number) => void;
     onRemoveMember: (groupId: string, memberId: number) => void;
     selectedPrincipalId: number;
-    setDirty: Dispatch<SetStateAction<boolean>>;
     usersAndGroups: List<Principal>;
 }
 
@@ -37,7 +36,6 @@ export const Group: FC<GroupProps> = memo(props => {
         deleteGroup,
         addMember,
         onRemoveMember,
-        setDirty,
     } = props;
 
     const generateClause = useMemo(() => {
@@ -78,8 +76,7 @@ export const Group: FC<GroupProps> = memo(props => {
 
     const onDeleteGroup = useCallback(() => {
         deleteGroup(id);
-        setDirty(true);
-    }, [deleteGroup, id, setDirty]);
+    }, [deleteGroup, id]);
 
     const principalsToAdd = useMemo(() => {
         const addedPrincipalIds = new Set(members.map(principal => principal.id));

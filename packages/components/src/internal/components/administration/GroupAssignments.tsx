@@ -102,6 +102,15 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         setNewGroupName('');
     }, [createGroup, groupMembership, newGroupName, setErrorMsg, setIsDirty]);
 
+    const onDeleteGroup = useCallback(
+        (id: string) => {
+            setSelectedPrincipalId(undefined);
+            deleteGroup(id);
+            setIsDirty(true);
+        },
+        [deleteGroup, setIsDirty]
+    );
+
     const onAddMember = useCallback(
         (groupId: string, principalId: number, principalName: string, principalType: string) => {
             setSelectedPrincipalId(principalId);
@@ -172,9 +181,8 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                                 onClickAssignment={showDetails}
                                 members={groupMembership[id].members}
                                 selectedPrincipalId={selectedPrincipalId}
-                                deleteGroup={deleteGroup}
+                                deleteGroup={onDeleteGroup}
                                 onRemoveMember={onRemoveMember}
-                                setDirty={setIsDirty}
                                 addMember={onAddMember}
                             />
                         ))}
@@ -193,7 +201,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                             principal={selectedPrincipal}
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
-                            members={groupMembership[selectedPrincipal?.userId].members}
+                            members={groupMembership[selectedPrincipal?.userId]?.members}
                         />
                     ) : (
                         <UserDetailsPanel

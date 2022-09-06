@@ -91,6 +91,16 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
     const save = useCallback(async () => {
         try {
+            // Delete members
+            const newGroupMembership = { ...groupMembership };
+            for (const groupId of Object.keys(newGroupMembership)) {
+                const currentMembers = new Set(newGroupMembership[groupId].members.map(member => member.id));
+                const oldMembers = savedGroupMembership[groupId]?.members.map(member => member.id);
+                const deletedMembers = oldMembers?.filter(id => !currentMembers.has(id));
+                if (deletedMembers?.length)
+                    await api.security.removeGroupMembers(parseInt(groupId, 10), deletedMembers, projectPath);
+            }
+
             // Delete groups
             const deletedGroups = Object.keys(savedGroupMembership).filter(groupId => !(groupId in groupMembership));
             const deletedGroupIds = await Promise.all(
@@ -99,7 +109,6 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                     return createGroupResponse.deleted;
                 })
             );
-            const newGroupMembership = { ...groupMembership };
             deletedGroupIds.forEach(deletedGroup => {
                 delete newGroupMembership[deletedGroup];
             });
@@ -126,15 +135,6 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                 const addedMembers = currentMembers.filter(id => !oldMembers.has(id));
                 if (addedMembers.length)
                     await api.security.addGroupMembers(parseInt(groupId, 10), addedMembers, projectPath);
-            }
-
-            // Delete members
-            for (const groupId of Object.keys(newGroupMembership)) {
-                const currentMembers = new Set(newGroupMembership[groupId].members.map(member => member.id));
-                const oldMembers = savedGroupMembership[groupId]?.members.map(member => member.id);
-                const deletedMembers = oldMembers?.filter(id => !currentMembers.has(id));
-                if (deletedMembers?.length)
-                    await api.security.removeGroupMembers(parseInt(groupId, 10), deletedMembers, projectPath);
             }
 
             // Save updated state
@@ -177,7 +177,13 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
     const deleteGroup = useCallback((id: string) => {
         setGroupMembership(current => {
-            const newGroupMembership = { ...current };
+            // Remove deleted group from membership in other groups first
+            const newGroupMembership = Object.fromEntries(
+                Object.entries(current).map(([groupId, group]) => {
+                    const newMembers = group.members.filter(g => g.id !== parseInt(id, 10));
+                    return [groupId, { ...group, members: [...newMembers] }];
+                })
+            );
             delete newGroupMembership[id];
             return newGroupMembership;
         });

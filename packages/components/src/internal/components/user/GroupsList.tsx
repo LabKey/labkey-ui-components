@@ -12,9 +12,11 @@ export const MembersList: FC<Props> = memo(props => {
             <hr className="principal-hr" />
             <div className="principal-detail-label">Member of:</div>
             <ul className="permissions-groups-ul">
-                {groups.map(group => (
-                    <li key={group}>{group}</li>
-                ))}
+                {groups.length > 0 ? (
+                    groups.map(group => <li key={group}>{group}</li>)
+                ) : (
+                    <li className="permissions-groups-member-li permissions-groups-member-none">None</li>
+                )}
             </ul>
         </>
     );

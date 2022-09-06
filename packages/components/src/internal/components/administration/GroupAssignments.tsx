@@ -19,6 +19,7 @@ export interface GroupAssignmentsProps {
     createGroup: (name: string) => void;
     deleteGroup: (id: string) => void;
     errorMsg: string;
+    getIsDirty: () => boolean;
     groupMembership: GroupMembership;
     policy: SecurityPolicy;
     principalsById: Map<number, Principal>;
@@ -26,6 +27,7 @@ export interface GroupAssignmentsProps {
     rolesByUniqueName: Map<string, SecurityRole>;
     save: () => Promise<void>;
     setErrorMsg: (e: string) => void;
+    setIsDirty: (isDirty: boolean) => void;
     showDetailsPanel?: boolean;
     usersAndGroups: List<Principal>;
 }
@@ -33,6 +35,7 @@ export interface GroupAssignmentsProps {
 export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     const {
         errorMsg,
+        getIsDirty,
         groupMembership,
         showDetailsPanel = true,
         policy,
@@ -45,9 +48,9 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         removeMember,
         save,
         setErrorMsg,
+        setIsDirty,
     } = props;
 
-    const [dirty, setDirty] = useState<boolean>();
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [selectedPrincipalId, setSelectedPrincipalId] = useState<number>();
     const [newGroupName, setNewGroupName] = useState<string>('');
@@ -56,20 +59,22 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         setSubmitting(true);
         setErrorMsg(undefined);
         await save();
-        setDirty(false);
+        setIsDirty(false);
         setSubmitting(false);
-    }, [save, setErrorMsg]);
+    }, [save, setErrorMsg, setIsDirty]);
 
-    const saveButton = (
-        <Button
-            className="pull-right alert-button group-management-save-btn"
-            bsStyle="success"
-            disabled={submitting || !dirty}
-            onClick={onSave}
-        >
-            Save
-        </Button>
-    );
+    const saveButton = useMemo(() => {
+        return (
+            <Button
+                className="pull-right alert-button group-management-save-btn"
+                bsStyle="success"
+                disabled={submitting || !getIsDirty()}
+                onClick={onSave}
+            >
+                Save
+            </Button>
+        );
+    }, [getIsDirty, onSave, submitting]);
 
     const showDetails = useCallback((principalId: number) => {
         setSelectedPrincipalId(principalId);
@@ -90,29 +95,29 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         ) {
             setErrorMsg(`Group ${trimmedName} already exists.`);
         } else {
-            setDirty(true);
+            setIsDirty(true);
             createGroup(trimmedName);
         }
 
         setNewGroupName('');
-    }, [createGroup, groupMembership, newGroupName, setErrorMsg]);
+    }, [createGroup, groupMembership, newGroupName, setErrorMsg, setIsDirty]);
 
     const onAddMember = useCallback(
         (groupId: string, principalId: number, principalName: string, principalType: string) => {
             setSelectedPrincipalId(principalId);
             addMembers(groupId, principalId, principalName, principalType);
-            setDirty(true);
+            setIsDirty(true);
         },
-        [addMembers]
+        [addMembers, setIsDirty]
     );
 
     const onRemoveMember = useCallback(
         (groupId: string, memberId: number) => {
             setSelectedPrincipalId(undefined);
             removeMember(groupId, memberId);
-            setDirty(true);
+            setIsDirty(true);
         },
-        [removeMember]
+        [removeMember, setIsDirty]
     );
 
     const selectedPrincipal = useMemo(() => {
@@ -131,7 +136,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                 <Panel>
                     <Panel.Heading> Application Groups and Assignments </Panel.Heading>
                     <Panel.Body className="permissions-groups-assignment-panel group-assignment-panel">
-                        {dirty && (
+                        {getIsDirty() && (
                             <div className="permissions-groups-save-alert">
                                 <Alert bsStyle="info">
                                     You have unsaved changes.
@@ -169,7 +174,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                                 selectedPrincipalId={selectedPrincipalId}
                                 deleteGroup={deleteGroup}
                                 onRemoveMember={onRemoveMember}
-                                setDirty={setDirty}
+                                setDirty={setIsDirty}
                                 addMember={onAddMember}
                             />
                         ))}

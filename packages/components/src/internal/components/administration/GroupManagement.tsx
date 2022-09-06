@@ -59,7 +59,7 @@ function getLastModified(project: string): Promise<string> {
 type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
 export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
-    const { setIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
+    const { setIsDirty, getIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [savedGroupMembership, setSavedGroupMembership] = useState<GroupMembership>();
@@ -152,13 +152,13 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             }
 
             // Delete members
-            Object.keys(newGroupMembership).map(async groupId => {
+            for (const groupId of Object.keys(newGroupMembership)) {
                 const currentMembers = new Set(newGroupMembership[groupId].members.map(member => member.id));
                 const oldMembers = savedGroupMembership[groupId]?.members.map(member => member.id);
                 const deletedMembers = oldMembers?.filter(id => !currentMembers.has(id));
                 if (deletedMembers?.length)
                     await api.security.removeGroupMembers(parseInt(groupId, 10), deletedMembers, projectPath);
-            });
+            }
 
             // Save updated state
             setSavedGroupMembership(newGroupMembership);
@@ -193,13 +193,6 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             </>
         );
     }, [lastModified]);
-
-    // const createGroup = useCallback(
-    //     (name: string) => {
-    //         setGroupMembership({ ...groupMembership, [name]: { groupName: name, members: [] } });
-    //     },
-    //     [groupMembership]
-    // );
 
     const createGroup = useCallback((name: string) => {
         setGroupMembership(current => ({ ...current, [name]: { groupName: name, members: [] } }));
@@ -281,6 +274,8 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                     save={save}
                     errorMsg={errorMsg}
                     setErrorMsg={onSetErrorMsg}
+                    setIsDirty={setIsDirty}
+                    getIsDirty={getIsDirty}
                 />
             )}
         </BasePermissionsCheckPage>

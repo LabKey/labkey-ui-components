@@ -1,9 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.213.2
+*Released*: 6 September 2022
+* Make sure assay functionality is enabled in community edition
+
 ### version 2.213.1
 *Released*: 1 September 2022
-* Issue 4457: Editable grid Bulk Insert and Bulk Update error with lookup to sample table with String key
+* Issue 44457: Editable grid Bulk Insert and Bulk Update error with lookup to sample table with String key
   * fix in actions.ts to only call parseInt on val if !isNaN
 
 ### version 2.213.0

@@ -1,6 +1,6 @@
 import { List, Map } from 'immutable';
 
-import { Query, Security } from '@labkey/api';
+import { Filter, Query, Security } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
@@ -100,6 +100,28 @@ export const getGroupMemberships = (): Promise<Row[]> => {
             columns: 'UserId,GroupId,GroupId/Name,UserId/DisplayName,UserId/Email',
             success: response => {
                 resolve(response.rows);
+            },
+            failure: error => {
+                console.error('Failed to fetch group memberships', error);
+                reject(error);
+            },
+        });
+    });
+};
+
+export const getAuditLogData = (columns: string, filterCol: string, filterVal: string | number): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        Query.selectRows({
+            method: 'POST',
+            schemaName: 'auditLog',
+            queryName: 'GroupAuditEvent',
+            columns,
+            filterArray: [Filter.create(filterCol, filterVal, Filter.Types.EQUAL)],
+            containerFilter: Query.ContainerFilter.allFolders,
+            sort: '-Date',
+            maxRows: 1,
+            success: response => {
+                resolve(response.rows.length ? response.rows[0].Date : '');
             },
             failure: error => {
                 console.error('Failed to fetch group memberships', error);

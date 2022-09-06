@@ -4,8 +4,6 @@ import { MenuItem } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import { Filter, Query } from '@labkey/api';
-
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
@@ -32,29 +30,7 @@ import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
-import { getGroupMembership, getGroupMemberships } from './actions';
-
-function getLastModified(project: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        Query.selectRows({
-            method: 'POST',
-            schemaName: 'auditLog',
-            queryName: 'GroupAuditEvent',
-            columns: 'Date,Project',
-            filterArray: [Filter.create('ProjectId/Name', project, Filter.Types.EQUAL)],
-            containerFilter: Query.ContainerFilter.allFolders,
-            sort: '-Date',
-            maxRows: 1,
-            success: response => {
-                resolve(response.rows.length ? response.rows[0].Date : '');
-            },
-            failure: error => {
-                console.error('Failed to fetch group memberships', error);
-                reject(error);
-            },
-        });
-    });
-}
+import { getAuditLogData, getGroupMembership, getGroupMemberships } from './actions';
 
 type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
@@ -82,7 +58,8 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         setLoadingState(LoadingState.LOADING);
         try {
             // Used in renderButtons()
-            const lastModifiedState = await getLastModified(projectPath.slice(0, -1));
+            const lastModifiedState = await getAuditLogData('Date,Project', 'ProjectId/Name', projectPath.slice(0, -1));
+
             setLastModified(lastModifiedState);
 
             // Used in DetailsPanels
@@ -198,33 +175,34 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         setGroupMembership(current => ({ ...current, [name]: { groupName: name, members: [] } }));
     }, []);
 
-    const deleteGroup = useCallback(
-        (id: string) => {
-            const newGroupMembership = { ...groupMembership };
+    const deleteGroup = useCallback((id: string) => {
+        setGroupMembership(current => {
+            const newGroupMembership = { ...current };
             delete newGroupMembership[id];
-
-            setGroupMembership(newGroupMembership);
-        },
-        [groupMembership]
-    );
+            return newGroupMembership;
+        });
+    }, []);
 
     const addMembers = useCallback(
         (groupId: string, principalId: number, principalName: string, principalType: string) => {
-            const group = groupMembership[groupId];
-            const newMember = { name: principalName, id: principalId, type: principalType };
-            const members = [...group.members, newMember].sort((m1, m2) => naturalSort(m1.name, m2.name));
-            setGroupMembership({
-                ...groupMembership,
-                [groupId]: { groupName: group.groupName, members },
+            setGroupMembership(current => {
+                const group = current[groupId];
+                const newMember = { name: principalName, id: principalId, type: principalType };
+                const members = [...group.members, newMember].sort((m1, m2) => naturalSort(m1.name, m2.name));
+
+                return {
+                    ...current,
+                    [groupId]: { groupName: group.groupName, members },
+                };
             });
         },
-        [groupMembership]
+        []
     );
 
-    const removeMember = useCallback(
-        (groupId: string, memberId: number) => {
-            const newGroupMembership = Object.fromEntries(
-                Object.entries(groupMembership).map(([id, group]) => {
+    const removeMember = useCallback((groupId: string, memberId: number) => {
+        setGroupMembership(current =>
+            Object.fromEntries(
+                Object.entries(current).map(([id, group]) => {
                     if (id === groupId) {
                         const newMembers = group.members.filter(member => member.id !== memberId);
                         return [id, { ...group, members: [...newMembers] }];
@@ -232,11 +210,9 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                         return [id, group];
                     }
                 })
-            );
-            setGroupMembership(newGroupMembership);
-        },
-        [groupMembership]
-    );
+            )
+        );
+    }, []);
 
     const usersAndGroups = useMemo(() => {
         return principals

@@ -128,8 +128,10 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
+    // Used in labbook module
     fetchPolicy = fetchContainerSecurityPolicy;
 
+    // Used in platform/core
     getUserLimitSettings = getUserLimitSettings;
 
     removeGroupMembers = (

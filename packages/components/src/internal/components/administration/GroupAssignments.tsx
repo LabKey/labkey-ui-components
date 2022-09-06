@@ -113,9 +113,9 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
 
     const onRemoveMember = useCallback(
         (groupId: string, memberId: number) => {
+            setIsDirty(true);
             setSelectedPrincipalId(undefined);
             removeMember(groupId, memberId);
-            setIsDirty(true);
         },
         [removeMember, setIsDirty]
     );

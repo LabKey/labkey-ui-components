@@ -6,39 +6,17 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
-import { Filter, Query } from '@labkey/api';
-
 import { resolveErrorMessage } from '../../util/messaging';
 import { Member } from '../administration/models';
 
 import { UserProperties } from '../user/UserProperties';
 
+import { getAuditLogData } from '../administration/actions';
+
 import { EffectiveRolesList } from './EffectiveRolesList';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { MembersList } from './MembersList';
-
-function getWhenCreated(id: number): Promise<string> {
-    return new Promise((resolve, reject) => {
-        Query.selectRows({
-            method: 'POST',
-            schemaName: 'auditLog',
-            queryName: 'GroupAuditEvent',
-            columns: 'Date,group/UserId',
-            filterArray: [Filter.create('group/UserId', id, Filter.Types.EQUAL)],
-            containerFilter: Query.ContainerFilter.allFolders,
-            sort: '-Date',
-            maxRows: 1,
-            success: response => {
-                resolve(response.rows.length ? response.rows[0].Date : '');
-            },
-            failure: error => {
-                console.error('Failed to fetch group memberships', error);
-                reject(error);
-            },
-        });
-    });
-}
 
 interface Props {
     members?: Member[];
@@ -53,7 +31,8 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
 
     const loadWhenCreated = useCallback(async () => {
         try {
-            const createdState = await getWhenCreated(principal.userId);
+            const createdState = await getAuditLogData('Date,group/UserId', 'group/UserId', principal.userId);
+
             setCreated(createdState.slice(0, -7));
         } catch (e) {
             console.error(resolveErrorMessage(e) ?? 'Failed to when group created');

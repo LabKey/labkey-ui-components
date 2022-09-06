@@ -416,7 +416,7 @@ export class EditorModel
                     } else if (col.lookup.displayColumn == col.lookup.keyColumn) {
                         row = row.set(
                             col.name,
-                            values.size === 1 ? quoteValueWithDelimiters(values.first().display, ',') : undefined
+                            values.size === 1 ? quoteValueWithDelimiters(values.first()?.display, ',') : undefined
                         );
                     } else {
                         let val;

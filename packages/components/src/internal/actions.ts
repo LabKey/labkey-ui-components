@@ -602,7 +602,7 @@ export function getSelectedData(
     sorts?: string,
     queryParameters?: { [key: string]: any },
     viewName?: string,
-    keyColumn = 'RowId',
+    keyColumn = 'RowId'
 ): Promise<IGridResponse> {
     const filterArray = [];
     filterArray.push(Filter.create(keyColumn, selections, Filter.Types.IN));
@@ -927,8 +927,7 @@ async function prepareInsertRowDataFromBulkForm(
             // If it's the display value, which happens to be a number, much confusion will arise.
             const values = data.toString().split(',');
             for (const val of values) {
-                const intVal = parseInt(val, 10);
-                const { message, valueDescriptor } = await getLookupDisplayValue(col, isNaN(intVal) ? val : intVal);
+                const { message, valueDescriptor } = await getLookupDisplayValue(col, parseIntIfNumber(val));
                 cv = cv.push(valueDescriptor);
                 if (message) {
                     messages = messages.push(message);
@@ -945,6 +944,12 @@ async function prepareInsertRowDataFromBulkForm(
         values,
         messages,
     };
+}
+
+// exported for jest testing
+export function parseIntIfNumber(val: any): number | string {
+    const intVal = !isNaN(val) ? parseInt(val, 10) : undefined;
+    return intVal === undefined || isNaN(intVal) ? val : intVal;
 }
 
 export function checkCellReadStatus(
@@ -1902,8 +1907,7 @@ async function prepareUpdateRowDataFromBulkForm(
             // If it's the display value, which happens to be a number, much confusion will arise.
             const rawValues = data.toString().split(',');
             for (const val of rawValues) {
-                const intVal = parseInt(val, 10);
-                const { message, valueDescriptor } = await getLookupDisplayValue(col, isNaN(intVal) ? val : intVal);
+                const { message, valueDescriptor } = await getLookupDisplayValue(col, parseIntIfNumber(val));
                 cv = cv.push(valueDescriptor);
                 if (message) {
                     messages = messages.set(colIdx, message);

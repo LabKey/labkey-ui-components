@@ -259,7 +259,7 @@ export const PicklistOverviewWithQueryModels = withQueryModels<OwnProps & ImplPr
 let LOAD_PICKLIST_COUNTER = 0;
 
 export const PicklistOverview: FC<OwnProps> = memo(props => {
-    const { params, user, api } = props;
+    const { params, user, api, samplesEditableGridProps } = props;
     const listId = parseInt(params.id, 10);
     const [picklist, setPicklist] = useState<Picklist>();
 
@@ -315,7 +315,9 @@ export const PicklistOverview: FC<OwnProps> = memo(props => {
                     id,
                     title: sampleType,
                     schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleType),
-                    requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS,
+                    requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS.concat(
+                        samplesEditableGridProps?.samplesGridRequiredColumns ?? []
+                    ),
                     baseFilters: [Filter.create('RowId', picklist.name, PICKLIST_SAMPLES_FILTER)],
                 };
             });

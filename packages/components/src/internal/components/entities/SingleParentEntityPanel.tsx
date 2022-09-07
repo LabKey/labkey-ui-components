@@ -2,7 +2,7 @@ import React, { FC, memo, PureComponent, ReactNode, useMemo, useState } from 're
 
 import { List } from 'immutable';
 
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { DELIMITER, DETAIL_TABLE_CLASSES } from '../forms/constants';
 
@@ -47,6 +47,7 @@ interface Props {
     parentEntityType?: IEntityTypeOption;
     parentLSIDs?: string[];
     parentTypeOptions?: List<IEntityTypeOption>;
+    containerFilter?: Query.ContainerFilter;
 }
 
 type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;
@@ -88,7 +89,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     };
 
     renderParentSelection = (model: QueryModel): ReactNode => {
-        const { chosenType, chosenValue, containerPath, parentLSIDs, parentTypeOptions, parentDataType, index } =
+        const { chosenType, chosenValue, containerPath, containerFilter, parentLSIDs, parentTypeOptions, parentDataType, index } =
             this.props;
 
         if (model?.rowsError || model?.queryInfoError) {
@@ -155,6 +156,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                             showLoading
                             value={value}
                             valueColumn="Name"
+                            containerFilter={containerFilter}
                         />
                         {!chosenValue && (
                             <div className="row top-spacing edit-parent-danger">

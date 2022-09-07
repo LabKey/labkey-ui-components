@@ -420,7 +420,8 @@ export function getAllEntityTypeOptions(
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
 export function getEntityTypeOptions(
     entityDataType: EntityDataType,
-    containerPath?: string
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
@@ -433,7 +434,7 @@ export function getEntityTypeOptions(
             queryName: typeListingSchemaQuery.queryName,
             columns: 'LSID,Name,RowId,Folder/Path',
             filterArray,
-            containerFilter: entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
+            containerFilter: containerFilter ?? (entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared),
         })
             .then(result => {
                 const rows = fromJS(result.models[result.key]);

@@ -48,6 +48,7 @@ interface CreateSamplesSubMenuProps {
     selectedType?: SampleCreationType;
     targetProductId?: string;
     sampleGridId?: string;
+    sourceGridId?: string;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -65,6 +66,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         getProductSampleWizardURL,
         isSelectingSamples,
         sampleGridId,
+        sourceGridId,
         selectedItems,
         selectedType,
         inlineItemsCount,
@@ -103,9 +105,9 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const onSampleCreationMenuSelect = useCallback(
         async (key: string) => {
             // check cross folder selection
-            if (sampleGridId) {
+            if (sampleGridId || sourceGridId) {
                 setCrossFolderSelectionResult(undefined);
-                const result = await getCrossFolderSelectionResult(sampleGridId,'sample');
+                const result = await getCrossFolderSelectionResult(sampleGridId ?? sourceGridId,sampleGridId ? 'sample' : 'data');
 
                 if (result.crossFolderSelectionCount > 0) {
                     let verb = 'Aliquot';

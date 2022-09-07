@@ -26,12 +26,13 @@ import { CreatedModified } from '../base/CreatedModified';
 
 import { naturalSort } from '../../../public/sort';
 
+import { getPrincipals } from '../permissions/actions';
+
 import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
 import { getAuditLogData, getGroupMembership, getGroupMemberships } from './actions';
-import { getPrincipals } from "../permissions/actions";
 
 type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
@@ -228,9 +229,17 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const usersAndGroups = useMemo(() => {
         return updatedPrincipals
             .filter(principal => principal.type === 'u' || principal.userId > 0)
-            .map(principal => ((groupMembership && groupMembership[principal.userId]?.type === 'sg') ? principal.set('isSiteGroup', true) : principal) as Principal)
+            .map(
+                principal =>
+                    (groupMembership && groupMembership[principal.userId]?.type === 'sg'
+                        ? principal.set('isSiteGroup', true)
+                        : principal) as Principal
+            )
             .sort(
-                (p1, p2) => naturalSort(p2.isSiteGroup, p1.isSiteGroup) || naturalSort(p1.type, p2.type) || naturalSort(p1.displayName, p2.displayName)
+                (p1, p2) =>
+                    naturalSort(p2.isSiteGroup, p1.isSiteGroup) ||
+                    naturalSort(p1.type, p2.type) ||
+                    naturalSort(p1.displayName, p2.displayName)
             ) as List<Principal>;
     }, [updatedPrincipals, groupMembership]);
 

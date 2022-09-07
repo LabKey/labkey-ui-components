@@ -10,10 +10,11 @@ import { ExpandableContainer } from '../ExpandableContainer';
 
 import { naturalSort } from '../../../public/sort';
 
+import { GroupMembership } from '../administration/models';
+
 import { Principal, SecurityAssignment, SecurityRole } from './models';
 import { RemovableButton } from './RemovableButton';
 import { AddRoleAssignmentInput } from './AddRoleAssignmentInput';
-import { GroupMembership } from '../administration/models';
 
 interface Props {
     assignments: List<SecurityAssignment>;

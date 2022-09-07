@@ -216,7 +216,7 @@ export function isRequestsEnabled(moduleContext?: any): boolean {
 }
 
 export function isAssayEnabled(moduleContext?: any): boolean {
-    return hasModule('assay', moduleContext) && isFeatureEnabled(ProductFeature.Assay, moduleContext);
+    return hasModule('assay', moduleContext) && (isCommunityDistribution() || isFeatureEnabled(ProductFeature.Assay, moduleContext));
 }
 
 export function isWorkflowEnabled(moduleContext?: any): boolean {

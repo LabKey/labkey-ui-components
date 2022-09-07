@@ -1561,7 +1561,7 @@ export type {
 } from './internal/components/domainproperties/models';
 export type { NotificationItemProps } from './internal/components/notifications/model';
 export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';
-export type { VisGraphNode } from './internal/components/lineage/vis/VisGraphGenerator';
+export type { VisGraphNode } from './internal/components/lineage/models';
 export type { ITab } from './internal/components/navigation/SubNav';
 export type { IDataViewInfo, EditorModelProps, IGridLoader, IGridResponse } from './internal/models';
 export type { HeatMapCell } from './internal/components/heatmap/HeatMap';

@@ -1,13 +1,26 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.214.1
+*Released*: 7 September 2022
+* Merge release22.9-SNAPSHOT into develop
+
 ### version 2.214.0
 *Released*: 5 September 2022
 * Issue 45403: Include App specified samplesGridRequiredColumns in requiredColumns array for QueryConfig
 
+### version 2.213.3
+*Released*: 6 September 2022
+* QuerySelect: Allow optionRenderer prop to be passed
+* Remove circular dependencies in QuerySelect and Lineage models
+
+### version 2.213.2
+*Released*: 6 September 2022
+* Make sure assay functionality is enabled in community edition
+
 ### version 2.213.1
 *Released*: 1 September 2022
-* Issue 4457: Editable grid Bulk Insert and Bulk Update error with lookup to sample table with String key
+* Issue 44457: Editable grid Bulk Insert and Bulk Update error with lookup to sample table with String key
   * fix in actions.ts to only call parseInt on val if !isNaN
 
 ### version 2.213.0

@@ -48,34 +48,6 @@ export function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelect
     return [iconURL, suffix, '.svg'].join('').toLowerCase();
 }
 
-export function getLineageNodeTitle(node: LineageItemWithMetadata, asHTML = false): string {
-    // encodeHtml if we are generating html for vis.js to use as the node's tooltip title
-    const h = (s: string): string => (asHTML ? Utils.encodeHtml(s) : s);
-
-    let title = '';
-
-    if (node instanceof LineageNode) {
-        const { meta } = node;
-        if (meta && meta.displayType) {
-            title += h(meta.displayType) + ': ';
-        }
-
-        title += node.name;
-
-        if (meta && meta.aliases && meta.aliases.size) {
-            title += ' (' + meta.aliases.map(h).join(', ') + ')';
-        }
-
-        if (meta && meta.description) {
-            title += (asHTML ? '<br>' : '\n') + h(meta.description);
-        }
-    } else {
-        title = node.name;
-    }
-
-    return title;
-}
-
 export function getLineageDepthFirstNodeList(
     nodes: Map<string, LineageNode>,
     lsid: string,

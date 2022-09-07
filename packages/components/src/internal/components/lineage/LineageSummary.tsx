@@ -8,8 +8,7 @@ import { List, Map } from 'immutable';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
-import { LineageLink, LineageResult } from './models';
-import { createLineageNodeCollections, isAliquotNodeCollection } from './vis/VisGraphGenerator';
+import { createLineageNodeCollections, isAliquotNodeCollection, LineageLink, LineageResult } from './models';
 import { DetailsListNodes } from './node/DetailsList';
 import { InjectedLineage, withLineage } from './withLineage';
 

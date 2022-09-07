@@ -4,7 +4,7 @@ import { Map } from 'immutable';
 
 import { DEFAULT_LINEAGE_DISTANCE, SAMPLE_ALIQUOT_PROTOCOL_LSID } from '../lineage/constants';
 import { LineageDepthLimitMessage, LineageGraph } from '../lineage/LineageGraph';
-import { VisGraphNode } from '../lineage/vis/VisGraphGenerator';
+import { VisGraphNode } from '../lineage/models';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,

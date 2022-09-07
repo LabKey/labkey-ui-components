@@ -12,7 +12,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { InjectedLineage, withLineage, WithLineageOptions } from './withLineage';
 import { NodeInteractionProvider, WithNodeInteraction } from './actions';
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
-import { isBasicNode, VisGraphOptions, VisGraphNode, VisGraphNodeType } from './vis/VisGraphGenerator';
+import { isBasicNode, VisGraphOptions, VisGraphNode, VisGraphNodeType } from './models';
 import { VisGraph } from './vis/VisGraph';
 import { LineageNodeDetailFactory } from './node/LineageNodeDetailFactory';
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';

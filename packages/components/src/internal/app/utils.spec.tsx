@@ -398,21 +398,42 @@ describe('utils', () => {
                 productFeatures: [],
             },
         };
-        expect(isAssayEnabled()).toBe(false);
+        expect(isAssayEnabled()).toBe(true); // LK Community
         LABKEY.moduleContext = {
             api: { moduleNames: [] },
             core: {
                 productFeatures: [ProductFeature.Assay],
             },
         };
-        expect(isAssayEnabled()).toBe(false);
+        expect(isAssayEnabled()).toBe(false); // no assay module
         LABKEY.moduleContext = {
             api: { moduleNames: ['assay'] },
             core: {
                 productFeatures: [ProductFeature.Assay],
             },
         };
-        expect(isAssayEnabled()).toBe(true);
+        expect(isAssayEnabled()).toBe(true); // assay module with assay feature
+        LABKEY.moduleContext = {
+            api: { moduleNames: ['assay', 'sampleManagement'] },
+            core: {
+                productFeatures: [ProductFeature.Assay],
+            },
+        };
+        expect(isAssayEnabled()).toBe(true); // LKSM Starter
+        LABKEY.moduleContext = {
+            api: { moduleNames: ['assay', 'sampleManagement', 'premium'] },
+            core: {
+                productFeatures: [ProductFeature.Assay],
+            },
+        };
+        expect(isAssayEnabled()).toBe(true); // LKS Starter
+        LABKEY.moduleContext = {
+            api: { moduleNames: ['assay', 'sampleManagement', 'premium', 'professional', 'labbook'] },
+            core: {
+                productFeatures: [ProductFeature.Assay],
+            },
+        };
+        expect(isAssayEnabled()).toBe(true); // LKS Professional
     });
 
     test('isWorkflowEnabled', () => {

@@ -6,13 +6,14 @@ import React, { FC, memo, PureComponent, ReactNode, useCallback, useMemo, useSta
 import { Tab, Tabs } from 'react-bootstrap';
 import { List } from 'immutable';
 
+import { LineageSummary } from '../LineageSummary';
 import {
     createLineageNodeCollections,
     isAliquotNodeCollection,
     LineageNodeCollectionByType,
-} from '../vis/VisGraphGenerator';
-import { LineageSummary } from '../LineageSummary';
-import { LineageIOWithMetadata, LineageNode } from '../models';
+    LineageIOWithMetadata,
+    LineageNode,
+} from '../models';
 import { LineageOptions } from '../types';
 
 import { Grid } from '../../base/Grid';

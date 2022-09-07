@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 
 import { LineageOptions } from '../types';
 import { Lineage } from '../models';
-import { isBasicNode, isClusterNode, isCombinedNode, VisGraphNodeType } from '../vis/VisGraphGenerator';
+import { isBasicNode, isClusterNode, isCombinedNode, VisGraphNodeType } from '../models';
 
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 

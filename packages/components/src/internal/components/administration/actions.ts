@@ -145,9 +145,9 @@ export const getAuditLogData = (columns: string, filterCol: string, filterVal: s
 export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): GroupMembership => {
     const groupsWithMembers = groupMemberships.reduce((prev, curr) => {
         const groupId = curr['GroupId'];
-        const i = groups.find(group => group.id === groupId);
+        const isProjectGroup = groups.find(group => group.id === groupId)?.isProjectGroup;
 
-        if (groupId === -1 || !i.isProjectGroup) {
+        if (groupId === -1) {
             return prev;
         }
         const userDisplayName = curr['UserId/DisplayName'];
@@ -164,15 +164,14 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): Gr
             prev[groupId].members.sort((member1, member2) => naturalSort(member1.name, member2.name));
             return prev;
         } else {
-            prev[groupId] = { groupName: curr['GroupId/Name'], members: [member] };
+            prev[groupId] = { groupName: curr['GroupId/Name'], members: [member], type: isProjectGroup ? 'g' : 'sg' };
             return prev;
         }
     }, {});
 
     // If a group has no members—is in groupsData but not groupRows—add it as well, unless it is a site group
     groups.forEach(group => {
-        const isProjectGroup = group.isProjectGroup;
-        if (!(group.id in groupsWithMembers) && isProjectGroup) {
+        if (!(group.id in groupsWithMembers)) {
             groupsWithMembers[group.id] = { groupName: group.name, members: [] };
         }
     });

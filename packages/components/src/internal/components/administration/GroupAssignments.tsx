@@ -133,8 +133,9 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         return principalsById.get(selectedPrincipalId);
     }, [principalsById, selectedPrincipalId]);
 
+    // Filter out site groups from display
     const orderedGroupMembership = useMemo(() => {
-        return Object.keys(groupMembership).sort((id1, id2) =>
+        return Object.keys(groupMembership).filter(group => groupMembership[group]?.type !== 'sg').sort((id1, id2) =>
             naturalSort(groupMembership[id1].groupName, groupMembership[id2].groupName)
         );
     }, [groupMembership]);

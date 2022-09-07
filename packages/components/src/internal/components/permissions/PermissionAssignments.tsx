@@ -254,6 +254,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                                 principals={principals}
                                 role={role}
                                 selectedUserId={selectedUserId}
+                                groupMembership={groupMembership}
                             />
                         ))}
                         <br />

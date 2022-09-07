@@ -31,6 +31,7 @@ import { GroupAssignments } from './GroupAssignments';
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
 import { getAuditLogData, getGroupMembership, getGroupMemberships } from './actions';
+import { getPrincipals } from "../permissions/actions";
 
 type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
@@ -40,6 +41,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [savedGroupMembership, setSavedGroupMembership] = useState<GroupMembership>();
     const [groupMembership, setGroupMembership] = useState<GroupMembership>();
+    const [updatedPrincipals, setUpdatedPrincipals] = useState<List<Principal>>(principals);
     const [lastModified, setLastModified] = useState<string>();
     const [policy, setPolicy] = useState<SecurityPolicy>();
     const [errorMsg, setErrorMsg] = useState<string>();
@@ -137,7 +139,10 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                     await api.security.addGroupMembers(parseInt(groupId, 10), addedMembers, projectPath);
             }
 
+            const principals = await getPrincipals();
+
             // Save updated state
+            setUpdatedPrincipals(principals);
             setSavedGroupMembership(newGroupMembership);
             setGroupMembership(newGroupMembership);
 
@@ -221,12 +226,13 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     }, []);
 
     const usersAndGroups = useMemo(() => {
-        return principals
+        return updatedPrincipals
             .filter(principal => principal.type === 'u' || principal.userId > 0)
+            .map(principal => ((groupMembership && groupMembership[principal.userId]?.type === 'sg') ? principal.set('isSiteGroup', true) : principal) as Principal)
             .sort(
-                (p1, p2) => naturalSort(p1.type, p2.type) || naturalSort(p1.displayName, p2.displayName)
+                (p1, p2) => naturalSort(p2.isSiteGroup, p1.isSiteGroup) || naturalSort(p1.type, p2.type) || naturalSort(p1.displayName, p2.displayName)
             ) as List<Principal>;
-    }, [principals]);
+    }, [updatedPrincipals, groupMembership]);
 
     const description = useMemo(() => {
         return showPremiumFeatures() ? container.path : undefined;

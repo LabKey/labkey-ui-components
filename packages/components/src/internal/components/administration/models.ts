@@ -7,6 +7,7 @@ export interface Member {
 interface Group {
     groupName: string;
     members: Member[];
+    type?: string;
 }
 
 export interface GroupMembership {

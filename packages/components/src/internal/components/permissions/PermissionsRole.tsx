@@ -13,10 +13,12 @@ import { naturalSort } from '../../../public/sort';
 import { Principal, SecurityAssignment, SecurityRole } from './models';
 import { RemovableButton } from './RemovableButton';
 import { AddRoleAssignmentInput } from './AddRoleAssignmentInput';
+import { GroupMembership } from '../administration/models';
 
 interface Props {
     assignments: List<SecurityAssignment>;
     disabledId?: number;
+    groupMembership: GroupMembership;
     initExpanded?: boolean;
     onAddAssignment?: (principal: Principal, role: SecurityRole) => any;
     onClickAssignment: (userId: number) => any;
@@ -68,12 +70,13 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
             selectedUserId,
             disabledId,
             initExpanded,
+            groupMembership,
         } = this.props;
         const existingAssignments =
             assignments && assignments.size > 0
                 ? assignments.map(assignment => assignment.userId).toList()
                 : List<number>();
-        const principalsToAdd = Principal.filterAndSort(principals, existingAssignments);
+        const principalsToAdd = Principal.filterAndSort(principals, groupMembership, existingAssignments);
 
         return (
             <ExpandableContainer

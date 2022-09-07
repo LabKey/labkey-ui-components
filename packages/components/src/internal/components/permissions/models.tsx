@@ -4,7 +4,10 @@
  */
 import { Record, List, Map } from 'immutable';
 
+import React from 'react';
+
 import { naturalSort } from '../../../public/sort';
+import { GroupMembership } from '../administration/models';
 
 export class Principal extends Record({
     userId: undefined,
@@ -12,12 +15,14 @@ export class Principal extends Record({
     displayName: undefined,
     type: undefined,
     active: true,
+    isSiteGroup: false,
 }) {
     declare userId: number;
     declare name: string;
     declare displayName: string;
     declare type: string;
     declare active: boolean;
+    declare isSiteGroup: boolean;
 
     static create(raw: any): Principal {
         return new Principal({ ...raw });
@@ -34,13 +39,33 @@ export class Principal extends Record({
         return new Principal({ userId, name, type, displayName });
     }
 
-    static filterAndSort(principals: List<Principal>, excludeUserIds?: List<number>): List<Principal> {
+    static filterAndSort(
+        principals: List<Principal>,
+        groupMembership: GroupMembership,
+        excludeUserIds?: List<number>
+    ): List<Principal> {
         return (
             principals
-                // filter out any principals that are already members of this role
-                .filter(principal => excludeUserIds === undefined || !excludeUserIds.contains(principal.userId))
+                // filter out any principals that are already members of this role, and built-in site groups
+                .filter(
+                    principal =>
+                        (excludeUserIds === undefined || !excludeUserIds.contains(principal.userId)) &&
+                        principal.userId > 0
+                )
+                // Supply information on whether a principal is a site group or not
+                .map(
+                    principal =>
+                        (groupMembership && groupMembership[principal.userId]?.type === 'sg'
+                            ? principal.set('isSiteGroup', true)
+                            : principal) as Principal
+                )
                 // finally sort by type (group or user) and then display name
-                .sort((p1, p2) => naturalSort(p1.type, p2.type) || naturalSort(p1.displayName, p2.displayName))
+                .sort(
+                    (p1, p2) =>
+                        naturalSort(p2.isSiteGroup, p1.isSiteGroup) ||
+                        naturalSort(p1.type, p2.type) ||
+                        naturalSort(p1.displayName, p2.displayName)
+                )
                 .toList()
         );
     }

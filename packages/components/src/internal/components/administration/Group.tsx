@@ -87,12 +87,7 @@ export const Group: FC<GroupProps> = memo(props => {
                 if (principal.type === 'u') {
                     return principal;
                 } else {
-                    return principal.set(
-                        'name',
-                        <strong>
-                            {principal.isSiteGroup ?? 'Site'} Group: {principal.name}
-                        </strong>
-                    );
+                    return principal.set('name', `${principal.isSiteGroup ? 'Site' : ''} Group: ${principal.name}`);
                 }
             });
     }, [members, usersAndGroups, id]);

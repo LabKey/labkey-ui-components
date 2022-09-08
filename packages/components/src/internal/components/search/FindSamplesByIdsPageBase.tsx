@@ -108,7 +108,7 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
 });
 
 export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = memo(props => {
-    const { actions, allSamplesModel } = props;
+    const { actions, allSamplesModel, samplesEditableGridProps } = props;
 
     const [sampleGridIds, setSampleGridIds] = useState<string[]>(undefined);
 
@@ -129,6 +129,9 @@ export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = mem
                             const queryConfig = {
                                 id: sampleGridId,
                                 schemaQuery: sampleSchemaQuery,
+                                requiredColumns: SAMPLE_STATUS_REQUIRED_COLUMNS.concat(
+                                    samplesEditableGridProps?.samplesGridRequiredColumns ?? []
+                                ),
                                 baseFilters: [filter],
                                 bindURL: false,
                                 title: sampleType,

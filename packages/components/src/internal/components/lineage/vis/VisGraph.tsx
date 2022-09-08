@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { DataSet, Edge, IdType, Network, Node } from 'vis-network';
 
-import { isCombinedNode, VisGraphCombinedNode, VisGraphNodeType, VisGraphOptions } from './VisGraphGenerator';
+import { isCombinedNode, VisGraphCombinedNode, VisGraphNodeType, VisGraphOptions } from '../models';
 import { VisGraphControls } from './VisGraphControls';
 
 export type HoverNodeCoords = { top: number; left: number; bottom: number; right: number };

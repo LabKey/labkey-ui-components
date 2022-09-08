@@ -16,8 +16,7 @@ import {
 import { LoadingState } from '../../../public/LoadingState';
 
 import { LineageFilter, LINEAGE_GROUPING_GENERATIONS } from './types';
-import { Lineage, LineageResult } from './models';
-import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator';
+import { generate, Lineage, LineageResult, VisGraphCombinedNode } from './models';
 
 describe('Lineage Graph', () => {
     // expression1 -> run1 -> child1

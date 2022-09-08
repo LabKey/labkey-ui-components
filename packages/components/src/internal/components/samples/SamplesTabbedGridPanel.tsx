@@ -44,9 +44,9 @@ interface Props extends InjectedQueryModels {
     // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     modelId?: string;
     onSampleTabSelect?: (modelId: string) => void;
-    sampleAliquotType?: ALIQUOT_FILTER_MODE;
     // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
-    samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    sampleAliquotType?: ALIQUOT_FILTER_MODE;
+    samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
     setIsDirty?: (isDirty: boolean) => void;
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     user: User;
@@ -67,7 +67,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         createBtnParentType,
         createBtnParentKey,
         sampleAliquotType,
-        samplesEditableGridProps,
+        samplesEditableGridProps = {},
         gridButtons,
         gridButtonProps,
         getSampleAuditBehaviorType,
@@ -102,6 +102,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const [showBulkUpdate, setShowBulkUpdate] = useState<boolean>();
     const [selectionData, setSelectionData] = useState<Map<string, any>>();
     const [editableGridUpdateData, setEditableGridUpdateData] = useState<OrderedMap<string, any>>();
+    // This prevents type error requiring otherwise unused properties
+    const editableGridProps = useMemo(() => samplesEditableGridProps as SamplesEditableGridProps, [samplesEditableGridProps]);
 
     const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
     const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
@@ -299,7 +301,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         <>
             {isEditing || selectionData ? (
                 <SamplesEditableGrid
-                    {...(samplesEditableGridProps as SamplesEditableGridProps)}
+                    {...editableGridProps}
                     determineSampleData={user.canUpdate}
                     determineLineage={user.canUpdate && !isMedia}
                     determineStorage={userCanEditStorageData(user) && !isMedia}

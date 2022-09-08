@@ -49,6 +49,8 @@ interface CreateSamplesSubMenuProps {
     targetProductId?: string;
     sampleGridId?: string;
     sourceGridId?: string;
+    selectionNoun?: string;
+    selectionNounPlural?: string;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -72,6 +74,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         inlineItemsCount,
         currentProductId,
         targetProductId,
+        selectionNoun = 'sample',
+        selectionNounPlural = 'samples'
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -96,7 +100,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         } can be selected`;
     }
 
-    const useOnClick = parentKey !== undefined || (selectingSampleParents && selectedQuantity > 0);
+    const useOnClick = parentKey !== undefined || (selectedQuantity > 0);
 
     const selectionKey = useMemo(() => {
         return parentQueryModel?.hasSelections ? parentQueryModel.selectionKey: null;
@@ -110,11 +114,11 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 const result = await getCrossFolderSelectionResult(sampleGridId ?? sourceGridId,sampleGridId ? 'sample' : 'data');
 
                 if (result.crossFolderSelectionCount > 0) {
-                    let verb = 'Aliquot';
+                    let verb = 'Derive';
                     if (selectedType === SampleCreationType.PooledSamples) {
                         verb = 'Pool';
                     }
-                    else if (selectedType === SampleCreationType.Derivatives) {
+                    else if (selectedType === SampleCreationType.Aliquots) {
                         verb = 'Derive';
                     }
 
@@ -239,8 +243,8 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     currentFolderSelectionCount={crossFolderSelectionResult.currentFolderSelectionCount}
                     onDismiss={dismissCrossFolderError}
                     title={crossFolderSelectionResult.title}
-                    noun="sample"
-                    nounPlural="samples"
+                    noun={selectionNoun}
+                    nounPlural={selectionNounPlural}
                 />
             }
 

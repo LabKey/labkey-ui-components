@@ -48,6 +48,8 @@ const USER = Principal.createFromSelectRow(
     })
 );
 
+const GROUP_MEMBERSHIP = {'11842': {groupName: 'Editor User Group', members: [{id: JEST_SITE_ADMIN_USER_ID, name: 'cnathe@labkey.com', type: 'u'}]}};
+
 const PRINCIPALS = List<Principal>([GROUP, USER]);
 const PRINCIPALS_BY_ID = PRINCIPALS.reduce((map, principal) => {
     return map.set(principal.userId, principal);
@@ -70,6 +72,7 @@ describe('PermissionAssignments', () => {
             principalsById: PRINCIPALS_BY_ID,
             roles: ROLES,
             rolesByUniqueName: ROLES_BY_NAME,
+            groupMembership: GROUP_MEMBERSHIP,
         };
     }
 

@@ -139,7 +139,7 @@ Array [
                     />
                   </svg>
                 </span>
-                
+
               </span>
             </div>
             <div
@@ -163,7 +163,7 @@ Array [
                 className="name-expression-label-div"
                 onMouseEnter={[Function]}
               >
-                Naming 
+                Naming
                 <span
                   className="domain-no-wrap"
                 >
@@ -191,7 +191,7 @@ Array [
                       />
                     </svg>
                   </span>
-                  
+
                 </span>
               </div>
             </div>
@@ -360,7 +360,7 @@ Array [
               className="file-form-formats"
             >
               <strong>
-                Supported formats include: 
+                Supported formats include:
               </strong>
               .csv, .tsv, .txt, .xls, .xlsx, .json
             </div>
@@ -555,7 +555,7 @@ Array [
                     />
                   </svg>
                 </span>
-                
+
               </span>
             </div>
             <div
@@ -579,7 +579,7 @@ Array [
                 className="name-expression-label-div"
                 onMouseEnter={[Function]}
               >
-                Naming 
+                Naming
                 <span
                   className="domain-no-wrap"
                 >
@@ -607,7 +607,7 @@ Array [
                       />
                     </svg>
                   </span>
-                  
+
                 </span>
               </div>
             </div>
@@ -636,7 +636,7 @@ Array [
           <div
             className="col-xs-2"
           >
-            Label 
+            Label
             <span
               className="domain-no-wrap"
             >
@@ -664,7 +664,7 @@ Array [
                   />
                 </svg>
               </span>
-              
+
             </span>
           </div>
           <div
@@ -840,7 +840,7 @@ Array [
               className="file-form-formats"
             >
               <strong>
-                Supported formats include: 
+                Supported formats include:
               </strong>
               .csv, .tsv, .txt, .xls, .xlsx, .json
             </div>
@@ -1082,6 +1082,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "fetchContainers": [Function],
           "fetchGroups": [Function],
           "fetchPolicy": [Function],
+          "getGroupMemberships": [Function],
           "getUserLimitSettings": [Function],
           "removeGroupMembers": [Function],
         },
@@ -1954,10 +1955,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                             className="pull-right"
                           >
                             <FontAwesomeIcon
+                              beat={false}
+                              beatFade={false}
                               border={false}
+                              bounce={false}
                               className="domain-form-collapse-btn"
+                              fade={false}
                               fixedWidth={false}
-                              flip={null}
+                              flip={false}
                               icon={
                                 Object {
                                   "icon": Array [
@@ -1974,14 +1979,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                               inverse={false}
                               listItem={false}
                               mask={null}
+                              maskId={null}
                               pull={null}
                               pulse={false}
                               rotation={null}
+                              shake={false}
                               size="lg"
                               spin={false}
+                              spinPulse={false}
+                              spinReverse={false}
                               swapOpacity={false}
                               symbol={false}
                               title=""
+                              titleId={null}
                               transform={null}
                             >
                               <svg
@@ -2362,10 +2372,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                       onMouseOver={[Function]}
                                                     >
                                                       <FontAwesomeIcon
+                                                        beat={false}
+                                                        beatFade={false}
                                                         border={false}
+                                                        bounce={false}
                                                         className="label-help-icon"
+                                                        fade={false}
                                                         fixedWidth={false}
-                                                        flip={null}
+                                                        flip={false}
                                                         icon={
                                                           Object {
                                                             "icon": Array [
@@ -2382,15 +2396,20 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         inverse={false}
                                                         listItem={false}
                                                         mask={null}
+                                                        maskId={null}
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
+                                                        shake={false}
                                                         size="1x"
                                                         spin={false}
+                                                        spinPulse={false}
+                                                        spinReverse={false}
                                                         style={Object {}}
                                                         swapOpacity={false}
                                                         symbol={false}
                                                         title=""
+                                                        titleId={null}
                                                         transform={null}
                                                       >
                                                         <svg
@@ -2472,7 +2491,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   helpTipBody={
                                                     <React.Fragment>
                                                       <p>
-                                                        Pattern used for generating unique IDs for this 
+                                                        Pattern used for generating unique IDs for this
                                                         sample type
                                                         .
                                                       </p>
@@ -2489,7 +2508,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   }
                                                   label="Naming Pattern"
                                                 >
-                                                  Naming 
+                                                  Naming
                                                   <span
                                                     className="domain-no-wrap"
                                                   >
@@ -2506,10 +2525,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         onMouseOver={[Function]}
                                                       >
                                                         <FontAwesomeIcon
+                                                          beat={false}
+                                                          beatFade={false}
                                                           border={false}
+                                                          bounce={false}
                                                           className="label-help-icon"
+                                                          fade={false}
                                                           fixedWidth={false}
-                                                          flip={null}
+                                                          flip={false}
                                                           icon={
                                                             Object {
                                                               "icon": Array [
@@ -2526,15 +2549,20 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           inverse={false}
                                                           listItem={false}
                                                           mask={null}
+                                                          maskId={null}
                                                           pull={null}
                                                           pulse={false}
                                                           rotation={null}
+                                                          shake={false}
                                                           size="1x"
                                                           spin={false}
+                                                          spinPulse={false}
+                                                          spinReverse={false}
                                                           style={Object {}}
                                                           swapOpacity={false}
                                                           symbol={false}
                                                           title=""
+                                                          titleId={null}
                                                           transform={null}
                                                         >
                                                           <svg
@@ -2639,7 +2667,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                           helpTipBody="The label color will be used to distinguish this sample type in various views in the application."
                                           label="Label Color"
                                         >
-                                          Label 
+                                          Label
                                           <span
                                             className="domain-no-wrap"
                                           >
@@ -2656,10 +2684,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                 onMouseOver={[Function]}
                                               >
                                                 <FontAwesomeIcon
+                                                  beat={false}
+                                                  beatFade={false}
                                                   border={false}
+                                                  bounce={false}
                                                   className="label-help-icon"
+                                                  fade={false}
                                                   fixedWidth={false}
-                                                  flip={null}
+                                                  flip={false}
                                                   icon={
                                                     Object {
                                                       "icon": Array [
@@ -2676,15 +2708,20 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   inverse={false}
                                                   listItem={false}
                                                   mask={null}
+                                                  maskId={null}
                                                   pull={null}
                                                   pulse={false}
                                                   rotation={null}
+                                                  shake={false}
                                                   size="1x"
                                                   spin={false}
+                                                  spinPulse={false}
+                                                  spinReverse={false}
                                                   style={Object {}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
+                                                  titleId={null}
                                                   transform={null}
                                                 >
                                                   <svg
@@ -2920,7 +2957,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 </p>
                 <br />
                 <p>
-                  Learn more about 
+                  Learn more about
                   <HelpLink
                     topic="aliquots"
                   >
@@ -3108,7 +3145,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     </p>
                     <br />
                     <p>
-                      Learn more about 
+                      Learn more about
                       <HelpLink
                         topic="aliquots"
                       >
@@ -3201,10 +3238,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                 className="domain-panel-status-icon domain-panel-status-icon-blue"
                               >
                                 <FontAwesomeIcon
+                                  beat={false}
+                                  beatFade={false}
                                   border={false}
+                                  bounce={false}
                                   className=""
+                                  fade={false}
                                   fixedWidth={false}
-                                  flip={null}
+                                  flip={false}
                                   icon={
                                     Object {
                                       "icon": Array [
@@ -3221,14 +3262,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                   inverse={false}
                                   listItem={false}
                                   mask={null}
+                                  maskId={null}
                                   pull={null}
                                   pulse={false}
                                   rotation={null}
+                                  shake={false}
                                   size={null}
                                   spin={false}
+                                  spinPulse={false}
+                                  spinReverse={false}
                                   swapOpacity={false}
                                   symbol={false}
                                   title=""
+                                  titleId={null}
                                   transform={null}
                                 />
                               </span>
@@ -3247,10 +3293,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                 className="domain-panel-status-icon domain-panel-status-icon-blue"
                               >
                                 <FontAwesomeIcon
+                                  beat={false}
+                                  beatFade={false}
                                   border={false}
+                                  bounce={false}
                                   className=""
+                                  fade={false}
                                   fixedWidth={false}
-                                  flip={null}
+                                  flip={false}
                                   icon={
                                     Object {
                                       "icon": Array [
@@ -3267,14 +3317,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                   inverse={false}
                                   listItem={false}
                                   mask={null}
+                                  maskId={null}
                                   pull={null}
                                   pulse={false}
                                   rotation={null}
+                                  shake={false}
                                   size={null}
                                   spin={false}
+                                  spinPulse={false}
+                                  spinReverse={false}
                                   swapOpacity={false}
                                   symbol={false}
                                   title=""
+                                  titleId={null}
                                   transform={null}
                                 >
                                   <svg
@@ -3320,10 +3375,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                             className="pull-right"
                           >
                             <FontAwesomeIcon
+                              beat={false}
+                              beatFade={false}
                               border={false}
+                              bounce={false}
                               className="domain-form-expand-btn"
+                              fade={false}
                               fixedWidth={false}
-                              flip={null}
+                              flip={false}
                               icon={
                                 Object {
                                   "icon": Array [
@@ -3340,14 +3399,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                               inverse={false}
                               listItem={false}
                               mask={null}
+                              maskId={null}
                               pull={null}
                               pulse={false}
                               rotation={null}
+                              shake={false}
                               size="lg"
                               spin={false}
+                              spinPulse={false}
+                              spinReverse={false}
                               swapOpacity={false}
                               symbol={false}
                               title=""
+                              titleId={null}
                               transform={null}
                             >
                               <svg
@@ -3458,7 +3522,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   <i
                                                     className="fa fa-plus-circle container--addition-icon"
                                                   />
-                                                   Add 
+                                                   Add
                                                   Field
                                                 </span>
                                               </div>
@@ -3656,7 +3720,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           className="domain-field-header"
                                                         >
                                                           0
-                                                           
+
                                                           fields
                                                            selected
                                                           <Button
@@ -3993,7 +4057,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                 </p>
                                                                 <br />
                                                                 <p>
-                                                                  Learn more about 
+                                                                  Learn more about
                                                                   <HelpLink
                                                                     topic="aliquots"
                                                                   >
@@ -4221,7 +4285,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                 </p>
                                                                                 <br />
                                                                                 <p>
-                                                                                  Learn more about 
+                                                                                  Learn more about
                                                                                   <HelpLink
                                                                                     topic="aliquots"
                                                                                   >
@@ -4415,10 +4479,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                       >
                                                                         <DragDropHandle>
                                                                           <FontAwesomeIcon
+                                                                            beat={false}
+                                                                            beatFade={false}
                                                                             border={false}
+                                                                            bounce={false}
                                                                             className=""
+                                                                            fade={false}
                                                                             fixedWidth={false}
-                                                                            flip={null}
+                                                                            flip={false}
                                                                             icon={
                                                                               Object {
                                                                                 "icon": Array [
@@ -4435,14 +4503,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             inverse={false}
                                                                             listItem={false}
                                                                             mask={null}
+                                                                            maskId={null}
                                                                             pull={null}
                                                                             pulse={false}
                                                                             rotation={null}
+                                                                            shake={false}
                                                                             size={null}
                                                                             spin={false}
+                                                                            spinPulse={false}
+                                                                            spinReverse={false}
                                                                             swapOpacity={false}
                                                                             symbol={false}
                                                                             title=""
+                                                                            titleId={null}
                                                                             transform={null}
                                                                           >
                                                                             <svg
@@ -4511,10 +4584,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             title="Show additional field properties"
                                                                           >
                                                                             <FontAwesomeIcon
+                                                                              beat={false}
+                                                                              beatFade={false}
                                                                               border={false}
+                                                                              bounce={false}
                                                                               className=""
+                                                                              fade={false}
                                                                               fixedWidth={false}
-                                                                              flip={null}
+                                                                              flip={false}
                                                                               icon={
                                                                                 Object {
                                                                                   "icon": Array [
@@ -4531,14 +4608,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               inverse={false}
                                                                               listItem={false}
                                                                               mask={null}
+                                                                              maskId={null}
                                                                               pull={null}
                                                                               pulse={false}
                                                                               rotation={null}
+                                                                              shake={false}
                                                                               size="lg"
                                                                               spin={false}
+                                                                              spinPulse={false}
+                                                                              spinReverse={false}
                                                                               swapOpacity={false}
                                                                               symbol={false}
                                                                               title=""
+                                                                              titleId={null}
                                                                               transform={null}
                                                                             >
                                                                               <svg
@@ -4766,10 +4848,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   title="Remove field"
                                                                                 >
                                                                                   <FontAwesomeIcon
+                                                                                    beat={false}
+                                                                                    beatFade={false}
                                                                                     border={false}
+                                                                                    bounce={false}
                                                                                     className="domain-field-delete-icon"
+                                                                                    fade={false}
                                                                                     fixedWidth={false}
-                                                                                    flip={null}
+                                                                                    flip={false}
                                                                                     icon={
                                                                                       Object {
                                                                                         "icon": Array [
@@ -4786,14 +4872,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                     inverse={false}
                                                                                     listItem={false}
                                                                                     mask={null}
+                                                                                    maskId={null}
                                                                                     pull={null}
                                                                                     pulse={false}
                                                                                     rotation={null}
+                                                                                    shake={false}
                                                                                     size={null}
                                                                                     spin={false}
+                                                                                    spinPulse={false}
+                                                                                    spinReverse={false}
                                                                                     swapOpacity={false}
                                                                                     symbol={false}
                                                                                     title=""
+                                                                                    titleId={null}
                                                                                     transform={null}
                                                                                   >
                                                                                     <svg
@@ -4880,7 +4971,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   </p>
                                                                                   <br />
                                                                                   <p>
-                                                                                    Learn more about 
+                                                                                    Learn more about
                                                                                     <HelpLink
                                                                                       topic="aliquots"
                                                                                     >
@@ -5088,7 +5179,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                   }
                                                                                                   label="Maximum Text Length"
                                                                                                 >
-                                                                                                  Maximum Text 
+                                                                                                  Maximum Text
                                                                                                   <span
                                                                                                     className="domain-no-wrap"
                                                                                                   >
@@ -5105,10 +5196,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         onMouseOver={[Function]}
                                                                                                       >
                                                                                                         <FontAwesomeIcon
+                                                                                                          beat={false}
+                                                                                                          beatFade={false}
                                                                                                           border={false}
+                                                                                                          bounce={false}
                                                                                                           className="label-help-icon"
+                                                                                                          fade={false}
                                                                                                           fixedWidth={false}
-                                                                                                          flip={null}
+                                                                                                          flip={false}
                                                                                                           icon={
                                                                                                             Object {
                                                                                                               "icon": Array [
@@ -5125,15 +5220,20 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                           inverse={false}
                                                                                                           listItem={false}
                                                                                                           mask={null}
+                                                                                                          maskId={null}
                                                                                                           pull={null}
                                                                                                           pulse={false}
                                                                                                           rotation={null}
+                                                                                                          shake={false}
                                                                                                           size="1x"
                                                                                                           spin={false}
+                                                                                                          spinPulse={false}
+                                                                                                          spinReverse={false}
                                                                                                           style={Object {}}
                                                                                                           swapOpacity={false}
                                                                                                           symbol={false}
                                                                                                           title=""
+                                                                                                          titleId={null}
                                                                                                           transform={null}
                                                                                                         >
                                                                                                           <svg
@@ -5299,7 +5399,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                               <span
                                                                                                 className="domain-text-options-length domain-field-float-left"
                                                                                               >
-                                                                                                No longer than 
+                                                                                                No longer than
                                                                                                 <FormControl
                                                                                                   bsClass="form-control"
                                                                                                   className="domain-text-length-field"
@@ -5363,7 +5463,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         along with any UniqueId fields for this sample type."
                                                                                                     label="Barcode Field"
                                                                                                   >
-                                                                                                    Barcode 
+                                                                                                    Barcode
                                                                                                     <span
                                                                                                       className="domain-no-wrap"
                                                                                                     >
@@ -5380,10 +5480,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                           onMouseOver={[Function]}
                                                                                                         >
                                                                                                           <FontAwesomeIcon
+                                                                                                            beat={false}
+                                                                                                            beatFade={false}
                                                                                                             border={false}
+                                                                                                            bounce={false}
                                                                                                             className="label-help-icon"
+                                                                                                            fade={false}
                                                                                                             fixedWidth={false}
-                                                                                                            flip={null}
+                                                                                                            flip={false}
                                                                                                             icon={
                                                                                                               Object {
                                                                                                                 "icon": Array [
@@ -5400,15 +5504,20 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                             inverse={false}
                                                                                                             listItem={false}
                                                                                                             mask={null}
+                                                                                                            maskId={null}
                                                                                                             pull={null}
                                                                                                             pulse={false}
                                                                                                             rotation={null}
+                                                                                                            shake={false}
                                                                                                             size="1x"
                                                                                                             spin={false}
+                                                                                                            spinPulse={false}
+                                                                                                            spinReverse={false}
                                                                                                             style={Object {}}
                                                                                                             swapOpacity={false}
                                                                                                             symbol={false}
                                                                                                             title=""
+                                                                                                            titleId={null}
                                                                                                             transform={null}
                                                                                                           >
                                                                                                             <svg
@@ -5535,7 +5644,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                             </p>
                                                                                             <br />
                                                                                             <p>
-                                                                                              Learn more about 
+                                                                                              Learn more about
                                                                                               <HelpLink
                                                                                                 topic="aliquots"
                                                                                               >
@@ -5771,7 +5880,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                   }
                                                                                                   label="Import Aliases"
                                                                                                 >
-                                                                                                  Import 
+                                                                                                  Import
                                                                                                   <span
                                                                                                     className="domain-no-wrap"
                                                                                                   >
@@ -5788,10 +5897,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         onMouseOver={[Function]}
                                                                                                       >
                                                                                                         <FontAwesomeIcon
+                                                                                                          beat={false}
+                                                                                                          beatFade={false}
                                                                                                           border={false}
+                                                                                                          bounce={false}
                                                                                                           className="label-help-icon"
+                                                                                                          fade={false}
                                                                                                           fixedWidth={false}
-                                                                                                          flip={null}
+                                                                                                          flip={false}
                                                                                                           icon={
                                                                                                             Object {
                                                                                                               "icon": Array [
@@ -5808,15 +5921,20 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                           inverse={false}
                                                                                                           listItem={false}
                                                                                                           mask={null}
+                                                                                                          maskId={null}
                                                                                                           pull={null}
                                                                                                           pulse={false}
                                                                                                           rotation={null}
+                                                                                                          shake={false}
                                                                                                           size="1x"
                                                                                                           spin={false}
+                                                                                                          spinPulse={false}
+                                                                                                          spinReverse={false}
                                                                                                           style={Object {}}
                                                                                                           swapOpacity={false}
                                                                                                           symbol={false}
                                                                                                           title=""
+                                                                                                          titleId={null}
                                                                                                           transform={null}
                                                                                                         >
                                                                                                           <svg
@@ -5894,7 +6012,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
                                                                                                       <br />
                                                                                                       <br />
-                                                                                                      Learn more about using 
+                                                                                                      Learn more about using
                                                                                                       <HelpLink
                                                                                                         topic="urlEncoding"
                                                                                                       >
@@ -5921,10 +6039,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         onMouseOver={[Function]}
                                                                                                       >
                                                                                                         <FontAwesomeIcon
+                                                                                                          beat={false}
+                                                                                                          beatFade={false}
                                                                                                           border={false}
+                                                                                                          bounce={false}
                                                                                                           className="label-help-icon"
+                                                                                                          fade={false}
                                                                                                           fixedWidth={false}
-                                                                                                          flip={null}
+                                                                                                          flip={false}
                                                                                                           icon={
                                                                                                             Object {
                                                                                                               "icon": Array [
@@ -5941,15 +6063,20 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                           inverse={false}
                                                                                                           listItem={false}
                                                                                                           mask={null}
+                                                                                                          maskId={null}
                                                                                                           pull={null}
                                                                                                           pulse={false}
                                                                                                           rotation={null}
+                                                                                                          shake={false}
                                                                                                           size="1x"
                                                                                                           spin={false}
+                                                                                                          spinPulse={false}
+                                                                                                          spinReverse={false}
                                                                                                           style={Object {}}
                                                                                                           swapOpacity={false}
                                                                                                           symbol={false}
                                                                                                           title=""
+                                                                                                          titleId={null}
                                                                                                           transform={null}
                                                                                                         >
                                                                                                           <svg
@@ -6050,7 +6177,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                             </p>
                                                                                             <br />
                                                                                             <p>
-                                                                                              Learn more about 
+                                                                                              Learn more about
                                                                                               <HelpLink
                                                                                                 topic="aliquots"
                                                                                               >
@@ -6226,7 +6353,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                           RegEx validators allow you to specify a regular expression that defines what string values are valid.
                                                                                                         </p>
                                                                                                         <p>
-                                                                                                          Learn more about using 
+                                                                                                          Learn more about using
                                                                                                           <HelpLink
                                                                                                             topic="fieldEditor#regex"
                                                                                                           >
@@ -6238,7 +6365,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                     }
                                                                                                     label="Create Regular Expression Validator"
                                                                                                   >
-                                                                                                    Create Regular Expression 
+                                                                                                    Create Regular Expression
                                                                                                     <span
                                                                                                       className="domain-no-wrap"
                                                                                                     >
@@ -6255,10 +6382,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                           onMouseOver={[Function]}
                                                                                                         >
                                                                                                           <FontAwesomeIcon
+                                                                                                            beat={false}
+                                                                                                            beatFade={false}
                                                                                                             border={false}
+                                                                                                            bounce={false}
                                                                                                             className="label-help-icon"
+                                                                                                            fade={false}
                                                                                                             fixedWidth={false}
-                                                                                                            flip={null}
+                                                                                                            flip={false}
                                                                                                             icon={
                                                                                                               Object {
                                                                                                                 "icon": Array [
@@ -6275,15 +6406,20 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                             inverse={false}
                                                                                                             listItem={false}
                                                                                                             mask={null}
+                                                                                                            maskId={null}
                                                                                                             pull={null}
                                                                                                             pulse={false}
                                                                                                             rotation={null}
+                                                                                                            shake={false}
                                                                                                             size="1x"
                                                                                                             spin={false}
+                                                                                                            spinPulse={false}
+                                                                                                            spinReverse={false}
                                                                                                             style={Object {}}
                                                                                                             swapOpacity={false}
                                                                                                             symbol={false}
                                                                                                             title=""
+                                                                                                            titleId={null}
                                                                                                             transform={null}
                                                                                                           >
                                                                                                             <svg
@@ -6428,7 +6564,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   <i
                                                     className="fa fa-plus-circle container--addition-icon"
                                                   />
-                                                   Add 
+                                                   Add
                                                   Field
                                                 </span>
                                               </div>

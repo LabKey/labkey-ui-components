@@ -55,6 +55,7 @@ describe('extractChanges', () => {
         expect(extractChanges(QUERY_INFO, currentData, { strInput: undefined }).strInput).toBe(null);
         expect(extractChanges(QUERY_INFO, currentData, { strInput: null }).strInput).toBe(null);
         expect(extractChanges(QUERY_INFO, currentData, { strInput: '' }).strInput).toBe('');
+        expect(extractChanges(QUERY_INFO, currentData, { strInput: [] }).strInput).toStrictEqual([]);
         expect(extractChanges(QUERY_INFO, currentData, { strInput: 'abc' }).strInput).toBe(undefined);
         expect(extractChanges(QUERY_INFO, currentData, { strInput: ' abc ' }).strInput).toBe(undefined);
         expect(extractChanges(QUERY_INFO, currentData, { strInput: ' abcd ' }).strInput).toBe('abcd');

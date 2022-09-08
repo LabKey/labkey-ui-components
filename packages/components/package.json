@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.213.3",
+  "version": "2.213.3-229-fb-prevent-46225.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

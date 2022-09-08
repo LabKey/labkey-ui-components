@@ -91,24 +91,6 @@ export function updateSecurityPolicy(
     });
 }
 
-export const getGroupMemberships = (): Promise<Row[]> => {
-    return new Promise((resolve, reject) => {
-        Query.selectRows({
-            method: 'POST',
-            schemaName: 'core',
-            queryName: 'Members',
-            columns: 'UserId,GroupId,GroupId/Name,UserId/DisplayName,UserId/Email',
-            success: response => {
-                resolve(response.rows);
-            },
-            failure: error => {
-                console.error('Failed to fetch group memberships', error);
-                reject(error);
-            },
-        });
-    });
-};
-
 export const getAuditLogData = (columns: string, filterCol: string, filterVal: string | number): Promise<string> => {
     return new Promise((resolve, reject) => {
         Query.selectRows({

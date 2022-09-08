@@ -29,12 +29,7 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { getProjectPath } from '../../app/utils';
 
-import {
-    getGroupMembership,
-    getGroupMemberships,
-    getUpdatedPolicyRoles,
-    getUpdatedPolicyRolesByUniqueName,
-} from './actions';
+import { getGroupMembership, getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
 import { GroupMembership } from './models';
 
 interface OwnProps {
@@ -82,8 +77,8 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const loadGroupMembership = useCallback(async () => {
         try {
             const fetchedGroups = await api.security.fetchGroups(getProjectPath(container.path));
-            const groups = fetchedGroups.filter(group => !group.isSystemGroup);
-            const groupMemberships = await getGroupMemberships();
+            const groups = fetchedGroups?.filter(group => !group.isSystemGroup);
+            const groupMemberships = await api.security.getGroupMemberships();
             const groupMembershipState = getGroupMembership(groups, groupMemberships);
             setGroupMembership(groupMembershipState);
         } catch (e) {

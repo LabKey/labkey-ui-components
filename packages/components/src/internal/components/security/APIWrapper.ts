@@ -1,4 +1,4 @@
-import { Security } from '@labkey/api';
+import { Query, Security } from '@labkey/api';
 import { Map } from 'immutable';
 
 import { CreateGroupResponse } from '@labkey/api/dist/labkey/security/Group';
@@ -6,6 +6,7 @@ import { CreateGroupResponse } from '@labkey/api/dist/labkey/security/Group';
 import { Container } from '../base/models/Container';
 import { fetchContainerSecurityPolicy, UserLimitSettings, getUserLimitSettings } from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
+import { Row } from '../../query/selectRows';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 export interface FetchedGroup {
@@ -36,6 +37,7 @@ export interface SecurityAPIWrapper {
         principalsById: Map<number, Principal>,
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
+    getGroupMemberships: () => Promise<Row[]>;
     getUserLimitSettings: () => Promise<UserLimitSettings>;
     removeGroupMembers: (
         groupId: number,
@@ -131,6 +133,24 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
     // Used in labbook module
     fetchPolicy = fetchContainerSecurityPolicy;
 
+    getGroupMemberships = (): Promise<Row[]> => {
+        return new Promise((resolve, reject) => {
+            Query.selectRows({
+                method: 'POST',
+                schemaName: 'core',
+                queryName: 'Members',
+                columns: 'UserId,GroupId,GroupId/Name,UserId/DisplayName,UserId/Email',
+                success: response => {
+                    resolve(response.rows);
+                },
+                failure: error => {
+                    console.error('Failed to fetch group memberships', error);
+                    reject(error);
+                },
+            });
+        });
+    };
+
     // Used in platform/core
     getUserLimitSettings = getUserLimitSettings;
 
@@ -178,6 +198,7 @@ export function getSecurityTestAPIWrapper(
         deleteGroup: mockFn(),
         addGroupMembers: mockFn(),
         removeGroupMembers: mockFn(),
+        getGroupMemberships: mockFn(),
         getUserLimitSettings: mockFn(),
         ...overrides,
     };

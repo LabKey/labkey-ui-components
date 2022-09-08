@@ -32,7 +32,7 @@ import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
-import { getAuditLogData, getGroupMembership, getGroupMemberships } from './actions';
+import { getAuditLogData, getGroupMembership } from './actions';
 
 type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
@@ -71,7 +71,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             // Assemble single cohesive data structure representing group data
             const fetchedGroups = await api.security.fetchGroups(projectPath);
             const groups = fetchedGroups.filter(group => !group.isSystemGroup);
-            const groupMemberships = await getGroupMemberships();
+            const groupMemberships = await api.security.getGroupMemberships();
             const groupMembershipState = getGroupMembership(groups, groupMemberships);
 
             setPolicy(policyState);

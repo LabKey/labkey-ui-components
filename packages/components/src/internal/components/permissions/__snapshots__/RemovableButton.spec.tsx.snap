@@ -5,7 +5,7 @@ exports[`<RemovableButton/> custom props 1`] = `
   className="permissions-button-group btn-group"
 >
   <div
-    className="disabled-button-with-tooltip"
+    className="disabled-button-with-tooltip "
     onBlur={[Function]}
     onClick={null}
     onFocus={[Function]}

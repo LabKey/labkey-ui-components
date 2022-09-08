@@ -135,6 +135,23 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
     <hr
       className="principal-hr"
     />
+    <div
+      className="principal-detail-label"
+    >
+      Member of:
+    </div>
+    <ul
+      className="permissions-groups-ul"
+    >
+      <li
+        className="permissions-groups-member-li permissions-groups-member-none"
+      >
+        None
+      </li>
+    </ul>
+    <hr
+      className="principal-hr"
+    />
     <button
       className="btn btn-default"
       disabled={false}
@@ -289,6 +306,23 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
     <hr
       className="principal-hr"
     />
+    <div
+      className="principal-detail-label"
+    >
+      Member of:
+    </div>
+    <ul
+      className="permissions-groups-ul"
+    >
+      <li
+        className="permissions-groups-member-li permissions-groups-member-none"
+      >
+        None
+      </li>
+    </ul>
+    <hr
+      className="principal-hr"
+    />
     <button
       className="pull-right btn btn-default"
       disabled={false}
@@ -428,7 +462,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
       Effective Roles:
     </div>
     <ul
-      className="permissions-ul"
+      className="permissions-groups-ul"
     >
       <li>
         Editor
@@ -447,6 +481,23 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
       </li>
       <li>
         Submitter
+      </li>
+    </ul>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="principal-detail-label"
+    >
+      Member of:
+    </div>
+    <ul
+      className="permissions-groups-ul"
+    >
+      <li
+        className="permissions-groups-member-li permissions-groups-member-none"
+      >
+        None
       </li>
     </ul>
   </div>

@@ -101,6 +101,7 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                     exportFilename: 'SamplesFoundById',
                     showViewMenu: false,
                 }}
+                showLabelOption={true}
                 user={user}
             />
         </>

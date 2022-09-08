@@ -104,7 +104,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const [editableGridUpdateData, setEditableGridUpdateData] = useState<OrderedMap<string, any>>();
 
     const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
-    const [showPrintModal, setShowPrintModal] = useState<boolean>(false);
     const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
 
     const onEditSelectionInGrid = useCallback(
@@ -263,14 +262,12 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const onPrintLabel = useCallback((modelId: string): void => {
         const _model = queryModels[modelId] ?? activeModel;
         setPrintDialogModel(_model);
-        setShowPrintModal(true);
     },[queryModels, activeModel]);
 
     const onLabelExport = { [EXPORT_TYPES.LABEL]: onPrintLabel };
 
     const onCancelPrint = useCallback(():void => {
         setPrintDialogModel(undefined);
-        setShowPrintModal(false);
     }, []);
 
     const afterPrint = useCallback((numSamples: number, numLabels: number): void => {
@@ -332,7 +329,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     buttonsComponentProps={_gridButtonProps}
                     ButtonsComponentRight={SampleTabbedGridButtonsRight}
                     supportedExportTypes={showLabelOption && canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
-                    onExport={canPrintLabels ? onLabelExport : undefined}
+                    onExport={showLabelOption && canPrintLabels ? onLabelExport : undefined}
                     showRowCountOnTabs
                 />
             )}
@@ -355,7 +352,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     user={user}
                 />
             )}
-            {showPrintModal && printDialogModel && (
+            {printDialogModel && (
                 <PrintLabelsModal
                     afterPrint={afterPrint}
                     labelTemplate={labelTemplate}

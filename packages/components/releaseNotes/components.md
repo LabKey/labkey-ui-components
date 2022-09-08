@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.213.4
+*Released*: 8 September 2022
+* Add defensive type-check when calling `trim()` for form value processing.
+
 ### version 2.213.3
 *Released*: 6 September 2022
 * QuerySelect: Allow optionRenderer prop to be passed

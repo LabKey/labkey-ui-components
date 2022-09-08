@@ -81,7 +81,9 @@ export function extractChanges(
                     return false;
                 }
             } else if (column?.jsonType === 'string') {
-                newValue = newValue?.trim();
+                if (Utils.isString(newValue)) {
+                    newValue = newValue.trim();
+                }
                 if (existingValue === newValue) {
                     return false;
                 }

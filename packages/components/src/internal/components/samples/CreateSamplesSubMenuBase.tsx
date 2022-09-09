@@ -47,8 +47,6 @@ interface CreateSamplesSubMenuProps {
     selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
     targetProductId?: string;
-    sampleGridId?: string;
-    dataClassGridId?: string;
     selectionNoun?: string;
     selectionNounPlural?: string;
 }
@@ -67,8 +65,6 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         sampleWizardURL,
         getProductSampleWizardURL,
         isSelectingSamples,
-        sampleGridId,
-        dataClassGridId,
         selectedItems,
         selectedType,
         inlineItemsCount,
@@ -137,9 +133,10 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const onSampleCreationMenuSelectOnClick = useCallback(
         async (key: string) => {
             // check cross folder selection
-            if (sampleGridId || dataClassGridId) {
+            if (parentQueryModel && selectedQuantity > 0 && selectingSampleParents) {
+                const dataType = parentQueryModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? 'data' : 'sample';
                 setCrossFolderSelectionResult(undefined);
-                const result = await getCrossFolderSelectionResult(sampleGridId ?? dataClassGridId,sampleGridId ? 'sample' : 'data');
+                const result = await getCrossFolderSelectionResult(parentQueryModel.id, dataType);
 
                 if (result.crossFolderSelectionCount > 0) {
                     let verb = 'Create';

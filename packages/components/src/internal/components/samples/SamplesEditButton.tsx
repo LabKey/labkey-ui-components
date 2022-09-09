@@ -1,7 +1,6 @@
-import React, {FC, memo, useCallback, useState} from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
-
 
 import { EntityDataType } from '../entities/models';
 
@@ -20,12 +19,14 @@ import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { SampleTypeDataType } from '../entities/constants';
 
+import { getCrossFolderSelectionResult } from '../entities/actions';
+
+import { EntityCrossProjectSelectionConfirmModal } from '../entities/EntityCrossProjectSelectionConfirmModal';
+
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { SamplesEditButtonSections, shouldIncludeMenuItem } from './utils';
 import { getSampleTypeRowId } from './actions';
 import { SampleGridButtonProps } from './models';
-import {getCrossFolderSelectionResult} from "../entities/actions";
-import {EntityCrossProjectSelectionConfirmModal} from "../entities/EntityCrossProjectSelectionConfirmModal";
 
 interface OwnProps {
     combineParentTypes?: boolean;
@@ -50,29 +51,30 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
 
     const { user, moduleContext } = useServerContext();
 
-    const handleMenuClick = useCallback(async (onClick: () => void, errorMsg?: string): Promise<void> => {
-        if (model?.hasSelections) {
-            setCrossFolderSelectionResult(undefined);
-            const result = await getCrossFolderSelectionResult(model.id,'sample');
-            if (result.crossFolderSelectionCount > 0) {
-                setCrossFolderSelectionResult({
-                    ...result,
-                    title: errorMsg,
-                });
+    const handleMenuClick = useCallback(
+        async (onClick: () => void, errorMsg?: string): Promise<void> => {
+            if (model?.hasSelections) {
+                setCrossFolderSelectionResult(undefined);
+                const result = await getCrossFolderSelectionResult(model.id, 'sample');
+                if (result.crossFolderSelectionCount > 0) {
+                    setCrossFolderSelectionResult({
+                        ...result,
+                        title: errorMsg,
+                    });
+                } else {
+                    onClick();
+                }
             }
-            else {
-                onClick();
-            }
-        }
-
-    }, [model?.hasSelections, model.id]);
+        },
+        [model?.hasSelections, model.id]
+    );
 
     const onToggleEditWithGridUpdate = useCallback(() => {
-        handleMenuClick(toggleEditWithGridUpdate, "Cannot Edit Samples");
+        handleMenuClick(toggleEditWithGridUpdate, 'Cannot Edit Samples');
     }, [toggleEditWithGridUpdate]);
 
     const onShowBulkUpdate = useCallback(() => {
-        handleMenuClick(showBulkUpdate, "Cannot Edit Samples");
+        handleMenuClick(showBulkUpdate, 'Cannot Edit Samples');
     }, [showBulkUpdate]);
 
     const dismissCrossFolderError = useCallback(() => {
@@ -183,7 +185,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                     </RequiresPermission>
                 )}
             </ManageDropdownButton>
-            {crossFolderSelectionResult &&
+            {crossFolderSelectionResult && (
                 <EntityCrossProjectSelectionConfirmModal
                     crossFolderSelectionCount={crossFolderSelectionResult.crossFolderSelectionCount}
                     currentFolderSelectionCount={crossFolderSelectionResult.currentFolderSelectionCount}
@@ -192,7 +194,7 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
                     noun="sample"
                     nounPlural="samples"
                 />
-            }
+            )}
         </RequiresPermission>
     );
 });

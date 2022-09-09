@@ -62,6 +62,8 @@ import { createGridModelId } from '../../models';
 import { TimelineEventModel } from '../auditlog/models';
 import { QueryInfo } from '../../../public/QueryInfo';
 
+import { ViewInfo } from '../../ViewInfo';
+
 import {
     IS_ALIQUOT_COL,
     SAMPLE_ID_FIND_FIELD,
@@ -69,7 +71,6 @@ import {
     UNIQUE_ID_FIND_FIELD,
 } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
-import { ViewInfo } from '../../ViewInfo';
 
 export function initSampleSetSelects(
     isUpdate: boolean,
@@ -280,7 +281,9 @@ export function getAliquotSampleIds(selection: List<any>, sampleType: string, vi
 }
 
 export function getNotInStorageSampleIds(selection: List<any>, sampleType: string, viewName: string): Promise<any[]> {
-    return getFilteredSampleSelection(selection, sampleType, viewName, [Filter.create('StorageStatus', 'Not in storage')]);
+    return getFilteredSampleSelection(selection, sampleType, viewName, [
+        Filter.create('StorageStatus', 'Not in storage'),
+    ]);
 }
 
 function getFilteredSampleSelection(
@@ -300,7 +303,7 @@ function getFilteredSampleSelection(
         selectRowsDeprecated({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             queryName: sampleType,
-            viewName: viewName,
+            viewName,
             columns: 'RowId',
             filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN), ...filters],
         })
@@ -893,7 +896,10 @@ export function getSampleAliquotsQueryConfig(
 
     // use Detail view so we get all info even if default view has been filtered
     return {
-        id: createGridModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME)),
+        id: createGridModelId(
+            'sample-aliquots',
+            SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME)
+        ),
         schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME),
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,

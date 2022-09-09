@@ -434,7 +434,8 @@ export function getEntityTypeOptions(
             queryName: typeListingSchemaQuery.queryName,
             columns: 'LSID,Name,RowId,Folder/Path',
             filterArray,
-            containerFilter: containerFilter ?? (entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared),
+            containerFilter:
+                containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(result => {
                 const rows = fromJS(result.models[result.key]);
@@ -618,7 +619,7 @@ export function getCrossFolderSelectionResult(
                 if (response.success) {
                     resolve({
                         currentFolderSelectionCount: response.data.currentFolderSelectionCount,
-                        crossFolderSelectionCount: response.data.crossFolderSelectionCount
+                        crossFolderSelectionCount: response.data.crossFolderSelectionCount,
                     });
                 } else {
                     console.error('Error getting cross folder data selection result', response.exception);
@@ -632,5 +633,3 @@ export function getCrossFolderSelectionResult(
         });
     });
 }
-
-

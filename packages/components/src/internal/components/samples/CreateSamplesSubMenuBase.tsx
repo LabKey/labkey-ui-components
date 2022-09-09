@@ -10,6 +10,10 @@ import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
 
 import { SCHEMAS } from '../../schemas';
 
+import { getCrossFolderSelectionResult } from '../entities/actions';
+
+import { EntityCrossProjectSelectionConfirmModal } from '../entities/EntityCrossProjectSelectionConfirmModal';
+
 import { isSamplesSchema } from './utils';
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import {
@@ -20,8 +24,6 @@ import {
     SampleCreationType,
     SampleCreationTypeModel,
 } from './models';
-import {getCrossFolderSelectionResult} from "../entities/actions";
-import {EntityCrossProjectSelectionConfirmModal} from "../entities/EntityCrossProjectSelectionConfirmModal";
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
@@ -46,9 +48,9 @@ interface CreateSamplesSubMenuProps {
     ) => string | AppURL;
     selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
-    targetProductId?: string;
     selectionNoun?: string;
     selectionNounPlural?: string;
+    targetProductId?: string;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -82,7 +84,9 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const schemaQuery = parentQueryModel?.schemaQuery;
 
     const selectingSampleParents = useMemo(() => {
-        return isSelectingSamples ? isSelectingSamples(schemaQuery) : (isSamplesSchema(schemaQuery) || schemaQuery?.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA);
+        return isSelectingSamples
+            ? isSelectingSamples(schemaQuery)
+            : isSamplesSchema(schemaQuery) || schemaQuery?.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA;
     }, [isSelectingSamples, schemaQuery]);
 
     let disabledMsg: string;
@@ -99,7 +103,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const useOnClick = parentKey !== undefined || (parentQueryModel && selectedQuantity > 0 && selectingSampleParents);
 
     const selectionKey = useMemo(() => {
-        return parentQueryModel?.hasSelections ? parentQueryModel.selectionKey: null;
+        return parentQueryModel?.hasSelections ? parentQueryModel.selectionKey : null;
     }, [parentQueryModel]);
 
     const onSampleCreationMenuSelect = useCallback(
@@ -142,11 +146,9 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     let verb = 'Create';
                     if (selectedType === SampleCreationType.PooledSamples) {
                         verb = 'Pool';
-                    }
-                    else if (selectedType === SampleCreationType.Aliquots) {
+                    } else if (selectedType === SampleCreationType.Aliquots) {
                         verb = 'Aliquot';
-                    }
-                    else if (selectedType === SampleCreationType.Derivatives) {
+                    } else if (selectedType === SampleCreationType.Derivatives) {
                         verb = 'Derive';
                     }
 
@@ -232,7 +234,15 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 key={SAMPLES_KEY}
                 options={
                     getOptions
-                        ? getOptions(useOnClick, disabledMsg, disabledMsg ? undefined : (useOnClick ? onSampleCreationMenuSelectOnClick : onSampleCreationMenuSelect))
+                        ? getOptions(
+                              useOnClick,
+                              disabledMsg,
+                              disabledMsg
+                                  ? undefined
+                                  : useOnClick
+                                  ? onSampleCreationMenuSelectOnClick
+                                  : onSampleCreationMenuSelect
+                          )
                         : undefined
                 }
                 text={menuText}
@@ -252,7 +262,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     nounPlural={nounPlural}
                 />
             )}
-            {crossFolderSelectionResult &&
+            {crossFolderSelectionResult && (
                 <EntityCrossProjectSelectionConfirmModal
                     crossFolderSelectionCount={crossFolderSelectionResult.crossFolderSelectionCount}
                     currentFolderSelectionCount={crossFolderSelectionResult.currentFolderSelectionCount}
@@ -261,8 +271,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     noun={selectionNoun}
                     nounPlural={selectionNounPlural}
                 />
-            }
-
+            )}
         </>
     );
 });

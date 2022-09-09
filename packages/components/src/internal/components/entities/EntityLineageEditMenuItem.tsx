@@ -13,10 +13,10 @@ import { EntityLineageEditModal } from './EntityLineageEditModal';
 interface Props {
     auditBehavior?: AuditBehaviorTypes;
     childEntityDataType: EntityDataType;
+    handleClick?: (cb: () => void, errorMsg?: string) => void;
     onSuccess?: () => void;
     parentEntityDataTypes: EntityDataType[];
     queryModel: QueryModel;
-    handleClick?: (cb: () => void, errorMsg?: string) => void;
 }
 
 export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
@@ -27,10 +27,8 @@ export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
 
     const onClick = useCallback(() => {
         if (queryModel.hasSelections) {
-            if (handleClick)
-                handleClick(() => setShowEditModal(true), 'Cannot ' + itemText);
-            else
-                setShowEditModal(true);
+            if (handleClick) handleClick(() => setShowEditModal(true), 'Cannot ' + itemText);
+            else setShowEditModal(true);
         }
     }, [queryModel]);
 

@@ -6,7 +6,7 @@ import { Map } from 'immutable';
 
 import { getHelpLink } from '../../util/helpLinks';
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
-import {isPremiumProductEnabled} from "../../app/utils";
+import { isPremiumProductEnabled } from '../../app/utils';
 
 interface AssayDesignUploadPanelProps {
     onFileChange: (files: Map<string, File>) => void;

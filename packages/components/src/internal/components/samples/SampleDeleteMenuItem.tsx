@@ -17,13 +17,13 @@ interface Props {
     api?: ComponentsAPIWrapper;
     auditBehavior?: AuditBehaviorTypes;
     beforeSampleDelete?: () => any;
+    handleClick?: (cb: () => void, errorMsg?: string) => void;
     itemText?: string;
     maxDeleteRows?: number;
     metricFeatureArea?: string;
     queryModel: QueryModel;
     selectionMenuId?: string;
     verb?: string;
-    handleClick?: (cb: () => void, errorMsg?: string) => void;
 }
 
 export const SampleDeleteMenuItem: FC<Props> = memo(props => {
@@ -44,10 +44,8 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
 
     const onClick = useCallback(() => {
         if (!queryModel || queryModel.hasSelections) {
-            if (handleClick)
-                handleClick(() => setShowConfirmDeleteSamples(true), "Cannot Delete Samples");
-            else
-                setShowConfirmDeleteSamples(true);
+            if (handleClick) handleClick(() => setShowConfirmDeleteSamples(true), 'Cannot Delete Samples');
+            else setShowConfirmDeleteSamples(true);
         }
     }, [queryModel]);
 

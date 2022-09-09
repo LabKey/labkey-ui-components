@@ -590,8 +590,8 @@ export interface EntityDataType {
     nounAsParentSingular: string;
     nounPlural: string;
     nounSingular: string;
-    operationConfirmationControllerName: string;
     operationConfirmationActionName: string;
+    operationConfirmationControllerName: string;
     typeListingSchemaQuery: SchemaQuery;
     typeNounAsParentSingular: string;
     typeNounSingular: string;

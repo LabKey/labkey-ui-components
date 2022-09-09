@@ -23,11 +23,12 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { ViewInfo } from '../../ViewInfo';
+
 import { ParentEntityRequiredColumns } from './constants';
 import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from './utils';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
-import { ViewInfo } from '../../ViewInfo';
 
 interface Props {
     auditBehavior?: AuditBehaviorTypes;
@@ -37,16 +38,17 @@ interface Props {
     childLSID?: string;
     childNounSingular: string;
     childSchemaQuery: SchemaQuery;
+    containerFilter?: Query.ContainerFilter;
     editOnly?: boolean;
     hideButtons?: boolean;
     includePanelHeader?: boolean;
     onChangeParent?: (currentParents: List<EntityChoice>) => void;
     onEditToggle?: (editing: boolean) => void;
     onUpdate?: () => void;
-    parentDataTypes: EntityDataType[]; // Note: the first data type in the array will be used for labels, nouns, etc...
+    // Note: the first data type in the array will be used for labels, nouns, etc...
+    parentDataTypes: EntityDataType[];
     submitText?: string;
     title?: string;
-    containerFilter?: Query.ContainerFilter;
 }
 
 interface State {

@@ -23,9 +23,10 @@ import { GridPanel } from '../../../public/QueryModel/GridPanel';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
+import { ViewInfo } from '../../ViewInfo';
+
 import { isSampleEntity } from './utils';
 import { EntityDataType, IEntityTypeOption } from './models';
-import { ViewInfo } from '../../ViewInfo';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -36,6 +37,7 @@ interface OwnProps {
 interface Props {
     childNounSingular?: string;
     chosenValue?: string | any[];
+    containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     editing?: boolean;
     index: number;
@@ -45,9 +47,8 @@ interface Props {
     onRemoveParentType?: (index: number) => void;
     parentDataType: EntityDataType;
     parentEntityType?: IEntityTypeOption;
-    parentLSIDs?: string[];
     parentTypeOptions?: List<IEntityTypeOption>;
-    containerFilter?: Query.ContainerFilter;
+    parentLSIDs?: string[];
 }
 
 type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;
@@ -89,8 +90,16 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     };
 
     renderParentSelection = (model: QueryModel): ReactNode => {
-        const { chosenType, chosenValue, containerPath, containerFilter, parentLSIDs, parentTypeOptions, parentDataType, index } =
-            this.props;
+        const {
+            chosenType,
+            chosenValue,
+            containerPath,
+            containerFilter,
+            parentLSIDs,
+            parentTypeOptions,
+            parentDataType,
+            index,
+        } = this.props;
 
         if (model?.rowsError || model?.queryInfoError) {
             return <Alert>{model.rowsError || model.queryInfoError}</Alert>;
@@ -270,7 +279,7 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
                 containerPath,
                 schemaQuery: SchemaQuery.create(chosenType.schema, chosenType.query, ViewInfo.DETAIL_NAME),
                 omittedColumns: ['Run'],
-                requiredColumns: ['Name']
+                requiredColumns: ['Name'],
             },
         };
     }, [chosenType, containerPath, parentTypeOptions, parentLSIDs]);

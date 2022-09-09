@@ -21,18 +21,27 @@ interface Props {
     afterDelete: (rowsToKeep?: any[]) => any;
     auditBehavior?: AuditBehaviorTypes;
     beforeDelete?: () => any;
+    containerPath?: string;
     entityDataType: EntityDataType;
     maxSelected?: number;
     onCancel: () => any;
     queryModel?: QueryModel;
     useSelected: boolean;
     verb?: string;
-    containerPath?: string;
 }
 
 export const EntityDeleteModal: FC<Props> = memo(props => {
-    const { auditBehavior, containerPath, queryModel, onCancel, afterDelete, beforeDelete, useSelected, entityDataType, maxSelected } =
-        props;
+    const {
+        auditBehavior,
+        containerPath,
+        queryModel,
+        onCancel,
+        afterDelete,
+        beforeDelete,
+        useSelected,
+        entityDataType,
+        maxSelected,
+    } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
     const [showProgress, setShowProgress] = useState(false);
@@ -64,7 +73,7 @@ export const EntityDeleteModal: FC<Props> = memo(props => {
                     auditBehavior,
                     rows: rowsToDelete,
                     schemaQuery: queryModel.schemaQuery,
-                    containerPath: containerPath,
+                    containerPath,
                 });
                 afterDelete(rowsToKeep);
                 createNotification(deleteSuccessMessage(noun, rowsToDelete.length, undefined));

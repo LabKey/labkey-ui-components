@@ -200,8 +200,16 @@ describe('SamplesTabbedGridPanel', () => {
         wrapper.unmount();
     });
 
+    test('showLabelOption false, canPrintLabels false', () => {
+        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={false} />, {}, { user: TEST_USER_READER}, {}, {}, {canPrintLabels: false});
+        validate(wrapper);
+        expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeUndefined();
+        expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeUndefined();
+        wrapper.unmount();
+    });
+
     test('canPrintLabels false', () => {
-        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} />, {}, { user: TEST_USER_READER}, {}, {}, {canPrintLabels: false});
+        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={true} />, {}, { user: TEST_USER_READER}, {}, {}, {canPrintLabels: false});
         validate(wrapper);
         expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeUndefined();
         expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeUndefined();
@@ -209,6 +217,22 @@ describe('SamplesTabbedGridPanel', () => {
     });
 
     test('canPrintLabels true', () => {
+        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={true} />, {}, { user: TEST_USER_READER}, {}, {}, {canPrintLabels: true, printServiceUrl:"jest", labelTemplate:"jest"});
+        validate(wrapper);
+        expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeDefined();
+        expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeDefined();
+        wrapper.unmount();
+    });
+
+    test('showLabelOption false', () => {
+        const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={false} />, {}, { user: TEST_USER_READER}, {}, {}, {canPrintLabels: true, printServiceUrl:"jest", labelTemplate:"jest"});
+        validate(wrapper);
+        expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeUndefined();
+        expect(wrapper.find(TabbedGridPanel).prop('onExport')).toBeUndefined();
+        wrapper.unmount();
+    });
+
+    test('showLabelOption true', () => {
         const wrapper = mountWithAppServerContext(<SamplesTabbedGridPanel {...DEFAULT_PROPS} showLabelOption={true} />, {}, { user: TEST_USER_READER}, {}, {}, {canPrintLabels: true, printServiceUrl:"jest", labelTemplate:"jest"});
         validate(wrapper);
         expect(wrapper.find(TabbedGridPanel).prop('supportedExportTypes')).toBeDefined();

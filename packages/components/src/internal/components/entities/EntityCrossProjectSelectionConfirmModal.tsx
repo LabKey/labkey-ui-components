@@ -1,6 +1,7 @@
 import React, { FC, memo } from 'react';
 import { ConfirmModal } from "../base/ConfirmModal";
 import { capitalizeFirstChar } from "../../util/utils";
+import {getCrossFolderSelectionMsg} from "./utils";
 
 interface Props {
     crossFolderSelectionCount: number;
@@ -30,17 +31,3 @@ export const EntityCrossProjectSelectionConfirmModal: FC<Props> = memo(props => 
 
 });
 
-export function getCrossFolderSelectionMsg(crossFolderSelectionCount: number, currentFolderSelectionCount: number, noun: string, nounPlural: string): string {
-    let first = '';
-    if (currentFolderSelectionCount === 0) {
-        if (crossFolderSelectionCount === 1)
-            first = `The ${noun} you selected does not `;
-        else
-            first = `The ${nounPlural} you selected don't `;
-    }
-    else
-        first = `Some of the ${nounPlural} you selected don't `;
-    first += 'belong to this project.';
-    const second = ` Please select ${nounPlural} from only this project, or navigate to the appropriate project to work with them.`;
-    return first + second;
-}

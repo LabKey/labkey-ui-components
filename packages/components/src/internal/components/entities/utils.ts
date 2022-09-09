@@ -228,3 +228,21 @@ export function isSampleEntity(dataType: EntityDataType) {
 export function isDataClassEntity(dataType: EntityDataType) {
     return dataType.instanceSchemaName === SCHEMAS.DATA_CLASSES.SCHEMA;
 }
+
+
+export function getCrossFolderSelectionMsg(crossFolderSelectionCount: number, currentFolderSelectionCount: number, noun: string, nounPlural: string): string {
+    let first = '';
+    if (!crossFolderSelectionCount)
+        return undefined;
+    if (currentFolderSelectionCount === 0) {
+        if (crossFolderSelectionCount === 1)
+            first = `The ${noun} you selected does not `;
+        else
+            first = `The ${nounPlural} you selected don't `;
+    }
+    else
+        first = `Some of the ${nounPlural} you selected don't `;
+    first += 'belong to this project.';
+    const second = ` Please select ${nounPlural} from only this project, or navigate to the appropriate project to work with them.`;
+    return first + second;
+}

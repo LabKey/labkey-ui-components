@@ -48,7 +48,7 @@ interface CreateSamplesSubMenuProps {
     selectedType?: SampleCreationType;
     targetProductId?: string;
     sampleGridId?: string;
-    sourceGridId?: string;
+    dataClassGridId?: string;
     selectionNoun?: string;
     selectionNounPlural?: string;
 }
@@ -68,14 +68,14 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         getProductSampleWizardURL,
         isSelectingSamples,
         sampleGridId,
-        sourceGridId,
+        dataClassGridId,
         selectedItems,
         selectedType,
         inlineItemsCount,
         currentProductId,
         targetProductId,
         selectionNoun = 'sample',
-        selectionNounPlural = 'samples'
+        selectionNounPlural = 'samples',
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -86,7 +86,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const schemaQuery = parentQueryModel?.schemaQuery;
 
     const selectingSampleParents = useMemo(() => {
-        return isSelectingSamples ? isSelectingSamples(schemaQuery) : true;
+        return isSelectingSamples ? isSelectingSamples(schemaQuery) : (isSamplesSchema(schemaQuery) || schemaQuery?.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA);
     }, [isSelectingSamples, schemaQuery]);
 
     let disabledMsg: string;
@@ -100,37 +100,14 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         } can be selected`;
     }
 
-    const useOnClick = parentKey !== undefined || (selectedQuantity > 0);
+    const useOnClick = parentKey !== undefined || (parentQueryModel && selectedQuantity > 0 && selectingSampleParents);
 
     const selectionKey = useMemo(() => {
         return parentQueryModel?.hasSelections ? parentQueryModel.selectionKey: null;
     }, [parentQueryModel]);
 
     const onSampleCreationMenuSelect = useCallback(
-        async (key: string) => {
-            // check cross folder selection
-            if (sampleGridId || sourceGridId) {
-                setCrossFolderSelectionResult(undefined);
-                const result = await getCrossFolderSelectionResult(sampleGridId ?? sourceGridId,sampleGridId ? 'sample' : 'data');
-
-                if (result.crossFolderSelectionCount > 0) {
-                    let verb = 'Derive';
-                    if (selectedType === SampleCreationType.PooledSamples) {
-                        verb = 'Pool';
-                    }
-                    else if (selectedType === SampleCreationType.Aliquots) {
-                        verb = 'Derive';
-                    }
-
-                    const totalSelectionCount = result.crossFolderSelectionCount + result.currentFolderSelectionCount;
-                    setCrossFolderSelectionResult({
-                        ...result,
-                        title: 'Cannot ' + verb + (totalSelectionCount > 1 ? ' Samples' : ' Sample'),
-                    });
-                    return;
-                }
-            }
-
+        (key: string) => {
             let appURL: string | AppURL;
 
             if (sampleWizardURL) {
@@ -145,6 +122,47 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
             } else {
                 return appURL;
             }
+        },
+        [
+            sampleWizardURL,
+            getProductSampleWizardURL,
+            useOnClick,
+            parentKey,
+            currentProductId,
+            targetProductId,
+            selectionKey,
+        ]
+    );
+
+    const onSampleCreationMenuSelectOnClick = useCallback(
+        async (key: string) => {
+            // check cross folder selection
+            if (sampleGridId || dataClassGridId) {
+                setCrossFolderSelectionResult(undefined);
+                const result = await getCrossFolderSelectionResult(sampleGridId ?? dataClassGridId,sampleGridId ? 'sample' : 'data');
+
+                if (result.crossFolderSelectionCount > 0) {
+                    let verb = 'Create';
+                    if (selectedType === SampleCreationType.PooledSamples) {
+                        verb = 'Pool';
+                    }
+                    else if (selectedType === SampleCreationType.Aliquots) {
+                        verb = 'Aliquot';
+                    }
+                    else if (selectedType === SampleCreationType.Derivatives) {
+                        verb = 'Derive';
+                    }
+
+                    const totalSelectionCount = result.crossFolderSelectionCount + result.currentFolderSelectionCount;
+                    setCrossFolderSelectionResult({
+                        ...result,
+                        title: 'Cannot ' + verb + (totalSelectionCount > 1 ? ' Samples' : ' Sample'),
+                    });
+                    return;
+                }
+            }
+
+            return onSampleCreationMenuSelect(key);
         },
         [
             sampleWizardURL,
@@ -217,7 +235,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 key={SAMPLES_KEY}
                 options={
                     getOptions
-                        ? getOptions(useOnClick, disabledMsg, disabledMsg ? undefined : onSampleCreationMenuSelect)
+                        ? getOptions(useOnClick, disabledMsg, disabledMsg ? undefined : (useOnClick ? onSampleCreationMenuSelectOnClick : onSampleCreationMenuSelect))
                         : undefined
                 }
                 text={menuText}

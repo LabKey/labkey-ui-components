@@ -20,7 +20,11 @@ import {
 } from './components/notifications/NotificationsContext';
 import { initQueryGridState } from './global';
 import { ServerContext, ServerContextProvider } from './components/base/ServerContext';
-import { LabelPrintingProvider, LabelPrintingProviderProps } from './components/labels/LabelPrintingContextProvider';
+import {
+    LabelPrintingContextProps,
+    LabelPrintingProvider,
+    LabelPrintingProviderProps
+} from './components/labels/LabelPrintingContextProvider';
 
 declare let LABKEY: LabKey;
 
@@ -95,7 +99,7 @@ interface AppContextTestProviderProps {
     appContext: Partial<AppContext>;
     notificationContext: Partial<NotificationsContextState>;
     serverContext: Partial<ServerContext>;
-    printLabelsContext: Partial<LabelPrintingProviderProps>;
+    printLabelsContext: Partial<LabelPrintingContextProps>;
 }
 
 export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => {
@@ -106,7 +110,7 @@ export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => 
         <ServerContextProvider initialContext={serverContext as ServerContext}>
             <AppContextProvider initialContext={initialAppContext}>
                 <NotificationsContextProvider initialContext={notificationContext as NotificationsContextState}>
-                    <LabelPrintingProvider initialContext={printLabelsContext as LabelPrintingProviderProps}>
+                    <LabelPrintingProvider initialContext={printLabelsContext as LabelPrintingContextProps}>
                         {children}
                     </LabelPrintingProvider>
                 </NotificationsContextProvider>

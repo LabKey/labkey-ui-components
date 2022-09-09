@@ -8,6 +8,7 @@ import { LoadingState } from '../../../public/LoadingState';
 import { SelectInput } from '../forms/input/SelectInput';
 import { Alert } from '../base/Alert';
 import { PrintLabelsModalImpl } from './PrintLabelsModal';
+import { QueryInfo } from '../../../public/QueryInfo';
 
 describe('<PrintLabelsModal/>', () => {
     let actions;
@@ -18,9 +19,9 @@ describe('<PrintLabelsModal/>', () => {
     beforeAll(() => {
         actions = makeTestActions();
         queryModels = {
-            "sampleModel": makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY))
+            "sampleModel": makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), {} as QueryInfo)
                 .mutate({queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED}),
-            "singleSampleModel": makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY))
+            "singleSampleModel": makeTestQueryModel(SchemaQuery.create(TEST_SCHEMA, TEST_QUERY), {} as QueryInfo)
                 .mutate({queryInfoLoadingState: LoadingState.LOADED, rowsLoadingState: LoadingState.LOADED})
         }
     });

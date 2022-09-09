@@ -14,6 +14,9 @@ interface State {
 }
 
 export type LabelPrintingProviderProps = State;
+export interface LabelPrintingContextProps {
+    initialContext?: State;
+}
 
 const LabelPrintingContext = React.createContext<LabelPrintingProviderProps>(undefined);
 
@@ -21,10 +24,10 @@ export const useLabelPrintingContext = (): LabelPrintingProviderProps => {
     return useContext(LabelPrintingContext);
 };
 
-export const LabelPrintingProvider: FC = memo(({ children }) => {
-    const [labelTemplate, setLabelTemplate] = useState<string>(undefined);
-    const [printServiceUrl, setPrintServiceUrl] = useState<string>(undefined);
-    const [canPrintLabels, setCanPrintLabels] = useState<boolean>(false);
+export const LabelPrintingProvider: FC<LabelPrintingContextProps> = memo(({ children, initialContext }) => {
+    const [labelTemplate, setLabelTemplate] = useState<string>(initialContext?.labelTemplate);
+    const [printServiceUrl, setPrintServiceUrl] = useState<string>(initialContext?.printServiceUrl);
+    const [canPrintLabels, setCanPrintLabels] = useState<boolean>(!!initialContext?.canPrintLabels);
     const { user } = useServerContext();
 
     useEffect(() => {

@@ -10,6 +10,8 @@ import { ExpandableContainer } from '../ExpandableContainer';
 
 import { naturalSort } from '../../../public/sort';
 
+import { GroupMembership } from '../administration/models';
+
 import { Principal, SecurityAssignment, SecurityRole } from './models';
 import { RemovableButton } from './RemovableButton';
 import { AddRoleAssignmentInput } from './AddRoleAssignmentInput';
@@ -17,6 +19,7 @@ import { AddRoleAssignmentInput } from './AddRoleAssignmentInput';
 interface Props {
     assignments: List<SecurityAssignment>;
     disabledId?: number;
+    groupMembership: GroupMembership;
     initExpanded?: boolean;
     onAddAssignment?: (principal: Principal, role: SecurityRole) => any;
     onClickAssignment: (userId: number) => any;
@@ -24,7 +27,6 @@ interface Props {
     principals: List<Principal>;
     role: SecurityRole;
     selectedUserId: number;
-    typeToShow: string;
 }
 
 export class PermissionsRole extends React.PureComponent<Props, any> {
@@ -37,13 +39,10 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
     }
 
     generateLinks() {
-        const { assignments, typeToShow } = this.props;
+        const { assignments } = this.props;
         let count = 0;
         if (assignments && assignments.size > 0) {
-            // if we are only showing one principal type, filter the count to just those assignments
-            count = typeToShow
-                ? assignments.filter(assignment => SecurityAssignment.isTypeMatch(assignment.type, typeToShow)).size
-                : assignments.size;
+            count = assignments.size;
         }
 
         return (
@@ -58,10 +57,6 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
     }
 
     getTypesToShow(): List<string> {
-        if (this.props.typeToShow) {
-            return List<string>([this.props.typeToShow]);
-        }
-
         return List<string>(['g', 'u']);
     }
 
@@ -69,7 +64,6 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
         const {
             role,
             assignments,
-            typeToShow,
             onRemoveAssignment,
             onClickAssignment,
             onAddAssignment,
@@ -77,13 +71,13 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
             selectedUserId,
             disabledId,
             initExpanded,
+            groupMembership,
         } = this.props;
         const existingAssignments =
             assignments && assignments.size > 0
                 ? assignments.map(assignment => assignment.userId).toList()
                 : List<number>();
-        const principalsToAdd = Principal.filterAndSort(principals, typeToShow, existingAssignments);
-        const showOneType = typeToShow !== undefined;
+        const principalsToAdd = Principal.filterAndSort(principals, groupMembership, existingAssignments);
 
         return (
             <ExpandableContainer
@@ -94,7 +88,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                 isExpandable={true}
                 initExpanded={initExpanded}
             >
-                <div className="permissions-role-container">
+                <div className="permissions-groups-expandable-container">
                     {role.description && <div>{role.description}</div>}
                     <Row className="permissions-assignments-row">
                         {this.getTypesToShow().map(type => {
@@ -106,9 +100,9 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                 : List<SecurityAssignment>();
 
                             return (
-                                <Col xs={12} sm={showOneType ? 12 : 6} key={key}>
-                                    {!showOneType && <div>{type === 'g' ? 'Groups:' : 'Users:'}</div>}
-                                    <ul className="permissions-members-ul">
+                                <Col xs={12} sm={6} key={key}>
+                                    <div>{type === 'g' ? 'Groups:' : 'Users:'}</div>
+                                    <ul className="permissions-groups-members-ul">
                                         {typeAssignments && typeAssignments.size > 0 ? (
                                             typeAssignments
                                                 .sortBy(assignment => assignment.displayName, naturalSort)
@@ -120,7 +114,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                                             : undefined;
 
                                                     return (
-                                                        <li key={key} className="permissions-member-li">
+                                                        <li key={key} className="permissions-groups-member-li">
                                                             <RemovableButton
                                                                 id={assignment.userId}
                                                                 display={SecurityAssignment.getDisplayName(assignment)}
@@ -143,7 +137,9 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                                     );
                                                 })
                                         ) : (
-                                            <li className="permissions-member-li permissions-member-none">None</li>
+                                            <li className="permissions-groups-member-li permissions-groups-member-none">
+                                                None
+                                            </li>
                                         )}
                                     </ul>
                                 </Col>
@@ -155,7 +151,6 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                             role={role}
                             principals={principalsToAdd}
                             onSelect={(selected: Principal) => onAddAssignment(selected, role)}
-                            placeholder={typeToShow === 'u' ? 'Add member...' : undefined}
                         />
                     )}
                 </div>

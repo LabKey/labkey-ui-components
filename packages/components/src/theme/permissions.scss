@@ -1,7 +1,6 @@
+// Note that classes with the prefix permissions-groups are used in both the Permissions and the Groups page
 
-.permissions-assignment-panel {
-    padding-top: 0px;
-
+.permissions-groups-assignment-panel {
     & > .row {
         margin: 15px 0 0 0;
     }
@@ -11,7 +10,11 @@
     }
 }
 
-.permissions-role-container {
+.permissions-assignment-panel {
+    padding-top: 0;
+}
+
+.permissions-groups-expandable-container {
     padding: 15px;
 }
 
@@ -49,17 +52,17 @@
     animation: shadow-pulse 1s 1;
 }
 
-.permissions-ul {
+.permissions-groups-ul {
     padding-left: 15px;
 }
 
-.permissions-members-ul {
+.permissions-groups-members-ul {
     padding-left: 0;
 }
-.permissions-member-li {
+.permissions-groups-member-li {
     display: block;
 }
-.permissions-member-none {
+.permissions-groups-member-none {
     color: $list-group-disabled-text-color
 }
 
@@ -68,7 +71,7 @@
     padding-bottom: 15px;
 }
 
-.permissions-save-alert {
+.permissions-groups-save-alert {
     margin-top: 15px;
 }
 

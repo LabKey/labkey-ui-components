@@ -57,7 +57,7 @@ exports[`<PermissionsRole/> not editable 1`] = `
     </div>
   </div>
   <div
-    className="permissions-role-container"
+    className="permissions-groups-expandable-container"
   >
     <div>
       Editors may read, add, update and delete information.
@@ -72,10 +72,10 @@ exports[`<PermissionsRole/> not editable 1`] = `
           Groups:
         </div>
         <ul
-          className="permissions-members-ul"
+          className="permissions-groups-members-ul"
         >
           <li
-            className="permissions-member-li"
+            className="permissions-groups-member-li"
           >
             <button
               className="permissions-button-display btn btn-default"
@@ -95,10 +95,10 @@ exports[`<PermissionsRole/> not editable 1`] = `
           Users:
         </div>
         <ul
-          className="permissions-members-ul"
+          className="permissions-groups-members-ul"
         >
           <li
-            className="permissions-member-li"
+            className="permissions-groups-member-li"
           >
             <button
               className="permissions-button-display btn btn-default"
@@ -110,7 +110,7 @@ exports[`<PermissionsRole/> not editable 1`] = `
             </button>
           </li>
           <li
-            className="permissions-member-li"
+            className="permissions-groups-member-li"
           >
             <button
               className="permissions-button-display btn btn-default"
@@ -176,7 +176,7 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
           className="container-expandable-heading"
         >
           <span>
-            2
+            3
              member
             s
           </span>
@@ -185,7 +185,7 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
     </div>
   </div>
   <div
-    className="permissions-role-container"
+    className="permissions-groups-expandable-container"
   >
     <div>
       Editors may read, add, update and delete information.
@@ -194,19 +194,59 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
       className="permissions-assignments-row row"
     >
       <div
-        className="col-sm-12 col-xs-12"
+        className="col-sm-6 col-xs-12"
       >
+        <div>
+          Groups:
+        </div>
         <ul
-          className="permissions-members-ul"
+          className="permissions-groups-members-ul"
         >
           <li
-            className="permissions-member-li"
+            className="permissions-groups-member-li"
+          >
+            <div
+              className="permissions-button-group btn-group"
+            >
+              <button
+                className="btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                <i
+                  className="fa fa-remove"
+                />
+              </button>
+              <button
+                className="permissions-button-display btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                Editor User Group
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div
+        className="col-sm-6 col-xs-12"
+      >
+        <div>
+          Users:
+        </div>
+        <ul
+          className="permissions-groups-members-ul"
+        >
+          <li
+            className="permissions-groups-member-li"
           >
             <div
               className="permissions-button-group btn-group"
             >
               <div
-                className="disabled-button-with-tooltip"
+                className="disabled-button-with-tooltip "
                 onBlur={[Function]}
                 onClick={null}
                 onFocus={[Function]}
@@ -234,7 +274,7 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
             </div>
           </li>
           <li
-            className="permissions-member-li"
+            className="permissions-groups-member-li"
           >
             <div
               className="permissions-button-group btn-group"
@@ -290,7 +330,7 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
               <div
                 className="select-input__placeholder css-1wa3eu0-placeholder"
               >
-                Add member...
+                Add member or group...
               </div>
               <div
                 className="css-b8ldur-Input"
@@ -447,7 +487,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
     </div>
   </div>
   <div
-    className="permissions-role-container"
+    className="permissions-groups-expandable-container"
   >
     <div>
       Editors may read, add, update and delete information.
@@ -462,10 +502,10 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
           Groups:
         </div>
         <ul
-          className="permissions-members-ul"
+          className="permissions-groups-members-ul"
         >
           <li
-            className="permissions-member-li"
+            className="permissions-groups-member-li"
           >
             <div
               className="permissions-button-group btn-group"
@@ -499,10 +539,10 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
           Users:
         </div>
         <ul
-          className="permissions-members-ul"
+          className="permissions-groups-members-ul"
         >
           <li
-            className="permissions-member-li"
+            className="permissions-groups-member-li"
           >
             <div
               className="permissions-button-group btn-group"
@@ -528,7 +568,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
             </div>
           </li>
           <li
-            className="permissions-member-li"
+            className="permissions-groups-member-li"
           >
             <div
               className="permissions-button-group btn-group"
@@ -741,7 +781,7 @@ exports[`<PermissionsRole/> without assignments 1`] = `
     </div>
   </div>
   <div
-    className="permissions-role-container"
+    className="permissions-groups-expandable-container"
   >
     <div>
       Authors may read and add information in some cases, but may update and delete only information they added. Supported for only Message Boards. See the online documentation for details.
@@ -756,10 +796,10 @@ exports[`<PermissionsRole/> without assignments 1`] = `
           Groups:
         </div>
         <ul
-          className="permissions-members-ul"
+          className="permissions-groups-members-ul"
         >
           <li
-            className="permissions-member-li permissions-member-none"
+            className="permissions-groups-member-li permissions-groups-member-none"
           >
             None
           </li>
@@ -772,10 +812,10 @@ exports[`<PermissionsRole/> without assignments 1`] = `
           Users:
         </div>
         <ul
-          className="permissions-members-ul"
+          className="permissions-groups-members-ul"
         >
           <li
-            className="permissions-member-li permissions-member-none"
+            className="permissions-groups-member-li permissions-groups-member-none"
           >
             None
           </li>

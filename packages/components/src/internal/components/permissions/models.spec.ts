@@ -89,41 +89,11 @@ describe('Principal model', () => {
 
         // testing excludeUserIds param
         expect(Principal.filterAndSort(principals, groupMembership, undefined).size).toBe(3);
-        expect(
-            Principal.filterAndSort(
-                principals,
-                groupMembership,
-                List<number>([1])
-            ).size
-        ).toBe(2);
-        expect(
-            Principal.filterAndSort(
-                principals,
-                groupMembership,
-                List<number>([2])
-            ).size
-        ).toBe(2);
-        expect(
-            Principal.filterAndSort(
-                principals,
-                groupMembership,
-                List<number>([3])
-            ).size
-        ).toBe(2);
-        expect(
-            Principal.filterAndSort(
-                principals,
-                groupMembership,
-                List<number>([1,2])
-            ).size
-        ).toBe(1);
-        expect(
-            Principal.filterAndSort(
-                principals,
-                groupMembership,
-                List<number>([1,2,3])
-            ).size
-        ).toBe(0);
+        expect(Principal.filterAndSort(principals, groupMembership, List<number>([1])).size).toBe(2);
+        expect(Principal.filterAndSort(principals, groupMembership, List<number>([2])).size).toBe(2);
+        expect(Principal.filterAndSort(principals, groupMembership, List<number>([3])).size).toBe(2);
+        expect(Principal.filterAndSort(principals, groupMembership, List<number>([1, 2])).size).toBe(1);
+        expect(Principal.filterAndSort(principals, groupMembership, List<number>([1, 2, 3])).size).toBe(0);
 
         // testing sort
         const sortedPrincipals = Principal.filterAndSort(principals, groupMembership, undefined);

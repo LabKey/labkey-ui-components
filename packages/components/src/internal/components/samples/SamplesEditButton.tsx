@@ -81,8 +81,6 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
         setCrossFolderSelectionResult(undefined);
     }, []);
 
-    if (!model || model.isLoading) return null;
-
     const onLinkToStudy = useCallback(async (): Promise<void> => {
         if (model?.hasSelections) {
             const sampleTypeId = await getSampleTypeRowId(model.schemaQuery.queryName);
@@ -93,6 +91,8 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
             });
         }
     }, [model?.hasSelections, model.id, model.schemaQuery.queryName]);
+
+    if (!model || model.isLoading) return null;
 
     const showEdit =
         shouldIncludeMenuItem(SamplesEditButtonSections.EDIT, excludedMenuKeys) &&

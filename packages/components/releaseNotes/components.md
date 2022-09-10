@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version version 2.215.0
+*Released*: 9 September 2022
 * Implement Group Management
 
 ### version 2.214.1

@@ -23,13 +23,15 @@ import { SampleGridButtonProps } from './models';
 import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
+import { PrintLabelsModal } from '../labels/PrintLabelsModal';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { useLabelPrintingContext } from '../labels/LabelPrintingContextProvider';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
 interface Props extends InjectedQueryModels {
     afterSampleActionComplete?: (hasDelete?: boolean) => void;
     asPanel?: boolean;
-    canPrintLabels?: boolean;
     containerFilter?: Query.ContainerFilter;
     createBtnParentKey?: string;
     createBtnParentType?: string;
@@ -41,15 +43,15 @@ interface Props extends InjectedQueryModels {
     initialTabId?: string;
     // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     modelId?: string;
-    onPrintLabel?: (modelId?: string) => void;
     onSampleTabSelect?: (modelId: string) => void;
-    sampleAliquotType?: ALIQUOT_FILTER_MODE;
     // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
-    samplesEditableGridProps: Partial<SamplesEditableGridProps>;
+    sampleAliquotType?: ALIQUOT_FILTER_MODE;
+    samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
     setIsDirty?: (isDirty: boolean) => void;
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     user: User;
     withTitle?: boolean;
+    showLabelOption?: boolean;
 }
 
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
@@ -60,14 +62,12 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         modelId,
         user,
         asPanel,
-        canPrintLabels,
-        onPrintLabel,
         afterSampleActionComplete,
         initialTabId,
         createBtnParentType,
         createBtnParentKey,
         sampleAliquotType,
-        samplesEditableGridProps,
+        samplesEditableGridProps = {},
         gridButtons,
         gridButtonProps,
         getSampleAuditBehaviorType,
@@ -76,9 +76,9 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         setIsDirty,
         tabbedGridPanelProps,
         withTitle,
+        showLabelOption,
     } = props;
     const { dismissNotifications, createNotification } = useNotificationsContext();
-    const onLabelExport = { [EXPORT_TYPES.LABEL]: onPrintLabel };
 
     const tabs = useMemo(() => {
         return modelId ? [modelId] : Object.keys(queryModels);
@@ -102,6 +102,11 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const [showBulkUpdate, setShowBulkUpdate] = useState<boolean>();
     const [selectionData, setSelectionData] = useState<Map<string, any>>();
     const [editableGridUpdateData, setEditableGridUpdateData] = useState<OrderedMap<string, any>>();
+    // This prevents type error requiring otherwise unused properties
+    const editableGridProps = useMemo(() => samplesEditableGridProps as SamplesEditableGridProps, [samplesEditableGridProps]);
+
+    const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
+    const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
 
     const onEditSelectionInGrid = useCallback(
         (
@@ -256,6 +261,27 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         [createNotification, dismissNotifications, getSampleAuditBehaviorType]
     );
 
+    const onPrintLabel = useCallback((modelId: string): void => {
+        const _model = queryModels[modelId] ?? activeModel;
+        setPrintDialogModel(_model);
+    },[queryModels, activeModel]);
+
+    const onLabelExport = { [EXPORT_TYPES.LABEL]: onPrintLabel };
+
+    const onCancelPrint = useCallback(():void => {
+        setPrintDialogModel(undefined);
+    }, []);
+
+    const afterPrint = useCallback((numSamples: number, numLabels: number): void => {
+        setPrintDialogModel(undefined);
+        createNotification(
+            'Successfully printed ' +
+            numLabels +
+            (numSamples === 0 ? ' blank ' : '') +
+            (numLabels > 1 ? ' labels.' : ' label.')
+        );
+    }, [createNotification]);
+
     const _gridButtonProps = {
         ...gridButtonProps,
         afterSampleDelete,
@@ -275,7 +301,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         <>
             {isEditing || selectionData ? (
                 <SamplesEditableGrid
-                    {...(samplesEditableGridProps as SamplesEditableGridProps)}
+                    {...editableGridProps}
                     determineSampleData={user.canUpdate}
                     determineLineage={user.canUpdate && !isMedia}
                     determineStorage={userCanEditStorageData(user) && !isMedia}
@@ -304,8 +330,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     ButtonsComponent={gridButtons}
                     buttonsComponentProps={_gridButtonProps}
                     ButtonsComponentRight={SampleTabbedGridButtonsRight}
-                    supportedExportTypes={canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
-                    onExport={canPrintLabels ? onLabelExport : undefined}
+                    supportedExportTypes={showLabelOption && canPrintLabels ? EXPORT_TYPES_WITH_LABEL : undefined}
+                    onExport={showLabelOption && canPrintLabels ? onLabelExport : undefined}
                     showRowCountOnTabs
                 />
             )}
@@ -328,6 +354,19 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     user={user}
                 />
             )}
+            {printDialogModel && (
+                <PrintLabelsModal
+                    afterPrint={afterPrint}
+                    labelTemplate={labelTemplate}
+                    printServiceUrl={printServiceUrl}
+                    onCancel={onCancelPrint}
+                    queryName={activeModel.queryName}
+                    schemaName={activeModel.schemaName}
+                    sampleIds={[...printDialogModel.selections]}
+                    show={true}
+                    showSelection={true}
+                />
+            )}
         </>
     );
 });
@@ -335,7 +374,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
 SamplesTabbedGridPanel.defaultProps = {
     asPanel: true,
     withTitle: true,
-    canPrintLabels: false,
 };
 
 SamplesTabbedGridPanel.displayName = 'SamplesTabbedGridPanel';

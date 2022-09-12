@@ -27,7 +27,10 @@ import { AppContext, useAppContext } from '../../AppContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
-import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
+import { getProjectPath } from '../../app/utils';
+
+import { getGroupMembership, getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
+import { GroupMembership } from './models';
 
 interface OwnProps {
     containerId: string;
@@ -62,12 +65,26 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [policy, setPolicy] = useState<SecurityPolicy>();
+    const [groupMembership, setGroupMembership] = useState<GroupMembership>();
     const { api } = useAppContext<AppContext>();
     const { dismissNotifications, createNotification } = useNotificationsContext();
-    const { user } = useServerContext();
+    const { container, user } = useServerContext();
     const loaded = !isLoading(loadingState);
     const isRoot = getServerContext().project.rootId === containerId;
     const showAssignments = (!isRoot && user.isAdmin) || user.isRootAdmin;
+
+    // Assemble single cohesive data structure representing group data
+    const loadGroupMembership = useCallback(async () => {
+        try {
+            const fetchedGroups = await api.security.fetchGroups(getProjectPath(container.path));
+            const groups = fetchedGroups?.filter(group => !group.isSystemGroup);
+            const groupMemberships = await api.security.getGroupMemberships();
+            const groupMembershipState = getGroupMembership(groups, groupMemberships);
+            setGroupMembership(groupMembershipState);
+        } catch (e) {
+            setError(resolveErrorMessage(e) ?? 'Failed to load group data');
+        }
+    }, [api.security, container.path]);
 
     const loadPolicy = useCallback(async () => {
         setError(undefined);
@@ -79,13 +96,22 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
             try {
                 const policy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
                 setPolicy(policy_);
+                await loadGroupMembership();
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
             }
         }
 
         setLoadingState(LoadingState.LOADED);
-    }, [api.security, containerId, inactiveUsersById, principalsById, setIsDirty, user]);
+    }, [
+        api.security,
+        containerId,
+        inactiveUsersById,
+        loadGroupMembership,
+        principalsById,
+        setIsDirty,
+        showAssignments,
+    ]);
 
     useEffect(() => {
         loadPolicy();
@@ -104,7 +130,8 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
         createNotification('Successfully updated roles and assignments.');
 
         loadPolicy();
-    }, [createNotification, dismissNotifications, loadPolicy]);
+        loadGroupMembership();
+    }, [createNotification, dismissNotifications, loadGroupMembership, loadPolicy]);
 
     const renderButtons = useCallback(() => {
         const row = policy ? { Modified: { value: policy.modified } } : {};
@@ -146,8 +173,8 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
                     onChange={onChange}
                     onSuccess={onSuccess}
                     policy={policy}
+                    groupMembership={groupMembership}
                     title={panelTitle}
-                    typeToShow="u"
                 />
             )}
             {children}

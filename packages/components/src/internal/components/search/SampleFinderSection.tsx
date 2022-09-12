@@ -506,6 +506,7 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                     allowViewCustomization: false,
                     showViewMenu: false,
                 }}
+                showLabelOption
             />
         </>
     );

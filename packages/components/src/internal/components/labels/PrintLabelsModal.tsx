@@ -168,6 +168,14 @@ export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQu
         const { schemaName, queryName, showSelection } = this.props;
         const { numCopies, labelTemplate } = this.state;
         const sampleCount = this.getSampleCount();
+        const model = this.getModel();
+
+        let displayColumn = 'Name';
+        let valueColumn = 'RowId';
+        if (model?.queryInfo.pkCols?.first() === 'rowId') {
+            displayColumn = 'name';
+            valueColumn = 'rowId';
+        }
 
         let message;
         if (sampleCount === 0) {
@@ -208,8 +216,8 @@ export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQu
                                 previewOptions={true}
                                 required={false}
                                 schemaQuery={SchemaQuery.create(schemaName, queryName)}
-                                displayColumn="Name"
-                                valueColumn="RowId"
+                                displayColumn={displayColumn}
+                                valueColumn={valueColumn}
                                 value={this.props.sampleIds.join(',')}
                             />
                         </div>

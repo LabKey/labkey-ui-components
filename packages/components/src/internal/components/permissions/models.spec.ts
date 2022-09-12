@@ -85,52 +85,22 @@ describe('Principal model', () => {
 
     test('filterAndSort', () => {
         const principals = List<Principal>([GROUP, USER1, USER2]);
+        const groupMembership = {};
 
-        // testing filter params
-        expect(Principal.filterAndSort(principals, undefined, undefined).size).toBe(3);
-        expect(Principal.filterAndSort(principals, 'g', undefined).size).toBe(1);
-        expect(
-            Principal.filterAndSort(
-                principals,
-                'g',
-                List<number>([2])
-            ).size
-        ).toBe(1);
-        expect(
-            Principal.filterAndSort(
-                principals,
-                'g',
-                List<number>([1])
-            ).size
-        ).toBe(0);
-        expect(Principal.filterAndSort(principals, 'u', undefined).size).toBe(2);
-        expect(
-            Principal.filterAndSort(
-                principals,
-                'u',
-                List<number>([1])
-            ).size
-        ).toBe(2);
-        expect(
-            Principal.filterAndSort(
-                principals,
-                'u',
-                List<number>([2])
-            ).size
-        ).toBe(1);
-        expect(
-            Principal.filterAndSort(
-                principals,
-                'u',
-                List<number>([2, 3])
-            ).size
-        ).toBe(0);
+        // testing excludeUserIds param
+        expect(Principal.filterAndSort(principals, groupMembership, undefined).size).toBe(3);
+        expect(Principal.filterAndSort(principals, groupMembership, List<number>([1])).size).toBe(2);
+        expect(Principal.filterAndSort(principals, groupMembership, List<number>([2])).size).toBe(2);
+        expect(Principal.filterAndSort(principals, groupMembership, List<number>([3])).size).toBe(2);
+        expect(Principal.filterAndSort(principals, groupMembership, List<number>([1, 2])).size).toBe(1);
+        expect(Principal.filterAndSort(principals, groupMembership, List<number>([1, 2, 3])).size).toBe(0);
 
         // testing sort
-        const users = Principal.filterAndSort(principals, 'u', undefined);
-        expect(users.size).toBe(2);
-        expect(users.get(0)).toBe(USER2);
-        expect(users.get(1)).toBe(USER1);
+        const sortedPrincipals = Principal.filterAndSort(principals, groupMembership, undefined);
+        expect(sortedPrincipals.size).toBe(3);
+        expect(sortedPrincipals.get(0)).toBe(GROUP);
+        expect(sortedPrincipals.get(1)).toBe(USER2);
+        expect(sortedPrincipals.get(2)).toBe(USER1);
     });
 });
 

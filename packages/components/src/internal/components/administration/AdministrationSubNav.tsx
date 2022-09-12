@@ -18,6 +18,7 @@ export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
     if (user.isAdmin) {
         tabs = tabs.push('Users');
         tabs = tabs.push('Permissions');
+        tabs = tabs.push('Groups');
         tabs = tabs.push('Settings');
     }
 

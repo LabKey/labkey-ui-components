@@ -24,14 +24,18 @@ const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 describe('<GroupDetailsPanel/>', () => {
     test('no principal', () => {
-        const component = <GroupDetailsPanel principal={undefined} policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} />;
+        const component = (
+            <GroupDetailsPanel principal={undefined} policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} members={[]} />
+        );
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test('with principal', () => {
-        const component = <GroupDetailsPanel principal={GROUP} policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} />;
+        const component = (
+            <GroupDetailsPanel principal={GROUP} policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} members={[]} />
+        );
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();

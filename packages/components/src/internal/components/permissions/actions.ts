@@ -6,8 +6,9 @@ import { fromJS, List, Map } from 'immutable';
 
 import { ActionURL, Ajax, Filter, Security, Utils } from '@labkey/api';
 
-import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
+
+import { Principal, SecurityPolicy, SecurityRole } from './models';
 
 export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -129,8 +130,8 @@ export type UserLimitSettings = {
     messageHtml: string;
     remainingUsers: number;
     success: boolean;
-    userLimitLevel: number;
     userLimit: boolean;
+    userLimitLevel: number;
 };
 
 export function getUserLimitSettings(): Promise<UserLimitSettings> {

@@ -36,6 +36,54 @@ exports[`<GroupDetailsPanel/> with principal 1`] = `
     >
       Editor User Group
     </p>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        User Count
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        0
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Group Count
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        0
+      </div>
+    </div>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Created
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        
+      </div>
+    </div>
     <hr
       className="principal-hr"
     />
@@ -45,7 +93,7 @@ exports[`<GroupDetailsPanel/> with principal 1`] = `
       Effective Roles:
     </div>
     <ul
-      className="permissions-ul"
+      className="permissions-groups-ul"
     >
       <li>
         Editor

@@ -20,6 +20,11 @@ import {
 } from './components/notifications/NotificationsContext';
 import { initQueryGridState } from './global';
 import { ServerContext, ServerContextProvider } from './components/base/ServerContext';
+import {
+    LabelPrintingContextProps,
+    LabelPrintingProvider,
+    LabelPrintingProviderProps
+} from './components/labels/LabelPrintingContextProvider';
 
 declare let LABKEY: LabKey;
 
@@ -94,17 +99,20 @@ interface AppContextTestProviderProps {
     appContext: Partial<AppContext>;
     notificationContext: Partial<NotificationsContextState>;
     serverContext: Partial<ServerContext>;
+    printLabelsContext: Partial<LabelPrintingContextProps>;
 }
 
 export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => {
-    const { appContext, children, serverContext, notificationContext } = props;
+    const { appContext, children, serverContext, notificationContext, printLabelsContext} = props;
     const initialAppContext = useMemo(() => ({ api: getTestAPIWrapper(), ...appContext }), [appContext]);
 
     return (
         <ServerContextProvider initialContext={serverContext as ServerContext}>
             <AppContextProvider initialContext={initialAppContext}>
                 <NotificationsContextProvider initialContext={notificationContext as NotificationsContextState}>
-                    {children}
+                    <LabelPrintingProvider initialContext={printLabelsContext as LabelPrintingContextProps}>
+                        {children}
+                    </LabelPrintingProvider>
                 </NotificationsContextProvider>
             </AppContextProvider>
         </ServerContextProvider>
@@ -118,17 +126,20 @@ export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => 
  * the returned mounted component will still be the component under test (as opposed to <AppContextProvider/>).
  * @param appContext The app context to be provided by the wrapping <AppContextProvider/>.
  * @param serverContext The server context to be provided by the wrapping <ServerContextProvider/>.
+ * @param notificationContext The notification context to be provided by the wrapping <NotificationProvider/>.
  * @param options Pass through for mount's rendering options.
+ * @param printLabelsContext The server context to be provided by the wrapping <PrintLabelsContext/>.
  */
 export const mountWithAppServerContextOptions = (
     appContext?: Partial<AppContext>,
     serverContext?: Partial<ServerContext>,
     notificationContext?: Partial<NotificationsContextState>,
-    options?: MountRendererProps
+    options?: MountRendererProps,
+    printLabelsContext?: Partial<LabelPrintingProviderProps>,
 ): MountRendererProps => {
     return {
         wrappingComponent: AppContextTestProvider,
-        wrappingComponentProps: { appContext, serverContext, notificationContext },
+        wrappingComponentProps: { appContext, serverContext: serverContext ?? {}, notificationContext, printLabelsContext },
         ...options,
     };
 };
@@ -139,17 +150,21 @@ export const mountWithAppServerContextOptions = (
  * With this the returned mounted component will still be the component under test
  * (as opposed to <AppContextProvider/>).
  * @param node The React node to mount
- * @param initialContext The app context to be provided by the wrapping <AppContextProvider/>
+ * @param appContext an optional app context object to mount
+ * @param serverContext an optional server context object to mount
+ * @param notificationContext an optional notification context object to mount
  * @param options Pass through for mount's rendering options
+ * @param printLabelsContext an optional label printing context object to mount
  */
 export const mountWithAppServerContext = (
     node: ReactElement,
     appContext?: Partial<AppContext>,
     serverContext?: Partial<ServerContext>,
     notificationContext?: Partial<NotificationsContextState>,
-    options?: MountRendererProps
+    options?: MountRendererProps,
+    printLabelsContext?: Partial<LabelPrintingProviderProps>,
 ): ReactWrapper => {
-    return mount(node, mountWithAppServerContextOptions(appContext, serverContext, notificationContext, options));
+    return mount(node, mountWithAppServerContextOptions(appContext, serverContext, notificationContext, options, printLabelsContext));
 };
 
 /**

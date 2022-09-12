@@ -19,6 +19,8 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { Alert } from '../base/Alert';
 
+import { GroupMembership } from '../administration/models';
+
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
@@ -29,6 +31,7 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
     containerId: string;
     /** UserId to disable to prevent removing assignments for that id */
     disabledId?: number;
+    groupMembership: GroupMembership;
     onChange: (policy: SecurityPolicy) => void;
     onSuccess: () => void;
     policy: SecurityPolicy;
@@ -45,6 +48,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         containerId,
         disabledId,
         error,
+        groupMembership,
         inactiveUsersById,
         onChange,
         onSuccess,
@@ -56,7 +60,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         rolesToShow,
         showDetailsPanel = true,
         title = 'Security Roles and Assignments',
-        typeToShow,
     } = props;
     const [dirty, setDirty] = useState<boolean>();
     const [inherited, setInherited] = useState<boolean>(() => policy.isInheritFromParent());
@@ -207,9 +210,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             <Col xs={12} md={showDetailsPanel ? 8 : 12}>
                 <Panel>
                     <Panel.Heading>{title}</Panel.Heading>
-                    <Panel.Body className="permissions-assignment-panel">
+                    <Panel.Body className="permissions-groups-assignment-panel permissions-assignment-panel">
                         {dirty && (
-                            <div className="permissions-save-alert">
+                            <div className="permissions-groups-save-alert">
                                 <Alert bsStyle="info">
                                     You have unsaved changes.
                                     {saveButton}
@@ -218,7 +221,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                         )}
 
                         {!dirty && inherited && (
-                            <div className="permissions-save-alert">
+                            <div className="permissions-groups-save-alert">
                                 <Alert bsStyle="info">
                                     Permissions for this container are being inherited from its parent.
                                 </Alert>
@@ -251,7 +254,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                                 principals={principals}
                                 role={role}
                                 selectedUserId={selectedUserId}
-                                typeToShow={typeToShow}
+                                groupMembership={groupMembership}
                             />
                         ))}
                         <br />
@@ -267,6 +270,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                             principal={selectedPrincipal}
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
+                            members={groupMembership[selectedPrincipal?.userId].members}
                         />
                     ) : (
                         <UserDetailsPanel

@@ -47,8 +47,8 @@ interface Props {
     onRemoveParentType?: (index: number) => void;
     parentDataType: EntityDataType;
     parentEntityType?: IEntityTypeOption;
-    parentTypeOptions?: List<IEntityTypeOption>;
     parentLSIDs?: string[];
+    parentTypeOptions?: List<IEntityTypeOption>;
 }
 
 type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;

@@ -99,11 +99,11 @@ interface OwnProps {
     location?: Location;
     // Not currently used, but related logic retained in component
     maxRows?: number;
-    onComplete: (response: AssayUploadResultModel, isAsync?: boolean) => void;
-    runDataPanelTitle?: string;
-    onSave?: (response: AssayUploadResultModel, isAsync?: boolean) => void;
-    runId?: string;
     onCancel: () => void;
+    onComplete: (response: AssayUploadResultModel, isAsync?: boolean) => void;
+    onSave?: (response: AssayUploadResultModel, isAsync?: boolean) => void;
+    runDataPanelTitle?: string;
+    runId?: string;
     setIsDirty?: (isDirty: boolean) => void;
     showQuerySelectPreviewOptions?: boolean;
     showUploadTabs?: boolean;

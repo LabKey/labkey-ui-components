@@ -8,7 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const constants = require('./constants');
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const IgnorePlugin = require('webpack').IgnorePlugin;
-const CircularDependencyPlugin = require('circular-dependency-plugin')
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const tsCheckerConfig = {
     ...constants.TS_CHECKER_CONFIG,

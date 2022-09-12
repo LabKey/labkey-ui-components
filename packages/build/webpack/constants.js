@@ -7,6 +7,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const FREEZER_MANAGER_DIRS = ['inventory', 'packages', 'freezermanager', 'src'];
 const WORKFLOW_DIRS = ['sampleManagement', 'packages', 'workflow', 'src'];
@@ -336,6 +337,12 @@ module.exports = {
         }));
 
         allPlugins.push(new ForkTsCheckerWebpackPlugin(TS_CHECKER_CONFIG));
+
+        allPlugins.push(new CircularDependencyPlugin({
+            exclude: /node_modules/,
+            include: /src/,
+            failOnError: false, // TODO: When all App circular deps have been resolved this should be set to true
+        }));
 
         return allPlugins;
     }

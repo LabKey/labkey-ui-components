@@ -91,7 +91,7 @@ module.exports = {
         new CircularDependencyPlugin({
             exclude: /node_modules/,
             include: /src/,
-            failOnError: false, // TODO switch this to true once all circular dependencies are removed from packages
+            failOnError: true,
         }),
     ],
     externals: [

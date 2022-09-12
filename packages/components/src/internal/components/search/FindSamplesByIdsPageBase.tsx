@@ -25,9 +25,6 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { arrayEquals } from '../../util/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
-import { useLabelPrintingContext } from '../labels/LabelPrintingContextProvider';
-import { PrintLabelsModal } from '../labels/PrintLabelsModal';
-import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { useServerContext } from '../base/ServerContext';
 
 import {
@@ -59,10 +56,7 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
         gridButtonProps,
         samplesEditableGridProps,
     } = props;
-    const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
-    const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
     const { user } = useServerContext();
-    const { createNotification } = useNotificationsContext();
 
     const afterSampleActionComplete = useCallback((): void => {
         actions.loadAllModels(true);
@@ -83,25 +77,6 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
         return models;
     }, [allSamplesModel, sampleGridIds, queryModels]);
 
-    const onPrintLabel = (modelId: string): void => {
-        const _model = allQueryModels[modelId] ?? allSamplesModel;
-        setPrintDialogModel(_model);
-    };
-
-    const onCancelPrint = (): void => {
-        setPrintDialogModel(undefined);
-    };
-
-    const afterPrint = (numSamples: number, numLabels: number): void => {
-        setPrintDialogModel(undefined);
-        createNotification(
-            'Successfully printed ' +
-                numLabels +
-                (numSamples === 0 ? ' blank ' : '') +
-                (numLabels > 1 ? ' labels.' : ' label.')
-        );
-    };
-
     return (
         <>
             <SamplesTabbedGridPanel
@@ -113,8 +88,6 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                 actions={actions}
                 getSampleAuditBehaviorType={getSampleAuditBehaviorType}
                 samplesEditableGridProps={samplesEditableGridProps}
-                canPrintLabels={canPrintLabels}
-                onPrintLabel={onPrintLabel}
                 gridButtons={gridButtons}
                 gridButtonProps={{
                     ...gridButtonProps,
@@ -128,21 +101,9 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                     exportFilename: 'SamplesFoundById',
                     showViewMenu: false,
                 }}
+                showLabelOption={true}
                 user={user}
             />
-            {printDialogModel && allSamplesModel && (
-                <PrintLabelsModal
-                    show={true}
-                    onCancel={onCancelPrint}
-                    afterPrint={afterPrint}
-                    schemaName={allSamplesModel.schemaName}
-                    queryName={allSamplesModel.queryName}
-                    sampleIds={[...printDialogModel.selections]}
-                    labelTemplate={labelTemplate}
-                    printServiceUrl={printServiceUrl}
-                    showSelection={true}
-                />
-            )}
         </>
     );
 });

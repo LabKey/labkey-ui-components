@@ -469,6 +469,7 @@ import { Principal, SecurityPolicy, SecurityRole } from './internal/components/p
 import { fetchContainerSecurityPolicy, getUserLimitSettings } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,
+    getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getOperationConfirmationData,
@@ -1140,6 +1141,7 @@ export {
     AddEntityButton,
     RemoveEntityButton,
     getSampleOperationConfirmationData,
+    getCrossFolderSelectionResult,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getOperationConfirmationData,

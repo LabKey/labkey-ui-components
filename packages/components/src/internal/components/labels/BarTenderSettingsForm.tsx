@@ -289,7 +289,7 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
                         <Panel.Body>
                             {titleCls && <h4 className={titleCls}>{title}</h4>}
                             {dirty && (
-                                <div className="permissions-save-alert">
+                                <div className="permissions-groups-save-alert">
                                     <Alert bsStyle="info">
                                         You have unsaved changes.
                                         {this.renderSaveButton()}

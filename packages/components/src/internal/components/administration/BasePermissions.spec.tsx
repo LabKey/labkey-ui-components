@@ -46,6 +46,8 @@ describe('BasePermissions', () => {
             api: getTestAPIWrapper(jest.fn, {
                 security: getSecurityTestAPIWrapper(jest.fn, {
                     fetchPolicy: jest.fn().mockResolvedValue(TEST_POLICY),
+                    fetchGroups: jest.fn().mockResolvedValue([]),
+                    getGroupMemberships: jest.fn().mockResolvedValue([]),
                     ...overrides,
                 }),
             }),

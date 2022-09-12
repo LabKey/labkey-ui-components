@@ -3,13 +3,14 @@ import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 
 interface Props {
     bsStyle: string;
+    className?: string;
     disabledMsg?: string;
     onClick: () => void;
     title?: string;
 }
 
 export const DisableableButton: FC<Props> = memo(props => {
-    const { bsStyle, disabledMsg, title, onClick, children } = props;
+    const { bsStyle, className = '', disabledMsg, title, onClick, children } = props;
 
     return (
         <>
@@ -22,14 +23,14 @@ export const DisableableButton: FC<Props> = memo(props => {
                         </Popover>
                     }
                 >
-                    <div className="disabled-button-with-tooltip">
+                    <div className={'disabled-button-with-tooltip ' + className}>
                         <Button bsStyle={bsStyle} disabled>
                             {children}
                         </Button>
                     </div>
                 </OverlayTrigger>
             ) : (
-                <Button bsStyle={bsStyle} onClick={onClick}>
+                <Button bsStyle={bsStyle} className={className} onClick={onClick}>
                     {children}
                 </Button>
             )}

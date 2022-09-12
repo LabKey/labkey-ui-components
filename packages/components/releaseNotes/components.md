@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add Label Print Modal component and menu options to SampleTabbedGrid
 
+### version version 2.215.0
+*Released*: 9 September 2022
+* Implement Group Management
+
 ### version 2.214.1
 *Released*: 7 September 2022
 * Merge release22.9-SNAPSHOT into develop

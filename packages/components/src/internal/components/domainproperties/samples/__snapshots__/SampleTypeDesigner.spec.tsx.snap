@@ -1076,9 +1076,15 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "loadFinderSearches": [Function],
         },
         "security": ServerSecurityAPIWrapper {
+          "addGroupMembers": [Function],
+          "createGroup": [Function],
+          "deleteGroup": [Function],
           "fetchContainers": [Function],
+          "fetchGroups": [Function],
           "fetchPolicy": [Function],
+          "getGroupMemberships": [Function],
           "getUserLimitSettings": [Function],
+          "removeGroupMembers": [Function],
         },
       }
     }

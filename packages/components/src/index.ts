@@ -627,7 +627,7 @@ import { getSelectedPicklistSamples } from './internal/components/picklist/actio
 import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
 import {
-    LabelPrintingProviderProps,
+    LabelPrintingProvider,
     withLabelPrintingContext,
     useLabelPrintingContext,
 } from './internal/components/labels/LabelPrintingContextProvider';
@@ -1529,6 +1529,7 @@ export {
     // BarTender
     BarTenderSettingsForm,
     PrintLabelsModal,
+    LabelPrintingProvider,
     withLabelPrintingContext,
     useLabelPrintingContext,
 };
@@ -1626,4 +1627,4 @@ export type { HorizontalBarData } from './internal/components/chart/HorizontalBa
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
 export type { EditableGridPanelForUpdateWithLineageProps } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-export type { LabelPrintingProviderProps } from './internal/components/labels/LabelPrintingContextProvider';
+export type { LabelPrintingProviderProps, LabelPrintingContextProps } from './internal/components/labels/LabelPrintingContextProvider';

@@ -14,7 +14,7 @@ interface State {
 }
 
 export type LabelPrintingProviderProps = State;
-export type LabelPrintingContextProps = Omit<State, "canPrintLabels">;
+export type LabelPrintingContextProps = Omit<State, 'canPrintLabels'>;
 
 interface OwnProps {
     initialContext?: LabelPrintingContextProps;
@@ -28,7 +28,7 @@ export const useLabelPrintingContext = (): LabelPrintingProviderProps => {
 
 export const LabelPrintingProvider: FC<OwnProps> = memo(({ children, initialContext }) => {
     const { user } = useServerContext();
-    const [canPrintLabels, setCanPrintLabels] = useState<boolean>( () => userCanPrintLabels(user));
+    const [canPrintLabels, setCanPrintLabels] = useState<boolean>(() => userCanPrintLabels(user));
     const [labelTemplate, setLabelTemplate] = useState<string>(initialContext?.labelTemplate);
     const [printServiceUrl, setPrintServiceUrl] = useState<string>(initialContext?.printServiceUrl);
 

@@ -125,7 +125,7 @@ export interface DetailDisplaySharedProps extends RenderOptions {
     detailEditRenderer?: DetailRenderer;
     detailRenderer?: DetailRenderer;
     editingMode?: boolean;
-    fieldHelpTexts?: { [key: string]: string };
+    fieldHelpTexts?: Record<string, string>;
     fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     titleRenderer?: TitleRenderer;

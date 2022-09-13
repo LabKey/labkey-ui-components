@@ -622,13 +622,13 @@ export function getCrossFolderSelectionResult(
                         crossFolderSelectionCount: response.data.crossFolderSelectionCount,
                     });
                 } else {
-                    console.error('Error getting cross folder data selection result', response.exception);
+                    console.error('Error getting cross-project data selection result', response.exception);
                     reject(response.exception);
                 }
             }),
             failure: Utils.getCallbackWrapper(response => {
                 console.error(response);
-                reject(response ? response.exception : 'Unknown error getting cross folder data selection result.');
+                reject(response ? response.exception : 'Unknown error getting cross-project data selection result.');
             }),
         });
     });

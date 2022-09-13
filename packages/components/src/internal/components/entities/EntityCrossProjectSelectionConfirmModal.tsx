@@ -18,7 +18,7 @@ interface Props {
 export const EntityCrossProjectSelectionConfirmModal: FC<Props> = memo(props => {
     const {
         onDismiss,
-        verb = 'Edit ',
+        verb = 'Edit',
         title,
         noun = 'data',
         nounPlural = 'data',

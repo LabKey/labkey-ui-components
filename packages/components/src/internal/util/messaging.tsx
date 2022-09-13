@@ -105,7 +105,7 @@ export function resolveErrorMessage(error: any, noun = 'data', nounPlural?: stri
         } else if (lcMessage.indexOf(ExperimentExceptionMessage) >= 0) {
             return trimExceptionPrefix(ExperimentExceptionMessage, errorMsg);
         } else if (lcMessage.indexOf("Cannot update data that don't belong to the current container.") >= 0) {
-            return `There was a problem ${verb || 'importing'} your ${noun || 'data'}. One of more ${
+            return `There was a problem ${verb || 'importing'} your ${noun || 'data'}. One or more ${
                 noun || 'data'
             } already exist in a different project.`;
         }

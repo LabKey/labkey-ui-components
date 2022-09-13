@@ -8,6 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const FREEZER_MANAGER_DIRS = ['inventory', 'packages', 'freezermanager', 'src'];
 const WORKFLOW_DIRS = ['sampleManagement', 'packages', 'workflow', 'src'];
@@ -343,6 +344,10 @@ module.exports = {
             include: /src/,
             failOnError: false, // TODO: When all App circular deps have been resolved this should be set to true
         }));
+
+        if (process.env.ANALYZE) {
+            allPlugins.push(new BundleAnalyzerPlugin());
+        }
 
         return allPlugins;
     }

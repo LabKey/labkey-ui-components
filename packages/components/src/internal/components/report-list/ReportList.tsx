@@ -22,7 +22,7 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
 
-import { DataViewInfo, IDataViewInfo } from '../../models';
+import { DataViewInfo, IDataViewInfo } from '../../DataViewInfo';
 import { DataViewInfoTypes, GRID_REPORTS, VISUALIZATION_REPORTS } from '../../constants';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';

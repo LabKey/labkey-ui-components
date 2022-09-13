@@ -6,7 +6,7 @@ import { Filter, getServerContext, Query } from '@labkey/api';
 import { MenuItem, SplitButton } from 'react-bootstrap';
 
 import { DataViewInfoTypes, EXPORT_TYPES, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
-import { DataViewInfo } from '../../internal/models';
+import { DataViewInfo } from '../../internal/DataViewInfo';
 import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
 import {

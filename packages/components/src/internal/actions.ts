@@ -40,13 +40,13 @@ import {
     CellMessage,
     CellMessages,
     CellValues,
-    DataViewInfo,
     EditorModel,
     EditorModelProps,
     IGridResponse,
     ValueDescriptor,
     VisualizationConfigModel,
 } from './models';
+import { DataViewInfo } from './DataViewInfo';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 
 import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from './util/utils';

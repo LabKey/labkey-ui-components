@@ -16,7 +16,8 @@
 import React, { ReactNode } from 'react';
 import { Filter } from '@labkey/api';
 
-import { DataViewInfo, VisualizationConfigModel } from '../../models';
+import { VisualizationConfigModel } from '../../models';
+import { DataViewInfo } from '../../DataViewInfo';
 import { getVisualizationConfig } from '../../actions';
 import { LABKEY_VIS } from '../../constants';
 import { debounce, generateId } from '../../util/utils';

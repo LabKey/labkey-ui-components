@@ -4,7 +4,7 @@ import { Filter } from '@labkey/api';
 import { User } from '../base/models/User';
 import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
 import { userCanDeletePublicPicklists, userCanManagePicklists } from '../../app/utils';
-import { flattenValuesFromRow } from '../../../public/QueryModel/utils';
+import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 
 export const PICKLIST_SAMPLE_ID_COLUMN = 'SampleID';
 export const PICKLIST_KEY_COLUMN = 'id';

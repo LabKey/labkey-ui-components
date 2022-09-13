@@ -9,7 +9,7 @@ import { LoadingState } from '../LoadingState';
 import { QuerySort } from '../QuerySort';
 import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
 
-import { QueryConfig, QueryModel } from './QueryModel';
+import { flattenValuesFromRow, QueryConfig, QueryModel } from './QueryModel';
 import { makeTestQueryModel } from './testUtils';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
@@ -253,5 +253,28 @@ describe('QueryModel', () => {
 
         expect(model.detailFilters).toHaveLength(1);
         expect(model.detailFilters[0].getColumnName()).toBe('replaced');
+    });
+});
+
+describe('flattenValuesFromRow', () => {
+    test('missing params', () => {
+        expect(JSON.stringify(flattenValuesFromRow(undefined, undefined))).toBe('{}');
+        expect(JSON.stringify(flattenValuesFromRow({ test: { value: 123 } }, undefined))).toBe('{}');
+        expect(JSON.stringify(flattenValuesFromRow(undefined, ['test']))).toBe('{}');
+    });
+
+    test('with values', () => {
+        const data = {
+            test1: { value: 123, displayValue: 'TEST123' },
+            test2: { value: 456 },
+            test3: { value: null },
+            test4: undefined,
+        };
+
+        expect(flattenValuesFromRow(data, Object.keys(data)).test0).toBe(undefined);
+        expect(flattenValuesFromRow(data, Object.keys(data)).test1).toBe(123);
+        expect(flattenValuesFromRow(data, Object.keys(data)).test2).toBe(456);
+        expect(flattenValuesFromRow(data, Object.keys(data)).test3).toBe(null);
+        expect(flattenValuesFromRow(data, Object.keys(data)).test4).toBe(undefined);
     });
 });

@@ -4,7 +4,7 @@ import { Filter, Query } from '@labkey/api';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
 
-import { DataViewInfo } from '../../internal/models';
+import { DataViewInfo } from '../../internal/DataViewInfo';
 
 import { encodePart, SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
@@ -16,7 +16,48 @@ import { caseInsensitive } from '../../internal/util/utils';
 import { naturalSort } from '../sort';
 import { PaginationData } from '../../internal/components/pagination/Pagination';
 
-import { flattenValuesFromRow, offsetFromString, querySortsFromString, searchFiltersFromString } from './utils';
+export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]: any } {
+    const values = {};
+    if (row && keys) {
+        keys.forEach((key: string) => {
+            if (row[key]) {
+                values[key] = row[key].value;
+            }
+        });
+    }
+    return values;
+}
+
+function offsetFromString(rowsPerPage: number, pageStr: string): number {
+    if (pageStr === undefined) {
+        return undefined;
+    }
+
+    let offset = 0;
+    const page = parseInt(pageStr, 10);
+
+    if (!isNaN(page)) {
+        offset = (page - 1) * rowsPerPage;
+    }
+
+    return offset >= 0 ? offset : 0;
+}
+
+function querySortFromString(sortStr: string): QuerySort {
+    if (sortStr.startsWith('-')) {
+        return new QuerySort({ dir: '-', fieldKey: sortStr.slice(1) });
+    } else {
+        return new QuerySort({ fieldKey: sortStr });
+    }
+}
+
+function querySortsFromString(sortsStr: string): QuerySort[] {
+    return sortsStr?.split(',').map(querySortFromString);
+}
+
+function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
+    return searchStr?.split(';').map(search => Filter.create('*', search, Filter.Types.Q));
+}
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as

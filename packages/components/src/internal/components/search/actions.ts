@@ -16,7 +16,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { resolveErrorMessage } from '../../util/messaging';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { loadReports } from '../../query/reports';
-import { IDataViewInfo } from '../../models';
+import { IDataViewInfo } from '../../DataViewInfo';
 import { selectRows } from '../../query/selectRows';
 import { caseInsensitive } from '../../util/utils';
 

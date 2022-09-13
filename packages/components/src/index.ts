@@ -488,11 +488,7 @@ import { SampleTypeModel } from './internal/components/domainproperties/samples/
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
-import {
-    flattenValuesFromRow,
-    getQueryModelExportParams,
-    runDetailsColumnsForQueryModel,
-} from './public/QueryModel/utils';
+import { getQueryModelExportParams, runDetailsColumnsForQueryModel } from './public/QueryModel/utils';
 import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
@@ -557,7 +553,7 @@ import {
     waitForLifecycle,
     wrapDraggable,
 } from './internal/testHelpers';
-import { QueryModel } from './public/QueryModel/QueryModel';
+import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
@@ -1570,7 +1566,8 @@ export type { NotificationItemProps } from './internal/components/notifications/
 export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';
 export type { VisGraphNode } from './internal/components/lineage/models';
 export type { ITab } from './internal/components/navigation/SubNav';
-export type { IDataViewInfo, EditorModelProps, IGridLoader, IGridResponse } from './internal/models';
+export type { EditorModelProps, IGridLoader, IGridResponse } from './internal/models';
+export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { HeatMapCell } from './internal/components/heatmap/HeatMap';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
 export type { SearchResultCardData } from './internal/components/search/models';

@@ -1,20 +1,20 @@
 import React, { ComponentType, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { useServerContext } from '../base/ServerContext';
 
 import { isSampleManagerEnabled } from '../../app/utils';
 
 import { userCanPrintLabels } from './utils';
-import { fetchBarTenderConfiguration } from './actions';
 
-interface State {
+export interface LabelPrintingProviderProps {
+    api?: ComponentsAPIWrapper;
     canPrintLabels: boolean;
     labelTemplate: string;
     printServiceUrl: string;
 }
 
-export type LabelPrintingProviderProps = State;
-export type LabelPrintingContextProps = Omit<State, 'canPrintLabels'>;
+export type LabelPrintingContextProps = Omit<LabelPrintingProviderProps, 'canPrintLabels'>;
 
 interface OwnProps {
     initialContext?: LabelPrintingContextProps;
@@ -28,6 +28,8 @@ export const useLabelPrintingContext = (): LabelPrintingProviderProps => {
 
 export const LabelPrintingProvider: FC<OwnProps> = memo(({ children, initialContext }) => {
     const { user } = useServerContext();
+    const api = initialContext?.api || getDefaultAPIWrapper();
+    const { fetchBarTenderConfiguration } = api.labelprinting;
     const [canPrintLabels, setCanPrintLabels] = useState<boolean>(() => userCanPrintLabels(user));
     const [labelTemplate, setLabelTemplate] = useState<string>(initialContext?.labelTemplate);
     const [printServiceUrl, setPrintServiceUrl] = useState<string>(initialContext?.printServiceUrl);
@@ -40,7 +42,7 @@ export const LabelPrintingProvider: FC<OwnProps> = memo(({ children, initialCont
                 setPrintServiceUrl(btConfiguration.serviceURL);
             });
         }
-    }, [user]);
+    }, [fetchBarTenderConfiguration, user]);
 
     const labelContext = useMemo<LabelPrintingProviderProps>(
         () => ({ labelTemplate, printServiceUrl, canPrintLabels }),

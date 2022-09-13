@@ -1050,6 +1050,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         },
         "labelprinting": LabelPrintingServerAPIWrapper {
           "fetchBarTenderConfiguration": [Function],
+          "printBarTenderLabels": [Function],
+          "printGridLabels": [Function],
+          "saveBarTenderConfiguration": [Function],
         },
         "picklist": PicklistServerAPIWrapper {
           "getPicklistCountsBySampleType": [Function],

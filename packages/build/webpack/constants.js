@@ -118,6 +118,10 @@ const BABEL_CONFIG = {
                 {
                     // support async/await
                     'targets': 'last 2 versions, not dead, not IE 11, > 5%',
+                    // See https://babeljs.io/docs/en/babel-preset-env#modules
+                    // This works in coordination with the TYPESCRIPT_DEV exclude change so that we
+                    // do not exclude the @labkey packages.
+                    modules: 'umd',
                 }
             ],
         ],
@@ -125,7 +129,7 @@ const BABEL_CONFIG = {
     }
 };
 
-const BABEL_DEV_CONFIG = {
+const BABEL_WATCH_CONFIG = {
     ...BABEL_CONFIG,
     options: {
         ...BABEL_CONFIG.options,
@@ -243,7 +247,7 @@ module.exports = {
         TYPESCRIPT_WATCH: [
             {
                 test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
-                use: [BABEL_DEV_CONFIG]
+                use: [BABEL_WATCH_CONFIG]
             }
         ]
     },

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.216.1
+*Released*: 14 September 2022
+* Merge release22.9-SNAPSHOT into develop (#2)
+
 ### version 2.216.0
 *Released*: 12 September 2022
 * Add Label Print Modal component and menu options to SampleTabbedGrid
@@ -16,6 +20,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.214.0
 *Released*: 5 September 2022
 * Issue 45403: Include App specified samplesGridRequiredColumns in requiredColumns array for QueryConfig
+
+### version 2.213.4
+*Released*: 8 September 2022
+* Add defensive type-check when calling `trim()` for form value processing.
 
 ### version 2.213.3
 *Released*: 6 September 2022

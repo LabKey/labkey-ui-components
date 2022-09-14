@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { HelpLink } from '../../util/helpLinks';
 import { QuerySelect } from '../forms/QuerySelect';
@@ -11,11 +12,11 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import { BarTenderResponse } from './models';
-import { printGridLabels } from './actions';
 import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR } from './constants';
 
 interface Props {
     afterPrint?: (numSamples: number, numLabels: number) => void;
+    api?: ComponentsAPIWrapper;
     labelTemplate: string;
     onCancel?: (any) => void;
     printServiceUrl: string;
@@ -37,7 +38,11 @@ interface State {
 const PRINT_ERROR_MESSAGE =
     'There was a problem printing the labels for the selected samples. Verify the label template chosen is still valid and the connection to BarTender has been configured properly.';
 
-export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQueryModels, State> {
+export class PrintLabelsModalImpl extends PureComponent<Props & InjectedQueryModels, State> {
+    static defaultProps = {
+        api: getDefaultAPIWrapper(),
+    };
+
     _modelId = 'sampleModel';
 
     constructor(props: Props & InjectedQueryModels) {
@@ -101,10 +106,11 @@ export class PrintLabelsModalImpl extends React.PureComponent<Props & InjectedQu
         this.setState(() => ({ labelTemplate }));
     };
 
-    onConfirmPrint = () => {
+    onConfirmPrint = (): void => {
         this.setState(() => ({ error: undefined, submitting: true }));
         const labelTemplate = this.state.labelTemplate.trim();
-        printGridLabels(this.getModel(), labelTemplate, this.state.numCopies, this.props.printServiceUrl)
+        this.props.api.labelprinting
+            .printGridLabels(this.getModel(), labelTemplate, this.state.numCopies, this.props.printServiceUrl)
             .then((btResponse: BarTenderResponse): void => {
                 if (btResponse.ranToCompletion()) {
                     this.onLabelPrintSuccess();

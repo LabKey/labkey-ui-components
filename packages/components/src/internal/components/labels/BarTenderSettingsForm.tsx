@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, FC, FormEventHandler, memo, PureComponent, ReactNode, useCallback } from 'react';
 import { Col, Panel, FormControl, Row, Button } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
@@ -10,15 +10,12 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { BarTenderConfiguration, BarTenderResponse } from './models';
-import { saveBarTenderConfiguration, printBarTenderLabels } from './actions';
 import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE, LABEL_NOT_FOUND_ERROR } from './constants';
 
 interface OwnProps {
     api?: ComponentsAPIWrapper;
     onChange: () => void;
-    onConfigFailure?: () => any;
-    onConfigSuccess?: () => any;
     onSuccess: () => void;
     title?: string;
     titleCls?: string;
@@ -42,9 +39,71 @@ const SUCCESSFUL_NOTIFICATION_MESSAGE = 'Successfully connected to BarTender web
 const FAILED_NOTIFICATION_MESSAGE = 'Failed to connect to BarTender web service.';
 const UNKNOWN_STATUS_MESSAGE = 'Unrecognized status code returned from BarTender service';
 const FAILED_TO_SAVE_MESSAGE = 'Failed to save connection configuration';
+const DEFAULT_LABEL_DESCRIPTION =
+    'Default Label file to use when printing labels with BarTender. The path should be relative to the default folder configured for the BarTender web service.';
+
+interface SaveButtonProps {
+    dirty: boolean;
+    onSave: () => void;
+    submitting: boolean;
+    testing: boolean;
+}
+
+const SaveButton: FC<SaveButtonProps> = memo(({ dirty, onSave, submitting, testing }) => (
+    <Button
+        className="pull-right alert-button"
+        bsStyle="success"
+        disabled={submitting || !dirty || testing}
+        onClick={onSave}
+    >
+        Save
+    </Button>
+));
+
+interface SettingsInputProps {
+    description: string;
+    label: string;
+    name: string;
+    onChange: (name: string, value: string) => void;
+    type: 'text' | 'url';
+    value: string;
+}
+
+const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, label, name, onChange, type, value }) => {
+    const onChange_ = useCallback(
+        (event): void => {
+            onChange(name, event.target.value);
+        },
+        [name, onChange]
+    );
+
+    return (
+        <Row className="form-group">
+            <Col xs={12}>
+                {children}
+                <div>
+                    {label}{' '}
+                    <LabelHelpTip title={label}>
+                        <p>{description}</p>
+                    </LabelHelpTip>
+                </div>
+            </Col>
+            <Col xs={12}>
+                <FormControl
+                    type={type}
+                    id={name}
+                    name={name}
+                    value={value}
+                    onChange={onChange_}
+                    placeholder="BarTender Web Service URL"
+                />
+            </Col>
+        </Row>
+    );
+});
 
 // exported for jest testing
-export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State> {
+export class BarTenderSettingsFormImpl extends PureComponent<Props, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
     };
@@ -92,10 +151,7 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
         });
     };
 
-    onChange = evt => {
-        const name = evt.target.id;
-        const value = evt.target.value;
-
+    onChange = (name: string, value: string): void => {
         this.setState((state: State) => ({
             ...state,
             [name]: value,
@@ -106,20 +162,18 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
             connectionValidated: undefined, // Value change has invalidated any existing validation
         }));
 
-        const { onChange } = this.props;
-        if (onChange) onChange();
+        this.props.onChange();
     };
 
-    onSave = () => {
+    onSave = (): void => {
         this.setState(() => ({ submitting: true }));
 
         const { btServiceURL, defaultLabel } = this.state;
         const config = new BarTenderConfiguration({ serviceURL: btServiceURL, defaultLabel });
 
-        saveBarTenderConfiguration(config)
+        this.props.api.labelprinting
+            .saveBarTenderConfiguration(config)
             .then((btConfig: BarTenderConfiguration): void => {
-                const { onSuccess } = this.props;
-
                 this.setState(() => ({
                     btServiceURL: btConfig.serviceURL,
                     defaultLabel: btConfig.defaultLabel,
@@ -127,9 +181,7 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
                     submitting: false,
                 }));
 
-                if (onSuccess) {
-                    onSuccess();
-                }
+                this.props.onSuccess();
             })
             .catch((reason: string) => {
                 console.error(reason);
@@ -137,14 +189,15 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
             });
     };
 
-    onVerifyBarTenderConfiguration = () => {
+    onVerifyBarTenderConfiguration = (): void => {
         this.setState(() => ({ testing: true }));
         const { btServiceURL, defaultLabel } = this.state;
 
-        printBarTenderLabels(this.btTestConnectionTemplate(defaultLabel), btServiceURL)
+        this.props.api.labelprinting
+            .printBarTenderLabels(this.btTestConnectionTemplate(defaultLabel), btServiceURL)
             .then((btResponse: BarTenderResponse) => {
                 if (btResponse.ranToCompletion()) {
-                    this.onConnectionSuccess();
+                    this.setState(() => ({ testing: false, connectionValidated: true, failureMessage: undefined }));
                 } else if (btResponse.faulted()) {
                     if (btResponse.isLabelUnavailableError(defaultLabel))
                         this.onConnectionFailure(LABEL_NOT_FOUND_ERROR);
@@ -158,128 +211,15 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
             });
     };
 
-    onConnectionSuccess = () => {
-        const { onConfigSuccess } = this.props;
-
-        this.setState(() => ({ testing: false, connectionValidated: true, failureMessage: undefined }));
-        if (onConfigSuccess) {
-            onConfigSuccess();
-        }
-    };
-
-    onConnectionFailure = (message: string) => {
-        const { onConfigFailure } = this.props;
-
+    onConnectionFailure = (message: string): void => {
         this.setState(() => ({ testing: false, connectionValidated: false, failureMessage: message }));
-        if (onConfigFailure) {
-            onConfigFailure();
-        }
     };
 
-    renderTestConfigButton = (): React.ReactNode => {
-        const { btServiceURL } = this.state;
-        const isBlank = !btServiceURL || btServiceURL.trim() === '';
-
-        return (
-            <Button
-                className="button-right-spacing pull-right"
-                bsStyle="default"
-                disabled={isBlank}
-                onClick={this.onVerifyBarTenderConfiguration}
-            >
-                Test Connection
-            </Button>
-        );
-    };
-
-    renderSaveButton = (): React.ReactNode => {
-        const { submitting, dirty, testing } = this.state;
-
-        return (
-            <Button
-                className="pull-right alert-button"
-                bsStyle="success"
-                disabled={submitting || !dirty || testing}
-                onClick={this.onSave}
-            >
-                Save
-            </Button>
-        );
-    };
-
-    renderURLInput = () => {
-        const label = 'BarTender Web Service URL';
-        const description = 'URL of the BarTender service to use when printing labels.';
-        const name = 'btServiceURL';
-        const { btServiceURL } = this.state;
-
-        return (
-            <Row className="form-group">
-                <Col xs={12}>
-                    <div className="pull-right">
-                        <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
-                            Learn more about BarTender
-                        </HelpLink>
-                    </div>
-                    <div>
-                        {label}{' '}
-                        {description && (
-                            <LabelHelpTip title={label}>
-                                <p>{description}</p>
-                            </LabelHelpTip>
-                        )}
-                    </div>
-                </Col>
-                <Col xs={12}>
-                    <FormControl
-                        type="url"
-                        id={name}
-                        name={name}
-                        value={btServiceURL}
-                        onChange={this.onChange}
-                        placeholder="BarTender Web Service URL"
-                    />
-                </Col>
-            </Row>
-        );
-    };
-
-    renderLabelInput = () => {
-        const label = 'Label Template File';
-        const description =
-            'Default Label file to use when printing labels with BarTender. The path should be relative to the default folder configured for the BarTender web service.';
-        const name = 'defaultLabel';
-        const { defaultLabel } = this.state;
-
-        return (
-            <Row className="form-group">
-                <Col xs={12}>
-                    <div>
-                        {label}{' '}
-                        {description && (
-                            <LabelHelpTip title={label}>
-                                <p>{description}</p>
-                            </LabelHelpTip>
-                        )}
-                    </div>
-                </Col>
-                <Col xs={12}>
-                    <FormControl
-                        type="text"
-                        id={name}
-                        name={name}
-                        value={defaultLabel}
-                        onChange={this.onChange}
-                        placeholder="Default Label File"
-                    />
-                </Col>
-            </Row>
-        );
-    };
-
-    render(): React.ReactNode {
+    render(): ReactNode {
         const { title = BARTENDER_CONFIGURATION_TITLE, titleCls } = this.props;
-        const { dirty, connectionValidated } = this.state;
+        const { btServiceURL, connectionValidated, defaultLabel, dirty, failureMessage, submitting, testing } =
+            this.state;
+        const isBlank = !btServiceURL || btServiceURL.trim() === '';
 
         return (
             <Row>
@@ -292,41 +232,67 @@ export class BarTenderSettingsFormImpl extends React.PureComponent<Props, State>
                                 <div className="permissions-groups-save-alert">
                                     <Alert bsStyle="info">
                                         You have unsaved changes.
-                                        {this.renderSaveButton()}
+                                        <SaveButton
+                                            dirty={dirty}
+                                            onSave={this.onSave}
+                                            submitting={submitting}
+                                            testing={testing}
+                                        />
                                     </Alert>
                                 </div>
                             )}
-                            {connectionValidated && BarTenderSettingsFormImpl.renderConnectionValidated()}
-                            {connectionValidated === false && this.renderConnectionFailedValidation()}
-                            {this.renderURLInput()}
-                            {this.renderLabelInput()}
-                            {this.renderButtons()}
+                            {connectionValidated && (
+                                <div>
+                                    <Alert bsStyle="success">{SUCCESSFUL_NOTIFICATION_MESSAGE}</Alert>
+                                </div>
+                            )}
+                            {connectionValidated === false && <Alert bsStyle="danger">{failureMessage}</Alert>}
+
+                            <SettingsInput
+                                description="URL of the BarTender service to use when printing labels."
+                                label="BarTender Web Service URL"
+                                name="btServiceURL"
+                                onChange={this.onChange}
+                                type="url"
+                                value={btServiceURL}
+                            >
+                                <div className="pull-right">
+                                    <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
+                                        Learn more about BarTender
+                                    </HelpLink>
+                                </div>
+                            </SettingsInput>
+
+                            <SettingsInput
+                                description={DEFAULT_LABEL_DESCRIPTION}
+                                label="Label Template File"
+                                name="defaultLabel"
+                                onChange={this.onChange}
+                                type="text"
+                                value={defaultLabel}
+                            />
+
+                            <div>
+                                <SaveButton
+                                    dirty={dirty}
+                                    onSave={this.onSave}
+                                    submitting={submitting}
+                                    testing={testing}
+                                />
+
+                                <Button
+                                    className="button-right-spacing pull-right"
+                                    bsStyle="default"
+                                    disabled={isBlank}
+                                    onClick={this.onVerifyBarTenderConfiguration}
+                                >
+                                    Test Connection
+                                </Button>
+                            </div>
                         </Panel.Body>
                     </Panel>
                 </Col>
             </Row>
-        );
-    }
-
-    private static renderConnectionValidated(): React.ReactNode {
-        return (
-            <div>
-                <Alert bsStyle="success">{SUCCESSFUL_NOTIFICATION_MESSAGE}</Alert>
-            </div>
-        );
-    }
-
-    private renderConnectionFailedValidation(): React.ReactNode {
-        const { failureMessage } = this.state;
-        return <Alert bsStyle="danger">{failureMessage}</Alert>;
-    }
-
-    private renderButtons() {
-        return (
-            <div>
-                {this.renderSaveButton()}
-                {this.renderTestConfigButton()}
-            </div>
         );
     }
 }

@@ -26,19 +26,19 @@ import {
 } from './CustomizeGridViewModal';
 
 const QUERY_COL = QueryColumn.create({
-    name: 'testColumn',
-    fieldKey: 'testColumn',
-    fieldKeyArray: ['testColumn'],
-    fieldKeyPath: 'testColumn',
+    name: 'test/Column',
+    fieldKey: 'test$SColumn',
+    fieldKeyArray: ['test/Column'],
+    fieldKeyPath: 'test$SColumn',
     caption: 'Test Column',
     selectable: true,
 });
 
 const QUERY_COL_LOOKUP = QueryColumn.create({
-    name: 'testColumn',
-    fieldKey: 'testColumn',
-    fieldKeyArray: ['testColumn'],
-    fieldKeyPath: 'parent1/parent2/testColumn',
+    name: 'test/Column',
+    fieldKey: 'test$SColumn',
+    fieldKeyArray: ['test/Column'],
+    fieldKeyPath: 'parent1/parent2/test$SColumn',
     caption: 'Test Column',
     selectable: true,
     lookup: {
@@ -163,6 +163,7 @@ describe('ColumnInView', () => {
             name: 'testColumn',
             fieldKey: 'testColumn',
             fieldKeyArray: ['testColumn'],
+            fieldKeyPath: 'testColumn',
             caption: 'Test Column',
             addToDisplayView: true,
         });
@@ -190,6 +191,7 @@ describe('ColumnInView', () => {
             name: 'testColumn',
             fieldKey: 'testColumn',
             fieldKeyArray: ['testColumn'],
+            fieldKeyPath: 'testColumn',
             caption: 'Test Column',
             addToDisplayView: true,
         });
@@ -217,6 +219,7 @@ describe('ColumnInView', () => {
             name: 'testColumn',
             fieldKey: 'testColumn',
             fieldKeyArray: ['testColumn'],
+            fieldKeyPath: 'testColumn',
             caption: 'Test Column',
             addToDisplayView: true,
         });
@@ -244,27 +247,31 @@ describe('ColumnInView', () => {
 
 describe('CustomizeGridViewModal', () => {
     const FIELD_1_COL = new QueryColumn({
-        name: 'field1',
-        fieldKey: 'field1',
-        fieldKeyArray: ['field1'],
+        name: 'field/1',
+        fieldKey: 'field$S1',
+        fieldKeyArray: ['field/1'],
+        fieldKeyPath: 'field$S1',
         selectable: true,
     });
     const FIELD_2_COL = new QueryColumn({
-        name: 'field2',
-        fieldKey: 'field2',
-        fieldKeyArray: ['field2'],
+        name: 'field+2',
+        fieldKey: 'field+2',
+        fieldKeyArray: ['field+2'],
+        fieldKeyPath: 'field+2',
         selectable: true,
     });
     const FIELD_3_COL = new QueryColumn({
         name: 'field3',
         fieldKey: 'field3',
         fieldKeyArray: ['field3'],
+        fieldKeyPath: 'field3',
         selectable: true,
     });
     const SYSTEM_COL = new QueryColumn({
         name: 'systemCol',
         fieldKey: 'systemCol',
         fieldKeyArray: ['systemCol'],
+        fieldKeyPath: 'systemCol',
         selectable: true,
         hidden: true,
     });
@@ -272,12 +279,13 @@ describe('CustomizeGridViewModal', () => {
         name: 'hiddenCol',
         fieldKey: 'hiddenCol',
         fieldKeyArray: ['hiddenCol'],
+        fieldKeyPath: 'hiddenCol',
         selectable: true,
         hidden: true,
     });
     const columns = fromJS({
-        field1: FIELD_1_COL,
-        field2: FIELD_2_COL,
+        'field$s1': FIELD_1_COL,
+        'field+2': FIELD_2_COL,
         field3: FIELD_3_COL,
         systemCol: SYSTEM_COL,
         hiddenCol: HIDDEN_COL,

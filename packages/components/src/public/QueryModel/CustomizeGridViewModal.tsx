@@ -72,8 +72,8 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
             />
         );
     }
-    // only show hover tooltip for lookup child fields
-    if (!includeFieldKey || column.index.indexOf('/') === -1) return content;
+    // only show hover tooltip for lookup child fields. 46256: use encoded fieldKeyPath
+    if (!includeFieldKey || column.fieldKeyPath.indexOf('/') === -1) return content;
 
     return (
         <OverlayTrigger
@@ -102,8 +102,12 @@ interface ColumnChoiceProps {
 export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     const { column, isExpanded, isInView, onAddColumn, onExpandColumn, onCollapseColumn } = props;
     const colFieldKey = column.index;
-    const hasParentFieldKeys = colFieldKey.indexOf('/') > -1;
-    const parentFieldKeys = hasParentFieldKeys ? colFieldKey.substring(0, colFieldKey.lastIndexOf('/')).split('/') : [];
+
+    // 46256: use encoded fieldKeyPath
+    const hasParentFieldKeys = column.fieldKeyPath.indexOf('/') > -1;
+    const parentFieldKeys = hasParentFieldKeys
+        ? column.fieldKeyPath.substring(0, column.fieldKeyPath.lastIndexOf('/')).split('/')
+        : [];
 
     const _onAddColumn = useCallback(() => {
         onAddColumn(column);
@@ -316,7 +320,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         try {
             const viewInfo = model.currentView.mutate({
                 columns: columnsInView.map(col => ({
-                    fieldKey: col.index,
+                    fieldKey: col.fieldKeyPath /* 46256: use encoded fieldKeyPath */,
                     title: col.customViewTitle,
                 })),
             });
@@ -455,7 +459,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                             {model.queryInfo.columns
                                 .valueSeq()
                                 .filter(column => includedColumnsForCustomizationFilter(column, showAllColumns))
-                                .filter(column => column.index.indexOf('/') === -1) // here at the top level we don't want to include lookup fields
+                                .filter(column => column.fieldKeyArray.length === 1) // here at the top level we don't want to include lookup fields
                                 .map(column => (
                                     <ColumnChoiceGroup
                                         column={column}

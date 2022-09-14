@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 46256: Custom view handling of slash in fieldKey
+
 ### version 2.216.1
 *Released*: 14 September 2022
 * Merge release22.9-SNAPSHOT into develop (#2)

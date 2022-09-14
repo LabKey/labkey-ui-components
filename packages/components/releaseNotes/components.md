@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.218.0
+*Released*: 14 September 2022
+* Export BarTenderConfiguration
+* Export LabelPrintingProvider
+* Move all label actions to label APIWrapper
+* Update build
+
 ### version 2.217.0
 *Released*: 14 September 2022
 * Projects, Enhance UX to disallow cross folder actions earlier

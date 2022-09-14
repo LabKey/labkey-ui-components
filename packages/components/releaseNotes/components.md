@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.216.1
+*Released*: 14 September 2022
+* Merge release22.9-SNAPSHOT into develop (#2)
+
 ### version 2.216.0
 *Released*: 12 September 2022
 * Add Label Print Modal component and menu options to SampleTabbedGrid

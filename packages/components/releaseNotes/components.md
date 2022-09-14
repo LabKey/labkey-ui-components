@@ -17,6 +17,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 5 September 2022
 * Issue 45403: Include App specified samplesGridRequiredColumns in requiredColumns array for QueryConfig
 
+### version 2.213.4
+*Released*: 8 September 2022
+* Add defensive type-check when calling `trim()` for form value processing.
+
 ### version 2.213.3
 *Released*: 6 September 2022
 * QuerySelect: Allow optionRenderer prop to be passed

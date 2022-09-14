@@ -233,6 +233,15 @@ module.exports = {
         ],
         TYPESCRIPT_DEV: [
             {
+                // For some reason the dev build needs to explicitly not exclude our packages so they get transpiled
+                // by Babel. For unknown reasons this is not needed for the prod build.
+                test: /^(?!.*spec\.tsx?$).*\.(js|ts|tsx)?$/,
+                exclude: /node_modules\/(?!(@labkey)\/).*/,
+                use: [BABEL_CONFIG]
+            }
+        ],
+        TYPESCRIPT_WATCH: [
+            {
                 test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
                 use: [BABEL_DEV_CONFIG]
             }

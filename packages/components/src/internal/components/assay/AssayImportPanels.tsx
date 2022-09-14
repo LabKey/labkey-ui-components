@@ -58,6 +58,8 @@ import { SCHEMAS } from '../../schemas';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
+import { isPremiumProductEnabled } from '../../app/utils';
+
 import { AssayUploadResultModel } from './models';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { RunDataPanel } from './RunDataPanel';
@@ -81,28 +83,30 @@ const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
 const DATA_GRID_ID = 'assay-grid-data';
 
 interface OwnProps {
+    acceptedPreviewFileFormats?: string;
+    allowBulkInsert?: boolean;
+    allowBulkRemove?: boolean;
+    allowBulkUpdate?: boolean;
     assayDefinition: AssayDefinitionModel;
-    runId?: string;
+    assayProtocol?: AssayProtocolModel;
+    // assay design setting
+    backgroundUpload?: boolean;
+    beforeFinish?: (data: IAssayUploadOptions) => IAssayUploadOptions;
+    fileSizeLimits?: Map<string, FileSizeLimitProps>;
+    getIsDirty?: () => boolean;
+    jobNotificationProvider?: string;
+    loadSelectedSamples?: (location: Location, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
+    location?: Location;
+    // Not currently used, but related logic retained in component
+    maxRows?: number;
     onCancel: () => void;
     onComplete: (response: AssayUploadResultModel, isAsync?: boolean) => void;
     onSave?: (response: AssayUploadResultModel, isAsync?: boolean) => void;
-    acceptedPreviewFileFormats?: string;
-    location?: Location;
-    allowBulkRemove?: boolean;
-    allowBulkInsert?: boolean;
-    allowBulkUpdate?: boolean;
-    fileSizeLimits?: Map<string, FileSizeLimitProps>;
-    maxRows?: number; // Not currently used, but related logic retained in component
-    loadSelectedSamples?: (location: Location, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
-    showUploadTabs?: boolean;
-    showQuerySelectPreviewOptions?: boolean;
     runDataPanelTitle?: string;
-    beforeFinish?: (data: IAssayUploadOptions) => IAssayUploadOptions;
-    jobNotificationProvider?: string;
-    assayProtocol?: AssayProtocolModel;
-    backgroundUpload?: boolean; // assay design setting
-    getIsDirty?: () => boolean;
+    runId?: string;
     setIsDirty?: (isDirty: boolean) => void;
+    showQuerySelectPreviewOptions?: boolean;
+    showUploadTabs?: boolean;
 }
 
 interface AssayImportPanelsBodyProps {
@@ -694,13 +698,14 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
         const isReimport = this.isReimport();
         const runContainerId = runPropsModel.getRowValue('Folder');
+        const folderNoun = isPremiumProductEnabled() ? 'project' : 'folder';
 
         if (isReimport && !allowReimportAssayRun(user, runContainerId, container.id)) {
             const runName = runPropsModel.getRowValue('Name');
             return (
                 <Alert>
-                    The run "{runName}" cannot be re-imported into this folder. This run is declared in a different
-                    folder and re-import of runs is only supported within the same folder.
+                    The run "{runName}" cannot be re-imported into this ${folderNoun}. This run is declared in a
+                    different ${folderNoun} and re-import of runs is only supported within the same ${folderNoun}.
                 </Alert>
             );
         }

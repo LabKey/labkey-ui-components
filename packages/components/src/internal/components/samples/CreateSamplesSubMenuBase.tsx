@@ -10,6 +10,10 @@ import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
 
 import { SCHEMAS } from '../../schemas';
 
+import { getCrossFolderSelectionResult } from '../entities/actions';
+
+import { EntityCrossProjectSelectionConfirmModal } from '../entities/EntityCrossProjectSelectionConfirmModal';
+
 import { isSamplesSchema } from './utils';
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import {
@@ -44,6 +48,8 @@ interface CreateSamplesSubMenuProps {
     ) => string | AppURL;
     selectedItems?: Record<string, any>;
     selectedType?: SampleCreationType;
+    selectionNoun?: string;
+    selectionNounPlural?: string;
     targetProductId?: string;
 }
 
@@ -66,16 +72,21 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         inlineItemsCount,
         currentProductId,
         targetProductId,
+        selectionNoun = 'sample',
+        selectionNounPlural = 'samples',
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
     const [selectedOption, setSelectedOption] = useState<string>();
+    const [crossFolderSelectionResult, setCrossFolderSelectionResult] = useState(undefined);
 
     const selectedQuantity = parentQueryModel ? parentQueryModel.selections?.size ?? 0 : 1;
     const schemaQuery = parentQueryModel?.schemaQuery;
 
     const selectingSampleParents = useMemo(() => {
-        return isSelectingSamples ? isSelectingSamples(schemaQuery) : true;
+        return isSelectingSamples
+            ? isSelectingSamples(schemaQuery)
+            : isSamplesSchema(schemaQuery) || schemaQuery?.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA;
     }, [isSelectingSamples, schemaQuery]);
 
     let disabledMsg: string;
@@ -89,10 +100,10 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         } can be selected`;
     }
 
-    const useOnClick = parentKey !== undefined || (selectingSampleParents && selectedQuantity > 0);
+    const useOnClick = parentKey !== undefined || (parentQueryModel && selectedQuantity > 0 && selectingSampleParents);
 
     const selectionKey = useMemo(() => {
-        return parentQueryModel?.hasSelections ? parentQueryModel.selectionKey: null;
+        return parentQueryModel?.hasSelections ? parentQueryModel.selectionKey : null;
     }, [parentQueryModel]);
 
     const onSampleCreationMenuSelect = useCallback(
@@ -123,6 +134,48 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         ]
     );
 
+    const onSampleCreationMenuSelectOnClick = useCallback(
+        async (key: string) => {
+            // check cross folder selection
+            if (parentQueryModel && selectedQuantity > 0 && selectingSampleParents) {
+                const dataType = parentQueryModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? 'data' : 'sample';
+                setCrossFolderSelectionResult(undefined);
+                const result = await getCrossFolderSelectionResult(parentQueryModel.id, dataType);
+
+                if (result.crossFolderSelectionCount > 0) {
+                    let verb = 'Create';
+                    if (selectedType === SampleCreationType.PooledSamples) {
+                        verb = 'Pool';
+                    } else if (selectedType === SampleCreationType.Aliquots) {
+                        verb = 'Aliquot';
+                    } else if (selectedType === SampleCreationType.Derivatives) {
+                        verb = 'Derive';
+                    }
+
+                    const totalSelectionCount = result.crossFolderSelectionCount + result.currentFolderSelectionCount;
+                    setCrossFolderSelectionResult({
+                        ...result,
+                        title: 'Cannot ' + verb + (totalSelectionCount > 1 ? ' Samples' : ' Sample'),
+                    });
+                    return;
+                }
+            }
+
+            return onSampleCreationMenuSelect(key);
+        },
+        [
+            sampleWizardURL,
+            getProductSampleWizardURL,
+            useOnClick,
+            parentKey,
+            currentProductId,
+            targetProductId,
+            selectionKey,
+            menuText,
+            selectedType,
+        ]
+    );
+
     const onCancel = useCallback(() => {
         setSampleCreationURL(undefined);
         setSelectedOption(undefined);
@@ -138,6 +191,10 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         },
         [navigate, sampleCreationURL]
     );
+
+    const dismissCrossFolderError = useCallback(() => {
+        setCrossFolderSelectionResult(undefined);
+    }, []);
 
     const sampleOptions = [
         {
@@ -177,7 +234,15 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                 key={SAMPLES_KEY}
                 options={
                     getOptions
-                        ? getOptions(useOnClick, disabledMsg, disabledMsg ? undefined : onSampleCreationMenuSelect)
+                        ? getOptions(
+                              useOnClick,
+                              disabledMsg,
+                              disabledMsg
+                                  ? undefined
+                                  : useOnClick
+                                  ? onSampleCreationMenuSelectOnClick
+                                  : onSampleCreationMenuSelect
+                          )
                         : undefined
                 }
                 text={menuText}
@@ -195,6 +260,16 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
                     selectedItems={selectedItems}
                     noun={noun}
                     nounPlural={nounPlural}
+                />
+            )}
+            {crossFolderSelectionResult && (
+                <EntityCrossProjectSelectionConfirmModal
+                    crossFolderSelectionCount={crossFolderSelectionResult.crossFolderSelectionCount}
+                    currentFolderSelectionCount={crossFolderSelectionResult.currentFolderSelectionCount}
+                    onDismiss={dismissCrossFolderError}
+                    title={crossFolderSelectionResult.title}
+                    noun={selectionNoun}
+                    nounPlural={selectionNounPlural}
                 />
             )}
         </>

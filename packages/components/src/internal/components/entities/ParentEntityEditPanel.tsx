@@ -3,7 +3,7 @@ import { Button, Panel } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import { AuditBehaviorTypes, Filter } from '@labkey/api';
+import { AuditBehaviorTypes, Filter, Query } from '@labkey/api';
 
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 
@@ -23,11 +23,12 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { ViewInfo } from '../../ViewInfo';
+
 import { ParentEntityRequiredColumns } from './constants';
 import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from './utils';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
-import { ViewInfo } from '../../ViewInfo';
 
 interface Props {
     auditBehavior?: AuditBehaviorTypes;
@@ -37,13 +38,15 @@ interface Props {
     childLSID?: string;
     childNounSingular: string;
     childSchemaQuery: SchemaQuery;
+    containerFilter?: Query.ContainerFilter;
     editOnly?: boolean;
     hideButtons?: boolean;
     includePanelHeader?: boolean;
     onChangeParent?: (currentParents: List<EntityChoice>) => void;
     onEditToggle?: (editing: boolean) => void;
     onUpdate?: () => void;
-    parentDataTypes: EntityDataType[]; // Note: the first data type in the array will be used for labels, nouns, etc...
+    // Note: the first data type in the array will be used for labels, nouns, etc...
+    parentDataTypes: EntityDataType[];
     submitText?: string;
     title?: string;
 }
@@ -68,6 +71,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         submitText: 'Save',
         includePanelHeader: true,
         title: 'Details',
+        containerFilter: Query.containerFilter.currentPlusProjectAndShared,
     };
 
     state: Readonly<State> = {
@@ -89,7 +93,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     }
 
     init = async (): Promise<void> => {
-        const { parentDataTypes, childContainerPath, childLSID, childSchemaQuery } = this.props;
+        const { parentDataTypes, childContainerPath, childLSID, childSchemaQuery, containerFilter } = this.props;
 
         let childData: any;
         let childQueryInfo: QueryInfo;
@@ -126,7 +130,8 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                     const typeData = await getParentTypeDataForLineage(
                         parentDataType,
                         childData ? [childData] : [],
-                        childContainerPath
+                        childContainerPath,
+                        containerFilter
                     );
                     parentTypeOptions = parentTypeOptions.concat(typeData.parentTypeOptions) as List<IEntityTypeOption>;
                     originalParents = originalParents.concat(
@@ -317,7 +322,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
     };
 
     renderParentData = (): ReactNode => {
-        const { childContainerPath, parentDataTypes, childNounSingular } = this.props;
+        const { childContainerPath, parentDataTypes, childNounSingular, containerFilter } = this.props;
         const { editing } = this.state;
 
         if (this.hasParents()) {
@@ -338,6 +343,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                             onChangeParentValue={this.onParentValueChange}
                             onInitialParentValue={this.onInitialParentValue}
                             onRemoveParentType={this.onRemoveParentType}
+                            containerFilter={containerFilter}
                         />
                     </div>
                 ))
@@ -357,6 +363,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                     onChangeParentType={this.changeEntityType}
                     onChangeParentValue={this.onParentValueChange}
                     onInitialParentValue={this.onInitialParentValue}
+                    containerFilter={containerFilter}
                 />
             </div>
         );

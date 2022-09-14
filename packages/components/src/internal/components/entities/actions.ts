@@ -18,6 +18,7 @@ import { ViewInfo } from '../../ViewInfo';
 import { isDataClassEntity, isSampleEntity } from './utils';
 import { DataClassDataType, DataOperation, SampleTypeDataType } from './constants';
 import {
+    CrossFolderSelectionResult,
     DisplayObject,
     EntityDataType,
     EntityIdCreationModel,
@@ -419,7 +420,8 @@ export function getAllEntityTypeOptions(
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
 export function getEntityTypeOptions(
     entityDataType: EntityDataType,
-    containerPath?: string
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
@@ -432,7 +434,8 @@ export function getEntityTypeOptions(
             queryName: typeListingSchemaQuery.queryName,
             columns: 'LSID,Name,RowId,Folder/Path',
             filterArray,
-            containerFilter: entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
+            containerFilter:
+                containerFilter ?? entityDataType.containerFilter ?? Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(result => {
                 const rows = fromJS(result.models[result.key]);
@@ -591,5 +594,42 @@ export function getDataOperationConfirmationData(
 ): Promise<OperationConfirmationData> {
     return getOperationConfirmationData(selectionKey, DataClassDataType, rowIds, {
         dataOperation: DataOperation[operation],
+    });
+}
+
+export function getCrossFolderSelectionResult(
+    dataRegionSelectionKey: string,
+    dataType: 'sample' | 'data',
+    rowIds?: string[] | number[]
+): Promise<CrossFolderSelectionResult> {
+    if (!dataRegionSelectionKey && !rowIds?.length) {
+        return Promise.resolve(undefined);
+    }
+
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'getCrossFolderDataSelection.api'),
+            method: 'POST',
+            jsonData: {
+                dataRegionSelectionKey,
+                rowIds,
+                dataType,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    resolve({
+                        currentFolderSelectionCount: response.data.currentFolderSelectionCount,
+                        crossFolderSelectionCount: response.data.crossFolderSelectionCount,
+                    });
+                } else {
+                    console.error('Error getting cross-project data selection result', response.exception);
+                    reject(response.exception);
+                }
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response ? response.exception : 'Unknown error getting cross-project data selection result.');
+            }),
+        });
     });
 }

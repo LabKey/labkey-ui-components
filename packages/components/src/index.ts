@@ -431,6 +431,7 @@ import {
 } from './internal/components/lineage/types';
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
+import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
@@ -469,6 +470,7 @@ import { Principal, SecurityPolicy, SecurityRole } from './internal/components/p
 import { fetchContainerSecurityPolicy, getUserLimitSettings } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,
+    getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getOperationConfirmationData,
@@ -1126,6 +1128,7 @@ export {
     SampleTimelinePageBase,
     // entities
     EntityTypeDeleteConfirmModal,
+    EntityCrossProjectSelectionConfirmModal,
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,
@@ -1139,6 +1142,7 @@ export {
     AddEntityButton,
     RemoveEntityButton,
     getSampleOperationConfirmationData,
+    getCrossFolderSelectionResult,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getOperationConfirmationData,

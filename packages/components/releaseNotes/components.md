@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.217.0
+*Released*: 14 September 2022
+* Projects, Enhance UX to disallow cross folder actions earlier
+  * Added EntityCrossProjectSelectionConfirmModal
+  * Update "Folder" terminology to "Project"
+  * Wire up cross folder selection check for EntityLineageEditMenuItem, SampleDeleteMenuItem, SamplesEditButton
+  * Fix CF for ParentEntityEditPanel and SingleParentEntityPanel
+
 ### version 2.216.1
 *Released*: 14 September 2022
 * Merge release22.9-SNAPSHOT into develop (#2)

@@ -17,6 +17,7 @@ interface Props {
     api?: ComponentsAPIWrapper;
     auditBehavior?: AuditBehaviorTypes;
     beforeSampleDelete?: () => any;
+    handleClick?: (cb: () => void, errorMsg?: string) => void;
     itemText?: string;
     maxDeleteRows?: number;
     metricFeatureArea?: string;
@@ -37,12 +38,14 @@ export const SampleDeleteMenuItem: FC<Props> = memo(props => {
         selectionMenuId,
         metricFeatureArea,
         api,
+        handleClick,
     } = props;
     const [showConfirmDeleteSamples, setShowConfirmDeleteSamples] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
         if (!queryModel || queryModel.hasSelections) {
-            setShowConfirmDeleteSamples(true);
+            if (handleClick) handleClick(() => setShowConfirmDeleteSamples(true), 'Cannot Delete Samples');
+            else setShowConfirmDeleteSamples(true);
         }
     }, [queryModel]);
 

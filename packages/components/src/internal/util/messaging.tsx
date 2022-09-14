@@ -104,6 +104,10 @@ export function resolveErrorMessage(error: any, noun = 'data', nounPlural?: stri
             }. This may be a problem in the application. Contact your administrator.`;
         } else if (lcMessage.indexOf(ExperimentExceptionMessage) >= 0) {
             return trimExceptionPrefix(ExperimentExceptionMessage, errorMsg);
+        } else if (lcMessage.indexOf("cannot update data that don't belong to the current container.") >= 0) {
+            return `There was a problem ${verb || 'importing'} your ${noun.toLowerCase() || 'data'}. One or more ${
+                noun.toLowerCase() || 'data'
+            } already exist in a different project.`;
         }
     }
     return errorMsg;

@@ -60,12 +60,7 @@ export class Principal extends Record({
                             : principal) as Principal
                 )
                 // finally sort by type (group or user) and then display name
-                .sort(
-                    (p1, p2) =>
-                        naturalSort(p2.isSiteGroup, p1.isSiteGroup) ||
-                        naturalSort(p1.type, p2.type) ||
-                        naturalSort(p1.displayName, p2.displayName)
-                )
+                .sort((p1, p2) => naturalSort(p1.displayName, p2.displayName))
                 .toList()
         );
     }

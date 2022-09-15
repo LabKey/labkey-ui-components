@@ -154,7 +154,11 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): Gr
     // If a group has no members—is in groupsData but not groupRows—add it as well, unless it is a site group
     groups.forEach(group => {
         if (!(group.id in groupsWithMembers)) {
-            groupsWithMembers[group.id] = { groupName: group.name, members: [] };
+            groupsWithMembers[group.id] = {
+                groupName: group.name,
+                members: [],
+                type: group.isProjectGroup ? 'g' : 'sg',
+            };
         }
     });
 

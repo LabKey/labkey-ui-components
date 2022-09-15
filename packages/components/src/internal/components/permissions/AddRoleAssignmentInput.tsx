@@ -2,10 +2,12 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import { List } from 'immutable';
 
 import { SelectInput } from '../forms/input/SelectInput';
+
+import { createGroupedOptions } from '../administration/utils';
 
 import { Principal, SecurityRole } from './models';
 
@@ -16,34 +18,38 @@ interface Props {
     role: SecurityRole;
 }
 
-export class AddRoleAssignmentInput extends PureComponent<Props> {
-    static defaultProps = {
-        placeholder: 'Add member or group...',
-    };
+export const AddRoleAssignmentInput: FC<Props> = memo(props => {
+    const { role, principals, onSelect, placeholder = 'Add member or group...' } = props;
 
-    onChange = (name: string, formValue: any, selected: Principal): void => {
-        if (selected) {
-            this.props.onSelect(selected);
-        }
-    };
+    const onChange = useCallback(
+        (name: string, formValue: any, selected: Principal) => {
+            if (selected) {
+                onSelect(selected);
+            }
+        },
+        [onSelect]
+    );
 
-    render() {
-        const { role, principals, placeholder } = this.props;
-        const name = 'addRoleAssignment';
+    const name = useMemo(() => {
+        return 'addRoleAssignment';
+    }, []);
 
-        return (
-            <SelectInput
-                autoValue={false}
-                name={name}
-                key={name + ':' + role.uniqueName}
-                options={principals.toArray()}
-                placeholder={placeholder}
-                inputClass="col-xs-12"
-                valueKey="userId"
-                labelKey="displayName"
-                onChange={this.onChange}
-                selectedOptions={null}
-            />
-        );
-    }
-}
+    const options = useMemo(() => {
+        return createGroupedOptions(principals);
+    }, [principals]);
+
+    return (
+        <SelectInput
+            autoValue={false}
+            name={name}
+            key={name + ':' + role.uniqueName}
+            options={options}
+            placeholder={placeholder}
+            inputClass="col-xs-12"
+            valueKey="userId"
+            labelKey="displayName"
+            onChange={onChange}
+            selectedOptions={null}
+        />
+    );
+});

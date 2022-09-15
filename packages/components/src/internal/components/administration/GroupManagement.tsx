@@ -32,7 +32,7 @@ import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
-import { getAuditLogData, getGroupMembership } from './actions';
+import { fetchGroupMembership, getAuditLogData } from './actions';
 
 type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
@@ -69,10 +69,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             const policyState = await api.security.fetchPolicy(container.id, principalsById, inactiveUsersById);
 
             // Assemble single cohesive data structure representing group data
-            const fetchedGroups = await api.security.fetchGroups(projectPath);
-            const groups = fetchedGroups.filter(group => !group.isSystemGroup);
-            const groupMemberships = await api.security.getGroupMemberships();
-            const groupMembershipState = getGroupMembership(groups, groupMemberships);
+            const groupMembershipState = await fetchGroupMembership(container, api.security);
 
             setPolicy(policyState);
             setSavedGroupMembership(groupMembershipState);
@@ -82,7 +79,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         }
 
         setLoadingState(LoadingState.LOADED);
-    }, [api.security, container.id, inactiveUsersById, principalsById, projectPath, setIsDirty]);
+    }, [api.security, container, inactiveUsersById, principalsById, projectPath, setIsDirty]);
 
     useEffect(() => {
         loadGroups();

@@ -5,14 +5,15 @@ import { Filter, Query, Security } from '@labkey/api';
 import { AppURL } from '../../url/AppURL';
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
-import { Row } from '../../query/selectRows';
-
 import { naturalSort } from '../../../public/sort';
 
-import { FetchedGroup } from '../security/APIWrapper';
+import {FetchedGroup, SecurityAPIWrapper} from '../security/APIWrapper';
 
-import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
+import { getProjectPath } from '../../app/utils';
+
 import { GroupMembership } from './models';
+import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
+import {Container} from "../base/models/Container";
 
 export function getUpdatedPolicyRoles(
     roles: List<SecurityRole>,
@@ -124,7 +125,7 @@ export const getAuditLogData = (columns: string, filterCol: string, filterVal: s
 //       ...
 // }
 // Where the members array is sorted by type, and then by name. The types stand for 'group,' 'site group,' and 'user'
-export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): GroupMembership => {
+const getGroupMembership = (groups: FetchedGroup[], groupMemberships): GroupMembership => {
     const groupsWithMembers = groupMemberships.reduce((prev, curr) => {
         const groupId = curr['GroupId'];
         const isProjectGroup = groups.find(group => group.id === groupId)?.isProjectGroup;
@@ -163,4 +164,11 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): Gr
     });
 
     return groupsWithMembers;
+};
+
+export const fetchGroupMembership = async (container: Container, api: SecurityAPIWrapper): Promise<GroupMembership> => {
+    const fetchedGroups = await api.fetchGroups(getProjectPath(container.path));
+    const groups = fetchedGroups?.filter(group => !group.isSystemGroup);
+    const groupMemberships = await api.getGroupMemberships();
+    return getGroupMembership(groups, groupMemberships);
 };

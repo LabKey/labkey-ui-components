@@ -21,6 +21,8 @@ import { Alert } from '../base/Alert';
 
 import { GroupMembership } from '../administration/models';
 
+import { fetchGroupMembership } from '../administration/actions';
+
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
@@ -31,7 +33,6 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage {
     containerId: string;
     /** UserId to disable to prevent removing assignments for that id */
     disabledId?: number;
-    groupMembership: GroupMembership;
     onChange: (policy: SecurityPolicy) => void;
     onSuccess: () => void;
     policy: SecurityPolicy;
@@ -47,8 +48,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const {
         containerId,
         disabledId,
-        error,
-        groupMembership,
         inactiveUsersById,
         onChange,
         onSuccess,
@@ -66,12 +65,29 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const [rootPolicy, setRootPolicy] = useState<SecurityPolicy>();
     const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
     const [selectedUserId, setSelectedUserId] = useState<number>();
+    const [groupMembership, setGroupMembership] = useState<GroupMembership>();
+    const [error, setError] = useState<string>();
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const { api } = useAppContext<AppContext>();
     const { container, project, user } = useServerContext();
 
     const selectedPrincipal = principalsById?.get(selectedUserId);
+
+    const loadGroupMembership = useCallback(async () => {
+        try {
+            const groupMembershipState = await fetchGroupMembership(container, api.security);
+            setGroupMembership(groupMembershipState);
+        } catch (e) {
+            setError(resolveErrorMessage(e) ?? 'Failed to load group membership data.');
+        }
+    }, [api.security, container]);
+
+    useEffect(() => {
+        (async () => {
+            await loadGroupMembership();
+        })();
+    }, [loadGroupMembership]);
 
     useEffect(() => {
         if (containerId !== project.rootId && user.isRootAdmin) {
@@ -104,12 +120,17 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         setInherited(!inherited);
     }, [inherited]);
 
+    const _onSuccess = useCallback(() => {
+        onSuccess();
+        loadGroupMembership();
+    }, [onSuccess, loadGroupMembership]);
+
     const onSavePolicy = useCallback(() => {
         const wasInherited = policy.isInheritFromParent();
 
         // Policy remains inherited. Act as if it was a successful change.
         if (inherited && wasInherited) {
-            onSuccess();
+            _onSuccess();
             setDirty(false);
             return;
         }
@@ -123,7 +144,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 resourceId: policy.resourceId,
                 success: response => {
                     if (response.success) {
-                        onSuccess();
+                        _onSuccess();
                         setSelectedUserId(undefined);
                         setDirty(false);
                     } else {
@@ -154,7 +175,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 },
                 success: response => {
                     if (response.success) {
-                        onSuccess();
+                        _onSuccess();
                         setSelectedUserId(undefined);
                         setDirty(false);
                     } else {
@@ -170,7 +191,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 },
             });
         }
-    }, [containerId, inherited, onSuccess, policy]);
+    }, [containerId, inherited, _onSuccess, policy]);
 
     const removeAssignment = useCallback(
         (userId: number, role: SecurityRole) => {

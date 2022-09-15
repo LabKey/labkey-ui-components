@@ -62,6 +62,8 @@ import { createGridModelId } from '../../models';
 import { TimelineEventModel } from '../auditlog/models';
 import { QueryInfo } from '../../../public/QueryInfo';
 
+import { ViewInfo } from '../../ViewInfo';
+
 import {
     IS_ALIQUOT_COL,
     SAMPLE_ID_FIND_FIELD,
@@ -69,7 +71,6 @@ import {
     UNIQUE_ID_FIND_FIELD,
 } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
-import { ViewInfo } from '../../ViewInfo';
 
 export function initSampleSetSelects(
     isUpdate: boolean,
@@ -280,7 +281,9 @@ export function getAliquotSampleIds(selection: List<any>, sampleType: string, vi
 }
 
 export function getNotInStorageSampleIds(selection: List<any>, sampleType: string, viewName: string): Promise<any[]> {
-    return getFilteredSampleSelection(selection, sampleType, viewName, [Filter.create('StorageStatus', 'Not in storage')]);
+    return getFilteredSampleSelection(selection, sampleType, viewName, [
+        Filter.create('StorageStatus', 'Not in storage'),
+    ]);
 }
 
 function getFilteredSampleSelection(
@@ -300,7 +303,7 @@ function getFilteredSampleSelection(
         selectRowsDeprecated({
             schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
             queryName: sampleType,
-            viewName: viewName,
+            viewName,
             columns: 'RowId',
             filterArray: [Filter.create('RowId', sampleRowIds, Filter.Types.IN), ...filters],
         })
@@ -468,7 +471,8 @@ export const getOriginalParentsFromLineage = async (
 export const getParentTypeDataForLineage = async (
     parentDataType: EntityDataType,
     data: any[],
-    containerPath?: string
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter
 ): Promise<{
     parentIdData: Record<string, ParentIdData>;
     parentTypeOptions: List<IEntityTypeOption>;
@@ -476,7 +480,7 @@ export const getParentTypeDataForLineage = async (
     let parentTypeOptions = List<IEntityTypeOption>();
     let parentIdData: {};
     if (parentDataType) {
-        const options = await getEntityTypeOptions(parentDataType, containerPath);
+        const options = await getEntityTypeOptions(parentDataType, containerPath, containerFilter);
         parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
 
         // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
@@ -892,7 +896,10 @@ export function getSampleAliquotsQueryConfig(
 
     // use Detail view so we get all info even if default view has been filtered
     return {
-        id: createGridModelId('sample-aliquots', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME)),
+        id: createGridModelId(
+            'sample-aliquots',
+            SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME)
+        ),
         schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME),
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,

@@ -23,7 +23,7 @@ import { ServerContext, ServerContextProvider } from './components/base/ServerCo
 import {
     LabelPrintingContextProps,
     LabelPrintingProvider,
-    LabelPrintingProviderProps
+    LabelPrintingProviderProps,
 } from './components/labels/LabelPrintingContextProvider';
 
 declare let LABKEY: LabKey;

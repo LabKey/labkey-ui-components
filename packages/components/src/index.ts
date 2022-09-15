@@ -431,6 +431,7 @@ import {
 } from './internal/components/lineage/types';
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
+import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
@@ -469,6 +470,7 @@ import { Principal, SecurityPolicy, SecurityRole } from './internal/components/p
 import { fetchContainerSecurityPolicy, getUserLimitSettings } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,
+    getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getOperationConfirmationData,
@@ -486,11 +488,7 @@ import { SampleTypeModel } from './internal/components/domainproperties/samples/
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
-import {
-    flattenValuesFromRow,
-    getQueryModelExportParams,
-    runDetailsColumnsForQueryModel,
-} from './public/QueryModel/utils';
+import { getQueryModelExportParams, runDetailsColumnsForQueryModel } from './public/QueryModel/utils';
 import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
@@ -555,7 +553,7 @@ import {
     waitForLifecycle,
     wrapDraggable,
 } from './internal/testHelpers';
-import { QueryModel } from './public/QueryModel/QueryModel';
+import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
@@ -624,8 +622,9 @@ import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveF
 import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
 import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
+import { BarTenderConfiguration } from './internal/components/labels/models';
 import {
-    LabelPrintingProviderProps,
+    LabelPrintingProvider,
     withLabelPrintingContext,
     useLabelPrintingContext,
 } from './internal/components/labels/LabelPrintingContextProvider';
@@ -1126,6 +1125,7 @@ export {
     SampleTimelinePageBase,
     // entities
     EntityTypeDeleteConfirmModal,
+    EntityCrossProjectSelectionConfirmModal,
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,
@@ -1139,6 +1139,7 @@ export {
     AddEntityButton,
     RemoveEntityButton,
     getSampleOperationConfirmationData,
+    getCrossFolderSelectionResult,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getOperationConfirmationData,
@@ -1523,8 +1524,10 @@ export {
     useSubNavContext,
     SubNavWithContext,
     // BarTender
+    BarTenderConfiguration,
     BarTenderSettingsForm,
     PrintLabelsModal,
+    LabelPrintingProvider,
     withLabelPrintingContext,
     useLabelPrintingContext,
 };
@@ -1565,7 +1568,8 @@ export type { NotificationItemProps } from './internal/components/notifications/
 export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';
 export type { VisGraphNode } from './internal/components/lineage/models';
 export type { ITab } from './internal/components/navigation/SubNav';
-export type { IDataViewInfo, EditorModelProps, IGridLoader, IGridResponse } from './internal/models';
+export type { EditorModelProps, IGridLoader, IGridResponse } from './internal/models';
+export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { HeatMapCell } from './internal/components/heatmap/HeatMap';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
 export type { SearchResultCardData } from './internal/components/search/models';
@@ -1622,4 +1626,4 @@ export type { HorizontalBarData } from './internal/components/chart/HorizontalBa
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
 export type { EditableGridPanelForUpdateWithLineageProps } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-export type { LabelPrintingProviderProps } from './internal/components/labels/LabelPrintingContextProvider';
+export type { LabelPrintingProviderProps, LabelPrintingContextProps } from './internal/components/labels/LabelPrintingContextProvider';

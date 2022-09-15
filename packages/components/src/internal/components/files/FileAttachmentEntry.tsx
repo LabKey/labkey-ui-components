@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 
 interface Props {
     allowDelete?: boolean;
@@ -8,7 +8,7 @@ interface Props {
     deleteTitleText?: string;
 }
 
-export class FileAttachmentEntry extends React.PureComponent<Props, any> {
+export class FileAttachmentEntry extends PureComponent<Props, any> {
     static defaultProps = {
         allowDelete: true,
         deleteTitleText: 'Remove file',

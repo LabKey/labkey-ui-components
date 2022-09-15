@@ -2,7 +2,7 @@ import React, { FC, memo, PureComponent, ReactNode, useMemo, useState } from 're
 
 import { List } from 'immutable';
 
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { DELIMITER, DETAIL_TABLE_CLASSES } from '../forms/constants';
 
@@ -23,9 +23,10 @@ import { GridPanel } from '../../../public/QueryModel/GridPanel';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
+import { ViewInfo } from '../../ViewInfo';
+
 import { isSampleEntity } from './utils';
 import { EntityDataType, IEntityTypeOption } from './models';
-import { ViewInfo } from '../../ViewInfo';
 
 interface OwnProps {
     chosenType: IEntityTypeOption;
@@ -36,6 +37,7 @@ interface OwnProps {
 interface Props {
     childNounSingular?: string;
     chosenValue?: string | any[];
+    containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     editing?: boolean;
     index: number;
@@ -88,8 +90,16 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     };
 
     renderParentSelection = (model: QueryModel): ReactNode => {
-        const { chosenType, chosenValue, containerPath, parentLSIDs, parentTypeOptions, parentDataType, index } =
-            this.props;
+        const {
+            chosenType,
+            chosenValue,
+            containerPath,
+            containerFilter,
+            parentLSIDs,
+            parentTypeOptions,
+            parentDataType,
+            index,
+        } = this.props;
 
         if (model?.rowsError || model?.queryInfoError) {
             return <Alert>{model.rowsError || model.queryInfoError}</Alert>;
@@ -155,6 +165,7 @@ class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
                             showLoading
                             value={value}
                             valueColumn="Name"
+                            containerFilter={containerFilter}
                         />
                         {!chosenValue && (
                             <div className="row top-spacing edit-parent-danger">
@@ -268,7 +279,7 @@ export const SingleParentEntityPanel: FC<Props> = memo(props => {
                 containerPath,
                 schemaQuery: SchemaQuery.create(chosenType.schema, chosenType.query, ViewInfo.DETAIL_NAME),
                 omittedColumns: ['Run'],
-                requiredColumns: ['Name']
+                requiredColumns: ['Name'],
             },
         };
     }, [chosenType, containerPath, parentTypeOptions, parentLSIDs]);

@@ -1172,7 +1172,9 @@ exports[`AssayPicker AssayPicker 1`] = `
                                             className="margin-top margin-bottom"
                                           >
                                             <p>
-                                              If you have an existing assay .XAR file on this server, you can directly upload this assay design using this folder's data pipeline.
+                                              If you have an existing assay .XAR file on this server, you can directly upload this assay design using this 
+                                              folder
+                                              's data pipeline.
                                             </p>
                                           </div>
                                           <div

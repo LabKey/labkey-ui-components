@@ -590,8 +590,8 @@ export interface EntityDataType {
     nounAsParentSingular: string;
     nounPlural: string;
     nounSingular: string;
-    operationConfirmationControllerName: string;
     operationConfirmationActionName: string;
+    operationConfirmationControllerName: string;
     typeListingSchemaQuery: SchemaQuery;
     typeNounAsParentSingular: string;
     typeNounSingular: string;
@@ -651,4 +651,10 @@ export class OperationConfirmationData {
     get anyNotAllowed(): boolean {
         return this.notAllowed.length > 0;
     }
+}
+
+export interface CrossFolderSelectionResult {
+    crossFolderSelectionCount: number;
+    currentFolderSelectionCount: number;
+    title?: string;
 }

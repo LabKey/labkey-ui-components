@@ -20,7 +20,7 @@ const SAMPLE_QUERY_CONFIG = {
     isPaged: true,
     id: SAMPLE_SET_GRID_GRID_ID,
     schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
-    omittedColumns: ['ImportAliases', 'MaterialInputImportAliases', 'DataInputImportAliases'],
+    omittedColumns: ['ImportAliases', 'MaterialInputImportAliases', 'DataInputImportAliases', 'Folder'],
     containerFilter: Query.containerFilter.currentPlusProjectAndShared,
 };
 

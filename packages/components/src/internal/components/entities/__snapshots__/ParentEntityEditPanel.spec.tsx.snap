@@ -12,6 +12,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
       "viewName": undefined,
     }
   }
+  containerFilter="CurrentPlusProjectAndShared"
   includePanelHeader={true}
   parentDataTypes={
     Array [
@@ -116,6 +117,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                 <hr />
                 <Memo()
                   childNounSingular="Testing"
+                  containerFilter="CurrentPlusProjectAndShared"
                   editing={true}
                   index={0}
                   onChangeParentType={[Function]}
@@ -158,6 +160,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                 >
                   <withRouter(ComponentWithQueryModels)
                     childNounSingular="Testing"
+                    containerFilter="CurrentPlusProjectAndShared"
                     editing={true}
                     index={0}
                     onChangeParentType={[Function]}
@@ -204,6 +207,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                     <ComponentWithQueryModels
                       autoLoad={false}
                       childNounSingular="Testing"
+                      containerFilter="CurrentPlusProjectAndShared"
                       editing={true}
                       index={0}
                       modelLoader={
@@ -288,6 +292,7 @@ exports[`ParentEntityEditPanel editing, no data 1`] = `
                         }
                         autoLoad={false}
                         childNounSingular="Testing"
+                        containerFilter="CurrentPlusProjectAndShared"
                         editing={true}
                         index={0}
                         onChangeParentType={[Function]}
@@ -4778,6 +4783,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
       "viewName": undefined,
     }
   }
+  containerFilter="CurrentPlusProjectAndShared"
   includePanelHeader={true}
   parentDataTypes={
     Array [
@@ -4893,6 +4899,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                 <hr />
                 <Memo()
                   childNounSingular="Testing"
+                  containerFilter="CurrentPlusProjectAndShared"
                   editing={false}
                   index={0}
                   onChangeParentType={[Function]}
@@ -4935,6 +4942,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                 >
                   <withRouter(ComponentWithQueryModels)
                     childNounSingular="Testing"
+                    containerFilter="CurrentPlusProjectAndShared"
                     editing={false}
                     index={0}
                     onChangeParentType={[Function]}
@@ -4981,6 +4989,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                     <ComponentWithQueryModels
                       autoLoad={false}
                       childNounSingular="Testing"
+                      containerFilter="CurrentPlusProjectAndShared"
                       editing={false}
                       index={0}
                       modelLoader={
@@ -5065,6 +5074,7 @@ exports[`ParentEntityEditPanel error state 1`] = `
                         }
                         autoLoad={false}
                         childNounSingular="Testing"
+                        containerFilter="CurrentPlusProjectAndShared"
                         editing={false}
                         index={0}
                         onChangeParentType={[Function]}
@@ -5174,6 +5184,7 @@ exports[`ParentEntityEditPanel loading state 1`] = `
       "viewName": undefined,
     }
   }
+  containerFilter="CurrentPlusProjectAndShared"
   includePanelHeader={true}
   parentDataTypes={
     Array [

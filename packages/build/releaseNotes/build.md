@@ -1,5 +1,13 @@
 # @labkey/build
 
+### version 6.2.0
+*Released*: ?? September 2022
+* Build packages as ES Modules
+* Add babel.config.js for jest tests
+  * Needed for any package or app that consumes our packages, see the note in the file for more info.
+* Add optional `ANALYZE` flag to our build
+  * Add `ANALYZE=true` to build args to enable the webpack bundle analyzer
+
 ### version 6.1.7
 *Released*: 30 August 2022
 * Add CircularDependencyPlugin to package.config.js

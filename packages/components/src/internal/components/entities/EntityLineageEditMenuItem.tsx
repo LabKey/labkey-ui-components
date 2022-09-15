@@ -13,20 +13,22 @@ import { EntityLineageEditModal } from './EntityLineageEditModal';
 interface Props {
     auditBehavior?: AuditBehaviorTypes;
     childEntityDataType: EntityDataType;
+    handleClick?: (cb: () => void, errorMsg?: string) => void;
     onSuccess?: () => void;
     parentEntityDataTypes: EntityDataType[];
     queryModel: QueryModel;
 }
 
 export const EntityLineageEditMenuItem: FC<Props> = memo(props => {
-    const { childEntityDataType, parentEntityDataTypes, queryModel, auditBehavior, onSuccess } = props;
+    const { childEntityDataType, parentEntityDataTypes, queryModel, auditBehavior, onSuccess, handleClick } = props;
     const parentNounPlural = parentEntityDataTypes[0].nounPlural;
     const itemText = 'Edit ' + parentNounPlural;
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
     const onClick = useCallback(() => {
         if (queryModel.hasSelections) {
-            setShowEditModal(true);
+            if (handleClick) handleClick(() => setShowEditModal(true), 'Cannot ' + itemText);
+            else setShowEditModal(true);
         }
     }, [queryModel]);
 

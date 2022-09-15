@@ -1,5 +1,5 @@
 import React from 'react';
-import * as ReactDOM from 'react-dom';
+import { findDOMNode } from 'react-dom';
 
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
@@ -47,7 +47,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
 
     focusNameInput = () => {
         if (this.nameInput && this.nameInput.current) {
-            const domEl = ReactDOM.findDOMNode(this.nameInput.current) as HTMLInputElement;
+            const domEl = findDOMNode(this.nameInput.current) as HTMLInputElement;
             domEl.focus();
         }
     };

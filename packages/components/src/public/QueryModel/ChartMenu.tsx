@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { ChartMenuItem } from '../../internal/components/chart/ChartMenuItem';
-import { DataViewInfo } from '../../internal/models';
+import { DataViewInfo } from '../../internal/DataViewInfo';
 
 import { ChartModal } from '../../internal/components/chart/ChartModal';
 import { blurActiveElement } from '../../internal/util/utils';

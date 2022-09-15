@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.216.1",
+  "version": "2.218.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -76,7 +76,7 @@
     "vis-network": "~6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "~6.1.7",
+    "@labkey/build": "6.2.0",
     "@labkey/eslint-config-react": "~0.0.12",
     "@types/history": "~4.7.9",
     "@types/node": "~16.11.26",

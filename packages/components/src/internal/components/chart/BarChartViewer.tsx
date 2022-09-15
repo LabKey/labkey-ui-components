@@ -6,10 +6,9 @@ import { Filter, PermissionTypes, Query } from '@labkey/api';
 import { getDateFormat } from '../../app/utils';
 
 import { ASSAYS_KEY, FIND_SAMPLES_BY_FILTER_HREF, NEW_SAMPLES_HREF, SAMPLES_KEY } from '../../app/constants';
+import { useAppContext } from '../../AppContext';
 
 import { SAMPLE_FILTER_METRIC_AREA } from '../search/utils';
-
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { selectRows } from '../../query/selectRows';
@@ -255,13 +254,9 @@ export class BarChartViewer extends PureComponent<Props, State> {
     }
 }
 
-interface SampleButtonProps {
-    api?: ComponentsAPIWrapper;
-}
-
 // export for jest testing
-export const SampleButtons: FC<SampleButtonProps> = memo(props => {
-    const { api } = props;
+export const SampleButtons: FC = memo(() => {
+    const { api } = useAppContext();
 
     const onSampleFinder = useCallback(() => {
         api.query.incrementClientSideMetricCount(SAMPLE_FILTER_METRIC_AREA, 'dashboardButtonNavigation');
@@ -280,7 +275,3 @@ export const SampleButtons: FC<SampleButtonProps> = memo(props => {
         </div>
     );
 });
-
-SampleButtons.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { Button, DropdownButton } from 'react-bootstrap';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 // react-bootstrap's native SplitButton can only disable/enable both main and dropdown buttons at the same time
 // SplitButtonGroup allow disable/enable buttons separately
-export class SplitButtonGroup extends React.Component<Props, any> {
+export class SplitButtonGroup extends Component<Props, any> {
     static defaultProps = {
         defaultBtnDisabled: false,
         dropdownBtnDisabled: false,

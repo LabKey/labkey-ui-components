@@ -12,7 +12,7 @@ import {
 } from '../../internal/actions';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../internal/constants';
 
-import { DataViewInfo, IDataViewInfo } from '../../internal/models';
+import { DataViewInfo, IDataViewInfo } from '../../internal/DataViewInfo';
 
 import { QueryInfo } from '../QueryInfo';
 import { getQueryDetails, selectRowsDeprecated } from '../../internal/query/api';

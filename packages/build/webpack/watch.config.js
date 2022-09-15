@@ -61,7 +61,7 @@ module.exports = {
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')
     },
     module: {
-        rules: constants.loaders.TYPESCRIPT_DEV.concat(constants.loaders.STYLE_DEV).concat(constants.loaders.FILES)
+        rules: constants.loaders.TYPESCRIPT_WATCH.concat(constants.loaders.STYLE_DEV).concat(constants.loaders.FILES)
     },
     optimization: {
         // do not emit compiled assets that include errors

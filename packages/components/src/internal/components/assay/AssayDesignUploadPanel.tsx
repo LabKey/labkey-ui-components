@@ -6,6 +6,7 @@ import { Map } from 'immutable';
 
 import { getHelpLink } from '../../util/helpLinks';
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
+import { isPremiumProductEnabled } from '../../app/utils';
 
 interface AssayDesignUploadPanelProps {
     onFileChange: (files: Map<string, File>) => void;
@@ -14,6 +15,8 @@ interface AssayDesignUploadPanelProps {
 
 export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(props => {
     const { onFileChange, onFileRemove, children } = props;
+
+    const folderNoun = isPremiumProductEnabled() ? 'project' : 'folder';
 
     return (
         <div>
@@ -53,7 +56,7 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                     <div className="margin-top margin-bottom">
                         <p>
                             If you have an existing assay .XAR file on this server, you can directly upload this assay
-                            design using this folder's data pipeline.
+                            design using this {folderNoun}'s data pipeline.
                         </p>
                     </div>
                     <div className="margin-top">

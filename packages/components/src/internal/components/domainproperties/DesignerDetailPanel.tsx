@@ -1,23 +1,23 @@
 import React, { FC, memo, useEffect, useState } from 'react';
+import { useAppContext } from '../../AppContext';
 
 import { DetailDisplaySharedProps } from '../forms/detail/DetailDisplay';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DetailPanel } from '../../../public/QueryModel/DetailPanel';
 
 interface Props extends DetailDisplaySharedProps, RequiresModelAndActions {
-    api?: ComponentsAPIWrapper;
     asPanel?: boolean;
     schemaQuery: SchemaQuery;
 }
 
 export const DesignerDetailPanel: FC<Props> = memo(props => {
-    const { api, schemaQuery, asPanel, ...detailDisplayProps } = props;
-    const [previews, setPreviews] = useState<{}>();
+    const { schemaQuery, asPanel, ...detailDisplayProps } = props;
+    const { api } = useAppContext();
+    const [previews, setPreviews] = useState<Record<string, string>>(undefined);
 
-    const init = async () => {
+    const init = async (): Promise<void> => {
         if (schemaQuery) {
             setPreviews(undefined);
 
@@ -46,7 +46,3 @@ export const DesignerDetailPanel: FC<Props> = memo(props => {
 
     return <DetailPanel asPanel={asPanel} fieldHelpTexts={previews} {...detailDisplayProps} />;
 });
-
-DesignerDetailPanel.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};

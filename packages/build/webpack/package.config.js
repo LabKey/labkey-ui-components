@@ -8,7 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const constants = require('./constants');
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const IgnorePlugin = require('webpack').IgnorePlugin;
-const CircularDependencyPlugin = require('circular-dependency-plugin')
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const tsCheckerConfig = {
     ...constants.TS_CHECKER_CONFIG,
@@ -24,12 +24,39 @@ const tsCheckerConfig = {
     }
 };
 
+const BABEL_CONFIG = {
+    loader: 'babel-loader',
+    options: {
+        babelrc: false,
+        cacheDirectory: true,
+        presets: [
+            [
+                '@babel/preset-env',
+                {
+                    // support async/await
+                    targets: 'last 2 versions, not dead, not IE 11, > 5%',
+                    modules: false,
+                }
+            ],
+        ],
+        plugins: constants.BABEL_PLUGINS,
+    }
+};
+
 module.exports = {
     entry: './src/index.ts',
     target: 'web',
     mode: 'production',
+    experiments: {
+        outputModule: true,
+    },
     module: {
-        rules: constants.loaders.TYPESCRIPT,
+        rules: [
+            {
+                test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
+                use: [BABEL_CONFIG],
+            }
+        ],
     },
     resolve: {
         extensions: [ '.jsx', '.js', '.tsx', '.ts' ]
@@ -43,8 +70,7 @@ module.exports = {
         publicPath: '',
         filename: constants.lkModule + '.js',
         library: {
-            name: '@labkey/' + constants.lkModule,
-            type: 'umd'
+            type: 'module'
         },
     },
     plugins: [
@@ -65,7 +91,7 @@ module.exports = {
         new CircularDependencyPlugin({
             exclude: /node_modules/,
             include: /src/,
-            failOnError: false, // TODO switch this to true once all circular dependencies are removed from packages
+            failOnError: true,
         }),
     ],
     externals: [

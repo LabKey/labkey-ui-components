@@ -1,11 +1,11 @@
-import { getServerContext } from '@labkey/api';
-
 import { User } from '../base/models/User';
-import { hasPremiumModule } from '../../app/utils';
+import { hasPremiumModule, resolveModuleContext } from '../../app/utils';
+import { ModuleContext } from '../base/ServerContext';
 
-export function shouldShowProductNavigation(user: User): boolean {
-    const apiModuleContext = getServerContext()?.moduleContext.api;
+export function shouldShowProductNavigation(user?: User, moduleContext?: ModuleContext): boolean {
     return (
-        hasPremiumModule() && (user.isAdmin || apiModuleContext?.applicationMenuDisplayMode?.toLowerCase() === 'always')
+        hasPremiumModule(moduleContext) &&
+        (user?.isAdmin ||
+            resolveModuleContext(moduleContext)?.api?.applicationMenuDisplayMode?.toLowerCase() === 'always')
     );
 }

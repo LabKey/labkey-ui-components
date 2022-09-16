@@ -41,6 +41,7 @@ import { ProductMenuModel } from './model';
 import { FolderMenu } from './FolderMenu';
 
 import { SEARCH_PLACEHOLDER } from './constants';
+import { useFolderMenuContext } from './hooks';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -83,6 +84,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         user,
     } = props;
 
+    const folderMenuContext = useFolderMenuContext();
     const onSearchIconClick = useCallback(() => {
         onSearch('');
     }, [onSearch]);
@@ -100,7 +102,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                                 <span className="navbar-item pull-left">{brand}</span>
                                 {showFolderMenu && (
                                     <span className="navbar-item">
-                                        <FolderMenu />
+                                        <FolderMenu key={folderMenuContext.key} />
                                     </span>
                                 )}
                                 {showNavMenu && !!model && (

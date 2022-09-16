@@ -23,6 +23,7 @@ import { FREEZER_MANAGER_APP_PROPERTIES } from '../app/constants';
 import { AppURL, createProductUrl } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
+import { getCurrentAppProperties } from '../app/utils';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
 
@@ -471,6 +472,20 @@ export const FREEZER_ITEM_SAMPLE_MAPPER = new ActionMapper('query', 'executeQuer
     return false;
 });
 
+export const PROJECT_MGMT_MAPPER = new ActionMapper('project', 'begin', (row, column, schema, query) => {
+    const url = row.get('url');
+
+    // Only match against the core.ProjectManagement query
+    if (url && schema?.toLowerCase() === 'core' && query?.toLowerCase() === 'projectmanagement') {
+        const { containerPath } = ActionURL.getPathFromLocation(url);
+        const { controllerName } = getCurrentAppProperties();
+        const baseURL = ActionURL.buildURL(controllerName, 'app.view', containerPath);
+        return baseURL + AppURL.create('admin', 'settings').toHref();
+    }
+
+    return false;
+});
+
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,
     DATA_CLASS_MAPPERS,
@@ -485,6 +500,7 @@ export const URL_MAPPERS = {
     LOOKUP_MAPPER,
     PIPELINE_MAPPER,
     FREEZER_ITEM_SAMPLE_MAPPER,
+    PROJECT_MGMT_MAPPER,
 };
 
 export class URLResolver {

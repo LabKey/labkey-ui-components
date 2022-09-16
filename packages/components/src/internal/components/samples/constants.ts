@@ -216,6 +216,7 @@ export const COMMON_AUDIT_QUERIES = [
     { value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders },
 ];
 
+export const PROJECT_AUDIT_QUERY = { value: 'containerauditevent', label: 'Project Events' };
 export const ASSAY_AUDIT_QUERY = { value: 'experimentauditevent', label: 'Assay Events' };
 export const WORKFLOW_AUDIT_QUERY = { value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true };
 export const SOURCE_AUDIT_QUERY = { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true };

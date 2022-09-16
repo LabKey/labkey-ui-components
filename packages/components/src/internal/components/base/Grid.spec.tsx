@@ -300,6 +300,7 @@ describe('getColumnHoverText', () => {
             getColumnHoverText({
                 description: ' desc ',
                 index: 'name',
+                fieldKeyPath: 'name',
                 phiProtected: false,
             })
         ).toBe('desc');
@@ -307,6 +308,7 @@ describe('getColumnHoverText', () => {
             getColumnHoverText({
                 description: ' desc ',
                 index: 'name',
+                fieldKeyPath: 'name',
                 phiProtected: true,
             })
         ).toBe('desc  (PHI protected data removed)');
@@ -314,6 +316,7 @@ describe('getColumnHoverText', () => {
             getColumnHoverText({
                 description: ' desc ',
                 index: 'parent/name',
+                fieldKeyPath: 'parent/name',
                 phiProtected: true,
             })
         ).toBe('desc  (parent/name) (PHI protected data removed)');
@@ -321,6 +324,7 @@ describe('getColumnHoverText', () => {
             getColumnHoverText({
                 description: ' desc ',
                 index: 'parent/name',
+                fieldKeyPath: 'parent/name',
                 phiProtected: false,
             })
         ).toBe('desc  (parent/name)');
@@ -328,6 +332,7 @@ describe('getColumnHoverText', () => {
             getColumnHoverText({
                 description: undefined,
                 index: 'parent/name',
+                fieldKeyPath: 'parent/name',
                 phiProtected: false,
             })
         ).toBe('parent/name');

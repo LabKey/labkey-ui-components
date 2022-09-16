@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.218.1
+*Released*: 16 September 2022
+* Issue 46256: Custom view handling of slash in fieldKey
+
 ### version 2.218.0
 *Released*: 14 September 2022
 * Export BarTenderConfiguration

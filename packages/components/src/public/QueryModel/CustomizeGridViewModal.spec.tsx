@@ -284,7 +284,7 @@ describe('CustomizeGridViewModal', () => {
         hidden: true,
     });
     const columns = fromJS({
-        'field$s1': FIELD_1_COL,
+        field$s1: FIELD_1_COL,
         'field+2': FIELD_2_COL,
         field3: FIELD_3_COL,
         systemCol: SYSTEM_COL,

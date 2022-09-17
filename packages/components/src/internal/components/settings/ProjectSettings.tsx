@@ -7,13 +7,22 @@ import { ProjectSettingsOptions } from '../security/APIWrapper';
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 
-interface Props {}
+interface Props {
+    onChange: () => void;
+    onSuccess: () => void;
+}
 
-export const ProjectSettings: FC<Props> = memo(() => {
+export const ProjectSettings: FC<Props> = memo(({ onChange, onSuccess }) => {
+    const [dirty, setDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const { api } = useAppContext();
     const { container, user } = useServerContext();
+
+    const onChange_ = useCallback(() => {
+        setDirty(true);
+        onChange();
+    }, [onChange]);
 
     const onSubmit = useCallback(
         async evt => {
@@ -31,13 +40,15 @@ export const ProjectSettings: FC<Props> = memo(() => {
 
             try {
                 await api.security.renameProject(options);
+                setDirty(false);
+                onSuccess();
             } catch (e) {
                 setError(resolveErrorMessage(e));
             }
 
             setIsSaving(false);
         },
-        [api, isSaving]
+        [api, onSuccess, isSaving]
     );
 
     if (container.isProject || !user.isAdmin) {
@@ -52,7 +63,17 @@ export const ProjectSettings: FC<Props> = memo(() => {
                 {!!error && <Alert>{error}</Alert>}
 
                 <form className="form-horizontal" onSubmit={onSubmit}>
-                    <ProjectProperties />
+                    <ProjectProperties
+                        defaultLabel={container.title}
+                        defaultName={container.name}
+                        onChange={onChange_}
+                    />
+
+                    <div className="pull-right">
+                        <button className="btn btn-success" disabled={!dirty} type="submit">
+                            {isSaving ? 'Saving' : 'Save'}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

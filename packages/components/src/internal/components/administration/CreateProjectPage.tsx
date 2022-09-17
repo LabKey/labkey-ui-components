@@ -66,7 +66,7 @@ export const CreateProjectContainer: FC<Props> = memo(props => {
                         <div className="form-horizontal">
                             <div className="form-subtitle">Project Properties</div>
 
-                            <ProjectProperties />
+                            <ProjectProperties autoFocus />
 
                             {/* <div className="form-subtitle">ID/Name Settings</div>*/}
 

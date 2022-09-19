@@ -83,8 +83,8 @@ export function getColumnHoverText(info: any): string {
     let sepRight = description.length > 0 ? ')' : '';
 
     // show field key for lookups to help determine path to field when the name is generic (i.e. "Name" is
-    // from "Ancestors/Sources/Lab/Name")
-    description += info?.index?.indexOf('/') > -1 ? ' ' + sepLeft + info.index + sepRight : '';
+    // from "Ancestors/Sources/Lab/Name"),  46256: use encoded fieldKeyPath
+    description += info?.fieldKeyPath?.indexOf('/') > -1 ? ' ' + sepLeft + info.index + sepRight : '';
     sepLeft = description.length > 0 ? '(' : '';
     sepRight = description.length > 0 ? ')' : '';
 

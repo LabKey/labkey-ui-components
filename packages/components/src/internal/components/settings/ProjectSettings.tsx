@@ -49,7 +49,7 @@ export const ProjectSettings: FC<Props> = memo(({ onChange, onSuccess }) => {
                 setError(resolveErrorMessage(e));
             }
 
-            if (project && project.path === container.path) {
+            if (project?.id === container.id) {
                 dispatch({
                     container: container.merge({
                         name: project.name,

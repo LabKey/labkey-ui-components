@@ -90,7 +90,7 @@ export const CreateProjectContainer: FC<Props> = memo(props => {
                     </div>
                     <div className="pull-right">
                         <span className="gridbar-button-spacer">
-                            <button className="create-project-button btn btn-success" type="submit">
+                            <button className="create-project-button btn btn-success" disabled={isSaving} type="submit">
                                 {isSaving ? 'Creating Project' : 'Create Project'}
                             </button>
                         </span>

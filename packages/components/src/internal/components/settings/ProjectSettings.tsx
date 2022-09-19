@@ -51,6 +51,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
                 setIsSaving(false);
             }
 
+            // If this change has been made to the current folder then dispatch a
+            // context update of the container's name and title.
             if (project?.id === container.id) {
                 dispatch({
                     container: container.merge({

@@ -109,6 +109,7 @@ export const CreateProjectPage: FC<WithRouterProps> = memo(({ router }) => {
 
     const onCreated = useCallback(
         (project: Container) => {
+            // Reroute user back to projects listing page
             router.replace(AppURL.create('admin', 'projects').toString());
 
             const appProps = getCurrentAppProperties();
@@ -126,6 +127,7 @@ export const CreateProjectPage: FC<WithRouterProps> = memo(({ router }) => {
                 ),
             });
 
+            // Reload the folder menu to ensure the new project appears in the navigation for this session
             reload();
         },
         [createNotification, reload, router]

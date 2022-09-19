@@ -8,12 +8,12 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
 
-interface Props {
+export interface ProjectSettingsProps {
     onChange: () => void;
     onSuccess: () => void;
 }
 
-export const ProjectSettings: FC<Props> = memo(({ onChange, onSuccess }) => {
+export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuccess }) => {
     const [dirty, setDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -46,7 +46,9 @@ export const ProjectSettings: FC<Props> = memo(({ onChange, onSuccess }) => {
                 setDirty(false);
                 onSuccess();
             } catch (e) {
-                setError(resolveErrorMessage(e));
+                setError(resolveErrorMessage(e) ?? 'Failed to update project settings');
+            } finally {
+                setIsSaving(false);
             }
 
             if (project?.id === container.id) {
@@ -57,8 +59,6 @@ export const ProjectSettings: FC<Props> = memo(({ onChange, onSuccess }) => {
                     }) as Container,
                 });
             }
-
-            setIsSaving(false);
         },
         [api, container, dispatch, isSaving, onSuccess]
     );
@@ -74,7 +74,7 @@ export const ProjectSettings: FC<Props> = memo(({ onChange, onSuccess }) => {
 
                 {!!error && <Alert>{error}</Alert>}
 
-                <form className="form-horizontal" onSubmit={onSubmit}>
+                <form className="project-settings-form form-horizontal" onSubmit={onSubmit}>
                     <ProjectProperties
                         defaultLabel={container.title}
                         defaultName={container.name}

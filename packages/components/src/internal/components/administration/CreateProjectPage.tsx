@@ -19,13 +19,13 @@ import { IDNameSettings } from '../settings/NameIdSettings';
 
 import { ProjectProperties } from './ProjectProperties';
 
-interface Props {
+export interface CreateProjectContainerProps {
     api: FolderAPIWrapper;
     onCancel: () => void;
     onCreated: (project: Container) => void;
 }
 
-export const CreateProjectContainer: FC<Props> = memo(props => {
+export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(props => {
     const { api, onCancel, onCreated } = props;
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -62,7 +62,7 @@ export const CreateProjectContainer: FC<Props> = memo(props => {
 
     return (
         <div className="create-project-container">
-            <form onSubmit={onSubmit}>
+            <form className="create-project-form" onSubmit={onSubmit}>
                 <div className="panel panel-default">
                     <div className="panel-body">
                         {!!error && <Alert>{error}</Alert>}
@@ -111,8 +111,9 @@ export const CreateProjectPage: FC<WithRouterProps> = memo(({ router }) => {
         (project: Container) => {
             router.replace(AppURL.create('admin', 'projects').toString());
 
-            const { controllerName } = getCurrentAppProperties();
-            const projectURL = ActionURL.buildURL(controllerName, 'app.view', project.path);
+            const appProps = getCurrentAppProperties();
+            if (!appProps?.controllerName) return;
+            const projectURL = ActionURL.buildURL(appProps.controllerName, 'app.view', project.path);
             const projectPermsURL = projectURL + AppURL.create('admin', 'permissions').toHref();
 
             createNotification({

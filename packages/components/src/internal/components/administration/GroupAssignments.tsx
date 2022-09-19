@@ -91,7 +91,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         const trimmedName = newGroupName.trim();
         if (
             trimmedName in groupMembership ||
-            Object.values(groupMembership).some(group => group.groupName === trimmedName)
+            Object.values(groupMembership).some(group => group.groupName.toLowerCase() === trimmedName.toLowerCase())
         ) {
             setErrorMsg(`Group ${trimmedName} already exists.`);
         } else {
@@ -203,6 +203,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
                             members={groupMembership[selectedPrincipal?.userId]?.members}
+                            isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === 'sg'}
                         />
                     ) : (
                         <UserDetailsPanel

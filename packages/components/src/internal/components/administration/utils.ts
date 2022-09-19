@@ -14,7 +14,7 @@ export function showPremiumFeatures(): boolean {
 }
 
 export function createGroupedOptions(principals: List<Principal>): any {
-    return principals.reduce(
+    const options = principals.reduce(
         (prev, curr) => {
             if (curr.isSiteGroup) {
                 prev[0].options.push(curr);
@@ -40,4 +40,12 @@ export function createGroupedOptions(principals: List<Principal>): any {
             },
         ]
     );
+
+    // If there are no Site Groups, label 'Project Groups' as 'Groups'
+    if (options[0].options.length === 0) {
+        options.shift();
+        options[0].label = 'Groups';
+    }
+
+    return options;
 }

@@ -167,8 +167,7 @@ const getGroupMembership = (groups: FetchedGroup[], groupMemberships): GroupMemb
 };
 
 export const fetchGroupMembership = async (container: Container, api: SecurityAPIWrapper): Promise<GroupMembership> => {
-    const fetchedGroups = await api.fetchGroups(getProjectPath(container.path));
-    const groups = fetchedGroups?.filter(group => !group.isSystemGroup);
+    const groups = await api.fetchGroups(getProjectPath(container.path));
     const groupMemberships = await api.getGroupMemberships();
     return getGroupMembership(groups, groupMemberships);
 };

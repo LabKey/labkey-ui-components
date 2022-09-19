@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, memo, SetStateAction, useCallback, useMemo } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { List } from 'immutable';

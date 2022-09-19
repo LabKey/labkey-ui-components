@@ -19,6 +19,7 @@ import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { MembersList } from './MembersList';
 
 interface Props {
+    isSiteGroup: boolean;
     members?: Member[];
     policy: SecurityPolicy;
     principal: Principal;
@@ -26,7 +27,7 @@ interface Props {
 }
 
 export const GroupDetailsPanel: FC<Props> = memo(props => {
-    const { principal, members } = props;
+    const { principal, members, isSiteGroup } = props;
     const [created, setCreated] = useState<string>('');
 
     const loadWhenCreated = useCallback(async () => {
@@ -63,6 +64,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
 
                         <hr className="principal-hr" />
                         <UserProperties prop={created} title="Created" />
+                        {isSiteGroup && <UserProperties prop="true" title="Site Group" />}
 
                         <EffectiveRolesList {...props} userId={principal.userId} />
                         <MembersList members={members} />

@@ -16,10 +16,10 @@ import { SCHEMAS } from '../../schemas';
 import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
 import { FileInput } from '../forms/input/FileInput';
 import { Alert } from '../base/Alert';
-import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
+import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { getUserDetailsRowData, getUserGroups, updateUserDetails } from './actions';
+import { getUserDetailsRowData, updateUserDetails } from './actions';
 
 const FIELDS_TO_EXCLUDE = List<string>([
     'userid',
@@ -39,7 +39,6 @@ const DEFAULT_AVATAR_PATH = '/_images/defaultavatar.png';
 
 interface State {
     avatar: File;
-    groups: string;
     hasError: boolean;
     queryInfo: QueryInfo;
     reloadRequired: boolean;
@@ -63,11 +62,10 @@ export class UserProfile extends PureComponent<Props, State> {
             removeCurrentAvatar: false,
             reloadRequired: false,
             hasError: false,
-            groups: undefined,
         };
     }
 
-    componentDidMount = async (): Promise<void> => {
+    componentDidMount = (): void => {
         getQueryDetails(SCHEMAS.CORE_TABLES.USERS)
             .then(queryInfo => {
                 this.setState(() => ({ queryInfo }));
@@ -76,15 +74,6 @@ export class UserProfile extends PureComponent<Props, State> {
                 console.error(reason);
                 this.setState(() => ({ hasError: true }));
             });
-
-        try {
-            const groupsResult = await getUserGroups(this.props.userProperties.userid);
-            const groups = groupsResult.join(', ');
-            this.setState(() => ({ groups }));
-        } catch (e) {
-            console.error(resolveErrorMessage(e) ?? 'Failed to load group data');
-            this.setState(() => ({ hasError: true }));
-        }
     };
 
     columnFilter = (col: QueryColumn): boolean => {
@@ -125,15 +114,6 @@ export class UserProfile extends PureComponent<Props, State> {
 
     renderSectionTitle(title: string) {
         return <p className="user-section-header">{title}</p>;
-    }
-
-    footer() {
-        return (
-            <div className="form-group row">
-                <label className="control-label col-sm-3 text-left col-xs-12"> Groups </label>
-                <div className="col-sm-9 col-md-9 col-xs-12">{this.state.groups}</div>
-            </div>
-        );
     }
 
     renderForm() {
@@ -188,7 +168,6 @@ export class UserProfile extends PureComponent<Props, State> {
                     onSuccess={this.onSuccess}
                     onHide={onCancel}
                     disabledFields={DISABLED_FIELDS}
-                    footer={this.footer()}
                     showErrorsAtBottom
                 />
             </>

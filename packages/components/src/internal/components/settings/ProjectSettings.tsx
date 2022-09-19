@@ -1,11 +1,12 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 
 import { useAppContext } from '../../AppContext';
-import { useServerContext } from '../base/ServerContext';
+import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
 import { ProjectProperties } from '../administration/ProjectProperties';
 import { ProjectSettingsOptions } from '../security/APIWrapper';
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
+import { Container } from '../base/models/Container';
 
 interface Props {
     onChange: () => void;
@@ -18,6 +19,7 @@ export const ProjectSettings: FC<Props> = memo(({ onChange, onSuccess }) => {
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const { api } = useAppContext();
     const { container, user } = useServerContext();
+    const dispatch = useServerContextDispatch();
 
     const onChange_ = useCallback(() => {
         setDirty(true);
@@ -31,24 +33,34 @@ export const ProjectSettings: FC<Props> = memo(({ onChange, onSuccess }) => {
             if (isSaving) return;
             setIsSaving(true);
 
-            const formData = new FormData(evt.target);
-            const options: ProjectSettingsOptions = {
-                label: formData.get('label') as string,
-                name: formData.get('name') as string,
-                nameAsLabel: !!formData.get('nameAsLabel'),
-            };
-
+            let project: Container;
             try {
-                await api.security.renameProject(options);
+                const formData = new FormData(evt.target);
+                const options: ProjectSettingsOptions = {
+                    label: formData.get('label') as string,
+                    name: formData.get('name') as string,
+                    nameAsLabel: !!formData.get('nameAsLabel'),
+                };
+
+                project = await api.security.renameProject(options);
                 setDirty(false);
                 onSuccess();
             } catch (e) {
                 setError(resolveErrorMessage(e));
             }
 
+            if (project && project.path === container.path) {
+                dispatch({
+                    container: container.merge({
+                        name: project.name,
+                        title: project.title,
+                    }) as Container,
+                });
+            }
+
             setIsSaving(false);
         },
-        [api, onSuccess, isSaving]
+        [api, container, dispatch, isSaving, onSuccess]
     );
 
     if (container.isProject || !user.isAdmin) {

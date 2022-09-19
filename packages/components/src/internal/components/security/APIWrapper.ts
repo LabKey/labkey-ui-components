@@ -54,7 +54,7 @@ export interface SecurityAPIWrapper {
         principalIds: number[],
         projectPath: string
     ) => Promise<RemoveGroupMembersResponse>;
-    renameProject: (options: ProjectSettingsOptions) => void;
+    renameProject: (options: ProjectSettingsOptions) => Promise<Container>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
@@ -198,14 +198,14 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    renameProject = (options: ProjectSettingsOptions): Promise<void> => {
+    renameProject = (options: ProjectSettingsOptions): Promise<Container> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL('sampleManager', 'renameProject.api'),
                 method: 'POST',
                 jsonData: options,
-                success: Utils.getCallbackWrapper(() => {
-                    resolve();
+                success: Utils.getCallbackWrapper(({ data }) => {
+                    resolve(new Container(data.project));
                 }),
                 failure: handleRequestFailure(reject, 'Failed to rename project'),
             });

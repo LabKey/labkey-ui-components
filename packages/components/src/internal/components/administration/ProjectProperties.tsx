@@ -85,8 +85,8 @@ export const ProjectProperties: FC<Props> = memo(props => {
                             defaultValue={nameIsLabel ? name : defaultLabel}
                             key="uncontrolled"
                             name="label"
-                            type="text"
                             onChange={onTitleChange}
+                            type="text"
                         />
                     )}
                 </Col>

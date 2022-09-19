@@ -1,17 +1,10 @@
 import { Map } from 'immutable';
-import { ActionURL, Ajax, Query, Security, Utils } from '@labkey/api';
+import { Query, Security } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
 import { fetchContainerSecurityPolicy, UserLimitSettings, getUserLimitSettings } from '../permissions/actions';
 import { Principal, SecurityPolicy } from '../permissions/models';
 import { Row } from '../../query/selectRows';
-import { handleRequestFailure } from '../../util/utils';
-
-export interface ProjectSettingsOptions {
-    label?: string;
-    name: string;
-    nameAsLabel?: boolean;
-}
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
 
@@ -38,7 +31,6 @@ export interface RemoveGroupMembersResponse {
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
-    createProject: (options: ProjectSettingsOptions) => Promise<Container>;
     deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
     fetchGroups: (projectPath: string) => Promise<FetchedGroup[]>;
@@ -54,7 +46,6 @@ export interface SecurityAPIWrapper {
         principalIds: number[],
         projectPath: string
     ) => Promise<RemoveGroupMembersResponse>;
-    renameProject: (options: ProjectSettingsOptions) => Promise<Container>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
@@ -91,20 +82,6 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
                     console.error('Failed to create group', error);
                     reject(error);
                 },
-            });
-        });
-    };
-
-    createProject = (options: ProjectSettingsOptions): Promise<Container> => {
-        return new Promise((resolve, reject) => {
-            Ajax.request({
-                url: ActionURL.buildURL('sampleManager', 'createProject.api'),
-                method: 'POST',
-                jsonData: options,
-                success: Utils.getCallbackWrapper(({ data }) => {
-                    resolve(new Container(data));
-                }),
-                failure: handleRequestFailure(reject, 'Failed to create project'),
             });
         });
     };
@@ -197,20 +174,6 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
             });
         });
     };
-
-    renameProject = (options: ProjectSettingsOptions): Promise<Container> => {
-        return new Promise((resolve, reject) => {
-            Ajax.request({
-                url: ActionURL.buildURL('sampleManager', 'renameProject.api'),
-                method: 'POST',
-                jsonData: options,
-                success: Utils.getCallbackWrapper(({ data }) => {
-                    resolve(new Container(data.project));
-                }),
-                failure: handleRequestFailure(reject, 'Failed to rename project'),
-            });
-        });
-    };
 }
 
 function recurseContainerHierarchy(data: Security.ContainerHierarchy, container: Container): Container[] {
@@ -230,7 +193,6 @@ export function getSecurityTestAPIWrapper(
     return {
         addGroupMembers: mockFn(),
         createGroup: mockFn(),
-        createProject: mockFn(),
         deleteGroup: mockFn(),
         fetchContainers: mockFn(),
         fetchGroups: mockFn(),
@@ -238,7 +200,6 @@ export function getSecurityTestAPIWrapper(
         getGroupMemberships: mockFn(),
         getUserLimitSettings: mockFn(),
         removeGroupMembers: mockFn(),
-        renameProject: mockFn(),
         ...overrides,
     };
 }

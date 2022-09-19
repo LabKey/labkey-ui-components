@@ -1048,6 +1048,10 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "entity": EntityServerAPIWrapper {
           "getDataOperationConfirmationData": [Function],
         },
+        "folder": ServerFolderAPIWrapper {
+          "createProject": [Function],
+          "renameProject": [Function],
+        },
         "labelprinting": LabelPrintingServerAPIWrapper {
           "fetchBarTenderConfiguration": [Function],
           "printBarTenderLabels": [Function],
@@ -1081,7 +1085,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "security": ServerSecurityAPIWrapper {
           "addGroupMembers": [Function],
           "createGroup": [Function],
-          "createProject": [Function],
           "deleteGroup": [Function],
           "fetchContainers": [Function],
           "fetchGroups": [Function],
@@ -1089,7 +1092,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "getGroupMemberships": [Function],
           "getUserLimitSettings": [Function],
           "removeGroupMembers": [Function],
-          "renameProject": [Function],
         },
       }
     }

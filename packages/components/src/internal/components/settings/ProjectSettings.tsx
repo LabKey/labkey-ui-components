@@ -3,7 +3,7 @@ import React, { FC, memo, useCallback, useState } from 'react';
 import { useAppContext } from '../../AppContext';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
 import { ProjectProperties } from '../administration/ProjectProperties';
-import { ProjectSettingsOptions } from '../security/APIWrapper';
+import { ProjectSettingsOptions } from '../container/FolderAPIWrapper';
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
@@ -42,7 +42,7 @@ export const ProjectSettings: FC<Props> = memo(({ onChange, onSuccess }) => {
                     nameAsLabel: !!formData.get('nameAsLabel'),
                 };
 
-                project = await api.security.renameProject(options);
+                project = await api.folder.renameProject(options);
                 setDirty(false);
                 onSuccess();
             } catch (e) {

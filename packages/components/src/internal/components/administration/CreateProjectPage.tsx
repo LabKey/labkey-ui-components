@@ -6,7 +6,7 @@ import { Page } from '../base/Page';
 import { useServerContext } from '../base/ServerContext';
 import { Alert } from '../base/Alert';
 import { AppContext, useAppContext } from '../../AppContext';
-import { ProjectSettingsOptions, SecurityAPIWrapper } from '../security/APIWrapper';
+import { FolderAPIWrapper, ProjectSettingsOptions } from '../container/FolderAPIWrapper';
 import { resolveErrorMessage } from '../../util/messaging';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { Container } from '../base/models/Container';
@@ -14,11 +14,13 @@ import { AppURL } from '../../url/AppURL';
 
 import { getCurrentAppProperties } from '../../app/utils';
 
-import { ProjectProperties } from './ProjectProperties';
 import { useFolderMenuContext } from '../navigation/hooks';
+import { IDNameSettings } from '../settings/NameIdSettings';
+
+import { ProjectProperties } from './ProjectProperties';
 
 interface Props {
-    api: SecurityAPIWrapper;
+    api: FolderAPIWrapper;
     onCancel: () => void;
     onCreated: (project: Container) => void;
 }
@@ -36,9 +38,11 @@ export const CreateProjectContainer: FC<Props> = memo(props => {
 
             const formData = new FormData(evt.target);
             const options: ProjectSettingsOptions = {
+                allowUserSpecifiedNames: !!formData.get('allowUserSpecifiedNames'),
                 label: formData.get('label') as string,
                 name: formData.get('name') as string,
                 nameAsLabel: !!formData.get('nameAsLabel'),
+                prefix: formData.get('prefix') as string,
             };
 
             let project: Container;
@@ -68,7 +72,9 @@ export const CreateProjectContainer: FC<Props> = memo(props => {
 
                             <ProjectProperties autoFocus />
 
-                            {/* <div className="form-subtitle">ID/Name Settings</div>*/}
+                            <div className="form-subtitle">ID/Name Settings</div>
+
+                            <IDNameSettings />
 
                             {/* Dummy submit button so browsers trigger onSubmit with enter key */}
                             <button type="submit" className="dummy-input" tabIndex={-1} />
@@ -126,7 +132,7 @@ export const CreateProjectPage: FC<WithRouterProps> = memo(({ router }) => {
 
     return (
         <Page notAuthorized={!user.isAdmin} hasHeader={false} title="Create Project">
-            <CreateProjectContainer api={api.security} onCancel={router.goBack} onCreated={onCreated} />
+            <CreateProjectContainer api={api.folder} onCancel={router.goBack} onCreated={onCreated} />
         </Page>
     );
 });

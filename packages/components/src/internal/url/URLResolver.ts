@@ -472,6 +472,8 @@ export const FREEZER_ITEM_SAMPLE_MAPPER = new ActionMapper('query', 'executeQuer
     return false;
 });
 
+// This mapper overrides the URL provided for the core.ProjectManagement query.
+// We're linking to #/admin/settings within a specific folder (which may be outside the current folder context).
 export const PROJECT_MGMT_MAPPER = new ActionMapper('project', 'begin', (row, column, schema, query) => {
     const url = row.get('url');
 
@@ -483,7 +485,8 @@ export const PROJECT_MGMT_MAPPER = new ActionMapper('project', 'begin', (row, co
         return baseURL + AppURL.create('admin', 'settings').toHref();
     }
 
-    return false;
+    // Allow resolution of 'project-begin' to fall through to other mappers
+    return undefined;
 });
 
 export const URL_MAPPERS = {

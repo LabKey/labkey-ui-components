@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.218.2
+*Released*: 20 September 2022
+* TabbedGridPanel fix to not assume that component is wrapped in NotificationsContextProvider
+
 ### version 2.218.1
 *Released*: 16 September 2022
 * Issue 46256: Custom view handling of slash in fieldKey

@@ -2,7 +2,13 @@ import React from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { ReactWrapper } from 'enzyme';
 
-import { TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../../userFixtures';
+import {
+    TEST_USER_AUTHOR,
+    TEST_USER_EDITOR,
+    TEST_USER_EDITOR_WITHOUT_DELETE,
+    TEST_USER_READER,
+    TEST_USER_STORAGE_EDITOR,
+} from '../../userFixtures';
 import { mountWithServerContext } from '../../testHelpers';
 
 import { EntityLineageEditMenuItem } from '../entities/EntityLineageEditMenuItem';
@@ -75,6 +81,14 @@ describe('SamplesEditButton', () => {
         wrapper.unmount();
     });
 
+    test('editor without delete', () => {
+        const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
+            user: TEST_USER_EDITOR_WITHOUT_DELETE,
+        });
+        validate(wrapper, true, 2, 4, 5, 0);
+        wrapper.unmount();
+    });
+
     test('author', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_AUTHOR,
@@ -87,7 +101,7 @@ describe('SamplesEditButton', () => {
         const wrapper = mountWithServerContext(<SamplesEditButton {...DEFAULT_PROPS} />, {
             user: TEST_USER_STORAGE_EDITOR,
         });
-        validate(wrapper, true, 0, 1, 2, 0);
+        validate(wrapper, true, 0, 1, 1, 0);
     });
 
     test('reader', () => {

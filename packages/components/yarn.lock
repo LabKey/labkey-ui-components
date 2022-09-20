@@ -1652,10 +1652,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@labkey/api@~1.15.0":
-  version "1.15.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.15.0.tgz#39911ac243ca3c2ada9f2ae07a43213e8907e00d"
-  integrity sha1-OZEawkPKPCranyrgekMhPokH4A0=
+"@labkey/api@1.16.0-fb-editorWithoutDelete.0":
+  version "1.16.0-fb-editorWithoutDelete.0"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.16.0-fb-editorWithoutDelete.0.tgz#a53236dea6a24b47b1c05f2d9987c5e1729e5556"
+  integrity sha512-DIEDew8O1Hzg3CF7QVwL1vnKbUHf0fEJbKcE4y2Lk8JP0LQhtAD4EDvBrz6oodbQKbgbd2IeeTfUUHLXmRbmGw==
 
 "@labkey/build@6.2.0":
   version "6.2.0"

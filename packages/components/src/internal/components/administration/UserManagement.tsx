@@ -16,7 +16,7 @@ import { AppURL } from '../../url/AppURL';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { UsersGridPanel } from '../user/UsersGridPanel';
 
-import { useServerContext } from '../base/ServerContext';
+import { ModuleContext, useServerContext } from '../base/ServerContext';
 
 import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
@@ -36,7 +36,8 @@ export function getNewUserRoles(
     user: User,
     container: Partial<Container>,
     project: Project,
-    extraRoles?: string[][]
+    extraRoles?: string[][],
+    moduleContext?: ModuleContext
 ): Array<Record<string, any>> {
     const roles = [
         {
@@ -49,7 +50,7 @@ export function getNewUserRoles(
             label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.EditorWithoutDelete),
         },
     ];
-    if (showPremiumFeatures()) {
+    if (showPremiumFeatures(moduleContext)) {
         roles.push({
             id: PermissionRoles.FolderAdmin.toString(),
             label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.FolderAdmin),

@@ -151,11 +151,11 @@ export function isOntologyEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('Ontology', moduleContext);
 }
 
-export function isProductNavigationEnabled(productId: string): boolean {
+export function isProductNavigationEnabled(productId: string, moduleContext?: ModuleContext): boolean {
     if (productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
-        return isSampleManagerEnabled() && !isBiologicsEnabled();
+        return isSampleManagerEnabled(moduleContext) && !isBiologicsEnabled(moduleContext);
     } else if (productId === BIOLOGICS_APP_PROPERTIES.productId) {
-        return isBiologicsEnabled();
+        return isBiologicsEnabled(moduleContext);
     }
 
     return false;

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { List, Map } from 'immutable';
 
 import {
@@ -67,10 +65,9 @@ import {
 
 describe('getMenuSectionConfigs', () => {
     test('LKS starter enabled', () => {
-        LABKEY.moduleContext = {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             ...TEST_LKS_STARTER_MODULE_CONTEXT,
-        };
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
+        });
 
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
@@ -92,10 +89,9 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('sampleManager starter enabled', () => {
-        LABKEY.moduleContext = {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             ...TEST_LKSM_STARTER_MODULE_CONTEXT,
-        };
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
+        });
 
         expect(configs.size).toBe(4);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
@@ -114,10 +110,9 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('sampleManager professional enabled', () => {
-        LABKEY.moduleContext = {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager', {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-        };
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, 'sampleManager');
+        });
 
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
@@ -143,12 +138,11 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('freezerManager enabled', () => {
-        LABKEY.moduleContext = {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId, {
             inventory: {
                 productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
             },
-        };
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId);
+        });
 
         expect(configs.size).toBe(2);
         expect(configs.hasIn([0, FREEZERS_KEY])).toBeTruthy();
@@ -158,7 +152,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('SM, ELN, and FM enabled, LKB current app', () => {
-        LABKEY.moduleContext = {
+        const moduleContext = {
             api: {
                 moduleNames: ['biologics', 'samplemanagement', 'study', 'premium', 'professional', 'labbook', 'assay'],
             },
@@ -176,7 +170,7 @@ describe('getMenuSectionConfigs', () => {
             },
         };
 
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId);
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, moduleContext);
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, 'registry'])).toBeTruthy();
         expect(configs.getIn([0, 'registry', 'seeAllURL'])).toEqual('#/registry');
@@ -206,7 +200,7 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('LKB with requests enabled', () => {
-        LABKEY.moduleContext = {
+        const moduleContext = {
             api: {
                 moduleNames: ['biologics', 'samplemanagement', 'study', 'premium', 'professional', 'labbook', 'assay'],
             },
@@ -225,7 +219,7 @@ describe('getMenuSectionConfigs', () => {
             },
         };
 
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId);
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, moduleContext);
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, 'registry'])).toBeTruthy();
         expect(configs.getIn([0, 'registry', 'seeAllURL'])).toEqual('#/registry');
@@ -254,11 +248,9 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('SM starter enabled, FM current app', () => {
-        LABKEY.moduleContext = {
+        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId, {
             ...TEST_LKSM_STARTER_MODULE_CONTEXT,
-        };
-
-        const configs = getMenuSectionConfigs(TEST_USER_EDITOR, FREEZER_MANAGER_APP_PROPERTIES.productId);
+        });
         expect(configs.size).toBe(4);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
         expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual(
@@ -278,11 +270,9 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('SM professional, SM current app, storage editor', () => {
-        LABKEY.moduleContext = {
+        const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId, {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-        };
-
-        const configs = getMenuSectionConfigs(TEST_USER_STORAGE_EDITOR, SAMPLE_MANAGER_APP_PROPERTIES.productId);
+        });
         expect(configs.size).toBe(3);
         expect(configs.hasIn([0, SAMPLES_KEY])).toBeTruthy();
         expect(configs.getIn([0, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
@@ -300,11 +290,9 @@ describe('getMenuSectionConfigs', () => {
     });
 
     test('SM professional, SM current app, reader', () => {
-        LABKEY.moduleContext = {
+        const configs = getMenuSectionConfigs(TEST_USER_READER, 'sampleManager', {
             ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-        };
-
-        const configs = getMenuSectionConfigs(TEST_USER_READER, 'sampleManager');
+        });
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, SOURCES_KEY])).toBeTruthy();
         expect(configs.getIn([0, SOURCES_KEY, 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
@@ -330,15 +318,6 @@ describe('getMenuSectionConfigs', () => {
 });
 
 describe('utils', () => {
-    LABKEY.moduleContext = {
-        api: {
-            moduleNames: ['samplemanagement', 'study', 'premium'],
-        },
-        samplemanagement: {
-            productId: 'SampleManager',
-        },
-    };
-
     test('userCanDesignSourceTypes', () => {
         expect(userCanDesignSourceTypes(TEST_USER_GUEST)).toBeFalsy();
         expect(userCanDesignSourceTypes(TEST_USER_READER)).toBeFalsy();
@@ -374,205 +353,156 @@ describe('utils', () => {
     });
 
     test('isELNEnabled', () => {
-        LABKEY.moduleContext = {
-            api: { moduleNames: [] },
-        };
-        expect(isELNEnabled()).toBeFalsy();
-        LABKEY.moduleContext = {
-            api: { moduleNames: ['labbook'] },
-            core: {
-                productFeatures: [ProductFeature.ELN],
-            },
-        };
-        expect(isELNEnabled()).toBeTruthy();
+        expect(isELNEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(
+            isELNEnabled({
+                api: { moduleNames: ['labbook'] },
+                core: {
+                    productFeatures: [ProductFeature.ELN],
+                },
+            })
+        ).toBeTruthy();
     });
 
     test('isAssayEnabled', () => {
-        LABKEY.moduleContext = {
-            api: { moduleNames: [] },
-        };
-        expect(isAssayEnabled()).toBe(false);
-        LABKEY.moduleContext = {
-            api: { moduleNames: ['assay'] },
-            core: {
-                productFeatures: [],
-            },
-        };
-        expect(isAssayEnabled()).toBe(true); // LK Community
-        LABKEY.moduleContext = {
-            api: { moduleNames: [] },
-            core: {
-                productFeatures: [ProductFeature.Assay],
-            },
-        };
-        expect(isAssayEnabled()).toBe(false); // no assay module
-        LABKEY.moduleContext = {
-            api: { moduleNames: ['assay'] },
-            core: {
-                productFeatures: [ProductFeature.Assay],
-            },
-        };
-        expect(isAssayEnabled()).toBe(true); // assay module with assay feature
-        LABKEY.moduleContext = {
-            api: { moduleNames: ['assay', 'sampleManagement'] },
-            core: {
-                productFeatures: [ProductFeature.Assay],
-            },
-        };
-        expect(isAssayEnabled()).toBe(true); // LKSM Starter
-        LABKEY.moduleContext = {
-            api: { moduleNames: ['assay', 'sampleManagement', 'premium'] },
-            core: {
-                productFeatures: [ProductFeature.Assay],
-            },
-        };
-        expect(isAssayEnabled()).toBe(true); // LKS Starter
-        LABKEY.moduleContext = {
-            api: { moduleNames: ['assay', 'sampleManagement', 'premium', 'professional', 'labbook'] },
-            core: {
-                productFeatures: [ProductFeature.Assay],
-            },
-        };
-        expect(isAssayEnabled()).toBe(true); // LKS Professional
+        expect(
+            isAssayEnabled({
+                api: { moduleNames: [] },
+            })
+        ).toBeFalsy();
+        expect(
+            isAssayEnabled({
+                api: { moduleNames: ['assay'] },
+                core: {
+                    productFeatures: [],
+                },
+            })
+        ).toBeTruthy(); // LK Community
+        expect(
+            isAssayEnabled({
+                api: { moduleNames: [] },
+                core: {
+                    productFeatures: [ProductFeature.Assay],
+                },
+            })
+        ).toBeFalsy(); // no assay module
+        expect(
+            isAssayEnabled({
+                api: { moduleNames: ['assay'] },
+                core: {
+                    productFeatures: [ProductFeature.Assay],
+                },
+            })
+        ).toBeTruthy(); // assay module with assay feature
+        expect(
+            isAssayEnabled({
+                api: { moduleNames: ['assay', 'sampleManagement'] },
+                core: {
+                    productFeatures: [ProductFeature.Assay],
+                },
+            })
+        ).toBeTruthy(); // LKSM Starter
+        expect(
+            isAssayEnabled({
+                api: { moduleNames: ['assay', 'sampleManagement', 'premium'] },
+                core: {
+                    productFeatures: [ProductFeature.Assay],
+                },
+            })
+        ).toBeTruthy(); // LKS Starter
+        expect(
+            isAssayEnabled({
+                api: { moduleNames: ['assay', 'sampleManagement', 'premium', 'professional', 'labbook'] },
+                core: {
+                    productFeatures: [ProductFeature.Assay],
+                },
+            })
+        ).toBeTruthy(); // LKS Professional
     });
 
     test('isWorkflowEnabled', () => {
-        LABKEY.moduleContext = {
-            api: { moduleNames: [] },
-        };
-        expect(isWorkflowEnabled()).toBe(false);
-        LABKEY.moduleContext = {
-            api: { moduleNames: ['samplemanagement'] },
-            core: {
-                productFeatures: [],
-            },
-        };
-        expect(isWorkflowEnabled()).toBe(false);
-        LABKEY.moduleContext = {
-            api: { moduleNames: [] },
-            core: {
-                productFeatures: [ProductFeature.Workflow],
-            },
-        };
-        expect(isWorkflowEnabled()).toBe(false);
-        LABKEY.moduleContext = {
-            api: { moduleNames: ['samplemanagement'] },
-            core: {
-                productFeatures: [ProductFeature.Workflow],
-            },
-        };
-        expect(isWorkflowEnabled()).toBe(true);
+        expect(
+            isWorkflowEnabled({
+                api: { moduleNames: [] },
+            })
+        ).toBeFalsy();
+        expect(
+            isWorkflowEnabled({
+                api: { moduleNames: ['samplemanagement'] },
+                core: {
+                    productFeatures: [],
+                },
+            })
+        ).toBeFalsy();
+        expect(
+            isWorkflowEnabled({
+                api: { moduleNames: [] },
+                core: {
+                    productFeatures: [ProductFeature.Workflow],
+                },
+            })
+        ).toBeFalsy();
+        expect(
+            isWorkflowEnabled({
+                api: { moduleNames: ['samplemanagement'] },
+                core: {
+                    productFeatures: [ProductFeature.Workflow],
+                },
+            })
+        ).toBeTruthy();
     });
 
     test('isSampleManagerEnabled', () => {
-        LABKEY.moduleContext = {};
-        expect(isSampleManagerEnabled()).toBeFalsy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-        };
-        expect(isSampleManagerEnabled()).toBeFalsy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            samplemanagement: {},
-        };
-        expect(isSampleManagerEnabled()).toBeTruthy();
+        expect(isSampleManagerEnabled({})).toBeFalsy();
         expect(isSampleManagerEnabled({ inventory: {} })).toBeFalsy();
+        expect(isSampleManagerEnabled({ inventory: {}, samplemanagement: {} })).toBeTruthy();
     });
 
     test('isBiologicsEnabled', () => {
-        LABKEY.moduleContext = {};
-        expect(isBiologicsEnabled()).toBeFalsy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-        };
-        expect(isBiologicsEnabled()).toBeFalsy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            biologics: {},
-        };
-        expect(isBiologicsEnabled()).toBeTruthy();
+        expect(isBiologicsEnabled({})).toBeFalsy();
         expect(isBiologicsEnabled({ inventory: {} })).toBeFalsy();
+        expect(isBiologicsEnabled({ biologics: {}, inventory: {} })).toBeTruthy();
     });
 
     test('isFreezerManagementEnabled', () => {
-        LABKEY.moduleContext = {};
-        expect(isFreezerManagementEnabled()).toBeFalsy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-        };
-        expect(isFreezerManagementEnabled()).toBeTruthy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            samplemanagement: {},
-        };
-        expect(isFreezerManagementEnabled()).toBeTruthy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            samplemanagement: {},
-            biologics: {},
-        };
-        expect(isFreezerManagementEnabled()).toBeTruthy();
+        expect(isFreezerManagementEnabled({})).toBeFalsy();
+        expect(isFreezerManagementEnabled({ inventory: {} })).toBeTruthy();
+        expect(isFreezerManagementEnabled({ inventory: {}, samplemanagement: {} })).toBeTruthy();
+        expect(isFreezerManagementEnabled({ biologics: {}, inventory: {}, samplemanagement: {} })).toBeTruthy();
     });
 
     test('isSampleStatusEnabled', () => {
-        LABKEY.moduleContext = { api: { moduleNames: [] } };
-        expect(isSampleStatusEnabled()).toBeFalsy();
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-        expect(isSampleStatusEnabled()).toBeTruthy();
+        expect(isSampleStatusEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(isSampleStatusEnabled({ api: { moduleNames: ['samplemanagement'] } })).toBeTruthy();
     });
 
     test('isProductNavigationEnabled', () => {
-        LABKEY.moduleContext = {};
-        expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeFalsy();
-        expect(isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId)).toBeFalsy();
-        expect(isProductNavigationEnabled(FREEZER_MANAGER_APP_PROPERTIES.productId)).toBeFalsy();
-
-        LABKEY.moduleContext = {
-            samplemanagement: {},
-        };
-        expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeTruthy();
-
-        LABKEY.moduleContext = {
-            samplemanagement: {},
-            biologics: {},
-        };
-        expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId)).toBeFalsy();
-        expect(isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId)).toBeTruthy();
+        expect(isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, {})).toBeFalsy();
+        expect(isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId, {})).toBeFalsy();
+        expect(isProductNavigationEnabled(FREEZER_MANAGER_APP_PROPERTIES.productId, {})).toBeFalsy();
+        expect(
+            isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, { samplemanagement: {} })
+        ).toBeTruthy();
+        expect(
+            isProductNavigationEnabled(SAMPLE_MANAGER_APP_PROPERTIES.productId, { biologics: {}, samplemanagement: {} })
+        ).toBeFalsy();
+        expect(
+            isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId, { biologics: {}, samplemanagement: {} })
+        ).toBeTruthy();
     });
 
     test('hasPremiumModule', () => {
-        LABKEY.moduleContext = {};
-        expect(hasPremiumModule()).toBeFalsy();
-
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-        expect(hasPremiumModule()).toBeFalsy();
-
-        LABKEY.moduleContext = { api: { moduleNames: ['api', 'core', 'premium'] } };
-        expect(hasPremiumModule()).toBeTruthy();
-
-        LABKEY.moduleContext = { api: {} };
-        expect(hasPremiumModule()).toBeFalsy();
+        expect(hasPremiumModule({})).toBeFalsy();
+        expect(hasPremiumModule({ api: { moduleNames: ['samplemanagement'] } })).toBeFalsy();
+        expect(hasPremiumModule({ api: { moduleNames: ['api', 'core', 'premium'] } })).toBeTruthy();
+        expect(hasPremiumModule({ api: {} })).toBeFalsy();
     });
 
     test('isCommunityDistribution', () => {
-        LABKEY.moduleContext = {};
-        expect(isCommunityDistribution()).toBeTruthy();
-
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-        expect(isCommunityDistribution()).toBeFalsy();
-
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
-        expect(isCommunityDistribution()).toBeFalsy();
-
-        LABKEY.moduleContext = { api: { moduleNames: ['api'] } };
-        expect(isCommunityDistribution()).toBeTruthy();
+        expect(isCommunityDistribution({})).toBeTruthy();
+        expect(isCommunityDistribution({ api: { moduleNames: ['samplemanagement'] } })).toBeFalsy();
+        expect(isCommunityDistribution({ api: { moduleNames: ['premium'] } })).toBeFalsy();
+        expect(isCommunityDistribution({ api: { moduleNames: ['api'] } })).toBeTruthy();
     });
 
     test('isProjectContainer', () => {
@@ -620,40 +550,32 @@ describe('utils', () => {
     });
 
     test('isPremiumProductEnabled', () => {
-        LABKEY.moduleContext = {};
         expect(isPremiumProductEnabled({})).toBeFalsy();
         expect(isPremiumProductEnabled({ inventory: {} })).toBeFalsy();
         expect(isPremiumProductEnabled({ samplemanagement: {}, inventory: {} })).toBeTruthy();
         expect(isPremiumProductEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
-        LABKEY.moduleContext = { inventory: {} };
-        expect(isPremiumProductEnabled()).toBeFalsy();
-        LABKEY.moduleContext = { samplemanagement: {} };
-        expect(isPremiumProductEnabled()).toBeTruthy();
+        expect(isPremiumProductEnabled({ inventory: {} })).toBeFalsy();
+        expect(isPremiumProductEnabled({ samplemanagement: {} })).toBeTruthy();
     });
 
     test('sampleManagerIsPrimaryApp', () => {
-        LABKEY.moduleContext = {};
-        expect(sampleManagerIsPrimaryApp()).toBeFalsy();
+        expect(sampleManagerIsPrimaryApp({})).toBeFalsy();
         expect(sampleManagerIsPrimaryApp({ inventory: {} })).toBeFalsy();
         expect(sampleManagerIsPrimaryApp({ samplemanagement: {}, inventory: {} })).toBeTruthy();
         expect(sampleManagerIsPrimaryApp({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeFalsy();
-        LABKEY.moduleContext = { samplemanagement: {} };
-        expect(sampleManagerIsPrimaryApp()).toBeTruthy();
+        expect(sampleManagerIsPrimaryApp({ samplemanagement: {} })).toBeTruthy();
     });
 
     test('biologcisIsPrimaryApp', () => {
-        LABKEY.moduleContext = {};
-        expect(biologicsIsPrimaryApp()).toBeFalsy();
+        expect(biologicsIsPrimaryApp({})).toBeFalsy();
         expect(biologicsIsPrimaryApp({ samplemanagement: {} })).toBeFalsy();
         expect(biologicsIsPrimaryApp({ inventory: {} })).toBeFalsy();
         expect(biologicsIsPrimaryApp({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
-        LABKEY.moduleContext = { biologics: {}, samplemanagement: {} };
-        expect(biologicsIsPrimaryApp()).toBeTruthy();
+        expect(biologicsIsPrimaryApp({ biologics: {}, samplemanagement: {} })).toBeTruthy();
     });
 
     test('getPrimaryAppProperties', () => {
-        LABKEY.moduleContext = {};
-        expect(getPrimaryAppProperties()).toBe(undefined);
+        expect(getPrimaryAppProperties({})).toBe(undefined);
         expect(getPrimaryAppProperties({ inventory: {} })).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
         expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {} })).toStrictEqual(
             SAMPLE_MANAGER_APP_PROPERTIES
@@ -885,7 +807,7 @@ describe('addSourcesSectionConfig', () => {
         expect(sectionConfig.emptyText).toBe('No source types have been defined');
         expect(sectionConfig.emptyURL).toBe(undefined);
         expect(sectionConfig.seeAllURL).toBe('/labkey/test/app.view#/sources?viewAs=grid');
-        expect(sectionConfig.showActiveJobIcon).toBe(true);
+        expect(sectionConfig.showActiveJobIcon).toBeTruthy();
         expect(sectionConfig.iconURL).toBe('/labkey/_images/source_type.svg');
         expect(sectionConfig.headerURL).toBe(undefined);
         expect(sectionConfig.headerText).toBe(undefined);
@@ -925,7 +847,7 @@ describe('addSamplesSectionConfig', () => {
         expect(sectionConfig.emptyText).toBe('No sample types have been defined');
         expect(sectionConfig.emptyURL).toBe(undefined);
         expect(sectionConfig.seeAllURL).toBe('/labkey/samplemanager/app.view#/samples?viewAs=cards');
-        expect(sectionConfig.showActiveJobIcon).toBe(true);
+        expect(sectionConfig.showActiveJobIcon).toBeTruthy();
         expect(sectionConfig.iconURL).toBe('/labkey/_images/samples.svg');
         expect(sectionConfig.headerURL).toBe(undefined);
         expect(sectionConfig.headerText).toBe(undefined);
@@ -952,7 +874,7 @@ describe('addAssaySectionConfig', () => {
         expect(sectionConfig.emptyText).toBe('No assays have been defined');
         expect(sectionConfig.emptyURL).toBe(undefined);
         expect(sectionConfig.seeAllURL).toBe('/labkey/test/app.view#/assays?viewAs=grid');
-        expect(sectionConfig.showActiveJobIcon).toBe(true);
+        expect(sectionConfig.showActiveJobIcon).toBeTruthy();
         expect(sectionConfig.iconURL).toBe('/labkey/_images/assay.svg');
         expect(sectionConfig.headerURL).toBe(undefined);
         expect(sectionConfig.headerText).toBe(undefined);

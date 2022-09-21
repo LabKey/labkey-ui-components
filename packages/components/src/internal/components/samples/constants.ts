@@ -5,7 +5,6 @@ import { IDomainField } from '../domainproperties/models';
 import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
 
 import { FindField } from './models';
-import { naturalSortByProperty } from '../../../public/sort';
 
 export const SAMPLE_INVENTORY_ITEM_SELECTION_KEY = 'inventoryItems';
 
@@ -218,5 +217,9 @@ export const COMMON_AUDIT_QUERIES = [
 
 export const PROJECT_AUDIT_QUERY = { value: 'containerauditevent', label: 'Project Events' };
 export const ASSAY_AUDIT_QUERY = { value: 'experimentauditevent', label: 'Assay Events' };
-export const WORKFLOW_AUDIT_QUERY = { value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true };
+export const WORKFLOW_AUDIT_QUERY = {
+    value: 'samplesworkflowauditevent',
+    label: 'Sample Workflow Events',
+    hasDetail: true,
+};
 export const SOURCE_AUDIT_QUERY = { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true };

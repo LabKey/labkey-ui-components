@@ -20,12 +20,13 @@ export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
         tabs = tabs.push('Permissions');
         tabs = tabs.push('Groups');
         tabs = tabs.push('Settings');
+        tabs = tabs.push('Audit Logs');
     }
 
     return tabs
         .map(text => ({
             text,
-            url: AppURL.create('admin', text.toLowerCase()),
+            url: text === 'Audit Logs' ? AppURL.create('audit', 'sampletimelineevent') : AppURL.create('admin', text.toLowerCase()),
         }))
         .toList();
 };

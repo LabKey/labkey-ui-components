@@ -226,7 +226,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
     };
 
     render = (): ReactNode => {
-        const title = 'Audit Log';
+        const title = 'Audit Logs';
         const { auditQueries } = this.state;
 
         return (

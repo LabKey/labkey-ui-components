@@ -6,10 +6,10 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 export interface ProjectSettingsOptions {
     allowUserSpecifiedNames?: boolean;
-    label?: string;
     name: string;
-    nameAsLabel?: boolean;
+    nameAsTitle?: boolean;
     prefix?: string;
+    title?: string;
 }
 
 export interface FolderAPIWrapper {

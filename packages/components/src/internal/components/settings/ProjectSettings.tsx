@@ -37,9 +37,9 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
             try {
                 const formData = new FormData(evt.target);
                 const options: ProjectSettingsOptions = {
-                    label: formData.get('label') as string,
                     name: formData.get('name') as string,
-                    nameAsLabel: !!formData.get('nameAsLabel'),
+                    nameAsTitle: !!formData.get('nameAsTitle'),
+                    title: formData.get('title') as string,
                 };
 
                 project = await api.folder.renameProject(options);
@@ -78,8 +78,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(({ onChange, onSuc
 
                 <form className="project-settings-form form-horizontal" onSubmit={onSubmit}>
                     <ProjectProperties
-                        defaultLabel={container.title}
                         defaultName={container.name}
+                        defaultTitle={container.title}
                         onChange={onChange_}
                     />
 

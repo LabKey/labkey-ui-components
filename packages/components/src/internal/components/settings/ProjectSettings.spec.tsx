@@ -71,8 +71,8 @@ describe('ProjectSettings', () => {
 
         const properties = wrapper.find(ProjectProperties);
         expect(properties.exists()).toBe(true);
-        expect(properties.prop('defaultLabel')).toEqual(container.title);
         expect(properties.prop('defaultName')).toEqual(container.name);
+        expect(properties.prop('defaultTitle')).toEqual(container.title);
 
         const form = wrapper.find('.project-settings-form');
         expect(form.exists()).toBe(true);
@@ -80,9 +80,9 @@ describe('ProjectSettings', () => {
 
         await waitForLifecycle(wrapper);
         expect(renameProject).toHaveBeenCalledWith({
-            label: container.title,
             name: container.name,
-            nameAsLabel: false,
+            nameAsTitle: false,
+            title: container.title,
         });
 
         wrapper.unmount();

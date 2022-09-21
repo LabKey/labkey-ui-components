@@ -3,15 +3,15 @@ import { Col, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 
 interface Props {
     autoFocus?: boolean;
-    defaultLabel?: string;
     defaultName?: string;
+    defaultTitle?: string;
     onChange?: () => void;
 }
 
 export const ProjectProperties: FC<Props> = memo(props => {
-    const { autoFocus, defaultLabel, defaultName, onChange } = props;
+    const { autoFocus, defaultTitle, defaultName, onChange } = props;
     const [name, setName] = useState<string>(defaultName);
-    const [nameIsLabel, setNameIsLabel] = useState<boolean>(defaultName ? defaultName === defaultLabel : true);
+    const [nameIsTitle, setNameIsTitle] = useState<boolean>(defaultName ? defaultName === defaultTitle : true);
     const toggleLabel = 'Use Project Name for Project Label';
 
     const onNameChange = useCallback(
@@ -27,7 +27,7 @@ export const ProjectProperties: FC<Props> = memo(props => {
     }, [onChange]);
 
     const toggleNameIsTitle = useCallback(() => {
-        setNameIsLabel(_nameIsLabel => !_nameIsLabel);
+        setNameIsTitle(_nameIsTitle => !_nameIsTitle);
         onChange?.();
     }, [onChange]);
 
@@ -51,10 +51,10 @@ export const ProjectProperties: FC<Props> = memo(props => {
                     <span className="help-block">
                         <label className="checkbox-inline" title={toggleLabel}>
                             <input
-                                id="project-name-prop-nameIsLabel"
-                                defaultChecked={nameIsLabel}
+                                id="project-name-prop-nameIsTitle"
+                                defaultChecked={nameIsTitle}
                                 style={{ marginRight: '8px' }}
-                                name="nameAsLabel"
+                                name="nameAsTitle"
                                 onChange={toggleNameIsTitle}
                                 type="checkbox"
                             />
@@ -64,27 +64,27 @@ export const ProjectProperties: FC<Props> = memo(props => {
                 </Col>
             </FormGroup>
 
-            <FormGroup controlId="project-name-prop-label">
+            <FormGroup controlId="project-name-prop-title">
                 <Col componentClass={ControlLabel} xs={12} sm={2} className="text-left">
                     Project Label
                 </Col>
 
                 <Col sm={10} md={5}>
-                    {nameIsLabel ? (
+                    {nameIsTitle ? (
                         <FormControl
                             autoComplete="off"
-                            disabled={nameIsLabel}
+                            disabled={nameIsTitle}
                             key="controlled"
-                            name="label"
+                            name="title"
                             type="text"
-                            value={nameIsLabel ? name : undefined}
+                            value={nameIsTitle ? name : undefined}
                         />
                     ) : (
                         <FormControl
                             autoComplete="off"
-                            defaultValue={nameIsLabel ? name : defaultLabel}
+                            defaultValue={nameIsTitle ? name : defaultTitle}
                             key="uncontrolled"
-                            name="label"
+                            name="title"
                             onChange={onTitleChange}
                             type="text"
                         />

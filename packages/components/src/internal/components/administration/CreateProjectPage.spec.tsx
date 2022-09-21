@@ -43,10 +43,10 @@ describe('CreateProjectPage', () => {
 
         expect(createProject).toHaveBeenCalledWith({
             allowUserSpecifiedNames: true,
-            label: null,
             name: '',
-            nameAsLabel: true,
+            nameAsTitle: true,
             prefix: '',
+            title: null,
         });
         expect(onCreated).toHaveBeenCalledWith(project);
 

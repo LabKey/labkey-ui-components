@@ -39,10 +39,10 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
             const formData = new FormData(evt.target);
             const options: ProjectSettingsOptions = {
                 allowUserSpecifiedNames: !!formData.get('allowUserSpecifiedNames'),
-                label: formData.get('label') as string,
                 name: formData.get('name') as string,
-                nameAsLabel: !!formData.get('nameAsLabel'),
+                nameAsTitle: !!formData.get('nameAsTitle'),
                 prefix: formData.get('prefix') as string,
+                title: formData.get('title') as string,
             };
 
             let project: Container;

@@ -20,10 +20,11 @@ import { LineageLinkMetadata } from '../components/lineage/types';
 
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../app/constants';
 
+import { getCurrentAppProperties } from '../app/utils';
+
 import { AppURL, createProductUrl } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
-import { getCurrentAppProperties } from '../app/utils';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
 
@@ -145,10 +146,10 @@ export class ActionMapper implements URLMapper {
 
 interface MapURLOptions {
     column: any;
-    url: string;
-    row: any;
     query?: string;
+    row: any;
     schema?: string;
+    url: string;
 }
 
 class LookupMapper implements URLMapper {

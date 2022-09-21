@@ -128,7 +128,13 @@ describe('getNewUsersRoles', () => {
 
     test('premium, non project, app admin', () => {
         const moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(TEST_USER_APP_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES, moduleContext);
+        const roles = getNewUserRoles(
+            TEST_USER_APP_ADMIN,
+            TEST_FOLDER_CONTAINER,
+            TEST_PROJECT,
+            STORAGE_ROLES,
+            moduleContext
+        );
         expect(roles.length).toBe(7);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeDefined();
@@ -136,7 +142,13 @@ describe('getNewUsersRoles', () => {
 
     test('premium, project, app admin', () => {
         const moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(TEST_USER_APP_ADMIN, TEST_PROJECT_CONTAINER, TEST_PROJECT, STORAGE_ROLES, moduleContext);
+        const roles = getNewUserRoles(
+            TEST_USER_APP_ADMIN,
+            TEST_PROJECT_CONTAINER,
+            TEST_PROJECT,
+            STORAGE_ROLES,
+            moduleContext
+        );
         expect(roles.length).toBe(8);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ProjectAdmin)).toBeDefined();
@@ -151,7 +163,13 @@ describe('getNewUsersRoles', () => {
 
     test('premium, non project, non app admin', () => {
         const moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(TEST_USER_PROJECT_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES, moduleContext);
+        const roles = getNewUserRoles(
+            TEST_USER_PROJECT_ADMIN,
+            TEST_FOLDER_CONTAINER,
+            TEST_PROJECT,
+            STORAGE_ROLES,
+            moduleContext
+        );
         expect(roles.length).toBe(6);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeUndefined();
@@ -159,7 +177,13 @@ describe('getNewUsersRoles', () => {
 
     test('premium, project, non app admin', () => {
         const moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(TEST_USER_PROJECT_ADMIN, TEST_PROJECT_CONTAINER, TEST_PROJECT, STORAGE_ROLES, moduleContext);
+        const roles = getNewUserRoles(
+            TEST_USER_PROJECT_ADMIN,
+            TEST_PROJECT_CONTAINER,
+            TEST_PROJECT,
+            STORAGE_ROLES,
+            moduleContext
+        );
         expect(roles.length).toBe(7);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ProjectAdmin)).toBeDefined();

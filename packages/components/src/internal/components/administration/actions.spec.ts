@@ -1,12 +1,13 @@
-/*
- * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
- * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
- */
 import { fromJS, List, Map } from 'immutable';
 
 import { SecurityRole } from '../permissions/models';
 
-import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName, getUserGridFilterURL } from './actions';
+import {
+    getGroupMembership,
+    getUpdatedPolicyRoles,
+    getUpdatedPolicyRolesByUniqueName,
+    getUserGridFilterURL,
+} from './actions';
 
 describe('Administration actions', () => {
     test('getUpdatedPolicyRoles', () => {
@@ -53,5 +54,104 @@ describe('Administration actions', () => {
         expect(getUserGridFilterURL(List<number>([1, 2]), 'query').toString()).toBe(
             baseExpectedUrl + '?query.UserId~in=1%3B2'
         );
+    });
+
+    test('getGroupMembership', () => {
+        const groups = [
+            {
+                name: 'Administrators',
+                id: -1,
+                isProjectGroup: false,
+            },
+            {
+                name: 'NewSiteGroup',
+                id: 1035,
+                isProjectGroup: false,
+            },
+            {
+                name: 'group1',
+                id: 1064,
+                isProjectGroup: true,
+            },
+            {
+                name: 'group2',
+                id: 1066,
+                isProjectGroup: true,
+            },
+        ];
+
+        const groupMemberships = [
+            {
+                'UserId/Email': 'rosalinep@labkey.com',
+                'UserId/DisplayName': 'rosalinep',
+                'GroupId/Name': 'Administrators',
+                UserId: 1005,
+                GroupId: -1,
+            },
+            {
+                'UserId/Email': 'rosalinep@labkey.com',
+                'UserId/DisplayName': 'rosalinep',
+                'GroupId/Name': 'NewSiteGroup',
+                UserId: 1005,
+                GroupId: 1035,
+            },
+            {
+                'UserId/Email': 'rosalinep@labkey.com',
+                'UserId/DisplayName': 'rosalinep',
+                'GroupId/Name': 'group1',
+                UserId: 1005,
+                GroupId: 1064,
+            },
+            {
+                'UserId/Email': null,
+                'UserId/DisplayName': null,
+                'GroupId/Name': 'group1',
+                UserId: 1066,
+                GroupId: 1064,
+            },
+        ];
+
+        const expected = {
+            '1035': {
+                groupName: 'NewSiteGroup',
+                members: [
+                    {
+                        id: 1005,
+                        name: 'rosalinep@labkey.com (rosalinep)',
+                        type: 'u',
+                    },
+                ],
+                type: 'sg',
+            },
+            '1064': {
+                groupName: 'group1',
+                members: [
+                    {
+                        id: 1066,
+                        name: 'group2',
+                        type: 'g',
+                    },
+                    {
+                        id: 1005,
+                        name: 'rosalinep@labkey.com (rosalinep)',
+                        type: 'u',
+                    },
+                ],
+                type: 'g',
+            },
+            '1066': {
+                groupName: 'group2',
+                members: [],
+                type: 'g',
+            },
+            '-1': {
+                groupName: 'Administrators',
+                members: [],
+                type: 'sg',
+            },
+        };
+
+        // See comment on getGroupMembership() function.
+        expect(getGroupMembership(groups, groupMemberships)).toEqual(expected);
     });
 });

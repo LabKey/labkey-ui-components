@@ -98,9 +98,9 @@ describe('Principal model', () => {
         // testing sort
         const sortedPrincipals = Principal.filterAndSort(principals, groupMembership, undefined);
         expect(sortedPrincipals.size).toBe(3);
-        expect(sortedPrincipals.get(0)).toBe(GROUP);
-        expect(sortedPrincipals.get(1)).toBe(USER2);
-        expect(sortedPrincipals.get(2)).toBe(USER1);
+        expect(sortedPrincipals.get(0)).toBe(USER2);
+        expect(sortedPrincipals.get(1)).toBe(USER1);
+        expect(sortedPrincipals.get(2)).toBe(GROUP);
     });
 });
 

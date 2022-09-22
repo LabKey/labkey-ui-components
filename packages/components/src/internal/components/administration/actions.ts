@@ -125,7 +125,7 @@ export const getAuditLogData = (columns: string, filterCol: string, filterVal: s
 //       ...
 // }
 // Where the members array is sorted by type, and then by name. The types stand for 'group,' 'site group,' and 'user'
-const getGroupMembership = (groups: FetchedGroup[], groupMemberships): GroupMembership => {
+export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): GroupMembership => {
     const groupsWithMembers = groupMemberships.reduce((prev, curr) => {
         const groupId = curr['GroupId'];
         const isProjectGroup = groups.find(group => group.id === groupId)?.isProjectGroup;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { List, Map, fromJS } from 'immutable';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
 
@@ -48,13 +47,13 @@ describe('<PermissionsRole/>', () => {
             <PermissionsRole
                 role={role}
                 assignments={POLICY.assignmentsByRole.get(role.uniqueName)}
-                typeToShow={undefined}
                 principals={List<Principal>()}
                 onAddAssignment={jest.fn()}
                 onRemoveAssignment={jest.fn()}
                 onClickAssignment={jest.fn()}
                 selectedUserId={undefined}
                 initExpanded={true}
+                groupMembership={{}}
             />
         );
 
@@ -69,13 +68,13 @@ describe('<PermissionsRole/>', () => {
             <PermissionsRole
                 role={role}
                 assignments={POLICY.assignmentsByRole.get(role.uniqueName)}
-                typeToShow={undefined}
                 principals={List<Principal>()}
                 onAddAssignment={jest.fn()}
                 onRemoveAssignment={jest.fn()}
                 onClickAssignment={jest.fn()}
                 selectedUserId={undefined}
                 initExpanded={true}
+                groupMembership={{}}
             />
         );
 
@@ -83,14 +82,13 @@ describe('<PermissionsRole/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('showing only a single type and a selected and disabled principal', () => {
+    test('showing a selected and disabled principal', () => {
         const role = ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR);
 
         const component = (
             <PermissionsRole
                 role={role}
                 assignments={POLICY.assignmentsByRole.get(role.uniqueName)}
-                typeToShow="u"
                 principals={List<Principal>()}
                 onAddAssignment={jest.fn()}
                 onRemoveAssignment={jest.fn()}
@@ -98,6 +96,7 @@ describe('<PermissionsRole/>', () => {
                 selectedUserId={USER.userId}
                 disabledId={USER.userId}
                 initExpanded={true}
+                groupMembership={{}}
             />
         );
 
@@ -112,11 +111,11 @@ describe('<PermissionsRole/>', () => {
             <PermissionsRole
                 role={role}
                 assignments={POLICY.assignmentsByRole.get(role.uniqueName)}
-                typeToShow={undefined}
                 principals={List<Principal>()}
                 onClickAssignment={jest.fn()}
                 selectedUserId={undefined}
                 initExpanded={true}
+                groupMembership={{}}
             />
         );
 

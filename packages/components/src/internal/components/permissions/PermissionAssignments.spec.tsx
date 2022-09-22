@@ -48,12 +48,13 @@ const USER = Principal.createFromSelectRow(
     })
 );
 
-const GROUP_MEMBERSHIP = {
-    '11842': {
-        groupName: 'Editor User Group',
-        members: [{ id: JEST_SITE_ADMIN_USER_ID, name: 'cnathe@labkey.com', type: 'u' }],
+const GROUPS = [
+    {
+        id: 11842,
+        name: 'Editor User Group',
+        isProjectGroup: true,
     },
-};
+];
 
 const PRINCIPALS = List<Principal>([GROUP, USER]);
 const PRINCIPALS_BY_ID = PRINCIPALS.reduce((map, principal) => {
@@ -77,7 +78,6 @@ describe('PermissionAssignments', () => {
             principalsById: PRINCIPALS_BY_ID,
             roles: ROLES,
             rolesByUniqueName: ROLES_BY_NAME,
-            groupMembership: GROUP_MEMBERSHIP,
         };
     }
 
@@ -101,14 +101,17 @@ describe('PermissionAssignments', () => {
         };
     }
 
+    const fetchPolicy = jest.fn().mockResolvedValue(POLICY);
+    const fetchGroups = jest.fn().mockResolvedValue(GROUPS);
+    const getGroupMemberships = jest.fn().mockResolvedValue([]);
+
     test('loads root policy', async () => {
         const container = TEST_FOLDER_CONTAINER;
-        const fetchPolicy = jest.fn().mockResolvedValue(POLICY);
         const defaultProps = getDefaultProps();
 
         const wrapper = mountWithAppServerContext(
             <PermissionAssignments {...defaultProps} containerId={container.id} />,
-            getDefaultAppContext({ fetchPolicy }),
+            getDefaultAppContext({ fetchPolicy, fetchGroups, getGroupMemberships }),
             getDefaultServerContext({
                 container,
                 user: TEST_USER_APP_ADMIN, // has "isRootAdmin" privileges
@@ -188,7 +191,7 @@ describe('PermissionAssignments', () => {
     test('displays details', async () => {
         const wrapper = mountWithAppServerContext(
             <PermissionAssignments {...getDefaultProps()} />,
-            getDefaultAppContext(),
+            getDefaultAppContext({ fetchPolicy, fetchGroups, getGroupMemberships }),
             getDefaultServerContext()
         );
 
@@ -231,10 +234,9 @@ describe('PermissionAssignments', () => {
     test('add and remove assignment', async () => {
         const onChange = jest.fn();
         const firstRole = ROLES.get(0);
-
         const wrapper = mountWithAppServerContext(
             <PermissionAssignments {...getDefaultProps()} onChange={onChange} />,
-            getDefaultAppContext(),
+            getDefaultAppContext({ fetchPolicy, fetchGroups, getGroupMemberships }),
             getDefaultServerContext()
         );
 

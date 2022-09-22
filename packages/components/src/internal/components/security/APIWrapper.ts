@@ -12,9 +12,7 @@ export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success
 export interface FetchedGroup {
     id: number;
     isProjectGroup: boolean;
-    isSystemGroup: boolean;
     name: string;
-    type: string;
 }
 export interface DeleteGroupResponse {
     deleted: number;

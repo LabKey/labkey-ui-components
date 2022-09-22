@@ -1,0 +1,176 @@
+import { fromJS, List, Map } from 'immutable';
+
+import { mount } from 'enzyme';
+
+import React from 'react';
+
+import { Button } from 'react-bootstrap';
+
+import PanelBody from 'react-bootstrap/lib/PanelBody';
+
+import { Principal, SecurityPolicy } from '../permissions/models';
+import policyJSON from '../../../test/data/security-getPolicy.json';
+import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
+import rolesJSON from '../../../test/data/security-getRoles.json';
+
+import { JEST_SITE_ADMIN_USER_ID } from '../../../test/data/constants';
+
+import { ExpandableContainer } from '../ExpandableContainer';
+
+import { Alert } from '../base/Alert';
+
+import { GroupAssignments } from './GroupAssignments';
+
+describe('<GroupAssignments/>', () => {
+    const GROUP_MEMBERSHIP = {
+        '1035': {
+            groupName: 'NewSiteGroup',
+            members: [
+                {
+                    name: 'rosalinep@labkey.com (rosalinep)',
+                    id: 1005,
+                    type: 'u',
+                },
+            ],
+            type: 'sg',
+        },
+        '1064': {
+            groupName: 'group1',
+            members: [
+                {
+                    name: 'group2',
+                    id: 1066,
+                    type: 'g',
+                },
+                {
+                    name: 'rosalinep@labkey.com (rosalinep)',
+                    id: 1005,
+                    type: 'u',
+                },
+            ],
+            type: 'g',
+        },
+        '1066': {
+            groupName: 'group2',
+            members: [
+                {
+                    name: 'aaaaaaaaa@labkey.com (aaaaaaaaa)',
+                    id: 1033,
+                    type: 'u',
+                },
+                {
+                    name: 'folderadmin@labkey.com (folderadmin)',
+                    id: 1008,
+                    type: 'u',
+                },
+                {
+                    name: 'FromMyBiologicsSiteGroup',
+                    id: 1110,
+                    type: 'g',
+                },
+            ],
+            type: 'g',
+        },
+        '-1': {
+            groupName: 'Site Administrators',
+            members: [],
+            type: 'sg',
+        },
+    };
+
+    const ROLES = processGetRolesResponse(rolesJSON.roles);
+    const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
+
+    const GROUP = Principal.createFromSelectRow(
+        fromJS({
+            UserId: { value: 11842 },
+            Type: { value: 'g' },
+            Name: { value: 'Editor User Group' },
+        })
+    );
+    const USER = Principal.createFromSelectRow(
+        fromJS({
+            UserId: { value: JEST_SITE_ADMIN_USER_ID },
+            Type: { value: 'u' },
+            Name: { value: 'cnathe@labkey.com' },
+            DisplayName: { value: 'Cory Nathe' },
+        })
+    );
+    const PRINCIPALS_BY_ID = List<Principal>([GROUP, USER]).reduce((map, principal) => {
+        return map.set(principal.userId, principal);
+    }, Map<number, Principal>());
+
+    const DEFAULT_PROPS = {
+        groupMembership: {},
+        usersAndGroups: List() as List<Principal>,
+        rolesByUniqueName: ROLES_BY_NAME,
+        principalsById: PRINCIPALS_BY_ID,
+        policy: SecurityPolicy.create(policyJSON),
+        errorMsg: undefined,
+        addMembers: jest.fn(),
+        createGroup: jest.fn(),
+        deleteGroup: jest.fn(),
+        getIsDirty: jest.fn(),
+        removeMember: jest.fn(),
+        save: jest.fn(),
+        setErrorMsg: jest.fn(),
+        setIsDirty: jest.fn(),
+    };
+
+    test('without members', async () => {
+        const wrapper = mount(<GroupAssignments {...DEFAULT_PROPS} />);
+
+        expect(wrapper.find(PanelBody).last().text()).toBe('No user selected.');
+        // 'Create Group' and 'Save' button are disabled
+        expect(wrapper.find(Button).first().prop('disabled')).toBeTruthy();
+        expect(wrapper.find(Button).last().prop('disabled')).toBeTruthy();
+        expect(wrapper.find(ExpandableContainer)).toHaveLength(0);
+
+        wrapper.unmount();
+    });
+
+    test('with members', async () => {
+        const wrapper = mount(<GroupAssignments {...DEFAULT_PROPS} groupMembership={GROUP_MEMBERSHIP} />);
+
+        expect(wrapper.find(ExpandableContainer)).toHaveLength(2);
+        expect(wrapper.find('.permissions-title').first().text()).toBe(' group1 ');
+        expect(wrapper.find('.permissions-title').last().text()).toBe(' group2 ');
+
+        wrapper.unmount();
+    });
+
+    test('creating a group', async () => {
+        const wrapper = mount(<GroupAssignments {...DEFAULT_PROPS} groupMembership={GROUP_MEMBERSHIP} />);
+
+        // Does not create duplicate 'group1' group
+        wrapper.find('.create-group__input').simulate('change', { target: { value: 'group1' } });
+        expect(wrapper.find(Button).first().prop('disabled')).toBeFalsy();
+        wrapper.find(Button).first().simulate('click');
+        expect(DEFAULT_PROPS.createGroup).toHaveBeenCalledTimes(0);
+
+        // Does create new 'group3' group
+        wrapper.find('.create-group__input').simulate('change', { target: { value: 'group3' } });
+        wrapper.find(Button).first().simulate('click');
+        expect(DEFAULT_PROPS.createGroup).toHaveBeenCalledTimes(1);
+        expect(wrapper.find('.create-group__input').prop('value')).toBe('');
+
+        wrapper.unmount();
+    });
+
+    test('dirtiness', async () => {
+        const wrapper = mount(<GroupAssignments {...DEFAULT_PROPS} />);
+
+        wrapper.find('.create-group__input').simulate('change', { target: { value: 'group3' } });
+        wrapper.find(Button).first().simulate('click');
+        expect(DEFAULT_PROPS.setIsDirty).toHaveBeenCalledWith(true);
+
+        wrapper.unmount();
+    });
+
+    test('with error', async () => {
+        const wrapper = mount(<GroupAssignments {...DEFAULT_PROPS} errorMsg="Error message." />);
+        expect(wrapper.find(Alert).text()).toBe('Error message.');
+
+        wrapper.unmount();
+    });
+});

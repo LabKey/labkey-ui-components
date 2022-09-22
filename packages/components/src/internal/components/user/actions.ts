@@ -240,8 +240,8 @@ export async function getUserGroups(userid: number): Promise<string[]> {
         columns: ['Groups'],
         maxRows: 1,
     });
-    if (response.rows.length > 0 && typeof Array.isArray(response.rows[0].Groups)) {
-        const groupsData = response.rows[0].Groups as unknown as Array<{ displayValue: string; value: number }>;
+    if (response.rows.length > 0 && Array.isArray(response.rows[0].Groups)) {
+        const groupsData = response.rows[0].Groups;
         return groupsData.map(group => group.displayValue).sort();
     } else {
         return [];

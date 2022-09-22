@@ -34,7 +34,7 @@ import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
 import { fetchGroupMembership, getAuditLogData } from './actions';
 
-type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
+export type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
 export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const { setIsDirty, getIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;

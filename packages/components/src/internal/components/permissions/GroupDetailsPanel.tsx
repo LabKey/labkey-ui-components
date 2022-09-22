@@ -36,7 +36,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
 
             setCreated(createdState.slice(0, -7));
         } catch (e) {
-            console.error(resolveErrorMessage(e) ?? 'Failed to when group created');
+            console.error(resolveErrorMessage(e) ?? 'Failed to load when group created');
         }
     }, [principal]);
 

@@ -1652,7 +1652,7 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@labkey/api@1.16.1":
+"@labkey/api@~1.16.1":
   version "1.16.1"
   resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.16.1.tgz#f8495eb3acbea7282ad8e34015145cc1f0f6ccf9"
   integrity sha512-OVHhObWPVu7w/6pDXHBo3uaRRfDztmAY31/X8omx2BV+AHPNplFwxORUjQFgIsBHj6u79T44ZpJLETdxuR2sSg==

@@ -16,11 +16,11 @@ export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
     let tabs = List<string>();
 
     if (user.isAdmin) {
-        tabs = tabs.push('Users');
-        tabs = tabs.push('Permissions');
-        tabs = tabs.push('Groups');
-        tabs = tabs.push('Settings');
         tabs = tabs.push('Audit Logs');
+        tabs = tabs.push('Groups');
+        tabs = tabs.push('Permissions');
+        tabs = tabs.push('Settings');
+        tabs = tabs.push('Users');
     }
 
     return tabs

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD September 2022
+### version 2.219.0
+*Released*: 22 September 2022
 * SamplesEditButton check for has delete perm when showing delete menu item divider
 * Add PermissionRoles.EditorWithoutDelete to APPLICATION_SECURITY_ROLES
 * Add PermissionRoles.EditorWithoutDelete to roles options in CreateUsersModal

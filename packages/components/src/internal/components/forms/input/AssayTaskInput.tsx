@@ -6,7 +6,6 @@ import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { Alert } from '../../base/Alert';
 
 import { SelectInput } from './SelectInput';
-import {getWorkflowTaskOptions} from "../actions";
 
 export interface InputOption {
     label: string;

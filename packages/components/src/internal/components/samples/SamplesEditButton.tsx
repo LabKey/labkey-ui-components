@@ -97,7 +97,9 @@ export const SamplesEditButton: FC<OwnProps & SampleGridButtonProps & RequiresMo
     const showEdit =
         shouldIncludeMenuItem(SamplesEditButtonSections.EDIT, excludedMenuKeys) &&
         hasAnyPermissions(user, [PermissionTypes.Update, PermissionTypes.EditStorageData]);
-    const showDelete = shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, excludedMenuKeys);
+    const showDelete =
+        shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, excludedMenuKeys) &&
+        hasAnyPermissions(user, [PermissionTypes.Delete]);
     const showStudy =
         showLinkToStudy &&
         hasModule('study', moduleContext) &&

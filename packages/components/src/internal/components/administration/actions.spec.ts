@@ -24,7 +24,7 @@ describe('Administration actions', () => {
         const changedRoles = getUpdatedPolicyRoles(roles, fromJS({ testRole: 'UpdatedDisplayName' }));
         expect(roles.size === changedRoles.size).toBeTruthy();
         expect(changedRoles.get(0).uniqueName).toBe(testRole.uniqueName);
-        expect(changedRoles.get(0).displayName).toBe('UpdatedDisplayNames');
+        expect(changedRoles.get(0).displayName).toBe('UpdatedDisplayName');
     });
 
     test('getUpdatedPolicyRolesByUniqueName', () => {
@@ -40,7 +40,7 @@ describe('Administration actions', () => {
         // test with a mapping to a new displayName
         const changedRoles = getUpdatedPolicyRolesByUniqueName(roles, fromJS({ testRole: 'UpdatedDisplayName' }));
         expect(changedRoles.get(key).uniqueName).toBe(testRole.uniqueName);
-        expect(changedRoles.get(key).displayName).toBe('UpdatedDisplayNames');
+        expect(changedRoles.get(key).displayName).toBe('UpdatedDisplayName');
     });
 
     test('getUserGridFilterURL', () => {

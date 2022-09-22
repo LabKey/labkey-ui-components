@@ -141,7 +141,6 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         getShowViewMenu,
         ...rest
     } = props;
-    const { createNotification } = useNotificationsContext();
     const [internalActiveId, setInternalActiveId] = useState<string>(activeModelId ?? tabOrder[0]);
     const [showExportModal, setShowExportModal] = useState<boolean>(false);
     const [canExport, setCanExport] = useState<boolean>(true);
@@ -155,6 +154,14 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         },
         [onTabSelect]
     );
+
+    // useNotificationsContext will not always be available depending on if the app wraps the NotificationsContext.Provider
+    let _createNotification;
+    try {
+        _createNotification = useNotificationsContext().createNotification;
+    } catch (e) {
+        // this is expected for LKS usages, so don't throw or console.error
+    }
 
     const exportTabs = useCallback(
         async (selectedTabs: string[] | Set<string>) => {
@@ -175,17 +182,17 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 const filename = exportFilename ?? 'Data';
                 await exportTabsXlsx(filename, models);
                 onExport?.[EXPORT_TYPES.EXCEL]?.();
-                createNotification({ message: 'Successfully exported tabs to file.', alertClass: 'success' });
+                _createNotification?.({ message: 'Successfully exported tabs to file.', alertClass: 'success' });
             } catch (e) {
                 // Set export error
-                createNotification({ message: 'Export failed: ' + e, alertClass: 'danger' });
+                _createNotification?.({ message: 'Export failed: ' + e, alertClass: 'danger' });
             } finally {
                 // unset exporting blocker
                 setCanExport(true);
                 setShowExportModal(false);
             }
         },
-        [exportFilename, canExport, createNotification, queryModels, advancedExportOptions, getAdvancedExportOptions]
+        [exportFilename, canExport, _createNotification, queryModels, advancedExportOptions, getAdvancedExportOptions]
     );
 
     const excelExportHandler = useCallback(async () => {

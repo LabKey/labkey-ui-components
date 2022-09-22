@@ -43,7 +43,7 @@ export function getUpdatedPolicyRolesByUniqueName(
 
 function getUpdatedRole(role: SecurityRole, updatedRoleInfo: Map<string, string>): SecurityRole {
     return role.merge({
-        displayName: updatedRoleInfo.get(role.uniqueName) + 's',
+        displayName: updatedRoleInfo.get(role.uniqueName),
         description: SECURITY_ROLE_DESCRIPTIONS.get(role.uniqueName) || role.description,
     }) as SecurityRole;
 }

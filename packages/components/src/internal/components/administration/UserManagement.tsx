@@ -44,6 +44,10 @@ export function getNewUserRoles(
             label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.Reader) + ' (default)',
         },
         { id: PermissionRoles.Editor.toString(), label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.Editor) },
+        {
+            id: PermissionRoles.EditorWithoutDelete.toString(),
+            label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.EditorWithoutDelete),
+        },
     ];
     if (showPremiumFeatures()) {
         roles.push({

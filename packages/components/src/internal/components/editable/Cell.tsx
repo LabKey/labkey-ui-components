@@ -29,6 +29,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { DateInputCell, DateInputCellProps } from './DateInputCell';
+import { resolveRenderer } from "../forms/renderers";
 
 export interface CellActions {
     clearSelection: () => void;
@@ -56,6 +57,7 @@ interface Props {
     placeholder?: string;
     readOnly?: boolean;
     rowIdx: number;
+    row: any;
     selected?: boolean;
     selection?: boolean;
     values?: List<ValueDescriptor>;
@@ -282,6 +284,7 @@ export class Cell extends React.PureComponent<Props, State> {
             selection,
             values,
             filteredLookupValues,
+            row
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
@@ -289,6 +292,35 @@ export class Cell extends React.PureComponent<Props, State> {
         const showLookup = col.isPublicLookup() || col.validValues;
 
         const isDateField = col.jsonType === 'date';
+
+        if (col.inputRenderer) {
+            const renderer = resolveRenderer(col);
+
+            if (renderer) {
+                const onQSChange = (name: string, value: string | any[], items: any) => {
+                    cellActions.modifyCell(colIdx, rowIdx, [{ raw: items?.value, display: items?.label }], MODIFICATION_TYPES.REPLACE);
+                }
+
+                return renderer(
+                    col,
+                    col.name,
+                    row,
+                    values?.get(0)?.raw,
+                    false,
+                    false,
+                    false,
+                    null,
+                    onQSChange,
+                    null,
+                    false,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    true
+                );
+            }
+        }
 
         if (!focused) {
             let valueDisplay = values

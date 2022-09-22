@@ -139,6 +139,7 @@ function inputCellFactory(
                 cellActions={cellActions}
                 col={c.raw}
                 colIdx={colIdx}
+                row={row}
                 containerFilter={containerFilter}
                 key={inputCellKey(c.raw, row)}
                 placeholder={columnMetadata ? columnMetadata.placeholder : undefined}

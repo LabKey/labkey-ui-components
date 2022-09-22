@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.218.3-auditConsistencies.0",
+  "version": "2.220.0-auditConsistencies.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -42,7 +42,7 @@
     "@fortawesome/free-regular-svg-icons": "~5.15.4",
     "@fortawesome/free-solid-svg-icons": "~5.15.4",
     "@fortawesome/react-fontawesome": "~0.1.15",
-    "@labkey/api": "~1.15.0",
+    "@labkey/api": "~1.16.1",
     "@types/enzyme": "~3.10.11",
     "@types/jest": "~28.1.6",
     "bootstrap": "~3.4.1",

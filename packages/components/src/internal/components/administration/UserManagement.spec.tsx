@@ -128,14 +128,14 @@ describe('getNewUsersRoles', () => {
 
     test('non premium, non project, app admin', () => {
         const roles = getNewUserRoles(TEST_USER_APP_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
-        expect(roles.length).toBe(5);
+        expect(roles.length).toBe(6);
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeDefined();
     });
 
     test('premium, non project, app admin', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
         const roles = getNewUserRoles(TEST_USER_APP_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
-        expect(roles.length).toBe(6);
+        expect(roles.length).toBe(7);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeDefined();
     });
@@ -143,7 +143,7 @@ describe('getNewUsersRoles', () => {
     test('premium, project, app admin', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
         const roles = getNewUserRoles(TEST_USER_APP_ADMIN, TEST_PROJECT_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
-        expect(roles.length).toBe(7);
+        expect(roles.length).toBe(8);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ProjectAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeDefined();
@@ -151,14 +151,14 @@ describe('getNewUsersRoles', () => {
 
     test('non premium, non project, non app admin', () => {
         const roles = getNewUserRoles(TEST_USER_PROJECT_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
-        expect(roles.length).toBe(4);
+        expect(roles.length).toBe(5);
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeUndefined();
     });
 
     test('premium, non project, non app admin', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
         const roles = getNewUserRoles(TEST_USER_PROJECT_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
-        expect(roles.length).toBe(5);
+        expect(roles.length).toBe(6);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeUndefined();
     });
@@ -166,7 +166,7 @@ describe('getNewUsersRoles', () => {
     test('premium, project, non app admin', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
         const roles = getNewUserRoles(TEST_USER_PROJECT_ADMIN, TEST_PROJECT_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
-        expect(roles.length).toBe(6);
+        expect(roles.length).toBe(7);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ProjectAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeUndefined();

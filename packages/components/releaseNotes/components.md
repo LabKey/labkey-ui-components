@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add Audit Logs in subnav for admin pages
 
+### version 2.219.0
+*Released*: 22 September 2022
+* SamplesEditButton check for has delete perm when showing delete menu item divider
+* Add PermissionRoles.EditorWithoutDelete to APPLICATION_SECURITY_ROLES
+* Add PermissionRoles.EditorWithoutDelete to roles options in CreateUsersModal
+* update @labkey/api package version
+
 ### version 2.218.2
 *Released*: 20 September 2022
 * TabbedGridPanel fix to not assume that component is wrapped in NotificationsContextProvider

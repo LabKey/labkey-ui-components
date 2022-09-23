@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add Audit Logs in subnav for admin pages
+* Updates for change in route to audit page with eventType as a url parameter
 
 ### version 2.219.0
 *Released*: 22 September 2022

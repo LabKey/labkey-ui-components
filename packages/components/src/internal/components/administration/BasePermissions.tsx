@@ -31,6 +31,7 @@ import { getProjectPath } from '../../app/utils';
 
 import { getGroupMembership, getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
 import { GroupMembership } from './models';
+import { GROUP_AUDIT_QUERY } from '../auditlog/constants';
 
 interface OwnProps {
     containerId: string;
@@ -140,7 +141,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
             <>
                 <CreatedModified row={row} />
                 <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
-                    <MenuItem href={AppURL.create('audit', 'groupauditevent').toHref()}>View Audit History</MenuItem>
+                    <MenuItem href={AppURL.create('audit').addParam('eventType', GROUP_AUDIT_QUERY.value).toHref()}>View Audit History</MenuItem>
                 </ManageDropdownButton>
             </>
         );

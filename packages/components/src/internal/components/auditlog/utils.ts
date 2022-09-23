@@ -8,14 +8,9 @@ import { Query } from '@labkey/api';
 
 import { isAssayEnabled, isSampleManagerEnabled, isWorkflowEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
-import {
-    ASSAY_AUDIT_QUERY,
-    COMMON_AUDIT_QUERIES,
-    SOURCE_AUDIT_QUERY,
-    WORKFLOW_AUDIT_QUERY,
-} from '../samples/constants';
 import { naturalSortByProperty } from '../../../public/sort';
 import { AppURL } from '../../url/AppURL';
+import { ASSAY_AUDIT_QUERY, COMMON_AUDIT_QUERIES, SOURCE_AUDIT_QUERY, WORKFLOW_AUDIT_QUERY } from './constants';
 
 export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;

@@ -687,6 +687,7 @@ import {
     TEST_USER_ASSAY_DESIGNER,
     TEST_USER_AUTHOR,
     TEST_USER_EDITOR,
+    TEST_USER_EDITOR_WITHOUT_DELETE,
     TEST_USER_FOLDER_ADMIN,
     TEST_USER_GUEST,
     TEST_USER_PROJECT_ADMIN,
@@ -847,6 +848,7 @@ const App = {
     TEST_USER_READER,
     TEST_USER_AUTHOR,
     TEST_USER_EDITOR,
+    TEST_USER_EDITOR_WITHOUT_DELETE,
     TEST_USER_ASSAY_DESIGNER,
     TEST_USER_FOLDER_ADMIN,
     TEST_USER_PROJECT_ADMIN,
@@ -1626,4 +1628,7 @@ export type { HorizontalBarData } from './internal/components/chart/HorizontalBa
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
 export type { EditableGridPanelForUpdateWithLineageProps } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-export type { LabelPrintingProviderProps, LabelPrintingContextProps } from './internal/components/labels/LabelPrintingContextProvider';
+export type {
+    LabelPrintingProviderProps,
+    LabelPrintingContextProps,
+} from './internal/components/labels/LabelPrintingContextProvider';

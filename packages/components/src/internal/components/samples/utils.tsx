@@ -219,6 +219,7 @@ export function getSampleSetMenuItem(menu: ProductMenuModel, key: string): MenuI
 export enum SamplesEditButtonSections {
     DELETE = 'delete',
     EDIT = 'edit',
+    FIND_DERIVATIVES = 'findderivatives',
     IMPORT = 'import',
     LINKTOSTUDY = 'linktostudy',
 }

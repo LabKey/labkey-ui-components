@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD September 2022
+* FindDerivativesButton added to samples/sources/registry grids
+  * take the model view and user filters and create the sample finder sessionStorage object
+* add QueryModel helper to get just the view filters from the queryInfo / viewName
+
 ### version 2.219.0
 *Released*: 22 September 2022
 * SamplesEditButton check for has delete perm when showing delete menu item divider

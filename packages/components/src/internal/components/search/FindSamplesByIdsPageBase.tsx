@@ -91,7 +91,9 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                 gridButtons={gridButtons}
                 gridButtonProps={{
                     ...gridButtonProps,
-                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT],
+                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT].concat(
+                        gridButtonProps?.excludedMenuKeys ?? []
+                    ),
                     metricFeatureArea: FIND_SAMPLE_BY_ID_METRIC_AREA,
                     excludeAddButton: true,
                 }}

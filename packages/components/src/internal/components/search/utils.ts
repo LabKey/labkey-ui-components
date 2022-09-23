@@ -852,7 +852,7 @@ export function getUpdatedFilterSelection(
     };
 }
 
-export function getLocalStorageKey(): string {
+export function getSampleFinderLocalStorageKey(): string {
     return getPrimaryAppProperties().productId + ActionURL.getContainer() + '-SampleFinder';
 }
 

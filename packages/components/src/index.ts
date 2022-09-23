@@ -305,6 +305,7 @@ import { SearchScope } from './internal/components/search/constants';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { SampleFinderSection } from './internal/components/search/SampleFinderSection';
+import { FindDerivativesButton } from './internal/components/search/FindDerivativesButton';
 import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
 import { ActiveUserLimit } from './internal/components/settings/ActiveUserLimit';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
@@ -1157,6 +1158,7 @@ export {
     SampleFinderSection,
     SearchScope,
     getSearchScopeFromContainerFilter,
+    FindDerivativesButton,
     // settings
     ActiveUserLimit,
     NameIdSettings,

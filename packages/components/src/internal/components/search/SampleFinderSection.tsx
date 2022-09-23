@@ -2,6 +2,7 @@ import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useSta
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
+import { Location } from '../../util/URL';
 import { capitalizeFirstChar } from '../../util/utils';
 import { EntityDataType } from '../entities/models';
 import { Section } from '../base/Section';
@@ -39,7 +40,7 @@ import { FilterCards } from './FilterCards';
 import {
     getFinderStartText,
     getFinderViewColumnsConfig,
-    getLocalStorageKey,
+    getSampleFinderLocalStorageKey,
     getSampleFinderColumnNames,
     getSampleFinderQueryConfigs,
     getSearchFilterObjs,
@@ -68,6 +69,7 @@ interface SampleFinderSamplesGridProps {
 }
 
 interface Props extends SampleFinderSamplesGridProps {
+    location: Location;
     clearSessionView?: boolean;
     parentEntityDataTypes: EntityDataType[];
 }
@@ -102,7 +104,7 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
 });
 
 export const SampleFinderSection: FC<Props> = memo(props => {
-    const { sampleTypeNames, parentEntityDataTypes, clearSessionView, ...gridProps } = props;
+    const { sampleTypeNames, parentEntityDataTypes, clearSessionView, location, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [savedViewChangeCounter, setSavedViewChangeCounter] = useState<number>(0);
@@ -137,11 +139,11 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             }
         })();
         if (clearSessionView) {
-            sessionStorage.removeItem(getLocalStorageKey());
+            sessionStorage.removeItem(getSampleFinderLocalStorageKey());
             return;
         }
 
-        const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
+        const finderSessionDataStr = sessionStorage.getItem(getSampleFinderLocalStorageKey());
         if (finderSessionDataStr) {
             const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
             if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
@@ -158,7 +160,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             if (updateSession) {
                 const currentTimestamp = new Date();
                 sessionStorage.setItem(
-                    getLocalStorageKey(),
+                    getSampleFinderLocalStorageKey(),
                     searchFiltersToJson(filterProps, changeCounter, currentTimestamp)
                 );
                 setUnsavedSessionViewName('Searched ' + formatDateTime(currentTimestamp));
@@ -255,7 +257,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         async (view: FinderReport) => {
             let cardJson = null;
 
-            if (view.isSession) cardJson = sessionStorage.getItem(getLocalStorageKey());
+            if (view.isSession) cardJson = sessionStorage.getItem(getSampleFinderLocalStorageKey());
             else if (view.reportId) {
                 try {
                     cardJson = await loadFinderSearch(view);
@@ -496,7 +498,9 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 gridButtons={gridButtons}
                 gridButtonProps={{
                     ...gridButtonProps,
-                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT],
+                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT].concat(
+                        gridButtonProps?.excludedMenuKeys ?? []
+                    ),
                     metricFeatureArea: SAMPLE_FILTER_METRIC_AREA,
                 }}
                 tabbedGridPanelProps={{

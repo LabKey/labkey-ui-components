@@ -29,7 +29,6 @@ import { getContainerFilter } from '../../query/api';
 
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 import { SearchScope } from './constants';
-import { HAS_ASSAY_RESULTS_WHERE_FILTER_TYPE } from '../../url/HasAssayResultsWhereFilterType';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 export const FIND_SAMPLE_BY_ID_METRIC_AREA = 'findSamplesById';
@@ -146,28 +145,6 @@ export function getExpDescendantOfFilter(
     if (!selectClause) return null;
 
     return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
-}
-
-export function getHasAssayResultsSelectClause(
-    assaySchemaQuery: SchemaQuery,
-    fieldFilters: FieldFilter[],
-    cf?: Query.ContainerFilter
-): string {
-    const selectClauseWhere = getLabKeySqlWhere(fieldFilters);
-    if (!selectClauseWhere) return null;
-
-
-}
-
-export function getHasAssayResultsWhereFilter(
-    assaySchemaQuery: SchemaQuery,
-    fieldFilters: FieldFilter[],
-    cf?: Query.ContainerFilter
-): Filter.IFilter {
-    const selectClause = getHasAssayResultsSelectClause(assaySchemaQuery, fieldFilters, cf);
-    if (!selectClause) return null;
-
-    return Filter.create("*", selectClause, HAS_ASSAY_RESULTS_WHERE_FILTER_TYPE);
 }
 
 // exported for jest testing

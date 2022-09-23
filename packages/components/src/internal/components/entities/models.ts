@@ -578,14 +578,14 @@ export interface EntityDataType {
     exprColumnsWithSubSelect?: string[];
     filterArray?: Filter.IFilter[];
     filterCardHeaderClass?: string;
+    getInstanceDataType?: (schemaQuery: SchemaQuery) => string;
+    getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
     importFileAction?: string;
     importFileController?: string;
     inputColumnName?: string;
     inputTypeValueField?: string;
     insertColumnNamePrefix?: string;
     instanceSchemaName: string;
-    getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
-    getInstanceDataType?: (schemaQuery: SchemaQuery) => string;
     isFromSharedContainer?: boolean;
     listingSchemaQuery: SchemaQuery;
     nounAsParentPlural: string;

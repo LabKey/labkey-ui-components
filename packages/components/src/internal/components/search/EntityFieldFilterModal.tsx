@@ -20,19 +20,19 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
+import { AssayResultDataType } from '../entities/constants';
+
 import { FieldFilter, FilterProps } from './models';
-import {
-    getFieldFiltersValidationResult,
-    getUpdatedDataTypeFilters,
-    isValidFilterFieldExcludeLookups,
-} from './utils';
+import { getFieldFiltersValidationResult, getUpdatedDataTypeFilters, isValidFilterFieldExcludeLookups } from './utils';
 import { QueryFilterPanel } from './QueryFilterPanel';
-import {AssayResultDataType} from "../entities/constants";
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    assaySampleIdCols?: {[key: string] : string};
+    assaySampleIdCols?: { [key: string]: string };
+    cards?: FilterProps[];
     entityDataType: EntityDataType;
+    fieldKey?: string;
+    metricFeatureArea?: string;
     onCancel: () => void;
     onFind: (
         entityDataType: EntityDataType,
@@ -40,11 +40,9 @@ interface Props {
         queryLabels: { [key: string]: string }
     ) => void;
     queryName?: string;
-    fieldKey?: string;
-    cards?: FilterProps[];
-    skipDefaultViewCheck?: boolean; // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
-    metricFeatureArea?: string;
     setCardDirty?: (dirty: boolean) => any;
+    // for jest tests only due to lack of views from QueryInfo.fromJSON. check all fields, instead of only columns from default view
+    skipDefaultViewCheck?: boolean;
 }
 
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
@@ -84,8 +82,8 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                     queryName = schemaQuery.queryName;
                 }
                 const queryInfo = await api.query.getQueryDetails({
-                    schemaName: schemaName,
-                    queryName: queryName,
+                    schemaName,
+                    queryName,
                 });
                 setActiveQuery(selectedQueryName);
                 setActiveQueryInfo(queryInfo);
@@ -129,8 +127,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         result.map(res => {
                             parents.push(res);
                         });
-                    };
-
+                    }
                 });
                 setEntityQueries(parents.sort(naturalSortByProperty('label')));
                 if (queryName) {

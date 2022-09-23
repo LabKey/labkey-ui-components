@@ -8,8 +8,9 @@ import { SAMPLE_TYPE_KEY } from '../../app/constants';
 
 import { SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from '../samples/constants';
 
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
 import { EntityDataType } from './models';
-import {SchemaQuery} from "../../../public/SchemaQuery";
 
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
@@ -32,7 +33,7 @@ export const AssayRunDataType: EntityDataType = {
     descriptionSingular: 'assay run',
     descriptionPlural: 'assay runs',
     uniqueFieldKey: 'RowId',
-    dependencyText: undefined
+    dependencyText: undefined,
 };
 
 export const AssayResultDataType: EntityDataType = {

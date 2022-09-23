@@ -34,6 +34,14 @@ import {
     withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
 
+import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
+
+import { getAssayDefinitionsWithResultSampleLookup } from '../assay/actions';
+
+import { isLoading } from '../../../public/LoadingState';
+
+import { AssayResultDataType } from '../entities/constants';
+
 import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';
 import {
@@ -54,10 +62,6 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
-import {InjectedAssayModel, withAssayModels} from "../assay/withAssayModels";
-import {getAssayDefinitionsWithResultSampleLookup} from "../assay/actions";
-import {isLoading} from "../../../public/LoadingState";
-import {AssayResultDataType} from "../entities/constants";
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -121,7 +125,7 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
     const [showSaveViewDialog, setShowSaveViewDialog] = useState<boolean>(false);
     const [showManageViewsDialog, setShowManageViewsDialog] = useState<boolean>(false);
     const [unsavedSessionViewName, setUnsavedSessionViewName] = useState<string>(undefined);
-    const [assaySampleIdCols, setAssaySampleIdCols] = useState<{[key: string] : string}>();
+    const [assaySampleIdCols, setAssaySampleIdCols] = useState<{ [key: string]: string }>();
 
     const { api } = useAppContext();
     const { createNotification } = useNotificationsContext();
@@ -130,8 +134,7 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
         const _enabledEntityTypes = [];
         (async () => {
             try {
-                if (isLoading(assayModel.definitionsLoadingState))
-                    return;
+                if (isLoading(assayModel.definitionsLoadingState)) return;
 
                 const assaySampleCols = getAssayDefinitionsWithResultSampleLookup(assayModel, 'general');
                 const entityOptions = await getAllEntityTypeOptions(parentEntityDataTypes);
@@ -143,10 +146,9 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
                                 if (!hasSampleIdCol && assaySampleCols[assay.value]) {
                                     hasSampleIdCol = true;
                                 }
-                            })
+                            });
 
-                            if (!hasSampleIdCol)
-                                return;
+                            if (!hasSampleIdCol) return;
                         }
                         _enabledEntityTypes.push(key);
                     }
@@ -256,7 +258,9 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
             });
             Object.keys(dataTypeFilters).forEach(queryName => {
                 newFilterCards.push({
-                    schemaQuery: isAssay ? entityDataType.getInstanceSchemaQuery(queryName) : SchemaQuery.create(schemaName, queryLabels[queryName]),
+                    schemaQuery: isAssay
+                        ? entityDataType.getInstanceSchemaQuery(queryName)
+                        : SchemaQuery.create(schemaName, queryLabels[queryName]),
                     filterArray: dataTypeFilters[queryName],
                     entityDataType: chosenEntityType,
                     dataTypeDisplayName: queryLabels[queryName],

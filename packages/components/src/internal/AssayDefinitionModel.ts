@@ -1,11 +1,14 @@
 import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
+import { QueryColumn } from '../public/QueryColumn';
+
+import { SchemaQuery } from '../public/SchemaQuery';
 
 import { AssayUploadTabs } from './constants';
-import { QueryColumn } from '../public/QueryColumn';
+
 import { AppURL, createProductUrlFromParts } from './url/AppURL';
-import { SchemaQuery } from '../public/SchemaQuery';
+
 import { SCHEMAS } from './schemas';
 import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
 
@@ -213,12 +216,10 @@ export class AssayDefinitionModel extends Record({
         // Traditional for loop so we can short circuit.
         let sampleCol = null;
         for (const k of Object.keys(AssayDomainTypes)) {
-            if (sampleCol)
-                break;
+            if (sampleCol) break;
 
             const domainType = AssayDomainTypes[k];
-            if (targetDomainType && targetDomainType !== domainType)
-                continue;
+            if (targetDomainType && targetDomainType !== domainType) continue;
 
             const domainColumns = this.getDomainByType(domainType);
 

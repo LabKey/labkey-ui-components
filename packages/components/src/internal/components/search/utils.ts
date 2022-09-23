@@ -27,11 +27,12 @@ import { formatDateTime } from '../../util/Date';
 
 import { getContainerFilter } from '../../query/api';
 
-import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
+import { COLUMN_IN_FILTER_TYPE } from '../../url/ColumnInFilterType';
+import { COLUMN_NOT_IN_FILTER_TYPE } from '../../url/ColumnNotInFilterType';
+import { AssayResultDataType } from '../entities/constants';
+
 import { SearchScope } from './constants';
-import {COLUMN_IN_FILTER_TYPE} from "../../url/ColumnInFilterType";
-import {COLUMN_NOT_IN_FILTER_TYPE} from "../../url/ColumnNotInFilterType";
-import {AssayResultDataType} from "../entities/constants";
+import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 export const FIND_SAMPLE_BY_ID_METRIC_AREA = 'findSamplesById';
@@ -151,20 +152,19 @@ export function getExpDescendantOfFilter(
     return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
 }
 
-export function getAssayFilter(
-    card: FilterProps,
-    cf?: Query.ContainerFilter
-): Filter.IFilter {
+export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): Filter.IFilter {
     const { schemaQuery, filterArray, targetColumnFieldKey } = card;
-    let noAssayDataFilter : Filter.IFilter = undefined;
+    let noAssayDataFilter: Filter.IFilter;
     filterArray.forEach(fieldFilter => {
-        if (!noAssayDataFilter && fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()) {
+        if (
+            !noAssayDataFilter &&
+            fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
+        ) {
             noAssayDataFilter = fieldFilter.filter;
         }
     });
 
-    if (noAssayDataFilter)
-        return noAssayDataFilter;
+    if (noAssayDataFilter) return noAssayDataFilter;
 
     const whereConditions = getLabKeySqlWhere(filterArray, true);
     if (!whereConditions) return null;
@@ -179,9 +179,7 @@ export function getAssayFilter(
         COLUMN_IN_FILTER_TYPE
     );
 
-
     // return `SELECT "${queryName}".expObject() FROM ${schemaName}."${queryName}" ${selectClauseWhere}`;
-
 
     // const assayFilter = Filter.create(
     //     'RowId',

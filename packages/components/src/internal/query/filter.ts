@@ -18,6 +18,7 @@ import { Filter } from '@labkey/api';
 
 import { JsonType } from '../components/domainproperties/PropDescType';
 import { getNextDateStr } from '../util/Date';
+import {COLUMN_NOT_IN_FILTER_TYPE} from "../url/ColumnNotInFilterType";
 
 const QUERY_KEY_CHAR_DECODED = ['$', '/', '&', '}', '~', ',', '.'];
 const QUERY_KEY_CHAR_ENCODED = ['$D', '$S', '$A', '$B', '$T', '$C', '$P'];
@@ -348,7 +349,9 @@ export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string
 
     let operatorSql = null;
 
-    if (filterType.getURLSuffix() === Filter.Types.HAS_ANY_VALUE.getURLSuffix()) return null;
+    if (filterType.getURLSuffix() === Filter.Types.HAS_ANY_VALUE.getURLSuffix() ||
+        filterType.getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
+    ) return null;
 
     if (jsonType === 'date' && filterType.isDataValueRequired()) {
         let dateValue: string;

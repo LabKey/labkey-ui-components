@@ -9,6 +9,7 @@ import { SAMPLE_TYPE_KEY } from '../../app/constants';
 import { SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from '../samples/constants';
 
 import { EntityDataType } from './models';
+import {SchemaQuery} from "../../../public/SchemaQuery";
 
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
@@ -32,6 +33,32 @@ export const AssayRunDataType: EntityDataType = {
     descriptionPlural: 'assay runs',
     uniqueFieldKey: 'RowId',
     dependencyText: undefined
+};
+
+export const AssayResultDataType: EntityDataType = {
+    deleteHelpLinkTopic: DELETE_ASSAY_RUNS_TOPIC, // placeholder
+    typeListingSchemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
+    listingSchemaQuery: SchemaQuery.create(SCHEMAS.ASSAY_TABLES.SCHEMA, 'Data'), // placeholder, switch to fn to get by name
+    instanceSchemaName: null,
+    getInstanceSchemaQuery: (assayName: string) => {
+        return SchemaQuery.create('assay.General.' + assayName, 'data');
+    },
+    getInstanceDataType: (schemaQuery: SchemaQuery) => {
+        return schemaQuery.schemaName.replace('assay.General.', '');
+    },
+    operationConfirmationControllerName: 'assay',
+    operationConfirmationActionName: ASSAY_RUN_OPERATION_CONFIRMATION_ACTION, // placeholder
+    nounSingular: 'result',
+    nounPlural: 'results',
+    typeNounSingular: 'Assay Design',
+    typeNounAsParentSingular: 'Assay Design',
+    nounAsParentPlural: 'Assays', // use short label for Sample Finder
+    nounAsParentSingular: 'Assay',
+    descriptionSingular: 'assay result',
+    descriptionPlural: 'assay results',
+    uniqueFieldKey: 'RowId',
+    dependencyText: undefined,
+    filterCardHeaderClass: 'filter-card__header-purple',
 };
 
 export const SampleTypeDataType: EntityDataType = {

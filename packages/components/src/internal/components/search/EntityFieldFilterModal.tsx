@@ -27,13 +27,15 @@ import {
     isValidFilterFieldExcludeLookups,
 } from './utils';
 import { QueryFilterPanel } from './QueryFilterPanel';
+import {AssayResultDataType} from "../entities/constants";
 
 interface Props {
     api?: ComponentsAPIWrapper;
+    assaySampleIdCols?: {[key: string] : string};
     entityDataType: EntityDataType;
     onCancel: () => void;
     onFind: (
-        schemaName: string,
+        entityDataType: EntityDataType,
         dataTypeFilters: { [key: string]: FieldFilter[] },
         queryLabels: { [key: string]: string }
     ) => void;
@@ -48,6 +50,7 @@ interface Props {
 export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const {
         api,
+        assaySampleIdCols,
         entityDataType,
         onCancel,
         onFind,
@@ -62,6 +65,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const capParentNoun = capitalizeFirstChar(entityDataType.nounAsParentSingular);
 
     const [entityQueries, setEntityQueries] = useState<IEntityTypeOption[]>(undefined);
+    const [activeQuery, setActiveQuery] = useState<string>(undefined);
     const [activeQueryInfo, setActiveQueryInfo] = useState<QueryInfo>(undefined);
     const [loadingError, setLoadingError] = useState<string>(undefined);
     const [filterError, setFilterError] = useState<string>(undefined);
@@ -72,20 +76,26 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const onEntityClick = useCallback(
         async (selectedQueryName: string) => {
             try {
+                let schemaName = entityDataType.instanceSchemaName;
+                let queryName = selectedQueryName;
+                if (!schemaName && entityDataType.getInstanceSchemaQuery) {
+                    const schemaQuery = entityDataType.getInstanceSchemaQuery(selectedQueryName);
+                    schemaName = schemaQuery.schemaName;
+                    queryName = schemaQuery.queryName;
+                }
                 const queryInfo = await api.query.getQueryDetails({
-                    schemaName: entityDataType.instanceSchemaName,
-                    queryName: selectedQueryName,
+                    schemaName: schemaName,
+                    queryName: queryName,
                 });
+                setActiveQuery(selectedQueryName);
                 setActiveQueryInfo(queryInfo);
                 setLoadingError(undefined);
             } catch (error) {
                 setLoadingError(resolveErrorMessage(error, selectedQueryName, selectedQueryName, 'load'));
             }
         },
-        [api, entityDataType.instanceSchemaName]
+        [api, entityDataType.instanceSchemaName, entityDataType.getInstanceSchemaQuery]
     );
-
-    const activeQuery = useMemo(() => activeQueryInfo?.name.toLowerCase(), [activeQueryInfo]);
 
     useEffect(() => {
         const activeDataTypeFilters = {};
@@ -101,11 +111,26 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         api.query
             .getEntityTypeOptions(entityDataType)
             .then(results => {
+                // filter assays
                 const parents = [];
                 results.map(result => {
-                    result.map(res => {
-                        parents.push(res);
-                    });
+                    let shouldInclude = true;
+                    if (entityDataType.typeListingSchemaQuery === AssayResultDataType.typeListingSchemaQuery) {
+                        let hasSampleIdCol = false;
+                        result.forEach(assay => {
+                            if (!hasSampleIdCol && assaySampleIdCols?.[assay.value]) {
+                                hasSampleIdCol = true;
+                            }
+                        });
+                        shouldInclude = hasSampleIdCol;
+                    }
+
+                    if (shouldInclude) {
+                        result.map(res => {
+                            parents.push(res);
+                        });
+                    };
+
                 });
                 setEntityQueries(parents.sort(naturalSortByProperty('label')));
                 if (queryName) {
@@ -154,12 +179,12 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         });
         const filterErrors = getFieldFiltersValidationResult(validDataTypeFilters, queryLabels);
         if (!filterErrors) {
-            onFind(entityDataType.instanceSchemaName, validDataTypeFilters, queryLabels);
+            onFind(entityDataType, validDataTypeFilters, queryLabels);
         } else {
             setFilterError(filterErrors);
             api.query.incrementClientSideMetricCount(metricFeatureArea, 'filterModalError');
         }
-    }, [api, metricFeatureArea, entityQueries, entityDataType.instanceSchemaName, onFind, validDataTypeFilters]);
+    }, [api, metricFeatureArea, entityQueries, entityDataType, onFind, validDataTypeFilters]);
 
     const onFilterUpdate = useCallback(
         (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => {

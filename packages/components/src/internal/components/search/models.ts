@@ -70,6 +70,7 @@ export interface FilterProps {
     dataTypeDisplayName?: string;
     index?: number;
     disabled?: boolean;
+    targetColumnFieldKey?: string;
 }
 
 export interface SearchSessionStorageProps {

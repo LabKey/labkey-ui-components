@@ -584,6 +584,8 @@ export interface EntityDataType {
     inputTypeValueField?: string;
     insertColumnNamePrefix?: string;
     instanceSchemaName: string;
+    getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
+    getInstanceDataType?: (schemaQuery: SchemaQuery) => string;
     isFromSharedContainer?: boolean;
     listingSchemaQuery: SchemaQuery;
     nounAsParentPlural: string;

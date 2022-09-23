@@ -193,6 +193,43 @@ export class AssayDefinitionModel extends Record({
         return false;
     }
 
+    getSampleLookupColumn(targetDomainType?: AssayDomainTypes, allowPicklist?: boolean): QueryColumn {
+        const findSampleLookup = (col: QueryColumn): boolean => {
+            if (col.isLookup()) {
+                const lookupSQ = col.lookup.schemaQuery;
+                const isMatch =
+                    lookupSQ.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA) ||
+                    SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ) ||
+                    (allowPicklist && lookupSQ.hasSchema(SCHEMAS.PICKLIST_TABLES.SCHEMA)) ||
+                    SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.isEqual(lookupSQ) ||
+                    SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ.isEqual(lookupSQ);
+
+                return isMatch;
+            }
+
+            return false;
+        };
+
+        // Traditional for loop so we can short circuit.
+        let sampleCol = null;
+        for (const k of Object.keys(AssayDomainTypes)) {
+            if (sampleCol)
+                break;
+
+            const domainType = AssayDomainTypes[k];
+            if (targetDomainType && targetDomainType !== domainType)
+                continue;
+
+            const domainColumns = this.getDomainByType(domainType);
+
+            if (domainColumns) {
+                sampleCol = domainColumns.find(findSampleLookup);
+            }
+        }
+
+        return sampleCol;
+    }
+
     private getSampleColumnsByDomain(domainType: AssayDomainTypes): ScopedSampleColumn[] {
         const ret = [];
         const columns = this.getDomainByType(domainType);

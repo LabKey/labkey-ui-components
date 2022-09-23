@@ -29,6 +29,9 @@ import { getContainerFilter } from '../../query/api';
 
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 import { SearchScope } from './constants';
+import {COLUMN_IN_FILTER_TYPE} from "../../url/ColumnInFilterType";
+import {COLUMN_NOT_IN_FILTER_TYPE} from "../../url/ColumnNotInFilterType";
+import {AssayResultDataType} from "../entities/constants";
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 export const FIND_SAMPLE_BY_ID_METRIC_AREA = 'findSamplesById';
@@ -108,9 +111,10 @@ function getSampleFinderConfigId(finderId: string, suffix: string): string {
  * Note: this is an experimental API that may change unexpectedly in future releases.
  * From an array of FieldFilter, LabKey sql where clause
  * @param fieldFilters
+ * @param skipWhere if true, don't include 'WHERE ' prefix in the returned sql fragment
  * @return labkey sql where clauses
  */
-export function getLabKeySqlWhere(fieldFilters: FieldFilter[]): string {
+export function getLabKeySqlWhere(fieldFilters: FieldFilter[], skipWhere?: boolean): string {
     const clauses = [];
     fieldFilters.forEach(fieldFilter => {
         const clause = getLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
@@ -119,7 +123,7 @@ export function getLabKeySqlWhere(fieldFilters: FieldFilter[]): string {
 
     if (clauses.length === 0) return '';
 
-    return 'WHERE ' + clauses.join(' AND ');
+    return (skipWhere ? '' : 'WHERE ') + clauses.join(' AND ');
 }
 
 export function getExpDescendantOfSelectClause(
@@ -147,6 +151,45 @@ export function getExpDescendantOfFilter(
     return Filter.create('*', selectClause, IN_EXP_DESCENDANTS_OF_FILTER_TYPE);
 }
 
+export function getAssayFilter(
+    card: FilterProps,
+    cf?: Query.ContainerFilter
+): Filter.IFilter {
+    const { schemaQuery, filterArray, targetColumnFieldKey } = card;
+    let noAssayDataFilter : Filter.IFilter = undefined;
+    filterArray.forEach(fieldFilter => {
+        if (!noAssayDataFilter && fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()) {
+            noAssayDataFilter = fieldFilter.filter;
+        }
+    });
+
+    if (noAssayDataFilter)
+        return noAssayDataFilter;
+
+    const whereConditions = getLabKeySqlWhere(filterArray, true);
+    if (!whereConditions) return null;
+
+    const { schemaName, queryName } = schemaQuery;
+
+    // const cfClause = cf ? `[ContainerFilter='${cf}']` : ''; //TODO container filter
+
+    return Filter.create(
+        'RowId',
+        '{json:' + JSON.stringify([targetColumnFieldKey, schemaName, queryName, whereConditions]) + '}',
+        COLUMN_IN_FILTER_TYPE
+    );
+
+
+    // return `SELECT "${queryName}".expObject() FROM ${schemaName}."${queryName}" ${selectClauseWhere}`;
+
+
+    // const assayFilter = Filter.create(
+    //     'RowId',
+    //     '{json:' + JSON.stringify(['SampleId', 'assay.General.assay1', 'data']) + '}',
+    //     COLUMN_NOT_IN_FILTER_TYPE
+    // );
+}
+
 // exported for jest testing
 export function getSampleFinderCommonConfigs(
     cards: FilterProps[],
@@ -156,6 +199,11 @@ export function getSampleFinderCommonConfigs(
     const baseFilters = [];
     const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
     cards.forEach(card => {
+        if (card.entityDataType.nounAsParentSingular === AssayResultDataType.nounAsParentSingular) {
+            baseFilters.push(getAssayFilter(card, cf));
+            return;
+        }
+
         const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery, useAncestors);
 
         requiredColumns.push(cardColumnName);
@@ -166,7 +214,7 @@ export function getSampleFinderCommonConfigs(
                 const columnName = filter.getColumnName();
 
                 // The 'Name' field is redundant since we always add a column for the parent type ID
-                if (columnName != 'Name') {
+                if (columnName !== 'Name') {
                     const newColumnName = cardColumnName + '/' + columnName;
                     if (requiredColumns.indexOf(newColumnName) === -1) {
                         requiredColumns.push(newColumnName);
@@ -182,6 +230,19 @@ export function getSampleFinderCommonConfigs(
             baseFilters.push(Filter.create(cardColumnName + '/Name', null, Filter.Types.NONBLANK));
         }
     });
+
+    // const assayFilter = Filter.create(
+    //     'RowId',
+    //     '{json:' + JSON.stringify(['SampleId', 'assay.General.assay1', 'data', 'intField < 20']) + '}',
+    //     COLUMN_IN_FILTER_TYPE
+    // );
+
+    // const assayFilter = Filter.create(
+    //     'RowId',
+    //     '{json:' + JSON.stringify(['SampleId', 'assay.General.assay1', 'data']) + '}',
+    //     COLUMN_NOT_IN_FILTER_TYPE
+    // );
+    // baseFilters.push(assayFilter);
     return {
         requiredColumns,
         baseFilters,
@@ -234,6 +295,10 @@ export function getSampleFinderQueryConfigs(
 export function getSampleFinderColumnNames(cards: FilterProps[]): { [key: string]: string } {
     const columnNames = {};
     cards?.forEach(card => {
+        if (card.entityDataType.nounAsParentSingular === AssayResultDataType.nounAsParentSingular) {
+            return;
+        }
+
         const ancestorCardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery, true);
         const parentCardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery, false);
         if (card.dataTypeDisplayName) {

@@ -20,7 +20,7 @@ import { AssayUploadTabs } from '../../constants';
 
 import { SCHEMAS } from '../../schemas';
 import { User } from '../base/models/User';
-import { AssayDefinitionModel } from '../../AssayDefinitionModel';
+import {AssayDefinitionModel, AssayDomainTypes} from '../../AssayDefinitionModel';
 import { buildURL } from '../../url/AppURL';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { naturalSortByProperty } from '../../../public/sort';
@@ -288,6 +288,23 @@ export function getImportItemsForAssayDefinitions(
             );
             return items.set(assay, href);
         }, OrderedMap<AssayDefinitionModel, string>());
+}
+
+export function getAssayDefinitionsWithResultSampleLookup(
+    assayStateModel: AssayStateModel,
+    providerType?: string,
+    allowPicklist?: boolean,
+): {[key: string] : string} {
+    const assays = assayStateModel.definitions.filter(assay => providerType === undefined || assay.type?.toLowerCase() === providerType?.toLowerCase());
+
+    const results = {};
+    assays.forEach(assay => {
+        const sampleCol = assay.getSampleLookupColumn(AssayDomainTypes.RESULT, allowPicklist);
+        if (sampleCol !== null)
+            results[assay.name] = sampleCol.fieldKey;
+    });
+
+    return results;
 }
 
 export interface DuplicateFilesResponse {

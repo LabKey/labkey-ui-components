@@ -18,8 +18,8 @@ describe('AdministrationSubNav', () => {
         expect(getAdministrationSubNavTabs(TEST_USER_AUTHOR).size).toBe(0);
         expect(getAdministrationSubNavTabs(TEST_USER_EDITOR).size).toBe(0);
         expect(getAdministrationSubNavTabs(TEST_USER_ASSAY_DESIGNER).size).toBe(0);
-        expect(getAdministrationSubNavTabs(TEST_USER_FOLDER_ADMIN).size).toBe(4);
-        expect(getAdministrationSubNavTabs(TEST_USER_PROJECT_ADMIN).size).toBe(4);
-        expect(getAdministrationSubNavTabs(TEST_USER_APP_ADMIN).size).toBe(4);
+        expect(getAdministrationSubNavTabs(TEST_USER_FOLDER_ADMIN).size).toBe(5);
+        expect(getAdministrationSubNavTabs(TEST_USER_PROJECT_ADMIN).size).toBe(5);
+        expect(getAdministrationSubNavTabs(TEST_USER_APP_ADMIN).size).toBe(5);
     });
 });

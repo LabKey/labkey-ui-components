@@ -11,7 +11,7 @@ import { AppURL } from '../../url/AppURL';
 import { useServerContext } from '../base/ServerContext';
 
 import { User } from '../base/models/User';
-import { SAMPLE_TIMELINE_AUDIT_QUERY } from '../auditlog/constants';
+import { AUDIT_KEY } from '../../app/constants';
 
 export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
     let tabs = List<string>();
@@ -27,7 +27,7 @@ export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
     return tabs
         .map(text => ({
             text,
-            url: text === 'Audit Logs' ? AppURL.create('audit') : AppURL.create('admin', text.toLowerCase()),
+            url: text === 'Audit Logs' ? AppURL.create(AUDIT_KEY) : AppURL.create('admin', text.toLowerCase()),
         }))
         .toList();
 };

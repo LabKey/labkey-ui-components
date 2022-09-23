@@ -16,6 +16,7 @@
 import { enableMapSet, enablePatches } from 'immer';
 
 import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
+import { getHref } from './internal/url/utils';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
@@ -712,6 +713,7 @@ import {
 import {
     ASSAY_DESIGN_KEY,
     ASSAYS_KEY,
+    AUDIT_KEY,
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
     ELN_KEY,
@@ -831,6 +833,7 @@ const App = {
     FREEZER_MANAGER: FREEZER_MANAGER_APP_PROPERTIES,
     ASSAYS_KEY,
     ASSAY_DESIGN_KEY,
+    AUDIT_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
     FIND_SAMPLES_BY_ID_KEY,
     FIND_SAMPLES_BY_FILTER_KEY,
@@ -946,6 +949,7 @@ export {
     SamplesResolver,
     ExperimentRunResolver,
     getLocation,
+    getHref,
     pushParameter,
     replaceParameter,
     replaceParameters,

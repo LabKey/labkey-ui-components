@@ -41,3 +41,5 @@ export const COMMON_AUDIT_QUERIES = [
     SAMPLE_TIMELINE_AUDIT_QUERY,
     USER_AUDIT_QUERY,
 ];
+
+export const AUDIT_EVENT_TYPE_PARAM = 'eventType';

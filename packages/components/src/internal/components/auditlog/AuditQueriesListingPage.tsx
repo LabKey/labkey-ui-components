@@ -26,7 +26,7 @@ import { getAuditDetail } from './actions';
 import { AuditDetailsModel } from './models';
 import { AuditDetails } from './AuditDetails';
 import { WithRouterProps } from 'react-router';
-import { SAMPLE_TIMELINE_AUDIT_QUERY } from './constants';
+import { AUDIT_EVENT_TYPE_PARAM, SAMPLE_TIMELINE_AUDIT_QUERY } from './constants';
 
 interface OwnProps {
     params: any;
@@ -72,7 +72,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
         const paramUpdates = location.query.map((value: string, key: string) => {
             if (key.startsWith("query"))
                 return undefined; // get rid of filtering parameters that are likely not applicable to this new audit log
-            else if (key === "eventType")
+            else if (key === AUDIT_EVENT_TYPE_PARAM)
                 return selected;
             else
                 return value;

@@ -3,8 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Add Audit Logs in subnav for admin pages
+* Add Audit Logs in subNav for admin pages and alphabetize subNav tabs
 * Updates for change in route to audit page with eventType as a url parameter
+* Update NavItem logic for active tab to exclude parameters in URL when comparing paths
 
 ### version 2.219.0
 *Released*: 22 September 2022

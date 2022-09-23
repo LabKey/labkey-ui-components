@@ -27,7 +27,7 @@ export const getAdministrationSubNavTabs = (user: User): List<ITab> => {
     return tabs
         .map(text => ({
             text,
-            url: text === 'Audit Logs' ? AppURL.create('audit').addParam('eventType', SAMPLE_TIMELINE_AUDIT_QUERY.value) : AppURL.create('admin', text.toLowerCase()),
+            url: text === 'Audit Logs' ? AppURL.create('audit') : AppURL.create('admin', text.toLowerCase()),
         }))
         .toList();
 };

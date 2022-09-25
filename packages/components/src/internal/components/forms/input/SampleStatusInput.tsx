@@ -24,6 +24,7 @@ interface SampleStatusInputProps {
     data: any;
     key: ReactText;
     isDetailInput?: boolean;
+    isGridInput?: boolean;
     allowDisable?: boolean;
     initiallyDisabled?: boolean;
     onToggleDisable?: (disabled: boolean) => void;
@@ -53,6 +54,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         onAdditionalFormDataChange,
         inputClass,
         formsy,
+        isGridInput
     } = props;
     const { user } = useServerContext();
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>(undefined);
@@ -148,11 +150,11 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 containerPath={col.lookup.containerPath ?? containerPath}
                 description={col.description}
                 displayColumn={col.lookup.displayColumn}
-                formsy={formsy}
+                formsy={isGridInput ? false : formsy}
                 helpTipRenderer={col.helpTipRenderer}
                 initiallyDisabled={initiallyDisabled}
                 joinValues={col.isJunctionLookup()}
-                label={col.caption}
+                label={isGridInput ? undefined : col.caption}
                 loadOnFocus
                 maxRows={10}
                 multiple={col.isJunctionLookup()}
@@ -165,7 +167,8 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 showLabel
                 value={value}
                 valueColumn={col.lookup.keyColumn}
-                inputClass={inputClass}
+                inputClass={isGridInput ? 'select-input-cell' : inputClass}
+                containerClass={isGridInput ? "select-input-cell-container" : undefined}
             />
             {error && <Alert>{error}</Alert>}
             {showDiscardPanel && <>{discardPanel}</>}

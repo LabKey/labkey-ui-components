@@ -110,7 +110,8 @@ const SampleStatusInputRenderer: InputRenderer = (
     onAdditionalFormDataChange?: (name: string, value: any) => any,
     inputClass?: string,
     containerPath?: string,
-    containerFilter?: Query.ContainerFilter
+    containerFilter?: Query.ContainerFilter,
+    isGridInput?: boolean
 ) => {
     return (
         <SampleStatusInput
@@ -128,6 +129,7 @@ const SampleStatusInputRenderer: InputRenderer = (
             inputClass={inputClass}
             containerFilter={containerFilter}
             containerPath={containerPath}
+            isGridInput={isGridInput}
         />
     );
 };
@@ -158,6 +160,7 @@ const AssayTaskInputRenderer: InputRenderer = (
     if (!assayId)
         assayId = Map.isMap(data) ? data.get(encodePart(ASSAY_ID_INDEX)) : data[encodePart(ASSAY_ID_INDEX)];
     assayId = assayId?.value ?? assayId;
+    assayId = assayId?.get('value') ?? assayId;
 
     return <AssayTaskInput
         assayId={assayId}

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, {ReactNode} from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -269,6 +269,44 @@ export class Cell extends React.PureComponent<Props, State> {
         }
     };
 
+    getRenderer = (): ReactNode => {
+        const {
+            cellActions,
+            col,
+            colIdx,
+            rowIdx,
+            values,
+            row
+        } = this.props;
+
+        const renderer = resolveRenderer(col);
+
+        if (renderer) {
+            const onQSChange = (name: string, value: string | any[], items: any) => {
+                cellActions.modifyCell(colIdx, rowIdx, [{ raw: items?.value, display: items?.label }], MODIFICATION_TYPES.REPLACE);
+            }
+
+            return renderer(
+                col,
+                col.name,
+                row,
+                values?.get(0)?.raw,
+                false,
+                false,
+                false,
+                null,
+                onQSChange,
+                null,
+                false,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                true
+            );
+        }
+    }
+
     render() {
         const {
             cellActions,
@@ -292,35 +330,6 @@ export class Cell extends React.PureComponent<Props, State> {
         const showLookup = col.isPublicLookup() || col.validValues;
 
         const isDateField = col.jsonType === 'date';
-
-        if (col.inputRenderer) {
-            const renderer = resolveRenderer(col);
-
-            if (renderer) {
-                const onQSChange = (name: string, value: string | any[], items: any) => {
-                    cellActions.modifyCell(colIdx, rowIdx, [{ raw: items?.value, display: items?.label }], MODIFICATION_TYPES.REPLACE);
-                }
-
-                return renderer(
-                    col,
-                    col.name,
-                    row,
-                    values?.get(0)?.raw,
-                    false,
-                    false,
-                    false,
-                    null,
-                    onQSChange,
-                    null,
-                    false,
-                    undefined,
-                    undefined,
-                    undefined,
-                    undefined,
-                    true
-                );
-            }
-        }
 
         if (!focused) {
             let valueDisplay = values
@@ -349,7 +358,8 @@ export class Cell extends React.PureComponent<Props, State> {
 
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
             let cell;
-            if (showLookup) {
+
+            if (showLookup || col.inputRenderer) {
                 cell = (
                     <div {...displayProps}>
                         <div className="cell-menu-value">{valueDisplay}</div>
@@ -385,6 +395,10 @@ export class Cell extends React.PureComponent<Props, State> {
                     )}
                 </>
             );
+        }
+
+        if (col.inputRenderer) {
+            return this.getRenderer();
         }
 
         if (showLookup) {

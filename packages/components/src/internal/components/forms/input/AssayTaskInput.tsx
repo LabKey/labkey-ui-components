@@ -106,6 +106,7 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
                     initiallyDisabled={initiallyDisabled}
                     onToggleDisable={onToggleDisable}
                     onChange={onChange}
+                    menuPosition={isGridInput?"fixed":undefined}
                 />
             )}
         </div>

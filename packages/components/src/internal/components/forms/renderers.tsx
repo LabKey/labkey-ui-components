@@ -160,7 +160,7 @@ const AssayTaskInputRenderer: InputRenderer = (
     if (!assayId)
         assayId = Map.isMap(data) ? data.get(encodePart(ASSAY_ID_INDEX)) : data[encodePart(ASSAY_ID_INDEX)];
     assayId = assayId?.value ?? assayId;
-    assayId = assayId?.get('value') ?? assayId;
+    assayId = assayId?.get?.('value') ?? assayId;
 
     return <AssayTaskInput
         assayId={assayId}

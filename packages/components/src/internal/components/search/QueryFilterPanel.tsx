@@ -1,6 +1,8 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Row, Col, Nav, NavItem, Tab } from 'react-bootstrap';
 import { fromJS, List } from 'immutable';
+import classNames from 'classnames';
+
 import { Filter, Query } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
@@ -18,7 +20,6 @@ import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
-import classNames from "classnames";
 
 enum FieldFilterTabs {
     ChooseValues = 'ChooseValues',
@@ -36,16 +37,16 @@ interface Props {
     fieldKey?: string;
     filters: { [key: string]: FieldFilter[] };
     fullWidth?: boolean;
+    hasNotInQueryFilter?: boolean;
+    hasNotInQueryFilterLabel?: string;
     metricFeatureArea?: string;
     onFilterUpdate: (field: QueryColumn, newFilters: Filter.IFilter[], index: number) => void;
+    onHasNoValueInQueryChange?: (check: boolean) => void;
     queryInfo: QueryInfo;
     selectDistinctOptions?: Query.SelectDistinctOptions;
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
-    hasNotInQueryFilter?: boolean;
-    onHasNoValueInQueryChange?: (check: boolean) => void;
-    hasNotInQueryFilterLabel?: string;
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
@@ -65,7 +66,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         fullWidth,
         selectDistinctOptions,
         onHasNoValueInQueryChange,
-        hasNotInQueryFilterLabel
+        hasNotInQueryFilterLabel,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
@@ -216,20 +217,20 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                 <input
                                     className="form-check-input filter-faceted__checkbox"
                                     type="checkbox"
-                                    name='field-value-nodata-check'
+                                    name="field-value-nodata-check"
                                     onChange={event => onHasNoValueInQueryChange(event.target.checked)}
                                     checked={hasNotInQueryFilter}
                                 />
-                                <div
-                                    className="filter-modal__fields-col-nodata-msg"
-                                >
+                                <div className="filter-modal__fields-col-nodata-msg">
                                     {hasNotInQueryFilterLabel ?? 'Without data from this type'}
                                 </div>
                             </div>
                         )}
-                        <div className={classNames({
-                            'field-modal__col-content-disabled': hasNotInQueryFilter
-                        })}>
+                        <div
+                            className={classNames({
+                                'field-modal__col-content-disabled': hasNotInQueryFilter,
+                            })}
+                        >
                             {queryFields?.map((field, index) => {
                                 const { caption } = field;
                                 const currFieldKey = field.getDisplayFieldKey();
@@ -255,9 +256,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                 <div className="field-modal__col-title">Values</div>
                 {queryName && !activeField && <div className="field-modal__empty-msg">Select a field.</div>}
                 {queryName && activeField && (
-                    <div className={classNames('field-modal__col-content field-modal__values', {
-                        'field-modal__col-content-disabled': hasNotInQueryFilter
-                    })}>
+                    <div
+                        className={classNames('field-modal__col-content field-modal__values', {
+                            'field-modal__col-content-disabled': hasNotInQueryFilter,
+                        })}
+                    >
                         <Tab.Container
                             activeKey={activeTab}
                             className="field-modal__tabs content-tabs"
@@ -273,7 +276,11 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                         </NavItem>
                                     )}
                                 </Nav>
-                                <Tab.Content animation className="filter-modal__values-col-content" disabled={hasNotInQueryFilter}>
+                                <Tab.Content
+                                    animation
+                                    className="filter-modal__values-col-content"
+                                    disabled={hasNotInQueryFilter}
+                                >
                                     <Tab.Pane eventKey={FieldFilterTabs.Filter}>
                                         <div className="field-modal__col-sub-title">
                                             Find values for {activeField.caption}

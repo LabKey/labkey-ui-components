@@ -24,10 +24,10 @@ import {
 import { FieldFilterOption, FilterSelection } from './models';
 
 interface Props {
+    disabled?: boolean;
     field: QueryColumn;
     fieldFilters: Filter.IFilter[];
     onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index: number) => void;
-    disabled?: boolean;
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
@@ -140,8 +140,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
     const updateTextFilterFieldValue = useCallback(
         (filterIndex, event: any, isNumberInput?: boolean) => {
-            if (disabled)
-                return;
+            if (disabled) return;
 
             let newValue = isNumberInput ? event.target.valueAsNumber : event.target.value;
             if (isNumberInput && isNaN(newValue)) newValue = null;

@@ -22,15 +22,16 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
 import { AssayResultDataType } from '../entities/constants';
 
+import { COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
+
 import { FieldFilter, FilterProps } from './models';
 import {
     getDataTypeFiltersWithNotInQueryUpdate,
     getFieldFiltersValidationResult,
     getUpdatedDataTypeFilters,
-    isValidFilterFieldExcludeLookups
+    isValidFilterFieldExcludeLookups,
 } from './utils';
 import { QueryFilterPanel } from './QueryFilterPanel';
-import {COLUMN_NOT_IN_FILTER_TYPE} from "../../query/filter";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -202,22 +203,28 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const onHasNoValueInQueryChange = useCallback(
         (check: boolean) => {
-            if (!entityDataType.supportHasNoValueInQuery)
-                return;
+            if (!entityDataType.supportHasNoValueInQuery) return;
 
             setCardDirty?.(true);
             setFilterError(undefined);
             const schemaQuery = entityDataType.getInstanceSchemaQuery(activeQuery);
             const targetQueryFilterKey = assaySampleIdCols[activeQuery];
-            setDataTypeFilters(getDataTypeFiltersWithNotInQueryUpdate(dataTypeFilters, schemaQuery, activeQuery, targetQueryFilterKey, check));
+            setDataTypeFilters(
+                getDataTypeFiltersWithNotInQueryUpdate(
+                    dataTypeFilters,
+                    schemaQuery,
+                    activeQuery,
+                    targetQueryFilterKey,
+                    check
+                )
+            );
         },
         [dataTypeFilters, activeQuery, entityDataType]
     );
 
     const hasNotInQueryFilter = useMemo((): boolean => {
         const activeQueryFilters: FieldFilter[] = dataTypeFilters[activeQuery];
-        if (!activeQueryFilters || activeQueryFilters.length === 0)
-            return false;
+        if (!activeQueryFilters || activeQueryFilters.length === 0) return false;
 
         let hasFilter = false;
         activeQueryFilters.forEach(fieldFilter => {

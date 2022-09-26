@@ -21,7 +21,7 @@ import {
     COLUMN_IN_FILTER_TYPE,
     COLUMN_NOT_IN_FILTER_TYPE,
     CONCEPT_COLUMN_FILTER_TYPES,
-    getLabKeySql
+    getLabKeySql,
 } from '../../query/filter';
 
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -832,11 +832,10 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     noDataInTypeChecked: boolean,
     cf?: Query.ContainerFilter
 ): { [p: string]: FieldFilter[] } {
-
     const lcActiveQuery = dataType.toLowerCase();
     const dataTypeFiltersUpdated = { ...dataTypeFilters };
 
-    //TODO add cf
+    // TODO add cf
     if (noDataInTypeChecked) {
         const noDataFilter = Filter.create(
             'RowId',
@@ -844,12 +843,14 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
             COLUMN_NOT_IN_FILTER_TYPE
         );
 
-        dataTypeFiltersUpdated[lcActiveQuery] = [{
-            fieldKey: '*',
-            fieldCaption: 'Results',
-            filter: noDataFilter,
-            jsonType: undefined,
-        } as FieldFilter];
+        dataTypeFiltersUpdated[lcActiveQuery] = [
+            {
+                fieldKey: '*',
+                fieldCaption: 'Results',
+                filter: noDataFilter,
+                jsonType: undefined,
+            } as FieldFilter,
+        ];
     } else {
         delete dataTypeFiltersUpdated[lcActiveQuery];
     }

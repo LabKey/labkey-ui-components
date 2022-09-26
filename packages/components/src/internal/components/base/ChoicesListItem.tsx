@@ -4,11 +4,11 @@ import classNames from 'classnames';
 interface Props {
     active: boolean;
     componentRight?: ReactNode;
+    disabled?: boolean;
     index: number;
     label: string;
-    subLabel?: string;
     onSelect: (index: number) => void;
-    disabled?: boolean;
+    subLabel?: string;
 }
 
 export const ChoicesListItem: FC<Props> = memo(props => {
@@ -18,7 +18,12 @@ export const ChoicesListItem: FC<Props> = memo(props => {
     }, [onSelect, index]);
 
     return (
-        <button className={classNames('list-group-item', { active })} onClick={onClick} type="button" disabled={disabled}>
+        <button
+            className={classNames('list-group-item', { active })}
+            onClick={onClick}
+            type="button"
+            disabled={disabled}
+        >
             {label}
             {subLabel && <span className="choices-list__sub-label">{subLabel}</span>}
             {componentRight}

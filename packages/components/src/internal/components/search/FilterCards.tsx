@@ -11,8 +11,8 @@ import { FilterValueDisplay } from './FilterValueDisplay';
 interface GroupedFilterProps {
     cardIndex: number;
     filterArray: FieldFilter[];
-    onFilterValueExpand: (cardIndex: number, fieldFilter: FieldFilter) => void;
     noValueInQueryFilterMsg?: string;
+    onFilterValueExpand: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 
 // exported for jest testing
@@ -50,9 +50,9 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
 });
 
 interface FilterEditProps extends FilterProps {
+    onAdd: (entityDataType: EntityDataType) => void;
     onDelete: (index) => void;
     onEdit: (index) => void;
-    onAdd: (entityDataType: EntityDataType) => void;
     onFilterValueExpand?: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 
@@ -163,9 +163,9 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
 interface Props {
     cards: FilterProps[];
     className?: string;
+    onAddEntity: (entityDataType: EntityDataType) => void;
     onFilterDelete?: (index) => void;
     onFilterEdit?: (index) => void;
-    onAddEntity: (entityDataType: EntityDataType) => void;
     onFilterValueExpand?: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 

@@ -594,11 +594,11 @@ export interface EntityDataType {
     nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
+    supportHasNoValueInQuery?: boolean;
     typeListingSchemaQuery: SchemaQuery;
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
-    supportHasNoValueInQuery?: boolean;
 }
 
 export class OperationConfirmationData {

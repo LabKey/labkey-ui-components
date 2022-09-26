@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 import { ReactWrapper } from 'enzyme';
-import { LabKey, PermissionRoles } from '@labkey/api';
+import { PermissionRoles } from '@labkey/api';
 
 import { initQueryGridState } from '../../global';
 import { mountWithAppServerContext } from '../../testHelpers';
@@ -19,14 +19,8 @@ import { InjectedPermissionsPage } from '../permissions/withPermissionsPage';
 
 import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 
-declare const LABKEY: LabKey;
-
 beforeAll(() => {
     initQueryGridState();
-});
-
-beforeEach(() => {
-    LABKEY.moduleContext.api = {};
 });
 
 describe('UserManagement', () => {
@@ -133,16 +127,28 @@ describe('getNewUsersRoles', () => {
     });
 
     test('premium, non project, app admin', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(TEST_USER_APP_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
+        const moduleContext = { api: { moduleNames: ['premium'] } };
+        const roles = getNewUserRoles(
+            TEST_USER_APP_ADMIN,
+            TEST_FOLDER_CONTAINER,
+            TEST_PROJECT,
+            STORAGE_ROLES,
+            moduleContext
+        );
         expect(roles.length).toBe(7);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeDefined();
     });
 
     test('premium, project, app admin', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(TEST_USER_APP_ADMIN, TEST_PROJECT_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
+        const moduleContext = { api: { moduleNames: ['premium'] } };
+        const roles = getNewUserRoles(
+            TEST_USER_APP_ADMIN,
+            TEST_PROJECT_CONTAINER,
+            TEST_PROJECT,
+            STORAGE_ROLES,
+            moduleContext
+        );
         expect(roles.length).toBe(8);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ProjectAdmin)).toBeDefined();
@@ -156,16 +162,28 @@ describe('getNewUsersRoles', () => {
     });
 
     test('premium, non project, non app admin', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(TEST_USER_PROJECT_ADMIN, TEST_FOLDER_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
+        const moduleContext = { api: { moduleNames: ['premium'] } };
+        const roles = getNewUserRoles(
+            TEST_USER_PROJECT_ADMIN,
+            TEST_FOLDER_CONTAINER,
+            TEST_PROJECT,
+            STORAGE_ROLES,
+            moduleContext
+        );
         expect(roles.length).toBe(6);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ApplicationAdmin)).toBeUndefined();
     });
 
     test('premium, project, non app admin', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
-        const roles = getNewUserRoles(TEST_USER_PROJECT_ADMIN, TEST_PROJECT_CONTAINER, TEST_PROJECT, STORAGE_ROLES);
+        const moduleContext = { api: { moduleNames: ['premium'] } };
+        const roles = getNewUserRoles(
+            TEST_USER_PROJECT_ADMIN,
+            TEST_PROJECT_CONTAINER,
+            TEST_PROJECT,
+            STORAGE_ROLES,
+            moduleContext
+        );
         expect(roles.length).toBe(7);
         expect(roles.find(role => role.id === PermissionRoles.FolderAdmin)).toBeDefined();
         expect(roles.find(role => role.id === PermissionRoles.ProjectAdmin)).toBeDefined();

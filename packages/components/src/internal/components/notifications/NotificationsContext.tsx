@@ -29,6 +29,7 @@ export interface NotificationsContextProviderProps {
     initialContext?: NotificationsContextState;
 }
 
+// TODO: move implementation to GlobalStateContextProvider
 export const NotificationsContextProvider: FC<NotificationsContextProviderProps> = memo(
     ({ children, initialContext }) => {
         const [notifications, setNotifications] = useState<Map<string, NotificationItemModel>>(

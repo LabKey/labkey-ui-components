@@ -6,11 +6,18 @@ import React, { ReactNode } from 'react';
 import { Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { isAssayEnabled, isSampleManagerEnabled, isWorkflowEnabled, sampleManagerIsPrimaryApp } from '../../app/utils';
+import {
+    isAssayEnabled,
+    isProductProjectsEnabled,
+    isSampleManagerEnabled,
+    isWorkflowEnabled,
+    sampleManagerIsPrimaryApp,
+} from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 import {
     ASSAY_AUDIT_QUERY,
     COMMON_AUDIT_QUERIES,
+    PROJECT_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
 } from '../samples/constants';
@@ -26,6 +33,7 @@ export type AuditQuery = {
 
 export function getAuditQueries(): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];
+    if (isProductProjectsEnabled()) queries.push(PROJECT_AUDIT_QUERY);
     if (isWorkflowEnabled()) queries.push(WORKFLOW_AUDIT_QUERY);
     if (isAssayEnabled()) queries.push(ASSAY_AUDIT_QUERY);
     if (isSampleManagerEnabled() && sampleManagerIsPrimaryApp()) queries.push(SOURCE_AUDIT_QUERY);

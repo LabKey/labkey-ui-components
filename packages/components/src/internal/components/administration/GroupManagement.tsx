@@ -49,7 +49,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
     const { api } = useAppContext<AppContext>();
     const { dismissNotifications, createNotification } = useNotificationsContext();
-    const { container, user } = useServerContext();
+    const { container, moduleContext, user } = useServerContext();
 
     const projectPath = useMemo(() => getProjectPath(container.path), [container]);
     const loaded = !isLoading(loadingState);
@@ -244,8 +244,8 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     }, [updatedPrincipals, groupMembership]);
 
     const description = useMemo(() => {
-        return showPremiumFeatures() ? container.path : undefined;
-    }, [container]);
+        return showPremiumFeatures(moduleContext) ? container.path : undefined;
+    }, [container, moduleContext]);
 
     return (
         <BasePermissionsCheckPage

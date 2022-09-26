@@ -1,4 +1,5 @@
 import React, { ComponentType, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
+
 import { useAppContext } from '../../AppContext';
 
 import { useServerContext } from '../base/ServerContext';
@@ -25,6 +26,7 @@ export const useLabelPrintingContext = (): LabelPrintingProviderProps => {
     return useContext(LabelPrintingContext);
 };
 
+// TODO: move implementation to GlobalStateContextProvider
 export const LabelPrintingProvider: FC<OwnProps> = memo(({ children, initialContext }) => {
     const { user } = useServerContext();
     const { api } = useAppContext();

@@ -2,7 +2,7 @@ import { Filter } from '@labkey/api';
 
 import { formatDate } from '../util/Date';
 
-import { getLabKeySql } from './filter';
+import {COLUMN_NOT_IN_FILTER_TYPE, getLabKeySql} from './filter';
 
 const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Los_Angeles
 const testDate = new Date(datePOSIX);
@@ -20,6 +20,10 @@ const dateTimeStr2 = formatDate(testDate2, timezone, 'YYYY-MM-dd HH:mm');
 describe('getLabKeySql', () => {
     test('has any value', () => {
         expect(getLabKeySql(Filter.create('StringField', null, Filter.Types.HAS_ANY_VALUE), 'string')).toBeNull();
+    });
+
+    test('column not in', () => {
+        expect(getLabKeySql(Filter.create('StringField', 'test', COLUMN_NOT_IN_FILTER_TYPE), 'string')).toBeNull();
     });
 
     test('simple operator, no filter value', () => {

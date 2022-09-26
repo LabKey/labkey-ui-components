@@ -79,9 +79,9 @@ export const FolderMenu: FC<Props> = memo(({ appProperties }) => {
     }, [api, container, controllerName]);
 
     const toggleMenu = useCallback(() => {
-        setOpen(!open);
+        setOpen(open_ => !open_);
         blurActiveElement();
-    }, [open]);
+    }, []);
 
     return (
         <Dropdown className="nav-folder-menu" id="folder-menu" onToggle={toggleMenu} open={open}>

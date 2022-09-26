@@ -3,7 +3,8 @@ import { List } from 'immutable';
 
 import { PICKLIST_HOME_HREF, PICKLIST_KEY } from '../../app/constants';
 
-import { ITab, SubNav } from '../navigation/SubNav';
+import { ITab } from '../navigation/types';
+import { SubNav } from '../navigation/SubNav';
 import { useServerContext } from '../base/ServerContext';
 import { AppURL } from '../../url/AppURL';
 

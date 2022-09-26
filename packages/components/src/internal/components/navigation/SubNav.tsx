@@ -13,28 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+import React, { FC, useRef, useState, useCallback, useEffect, memo } from 'react';
 import classNames from 'classnames';
-import React, { ReactNode, FC, useRef, useState, useCallback, useEffect } from 'react';
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { AppURL } from '../../url/AppURL';
 import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
 
 import NavItem, { ParentNavItem } from './NavItem';
+import { ITab, SubNavGlobalContext } from './types';
+import { useSubNavContext } from './hooks';
 
 interface Props {
     ignoreShow?: boolean; // Forces the SubNav to always be hidden in "scrolled" mode
     noun?: ITab;
     tabs: List<ITab>;
-}
-
-export interface ITab {
-    text: string;
-    tooltip?: ReactNode;
-    url: string | AppURL;
 }
 
 export const SubNav: FC<Props> = ({ ignoreShow, noun, tabs }) => {
@@ -134,3 +128,17 @@ export const SubNav: FC<Props> = ({ ignoreShow, noun, tabs }) => {
         </nav>
     );
 };
+
+/**
+ * SubNavWithContext renders a SubNav component using data stored in the SubNavContext, this component is useful when
+ * you need to update the SubNav based on data you load asynchronously after the page loads.
+ */
+export const SubNavWithContext: FC<SubNavGlobalContext> = memo(() => {
+    const { ignoreShow, noun, tabs } = useSubNavContext();
+
+    if (tabs.size === 0 && noun === undefined) {
+        return null;
+    }
+
+    return <SubNav ignoreShow={ignoreShow} noun={noun} tabs={tabs} />;
+});

@@ -1,7 +1,8 @@
 import React from 'react';
 import { List } from 'immutable';
 
-import { ITab, SubNav } from '../navigation/SubNav';
+import { ITab } from '../navigation/types';
+import { SubNav } from '../navigation/SubNav';
 import { AppURL } from '../../url/AppURL';
 
 const PARENT_TAB: ITab = {

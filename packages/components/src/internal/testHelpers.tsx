@@ -25,6 +25,7 @@ import {
     LabelPrintingProvider,
     LabelPrintingProviderProps,
 } from './components/labels/LabelPrintingContextProvider';
+import { GlobalStateContextProvider } from './GlobalStateContext';
 
 declare let LABKEY: LabKey;
 
@@ -98,22 +99,24 @@ export const makeTestData = (getQueryResponse): RowsResponse => {
 interface AppContextTestProviderProps {
     appContext: Partial<AppContext>;
     notificationContext: Partial<NotificationsContextState>;
-    serverContext: Partial<ServerContext>;
     printLabelsContext: Partial<LabelPrintingContextProps>;
+    serverContext: Partial<ServerContext>;
 }
 
 export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => {
-    const { appContext, children, serverContext, notificationContext, printLabelsContext} = props;
+    const { appContext, children, serverContext, notificationContext, printLabelsContext } = props;
     const initialAppContext = useMemo(() => ({ api: getTestAPIWrapper(), ...appContext }), [appContext]);
 
     return (
         <ServerContextProvider initialContext={serverContext as ServerContext}>
             <AppContextProvider initialContext={initialAppContext}>
-                <NotificationsContextProvider initialContext={notificationContext as NotificationsContextState}>
-                    <LabelPrintingProvider initialContext={printLabelsContext as LabelPrintingContextProps}>
-                        {children}
-                    </LabelPrintingProvider>
-                </NotificationsContextProvider>
+                <GlobalStateContextProvider>
+                    <NotificationsContextProvider initialContext={notificationContext as NotificationsContextState}>
+                        <LabelPrintingProvider initialContext={printLabelsContext as LabelPrintingContextProps}>
+                            {children}
+                        </LabelPrintingProvider>
+                    </NotificationsContextProvider>
+                </GlobalStateContextProvider>
             </AppContextProvider>
         </ServerContextProvider>
     );
@@ -135,11 +138,16 @@ export const mountWithAppServerContextOptions = (
     serverContext?: Partial<ServerContext>,
     notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps,
-    printLabelsContext?: Partial<LabelPrintingProviderProps>,
+    printLabelsContext?: Partial<LabelPrintingProviderProps>
 ): MountRendererProps => {
     return {
         wrappingComponent: AppContextTestProvider,
-        wrappingComponentProps: { appContext, serverContext: serverContext ?? {}, notificationContext, printLabelsContext },
+        wrappingComponentProps: {
+            appContext,
+            serverContext: serverContext ?? {},
+            notificationContext,
+            printLabelsContext,
+        },
         ...options,
     };
 };
@@ -162,9 +170,12 @@ export const mountWithAppServerContext = (
     serverContext?: Partial<ServerContext>,
     notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps,
-    printLabelsContext?: Partial<LabelPrintingProviderProps>,
+    printLabelsContext?: Partial<LabelPrintingProviderProps>
 ): ReactWrapper => {
-    return mount(node, mountWithAppServerContextOptions(appContext, serverContext, notificationContext, options, printLabelsContext));
+    return mount(
+        node,
+        mountWithAppServerContextOptions(appContext, serverContext, notificationContext, options, printLabelsContext)
+    );
 };
 
 /**

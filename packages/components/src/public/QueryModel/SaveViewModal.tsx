@@ -19,11 +19,11 @@ interface ViewNameInputProps {
     autoFocus?: boolean;
     defaultValue?: string;
     isDefaultView?: boolean;
-    onChange?: (name: string, hasError: boolean) => void;
+    maxLength?: number;
     onBlur: (name: string, hasError: boolean) => void;
+    onChange?: (name: string, hasError: boolean) => void;
     placeholder?: string;
     view: ViewInfo;
-    maxLength?: number;
 }
 
 export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
@@ -39,38 +39,37 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
     } = props;
 
     const [nameError, setNameError] = useState<string>(undefined);
-    const [viewName, setViewName] = useState<string>(
-        view?.isDefault || view?.hidden ? '' : view?.name
-    );
+    const [viewName, setViewName] = useState<string>(view?.isDefault || view?.hidden ? '' : view?.name);
 
     const setNameErrorMessage = useCallback(() => {
         const trimmed = viewName.trim();
         if (trimmed.length > maxLength) {
             setNameError(`Current length: ${trimmed.length}; maximum length: ${maxLength}`);
-        }
-        else if (RESERVED_VIEW_NAMES.indexOf(trimmed.toLowerCase()) >= 0)
+        } else if (RESERVED_VIEW_NAMES.indexOf(trimmed.toLowerCase()) >= 0)
             setNameError(`View name '${trimmed}' is reserved.`);
-        else
-            setNameError(undefined);
+        else setNameError(undefined);
     }, [maxLength, viewName]);
 
     useEffect(() => {
-        if (!isDefaultView ) {
-            setNameErrorMessage()
+        if (!isDefaultView) {
+            setNameErrorMessage();
         }
-    }, [isDefaultView, viewName]);
+    }, [isDefaultView, setNameErrorMessage, viewName]);
 
     const clearError = useCallback(() => {
         setNameError(undefined);
-    }, [setNameError]);
-
-    const onViewNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-        setViewName(evt.target.value);
-        const trimmed = evt.target.value.trim();
-        const hasError = trimmed.length > maxLength || RESERVED_VIEW_NAMES.indexOf(trimmed) >= 0;
-        setNameErrorMessage();
-        onChange?.(evt.target.value, hasError);
     }, []);
+
+    const onViewNameChange = useCallback(
+        (evt: ChangeEvent<HTMLInputElement>) => {
+            setViewName(evt.target.value);
+            const trimmed = evt.target.value.trim();
+            const hasError = trimmed.length > maxLength || RESERVED_VIEW_NAMES.indexOf(trimmed) >= 0;
+            setNameErrorMessage();
+            onChange?.(evt.target.value, hasError);
+        },
+        [maxLength, onChange, setNameErrorMessage]
+    );
 
     const _onBlur = useCallback(() => {
         if (viewName.length > maxLength) {
@@ -79,8 +78,7 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
         } else {
             onBlur(viewName, false);
         }
-    }, [viewName])
-
+    }, [maxLength, onBlur, setNameErrorMessage, viewName]);
 
     return (
         <>
@@ -88,8 +86,8 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
                 autoFocus={autoFocus}
                 name="gridViewName"
                 defaultValue={defaultValue}
-                placeholder={placeholder ?? "Grid View Name"}
-                className={"form-control" + (nameError ? " grid-view-name-error" : "") }
+                placeholder={placeholder ?? 'Grid View Name'}
+                className={'form-control' + (nameError ? ' grid-view-name-error' : '')}
                 value={viewName}
                 onChange={onViewNameChange}
                 onFocus={clearError}
@@ -99,7 +97,7 @@ export const ViewNameInput: FC<ViewNameInputProps> = memo(props => {
             />
             {nameError && <span className="text-danger">{nameError}</span>}
         </>
-    )
+    );
 });
 
 interface Props {
@@ -111,14 +109,15 @@ interface Props {
 
 export const SaveViewModal: FC<Props> = memo(props => {
     const { onConfirmSave, currentView, onCancel, gridLabel } = props;
-
-    const { user } = useServerContext();
+    const { moduleContext, user } = useServerContext();
 
     const [viewName, setViewName] = useState<string>(
         currentView?.isDefault || currentView?.hidden ? '' : currentView?.name
     );
     const [nameError, setNameError] = useState<boolean>(false);
-    const [isDefaultView, setIsDefaultView] = useState<boolean>(user.hasAdminPermission() && currentView?.isDefault);
+    const [isDefaultView, setIsDefaultView] = useState<boolean>(
+        () => user.hasAdminPermission() && currentView?.isDefault
+    );
     const [canInherit, setCanInherit] = useState<boolean>(currentView?.inherit);
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
@@ -138,8 +137,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
         } finally {
             setIsSubmitting(false);
         }
-    }, [viewName, isDefaultView, canInherit]);
-
+    }, [viewName, isDefaultView, currentView?.name, onConfirmSave, canInherit]);
 
     const onViewNameChange = useCallback((name: string, hasError: boolean) => {
         setViewName(name);
@@ -168,7 +166,12 @@ export const SaveViewModal: FC<Props> = memo(props => {
                             <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                         </div>
                         <div className="bottom-spacing">
-                            <ViewNameInput onChange={onViewNameChange} onBlur={onViewNameChange} view={currentView} isDefaultView={isDefaultView} />
+                            <ViewNameInput
+                                onChange={onViewNameChange}
+                                onBlur={onViewNameChange}
+                                view={currentView}
+                                isDefaultView={isDefaultView}
+                            />
                         </div>
                         <RequiresPermission perms={PermissionTypes.Admin}>
                             {/* Only allow admins to create custom default views in app. Note this is different from LKS*/}
@@ -183,7 +186,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 <span className="margin-left">Make default view for all users</span>
                             </div>
                         </RequiresPermission>
-                        {isProductProjectsEnabled() && (
+                        {isProductProjectsEnabled(moduleContext) && (
                             <div className="form-check">
                                 <input
                                     className="form-check-input"

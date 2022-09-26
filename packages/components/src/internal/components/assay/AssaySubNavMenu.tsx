@@ -9,7 +9,8 @@ import { WithRouterProps } from 'react-router';
 import { ASSAYS_KEY } from '../../app/constants';
 import { AppURL } from '../../url/AppURL';
 
-import { ITab, SubNav } from '../navigation/SubNav';
+import { ITab } from '../navigation/types';
+import { SubNav } from '../navigation/SubNav';
 
 import { InjectedAssayModel, withAssayModelsFromLocation } from './withAssayModels';
 

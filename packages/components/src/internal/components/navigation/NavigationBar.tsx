@@ -31,6 +31,8 @@ import { getPrimaryAppProperties } from '../../app/utils';
 
 import { User } from '../base/models/User';
 
+import { useServerContext } from '../base/ServerContext';
+
 import { HeaderWrapper } from './HeaderWrapper';
 
 import { ProductMenu } from './ProductMenu';
@@ -41,6 +43,7 @@ import { ProductMenuModel } from './model';
 import { FolderMenu } from './FolderMenu';
 
 import { SEARCH_PLACEHOLDER } from './constants';
+import { useFolderMenuContext } from './hooks';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -73,7 +76,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         onFindByIds,
         onSignIn,
         onSignOut,
-        searchPlaceholder = getPrimaryAppProperties()?.searchPlaceholder ?? SEARCH_PLACEHOLDER,
+        searchPlaceholder,
         showFolderMenu,
         showNavMenu,
         showNotifications,
@@ -83,12 +86,16 @@ export const NavigationBar: FC<Props> = memo(props => {
         user,
     } = props;
 
+    const { moduleContext } = useServerContext();
+    const folderMenuContext = useFolderMenuContext();
     const onSearchIconClick = useCallback(() => {
         onSearch('');
     }, [onSearch]);
 
-    const _showNotifications = showNotifications !== false && !!notificationsConfig && user && !user.isGuest;
-    const _showProductNav = showProductNav !== false && shouldShowProductNavigation(user);
+    const _searchPlaceholder =
+        searchPlaceholder ?? getPrimaryAppProperties(moduleContext)?.searchPlaceholder ?? SEARCH_PLACEHOLDER;
+    const _showNotifications = showNotifications !== false && !!notificationsConfig && !!user && !user.isGuest;
+    const _showProductNav = showProductNav !== false && shouldShowProductNavigation(user, moduleContext);
 
     return (
         <div className="sticky-on-top">
@@ -100,7 +107,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                                 <span className="navbar-item pull-left">{brand}</span>
                                 {showFolderMenu && (
                                     <span className="navbar-item">
-                                        <FolderMenu />
+                                        <FolderMenu key={folderMenuContext.key} />
                                     </span>
                                 )}
                                 {showNavMenu && !!model && (
@@ -138,7 +145,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                                         <div className="hidden-md hidden-sm hidden-xs">
                                             <SearchBox
                                                 onSearch={onSearch}
-                                                placeholder={searchPlaceholder}
+                                                placeholder={_searchPlaceholder}
                                                 onFindByIds={onFindByIds}
                                                 findNounPlural="samples"
                                             />

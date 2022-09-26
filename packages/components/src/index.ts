@@ -308,9 +308,12 @@ import { SampleFinderSection } from './internal/components/search/SampleFinderSe
 import { FIND_SAMPLE_BY_ID_METRIC_AREA, getSearchScopeFromContainerFilter } from './internal/components/search/utils';
 import { ActiveUserLimit } from './internal/components/settings/ActiveUserLimit';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
+import { ProjectSettings } from './internal/components/settings/ProjectSettings';
 import { loadNameExpressionOptions } from './internal/components/settings/actions';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
+import { CreateProjectPage } from './internal/components/administration/CreateProjectPage';
+import { ProjectManagementPage } from './internal/components/administration/ProjectManagementPage';
 import { BasePermissions } from './internal/components/administration/BasePermissions';
 import { GroupManagement } from './internal/components/administration/GroupManagement';
 import { showPremiumFeatures } from './internal/components/administration/utils';
@@ -440,8 +443,8 @@ import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
-import { SubNav } from './internal/components/navigation/SubNav';
-import { SubNavWithContext, useSubNavContext } from './internal/components/navigation/SubNavWithContext';
+import { useSubNavContext } from './internal/components/navigation/hooks';
+import { SubNav, SubNavWithContext } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
@@ -1161,9 +1164,12 @@ export {
     ActiveUserLimit,
     NameIdSettings,
     loadNameExpressionOptions,
+    ProjectSettings,
     // administration
     AdministrationSubNav,
     UserManagementPage,
+    CreateProjectPage,
+    ProjectManagementPage,
     BasePermissions,
     GroupManagement,
     SECURITY_ROLE_DESCRIPTIONS,
@@ -1569,7 +1575,7 @@ export type {
 export type { NotificationItemProps } from './internal/components/notifications/model';
 export type { NotificationsContextProps } from './internal/components/notifications/NotificationsContext';
 export type { VisGraphNode } from './internal/components/lineage/models';
-export type { ITab } from './internal/components/navigation/SubNav';
+export type { ITab } from './internal/components/navigation/types';
 export type { EditorModelProps, IGridLoader, IGridResponse } from './internal/models';
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { HeatMapCell } from './internal/components/heatmap/HeatMap';

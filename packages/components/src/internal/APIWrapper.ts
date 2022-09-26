@@ -20,10 +20,16 @@ import {
 } from './components/domainproperties/APIWrapper';
 import { getQueryTestAPIWrapper, QueryAPIWrapper, QueryServerAPIWrapper } from './query/APIWrapper';
 import { EntityAPIWrapper, EntityServerAPIWrapper, getEntityTestAPIWrapper } from './components/entities/APIWrapper';
+import {
+    FolderAPIWrapper,
+    getFolderTestAPIWrapper,
+    ServerFolderAPIWrapper,
+} from './components/container/FolderAPIWrapper';
 
 export interface ComponentsAPIWrapper {
     domain: DomainPropertiesAPIWrapper;
     entity: EntityAPIWrapper;
+    folder: FolderAPIWrapper;
     labelprinting: LabelPrintingAPIWrapper;
     picklist: PicklistAPIWrapper;
     query: QueryAPIWrapper;
@@ -35,6 +41,7 @@ export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
     return {
         domain: new DomainPropertiesAPIWrapper(),
         entity: new EntityServerAPIWrapper(),
+        folder: new ServerFolderAPIWrapper(),
         query: new QueryServerAPIWrapper(),
         labelprinting: new LabelPrintingServerAPIWrapper(),
         picklist: new PicklistServerAPIWrapper(),
@@ -53,6 +60,7 @@ export function getTestAPIWrapper(
     return {
         domain: getDomainPropertiesTestAPIWrapper(mockFn, overrides.domain),
         entity: getEntityTestAPIWrapper(mockFn, overrides.entity),
+        folder: getFolderTestAPIWrapper(mockFn, overrides.folder),
         query: getQueryTestAPIWrapper(mockFn, overrides.query),
         labelprinting: getLabelPrintingTestAPIWrapper(mockFn, overrides.labelprinting),
         picklist: getPicklistTestAPIWrapper(mockFn, overrides.picklist),

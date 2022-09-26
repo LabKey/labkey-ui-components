@@ -19,8 +19,11 @@ import { LabKey } from '@labkey/api';
 import { Container } from './models/Container';
 import { User } from './models/User';
 
+export type ModuleContext = Record<string, any>;
+
 export interface ServerContext extends LabKey {
     container: Container;
+    moduleContext?: ModuleContext;
     user: User;
 }
 

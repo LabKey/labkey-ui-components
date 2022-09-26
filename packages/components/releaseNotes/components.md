@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* WebDav helper for creating directories: createWebDavDirectory()
+
 ### version 2.220.0
 *Released*: 26 September 2022
 * Introduce `GlobalStateContext` which is an extensible context made available to all of our applications.

@@ -12,11 +12,12 @@ interface GroupedFilterProps {
     cardIndex: number;
     filterArray: FieldFilter[];
     onFilterValueExpand: (cardIndex: number, fieldFilter: FieldFilter) => void;
+    noValueInQueryFilterMsg?: string;
 }
 
 // exported for jest testing
 export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
-    const { cardIndex, filterArray, onFilterValueExpand } = props;
+    const { cardIndex, filterArray, onFilterValueExpand, noValueInQueryFilterMsg } = props;
     const groupedFilters = {};
     filterArray?.forEach(filter => {
         if (!groupedFilters[filter.fieldKey]) {
@@ -38,6 +39,7 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
                         <FilterValueDisplay
                             filter={fieldFilter.filter}
                             onFilterValueExpand={() => onFilterValueExpand(cardIndex, fieldFilter)}
+                            noValueInQueryFilterMsg={noValueInQueryFilterMsg}
                         />
                     </td>
                 </tr>
@@ -147,6 +149,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                                     cardIndex={index}
                                     filterArray={filterArray}
                                     onFilterValueExpand={onFilterValueExpand}
+                                    noValueInQueryFilterMsg={`Samples without ${dataTypeName} results`}
                                 />
                             </tbody>
                         </table>

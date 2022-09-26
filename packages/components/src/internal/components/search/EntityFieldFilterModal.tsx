@@ -23,8 +23,14 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 import { AssayResultDataType } from '../entities/constants';
 
 import { FieldFilter, FilterProps } from './models';
-import { getFieldFiltersValidationResult, getUpdatedDataTypeFilters, isValidFilterFieldExcludeLookups } from './utils';
+import {
+    getDataTypeFiltersWithNotInQueryUpdate,
+    getFieldFiltersValidationResult,
+    getUpdatedDataTypeFilters,
+    isValidFilterFieldExcludeLookups
+} from './utils';
 import { QueryFilterPanel } from './QueryFilterPanel';
+import {COLUMN_NOT_IN_FILTER_TYPE} from "../../query/filter";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -100,7 +106,9 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
         cards?.forEach(card => {
             if (card.entityDataType.instanceSchemaName !== entityDataType.instanceSchemaName) return;
-            const parent = card.schemaQuery.queryName.toLowerCase();
+            let parent = card.schemaQuery.queryName.toLowerCase(); // if is assay, change to datatype
+            if (card.entityDataType.getInstanceDataType)
+                parent = card.entityDataType.getInstanceDataType(card.schemaQuery).toLowerCase();
             activeDataTypeFilters[parent] = card.filterArray;
         });
         setDataTypeFilters(activeDataTypeFilters);
@@ -192,6 +200,33 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         [dataTypeFilters, activeQuery]
     );
 
+    const onHasNoValueInQueryChange = useCallback(
+        (check: boolean) => {
+            if (!entityDataType.supportHasNoValueInQuery)
+                return;
+
+            setCardDirty?.(true);
+            setFilterError(undefined);
+            const schemaQuery = entityDataType.getInstanceSchemaQuery(activeQuery);
+            const targetQueryFilterKey = assaySampleIdCols[activeQuery];
+            setDataTypeFilters(getDataTypeFiltersWithNotInQueryUpdate(dataTypeFilters, schemaQuery, activeQuery, targetQueryFilterKey, check));
+        },
+        [dataTypeFilters, activeQuery, entityDataType]
+    );
+
+    const hasNotInQueryFilter = useMemo((): boolean => {
+        const activeQueryFilters: FieldFilter[] = dataTypeFilters[activeQuery];
+        if (!activeQueryFilters || activeQueryFilters.length === 0)
+            return false;
+
+        let hasFilter = false;
+        activeQueryFilters.forEach(fieldFilter => {
+            if (fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix())
+                hasFilter = true;
+        });
+        return hasFilter;
+    }, [dataTypeFilters, activeQuery]);
+
     const fieldsEmptyMsg = useMemo(() => {
         return `Select a ${
             entityDataType.nounAsParentSingular?.toLowerCase() ?? entityDataType.nounSingular?.toLowerCase()
@@ -247,9 +282,12 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         filters={dataTypeFilters}
                         metricFeatureArea={metricFeatureArea}
                         onFilterUpdate={onFilterUpdate}
+                        hasNotInQueryFilter={hasNotInQueryFilter}
+                        onHasNoValueInQueryChange={onHasNoValueInQueryChange}
                         queryInfo={activeQueryInfo}
                         skipDefaultViewCheck={skipDefaultViewCheck}
                         validFilterField={isValidFilterFieldExcludeLookups}
+                        hasNotInQueryFilterLabel={`Find Samples without ${activeQuery} results`}
                     />
                 </Row>
             </Modal.Body>

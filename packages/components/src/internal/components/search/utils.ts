@@ -17,7 +17,12 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
 import { IN_EXP_DESCENDANTS_OF_FILTER_TYPE } from '../../url/InExpDescendantsOfFilterType';
-import { CONCEPT_COLUMN_FILTER_TYPES, getLabKeySql } from '../../query/filter';
+import {
+    COLUMN_IN_FILTER_TYPE,
+    COLUMN_NOT_IN_FILTER_TYPE,
+    CONCEPT_COLUMN_FILTER_TYPES,
+    getLabKeySql
+} from '../../query/filter';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -27,8 +32,6 @@ import { formatDateTime } from '../../util/Date';
 
 import { getContainerFilter } from '../../query/api';
 
-import { COLUMN_IN_FILTER_TYPE } from '../../url/ColumnInFilterType';
-import { COLUMN_NOT_IN_FILTER_TYPE } from '../../url/ColumnNotInFilterType';
 import { AssayResultDataType } from '../entities/constants';
 
 import { SearchScope } from './constants';
@@ -324,6 +327,7 @@ export const SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE = [
     Filter.Types.DATE_EQUAL.getURLSuffix(),
     Filter.Types.IN.getURLSuffix(),
     Filter.Types.BETWEEN.getURLSuffix(),
+    COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix(),
     ...NEGATE_FILTERS,
 ];
 
@@ -477,6 +481,11 @@ export function getSearchFiltersFromObjs(filterPropsObj: any[]): FilterProps[] {
             });
 
             filterPropObj['entityDataType']['filterArray'] = filterArray;
+        }
+
+        if (filterPropObj['entityDataType']?.['descriptionSingular'] === AssayResultDataType.descriptionSingular) {
+            filterPropObj['entityDataType']['getInstanceSchemaQuery'] = AssayResultDataType.getInstanceSchemaQuery;
+            filterPropObj['entityDataType']['getInstanceDataType'] = AssayResultDataType.getInstanceDataType;
         }
 
         filters.push(filterPropObj as FilterProps);
@@ -809,6 +818,38 @@ export function getUpdatedDataTypeFilters(
 
     if (otherFieldFilters.length + thisFieldFilters.length > 0) {
         dataTypeFiltersUpdated[lcActiveQuery] = [...otherFieldFilters, ...thisFieldFilters];
+    } else {
+        delete dataTypeFiltersUpdated[lcActiveQuery];
+    }
+    return dataTypeFiltersUpdated;
+}
+
+export function getDataTypeFiltersWithNotInQueryUpdate(
+    dataTypeFilters: { [p: string]: FieldFilter[] },
+    schemaQuery: SchemaQuery,
+    dataType: string,
+    targetQueryFilterKey: string,
+    noDataInTypeChecked: boolean,
+    cf?: Query.ContainerFilter
+): { [p: string]: FieldFilter[] } {
+
+    const lcActiveQuery = dataType.toLowerCase();
+    const dataTypeFiltersUpdated = { ...dataTypeFilters };
+
+    //TODO add cf
+    if (noDataInTypeChecked) {
+        const noDataFilter = Filter.create(
+            'RowId',
+            '{json:' + JSON.stringify([targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName]) + '}',
+            COLUMN_NOT_IN_FILTER_TYPE
+        );
+
+        dataTypeFiltersUpdated[lcActiveQuery] = [{
+            fieldKey: '*',
+            fieldCaption: 'Results',
+            filter: noDataFilter,
+            jsonType: undefined,
+        } as FieldFilter];
     } else {
         delete dataTypeFiltersUpdated[lcActiveQuery];
     }

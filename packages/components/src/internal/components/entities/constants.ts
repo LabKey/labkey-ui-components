@@ -41,6 +41,7 @@ export const AssayResultDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
     listingSchemaQuery: SchemaQuery.create(SCHEMAS.ASSAY_TABLES.SCHEMA, 'Data'), // placeholder, switch to fn to get by name
     instanceSchemaName: null,
+    supportHasNoValueInQuery: true,
     getInstanceSchemaQuery: (assayName: string) => {
         return SchemaQuery.create('assay.General.' + assayName, 'data');
     },

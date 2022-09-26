@@ -598,6 +598,7 @@ export interface EntityDataType {
     typeNounAsParentSingular: string;
     typeNounSingular: string;
     uniqueFieldKey: string;
+    supportHasNoValueInQuery?: boolean;
 }
 
 export class OperationConfirmationData {

@@ -18,7 +18,6 @@ import { Filter } from '@labkey/api';
 
 import { JsonType } from '../components/domainproperties/PropDescType';
 import { getNextDateStr } from '../util/Date';
-import { COLUMN_NOT_IN_FILTER_TYPE } from '../url/ColumnNotInFilterType';
 
 const QUERY_KEY_CHAR_DECODED = ['$', '/', '&', '}', '~', ',', '.'];
 const QUERY_KEY_CHAR_ENCODED = ['$D', '$S', '$A', '$B', '$T', '$C', '$P'];
@@ -465,3 +464,9 @@ export function registerFilterType(
         labkeySqlOperator
     );
 }
+
+/**
+ * This implements the filter corresponding to QueryServiceImpl.COLUMN_IN and QueryServiceImpl.COLUMN_NOT_IN. Updates there should also be reflected here.
+ */
+export const COLUMN_IN_FILTER_TYPE = registerFilterType('COLUMN IN', null, 'columnin', true);
+export const COLUMN_NOT_IN_FILTER_TYPE = registerFilterType('COLUMN NOT IN', null, 'columnnotin', true);

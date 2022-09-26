@@ -21,10 +21,11 @@ interface Props {
     onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index) => void;
     selectDistinctOptions: Query.SelectDistinctOptions;
     showSearchLength?: number; // show search box if number of unique values > N
+    disabled?: boolean;
 }
 
 export const FilterFacetedSelector: FC<Props> = memo(props => {
-    const { api, canBeBlank, selectDistinctOptions, fieldKey, fieldFilters, onFieldFilterUpdate, showSearchLength } = props;
+    const { api, canBeBlank, disabled, selectDistinctOptions, fieldKey, fieldFilters, onFieldFilterUpdate, showSearchLength } = props;
 
     const [fieldDistinctValues, setFieldDistinctValues] = useState<string[]>(undefined);
     const [error, setError] = useState<string>(undefined);
@@ -84,6 +85,9 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 
     const onChange = useCallback(
         (value: string, checked: boolean, uncheckOthers?: boolean) => {
+            if (disabled)
+                return;
+
             const newFilter = getUpdatedChooseValuesFilter(
                 fieldDistinctValues,
                 fieldKey,
@@ -94,7 +98,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
             );
             onFieldFilterUpdate([newFilter], 0);
         },
-        [fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate]
+        [disabled, fieldDistinctValues, fieldKey, fieldFilters, onFieldFilterUpdate]
     );
 
     const filteredFieldDistinctValues = useMemo(() => {
@@ -123,6 +127,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                             onChange={onSearchStrChange}
                             type="text"
                             placeholder="Type to filter"
+                            disabled={disabled}
                         />
                     </div>
                 )}
@@ -151,6 +156,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                                 name={'field-value-' + index}
                                                 onChange={event => onChange(value, event.target.checked)}
                                                 checked={checkedValues.indexOf(value) > -1}
+                                                disabled={disabled}
                                             />
                                             <div
                                                 className="filter-faceted__value"

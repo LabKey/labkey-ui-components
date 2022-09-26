@@ -42,21 +42,31 @@ async function loadInputOptions(assayId: number): Promise<InputOption[]> {
 }
 
 interface WorkflowTaskInputProps {
-    assayId: number;
-    isDetailInput: boolean;
-    name: string;
-    value: number;
     allowFieldDisable?: boolean;
+    assayId: number;
     initiallyDisabled?: boolean;
-    onToggleDisable?: (disabled: boolean) => void
-    onChange?: (name: string, value: string | any[], items: any) => void;
+    isDetailInput: boolean;
     isGridInput: boolean;
+    name: string;
+    onChange?: (name: string, value: string | any[], items: any) => void;
+    onToggleDisable?: (disabled: boolean) => void;
+    value: number;
 }
 
 // Note: this component is specific to Workflow, and ideally would live in the Workflow package, however we do not
 // currently have a way for our Apps to override the InputRenderers used by resolveRenderer (see renderers.tsx).
 export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
-    const { assayId, isDetailInput, allowFieldDisable, initiallyDisabled, onToggleDisable, name, value, onChange, isGridInput } = props;
+    const {
+        assayId,
+        isDetailInput,
+        allowFieldDisable,
+        initiallyDisabled,
+        onToggleDisable,
+        name,
+        value,
+        onChange,
+        isGridInput,
+    } = props;
     const [loading, setLoading] = useState<boolean>(true);
     const [taskOptions, setTaskOptions] = useState<InputOption[]>(undefined);
     const [error, setError] = useState<string>(undefined);
@@ -95,10 +105,10 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
                     clearable
                     description={isDetailInput ? undefined : 'The workflow task associated with this Run'}
                     disabled={taskOptions === undefined}
-                    inputClass={isDetailInput ? 'col-sm-12' : (isGridInput ? 'select-input-cell' : undefined)}
-                    containerClass={isGridInput ? "select-input-cell-container" : undefined}
+                    inputClass={isDetailInput ? 'col-sm-12' : isGridInput ? 'select-input-cell' : undefined}
+                    containerClass={isGridInput ? 'select-input-cell-container' : undefined}
                     isLoading={loading}
-                    label={(isDetailInput || isGridInput) ? undefined : 'Workflow Task'}
+                    label={isDetailInput || isGridInput ? undefined : 'Workflow Task'}
                     name={name}
                     options={taskOptions}
                     value={value}
@@ -106,7 +116,7 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
                     initiallyDisabled={initiallyDisabled}
                     onToggleDisable={onToggleDisable}
                     onChange={onChange}
-                    menuPosition={isGridInput?"fixed":undefined}
+                    menuPosition={isGridInput ? 'fixed' : undefined}
                 />
             )}
         </div>

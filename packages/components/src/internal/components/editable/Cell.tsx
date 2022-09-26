@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {ReactNode} from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -27,9 +27,10 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { resolveRenderer } from '../forms/renderers';
+
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { DateInputCell, DateInputCellProps } from './DateInputCell';
-import { resolveRenderer } from "../forms/renderers";
 
 export interface CellActions {
     clearSelection: () => void;
@@ -56,8 +57,8 @@ interface Props {
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
-    rowIdx: number;
     row: any;
+    rowIdx: number;
     selected?: boolean;
     selection?: boolean;
     values?: List<ValueDescriptor>;
@@ -270,21 +271,19 @@ export class Cell extends React.PureComponent<Props, State> {
     };
 
     getRenderer = (): ReactNode => {
-        const {
-            cellActions,
-            col,
-            colIdx,
-            rowIdx,
-            values,
-            row
-        } = this.props;
+        const { cellActions, col, colIdx, rowIdx, values, row } = this.props;
 
         const renderer = resolveRenderer(col);
 
         if (renderer) {
             const onQSChange = (name: string, value: string | any[], items: any) => {
-                cellActions.modifyCell(colIdx, rowIdx, [{ raw: items?.value, display: items?.label }], MODIFICATION_TYPES.REPLACE);
-            }
+                cellActions.modifyCell(
+                    colIdx,
+                    rowIdx,
+                    [{ raw: items?.value, display: items?.label }],
+                    MODIFICATION_TYPES.REPLACE
+                );
+            };
 
             return renderer(
                 col,
@@ -305,7 +304,7 @@ export class Cell extends React.PureComponent<Props, State> {
                 true
             );
         }
-    }
+    };
 
     render() {
         const {
@@ -322,7 +321,7 @@ export class Cell extends React.PureComponent<Props, State> {
             selection,
             values,
             filteredLookupValues,
-            row
+            row,
         } = this.props;
 
         const { filteredLookupKeys } = this.state;

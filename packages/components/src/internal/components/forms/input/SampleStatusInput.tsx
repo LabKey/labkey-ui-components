@@ -17,24 +17,24 @@ import { useServerContext } from '../../base/ServerContext';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
 
 interface SampleStatusInputProps {
+    allowDisable?: boolean;
     api?: ComponentsAPIWrapper;
     col: QueryColumn;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     data: any;
-    key: ReactText;
-    isDetailInput?: boolean;
-    isGridInput?: boolean;
-    allowDisable?: boolean;
+    formsy?: boolean;
     initiallyDisabled?: boolean;
+    inputClass?: string;
+    isDetailInput?: boolean;
     onToggleDisable?: (disabled: boolean) => void;
     value?: string | Array<Record<string, any>>;
-    onQSChange?: (name: string, value: string | any[], items: any) => void;
-    renderLabelField?: (col: QueryColumn) => ReactNode;
-    showAsteriskSymbol?: boolean;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
-    inputClass?: string;
-    formsy?: boolean; // for jest test
+    onQSChange?: (name: string, value: string | any[], items: any) => void;
+    showAsteriskSymbol?: boolean;
+    renderLabelField?: (col: QueryColumn) => ReactNode;
+    key: ReactText;
+    isGridInput?: boolean; // for jest test
 }
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
@@ -54,7 +54,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         onAdditionalFormDataChange,
         inputClass,
         formsy,
-        isGridInput
+        isGridInput,
     } = props;
     const { user } = useServerContext();
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>(undefined);
@@ -168,7 +168,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 value={value}
                 valueColumn={col.lookup.keyColumn}
                 inputClass={isGridInput ? 'select-input-cell' : inputClass}
-                containerClass={isGridInput ? "select-input-cell-container" : undefined}
+                containerClass={isGridInput ? 'select-input-cell-container' : undefined}
             />
             {error && <Alert>{error}</Alert>}
             {showDiscardPanel && <>{discardPanel}</>}

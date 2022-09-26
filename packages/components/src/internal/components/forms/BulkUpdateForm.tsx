@@ -29,7 +29,6 @@ interface Props {
     ) => any;
     pluralNoun?: string;
     queryInfo: QueryInfo;
-    viewName: string; // queryInfo.schemaQuery.viewName is likely undefined (i.e., not the current viewName)
     readOnlyColumns?: List<string>;
     requiredColumns?: string[];
     selectedIds: Set<string>;
@@ -39,6 +38,8 @@ interface Props {
     sortString?: string;
     uniqueFieldKey?: string;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
+    // queryInfo.schemaQuery.viewName is likely undefined (i.e., not the current viewName)
+    viewName: string;
 }
 
 interface State {
@@ -67,15 +68,24 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { onCancel, pluralNoun, queryInfo, readOnlyColumns, selectedIds, shownInUpdateColumns, sortString, viewName, requiredColumns } =
-            this.props;
+        const {
+            onCancel,
+            pluralNoun,
+            queryInfo,
+            readOnlyColumns,
+            selectedIds,
+            shownInUpdateColumns,
+            sortString,
+            viewName,
+            requiredColumns,
+        } = this.props;
         // Get all shownInUpdateView and required columns or undefined
-        const columns = (shownInUpdateColumns || requiredColumns)
-            ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns)) as List<QueryColumn>)
-            : undefined;
+        const columns =
+            shownInUpdateColumns || requiredColumns
+                ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns)) as List<QueryColumn>)
+                : undefined;
         let columnString = columns?.map(c => c.fieldKey).join(',');
-        if (requiredColumns)
-            columnString = `${columnString ? columnString + ',' : ''}${requiredColumns.join(',')}`;
+        if (requiredColumns) columnString = `${columnString ? columnString + ',' : ''}${requiredColumns.join(',')}`;
 
         const { schemaName, name } = queryInfo;
 

@@ -18,15 +18,17 @@ import { Query } from '@labkey/api';
 import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
 
+import { Map } from 'immutable';
+
 import { QueryColumn } from '../../../public/QueryColumn';
+
+import { encodePart } from '../../../public/SchemaQuery';
 
 import { AssayTaskInput } from './input/AssayTaskInput';
 
 import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
 import { SampleStatusInput } from './input/SampleStatusInput';
-import { Map } from "immutable";
-import { encodePart } from "../../../public/SchemaQuery";
 
 type InputRenderer = (
     col: QueryColumn,
@@ -153,27 +155,27 @@ const AssayTaskInputRenderer: InputRenderer = (
     containerPath?: string,
     containerFilter?: Query.ContainerFilter,
     isGridInput?: boolean
-) =>
-{
+) => {
     // Used in multiple contexts so need to check various data formats
     let assayId = Map.isMap(data) ? data.get(ASSAY_ID_INDEX) : data[ASSAY_ID_INDEX];
-    if (!assayId)
-        assayId = Map.isMap(data) ? data.get(encodePart(ASSAY_ID_INDEX)) : data[encodePart(ASSAY_ID_INDEX)];
+    if (!assayId) assayId = Map.isMap(data) ? data.get(encodePart(ASSAY_ID_INDEX)) : data[encodePart(ASSAY_ID_INDEX)];
     assayId = assayId?.value ?? assayId;
     assayId = assayId?.get?.('value') ?? assayId;
 
-    return <AssayTaskInput
-        assayId={assayId}
-        isDetailInput={isDetailInput}
-        name={col.name}
-        value={value}
-        allowFieldDisable={allowFieldDisable}
-        initiallyDisabled={initiallyDisabled}
-        onToggleDisable={onToggleDisable}
-        onChange={onQSChange}
-        isGridInput={isGridInput}
-    />
-}
+    return (
+        <AssayTaskInput
+            assayId={assayId}
+            isDetailInput={isDetailInput}
+            name={col.name}
+            value={value}
+            allowFieldDisable={allowFieldDisable}
+            initiallyDisabled={initiallyDisabled}
+            onToggleDisable={onToggleDisable}
+            onChange={onQSChange}
+            isGridInput={isGridInput}
+        />
+    );
+};
 
 export function resolveRenderer(column: QueryColumn): InputRenderer {
     // 23462: Global Formsy validation rule for numbers

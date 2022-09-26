@@ -37,10 +37,10 @@ export const AssayRunDataType: EntityDataType = {
 };
 
 export const AssayResultDataType: EntityDataType = {
-    deleteHelpLinkTopic: DELETE_ASSAY_RUNS_TOPIC, // placeholder
+    deleteHelpLinkTopic: undefined,
     typeListingSchemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
-    listingSchemaQuery: SchemaQuery.create(SCHEMAS.ASSAY_TABLES.SCHEMA, 'Data'), // placeholder, switch to fn to get by name
-    instanceSchemaName: null,
+    listingSchemaQuery: undefined,
+    instanceSchemaName: undefined,
     supportHasNoValueInQuery: true,
     getInstanceSchemaQuery: (assayName: string) => {
         return SchemaQuery.create('assay.General.' + assayName, 'data');
@@ -49,7 +49,7 @@ export const AssayResultDataType: EntityDataType = {
         return schemaQuery.schemaName.replace('assay.General.', '');
     },
     operationConfirmationControllerName: 'assay',
-    operationConfirmationActionName: ASSAY_RUN_OPERATION_CONFIRMATION_ACTION, // placeholder
+    operationConfirmationActionName: undefined,
     nounSingular: 'result',
     nounPlural: 'results',
     typeNounSingular: 'Assay Design',

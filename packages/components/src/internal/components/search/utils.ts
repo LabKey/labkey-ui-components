@@ -174,21 +174,13 @@ export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): F
 
     const { schemaName, queryName } = schemaQuery;
 
-    // const cfClause = cf ? `[ContainerFilter='${cf}']` : ''; //TODO container filter
+    // const cfClause = cf ? `[ContainerFilter='${cf}']` : ''; //TODO add container filter
 
     return Filter.create(
         'RowId',
         '{json:' + JSON.stringify([targetColumnFieldKey, schemaName, queryName, whereConditions]) + '}',
         COLUMN_IN_FILTER_TYPE
     );
-
-    // return `SELECT "${queryName}".expObject() FROM ${schemaName}."${queryName}" ${selectClauseWhere}`;
-
-    // const assayFilter = Filter.create(
-    //     'RowId',
-    //     '{json:' + JSON.stringify(['SampleId', 'assay.General.assay1', 'data']) + '}',
-    //     COLUMN_NOT_IN_FILTER_TYPE
-    // );
 }
 
 // exported for jest testing
@@ -232,18 +224,6 @@ export function getSampleFinderCommonConfigs(
         }
     });
 
-    // const assayFilter = Filter.create(
-    //     'RowId',
-    //     '{json:' + JSON.stringify(['SampleId', 'assay.General.assay1', 'data', 'intField < 20']) + '}',
-    //     COLUMN_IN_FILTER_TYPE
-    // );
-
-    // const assayFilter = Filter.create(
-    //     'RowId',
-    //     '{json:' + JSON.stringify(['SampleId', 'assay.General.assay1', 'data']) + '}',
-    //     COLUMN_NOT_IN_FILTER_TYPE
-    // );
-    // baseFilters.push(assayFilter);
     return {
         requiredColumns,
         baseFilters,

@@ -11,6 +11,7 @@ export const GROUP_AUDIT_QUERY = {
     label: 'Roles and Assignment Events',
     containerFilter: Query.ContainerFilter.allFolders,
 };
+export const PROJECT_AUDIT_QUERY = { value: 'containerauditevent', label: 'Project Events' };
 export const SAMPLE_TYPE_AUDIT_QUERY = {value: 'samplesetauditevent', label: 'Sample Type Events'};
 export const SAMPLE_TIMELINE_AUDIT_QUERY = {
     value: 'sampletimelineevent',

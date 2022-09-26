@@ -22,7 +22,6 @@ import {
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
-    ProductFeature,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
     HOME_KEY,
@@ -35,6 +34,7 @@ import {
     NOTEBOOKS_KEY,
     PICKLIST_HOME_HREF,
     PICKLIST_KEY,
+    ProductFeature,
     REGISTRY_KEY,
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
@@ -225,6 +225,10 @@ export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
         hasModule('assay', moduleContext) &&
         (isCommunityDistribution(moduleContext) || isFeatureEnabled(ProductFeature.Assay, moduleContext))
     );
+}
+
+export function isMediaEnabled(moduleContext?: ModuleContext): boolean {
+    return hasModule('recipe', moduleContext) && isFeatureEnabled(ProductFeature.Media, moduleContext);
 }
 
 export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {

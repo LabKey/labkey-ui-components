@@ -53,9 +53,11 @@ import {
     EXPERIMENTAL_REQUESTS_MENU,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
+    MEDIA_KEY,
     NOTEBOOKS_KEY,
     PICKLIST_KEY,
     ProductFeature,
+    REGISTRY_KEY,
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
@@ -172,8 +174,8 @@ describe('getMenuSectionConfigs', () => {
 
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, moduleContext);
         expect(configs.size).toBe(5);
-        expect(configs.hasIn([0, 'registry'])).toBeTruthy();
-        expect(configs.getIn([0, 'registry', 'seeAllURL'])).toEqual('#/registry');
+        expect(configs.hasIn([0, REGISTRY_KEY])).toBeTruthy();
+        expect(configs.getIn([0, REGISTRY_KEY, 'seeAllURL'])).toEqual('#/registry');
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
         expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
@@ -190,8 +192,8 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
         expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
 
-        expect(configs.hasIn([4, 'media'])).toBeTruthy();
-        expect(configs.getIn([4, 'media', 'headerURL'])).toEqual('#/media');
+        expect(configs.hasIn([4, MEDIA_KEY])).toBeTruthy();
+        expect(configs.getIn([4, MEDIA_KEY, 'headerURL'])).toEqual('#/media');
 
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
         expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual('#/notebooks');
@@ -221,8 +223,8 @@ describe('getMenuSectionConfigs', () => {
 
         const configs = getMenuSectionConfigs(TEST_USER_EDITOR, BIOLOGICS_APP_PROPERTIES.productId, moduleContext);
         expect(configs.size).toBe(5);
-        expect(configs.hasIn([0, 'registry'])).toBeTruthy();
-        expect(configs.getIn([0, 'registry', 'seeAllURL'])).toEqual('#/registry');
+        expect(configs.hasIn([0, REGISTRY_KEY])).toBeTruthy();
+        expect(configs.getIn([0, REGISTRY_KEY, 'seeAllURL'])).toEqual('#/registry');
 
         expect(configs.hasIn([1, SAMPLES_KEY])).toBeTruthy();
         expect(configs.getIn([1, SAMPLES_KEY, 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
@@ -240,8 +242,8 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([4, PICKLIST_KEY])).toBeTruthy();
         expect(configs.getIn([4, PICKLIST_KEY, 'headerURL'])).toEqual('#/picklist');
 
-        expect(configs.hasIn([4, 'media'])).toBeTruthy();
-        expect(configs.getIn([4, 'media', 'headerURL'])).toEqual('#/media');
+        expect(configs.hasIn([4, MEDIA_KEY])).toBeTruthy();
+        expect(configs.getIn([4, MEDIA_KEY, 'headerURL'])).toEqual('#/media');
 
         expect(configs.hasIn([4, NOTEBOOKS_KEY])).toBeTruthy();
         expect(configs.getIn([4, NOTEBOOKS_KEY, 'headerURL'])).toEqual('#/notebooks');

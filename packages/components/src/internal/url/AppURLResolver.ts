@@ -26,6 +26,7 @@ import { caseInsensitive } from '../util/utils';
 import { getQueryDetails } from '../query/api';
 import { AppRouteResolver } from './models';
 import { decodeListResolverPath } from './utils';
+import { MEDIA_KEY } from '../app/constants';
 
 /**
  * Resolves Data Class routes dynamically
@@ -257,7 +258,7 @@ export class SamplesResolver implements AppRouteResolver {
                         info.name.toLowerCase() === SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase()
                             ? 'mixturebatches'
                             : info.name;
-                    value = List(['media', encodeURIComponent(mediaTypeName)]);
+                    value = List([MEDIA_KEY, encodeURIComponent(mediaTypeName)]);
                 } else {
                     value = List([SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase(), encodeURIComponent(sampleTypeName)]);
                 }

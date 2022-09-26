@@ -1,9 +1,8 @@
-import { mount } from 'enzyme';
 import React from 'react';
 
 import { Button, Checkbox } from 'react-bootstrap';
 
-import { waitForLifecycle } from '../../testHelpers';
+import { mountWithServerContext, waitForLifecycle } from '../../testHelpers';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ConfirmModal } from '../base/ConfirmModal';
@@ -22,7 +21,7 @@ describe('NameIdSettings', () => {
     });
 
     test('on init', async () => {
-        const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
+        const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         expect(wrapper.find(LoadingSpinner).length).toEqual(2);
         expect(wrapper.find('.name-id-setting__prefix-field').exists()).toEqual(false);
         expect(wrapper.find(Checkbox).exists()).toEqual(false);
@@ -36,7 +35,7 @@ describe('NameIdSettings', () => {
     });
 
     test('allowUserSpecifiedNames checkbox', async () => {
-        const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
+        const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
 
         const checkbox = () => wrapper.find('input').first();
@@ -50,14 +49,14 @@ describe('NameIdSettings', () => {
     });
 
     test('prefix preview', async () => {
-        const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
+        const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find('.name-id-setting__prefix-example').text()).toContain('ABC-Blood-${GenId}');
     });
 
     test('apply prefix confirm modal -- cancel', async () => {
-        const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
+        const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
 
         wrapper.find(Button).simulate('click');
@@ -67,7 +66,7 @@ describe('NameIdSettings', () => {
     });
 
     test('apply prefix confirm modal -- save', async () => {
-        const wrapper = mount(<NameIdSettingsForm {...DEFAULT_PROPS} />);
+        const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         await waitForLifecycle(wrapper);
 
         wrapper.find(Button).simulate('click');

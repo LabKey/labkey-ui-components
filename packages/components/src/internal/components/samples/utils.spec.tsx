@@ -36,15 +36,17 @@ const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
 
 test('getOmittedSampleTypeColumn', () => {
-    LABKEY.moduleContext = {};
-    expect(isFreezerManagementEnabled()).toBeFalsy();
-    expect(getOmittedSampleTypeColumns(TEST_USER_READER)).toStrictEqual(INVENTORY_COLS);
-    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST)).toStrictEqual([CHECKED_OUT_BY_FIELD].concat(INVENTORY_COLS));
+    let moduleContext = {};
+    expect(isFreezerManagementEnabled(moduleContext)).toBeFalsy();
+    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual(INVENTORY_COLS);
+    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual(
+        [CHECKED_OUT_BY_FIELD].concat(INVENTORY_COLS)
+    );
 
-    LABKEY.moduleContext = { inventory: {} };
-    expect(isFreezerManagementEnabled()).toBeTruthy();
-    expect(getOmittedSampleTypeColumns(TEST_USER_READER)).toStrictEqual([]);
-    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
+    moduleContext = { inventory: {} };
+    expect(isFreezerManagementEnabled(moduleContext)).toBeTruthy();
+    expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual([]);
+    expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
 });
 
 describe('getSampleDeleteMessage', () => {
@@ -74,46 +76,61 @@ describe('getSampleDeleteMessage', () => {
 
 describe('isSampleOperationPermitted', () => {
     test('status not enabled', () => {
-        LABKEY.moduleContext = {};
+        const moduleContext = {};
         expect(isSampleStatusEnabled()).toBeFalsy();
-        expect(isSampleOperationPermitted(SampleStateType.Locked, SampleOperation.EditMetadata)).toBeTruthy();
-        expect(isSampleOperationPermitted(SampleStateType.Consumed, SampleOperation.AddToStorage)).toBeTruthy();
-        expect(isSampleOperationPermitted(SampleStateType.Available, SampleOperation.EditLineage)).toBeTruthy();
+        expect(
+            isSampleOperationPermitted(SampleStateType.Locked, SampleOperation.EditMetadata, moduleContext)
+        ).toBeTruthy();
+        expect(
+            isSampleOperationPermitted(SampleStateType.Consumed, SampleOperation.AddToStorage, moduleContext)
+        ).toBeTruthy();
+        expect(
+            isSampleOperationPermitted(SampleStateType.Available, SampleOperation.EditLineage, moduleContext)
+        ).toBeTruthy();
     });
 
     test('enabled, no status provided', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-        expect(isSampleOperationPermitted(undefined, SampleOperation.EditMetadata)).toBeTruthy();
-        expect(isSampleOperationPermitted(null, SampleOperation.EditLineage)).toBeTruthy();
+        const moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+        expect(isSampleOperationPermitted(undefined, SampleOperation.EditMetadata, moduleContext)).toBeTruthy();
+        expect(isSampleOperationPermitted(null, SampleOperation.EditLineage, moduleContext)).toBeTruthy();
     });
 
     test('enabled, with status type provided', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-        expect(isSampleOperationPermitted(SampleStateType.Locked, SampleOperation.EditMetadata)).toBeFalsy();
-        expect(isSampleOperationPermitted(SampleStateType.Locked, SampleOperation.AddToPicklist)).toBeTruthy();
-        expect(isSampleOperationPermitted(SampleStateType.Consumed, SampleOperation.AddToStorage)).toBeFalsy();
-        expect(isSampleOperationPermitted(SampleStateType.Consumed, SampleOperation.RemoveFromStorage)).toBeTruthy();
-        expect(isSampleOperationPermitted(SampleStateType.Available, SampleOperation.EditLineage)).toBeTruthy();
+        const moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+        expect(
+            isSampleOperationPermitted(SampleStateType.Locked, SampleOperation.EditMetadata, moduleContext)
+        ).toBeFalsy();
+        expect(
+            isSampleOperationPermitted(SampleStateType.Locked, SampleOperation.AddToPicklist, moduleContext)
+        ).toBeTruthy();
+        expect(
+            isSampleOperationPermitted(SampleStateType.Consumed, SampleOperation.AddToStorage, moduleContext)
+        ).toBeFalsy();
+        expect(
+            isSampleOperationPermitted(SampleStateType.Consumed, SampleOperation.RemoveFromStorage, moduleContext)
+        ).toBeTruthy();
+        expect(
+            isSampleOperationPermitted(SampleStateType.Available, SampleOperation.EditLineage, moduleContext)
+        ).toBeTruthy();
     });
 });
 
 describe('getFilterForSampleOperation', () => {
     test('status not enabled', () => {
-        LABKEY.moduleContext = {};
-        expect(getFilterForSampleOperation(SampleOperation.EditMetadata)).toBeNull();
+        expect(getFilterForSampleOperation(SampleOperation.EditMetadata, true, {})).toBeNull();
     });
 
     test('enabled, all allowed', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-        expect(getFilterForSampleOperation(SampleOperation.AddToPicklist)).toBeNull();
+        const moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+        expect(getFilterForSampleOperation(SampleOperation.AddToPicklist, true, moduleContext)).toBeNull();
     });
 
     test('enabled, some status does not allow', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-        expect(getFilterForSampleOperation(SampleOperation.EditLineage)).toStrictEqual(
+        const moduleContext = { api: { moduleNames: ['samplemanagement'] } };
+        expect(getFilterForSampleOperation(SampleOperation.EditLineage, true, moduleContext)).toStrictEqual(
             Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, [SampleStateType.Locked], Filter.Types.NOT_IN)
         );
-        expect(getFilterForSampleOperation(SampleOperation.UpdateStorageMetadata)).toStrictEqual(
+        expect(getFilterForSampleOperation(SampleOperation.UpdateStorageMetadata, true, moduleContext)).toStrictEqual(
             Filter.create(
                 SAMPLE_STATE_TYPE_COLUMN_NAME,
                 [SampleStateType.Consumed, SampleStateType.Locked],
@@ -155,8 +172,10 @@ describe('filterSampleRowsForOperation', () => {
         operation: SampleOperation,
         numAllowed: number,
         numNotAllowed: number
-    ) {
-        const filteredData = filterSampleRowsForOperation(rows, operation);
+    ): void {
+        const filteredData = filterSampleRowsForOperation(rows, operation, 'RowId', {
+            api: { moduleNames: ['samplemanagement'] },
+        });
         expect(Object.keys(filteredData.rows)).toHaveLength(numAllowed);
         expect(filteredData.statusData.allowed).toHaveLength(numAllowed);
         expect(filteredData.statusData.notAllowed).toHaveLength(numNotAllowed);
@@ -168,7 +187,6 @@ describe('filterSampleRowsForOperation', () => {
     }
 
     test('all available', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         const data = {
             1: availableRow1,
             2: availableRow2,
@@ -177,7 +195,6 @@ describe('filterSampleRowsForOperation', () => {
     });
 
     test('all locked', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         const data = {
             30: lockedRow1,
             31: lockedRow2,
@@ -187,7 +204,6 @@ describe('filterSampleRowsForOperation', () => {
     });
 
     test('mixed statuses', () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
         const data = {
             30: lockedRow1,
             20: consumedRow1,

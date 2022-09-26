@@ -7,6 +7,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Updates for change in route to audit page with eventType as a url parameter
 * Update NavItem logic for active tab to exclude parameters in URL when comparing paths
 
+### version 2.220.0
+*Released*: 26 September 2022
+* Introduce `GlobalStateContext` which is an extensible context made available to all of our applications.
+* Add `ModuleContext` type and consolidate logic to resolve module context from optional parameter.
+* Add `FolderMenuContext` to expose global way to refresh the folder menu. Add hooks `useFolderMenuContext` and refactor `useSubNavContext`.
+* Introduce `FolderAPIWrapper` to wrap folder-specific API endpoints.
+* Add `CreateProjectPage` and `ProjectManagementPage` page components for project creation and project listing.
+* Define `ProjectSettings` component which encapsulates behavior for the administration of project name and label modifications.
+
 ### version 2.219.0
 *Released*: 22 September 2022
 * SamplesEditButton check for has delete perm when showing delete menu item divider

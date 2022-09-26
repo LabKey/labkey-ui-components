@@ -1657,10 +1657,10 @@
   resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.16.1.tgz#f8495eb3acbea7282ad8e34015145cc1f0f6ccf9"
   integrity sha512-OVHhObWPVu7w/6pDXHBo3uaRRfDztmAY31/X8omx2BV+AHPNplFwxORUjQFgIsBHj6u79T44ZpJLETdxuR2sSg==
 
-"@labkey/build@6.2.0":
-  version "6.2.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.2.0.tgz#eb1257bf52a71b52f532f47217e007c74c3021ea"
-  integrity sha512-i13nWY3iHcZmjRxaWzcuNbsUtwu3zrdW9mFkR4L9QWbJ4BW6XOcXl28Qqs5xDXGrOkjWut5KjirY25zRkjresQ==
+"@labkey/build@6.2.1":
+  version "6.2.1"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.2.1.tgz#4436a4a01f928a075ce5185694df635ab30f0852"
+  integrity sha512-D3IB/YHd4+1/8ANsc7MPzO6RHfkFsC6aIkFgyZ55aL7jqdVODEXxLZLclN0PCuG2idUxg9WeS/qGng/QvIRGKA==
   dependencies:
     "@babel/core" "~7.17.8"
     "@babel/plugin-proposal-class-properties" "~7.16.7"

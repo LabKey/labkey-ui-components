@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 
 import { AppContextProvider, ExtendableAppContext } from './AppContext';
+import { GlobalStateContextProvider } from './GlobalStateContext';
 import { ServerContextProvider, withAppUser } from './components/base/ServerContext';
-import { SubNavContextProvider } from './components/navigation/SubNavWithContext';
 import { NotificationsContextProvider } from './components/notifications/NotificationsContext';
 import { LabelPrintingProvider } from './components/labels/LabelPrintingContextProvider';
 
@@ -26,7 +26,7 @@ export const AppContexts: FC<Props> = props => {
     return (
         <ServerContextProvider initialContext={initialServerContext}>
             <AppContextProvider initialContext={initialAppContext}>
-                <SubNavContextProvider>
+                <GlobalStateContextProvider>
                     <NotificationsContextProvider>
                         <LabelPrintingProvider>
                             <Provider store={store}>
@@ -34,7 +34,7 @@ export const AppContexts: FC<Props> = props => {
                             </Provider>
                         </LabelPrintingProvider>
                     </NotificationsContextProvider>
-                </SubNavContextProvider>
+                </GlobalStateContextProvider>
             </AppContextProvider>
         </ServerContextProvider>
     );

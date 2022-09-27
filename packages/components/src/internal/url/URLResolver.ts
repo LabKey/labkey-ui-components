@@ -20,6 +20,8 @@ import { LineageLinkMetadata } from '../components/lineage/types';
 
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../app/constants';
 
+import { getCurrentAppProperties } from '../app/utils';
+
 import { AppURL, createProductUrl } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
@@ -144,10 +146,10 @@ export class ActionMapper implements URLMapper {
 
 interface MapURLOptions {
     column: any;
-    url: string;
-    row: any;
     query?: string;
+    row: any;
     schema?: string;
+    url: string;
 }
 
 class LookupMapper implements URLMapper {
@@ -471,6 +473,23 @@ export const FREEZER_ITEM_SAMPLE_MAPPER = new ActionMapper('query', 'executeQuer
     return false;
 });
 
+// This mapper overrides the URL provided for the core.ProjectManagement query.
+// We're linking to #/admin/settings within a specific folder (which may be outside the current folder context).
+export const PROJECT_MGMT_MAPPER = new ActionMapper('project', 'begin', (row, column, schema, query) => {
+    const url = row.get('url');
+
+    // Only match against the core.ProjectManagement query
+    if (url && schema?.toLowerCase() === 'core' && query?.toLowerCase() === 'projectmanagement') {
+        const { containerPath } = ActionURL.getPathFromLocation(url);
+        const { controllerName } = getCurrentAppProperties();
+        const baseURL = ActionURL.buildURL(controllerName, 'app.view', containerPath);
+        return baseURL + AppURL.create('admin', 'settings').toHref();
+    }
+
+    // Allow resolution of 'project-begin' to fall through to other mappers
+    return undefined;
+});
+
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,
     DATA_CLASS_MAPPERS,
@@ -485,6 +504,7 @@ export const URL_MAPPERS = {
     LOOKUP_MAPPER,
     PIPELINE_MAPPER,
     FREEZER_ITEM_SAMPLE_MAPPER,
+    PROJECT_MGMT_MAPPER,
 };
 
 export class URLResolver {

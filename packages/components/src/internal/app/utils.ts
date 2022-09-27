@@ -14,6 +14,7 @@ import { hasAllPermissions, User } from '../components/base/models/User';
 import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
 import { imageURL } from '../url/ActionURL';
 import { AppURL, buildURL } from '../url/AppURL';
+import { ModuleContext } from '../components/base/ServerContext';
 
 import { AppProperties } from './models';
 import {
@@ -90,6 +91,10 @@ export function registerWebSocketListeners(
     }
 }
 
+export function resolveModuleContext(moduleContext?: ModuleContext): ModuleContext {
+    return moduleContext ?? getServerContext().moduleContext;
+}
+
 export function userCanReadAssays(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.ReadAssay]);
 }
@@ -138,50 +143,50 @@ export function userCanEditStorageData(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.EditStorageData], false);
 }
 
-export function isFreezerManagementEnabled(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.inventory !== undefined;
+export function isFreezerManagementEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.inventory !== undefined;
 }
 
-export function isOntologyEnabled(): boolean {
-    return hasModule('Ontology');
+export function isOntologyEnabled(moduleContext?: ModuleContext): boolean {
+    return hasModule('Ontology', moduleContext);
 }
 
-export function isProductNavigationEnabled(productId: string): boolean {
+export function isProductNavigationEnabled(productId: string, moduleContext?: ModuleContext): boolean {
     if (productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
-        return isSampleManagerEnabled() && !isBiologicsEnabled();
+        return isSampleManagerEnabled(moduleContext) && !isBiologicsEnabled(moduleContext);
     } else if (productId === BIOLOGICS_APP_PROPERTIES.productId) {
-        return isBiologicsEnabled();
+        return isBiologicsEnabled(moduleContext);
     }
 
     return false;
 }
 
-export function isProductProjectsEnabled(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.query?.isProductProjectsEnabled === true;
+export function isProductProjectsEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.query?.isProductProjectsEnabled === true;
 }
 
-export function isSampleManagerEnabled(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.samplemanagement !== undefined;
+export function isSampleManagerEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.samplemanagement !== undefined;
 }
 
-export function isBiologicsEnabled(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.biologics !== undefined;
+export function isBiologicsEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.biologics !== undefined;
 }
 
-export function isPremiumProductEnabled(moduleContext?: any): boolean {
+export function isPremiumProductEnabled(moduleContext?: ModuleContext): boolean {
     return isSampleManagerEnabled(moduleContext) || isBiologicsEnabled(moduleContext);
 }
 
-export function sampleManagerIsPrimaryApp(moduleContext?: any): boolean {
+export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {
     return getPrimaryAppProperties(moduleContext)?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
 }
 
-export function biologicsIsPrimaryApp(moduleContext?: any): boolean {
+export function biologicsIsPrimaryApp(moduleContext?: ModuleContext): boolean {
     return getPrimaryAppProperties(moduleContext)?.productId === BIOLOGICS_APP_PROPERTIES.productId;
 }
 
-export function isSampleStatusEnabled(): boolean {
-    return hasModule('SampleManagement');
+export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
+    return hasModule('SampleManagement', moduleContext);
 }
 
 export function getCurrentAppProperties(): AppProperties {
@@ -195,7 +200,7 @@ export function getCurrentAppProperties(): AppProperties {
     return undefined;
 }
 
-export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
+export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppProperties {
     if (isBiologicsEnabled(moduleContext)) {
         return BIOLOGICS_APP_PROPERTIES;
     } else if (isSampleManagerEnabled(moduleContext)) {
@@ -207,47 +212,46 @@ export function getPrimaryAppProperties(moduleContext?: any): AppProperties {
     }
 }
 
-export function isELNEnabled(moduleContext?: any): boolean {
+export function isELNEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('LabBook', moduleContext) && isFeatureEnabled(ProductFeature.ELN, moduleContext);
 }
 
-export function isRequestsEnabled(moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
+export function isRequestsEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
 }
 
-export function isAssayEnabled(moduleContext?: any): boolean {
-    return hasModule('assay', moduleContext) && (isCommunityDistribution() || isFeatureEnabled(ProductFeature.Assay, moduleContext));
+export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
+    return (
+        hasModule('assay', moduleContext) &&
+        (isCommunityDistribution(moduleContext) || isFeatureEnabled(ProductFeature.Assay, moduleContext))
+    );
 }
 
-export function isWorkflowEnabled(moduleContext?: any): boolean {
+export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {
     return (
         hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) &&
         isFeatureEnabled(ProductFeature.Workflow, moduleContext)
     );
 }
 
-export function isFeatureEnabled(flag: ProductFeature, moduleContext?: any): boolean {
-    return (moduleContext ?? getServerContext().moduleContext)?.core?.productFeatures?.indexOf(flag) >= 0;
+export function isFeatureEnabled(flag: ProductFeature, moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.core?.productFeatures?.indexOf(flag) >= 0;
 }
 
-export function isSampleAliquotSelectorEnabled(moduleContext?: any): boolean {
-    return (
-        (moduleContext ?? getServerContext().moduleContext)?.samplemanagement?.[
-            EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR
-        ] === true
-    );
+export function isSampleAliquotSelectorEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR] === true;
 }
 
-export function hasModule(moduleName: string, moduleContext?: any) {
-    return (moduleContext ?? getServerContext().moduleContext).api?.moduleNames?.indexOf(moduleName.toLowerCase()) >= 0;
+export function hasModule(moduleName: string, moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext).api?.moduleNames?.indexOf(moduleName.toLowerCase()) >= 0;
 }
 
-export function hasPremiumModule(): boolean {
-    return hasModule('Premium');
+export function hasPremiumModule(moduleContext?: ModuleContext): boolean {
+    return hasModule('Premium', moduleContext);
 }
 
-export function isCommunityDistribution(): boolean {
-    return !hasModule('SampleManagement') && !hasPremiumModule();
+export function isCommunityDistribution(moduleContext?: ModuleContext): boolean {
+    return !hasModule('SampleManagement', moduleContext) && !hasPremiumModule(moduleContext);
 }
 
 export function isProjectContainer(containerPath?: string): boolean {
@@ -415,7 +419,7 @@ const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
     iconURL: imageURL('_images', 'default.svg'),
 });
 
-function getBioWorkflowNotebookMediaConfigs(appBase: string, user: User) {
+function getBioWorkflowNotebookMediaConfigs(appBase: string, user: User): Map<string, MenuSectionConfig> {
     let configs = Map({
         [WORKFLOW_KEY]: getWorkflowSectionConfig(appBase),
     });
@@ -433,7 +437,7 @@ function getBioWorkflowNotebookMediaConfigs(appBase: string, user: User) {
 export function getMenuSectionConfigs(
     user: User,
     currentProductId: string,
-    moduleContext?: any
+    moduleContext?: ModuleContext
 ): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
@@ -521,7 +525,7 @@ export const useMenuSectionConfigs = (
 
 function getProductId(moduleName: string, moduleContext: any): string {
     const lcModuleName = moduleName.toLowerCase();
-    const context = (moduleContext ?? getServerContext().moduleContext)?.[lcModuleName];
+    const context = resolveModuleContext(moduleContext)?.[lcModuleName];
     return context?.productId?.toLowerCase();
 }
 
@@ -539,8 +543,8 @@ export function getDateFormat(): string {
 export function getDateTimeFormat(): string {
     return getServerContext().container.formats.dateTimeFormat;
 }
-// Returns the friendly name of the product, primarly for use in help text.
-export function getCurrentProductName() {
+// Returns the friendly name of the product, primarily for use in help text.
+export function getCurrentProductName(): string {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController) return LABKEY_SERVER_PRODUCT_NAME;
 

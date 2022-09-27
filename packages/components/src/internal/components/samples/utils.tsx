@@ -18,6 +18,8 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 
+import { ModuleContext } from '../base/ServerContext';
+
 import { SampleStatus } from './models';
 
 import {
@@ -32,31 +34,34 @@ import {
     SampleStateType,
 } from './constants';
 
-export function getOmittedSampleTypeColumns(user: User): string[] {
+export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];
 
     if (user.isGuest) {
         cols.push(SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD);
     }
-    if (!isFreezerManagementEnabled()) {
+    if (!isFreezerManagementEnabled(moduleContext)) {
         cols = cols.concat(SCHEMAS.INVENTORY.INVENTORY_COLS);
     }
 
     return cols;
 }
 
-export function isSampleOperationPermitted(sampleStatusType: SampleStateType, operation: SampleOperation): boolean {
-    if (!isSampleStatusEnabled())
-        // everything is possible when not tracking status
-        return true;
+export function isSampleOperationPermitted(
+    sampleStatusType: SampleStateType,
+    operation: SampleOperation,
+    moduleContext?: ModuleContext
+): boolean {
+    // everything is possible when not tracking status
+    if (!isSampleStatusEnabled(moduleContext)) return true;
 
-    if (!sampleStatusType)
-        // no status provided means all operations are permitted
-        return true;
+    // no status provided means all operations are permitted
+    if (!sampleStatusType) return true;
 
     return permittedOps[sampleStatusType].has(operation);
 }
 
+// TODO: Convert this into a component and utilize useServerContext() to fetch moduleContext for isELNEnabled() check
 export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: boolean): ReactNode {
     let deleteMsg;
     if (canDelete === undefined) {
@@ -110,20 +115,27 @@ export function getSampleStatus(row: any): SampleStatus {
     };
 }
 
-export function getFilterForSampleOperation(operation: SampleOperation, allowed = true): Filter.IFilter {
-    if (!isSampleStatusEnabled()) return null;
+export function getFilterForSampleOperation(
+    operation: SampleOperation,
+    allowed = true,
+    moduleContext?: ModuleContext
+): Filter.IFilter {
+    if (!isSampleStatusEnabled(moduleContext)) {
+        return null;
+    }
 
     const typesNotAllowed = [];
     for (const stateType in SampleStateType) {
-        if (!permittedOps[stateType].has(operation)) typesNotAllowed.push(stateType);
+        if (!permittedOps[stateType].has(operation)) {
+            typesNotAllowed.push(stateType);
+        }
     }
-    if (typesNotAllowed.length == 0) return null;
+    if (typesNotAllowed.length === 0) {
+        return null;
+    }
 
-    if (allowed) {
-        return Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed, Filter.Types.NOT_IN);
-    } else {
-        return Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed, Filter.Types.IN);
-    }
+    const filterType = allowed ? Filter.Types.NOT_IN : Filter.Types.IN;
+    return Filter.create(SAMPLE_STATE_TYPE_COLUMN_NAME, typesNotAllowed, filterType);
 }
 
 function getOperationMessageAndRecommendation(operation: SampleOperation, numSamples: number, isAll?: boolean): string {
@@ -182,7 +194,8 @@ export function getOperationNotPermittedMessage(
 export function filterSampleRowsForOperation(
     rows: Record<string, any>,
     operation: SampleOperation,
-    sampleIdField = 'RowId'
+    sampleIdField = 'RowId',
+    moduleContext?: ModuleContext
 ): { rows: { [p: string]: any }; statusData: OperationConfirmationData; statusMessage: string } {
     const allowed = [];
     const notAllowed = [];
@@ -194,7 +207,7 @@ export function filterSampleRowsForOperation(
             RowId: caseInsensitive(row, sampleIdField).value,
             Name: caseInsensitive(row, 'SampleID').displayValue,
         };
-        if (isSampleOperationPermitted(statusType, operation)) {
+        if (isSampleOperationPermitted(statusType, operation, moduleContext)) {
             allowed.push(statusRecord);
             validRows[id] = row;
         } else {

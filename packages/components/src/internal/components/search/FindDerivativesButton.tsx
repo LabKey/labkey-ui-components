@@ -17,6 +17,7 @@ import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
 import { getSampleFinderLocalStorageKey, searchFiltersToJson } from './utils';
 import { FieldFilter } from './models';
+import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
 
 const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
     const colName = filter.getColumnName();
@@ -41,7 +42,7 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
 
     const onClick = useCallback(() => {
         const currentTimestamp = new Date();
-        const sessionViewName = 'Searched ' + formatDateTime(currentTimestamp);
+        const sessionViewName = SAMPLE_FINDER_SESSION_PREFIX + formatDateTime(currentTimestamp);
 
         // only using viewFilters and user defined filters (filterArray), intentionally leaving out baseFilters
         let fieldFilters = [];

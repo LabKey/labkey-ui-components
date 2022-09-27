@@ -28,7 +28,7 @@ import { formatDateTime } from '../../util/Date';
 import { getContainerFilter } from '../../query/api';
 
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
-import { SearchScope } from './constants';
+import {SAMPLE_FINDER_SESSION_PREFIX, SearchScope} from './constants';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
 export const FIND_SAMPLE_BY_ID_METRIC_AREA = 'findSamplesById';
@@ -389,7 +389,7 @@ export function searchFiltersToJson(
     return JSON.stringify({
         filters: getSearchFilterObjs(filterProps),
         filterChangeCounter,
-        filterTimestamp: 'Searched ' + formatDateTime(time ?? new Date(), timezone),
+        filterTimestamp: SAMPLE_FINDER_SESSION_PREFIX + formatDateTime(time ?? new Date(), timezone),
     });
 }
 

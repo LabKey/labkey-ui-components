@@ -55,6 +55,7 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
+import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -163,7 +164,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     getSampleFinderLocalStorageKey(),
                     searchFiltersToJson(filterProps, changeCounter, currentTimestamp)
                 );
-                setUnsavedSessionViewName('Searched ' + formatDateTime(currentTimestamp));
+                setUnsavedSessionViewName(SAMPLE_FINDER_SESSION_PREFIX + formatDateTime(currentTimestamp));
             }
         },
         []
@@ -198,7 +199,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             newFilterCards.splice(index, 1);
             if (currentView && newFilterCards?.length === 0) {
                 updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, false);
-                setCurrentView(undefined);
+                setCurrentView(null); // using null to not trigger the reload of a url report name
             } else {
                 updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
             }
@@ -330,6 +331,26 @@ export const SampleFinderSection: FC<Props> = memo(props => {
             setSavedViewChangeCounter(counter => counter + 1);
         }
     }, []);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                // if the page is first loading (i.e. no currentView) and the URL has a view name, try to load it
+                const reportName = location.query?.view;
+                if (currentView === undefined && reportName) {
+                    if (reportName.startsWith(SAMPLE_FINDER_SESSION_PREFIX)) {
+                        loadSearch({ isSession: true, reportName });
+                    } else {
+                        const views = await api.samples.loadFinderSearches();
+                        const view = views.find(v => v.reportName === reportName);
+                        if (view) loadSearch(view);
+                    }
+                }
+            } catch (error) {
+                // do nothing
+            }
+        })();
+    }, [api.samples, currentView, loadSearch, location.query?.view]);
 
     return (
         <Section

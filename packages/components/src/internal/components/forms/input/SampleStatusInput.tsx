@@ -161,7 +161,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 name={col.fieldKey}
                 onQSChange={onChange}
                 onToggleDisable={onToggleDisable}
-                placeholder="Select or type to search..."
+                placeholder={isGridInput ? undefined : "Select or type to search..."}
                 required={col.required}
                 schemaQuery={col.lookup.schemaQuery}
                 showLabel
@@ -169,6 +169,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 valueColumn={col.lookup.keyColumn}
                 inputClass={isGridInput ? 'select-input-cell' : inputClass}
                 containerClass={isGridInput ? 'select-input-cell-container' : undefined}
+                menuPosition={isGridInput ? 'fixed' : undefined}
             />
             {error && <Alert>{error}</Alert>}
             {showDiscardPanel && <>{discardPanel}</>}

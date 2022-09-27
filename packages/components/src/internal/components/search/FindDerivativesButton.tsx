@@ -16,8 +16,10 @@ import { EntityDataType } from '../entities/models';
 import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
 import { getSampleFinderLocalStorageKey, searchFiltersToJson } from './utils';
-import { FieldFilter } from './models';
+import {FieldFilter} from './models';
 import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
+import {DataClassDataType, SampleTypeDataType} from "../entities/constants";
+import {SCHEMAS} from "../../schemas";
 
 const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
     const colName = filter.getColumnName();
@@ -33,12 +35,14 @@ const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter 
 
 interface Props {
     asSubMenu?: boolean;
+    baseFilter?: Filter.IFilter;
+    baseModel?: QueryModel;
     entityDataType: EntityDataType;
     model: QueryModel;
 }
 
 export const FindDerivativesButton: FC<Props> = memo(props => {
-    const { model, entityDataType, asSubMenu } = props;
+    const { baseModel, baseFilter, model, entityDataType, asSubMenu } = props;
 
     const onClick = useCallback(() => {
         const currentTimestamp = new Date();
@@ -49,17 +53,27 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
         fieldFilters = fieldFilters.concat(model.viewFilters.map(filter => getFieldFilter(model, filter)));
         fieldFilters = fieldFilters.concat(model.filterArray.map(filter => getFieldFilter(model, filter)));
 
+        const filterProps = [];
+        if (baseModel && baseFilter) {
+            filterProps.push({
+                schemaQuery: baseModel.schemaQuery,
+                filterArray: [getFieldFilter(baseModel, baseFilter)],
+                entityDataType:
+                    baseModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? DataClassDataType : SampleTypeDataType,
+                dataTypeDisplayName: baseModel.title ?? baseModel.queryInfo.title ?? baseModel.queryName,
+            });
+        }
+        filterProps.push({
+            schemaQuery: model.schemaQuery,
+            filterArray: fieldFilters,
+            entityDataType,
+            dataTypeDisplayName: model.title ?? model.queryInfo.title ?? model.queryName,
+        });
+
         sessionStorage.setItem(
             getSampleFinderLocalStorageKey(),
             searchFiltersToJson(
-                [
-                    {
-                        schemaQuery: model.schemaQuery,
-                        filterArray: fieldFilters,
-                        entityDataType,
-                        dataTypeDisplayName: model.title ?? model.queryInfo.title ?? model.queryName,
-                    },
-                ],
+                filterProps,
                 0,
                 currentTimestamp
             )

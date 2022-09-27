@@ -187,6 +187,7 @@ export interface SampleGridButtonProps {
     metricFeatureArea?: string;
     navigate?: (url: string | AppURL) => void;
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
+    sampleFinderBaseProps?: Record<string, any>;
     showBulkUpdate?: () => void;
     subMenuWidth?: number;
     toggleEditWithGridUpdate?: () => void;

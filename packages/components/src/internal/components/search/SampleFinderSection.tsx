@@ -336,7 +336,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         (async () => {
             try {
                 // if the page is first loading (i.e. no currentView) and the URL has a view name, try to load it
-                const reportName = location.query?.view;
+                const reportName = location?.query?.view;
                 if (currentView === undefined && reportName) {
                     if (reportName.startsWith(SAMPLE_FINDER_SESSION_PREFIX)) {
                         loadSearch({ isSession: true, reportName });
@@ -350,7 +350,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 // do nothing
             }
         })();
-    }, [api.samples, currentView, loadSearch, location.query?.view]);
+    }, [api.samples, currentView, loadSearch, location?.query?.view]);
 
     return (
         <Section

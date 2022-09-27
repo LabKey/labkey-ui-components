@@ -11,7 +11,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 
 import { User } from '../base/models/User';
-import { resetParameters } from '../../util/URL';
+import { getLocation, replaceParameters } from '../../util/URL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -25,13 +25,15 @@ import { AuditQuery, getAuditQueries } from './utils';
 import { getAuditDetail } from './actions';
 import { AuditDetailsModel } from './models';
 import { AuditDetails } from './AuditDetails';
+import { WithRouterProps } from 'react-router';
+import { AUDIT_EVENT_TYPE_PARAM, SAMPLE_TIMELINE_AUDIT_QUERY } from './constants';
 
 interface OwnProps {
     params: any;
     user: User;
 }
 
-type Props = OwnProps & InjectedQueryModels;
+type Props = OwnProps & InjectedQueryModels & WithRouterProps;
 
 interface State {
     auditQueries: AuditQuery[];
@@ -46,7 +48,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            selected: props.params.query,
+            selected: props.location.query?.eventType ?? SAMPLE_TIMELINE_AUDIT_QUERY.value,
             selectedRowId: undefined,
             auditQueries: getAuditQueries(),
         };
@@ -57,16 +59,25 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
     };
 
     componentDidUpdate = (prevProps: Readonly<Props>): void => {
-        const { query } = this.props.params;
-        if (query !== undefined && query !== prevProps.params.query) {
-            this.onSelectionChange(null, query);
+        const { eventType } = this.props.location?.query;
+        if (eventType !== undefined && eventType !== prevProps.location.query?.eventType) {
+            this.onSelectionChange(null, eventType);
         }
 
         this.setLastSelectedId();
     };
 
     onSelectionChange = (_: any, selected: string): void => {
-        resetParameters(); // get rid of filtering parameters that are likely not applicable to this new audit log
+        const location = getLocation();
+        const paramUpdates = location.query.map((value: string, key: string) => {
+            if (key.startsWith("query"))
+                return undefined; // get rid of filtering parameters that are likely not applicable to this new audit log
+            else if (key === AUDIT_EVENT_TYPE_PARAM)
+                return selected;
+            else
+                return value;
+        } );
+        replaceParameters(location, paramUpdates);
         this.setState(() => ({ selected, selectedRowId: undefined }));
     };
 
@@ -226,7 +237,7 @@ class AuditQueriesListingPageImpl extends PureComponent<Props, State> {
     };
 
     render = (): ReactNode => {
-        const title = 'Audit Log';
+        const title = 'Audit Logs';
         const { auditQueries } = this.state;
 
         return (

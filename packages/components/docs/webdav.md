@@ -1,18 +1,18 @@
 # Webdav API
 
-Below example walks you through how you can utilize LabKey's WebDAV API in your React development to get already uploaded
-files from the server, and to upload new files to the server.
+The examples below walk you through how you can utilize LabKey's WebDAV API in your React development to get already uploaded
+files from the server, create new directories on the server, and upload new files to the server.
 
-Additionally, FileAttachmentForm component allows users to select files to be uploaded via file
+Additionally, the `FileAttachmentForm` component allows users to select files to be uploaded via file
 selection or drag & drop - example to render FileAttachmentForm component [here](./fileAttachment.md).
 
 ## [WebDav](../src/public/files/WebDav.ts#L69)
 ```ts
-import { getWebDavFiles, WebDavFile, uploadWebDavFile } from '@labkey/components';
+import { getWebDavFiles, WebDavFile, uploadWebDavFile, createWebDavDirectory } from '@labkey/components';
 
 const ATTACHMENTS_DIR = 'MyUploads';
 
-export class AttachmentModel {
+class AttachmentModel {
     [immerable] = true;
 
     readonly savedFiles: string[]; // to get uploaded file names from the server
@@ -24,7 +24,7 @@ export class AttachmentModel {
 }
 
 // Action to get file(s)
-export function getFiles(container: string, directory?: string, includeSubdirectories?: boolean): Promise<AttachmentModel> {
+function getFiles(container: string, directory?: string, includeSubdirectories?: boolean): Promise<AttachmentModel> {
     return new Promise(async (resolve, reject) => {
         try {
             const webDavFilesResponse = await getWebDavFiles(container, directory, includeSubdirectories);
@@ -67,6 +67,20 @@ function uploadFiles(model: AttachmentModel): any {
                     });
             }
         }, this);
+    });
+}
+
+// Action to create a new directory on the server
+function createDir(directory: string): any {
+    return new Promise((resolve, reject) => {
+        // the 3rd param of true indicates that intermidiate directories should also be created
+        createWebDavDirectory(ActionURL.getContainer(), directory, true)
+            .then((name: string) => {
+                resolve(name);
+            })
+            .catch(reason => {
+                reject(reason);
+            });;
     });
 }
 ```

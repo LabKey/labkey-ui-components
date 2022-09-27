@@ -16,6 +16,7 @@
 import { enableMapSet, enablePatches } from 'immer';
 
 import { AppURL, buildURL, createProductUrl, createProductUrlFromParts, spliceURL } from './internal/url/AppURL';
+import { getHref } from './internal/url/utils';
 import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, hasAnyPermissions, hasPermissions, User } from './internal/components/base/models/User';
@@ -129,7 +130,7 @@ import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
-import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
+import { getWebDavFiles, uploadWebDavFile, createWebDavDirectory, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notifications } from './internal/components/notifications/Notifications';
 import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/components/notifications/actions';
@@ -139,7 +140,7 @@ import {
     withNotificationsContext,
 } from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
-import { formatDate, formatDateTime, getDateFormat, parseDate, filterDate } from './internal/util/Date';
+import { filterDate, formatDate, formatDateTime, getDateFormat, parseDate } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
@@ -295,10 +296,10 @@ import { EntityLineageEditMenuItem } from './internal/components/entities/Entity
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
 import {
-    GenerateEntityResponse,
-    OperationConfirmationData,
     EntityIdCreationModel,
     EntityParentType,
+    GenerateEntityResponse,
+    OperationConfirmationData,
 } from './internal/components/entities/models';
 import { FindSamplesByIdsPageBase } from './internal/components/search/FindSamplesByIdsPageBase';
 import { SearchScope } from './internal/components/search/constants';
@@ -499,6 +500,16 @@ import { HorizontalBarSection } from './internal/components/chart/HorizontalBarS
 import { ItemsLegend } from './internal/components/chart/ItemsLegend';
 import { CHART_GROUPS } from './internal/components/chart/configs';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
+import {
+    ASSAY_AUDIT_QUERY,
+    DATA_UPDATE_AUDIT_QUERY,
+    GROUP_AUDIT_QUERY,
+    INVENTORY_AUDIT_QUERY,
+    SAMPLE_TIMELINE_AUDIT_QUERY,
+    SAMPLE_TYPE_AUDIT_QUERY,
+    SOURCE_AUDIT_QUERY,
+    WORKFLOW_AUDIT_QUERY,
+} from './internal/components/auditlog/constants';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
@@ -629,8 +640,8 @@ import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal'
 import { BarTenderConfiguration } from './internal/components/labels/models';
 import {
     LabelPrintingProvider,
-    withLabelPrintingContext,
     useLabelPrintingContext,
+    withLabelPrintingContext,
 } from './internal/components/labels/LabelPrintingContextProvider';
 
 import {
@@ -702,6 +713,7 @@ import {
 import {
     ASSAY_DESIGN_KEY,
     ASSAYS_KEY,
+    AUDIT_KEY,
     BIOLOGICS_APP_PROPERTIES,
     BOXES_KEY,
     ELN_KEY,
@@ -821,6 +833,7 @@ const App = {
     FREEZER_MANAGER: FREEZER_MANAGER_APP_PROPERTIES,
     ASSAYS_KEY,
     ASSAY_DESIGN_KEY,
+    AUDIT_KEY,
     EXPERIMENTAL_REQUESTS_MENU,
     FIND_SAMPLES_BY_ID_KEY,
     FIND_SAMPLES_BY_FILTER_KEY,
@@ -936,6 +949,7 @@ export {
     SamplesResolver,
     ExperimentRunResolver,
     getLocation,
+    getHref,
     pushParameter,
     replaceParameter,
     replaceParameters,
@@ -1332,6 +1346,7 @@ export {
     WebDavFile,
     getWebDavFiles,
     uploadWebDavFile,
+    createWebDavDirectory,
     // util functions
     getDateFormat,
     getDisambiguatedSelectInputOptions,
@@ -1480,6 +1495,14 @@ export {
     makeTestActions,
     makeTestQueryModel,
     // AuditLog and Timeline
+    DATA_UPDATE_AUDIT_QUERY,
+    GROUP_AUDIT_QUERY,
+    ASSAY_AUDIT_QUERY,
+    SAMPLE_TIMELINE_AUDIT_QUERY,
+    SAMPLE_TYPE_AUDIT_QUERY,
+    SOURCE_AUDIT_QUERY,
+    INVENTORY_AUDIT_QUERY,
+    WORKFLOW_AUDIT_QUERY,
     AuditDetailsModel,
     AuditQueriesListingPage,
     AuditDetails,

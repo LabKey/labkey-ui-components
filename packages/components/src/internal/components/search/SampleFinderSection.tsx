@@ -132,18 +132,20 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
 
     useEffect(() => {
         const _enabledEntityTypes = [];
-        (async () => {
-            try {
-                if (isLoading(assayModel.definitionsLoadingState)) return;
+        if (isLoading(assayModel.definitionsLoadingState)) return;
 
-                const assaySampleCols = getAssayDefinitionsWithResultSampleLookup(assayModel, 'general');
-                const entityOptions = await getAllEntityTypeOptions(parentEntityDataTypes);
+        const assaySampleCols = getAssayDefinitionsWithResultSampleLookup(assayModel, 'general');
+        getAllEntityTypeOptions(parentEntityDataTypes)
+            .then(entityOptions => {
                 Object.keys(entityOptions).forEach(key => {
-                    if (entityOptions[key].length) {
-                        if (key === AssayResultDataType.typeListingSchemaQuery.queryName) {
+                    if (entityOptions[key].length)
+                    {
+                        if (key === AssayResultDataType.typeListingSchemaQuery.queryName)
+                        {
                             let hasSampleIdCol = false;
                             entityOptions[key].forEach(assay => {
-                                if (!hasSampleIdCol && assaySampleCols[assay.value]) {
+                                if (!hasSampleIdCol && assaySampleCols[assay.value])
+                                {
                                     hasSampleIdCol = true;
                                 }
                             });
@@ -154,12 +156,13 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
                     }
                 });
                 setAssaySampleIdCols(assaySampleCols);
+                setEnabledEntityTypes(_enabledEntityTypes);
+            })
+            .catch(error => {
+                console.error(error);
+                setEnabledEntityTypes(_enabledEntityTypes);
+            });
 
-                setEnabledEntityTypes(_enabledEntityTypes);
-            } catch {
-                setEnabledEntityTypes(_enabledEntityTypes);
-            }
-        })();
         if (clearSessionView) {
             sessionStorage.removeItem(getLocalStorageKey());
             return;

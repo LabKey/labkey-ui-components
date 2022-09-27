@@ -298,7 +298,6 @@ export interface AssaySampleColumnProp {
 export function getAssayDefinitionsWithResultSampleLookup(
     assayStateModel: AssayStateModel,
     providerType?: string,
-    allowPicklist?: boolean
 ): { [key: string]: AssaySampleColumnProp } {
     const assays = assayStateModel.definitions.filter(
         assay => providerType === undefined || assay.type?.toLowerCase() === providerType?.toLowerCase()
@@ -306,7 +305,7 @@ export function getAssayDefinitionsWithResultSampleLookup(
 
     const results = {};
     assays.forEach(assay => {
-        const sampleCol = assay.getSampleLookupColumn(AssayDomainTypes.RESULT, allowPicklist);
+        const sampleCol = assay.getSampleColumn(AssayDomainTypes.RESULT)?.column;
         if (sampleCol) {
             results[assay.name?.toLowerCase()] = {
                 fieldKey: sampleCol.fieldKey,

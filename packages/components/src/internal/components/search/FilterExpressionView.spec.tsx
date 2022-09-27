@@ -111,7 +111,8 @@ describe('FilterExpressionView', () => {
         inputOffset = 0,
         selectedOp?: string,
         firstInputValue?: any,
-        secondInputValue?: any
+        secondInputValue?: any,
+        disabled?: boolean,
     ) {
         expect(wrapper.find(SelectInput)).toHaveLength(numFilters);
         validateFilterTypeDropdown(wrapper, operators, filterIndex, selectedOp);
@@ -122,10 +123,13 @@ describe('FilterExpressionView', () => {
 
         if (firstInputValue) {
             expect(filterInputs.at(inputOffset).props()['value']).toEqual(firstInputValue);
+            expect(filterInputs.at(inputOffset).props()['disabled']).toEqual(disabled);
+
         }
 
         if (secondInputValue) {
             expect(filterInputs.at(inputOffset + 1).props()['value']).toEqual(secondInputValue);
+            expect(filterInputs.at(inputOffset + 1).props()['disabled']).toEqual(disabled);
         }
     }
 
@@ -201,7 +205,7 @@ describe('FilterExpressionView', () => {
             />
         );
 
-        validate(wrapper, dateOps, 0, 2, 1, 0, 'dateneq', '2020-08-06');
+        validate(wrapper, dateOps, 0, 2, 1, 0, 'dateneq', '2020-08-06', undefined, false);
         wrapper.unmount();
     });
 
@@ -301,6 +305,19 @@ describe('FilterExpressionView', () => {
             />
         );
         validate(wrapper, Ops, 0, 2, 0, 0, 'isnonblank');
+        wrapper.unmount();
+    });
+
+    test('int field, between operator, disabled', async () => {
+        const wrapper = mount(
+            <FilterExpressionView
+                field={intField}
+                fieldFilters={[Filter.create('IntField', '1,200', Filter.Types.BETWEEN)]}
+                disabled={true}
+            />
+        );
+
+        validate(wrapper, Ops, 0, 2, 2, 0, 'between', '1', '200', true);
         wrapper.unmount();
     });
 });

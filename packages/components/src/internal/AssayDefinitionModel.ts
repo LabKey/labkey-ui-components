@@ -196,41 +196,6 @@ export class AssayDefinitionModel extends Record({
         return false;
     }
 
-    getSampleLookupColumn(targetDomainType?: AssayDomainTypes, allowPicklist?: boolean): QueryColumn {
-        const findSampleLookup = (col: QueryColumn): boolean => {
-            if (col.isLookup()) {
-                const lookupSQ = col.lookup.schemaQuery;
-                const isMatch =
-                    lookupSQ.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA) ||
-                    SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ) ||
-                    (allowPicklist && lookupSQ.hasSchema(SCHEMAS.PICKLIST_TABLES.SCHEMA)) ||
-                    SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.isEqual(lookupSQ) ||
-                    SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ.isEqual(lookupSQ);
-
-                return isMatch;
-            }
-
-            return false;
-        };
-
-        // Traditional for loop so we can short circuit.
-        let sampleCol = null;
-        for (const k of Object.keys(AssayDomainTypes)) {
-            if (sampleCol) break;
-
-            const domainType = AssayDomainTypes[k];
-            if (targetDomainType && targetDomainType !== domainType) continue;
-
-            const domainColumns = this.getDomainByType(domainType);
-
-            if (domainColumns) {
-                sampleCol = domainColumns.find(findSampleLookup);
-            }
-        }
-
-        return sampleCol;
-    }
-
     private getSampleColumnsByDomain(domainType: AssayDomainTypes): ScopedSampleColumn[] {
         const ret = [];
         const columns = this.getDomainByType(domainType);
@@ -247,12 +212,13 @@ export class AssayDefinitionModel extends Record({
     }
 
     /**
-     * get all sample lookup columns found in the result, run, and batch domains.
+     * get all sample lookup columns found in the result, run, and batch domains, or from a specific domainType
      */
-    getSampleColumns(): List<ScopedSampleColumn> {
+    getSampleColumns(domainType?: AssayDomainTypes): List<ScopedSampleColumn> {
         let ret = [];
         // The order matters here, we care about result, run, and batch in that order.
-        for (const domain of [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH]) {
+        const domainTypes = domainType ? [domainType] : [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH];
+        for (const domain of domainTypes) {
             const columns = this.getSampleColumnsByDomain(domain);
 
             if (columns && columns.length > 0) {
@@ -266,8 +232,8 @@ export class AssayDefinitionModel extends Record({
     /**
      * get the first sample lookup column found in the result, run, or batch domain.
      */
-    getSampleColumn(): ScopedSampleColumn {
-        const sampleColumns = this.getSampleColumns();
+    getSampleColumn(domainType?: AssayDomainTypes): ScopedSampleColumn {
+        const sampleColumns = this.getSampleColumns(domainType);
         return !sampleColumns.isEmpty() ? sampleColumns.first() : null;
     }
 

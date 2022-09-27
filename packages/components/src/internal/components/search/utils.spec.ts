@@ -295,6 +295,7 @@ describe('getAssayFilter', () => {
                 schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
                 filterArray: [cardFilter],
                 targetColumnFieldKey: 'SampleId',
+                selectColumnFieldKey: 'RowId',
             })
         ).toEqual(AssayColumnInFilter);
     });
@@ -432,6 +433,7 @@ describe('getSampleFinderCommonConfigs', () => {
                         schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
                         filterArray: [cardFilter],
                         targetColumnFieldKey: 'SampleId',
+                        selectColumnFieldKey: 'RowId'
                     },
                 ],
                 false

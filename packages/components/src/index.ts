@@ -228,9 +228,7 @@ import {
     EditableGridPanelForUpdateWithLineage,
     UpdateGridTab,
 } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import {
-    LineageEditableGridLoaderFromSelection
-} from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -437,9 +435,7 @@ import {
 } from './internal/components/lineage/types';
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
-import {
-    EntityCrossProjectSelectionConfirmModal
-} from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';

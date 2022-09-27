@@ -156,11 +156,11 @@ export function getSampleFinderCommonConfigs(
     const baseFilters = [];
     const requiredColumns = [...SAMPLE_STATUS_REQUIRED_COLUMNS];
     cards.forEach(card => {
-        const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery, useAncestors);
+        const schemaQuery = card.schemaQuery;
+        const cardColumnName = getFilterCardColumnName(card.entityDataType, schemaQuery, useAncestors);
 
         requiredColumns.push(cardColumnName);
         if (card.filterArray?.length) {
-            const schemaQuery = card.schemaQuery;
             card.filterArray.forEach(f => {
                 const filter = f.filter;
                 const columnName = filter.getColumnName();
@@ -175,6 +175,17 @@ export function getSampleFinderCommonConfigs(
             });
 
             const filter = getExpDescendantOfFilter(schemaQuery, card.filterArray, cf);
+            if (filter) {
+                baseFilters.push(filter);
+            }
+        } else if (useAncestors) {
+            const pkColName = 'Name';
+            const filter = getExpDescendantOfFilter(schemaQuery, [{
+                fieldCaption: pkColName,
+                fieldKey: pkColName,
+                filter: Filter.create(pkColName, null, Filter.Types.NONBLANK),
+                jsonType: 'string',
+            }], cf);
             if (filter) {
                 baseFilters.push(filter);
             }

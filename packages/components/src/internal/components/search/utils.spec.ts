@@ -291,7 +291,13 @@ describe('getSampleFinderCommonConfigs', () => {
                 true
             )
         ).toStrictEqual({
-            baseFilters: [Filter.create('Ancestors/Samples/TestQuery/Name', null, Filter.Types.NONBLANK)],
+            baseFilters: [
+                Filter.create(
+                    '*',
+                    'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
+                    IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                ),
+            ],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
         });
     });
@@ -454,7 +460,13 @@ describe('getSampleFinderQueryConfigs', () => {
                 title: 'Sample Type 1',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
-                baseFilters: [Filter.create('Ancestors/Samples/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                baseFilters: [
+                    Filter.create(
+                        '*',
+                        'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
+                        IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                    ),
+                ],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
             },
             'uuid-1-testId|samples/Sample Type 2': {
@@ -462,7 +474,13 @@ describe('getSampleFinderQueryConfigs', () => {
                 title: 'Sample Type 2',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
-                baseFilters: [Filter.create('Ancestors/Samples/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                baseFilters: [
+                    Filter.create(
+                        '*',
+                        'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
+                        IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                    ),
+                ],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
             },
         });

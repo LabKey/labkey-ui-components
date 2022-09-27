@@ -4,7 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Sample Finder assay result filters
-  *
+  * Added COLUMN_IN_FILTER_TYPE and COLUMN_NOT_IN_FILTER_TYPE
+  * Added Assay card to SampleFinderSection and wired up assay filters for Finder
+  * Modified QueryFilterPanel and EntityFieldFilterModal to allow "Without data from this type" checkbox
 
 ### version 2.220.0
 *Released*: 26 September 2022

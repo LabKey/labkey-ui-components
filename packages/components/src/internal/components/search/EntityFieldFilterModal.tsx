@@ -24,6 +24,8 @@ import { AssayResultDataType } from '../entities/constants';
 
 import { COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
 
+import { AssaySampleColumnProp } from '../assay/actions';
+
 import { FieldFilter, FilterProps } from './models';
 import {
     getDataTypeFiltersWithNotInQueryUpdate,
@@ -32,7 +34,6 @@ import {
     isValidFilterFieldExcludeLookups,
 } from './utils';
 import { QueryFilterPanel } from './QueryFilterPanel';
-import {AssaySampleColumnProp} from "../assay/actions";
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -123,13 +124,12 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 const parents = [];
                 results.map(result => {
                     if (entityDataType.typeListingSchemaQuery === AssayResultDataType.typeListingSchemaQuery) {
-                         result.forEach(assay => {
+                        result.forEach(assay => {
                             if (assaySampleIdCols?.[assay.value.toLowerCase()]) {
                                 parents.push(assay);
                             }
                         });
-                    }
-                    else {
+                    } else {
                         result.map(res => {
                             parents.push(res);
                         });

@@ -36,7 +36,7 @@ import {
 
 import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
 
-import {AssaySampleColumnProp, getAssayDefinitionsWithResultSampleLookup} from '../assay/actions';
+import { AssaySampleColumnProp, getAssayDefinitionsWithResultSampleLookup } from '../assay/actions';
 
 import { isLoading } from '../../../public/LoadingState';
 
@@ -138,14 +138,11 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
         getAllEntityTypeOptions(parentEntityDataTypes)
             .then(entityOptions => {
                 Object.keys(entityOptions).forEach(key => {
-                    if (entityOptions[key].length)
-                    {
-                        if (key === AssayResultDataType.typeListingSchemaQuery.queryName)
-                        {
+                    if (entityOptions[key].length) {
+                        if (key === AssayResultDataType.typeListingSchemaQuery.queryName) {
                             let hasSampleIdCol = false;
                             entityOptions[key].forEach(assay => {
-                                if (!hasSampleIdCol && assaySampleCols[assay.value])
-                                {
+                                if (!hasSampleIdCol && assaySampleCols[assay.value]) {
                                     hasSampleIdCol = true;
                                 }
                             });

@@ -157,8 +157,7 @@ export function getExpDescendantOfFilter(
 
 export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): Filter.IFilter {
     const { schemaQuery, filterArray, selectColumnFieldKey, targetColumnFieldKey } = card;
-    if (!filterArray || filterArray.length === 0)
-        return undefined;
+    if (!filterArray || filterArray.length === 0) return undefined;
 
     let noAssayDataFilter: Filter.IFilter;
     filterArray.forEach(fieldFilter => {
@@ -197,8 +196,7 @@ export function getSampleFinderCommonConfigs(
     cards.forEach(card => {
         if (card.entityDataType.nounAsParentSingular === AssayResultDataType.nounAsParentSingular) {
             const assayFilter = getAssayFilter(card, cf);
-            if (assayFilter)
-                baseFilters.push(assayFilter);
+            if (assayFilter) baseFilters.push(assayFilter);
             return;
         }
 

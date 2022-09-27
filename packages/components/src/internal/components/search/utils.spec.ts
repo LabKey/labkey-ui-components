@@ -22,6 +22,8 @@ import { formatDate } from '../../util/Date';
 
 import { AssayResultDataType, SampleTypeDataType } from '../entities/constants';
 
+import { COLUMN_IN_FILTER_TYPE, COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
+
 import {
     ALL_VALUE_DISPLAY,
     EMPTY_VALUE_DISPLAY,
@@ -51,7 +53,6 @@ import {
     searchFiltersToJson,
 } from './utils';
 import { FieldFilter } from './models';
-import { COLUMN_IN_FILTER_TYPE, COLUMN_NOT_IN_FILTER_TYPE } from "../../query/filter";
 
 beforeAll(() => {
     LABKEY.container = {
@@ -262,9 +263,17 @@ const assay1SchemaQuery = SchemaQuery.create('assay.general.' + assay1, 'data');
 
 const assayFilterWhere = '"TestColumn" = \'value\'';
 
-const AssayColumnInFilter = Filter.create('RowId', '{json:' + JSON.stringify(['SampleId', 'assay.general.' + assay1, 'data', assayFilterWhere]) + '}', COLUMN_IN_FILTER_TYPE);
+const AssayColumnInFilter = Filter.create(
+    'RowId',
+    '{json:' + JSON.stringify(['SampleId', 'assay.general.' + assay1, 'data', assayFilterWhere]) + '}',
+    COLUMN_IN_FILTER_TYPE
+);
 
-const AssayNotInFilter = Filter.create('RowId', '{json:' + JSON.stringify(['strField', 'assay.general.' + assay1, 'data']) + '}', COLUMN_NOT_IN_FILTER_TYPE);
+const AssayNotInFilter = Filter.create(
+    'RowId',
+    '{json:' + JSON.stringify(['strField', 'assay.general.' + assay1, 'data']) + '}',
+    COLUMN_NOT_IN_FILTER_TYPE
+);
 const AssayNotInFilterField = {
     fieldKey: '*',
     fieldCaption: 'Results',
@@ -273,7 +282,6 @@ const AssayNotInFilterField = {
 } as FieldFilter;
 
 describe('getAssayFilter', () => {
-
     test('Assay card with filters', () => {
         const cardFilter = {
             fieldKey: 'TestColumn',
@@ -286,8 +294,9 @@ describe('getAssayFilter', () => {
                 entityDataType: AssayResultDataType,
                 schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
                 filterArray: [cardFilter],
-                targetColumnFieldKey: 'SampleId'
-            })).toEqual(AssayColumnInFilter);
+                targetColumnFieldKey: 'SampleId',
+            })
+        ).toEqual(AssayColumnInFilter);
     });
 
     test('Assay card with not in assay filter', () => {
@@ -301,10 +310,10 @@ describe('getAssayFilter', () => {
             getAssayFilter({
                 entityDataType: AssayResultDataType,
                 schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
-                filterArray: [AssayNotInFilterField]
-            })).toEqual(AssayNotInFilter);
+                filterArray: [AssayNotInFilterField],
+            })
+        ).toEqual(AssayNotInFilter);
     });
-
 });
 
 describe('getSampleFinderCommonConfigs', () => {
@@ -422,7 +431,7 @@ describe('getSampleFinderCommonConfigs', () => {
                         entityDataType: AssayResultDataType,
                         schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
                         filterArray: [cardFilter],
-                        targetColumnFieldKey: 'SampleId'
+                        targetColumnFieldKey: 'SampleId',
                     },
                 ],
                 false
@@ -440,7 +449,7 @@ describe('getSampleFinderCommonConfigs', () => {
                     {
                         entityDataType: AssayResultDataType,
                         schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
-                        filterArray: [AssayNotInFilterField]
+                        filterArray: [AssayNotInFilterField],
                     },
                 ],
                 false
@@ -1585,11 +1594,11 @@ describe('getUpdatedDataTypeFilters', () => {
 });
 
 const ASSAY_RESULT_FILTERS = {
-    [assay1]: [stringEqualFilter, stringBetweenFilter, intEqFilter]
+    [assay1]: [stringEqualFilter, stringBetweenFilter, intEqFilter],
 };
 
 const ASSAY_NO_DATA_FILTERS = {
-    [assay1]: [AssayNotInFilterField]
+    [assay1]: [AssayNotInFilterField],
 };
 
 describe('getDataTypeFiltersWithNotInQueryUpdate', () => {

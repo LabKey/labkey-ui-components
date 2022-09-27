@@ -130,3 +130,27 @@ export function uploadWebDavFile(
         });
     });
 }
+
+export function createWebDavDirectory(
+    containerPath: string,
+    directory: string,
+    createIntermediates?: boolean
+): Promise<string> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: getWebDavUrl(containerPath, directory, createIntermediates),
+            method: 'MKCOL',
+            success: Utils.getCallbackWrapper(() => {
+                resolve(directory);
+            }),
+            failure: Utils.getCallbackWrapper(
+                () => {
+                    console.error('failure creating directory ' + directory);
+                    reject(directory);
+                },
+                null,
+                false
+            ),
+        });
+    });
+}

@@ -33,6 +33,8 @@ import { GroupAssignments } from './GroupAssignments';
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
 import { fetchGroupMembership, getAuditLogData } from './actions';
+import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants';
+import { AUDIT_KEY } from '../../app/constants';
 
 export type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
@@ -49,7 +51,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
     const { api } = useAppContext<AppContext>();
     const { dismissNotifications, createNotification } = useNotificationsContext();
-    const { container, user } = useServerContext();
+    const { container, moduleContext, user } = useServerContext();
 
     const projectPath = useMemo(() => getProjectPath(container.path), [container]);
     const loaded = !isLoading(loadingState);
@@ -168,7 +170,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             <>
                 <CreatedModified row={row} />
                 <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
-                    <MenuItem href={AppURL.create('audit', 'groupauditevent').toHref()}>View Audit History</MenuItem>
+                    <MenuItem href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value).toHref()}>View Audit History</MenuItem>
                 </ManageDropdownButton>
             </>
         );
@@ -236,8 +238,8 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     }, [updatedPrincipals, groupMembership]);
 
     const description = useMemo(() => {
-        return showPremiumFeatures() ? container.path : undefined;
-    }, [container]);
+        return showPremiumFeatures(moduleContext) ? container.path : undefined;
+    }, [container, moduleContext]);
 
     return (
         <BasePermissionsCheckPage

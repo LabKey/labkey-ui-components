@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
 import { TEST_USER_APP_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 import { ServerNotifications } from '../notifications/ServerNotifications';
 
+import { mountWithAppServerContext } from '../../testHelpers';
 import { markAllNotificationsRead } from '../../../test/data/notificationData';
 import { ServerNotificationModel } from '../notifications/model';
 
+import { FindAndSearchDropdown } from '../search/FindAndSearchDropdown';
 import { ProductNavigation } from '../productnavigation/ProductNavigation';
 
 import { SearchBox } from '../search/SearchBox';
@@ -38,13 +39,24 @@ beforeEach(() => {
     LABKEY.devMode = false;
 });
 
-describe('<NavigationBar/>', () => {
+describe('NavigationBar', () => {
     const productMenuModel = new ProductMenuModel({
         productIds: ['testNavBar'],
         isLoaded: true,
         isLoading: false,
         sections: List<MenuSectionModel>(),
     });
+
+    function validate(wrapper: ReactWrapper, compCounts: Record<string, number> = {}): void {
+        expect(wrapper.find('.project-name')).toHaveLength(compCounts.ProjectName ?? 0);
+        expect(wrapper.find(ProductMenu)).toHaveLength(compCounts.ProductMenu ?? 1);
+        expect(wrapper.find(UserMenu)).toHaveLength(compCounts.UserMenu ?? 0);
+        expect(wrapper.find(SearchBox)).toHaveLength(compCounts.SearchBox ?? 0);
+        expect(wrapper.find('.navbar__xs-search-icon')).toHaveLength(compCounts.SearchBox ?? 0);
+        expect(wrapper.find(ServerNotifications)).toHaveLength(compCounts.ServerNotifications ?? 0);
+        expect(wrapper.find(ProductNavigation)).toHaveLength(compCounts.ProductNavigation ?? 0);
+        expect(wrapper.find(FindAndSearchDropdown)).toHaveLength(compCounts.FindAndSearchDropdown ?? 0);
+    }
 
     const notificationsConfig = {
         maxRows: 1,
@@ -54,88 +66,86 @@ describe('<NavigationBar/>', () => {
     };
 
     test('default props', () => {
-        const component = <NavigationBar model={null} />;
-
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
+        const component = mountWithAppServerContext(<NavigationBar model={productMenuModel} />);
+        validate(component);
+        component.unmount();
     });
 
     test('with search box', () => {
-        const component = <NavigationBar model={null} showSearchBox={true} />;
-
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
+        const component = mountWithAppServerContext(<NavigationBar model={productMenuModel} showSearchBox />);
+        validate(component, { SearchBox: 1 });
+        component.unmount();
     });
 
     test('with findByIds', () => {
-        const component = <NavigationBar model={null} showSearchBox={true} onFindByIds={jest.fn} />;
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
+        const component = mountWithAppServerContext(
+            <NavigationBar model={productMenuModel} onFindByIds={jest.fn} showSearchBox />
+        );
+        validate(component, { FindAndSearchDropdown: 2, SearchBox: 1 });
+        component.unmount();
     });
 
     test('without search but with findByIds', () => {
-        const component = <NavigationBar model={null} showSearchBox={false} onFindByIds={jest.fn} />;
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
+        const component = mountWithAppServerContext(
+            <NavigationBar model={productMenuModel} onFindByIds={jest.fn} showSearchBox={false} />
+        );
+        validate(component, { FindAndSearchDropdown: 0, SearchBox: 0 });
+        component.unmount();
     });
 
-    function validate(wrapper: ReactWrapper, compCounts?: Record<string, number>) {
-        expect(wrapper.find('.project-name')).toHaveLength(compCounts?.ProjectName ?? 0);
-        expect(wrapper.find(ProductMenu)).toHaveLength(compCounts?.ProductMenu ?? 0);
-        expect(wrapper.find(UserMenu)).toHaveLength(compCounts?.UserMenu ?? 0);
-        expect(wrapper.find(SearchBox)).toHaveLength(compCounts?.SearchBox ?? 0);
-        expect(wrapper.find('.navbar__xs-search-icon')).toHaveLength(compCounts?.SearchBox ?? 0);
-        expect(wrapper.find(ServerNotifications)).toHaveLength(compCounts?.ServerNotifications ?? 0);
-        expect(wrapper.find(ProductNavigation)).toHaveLength(compCounts?.ProductNavigation ?? 0);
-    }
-
     test('with notifications no user', () => {
-        const component = mount(<NavigationBar model={productMenuModel} notificationsConfig={notificationsConfig} />);
-        validate(component, { ProductMenu: 1, ServerNotifications: 0 });
+        const component = mountWithAppServerContext(
+            <NavigationBar model={productMenuModel} notificationsConfig={notificationsConfig} />
+        );
+        validate(component, { ServerNotifications: 0 });
         component.unmount();
     });
 
     test('with notifications, guest user', () => {
-        const component = mount(
+        const component = mountWithAppServerContext(
             <NavigationBar model={productMenuModel} user={TEST_USER_GUEST} notificationsConfig={notificationsConfig} />
         );
-        validate(component, { ProductMenu: 1, UserMenu: 1, ServerNotifications: 0 });
+        validate(component, { UserMenu: 1, ServerNotifications: 0 });
         component.unmount();
     });
 
     test('with notifications, non-guest user', () => {
-        const component = mount(
+        const component = mountWithAppServerContext(
             <NavigationBar model={productMenuModel} user={TEST_USER_READER} notificationsConfig={notificationsConfig} />
         );
-        validate(component, { ProductMenu: 1, UserMenu: 1, ServerNotifications: 1 });
+        validate(component, { UserMenu: 1, ServerNotifications: 1 });
         component.unmount();
     });
 
     test('show ProductNavigation for hasPremiumModule, non-admin', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } };
-        const component = mount(<NavigationBar model={productMenuModel} user={TEST_USER_READER} />);
-        validate(component, { ProductMenu: 1, UserMenu: 1, ProductNavigation: 1 });
+        const component = mountWithAppServerContext(<NavigationBar model={productMenuModel} user={TEST_USER_READER} />);
+        validate(component, { UserMenu: 1, ProductNavigation: 1 });
         component.unmount();
     });
 
     test('hide ProductNavigation for non-admin', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ADMIN' } };
-        const component = mount(<NavigationBar model={productMenuModel} user={TEST_USER_READER} />);
-        validate(component, { ProductMenu: 1, UserMenu: 1, ProductNavigation: 0 });
+        const component = mountWithAppServerContext(<NavigationBar model={productMenuModel} user={TEST_USER_READER} />);
+        validate(component, { UserMenu: 1, ProductNavigation: 0 });
         component.unmount();
     });
 
     test('show ProductNavigation for hasPremiumModule, admin always', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ALWAYS' } };
-        const component = mount(<NavigationBar model={productMenuModel} user={TEST_USER_APP_ADMIN} />);
-        validate(component, { ProductMenu: 1, UserMenu: 1, ProductNavigation: 1 });
+        const component = mountWithAppServerContext(
+            <NavigationBar model={productMenuModel} user={TEST_USER_APP_ADMIN} />
+        );
+        validate(component, { UserMenu: 1, ProductNavigation: 1 });
         component.unmount();
     });
 
     test('show ProductNavigation for hasPremiumModule, admin only', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['premium'], applicationMenuDisplayMode: 'ADMIN' } };
-        const component = mount(<NavigationBar model={productMenuModel} user={TEST_USER_APP_ADMIN} />);
-        validate(component, { ProductMenu: 1, UserMenu: 1, ProductNavigation: 1 });
+        const component = mountWithAppServerContext(
+            <NavigationBar model={productMenuModel} user={TEST_USER_APP_ADMIN} />
+        );
+        validate(component, { UserMenu: 1, ProductNavigation: 1 });
         component.unmount();
     });
 });

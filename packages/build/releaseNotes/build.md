@@ -1,7 +1,11 @@
 # @labkey/build
 
+### version 6.2.1
+*Released*: 23 September 2022
+* Update typescript_dev module loader rule regex to match Windows and Unix path operators.
+
 ### version 6.2.0
-*Released*: ?? September 2022
+*Released*: 14 September 2022
 * Build packages as ES Modules
 * Add babel.config.js for jest tests
   * Needed for any package or app that consumes our packages, see the note in the file for more info.

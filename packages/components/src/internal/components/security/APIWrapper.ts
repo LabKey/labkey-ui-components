@@ -1,7 +1,5 @@
-import { Query, Security } from '@labkey/api';
 import { Map } from 'immutable';
-
-import { CreateGroupResponse } from '@labkey/api/dist/labkey/security/Group';
+import { Query, Security } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
 import { fetchContainerSecurityPolicy, UserLimitSettings, getUserLimitSettings } from '../permissions/actions';
@@ -9,24 +7,28 @@ import { Principal, SecurityPolicy } from '../permissions/models';
 import { Row } from '../../query/selectRows';
 
 export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
+
 export interface FetchedGroup {
     id: number;
     isProjectGroup: boolean;
     name: string;
 }
+
 export interface DeleteGroupResponse {
     deleted: number;
 }
+
 export interface AddGroupMembersResponse {
     added: number[];
 }
+
 export interface RemoveGroupMembersResponse {
     removed: number[];
 }
 
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
-    createGroup: (groupName: string, projectPath: string) => Promise<CreateGroupResponse>;
+    createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
     deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
     fetchGroups: (projectPath: string) => Promise<FetchedGroup[]>;
@@ -66,7 +68,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    createGroup = (groupName: string, projectPath: string): Promise<CreateGroupResponse> => {
+    createGroup = (groupName: string, projectPath: string): Promise<Security.CreateGroupResponse> => {
         return new Promise((resolve, reject) => {
             Security.createGroup({
                 groupName,
@@ -128,7 +130,6 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    // Used in labbook module
     fetchPolicy = fetchContainerSecurityPolicy;
 
     getGroupMemberships = (): Promise<Row[]> => {
@@ -149,7 +150,6 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    // Used in platform/core
     getUserLimitSettings = getUserLimitSettings;
 
     removeGroupMembers = (
@@ -189,15 +189,15 @@ export function getSecurityTestAPIWrapper(
     overrides: Partial<SecurityAPIWrapper> = {}
 ): SecurityAPIWrapper {
     return {
-        fetchContainers: mockFn(),
-        fetchPolicy: mockFn(),
-        fetchGroups: mockFn(),
+        addGroupMembers: mockFn(),
         createGroup: mockFn(),
         deleteGroup: mockFn(),
-        addGroupMembers: mockFn(),
-        removeGroupMembers: mockFn(),
+        fetchContainers: mockFn(),
+        fetchGroups: mockFn(),
+        fetchPolicy: mockFn(),
         getGroupMemberships: mockFn(),
         getUserLimitSettings: mockFn(),
+        removeGroupMembers: mockFn(),
         ...overrides,
     };
 }

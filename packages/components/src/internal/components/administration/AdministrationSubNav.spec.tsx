@@ -36,6 +36,6 @@ describe('AdministrationSubNavImpl', () => {
         wrapper.setProps({ inProjectContainer: false, projectsEnabled: true });
         expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(-1);
         wrapper.setProps({ inProjectContainer: true, projectsEnabled: true });
-        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(4);
+        expect(wrapper.prop('tabs').findIndex(t => t.text === 'Projects')).toBe(3);
     });
 });

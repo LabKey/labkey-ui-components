@@ -22,6 +22,7 @@ import { SCHEMAS } from '../../schemas';
 import { getSampleFinderLocalStorageKey, searchFiltersToJson } from './utils';
 import { FieldFilter } from './models';
 import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
+import {useAppContext} from "../../AppContext";
 
 const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
     const colName = filter.getColumnName();
@@ -40,11 +41,13 @@ interface Props {
     baseFilter?: Filter.IFilter[];
     baseModel?: QueryModel;
     entityDataType: EntityDataType;
+    metricFeatureArea?: string;
     model: QueryModel;
 }
 
 export const FindDerivativesButton: FC<Props> = memo(props => {
-    const { baseModel, baseFilter, model, entityDataType, asSubMenu } = props;
+    const { baseModel, baseFilter, model, entityDataType, asSubMenu, metricFeatureArea } = props;
+    const { api } = useAppContext();
 
     const onClick = useCallback(() => {
         const currentTimestamp = new Date();
@@ -77,6 +80,7 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
         });
 
         sessionStorage.setItem(getSampleFinderLocalStorageKey(), searchFiltersToJson(filterProps, 0, currentTimestamp));
+        api.query.incrementClientSideMetricCount(metricFeatureArea, 'sampleFinderFindDerivatives');
 
         window.location.href = AppURL.create('search', FIND_SAMPLES_BY_FILTER_KEY)
             .addParam('view', sessionViewName)

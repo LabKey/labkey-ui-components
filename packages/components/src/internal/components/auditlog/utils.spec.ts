@@ -8,12 +8,12 @@ import { List, Map } from 'immutable';
 import { ASSAYS_KEY, ProductFeature, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 import { getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './utils';
-import { ASSAY_AUDIT_QUERY, SOURCE_AUDIT_QUERY, WORKFLOW_AUDIT_QUERY } from '../samples/constants';
 import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT
 } from '../../../test/data/constants';
+import { ASSAY_AUDIT_QUERY, SOURCE_AUDIT_QUERY, WORKFLOW_AUDIT_QUERY } from './constants';
 
 describe ('getAuditQueries', () => {
 

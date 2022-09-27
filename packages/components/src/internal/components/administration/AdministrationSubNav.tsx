@@ -10,6 +10,7 @@ import { SubNav } from '../navigation/SubNav';
 import { AppURL } from '../../url/AppURL';
 import { useServerContext } from '../base/ServerContext';
 import { User } from '../base/models/User';
+import { AUDIT_KEY } from '../../app/constants';
 import { isProjectContainer, isProductProjectsEnabled } from '../../app/utils';
 
 const PARENT_TAB: ITab = {
@@ -31,17 +32,18 @@ export const AdministrationSubNavImpl: FC<Props> = memo(props => {
         const tabs_ = [];
 
         if (user.isAdmin) {
-            tabs_.push('Users', 'Permissions', 'Groups', 'Settings');
+            tabs_.push('Audit Logs', 'Groups',  'Permissions');
 
             if (projectsEnabled && inProjectContainer) {
                 tabs_.push('Projects');
             }
+            tabs_.push('Settings', 'Users');
         }
 
         return List(
             tabs_.map(text => ({
                 text,
-                url: AppURL.create('admin', text.toLowerCase()),
+                url: text === 'Audit Logs' ? AppURL.create(AUDIT_KEY) : AppURL.create('admin', text.toLowerCase()),
             }))
         );
     }, [inProjectContainer, projectsEnabled, user.isAdmin]);

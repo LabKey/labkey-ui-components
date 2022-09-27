@@ -33,6 +33,8 @@ import { GroupAssignments } from './GroupAssignments';
 import { showPremiumFeatures } from './utils';
 import { GroupMembership } from './models';
 import { getAuditLogData, getGroupMembership } from './actions';
+import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants';
+import { AUDIT_KEY } from '../../app/constants';
 
 type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
@@ -171,7 +173,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             <>
                 <CreatedModified row={row} />
                 <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
-                    <MenuItem href={AppURL.create('audit', 'groupauditevent').toHref()}>View Audit History</MenuItem>
+                    <MenuItem href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value).toHref()}>View Audit History</MenuItem>
                 </ManageDropdownButton>
             </>
         );

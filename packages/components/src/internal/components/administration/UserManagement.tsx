@@ -31,6 +31,8 @@ import { NotificationsContextProps, withNotificationsContext } from '../notifica
 
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
+import { AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY } from '../auditlog/constants';
+import { AUDIT_KEY } from '../../app/constants';
 
 export function getNewUserRoles(
     user: User,
@@ -258,7 +260,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     renderButtons = (): ReactNode => {
         return (
             <ManageDropdownButton collapsed id="user-management-page-manage" pullRight>
-                <MenuItem href={AppURL.create('audit', 'userauditevent').toHref()}>View Audit History</MenuItem>
+                <MenuItem href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY.value).toHref()}>View Audit History</MenuItem>
             </ManageDropdownButton>
         );
     };

@@ -27,6 +27,7 @@ const FREEZER_MANAGER_CONTROLLER_NAME = 'freezerManager';
 
 export const ASSAYS_KEY = 'assays';
 export const ASSAY_DESIGN_KEY = 'assayDesign';
+export const AUDIT_KEY = 'audit';
 export const SAMPLES_KEY = 'samples';
 export const SAMPLE_TYPE_KEY = 'sampleType';
 export const SEARCH_KEY = 'search';

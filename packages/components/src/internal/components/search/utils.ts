@@ -178,7 +178,7 @@ export function getSampleFinderCommonConfigs(
             if (filter) {
                 baseFilters.push(filter);
             }
-        } else if (useAncestors) {
+        } else {
             const pkColName = 'Name';
             const filter = getExpDescendantOfFilter(schemaQuery, [{
                 fieldCaption: pkColName,
@@ -189,8 +189,6 @@ export function getSampleFinderCommonConfigs(
             if (filter) {
                 baseFilters.push(filter);
             }
-        } else {
-            baseFilters.push(Filter.create(cardColumnName + '/Name', null, Filter.Types.NONBLANK));
         }
     });
     return {

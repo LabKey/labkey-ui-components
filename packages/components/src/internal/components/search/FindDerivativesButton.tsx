@@ -15,11 +15,13 @@ import { EntityDataType } from '../entities/models';
 
 import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
+import { DataClassDataType, SampleTypeDataType } from '../entities/constants';
+
+import { SCHEMAS } from '../../schemas';
+
 import { getSampleFinderLocalStorageKey, searchFiltersToJson } from './utils';
-import {FieldFilter} from './models';
+import { FieldFilter } from './models';
 import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
-import {DataClassDataType, SampleTypeDataType} from "../entities/constants";
-import {SCHEMAS} from "../../schemas";
 
 const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
     const colName = filter.getColumnName();
@@ -35,7 +37,7 @@ const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter 
 
 interface Props {
     asSubMenu?: boolean;
-    baseFilter?: Filter.IFilter;
+    baseFilter?: Filter.IFilter[];
     baseModel?: QueryModel;
     entityDataType: EntityDataType;
     model: QueryModel;
@@ -48,8 +50,12 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
         const currentTimestamp = new Date();
         const sessionViewName = SAMPLE_FINDER_SESSION_PREFIX + formatDateTime(currentTimestamp);
 
-        // only using viewFilters and user defined filters (filterArray), intentionally leaving out baseFilters
         let fieldFilters = [];
+        // optionally include baseFilter when passed without a baseModel (i.e. apply to the same schemaQuery as the other filters)
+        if (baseFilter && !baseModel) {
+            fieldFilters = fieldFilters.concat(baseFilter.map(filter => getFieldFilter(model, filter)));
+        }
+        // always include viewFilters and user defined filters (filterArray)
         fieldFilters = fieldFilters.concat(model.viewFilters.map(filter => getFieldFilter(model, filter)));
         fieldFilters = fieldFilters.concat(model.filterArray.map(filter => getFieldFilter(model, filter)));
 
@@ -57,7 +63,7 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
         if (baseModel && baseFilter) {
             filterProps.push({
                 schemaQuery: baseModel.schemaQuery,
-                filterArray: [getFieldFilter(baseModel, baseFilter)],
+                filterArray: [getFieldFilter(baseModel, baseFilter[0])],
                 entityDataType:
                     baseModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? DataClassDataType : SampleTypeDataType,
                 dataTypeDisplayName: baseModel.title ?? baseModel.queryInfo.title ?? baseModel.queryName,
@@ -70,19 +76,12 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
             dataTypeDisplayName: model.title ?? model.queryInfo.title ?? model.queryName,
         });
 
-        sessionStorage.setItem(
-            getSampleFinderLocalStorageKey(),
-            searchFiltersToJson(
-                filterProps,
-                0,
-                currentTimestamp
-            )
-        );
+        sessionStorage.setItem(getSampleFinderLocalStorageKey(), searchFiltersToJson(filterProps, 0, currentTimestamp));
 
         window.location.href = AppURL.create('search', FIND_SAMPLES_BY_FILTER_KEY)
             .addParam('view', sessionViewName)
             .toHref();
-    }, [entityDataType, model]);
+    }, [baseFilter, baseModel, entityDataType, model]);
 
     if (!model.queryInfo) return null;
 

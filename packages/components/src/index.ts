@@ -130,7 +130,7 @@ import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
-import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
+import { getWebDavFiles, uploadWebDavFile, createWebDavDirectory, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notifications } from './internal/components/notifications/Notifications';
 import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/components/notifications/actions';
@@ -228,9 +228,7 @@ import {
     EditableGridPanelForUpdateWithLineage,
     UpdateGridTab,
 } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import {
-    LineageEditableGridLoaderFromSelection
-} from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -437,9 +435,7 @@ import {
 } from './internal/components/lineage/types';
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
-import {
-    EntityCrossProjectSelectionConfirmModal
-} from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
@@ -1348,6 +1344,7 @@ export {
     WebDavFile,
     getWebDavFiles,
     uploadWebDavFile,
+    createWebDavDirectory,
     // util functions
     getDateFormat,
     getDisambiguatedSelectInputOptions,

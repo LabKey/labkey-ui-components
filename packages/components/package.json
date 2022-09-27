@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.220.1-storageOrderById.0",
+  "version": "2.220.1-storageOrderById.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

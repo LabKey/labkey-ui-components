@@ -290,11 +290,16 @@ export function getImportItemsForAssayDefinitions(
         }, OrderedMap<AssayDefinitionModel, string>());
 }
 
+export interface AssaySampleColumnProp {
+    fieldKey: string;
+    lookupFieldKey: string;
+}
+
 export function getAssayDefinitionsWithResultSampleLookup(
     assayStateModel: AssayStateModel,
     providerType?: string,
     allowPicklist?: boolean
-): { [key: string]: string } {
+): { [key: string]: AssaySampleColumnProp } {
     const assays = assayStateModel.definitions.filter(
         assay => providerType === undefined || assay.type?.toLowerCase() === providerType?.toLowerCase()
     );
@@ -302,7 +307,12 @@ export function getAssayDefinitionsWithResultSampleLookup(
     const results = {};
     assays.forEach(assay => {
         const sampleCol = assay.getSampleLookupColumn(AssayDomainTypes.RESULT, allowPicklist);
-        if (sampleCol) results[assay.name?.toLowerCase()] = sampleCol.fieldKey;
+        if (sampleCol) {
+            results[assay.name?.toLowerCase()] = {
+                fieldKey: sampleCol.fieldKey,
+                lookupFieldKey: sampleCol.lookup.keyColumn,
+            };
+        }
     });
 
     return results;

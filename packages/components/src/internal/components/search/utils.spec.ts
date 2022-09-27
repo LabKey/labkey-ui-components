@@ -1598,6 +1598,7 @@ describe('getDataTypeFiltersWithNotInQueryUpdate', () => {
             {},
             assay1SchemaQuery,
             assay1,
+            'RowId',
             'strField',
             true
         );
@@ -1609,6 +1610,7 @@ describe('getDataTypeFiltersWithNotInQueryUpdate', () => {
             ASSAY_RESULT_FILTERS,
             assay1SchemaQuery,
             assay1,
+            'RowId',
             'strField',
             true
         );
@@ -1620,6 +1622,7 @@ describe('getDataTypeFiltersWithNotInQueryUpdate', () => {
             ASSAY_NO_DATA_FILTERS,
             assay1SchemaQuery,
             assay1,
+            'RowId',
             'strField',
             false
         );

@@ -156,7 +156,7 @@ export function getExpDescendantOfFilter(
 }
 
 export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): Filter.IFilter {
-    const { schemaQuery, filterArray, targetColumnFieldKey } = card;
+    const { schemaQuery, filterArray, selectColumnFieldKey, targetColumnFieldKey } = card;
     if (!filterArray || filterArray.length === 0)
         return undefined;
 
@@ -180,7 +180,7 @@ export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): F
     // const cfClause = cf ? `[ContainerFilter='${cf}']` : ''; //TODO add container filter
 
     return Filter.create(
-        'RowId',
+        selectColumnFieldKey,
         '{json:' + JSON.stringify([targetColumnFieldKey, schemaName, queryName, whereConditions]) + '}',
         COLUMN_IN_FILTER_TYPE
     );
@@ -813,6 +813,7 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     dataTypeFilters: { [p: string]: FieldFilter[] },
     schemaQuery: SchemaQuery,
     dataType: string,
+    selectQueryFilterKey: string,
     targetQueryFilterKey: string,
     noDataInTypeChecked: boolean,
     cf?: Query.ContainerFilter
@@ -823,7 +824,7 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     // TODO add cf
     if (noDataInTypeChecked) {
         const noDataFilter = Filter.create(
-            'RowId',
+            selectQueryFilterKey,
             '{json:' + JSON.stringify([targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName]) + '}',
             COLUMN_NOT_IN_FILTER_TYPE
         );

@@ -71,6 +71,7 @@ export interface FilterProps {
     filterArray?: FieldFilter[];
     index?: number;
     schemaQuery?: SchemaQuery;
+    selectColumnFieldKey?: string;
     targetColumnFieldKey?: string;
 }
 

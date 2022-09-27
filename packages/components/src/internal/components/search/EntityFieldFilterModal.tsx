@@ -32,10 +32,11 @@ import {
     isValidFilterFieldExcludeLookups,
 } from './utils';
 import { QueryFilterPanel } from './QueryFilterPanel';
+import {AssaySampleColumnProp} from "../assay/actions";
 
 interface Props {
     api?: ComponentsAPIWrapper;
-    assaySampleIdCols?: { [key: string]: string };
+    assaySampleIdCols?: { [key: string]: AssaySampleColumnProp };
     cards?: FilterProps[];
     entityDataType: EntityDataType;
     fieldKey?: string;
@@ -204,12 +205,14 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
             setCardDirty?.(true);
             setFilterError(undefined);
             const schemaQuery = entityDataType.getInstanceSchemaQuery(activeQuery);
-            const targetQueryFilterKey = assaySampleIdCols[activeQuery];
+            const selectQueryFilterKey = assaySampleIdCols[activeQuery]?.lookupFieldKey;
+            const targetQueryFilterKey = assaySampleIdCols[activeQuery]?.fieldKey;
             setDataTypeFilters(
                 getDataTypeFiltersWithNotInQueryUpdate(
                     dataTypeFilters,
                     schemaQuery,
                     activeQuery,
+                    selectQueryFilterKey,
                     targetQueryFilterKey,
                     check
                 )

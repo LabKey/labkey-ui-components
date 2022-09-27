@@ -36,7 +36,7 @@ import {
 
 import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
 
-import { getAssayDefinitionsWithResultSampleLookup } from '../assay/actions';
+import {AssaySampleColumnProp, getAssayDefinitionsWithResultSampleLookup} from '../assay/actions';
 
 import { isLoading } from '../../../public/LoadingState';
 
@@ -125,7 +125,7 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
     const [showSaveViewDialog, setShowSaveViewDialog] = useState<boolean>(false);
     const [showManageViewsDialog, setShowManageViewsDialog] = useState<boolean>(false);
     const [unsavedSessionViewName, setUnsavedSessionViewName] = useState<string>(undefined);
-    const [assaySampleIdCols, setAssaySampleIdCols] = useState<{ [key: string]: string }>();
+    const [assaySampleIdCols, setAssaySampleIdCols] = useState<{ [key: string]: AssaySampleColumnProp }>();
 
     const { api } = useAppContext();
     const { createNotification } = useNotificationsContext();
@@ -267,7 +267,8 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
                     filterArray: dataTypeFilters[queryName],
                     entityDataType: chosenEntityType,
                     dataTypeDisplayName: queryLabels[queryName],
-                    targetColumnFieldKey: isAssay ? assaySampleIdCols[queryName] : undefined,
+                    selectColumnFieldKey: isAssay ? assaySampleIdCols[queryName]?.lookupFieldKey : undefined,
+                    targetColumnFieldKey: isAssay ? assaySampleIdCols[queryName]?.fieldKey : undefined,
                 });
             });
 

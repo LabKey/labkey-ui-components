@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 46395: add `hasOrdinal` property to SampleButtonProps so we can retain ordering when adding to storage from a FindByIds page
+
 ### version 2.220.0
 *Released*: 26 September 2022
 * Introduce `GlobalStateContext` which is an extensible context made available to all of our applications.

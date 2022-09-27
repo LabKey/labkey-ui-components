@@ -121,18 +121,14 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 // filter assays
                 const parents = [];
                 results.map(result => {
-                    let shouldInclude = true;
                     if (entityDataType.typeListingSchemaQuery === AssayResultDataType.typeListingSchemaQuery) {
-                        let hasSampleIdCol = false;
-                        result.forEach(assay => {
-                            if (!hasSampleIdCol && assaySampleIdCols?.[assay.value]) {
-                                hasSampleIdCol = true;
+                         result.forEach(assay => {
+                            if (assaySampleIdCols?.[assay.value.toLowerCase()]) {
+                                parents.push(assay);
                             }
                         });
-                        shouldInclude = hasSampleIdCol;
                     }
-
-                    if (shouldInclude) {
+                    else {
                         result.map(res => {
                             parents.push(res);
                         });

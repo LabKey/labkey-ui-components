@@ -302,7 +302,7 @@ export function getAssayDefinitionsWithResultSampleLookup(
     const results = {};
     assays.forEach(assay => {
         const sampleCol = assay.getSampleLookupColumn(AssayDomainTypes.RESULT, allowPicklist);
-        if (sampleCol) results[assay.name] = sampleCol.fieldKey;
+        if (sampleCol) results[assay.name?.toLowerCase()] = sampleCol.fieldKey;
     });
 
     return results;

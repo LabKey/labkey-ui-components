@@ -23,7 +23,9 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('column not in', () => {
-        expect(getFilterLabKeySql(Filter.create('StringField', 'test', COLUMN_NOT_IN_FILTER_TYPE), 'string')).toBeNull();
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', 'test', COLUMN_NOT_IN_FILTER_TYPE), 'string')
+        ).toBeNull();
     });
 
     test('simple operator, no filter value', () => {
@@ -106,9 +108,9 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('not startsWith', () => {
-        expect(getFilterLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_START_WITH), 'string')).toEqual(
-            '("StringField" IS NULL) OR (LOWER("StringField") NOT LIKE LOWER(\'ABC%\') ESCAPE \'!\')'
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_START_WITH), 'string')
+        ).toEqual('("StringField" IS NULL) OR (LOWER("StringField") NOT LIKE LOWER(\'ABC%\') ESCAPE \'!\')');
     });
 
     test('contains', () => {
@@ -118,15 +120,15 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('not contains', () => {
-        expect(getFilterLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_CONTAIN), 'string')).toEqual(
-            '("StringField" IS NULL) OR (LOWER("StringField") NOT LIKE LOWER(\'%ABC%\') ESCAPE \'!\')'
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_CONTAIN), 'string')
+        ).toEqual('("StringField" IS NULL) OR (LOWER("StringField") NOT LIKE LOWER(\'%ABC%\') ESCAPE \'!\')');
     });
 
     test('not contains, with quote', () => {
-        expect(getFilterLabKeySql(Filter.create('StringField', "AB'C", Filter.Types.DOES_NOT_CONTAIN), 'string')).toEqual(
-            "(\"StringField\" IS NULL) OR (LOWER(\"StringField\") NOT LIKE LOWER('%AB''C%') ESCAPE '!')"
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', "AB'C", Filter.Types.DOES_NOT_CONTAIN), 'string')
+        ).toEqual("(\"StringField\" IS NULL) OR (LOWER(\"StringField\") NOT LIKE LOWER('%AB''C%') ESCAPE '!')");
     });
 
     test('neq OR null', () => {
@@ -140,15 +142,15 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('value list, string', () => {
-        expect(getFilterLabKeySql(Filter.create('StringField', 'value1;value2;value3', Filter.Types.IN), 'string')).toEqual(
-            "(\"StringField\" IN ('value1', 'value2', 'value3'))"
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', 'value1;value2;value3', Filter.Types.IN), 'string')
+        ).toEqual("(\"StringField\" IN ('value1', 'value2', 'value3'))");
     });
 
     test('value list, include null, string', () => {
-        expect(getFilterLabKeySql(Filter.create('StringField', 'value1;value2;;value3', Filter.Types.IN), 'string')).toEqual(
-            "(\"StringField\" IN ('value1', 'value2', '', 'value3') OR \"StringField\" IS NULL)"
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', 'value1;value2;;value3', Filter.Types.IN), 'string')
+        ).toEqual("(\"StringField\" IN ('value1', 'value2', '', 'value3') OR \"StringField\" IS NULL)");
     });
 
     test('value list, string, exclusion', () => {
@@ -229,16 +231,19 @@ describe('getFilterLabKeySql', () => {
 
     test('contains one of, values list', () => {
         expect(
-            getFilterLabKeySql(Filter.create('StringField', 'value1;value2;value3', Filter.Types.CONTAINS_ONE_OF), 'string')
+            getFilterLabKeySql(
+                Filter.create('StringField', 'value1;value2;value3', Filter.Types.CONTAINS_ONE_OF),
+                'string'
+            )
         ).toEqual(
             "((LOWER(\"StringField\") LIKE LOWER('%value1%') ESCAPE '!') OR (LOWER(\"StringField\") LIKE LOWER('%value2%') ESCAPE '!') OR (LOWER(\"StringField\") LIKE LOWER('%value3%') ESCAPE '!'))"
         );
     });
 
     test('contains one of, single value', () => {
-        expect(getFilterLabKeySql(Filter.create('StringField', 'value1', Filter.Types.CONTAINS_ONE_OF), 'string')).toEqual(
-            "LOWER(\"StringField\") LIKE LOWER('%value1%') ESCAPE '!'"
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', 'value1', Filter.Types.CONTAINS_ONE_OF), 'string')
+        ).toEqual("LOWER(\"StringField\") LIKE LOWER('%value1%') ESCAPE '!'");
     });
 
     test('contains one of, single blank value', () => {
@@ -257,16 +262,19 @@ describe('getFilterLabKeySql', () => {
 
     test('contains none of, values list', () => {
         expect(
-            getFilterLabKeySql(Filter.create('StringField', 'value1;value2;value3', Filter.Types.CONTAINS_NONE_OF), 'string')
+            getFilterLabKeySql(
+                Filter.create('StringField', 'value1;value2;value3', Filter.Types.CONTAINS_NONE_OF),
+                'string'
+            )
         ).toEqual(
             "((LOWER(\"StringField\") NOT LIKE LOWER('%value1%') ESCAPE '!') AND (LOWER(\"StringField\") NOT LIKE LOWER('%value2%') ESCAPE '!') AND (LOWER(\"StringField\") NOT LIKE LOWER('%value3%') ESCAPE '!')) OR (\"StringField\" IS NULL)"
         );
     });
 
     test('contains none of, single value', () => {
-        expect(getFilterLabKeySql(Filter.create('StringField', 'value1', Filter.Types.CONTAINS_NONE_OF), 'string')).toEqual(
-            '("StringField" IS NULL) OR (LOWER("StringField") NOT LIKE LOWER(\'%value1%\') ESCAPE \'!\')'
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', 'value1', Filter.Types.CONTAINS_NONE_OF), 'string')
+        ).toEqual('("StringField" IS NULL) OR (LOWER("StringField") NOT LIKE LOWER(\'%value1%\') ESCAPE \'!\')');
     });
 
     test('contains none of, single blank value', () => {
@@ -302,9 +310,9 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('datetime filter, neq', () => {
-        expect(getFilterLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_NOT_EQUAL), 'date')).toEqual(
-            '"DateField" <> \'' + dateTimeStr + "'"
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_NOT_EQUAL), 'date')
+        ).toEqual('"DateField" <> \'' + dateTimeStr + "'");
     });
 
     test('date filter, >', () => {
@@ -314,9 +322,9 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('datetime filter, >', () => {
-        expect(getFilterLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_GREATER_THAN), 'date')).toEqual(
-            '"DateField" > \'' + dateTimeStr + "'"
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_GREATER_THAN), 'date')
+        ).toEqual('"DateField" > \'' + dateTimeStr + "'");
     });
 
     test('date filter, >=', () => {
@@ -332,9 +340,9 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('date filter, <=', () => {
-        expect(getFilterLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_LESS_THAN_OR_EQUAL), 'date')).toEqual(
-            '("DateField" < \'2020-08-07\')'
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_LESS_THAN_OR_EQUAL), 'date')
+        ).toEqual('("DateField" < \'2020-08-07\')');
     });
 
     test('datetime filter, <=', () => {
@@ -350,9 +358,9 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('datetime filter, <', () => {
-        expect(getFilterLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_LESS_THAN), 'date')).toEqual(
-            '"DateField" < \'' + dateTimeStr + "'"
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('DateField', dateTimeStr, Filter.Types.DATE_LESS_THAN), 'date')
+        ).toEqual('"DateField" < \'' + dateTimeStr + "'");
     });
 
     test('date filter, between', () => {
@@ -363,7 +371,10 @@ describe('getFilterLabKeySql', () => {
 
     test('datetime filter, between', () => {
         expect(
-            getFilterLabKeySql(Filter.create('DateField', dateTimeStr + ',' + dateTimeStr2, Filter.Types.BETWEEN), 'date')
+            getFilterLabKeySql(
+                Filter.create('DateField', dateTimeStr + ',' + dateTimeStr2, Filter.Types.BETWEEN),
+                'date'
+            )
         ).toEqual('"DateField" BETWEEN \'' + dateTimeStr + "' AND '" + dateTimeStr2 + "'");
     });
 
@@ -375,13 +386,19 @@ describe('getFilterLabKeySql', () => {
 
     test('datetime filter, not between', () => {
         expect(
-            getFilterLabKeySql(Filter.create('DateField', dateTimeStr + ',' + dateTimeStr2, Filter.Types.NOT_BETWEEN), 'date')
+            getFilterLabKeySql(
+                Filter.create('DateField', dateTimeStr + ',' + dateTimeStr2, Filter.Types.NOT_BETWEEN),
+                'date'
+            )
         ).toEqual('"DateField" NOT BETWEEN \'' + dateTimeStr + "' AND '" + dateTimeStr2 + "'");
     });
 
     test('ontology subtree, single path', () => {
         expect(
-            getFilterLabKeySql(Filter.create('OntologyField', 'NCIT:ST1000027', Filter.Types.ONTOLOGY_IN_SUBTREE), 'string')
+            getFilterLabKeySql(
+                Filter.create('OntologyField', 'NCIT:ST1000027', Filter.Types.ONTOLOGY_IN_SUBTREE),
+                'string'
+            )
         ).toEqual('IsInSubtree("OntologyField", ConceptPath(\'NCIT:ST1000027\'))');
     });
 

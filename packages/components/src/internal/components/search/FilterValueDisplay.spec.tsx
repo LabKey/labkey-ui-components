@@ -5,8 +5,9 @@ import { Filter } from '@labkey/api';
 
 import { formatDate } from '../../util/Date';
 
+import { COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
+
 import { FilterValueDisplay } from './FilterValueDisplay';
-import {COLUMN_NOT_IN_FILTER_TYPE} from "../../query/filter";
 
 describe('FilterValueDisplay', () => {
     function validate(wrapper: ReactWrapper, filterLabel?: string, value?: string, isExclusion?: boolean) {
@@ -133,9 +134,7 @@ describe('FilterValueDisplay', () => {
     });
 
     test('columnnotin filter', () => {
-        const wrapper = mount(
-            <FilterValueDisplay filter={Filter.create('RowId', '', COLUMN_NOT_IN_FILTER_TYPE)} />
-        );
+        const wrapper = mount(<FilterValueDisplay filter={Filter.create('RowId', '', COLUMN_NOT_IN_FILTER_TYPE)} />);
         validate(wrapper, null, 'Without data from this type');
 
         wrapper.unmount();
@@ -145,12 +144,11 @@ describe('FilterValueDisplay', () => {
         const wrapper = mount(
             <FilterValueDisplay
                 filter={Filter.create('RowId', '', COLUMN_NOT_IN_FILTER_TYPE)}
-                noValueInQueryFilterMsg={'No assay data'}
+                noValueInQueryFilterMsg="No assay data"
             />
         );
         validate(wrapper, null, 'No assay data');
 
         wrapper.unmount();
     });
-
 });

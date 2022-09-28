@@ -147,7 +147,7 @@ export function getLabKeySql(
     fieldFilters?: FieldFilter[]
 ): string {
     const from = getLegalIdentifier(schemaName) + '.' + getLegalIdentifier(queryName);
-    const where = fieldFilters ? (' ' + getLabKeySqlWhere(fieldFilters)) : '';
+    const where = fieldFilters ? ' ' + getLabKeySqlWhere(fieldFilters) : '';
     return 'SELECT ' + getLegalIdentifier(selectColumn) + ' FROM ' + from + where;
 }
 

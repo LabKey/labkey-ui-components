@@ -112,7 +112,7 @@ describe('FilterExpressionView', () => {
         selectedOp?: string,
         firstInputValue?: any,
         secondInputValue?: any,
-        disabled?: boolean,
+        disabled?: boolean
     ) {
         expect(wrapper.find(SelectInput)).toHaveLength(numFilters);
         validateFilterTypeDropdown(wrapper, operators, filterIndex, selectedOp);
@@ -124,7 +124,6 @@ describe('FilterExpressionView', () => {
         if (firstInputValue) {
             expect(filterInputs.at(inputOffset).props()['value']).toEqual(firstInputValue);
             expect(filterInputs.at(inputOffset).props()['disabled']).toEqual(disabled);
-
         }
 
         if (secondInputValue) {

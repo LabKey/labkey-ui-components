@@ -11,14 +11,19 @@ describe('ChoicesListItem', () => {
         onSelect: jest.fn,
     };
 
-    function validate(wrapper: ReactWrapper, active = false, hasComponentRight = false, itemType = 'Available', disabled?: boolean): void {
+    function validate(
+        wrapper: ReactWrapper,
+        active = false,
+        hasComponentRight = false,
+        itemType = 'Available',
+        disabled?: boolean
+    ): void {
         expect(wrapper.find('button')).toHaveLength(1);
         expect(wrapper.find('.active')).toHaveLength(active ? 1 : 0);
         expect(wrapper.find('.choices-list__sub-label')).toHaveLength(itemType !== 'Available' ? 1 : 0);
         expect(wrapper.find('.component-right')).toHaveLength(hasComponentRight ? 1 : 0);
         expect(wrapper.find('button').text()).toBe(itemType);
-        if (disabled)
-            expect(wrapper.find('button').props()['disabled']).toBeTruthy();
+        if (disabled) expect(wrapper.find('button').props()['disabled']).toBeTruthy();
     }
 
     test('default props', () => {

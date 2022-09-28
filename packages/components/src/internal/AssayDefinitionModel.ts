@@ -217,7 +217,9 @@ export class AssayDefinitionModel extends Record({
     getSampleColumns(domainType?: AssayDomainTypes): List<ScopedSampleColumn> {
         let ret = [];
         // The order matters here, we care about result, run, and batch in that order.
-        const domainTypes = domainType ? [domainType] : [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH];
+        const domainTypes = domainType
+            ? [domainType]
+            : [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH];
         for (const domain of domainTypes) {
             const columns = this.getSampleColumnsByDomain(domain);
 

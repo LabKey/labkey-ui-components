@@ -264,13 +264,13 @@ const assay1SchemaQuery = SchemaQuery.create('assay.general.' + assay1, 'data');
 
 const AssayColumnInFilter = Filter.create(
     'RowId',
-    "SELECT \"SampleId\" FROM \"assay.general.assay1\".\"data\" WHERE \"TestColumn\" = 'value'",
+    'SELECT "SampleId" FROM "assay.general.assay1"."data" WHERE "TestColumn" = \'value\'',
     COLUMN_IN_FILTER_TYPE
 );
 
 const AssayNotInFilter = Filter.create(
     'RowId',
-    "SELECT \"strField\" FROM \"assay.general.assay1\".\"data\"",
+    'SELECT "strField" FROM "assay.general.assay1"."data"',
     COLUMN_NOT_IN_FILTER_TYPE
 );
 const AssayNotInFilterField = {
@@ -432,7 +432,7 @@ describe('getSampleFinderCommonConfigs', () => {
                         schemaQuery: SchemaQuery.create('assay.general.' + assay1, 'data'),
                         filterArray: [cardFilter],
                         targetColumnFieldKey: 'SampleId',
-                        selectColumnFieldKey: 'RowId'
+                        selectColumnFieldKey: 'RowId',
                     },
                 ],
                 false
@@ -1258,22 +1258,29 @@ describe('getLabKeySqlWhere', () => {
 
 describe('getLabKeySql', () => {
     test('empty', () => {
-        expect(getLabKeySql('RowId', 'schema', 'query', [])).toEqual("SELECT \"RowId\" FROM \"schema\".\"query\" ");
+        expect(getLabKeySql('RowId', 'schema', 'query', [])).toEqual('SELECT "RowId" FROM "schema"."query" ');
     });
 
     test('has any value', () => {
-        expect(getLabKeySql('RowId', 'schema', 'query', [anyValueFilter])).toEqual("SELECT \"RowId\" FROM \"schema\".\"query\" ");
+        expect(getLabKeySql('RowId', 'schema', 'query', [anyValueFilter])).toEqual(
+            'SELECT "RowId" FROM "schema"."query" '
+        );
     });
 
     test('unsupported filters', () => {
-        expect(getLabKeySql('RowId', 'schema', 'query', [notSupportedFilter])).toEqual("SELECT \"RowId\" FROM \"schema\".\"query\" ");
+        expect(getLabKeySql('RowId', 'schema', 'query', [notSupportedFilter])).toEqual(
+            'SELECT "RowId" FROM "schema"."query" '
+        );
     });
 
     test('schema name and query name with quote', () => {
-        expect(getLabKeySql('RowId', 'schema"assay', 'query"b', [isBlankFilter])).toEqual("SELECT \"RowId\" FROM \"schema\"\"assay\".\"query\"\"b\" WHERE \"String Field\" IS NULL");
-        expect(getLabKeySql('RowId', 'schema\'assay', 'query\'b', [anyValueFilter, isBlankFilter])).toEqual("SELECT \"RowId\" FROM \"schema'assay\".\"query'b\" WHERE \"String Field\" IS NULL");
+        expect(getLabKeySql('RowId', 'schema"assay', 'query"b', [isBlankFilter])).toEqual(
+            'SELECT "RowId" FROM "schema""assay"."query""b" WHERE "String Field" IS NULL'
+        );
+        expect(getLabKeySql('RowId', "schema'assay", "query'b", [anyValueFilter, isBlankFilter])).toEqual(
+            'SELECT "RowId" FROM "schema\'assay"."query\'b" WHERE "String Field" IS NULL'
+        );
     });
-
 });
 
 const schemaQuery = SchemaQuery.create('Test', 'SampleA');

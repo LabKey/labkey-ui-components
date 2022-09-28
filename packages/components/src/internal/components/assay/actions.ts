@@ -297,7 +297,7 @@ export interface AssaySampleColumnProp {
 
 export function getAssayDefinitionsWithResultSampleLookup(
     assayStateModel: AssayStateModel,
-    providerType?: string,
+    providerType?: string
 ): { [key: string]: AssaySampleColumnProp } {
     const assays = assayStateModel.definitions.filter(
         assay => providerType === undefined || assay.type?.toLowerCase() === providerType?.toLowerCase()

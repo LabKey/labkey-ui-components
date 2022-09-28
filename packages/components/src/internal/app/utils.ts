@@ -228,7 +228,7 @@ export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isMediaEnabled(moduleContext?: ModuleContext): boolean {
-    return hasModule('recipe', moduleContext) && isFeatureEnabled(ProductFeature.Media, moduleContext);
+    return isFeatureEnabled(ProductFeature.Media, moduleContext);
 }
 
 export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {

@@ -5,8 +5,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD September 2022
 * FindDerivativesButton added to samples/sources/registry grids
   * take the model view and user filters and create the sample finder sessionStorage object
-* add QueryModel helper to get just the view filters from the queryInfo / viewName
+  * allow passthrough of base/context filter to be applied for certain scenarios
 * fix for "Showing all samples with ... parents" filter to use getExpDescendantOfFilter()
+* add QueryModel helper to get just the view filters from the queryInfo / viewName
 
 ### version 2.222.0
 *Released*: 27 September 2022

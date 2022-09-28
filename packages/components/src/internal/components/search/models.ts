@@ -57,9 +57,10 @@ export interface SearchResultCardData {
 }
 
 export interface FieldFilter {
-    fieldKey: string;
     fieldCaption: string;
+    fieldKey: string;
     filter: Filter.IFilter;
+    invalidMsg?: string;
     jsonType: JsonType;
 }
 

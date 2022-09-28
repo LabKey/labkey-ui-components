@@ -22,7 +22,7 @@ import { SCHEMAS } from '../../schemas';
 import { getSampleFinderLocalStorageKey, searchFiltersToJson } from './utils';
 import { FieldFilter } from './models';
 import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
-import {useAppContext} from "../../AppContext";
+import { useAppContext } from '../../AppContext';
 
 const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
     const colName = filter.getColumnName();
@@ -32,7 +32,8 @@ const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter 
         fieldKey: column?.fieldKey ?? colName,
         fieldCaption: column?.caption ?? colName,
         filter,
-        jsonType: column?.jsonType ?? 'string',
+        jsonType: column.isLookup() ? 'string' : column?.jsonType ?? 'string', // deferring to 'string' for lookups since lookup display columns default to text fields
+        invalidMsg: column.multiValue ? 'Unable to use multi-value lookup fields in Sample Finder.' : undefined,
     } as FieldFilter;
 };
 
@@ -85,7 +86,7 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
         window.location.href = AppURL.create('search', FIND_SAMPLES_BY_FILTER_KEY)
             .addParam('view', sessionViewName)
             .toHref();
-    }, [baseFilter, baseModel, entityDataType, model]);
+    }, [api.query, baseFilter, baseModel, entityDataType, metricFeatureArea, model]);
 
     if (!model.queryInfo) return null;
 

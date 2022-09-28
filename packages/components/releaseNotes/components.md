@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.235.0
+*Released*: ?? October 2022
+* EditInlineField: Add showToggle prop
+
 ### version 2.234.0
 *Released*: 19 October 2022
 * Issue 46037: Exclude samples from bogus 'Material' sample type created by some plate-based assays (e.g., NAB)

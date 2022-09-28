@@ -25,8 +25,7 @@ import { useAppContext } from '../../AppContext';
 import {DisableableMenuItem} from "../samples/DisableableMenuItem";
 import {DisableableButton} from "../buttons/DisableableButton";
 
-const DISABLED_FIND_DERIVATIVES_MSG =
-    'Unable to find derivative samples because the set of filters applied to this grid are not all valid for Sample Finder.';
+const DISABLED_FIND_DERIVATIVES_MSG = 'Unable to find derivative samples using filters on multi-valued lookup fields';
 
 const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
     const colName = filter.getColumnName();
@@ -57,13 +56,16 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
         () => [].concat(model.viewFilters).concat(model.filterArray),
         [model.filterArray, model.viewFilters]
     );
-    const hasInvalidFilter = useMemo(
+    const invalidFilterNames = useMemo(
         () =>
-            viewAndUserFilters.find(filter => {
-                const colName = filter.getColumnName();
-                const column = model.getColumn(colName);
-                return !isValidFilterFieldSampleFinder(column, model.queryInfo);
-            }) !== undefined,
+            viewAndUserFilters
+                .map(filter => {
+                    const colName = filter.getColumnName();
+                    const column = model.getColumn(colName);
+                    return !isValidFilterFieldSampleFinder(column, model.queryInfo) ? column.caption : undefined;
+                })
+                .filter(caption => caption !== undefined)
+                .join(', '),
         [model, viewAndUserFilters]
     );
 
@@ -102,15 +104,15 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
         window.location.href = AppURL.create('search', FIND_SAMPLES_BY_FILTER_KEY)
             .addParam('view', sessionViewName)
             .toHref();
-    }, [api.query, baseFilter, baseModel, entityDataType, metricFeatureArea, model]);
+    }, [api.query, baseFilter, baseModel, entityDataType, metricFeatureArea, model, viewAndUserFilters]);
 
     if (!model.queryInfo) return null;
 
     if (asSubMenu) {
         const items = (
             <DisableableMenuItem
-                operationPermitted={!hasInvalidFilter}
-                disabledMessage={DISABLED_FIND_DERIVATIVES_MSG}
+                operationPermitted={!invalidFilterNames}
+                disabledMessage={DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').'}
                 onClick={onClick}
             >
                 Find Derivatives
@@ -124,7 +126,7 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
             className="responsive-menu"
             bsStyle="default"
             onClick={onClick}
-            disabledMsg={hasInvalidFilter ? DISABLED_FIND_DERIVATIVES_MSG : undefined}
+            disabledMsg={invalidFilterNames ? DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').' : undefined}
         >
             Find Derivatives
         </DisableableButton>

@@ -36,7 +36,6 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
                     {index !== 0 && <td className="filter-display__field-boolean">and</td>}
                     <td className="filter-display__filter-content">
                         <FilterValueDisplay
-                            invalidMsg={fieldFilter.invalidMsg}
                             filter={fieldFilter.filter}
                             onFilterValueExpand={() => onFilterValueExpand(cardIndex, fieldFilter)}
                         />

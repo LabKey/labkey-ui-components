@@ -6,11 +6,9 @@ import { Filter } from '@labkey/api';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { getFilterValuesAsArray, NEGATE_FILTERS, SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE } from './utils';
-import {Alert} from "../base/Alert";
 
 interface FilterValueDisplayProps {
     filter: Filter.IFilter;
-    invalidMsg: string;
     onFilterValueExpand?: () => void;
 }
 
@@ -37,7 +35,7 @@ function getShortFilterTypeDisplay(filterType: Filter.IFilterType) {
 }
 
 export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
-    const { filter, onFilterValueExpand, invalidMsg } = props;
+    const { filter, onFilterValueExpand } = props;
 
     const exclude = useMemo(() => {
         return NEGATE_FILTERS.indexOf(filter.getFilterType().getURLSuffix()) > -1;
@@ -113,23 +111,14 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
         return filterValueDisplay;
     }, [filter, onFilterValueExpand]);
 
-    const overlayContent = useMemo(() => <Popover>{invalidMsg}</Popover>, [invalidMsg]);
-
     return (
-        <>
-            <span
-                className={classNames('filter-display__filter-value', {
-                    'field-display__filter-value-negate': exclude,
-                })}
-            >
-                {filterTypeLabel && <>{filterTypeLabel} </>}
-                {filterValueDisplay}
-                {invalidMsg && (
-                    <OverlayTrigger overlay={overlayContent} rootClose trigger="hover">
-                        <Alert className="field-display__invalid-msg">Filter value not applied.</Alert>
-                    </OverlayTrigger>
-                )}
-            </span>
-        </>
+        <span
+            className={classNames('filter-display__filter-value', {
+                'field-display__filter-value-negate': exclude,
+            })}
+        >
+            {filterTypeLabel && <>{filterTypeLabel} </>}
+            {filterValueDisplay}
+        </span>
     );
 });

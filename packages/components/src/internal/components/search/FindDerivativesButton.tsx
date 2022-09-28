@@ -33,7 +33,6 @@ const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter 
         fieldCaption: column?.caption ?? colName,
         filter,
         jsonType: column.isLookup() ? 'string' : column?.jsonType ?? 'string', // deferring to 'string' for lookups since lookup display columns default to text fields
-        invalidMsg: column.multiValue ? 'Unable to use multi-value lookup fields in Sample Finder.' : undefined,
     } as FieldFilter;
 };
 

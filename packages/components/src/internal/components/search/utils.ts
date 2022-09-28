@@ -112,12 +112,10 @@ function getSampleFinderConfigId(finderId: string, suffix: string): string {
  */
 export function getLabKeySqlWhere(fieldFilters: FieldFilter[]): string {
     const clauses = [];
-    fieldFilters
-        .filter(fieldFilter => !fieldFilter.invalidMsg)
-        .forEach(fieldFilter => {
-            const clause = getLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
-            if (clause) clauses.push(clause);
-        });
+    fieldFilters.forEach(fieldFilter => {
+        const clause = getLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
+        if (clause) clauses.push(clause);
+    });
 
     if (clauses.length === 0) return '';
 
@@ -372,7 +370,6 @@ export function getSearchFilterObjs(filterProps: FilterProps[]): any[] {
                 fieldCaption: field.fieldCaption,
                 filter: filterToJson(field.filter),
                 jsonType: field.jsonType,
-                invalidMsg: field.invalidMsg,
             });
         });
         filterPropObj.filterArray = filterArrayObjs;
@@ -415,7 +412,6 @@ export function getSearchFiltersFromObjs(filterPropsObj: any[]): FilterProps[] {
                 fieldCaption: field.fieldCaption,
                 filter: filterFromJson(field.filter),
                 jsonType: field.jsonType,
-                invalidMsg: field.invalidMsg,
             });
         });
         filterPropObj['filterArray'] = filterArray;

@@ -60,7 +60,6 @@ export interface FieldFilter {
     fieldCaption: string;
     fieldKey: string;
     filter: Filter.IFilter;
-    invalidMsg?: string;
     jsonType: JsonType;
 }
 

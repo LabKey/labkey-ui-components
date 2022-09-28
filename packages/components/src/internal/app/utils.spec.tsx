@@ -36,6 +36,7 @@ import {
     isCommunityDistribution,
     isELNEnabled,
     isFreezerManagementEnabled,
+    isMediaEnabled,
     isPremiumProductEnabled,
     isProductNavigationEnabled,
     isProjectContainer,
@@ -420,6 +421,17 @@ describe('utils', () => {
                 },
             })
         ).toBeTruthy(); // LKS Professional
+    });
+
+    test('isMediaEnabled', () => {
+        expect(isMediaEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(isMediaEnabled({ api: { moduleNames: ['recipe'] }, core: { productFeatures: [] } })).toBeFalsy();
+        expect(
+            isMediaEnabled({ api: { moduleNames: [] }, core: { productFeatures: [ProductFeature.Media] } })
+        ).toBeTruthy();
+        expect(
+            isMediaEnabled({ api: { moduleNames: ['recipe'] }, core: { productFeatures: [ProductFeature.Media] } })
+        ).toBeTruthy();
     });
 
     test('isWorkflowEnabled', () => {

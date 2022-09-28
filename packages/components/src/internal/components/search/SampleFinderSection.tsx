@@ -119,7 +119,7 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
     const [filters, setFilters] = useState<FilterProps[]>([]);
     const [chosenQueryName, setChosenQueryName] = useState<string>(undefined);
     const [chosenField, setChosenField] = useState<string>(undefined);
-    const [enabledEntityTypes, setEnabledEntityTypes] = useState<string[]>([]);
+    const [enabledEntityTypes, setEnabledEntityTypes] = useState<string[]>(undefined);
     const [cardDirty, setCardDirty] = useState<boolean>(false); // EntityFieldModal dirty, but Find is not yet clicked
     const [viewDirty, setViewDirty] = useState<boolean>(false); // Find is clicked
     const [showSaveViewDialog, setShowSaveViewDialog] = useState<boolean>(false);
@@ -363,6 +363,9 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
             setSavedViewChangeCounter(counter => counter + 1);
         }
     }, []);
+
+    if (!enabledEntityTypes)
+        return <LoadingSpinner/>;
 
     return (
         <Section

@@ -6,7 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * FindDerivativesButton added to samples/sources/registry grids
   * take the model view and user filters and create the sample finder sessionStorage object
   * allow passthrough of base/context filter to be applied for certain scenarios
-  * Sample Finder to not apply and instead display error alert for invalid filter values
+  * disable button if an invalid filter is added to grid (i.e. a filter on a MVFK field that doesn't work in Sample Finder)
 * fix for "Showing all samples with ... parents" filter to use getExpDescendantOfFilter()
 * add QueryModel helper to get just the view filters from the queryInfo / viewName
 

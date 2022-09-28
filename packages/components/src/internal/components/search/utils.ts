@@ -727,6 +727,17 @@ export function isValidFilterFieldExcludeLookups(
     return !field.isLookup();
 }
 
+export function isValidFilterFieldSampleFinder(
+    field: QueryColumn,
+    queryInfo: QueryInfo,
+    exprColumnsWithSubSelect?: string[]
+): boolean {
+    if (!isValidFilterField(field, queryInfo, exprColumnsWithSubSelect)) return false;
+
+    // also exclude multiValue lookups (MVFKs)
+    return !field.multiValue;
+}
+
 export function getUpdatedDataTypeFilters(
     dataTypeFilters: { [p: string]: FieldFilter[] },
     activeQuery: string,

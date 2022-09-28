@@ -1,5 +1,4 @@
-import React, { FC, memo, useCallback } from 'react';
-import { Button, MenuItem } from 'react-bootstrap';
+import React, {FC, memo, useCallback, useMemo} from 'react';
 
 import { Filter } from '@labkey/api';
 
@@ -19,10 +18,15 @@ import { DataClassDataType, SampleTypeDataType } from '../entities/constants';
 
 import { SCHEMAS } from '../../schemas';
 
-import { getSampleFinderLocalStorageKey, searchFiltersToJson } from './utils';
+import { getSampleFinderLocalStorageKey, isValidFilterFieldSampleFinder, searchFiltersToJson } from './utils';
 import { FieldFilter } from './models';
 import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
 import { useAppContext } from '../../AppContext';
+import {DisableableMenuItem} from "../samples/DisableableMenuItem";
+import {DisableableButton} from "../buttons/DisableableButton";
+
+const DISABLED_FIND_DERIVATIVES_MSG =
+    'Unable to find derivative samples because the set of filters applied to this grid are not all valid for Sample Finder.';
 
 const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
     const colName = filter.getColumnName();
@@ -49,6 +53,20 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
     const { baseModel, baseFilter, model, entityDataType, asSubMenu, metricFeatureArea } = props;
     const { api } = useAppContext();
 
+    const viewAndUserFilters = useMemo(
+        () => [].concat(model.viewFilters).concat(model.filterArray),
+        [model.filterArray, model.viewFilters]
+    );
+    const hasInvalidFilter = useMemo(
+        () =>
+            viewAndUserFilters.find(filter => {
+                const colName = filter.getColumnName();
+                const column = model.getColumn(colName);
+                return !isValidFilterFieldSampleFinder(column, model.queryInfo);
+            }) !== undefined,
+        [model, viewAndUserFilters]
+    );
+
     const onClick = useCallback(() => {
         const currentTimestamp = new Date();
         const sessionViewName = SAMPLE_FINDER_SESSION_PREFIX + formatDateTime(currentTimestamp);
@@ -59,8 +77,7 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
             fieldFilters = fieldFilters.concat(baseFilter.map(filter => getFieldFilter(model, filter)));
         }
         // always include viewFilters and user defined filters (filterArray)
-        fieldFilters = fieldFilters.concat(model.viewFilters.map(filter => getFieldFilter(model, filter)));
-        fieldFilters = fieldFilters.concat(model.filterArray.map(filter => getFieldFilter(model, filter)));
+        fieldFilters = fieldFilters.concat(viewAndUserFilters.map(filter => getFieldFilter(model, filter)));
 
         const filterProps = [];
         if (baseModel && baseFilter) {
@@ -90,13 +107,26 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
     if (!model.queryInfo) return null;
 
     if (asSubMenu) {
-        const items = <MenuItem onClick={onClick}>Find Derivatives</MenuItem>;
+        const items = (
+            <DisableableMenuItem
+                operationPermitted={!hasInvalidFilter}
+                disabledMessage={DISABLED_FIND_DERIVATIVES_MSG}
+                onClick={onClick}
+            >
+                Find Derivatives
+            </DisableableMenuItem>
+        );
         return <ResponsiveMenuButton id="samples-finder-menu" items={items} text="Find" asSubMenu={asSubMenu} />;
     }
 
     return (
-        <Button className="responsive-menu" onClick={onClick}>
+        <DisableableButton
+            className="responsive-menu"
+            bsStyle="default"
+            onClick={onClick}
+            disabledMsg={hasInvalidFilter ? DISABLED_FIND_DERIVATIVES_MSG : undefined}
+        >
             Find Derivatives
-        </Button>
+        </DisableableButton>
     );
 });

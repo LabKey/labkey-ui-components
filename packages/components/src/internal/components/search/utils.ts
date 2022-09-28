@@ -21,7 +21,8 @@ import {
     COLUMN_IN_FILTER_TYPE,
     COLUMN_NOT_IN_FILTER_TYPE,
     CONCEPT_COLUMN_FILTER_TYPES,
-    getLabKeySql,
+    getLegalIdentifier,
+    getFilterLabKeySql,
 } from '../../query/filter';
 
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -121,13 +122,33 @@ function getSampleFinderConfigId(finderId: string, suffix: string): string {
 export function getLabKeySqlWhere(fieldFilters: FieldFilter[], skipWhere?: boolean): string {
     const clauses = [];
     fieldFilters.forEach(fieldFilter => {
-        const clause = getLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
+        const clause = getFilterLabKeySql(fieldFilter.filter, fieldFilter.jsonType);
         if (clause) clauses.push(clause);
     });
 
     if (clauses.length === 0) return '';
 
     return (skipWhere ? '' : 'WHERE ') + clauses.join(' AND ');
+}
+
+/**
+ * Note: this is an experimental API that may change unexpectedly in future releases.
+ * generate LabKey select sql
+ * @param selectColumn the column to select
+ * @param schemaName
+ * @param queryName
+ * @param fieldFilters
+ * @return labkey sql
+ */
+export function getLabKeySql(
+    selectColumn: string,
+    schemaName: string,
+    queryName: string,
+    fieldFilters?: FieldFilter[]
+): string {
+    const from = getLegalIdentifier(schemaName) + '.' + getLegalIdentifier(queryName);
+    const where = fieldFilters ? (' ' + getLabKeySqlWhere(fieldFilters)) : '';
+    return 'SELECT ' + getLegalIdentifier(selectColumn) + ' FROM ' + from + where;
 }
 
 export function getExpDescendantOfSelectClause(
@@ -180,7 +201,7 @@ export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): F
 
     return Filter.create(
         selectColumnFieldKey,
-        '{json:' + JSON.stringify([targetColumnFieldKey, schemaName, queryName, whereConditions]) + '}',
+        getLabKeySql(targetColumnFieldKey, schemaName, queryName, filterArray),
         COLUMN_IN_FILTER_TYPE
     );
 }
@@ -823,7 +844,7 @@ export function getDataTypeFiltersWithNotInQueryUpdate(
     if (noDataInTypeChecked) {
         const noDataFilter = Filter.create(
             selectQueryFilterKey,
-            '{json:' + JSON.stringify([targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName]) + '}',
+            getLabKeySql(targetQueryFilterKey, schemaQuery.schemaName, schemaQuery.queryName),
             COLUMN_NOT_IN_FILTER_TYPE
         );
 

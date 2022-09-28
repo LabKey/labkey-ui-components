@@ -36,6 +36,7 @@ import {
     getFilterValuesAsArray,
     getFinderStartText,
     getFinderViewColumnsConfig,
+    getLabKeySql,
     getLabKeySqlWhere,
     getSampleFinderColumnNames,
     getSampleFinderCommonConfigs,
@@ -261,17 +262,15 @@ describe('getFinderViewColumnsConfig', () => {
 const assay1 = 'assay1';
 const assay1SchemaQuery = SchemaQuery.create('assay.general.' + assay1, 'data');
 
-const assayFilterWhere = '"TestColumn" = \'value\'';
-
 const AssayColumnInFilter = Filter.create(
     'RowId',
-    '{json:' + JSON.stringify(['SampleId', 'assay.general.' + assay1, 'data', assayFilterWhere]) + '}',
+    "SELECT \"SampleId\" FROM \"assay.general.assay1\".\"data\" WHERE \"TestColumn\" = 'value'",
     COLUMN_IN_FILTER_TYPE
 );
 
 const AssayNotInFilter = Filter.create(
     'RowId',
-    '{json:' + JSON.stringify(['strField', 'assay.general.' + assay1, 'data']) + '}',
+    "SELECT \"strField\" FROM \"assay.general.assay1\".\"data\"",
     COLUMN_NOT_IN_FILTER_TYPE
 );
 const AssayNotInFilterField = {
@@ -1255,6 +1254,26 @@ describe('getLabKeySqlWhere', () => {
             ])
         ).toEqual(expectedWhere);
     });
+});
+
+describe('getLabKeySql', () => {
+    test('empty', () => {
+        expect(getLabKeySql('RowId', 'schema', 'query', [])).toEqual("SELECT \"RowId\" FROM \"schema\".\"query\" ");
+    });
+
+    test('has any value', () => {
+        expect(getLabKeySql('RowId', 'schema', 'query', [anyValueFilter])).toEqual("SELECT \"RowId\" FROM \"schema\".\"query\" ");
+    });
+
+    test('unsupported filters', () => {
+        expect(getLabKeySql('RowId', 'schema', 'query', [notSupportedFilter])).toEqual("SELECT \"RowId\" FROM \"schema\".\"query\" ");
+    });
+
+    test('schema name and query name with quote', () => {
+        expect(getLabKeySql('RowId', 'schema"assay', 'query"b', [isBlankFilter])).toEqual("SELECT \"RowId\" FROM \"schema\"\"assay\".\"query\"\"b\" WHERE \"String Field\" IS NULL");
+        expect(getLabKeySql('RowId', 'schema\'assay', 'query\'b', [anyValueFilter, isBlankFilter])).toEqual("SELECT \"RowId\" FROM \"schema'assay\".\"query'b\" WHERE \"String Field\" IS NULL");
+    });
+
 });
 
 const schemaQuery = SchemaQuery.create('Test', 'SampleA');

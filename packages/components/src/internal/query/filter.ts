@@ -66,7 +66,7 @@ export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter
     return isEqual;
 }
 
-function getColumnSelect(columnName: string): string {
+export function getLegalIdentifier(columnName: string): string {
     const columnNameParts = columnName.split('/');
     const formattedParts = [];
     columnNameParts.forEach(part => {
@@ -117,7 +117,7 @@ function getDateStrRange(dateStr: string): string[] {
 // for date (not datetime) field, ignore the time portion and do date only comparison
 export function getDateFieldLabKeySql(filter: Filter.IFilter): string {
     const filterType = filter.getFilterType();
-    const columnNameSelect = getColumnSelect(filter.getColumnName());
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
 
     let startDateStart, startDateEnd, endDateStart, endDateEnd: string;
     const urlSuffix = filterType.getURLSuffix();
@@ -184,7 +184,7 @@ export function getDateFieldLabKeySql(filter: Filter.IFilter): string {
 
 function getInClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
     const filterType = filter.getFilterType();
-    const columnNameSelect = getColumnSelect(filter.getColumnName());
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
     let operatorSql = null;
 
     const values = filterType.parseValue(filter.getValue());
@@ -237,7 +237,7 @@ function getNotContainsClause(sqlValue): string {
 }
 
 function getLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStart: boolean): string {
-    const columnNameSelect = getColumnSelect(filter.getColumnName());
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
     const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
     if (!sqlValue || sqlValue === '') return columnNameSelect + getLikeClause(sqlValue, isStart);
     return 'LOWER(' + columnNameSelect + ')' + getLikeClause(sqlValue, isStart);
@@ -252,7 +252,7 @@ function getStartsWithFullClause(filter: Filter.IFilter, jsonType: JsonType): st
 }
 
 function getNotLikeFullClause(filter: Filter.IFilter, jsonType: JsonType, isStart: boolean): string {
-    const columnNameSelect = getColumnSelect(filter.getColumnName());
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
     const sqlValue = getLabKeySqlValue(filter.getValue(), jsonType, true);
     if (!sqlValue || sqlValue === '') return columnNameSelect + ' IS NOT NULL';
     return (
@@ -275,7 +275,7 @@ function getNotStartsWithFullClause(filter: Filter.IFilter, jsonType: JsonType):
 }
 
 function getInSubTreeClause(filter: Filter.IFilter, jsonType: JsonType, not?: boolean): string {
-    const columnNameSelect = getColumnSelect(filter.getColumnName());
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
 
     const notFrag = not ? 'NOT ' : '';
     const pathValue = filter.getValue();
@@ -294,7 +294,7 @@ function getInSubTreeClause(filter: Filter.IFilter, jsonType: JsonType, not?: bo
 
 function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
     const filterType = filter.getFilterType();
-    const columnNameSelect = getColumnSelect(filter.getColumnName());
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
 
     const values = filterType.parseValue(filter.getValue());
 
@@ -341,10 +341,10 @@ function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType
  * @param jsonType The json type ("string", "int", "float", "date", or "boolean") of the field
  * @return labkey sql fragment
  */
-export function getLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
+export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType): string {
     const filterType = filter.getFilterType();
 
-    const columnNameSelect = getColumnSelect(filter.getColumnName());
+    const columnNameSelect = getLegalIdentifier(filter.getColumnName());
 
     let operatorSql = null;
 

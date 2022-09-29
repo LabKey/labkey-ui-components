@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * TODO
 
+### version 2.222.1
+*Released*: 28 September 2022
+* Issue 46395: add `hasOrdinal` property to SampleButtonProps so we can retain ordering when adding to storage from a FindByIds page
+
 ### version 2.222.0
 *Released*: 27 September 2022
 * WebDav helper for creating directories: createWebDavDirectory()

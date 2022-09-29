@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { LockIcon } from '../base/LockIcon';
-
 import { HorizontalBarLegendData } from './utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 const CELL_EMPTY_COLOR = 'FFFFFF';
 
@@ -33,7 +33,11 @@ export class ItemsLegend extends React.PureComponent<Props> {
                     />
                 );
             } else if (legend.locked) {
-                icon = <LockIcon id={index + ''} title="" iconCls="cell-lock" body="" />;
+                icon = (
+                    <span className={'cell-lock'}>
+                        <FontAwesomeIcon icon={faLock} />
+                    </span>
+                )
             }
 
             const key = 'cell-legend-' + index;
@@ -43,6 +47,7 @@ export class ItemsLegend extends React.PureComponent<Props> {
                     <td>
                         <span
                             className={classNames('cell-legend-icon', {
+                                'cell-legend-icon-spacing': legend.locked,
                                 'cell-legend-icon-border': hasBackground,
                             })}
                             style={{ backgroundColor: hasBackground ? legend.backgroundColor : emptyColor }}

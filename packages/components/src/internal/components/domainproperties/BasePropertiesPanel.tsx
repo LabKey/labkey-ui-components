@@ -20,7 +20,7 @@ interface OwnProps {
     headerId: string;
     isValid: boolean;
     title: string;
-    titlePrefix: string;
+    titlePrefix?: string;
     updateValidStatus: (model?: any) => any;
 }
 

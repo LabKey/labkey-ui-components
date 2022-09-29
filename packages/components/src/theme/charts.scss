@@ -83,7 +83,13 @@
 
         .cell-legend-circle {
             display: flex;
-            margin-left: 5px;
+            margin-left: 6px;
+            margin-top: 6px;
+        }
+
+        .cell-lock {
+            display: flex;
+            margin-left: 8px;
             margin-top: 6px;
         }
     }

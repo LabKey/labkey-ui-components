@@ -33,7 +33,7 @@ export class ItemsLegend extends React.PureComponent<Props> {
                     />
                 );
             } else if (legend.locked) {
-                icon = <LockIcon id={index + ''} title="" iconCls="cell-legend-circle" body="" />;
+                icon = <LockIcon id={index + ''} title="" iconCls="cell-lock" body="" />;
             }
 
             const key = 'cell-legend-' + index;

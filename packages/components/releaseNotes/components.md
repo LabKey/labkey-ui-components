@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* For consistency and to reduce redundancy, remove name of domain from header on several domain properties panels
+  (left in place for panels shown in LKS pages where the name redundancy is less obvious)
+* Small updates to styling of ItemsLegend
+
 ### version 2.222.1
 *Released*: 28 September 2022
 * Issue 46395: add `hasOrdinal` property to SampleButtonProps so we can retain ordering when adding to storage from a FindByIds page

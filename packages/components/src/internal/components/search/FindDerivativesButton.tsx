@@ -88,8 +88,8 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
     const { api } = useAppContext();
 
     const viewAndUserFilters = useMemo(
-        () => [].concat(model.viewFilters).concat(model.filterArray),
-        [model.filterArray, model.viewFilters]
+        () => (!model.queryInfo ? [] : [].concat(model.viewFilters).concat(model.filterArray)),
+        [model]
     );
     const invalidFilterNames = useMemo(
         () =>

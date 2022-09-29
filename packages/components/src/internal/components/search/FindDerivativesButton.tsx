@@ -19,7 +19,7 @@ import { DataClassDataType, SampleTypeDataType } from '../entities/constants';
 import { SCHEMAS } from '../../schemas';
 
 import { getSampleFinderLocalStorageKey, isValidFilterFieldSampleFinder, searchFiltersToJson } from './utils';
-import { FieldFilter } from './models';
+import {FieldFilter, FilterProps} from './models';
 import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
 import { useAppContext } from '../../AppContext';
 import {DisableableMenuItem} from "../samples/DisableableMenuItem";
@@ -27,7 +27,7 @@ import {DisableableButton} from "../buttons/DisableableButton";
 
 const DISABLED_FIND_DERIVATIVES_MSG = 'Unable to find derivative samples using search filters or filters on multi-valued lookup fields';
 
-const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
+export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
     const colName = filter.getColumnName();
     const column = model.getColumn(colName);
 
@@ -37,6 +37,41 @@ const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter 
         filter,
         jsonType: column.isLookup() ? 'string' : column?.jsonType ?? 'string', // deferring to 'string' for lookups since lookup display columns default to text fields
     } as FieldFilter;
+};
+
+export const getSessionSearchFilterProps = (
+    entityDataType: EntityDataType,
+    model: QueryModel,
+    filters: Filter.IFilter[],
+    baseModel?: QueryModel,
+    baseFilter?: Filter.IFilter[]
+): FilterProps[] => {
+    let fieldFilters = [];
+    // optionally include baseFilter when passed without a baseModel (i.e. apply to the same schemaQuery as the other filters)
+    if (baseFilter && !baseModel) {
+        fieldFilters = fieldFilters.concat(baseFilter.map(filter => getFieldFilter(model, filter)));
+    }
+    // always include viewFilters and user defined filters (filterArray)
+    fieldFilters = fieldFilters.concat(filters.map(filter => getFieldFilter(model, filter)));
+
+    const filterProps = [];
+    if (baseModel && baseFilter) {
+        filterProps.push({
+            schemaQuery: baseModel.schemaQuery,
+            filterArray: [getFieldFilter(baseModel, baseFilter[0])],
+            entityDataType:
+                baseModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? DataClassDataType : SampleTypeDataType,
+            dataTypeDisplayName: baseModel.title ?? baseModel.queryInfo.title ?? baseModel.queryName,
+        });
+    }
+    filterProps.push({
+        schemaQuery: model.schemaQuery,
+        filterArray: fieldFilters,
+        entityDataType,
+        dataTypeDisplayName: model.title ?? model.queryInfo.title ?? model.queryName,
+    });
+
+    return filterProps;
 };
 
 interface Props {
@@ -76,31 +111,13 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
     const onClick = useCallback(() => {
         const currentTimestamp = new Date();
         const sessionViewName = SAMPLE_FINDER_SESSION_PREFIX + formatDateTime(currentTimestamp);
-
-        let fieldFilters = [];
-        // optionally include baseFilter when passed without a baseModel (i.e. apply to the same schemaQuery as the other filters)
-        if (baseFilter && !baseModel) {
-            fieldFilters = fieldFilters.concat(baseFilter.map(filter => getFieldFilter(model, filter)));
-        }
-        // always include viewFilters and user defined filters (filterArray)
-        fieldFilters = fieldFilters.concat(viewAndUserFilters.map(filter => getFieldFilter(model, filter)));
-
-        const filterProps = [];
-        if (baseModel && baseFilter) {
-            filterProps.push({
-                schemaQuery: baseModel.schemaQuery,
-                filterArray: [getFieldFilter(baseModel, baseFilter[0])],
-                entityDataType:
-                    baseModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? DataClassDataType : SampleTypeDataType,
-                dataTypeDisplayName: baseModel.title ?? baseModel.queryInfo.title ?? baseModel.queryName,
-            });
-        }
-        filterProps.push({
-            schemaQuery: model.schemaQuery,
-            filterArray: fieldFilters,
+        const filterProps = getSessionSearchFilterProps(
             entityDataType,
-            dataTypeDisplayName: model.title ?? model.queryInfo.title ?? model.queryName,
-        });
+            model,
+            viewAndUserFilters,
+            baseModel,
+            baseFilter
+        );
 
         sessionStorage.setItem(getSampleFinderLocalStorageKey(), searchFiltersToJson(filterProps, 0, currentTimestamp));
         api.query.incrementClientSideMetricCount(metricFeatureArea, 'sampleFinderFindDerivatives');

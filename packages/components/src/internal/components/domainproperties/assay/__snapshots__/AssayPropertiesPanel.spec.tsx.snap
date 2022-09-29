@@ -5261,7 +5261,6 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
       onChange={[Function]}
       panelStatus="NONE"
       title="Assay Properties"
-      titlePrefix="name should not be editable"
       togglePanel={[Function]}
       updateValidStatus={[Function]}
       useTheme={false}
@@ -5296,7 +5295,6 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                 isValid={true}
                 panelStatus="NONE"
                 title="Assay Properties"
-                titlePrefix="name should not be editable"
                 togglePanel={[Function]}
                 useTheme={false}
               >
@@ -5315,7 +5313,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                     <span
                       className="domain-panel-title"
                     >
-                      name should not be editable - Assay Properties
+                      Assay Properties
                     </span>
                   </div>
                 </PanelHeading>

@@ -1,3 +1,4 @@
+import {fromJS, List} from "immutable";
 import { Filter } from '@labkey/api';
 
 import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
@@ -11,6 +12,7 @@ import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
 
 import { flattenValuesFromRow, QueryConfig, QueryModel } from './QueryModel';
 import { makeTestQueryModel } from './testUtils';
+import { ViewInfo } from '../../internal/ViewInfo';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
@@ -234,7 +236,17 @@ describe('QueryModel', () => {
     });
 
     test('filters', () => {
-        const model = makeTestQueryModel(SCHEMA_QUERY, new QueryInfo()).mutate({
+        const viewName = 'TEST_VIEW';
+        const view = ViewInfo.create({
+            name: viewName,
+            filter: [{ fieldKey: 'c', value: 'testing' }],
+        });
+        const queryInfo = QueryInfo.create({
+            views: fromJS({ [viewName.toLowerCase()]: view }),
+        });
+        const sq = SchemaQuery.create('exp.data', 'mixtures', viewName);
+
+        const model = makeTestQueryModel(sq, queryInfo).mutate({
             baseFilters: [
                 Filter.create('a', null, Filter.Types.ISBLANK),
                 Filter.create('replaced', null, Filter.Types.ISBLANK),
@@ -242,14 +254,19 @@ describe('QueryModel', () => {
             filterArray: [Filter.create('b', null, Filter.Types.ISBLANK)],
         });
 
-        expect(model.filters).toHaveLength(3);
+        expect(model.filters).toHaveLength(4);
         expect(model.filters[0].getColumnName()).toBe('a');
         expect(model.filters[1].getColumnName()).toBe('replaced');
-        expect(model.filters[2].getColumnName()).toBe('b');
+        expect(model.filters[2].getColumnName()).toBe('c');
+        expect(model.filters[3].getColumnName()).toBe('b');
 
-        expect(model.modelFilters).toHaveLength(2);
+        expect(model.modelFilters).toHaveLength(3);
         expect(model.modelFilters[0].getColumnName()).toBe('a');
         expect(model.modelFilters[1].getColumnName()).toBe('replaced');
+        expect(model.filters[2].getColumnName()).toBe('c');
+
+        expect(model.viewFilters).toHaveLength(1);
+        expect(model.viewFilters[0].getColumnName()).toBe('c');
 
         expect(model.detailFilters).toHaveLength(1);
         expect(model.detailFilters[0].getColumnName()).toBe('replaced');

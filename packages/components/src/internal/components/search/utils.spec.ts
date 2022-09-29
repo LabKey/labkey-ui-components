@@ -44,6 +44,7 @@ import {
     getUpdateFilterExpressionFilter,
     isValidFilterField,
     isValidFilterFieldExcludeLookups,
+    isValidFilterFieldSampleFinder,
     SAMPLE_FINDER_VIEW_NAME,
     searchFiltersFromJson,
     searchFiltersToJson,
@@ -1300,6 +1301,25 @@ describe('isValidFilterField', () => {
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             false
         );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
+    });
+
+    test('mult-value lookup field', () => {
+        const field = QueryColumn.create({ name: 'test', lookup: { isPublic: true }, multiValue: true });
+        const queryInfo = QueryInfo.create({
+            schemaName: 'test',
+            name: 'query',
+            supportGroupConcatSubSelect: true,
+        });
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
     });
 
     test('Units field', () => {
@@ -1311,6 +1331,9 @@ describe('isValidFilterField', () => {
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             false
         );
     });
@@ -1326,6 +1349,9 @@ describe('isValidFilterField', () => {
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             false
         );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
     });
 
     test('group concat field not supported, regular field', () => {
@@ -1339,6 +1365,9 @@ describe('isValidFilterField', () => {
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             true
         );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
     });
 
     test('group concat field not supported, no group concat fields', () => {
@@ -1350,6 +1379,7 @@ describe('isValidFilterField', () => {
         });
         expect(isValidFilterField(field, queryInfo, undefined)).toBe(true);
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, undefined)).toBe(true);
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, undefined)).toBe(true);
     });
 
     test('group concat field is supported', () => {
@@ -1363,6 +1393,9 @@ describe('isValidFilterField', () => {
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             true
         );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
     });
 
     test('regular field', () => {
@@ -1374,6 +1407,9 @@ describe('isValidFilterField', () => {
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             true
         );
     });

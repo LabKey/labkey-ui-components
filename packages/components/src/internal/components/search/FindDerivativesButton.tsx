@@ -25,7 +25,7 @@ import { useAppContext } from '../../AppContext';
 import {DisableableMenuItem} from "../samples/DisableableMenuItem";
 import {DisableableButton} from "../buttons/DisableableButton";
 
-const DISABLED_FIND_DERIVATIVES_MSG = 'Unable to find derivative samples using filters on multi-valued lookup fields';
+const DISABLED_FIND_DERIVATIVES_MSG = 'Unable to find derivative samples using search filters or filters on multi-valued lookup fields';
 
 const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
     const colName = filter.getColumnName();
@@ -62,6 +62,10 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
                 .map(filter => {
                     const colName = filter.getColumnName();
                     const column = model.getColumn(colName);
+                    if (!column) {
+                        return colName === '*' ? 'Search Filter' : 'Unknown Field';
+                    }
+
                     return !isValidFilterFieldSampleFinder(column, model.queryInfo) ? column.caption : undefined;
                 })
                 .filter(caption => caption !== undefined)
@@ -114,6 +118,7 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
                 operationPermitted={!invalidFilterNames}
                 disabledMessage={DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').'}
                 onClick={onClick}
+                placement="right"
             >
                 Find Derivatives
             </DisableableMenuItem>

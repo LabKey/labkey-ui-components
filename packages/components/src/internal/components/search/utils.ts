@@ -709,7 +709,7 @@ export function isValidFilterField(
 
     // exclude the storage Units field for sample types since the display of this field is nonstandard and it is not
     // a useful field for filtering parent values
-    if (isSamplesSchema(queryInfo.schemaQuery) && field.fieldKey === 'Units') {
+    if (isSamplesSchema(queryInfo.schemaQuery) && field?.fieldKey === 'Units') {
         return false;
     }
 

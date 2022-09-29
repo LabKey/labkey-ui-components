@@ -96,7 +96,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                             </div>
                         </div>
                         <div className="filter-card__empty-content">
-                            No {entityDataType.nounAsParentSingular} {entityDataType.nounAsParentSingular.toLowerCase() === 'assay' ? '' : 'Types'} defined.
+                            No {entityDataType.nounAsParentSingular}{entityDataType.nounAsParentSingular.toLowerCase() === 'assay' ? 's' : ' Types'} defined.
                         </div>
                     </div>
                 </>

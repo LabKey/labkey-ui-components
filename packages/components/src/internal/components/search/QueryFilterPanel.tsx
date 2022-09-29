@@ -76,11 +76,10 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
     // for sample finder, assay data filters uses assay design name (part of schema key) instead of "data" (the query name) as query key
     const filterQueryKey = useMemo(() => {
-        let queryKey = queryInfo?.name?.toLowerCase();
         if (entityDataType && entityDataType.getInstanceDataType && queryInfo?.schemaQuery)
-            queryKey = entityDataType.getInstanceDataType(queryInfo.schemaQuery)?.toLowerCase();
-        return queryKey;
-    }, [queryInfo, entityDataType]);
+            return entityDataType.getInstanceDataType(queryInfo.schemaQuery)?.toLowerCase();
+        return queryName;
+    }, [queryInfo, entityDataType, queryName]);
 
     const viewName = useMemo(() => props.viewName ?? DEFAULT_VIEW_NAME, [props.viewName]);
     const allowFaceting = (col: QueryColumn): boolean => {

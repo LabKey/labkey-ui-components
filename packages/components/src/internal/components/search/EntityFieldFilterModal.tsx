@@ -218,19 +218,16 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                 )
             );
         },
-        [dataTypeFilters, activeQuery, entityDataType]
+        [dataTypeFilters, activeQuery, entityDataType, assaySampleIdCols]
     );
 
     const hasNotInQueryFilter = useMemo((): boolean => {
         const activeQueryFilters: FieldFilter[] = dataTypeFilters[activeQuery];
         if (!activeQueryFilters || activeQueryFilters.length === 0) return false;
 
-        let hasFilter = false;
-        activeQueryFilters.forEach(fieldFilter => {
-            if (fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix())
-                hasFilter = true;
-        });
-        return hasFilter;
+        return activeQueryFilters.some(fieldFilter =>
+            fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
+        );
     }, [dataTypeFilters, activeQuery]);
 
     const fieldsEmptyMsg = useMemo(() => {

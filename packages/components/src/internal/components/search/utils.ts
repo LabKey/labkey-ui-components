@@ -180,15 +180,9 @@ export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): F
     const { schemaQuery, filterArray, selectColumnFieldKey, targetColumnFieldKey } = card;
     if (!filterArray || filterArray.length === 0) return undefined;
 
-    let noAssayDataFilter: Filter.IFilter;
-    filterArray.forEach(fieldFilter => {
-        if (
-            !noAssayDataFilter &&
-            fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
-        ) {
-            noAssayDataFilter = fieldFilter.filter;
-        }
-    });
+    const noAssayDataFilter = filterArray.find(fieldFilter =>
+        fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
+    )?.filter;
 
     if (noAssayDataFilter) return noAssayDataFilter;
 
@@ -231,7 +225,7 @@ export function getSampleFinderCommonConfigs(
                 const columnName = filter.getColumnName();
 
                 // The 'Name' field is redundant since we always add a column for the parent type ID
-                if (columnName !== 'Name') {
+                if (columnName.toLowerCase() !== 'name') {
                     const newColumnName = cardColumnName + '/' + columnName;
                     if (requiredColumns.indexOf(newColumnName) === -1) {
                         requiredColumns.push(newColumnName);

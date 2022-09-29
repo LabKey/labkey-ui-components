@@ -140,13 +140,7 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
                 Object.keys(entityOptions).forEach(key => {
                     if (entityOptions[key].length) {
                         if (key === AssayResultDataType.typeListingSchemaQuery.queryName) {
-                            let hasSampleIdCol = false;
-                            entityOptions[key].forEach(assay => {
-                                if (!hasSampleIdCol && assaySampleCols[assay.value]) {
-                                    hasSampleIdCol = true;
-                                }
-                            });
-
+                            const hasSampleIdCol = entityOptions[key].some(assay => !!assaySampleCols[assay.value]);
                             if (!hasSampleIdCol) return;
                         }
                         _enabledEntityTypes.push(key);

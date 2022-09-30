@@ -5,9 +5,11 @@ import { selectRowsDeprecated } from '../../../query/api';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { Alert } from '../../base/Alert';
 
+import { customStyles, customTheme, LookupCell } from '../../editable/LookupCell';
+
 import { SelectInput } from './SelectInput';
-import {DisableableInputProps} from "./DisableableInput";
-import {customStyles, customTheme, LookupCell} from "../../editable/LookupCell";
+import { DisableableInputProps } from './DisableableInput';
+import {customBulkStyles} from "./SampleStatusInput";
 
 export interface InputOption {
     label: string;
@@ -43,7 +45,7 @@ async function loadInputOptions(assayId: number): Promise<InputOption[]> {
     return taskOptions;
 }
 
-interface WorkflowTaskInputProps extends DisableableInputProps{
+interface WorkflowTaskInputProps extends DisableableInputProps {
     assayId: number;
     isDetailInput: boolean;
     isGridInput: boolean;
@@ -115,7 +117,7 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
                     onToggleDisable={onToggleDisable}
                     onChange={onChange}
                     menuPosition={isGridInput ? 'fixed' : undefined}
-                    customStyles={isGridInput ? customStyles : undefined}
+                    customStyles={isGridInput ? customStyles : isDetailInput ? undefined : customBulkStyles}
                     customTheme={isGridInput ? customTheme : undefined}
                 />
             )}

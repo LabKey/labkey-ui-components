@@ -18,7 +18,7 @@ import { Query } from '@labkey/api';
 import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
 
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
@@ -159,6 +159,7 @@ const AssayTaskInputRenderer: InputRenderer = (
     // Used in multiple contexts so need to check various data formats
     let assayId = Map.isMap(data) ? data.get(ASSAY_ID_INDEX) : data[ASSAY_ID_INDEX];
     if (!assayId) assayId = Map.isMap(data) ? data.get(encodePart(ASSAY_ID_INDEX)) : data[encodePart(ASSAY_ID_INDEX)];
+    if (List.isList(assayId)) assayId = assayId.get(0);
     assayId = assayId?.value ?? assayId;
     assayId = assayId?.get?.('value') ?? assayId;
 

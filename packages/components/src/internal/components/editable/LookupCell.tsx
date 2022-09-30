@@ -147,7 +147,11 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 queryFilters={queryFilters}
                 multiple={isMultiple}
                 // use detail view to assure we get values that may have been filtered out in the default view
-                schemaQuery={SchemaQuery.create(lookup.schemaQuery.schemaName, lookup.schemaQuery.queryName, ViewInfo.DETAIL_NAME)}
+                schemaQuery={SchemaQuery.create(
+                    lookup.schemaQuery.schemaName,
+                    lookup.schemaQuery.queryName,
+                    ViewInfo.DETAIL_NAME
+                )}
                 key={col.lookupKey}
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 containerPath={lookup.containerPath}

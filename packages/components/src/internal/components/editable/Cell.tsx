@@ -127,13 +127,13 @@ export class Cell extends React.PureComponent<Props, State> {
             rowIdx,
             [
                 {
-                    display: display,
-                    raw: raw,
+                    display,
+                    raw,
                 },
             ],
             MODIFICATION_TYPES.REPLACE
         );
-    }
+    };
 
     handleBlur = (evt: any): void => {
         clearTimeout(this.changeTO);
@@ -146,7 +146,7 @@ export class Cell extends React.PureComponent<Props, State> {
 
         clearTimeout(this.changeTO);
         this.changeTO = window.setTimeout(() => {
-            this.replaceCurrentCellValue(event.target.value, event.target.value)
+            this.replaceCurrentCellValue(event.target.value, event.target.value);
         }, 250);
     };
 

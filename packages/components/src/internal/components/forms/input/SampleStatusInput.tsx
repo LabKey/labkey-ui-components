@@ -15,7 +15,7 @@ import { userCanEditStorageData } from '../../../app/utils';
 import { useServerContext } from '../../base/ServerContext';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
-import {customStyles, customTheme} from "../../editable/LookupCell";
+import { customStyles, customTheme } from '../../editable/LookupCell';
 
 interface SampleStatusInputProps {
     allowDisable?: boolean;
@@ -28,15 +28,30 @@ interface SampleStatusInputProps {
     initiallyDisabled?: boolean;
     inputClass?: string;
     isDetailInput?: boolean;
-    onToggleDisable?: (disabled: boolean) => void;
-    value?: string | Array<Record<string, any>>;
+    isGridInput?: boolean;
+    key: ReactText;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     onQSChange?: (name: string, value: string | any[], items: any) => void;
-    showAsteriskSymbol?: boolean;
+    onToggleDisable?: (disabled: boolean) => void;
     renderLabelField?: (col: QueryColumn) => ReactNode;
-    key: ReactText;
-    isGridInput?: boolean; // for jest test
+    showAsteriskSymbol?: boolean;
+    value?: string | Array<Record<string, any>>; // for jest test
 }
+
+// Move somewhere more central?
+// Styles to match form-control in bulk form
+export const customBulkStyles = {
+    control: provided => ({
+        ...provided,
+        color: '#555555',
+        border: '1px solid #ccc',
+        borderRadius: '4px'
+    }),
+    singleValue: provided => ({
+        ...provided,
+        color: '#555555'
+    }),
+};
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     const {
@@ -56,6 +71,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         inputClass,
         formsy,
         isGridInput,
+        isDetailInput
     } = props;
     const { user } = useServerContext();
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>(undefined);
@@ -162,7 +178,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 name={col.fieldKey}
                 onQSChange={onChange}
                 onToggleDisable={onToggleDisable}
-                placeholder={isGridInput ? undefined : "Select or type to search..."}
+                placeholder={isGridInput ? undefined : 'Select or type to search...'}
                 required={col.required}
                 schemaQuery={col.lookup.schemaQuery}
                 showLabel
@@ -171,7 +187,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 inputClass={isGridInput ? 'select-input-cell' : inputClass}
                 containerClass={isGridInput ? 'select-input-cell-container' : undefined}
                 menuPosition={isGridInput ? 'fixed' : undefined}
-                customStyles={isGridInput ? customStyles : undefined}
+                customStyles={isGridInput ? customStyles : isDetailInput ? undefined : customBulkStyles}
                 customTheme={isGridInput ? customTheme : undefined}
                 showLoading={false}
             />

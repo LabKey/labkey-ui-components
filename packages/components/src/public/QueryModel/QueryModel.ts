@@ -482,7 +482,7 @@ export class QueryModel {
     }
 
     get modelFilters(): Filter.IFilter[] {
-        const { baseFilters, queryInfo, keyValue, viewName } = this;
+        const { baseFilters, queryInfo, keyValue } = this;
 
         if (!queryInfo) {
             // Throw an error because this method is only used when making an API request, and if we don't have a
@@ -505,7 +505,18 @@ export class QueryModel {
             return [...pkFilter, ...this.detailFilters];
         }
 
-        return [...baseFilters, ...queryInfo.getFilters(viewName).toArray()];
+        return [...baseFilters, ...this.viewFilters];
+    }
+
+    get viewFilters(): Filter.IFilter[] {
+        const { queryInfo, viewName } = this;
+        if (!queryInfo) {
+            // Throw an error because this method is only used when making an API request, and if we don't have a
+            // QueryInfo then we're going to make a bad request. It's better to error here before hitting the server.
+            throw new Error('Cannot get filters, no QueryInfo available');
+        }
+
+        return [...queryInfo.getFilters(viewName).toArray()];
     }
 
     /**
@@ -845,8 +856,7 @@ export class QueryModel {
      * True if either the query info or rows of the QueryModel are still loading.
      */
     get isLoading(): boolean {
-        if (this.hasLoadErrors)
-            return false;
+        if (this.hasLoadErrors) return false;
 
         return isLoading(this.queryInfoLoadingState, this.rowsLoadingState);
     }

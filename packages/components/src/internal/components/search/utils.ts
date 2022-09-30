@@ -35,7 +35,7 @@ import { getContainerFilter } from '../../query/api';
 
 import { AssayResultDataType } from '../entities/constants';
 
-import { SearchScope } from './constants';
+import { SearchScope, SAMPLE_FINDER_SESSION_PREFIX } from './constants';
 import { FieldFilter, FieldFilterOption, FilterProps, FilterSelection, SearchSessionStorageProps } from './models';
 
 export const SAMPLE_FILTER_METRIC_AREA = 'sampleFinder';
@@ -215,11 +215,11 @@ export function getSampleFinderCommonConfigs(
             return;
         }
 
+        const schemaQuery = card.schemaQuery;
         const cardColumnName = getFilterCardColumnName(card.entityDataType, card.schemaQuery, useAncestors);
 
         requiredColumns.push(cardColumnName);
         if (card.filterArray?.length) {
-            const schemaQuery = card.schemaQuery;
             card.filterArray.forEach(f => {
                 const filter = f.filter;
                 const columnName = filter.getColumnName();
@@ -238,7 +238,22 @@ export function getSampleFinderCommonConfigs(
                 baseFilters.push(filter);
             }
         } else {
-            baseFilters.push(Filter.create(cardColumnName + '/Name', null, Filter.Types.NONBLANK));
+            const pkColName = 'Name';
+            const filter = getExpDescendantOfFilter(
+                schemaQuery,
+                [
+                    {
+                        fieldCaption: pkColName,
+                        fieldKey: pkColName,
+                        filter: Filter.create(pkColName, null, Filter.Types.NONBLANK),
+                        jsonType: 'string',
+                    },
+                ],
+                cf
+            );
+            if (filter) {
+                baseFilters.push(filter);
+            }
         }
     });
 
@@ -454,7 +469,7 @@ export function searchFiltersToJson(
     return JSON.stringify({
         filters: getSearchFilterObjs(filterProps),
         filterChangeCounter,
-        filterTimestamp: 'Searched ' + formatDateTime(time ?? new Date(), timezone),
+        filterTimestamp: SAMPLE_FINDER_SESSION_PREFIX + formatDateTime(time ?? new Date(), timezone),
     });
 }
 
@@ -770,7 +785,7 @@ export function isValidFilterField(
 
     // exclude the storage Units field for sample types since the display of this field is nonstandard and it is not
     // a useful field for filtering parent values
-    if (isSamplesSchema(queryInfo.schemaQuery) && field.fieldKey === 'Units') {
+    if (isSamplesSchema(queryInfo.schemaQuery) && field?.fieldKey === 'Units') {
         return false;
     }
 
@@ -786,6 +801,17 @@ export function isValidFilterFieldExcludeLookups(
 
     // also exclude lookups since MVFKs don't support following lookups
     return !field.isLookup();
+}
+
+export function isValidFilterFieldSampleFinder(
+    field: QueryColumn,
+    queryInfo: QueryInfo,
+    exprColumnsWithSubSelect?: string[]
+): boolean {
+    if (!isValidFilterField(field, queryInfo, exprColumnsWithSubSelect)) return false;
+
+    // also exclude multiValue lookups (MVFKs)
+    return !field.multiValue;
 }
 
 export function getUpdatedDataTypeFilters(
@@ -956,7 +982,7 @@ export function getUpdatedFilterSelection(
     };
 }
 
-export function getLocalStorageKey(): string {
+export function getSampleFinderLocalStorageKey(): string {
     return getPrimaryAppProperties().productId + ActionURL.getContainer() + '-SampleFinder';
 }
 

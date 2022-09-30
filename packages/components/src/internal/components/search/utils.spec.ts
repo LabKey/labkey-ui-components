@@ -49,6 +49,7 @@ import {
     getUpdateFilterExpressionFilter,
     isValidFilterField,
     isValidFilterFieldExcludeLookups,
+    isValidFilterFieldSampleFinder,
     SAMPLE_FINDER_VIEW_NAME,
     searchFiltersFromJson,
     searchFiltersToJson,
@@ -336,7 +337,13 @@ describe('getSampleFinderCommonConfigs', () => {
                 false
             )
         ).toStrictEqual({
-            baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
+            baseFilters: [
+                Filter.create(
+                    '*',
+                    'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
+                    IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                ),
+            ],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
         });
     });
@@ -370,7 +377,13 @@ describe('getSampleFinderCommonConfigs', () => {
                 true
             )
         ).toStrictEqual({
-            baseFilters: [Filter.create('Ancestors/Samples/TestQuery/Name', null, Filter.Types.NONBLANK)],
+            baseFilters: [
+                Filter.create(
+                    '*',
+                    'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
+                    IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                ),
+            ],
             requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
         });
     });
@@ -401,7 +414,11 @@ describe('getSampleFinderCommonConfigs', () => {
             )
         ).toStrictEqual({
             baseFilters: [
-                Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK),
+                Filter.create(
+                    '*',
+                    'SELECT "TestQuery".expObject() FROM Samples."TestQuery"[ContainerFilter=\'CurrentAndFirstChildren\'] WHERE "Name" IS NOT NULL',
+                    IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                ),
                 Filter.create(
                     '*',
                     'SELECT "TestQuery2".expObject() FROM Samples."TestQuery2"[ContainerFilter=\'CurrentAndFirstChildren\'] WHERE "TestColumn" = \'value\'',
@@ -509,7 +526,13 @@ describe('getSampleFinderQueryConfigs', () => {
                     SAMPLE_FINDER_VIEW_NAME
                 ),
                 omittedColumns: ['Run'],
-                baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                baseFilters: [
+                    Filter.create(
+                        '*',
+                        'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
+                        IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                    ),
+                ],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
             },
         });
@@ -569,7 +592,13 @@ describe('getSampleFinderQueryConfigs', () => {
                     SAMPLE_FINDER_VIEW_NAME
                 ),
                 omittedColumns: ['checkedOutBy', 'Run'],
-                baseFilters: [Filter.create('Inputs/Materials/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                baseFilters: [
+                    Filter.create(
+                        '*',
+                        'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
+                        IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                    ),
+                ],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Inputs/Materials/TestQuery'],
             },
             'uuid-1-testId|samples/Sample Type 1': {
@@ -577,7 +606,13 @@ describe('getSampleFinderQueryConfigs', () => {
                 title: 'Sample Type 1',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 1', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
-                baseFilters: [Filter.create('Ancestors/Samples/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                baseFilters: [
+                    Filter.create(
+                        '*',
+                        'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
+                        IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                    ),
+                ],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
             },
             'uuid-1-testId|samples/Sample Type 2': {
@@ -585,7 +620,13 @@ describe('getSampleFinderQueryConfigs', () => {
                 title: 'Sample Type 2',
                 schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Sample Type 2', SAMPLE_FINDER_VIEW_NAME),
                 omittedColumns: ['checkedOutBy'],
-                baseFilters: [Filter.create('Ancestors/Samples/TestQuery/Name', null, Filter.Types.NONBLANK)],
+                baseFilters: [
+                    Filter.create(
+                        '*',
+                        'SELECT "TestQuery".expObject() FROM Samples."TestQuery" WHERE "Name" IS NOT NULL',
+                        IN_EXP_DESCENDANTS_OF_FILTER_TYPE
+                    ),
+                ],
                 requiredColumns: [...SAMPLE_STATUS_REQUIRED_COLUMNS, 'Ancestors/Samples/TestQuery'],
             },
         });
@@ -1435,6 +1476,41 @@ describe('isValidFilterField', () => {
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             false
         );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
+    });
+
+    test('mult-value lookup field', () => {
+        const field = QueryColumn.create({ name: 'test', lookup: { isPublic: true }, multiValue: true });
+        const queryInfo = QueryInfo.create({
+            schemaName: 'test',
+            name: 'query',
+            supportGroupConcatSubSelect: true,
+        });
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
+    });
+
+    test('mult-value lookup field and not supportGroupConcatSubSelect', () => {
+        const field = QueryColumn.create({ name: 'test', lookup: { isPublic: true }, multiValue: true });
+        const queryInfo = QueryInfo.create({
+            schemaName: 'test',
+            name: 'query',
+            supportGroupConcatSubSelect: false,
+        });
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
     });
 
     test('Units field', () => {
@@ -1446,6 +1522,9 @@ describe('isValidFilterField', () => {
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(false);
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             false
         );
     });
@@ -1461,6 +1540,9 @@ describe('isValidFilterField', () => {
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             false
         );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
     });
 
     test('group concat field not supported, regular field', () => {
@@ -1474,6 +1556,9 @@ describe('isValidFilterField', () => {
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             true
         );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
     });
 
     test('group concat field not supported, no group concat fields', () => {
@@ -1485,6 +1570,7 @@ describe('isValidFilterField', () => {
         });
         expect(isValidFilterField(field, queryInfo, undefined)).toBe(true);
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, undefined)).toBe(true);
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, undefined)).toBe(true);
     });
 
     test('group concat field is supported', () => {
@@ -1498,6 +1584,9 @@ describe('isValidFilterField', () => {
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             true
         );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
     });
 
     test('regular field', () => {
@@ -1509,6 +1598,9 @@ describe('isValidFilterField', () => {
         });
         expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
         expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            true
+        );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
             true
         );
     });

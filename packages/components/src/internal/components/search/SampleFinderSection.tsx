@@ -2,6 +2,7 @@ import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useSta
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
+import { Location } from '../../util/URL';
 import { capitalizeFirstChar } from '../../util/utils';
 import { EntityDataType } from '../entities/models';
 import { Section } from '../base/Section';
@@ -47,7 +48,7 @@ import { FilterCards } from './FilterCards';
 import {
     getFinderStartText,
     getFinderViewColumnsConfig,
-    getLocalStorageKey,
+    getSampleFinderLocalStorageKey,
     getSampleFinderColumnNames,
     getSampleFinderQueryConfigs,
     getSearchFilterObjs,
@@ -62,6 +63,7 @@ import { FieldFilter, FilterProps, FinderReport } from './models';
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
+import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -77,6 +79,7 @@ interface SampleFinderSamplesGridProps {
 
 interface Props extends SampleFinderSamplesGridProps {
     clearSessionView?: boolean;
+    location: Location;
     parentEntityDataTypes: EntityDataType[];
 }
 
@@ -110,7 +113,7 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
 });
 
 export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
-    const { assayModel, sampleTypeNames, parentEntityDataTypes, clearSessionView, ...gridProps } = props;
+    const { assayModel, sampleTypeNames, parentEntityDataTypes, clearSessionView, location, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [savedViewChangeCounter, setSavedViewChangeCounter] = useState<number>(0);
@@ -155,11 +158,11 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
             });
 
         if (clearSessionView) {
-            sessionStorage.removeItem(getLocalStorageKey());
+            sessionStorage.removeItem(getSampleFinderLocalStorageKey());
             return;
         }
 
-        const finderSessionDataStr = sessionStorage.getItem(getLocalStorageKey());
+        const finderSessionDataStr = sessionStorage.getItem(getSampleFinderLocalStorageKey());
         if (finderSessionDataStr) {
             const finderSessionData = searchFiltersFromJson(finderSessionDataStr);
             if (finderSessionData?.filters?.length > 0 && finderSessionData?.filterTimestamp) {
@@ -176,10 +179,10 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
             if (updateSession) {
                 const currentTimestamp = new Date();
                 sessionStorage.setItem(
-                    getLocalStorageKey(),
+                    getSampleFinderLocalStorageKey(),
                     searchFiltersToJson(filterProps, changeCounter, currentTimestamp)
                 );
-                setUnsavedSessionViewName('Searched ' + formatDateTime(currentTimestamp));
+                setUnsavedSessionViewName(SAMPLE_FINDER_SESSION_PREFIX + formatDateTime(currentTimestamp));
             }
         },
         []
@@ -219,7 +222,7 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
             newFilterCards.splice(index, 1);
             if (currentView && newFilterCards?.length === 0) {
                 updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, false);
-                setCurrentView(undefined);
+                setCurrentView(null); // using null to not trigger the reload of a url report name
             } else {
                 updateFilters(filterChangeCounter + 1, newFilterCards, !currentView?.entityId, true);
             }
@@ -284,7 +287,7 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
         async (view: FinderReport) => {
             let cardJson = null;
 
-            if (view.isSession) cardJson = sessionStorage.getItem(getLocalStorageKey());
+            if (view.isSession) cardJson = sessionStorage.getItem(getSampleFinderLocalStorageKey());
             else if (view.reportId) {
                 try {
                     cardJson = await loadFinderSearch(view);
@@ -357,6 +360,26 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
             setSavedViewChangeCounter(counter => counter + 1);
         }
     }, []);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                // if the page is first loading (i.e. no currentView) and the URL has a view name, try to load it
+                const reportName = location?.query?.view;
+                if (currentView === undefined && reportName) {
+                    if (reportName.startsWith(SAMPLE_FINDER_SESSION_PREFIX)) {
+                        loadSearch({ isSession: true, reportName });
+                    } else {
+                        const views = await api.samples.loadFinderSearches();
+                        const view = views.find(v => v.reportName === reportName);
+                        if (view) loadSearch(view);
+                    }
+                }
+            } catch (error) {
+                // do nothing
+            }
+        })();
+    }, [api.samples, currentView, loadSearch, location?.query?.view]);
 
     if (!enabledEntityTypes) return <LoadingSpinner />;
 
@@ -530,7 +553,9 @@ export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & Injected
                 gridButtons={gridButtons}
                 gridButtonProps={{
                     ...gridButtonProps,
-                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT],
+                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT].concat(
+                        gridButtonProps?.excludedMenuKeys ?? []
+                    ),
                     metricFeatureArea: SAMPLE_FILTER_METRIC_AREA,
                 }}
                 tabbedGridPanelProps={{

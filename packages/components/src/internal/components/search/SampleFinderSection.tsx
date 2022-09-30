@@ -34,6 +34,14 @@ import {
     withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
 
+import { InjectedAssayModel, withAssayModels } from '../assay/withAssayModels';
+
+import { AssaySampleColumnProp, getAssayDefinitionsWithResultSampleLookup } from '../assay/actions';
+
+import { isLoading } from '../../../public/LoadingState';
+
+import { AssayResultDataType } from '../entities/constants';
+
 import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from './actions';
 import { FilterCards } from './FilterCards';
 import {
@@ -101,8 +109,8 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
     );
 });
 
-export const SampleFinderSection: FC<Props> = memo(props => {
-    const { sampleTypeNames, parentEntityDataTypes, clearSessionView, ...gridProps } = props;
+export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
+    const { assayModel, sampleTypeNames, parentEntityDataTypes, clearSessionView, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
     const [savedViewChangeCounter, setSavedViewChangeCounter] = useState<number>(0);
@@ -111,31 +119,41 @@ export const SampleFinderSection: FC<Props> = memo(props => {
     const [filters, setFilters] = useState<FilterProps[]>([]);
     const [chosenQueryName, setChosenQueryName] = useState<string>(undefined);
     const [chosenField, setChosenField] = useState<string>(undefined);
-    const [enabledEntityTypes, setEnabledEntityTypes] = useState<string[]>([]);
+    const [enabledEntityTypes, setEnabledEntityTypes] = useState<string[]>(undefined);
     const [cardDirty, setCardDirty] = useState<boolean>(false); // EntityFieldModal dirty, but Find is not yet clicked
     const [viewDirty, setViewDirty] = useState<boolean>(false); // Find is clicked
     const [showSaveViewDialog, setShowSaveViewDialog] = useState<boolean>(false);
     const [showManageViewsDialog, setShowManageViewsDialog] = useState<boolean>(false);
     const [unsavedSessionViewName, setUnsavedSessionViewName] = useState<string>(undefined);
+    const [assaySampleIdCols, setAssaySampleIdCols] = useState<{ [key: string]: AssaySampleColumnProp }>();
 
     const { api } = useAppContext();
     const { createNotification } = useNotificationsContext();
 
     useEffect(() => {
         const _enabledEntityTypes = [];
-        (async () => {
-            try {
-                const entityOptions = await getAllEntityTypeOptions(parentEntityDataTypes);
+        if (isLoading(assayModel.definitionsLoadingState)) return;
+
+        const assaySampleCols = getAssayDefinitionsWithResultSampleLookup(assayModel, 'general');
+        getAllEntityTypeOptions(parentEntityDataTypes)
+            .then(entityOptions => {
                 Object.keys(entityOptions).forEach(key => {
                     if (entityOptions[key].length) {
+                        if (key === AssayResultDataType.typeListingSchemaQuery.queryName) {
+                            const hasSampleIdCol = entityOptions[key].some(assay => !!assaySampleCols[assay.value]);
+                            if (!hasSampleIdCol) return;
+                        }
                         _enabledEntityTypes.push(key);
                     }
                 });
+                setAssaySampleIdCols(assaySampleCols);
                 setEnabledEntityTypes(_enabledEntityTypes);
-            } catch {
+            })
+            .catch(error => {
+                console.error(error);
                 setEnabledEntityTypes(_enabledEntityTypes);
-            }
-        })();
+            });
+
         if (clearSessionView) {
             sessionStorage.removeItem(getLocalStorageKey());
             return;
@@ -148,7 +166,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 setUnsavedSessionViewName(finderSessionData.filterTimestamp);
             }
         }
-    }, []);
+    }, [assayModel.definitions]);
 
     const updateFilters = useCallback(
         (changeCounter: number, filterProps: FilterProps[], updateSession: boolean, isViewDirty: boolean) => {
@@ -177,7 +195,12 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         (index: number) => {
             const selectedCard = filters[index];
             setChosenEntityType(selectedCard.entityDataType);
-            setChosenQueryName(selectedCard.schemaQuery.queryName);
+
+            let queryName = selectedCard.schemaQuery.queryName;
+            if (selectedCard.entityDataType.getInstanceDataType)
+                queryName = selectedCard.entityDataType.getInstanceDataType(selectedCard.schemaQuery);
+
+            setChosenQueryName(queryName);
         },
         [filters]
     );
@@ -213,7 +236,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
 
     const onFind = useCallback(
         (
-            schemaName: string,
+            entityDataType: EntityDataType,
             dataTypeFilters: { [key: string]: FieldFilter[] },
             queryLabels: { [key: string]: string }
         ) => {
@@ -222,15 +245,21 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                 return;
             }
 
+            const schemaName = entityDataType.instanceSchemaName;
+            const isAssay = schemaName === AssayResultDataType.instanceSchemaName;
             const newFilterCards = [...filters].filter(filter => {
                 return filter.entityDataType.instanceSchemaName !== chosenEntityType.instanceSchemaName;
             });
             Object.keys(dataTypeFilters).forEach(queryName => {
                 newFilterCards.push({
-                    schemaQuery: SchemaQuery.create(schemaName, queryLabels[queryName]),
+                    schemaQuery: isAssay
+                        ? entityDataType.getInstanceSchemaQuery(queryName)
+                        : SchemaQuery.create(schemaName, queryLabels[queryName]),
                     filterArray: dataTypeFilters[queryName],
                     entityDataType: chosenEntityType,
                     dataTypeDisplayName: queryLabels[queryName],
+                    selectColumnFieldKey: isAssay ? assaySampleIdCols[queryName]?.lookupFieldKey : undefined,
+                    targetColumnFieldKey: isAssay ? assaySampleIdCols[queryName]?.fieldKey : undefined,
                 });
             });
 
@@ -329,6 +358,8 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         }
     }, []);
 
+    if (!enabledEntityTypes) return <LoadingSpinner />;
+
     return (
         <Section
             title={
@@ -392,6 +423,7 @@ export const SampleFinderSection: FC<Props> = memo(props => {
                     fieldKey={chosenField}
                     metricFeatureArea={SAMPLE_FILTER_METRIC_AREA}
                     setCardDirty={setCardDirty}
+                    assaySampleIdCols={assaySampleIdCols}
                 />
             )}
             {showSaveViewDialog && (
@@ -408,6 +440,8 @@ export const SampleFinderSection: FC<Props> = memo(props => {
         </Section>
     );
 });
+
+export const SampleFinderSection = withAssayModels(SampleFinderSectionImpl);
 
 interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
     cards: FilterProps[];

@@ -5,6 +5,8 @@ import { Filter } from '@labkey/api';
 
 import { formatDate } from '../../util/Date';
 
+import { COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
+
 import { FilterValueDisplay } from './FilterValueDisplay';
 
 describe('FilterValueDisplay', () => {
@@ -127,6 +129,25 @@ describe('FilterValueDisplay', () => {
             />
         );
         validate(wrapper, null, '2020-08-06');
+
+        wrapper.unmount();
+    });
+
+    test('columnnotin filter', () => {
+        const wrapper = mount(<FilterValueDisplay filter={Filter.create('RowId', '', COLUMN_NOT_IN_FILTER_TYPE)} />);
+        validate(wrapper, null, 'Without data from this type');
+
+        wrapper.unmount();
+    });
+
+    test('columnnotin filter, with custom msg', () => {
+        const wrapper = mount(
+            <FilterValueDisplay
+                filter={Filter.create('RowId', '', COLUMN_NOT_IN_FILTER_TYPE)}
+                noValueInQueryFilterMsg="No assay data"
+            />
+        );
+        validate(wrapper, null, 'No assay data');
 
         wrapper.unmount();
     });

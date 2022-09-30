@@ -6,13 +6,17 @@ import { Filter } from '@labkey/api';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ChoicesListItem } from '../base/ChoicesListItem';
 import sampleSetAllFieldTypesQueryInfo from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
+
+import { waitForLifecycle } from '../../testHelpers';
+
+import { getTestAPIWrapper } from '../../APIWrapper';
+
+import { AssayResultDataType } from '../entities/constants';
+
 import { FilterExpressionView } from './FilterExpressionView';
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { QueryFilterPanel } from './QueryFilterPanel';
 import { FieldFilter } from './models';
-
-import { waitForLifecycle } from '../../testHelpers';
-import { getTestAPIWrapper } from '../../APIWrapper';
 
 describe('QueryFilterPanel', () => {
     const DEFAULT_PROPS = {
@@ -135,6 +139,67 @@ describe('QueryFilterPanel', () => {
         expect(wrapper.find(NavItem)).toHaveLength(2);
         expect(wrapper.find('#filter-field-tabs').first().prop('activeKey')).toBe('Filter');
         expect(wrapper.find('.field-modal__field_dot')).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+    test('hasNoValueInQuery checkbox, not checked', () => {
+        const hasNotInQueryFilterLabel = 'Sample Without assay data';
+        const wrapper = mount(
+            <QueryFilterPanel
+                {...DEFAULT_PROPS}
+                entityDataType={AssayResultDataType}
+                emptyMsg="Select a query"
+                hasNotInQueryFilterLabel={hasNotInQueryFilterLabel}
+            />
+        );
+        validate(wrapper, 10);
+        expect(wrapper.find('.filter-modal__fields-col-nodata-msg').hostNodes().text()).toBe(hasNotInQueryFilterLabel);
+        expect(wrapper.find('.field-modal__col-content-disabled').hostNodes()).toHaveLength(0);
+
+        wrapper.unmount();
+    });
+
+    test('hasNoValueInQuery checkbox, checked', () => {
+        const wrapper = mount(
+            <QueryFilterPanel
+                {...DEFAULT_PROPS}
+                entityDataType={AssayResultDataType}
+                emptyMsg="Select a query"
+                hasNotInQueryFilter={true}
+            />
+        );
+        validate(wrapper, 10);
+        expect(wrapper.find('.filter-modal__fields-col-nodata-msg').hostNodes().text()).toBe(
+            'Without data from this type'
+        );
+        expect(wrapper.find('.field-modal__col-content-disabled').hostNodes()).toHaveLength(1);
+
+        wrapper.unmount();
+    });
+
+    test('hasNoValueInQuery checkbox, checked, has active field and filters', () => {
+        const wrapper = mount(
+            <QueryFilterPanel
+                {...DEFAULT_PROPS}
+                entityDataType={AssayResultDataType}
+                emptyMsg="Select a query"
+                hasNotInQueryFilter={true}
+                fieldKey="Text"
+                filters={{
+                    [DEFAULT_PROPS.queryInfo.name.toLowerCase()]: [
+                        {
+                            fieldKey: 'Text',
+                            filter: Filter.create('Text', 'a', Filter.Types.GREATER_THAN),
+                        } as FieldFilter,
+                    ],
+                }}
+            />
+        );
+        expect(wrapper.find('.filter-modal__fields-col-nodata-msg').hostNodes().text()).toBe(
+            'Without data from this type'
+        );
+        expect(wrapper.find('.field-modal__col-content-disabled').hostNodes()).toHaveLength(2);
+
         wrapper.unmount();
     });
 });

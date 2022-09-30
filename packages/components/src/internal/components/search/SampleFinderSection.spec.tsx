@@ -76,21 +76,4 @@ describe('SampleFinderSection', () => {
         expect(buttons.at(1).prop('disabled')).toBe(true);
         wrapper.unmount();
     });
-
-    test('No cards', () => {
-        const wrapper = mountWithAppServerContext(
-            <SampleFinderSection
-                user={TEST_USER_EDITOR}
-                getSampleAuditBehaviorType={jest.fn()}
-                samplesEditableGridProps={{}}
-                parentEntityDataTypes={[TestTypeDataType]}
-                sampleTypeNames={[]}
-            />
-        );
-        const section = wrapper.find(Section);
-        expect(section.find('.filter-hint').exists()).toBeTruthy();
-        const cards = wrapper.find(FilterCards);
-        expect(cards.prop('className')).toBe('empty');
-        wrapper.unmount();
-    });
 });

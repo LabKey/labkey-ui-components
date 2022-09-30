@@ -8,6 +8,8 @@ import { SAMPLE_TYPE_KEY } from '../../app/constants';
 
 import { SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR } from '../samples/constants';
 
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
 import { EntityDataType } from './models';
 
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
@@ -31,7 +33,34 @@ export const AssayRunDataType: EntityDataType = {
     descriptionSingular: 'assay run',
     descriptionPlural: 'assay runs',
     uniqueFieldKey: 'RowId',
-    dependencyText: undefined
+    dependencyText: undefined,
+};
+
+export const AssayResultDataType: EntityDataType = {
+    deleteHelpLinkTopic: undefined,
+    typeListingSchemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
+    listingSchemaQuery: undefined,
+    instanceSchemaName: undefined,
+    supportHasNoValueInQuery: true,
+    getInstanceSchemaQuery: (assayName: string) => {
+        return SchemaQuery.create('assay.General.' + assayName, 'data');
+    },
+    getInstanceDataType: (schemaQuery: SchemaQuery) => {
+        return schemaQuery.schemaName.replace('assay.General.', '');
+    },
+    operationConfirmationControllerName: 'assay',
+    operationConfirmationActionName: undefined,
+    nounSingular: 'result',
+    nounPlural: 'results',
+    typeNounSingular: 'Assay Design',
+    typeNounAsParentSingular: 'Assay Design',
+    nounAsParentPlural: 'Assays', // use short label for Sample Finder
+    nounAsParentSingular: 'Assay',
+    descriptionSingular: 'assay result',
+    descriptionPlural: 'assay results',
+    uniqueFieldKey: 'RowId',
+    dependencyText: undefined,
+    filterCardHeaderClass: 'filter-card__header-purple',
 };
 
 export const SampleTypeDataType: EntityDataType = {

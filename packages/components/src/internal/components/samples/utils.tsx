@@ -273,7 +273,7 @@ export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
 export function isFindByIdsSchema(schemaQuery: SchemaQuery): boolean {
     const lcSchemaName = schemaQuery?.schemaName?.toLowerCase();
     const lcQueryName = schemaQuery?.queryName?.toLowerCase();
-    return lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA && lcQueryName.startsWith('exp_temp_')
+    return lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA && lcQueryName.startsWith('exp_temp_');
 }
 
 export const getSampleTypeTemplateUrl = (

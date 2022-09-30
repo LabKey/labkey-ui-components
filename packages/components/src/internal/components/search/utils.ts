@@ -239,12 +239,18 @@ export function getSampleFinderCommonConfigs(
             }
         } else {
             const pkColName = 'Name';
-            const filter = getExpDescendantOfFilter(schemaQuery, [{
-                fieldCaption: pkColName,
-                fieldKey: pkColName,
-                filter: Filter.create(pkColName, null, Filter.Types.NONBLANK),
-                jsonType: 'string',
-            }], cf);
+            const filter = getExpDescendantOfFilter(
+                schemaQuery,
+                [
+                    {
+                        fieldCaption: pkColName,
+                        fieldKey: pkColName,
+                        filter: Filter.create(pkColName, null, Filter.Types.NONBLANK),
+                        jsonType: 'string',
+                    },
+                ],
+                cf
+            );
             if (filter) {
                 baseFilters.push(filter);
             }

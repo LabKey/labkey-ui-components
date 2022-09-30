@@ -7,8 +7,6 @@ import { getPrimaryAppProperties } from '../../app/utils';
 
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-import { FinderReport, SearchIdData, SearchResultCardData } from './models';
-import { SAMPLE_FINDER_VIEW_NAME } from './utils';
 import { incrementClientSideMetricCount } from '../../actions';
 import { buildURL } from '../../url/AppURL';
 import { URLResolver } from '../../url/URLResolver';
@@ -19,6 +17,9 @@ import { loadReports } from '../../query/reports';
 import { IDataViewInfo } from '../../DataViewInfo';
 import { selectRows } from '../../query/selectRows';
 import { caseInsensitive } from '../../util/utils';
+
+import { SAMPLE_FINDER_VIEW_NAME } from './utils';
+import { FinderReport, SearchIdData, SearchResultCardData } from './models';
 
 type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 

@@ -1,4 +1,4 @@
-import React, {FC, memo, useCallback, useMemo} from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 
 import { Filter } from '@labkey/api';
 
@@ -14,14 +14,18 @@ import { EntityDataType } from '../entities/models';
 
 import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
-import { getSampleFinderLocalStorageKey, isValidFilterFieldSampleFinder, searchFiltersToJson } from './utils';
-import {FieldFilter, FilterProps} from './models';
-import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
 import { useAppContext } from '../../AppContext';
-import {DisableableMenuItem} from "../samples/DisableableMenuItem";
-import {DisableableButton} from "../buttons/DisableableButton";
 
-const DISABLED_FIND_DERIVATIVES_MSG = 'Unable to find derivative samples using search filters or filters on multi-valued lookup fields';
+import { DisableableMenuItem } from '../samples/DisableableMenuItem';
+
+import { DisableableButton } from '../buttons/DisableableButton';
+
+import { getSampleFinderLocalStorageKey, isValidFilterFieldSampleFinder, searchFiltersToJson } from './utils';
+import { FieldFilter, FilterProps } from './models';
+import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
+
+const DISABLED_FIND_DERIVATIVES_MSG =
+    'Unable to find derivative samples using search filters or filters on multi-valued lookup fields';
 
 export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): FieldFilter => {
     const colName = filter.getColumnName();
@@ -72,8 +76,8 @@ export const getSessionSearchFilterProps = (
 
 interface Props {
     asSubMenu?: boolean;
-    baseFilter?: Filter.IFilter[];
     baseEntityDataType?: EntityDataType;
+    baseFilter?: Filter.IFilter[];
     baseModel?: QueryModel;
     entityDataType: EntityDataType;
     metricFeatureArea?: string;
@@ -146,7 +150,9 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
             className="responsive-menu"
             bsStyle="default"
             onClick={onClick}
-            disabledMsg={invalidFilterNames ? DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').' : undefined}
+            disabledMsg={
+                invalidFilterNames ? DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').' : undefined
+            }
         >
             Find Derivatives
         </DisableableButton>

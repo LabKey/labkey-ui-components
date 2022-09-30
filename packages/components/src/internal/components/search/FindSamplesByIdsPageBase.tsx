@@ -22,7 +22,7 @@ import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SamplesEditButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import {arrayEquals, caseInsensitive} from '../../util/utils';
+import { arrayEquals, caseInsensitive } from '../../util/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { useServerContext } from '../base/ServerContext';

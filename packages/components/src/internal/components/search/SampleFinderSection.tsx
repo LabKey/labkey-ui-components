@@ -78,8 +78,8 @@ interface SampleFinderSamplesGridProps {
 }
 
 interface Props extends SampleFinderSamplesGridProps {
-    location: Location;
     clearSessionView?: boolean;
+    location: Location;
     parentEntityDataTypes: EntityDataType[];
 }
 

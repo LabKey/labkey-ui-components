@@ -1,17 +1,21 @@
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
-import {FindDerivativesButton, getFieldFilter, getSessionSearchFilterProps} from './FindDerivativesButton';
-import {DataClassDataType, SampleTypeDataType} from "../entities/constants";
-import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {mountWithAppServerContext} from "../../testHelpers";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {Filter} from "@labkey/api";
-import {ViewInfo} from "../../ViewInfo";
-import {fromJS} from "immutable";
-import {DisableableButton} from "../buttons/DisableableButton";
-import {ResponsiveMenuButton} from "../buttons/ResponsiveMenuButton";
+import { Filter } from '@labkey/api';
+
+import { fromJS } from 'immutable';
+
+import { DataClassDataType, SampleTypeDataType } from '../entities/constants';
+import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { mountWithAppServerContext } from '../../testHelpers';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { ViewInfo } from '../../ViewInfo';
+
+import { DisableableButton } from '../buttons/DisableableButton';
+import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
+
+import { FindDerivativesButton, getFieldFilter, getSessionSearchFilterProps } from './FindDerivativesButton';
 
 const VIEW_NAME = 'TEST_VIEW';
 const VIEW = ViewInfo.create({
@@ -28,21 +32,24 @@ const QUERY_INFO = QueryInfo.fromJSON({
             caption: 'FieldA',
             shortCaption: 'FieldA',
             jsonType: 'string',
-        },{
+        },
+        {
             name: 'b',
             fieldKey: 'b',
             fieldKeyArray: ['b'],
             caption: 'FieldB',
             shortCaption: 'FieldB',
             jsonType: 'int',
-        },{
+        },
+        {
             name: 'c',
             fieldKey: 'c',
             fieldKeyArray: ['c'],
             caption: undefined,
             shortCaption: '',
             jsonType: 'string',
-        },{
+        },
+        {
             name: 'd',
             fieldKey: 'd',
             fieldKeyArray: ['d'],
@@ -53,7 +60,8 @@ const QUERY_INFO = QueryInfo.fromJSON({
             lookup: {
                 // details not important here
             },
-        },{
+        },
+        {
             name: 'e',
             fieldKey: 'e',
             fieldKeyArray: ['e'],

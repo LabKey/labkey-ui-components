@@ -1,4 +1,4 @@
-import {fromJS, List} from "immutable";
+import { fromJS } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
@@ -10,9 +10,10 @@ import { LoadingState } from '../LoadingState';
 import { QuerySort } from '../QuerySort';
 import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
 
+import { ViewInfo } from '../../internal/ViewInfo';
+
 import { flattenValuesFromRow, QueryConfig, QueryModel } from './QueryModel';
 import { makeTestQueryModel } from './testUtils';
-import { ViewInfo } from '../../internal/ViewInfo';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;

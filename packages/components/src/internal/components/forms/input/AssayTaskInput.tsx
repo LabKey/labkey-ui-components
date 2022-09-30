@@ -6,6 +6,8 @@ import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { Alert } from '../../base/Alert';
 
 import { SelectInput } from './SelectInput';
+import {DisableableInputProps} from "./DisableableInput";
+import {customStyles, customTheme, LookupCell} from "../../editable/LookupCell";
 
 export interface InputOption {
     label: string;
@@ -41,16 +43,12 @@ async function loadInputOptions(assayId: number): Promise<InputOption[]> {
     return taskOptions;
 }
 
-interface WorkflowTaskInputProps {
-    allowFieldDisable?: boolean;
+interface WorkflowTaskInputProps extends DisableableInputProps{
     assayId: number;
-    initiallyDisabled?: boolean;
     isDetailInput: boolean;
     isGridInput: boolean;
     name: string;
     onChange?: (name: string, value: string | any[], items: any) => void;
-    onToggleDisable?: (disabled: boolean) => void;
-    value: number;
 }
 
 // Note: this component is specific to Workflow, and ideally would live in the Workflow package, however we do not
@@ -59,7 +57,7 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
     const {
         assayId,
         isDetailInput,
-        allowFieldDisable,
+        allowDisable,
         initiallyDisabled,
         onToggleDisable,
         name,
@@ -112,11 +110,13 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
                     name={name}
                     options={taskOptions}
                     value={value}
-                    allowDisable={allowFieldDisable}
+                    allowDisable={allowDisable}
                     initiallyDisabled={initiallyDisabled}
                     onToggleDisable={onToggleDisable}
                     onChange={onChange}
                     menuPosition={isGridInput ? 'fixed' : undefined}
+                    customStyles={isGridInput ? customStyles : undefined}
+                    customTheme={isGridInput ? customTheme : undefined}
                 />
             )}
         </div>

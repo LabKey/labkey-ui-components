@@ -26,7 +26,7 @@ import { QuerySelect } from '../forms/QuerySelect';
 import { ViewInfo } from '../../ViewInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-const customStyles = {
+export const customStyles = {
     control: provided => ({
         ...provided,
         minHeight: 24,
@@ -44,10 +44,11 @@ const customStyles = {
     indicatorsContainer: provided => ({
         ...provided,
         minHeight: 24,
+        padding: '0 4px',
     }),
 };
 
-const customTheme = theme => ({
+export const customTheme = theme => ({
     ...theme,
     colors: {
         ...theme.colors,

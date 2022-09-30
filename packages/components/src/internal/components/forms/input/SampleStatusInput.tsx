@@ -15,6 +15,7 @@ import { userCanEditStorageData } from '../../../app/utils';
 import { useServerContext } from '../../base/ServerContext';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
+import {customStyles, customTheme} from "../../editable/LookupCell";
 
 interface SampleStatusInputProps {
     allowDisable?: boolean;
@@ -170,6 +171,9 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 inputClass={isGridInput ? 'select-input-cell' : inputClass}
                 containerClass={isGridInput ? 'select-input-cell-container' : undefined}
                 menuPosition={isGridInput ? 'fixed' : undefined}
+                customStyles={isGridInput ? customStyles : undefined}
+                customTheme={isGridInput ? customTheme : undefined}
+                showLoading={false}
             />
             {error && <Alert>{error}</Alert>}
             {showDiscardPanel && <>{discardPanel}</>}

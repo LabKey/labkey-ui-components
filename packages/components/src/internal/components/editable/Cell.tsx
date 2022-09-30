@@ -120,20 +120,25 @@ export class Cell extends React.PureComponent<Props, State> {
         }
     };
 
-    handleBlur = (evt: any): void => {
-        clearTimeout(this.changeTO);
+    replaceCurrentCellValue = (display: any, raw: any): void => {
         const { colIdx, rowIdx, cellActions } = this.props;
         cellActions.modifyCell(
             colIdx,
             rowIdx,
             [
                 {
-                    display: evt.target.value,
-                    raw: evt.target.value,
+                    display: display,
+                    raw: raw,
                 },
             ],
             MODIFICATION_TYPES.REPLACE
         );
+    }
+
+    handleBlur = (evt: any): void => {
+        clearTimeout(this.changeTO);
+        const { colIdx, rowIdx, cellActions } = this.props;
+        this.replaceCurrentCellValue(evt.target.value, evt.target.value);
     };
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -141,18 +146,7 @@ export class Cell extends React.PureComponent<Props, State> {
 
         clearTimeout(this.changeTO);
         this.changeTO = window.setTimeout(() => {
-            const { colIdx, rowIdx, cellActions } = this.props;
-            cellActions.modifyCell(
-                colIdx,
-                rowIdx,
-                [
-                    {
-                        display: event.target.value,
-                        raw: event.target.value,
-                    },
-                ],
-                MODIFICATION_TYPES.REPLACE
-            );
+            this.replaceCurrentCellValue(event.target.value, event.target.value)
         }, 250);
     };
 
@@ -277,12 +271,7 @@ export class Cell extends React.PureComponent<Props, State> {
 
         if (renderer) {
             const onQSChange = (name: string, value: string | any[], items: any) => {
-                cellActions.modifyCell(
-                    colIdx,
-                    rowIdx,
-                    [{ raw: items?.value, display: items?.label }],
-                    MODIFICATION_TYPES.REPLACE
-                );
+                this.replaceCurrentCellValue(items?.label, items?.value);
             };
 
             return renderer(

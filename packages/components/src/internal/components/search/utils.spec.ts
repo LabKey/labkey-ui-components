@@ -1322,6 +1322,22 @@ describe('isValidFilterField', () => {
         );
     });
 
+    test('mult-value lookup field and not supportGroupConcatSubSelect', () => {
+        const field = QueryColumn.create({ name: 'test', lookup: { isPublic: true }, multiValue: true });
+        const queryInfo = QueryInfo.create({
+            schemaName: 'test',
+            name: 'query',
+            supportGroupConcatSubSelect: false,
+        });
+        expect(isValidFilterField(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(true);
+        expect(isValidFilterFieldExcludeLookups(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
+        expect(isValidFilterFieldSampleFinder(field, queryInfo, SampleTypeDataType.exprColumnsWithSubSelect)).toBe(
+            false
+        );
+    });
+
     test('Units field', () => {
         const field = QueryColumn.create({ name: 'Units', fieldKey: 'Units' });
         const queryInfo = QueryInfo.create({

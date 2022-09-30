@@ -49,6 +49,7 @@ const QUERY_INFO = QueryInfo.fromJSON({
             caption: 'FieldD',
             shortCaption: 'FieldD',
             jsonType: 'int',
+            displayFieldJsonType: 'string',
             lookup: {
                 // details not important here
             },
@@ -175,7 +176,7 @@ describe('getSessionSearchFilterProps', () => {
     });
 
     test('baseFilter, without baseModel', () => {
-        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], undefined, [
+        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], undefined, undefined, [
             Filter.create('a', 'Something'),
         ]);
         expect(props).toHaveLength(1);
@@ -186,7 +187,7 @@ describe('getSessionSearchFilterProps', () => {
         const baseModel = MODEL.mutate({
             schemaQuery: SchemaQuery.create('samples', 'query2'),
         });
-        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], baseModel, [
+        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], SampleTypeDataType, baseModel, [
             Filter.create('a', 'Something'),
         ]);
         expect(props).toHaveLength(2);
@@ -200,7 +201,7 @@ describe('getSessionSearchFilterProps', () => {
         const baseModel = MODEL.mutate({
             schemaQuery: SchemaQuery.create('exp.data', 'query3'),
         });
-        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], baseModel, [
+        const props = getSessionSearchFilterProps(SampleTypeDataType, MODEL, [], DataClassDataType, baseModel, [
             Filter.create('a', 'Something'),
         ]);
         expect(props).toHaveLength(2);

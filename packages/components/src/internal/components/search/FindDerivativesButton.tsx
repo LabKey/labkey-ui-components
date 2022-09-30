@@ -14,10 +14,6 @@ import { EntityDataType } from '../entities/models';
 
 import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
 
-import { DataClassDataType, SampleTypeDataType } from '../entities/constants';
-
-import { SCHEMAS } from '../../schemas';
-
 import { getSampleFinderLocalStorageKey, isValidFilterFieldSampleFinder, searchFiltersToJson } from './utils';
 import {FieldFilter, FilterProps} from './models';
 import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
@@ -35,7 +31,7 @@ export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): Field
         fieldKey: column?.fieldKey ?? colName,
         fieldCaption: column?.caption ?? colName,
         filter,
-        jsonType: column.isLookup() ? 'string' : column?.jsonType ?? 'string', // deferring to 'string' for lookups since lookup display columns default to text fields
+        jsonType: column.isLookup() ? column.displayFieldJsonType : column?.jsonType ?? 'string',
     } as FieldFilter;
 };
 
@@ -43,6 +39,7 @@ export const getSessionSearchFilterProps = (
     entityDataType: EntityDataType,
     model: QueryModel,
     filters: Filter.IFilter[],
+    baseEntityDataType?: EntityDataType,
     baseModel?: QueryModel,
     baseFilter?: Filter.IFilter[]
 ): FilterProps[] => {
@@ -58,9 +55,8 @@ export const getSessionSearchFilterProps = (
     if (baseModel && baseFilter) {
         filterProps.push({
             schemaQuery: baseModel.schemaQuery,
-            filterArray: [getFieldFilter(baseModel, baseFilter[0])],
-            entityDataType:
-                baseModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? DataClassDataType : SampleTypeDataType,
+            filterArray: baseFilter.map(filter => getFieldFilter(baseModel, filter)),
+            entityDataType: baseEntityDataType,
             dataTypeDisplayName: baseModel.title ?? baseModel.queryInfo.title ?? baseModel.queryName,
         });
     }
@@ -77,6 +73,7 @@ export const getSessionSearchFilterProps = (
 interface Props {
     asSubMenu?: boolean;
     baseFilter?: Filter.IFilter[];
+    baseEntityDataType?: EntityDataType;
     baseModel?: QueryModel;
     entityDataType: EntityDataType;
     metricFeatureArea?: string;
@@ -84,7 +81,7 @@ interface Props {
 }
 
 export const FindDerivativesButton: FC<Props> = memo(props => {
-    const { baseModel, baseFilter, model, entityDataType, asSubMenu, metricFeatureArea } = props;
+    const { baseEntityDataType, baseModel, baseFilter, model, entityDataType, asSubMenu, metricFeatureArea } = props;
     const { api } = useAppContext();
 
     const viewAndUserFilters = useMemo(
@@ -115,6 +112,7 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
             entityDataType,
             model,
             viewAndUserFilters,
+            baseEntityDataType,
             baseModel,
             baseFilter
         );

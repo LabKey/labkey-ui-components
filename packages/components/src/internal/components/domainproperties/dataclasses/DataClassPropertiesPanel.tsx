@@ -141,7 +141,6 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                 {...this.props}
                 headerId={PROPERTIES_HEADER_ID}
                 title={nounSingular + ' Properties'}
-                titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
                 warning={warning}

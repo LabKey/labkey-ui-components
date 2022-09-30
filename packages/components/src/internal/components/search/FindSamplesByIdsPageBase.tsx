@@ -22,7 +22,7 @@ import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
 import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
 import { SamplesEditButtonSections } from '../samples/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { arrayEquals } from '../../util/utils';
+import { arrayEquals, caseInsensitive } from '../../util/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { useServerContext } from '../base/ServerContext';
@@ -91,7 +91,9 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
                 gridButtons={gridButtons}
                 gridButtonProps={{
                     ...gridButtonProps,
-                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT],
+                    excludedMenuKeys: [SamplesEditButtonSections.IMPORT].concat(
+                        gridButtonProps?.excludedMenuKeys ?? []
+                    ),
                     metricFeatureArea: FIND_SAMPLE_BY_ID_METRIC_AREA,
                     excludeAddButton: true,
                 }}
@@ -124,7 +126,12 @@ export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = mem
 
                         const sampleGridId = createGridModelId(TYPE_GRID_PREFIX, sampleSchemaQuery);
 
-                        const filter = Filter.create('RowId', sampleTypesRows[sampleType], Filter.Types.IN);
+                        // note: changed to using Name IN clause instead of RowId IN clause so that the filter
+                        // will pass through to the Sample Finder via the FindDerivativesButton to match
+                        // expected behavior there
+                        const rows = sampleTypesRows[sampleType];
+                        const sampleIds = rows.map(row => caseInsensitive(row, 'SampleID')?.value);
+                        const filter = Filter.create('Name', sampleIds, Filter.Types.IN);
 
                         if (!sampleGridIds || sampleGridIds.indexOf(sampleGridId) === -1) {
                             const queryConfig = {

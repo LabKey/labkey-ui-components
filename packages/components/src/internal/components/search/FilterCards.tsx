@@ -11,12 +11,13 @@ import { FilterValueDisplay } from './FilterValueDisplay';
 interface GroupedFilterProps {
     cardIndex: number;
     filterArray: FieldFilter[];
+    noValueInQueryFilterMsg?: string;
     onFilterValueExpand: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 
 // exported for jest testing
 export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
-    const { cardIndex, filterArray, onFilterValueExpand } = props;
+    const { cardIndex, filterArray, onFilterValueExpand, noValueInQueryFilterMsg } = props;
     const groupedFilters = {};
     filterArray?.forEach(filter => {
         if (!groupedFilters[filter.fieldKey]) {
@@ -38,6 +39,7 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
                         <FilterValueDisplay
                             filter={fieldFilter.filter}
                             onFilterValueExpand={() => onFilterValueExpand(cardIndex, fieldFilter)}
+                            noValueInQueryFilterMsg={noValueInQueryFilterMsg}
                         />
                     </td>
                 </tr>
@@ -48,9 +50,9 @@ export const GroupedFilterValues: FC<GroupedFilterProps> = memo(props => {
 });
 
 interface FilterEditProps extends FilterProps {
+    onAdd: (entityDataType: EntityDataType) => void;
     onDelete: (index) => void;
     onEdit: (index) => void;
-    onAdd: (entityDataType: EntityDataType) => void;
     onFilterValueExpand?: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 
@@ -94,7 +96,8 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                             </div>
                         </div>
                         <div className="filter-card__empty-content">
-                            No {entityDataType.nounAsParentSingular} Types defined.
+                            No {entityDataType.nounAsParentSingular}
+                            {entityDataType.nounAsParentSingular.toLowerCase() === 'assay' ? 's' : ' Types'} defined.
                         </div>
                     </div>
                 </>
@@ -147,6 +150,7 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
                                     cardIndex={index}
                                     filterArray={filterArray}
                                     onFilterValueExpand={onFilterValueExpand}
+                                    noValueInQueryFilterMsg={`Samples without ${dataTypeName} results`}
                                 />
                             </tbody>
                         </table>
@@ -160,9 +164,9 @@ export const FilterCard: FC<FilterEditProps> = memo(props => {
 interface Props {
     cards: FilterProps[];
     className?: string;
+    onAddEntity: (entityDataType: EntityDataType) => void;
     onFilterDelete?: (index) => void;
     onFilterEdit?: (index) => void;
-    onAddEntity: (entityDataType: EntityDataType) => void;
     onFilterValueExpand?: (cardIndex: number, fieldFilter: FieldFilter) => void;
 }
 

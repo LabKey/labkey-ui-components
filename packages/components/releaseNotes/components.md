@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.223.0
+*Released*: 30 September 2022
 * Sample Finder assay result filters
   * Added COLUMN_IN_FILTER_TYPE and COLUMN_NOT_IN_FILTER_TYPE
   * Added Assay card to SampleFinderSection and wired up assay filters for Finder

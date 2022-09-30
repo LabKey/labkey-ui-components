@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD September 2022
+### version 2.225.0
+*Released*: 30 September 2022
 * FindDerivativesButton added to samples/sources/registry grids
   * take the model view and user filters and create the sample finder sessionStorage object
   * allow passthrough of base/context filter to be applied for certain scenarios

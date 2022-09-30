@@ -28,7 +28,7 @@ export const getFieldFilter = (model: QueryModel, filter: Filter.IFilter): Field
     const column = model.getColumn(colName);
 
     return {
-        fieldKey: column?.fieldKey ?? colName,
+        fieldKey: colName,
         fieldCaption: column?.caption ?? colName,
         filter,
         jsonType: column.isLookup() ? column.displayFieldJsonType : column?.jsonType ?? 'string',

@@ -20,10 +20,8 @@ import classNames from 'classnames';
 import { MenuItemModel, MenuSectionModel } from './model';
 import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 import { naturalSort } from '../../../public/sort';
+import { getHref } from '../../url/utils';
 
-function getHref(url: AppURL | string): string {
-    return typeof url === 'string' ? url : url.toHref();
-}
 
 export class MenuSectionConfig extends Record({
     activeJobIconCls: 'fa-spinner fa-pulse',

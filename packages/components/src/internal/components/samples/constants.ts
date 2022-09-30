@@ -1,5 +1,3 @@
-import { Query } from '@labkey/api';
-
 import { IDomainField } from '../domainproperties/models';
 
 import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
@@ -198,22 +196,6 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
     includeColumn: ['AliquotedFromLSID'],
 };
 
-export const COMMON_AUDIT_QUERIES = [
-    { value: 'attachmentauditevent', label: 'Attachment Events' },
-    { value: 'domainauditevent', label: 'Domain Events' },
-    { value: 'domainpropertyauditevent', label: 'Domain Property Events' },
-    { value: 'queryupdateauditevent', label: 'Data Update Events', hasDetail: true },
-    { value: 'inventoryauditevent', label: 'Freezer Management Events', hasDetail: true },
-    { value: 'listauditevent', label: 'List Events' },
-    {
-        value: 'groupauditevent',
-        label: 'Roles and Assignment Events',
-        containerFilter: Query.ContainerFilter.allFolders,
-    },
-    { value: 'samplesetauditevent', label: 'Sample Type Events' },
-    { value: 'sampletimelineevent', label: 'Sample Timeline Events', hasDetail: true },
-    { value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders },
-];
 
 export const PROJECT_AUDIT_QUERY = { value: 'containerauditevent', label: 'Project Events' };
 export const ASSAY_AUDIT_QUERY = { value: 'experimentauditevent', label: 'Assay Events' };

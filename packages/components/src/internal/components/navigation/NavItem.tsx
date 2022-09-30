@@ -30,7 +30,9 @@ const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, locati
 
     useEffect(() => {
         if (to && location) {
-            const isActive = location.pathname.toLowerCase() === to.toString().toLowerCase();
+            const toString = to.toString();
+            const paramIndex = toString.indexOf("?"); ;
+            const isActive = location.pathname.toLowerCase() === toString.substring(0, paramIndex < 0 ? toString.length : paramIndex).toLowerCase();
             setActive(isActive);
 
             if (isActive) {

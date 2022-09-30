@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.224.0
+*Released*: 30 September 2022
+* For consistency and to reduce redundancy, remove name of domain from header on several domain properties panels
+  (left in place for panels shown in LKS pages where the name redundancy is less obvious)
+* Small updates to styling of ItemsLegend
+
 ### version 2.223.0
 *Released*: 30 September 2022
 * Sample Finder assay result filters

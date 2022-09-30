@@ -1899,7 +1899,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             sampleTypeCaption="Sample Type"
             showLinkToStudy={false}
             title="Sample Type Properties"
-            titlePrefix="Test Name"
             togglePanel={[Function]}
             updateDupeParentAliases={[Function]}
             updateModel={[Function]}
@@ -1937,7 +1936,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       isValid={true}
                       panelStatus="NONE"
                       title="Sample Type Properties"
-                      titlePrefix="Test Name"
                       togglePanel={[Function]}
                       useTheme={false}
                     >
@@ -1956,7 +1954,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                           <span
                             className="domain-panel-title"
                           >
-                            Test Name - Sample Type Properties
+                            Sample Type Properties
                           </span>
                           <span
                             className="pull-right"

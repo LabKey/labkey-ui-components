@@ -400,7 +400,6 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 {...this.props}
                 headerId={PROPERTIES_HEADER_ID}
                 title="Sample Type Properties"
-                titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
                 warning={warning}

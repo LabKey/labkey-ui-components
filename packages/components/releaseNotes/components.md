@@ -10,6 +10,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * fix for "Showing all samples with ... parents" filter to use getExpDescendantOfFilter()
 * add QueryModel helper to get just the view filters from the queryInfo / viewName
 
+### version 2.224.0
+*Released*: 30 September 2022
+* For consistency and to reduce redundancy, remove name of domain from header on several domain properties panels
+  (left in place for panels shown in LKS pages where the name redundancy is less obvious)
+* Small updates to styling of ItemsLegend
+
 ### version 2.223.0
 *Released*: 30 September 2022
 * Sample Finder assay result filters

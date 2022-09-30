@@ -484,6 +484,7 @@ import {
     getSelectedItemSamples,
 } from './internal/components/entities/actions';
 import {
+    AssayResultDataType,
     AssayRunDataType,
     DataClassDataType,
     ParentEntityRequiredColumns,
@@ -1107,6 +1108,7 @@ export {
     getDeleteSharedSampleTypeUrl,
     SampleTypeDataType,
     DataClassDataType,
+    AssayResultDataType,
     AssayRunDataType,
     ParentEntityRequiredColumns,
     SampleEmptyAlert,

@@ -48,11 +48,11 @@ export class SearchIdData {
 }
 
 export interface SearchResultCardData {
+    altText?: string;
+    category?: string;
     iconDir?: string;
     iconSrc?: string;
-    altText?: string;
     title?: string;
-    category?: string;
     typeName?: string;
 }
 
@@ -64,27 +64,30 @@ export interface FieldFilter {
 }
 
 export interface FilterProps {
-    entityDataType: EntityDataType;
-    filterArray?: FieldFilter[]; // the filters to be used in conjunction with the schemaQuery
-    schemaQuery?: SchemaQuery;
     dataTypeDisplayName?: string;
-    index?: number;
     disabled?: boolean;
+    entityDataType: EntityDataType;
+    // the filters to be used in conjunction with the schemaQuery
+    filterArray?: FieldFilter[];
+    index?: number;
+    schemaQuery?: SchemaQuery;
+    selectColumnFieldKey?: string;
+    targetColumnFieldKey?: string;
 }
 
 export interface SearchSessionStorageProps {
-    filters: FilterProps[];
     filterChangeCounter: number;
     filterTimestamp: string;
+    filters: FilterProps[];
 }
 
 export interface FieldFilterOption {
-    value: string;
-    label: string;
-    valueRequired: boolean;
-    multiValue: boolean;
     betweenOperator: boolean;
     isSoleFilter: boolean;
+    label: string;
+    multiValue: boolean;
+    value: string;
+    valueRequired: boolean;
 }
 
 export interface FilterSelection {
@@ -94,8 +97,8 @@ export interface FilterSelection {
 }
 
 export interface FinderReport {
+    entityId?: string;
+    isSession?: boolean;
     reportId?: string;
     reportName?: string;
-    isSession?: boolean;
-    entityId?: string;
 }

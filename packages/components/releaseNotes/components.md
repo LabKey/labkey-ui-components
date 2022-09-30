@@ -10,6 +10,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * fix for "Showing all samples with ... parents" filter to use getExpDescendantOfFilter()
 * add QueryModel helper to get just the view filters from the queryInfo / viewName
 
+### version 2.223.0
+*Released*: 30 September 2022
+* Sample Finder assay result filters
+  * Added COLUMN_IN_FILTER_TYPE and COLUMN_NOT_IN_FILTER_TYPE
+  * Added Assay card to SampleFinderSection and wired up assay filters for Finder
+  * Modified QueryFilterPanel and EntityFieldFilterModal to allow "Without data from this type" checkbox
+
 ### version 2.222.1
 *Released*: 28 September 2022
 * Issue 46395: add `hasOrdinal` property to SampleButtonProps so we can retain ordering when adding to storage from a FindByIds page

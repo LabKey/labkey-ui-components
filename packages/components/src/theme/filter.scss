@@ -270,3 +270,15 @@
     cursor:pointer;
 }
 
+.filter-modal__fields-col-nodata-msg {
+    display: inline-block;
+    margin-left: 20px;
+    padding-right: 5px;
+    color: $text-color;
+}
+
+.field-modal__col-content-disabled {
+    opacity: 0.5;
+
+}
+

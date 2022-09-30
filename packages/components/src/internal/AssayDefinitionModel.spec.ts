@@ -21,16 +21,16 @@ describe('AssayDefinitionModel', () => {
         expect(nonSampleColumn).toBe(null);
     });
 
-    test('with getSampleColumn()', () => {
+    test('getSampleColumn with invalid domainType', () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
-        const sampleColumn = modelWithSampleId.getSampleColumn();
-        expect(sampleColumn.column.name).toBe('SampleID');
+        const sampleColumn = modelWithSampleId.getSampleColumn(AssayDomainTypes.BATCH);
+        expect(sampleColumn).toBe(null);
     });
 
-    test('without getSampleColumn()', () => {
-        const modelWithout = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
-        const nonSampleColumn = modelWithout.getSampleColumn();
-        expect(nonSampleColumn).toBe(null);
+    test('getSampleColumn with domainType', () => {
+        const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
+        const sampleColumn = modelWithSampleId.getSampleColumn(AssayDomainTypes.RESULT);
+        expect(sampleColumn.column.fieldKey).toBe('SampleID');
     });
 
     test('hasLookup()', () => {

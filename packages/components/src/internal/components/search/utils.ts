@@ -180,8 +180,8 @@ export function getAssayFilter(card: FilterProps, cf?: Query.ContainerFilter): F
     const { schemaQuery, filterArray, selectColumnFieldKey, targetColumnFieldKey } = card;
     if (!filterArray || filterArray.length === 0) return undefined;
 
-    const noAssayDataFilter = filterArray.find(fieldFilter =>
-        fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
+    const noAssayDataFilter = filterArray.find(
+        fieldFilter => fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
     )?.filter;
 
     if (noAssayDataFilter) return noAssayDataFilter;

@@ -358,8 +358,7 @@ export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(prop
         }
     }, []);
 
-    if (!enabledEntityTypes)
-        return <LoadingSpinner/>;
+    if (!enabledEntityTypes) return <LoadingSpinner />;
 
     return (
         <Section

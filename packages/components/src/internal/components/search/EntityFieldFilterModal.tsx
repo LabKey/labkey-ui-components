@@ -225,8 +225,9 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         const activeQueryFilters: FieldFilter[] = dataTypeFilters[activeQuery];
         if (!activeQueryFilters || activeQueryFilters.length === 0) return false;
 
-        return activeQueryFilters.some(fieldFilter =>
-            fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
+        return activeQueryFilters.some(
+            fieldFilter =>
+                fieldFilter.filter.getFilterType().getURLSuffix() === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()
         );
     }, [dataTypeFilters, activeQuery]);
 

@@ -285,7 +285,9 @@ export function loadFinderSearch(view: FinderReport): Promise<any> {
     });
 }
 
-export function getSampleTypesFromFindByIdQuery(schemaQuery: SchemaQuery): Promise<{ [key: string]: number[] }> {
+export function getSampleTypesFromFindByIdQuery(
+    schemaQuery: SchemaQuery
+): Promise<{ [key: string]: Record<string, any>[] }> {
     return new Promise((resolve, reject) => {
         selectRows({
             schemaQuery,
@@ -295,9 +297,8 @@ export function getSampleTypesFromFindByIdQuery(schemaQuery: SchemaQuery): Promi
                 if (response.rows) {
                     response.rows.forEach(row => {
                         const sampleType = caseInsensitive(row, 'SampleSet')?.displayValue;
-                        const sampleRowId = caseInsensitive(row, 'RowId')?.value;
                         if (!sampleTypesRows[sampleType]) sampleTypesRows[sampleType] = [];
-                        sampleTypesRows[sampleType].push(sampleRowId);
+                        sampleTypesRows[sampleType].push(row);
                     });
                     resolve(sampleTypesRows);
                 }

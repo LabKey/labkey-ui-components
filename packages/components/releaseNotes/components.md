@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.226.0
+*Released*: 01 October 2022
+* Update EditableGrid -> Cell to use input renderer if available on column
+* Update BulkUpdateForm to allow required columns
+* Update AssayTaskInput to be input renderer for BulkUpdateForm and EditableGrid
+* Update SampleStatusInput to be input renderer for EditableGrid due to EditableGrid update
+
+
 ### version 2.225.0
 *Released*: 30 September 2022
 * FindDerivativesButton added to samples/sources/registry grids

@@ -18,7 +18,11 @@ import { Query } from '@labkey/api';
 import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
 
+import { Map, List } from 'immutable';
+
 import { QueryColumn } from '../../../public/QueryColumn';
+
+import { encodePart } from '../../../public/SchemaQuery';
 
 import { AssayTaskInput } from './input/AssayTaskInput';
 
@@ -41,7 +45,8 @@ type InputRenderer = (
     onAdditionalFormDataChange?: (name: string, value: any) => any,
     inputClass?: string,
     containerPath?: string,
-    containerFilter?: Query.ContainerFilter
+    containerFilter?: Query.ContainerFilter,
+    isGridInput?: boolean
 ) => ReactNode;
 
 const AliasInputRenderer: InputRenderer = (
@@ -107,7 +112,8 @@ const SampleStatusInputRenderer: InputRenderer = (
     onAdditionalFormDataChange?: (name: string, value: any) => any,
     inputClass?: string,
     containerPath?: string,
-    containerFilter?: Query.ContainerFilter
+    containerFilter?: Query.ContainerFilter,
+    isGridInput?: boolean
 ) => {
     return (
         <SampleStatusInput
@@ -125,6 +131,7 @@ const SampleStatusInputRenderer: InputRenderer = (
             inputClass={inputClass}
             containerFilter={containerFilter}
             containerPath={containerPath}
+            isGridInput={isGridInput}
         />
     );
 };
@@ -136,15 +143,40 @@ const AssayTaskInputRenderer: InputRenderer = (
     key: ReactText,
     data: any,
     value: any,
-    isDetailInput: boolean
-) => (
-    <AssayTaskInput
-        assayId={data.getIn([ASSAY_ID_INDEX, 'value'])}
-        isDetailInput={isDetailInput}
-        name={col.name}
-        value={value}
-    />
-);
+    isDetailInput: boolean,
+    allowFieldDisable?: boolean,
+    initiallyDisabled?: boolean,
+    onToggleDisable?: (disabled: boolean) => void,
+    onQSChange?: (name: string, value: string | any[], items: any) => void,
+    renderLabelField?: (col: QueryColumn) => ReactNode,
+    showAsteriskSymbol?: boolean,
+    onAdditionalFormDataChange?: (name: string, value: any) => any,
+    inputClass?: string,
+    containerPath?: string,
+    containerFilter?: Query.ContainerFilter,
+    isGridInput?: boolean
+) => {
+    // Used in multiple contexts so need to check various data formats
+    let assayId = Map.isMap(data) ? data.get(ASSAY_ID_INDEX) : data[ASSAY_ID_INDEX];
+    if (!assayId) assayId = Map.isMap(data) ? data.get(encodePart(ASSAY_ID_INDEX)) : data[encodePart(ASSAY_ID_INDEX)];
+    if (List.isList(assayId)) assayId = assayId.get(0);
+    assayId = assayId?.value ?? assayId;
+    assayId = assayId?.get?.('value') ?? assayId;
+
+    return (
+        <AssayTaskInput
+            assayId={assayId}
+            isDetailInput={isDetailInput}
+            name={col.name}
+            value={value}
+            allowDisable={allowFieldDisable}
+            initiallyDisabled={initiallyDisabled}
+            onToggleDisable={onToggleDisable}
+            onChange={onQSChange}
+            isGridInput={isGridInput}
+        />
+    );
+};
 
 export function resolveRenderer(column: QueryColumn): InputRenderer {
     // 23462: Global Formsy validation rule for numbers

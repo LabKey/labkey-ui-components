@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -26,6 +26,8 @@ import { CELL_SELECTION_HANDLE_CLASSNAME, KEYS, MODIFICATION_TYPES, SELECTION_TY
 import { getQueryColumnRenderers } from '../../global';
 
 import { QueryColumn } from '../../../public/QueryColumn';
+
+import { resolveRenderer } from '../forms/renderers';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { DateInputCell, DateInputCellProps } from './DateInputCell';
@@ -55,6 +57,7 @@ interface Props {
     name?: string;
     placeholder?: string;
     readOnly?: boolean;
+    row: any;
     rowIdx: number;
     selected?: boolean;
     selection?: boolean;
@@ -117,20 +120,25 @@ export class Cell extends React.PureComponent<Props, State> {
         }
     };
 
-    handleBlur = (evt: any): void => {
-        clearTimeout(this.changeTO);
+    replaceCurrentCellValue = (display: any, raw: any): void => {
         const { colIdx, rowIdx, cellActions } = this.props;
         cellActions.modifyCell(
             colIdx,
             rowIdx,
             [
                 {
-                    display: evt.target.value,
-                    raw: evt.target.value,
+                    display,
+                    raw,
                 },
             ],
             MODIFICATION_TYPES.REPLACE
         );
+    };
+
+    handleBlur = (evt: any): void => {
+        clearTimeout(this.changeTO);
+        const { colIdx, rowIdx, cellActions } = this.props;
+        this.replaceCurrentCellValue(evt.target.value, evt.target.value);
     };
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -138,18 +146,7 @@ export class Cell extends React.PureComponent<Props, State> {
 
         clearTimeout(this.changeTO);
         this.changeTO = window.setTimeout(() => {
-            const { colIdx, rowIdx, cellActions } = this.props;
-            cellActions.modifyCell(
-                colIdx,
-                rowIdx,
-                [
-                    {
-                        display: event.target.value,
-                        raw: event.target.value,
-                    },
-                ],
-                MODIFICATION_TYPES.REPLACE
-            );
+            this.replaceCurrentCellValue(event.target.value, event.target.value);
         }, 250);
     };
 
@@ -267,6 +264,37 @@ export class Cell extends React.PureComponent<Props, State> {
         }
     };
 
+    getRenderer = (): ReactNode => {
+        const { cellActions, col, colIdx, rowIdx, values, row } = this.props;
+
+        const renderer = resolveRenderer(col);
+
+        if (renderer) {
+            const onQSChange = (name: string, value: string | any[], items: any) => {
+                this.replaceCurrentCellValue(items?.label, items?.value);
+            };
+
+            return renderer(
+                col,
+                col.name,
+                row,
+                values?.get(0)?.raw,
+                false,
+                false,
+                false,
+                null,
+                onQSChange,
+                null,
+                false,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                true
+            );
+        }
+    };
+
     render() {
         const {
             cellActions,
@@ -282,6 +310,7 @@ export class Cell extends React.PureComponent<Props, State> {
             selection,
             values,
             filteredLookupValues,
+            row,
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
@@ -317,7 +346,8 @@ export class Cell extends React.PureComponent<Props, State> {
 
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
             let cell;
-            if (showLookup) {
+
+            if (showLookup || col.inputRenderer) {
                 cell = (
                     <div {...displayProps}>
                         <div className="cell-menu-value">{valueDisplay}</div>
@@ -353,6 +383,10 @@ export class Cell extends React.PureComponent<Props, State> {
                     )}
                 </>
             );
+        }
+
+        if (col.inputRenderer) {
+            return this.getRenderer();
         }
 
         if (showLookup) {

@@ -5,9 +5,13 @@ import { selectRowsDeprecated } from '../../../query/api';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { Alert } from '../../base/Alert';
 
-import { SelectInput } from './SelectInput';
+import { customStyles, customTheme, LookupCell } from '../../editable/LookupCell';
 
-interface InputOption {
+import { SelectInput } from './SelectInput';
+import { DisableableInputProps } from './DisableableInput';
+import {customBulkStyles} from "./SampleStatusInput";
+
+export interface InputOption {
     label: string;
     value: number;
 }
@@ -41,17 +45,28 @@ async function loadInputOptions(assayId: number): Promise<InputOption[]> {
     return taskOptions;
 }
 
-interface WorkflowTaskInputProps {
+interface WorkflowTaskInputProps extends DisableableInputProps {
     assayId: number;
     isDetailInput: boolean;
+    isGridInput: boolean;
     name: string;
-    value: number;
+    onChange?: (name: string, value: string | any[], items: any) => void;
 }
 
 // Note: this component is specific to Workflow, and ideally would live in the Workflow package, however we do not
 // currently have a way for our Apps to override the InputRenderers used by resolveRenderer (see renderers.tsx).
 export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
-    const { assayId, isDetailInput, name, value } = props;
+    const {
+        assayId,
+        isDetailInput,
+        allowDisable,
+        initiallyDisabled,
+        onToggleDisable,
+        name,
+        value,
+        onChange,
+        isGridInput,
+    } = props;
     const [loading, setLoading] = useState<boolean>(true);
     const [taskOptions, setTaskOptions] = useState<InputOption[]>(undefined);
     const [error, setError] = useState<string>(undefined);
@@ -86,16 +101,24 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
 
             {!loading && !error && (
                 <SelectInput
-                    formsy
+                    formsy={!isGridInput}
                     clearable
                     description={isDetailInput ? undefined : 'The workflow task associated with this Run'}
                     disabled={taskOptions === undefined}
-                    inputClass={isDetailInput ? 'col-sm-12' : undefined}
+                    inputClass={isDetailInput ? 'col-sm-12' : isGridInput ? 'select-input-cell' : undefined}
+                    containerClass={isGridInput ? 'select-input-cell-container' : undefined}
                     isLoading={loading}
-                    label={isDetailInput ? undefined : 'Workflow Task'}
+                    label={isDetailInput || isGridInput ? undefined : 'Workflow Task'}
                     name={name}
                     options={taskOptions}
                     value={value}
+                    allowDisable={allowDisable}
+                    initiallyDisabled={initiallyDisabled}
+                    onToggleDisable={onToggleDisable}
+                    onChange={onChange}
+                    menuPosition={isGridInput ? 'fixed' : undefined}
+                    customStyles={isGridInput ? customStyles : isDetailInput ? undefined : customBulkStyles}
+                    customTheme={isGridInput ? customTheme : undefined}
                 />
             )}
         </div>

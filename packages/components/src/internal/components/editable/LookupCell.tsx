@@ -26,7 +26,7 @@ import { QuerySelect } from '../forms/QuerySelect';
 import { ViewInfo } from '../../ViewInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-const customStyles = {
+export const customStyles = {
     control: provided => ({
         ...provided,
         minHeight: 24,
@@ -44,10 +44,11 @@ const customStyles = {
     indicatorsContainer: provided => ({
         ...provided,
         minHeight: 24,
+        padding: '0 4px',
     }),
 };
 
-const customTheme = theme => ({
+export const customTheme = theme => ({
     ...theme,
     colors: {
         ...theme.colors,
@@ -146,7 +147,11 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 queryFilters={queryFilters}
                 multiple={isMultiple}
                 // use detail view to assure we get values that may have been filtered out in the default view
-                schemaQuery={SchemaQuery.create(lookup.schemaQuery.schemaName, lookup.schemaQuery.queryName, ViewInfo.DETAIL_NAME)}
+                schemaQuery={SchemaQuery.create(
+                    lookup.schemaQuery.schemaName,
+                    lookup.schemaQuery.queryName,
+                    ViewInfo.DETAIL_NAME
+                )}
                 key={col.lookupKey}
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 containerPath={lookup.containerPath}

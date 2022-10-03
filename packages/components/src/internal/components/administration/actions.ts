@@ -13,7 +13,7 @@ import { getProjectPath } from '../../app/utils';
 
 import { Container } from '../base/models/Container';
 
-import { GroupMembership } from './models';
+import { GroupMembership, MemberType } from './models';
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
 
 export function getUpdatedPolicyRoles(
@@ -119,14 +119,18 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): Gr
         const member = {
             name: memberIsGroup ? groups.find(group => group.id === curr.UserId).name : userDisplayValue,
             id: curr.UserId,
-            type: memberIsGroup ? 'g' : 'u',
+            type: memberIsGroup ? MemberType.group : MemberType.user,
         };
         if (curr.GroupId in prev) {
             prev[groupId].members.push(member);
             prev[groupId].members.sort((member1, member2) => naturalSort(member1.name, member2.name));
             return prev;
         } else {
-            prev[groupId] = { groupName: curr['GroupId/Name'], members: [member], type: isProjectGroup ? 'g' : 'sg' };
+            prev[groupId] = {
+                groupName: curr['GroupId/Name'],
+                members: [member],
+                type: isProjectGroup ? MemberType.group : MemberType.siteGroup,
+            };
             return prev;
         }
     }, {});
@@ -137,7 +141,7 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): Gr
             groupsWithMembers[group.id] = {
                 groupName: group.name,
                 members: [],
-                type: group.isProjectGroup ? 'g' : 'sg',
+                type: group.isProjectGroup ? MemberType.group : MemberType.siteGroup,
             };
         }
     });

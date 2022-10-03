@@ -6,6 +6,8 @@ import { hasPremiumModule } from '../../app/utils';
 import { ModuleContext } from '../base/ServerContext';
 import { Principal } from '../permissions/models';
 
+import { MemberType } from './models';
+
 export function isLoginAutoRedirectEnabled(moduleContext: ModuleContext): boolean {
     return moduleContext?.api?.AutoRedirectSSOAuthConfiguration !== undefined;
 }
@@ -19,7 +21,7 @@ export function createGroupedOptions(principals: List<Principal>): Array<{ label
         (prev, curr) => {
             if (curr.isSiteGroup) {
                 prev[0].options.push(curr);
-            } else if (curr.type === 'g') {
+            } else if (curr.type === MemberType.group) {
                 prev[1].options.push(curr);
             } else {
                 prev[2].options.push(curr);

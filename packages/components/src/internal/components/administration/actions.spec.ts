@@ -8,6 +8,7 @@ import {
     getUpdatedPolicyRolesByUniqueName,
     getUserGridFilterURL,
 } from './actions';
+import { MemberType } from './models';
 
 describe('Administration actions', () => {
     test('getUpdatedPolicyRoles', () => {
@@ -118,10 +119,10 @@ describe('Administration actions', () => {
                     {
                         id: 1005,
                         name: 'rosalinep@labkey.com (rosalinep)',
-                        type: 'u',
+                        type: MemberType.user,
                     },
                 ],
-                type: 'sg',
+                type: MemberType.siteGroup,
             },
             '1064': {
                 groupName: 'group1',
@@ -129,25 +130,25 @@ describe('Administration actions', () => {
                     {
                         id: 1066,
                         name: 'group2',
-                        type: 'g',
+                        type: MemberType.group,
                     },
                     {
                         id: 1005,
                         name: 'rosalinep@labkey.com (rosalinep)',
-                        type: 'u',
+                        type: MemberType.user,
                     },
                 ],
-                type: 'g',
+                type: MemberType.group,
             },
             '1066': {
                 groupName: 'group2',
                 members: [],
-                type: 'g',
+                type: MemberType.group,
             },
             '-1': {
                 groupName: 'Administrators',
                 members: [],
-                type: 'sg',
+                type: MemberType.siteGroup,
             },
         };
 

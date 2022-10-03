@@ -3,6 +3,7 @@ import { List } from 'immutable';
 import { Principal } from '../permissions/models';
 
 import { createGroupedOptions } from './utils';
+import { MemberType } from './models';
 
 describe('createGroupedOptions', () => {
     const SITE_GROUPS = List([
@@ -10,7 +11,7 @@ describe('createGroupedOptions', () => {
             userId: 1109,
             name: 'SiteGroup1',
             displayName: 'SiteGroup1',
-            type: 'g',
+            type: MemberType.group,
             active: true,
             isSiteGroup: true,
         }),
@@ -18,7 +19,7 @@ describe('createGroupedOptions', () => {
             userId: 1035,
             name: 'SiteGroup2',
             displayName: 'SiteGroup2',
-            type: 'g',
+            type: MemberType.group,
             active: true,
             isSiteGroup: true,
         }),
@@ -28,7 +29,7 @@ describe('createGroupedOptions', () => {
             userId: 1009,
             name: 'editor@labkey.com',
             displayName: 'editor@labkey.com (editor)',
-            type: 'u',
+            type: MemberType.user,
             active: true,
             isSiteGroup: false,
         }),
@@ -36,7 +37,7 @@ describe('createGroupedOptions', () => {
             userId: 1008,
             name: 'folderadmin@labkey.com',
             displayName: 'folderadmin@labkey.com (folderadmin)',
-            type: 'u',
+            type: MemberType.user,
             active: true,
             isSiteGroup: false,
         }),
@@ -44,7 +45,7 @@ describe('createGroupedOptions', () => {
             userId: 1065,
             name: 'group1',
             displayName: 'group1',
-            type: 'g',
+            type: MemberType.group,
             active: true,
             isSiteGroup: false,
         }),
@@ -52,7 +53,7 @@ describe('createGroupedOptions', () => {
             userId: 1066,
             name: 'group2',
             displayName: 'group2',
-            type: 'g',
+            type: MemberType.group,
             active: true,
             isSiteGroup: false,
         }),
@@ -60,7 +61,7 @@ describe('createGroupedOptions', () => {
             userId: 1067,
             name: 'group3',
             displayName: 'group3',
-            type: 'g',
+            type: MemberType.group,
             active: true,
             isSiteGroup: false,
         }),

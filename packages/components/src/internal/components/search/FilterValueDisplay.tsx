@@ -5,10 +5,13 @@ import { Filter } from '@labkey/api';
 
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
+import { COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
+
 import { getFilterValuesAsArray, NEGATE_FILTERS, SAMPLE_SEARCH_FILTER_TYPES_SKIP_TITLE } from './utils';
 
 interface FilterValueDisplayProps {
     filter: Filter.IFilter;
+    noValueInQueryFilterMsg?: string;
     onFilterValueExpand?: () => void;
 }
 
@@ -35,7 +38,7 @@ function getShortFilterTypeDisplay(filterType: Filter.IFilterType) {
 }
 
 export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
-    const { filter, onFilterValueExpand } = props;
+    const { filter, onFilterValueExpand, noValueInQueryFilterMsg } = props;
 
     const exclude = useMemo(() => {
         return NEGATE_FILTERS.indexOf(filter.getFilterType().getURLSuffix()) > -1;
@@ -56,7 +59,9 @@ export const FilterValueDisplay: FC<FilterValueDisplayProps> = memo(props => {
         const filterUrlSuffix = filterType.getURLSuffix();
         let filterValueDisplay = null;
 
-        if (
+        if (filterUrlSuffix === COLUMN_NOT_IN_FILTER_TYPE.getURLSuffix()) {
+            filterValueDisplay = noValueInQueryFilterMsg ?? 'Without data from this type';
+        } else if (
             filterUrlSuffix === Filter.Types.IN.getURLSuffix() ||
             filterUrlSuffix === Filter.Types.NOT_IN.getURLSuffix() ||
             filterUrlSuffix === Filter.Types.CONTAINS_ONE_OF.getURLSuffix() ||

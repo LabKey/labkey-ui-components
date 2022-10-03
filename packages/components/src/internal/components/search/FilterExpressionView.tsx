@@ -24,13 +24,14 @@ import {
 import { FieldFilterOption, FilterSelection } from './models';
 
 interface Props {
+    disabled?: boolean;
     field: QueryColumn;
     fieldFilters: Filter.IFilter[];
     onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index: number) => void;
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { field, fieldFilters, onFieldFilterUpdate } = props;
+    const { field, fieldFilters, onFieldFilterUpdate, disabled } = props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
     const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);
@@ -139,6 +140,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
     const updateTextFilterFieldValue = useCallback(
         (filterIndex, event: any, isNumberInput?: boolean) => {
+            if (disabled) return;
+
             let newValue = isNumberInput ? event.target.valueAsNumber : event.target.value;
             if (isNumberInput && isNaN(newValue)) newValue = null;
             const isSecondInput = event.target.name.endsWith('-second');
@@ -152,7 +155,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             updateFilter(filterIndex, activeFilters[filterIndex]?.filterType, newValue, isSecondInput);
             updateActiveFilters(filterIndex, update);
         },
-        [activeFilters]
+        [activeFilters, disabled]
     );
 
     const updateDateFilterFieldValue = useCallback(
@@ -221,6 +224,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         showLabel={false}
                         isClearable
                         showTime={showTimeStamp}
+                        disabled={disabled}
                         onChange={newDate =>
                             updateDateFilterFieldValue(
                                 filterIndex,
@@ -241,6 +245,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                 type="radio"
                                 name={'field-value-bool' + suffix}
                                 value="true"
+                                disabled={disabled}
                                 onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
                             />{' '}
                             TRUE
@@ -252,6 +257,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                 type="radio"
                                 name={'field-value-bool' + suffix}
                                 value="false"
+                                disabled={disabled}
                                 onChange={event => updateBooleanFilterFieldValue(filterIndex, event)}
                             />{' '}
                             FALSE
@@ -272,6 +278,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         value={valueRaw ?? ''}
                         placeholder={placeholder}
                         required
+                        disabled={disabled}
                     />
                 );
             }
@@ -285,6 +292,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     onChange={event => updateTextFilterFieldValue(filterIndex, event)}
                     placeholder={placeholder}
                     required
+                    disabled={disabled}
                 />
             );
 
@@ -300,6 +308,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                             id="ontology-browser__menu"
                             onToggle={() => onOntologyFilterExpand(ontologyBrowserKey, !expanded)}
                             open={expanded}
+                            disabled={disabled}
                         >
                             <Dropdown.Toggle useAnchor={true}>
                                 <span>{expanded ? 'Close Browser' : `Find ${field.caption} By Tree`}</span>
@@ -322,7 +331,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
             return textInput;
         },
-        [field, activeFilters]
+        [field, activeFilters, disabled]
     );
 
     const renderFilterTypeInputs = useCallback(
@@ -347,7 +356,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 </>
             );
         },
-        [field, activeFilters, expandedOntologyKey]
+        [field, activeFilters, expandedOntologyKey, disabled]
     );
 
     const shouldShowSecondFilter = useCallback((): boolean => {
@@ -375,6 +384,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                     onFieldFilterTypeChange(fieldname, filterUrlSuffix, 0)
                 }
                 options={unusedFilterOptions(0)}
+                disabled={disabled}
             />
             {renderFilterTypeInputs(0)}
             {shouldShowSecondFilter() && (
@@ -392,6 +402,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         }
                         options={unusedFilterOptions(1)}
                         menuPosition="fixed"
+                        disabled={disabled}
                     />
                     {renderFilterTypeInputs(1)}
                 </>

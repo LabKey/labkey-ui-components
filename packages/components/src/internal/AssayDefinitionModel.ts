@@ -1,11 +1,14 @@
 import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
 import { Filter } from '@labkey/api';
 
+import { QueryColumn } from '../public/QueryColumn';
+
+import { SchemaQuery } from '../public/SchemaQuery';
 
 import { AssayUploadTabs } from './constants';
-import { QueryColumn } from '../public/QueryColumn';
+
 import { AppURL, createProductUrlFromParts } from './url/AppURL';
-import { SchemaQuery } from '../public/SchemaQuery';
+
 import { SCHEMAS } from './schemas';
 import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
 
@@ -209,12 +212,15 @@ export class AssayDefinitionModel extends Record({
     }
 
     /**
-     * get all sample lookup columns found in the result, run, and batch domains.
+     * get all sample lookup columns found in the result, run, and batch domains, or from a specific domainType
      */
-    getSampleColumns(): List<ScopedSampleColumn> {
+    getSampleColumns(domainType?: AssayDomainTypes): List<ScopedSampleColumn> {
         let ret = [];
         // The order matters here, we care about result, run, and batch in that order.
-        for (const domain of [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH]) {
+        const domainTypes = domainType
+            ? [domainType]
+            : [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH];
+        for (const domain of domainTypes) {
             const columns = this.getSampleColumnsByDomain(domain);
 
             if (columns && columns.length > 0) {
@@ -228,8 +234,8 @@ export class AssayDefinitionModel extends Record({
     /**
      * get the first sample lookup column found in the result, run, or batch domain.
      */
-    getSampleColumn(): ScopedSampleColumn {
-        const sampleColumns = this.getSampleColumns();
+    getSampleColumn(domainType?: AssayDomainTypes): ScopedSampleColumn {
+        const sampleColumns = this.getSampleColumns(domainType);
         return !sampleColumns.isEmpty() ? sampleColumns.first() : null;
     }
 

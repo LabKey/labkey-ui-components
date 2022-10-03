@@ -9,3 +9,5 @@ export enum SearchScope {
     Project = 'Project',
     ProjectAndShared = 'ProjectAndShared',
 }
+
+export const SAMPLE_FINDER_SESSION_PREFIX = 'Searched ';

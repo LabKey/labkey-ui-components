@@ -7,8 +7,6 @@ import { getPrimaryAppProperties } from '../../app/utils';
 
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-import { FinderReport, SearchIdData, SearchResultCardData } from './models';
-import { SAMPLE_FINDER_VIEW_NAME } from './utils';
 import { incrementClientSideMetricCount } from '../../actions';
 import { buildURL } from '../../url/AppURL';
 import { URLResolver } from '../../url/URLResolver';
@@ -19,6 +17,9 @@ import { loadReports } from '../../query/reports';
 import { IDataViewInfo } from '../../DataViewInfo';
 import { selectRows } from '../../query/selectRows';
 import { caseInsensitive } from '../../util/utils';
+
+import { SAMPLE_FINDER_VIEW_NAME } from './utils';
+import { FinderReport, SearchIdData, SearchResultCardData } from './models';
 
 type GetCardDataFn = (data: Map<any, any>, category?: string) => SearchResultCardData;
 
@@ -285,7 +286,9 @@ export function loadFinderSearch(view: FinderReport): Promise<any> {
     });
 }
 
-export function getSampleTypesFromFindByIdQuery(schemaQuery: SchemaQuery): Promise<{ [key: string]: number[] }> {
+export function getSampleTypesFromFindByIdQuery(
+    schemaQuery: SchemaQuery
+): Promise<{ [key: string]: Record<string, any>[] }> {
     return new Promise((resolve, reject) => {
         selectRows({
             schemaQuery,
@@ -295,9 +298,8 @@ export function getSampleTypesFromFindByIdQuery(schemaQuery: SchemaQuery): Promi
                 if (response.rows) {
                     response.rows.forEach(row => {
                         const sampleType = caseInsensitive(row, 'SampleSet')?.displayValue;
-                        const sampleRowId = caseInsensitive(row, 'RowId')?.value;
                         if (!sampleTypesRows[sampleType]) sampleTypesRows[sampleType] = [];
-                        sampleTypesRows[sampleType].push(sampleRowId);
+                        sampleTypesRows[sampleType].push(row);
                     });
                     resolve(sampleTypesRows);
                 }

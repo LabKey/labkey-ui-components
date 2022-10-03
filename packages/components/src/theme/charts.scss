@@ -83,13 +83,24 @@
 
         .cell-legend-circle {
             display: flex;
-            margin-left: 5px;
+            margin-left: 6px;
+            margin-top: 6px;
+        }
+
+        .cell-lock {
+            opacity: 0.5;
+            display: flex;
+            margin-left: 8px;
             margin-top: 6px;
         }
     }
 
     .cell-legend-icon-border {
         border: 1px solid #979797;
+    }
+
+    .cell-legend-icon-spacing {
+        margin-bottom: 5px;
     }
 
     .cell-legend-label {

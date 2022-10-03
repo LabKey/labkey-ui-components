@@ -15,26 +15,43 @@ import { userCanEditStorageData } from '../../../app/utils';
 import { useServerContext } from '../../base/ServerContext';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
+import { customStyles, customTheme } from '../../editable/LookupCell';
 
 interface SampleStatusInputProps {
+    allowDisable?: boolean;
     api?: ComponentsAPIWrapper;
     col: QueryColumn;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     data: any;
-    key: ReactText;
-    isDetailInput?: boolean;
-    allowDisable?: boolean;
+    formsy?: boolean;
     initiallyDisabled?: boolean;
-    onToggleDisable?: (disabled: boolean) => void;
-    value?: string | Array<Record<string, any>>;
+    inputClass?: string;
+    isDetailInput?: boolean;
+    isGridInput?: boolean;
+    key: ReactText;
+    onAdditionalFormDataChange?: (name: string, value: any) => any;
     onQSChange?: (name: string, value: string | any[], items: any) => void;
+    onToggleDisable?: (disabled: boolean) => void;
     renderLabelField?: (col: QueryColumn) => ReactNode;
     showAsteriskSymbol?: boolean;
-    onAdditionalFormDataChange?: (name: string, value: any) => any;
-    inputClass?: string;
-    formsy?: boolean; // for jest test
+    value?: string | Array<Record<string, any>>; // for jest test
 }
+
+// Move somewhere more central?
+// Styles to match form-control in bulk form
+export const customBulkStyles = {
+    control: provided => ({
+        ...provided,
+        color: '#555555',
+        border: '1px solid #ccc',
+        borderRadius: '4px'
+    }),
+    singleValue: provided => ({
+        ...provided,
+        color: '#555555'
+    }),
+};
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     const {
@@ -53,6 +70,8 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         onAdditionalFormDataChange,
         inputClass,
         formsy,
+        isGridInput,
+        isDetailInput
     } = props;
     const { user } = useServerContext();
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>(undefined);
@@ -148,24 +167,29 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 containerPath={col.lookup.containerPath ?? containerPath}
                 description={col.description}
                 displayColumn={col.lookup.displayColumn}
-                formsy={formsy}
+                formsy={isGridInput ? false : formsy}
                 helpTipRenderer={col.helpTipRenderer}
                 initiallyDisabled={initiallyDisabled}
                 joinValues={col.isJunctionLookup()}
-                label={col.caption}
+                label={isGridInput ? undefined : col.caption}
                 loadOnFocus
                 maxRows={10}
                 multiple={col.isJunctionLookup()}
                 name={col.fieldKey}
                 onQSChange={onChange}
                 onToggleDisable={onToggleDisable}
-                placeholder="Select or type to search..."
+                placeholder={isGridInput ? undefined : 'Select or type to search...'}
                 required={col.required}
                 schemaQuery={col.lookup.schemaQuery}
                 showLabel
                 value={value}
                 valueColumn={col.lookup.keyColumn}
-                inputClass={inputClass}
+                inputClass={isGridInput ? 'select-input-cell' : inputClass}
+                containerClass={isGridInput ? 'select-input-cell-container' : undefined}
+                menuPosition={isGridInput ? 'fixed' : undefined}
+                customStyles={isGridInput ? customStyles : isDetailInput ? undefined : customBulkStyles}
+                customTheme={isGridInput ? customTheme : undefined}
+                showLoading={false}
             />
             {error && <Alert>{error}</Alert>}
             {showDiscardPanel && <>{discardPanel}</>}

@@ -267,7 +267,6 @@ class AssayPropertiesPanelImpl extends React.PureComponent<Props & InjectedDomai
                 {...this.props}
                 headerId={PROPERTIES_HEADER_ID}
                 title="Assay Properties"
-                titlePrefix={model.name}
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >

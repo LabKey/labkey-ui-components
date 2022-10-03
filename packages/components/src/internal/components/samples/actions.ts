@@ -975,13 +975,13 @@ export function getSampleTypeRowId(name: string): Promise<number> {
     });
 }
 
-export function getSampleTypes(): Promise<Array<{ id: number; label: string }>> {
+export function getSampleTypes(includeMedia?: boolean): Promise<Array<{ id: number; label: string }>> {
     return new Promise((resolve, reject) => {
         selectRowsDeprecated({
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
             sort: 'Name',
-            filterArray: [Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL)],
+            filterArray: includeMedia ? undefined : [Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL)],
             containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(response => {

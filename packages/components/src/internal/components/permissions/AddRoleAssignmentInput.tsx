@@ -18,6 +18,8 @@ interface Props {
     role: SecurityRole;
 }
 
+const NAME = 'addRoleAssignment';
+
 export const AddRoleAssignmentInput: FC<Props> = memo(props => {
     const { role, principals, onSelect, placeholder = 'Add member or group...' } = props;
 
@@ -30,10 +32,6 @@ export const AddRoleAssignmentInput: FC<Props> = memo(props => {
         [onSelect]
     );
 
-    const name = useMemo(() => {
-        return 'addRoleAssignment';
-    }, []);
-
     const options = useMemo(() => {
         return createGroupedOptions(principals);
     }, [principals]);
@@ -41,8 +39,8 @@ export const AddRoleAssignmentInput: FC<Props> = memo(props => {
     return (
         <SelectInput
             autoValue={false}
-            name={name}
-            key={name + ':' + role.uniqueName}
+            name={NAME}
+            key={NAME + ':' + role.uniqueName}
             options={options}
             placeholder={placeholder}
             inputClass="col-xs-12"

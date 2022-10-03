@@ -31,6 +31,7 @@ describe('<GroupDetailsPanel/>', () => {
                 rolesByUniqueName={ROLES_BY_NAME}
                 members={[]}
                 isSiteGroup={false}
+                getAuditLogData={jest.fn()}
             />
         );
 
@@ -50,6 +51,26 @@ describe('<GroupDetailsPanel/>', () => {
                     { id: 3, name: 'group1', type: 'g' },
                 ]}
                 isSiteGroup={false}
+                getAuditLogData={jest.fn()}
+            />
+        );
+
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
+    test('as site group', () => {
+        const component = (
+            <GroupDetailsPanel
+                principal={GROUP}
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+                members={[
+                    { id: 1, name: 'user1', type: 'u' },
+                    { id: 3, name: 'group1', type: 'g' },
+                ]}
+                isSiteGroup={true}
+                getAuditLogData={jest.fn()}
             />
         );
 

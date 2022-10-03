@@ -14,7 +14,7 @@ export function showPremiumFeatures(moduleContext?: ModuleContext): boolean {
     return hasPremiumModule(moduleContext) && !ActionURL.getParameter('excludePremium');
 }
 
-export function createGroupedOptions(principals: List<Principal>): any {
+export function createGroupedOptions(principals: List<Principal>): Array<{ label: string; options: Principal[] }> {
     const options = principals.reduce(
         (prev, curr) => {
             if (curr.isSiteGroup) {

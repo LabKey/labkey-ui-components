@@ -11,14 +11,13 @@ import { Member } from '../administration/models';
 
 import { UserProperties } from '../user/UserProperties';
 
-import { getAuditLogData } from '../administration/actions';
-
 import { EffectiveRolesList } from './EffectiveRolesList';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { MembersList } from './MembersList';
 
 interface Props {
+    getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     isSiteGroup: boolean;
     members?: Member[];
     policy: SecurityPolicy;
@@ -27,7 +26,7 @@ interface Props {
 }
 
 export const GroupDetailsPanel: FC<Props> = memo(props => {
-    const { principal, members, isSiteGroup } = props;
+    const { getAuditLogData, principal, members, isSiteGroup } = props;
     const [created, setCreated] = useState<string>('');
 
     const loadWhenCreated = useCallback(async () => {
@@ -38,7 +37,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
         } catch (e) {
             console.error(resolveErrorMessage(e) ?? 'Failed to load when group created');
         }
-    }, [principal]);
+    }, [getAuditLogData, principal]);
 
     useEffect(() => {
         loadWhenCreated();

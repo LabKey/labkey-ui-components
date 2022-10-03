@@ -26,6 +26,7 @@ describe('<MemberButtons />', () => {
     test('With Selected Member', () => {
         const wrapper = shallow(<MemberButtons {...DEFAULT_PROPS} selectedPrincipalId={1} />);
         expect(wrapper.find(RemovableButton).prop('bsStyle')).toBe('primary');
+        expect(wrapper.find('.permissions-groups-member-none')).toHaveLength(0);
     });
 
     test('With No Members', () => {

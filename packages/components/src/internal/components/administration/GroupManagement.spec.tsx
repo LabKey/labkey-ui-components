@@ -13,7 +13,10 @@ import policyJSON from '../../../test/data/security-getPolicy.json';
 import { ServerContext } from '../base/ServerContext';
 import { TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
 
-import { GroupManagement, GroupManagementImpl, GroupPermissionsProps } from './GroupManagement';
+import { Alert } from '../base/Alert';
+
+import { GroupManagementImpl, GroupPermissionsProps } from './GroupManagement';
+import { GroupAssignments } from './GroupAssignments';
 
 describe('BasePermissions', () => {
     function getDefaultProps(): GroupPermissionsProps {
@@ -37,6 +40,7 @@ describe('BasePermissions', () => {
                     fetchPolicy: jest.fn().mockResolvedValue(TEST_POLICY),
                     fetchGroups: jest.fn().mockResolvedValue([]),
                     getGroupMemberships: jest.fn().mockResolvedValue([]),
+                    getAuditLogData: jest.fn().mockResolvedValue('Modified a day ago'),
                     ...overrides,
                 }),
             }),
@@ -58,14 +62,24 @@ describe('BasePermissions', () => {
             getDefaultServerContext()
         );
 
-        expect(wrapper.find(GroupManagement).exists()).toBe(false);
+        expect(wrapper.find(GroupAssignments).exists()).toBe(false);
         await waitForLifecycle(wrapper);
-        // expect(wrapper.find(GroupManagement).exists()).toBe(true);
+        expect(wrapper.find(GroupAssignments).exists()).toBe(true);
 
         wrapper.unmount();
     });
 
     test('handles error', async () => {
-        //    to be filled out once 'loads' works
+        const wrapper = mountWithAppServerContext(
+            <GroupManagementImpl {...getDefaultProps()} />,
+            getDefaultAppContext({ fetchPolicy: jest.fn().mockRejectedValue(undefined) }),
+            getDefaultServerContext()
+        );
+
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find(Alert).text()).toEqual('Failed to load group data');
+        expect(wrapper.find(GroupAssignments).exists()).toBe(false);
+
+        wrapper.unmount();
     });
 });

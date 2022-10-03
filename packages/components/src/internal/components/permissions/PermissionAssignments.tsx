@@ -293,6 +293,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                             rolesByUniqueName={rolesByUniqueName}
                             members={groupMembership[selectedPrincipal?.userId].members}
                             isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === 'sg'}
+                            getAuditLogData={api.security.getAuditLogData}
                         />
                     ) : (
                         <UserDetailsPanel

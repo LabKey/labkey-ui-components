@@ -27,11 +27,10 @@ import { AppContext, useAppContext } from '../../AppContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
-import { getProjectPath } from '../../app/utils';
-
-import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
 import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants';
 import { AUDIT_KEY } from '../../app/constants';
+
+import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
 
 interface OwnProps {
     containerId: string;
@@ -117,7 +116,13 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
             <>
                 <CreatedModified row={row} />
                 <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
-                    <MenuItem href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value).toHref()}>View Audit History</MenuItem>
+                    <MenuItem
+                        href={AppURL.create(AUDIT_KEY)
+                            .addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value)
+                            .toHref()}
+                    >
+                        View Audit History
+                    </MenuItem>
                 </ManageDropdownButton>
             </>
         );

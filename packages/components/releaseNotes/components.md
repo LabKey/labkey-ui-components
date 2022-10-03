@@ -4,6 +4,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.235.0
 *Released*: ?? October 2022
 * EditInlineField: Add showToggle prop
+* Remove Footer
+* Add new app layout styles
+  * Update NavigationBar and SubNav to account for new layout styles
+  * SubNav no longer scrolls into and out of view when scrolling up slightly after scrolling down
+* DomainForm: Don't use react-sticky for sticky header
+  * This removes the containerTop prop from DomainForm, AssayDesignerPanels, DataclassDesigner, DatasetDesignerPanels,
+  IssueLIstDefDesignerPanels, and SampleTypeDesigner
 
 ### version 2.234.0
 *Released*: 19 October 2022

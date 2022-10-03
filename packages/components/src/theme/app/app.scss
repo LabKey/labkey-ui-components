@@ -1,19 +1,21 @@
-.content-wrapper {
-  min-height: calc( 100vh - ( #{$header-height} + #{$footer-height} ) );
-  width: 100%;
-  padding: 0 20px;
+.app-wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.app-content-wrapper {
-  padding-top: $header-height;
+.header-nav {
+    min-height: 56px;
+}
 
-  &.with-sub-nav {
-    padding-top: $header-spacing-no-scroll;
+.app-body {
+    flex-grow: 1;
+    overflow: auto;
+}
 
-    & > .content-wrapper {
-      min-height: calc( 100vh - ( #{$header-spacing-no-scroll} + #{$footer-height} ) );
-    }
-  }
+.sub-nav-wrapper {
+    margin-bottom: 20px;
 }
 
 .page-header {

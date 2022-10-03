@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { FC, useRef, useState, useCallback, useEffect, memo } from 'react';
-import classNames from 'classnames';
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
@@ -26,12 +25,11 @@ import { ITab, SubNavGlobalContext } from './types';
 import { useSubNavContext } from './hooks';
 
 interface Props {
-    ignoreShow?: boolean; // Forces the SubNav to always be hidden in "scrolled" mode
     noun?: ITab;
     tabs: List<ITab>;
 }
 
-export const SubNav: FC<Props> = ({ ignoreShow, noun, tabs }) => {
+export const SubNav: FC<Props> = ({ noun, tabs }) => {
     const scrollable = useRef<HTMLDivElement>();
     const { navigation } = useAppContext();
     const { container } = useServerContext();
@@ -82,12 +80,8 @@ export const SubNav: FC<Props> = ({ ignoreShow, noun, tabs }) => {
         calculateIsScrollable();
     }, [calculateIsScrollable, tabs]);
 
-    const className = classNames('navbar navbar-inverse no-margin-bottom sub-nav', {
-        'sub-nav--ignore-show': ignoreShow,
-    });
-
     return (
-        <nav className={className}>
+        <nav className="navbar navbar-inverse sub-nav">
             <div className="container">
                 {noun && <ParentNavItem to={noun.url}>{noun.text}</ParentNavItem>}
 
@@ -134,11 +128,11 @@ export const SubNav: FC<Props> = ({ ignoreShow, noun, tabs }) => {
  * you need to update the SubNav based on data you load asynchronously after the page loads.
  */
 export const SubNavWithContext: FC<SubNavGlobalContext> = memo(() => {
-    const { ignoreShow, noun, tabs } = useSubNavContext();
+    const { noun, tabs } = useSubNavContext();
 
     if (tabs.size === 0 && noun === undefined) {
         return null;
     }
 
-    return <SubNav ignoreShow={ignoreShow} noun={noun} tabs={tabs} />;
+    return <SubNav noun={noun} tabs={tabs} />;
 });

@@ -227,6 +227,10 @@ export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
     );
 }
 
+export function isComplianceEnabled(moduleContext?: ModuleContext): boolean {
+    return hasModule('compliance', moduleContext) && hasModule('complianceActivities', moduleContext);
+}
+
 export function isMediaEnabled(moduleContext?: ModuleContext): boolean {
     return isFeatureEnabled(ProductFeature.Media, moduleContext);
 }

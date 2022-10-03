@@ -34,6 +34,7 @@ import {
     isAssayEnabled,
     isBiologicsEnabled,
     isCommunityDistribution,
+    isComplianceEnabled,
     isELNEnabled,
     isFreezerManagementEnabled,
     isMediaEnabled,
@@ -421,6 +422,13 @@ describe('utils', () => {
                 },
             })
         ).toBeTruthy(); // LKS Professional
+    });
+
+    test('isComplianceEnabled', () => {
+        expect(isComplianceEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(isComplianceEnabled({ api: { moduleNames: ['compliance'] } })).toBeFalsy();
+        expect(isComplianceEnabled({ api: { moduleNames: ['complianceactivities'] } })).toBeFalsy();
+        expect(isComplianceEnabled({ api: { moduleNames: ['compliance', 'complianceactivities'] } })).toBeTruthy();
     });
 
     test('isMediaEnabled', () => {

@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Fixes Project Groups bugs
     * Visual updates to dropdown and profile page's group information
 
+### version 2.227.0
+*Released*: 03 October 2022
+* Issue 46436: Add optional containerPath prop to fetchDomain
+
 ### version 2.226.0
 *Released*: 01 October 2022
 * Update EditableGrid -> Cell to use input renderer if available on column

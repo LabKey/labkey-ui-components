@@ -137,11 +137,18 @@ export function processContainers(payload: any, container?: Container): List<Con
  * @param domainId: Fetch domain by Id. Priority param over schema and query name.
  * @param schemaName: Schema of domain.
  * @param queryName: Query of domain.
+ * @param containerPath: (optional) containerPath to use for domain details query.
  * @return Promise wrapped Domain API call.
  */
-export function fetchDomain(domainId: number, schemaName: string, queryName: string): Promise<DomainDesign> {
+export function fetchDomain(
+    domainId: number,
+    schemaName: string,
+    queryName: string,
+    containerPath?: string
+): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
+            containerPath,
             domainId,
             schemaName,
             queryName,

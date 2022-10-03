@@ -7,11 +7,9 @@ import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import { resolveErrorMessage } from '../../util/messaging';
-import { Member } from '../administration/models';
+import { Member, MemberType } from '../administration/models';
 
 import { UserProperties } from '../user/UserProperties';
-
-import { getAuditLogData } from '../administration/actions';
 
 import { EffectiveRolesList } from './EffectiveRolesList';
 
@@ -19,6 +17,8 @@ import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { MembersList } from './MembersList';
 
 interface Props {
+    getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
+    isSiteGroup: boolean;
     members?: Member[];
     policy: SecurityPolicy;
     principal: Principal;
@@ -26,7 +26,7 @@ interface Props {
 }
 
 export const GroupDetailsPanel: FC<Props> = memo(props => {
-    const { principal, members } = props;
+    const { getAuditLogData, principal, members, isSiteGroup } = props;
     const [created, setCreated] = useState<string>('');
 
     const loadWhenCreated = useCallback(async () => {
@@ -35,16 +35,16 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
 
             setCreated(createdState.slice(0, -7));
         } catch (e) {
-            console.error(resolveErrorMessage(e) ?? 'Failed to when group created');
+            console.error(resolveErrorMessage(e) ?? 'Failed to load when group created');
         }
-    }, [principal]);
+    }, [getAuditLogData, principal]);
 
     useEffect(() => {
         loadWhenCreated();
     }, [loadWhenCreated]);
 
     const { usersCount, groupsCount } = useMemo(() => {
-        const usersCount = members.filter(member => member.type === 'u').length;
+        const usersCount = members.filter(member => member.type === MemberType.user).length;
         const groupsCount = (members.length - usersCount).toString();
 
         return { usersCount, groupsCount };
@@ -63,6 +63,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
 
                         <hr className="principal-hr" />
                         <UserProperties prop={created} title="Created" />
+                        {isSiteGroup && <UserProperties prop="true" title="Site Group" />}
 
                         <EffectiveRolesList {...props} userId={principal.userId} />
                         <MembersList members={members} />

@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.228.0
+*Released*: 03 October 2022
+* Group Management followup
+    * Adds unit tests
+    * Fixes Project Groups bugs
+    * Visual updates to dropdown and profile page's group information
+
 ### version 2.227.0
 *Released*: 03 October 2022
 * Issue 46436: Add optional containerPath prop to fetchDomain

@@ -12,13 +12,14 @@ import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 import { naturalSort } from '../../../public/sort';
 
 import { Group } from './Group';
-import { GroupMembership } from './models';
+import { GroupMembership, MemberType } from './models';
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
     createGroup: (name: string) => void;
     deleteGroup: (id: string) => void;
     errorMsg: string;
+    getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     getIsDirty: () => boolean;
     groupMembership: GroupMembership;
     policy: SecurityPolicy;
@@ -35,6 +36,7 @@ export interface GroupAssignmentsProps {
 export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     const {
         errorMsg,
+        getAuditLogData,
         getIsDirty,
         groupMembership,
         showDetailsPanel = true,
@@ -91,7 +93,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         const trimmedName = newGroupName.trim();
         if (
             trimmedName in groupMembership ||
-            Object.values(groupMembership).some(group => group.groupName === trimmedName)
+            Object.values(groupMembership).some(group => group.groupName.toLowerCase() === trimmedName.toLowerCase())
         ) {
             setErrorMsg(`Group ${trimmedName} already exists.`);
         } else {
@@ -136,7 +138,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     // Filter out site groups from display
     const orderedGroupMembership = useMemo(() => {
         return Object.keys(groupMembership)
-            .filter(group => groupMembership[group]?.type !== 'sg')
+            .filter(group => groupMembership[group]?.type !== MemberType.siteGroup)
             .sort((id1, id2) => naturalSort(groupMembership[id1].groupName, groupMembership[id2].groupName));
     }, [groupMembership]);
 
@@ -197,12 +199,14 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
             </Col>
             {showDetailsPanel && (
                 <Col xs={12} md={4}>
-                    {selectedPrincipal?.type === 'g' ? (
+                    {selectedPrincipal?.type === MemberType.group ? (
                         <GroupDetailsPanel
                             principal={selectedPrincipal}
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
                             members={groupMembership[selectedPrincipal?.userId]?.members}
+                            isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
+                            getAuditLogData={getAuditLogData}
                         />
                     ) : (
                         <UserDetailsPanel

@@ -28,15 +28,17 @@ import { naturalSort } from '../../../public/sort';
 
 import { getPrincipals } from '../permissions/actions';
 
+import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants';
+
+import { AUDIT_KEY } from '../../app/constants';
+
 import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
-import { GroupMembership } from './models';
-import { getAuditLogData, getGroupMembership } from './actions';
-import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants';
-import { AUDIT_KEY } from '../../app/constants';
+import { GroupMembership, MemberType } from './models';
+import { fetchGroupMembership } from './actions';
 
-type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
+export type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
 
 export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
     const { setIsDirty, getIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
@@ -63,7 +65,11 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         setLoadingState(LoadingState.LOADING);
         try {
             // Used in renderButtons()
-            const lastModifiedState = await getAuditLogData('Date,Project', 'ProjectId/Name', projectPath.slice(0, -1));
+            const lastModifiedState = await api.security.getAuditLogData(
+                'Date,Project',
+                'ProjectId/Name',
+                projectPath.slice(0, -1)
+            );
 
             setLastModified(lastModifiedState);
 
@@ -71,10 +77,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             const policyState = await api.security.fetchPolicy(container.id, principalsById, inactiveUsersById);
 
             // Assemble single cohesive data structure representing group data
-            const fetchedGroups = await api.security.fetchGroups(projectPath);
-            const groups = fetchedGroups.filter(group => !group.isSystemGroup);
-            const groupMemberships = await api.security.getGroupMemberships();
-            const groupMembershipState = getGroupMembership(groups, groupMemberships);
+            const groupMembershipState = await fetchGroupMembership(container, api.security);
 
             setPolicy(policyState);
             setSavedGroupMembership(groupMembershipState);
@@ -84,7 +87,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
         }
 
         setLoadingState(LoadingState.LOADED);
-    }, [api.security, container.id, inactiveUsersById, principalsById, projectPath, setIsDirty]);
+    }, [api.security, container, inactiveUsersById, principalsById, projectPath, setIsDirty]);
 
     useEffect(() => {
         loadGroups();
@@ -173,7 +176,13 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
             <>
                 <CreatedModified row={row} />
                 <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
-                    <MenuItem href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value).toHref()}>View Audit History</MenuItem>
+                    <MenuItem
+                        href={AppURL.create(AUDIT_KEY)
+                            .addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value)
+                            .toHref()}
+                    >
+                        View Audit History
+                    </MenuItem>
                 </ManageDropdownButton>
             </>
         );
@@ -230,19 +239,14 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
     const usersAndGroups = useMemo(() => {
         return updatedPrincipals
-            .filter(principal => principal.type === 'u' || principal.userId > 0)
+            .filter(principal => principal.type === MemberType.user || principal.userId > 0)
             .map(
                 principal =>
-                    (groupMembership && groupMembership[principal.userId]?.type === 'sg'
+                    (groupMembership && groupMembership[principal.userId]?.type === MemberType.siteGroup
                         ? principal.set('isSiteGroup', true)
                         : principal) as Principal
             )
-            .sort(
-                (p1, p2) =>
-                    naturalSort(p2.isSiteGroup, p1.isSiteGroup) ||
-                    naturalSort(p1.type, p2.type) ||
-                    naturalSort(p1.displayName, p2.displayName)
-            ) as List<Principal>;
+            .sort((p1, p2) => naturalSort(p1.displayName, p2.displayName)) as List<Principal>;
     }, [updatedPrincipals, groupMembership]);
 
     const description = useMemo(() => {
@@ -275,6 +279,7 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
                     setErrorMsg={onSetErrorMsg}
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
+                    getAuditLogData={api.security.getAuditLogData}
                 />
             )}
         </BasePermissionsCheckPage>

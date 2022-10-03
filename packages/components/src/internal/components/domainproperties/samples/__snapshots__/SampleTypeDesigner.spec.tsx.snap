@@ -1089,6 +1089,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "fetchContainers": [Function],
           "fetchGroups": [Function],
           "fetchPolicy": [Function],
+          "getAuditLogData": [Function],
           "getGroupMemberships": [Function],
           "getUserLimitSettings": [Function],
           "removeGroupMembers": [Function],

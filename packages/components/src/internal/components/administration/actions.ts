@@ -1,18 +1,20 @@
 import { List, Map } from 'immutable';
 
-import { Filter, Query, Security } from '@labkey/api';
+import { Security } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
-import { Row } from '../../query/selectRows';
-
 import { naturalSort } from '../../../public/sort';
 
-import { FetchedGroup } from '../security/APIWrapper';
+import { FetchedGroup, SecurityAPIWrapper } from '../security/APIWrapper';
 
+import { getProjectPath } from '../../app/utils';
+
+import { Container } from '../base/models/Container';
+
+import { GroupMembership, MemberType } from './models';
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
-import { GroupMembership } from './models';
 
 export function getUpdatedPolicyRoles(
     roles: List<SecurityRole>,
@@ -91,28 +93,6 @@ export function updateSecurityPolicy(
     });
 }
 
-export const getAuditLogData = (columns: string, filterCol: string, filterVal: string | number): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        Query.selectRows({
-            method: 'POST',
-            schemaName: 'auditLog',
-            queryName: 'GroupAuditEvent',
-            columns,
-            filterArray: [Filter.create(filterCol, filterVal, Filter.Types.EQUAL)],
-            containerFilter: Query.ContainerFilter.allFolders,
-            sort: '-Date',
-            maxRows: 1,
-            success: response => {
-                resolve(response.rows.length ? response.rows[0].Date : '');
-            },
-            failure: error => {
-                console.error('Failed to fetch group memberships', error);
-                reject(error);
-            },
-        });
-    });
-};
-
 // groups is an array of objects, each representing a group.
 // groupMemberships is an array of data rows that correlate members with groups. See core.Members, the data source.
 // From this, we construct an object of the form:
@@ -139,14 +119,18 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): Gr
         const member = {
             name: memberIsGroup ? groups.find(group => group.id === curr.UserId).name : userDisplayValue,
             id: curr.UserId,
-            type: memberIsGroup ? 'g' : 'u',
+            type: memberIsGroup ? MemberType.group : MemberType.user,
         };
         if (curr.GroupId in prev) {
             prev[groupId].members.push(member);
             prev[groupId].members.sort((member1, member2) => naturalSort(member1.name, member2.name));
             return prev;
         } else {
-            prev[groupId] = { groupName: curr['GroupId/Name'], members: [member], type: isProjectGroup ? 'g' : 'sg' };
+            prev[groupId] = {
+                groupName: curr['GroupId/Name'],
+                members: [member],
+                type: isProjectGroup ? MemberType.group : MemberType.siteGroup,
+            };
             return prev;
         }
     }, {});
@@ -154,9 +138,19 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): Gr
     // If a group has no members—is in groupsData but not groupRows—add it as well, unless it is a site group
     groups.forEach(group => {
         if (!(group.id in groupsWithMembers)) {
-            groupsWithMembers[group.id] = { groupName: group.name, members: [] };
+            groupsWithMembers[group.id] = {
+                groupName: group.name,
+                members: [],
+                type: group.isProjectGroup ? MemberType.group : MemberType.siteGroup,
+            };
         }
     });
 
     return groupsWithMembers;
+};
+
+export const fetchGroupMembership = async (container: Container, api: SecurityAPIWrapper): Promise<GroupMembership> => {
+    const groups = await api.fetchGroups(getProjectPath(container.path));
+    const groupMemberships = await api.getGroupMemberships();
+    return getGroupMembership(groups, groupMemberships);
 };

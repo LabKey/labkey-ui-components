@@ -1,13 +1,14 @@
 import React from 'react';
 import { List, Map, fromJS } from 'immutable';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
 
 import rolesJSON from '../../../test/data/security-getRoles.json';
 
 import { JEST_SITE_ADMIN_USER_ID, SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR } from '../../../test/data/constants';
+
+import { MemberType } from '../administration/models';
 
 import { PermissionsRole } from './PermissionsRole';
 import { Principal, SecurityPolicy } from './models';
@@ -16,7 +17,7 @@ import { getRolesByUniqueName, processGetRolesResponse } from './actions';
 const GROUP = Principal.createFromSelectRow(
     fromJS({
         UserId: { value: 11842 },
-        Type: { value: 'g' },
+        Type: { value: MemberType.group },
         Name: { value: 'Editor User Group' },
     })
 );
@@ -24,7 +25,7 @@ const GROUP = Principal.createFromSelectRow(
 const USER = Principal.createFromSelectRow(
     fromJS({
         UserId: { value: JEST_SITE_ADMIN_USER_ID },
-        Type: { value: 'u' },
+        Type: { value: MemberType.user },
         Name: { value: 'cnathe@labkey.com' },
         DisplayName: { value: 'Cory Nathe' },
     })
@@ -48,13 +49,13 @@ describe('<PermissionsRole/>', () => {
             <PermissionsRole
                 role={role}
                 assignments={POLICY.assignmentsByRole.get(role.uniqueName)}
-                typeToShow={undefined}
                 principals={List<Principal>()}
                 onAddAssignment={jest.fn()}
                 onRemoveAssignment={jest.fn()}
                 onClickAssignment={jest.fn()}
                 selectedUserId={undefined}
                 initExpanded={true}
+                groupMembership={{}}
             />
         );
 
@@ -69,13 +70,13 @@ describe('<PermissionsRole/>', () => {
             <PermissionsRole
                 role={role}
                 assignments={POLICY.assignmentsByRole.get(role.uniqueName)}
-                typeToShow={undefined}
                 principals={List<Principal>()}
                 onAddAssignment={jest.fn()}
                 onRemoveAssignment={jest.fn()}
                 onClickAssignment={jest.fn()}
                 selectedUserId={undefined}
                 initExpanded={true}
+                groupMembership={{}}
             />
         );
 
@@ -83,14 +84,13 @@ describe('<PermissionsRole/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('showing only a single type and a selected and disabled principal', () => {
+    test('showing a selected and disabled principal', () => {
         const role = ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR);
 
         const component = (
             <PermissionsRole
                 role={role}
                 assignments={POLICY.assignmentsByRole.get(role.uniqueName)}
-                typeToShow="u"
                 principals={List<Principal>()}
                 onAddAssignment={jest.fn()}
                 onRemoveAssignment={jest.fn()}
@@ -98,6 +98,7 @@ describe('<PermissionsRole/>', () => {
                 selectedUserId={USER.userId}
                 disabledId={USER.userId}
                 initExpanded={true}
+                groupMembership={{}}
             />
         );
 
@@ -112,11 +113,11 @@ describe('<PermissionsRole/>', () => {
             <PermissionsRole
                 role={role}
                 assignments={POLICY.assignmentsByRole.get(role.uniqueName)}
-                typeToShow={undefined}
                 principals={List<Principal>()}
                 onClickAssignment={jest.fn()}
                 selectedUserId={undefined}
                 initExpanded={true}
+                groupMembership={{}}
             />
         );
 

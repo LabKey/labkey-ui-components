@@ -69,7 +69,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         }
     }
 
-    loadUserDetails = async (): Promise<void> => {
+    loadUserDetails = (): void => {
         const { userId } = this.props;
 
         if (userId) {
@@ -84,12 +84,14 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     this.setState(() => ({ userProperties: undefined, loading: false }));
                 });
 
-            try {
-                const groups = await getUserGroups(userId);
-                this.setState(() => ({ groups }));
-            } catch (e) {
-                console.error(e);
-            }
+            getUserGroups(userId)
+                .then(groups => {
+                    this.setState({ groups });
+                })
+                .catch(error => {
+                    // Note that getUserGroups()'s call to selectRows() will console.error
+                    // On error, simply do not show group assignments, rather than rendering error within side panel
+                });
         } else {
             this.setState(() => ({ userProperties: undefined }));
         }

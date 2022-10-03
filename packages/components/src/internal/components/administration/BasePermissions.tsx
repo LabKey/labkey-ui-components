@@ -27,12 +27,10 @@ import { AppContext, useAppContext } from '../../AppContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
-import { getProjectPath } from '../../app/utils';
-
-import { getGroupMembership, getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
-import { GroupMembership } from './models';
 import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants';
 import { AUDIT_KEY } from '../../app/constants';
+
+import { getUpdatedPolicyRoles, getUpdatedPolicyRolesByUniqueName } from './actions';
 
 interface OwnProps {
     containerId: string;
@@ -67,26 +65,12 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [policy, setPolicy] = useState<SecurityPolicy>();
-    const [groupMembership, setGroupMembership] = useState<GroupMembership>();
     const { api } = useAppContext<AppContext>();
     const { dismissNotifications, createNotification } = useNotificationsContext();
-    const { container, user } = useServerContext();
+    const { user } = useServerContext();
     const loaded = !isLoading(loadingState);
     const isRoot = getServerContext().project.rootId === containerId;
     const showAssignments = (!isRoot && user.isAdmin) || user.isRootAdmin;
-
-    // Assemble single cohesive data structure representing group data
-    const loadGroupMembership = useCallback(async () => {
-        try {
-            const fetchedGroups = await api.security.fetchGroups(getProjectPath(container.path));
-            const groups = fetchedGroups?.filter(group => !group.isSystemGroup);
-            const groupMemberships = await api.security.getGroupMemberships();
-            const groupMembershipState = getGroupMembership(groups, groupMemberships);
-            setGroupMembership(groupMembershipState);
-        } catch (e) {
-            setError(resolveErrorMessage(e) ?? 'Failed to load group data');
-        }
-    }, [api.security, container.path]);
 
     const loadPolicy = useCallback(async () => {
         setError(undefined);
@@ -98,22 +82,13 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
             try {
                 const policy_ = await api.security.fetchPolicy(containerId, principalsById, inactiveUsersById);
                 setPolicy(policy_);
-                await loadGroupMembership();
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
             }
         }
 
         setLoadingState(LoadingState.LOADED);
-    }, [
-        api.security,
-        containerId,
-        inactiveUsersById,
-        loadGroupMembership,
-        principalsById,
-        setIsDirty,
-        showAssignments,
-    ]);
+    }, [api.security, containerId, inactiveUsersById, principalsById, setIsDirty, showAssignments]);
 
     useEffect(() => {
         loadPolicy();
@@ -132,8 +107,7 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
         createNotification('Successfully updated roles and assignments.');
 
         loadPolicy();
-        loadGroupMembership();
-    }, [createNotification, dismissNotifications, loadGroupMembership, loadPolicy]);
+    }, [createNotification, dismissNotifications, loadPolicy]);
 
     const renderButtons = useCallback(() => {
         const row = policy ? { Modified: { value: policy.modified } } : {};
@@ -142,7 +116,13 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
             <>
                 <CreatedModified row={row} />
                 <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
-                    <MenuItem href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value).toHref()}>View Audit History</MenuItem>
+                    <MenuItem
+                        href={AppURL.create(AUDIT_KEY)
+                            .addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value)
+                            .toHref()}
+                    >
+                        View Audit History
+                    </MenuItem>
                 </ManageDropdownButton>
             </>
         );
@@ -175,7 +155,6 @@ export const BasePermissionsImpl: FC<BasePermissionsImplProps> = memo(props => {
                     onChange={onChange}
                     onSuccess={onSuccess}
                     policy={policy}
-                    groupMembership={groupMembership}
                     title={panelTitle}
                 />
             )}

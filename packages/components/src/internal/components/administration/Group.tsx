@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, memo, SetStateAction, useCallback, useMemo } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { List } from 'immutable';
@@ -10,8 +10,9 @@ import { SelectInput } from '../forms/input/SelectInput';
 
 import { DisableableButton } from '../buttons/DisableableButton';
 
-import { Member } from './models';
+import { Member, MemberType } from './models';
 import { MemberButtons } from './MemberButtons';
+import { createGroupedOptions } from './utils';
 
 export interface GroupProps {
     addMember: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
@@ -81,15 +82,11 @@ export const Group: FC<GroupProps> = memo(props => {
     const principalsToAdd = useMemo(() => {
         const addedPrincipalIds = new Set(members.map(principal => principal.id));
 
-        return usersAndGroups
-            .filter(principal => !addedPrincipalIds.has(principal.userId) && principal.userId !== parseInt(id, 10))
-            .map(principal => {
-                if (principal.type === 'u') {
-                    return principal;
-                } else {
-                    return principal.set('name', `${principal.isSiteGroup ? 'Site' : ''} Group: ${principal.name}`);
-                }
-            });
+        return createGroupedOptions(
+            usersAndGroups.filter(
+                principal => !addedPrincipalIds.has(principal.userId) && principal.userId !== parseInt(id, 10)
+            ) as List<Principal>
+        );
     }, [members, usersAndGroups, id]);
 
     const onSelectMember = useCallback(
@@ -101,8 +98,8 @@ export const Group: FC<GroupProps> = memo(props => {
 
     const { groups, users } = useMemo(() => {
         return {
-            groups: members.filter(member => member.type === 'g'),
-            users: members.filter(member => member.type === 'u'),
+            groups: members.filter(member => member.type === MemberType.group),
+            users: members.filter(member => member.type === MemberType.user),
         };
     }, [members]);
 
@@ -136,7 +133,7 @@ export const Group: FC<GroupProps> = memo(props => {
                     <Col xs={12} sm={6}>
                         <SelectInput
                             autoValue={false}
-                            options={principalsToAdd.toArray()}
+                            options={principalsToAdd}
                             placeholder="Add member..."
                             inputClass="col-xs-12"
                             valueKey="userId"

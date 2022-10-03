@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD October 2022
+### version 2.227.0
+*Released*: 03 October 2022
 * Issue 46436: Add optional containerPath prop to fetchDomain
 
 ### version 2.226.0

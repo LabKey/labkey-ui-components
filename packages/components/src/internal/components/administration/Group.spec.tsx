@@ -11,13 +11,14 @@ import { SelectInputImpl } from '../forms/input/SelectInput';
 
 import { MemberButtons } from './MemberButtons';
 import { Group } from './Group';
+import { MemberType } from './models';
 
 describe('<Group/>', () => {
     const EDITOR = Principal.create({
         userId: 1009,
         name: 'editor@labkey.com',
         displayName: 'editor@labkey.com (editor)',
-        type: 'u',
+        type: MemberType.user,
         active: true,
         isSiteGroup: false,
     });
@@ -25,7 +26,7 @@ describe('<Group/>', () => {
         userId: 1008,
         name: 'folderadmin@labkey.com',
         displayName: 'folderadmin@labkey.com (folderadmin)',
-        type: 'u',
+        type: MemberType.user,
         active: true,
         isSiteGroup: false,
     });
@@ -33,7 +34,7 @@ describe('<Group/>', () => {
         userId: 1064,
         name: 'group1',
         displayName: 'group1',
-        type: 'g',
+        type: MemberType.group,
         active: true,
         isSiteGroup: false,
     });
@@ -41,7 +42,7 @@ describe('<Group/>', () => {
         userId: 1065,
         name: 'group2',
         displayName: 'group2',
-        type: 'g',
+        type: MemberType.group,
         active: true,
         isSiteGroup: false,
     });
@@ -49,7 +50,7 @@ describe('<Group/>', () => {
         userId: 1066,
         name: 'group3',
         displayName: 'group3',
-        type: 'g',
+        type: MemberType.group,
         active: true,
         isSiteGroup: false,
     });
@@ -57,7 +58,7 @@ describe('<Group/>', () => {
         userId: 1035,
         name: 'siteGroup',
         displayName: 'siteGroup',
-        type: 'g',
+        type: MemberType.group,
         active: true,
         isSiteGroup: true,
     });
@@ -68,17 +69,17 @@ describe('<Group/>', () => {
         {
             name: 'editor@labkey.com (editor)',
             id: 1009,
-            type: 'u',
+            type: MemberType.user,
         },
         {
             name: 'group2',
             id: 1065,
-            type: 'g',
+            type: MemberType.group,
         },
         {
             name: 'siteGroup',
             id: 1035,
-            type: 'g',
+            type: MemberType.group,
         },
     ];
 
@@ -122,7 +123,9 @@ describe('<Group/>', () => {
 
         expect(wrapper.find('.permissions-groups-members-ul').first().children()).toHaveLength(2);
         expect(wrapper.find('.permissions-groups-members-ul').last().children()).toHaveLength(1);
-        expect(wrapper.find(DisableableButton).last().prop('disabledMsg')).toBe('To delete this group, first remove all members.');
+        expect(wrapper.find(DisableableButton).last().prop('disabledMsg')).toBe(
+            'To delete this group, first remove all members.'
+        );
         const options = wrapper.find(SelectInputImpl).prop('options');
         expect(options[0]).toStrictEqual({ label: 'Groups', options: [PROJECT_GROUP3] });
         expect(options[1]).toStrictEqual({ label: 'Users', options: [FOLDER_ADMIN] });

@@ -7,7 +7,7 @@ import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import { resolveErrorMessage } from '../../util/messaging';
-import { Member } from '../administration/models';
+import { Member, MemberType } from '../administration/models';
 
 import { UserProperties } from '../user/UserProperties';
 
@@ -44,7 +44,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
     }, [loadWhenCreated]);
 
     const { usersCount, groupsCount } = useMemo(() => {
-        const usersCount = members.filter(member => member.type === 'u').length;
+        const usersCount = members.filter(member => member.type === MemberType.user).length;
         const groupsCount = (members.length - usersCount).toString();
 
         return { usersCount, groupsCount };

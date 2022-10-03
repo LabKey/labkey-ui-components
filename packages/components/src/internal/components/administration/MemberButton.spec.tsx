@@ -5,12 +5,13 @@ import React from 'react';
 import { RemovableButton } from '../permissions/RemovableButton';
 
 import { MemberButtons } from './MemberButtons';
+import { MemberType } from './models';
 
 const DEFAULT_PROPS = {
     onClick: jest.fn(),
     onRemove: jest.fn(),
     title: 'Users or Groups',
-    members: [{ id: 1, name: 'member', type: 'u' }],
+    members: [{ id: 1, name: 'member', type: MemberType.user }],
     selectedPrincipalId: 2,
 };
 

@@ -10,7 +10,7 @@ import { SelectInput } from '../forms/input/SelectInput';
 
 import { DisableableButton } from '../buttons/DisableableButton';
 
-import { Member } from './models';
+import { Member, MemberType } from './models';
 import { MemberButtons } from './MemberButtons';
 import { createGroupedOptions } from './utils';
 
@@ -98,8 +98,8 @@ export const Group: FC<GroupProps> = memo(props => {
 
     const { groups, users } = useMemo(() => {
         return {
-            groups: members.filter(member => member.type === 'g'),
-            users: members.filter(member => member.type === 'u'),
+            groups: members.filter(member => member.type === MemberType.group),
+            users: members.filter(member => member.type === MemberType.user),
         };
     }, [members]);
 

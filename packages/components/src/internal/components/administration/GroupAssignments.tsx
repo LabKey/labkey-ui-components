@@ -12,7 +12,7 @@ import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 import { naturalSort } from '../../../public/sort';
 
 import { Group } from './Group';
-import { GroupMembership } from './models';
+import { GroupMembership, MemberType } from './models';
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
@@ -138,7 +138,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     // Filter out site groups from display
     const orderedGroupMembership = useMemo(() => {
         return Object.keys(groupMembership)
-            .filter(group => groupMembership[group]?.type !== 'sg')
+            .filter(group => groupMembership[group]?.type !== MemberType.siteGroup)
             .sort((id1, id2) => naturalSort(groupMembership[id1].groupName, groupMembership[id2].groupName));
     }, [groupMembership]);
 
@@ -199,13 +199,13 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
             </Col>
             {showDetailsPanel && (
                 <Col xs={12} md={4}>
-                    {selectedPrincipal?.type === 'g' ? (
+                    {selectedPrincipal?.type === MemberType.group ? (
                         <GroupDetailsPanel
                             principal={selectedPrincipal}
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
                             members={groupMembership[selectedPrincipal?.userId]?.members}
-                            isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === 'sg'}
+                            isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
                             getAuditLogData={getAuditLogData}
                         />
                     ) : (

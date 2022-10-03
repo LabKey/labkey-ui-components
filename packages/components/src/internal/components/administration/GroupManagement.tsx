@@ -35,7 +35,7 @@ import { AUDIT_KEY } from '../../app/constants';
 import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
-import { GroupMembership } from './models';
+import { GroupMembership, MemberType } from './models';
 import { fetchGroupMembership } from './actions';
 
 export type GroupPermissionsProps = InjectedRouteLeaveProps & InjectedPermissionsPage;
@@ -239,10 +239,10 @@ export const GroupManagementImpl: FC<GroupPermissionsProps> = memo(props => {
 
     const usersAndGroups = useMemo(() => {
         return updatedPrincipals
-            .filter(principal => principal.type === 'u' || principal.userId > 0)
+            .filter(principal => principal.type === MemberType.user || principal.userId > 0)
             .map(
                 principal =>
-                    (groupMembership && groupMembership[principal.userId]?.type === 'sg'
+                    (groupMembership && groupMembership[principal.userId]?.type === MemberType.siteGroup
                         ? principal.set('isSiteGroup', true)
                         : principal) as Principal
             )

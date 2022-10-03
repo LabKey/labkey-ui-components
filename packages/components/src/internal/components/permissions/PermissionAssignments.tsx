@@ -19,7 +19,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { Alert } from '../base/Alert';
 
-import { GroupMembership } from '../administration/models';
+import { GroupMembership, MemberType } from '../administration/models';
 
 import { fetchGroupMembership } from '../administration/actions';
 
@@ -286,13 +286,13 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             </Col>
             {showDetailsPanel && (
                 <Col xs={12} md={4}>
-                    {selectedPrincipal?.type === 'g' ? (
+                    {selectedPrincipal?.type === MemberType.group ? (
                         <GroupDetailsPanel
                             principal={selectedPrincipal}
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
                             members={groupMembership[selectedPrincipal?.userId].members}
-                            isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === 'sg'}
+                            isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
                             getAuditLogData={api.security.getAuditLogData}
                         />
                     ) : (

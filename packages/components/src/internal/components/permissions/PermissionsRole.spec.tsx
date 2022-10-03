@@ -8,6 +8,8 @@ import rolesJSON from '../../../test/data/security-getRoles.json';
 
 import { JEST_SITE_ADMIN_USER_ID, SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR } from '../../../test/data/constants';
 
+import { MemberType } from '../administration/models';
+
 import { PermissionsRole } from './PermissionsRole';
 import { Principal, SecurityPolicy } from './models';
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
@@ -15,7 +17,7 @@ import { getRolesByUniqueName, processGetRolesResponse } from './actions';
 const GROUP = Principal.createFromSelectRow(
     fromJS({
         UserId: { value: 11842 },
-        Type: { value: 'g' },
+        Type: { value: MemberType.group },
         Name: { value: 'Editor User Group' },
     })
 );
@@ -23,7 +25,7 @@ const GROUP = Principal.createFromSelectRow(
 const USER = Principal.createFromSelectRow(
     fromJS({
         UserId: { value: JEST_SITE_ADMIN_USER_ID },
-        Type: { value: 'u' },
+        Type: { value: MemberType.user },
         Name: { value: 'cnathe@labkey.com' },
         DisplayName: { value: 'Cory Nathe' },
     })

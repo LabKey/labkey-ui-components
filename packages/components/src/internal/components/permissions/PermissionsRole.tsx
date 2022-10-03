@@ -10,7 +10,7 @@ import { ExpandableContainer } from '../ExpandableContainer';
 
 import { naturalSort } from '../../../public/sort';
 
-import { GroupMembership } from '../administration/models';
+import { GroupMembership, MemberType } from '../administration/models';
 
 import { Principal, SecurityAssignment, SecurityRole } from './models';
 import { RemovableButton } from './RemovableButton';
@@ -57,7 +57,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
     }
 
     getTypesToShow(): List<string> {
-        return List<string>(['g', 'u']);
+        return List<string>([MemberType.group, MemberType.user]);
     }
 
     render() {
@@ -101,7 +101,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
 
                             return (
                                 <Col xs={12} sm={6} key={key}>
-                                    <div>{type === 'g' ? 'Groups:' : 'Users:'}</div>
+                                    <div>{type === MemberType.group ? 'Groups:' : 'Users:'}</div>
                                     <ul className="permissions-groups-members-ul">
                                         {typeAssignments && typeAssignments.size > 0 ? (
                                             typeAssignments

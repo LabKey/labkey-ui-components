@@ -20,6 +20,7 @@ import { ExpandableContainer } from '../ExpandableContainer';
 import { Alert } from '../base/Alert';
 
 import { GroupAssignments } from './GroupAssignments';
+import { MemberType } from './models';
 
 describe('<GroupAssignments/>', () => {
     const GROUP_MEMBERSHIP = {
@@ -29,10 +30,10 @@ describe('<GroupAssignments/>', () => {
                 {
                     name: 'rosalinep@labkey.com (rosalinep)',
                     id: 1005,
-                    type: 'u',
+                    type: MemberType.user,
                 },
             ],
-            type: 'sg',
+            type: MemberType.siteGroup,
         },
         '1064': {
             groupName: 'group1',
@@ -40,15 +41,15 @@ describe('<GroupAssignments/>', () => {
                 {
                     name: 'group2',
                     id: 1066,
-                    type: 'g',
+                    type: MemberType.group,
                 },
                 {
                     name: 'rosalinep@labkey.com (rosalinep)',
                     id: 1005,
-                    type: 'u',
+                    type: MemberType.user,
                 },
             ],
-            type: 'g',
+            type: MemberType.group,
         },
         '1066': {
             groupName: 'group2',
@@ -56,25 +57,25 @@ describe('<GroupAssignments/>', () => {
                 {
                     name: 'aaaaaaaaa@labkey.com (aaaaaaaaa)',
                     id: 1033,
-                    type: 'u',
+                    type: MemberType.user,
                 },
                 {
                     name: 'folderadmin@labkey.com (folderadmin)',
                     id: 1008,
-                    type: 'u',
+                    type: MemberType.user,
                 },
                 {
                     name: 'FromMyBiologicsSiteGroup',
                     id: 1110,
-                    type: 'g',
+                    type: MemberType.group,
                 },
             ],
-            type: 'g',
+            type: MemberType.group,
         },
         '-1': {
             groupName: 'Site Administrators',
             members: [],
-            type: 'sg',
+            type: MemberType.siteGroup,
         },
     };
 
@@ -84,14 +85,14 @@ describe('<GroupAssignments/>', () => {
     const GROUP = Principal.createFromSelectRow(
         fromJS({
             UserId: { value: 11842 },
-            Type: { value: 'g' },
+            Type: { value: MemberType.group },
             Name: { value: 'Editor User Group' },
         })
     );
     const USER = Principal.createFromSelectRow(
         fromJS({
             UserId: { value: JEST_SITE_ADMIN_USER_ID },
-            Type: { value: 'u' },
+            Type: { value: MemberType.user },
             Name: { value: 'cnathe@labkey.com' },
             DisplayName: { value: 'Cory Nathe' },
         })
@@ -115,6 +116,7 @@ describe('<GroupAssignments/>', () => {
         save: jest.fn(),
         setErrorMsg: jest.fn(),
         setIsDirty: jest.fn(),
+        getAuditLogData: jest.fn(),
     };
 
     test('without members', async () => {

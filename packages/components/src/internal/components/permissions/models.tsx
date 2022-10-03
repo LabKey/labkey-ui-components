@@ -7,7 +7,7 @@ import { Record, List, Map } from 'immutable';
 import React from 'react';
 
 import { naturalSort } from '../../../public/sort';
-import { GroupMembership } from '../administration/models';
+import { GroupMembership, MemberType } from '../administration/models';
 
 export class Principal extends Record({
     userId: undefined,
@@ -34,7 +34,7 @@ export class Principal extends Record({
         const name = row.getIn(['Name', 'value']);
 
         let displayName = row.getIn(['DisplayName', 'value']);
-        displayName = type === 'u' && displayName ? name + ' (' + displayName + ')' : name;
+        displayName = type === MemberType.user && displayName ? name + ' (' + displayName + ')' : name;
 
         return new Principal({ userId, name, type, displayName });
     }
@@ -55,7 +55,7 @@ export class Principal extends Record({
                 // Supply information on whether a principal is a site group or not
                 .map(
                     principal =>
-                        (groupMembership && groupMembership[principal.userId]?.type === 'sg'
+                        (groupMembership && groupMembership[principal.userId]?.type === MemberType.siteGroup
                             ? principal.set('isSiteGroup', true)
                             : principal) as Principal
                 )
@@ -129,7 +129,7 @@ export class SecurityAssignment extends Record({
 
     static isTypeMatch(assignmentType: string, typeToMatch: string): boolean {
         // inactive users will return type of undefined
-        if (typeToMatch === 'u' && assignmentType === undefined) {
+        if (typeToMatch === MemberType.user && assignmentType === undefined) {
             return true;
         }
 
@@ -210,7 +210,7 @@ export class SecurityPolicy extends Record({
     }
 
     static addUserIdAssignment(policy: SecurityPolicy, userId: number, roleUniqueName: string): SecurityPolicy {
-        const principal = new Principal({ userId, type: 'u' });
+        const principal = new Principal({ userId, type: MemberType.user });
         const role = new SecurityRole({ uniqueName: roleUniqueName });
         return this.addAssignment(policy, principal, role);
     }

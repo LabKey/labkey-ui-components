@@ -6,6 +6,8 @@ import policyJSON from '../../../test/data/security-getPolicy.json';
 
 import rolesJSON from '../../../test/data/security-getRoles.json';
 
+import { MemberType } from '../administration/models';
+
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { Principal, SecurityPolicy } from './models';
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
@@ -13,7 +15,7 @@ import { getRolesByUniqueName, processGetRolesResponse } from './actions';
 const GROUP = Principal.createFromSelectRow(
     fromJS({
         UserId: { value: 11842 },
-        Type: { value: 'g' },
+        Type: { value: MemberType.group },
         Name: { value: 'Editor User Group' },
     })
 );
@@ -46,9 +48,9 @@ describe('<GroupDetailsPanel/>', () => {
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
                 members={[
-                    { id: 1, name: 'user1', type: 'u' },
-                    { id: 2, name: 'user2', type: 'u' },
-                    { id: 3, name: 'group1', type: 'g' },
+                    { id: 1, name: 'user1', type: MemberType.user },
+                    { id: 2, name: 'user2', type: MemberType.user },
+                    { id: 3, name: 'group1', type: MemberType.group },
                 ]}
                 isSiteGroup={false}
                 getAuditLogData={jest.fn()}
@@ -66,8 +68,8 @@ describe('<GroupDetailsPanel/>', () => {
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
                 members={[
-                    { id: 1, name: 'user1', type: 'u' },
-                    { id: 3, name: 'group1', type: 'g' },
+                    { id: 1, name: 'user1', type: MemberType.user },
+                    { id: 3, name: 'group1', type: MemberType.group },
                 ]}
                 isSiteGroup={true}
                 getAuditLogData={jest.fn()}

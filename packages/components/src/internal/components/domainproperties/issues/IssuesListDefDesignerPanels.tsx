@@ -19,7 +19,6 @@ interface Props {
     onCancel: () => void;
     onComplete: (model: IssuesListDefModel) => void;
     useTheme?: boolean;
-    containerTop?: number; // This sets the top of the sticky header, default is 0
     successBsStyle?: string;
     saveBtnText?: string;
     testMode?: boolean;
@@ -139,7 +138,6 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
         const {
             onCancel,
             useTheme,
-            containerTop,
             successBsStyle,
             visitedPanels,
             currentPanelIndex,
@@ -198,7 +196,6 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    containerTop={containerTop}
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(1, collapsed, callback);
                     }}

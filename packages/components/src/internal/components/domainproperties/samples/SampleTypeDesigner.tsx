@@ -78,8 +78,6 @@ interface Props {
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: SampleTypeModel) => void;
-    // This sets the top of the sticky header, default is 0
-    containerTop?: number;
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
     dataClassTypeCaption?: string;
@@ -639,7 +637,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     render() {
         const {
             api,
-            containerTop,
             useTheme,
             appPropertiesOnly,
             successBsStyle,
@@ -783,7 +780,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    containerTop={containerTop}
                     onChange={this.domainChangeHandler}
                     onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}

@@ -159,7 +159,6 @@ import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMe
 import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
 import { getMenuItemForSectionKey, getMenuItemsForSection } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
-import { Footer } from './internal/components/base/Footer';
 import { Setting } from './internal/components/base/Setting';
 import { ValueList } from './internal/components/base/ValueList';
 
@@ -1337,7 +1336,6 @@ export {
     Section,
     ConfirmModal,
     Cards,
-    Footer,
     DragDropHandle,
     FieldExpansionToggle,
     LoadingModal,

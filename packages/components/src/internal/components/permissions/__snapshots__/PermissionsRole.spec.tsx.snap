@@ -128,7 +128,7 @@ exports[`<PermissionsRole/> not editable 1`] = `
 </div>
 `;
 
-exports[`<PermissionsRole/> showing only a single type and a selected and disabled principal 1`] = `
+exports[`<PermissionsRole/> showing a selected and disabled principal 1`] = `
 <div
   className="row container-expandable"
 >

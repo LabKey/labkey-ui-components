@@ -6,6 +6,8 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DataClassDataType, SampleTypeDataType } from '../entities/constants';
 import { EntityChoice, IEntityTypeOption } from '../entities/models';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+
 import { getLineageEditorUpdateColumns, getUpdatedLineageRows, getRowIdsFromSelection } from './actions';
 
 let DATA = fromJS({
@@ -130,12 +132,17 @@ describe('getUpdatedLineageRows', () => {
 describe('getLineageEditorUpdateColumns', () => {
     const MODEL = makeTestQueryModel(
         SchemaQuery.create('schema', 'query'),
-        new QueryInfo({
-            columns: fromJS({
-                rowid: { fieldKey: 'rowid' },
-                name: { fieldKey: 'name' },
-                other: { fieldKey: 'other' },
-            }),
+        QueryInfo.fromJSON({
+            columns: [
+                { fieldKey: 'rowId' },
+                {
+                    fieldKey: 'name',
+                    fieldKeyArray: ['name'],
+                    shownInUpdateView: true,
+                    userEditable: true,
+                },
+                { fieldKey: 'other' },
+            ],
         })
     );
 
@@ -185,6 +192,21 @@ describe('getLineageEditorUpdateColumns', () => {
         expect(cols.updateColumns.get(0).get('fieldKey')).toBe('name');
         expect(cols.updateColumns.get(1).get('fieldKey')).toBe('DataInputs/Test2');
         expect(cols.updateColumns.get(2).get('fieldKey')).toBe('MaterialInputs/Test1');
+    });
+
+    // Regression coverage to ensure the "name" column is included in the lineage
+    // update columns ONLY when the "name" column is a part of the update columns for the underlying QueryInfo.
+    test('without updatable "name" column', () => {
+        const queryInfo = MODEL.queryInfo.setIn(
+            ['columns', 'name'],
+            new QueryColumn({ fieldKey: 'name' })
+        ) as QueryInfo;
+        const model = MODEL.mutate({ queryInfo });
+        const cols = getLineageEditorUpdateColumns(model, {});
+
+        expect(cols.queryInfoColumns.size).toBe(2);
+        expect(cols.queryInfoColumns.get('name')).toBeDefined();
+        expect(cols.updateColumns.size).toBe(0);
     });
 });
 

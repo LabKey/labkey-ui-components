@@ -289,7 +289,7 @@ export class QueryColumn extends Record({
         );
     }
 
-    isEditable() {
+    isEditable(): boolean {
         return !this.readOnly && this.userEditable && this.shownInUpdateView;
     }
 

@@ -46,12 +46,9 @@ interface EditableColumnTitleProps {
 // exported for jest tests
 export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     const { column, editing, onChange, onEditToggle } = props;
-    const initialTitle = useMemo(() => {
-        return column.caption ?? column.name;
-    }, [column.caption, column.name]);
+    const initialTitle = useMemo(() => column.caption ?? column.name, [column.caption, column.name]);
     const [title, setTitle] = useState<string>(initialTitle);
-
-    const titleInput: React.RefObject<HTMLInputElement> = React.createRef();
+    const titleInput = useRef<HTMLInputElement>();
 
     useEffect(() => {
         setTitle(initialTitle);
@@ -64,7 +61,7 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     const onCancelEdit = useCallback(() => {
         onEditToggle(false);
         setTitle(initialTitle);
-    }, [initialTitle]);
+    }, [initialTitle, onEditToggle]);
 
     const onEditFinish = useCallback(() => {
         onEditToggle(false);
@@ -153,8 +150,29 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
             setOpen(shouldOpen);
         },
-        [includeDropdown]
+        [editingTitle, includeDropdown]
     );
+
+    const setPosition = useCallback(() => {
+        if (wrapperEl.current) {
+            const menuEl = wrapperEl.current.querySelector<HTMLElement>('.dropdown-menu');
+            if (menuEl) {
+                const headerRect = wrapperEl.current.parentElement.getBoundingClientRect();
+                const menuRect = menuEl.getBoundingClientRect();
+                let top = headerRect.y + headerRect.height;
+
+                // When the menu is cutoff by the bottom of the page then render it above the header bar
+                if (headerRect.y + menuRect.height > window.innerHeight) {
+                    top = headerRect.y - menuRect.height - 5;
+                }
+
+                Object.assign(menuEl.style, {
+                    top: top + 'px',
+                    left: headerRect.x + headerRect.width - menuRect.width + 'px',
+                });
+            }
+        }
+    }, []);
 
     const _handleFilter = useCallback(
         (remove?: boolean) => {
@@ -209,22 +227,22 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     }, [headerClickCount]);
 
     useEffect(() => {
+        // Issue 45553: App Grid: Grid column menu does not scroll when page is scrolled
+        function onScroll(): void {
+            setOpen(false);
+        }
+
         if (open) {
             // Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
             // (see related SCSS in query-model.scss)
-            if (wrapperEl.current) {
-                const menuEl = wrapperEl.current.querySelector<HTMLElement>('.dropdown-menu');
-                if (menuEl) {
-                    const headerRect = wrapperEl.current.parentElement.getBoundingClientRect();
-                    const menuRect = menuEl.getBoundingClientRect();
-                    Object.assign(menuEl.style, {
-                        top: headerRect.y + headerRect.height + 'px',
-                        left: headerRect.x + headerRect.width - menuRect.width + 'px',
-                    });
-                }
-            }
+            setPosition();
+            document.addEventListener('scroll', onScroll, true);
         }
-    }, [open]);
+
+        return () => {
+            document.removeEventListener('scroll', onScroll, true);
+        };
+    }, [open, setPosition]);
 
     if (!col) return null;
 
@@ -240,7 +258,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     const isSortAsc = col.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
     const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
-    const showGridCustomization = handleHideColumn || handleAddColumn;
+    const showGridCustomization = !!handleHideColumn || !!handleAddColumn;
 
     return (
         <>
@@ -271,7 +289,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 )}
             </span>
             {includeDropdown && !editingTitle && (
-                <span className="pull-right" ref={wrapperEl}>
+                <span className="pull-right" id={`grid-menu-${i}-wrapper`} ref={wrapperEl}>
                     <Dropdown id={`grid-menu-${i}`} onToggle={onToggleClick} open={open}>
                         <CustomToggle bsRole="toggle">
                             <span className="fa fa-chevron-circle-down grid-panel__menu-toggle" />
@@ -358,7 +376,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                                     )}
                                     <DisableableMenuItem
                                         operationPermitted={handleHideColumn && !!model}
-                                        onClick={() => _handleHideColumn()}
+                                        onClick={_handleHideColumn}
                                         disabledMessage={APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
                                     >
                                         <span className="fa fa-eye-slash grid-panel__menu-icon" />
@@ -411,7 +429,7 @@ export function headerSelectionCell(
     selectedState: GRID_CHECKBOX_OPTIONS,
     disabled: boolean,
     className?
-) {
+): ReactNode {
     const isChecked = selectedState === GRID_CHECKBOX_OPTIONS.ALL;
     const isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME;
 

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 46337: Add Workflow Editor role
+
 ### version 2.228.0
 *Released*: 03 October 2022
 * Group Management followup

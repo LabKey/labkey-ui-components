@@ -11,4 +11,5 @@ export const APPLICATION_SECURITY_ROLES = Map<string, string>([
     [PermissionRoles.Editor, 'Editor'],
     [PermissionRoles.EditorWithoutDelete, 'Editor without Delete'],
     [PermissionRoles.Reader, 'Reader'],
+    [PermissionRoles.WorkflowEditor, 'Workflow Editor'],
 ]);

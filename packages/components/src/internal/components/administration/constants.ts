@@ -29,5 +29,7 @@ export const SECURITY_ROLE_DESCRIPTIONS = Map<string, string>([
 
 export const HOSTED_APPLICATION_SECURITY_ROLES = Map<string, string>([
     [PermissionRoles.Editor, 'Editor'],
+    [PermissionRoles.EditorWithoutDelete, 'Editor without Delete'],
     [PermissionRoles.Reader, 'Reader'],
+    [PermissionRoles.WorkflowEditor, 'Workflow Editor'],
 ]);

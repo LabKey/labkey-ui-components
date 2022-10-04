@@ -33,6 +33,7 @@ import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 import { AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY } from '../auditlog/constants';
 import { AUDIT_KEY } from '../../app/constants';
+import { naturalSortByProperty } from '../../../public/sort';
 
 export function getNewUserRoles(
     user: User,
@@ -66,6 +67,10 @@ export function getNewUserRoles(
     }
     extraRoles?.forEach(role => {
         roles.push({ id: role[0], label: role[1] });
+    });
+    roles.push({
+        id: PermissionRoles.WorkflowEditor.toString(),
+        label: APPLICATION_SECURITY_ROLES.get(PermissionRoles.WorkflowEditor),
     });
     if (user.isAppAdmin()) {
         roles.push({

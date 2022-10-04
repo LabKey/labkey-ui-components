@@ -439,7 +439,10 @@ export function getLineageEditorUpdateColumns(
             queryInfoColumns = queryInfoColumns.set(key, column);
         } else if (key === 'name') {
             queryInfoColumns = queryInfoColumns.set(key, column);
-            updateColumns = updateColumns.push(column);
+            // Add "name" column to updateColumns iff it is being utilized as an underlying update column
+            if (displayQueryModel.queryInfo.getUpdateColumns().find(col => col.fieldKey.toLowerCase() === 'name')) {
+                updateColumns = updateColumns.push(column);
+            }
         }
     });
     const parentColumns = {};

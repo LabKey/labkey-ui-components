@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBd
+*Released*: TBD
+* Issue 45878: LKSM: Remove option to not send an email to new users
+
 ### version 2.228.0
 *Released*: 03 October 2022
 * Group Management followup

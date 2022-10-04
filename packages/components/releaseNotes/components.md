@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD October 2022
+* Sample type consistency for LKB and LKSM
+  * move SampleTypeBasePage.tsx from LKSM to be used in both apps
+
 ### version 2.228.0
 *Released*: 03 October 2022
 * Group Management followup

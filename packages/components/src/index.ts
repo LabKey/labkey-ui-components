@@ -893,12 +893,8 @@ const Hooks = {
     useUsersWithPermissions,
 };
 
-const Samples = {
-    SampleTypeBasePage,
-};
-
 export {
-    Samples, // TODO this will move, to be exposed as a separate entry point in package
+    SampleTypeBasePage, // TODO this will move, to be exposed as a separate entry point in package
     // internal application
     App,
     AppModel,

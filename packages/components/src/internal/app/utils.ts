@@ -227,7 +227,7 @@ export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
     );
 }
 
-export function isComplianceEnabled(moduleContext?: ModuleContext): boolean {
+export function isProtectedDataEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('compliance', moduleContext) && hasModule('complianceActivities', moduleContext);
 }
 

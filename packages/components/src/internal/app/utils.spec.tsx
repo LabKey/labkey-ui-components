@@ -34,13 +34,13 @@ import {
     isAssayEnabled,
     isBiologicsEnabled,
     isCommunityDistribution,
-    isComplianceEnabled,
     isELNEnabled,
     isFreezerManagementEnabled,
     isMediaEnabled,
     isPremiumProductEnabled,
     isProductNavigationEnabled,
     isProjectContainer,
+    isProtectedDataEnabled,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
     isWorkflowEnabled,
@@ -424,11 +424,11 @@ describe('utils', () => {
         ).toBeTruthy(); // LKS Professional
     });
 
-    test('isComplianceEnabled', () => {
-        expect(isComplianceEnabled({ api: { moduleNames: [] } })).toBeFalsy();
-        expect(isComplianceEnabled({ api: { moduleNames: ['compliance'] } })).toBeFalsy();
-        expect(isComplianceEnabled({ api: { moduleNames: ['complianceactivities'] } })).toBeFalsy();
-        expect(isComplianceEnabled({ api: { moduleNames: ['compliance', 'complianceactivities'] } })).toBeTruthy();
+    test('isProtectedDataEnabled', () => {
+        expect(isProtectedDataEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(isProtectedDataEnabled({ api: { moduleNames: ['compliance'] } })).toBeFalsy();
+        expect(isProtectedDataEnabled({ api: { moduleNames: ['complianceactivities'] } })).toBeFalsy();
+        expect(isProtectedDataEnabled({ api: { moduleNames: ['compliance', 'complianceactivities'] } })).toBeTruthy();
     });
 
     test('isMediaEnabled', () => {

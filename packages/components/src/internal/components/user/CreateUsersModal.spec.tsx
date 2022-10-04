@@ -38,9 +38,6 @@ describe('<CreateUsersModal/>', () => {
         expect(wrapper.find('textarea')).toHaveLength(2);
         expect(wrapper.find('textarea#create-users-email-input').props().value).toBe('');
         expect(wrapper.find('textarea#create-users-optionalMessage-input').props().value).toBe('');
-        expect(wrapper.find('textarea#create-users-optionalMessage-input').props().disabled).toBe(false);
-        expect(wrapper.find('Checkbox')).toHaveLength(1);
-        expect(wrapper.find('Checkbox').props().checked).toBe(true);
         expect(wrapper.find('SelectInput')).toHaveLength(0);
         expect(wrapper.find('.btn')).toHaveLength(2);
         expect(wrapper.find('.btn-success')).toHaveLength(1);
@@ -59,9 +56,6 @@ describe('<CreateUsersModal/>', () => {
         expect(wrapper.find('textarea')).toHaveLength(2);
         expect(wrapper.find('textarea#create-users-email-input').props().value).toBe('');
         expect(wrapper.find('textarea#create-users-optionalMessage-input').props().value).toBe('');
-        expect(wrapper.find('textarea#create-users-optionalMessage-input').props().disabled).toBe(false);
-        expect(wrapper.find('Checkbox')).toHaveLength(1);
-        expect(wrapper.find('Checkbox').props().checked).toBe(true);
         expect(wrapper.find('SelectInput')).toHaveLength(1);
         expect(wrapper.find('SelectInput').props().value).toStrictEqual([ROLE_OPTIONS[0].id]);
         expect(wrapper.find('.btn')).toHaveLength(2);
@@ -90,9 +84,6 @@ describe('<CreateUsersModal/>', () => {
         expect(wrapper.find('textarea')).toHaveLength(2);
         expect(wrapper.find('textarea#create-users-email-input').props().value).toBe('TestEmailText');
         expect(wrapper.find('textarea#create-users-optionalMessage-input').props().value).toBe('TestOptionalMessage');
-        expect(wrapper.find('textarea#create-users-optionalMessage-input').props().disabled).toBe(true);
-        expect(wrapper.find('Checkbox')).toHaveLength(1);
-        expect(wrapper.find('Checkbox').props().checked).toBe(false);
         expect(wrapper.find('SelectInput')).toHaveLength(1);
         expect(wrapper.find('SelectInput').props().value).toStrictEqual([ROLE_OPTIONS[1].id]);
         expect(wrapper.find('.btn')).toHaveLength(2);

@@ -24,12 +24,10 @@ interface State {
     isSubmitting: boolean;
     optionalMessage: string;
     roles: string[];
-    sendEmail: boolean;
 }
 
 const DEFAULT_STATE = {
     emailText: '',
-    sendEmail: true,
     optionalMessage: '',
     roles: undefined,
     isSubmitting: false,
@@ -53,22 +51,13 @@ export class CreateUsersModal extends React.Component<Props, State> {
         this.setState(() => ({ optionalMessage }));
     };
 
-    handleSendEmail = (evt: any): void => {
-        const sendEmail = evt.target.checked;
-        this.setState(state => ({
-            sendEmail,
-            // reset the optional message if we unchecked the sendEmail checkbox
-            optionalMessage: !sendEmail ? '' : state.optionalMessage,
-        }));
-    };
-
     handleRoles = (name, formValue, selectedOptions: Array<{ id: string; label: string }>): void => {
         const roles = selectedOptions ? selectedOptions.map(option => option.id) : undefined;
         this.setState({ roles });
     };
 
     createUsers = (): void => {
-        const { emailText, sendEmail, optionalMessage } = this.state;
+        const { emailText, optionalMessage } = this.state;
         this.setState(() => ({ isSubmitting: true, error: undefined }));
 
         // convert the email addresses from newline separated to semicolon separated
@@ -76,7 +65,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
 
         Security.createNewUser({
             email,
-            sendEmail,
+            sendEmail: true,
             optionalMessage: optionalMessage && optionalMessage.length > 0 ? optionalMessage : undefined,
             success: response => {
                 this.props.onComplete(response, this.getSelectedRoles());
@@ -99,7 +88,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
 
     renderForm(): ReactNode {
         const { userLimitSettings } = this.props;
-        const { emailText, sendEmail, optionalMessage } = this.state;
+        const { emailText, optionalMessage } = this.state;
 
         return (
             <>
@@ -137,15 +126,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
                         />
                     </>
                 )}
-                <Checkbox
-                    id="create-users-sendEmail-input"
-                    className="create-users-label-top"
-                    checked={sendEmail}
-                    onChange={this.handleSendEmail}
-                >
-                    Send notification emails to all new users?
-                </Checkbox>
-                <div className="create-users-label-bottom">Optional Message:</div>
+                <div className="create-users-label-bottom">Optional message to send to new users:</div>
                 <FormControl
                     componentClass="textarea"
                     className="form-control create-users-textarea"
@@ -153,7 +134,6 @@ export class CreateUsersModal extends React.Component<Props, State> {
                     rows={5}
                     value={optionalMessage || ''}
                     placeholder="Add your message to be included in the invite email..."
-                    disabled={!sendEmail}
                     onChange={this.handleOptionalMessage}
                 />
             </>

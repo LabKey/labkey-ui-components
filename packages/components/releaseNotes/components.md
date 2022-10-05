@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Sample type consistency for LKB and LKSM
   * move SampleTypeBasePage.tsx from LKSM to be used in both apps
 
+### version 2.229.0
+*Released*: 4 October 2022
+* Issue 45878: LKSM: Remove option to not send an email to new users
+
 ### version 2.228.0
 *Released*: 03 October 2022
 * Group Management followup

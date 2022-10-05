@@ -33,7 +33,6 @@ import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 import { AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY } from '../auditlog/constants';
 import { AUDIT_KEY } from '../../app/constants';
-import { naturalSortByProperty } from '../../../public/sort';
 
 export function getNewUserRoles(
     user: User,

@@ -1,25 +1,22 @@
 {
   "name": "@labkey/components",
-  "version": "2.228.0-fb-sampleTypeConsistencyV1.9",
+  "version": "2.228.0-fb-sampleTypeConsistencyV1.10",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "main": "dist/components.js",
   "module": "dist/components.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],
   "exports": {
-    ".": "./dist/components.js",
-    "./samples": "./dist/samples.js"
-  },
-  "typesVersions": {
-    "*": {
-      ".": [
-        "dist/index.d.ts"
-      ],
-      "./samples": [
-        "dist/index_samples.d.ts"
-      ]
+    ".": {
+      "import": "./dist/components.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./samples": {
+      "import": "./dist/samples.js",
+      "types": "./dist/index_samples.d.ts"
     }
   },
   "scripts": {

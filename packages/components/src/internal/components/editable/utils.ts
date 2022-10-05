@@ -13,6 +13,11 @@ import { getUpdatedDataFromGrid } from '../../util/utils';
 
 import { EXPORT_TYPES } from '../../constants';
 
+/**
+ * @deprecated Use initEditableGridModel() or initEditableGridModels() instead.
+ * This method does not make use the grid loader paradigm. Usages of this method directly
+ * is susceptible to data misalignment errors with the associated view.
+ */
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
     editorColumns?: List<QueryColumn>,
@@ -85,12 +90,13 @@ export const loadEditorModelData = async (
     };
 };
 
-const loadData = async (
+export const initEditableGridModel = async (
+    dataModel: QueryModel,
+    editorModel: EditorModel,
     queryModel: QueryModel,
     loader: IEditableGridLoader,
-    editorModel: EditorModel,
     includeColumns?: Array<Partial<QueryColumn>>
-): Promise<{ editorModelData: Partial<EditorModel>; gridData: Partial<QueryModel> }> => {
+): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
     const response = await loader.fetch(queryModel);
     const gridData: Partial<QueryModel> = {
         rows: response.data.toJS(),
@@ -116,7 +122,15 @@ const loadData = async (
     }
 
     const editorModelData = await loadEditorModelData(gridData, columns, extraColumns);
-    return { editorModelData, gridData };
+
+    return {
+        dataModel: dataModel.mutate({
+            ...gridData,
+            rowsLoadingState: LoadingState.LOADED,
+            queryInfoLoadingState: LoadingState.LOADED,
+        }),
+        editorModel: editorModel.merge(editorModelData) as EditorModel,
+    };
 };
 
 export interface EditableGridModels {
@@ -135,20 +149,14 @@ export const initEditableGridModels = async (
     const updatedEditorModels = [];
 
     const results = await Promise.all(
-        loaders.map((loader, i) => loadData(queryModel, loader, editorModels[i], includeColumns))
+        dataModels.map((dataModel, i) =>
+            initEditableGridModel(dataModels[i], editorModels[i], queryModel, loaders[i], includeColumns)
+        )
     );
 
-    results.forEach((result, index) => {
-        const { editorModelData, gridData } = result;
-
-        updatedDataModels.push(
-            dataModels[index].mutate({
-                ...gridData,
-                rowsLoadingState: LoadingState.LOADED,
-                queryInfoLoadingState: LoadingState.LOADED,
-            })
-        );
-        updatedEditorModels.push(editorModels[index].merge(editorModelData) as EditorModel);
+    results.forEach(result => {
+        updatedDataModels.push(result.dataModel);
+        updatedEditorModels.push(result.editorModel);
     });
 
     return {

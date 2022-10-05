@@ -7,7 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Remove Footer
 * Add new app layout styles
   * Update NavigationBar and SubNav to account for new layout styles
-  * SubNav no longer scrolls into and out of view when scrolling up slightly after scrolling down
+  * SubNav is now always visible when present, it no longer scrolls into and out of view
+* <Page /> components now wrap children in a div
+  * This allows us to add padding to pages in a way that allows child components to lay out their components so they do
+  not need to account for the size of the NavBar
 * DomainForm: Don't use react-sticky for sticky header
   * This removes the containerTop prop from DomainForm, AssayDesignerPanels, DataclassDesigner, DatasetDesignerPanels,
   IssueLIstDefDesignerPanels, and SampleTypeDesigner

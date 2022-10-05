@@ -33,6 +33,7 @@ import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 import { TextChoiceOptions } from './TextChoiceOptions';
+import {FileAttachmentOptions} from "./FileAttachmentOptions";
 
 interface IDomainRowExpandedOptionsProps {
     appPropertiesOnly?: boolean;
@@ -224,6 +225,23 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         lockedSqlFragment={domainFormDisplayOptions.textChoiceLockedSqlFragment}
                     />
                 );
+            case 'fileLink':
+            case 'attachment':
+                // TODO: Can this be added in LKB/LKSM?
+                if (appPropertiesOnly)
+                    return null;
+
+                return (
+                    <FileAttachmentOptions
+                        index={index}
+                        domainIndex={domainIndex}
+                        label={field.dataType.name === 'fileLink' ? 'File Behavior' : 'Attachment Behavior'}
+                        displayOption={field.format}
+                        onChange={onChange}
+                        lockType={field.lockType}
+                    />
+                );
+
         }
 
         return null;

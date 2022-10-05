@@ -343,21 +343,11 @@ import {
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
-import { SampleLineageGraph } from './internal/components/samples/SampleLineageGraph';
-import { SamplesAddButton } from './internal/components/samples/SamplesAddButton';
 import { SamplesAssayButton } from './internal/components/samples/SamplesAssayButton';
-import { SamplesEditButton } from './internal/components/samples/SamplesEditButton';
-import { SampleDetailEditing } from './internal/components/samples/SampleDetailEditing';
-import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
-import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
 import { CreateSamplesSubMenu } from './internal/components/samples/CreateSamplesSubMenu';
-import { SamplesDeriveButtonBase } from './internal/components/samples/SamplesDeriveButtonBase';
 import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSamplesSubMenuBase';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
-import { SampleAliquotsSummary } from './internal/components/samples/SampleAliquotsSummary';
-import { SampleAliquotsGridPanel } from './internal/components/samples/SampleAliquotsGridPanel';
-import { SampleActionsButton } from './internal/components/samples/SampleActionsButton';
 
 import { SampleTimelinePageBase } from './internal/components/timeline/SampleTimelinePageBase';
 
@@ -386,7 +376,6 @@ import {
     ALIQUOT_FILTER_MODE,
     SampleAliquotViewSelector,
 } from './internal/components/samples/SampleAliquotViewSelector';
-import { SampleAssayDetail } from './internal/components/samples/SampleAssayDetail';
 import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSamplesByIdHeaderPanel';
 import {
     AssayContextConsumer,
@@ -1113,28 +1102,17 @@ export {
     ParentEntityRequiredColumns,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
-    SampleSetSummary,
     SampleCreationType,
-    SampleSetDeleteModal,
-    SampleActionsButton,
-    SamplesAddButton,
     SamplesAssayButton,
-    SamplesEditButton,
     SamplesEditButtonSections,
     SamplesTabbedGridPanel,
-    SampleLineageGraph,
-    SampleDetailEditing,
     SampleCreationTypeModal,
     CreateSamplesSubMenuBase,
     CreateSamplesSubMenu,
-    SamplesDeriveButtonBase,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
     GridAliquotViewSelector,
-    SampleAliquotsSummary,
     ALIQUOT_FILTER_MODE,
-    SampleAssayDetail,
-    SampleAliquotsGridPanel,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,

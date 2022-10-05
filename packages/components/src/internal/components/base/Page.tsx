@@ -35,7 +35,6 @@ export class Page extends React.Component<PageProps, any> {
 
     componentDidMount() {
         this.setDocumentTitle();
-        window.scrollTo(0, 0);
     }
 
     componentDidUpdate(): void {

@@ -16,13 +16,7 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
-import {
-    EntityChoice,
-    EntityDataType,
-    EntityParentType,
-    IEntityTypeDetails,
-    IEntityTypeOption,
-} from '../entities/models';
+import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
 
 import { Location } from '../../util/URL';
@@ -47,7 +41,7 @@ import { DomainDetails } from '../domainproperties/models';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { getSelectedPicklistSamples } from '../picklist/actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { naturalSort, naturalSortByProperty } from '../../../public/sort';
 import { AssayStateModel } from '../assay/models';
 import { createGridModelId } from '../../models';

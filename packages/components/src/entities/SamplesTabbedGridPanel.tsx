@@ -86,7 +86,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const onTabSelect = useCallback((tab: string) => {
         setActiveTabId(tab);
         onSampleTabSelect?.(tab);
-    }, []);
+    }, [onSampleTabSelect]);
     const activeModel = useMemo(() => queryModels[activeTabId], [activeTabId, queryModels]);
     const hasSelections = activeModel?.hasSelections;
     const selections = activeModel?.selections;
@@ -156,7 +156,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             dismissNotifications();
             setShowBulkUpdate(true);
         }
-    }, [hasSelections]);
+    }, [dismissNotifications, hasSelections]);
 
     const onBulkUpdateError = useCallback(
         (message: string) => {
@@ -183,7 +183,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         setIsEditing(false);
         setShowBulkUpdate(false);
         setIsDirty?.(false);
-    }, []);
+    }, [setIsDirty]);
 
     const toggleEditWithGridUpdate = useCallback(() => {
         if (isEditing) {
@@ -192,7 +192,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             dismissNotifications();
             setIsEditing(true);
         }
-    }, [isEditing, hasValidMaxSelection, resetState]);
+    }, [isEditing, hasValidMaxSelection, resetState, dismissNotifications]);
 
     const onGridEditComplete = useCallback(() => {
         afterSampleActionComplete?.();
@@ -206,7 +206,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             afterSampleActionComplete?.(hasDelete);
             resetState();
         },
-        [actions, activeModelId, afterSampleActionComplete, resetState]
+        [actions, activeModelId, afterSampleActionComplete, dismissNotifications, resetState]
     );
 
     const afterSampleDelete = useCallback(
@@ -314,7 +314,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     sampleSet={activeModel.schemaQuery.queryName}
                     selection={selection}
                     selectionData={selectionData}
-                    user={user}
                 />
             ) : (
                 <TabbedGridPanel

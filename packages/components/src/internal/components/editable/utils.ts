@@ -13,8 +13,6 @@ import { getUpdatedDataFromGrid } from '../../util/utils';
 
 import { EXPORT_TYPES } from '../../constants';
 
-import { EditableGridLoaderFromSelection } from './EditableGridLoaderFromSelection';
-
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
     editorColumns?: List<QueryColumn>,
@@ -120,7 +118,7 @@ export const initEditableGridModels = async (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
     queryModel: QueryModel,
-    loaders: EditableGridLoaderFromSelection[],
+    loaders: IEditableGridLoader[],
     includeColumns?: Array<Partial<QueryColumn>>
 ): Promise<EditableGridModels> => {
     const updatedDataModels = [];

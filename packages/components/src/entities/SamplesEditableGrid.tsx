@@ -56,14 +56,13 @@ export interface SamplesEditableGridProps {
     ) => any;
     getIsDirty?: () => boolean;
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
-    onGridEditCancel: () => any;
-    onGridEditComplete: () => any;
+    onGridEditCancel: () => void;
+    onGridEditComplete: () => void;
     parentDataTypes: List<EntityDataType>;
     samplesGridOmittedColumns?: List<string>;
     samplesGridRequiredColumns?: string[];
     selectionData: Map<string, any>;
     setIsDirty?: (isDirty: boolean) => void;
-    user: User;
 }
 
 type Props = SamplesEditableGridProps &
@@ -489,7 +488,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
         if (determineLineage && this.hasParentDataTypes() && !originalParents) return <LoadingSpinner />;
 
-        const loaders = [];
+        const loaders: IEditableGridLoader[] = [];
         if (determineSampleData) {
             loaders.push(
                 new EditableGridLoaderFromSelection(

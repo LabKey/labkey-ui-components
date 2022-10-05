@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.230.0
+*Released*: 5 October 2022
+* Add `isComplianceEnabled` and `isMediaEnabled` utility method for apps.
+* Add `Media` as a `ProductFeature` enumeration.
+
 ### version 2.229.0
 *Released*: 4 October 2022
 * Issue 45878: LKSM: Remove option to not send an email to new users

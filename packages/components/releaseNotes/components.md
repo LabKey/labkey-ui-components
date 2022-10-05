@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Issue 46337: Add Workflow Editor role
+* Add EditorWithoutDelete role to `HOSTED_APPLICATION_SECURITY_ROLES`
 
 ### version 2.229.0
 *Released*: 4 October 2022

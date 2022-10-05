@@ -42,7 +42,7 @@
     "@fortawesome/free-regular-svg-icons": "~5.15.4",
     "@fortawesome/free-solid-svg-icons": "~5.15.4",
     "@fortawesome/react-fontawesome": "~0.1.15",
-    "@labkey/api": "1.16.2-workflowEditorRole.1",
+    "@labkey/api": "~1.16.1",
     "@types/enzyme": "~3.10.11",
     "@types/jest": "~28.1.6",
     "bootstrap": "~3.4.1",

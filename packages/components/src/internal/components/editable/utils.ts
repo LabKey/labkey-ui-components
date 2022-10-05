@@ -3,7 +3,7 @@ import { Utils, UtilsDOM } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from '../../models';
+import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from '../../models';
 import { getLookupValueDescriptors } from '../../actions';
 import { genCellKey } from '../../utils';
 
@@ -88,6 +88,7 @@ export const loadEditorModelData = async (
 const loadData = async (
     queryModel: QueryModel,
     loader: IEditableGridLoader,
+    editorModel: EditorModel,
     includeColumns?: Array<Partial<QueryColumn>>
 ): Promise<{ editorModelData: Partial<EditorModel>; gridData: Partial<QueryModel> }> => {
     const response = await loader.fetch(queryModel);
@@ -105,7 +106,16 @@ const loadData = async (
         }
     });
 
-    const editorModelData = await loadEditorModelData(gridData, loader.updateColumns, extraColumns);
+    let columns: List<QueryColumn>;
+    const forUpdate = loader.mode === EditorMode.Update;
+
+    if (loader.columns) {
+        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, loader.columns, loader.columns);
+    } else {
+        columns = editorModel.getColumns(gridData.queryInfo, forUpdate);
+    }
+
+    const editorModelData = await loadEditorModelData(gridData, columns, extraColumns);
     return { editorModelData, gridData };
 };
 
@@ -124,7 +134,9 @@ export const initEditableGridModels = async (
     const updatedDataModels = [];
     const updatedEditorModels = [];
 
-    const results = await Promise.all(loaders.map(loader => loadData(queryModel, loader, includeColumns)));
+    const results = await Promise.all(
+        loaders.map((loader, i) => loadData(queryModel, loader, editorModels[i], includeColumns))
+    );
 
     results.forEach((result, index) => {
         const { editorModelData, gridData } = result;

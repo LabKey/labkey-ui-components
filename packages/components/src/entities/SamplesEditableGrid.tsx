@@ -9,7 +9,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapp
 
 import { UpdateGridTab } from '../internal/components/editable/EditableGridPanelForUpdateWithLineage';
 
-import { EditorModel, IEditableGridLoader, IGridResponse } from '../internal/models';
+import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../internal/models';
 
 import { isFreezerManagementEnabled } from '../internal/app/utils';
 
@@ -19,7 +19,6 @@ import {
     NotificationsContextProps,
     withNotificationsContext,
 } from '../internal/components/notifications/NotificationsContext';
-import { User } from '../internal/components/base/models/User';
 
 import { caseInsensitive } from '../internal/util/utils';
 import { NO_UPDATES_MESSAGE } from '../internal/constants';
@@ -593,24 +592,26 @@ export const SamplesEditableGrid = SamplesSelectionProvider<SamplesEditableGridP
 );
 
 class StorageEditableGridLoaderFromSelection implements IEditableGridLoader {
+    columns: List<QueryColumn>;
     id: string;
+    mode: EditorMode;
     queryInfo: QueryInfo;
     requiredColumns: string[];
     omittedColumns: string[];
-    updateColumns: List<QueryColumn>;
 
     constructor(
         id: string,
         queryInfo: QueryInfo,
         requiredColumns: string[],
         omittedColumns: string[],
-        updateColumns: List<QueryColumn>
+        columns: List<QueryColumn>
     ) {
+        this.columns = columns;
         this.id = id;
+        this.mode = EditorMode.Update;
         this.queryInfo = queryInfo;
         this.requiredColumns = requiredColumns;
         this.omittedColumns = omittedColumns;
-        this.updateColumns = updateColumns;
     }
 
     fetch(queryModel: QueryModel): Promise<IGridResponse> {

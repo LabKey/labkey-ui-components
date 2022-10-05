@@ -16,20 +16,21 @@
 import { List, Map } from 'immutable';
 
 import { getSelectedData } from '../../actions';
-import { EditorModel, IEditableGridLoader, IGridResponse } from '../../models';
+import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../../models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 export class EditableGridLoaderFromSelection implements IEditableGridLoader {
+    columns: List<QueryColumn>;
     id: string;
     idsNotToUpdate: number[];
     fieldsNotToUpdate: string[];
+    mode: EditorMode;
     model: QueryModel;
     omittedColumns: string[];
     queryInfo: QueryInfo;
     requiredColumns: string[];
-    updateColumns: List<QueryColumn>;
     updateData: any;
 
     constructor(
@@ -38,21 +39,22 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
         updateData,
         requiredColumns?: string[],
         omittedColumns?: string[],
-        updateColumns?: List<QueryColumn>,
+        columns?: List<QueryColumn>,
         idsNotToUpdate?: any[],
         fieldsNotToUpdate?: string[]
     ) {
+        this.columns = columns;
         this.id = id;
+        this.mode = EditorMode.Update;
         this.queryInfo = queryInfo;
         this.updateData = updateData || {};
         this.requiredColumns = requiredColumns || [];
         this.omittedColumns = omittedColumns || [];
-        this.updateColumns = updateColumns;
         this.idsNotToUpdate = idsNotToUpdate || [];
         this.fieldsNotToUpdate = fieldsNotToUpdate || [];
     }
 
-    selectAndFetch(gridModel: QueryModel): Promise<IGridResponse> {
+    fetch(gridModel: QueryModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
             const { queryParameters, schemaQuery } = gridModel;
             const columnString = gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns);
@@ -88,9 +90,5 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
                     });
                 });
         });
-    }
-
-    fetch(gridModel: QueryModel): Promise<IGridResponse> {
-        return this.selectAndFetch(gridModel);
     }
 }

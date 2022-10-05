@@ -33,8 +33,8 @@ describe('getLineageEditorUpdateColumns', () => {
         expect(cols.queryInfoColumns.get('rowid')).toBeDefined();
         expect(cols.queryInfoColumns.get('name')).toBeDefined();
         expect(cols.queryInfoColumns.get('other')).toBeUndefined();
-        expect(cols.updateColumns.size).toBe(1);
-        expect(cols.updateColumns.get(0).get('fieldKey')).toBe('name');
+        expect(cols.columns.size).toBe(1);
+        expect(cols.columns.get(0).get('fieldKey')).toBe('name');
     });
 
     test('with parent types', () => {
@@ -69,10 +69,10 @@ describe('getLineageEditorUpdateColumns', () => {
         expect(cols.queryInfoColumns.get('other')).toBeUndefined();
         expect(cols.queryInfoColumns.get('MaterialInputs/Test1')).toBeDefined();
         expect(cols.queryInfoColumns.get('DataInputs/Test2')).toBeDefined();
-        expect(cols.updateColumns.size).toBe(3);
-        expect(cols.updateColumns.get(0).get('fieldKey')).toBe('name');
-        expect(cols.updateColumns.get(1).get('fieldKey')).toBe('DataInputs/Test2');
-        expect(cols.updateColumns.get(2).get('fieldKey')).toBe('MaterialInputs/Test1');
+        expect(cols.columns.size).toBe(3);
+        expect(cols.columns.get(0).get('fieldKey')).toBe('name');
+        expect(cols.columns.get(1).get('fieldKey')).toBe('DataInputs/Test2');
+        expect(cols.columns.get(2).get('fieldKey')).toBe('MaterialInputs/Test1');
     });
 
     // Regression coverage to ensure the "name" column is included in the lineage
@@ -87,6 +87,6 @@ describe('getLineageEditorUpdateColumns', () => {
 
         expect(cols.queryInfoColumns.size).toBe(2);
         expect(cols.queryInfoColumns.get('name')).toBeDefined();
-        expect(cols.updateColumns.size).toBe(0);
+        expect(cols.columns.size).toBe(0);
     });
 });

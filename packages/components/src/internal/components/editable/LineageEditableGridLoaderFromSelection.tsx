@@ -4,25 +4,25 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { DisplayObject, EntityChoice, EntityParentType } from '../entities/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { EditorModel, IEditableGridLoader, IGridResponse } from '../../models';
+import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../../models';
 
 // exported for unit testing
 export function getLineageEditorUpdateColumns(
     queryModel: QueryModel,
     originalParents: Record<string, List<EntityChoice>>
-): { queryInfoColumns: OrderedMap<string, QueryColumn>; updateColumns: List<QueryColumn> } {
+): { columns: List<QueryColumn>; queryInfoColumns: OrderedMap<string, QueryColumn> } {
     // model columns should include RowId, Name, and one column for each distinct existing parent (source and/or
     // sample type) of the selected samples.
     let queryInfoColumns = OrderedMap<string, QueryColumn>();
-    let updateColumns = List<QueryColumn>();
+    let columns = List<QueryColumn>();
     queryModel.queryInfo.columns.forEach((column, key) => {
         if (key === 'rowid') {
             queryInfoColumns = queryInfoColumns.set(key, column);
         } else if (key === 'name') {
             queryInfoColumns = queryInfoColumns.set(key, column);
-            // Add "name" column to updateColumns iff it is being utilized as an underlying update column
+            // Add "name" column to columns iff it is being utilized as an underlying update column
             if (queryModel.queryInfo.getUpdateColumns().find(col => col.fieldKey.toLowerCase() === 'name')) {
-                updateColumns = updateColumns.push(column);
+                columns = columns.push(column);
             }
         }
     });
@@ -46,16 +46,17 @@ export function getLineageEditorUpdateColumns(
         .sort() // Order parent columns so sources come first before sample types, and then alphabetically ordered within the types
         .forEach(key => {
             queryInfoColumns = queryInfoColumns.set(key, parentColumns[key]);
-            updateColumns = updateColumns.push(parentColumns[key]);
+            columns = columns.push(parentColumns[key]);
         });
 
-    return { queryInfoColumns, updateColumns };
+    return { queryInfoColumns, columns };
 }
 
 export class LineageEditableGridLoaderFromSelection implements IEditableGridLoader {
+    columns: List<QueryColumn>;
     id: string;
+    mode: EditorMode;
     queryInfo: QueryInfo;
-    updateColumns: List<QueryColumn>;
     originalParents: Record<string, List<EntityChoice>>;
     lineageKeys: string[];
     lineage: Record<string, any>;
@@ -70,14 +71,15 @@ export class LineageEditableGridLoaderFromSelection implements IEditableGridLoad
         aliquots?: string[]
     ) {
         this.id = id;
+        this.mode = EditorMode.Update;
         this.originalParents = originalParents;
         this.lineageKeys = lineageKeys;
         this.lineage = lineage;
         this.aliquots = aliquots;
 
-        const columns = getLineageEditorUpdateColumns(queryModel, this.originalParents);
-        this.queryInfo = queryModel.queryInfo.merge({ columns: columns.queryInfoColumns }) as QueryInfo;
-        this.updateColumns = columns.updateColumns;
+        const { columns, queryInfoColumns } = getLineageEditorUpdateColumns(queryModel, this.originalParents);
+        this.columns = columns;
+        this.queryInfo = queryModel.queryInfo.merge({ columns: queryInfoColumns }) as QueryInfo;
     }
 
     fetch(queryModel: QueryModel): Promise<IGridResponse> {

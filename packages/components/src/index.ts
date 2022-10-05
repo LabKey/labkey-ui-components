@@ -772,7 +772,6 @@ import {
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from './test/data/constants';
-import {SampleTypeBasePage} from "./internal/samples/SampleTypeBasePage";
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -894,7 +893,6 @@ const Hooks = {
 };
 
 export {
-    SampleTypeBasePage, // TODO this will move, to be exposed as a separate entry point in package
     // internal application
     App,
     AppModel,

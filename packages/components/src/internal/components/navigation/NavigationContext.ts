@@ -24,15 +24,13 @@ export const useNavigationContextState = (): NavigationGlobalContext => {
     // SubNavGlobalContext
     const [noun, setNoun] = useState<ITab>(undefined);
     const [tabs, setTabs] = useState<List<ITab>>(List());
-    const [ignoreShow, setIgnoreShow] = useState<boolean>(false);
     const clearNav = useCallback(() => {
         setNoun(undefined);
         setTabs(List());
-        setIgnoreShow(false);
     }, []);
     const subNavContext = useMemo<SubNavGlobalContext>(
-        () => ({ clearNav, ignoreShow, noun, setIgnoreShow, setNoun, setTabs, tabs }),
-        [clearNav, ignoreShow, noun, tabs]
+        () => ({ clearNav, noun, setNoun, setTabs, tabs }),
+        [clearNav, noun, tabs]
     );
 
     return useMemo(

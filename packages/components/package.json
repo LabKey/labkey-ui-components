@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.228.0-fb-sampleTypeConsistencyV1.10",
+  "version": "2.228.0-fb-sampleTypeConsistencyV1.11",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "main": "dist/components.js",
@@ -12,12 +12,15 @@
   "exports": {
     ".": {
       "import": "./dist/components.js",
+      "require": "./dist/components.js",
       "types": "./dist/index.d.ts"
     },
     "./samples": {
       "import": "./dist/samples.js",
+      "require": "./dist/samples.js",
       "types": "./dist/index_samples.d.ts"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "build": "npm run clean && cross-env NODE_ENV=production webpack --config node_modules/@labkey/build/webpack/package.config.js --color --progress --profile",

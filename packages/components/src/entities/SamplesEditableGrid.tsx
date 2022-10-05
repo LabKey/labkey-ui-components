@@ -38,7 +38,7 @@ import { SampleStateType } from '../internal/components/samples/constants';
 import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
-import { getLineageEditorUpdateColumns, getUpdatedLineageRows } from '../internal/components/samples/actions';
+import { getUpdatedLineageRows } from '../internal/components/samples/actions';
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
 import { getOriginalParentsFromLineage } from './actions';
 
@@ -539,17 +539,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         }
 
         if (determineLineage && this.hasParentDataTypes()) {
-            const { queryInfoColumns, updateColumns } = getLineageEditorUpdateColumns(
-                displayQueryModel,
-                originalParents
-            );
-            const lineageQueryInfo = displayQueryModel.queryInfo.merge({ columns: queryInfoColumns }) as QueryInfo;
-
             loaders.push(
                 new LineageEditableGridLoaderFromSelection(
                     SAMPLES_LINEAGE_EDIT_GRID_ID,
-                    lineageQueryInfo,
-                    updateColumns,
+                    displayQueryModel,
                     originalParents,
                     sampleLineageKeys,
                     sampleLineage,

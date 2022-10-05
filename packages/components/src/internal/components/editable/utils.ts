@@ -3,7 +3,7 @@ import { Utils, UtilsDOM } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { EditorModel, EditorModelProps, ValueDescriptor } from '../../models';
+import { EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from '../../models';
 import { getLookupValueDescriptors } from '../../actions';
 import { genCellKey } from '../../utils';
 
@@ -87,6 +87,30 @@ export const loadEditorModelData = async (
     };
 };
 
+const loadData = async (
+    queryModel: QueryModel,
+    loader: IEditableGridLoader,
+    includeColumns?: Array<Partial<QueryColumn>>
+): Promise<{ editorModelData: Partial<EditorModel>; gridData: Partial<QueryModel> }> => {
+    const response = await loader.fetch(queryModel);
+    const gridData: Partial<QueryModel> = {
+        rows: response.data.toJS(),
+        orderedRows: response.dataIds.toArray(),
+        queryInfo: loader.queryInfo,
+    };
+
+    const extraColumns: QueryColumn[] = [];
+    includeColumns?.forEach(col => {
+        const column = queryModel.getColumn(col.fieldKey);
+        if (column) {
+            extraColumns.push(column);
+        }
+    });
+
+    const editorModelData = await loadEditorModelData(gridData, loader.updateColumns, extraColumns);
+    return { editorModelData, gridData };
+};
+
 export interface EditableGridModels {
     dataModels: QueryModel[];
     editorModels: EditorModel[];
@@ -102,34 +126,7 @@ export const initEditableGridModels = async (
     const updatedDataModels = [];
     const updatedEditorModels = [];
 
-    const results = await Promise.all(
-        loaders.map(
-            loader =>
-                new Promise<{ editorModelData: Partial<EditorModel>; gridData: Record<string, any> }>(resolve => {
-                    let gridData;
-                    loader
-                        .fetch(queryModel)
-                        .then(response => {
-                            gridData = {
-                                rows: response.data.toJS(),
-                                orderedRows: response.dataIds.toArray(),
-                                queryInfo: loader.queryInfo,
-                            };
-                            const extraColumns = [];
-                            if (includeColumns) {
-                                includeColumns.forEach(col => {
-                                    const column = queryModel.getColumn(col.fieldKey);
-                                    if (column) extraColumns.push(column);
-                                });
-                            }
-                            return loadEditorModelData(gridData, loader.updateColumns, extraColumns);
-                        })
-                        .then(editorModelData => {
-                            resolve({ editorModelData, gridData });
-                        });
-                })
-        )
-    );
+    const results = await Promise.all(loaders.map(loader => loadData(queryModel, loader, includeColumns)));
 
     results.forEach((result, index) => {
         const { editorModelData, gridData } = result;

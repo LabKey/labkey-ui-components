@@ -1,8 +1,9 @@
 {
   "name": "@labkey/components",
-  "version": "2.228.0-fb-sampleTypeConsistencyV1.7",
+  "version": "2.228.0-fb-sampleTypeConsistencyV1.8",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
+  "type": "module",
   "main": "dist/components.js",
   "module": "dist/components.js",
   "exports": {

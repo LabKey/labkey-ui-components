@@ -32,18 +32,18 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
         return (
             <>
                 <p>
-                    Set the default behavior of file links when clicked in grids and elsewhere in LabKey.
+                    {`Set the default behavior of ${label.toLowerCase()} links when clicked in grids and elsewhere in LabKey.`}
                 </p>
             </>
         );
-    }, []);
+    }, [label]);
 
 
     return (
         <div>
             <Row>
                 <Col xs={12}>
-                    <SectionHeading title={label} helpTipBody={helpText} />
+                    <SectionHeading title={`${label} Behavior`} helpTipBody={helpText} />
                 </Col>
             </Row>
             <Row className={'domain-field-label'}>
@@ -64,7 +64,7 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
                             )}
                             value={FILE_DISPLAY_INLINE}
                         >
-                            Show File in Browser
+                            {`Show ${label} in Browser`}
                         </option>
                         <option
                             key={createFormInputId(
@@ -74,7 +74,7 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
                             )}
                             value={FILE_DISPLAY_ATTACHMENT}
                         >
-                            Download File
+                            {`Download ${label}`}
                         </option>
                     </FormControl>
                 </Col>

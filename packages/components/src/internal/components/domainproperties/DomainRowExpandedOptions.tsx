@@ -235,7 +235,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                     <FileAttachmentOptions
                         index={index}
                         domainIndex={domainIndex}
-                        label={field.dataType.name === 'fileLink' ? 'File Behavior' : 'Attachment Behavior'}
+                        label={field.dataType.name === 'fileLink' ? 'File' : 'Attachment'}
                         displayOption={field.format}
                         onChange={onChange}
                         lockType={field.lockType}

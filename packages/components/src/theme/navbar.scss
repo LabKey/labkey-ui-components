@@ -1,5 +1,13 @@
-.app-header-wrapper {
-  width: 100%;
+.main-nav.navbar {
+    height: 56px;
+}
+
+.sub-nav-wrapper .navbar {
+    height: 41px;
+}
+
+.app-navigation .navbar {
+    margin-bottom: 0;
 }
 
 .navbar-container {

@@ -2,8 +2,6 @@ import moment from 'moment';
 import { OrderedMap } from 'immutable';
 import { Ajax, Filter, PermissionRoles, PermissionTypes, Security, Utils } from '@labkey/api';
 
-import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
-
 import { processRequest } from '../../query/api';
 
 import { buildURL } from '../../url/AppURL';
@@ -16,6 +14,7 @@ import { selectRows } from '../../query/selectRows';
 import { SCHEMAS } from '../../schemas';
 
 import { ChangePasswordModel } from './models';
+import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../administration/constants';
 
 export function getUserProperties(userId: number): Promise<any> {
     return new Promise((resolve, reject) => {

@@ -45,7 +45,9 @@ export namespace URLService {
 
     export function registerAppRouteResolvers(...appRouteResolvers: AppRouteResolver[]): void {
         appRouteResolvers.forEach(resolver => {
-            resolvers = resolvers.add(resolver);
+            if (resolver) {
+                resolvers = resolvers.add(resolver);
+            }
         });
     }
 

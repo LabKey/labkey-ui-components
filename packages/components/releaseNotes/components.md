@@ -3,8 +3,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD October 2022
-* Sample type consistency for LKB and LKSM
+* Components package update to split out `entities` components as separate entry point (subpackage)
   * move SampleTypeBasePage.tsx from LKSM to be used in both apps
+  * ...
+
+### version 2.230.1
+*Released*: 6 October 2022
+* Add EditorWithoutDelete role to `HOSTED_APPLICATION_SECURITY_ROLES`
+
+### version 2.230.0
+*Released*: 5 October 2022
+* Add `isComplianceEnabled` and `isMediaEnabled` utility method for apps.
+* Add `Media` as a `ProductFeature` enumeration.
 
 ### version 2.229.0
 *Released*: 4 October 2022

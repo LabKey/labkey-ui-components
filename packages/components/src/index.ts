@@ -112,7 +112,6 @@ import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsAlert } from './internal/components/permissions/InsufficientPermissionsAlert';
 import { InsufficientPermissionsPage } from './internal/components/permissions/InsufficientPermissionsPage';
 import { BasePermissionsCheckPage } from './internal/components/permissions/BasePermissionsCheckPage';
-import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './internal/components/permissions/constants';
 import { NotFound } from './internal/components/base/NotFound';
 import { Page } from './internal/components/base/Page';
 import { LoadingPage } from './internal/components/base/LoadingPage';
@@ -310,8 +309,10 @@ import { BasePermissions } from './internal/components/administration/BasePermis
 import { GroupManagement } from './internal/components/administration/GroupManagement';
 import { showPremiumFeatures } from './internal/components/administration/utils';
 import {
+    APPLICATION_SECURITY_ROLES,
     HOSTED_APPLICATION_SECURITY_ROLES,
     SECURITY_ROLE_DESCRIPTIONS,
+    SITE_SECURITY_ROLES,
 } from './internal/components/administration/constants';
 import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
@@ -613,9 +614,11 @@ import {
     isBiologicsEnabled,
     isELNEnabled,
     isFreezerManagementEnabled,
+    isMediaEnabled,
     isPremiumProductEnabled,
     isProductProjectsEnabled,
     isProjectContainer,
+    isProtectedDataEnabled,
     isRequestsEnabled,
     isSampleAliquotSelectorEnabled,
     isSampleManagerEnabled,
@@ -733,6 +736,7 @@ const App = {
     getCurrentAppProperties,
     registerWebSocketListeners,
     isAssayEnabled,
+    isMediaEnabled,
     isWorkflowEnabled,
     isELNEnabled,
     isFreezerManagementEnabled,
@@ -742,6 +746,7 @@ const App = {
     isPremiumProductEnabled,
     isSampleAliquotSelectorEnabled,
     isProjectContainer,
+    isProtectedDataEnabled,
     sampleManagerIsPrimaryApp,
     isSampleStatusEnabled,
     isProductProjectsEnabled,

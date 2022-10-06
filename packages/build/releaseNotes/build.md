@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version TBD
+*Released*: TBD
+* Revert changes for build packages as ES Modules
+
 ### version 6.2.1
 *Released*: 23 September 2022
 * Update typescript_dev module loader rule regex to match Windows and Unix path operators.

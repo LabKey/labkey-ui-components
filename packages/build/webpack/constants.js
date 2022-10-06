@@ -118,10 +118,6 @@ const BABEL_CONFIG = {
                 {
                     // support async/await
                     'targets': 'last 2 versions, not dead, not IE 11, > 5%',
-                    // See https://babeljs.io/docs/en/babel-preset-env#modules
-                    // This works in coordination with the TYPESCRIPT_DEV exclude change so that we
-                    // do not exclude the @labkey packages.
-                    modules: 'umd',
                 }
             ],
         ],
@@ -129,7 +125,7 @@ const BABEL_CONFIG = {
     }
 };
 
-const BABEL_WATCH_CONFIG = {
+const BABEL_DEV_CONFIG = {
     ...BABEL_CONFIG,
     options: {
         ...BABEL_CONFIG.options,
@@ -181,7 +177,6 @@ module.exports = {
     watchPort,
     TS_CHECKER_CONFIG,
     TS_CHECKER_DEV_CONFIG,
-    BABEL_PLUGINS,
     context: path.resolve(lkModule, '..'),
     extensions: {
         TYPESCRIPT: [ '.jsx', '.js', '.tsx', '.ts' ]
@@ -235,19 +230,10 @@ module.exports = {
                 use: [BABEL_CONFIG]
             }
         ],
-        TYPESCRIPT_DEV: [
-            {
-                // For some reason the dev build needs to explicitly not exclude our packages so they get transpiled
-                // by Babel. For unknown reasons this is not needed for the prod build.
-                test: /^(?!.*spec\.tsx?$).*\.(js|ts|tsx)?$/,
-                exclude: /node_modules[\\\/](?!(.labkey)[\\\/]).*/,
-                use: [BABEL_CONFIG]
-            }
-        ],
         TYPESCRIPT_WATCH: [
             {
                 test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
-                use: [BABEL_WATCH_CONFIG]
+                use: [BABEL_DEV_CONFIG]
             }
         ]
     },

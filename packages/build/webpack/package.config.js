@@ -24,39 +24,12 @@ const tsCheckerConfig = {
     }
 };
 
-const BABEL_CONFIG = {
-    loader: 'babel-loader',
-    options: {
-        babelrc: false,
-        cacheDirectory: true,
-        presets: [
-            [
-                '@babel/preset-env',
-                {
-                    // support async/await
-                    targets: 'last 2 versions, not dead, not IE 11, > 5%',
-                    modules: false,
-                }
-            ],
-        ],
-        plugins: constants.BABEL_PLUGINS,
-    }
-};
-
 module.exports = {
     entry: './src/index.ts',
     target: 'web',
     mode: 'production',
-    experiments: {
-        outputModule: true,
-    },
     module: {
-        rules: [
-            {
-                test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
-                use: [BABEL_CONFIG],
-            }
-        ],
+        rules: constants.loaders.TYPESCRIPT,
     },
     resolve: {
         extensions: [ '.jsx', '.js', '.tsx', '.ts' ]
@@ -70,7 +43,8 @@ module.exports = {
         publicPath: '',
         filename: constants.lkModule + '.js',
         library: {
-            type: 'module'
+            name: '@labkey/' + constants.lkModule,
+            type: 'umd'
         },
     },
     plugins: [

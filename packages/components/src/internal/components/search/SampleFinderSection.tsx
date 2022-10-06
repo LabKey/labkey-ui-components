@@ -112,7 +112,7 @@ export const SampleFinderHeaderButtons: FC<SampleFinderHeaderProps> = memo(props
     );
 });
 
-export const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
+const SampleFinderSectionImpl: FC<Props & InjectedAssayModel> = memo(props => {
     const { assayModel, sampleTypeNames, parentEntityDataTypes, clearSessionView, location, ...gridProps } = props;
 
     const [filterChangeCounter, setFilterChangeCounter] = useState<number>(0);
@@ -472,7 +472,7 @@ interface SampleFinderSamplesProps extends SampleFinderSamplesGridProps {
     selectionKeyPrefix: string;
 }
 
-export const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
+const SampleFinderSamplesImpl: FC<SampleFinderSamplesGridProps & InjectedQueryModels> = memo(props => {
     const { actions, columnDisplayNames, queryModels, gridButtons, gridButtonProps } = props;
     const [isLoading, setIsLoading] = useState<boolean>(true);
 

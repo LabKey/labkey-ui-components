@@ -21,8 +21,20 @@ import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSa
 import { SamplesAssayButton } from './internal/components/samples/SamplesAssayButton';
 import { SampleTypeInsightsPanel } from './internal/components/samples/SampleTypeInsightsPanel';
 import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSamplesByIdHeaderPanel';
+import { FindSamplesByIdsPageBase } from './internal/components/search/FindSamplesByIdsPageBase';
+import { SampleFinderSection } from './internal/components/search/SampleFinderSection';
+import { FindDerivativesButton } from './internal/components/search/FindDerivativesButton';
+import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
+import { GridAliquotViewSelector } from './internal/components/gridbar/GridAliquotViewSelector';
+import {
+    ALIQUOT_FILTER_MODE,
+    SampleAliquotViewSelector,
+} from './internal/components/samples/SampleAliquotViewSelector';
+import { SampleTimelinePageBase } from './internal/components/timeline/SampleTimelinePageBase';
 
 export {
+    ALIQUOT_FILTER_MODE,
     filterSampleRowsForOperation,
     getSampleSetMenuItem,
     getSampleWizardURL,
@@ -30,17 +42,25 @@ export {
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
     EntityCrossProjectSelectionConfirmModal,
+    FindDerivativesButton,
+    FindSamplesByIdHeaderPanel,
+    FindSamplesByIdsPageBase,
+    GridAliquotViewSelector,
+    ManageSampleStatusesPanel,
     SampleActionsButton,
     SampleAliquotDetailHeader,
+    SampleAliquotViewSelector,
     SampleAliquotsGridPanel,
     SampleAliquotsSummary,
     SamplesAddButton,
     SampleAssayDetail,
     SampleCreationTypeModal,
     SampleDetailEditing,
+    SampleFinderSection,
     SampleLineageGraph,
     SampleSetDeleteModal,
     SampleSetSummary,
+    SampleTimelinePageBase,
     SampleTypeBasePage,
     SampleTypeInsightsPanel,
     SamplesAssayButton,

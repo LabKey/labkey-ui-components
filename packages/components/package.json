@@ -19,7 +19,7 @@
         "dist/index.d.ts"
       ],
       "samples": [
-        "dist/index_samples.d.ts"
+        "dist/entities/index.d.ts"
       ]
     }
   },

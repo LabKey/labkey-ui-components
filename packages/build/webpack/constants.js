@@ -159,6 +159,7 @@ const TS_CHECKER_DEV_CONFIG = {
             compilerOptions: {
                 "paths": {
                     "@labkey/components": [labkeyUIComponentsPath],
+                    "@labkey/components/entities": [labkeyUIComponentsPath + '/entities'],
                     "@labkey/freezermanager": [freezerManagerPath],
                     "@labkey/workflow": [workflowPath],
                     "@labkey/eln": [elnPath],
@@ -249,6 +250,7 @@ module.exports = {
             // Note that for modules that don't have these packages, the aliases are just ignored and don't
             // seem to cause any problems.
             '@labkey/components': labkeyUIComponentsPath,
+            '@labkey/components/entities': labkeyUIComponentsPath + '/entities',
             '@labkey/freezermanager': freezerManagerPath,
             '@labkey/workflow': workflowPath,
             '@labkey/eln': elnPath,

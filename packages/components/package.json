@@ -24,7 +24,7 @@
     }
   },
   "scripts": {
-    "build": "npm run clean && cross-env NODE_ENV=production webpack --config node_modules/@labkey/build/webpack/package.config.js --color --progress --profile",
+    "build": "npm run clean && cross-env NODE_ENV=production webpack --config package.config.js --color --progress --profile",
     "clean": "rimraf dist",
     "cleanAll": "rimraf dist && rimraf node_modules",
     "prepublishOnly": "cross-env WEBPACK_STATS=errors-only yarn build",
@@ -113,6 +113,7 @@
     "jest-teamcity-reporter": "~0.9.0",
     "react-test-renderer": "~16.14.0",
     "ts-jest": "~28.0.7",
+    "webpack-merge": "~5.8.0",
     "xhr-mock": "~2.5.1"
   },
   "peerDependencies": {

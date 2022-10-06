@@ -33,7 +33,7 @@ import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 import { TextChoiceOptions } from './TextChoiceOptions';
-import {FileAttachmentOptions} from "./FileAttachmentOptions";
+import { FileAttachmentOptions } from './FileAttachmentOptions';
 
 interface IDomainRowExpandedOptionsProps {
     appPropertiesOnly?: boolean;
@@ -228,8 +228,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             case 'fileLink':
             case 'attachment':
                 // TODO: Can this be added in LKB/LKSM?
-                if (appPropertiesOnly)
-                    return null;
+                if (appPropertiesOnly) return null;
 
                 return (
                     <FileAttachmentOptions
@@ -241,7 +240,6 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         lockType={field.lockType}
                     />
                 );
-
         }
 
         return null;

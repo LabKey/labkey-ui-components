@@ -1,32 +1,31 @@
+import React, { FC, memo, ReactNode, useCallback, useMemo } from 'react';
 
-import React, {FC, memo, ReactNode, useCallback, useMemo} from 'react';
-import {ITypeDependentProps} from "./models";
-import {Col, FormControl, Row} from "react-bootstrap";
-import {SectionHeading} from "./SectionHeading";
-import {DomainFieldLabel} from "./DomainFieldLabel";
-import {createFormInputId, createFormInputName} from "./utils";
-import {
-    DOMAIN_FIELD_FILE_DISPLAY,
-    FILE_DISPLAY_ATTACHMENT,
-    FILE_DISPLAY_INLINE
-} from "./constants";
-import {isFieldFullyLocked} from "./propertiesUtil";
+import { Col, FormControl, Row } from 'react-bootstrap';
+
+import { ITypeDependentProps } from './models';
+import { SectionHeading } from './SectionHeading';
+import { DomainFieldLabel } from './DomainFieldLabel';
+import { createFormInputId, createFormInputName } from './utils';
+import { DOMAIN_FIELD_FILE_DISPLAY, FILE_DISPLAY_ATTACHMENT, FILE_DISPLAY_INLINE } from './constants';
+import { isFieldFullyLocked } from './propertiesUtil';
 
 interface Props extends ITypeDependentProps {
     displayOption: string;
 }
 
-
 export const FileAttachmentOptions: FC<Props> = memo(props => {
     const { onChange, label, index, domainIndex, displayOption, lockType } = props;
 
-    const onFieldChange = useCallback((evt): void => {
-        const value = evt.target.value;
+    const onFieldChange = useCallback(
+        (evt): void => {
+            const value = evt.target.value;
 
-        if (onChange) {
-            onChange(evt.target.id, value);
-        }
-    }, [onChange]);
+            if (onChange) {
+                onChange(evt.target.id, value);
+            }
+        },
+        [onChange]
+    );
 
     const helpText = useMemo((): ReactNode => {
         return (
@@ -38,7 +37,6 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
         );
     }, [label]);
 
-
     return (
         <div>
             <Row>
@@ -46,7 +44,7 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
                     <SectionHeading title={`${label} Behavior`} helpTipBody={helpText} />
                 </Col>
             </Row>
-            <Row className={'domain-field-label'}>
+            <Row className="domain-field-label">
                 <Col xs={2}>
                     <FormControl
                         componentClass="select"
@@ -80,6 +78,5 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
                 </Col>
             </Row>
         </div>
-    )
-
+    );
 });

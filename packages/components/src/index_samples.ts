@@ -25,13 +25,22 @@ import { FindSamplesByIdHeaderPanel } from './internal/components/samples/FindSa
 import { FindSamplesByIdsPageBase } from './internal/components/search/FindSamplesByIdsPageBase';
 import { SampleFinderSection } from './internal/components/search/SampleFinderSection';
 import { FindDerivativesButton } from './internal/components/search/FindDerivativesButton';
-import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
 import { GridAliquotViewSelector } from './internal/components/gridbar/GridAliquotViewSelector';
 import {
     ALIQUOT_FILTER_MODE,
     SampleAliquotViewSelector,
 } from './internal/components/samples/SampleAliquotViewSelector';
 import { SampleTimelinePageBase } from './internal/components/timeline/SampleTimelinePageBase';
+import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
+import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
+import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
+import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
+import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
+import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveFromPicklistButton';
+import { PicklistListing } from './internal/components/picklist/PicklistListing';
+import { PicklistOverview } from './internal/components/picklist/PicklistOverview';
+import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
+import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 
 export {
     ALIQUOT_FILTER_MODE,
@@ -42,11 +51,19 @@ export {
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
     EntityCrossProjectSelectionConfirmModal,
+    EntityDeleteModal,
+    EntityInsertPanel,
+    EntityLineageEditMenuItem,
+    EntityTypeDeleteConfirmModal,
     FindDerivativesButton,
     FindSamplesByIdHeaderPanel,
     FindSamplesByIdsPageBase,
     GridAliquotViewSelector,
-    ManageSampleStatusesPanel,
+    ParentEntityEditPanel,
+    PicklistListing,
+    PicklistOverview,
+    PicklistSubNav,
+    RemoveFromPicklistButton,
     SampleActionsButton,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
@@ -66,4 +83,5 @@ export {
     SamplesAssayButton,
     SamplesDeriveButtonBase,
     SamplesEditButton,
+    SamplesTabbedGridPanel,
 };

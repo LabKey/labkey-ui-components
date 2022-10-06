@@ -693,20 +693,6 @@ export function getGroupedSampleDisplayColumns(
     };
 }
 
-export function getEditSharedSampleTypeUrl(typeId: number): string {
-    return ActionURL.buildURL('experiment', 'editSampleType', SHARED_CONTAINER_PATH, {
-        RowId: typeId,
-        returnUrl: window.location.pathname + (window.location.hash ? window.location.hash : ''),
-    }).toString();
-}
-
-export function getDeleteSharedSampleTypeUrl(typeId: number): string {
-    return ActionURL.buildURL('experiment', 'deleteSampleTypes', SHARED_CONTAINER_PATH, {
-        singleObjectRowId: typeId,
-        returnUrl: window.location.pathname + '#/samples',
-    }).toString();
-}
-
 async function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): Promise<string[]> {
     // Not try/caught as caller is expected to handle errors
     const result = await selectDistinctRows({

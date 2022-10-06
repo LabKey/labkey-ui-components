@@ -167,7 +167,6 @@ import { ValueList } from './internal/components/base/ValueList';
 import { createGridModelId, EditorModel } from './internal/models';
 import {
     clearSelected,
-    createQueryConfigFilteredBySample,
     getSelected,
     getSelectedData,
     getSelection,
@@ -290,14 +289,9 @@ import { QueriesListingPage } from './internal/components/listing/pages/QueriesL
 import { SchemaListingPage } from './internal/components/listing/pages/SchemaListingPage';
 import { HeatMap } from './internal/components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './internal/components/heatmap/utils';
-import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
-import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
-import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
-import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
 import {
     EntityIdCreationModel,
     EntityParentType,
-    GenerateEntityResponse,
     OperationConfirmationData,
 } from './internal/components/entities/models';
 import { SearchScope } from './internal/components/search/constants';
@@ -325,20 +319,15 @@ import {
     deleteSampleSet,
     downloadSampleTypeTemplate,
     fetchSamples,
-    getDeleteSharedSampleTypeUrl,
-    getEditSharedSampleTypeUrl,
     getFieldLookupFromSelection,
-    getFindSamplesByIdData,
     getLineageEditorUpdateColumns,
     getOriginalParentsFromLineage,
     getSampleSet,
     getSampleTypeDetails,
     getSampleTypes,
     getSelectionLineageData,
-    getUpdatedLineageRows,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
-import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
@@ -406,8 +395,6 @@ import {
 } from './internal/components/lineage/types';
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
-import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
-import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
 import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
@@ -443,7 +430,6 @@ import { withPermissionsPage } from './internal/components/permissions/withPermi
 import { Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
 import { fetchContainerSecurityPolicy, getUserLimitSettings } from './internal/components/permissions/actions';
 import {
-    extractEntityTypeOptionFromRow,
     getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
@@ -567,23 +553,21 @@ import {
 } from './internal/components/samples/models';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
+import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
 import {
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
     IS_ALIQUOT_COL,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
-    SAMPLE_ID_FIND_FIELD,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
     SAMPLE_STATE_COLUMN_NAME,
-    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
     SampleStateType,
-    UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -596,12 +580,8 @@ import { AppModel, LogoutReason } from './internal/app/models';
 import { Picklist, PICKLIST_SAMPLES_FILTER } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
-import { PicklistListing } from './internal/components/picklist/PicklistListing';
-import { PicklistOverview } from './internal/components/picklist/PicklistOverview';
-import { PicklistSubNav } from './internal/components/picklist/PicklistSubnav';
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
-import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveFromPicklistButton';
 import { getSelectedPicklistSamples } from './internal/components/picklist/actions';
 import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
@@ -1014,13 +994,9 @@ export {
     useUserProperties,
     // sample picklist items
     AddToPicklistMenuItem,
-    RemoveFromPicklistButton,
     PicklistButton,
     PicklistCreationMenuItem,
     Picklist,
-    PicklistListing,
-    PicklistOverview,
-    PicklistSubNav,
     getSelectedPicklistSamples,
     PICKLIST_SAMPLES_FILTER,
     // data class and sample type related items
@@ -1042,14 +1018,11 @@ export {
     SampleStatusTag,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
-    SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SAMPLE_STORAGE_COLUMNS,
     FIND_BY_IDS_QUERY_PARAM,
-    UNIQUE_ID_FIND_FIELD,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
-    SAMPLE_ID_FIND_FIELD,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     IS_ALIQUOT_COL,
     SampleTypeModel,
@@ -1057,7 +1030,6 @@ export {
     fetchSamples,
     getSampleSet,
     getSampleTypeDetails,
-    createQueryConfigFilteredBySample,
     getFieldLookupFromSelection,
     getSelectedItemSamples,
     getSelectionLineageData,
@@ -1076,15 +1048,14 @@ export {
     SampleTypeEmptyAlert,
     SampleCreationType,
     SamplesEditButtonSections,
-    SamplesTabbedGridPanel,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
     ALIQUOT_CREATION,
     SAMPLE_INVENTORY_ITEM_SELECTION_KEY,
-    getFindSamplesByIdData,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
+    ManageSampleStatusesPanel,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

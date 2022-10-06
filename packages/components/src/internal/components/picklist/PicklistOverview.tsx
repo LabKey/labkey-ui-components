@@ -61,7 +61,7 @@ interface ImplProps {
 
 type Props = OwnProps & ImplProps & InjectedQueryModels;
 
-export const PICKLIST_EXPORT_CONFIG = {
+const PICKLIST_EXPORT_CONFIG = {
     'exportAlias.SampleID/AliquotedFromLSID': ALIQUOTED_FROM_COL,
     'exportAlias.AliquotedFromLSID': ALIQUOTED_FROM_COL,
     includeColumn: ['SampleID/AliquotedFromLSID', 'AliquotedFromLSID'],

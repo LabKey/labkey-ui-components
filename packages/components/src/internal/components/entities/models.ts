@@ -207,37 +207,6 @@ export interface MaterialOutput {
     sampleSet: any;
 }
 
-export class GenerateEntityResponse extends Record({
-    data: undefined,
-    message: undefined,
-    success: false,
-}) {
-    declare data: {
-        [key: string]: any;
-        materialOutputs: MaterialOutput[];
-    };
-    declare message: string;
-    declare success: boolean;
-
-    // Get all of the rowIds of the newly generated entity Ids (or the runs)
-    getFilter(): Filter.IFilter {
-        let filterColumn: string, filterValue;
-
-        // data.id is the run rowId. If provided, create a filter based off the run instead of entityIds.
-        if (this.data.id) {
-            filterColumn = 'Run/RowId';
-            filterValue = [this.data.id];
-        } else {
-            filterColumn = 'RowId';
-
-            // if a run id was not included, filter based on generated entity Ids.
-            filterValue = this.data.materialOutputs.map(val => val.id);
-        }
-
-        return Filter.create(filterColumn, filterValue, Filter.Types.IN);
-    }
-}
-
 export class EntityIdCreationModel extends Record({
     errors: undefined,
     initialEntityType: undefined,

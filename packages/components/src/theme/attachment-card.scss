@@ -81,5 +81,7 @@
     cursor: pointer;
 }
 .attachment-card__img_modal {
+    display: block;
+    margin: 0 auto;
     max-width: 100%;
 }

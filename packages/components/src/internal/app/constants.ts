@@ -97,6 +97,7 @@ export enum ProductFeature {
     Assay = 'Assay',
     ELN = 'ELN',
     FreezerManagement = 'FreezerManagement',
+    Media = 'Media',
     SampleManagement = 'SampleManagement',
     Workflow = 'Workflow',
 }

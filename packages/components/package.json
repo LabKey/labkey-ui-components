@@ -11,14 +11,14 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": "./dist/components.js",
-    "./samples": "./dist/samples.js"
+    "./entities": "./dist/entities.js"
   },
   "typesVersions": {
     "*": {
       "*": [
         "dist/index.d.ts"
       ],
-      "samples": [
+      "entities": [
         "dist/entities/index.d.ts"
       ]
     }

@@ -706,6 +706,7 @@ async function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): P
     return findMissingValues(result.values, orderedIds);
 }
 
+// TODO move this
 export function getFindSamplesByIdData(
     sessionKey: string
 ): Promise<{ ids: string[]; missingIds?: { [key: string]: string[] }; queryName: string }> {

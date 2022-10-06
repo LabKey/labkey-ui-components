@@ -33,7 +33,6 @@ import {
 import { SampleTimelinePageBase } from './internal/components/timeline/SampleTimelinePageBase';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
-import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { EntityLineageEditMenuItem } from './internal/components/entities/EntityLineageEditMenuItem';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
 import { RemoveFromPicklistButton } from './internal/components/picklist/RemoveFromPicklistButton';
@@ -52,7 +51,6 @@ export {
     CreateSamplesSubMenuBase,
     EntityCrossProjectSelectionConfirmModal,
     EntityDeleteModal,
-    EntityInsertPanel,
     EntityLineageEditMenuItem,
     EntityTypeDeleteConfirmModal,
     FindDerivativesButton,

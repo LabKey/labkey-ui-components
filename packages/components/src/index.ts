@@ -445,6 +445,7 @@ import {
     SampleTypeDataType,
 } from './internal/components/entities/constants';
 import { createEntityParentKey, getUniqueIdColumnMetadata } from './internal/components/entities/utils';
+import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
@@ -923,7 +924,7 @@ export {
     MultiValueRenderer,
     StorageStatusRenderer,
     SampleStatusRenderer,
-    SampleTypeTemplateDownloadRenderer,
+    SampleTypeTemplateDownloadRenderer, // TODO move
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
@@ -998,7 +999,7 @@ export {
     PicklistCreationMenuItem,
     Picklist,
     getSelectedPicklistSamples,
-    PICKLIST_SAMPLES_FILTER,
+    PICKLIST_SAMPLES_FILTER, // TODO move
     // data class and sample type related items
     DataClassModel,
     deleteDataClass,
@@ -1007,11 +1008,11 @@ export {
     isSamplesSchema,
     isAllSamplesSchema,
     getFilterForSampleOperation,
-    getSampleDeleteMessage,
+    getSampleDeleteMessage, // TODO move
     getSampleStatus,
     getSampleStatusType,
-    getSampleTypeTemplateUrl,
-    downloadSampleTypeTemplate,
+    getSampleTypeTemplateUrl, // TODO move
+    downloadSampleTypeTemplate, // TODO move
     DisableableMenuItem,
     SampleOperation,
     SampleStateType,
@@ -1033,12 +1034,10 @@ export {
     getFieldLookupFromSelection,
     getSelectedItemSamples,
     getSelectionLineageData,
-    getUpdatedLineageRows,
-    getOriginalParentsFromLineage,
+    getOriginalParentsFromLineage, // TODO maybe move
     getLineageEditorUpdateColumns,
-    getSampleTypes,
-    getEditSharedSampleTypeUrl,
-    getDeleteSharedSampleTypeUrl,
+    getSampleTypes, // TODO move
+    EntityInsertPanel,
     SampleTypeDataType,
     DataClassDataType,
     AssayResultDataType,
@@ -1057,25 +1056,17 @@ export {
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
     // entities
-    EntityTypeDeleteConfirmModal,
-    EntityDeleteConfirmModal,
-    EntityDeleteModal,
-    EntityInsertPanel,
-    EntityLineageEditMenuItem,
-    ParentEntityEditPanel,
-    extractEntityTypeOptionFromRow,
-    GenerateEntityResponse,
-    EntityIdCreationModel,
+    EntityIdCreationModel, // TODO move
     EntityParentType,
     OperationConfirmationData,
     AddEntityButton,
     RemoveEntityButton,
     getSampleOperationConfirmationData,
-    getCrossFolderSelectionResult,
+    getCrossFolderSelectionResult, // TODO move
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getOperationConfirmationData,
-    createEntityParentKey,
+    createEntityParentKey, // TODO move
     getUniqueIdColumnMetadata,
     // search related items
     FIND_SAMPLE_BY_ID_METRIC_AREA,

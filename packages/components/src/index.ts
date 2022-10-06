@@ -343,11 +343,6 @@ import {
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SamplesTabbedGridPanel } from './internal/components/samples/SamplesTabbedGridPanel';
-import { SamplesAssayButton } from './internal/components/samples/SamplesAssayButton';
-import { CreateSamplesSubMenu } from './internal/components/samples/CreateSamplesSubMenu';
-import { CreateSamplesSubMenuBase } from './internal/components/samples/CreateSamplesSubMenuBase';
-import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
-import { SampleAliquotDetailHeader } from './internal/components/samples/SampleAliquotDetailHeader';
 
 import { SampleTimelinePageBase } from './internal/components/timeline/SampleTimelinePageBase';
 
@@ -356,18 +351,14 @@ import { AppContexts } from './internal/AppContexts';
 import { useContainerUser } from './internal/components/container/actions';
 
 import {
-    filterSampleRowsForOperation,
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     getSampleDeleteMessage,
-    getSampleSetMenuItem,
     getSampleStatus,
     getSampleStatusType,
     getSampleTypeTemplateUrl,
-    getSampleWizardURL,
     isAllSamplesSchema,
-    isFindByIdsSchema,
     isSampleOperationPermitted,
     isSamplesSchema,
     SamplesEditButtonSections,
@@ -426,7 +417,6 @@ import {
 } from './internal/components/lineage/types';
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
-import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
 import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
@@ -589,7 +579,6 @@ import {
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
-import { SampleTypeInsightsPanel } from './internal/components/samples/SampleTypeInsightsPanel';
 import {
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
@@ -1050,18 +1039,14 @@ export {
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
-    filterSampleRowsForOperation,
     isSampleOperationPermitted,
     isSamplesSchema,
     isAllSamplesSchema,
-    isFindByIdsSchema,
-    getSampleSetMenuItem,
     getFilterForSampleOperation,
     getSampleDeleteMessage,
     getSampleStatus,
     getSampleStatusType,
     getSampleTypeTemplateUrl,
-    getSampleWizardURL,
     downloadSampleTypeTemplate,
     DisableableMenuItem,
     SampleOperation,
@@ -1103,13 +1088,8 @@ export {
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
     SampleCreationType,
-    SamplesAssayButton,
     SamplesEditButtonSections,
     SamplesTabbedGridPanel,
-    SampleCreationTypeModal,
-    CreateSamplesSubMenuBase,
-    CreateSamplesSubMenu,
-    SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
     GridAliquotViewSelector,
     ALIQUOT_FILTER_MODE,
@@ -1122,12 +1102,10 @@ export {
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
-    SampleTypeInsightsPanel,
     // timeline
     SampleTimelinePageBase,
     // entities
     EntityTypeDeleteConfirmModal,
-    EntityCrossProjectSelectionConfirmModal,
     EntityDeleteConfirmModal,
     EntityDeleteModal,
     EntityInsertPanel,
@@ -1604,9 +1582,6 @@ export type { ISelectInitData } from './internal/components/forms/model';
 export type { QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
 export type {
     SampleCreationTypeModel,
-    GroupedSampleFields,
-    SamplesSelectionProviderProps,
-    SamplesSelectionResultProps,
     SampleStatus,
     SampleGridButtonProps,
 } from './internal/components/samples/models';

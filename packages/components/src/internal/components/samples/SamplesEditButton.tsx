@@ -24,7 +24,8 @@ import { getCrossFolderSelectionResult } from '../entities/actions';
 import { EntityCrossProjectSelectionConfirmModal } from '../entities/EntityCrossProjectSelectionConfirmModal';
 
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
-import { SamplesEditButtonSections, shouldIncludeMenuItem } from './utils';
+import { SamplesEditButtonSections } from './utils';
+import { shouldIncludeMenuItem } from '../../samples/utils';
 import { getSampleTypeRowId } from './actions';
 import { SampleGridButtonProps } from './models';
 

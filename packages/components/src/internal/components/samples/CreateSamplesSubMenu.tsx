@@ -14,7 +14,7 @@ import { SAMPLES_KEY } from '../../app/constants';
 import { SampleCreationType } from './models';
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
 import { DisableableMenuItem } from './DisableableMenuItem';
-import { getSampleWizardURL } from './utils';
+import { getSampleWizardURL } from '../../samples/utils';
 
 interface Props {
     allowPooledSamples?: boolean;

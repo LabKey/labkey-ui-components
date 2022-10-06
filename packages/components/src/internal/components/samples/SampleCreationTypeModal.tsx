@@ -12,7 +12,8 @@ import { Alert } from '../base/Alert';
 
 import { SampleCreationTypeOption } from './SampleCreationTypeOption';
 import { SampleCreationType, SampleCreationTypeModel } from './models';
-import { filterSampleRowsForOperation, getOperationNotPermittedMessage } from './utils';
+import { getOperationNotPermittedMessage } from './utils';
+import { filterSampleRowsForOperation } from '../../samples/utils';
 import { SampleOperation } from './constants';
 
 interface Props {

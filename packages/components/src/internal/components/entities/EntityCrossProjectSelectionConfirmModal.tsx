@@ -3,7 +3,7 @@ import React, { FC, memo } from 'react';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { capitalizeFirstChar } from '../../util/utils';
 
-import { getCrossFolderSelectionMsg } from './utils';
+import { getCrossFolderSelectionMsg } from '../../samples/utils';
 
 interface Props {
     crossFolderSelectionCount: number;

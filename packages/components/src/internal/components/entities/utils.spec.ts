@@ -9,7 +9,6 @@ import { makeQueryInfo } from '../../testHelpers';
 import { EntityChoice, IEntityTypeOption } from './models';
 import {
     createEntityParentKey,
-    getCrossFolderSelectionMsg,
     getEntityDescription,
     getEntityNoun,
     getInitialParentChoices,
@@ -718,37 +717,5 @@ describe('getUpdatedLineageRowsForBulkEdit', () => {
                 'MaterialInputs/Label 1': 'Val1,Val2',
             },
         ]);
-    });
-});
-
-describe('getCrossFolderSelectionMsg', () => {
-    test('without cross folder selection', () => {
-        expect(getCrossFolderSelectionMsg(0, 0, 'sample', 'samples')).toBeUndefined();
-        expect(getCrossFolderSelectionMsg(0, 1, 'sample', 'samples')).toBeUndefined();
-    });
-    test('with cross folder selection and without current folder selection', () => {
-        expect(getCrossFolderSelectionMsg(1, 0, 'sample', 'samples')).toBe(
-            'The sample you selected does not belong to this project. Please select samples from only this project, or navigate to the appropriate project to work with them.'
-        );
-        expect(getCrossFolderSelectionMsg(2, 0, 'sample', 'samples')).toBe(
-            "The samples you selected don't belong to this project. Please select samples from only this project, or navigate to the appropriate project to work with them."
-        );
-    });
-    test('with cross folder selection and with current folder selection', () => {
-        expect(getCrossFolderSelectionMsg(1, 1, 'sample', 'samples')).toBe(
-            "Some of the samples you selected don't belong to this project. Please select samples from only this project, or navigate to the appropriate project to work with them."
-        );
-        expect(getCrossFolderSelectionMsg(2, 1, 'sample', 'samples')).toBe(
-            "Some of the samples you selected don't belong to this project. Please select samples from only this project, or navigate to the appropriate project to work with them."
-        );
-        expect(getCrossFolderSelectionMsg(1, 2, 'sample', 'samples')).toBe(
-            "Some of the samples you selected don't belong to this project. Please select samples from only this project, or navigate to the appropriate project to work with them."
-        );
-        expect(getCrossFolderSelectionMsg(2, 2, 'sample', 'samples')).toBe(
-            "Some of the samples you selected don't belong to this project. Please select samples from only this project, or navigate to the appropriate project to work with them."
-        );
-        expect(getCrossFolderSelectionMsg(2, 2, 'data', 'data')).toBe(
-            "Some of the data you selected don't belong to this project. Please select data from only this project, or navigate to the appropriate project to work with them."
-        );
     });
 });

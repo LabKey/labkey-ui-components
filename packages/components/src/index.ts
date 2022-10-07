@@ -1520,7 +1520,6 @@ export type {
     IDerivePayload,
     IEntityTypeOption,
     IParentOption,
-    MaterialOutput,
     EntityChoice,
 } from './internal/components/entities/models';
 export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
@@ -1556,7 +1555,6 @@ export type { AnnouncementsAPIWrapper } from './internal/announcements/APIWrappe
 export type { AppContext, ExtendableAppContext } from './internal/AppContext';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
-export type { SamplesEditableGridProps } from './internal/components/samples/SamplesEditableGrid';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
 export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';

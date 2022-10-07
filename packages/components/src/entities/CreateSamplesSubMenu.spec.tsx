@@ -2,15 +2,15 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { SAMPLES_KEY } from '../../app/constants';
+import { SAMPLES_KEY } from '../internal/app/constants';
 
-import { TEST_USER_APP_ADMIN } from '../../userFixtures';
+import { TEST_USER_APP_ADMIN } from '../internal/userFixtures';
 
-import { MenuOption, SubMenu } from '../menus/SubMenu';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
+import { SchemaQuery } from '../public/SchemaQuery';
 
-import { MenuSectionModel, ProductMenuModel } from '../navigation/model';
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { MenuSectionModel, ProductMenuModel } from '../internal/components/navigation/model';
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import { CreateSamplesSubMenu, MAX_PARENTS_PER_SAMPLE } from './CreateSamplesSubMenu';

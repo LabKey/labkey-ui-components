@@ -2,20 +2,20 @@ import React, { FC, memo, useCallback, useState } from 'react';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { MAX_SELECTED_SAMPLES } from '../samples/constants';
+import { MAX_SELECTED_SAMPLES } from '../internal/components/samples/constants';
 
-import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
+import { deleteErrorMessage, deleteSuccessMessage } from '../internal/util/messaging';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { deleteRows } from '../../query/api';
-import { ConfirmModal } from '../base/ConfirmModal';
-import { capitalizeFirstChar } from '../../util/utils';
-import { Progress } from '../base/Progress';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
+import { deleteRows } from '../internal/query/api';
+import { ConfirmModal } from '../internal/components/base/ConfirmModal';
+import { capitalizeFirstChar } from '../internal/util/utils';
+import { Progress } from '../internal/components/base/Progress';
 
-import { getEntityNoun } from './utils';
-import { EntityDataType } from './models';
-import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
+import { getEntityNoun } from '../internal/components/entities/utils';
+import { EntityDataType } from '../internal/components/entities/models';
+import { EntityDeleteConfirmModal } from '../internal/components/entities/EntityDeleteConfirmModal';
 
 interface Props {
     afterDelete: (rowsToKeep?: any[]) => any;

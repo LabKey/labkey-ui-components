@@ -1,20 +1,20 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { List } from 'immutable';
 
-import { MenuOption, SubMenu } from '../menus/SubMenu';
-import { AppURL } from '../../url/AppURL';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
+import { AppURL } from '../internal/url/AppURL';
+import { SchemaQuery } from '../public/SchemaQuery';
+import { QueryModel } from '../public/QueryModel/QueryModel';
 
-import { SAMPLES_KEY, SOURCES_KEY } from '../../app/constants';
+import { SAMPLES_KEY, SOURCES_KEY } from '../internal/app/constants';
 
-import { SCHEMAS } from '../../schemas';
+import { SCHEMAS } from '../internal/schemas';
 
-import { getCrossFolderSelectionResult } from '../entities/actions';
+import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
 
-import { EntityCrossProjectSelectionConfirmModal } from '../entities/EntityCrossProjectSelectionConfirmModal';
+import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
 
-import { isSamplesSchema } from './utils';
+import { isSamplesSchema } from '../internal/components/samples/utils';
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 import {
     ALIQUOT_CREATION,
@@ -23,7 +23,7 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
     SampleCreationTypeModel,
-} from './models';
+} from '../internal/components/samples/models';
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;

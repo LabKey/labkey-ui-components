@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-import { DiscardConsumedSamplesPanel } from './DiscardConsumedSamplesPanel';
+import { DiscardConsumedSamplesPanel } from '../internal/components/samples/DiscardConsumedSamplesPanel';
 
 interface Props {
     consumedSampleCount: number;

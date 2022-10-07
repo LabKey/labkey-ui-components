@@ -4,20 +4,20 @@ import { fromJS } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { GetQueryDetailsOptions } from '../../query/api';
-import sampleSetAllFieldTypesQueryInfo from '../../../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
-import { TestTypeDataType } from '../../../test/data/constants';
-import { waitForLifecycle } from '../../testHelpers';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { ChoicesListItem } from '../base/ChoicesListItem';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { GetQueryDetailsOptions } from '../internal/query/api';
+import sampleSetAllFieldTypesQueryInfo from '../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
+import { TestTypeDataType } from '../test/data/constants';
+import { waitForLifecycle } from '../internal/testHelpers';
+import { QueryInfo } from '../public/QueryInfo';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+import { ChoicesListItem } from '../internal/components/base/ChoicesListItem';
+import { SchemaQuery } from '../public/SchemaQuery';
 
-import { getTestAPIWrapper } from '../../APIWrapper';
-import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
+import { getTestAPIWrapper } from '../internal/APIWrapper';
+import { getQueryTestAPIWrapper } from '../internal/query/APIWrapper';
 
 import { EntityFieldFilterModal } from './EntityFieldFilterModal';
-import { FieldFilter } from './models';
+import { FieldFilter } from '../internal/components/search/models';
 
 const sampleTypes = {
     SampleSets: [

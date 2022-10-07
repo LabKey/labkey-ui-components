@@ -1,20 +1,20 @@
 import React, { FC, memo } from 'react';
 import { List } from 'immutable';
 
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SchemaQuery } from '../public/SchemaQuery';
 
-import { ProductMenuModel } from '../navigation/model';
-import { AppURL } from '../../url/AppURL';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { ProductMenuModel } from '../internal/components/navigation/model';
+import { AppURL } from '../internal/url/AppURL';
+import { QueryModel } from '../public/QueryModel/QueryModel';
 
-import { MenuOption } from '../menus/SubMenu';
-import { getMenuItemForSectionKey, getMenuItemsForSection } from '../buttons/utils';
-import { SAMPLES_KEY } from '../../app/constants';
+import { MenuOption } from '../internal/components/menus/SubMenu';
+import { getMenuItemForSectionKey, getMenuItemsForSection } from '../internal/components/buttons/utils';
+import { SAMPLES_KEY } from '../internal/app/constants';
 
-import { SampleCreationType } from './models';
+import { SampleCreationType } from '../internal/components/samples/models';
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
-import { DisableableMenuItem } from './DisableableMenuItem';
-import { getSampleWizardURL } from '../../samples/utils';
+import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
+import { getSampleWizardURL } from './utils';
 
 interface Props {
     allowPooledSamples?: boolean;

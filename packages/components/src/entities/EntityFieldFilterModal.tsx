@@ -3,37 +3,37 @@ import { Col, Modal, Row } from 'react-bootstrap';
 
 import { Filter } from '@labkey/api';
 
-import { EntityDataType, IEntityTypeOption } from '../entities/models';
-import { capitalizeFirstChar } from '../../util/utils';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { ChoicesListItem } from '../base/ChoicesListItem';
+import { EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
+import { capitalizeFirstChar } from '../internal/util/utils';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+import { ChoicesListItem } from '../internal/components/base/ChoicesListItem';
 
-import { QueryColumn } from '../../../public/QueryColumn';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { Alert } from '../base/Alert';
+import { QueryColumn } from '../public/QueryColumn';
+import { QueryInfo } from '../public/QueryInfo';
+import { Alert } from '../internal/components/base/Alert';
 
-import { resolveErrorMessage } from '../../util/messaging';
+import { resolveErrorMessage } from '../internal/util/messaging';
 
-import { naturalSortByProperty } from '../../../public/sort';
+import { naturalSortByProperty } from '../public/sort';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
-import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
+import { NOT_ANY_FILTER_TYPE } from '../internal/url/NotAnyFilterType';
 
-import { AssayResultDataType } from '../entities/constants';
+import { AssayResultDataType } from '../internal/components/entities/constants';
 
-import { COLUMN_NOT_IN_FILTER_TYPE } from '../../query/filter';
+import { COLUMN_NOT_IN_FILTER_TYPE } from '../internal/query/filter';
 
-import { AssaySampleColumnProp } from '../assay/actions';
+import { AssaySampleColumnProp } from '../internal/components/assay/actions';
 
-import { FieldFilter, FilterProps } from './models';
+import { FieldFilter, FilterProps } from '../internal/components/search/models';
 import {
     getDataTypeFiltersWithNotInQueryUpdate,
     getFieldFiltersValidationResult,
     getUpdatedDataTypeFilters,
     isValidFilterFieldExcludeLookups,
-} from './utils';
-import { QueryFilterPanel } from './QueryFilterPanel';
+} from '../internal/components/search/utils';
+import { QueryFilterPanel } from '../internal/components/search/QueryFilterPanel';
 
 interface Props {
     api?: ComponentsAPIWrapper;

@@ -127,10 +127,35 @@ yarn run lint-fix "./src/components/**/*"
 Periodically we should review the @labkey/components package bundle size to make sure that there
 aren't any inadvertent dependencies or files getting included in the bundle. To do this, we have
 used the `webpack-bundle-analyzer` npm package. See [docs](https://github.com/webpack-contrib/webpack-bundle-analyzer) for more details.
-1. `yarn add -D webpack-bundle-analyzer`
-1. In the `components/webpack.config.js` file, add the following to the top of the page:
-    `const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;`
-1. In that same file, add the following to the `plugins` array: `new BundleAnalyzerPlugin()`
+
+You can analyze the bundle size for any of our npm packages or app builds by updating the build
+command in the package.json file to include the `ANALYZE=true` parameter.
+
+For example, with the `@labkey/components` package, it would look like:
+```
+"build": "npm run clean && cross-env NODE_ENV=production ANALYZE=true webpack --config package.config.js --color --progress --profile",
+```
+and for the Sample Manager app build it would look like:
+```
+"build-dev": "npm run clean && cross-env NODE_ENV=development ANALYZE=true webpack --config node_modules/@labkey/build/webpack/dev.config.js --color",
+```
+
+### Adding an entry point / subpackage to @labkey/components
+1. Create a new top level directory in the `packages/components/src` directory for your subpackage
+   1. add a new `index.ts` file in this directory
+   2. move any components, utils, actions, models that you are going to export from this subpackage into this directory
+   3. Note: any code in this subpackage should not be imported / used by the code in the `src/internal` directory
+2. Update the `packages/components/package.config.js` file to add the new entry
+   1. adding the `import` path to the `index.ts` file mentioned in step 1.i
+   2. in most cases, the new entry will also `dependOn: 'compoenents'`
+3. Update the `packages/components/package.json` file to add the new subpackage
+   1. add to `"exports"` to indicate the location of the subpackage generated JS file
+   2. add to `"typesVersions"` to indicate the location of the subpackage typings file
+4. Update the `packages/build/webpack/constants.js` file to add the subpackage alias
+   1. add to the TypeScript config `"compilerOptions"` to indicate the src code path for the subpackage
+   2. add to the `"aliases"` `LABKEY_PACKAGES_DEV` object to setup an alias for the subpackage src code
+5. Update the `packages/build/webpack/package.config.js` file to add the new subpackage to the `"externals"` array
+   1. this will keep the subpackage JS code from being bundled with the downstream LabKey npm packages
 
 ## Publishing
 

@@ -1,12 +1,7 @@
 import { List } from 'immutable';
 
-
 import { IEntityTypeOption } from './models';
-import {
-    getEntityDescription,
-    getEntityNoun,
-    getInitialParentChoices,
-} from './utils';
+import { getEntityDescription, getEntityNoun, getInitialParentChoices } from './utils';
 import { DataClassDataType, SampleTypeDataType } from './constants';
 
 describe('getInitialParentChoices', () => {

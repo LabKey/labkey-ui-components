@@ -7,10 +7,10 @@ import { TemplateDownloadButton } from '../public/files/TemplateDownloadButton';
 import { Notifications } from '../internal/components/notifications/Notifications';
 
 interface OwnProps {
+    buttons?: ReactNode;
     description?: ReactNode;
     hasActiveJob?: boolean;
     onTemplateDownload?: () => void;
-    buttons?: ReactNode;
     subtitle?: ReactNode;
     title: string;
 }

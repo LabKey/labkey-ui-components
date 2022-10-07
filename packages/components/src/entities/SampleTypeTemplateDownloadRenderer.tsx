@@ -3,9 +3,11 @@ import { Map } from 'immutable';
 
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
+
+import { TemplateDownloadButton } from '../public/files/TemplateDownloadButton';
+
 import { downloadSampleTypeTemplate } from './actions';
 import { getSampleTypeTemplateUrl } from './utils';
-import { TemplateDownloadButton } from '../public/files/TemplateDownloadButton';
 
 interface Props {
     excludeColumns?: string[];

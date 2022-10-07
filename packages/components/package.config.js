@@ -13,8 +13,6 @@ module.exports = merge(baseConfig, {
             import: './src/entities/index.ts',
             dependOn: 'components',
         },
-        // TODO add note about why this doesn't dependOn components
-        productnavigation: './src/productnavigation/index.ts',
     },
     output: {
         filename: '[name].js',

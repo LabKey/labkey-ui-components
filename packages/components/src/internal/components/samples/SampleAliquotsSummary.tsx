@@ -14,7 +14,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
+import { ALIQUOT_FILTER_MODE } from './constants';
 import { SampleAliquotAssaysCount } from './SampleAliquotAssaysCount';
 import { SampleAliquotsStats } from './models';
 import { getSampleAliquotsQueryConfig, getSampleAliquotsStats } from './actions';

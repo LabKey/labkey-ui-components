@@ -2,7 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { MenuItem } from 'react-bootstrap';
 
-import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+import { ALIQUOT_FILTER_MODE } from './constants';
 
 describe('<SampleAliquotViewSelector/>', () => {
     function verifyOptions(wrapper, all?: boolean, samples?: boolean, aliquots?: boolean) {

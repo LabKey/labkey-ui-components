@@ -570,6 +570,7 @@ import {
     SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
     SampleStateType,
+    ALIQUOT_FILTER_MODE,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -1006,6 +1007,7 @@ export {
     getSelectedPicklistSamples,
     PICKLIST_SAMPLES_FILTER, // TODO move
     // data class and sample type related items
+    ALIQUOT_FILTER_MODE,
     DataClassModel,
     deleteDataClass,
     fetchDataClass,

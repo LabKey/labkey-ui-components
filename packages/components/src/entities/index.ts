@@ -26,10 +26,7 @@ import { FindSamplesByIdsPageBase } from '../internal/components/search/FindSamp
 import { SampleFinderSection } from '../internal/components/search/SampleFinderSection';
 import { FindDerivativesButton } from '../internal/components/search/FindDerivativesButton';
 import { GridAliquotViewSelector } from '../internal/components/gridbar/GridAliquotViewSelector';
-import {
-    ALIQUOT_FILTER_MODE,
-    SampleAliquotViewSelector,
-} from '../internal/components/samples/SampleAliquotViewSelector';
+import { SampleAliquotViewSelector } from '../internal/components/samples/SampleAliquotViewSelector';
 import { SampleTimelinePageBase } from '../internal/components/timeline/SampleTimelinePageBase';
 import { EntityTypeDeleteConfirmModal } from '../internal/components/entities/EntityTypeDeleteConfirmModal';
 import { EntityDeleteModal } from '../internal/components/entities/EntityDeleteModal';
@@ -42,7 +39,6 @@ import { PicklistSubNav } from '../internal/components/picklist/PicklistSubnav';
 import { SamplesTabbedGridPanel } from '../internal/components/samples/SamplesTabbedGridPanel';
 
 export {
-    ALIQUOT_FILTER_MODE,
     filterSampleRowsForOperation,
     getSampleSetMenuItem,
     getSampleWizardURL,

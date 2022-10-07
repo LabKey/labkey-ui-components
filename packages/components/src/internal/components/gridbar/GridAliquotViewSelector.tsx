@@ -19,8 +19,8 @@ import { Filter } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { Actions } from '../../../public/QueryModel/withQueryModels';
-import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from '../samples/SampleAliquotViewSelector';
-import { IS_ALIQUOT_COL } from '../samples/constants';
+import { SampleAliquotViewSelector } from '../samples/SampleAliquotViewSelector';
+import { ALIQUOT_FILTER_MODE, IS_ALIQUOT_COL } from '../samples/constants';
 import { isSampleAliquotSelectorEnabled } from '../../app/utils';
 
 interface Props {

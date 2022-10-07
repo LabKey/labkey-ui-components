@@ -18,9 +18,8 @@ import { SampleTypeDataType } from '../entities/constants';
 import { resolveErrorMessage } from '../../util/messaging';
 import { GridAliquotViewSelector } from '../gridbar/GridAliquotViewSelector';
 
-import { IS_ALIQUOT_COL } from './constants';
+import { ALIQUOT_FILTER_MODE, IS_ALIQUOT_COL } from './constants';
 import { SampleGridButtonProps } from './models';
-import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
 import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
 import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
 import { PrintLabelsModal } from '../labels/PrintLabelsModal';

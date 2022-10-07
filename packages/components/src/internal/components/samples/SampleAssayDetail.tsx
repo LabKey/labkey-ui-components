@@ -26,8 +26,8 @@ import {
     withQueryModels,
 } from '../../../public/QueryModel/withQueryModels';
 
-import { SampleOperation } from './constants';
-import { ALIQUOT_FILTER_MODE, SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+import { ALIQUOT_FILTER_MODE, SampleOperation } from './constants';
+import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import { getSampleStatusType, isSampleOperationPermitted } from './utils';
 import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from './actions';
 

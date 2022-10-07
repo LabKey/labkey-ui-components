@@ -3,13 +3,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { generateId } from '../../util/utils';
-
-export enum ALIQUOT_FILTER_MODE {
-    all = 'all',
-    samples = 'samples',
-    aliquots = 'aliquots',
-    none = 'none', // when using grid filter with 'is blank'
-}
+import { ALIQUOT_FILTER_MODE } from './constants';
 
 interface Props {
     aliquotFilterMode: ALIQUOT_FILTER_MODE;

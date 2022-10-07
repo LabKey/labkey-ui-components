@@ -9,8 +9,7 @@ import { User } from '../base/models/User';
 import { AppURL } from '../../url/AppURL';
 
 import { SamplesEditButtonSections } from './utils';
-import { ALIQUOT_FILTER_MODE } from './SampleAliquotViewSelector';
-import { SampleStateType } from './constants';
+import { ALIQUOT_FILTER_MODE, SampleStateType } from './constants';
 
 export enum SampleCreationType {
     Aliquots = 'Aliquots',

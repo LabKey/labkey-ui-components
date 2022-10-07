@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Update `GridPanel` to set `calcWidths` only when room is needed for extra icons
+* Update `QueryConfig` to include an optional `filterArray` property that can be passed through to `QueryModel`
 
 ### version 2.230.1
 *Released*: 6 October 2022

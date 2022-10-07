@@ -1046,6 +1046,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const {
             actions,
             allowSelections,
+            allowFiltering,
+            allowSorting,
             allowViewCustomization,
             hasHeader,
             asPanel,
@@ -1165,7 +1167,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                         allowViewCustomization && !disableColumnDrag ? this.onColumnDrop : undefined
                                     }
                                     showHeader={showHeader}
-                                    calcWidths
+                                    calcWidths={allowSorting || allowFiltering}
                                     condensed
                                     emptyText={gridEmptyText}
                                     fixedHeight

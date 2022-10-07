@@ -9,6 +9,7 @@ const constants = require('./constants');
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const IgnorePlugin = require('webpack').IgnorePlugin;
 const CircularDependencyPlugin = require('circular-dependency-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const tsCheckerConfig = {
     ...constants.TS_CHECKER_CONFIG,
@@ -23,6 +24,31 @@ const tsCheckerConfig = {
         }
     }
 };
+
+const plugins = [
+    new ForkTsCheckerWebpackPlugin(tsCheckerConfig),
+    new CopyWebpackPlugin({
+        patterns: [
+            {
+                // copy theme scss files into the dist dir to be used by LabKey module apps
+                from: 'src/theme',
+                to: 'assets/scss/theme'
+            }
+        ]
+    }),
+    new IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/,
+    }),
+    new CircularDependencyPlugin({
+        exclude: /node_modules/,
+        include: /src/,
+        failOnError: true,
+    }),
+];
+if (process.env.ANALYZE) {
+    plugins.push(new BundleAnalyzerPlugin());
+}
 
 module.exports = {
     entry: './src/index.ts',
@@ -47,27 +73,7 @@ module.exports = {
             type: 'umd'
         },
     },
-    plugins: [
-        new ForkTsCheckerWebpackPlugin(tsCheckerConfig),
-        new CopyWebpackPlugin({
-            patterns: [
-                {
-                    // copy theme scss files into the dist dir to be used by LabKey module apps
-                    from: 'src/theme',
-                    to: 'assets/scss/theme'
-                }
-            ]
-        }),
-        new IgnorePlugin({
-            resourceRegExp: /^\.\/locale$/,
-            contextRegExp: /moment$/,
-        }),
-        new CircularDependencyPlugin({
-            exclude: /node_modules/,
-            include: /src/,
-            failOnError: true,
-        }),
-    ],
+    plugins,
     externals: [
         // Note: If there is a package (of our own, or 3rd party) that is a dependency of one of our packages AND one of
         // our apps, then it should be in the list of externals.

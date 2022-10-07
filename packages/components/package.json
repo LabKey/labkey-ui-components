@@ -27,7 +27,7 @@
     "build": "npm run clean && cross-env NODE_ENV=production webpack --config package.config.js --color --progress --profile",
     "clean": "rimraf dist",
     "cleanAll": "rimraf dist && rimraf node_modules",
-    "prepublishOnly": "cross-env WEBPACK_STATS=errors-only yarn build",
+    "prepublishOnly": "yarn install && cross-env WEBPACK_STATS=errors-only yarn build",
     "test": "cross-env NODE_ENV=test jest --maxWorkers=6 --silent",
     "test-ci": "cross-env NODE_ENV=test jest --ci --silent",
     "lint": "eslint",

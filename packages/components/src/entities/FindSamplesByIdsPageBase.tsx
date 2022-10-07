@@ -8,7 +8,7 @@ import {
     SAMPLE_STATUS_REQUIRED_COLUMNS,
 } from '../internal/components/samples/constants';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
-import { getFindSamplesByIdData } from '../internal/components/samples/actions';
+import { getFindSamplesByIdData } from './actions';
 import { getLocation, pushParameter, replaceParameter, resetParameters } from '../internal/util/URL';
 import { createGridModelId } from '../internal/models';
 import { LoadingState } from '../public/LoadingState';

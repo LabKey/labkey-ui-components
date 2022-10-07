@@ -1,22 +1,16 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
-import { ActionURL, Filter, Utils } from '@labkey/api';
+import { Filter } from '@labkey/api';
 
 import { User } from '../base/models/User';
 
-import { isELNEnabled, isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
+import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
 import { OperationConfirmationData } from '../entities/models';
 
-import { SAMPLES_KEY } from '../../app/constants';
-
 import { SCHEMAS } from '../../schemas';
-import { LoadingSpinner } from '../base/LoadingSpinner';
 import { caseInsensitive } from '../../util/utils';
-import { MenuItemModel, ProductMenuModel } from '../navigation/model';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 
 import { ModuleContext } from '../base/ServerContext';
 
@@ -25,8 +19,6 @@ import { SampleStatus } from './models';
 import {
     operationRestrictionMessage,
     permittedOps,
-    SAMPLE_EXPORT_CONFIG,
-    SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
@@ -59,28 +51,6 @@ export function isSampleOperationPermitted(
     if (!sampleStatusType) return true;
 
     return permittedOps[sampleStatusType].has(operation);
-}
-
-// TODO: Convert this into a component and utilize useServerContext() to fetch moduleContext for isELNEnabled() check
-export function getSampleDeleteMessage(canDelete: boolean, deleteInfoError: boolean): ReactNode {
-    let deleteMsg;
-    if (canDelete === undefined) {
-        deleteMsg = <LoadingSpinner msg="Loading delete confirmation data..." />;
-    } else if (!canDelete) {
-        deleteMsg = 'This sample cannot be deleted because ';
-        if (deleteInfoError) {
-            deleteMsg += 'there was a problem loading the delete confirmation data.';
-        } else {
-            deleteMsg += 'it has either derived sample, job, or assay data dependencies, ';
-            if (isELNEnabled()) {
-                deleteMsg += 'status that prevents deletion, or references in one or more active notebooks';
-            } else {
-                deleteMsg += 'or status that prevents deletion';
-            }
-            deleteMsg += '. Check the Lineage, Assays, and Jobs tabs for this sample to get more information.';
-        }
-    }
-    return deleteMsg;
 }
 
 export function getSampleStatusType(row: any): SampleStateType {
@@ -224,28 +194,3 @@ export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
 
     return false;
 }
-
-export const getSampleTypeTemplateUrl = (
-    queryInfo: QueryInfo,
-    importAliases: Record<string, string>,
-    excludeColumns: string[] = ['flag', 'Ancestors'],
-    exportConfig: any = SAMPLE_EXPORT_CONFIG
-): string => {
-    const { schemaQuery } = queryInfo;
-    if (!schemaQuery) return undefined;
-
-    const extraColumns = SAMPLE_INSERT_EXTRA_COLUMNS.concat(Object.keys(importAliases || {})).filter(
-        col => excludeColumns.indexOf(col) == -1
-    );
-
-    return ActionURL.buildURL('query', 'ExportExcelTemplate', null, {
-        ...exportConfig,
-        schemaName: schemaQuery.getSchema(),
-        'query.queryName': schemaQuery.getQuery(),
-        headerType: 'DisplayFieldKey',
-        excludeColumn: excludeColumns
-            ? excludeColumns.concat(queryInfo.getFileColumnFieldKeys())
-            : queryInfo.getFileColumnFieldKeys(),
-        includeColumn: extraColumns,
-    });
-};

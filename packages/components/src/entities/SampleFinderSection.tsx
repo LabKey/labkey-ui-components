@@ -43,12 +43,17 @@ import { isLoading } from '../public/LoadingState';
 
 import { AssayResultDataType } from '../internal/components/entities/constants';
 
-import { loadFinderSearch, removeFinderGridView, saveFinderGridView, saveFinderSearch } from '../internal/components/search/actions';
+import {
+    loadFinderSearch,
+    removeFinderGridView,
+    saveFinderGridView,
+    saveFinderSearch,
+} from '../internal/components/search/actions';
 import { FilterCards } from '../internal/components/search/FilterCards';
+import { getSampleFinderLocalStorageKey } from './utils';
 import {
     getFinderStartText,
     getFinderViewColumnsConfig,
-    getSampleFinderLocalStorageKey,
     getSampleFinderColumnNames,
     getSampleFinderQueryConfigs,
     getSearchFilterObjs,

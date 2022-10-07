@@ -35,8 +35,9 @@ import { SampleStateType } from '../internal/components/samples/constants';
 import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
-import { getLineageEditorUpdateColumns, getOriginalParentsFromLineage, getUpdatedLineageRows } from '../internal/components/samples/actions';
+import { getLineageEditorUpdateColumns, getUpdatedLineageRows } from '../internal/components/samples/actions';
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
+import { getOriginalParentsFromLineage } from './utils';
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;

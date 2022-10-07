@@ -6,7 +6,7 @@ import { Button, Modal } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import { getOriginalParentsFromLineage } from '../internal/components/samples/actions';
+import { getOriginalParentsFromLineage } from './utils';
 
 import { IS_ALIQUOT_COL, SampleOperation } from '../internal/components/samples/constants';
 
@@ -24,8 +24,9 @@ import { Progress } from '../internal/components/base/Progress';
 
 import { DataOperation, ParentEntityLineageColumns } from '../internal/components/entities/constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-import { getEntityNoun, getUpdatedLineageRowsForBulkEdit, isSampleEntity } from '../internal/components/entities/utils';
+import { getEntityNoun, isSampleEntity } from '../internal/components/entities/utils';
 import { EntityChoice, EntityDataType, OperationConfirmationData } from '../internal/components/entities/models';
+import { getUpdatedLineageRowsForBulkEdit } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;

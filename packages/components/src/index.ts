@@ -236,10 +236,7 @@ import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
-import {
-    AssayResultTemplateDownloadRenderer,
-    SampleTypeTemplateDownloadRenderer,
-} from './internal/renderers/TemplateDownloadRenderer';
+import { AssayResultTemplateDownloadRenderer } from './internal/renderers/TemplateDownloadRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
 import { AttachmentCard } from './internal/renderers/AttachmentCard';
 import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
@@ -318,14 +315,11 @@ import { searchUsingIndex } from './internal/components/search/actions';
 import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
-    downloadSampleTypeTemplate,
     fetchSamples,
     getFieldLookupFromSelection,
     getLineageEditorUpdateColumns,
-    getOriginalParentsFromLineage,
     getSampleSet,
     getSampleTypeDetails,
-    getSampleTypes,
     getSelectionLineageData,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
@@ -338,10 +332,8 @@ import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
-    getSampleDeleteMessage,
     getSampleStatus,
     getSampleStatusType,
-    getSampleTypeTemplateUrl,
     isAllSamplesSchema,
     isSampleOperationPermitted,
     isSamplesSchema,
@@ -445,7 +437,7 @@ import {
     ParentEntityRequiredColumns,
     SampleTypeDataType,
 } from './internal/components/entities/constants';
-import { createEntityParentKey, getUniqueIdColumnMetadata } from './internal/components/entities/utils';
+import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
@@ -580,7 +572,7 @@ import { OntologyConceptOverviewPanel } from './internal/components/ontology/Con
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { OntologySearchInput } from './internal/components/ontology/OntologyTreeSearchContainer';
 import { AppModel, LogoutReason } from './internal/app/models';
-import { Picklist, PICKLIST_SAMPLES_FILTER } from './internal/components/picklist/models';
+import { Picklist } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
 
@@ -930,7 +922,6 @@ export {
     MultiValueRenderer,
     StorageStatusRenderer,
     SampleStatusRenderer,
-    SampleTypeTemplateDownloadRenderer, // TODO move
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
@@ -1005,7 +996,6 @@ export {
     PicklistCreationMenuItem,
     Picklist,
     getSelectedPicklistSamples,
-    PICKLIST_SAMPLES_FILTER, // TODO move
     // data class and sample type related items
     ALIQUOT_FILTER_MODE,
     DataClassModel,
@@ -1015,11 +1005,8 @@ export {
     isSamplesSchema,
     isAllSamplesSchema,
     getFilterForSampleOperation,
-    getSampleDeleteMessage, // TODO move
     getSampleStatus,
     getSampleStatusType,
-    getSampleTypeTemplateUrl, // TODO move
-    downloadSampleTypeTemplate, // TODO move
     DisableableMenuItem,
     SampleOperation,
     SampleStateType,
@@ -1041,9 +1028,7 @@ export {
     getFieldLookupFromSelection,
     getSelectedItemSamples,
     getSelectionLineageData,
-    getOriginalParentsFromLineage, // TODO maybe move
     getLineageEditorUpdateColumns,
-    getSampleTypes, // TODO move
     EntityInsertPanel,
     SampleTypeDataType,
     DataClassDataType,
@@ -1062,18 +1047,16 @@ export {
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
-    // entities
-    EntityIdCreationModel, // TODO move
+    EntityIdCreationModel,
     EntityParentType,
     OperationConfirmationData,
     AddEntityButton,
     RemoveEntityButton,
     getSampleOperationConfirmationData,
-    getCrossFolderSelectionResult, // TODO move
+    getCrossFolderSelectionResult,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getOperationConfirmationData,
-    createEntityParentKey, // TODO move
     getUniqueIdColumnMetadata,
     // search related items
     FIND_SAMPLE_BY_ID_METRIC_AREA,

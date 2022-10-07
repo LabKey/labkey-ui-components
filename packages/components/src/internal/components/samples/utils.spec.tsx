@@ -20,10 +20,8 @@ import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
-    getSampleDeleteMessage,
     getSampleStatus,
     getSampleStatusType,
-    getSampleTypeTemplateUrl,
     isSampleOperationPermitted,
     isSamplesSchema,
 } from './utils';
@@ -43,31 +41,6 @@ test('getOmittedSampleTypeColumn', () => {
     expect(isFreezerManagementEnabled(moduleContext)).toBeTruthy();
     expect(getOmittedSampleTypeColumns(TEST_USER_READER, moduleContext)).toStrictEqual([]);
     expect(getOmittedSampleTypeColumns(TEST_USER_GUEST, moduleContext)).toStrictEqual([CHECKED_OUT_BY_FIELD]);
-});
-
-describe('getSampleDeleteMessage', () => {
-    test('loading', () => {
-        LABKEY.moduleContext = {};
-        const wrapper = mount(<span>{getSampleDeleteMessage(undefined, false)}</span>);
-        expect(wrapper.find(LoadingSpinner).exists()).toBeTruthy();
-    });
-
-    test('cannot delete', () => {
-        LABKEY.moduleContext = {};
-        const wrapper = mount(<span>{getSampleDeleteMessage(false, false)}</span>);
-        expect(wrapper.find(LoadingSpinner).exists()).toBeFalsy();
-        expect(wrapper.text()).toContain(
-            'This sample cannot be deleted because it has either derived sample, job, or assay data dependencies, or status that prevents deletion.'
-        );
-    });
-
-    test('cannot delete with error', () => {
-        LABKEY.moduleContext = {};
-        const wrapper = mount(<span>{getSampleDeleteMessage(false, true)}</span>);
-        expect(wrapper.text()).toContain(
-            'This sample cannot be deleted because there was a problem loading the delete confirmation data.'
-        );
-    });
 });
 
 describe('isSampleOperationPermitted', () => {
@@ -349,56 +322,5 @@ describe('getSampleStatus', () => {
         expect(getSampleStatus({ 'SampleID/SampleState/Description': { value: 'Desc2' } }).description).toBe('Desc2');
         expect(getSampleStatus({ Description: { value: undefined } }).description).toBeUndefined();
         expect(getSampleStatus({ Description: { value: 'Desc3' } }).description).toBe('Desc3');
-    });
-});
-
-describe('getSampleTypeTemplateUrl', () => {
-    const BASE_URL =
-        '/labkey/query/ExportExcelTemplate.view?exportAlias.name=Sample%20ID&exportAlias.aliquotedFromLSID=AliquotedFrom&exportAlias.sampleState=Status&schemaName=schema&query.queryName=query&headerType=DisplayFieldKey&excludeColumn=flag&excludeColumn=Ancestors&includeColumn=StorageLocation&includeColumn=StorageRow&includeColumn=StorageCol&includeColumn=StoredAmount&includeColumn=Units&includeColumn=FreezeThawCount&includeColumn=EnteredStorage&includeColumn=CheckedOut&includeColumn=CheckedOutBy&includeColumn=StorageComment&includeColumn=AliquotedFrom';
-
-    test('no schemaQuery', () => {
-        expect(getSampleTypeTemplateUrl(QueryInfo.create({}), undefined)).toBe(undefined);
-    });
-
-    test('without importAliases', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
-        expect(getSampleTypeTemplateUrl(qInfo, undefined)).toBe(BASE_URL);
-    });
-
-    test('with importAliases', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
-        expect(
-            getSampleTypeTemplateUrl(qInfo, { a: '1', b: '2' }).indexOf('&includeColumn=a&includeColumn=b') > -1
-        ).toBeTruthy();
-    });
-
-    test('with columns to exclude', () => {
-        const qInfo = QueryInfo.fromJSON({
-            schemaName: 'schema',
-            name: 'query',
-            columns: {
-                nonFileCol: { fieldKey: 'nonFileCol', inputType: 'text' },
-                fileCol: { fieldKey: 'fileCol', inputType: 'file' },
-            },
-        });
-        expect(getSampleTypeTemplateUrl(qInfo, undefined).indexOf('&excludeColumn=fileCol') > -1).toBeTruthy();
-    });
-
-    test('with extra excluded columns', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
-        const url = getSampleTypeTemplateUrl(qInfo, { a: '1', b: '2' }, ['flag', 'alias']);
-        expect(url.indexOf('&includeColumn=a&includeColumn=b') > 1).toBeTruthy();
-        expect(url.indexOf('&excludeColumn=flag&excludeColumn=alias') > -1).toBeTruthy();
-    });
-
-    test('with no exportConfig, exclude storage', () => {
-        const qInfo = QueryInfo.fromJSON({ schemaName: 'schema', name: 'query', columns: {} });
-        const url = getSampleTypeTemplateUrl(qInfo, undefined, SAMPLE_STORAGE_COLUMNS, {});
-        expect(url.indexOf('exportAlias.name=SampleID')).toBe(-1);
-        expect(url.indexOf('exportAlias.aliquotedFromLSID=AliquotedFrom')).toBe(-1);
-        expect(url.indexOf('exportAlias.sampleState=Status')).toBe(-1);
-        SAMPLE_STORAGE_COLUMNS.forEach(col => {
-            expect(url.indexOf('includeColumn=' + col)).toBe(-1);
-        });
     });
 });

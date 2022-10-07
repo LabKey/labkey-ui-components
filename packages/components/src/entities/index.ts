@@ -1,4 +1,4 @@
-import { getSampleWizardURL, filterSampleRowsForOperation, getSampleSetMenuItem, isFindByIdsSchema } from './utils';
+import { getSampleWizardURL, filterSampleRowsForOperation, getSampleSetMenuItem, isFindByIdsSchema, getSampleDeleteMessage, getSampleTypeTemplateUrl, getOriginalParentsFromLineage, createEntityParentKey } from './utils';
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { SampleActionsButton } from './SampleActionsButton';
 import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
@@ -34,10 +34,20 @@ import { PicklistListing } from './PicklistListing';
 import { PicklistOverview } from './PicklistOverview';
 import { PicklistSubNav } from './PicklistSubnav';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
+import { SampleTypeTemplateDownloadRenderer } from './SampleTypeTemplateDownloadRenderer';
+import { PICKLIST_SAMPLES_FILTER } from './models';
+import { downloadSampleTypeTemplate, getSampleTypes } from './actions';
 
 export {
+    PICKLIST_SAMPLES_FILTER,
+    createEntityParentKey,
+    downloadSampleTypeTemplate,
     filterSampleRowsForOperation,
+    getOriginalParentsFromLineage,
     getSampleSetMenuItem,
+    getSampleDeleteMessage,
+    getSampleTypeTemplateUrl,
+    getSampleTypes,
     getSampleWizardURL,
     isFindByIdsSchema,
     CreateSamplesSubMenu,
@@ -71,6 +81,7 @@ export {
     SampleTimelinePageBase,
     SampleTypeBasePage,
     SampleTypeInsightsPanel,
+    SampleTypeTemplateDownloadRenderer,
     SamplesAssayButton,
     SamplesDeriveButtonBase,
     SamplesEditButton,

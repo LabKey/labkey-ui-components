@@ -36,8 +36,9 @@ import {
 import { PicklistGridButtons } from './PicklistGridButtons';
 import { PicklistEditModal } from '../internal/components/picklist/PicklistEditModal';
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
-import { Picklist, PICKLIST_SAMPLES_FILTER } from '../internal/components/picklist/models';
+import { Picklist } from '../internal/components/picklist/models';
 import { deletePicklists, updatePicklist } from '../internal/components/picklist/actions';
+import { PICKLIST_SAMPLES_FILTER } from './models';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';

@@ -20,7 +20,8 @@ import { DisableableMenuItem } from '../internal/components/samples/DisableableM
 
 import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 
-import { getSampleFinderLocalStorageKey, isValidFilterFieldSampleFinder, searchFiltersToJson } from '../internal/components/search/utils';
+import { getSampleFinderLocalStorageKey } from './utils';
+import { isValidFilterFieldSampleFinder, searchFiltersToJson } from '../internal/components/search/utils';
 import { FieldFilter, FilterProps } from '../internal/components/search/models';
 import { SAMPLE_FINDER_SESSION_PREFIX } from '../internal/components/search/constants';
 

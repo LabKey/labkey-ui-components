@@ -26,9 +26,10 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { ViewInfo } from '../internal/ViewInfo';
 
 import { ParentEntityRequiredColumns } from '../internal/components/entities/constants';
-import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from '../internal/components/entities/utils';
+import { getInitialParentChoices } from '../internal/components/entities/utils';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
+import { parentValuesDiffer, getUpdatedRowForParentChanges } from './utils';
 
 interface Props {
     auditBehavior?: AuditBehaviorTypes;

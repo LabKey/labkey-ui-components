@@ -1,42 +1,39 @@
-import { SampleTypeBasePage } from '../internal/samples/SampleTypeBasePage';
-
-import { getSampleWizardURL, filterSampleRowsForOperation, getSampleSetMenuItem, isFindByIdsSchema } from '../internal/samples/utils';
-
-// TODO should these files be moved?
-import { SampleActionsButton } from '../internal/components/samples/SampleActionsButton';
-import { SampleAliquotsGridPanel } from '../internal/components/samples/SampleAliquotsGridPanel';
-import { SampleAliquotsSummary } from '../internal/components/samples/SampleAliquotsSummary';
-import { SamplesAddButton } from '../internal/components/samples/SamplesAddButton';
-import { SampleAssayDetail } from '../internal/components/samples/SampleAssayDetail';
-import { SampleDetailEditing } from '../internal/components/samples/SampleDetailEditing';
-import { SampleLineageGraph } from '../internal/components/samples/SampleLineageGraph';
-import { SampleSetDeleteModal } from '../internal/components/samples/SampleSetDeleteModal';
-import { SampleSetSummary } from '../internal/components/samples/SampleSetSummary';
-import { SamplesDeriveButtonBase } from '../internal/components/samples/SamplesDeriveButtonBase';
-import { SamplesEditButton } from '../internal/components/samples/SamplesEditButton';
-import { SampleAliquotDetailHeader } from '../internal/components/samples/SampleAliquotDetailHeader';
-import { SampleCreationTypeModal } from '../internal/components/samples/SampleCreationTypeModal';
-import { CreateSamplesSubMenu } from '../internal/components/samples/CreateSamplesSubMenu';
-import { CreateSamplesSubMenuBase } from '../internal/components/samples/CreateSamplesSubMenuBase';
-import { SamplesAssayButton } from '../internal/components/samples/SamplesAssayButton';
-import { SampleTypeInsightsPanel } from '../internal/components/samples/SampleTypeInsightsPanel';
-import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
-import { FindSamplesByIdHeaderPanel } from '../internal/components/samples/FindSamplesByIdHeaderPanel';
-import { FindSamplesByIdsPageBase } from '../internal/components/search/FindSamplesByIdsPageBase';
-import { SampleFinderSection } from '../internal/components/search/SampleFinderSection';
-import { FindDerivativesButton } from '../internal/components/search/FindDerivativesButton';
-import { GridAliquotViewSelector } from '../internal/components/gridbar/GridAliquotViewSelector';
-import { SampleAliquotViewSelector } from '../internal/components/samples/SampleAliquotViewSelector';
-import { SampleTimelinePageBase } from '../internal/components/timeline/SampleTimelinePageBase';
-import { EntityTypeDeleteConfirmModal } from '../internal/components/entities/EntityTypeDeleteConfirmModal';
-import { EntityDeleteModal } from '../internal/components/entities/EntityDeleteModal';
-import { EntityLineageEditMenuItem } from '../internal/components/entities/EntityLineageEditMenuItem';
-import { ParentEntityEditPanel } from '../internal/components/entities/ParentEntityEditPanel';
-import { RemoveFromPicklistButton } from '../internal/components/picklist/RemoveFromPicklistButton';
-import { PicklistListing } from '../internal/components/picklist/PicklistListing';
-import { PicklistOverview } from '../internal/components/picklist/PicklistOverview';
-import { PicklistSubNav } from '../internal/components/picklist/PicklistSubnav';
-import { SamplesTabbedGridPanel } from '../internal/components/samples/SamplesTabbedGridPanel';
+import { getSampleWizardURL, filterSampleRowsForOperation, getSampleSetMenuItem, isFindByIdsSchema } from './utils';
+import { SampleTypeBasePage } from './SampleTypeBasePage';
+import { SampleActionsButton } from './SampleActionsButton';
+import { SampleAliquotsGridPanel } from './SampleAliquotsGridPanel';
+import { SampleAliquotsSummary } from './SampleAliquotsSummary';
+import { SamplesAddButton } from './SamplesAddButton';
+import { SampleAssayDetail } from './SampleAssayDetail';
+import { SampleDetailEditing } from './SampleDetailEditing';
+import { SampleLineageGraph } from './SampleLineageGraph';
+import { SampleSetDeleteModal } from './SampleSetDeleteModal';
+import { SampleSetSummary } from './SampleSetSummary';
+import { SamplesDeriveButtonBase } from './SamplesDeriveButtonBase';
+import { SamplesEditButton } from './SamplesEditButton';
+import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
+import { SampleCreationTypeModal } from './SampleCreationTypeModal';
+import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
+import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
+import { SamplesAssayButton } from './SamplesAssayButton';
+import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
+import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
+import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
+import { FindSamplesByIdsPageBase } from './FindSamplesByIdsPageBase';
+import { SampleFinderSection } from './SampleFinderSection';
+import { FindDerivativesButton } from './FindDerivativesButton';
+import { GridAliquotViewSelector } from './GridAliquotViewSelector';
+import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+import { SampleTimelinePageBase } from './SampleTimelinePageBase';
+import { EntityTypeDeleteConfirmModal } from './EntityTypeDeleteConfirmModal';
+import { EntityDeleteModal } from './EntityDeleteModal';
+import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
+import { ParentEntityEditPanel } from './ParentEntityEditPanel';
+import { RemoveFromPicklistButton } from './RemoveFromPicklistButton';
+import { PicklistListing } from './PicklistListing';
+import { PicklistOverview } from './PicklistOverview';
+import { PicklistSubNav } from './PicklistSubnav';
+import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 
 export {
     filterSampleRowsForOperation,

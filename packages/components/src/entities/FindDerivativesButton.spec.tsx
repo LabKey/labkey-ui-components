@@ -5,15 +5,15 @@ import { Filter } from '@labkey/api';
 
 import { fromJS } from 'immutable';
 
-import { DataClassDataType, SampleTypeDataType } from '../entities/constants';
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { mountWithAppServerContext } from '../../testHelpers';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { ViewInfo } from '../../ViewInfo';
+import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { SchemaQuery } from '../public/SchemaQuery';
+import { mountWithAppServerContext } from '../internal/testHelpers';
+import { QueryInfo } from '../public/QueryInfo';
+import { ViewInfo } from '../internal/ViewInfo';
 
-import { DisableableButton } from '../buttons/DisableableButton';
-import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
+import { DisableableButton } from '../internal/components/buttons/DisableableButton';
+import { ResponsiveMenuButton } from '../internal/components/buttons/ResponsiveMenuButton';
 
 import { FindDerivativesButton, getFieldFilter, getSessionSearchFilterProps } from './FindDerivativesButton';
 

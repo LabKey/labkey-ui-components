@@ -3,21 +3,21 @@ import { Modal, Button } from 'react-bootstrap';
 import { List } from 'immutable';
 import { ReactWrapper } from 'enzyme';
 
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { SchemaQuery } from '../public/SchemaQuery';
 
-import { getTestAPIWrapper } from '../../APIWrapper';
+import { getTestAPIWrapper } from '../internal/APIWrapper';
 
-import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../internal/testHelpers';
 
-import { Progress } from '../base/Progress';
+import { Progress } from '../internal/components/base/Progress';
 
-import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
+import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
 import { EntityLineageEditModal } from './EntityLineageEditModal';
-import { DataClassDataType, SampleTypeDataType } from './constants';
+import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-import { OperationConfirmationData } from './models';
+import { OperationConfirmationData } from '../internal/components/entities/models';
 
 const SQ = SchemaQuery.create('schema', 'query');
 const MODEL = makeTestQueryModel(SQ).mutate({

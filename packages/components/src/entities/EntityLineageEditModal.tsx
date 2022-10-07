@@ -6,26 +6,26 @@ import { Button, Modal } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import { getOriginalParentsFromLineage } from '../samples/actions';
+import { getOriginalParentsFromLineage } from '../internal/components/samples/actions';
 
-import { IS_ALIQUOT_COL, SampleOperation } from '../samples/constants';
+import { IS_ALIQUOT_COL, SampleOperation } from '../internal/components/samples/constants';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
-import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { capitalizeFirstChar, caseInsensitive } from '../../util/utils';
-import { updateRows } from '../../query/api';
-import { resolveErrorMessage } from '../../util/messaging';
-import { getOperationNotPermittedMessage } from '../samples/utils';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from '../base/Alert';
-import { Progress } from '../base/Progress';
+import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { capitalizeFirstChar, caseInsensitive } from '../internal/util/utils';
+import { updateRows } from '../internal/query/api';
+import { resolveErrorMessage } from '../internal/util/messaging';
+import { getOperationNotPermittedMessage } from '../internal/components/samples/utils';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+import { Alert } from '../internal/components/base/Alert';
+import { Progress } from '../internal/components/base/Progress';
 
-import { DataOperation, ParentEntityLineageColumns } from './constants';
+import { DataOperation, ParentEntityLineageColumns } from '../internal/components/entities/constants';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
-import { getEntityNoun, getUpdatedLineageRowsForBulkEdit, isSampleEntity } from './utils';
-import { EntityChoice, EntityDataType, OperationConfirmationData } from './models';
+import { getEntityNoun, getUpdatedLineageRowsForBulkEdit, isSampleEntity } from '../internal/components/entities/utils';
+import { EntityChoice, EntityDataType, OperationConfirmationData } from '../internal/components/entities/models';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -37,7 +37,7 @@ interface Props {
     queryModel: QueryModel;
 }
 
-export const restrictedDataOperationMsg = (
+const restrictedDataOperationMsg = (
     confirmationData: OperationConfirmationData,
     entityDataType: EntityDataType
 ): string => {

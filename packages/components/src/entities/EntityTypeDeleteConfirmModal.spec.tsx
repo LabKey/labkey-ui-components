@@ -16,7 +16,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { ConfirmModal } from '../base/ConfirmModal';
+import { ConfirmModal } from '../internal/components/base/ConfirmModal';
 
 import { EntityTypeDeleteConfirmModal } from './EntityTypeDeleteConfirmModal';
 

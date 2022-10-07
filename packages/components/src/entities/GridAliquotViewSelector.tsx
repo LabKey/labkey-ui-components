@@ -17,11 +17,11 @@ import React, { Component, ReactNode } from 'react';
 
 import { Filter } from '@labkey/api';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { Actions } from '../../../public/QueryModel/withQueryModels';
-import { SampleAliquotViewSelector } from '../samples/SampleAliquotViewSelector';
-import { ALIQUOT_FILTER_MODE, IS_ALIQUOT_COL } from '../samples/constants';
-import { isSampleAliquotSelectorEnabled } from '../../app/utils';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { Actions } from '../public/QueryModel/withQueryModels';
+import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+import { ALIQUOT_FILTER_MODE, IS_ALIQUOT_COL } from '../internal/components/samples/constants';
+import { isSampleAliquotSelectorEnabled } from '../internal/app/utils';
 
 interface Props {
     actions?: Actions;

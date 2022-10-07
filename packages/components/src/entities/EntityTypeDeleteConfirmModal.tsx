@@ -1,9 +1,9 @@
 import React from 'react';
 import { Map } from 'immutable';
 
-import { SampleOperation } from '../samples/constants';
-import { buildURL } from '../../url/AppURL';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { SampleOperation } from '../internal/components/samples/constants';
+import { buildURL } from '../internal/url/AppURL';
+import { ConfirmModal } from '../internal/components/base/ConfirmModal';
 
 interface Props {
     deleteConfirmationActionName?: string;

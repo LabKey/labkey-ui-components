@@ -2,27 +2,27 @@ import React, { FC, memo, useCallback, useMemo } from 'react';
 
 import { Filter } from '@labkey/api';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryModel } from '../public/QueryModel/QueryModel';
 
-import { AppURL } from '../../url/AppURL';
+import { AppURL } from '../internal/url/AppURL';
 
-import { FIND_SAMPLES_BY_FILTER_KEY } from '../../app/constants';
+import { FIND_SAMPLES_BY_FILTER_KEY } from '../internal/app/constants';
 
-import { formatDateTime } from '../../util/Date';
+import { formatDateTime } from '../internal/util/Date';
 
-import { EntityDataType } from '../entities/models';
+import { EntityDataType } from '../internal/components/entities/models';
 
-import { ResponsiveMenuButton } from '../buttons/ResponsiveMenuButton';
+import { ResponsiveMenuButton } from '../internal/components/buttons/ResponsiveMenuButton';
 
-import { useAppContext } from '../../AppContext';
+import { useAppContext } from '../internal/AppContext';
 
-import { DisableableMenuItem } from '../samples/DisableableMenuItem';
+import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 
-import { DisableableButton } from '../buttons/DisableableButton';
+import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 
-import { getSampleFinderLocalStorageKey, isValidFilterFieldSampleFinder, searchFiltersToJson } from './utils';
-import { FieldFilter, FilterProps } from './models';
-import { SAMPLE_FINDER_SESSION_PREFIX } from './constants';
+import { getSampleFinderLocalStorageKey, isValidFilterFieldSampleFinder, searchFiltersToJson } from '../internal/components/search/utils';
+import { FieldFilter, FilterProps } from '../internal/components/search/models';
+import { SAMPLE_FINDER_SESSION_PREFIX } from '../internal/components/search/constants';
 
 const DISABLED_FIND_DERIVATIVES_MSG =
     'Unable to find derivative samples using search filters or filters on multi-valued lookup fields';

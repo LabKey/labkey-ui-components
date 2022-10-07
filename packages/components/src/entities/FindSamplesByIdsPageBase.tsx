@@ -6,35 +6,35 @@ import {
     FIND_BY_IDS_QUERY_PARAM,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
-} from '../samples/constants';
-import { FindSamplesByIdHeaderPanel } from '../samples/FindSamplesByIdHeaderPanel';
-import { getFindSamplesByIdData } from '../samples/actions';
-import { getLocation, pushParameter, replaceParameter, resetParameters } from '../../util/URL';
-import { createGridModelId } from '../../models';
-import { LoadingState } from '../../../public/LoadingState';
-import { Page } from '../base/Page';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { QuerySort } from '../../../public/QuerySort';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { SCHEMAS } from '../../schemas';
-import { SampleGridButtonProps } from '../samples/models';
-import { SamplesEditableGridProps } from '../samples/SamplesEditableGrid';
-import { SamplesTabbedGridPanel } from '../samples/SamplesTabbedGridPanel';
-import { SamplesEditButtonSections } from '../samples/utils';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { arrayEquals, caseInsensitive } from '../../util/utils';
+} from '../internal/components/samples/constants';
+import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
+import { getFindSamplesByIdData } from '../internal/components/samples/actions';
+import { getLocation, pushParameter, replaceParameter, resetParameters } from '../internal/util/URL';
+import { createGridModelId } from '../internal/models';
+import { LoadingState } from '../public/LoadingState';
+import { Page } from '../internal/components/base/Page';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { QuerySort } from '../public/QuerySort';
+import { SchemaQuery } from '../public/SchemaQuery';
+import { SCHEMAS } from '../internal/schemas';
+import { SampleGridButtonProps } from '../internal/components/samples/models';
+import { SamplesEditableGridProps } from './SamplesEditableGrid';
+import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
+import { SamplesEditButtonSections } from '../internal/components/samples/utils';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+import { arrayEquals, caseInsensitive } from '../internal/util/utils';
 
-import { resolveErrorMessage } from '../../util/messaging';
-import { useServerContext } from '../base/ServerContext';
+import { resolveErrorMessage } from '../internal/util/messaging';
+import { useServerContext } from '../internal/components/base/ServerContext';
 
 import {
     InjectedQueryModels,
     RequiresModelAndActions,
     withQueryModels,
-} from '../../../public/QueryModel/withQueryModels';
+} from '../public/QueryModel/withQueryModels';
 
-import { getSampleTypesFromFindByIdQuery } from './actions';
-import { FIND_SAMPLE_BY_ID_METRIC_AREA } from './utils';
+import { getSampleTypesFromFindByIdQuery } from '../internal/components/search/actions';
+import { FIND_SAMPLE_BY_ID_METRIC_AREA } from '../internal/components/search/utils';
 
 const TYPE_GRID_PREFIX = 'find-by-id-';
 
@@ -46,7 +46,7 @@ interface FindSamplesByIdsTabProps extends InjectedQueryModels {
     samplesEditableGridProps: Partial<SamplesEditableGridProps>;
 }
 
-export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(props => {
+const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> = memo(props => {
     const {
         actions,
         allSamplesModel,
@@ -110,7 +110,7 @@ export const FindSamplesByIdsTabbedGridPanelImpl: FC<FindSamplesByIdsTabProps> =
     );
 });
 
-export const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = memo(props => {
+const FindSamplesByIdsTabbedGridPanel: FC<FindSamplesByIdsTabProps> = memo(props => {
     const { actions, allSamplesModel, samplesEditableGridProps } = props;
 
     const [sampleGridIds, setSampleGridIds] = useState<string[]>(undefined);

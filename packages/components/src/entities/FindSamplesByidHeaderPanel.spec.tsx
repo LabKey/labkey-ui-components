@@ -4,20 +4,20 @@ import { mount } from 'enzyme';
 
 import { Alert, Button } from 'react-bootstrap';
 
-import { LoadingState } from '../../../public/LoadingState';
+import { LoadingState } from '../public/LoadingState';
 
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { QueryInfo } from '../../../public/QueryInfo';
-import { FindByIdsModal } from '../search/FindByIdsModal';
-import { LoadingSpinner } from '../base/LoadingSpinner';
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { SchemaQuery } from '../public/SchemaQuery';
+import { QueryInfo } from '../public/QueryInfo';
+import { FindByIdsModal } from '../internal/components/search/FindByIdsModal';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
 import {
     FindSamplesByIdHeaderPanel,
     getFindIdCountsByTypeMessage,
     SamplesNotFoundMsg,
 } from './FindSamplesByIdHeaderPanel';
-import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';
+import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../internal/components/samples/constants';
 
 describe('getFindIdCountsByTypeMessage', () => {
     test('no data', () => {

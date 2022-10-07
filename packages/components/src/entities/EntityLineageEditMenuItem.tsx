@@ -3,11 +3,11 @@ import { MenuItem } from 'react-bootstrap';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryModel } from '../public/QueryModel/QueryModel';
 
-import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
 
-import { EntityDataType } from './models';
+import { EntityDataType } from '../internal/components/entities/models';
 import { EntityLineageEditModal } from './EntityLineageEditModal';
 
 interface Props {

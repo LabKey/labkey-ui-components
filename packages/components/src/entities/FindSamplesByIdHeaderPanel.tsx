@@ -4,15 +4,15 @@ import { Button } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
-import { isLoading, LoadingState } from '../../../public/LoadingState';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { LoadingSpinner } from '../base/LoadingSpinner';
+import { isLoading, LoadingState } from '../public/LoadingState';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
-import { Alert } from '../base/Alert';
-import { FindByIdsModal } from '../search/FindByIdsModal';
-import { Section } from '../base/Section';
+import { Alert } from '../internal/components/base/Alert';
+import { FindByIdsModal } from '../internal/components/search/FindByIdsModal';
+import { Section } from '../internal/components/base/Section';
 
-import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from './constants';
+import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../internal/components/samples/constants';
 
 interface HeaderPanelProps {
     loadingState: LoadingState;

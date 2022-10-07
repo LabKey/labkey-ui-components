@@ -3,11 +3,11 @@ import { mount } from 'enzyme';
 
 import { MenuItem } from 'react-bootstrap';
 
-import { SelectionMenuItem } from '../menus/SelectionMenuItem';
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { SchemaQuery } from '../public/SchemaQuery';
 
-import { DataClassDataType, SampleTypeDataType } from './constants';
+import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
 import { EntityLineageEditMenuItem } from './EntityLineageEditMenuItem';
 
 describe('EntityLineageEditMenuItem', () => {

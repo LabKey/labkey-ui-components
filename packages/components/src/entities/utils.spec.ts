@@ -1,6 +1,15 @@
-import { getSampleWizardURL, filterSampleRowsForOperation, getCrossFolderSelectionMsg, shouldIncludeMenuItem } from './utils';
-import {SamplesEditButtonSections} from '../components/samples/utils';
-import {SAMPLE_STATE_TYPE_COLUMN_NAME, SampleOperation, SampleStateType} from "../components/samples/constants";
+import {
+    getSampleWizardURL,
+    filterSampleRowsForOperation,
+    getCrossFolderSelectionMsg,
+    shouldIncludeMenuItem,
+} from './utils';
+import { SamplesEditButtonSections } from '../internal/components/samples/utils';
+import {
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SampleOperation,
+    SampleStateType,
+} from '../internal/components/samples/constants';
 
 describe('getCrossFolderSelectionMsg', () => {
     test('without cross folder selection', () => {

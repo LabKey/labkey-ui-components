@@ -4,16 +4,16 @@ import {
     getOperationNotPermittedMessage,
     isSampleOperationPermitted,
     SamplesEditButtonSections
-} from '../components/samples/utils';
-import {MenuItemModel, ProductMenuModel} from "../components/navigation/model";
-import {SAMPLES_KEY} from "../app/constants";
-import {AppURL, createProductUrlFromParts} from "../url/AppURL";
-import {SchemaQuery} from "../../public/SchemaQuery";
-import {SCHEMAS} from "../schemas";
-import {SAMPLE_STATE_TYPE_COLUMN_NAME, SampleOperation} from "../components/samples/constants";
-import {ModuleContext} from "../components/base/ServerContext";
-import {OperationConfirmationData} from "../components/entities/models";
-import {caseInsensitive} from "../util/utils";
+} from '../internal/components/samples/utils';
+import {MenuItemModel, ProductMenuModel} from "../internal/components/navigation/model";
+import {SAMPLES_KEY} from "../internal/app/constants";
+import {AppURL, createProductUrlFromParts} from "../internal/url/AppURL";
+import {SchemaQuery} from "../public/SchemaQuery";
+import {SCHEMAS} from "../internal/schemas";
+import {SAMPLE_STATE_TYPE_COLUMN_NAME, SampleOperation} from "../internal/components/samples/constants";
+import {ModuleContext} from "../internal/components/base/ServerContext";
+import {OperationConfirmationData} from "../internal/components/entities/models";
+import {caseInsensitive} from "../internal/util/utils";
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,

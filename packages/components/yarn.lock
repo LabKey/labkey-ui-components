@@ -1657,10 +1657,10 @@
   resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.16.1.tgz#f8495eb3acbea7282ad8e34015145cc1f0f6ccf9"
   integrity sha512-OVHhObWPVu7w/6pDXHBo3uaRRfDztmAY31/X8omx2BV+AHPNplFwxORUjQFgIsBHj6u79T44ZpJLETdxuR2sSg==
 
-"@labkey/build@6.2.1-fb-sampleTypeConsistencyV1.0":
-  version "6.2.1-fb-sampleTypeConsistencyV1.0"
-  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.2.1-fb-sampleTypeConsistencyV1.0.tgz#a8ac76e8837b853888e89c3e92debb3df7c65e06"
-  integrity sha512-g1p13rA6+//HZOilfOyEayrcEG3f8YQ00gFWpvmMF3tVFjXD9RKT84P6nQp5tGQsiXQbz8Etkg5YnL4UsdSd8A==
+"@labkey/build@6.2.1-fb-sampleTypeConsistencyV1.3":
+  version "6.2.1-fb-sampleTypeConsistencyV1.3"
+  resolved "https://labkey.jfrog.io/artifactory/api/npm/libs-client/@labkey/build/-/@labkey/build-6.2.1-fb-sampleTypeConsistencyV1.3.tgz#eecff7d3f4be3dd3104f789a66ac61670d048c88"
+  integrity sha512-nD6yL+eZLAVWfbYgmMDwWEDT6wgKRHl1ppjtuHSw51C5aQw0q36R53HphlXzkXMoGi4LPYXEZ5oZvuL8oN+28Q==
   dependencies:
     "@babel/core" "~7.17.8"
     "@babel/plugin-proposal-class-properties" "~7.16.7"

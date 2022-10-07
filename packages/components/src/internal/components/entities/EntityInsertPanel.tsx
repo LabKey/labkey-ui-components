@@ -1452,12 +1452,13 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     }
 }
 
-export const EntityInsertPanelFormSteps = withFormSteps(EntityInsertPanelImpl, {
+const EntityInsertPanelFormSteps = withFormSteps(EntityInsertPanelImpl, {
     currentStep: EntityInsertPanelTabs.First,
     furthestStep: EntityInsertPanelTabs.Second,
     hasDependentSteps: false,
 });
 
+// ideally this would move to the /entities subpackage, but it is used in the core-components.view page
 export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(props => {
     const { location, ...entityInsertPanelProps } = props;
     const { user } = useServerContext();

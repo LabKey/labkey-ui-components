@@ -77,4 +77,4 @@ export {
     SamplesTabbedGridPanel,
 };
 
-export type { SamplesEditableGridProps } from './entities/SamplesEditableGrid';
+export type { SamplesEditableGridProps } from './SamplesEditableGrid';

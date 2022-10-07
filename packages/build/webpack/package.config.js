@@ -85,6 +85,7 @@ module.exports = {
         '@fortawesome/react-fontawesome',
         '@labkey/api',
         '@labkey/components',
+        '@labkey/components/entities',
         '@remirror/pm',
         'boostrap-sass',
         'classnames',

@@ -16,7 +16,7 @@ import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
-} from '../../test/data/constants';
+} from '../productFixtures';
 
 import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
 

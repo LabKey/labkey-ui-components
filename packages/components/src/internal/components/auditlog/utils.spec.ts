@@ -11,8 +11,8 @@ import { getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from 
 import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-    TEST_LKSM_STARTER_MODULE_CONTEXT
-} from '../../../test/data/constants';
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
+} from '../../productFixtures';
 import { ASSAY_AUDIT_QUERY, SOURCE_AUDIT_QUERY, WORKFLOW_AUDIT_QUERY } from './constants';
 
 describe ('getAuditQueries', () => {

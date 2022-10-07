@@ -19,7 +19,7 @@ import { mount } from 'enzyme';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { AssayRunDataType, SampleTypeDataType } from './constants';
 import { OperationConfirmationData } from './models';
-import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../../test/data/constants';
+import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../productFixtures';
 
 describe('<EntityDeleteConfirmModal/>', () => {
     test('Can delete 1', () => {

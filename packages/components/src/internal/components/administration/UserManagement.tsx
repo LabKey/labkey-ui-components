@@ -9,7 +9,6 @@ import { PermissionRoles, Project, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
-import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../permissions/constants';
 import { SecurityPolicy } from '../permissions/models';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { AppURL } from '../../url/AppURL';
@@ -33,6 +32,7 @@ import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 import { AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY } from '../auditlog/constants';
 import { AUDIT_KEY } from '../../app/constants';
+import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './constants';
 
 export function getNewUserRoles(
     user: User,

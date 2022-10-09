@@ -33,6 +33,7 @@ import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 import { TextChoiceOptions } from './TextChoiceOptions';
+import { FileAttachmentOptions } from './FileAttachmentOptions';
 
 interface IDomainRowExpandedOptionsProps {
     appPropertiesOnly?: boolean;
@@ -222,6 +223,21 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         schemaName={schemaName}
                         lockedForDomain={domainFormDisplayOptions.textChoiceLockedForDomain}
                         lockedSqlFragment={domainFormDisplayOptions.textChoiceLockedSqlFragment}
+                    />
+                );
+            case 'fileLink':
+            case 'attachment':
+                // Remove when this is supported in apps. Issue 46476
+                if (appPropertiesOnly) return null;
+
+                return (
+                    <FileAttachmentOptions
+                        index={index}
+                        domainIndex={domainIndex}
+                        label={field.dataType.name === 'fileLink' ? 'File' : 'Attachment'}
+                        displayOption={field.format}
+                        onChange={onChange}
+                        lockType={field.lockType}
                     />
                 );
         }

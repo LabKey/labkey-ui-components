@@ -227,7 +227,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                 );
             case 'fileLink':
             case 'attachment':
-                // TODO: Can this be added in LKB/LKSM?
+                // Remove when this is supported in apps. Issue 46476
                 if (appPropertiesOnly) return null;
 
                 return (

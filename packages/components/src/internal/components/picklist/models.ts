@@ -1,7 +1,7 @@
 import { Draft, immerable, produce } from 'immer';
 
 import { User } from '../base/models/User';
-import { PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+import { PUBLIC_PICKLIST_CATEGORY } from './constants';
 import { userCanDeletePublicPicklists, userCanManagePicklists } from '../../app/utils';
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 

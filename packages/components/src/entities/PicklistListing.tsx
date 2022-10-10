@@ -2,8 +2,6 @@ import React, { ComponentType, FC, memo, useCallback, useMemo, useState } from '
 
 import { Filter, PermissionTypes } from '@labkey/api';
 
-import { PUBLIC_PICKLIST_CATEGORY } from '../internal/components/domainproperties/list/constants';
-
 import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 
 import { userCanManagePicklists } from '../internal/app/utils';
@@ -29,6 +27,7 @@ import {
 import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
 import { Picklist } from '../internal/components/picklist/models';
 import { deletePicklists, getPicklistListingContainerFilter } from '../internal/components/picklist/actions';
+import { PUBLIC_PICKLIST_CATEGORY } from '../internal/components/picklist/constants';
 
 const MY_PICKLISTS_GRID_ID = 'my-picklists';
 const TEAM_PICKLISTS_GRID_ID = 'team-picklists';

@@ -2,8 +2,6 @@ import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
-
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../internal/components/domainproperties/list/constants';
 import { mountWithAppServerContext } from '../internal/testHelpers';
 
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
@@ -11,6 +9,7 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { DisableableButton } from '../internal/components/buttons/DisableableButton';
 import { ConfirmModal } from '../internal/components/base/ConfirmModal';
 
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../internal/components/picklist/constants';
 import { Picklist } from '../internal/components/picklist/models';
 import { RemoveFromPicklistButton } from './RemoveFromPicklistButton';
 

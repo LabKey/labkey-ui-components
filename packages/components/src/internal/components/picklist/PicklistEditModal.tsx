@@ -8,8 +8,7 @@ import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
-
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 import { SampleOperation } from '../samples/constants';
 import { OperationConfirmationData } from '../entities/models';
 import { getOperationNotPermittedMessage } from '../samples/utils';

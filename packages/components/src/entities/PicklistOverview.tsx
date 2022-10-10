@@ -2,12 +2,10 @@ import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useSta
 import { Checkbox, MenuItem } from 'react-bootstrap';
 import { AuditBehaviorTypes, Filter } from '@labkey/api';
 
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../internal/components/domainproperties/list/constants';
-
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
 import { ALIQUOTED_FROM_COL, SAMPLE_STATUS_REQUIRED_COLUMNS } from '../internal/components/samples/constants';
-
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../internal/components/picklist/constants';
 import { PICKLIST_KEY } from '../internal/app/constants';
 
 import { AppURL } from '../internal/url/AppURL';

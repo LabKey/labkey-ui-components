@@ -8,7 +8,7 @@ import { LoadingPage } from '../internal/components/base/LoadingPage';
 import { NotFound } from '../internal/components/base/NotFound';
 import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
 import { mountWithAppServerContext, waitForLifecycle } from '../internal/testHelpers';
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../internal/components/domainproperties/list/constants';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../internal/components/picklist/constants';
 import { makeTestActions, makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { Page } from '../internal/components/base/Page';
 import { PageDetailHeader } from '../internal/components/forms/PageDetailHeader';

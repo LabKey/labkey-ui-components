@@ -6,7 +6,11 @@ import { SCHEMAS } from '../internal/schemas';
 
 import { TemplateDownloadButton } from '../public/files/TemplateDownloadButton';
 
-import { downloadSampleTypeTemplate } from './actions';
+import { QueryInfo } from '../public/QueryInfo';
+import { getQueryDetails } from '../internal/query/api';
+import { getSampleTypeDetails } from '../internal/components/samples/actions';
+import { downloadAttachment } from '../internal/util/utils';
+
 import { getSampleTypeTemplateUrl } from './utils';
 
 interface Props {
@@ -28,3 +32,26 @@ export class SampleTypeTemplateDownloadRenderer extends React.PureComponent<Prop
         return <TemplateDownloadButton onClick={this.onDownload} text="Download" className="button-small-padding" />;
     }
 }
+
+export const downloadSampleTypeTemplate = (
+    schemaQuery: SchemaQuery,
+    getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>, excludeColumns?: string[]) => string,
+    excludeColumns?: string[]
+): void => {
+    const promises = [];
+    promises.push(
+        getQueryDetails({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+        })
+    );
+    promises.push(getSampleTypeDetails(schemaQuery));
+    Promise.all(promises)
+        .then(results => {
+            const [queryInfo, domainDetails] = results;
+            downloadAttachment(getUrl(queryInfo, domainDetails.options?.get('importAliases'), excludeColumns), true);
+        })
+        .catch(reason => {
+            console.error('Unable to download sample type template', reason);
+        });
+};

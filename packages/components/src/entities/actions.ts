@@ -1,36 +1,15 @@
-import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
+import { List, Map } from 'immutable';
+import { Filter, Query } from '@labkey/api';
 
-import { SchemaQuery } from '../public/SchemaQuery';
-import { QueryInfo } from '../public/QueryInfo';
-import { getQueryDetails, selectDistinctRows, selectRowsDeprecated } from '../internal/query/api';
-import { downloadAttachment, findMissingValues } from '../internal/util/utils';
-import { getSampleTypeDetails } from '../internal/components/samples/actions';
+import { selectRowsDeprecated } from '../internal/query/api';
 import { SCHEMAS } from '../internal/schemas';
 import { resolveErrorMessage } from '../internal/util/messaging';
-import { SAMPLE_ID_FIND_FIELD, UNIQUE_ID_FIND_FIELD } from '../internal/components/samples/constants';
+import { EntityChoice, EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
+import { getParentTypeDataForLineage } from '../internal/components/samples/actions';
+import { getInitialParentChoices } from '../internal/components/entities/utils';
 
-export const downloadSampleTypeTemplate = (
-    schemaQuery: SchemaQuery,
-    getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>, excludeColumns?: string[]) => string,
-    excludeColumns?: string[]
-): void => {
-    const promises = [];
-    promises.push(
-        getQueryDetails({
-            schemaName: schemaQuery.schemaName,
-            queryName: schemaQuery.queryName,
-        })
-    );
-    promises.push(getSampleTypeDetails(schemaQuery));
-    Promise.all(promises)
-        .then(results => {
-            const [queryInfo, domainDetails] = results;
-            downloadAttachment(getUrl(queryInfo, domainDetails.options?.get('importAliases'), excludeColumns), true);
-        })
-        .catch(reason => {
-            console.error('Unable to download sample type template', reason);
-        });
-};
+// TODO: this file is temporary as we move things into an @labkey/components/entities subpackage. Instead of adding
+// anything to this file, we should create an API wrapper to be used for any new actions in this subpackage.
 
 export function getSampleTypes(includeMedia?: boolean): Promise<Array<{ id: number; label: string }>> {
     return new Promise((resolve, reject) => {
@@ -57,66 +36,60 @@ export function getSampleTypes(includeMedia?: boolean): Promise<Array<{ id: numb
     });
 }
 
-async function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): Promise<string[]> {
-    // Not try/caught as caller is expected to handle errors
-    const result = await selectDistinctRows({
-        column: 'Ordinal',
-        queryName,
-        schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-        sort: 'Ordinal',
-    });
+export const getOriginalParentsFromLineage = async (
+    lineage: Record<string, any>,
+    parentDataTypes: EntityDataType[],
+    containerPath?: string
+): Promise<{
+    originalParents: Record<string, List<EntityChoice>>;
+    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+}> => {
+    const originalParents = {};
+    let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
+    const dataClassTypeData = await getParentTypeDataForLineage(
+        parentDataTypes.filter(
+            dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+        )[0],
+        Object.values(lineage),
+        containerPath
+    );
+    const sampleTypeData = await getParentTypeDataForLineage(
+        parentDataTypes.filter(
+            dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
+        )[0],
+        Object.values(lineage),
+        containerPath
+    );
 
-    // find the gaps in the ordinals values as these correspond to ids we could not find
-    return findMissingValues(result.values, orderedIds);
-}
+    // iterate through both Data Classes and Sample Types for finding sample parents
+    parentDataTypes.forEach(dataType => {
+        const dataTypeOptions =
+            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+                ? dataClassTypeData.parentTypeOptions
+                : sampleTypeData.parentTypeOptions;
 
-export function getFindSamplesByIdData(
-    sessionKey: string
-): Promise<{ ids: string[]; missingIds?: { [key: string]: string[] }; queryName: string }> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('experiment', 'saveOrderedSamplesQuery.api'),
-            method: 'POST',
-            jsonData: {
-                sessionKey,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                if (response.success) {
-                    const { queryName, ids } = response.data;
-                    getSamplesIdsNotFound(queryName, ids)
-                        .then(notFound => {
-                            const missingIds = {
-                                [UNIQUE_ID_FIND_FIELD.label]: notFound
-                                    .filter(id => id.startsWith(UNIQUE_ID_FIND_FIELD.storageKeyPrefix))
-                                    .map(id => id.substring(UNIQUE_ID_FIND_FIELD.storageKeyPrefix.length)),
-                                [SAMPLE_ID_FIND_FIELD.label]: notFound
-                                    .filter(id => id.startsWith(SAMPLE_ID_FIND_FIELD.storageKeyPrefix))
-                                    .map(id => id.substring(SAMPLE_ID_FIND_FIELD.storageKeyPrefix.length)),
-                            };
-                            resolve({
-                                queryName,
-                                ids,
-                                missingIds,
-                            });
-                        })
-                        .catch(reason => {
-                            console.error('Problem retrieving data about samples not found', reason);
-                            resolve({
-                                queryName,
-                                ids,
-                            });
-                        });
-                } else {
-                    console.error('Unable to create session query');
-                    reject('There was a problem retrieving the samples. Your session may have expired.');
-                }
-            }),
-            failure: Utils.getCallbackWrapper(error => {
-                console.error('There was a problem creating the query for the samples.', error);
-                reject(
-                    "There was a problem retrieving the samples. Please try again using the 'Find Samples' option from the Search menu."
-                );
-            }),
+        const parentIdData =
+            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+                ? dataClassTypeData.parentIdData
+                : sampleTypeData.parentIdData;
+        Object.keys(lineage).forEach(sampleId => {
+            if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
+
+            originalParents[sampleId] = originalParents[sampleId].concat(
+                getInitialParentChoices(dataTypeOptions, dataType, lineage[sampleId], parentIdData)
+            );
         });
+
+        // filter out the current parent types from the dataTypeOptions
+        const originalParentTypeLsids = [];
+        Object.values(originalParents).forEach((parentTypes: List<EntityChoice>) => {
+            originalParentTypeLsids.push(...parentTypes.map(parentType => parentType.type.lsid).toArray());
+        });
+        parentTypeOptions = parentTypeOptions.set(
+            dataType.typeListingSchemaQuery.queryName,
+            dataTypeOptions.filter(option => originalParentTypeLsids.indexOf(option.lsid) === -1).toList()
+        );
     });
-}
+
+    return { originalParents, parentTypeOptions };
+};

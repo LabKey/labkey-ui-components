@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
+import { List, Set } from 'immutable';
 import { ActionURL, Utils } from '@labkey/api';
-import { List, Map, Set } from 'immutable';
 
 import {
     getOperationNotPermittedMessage,
@@ -19,18 +19,11 @@ import {
     SampleOperation,
 } from '../internal/components/samples/constants';
 import { ModuleContext } from '../internal/components/base/ServerContext';
-import {
-    EntityChoice,
-    EntityDataType,
-    IEntityTypeOption,
-    OperationConfirmationData,
-} from '../internal/components/entities/models';
+import { EntityChoice, OperationConfirmationData } from '../internal/components/entities/models';
 import { caseInsensitive, parseCsvString } from '../internal/util/utils';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { getPrimaryAppProperties, isELNEnabled } from '../internal/app/utils';
 import { QueryInfo } from '../public/QueryInfo';
-import { getInitialParentChoices } from '../internal/components/entities/utils';
-import { getParentTypeDataForLineage } from '../internal/components/samples/actions';
 import { naturalSort } from '../public/sort';
 import { DELIMITER } from '../internal/components/forms/constants';
 
@@ -177,64 +170,6 @@ export const getSampleTypeTemplateUrl = (
             : queryInfo.getFileColumnFieldKeys(),
         includeColumn: extraColumns,
     });
-};
-
-export const getOriginalParentsFromLineage = async (
-    lineage: Record<string, any>,
-    parentDataTypes: EntityDataType[],
-    containerPath?: string
-): Promise<{
-    originalParents: Record<string, List<EntityChoice>>;
-    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
-}> => {
-    const originalParents = {};
-    let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
-    const dataClassTypeData = await getParentTypeDataForLineage(
-        parentDataTypes.filter(
-            dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
-        )[0],
-        Object.values(lineage),
-        containerPath
-    );
-    const sampleTypeData = await getParentTypeDataForLineage(
-        parentDataTypes.filter(
-            dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
-        )[0],
-        Object.values(lineage),
-        containerPath
-    );
-
-    // iterate through both Data Classes and Sample Types for finding sample parents
-    parentDataTypes.forEach(dataType => {
-        const dataTypeOptions =
-            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
-                ? dataClassTypeData.parentTypeOptions
-                : sampleTypeData.parentTypeOptions;
-
-        const parentIdData =
-            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
-                ? dataClassTypeData.parentIdData
-                : sampleTypeData.parentIdData;
-        Object.keys(lineage).forEach(sampleId => {
-            if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
-
-            originalParents[sampleId] = originalParents[sampleId].concat(
-                getInitialParentChoices(dataTypeOptions, dataType, lineage[sampleId], parentIdData)
-            );
-        });
-
-        // filter out the current parent types from the dataTypeOptions
-        const originalParentTypeLsids = [];
-        Object.values(originalParents).forEach((parentTypes: List<EntityChoice>) => {
-            originalParentTypeLsids.push(...parentTypes.map(parentType => parentType.type.lsid).toArray());
-        });
-        parentTypeOptions = parentTypeOptions.set(
-            dataType.typeListingSchemaQuery.queryName,
-            dataTypeOptions.filter(option => originalParentTypeLsids.indexOf(option.lsid) === -1).toList()
-        );
-    });
-
-    return { originalParents, parentTypeOptions };
 };
 
 export function createEntityParentKey(schemaQuery: SchemaQuery, id?: string): string {

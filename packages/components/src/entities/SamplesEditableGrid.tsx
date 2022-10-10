@@ -15,7 +15,10 @@ import { isFreezerManagementEnabled } from '../internal/app/utils';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../public/SchemaQuery';
-import { NotificationsContextProps, withNotificationsContext } from '../internal/components/notifications/NotificationsContext';
+import {
+    NotificationsContextProps,
+    withNotificationsContext,
+} from '../internal/components/notifications/NotificationsContext';
 import { User } from '../internal/components/base/models/User';
 
 import { caseInsensitive } from '../internal/util/utils';
@@ -37,7 +40,7 @@ import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
 import { getLineageEditorUpdateColumns, getUpdatedLineageRows } from '../internal/components/samples/actions';
 import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
-import { getOriginalParentsFromLineage } from './utils';
+import { getOriginalParentsFromLineage } from './actions';
 
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;

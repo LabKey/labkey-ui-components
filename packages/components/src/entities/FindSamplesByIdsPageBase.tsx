@@ -1,14 +1,15 @@
 import React, { ComponentType, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { WithRouterProps } from 'react-router';
-import { AuditBehaviorTypes, Filter } from '@labkey/api';
+import { ActionURL, Ajax, AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 
 import {
     FIND_BY_IDS_QUERY_PARAM,
     SAMPLE_DATA_EXPORT_CONFIG,
+    SAMPLE_ID_FIND_FIELD,
     SAMPLE_STATUS_REQUIRED_COLUMNS,
+    UNIQUE_ID_FIND_FIELD,
 } from '../internal/components/samples/constants';
-import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
-import { getFindSamplesByIdData } from './actions';
+
 import { getLocation, pushParameter, replaceParameter, resetParameters } from '../internal/util/URL';
 import { createGridModelId } from '../internal/models';
 import { LoadingState } from '../public/LoadingState';
@@ -18,23 +19,23 @@ import { QuerySort } from '../public/QuerySort';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
 import { SampleGridButtonProps } from '../internal/components/samples/models';
-import { SamplesEditableGridProps } from './SamplesEditableGrid';
-import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
+
 import { SamplesEditButtonSections } from '../internal/components/samples/utils';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
-import { arrayEquals, caseInsensitive } from '../internal/util/utils';
+import { arrayEquals, caseInsensitive, findMissingValues } from '../internal/util/utils';
 
 import { resolveErrorMessage } from '../internal/util/messaging';
 import { useServerContext } from '../internal/components/base/ServerContext';
 
-import {
-    InjectedQueryModels,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 import { getSampleTypesFromFindByIdQuery } from '../internal/components/search/actions';
 import { FIND_SAMPLE_BY_ID_METRIC_AREA } from '../internal/components/search/utils';
+import { selectDistinctRows } from '../internal/query/api';
+
+import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
+import { SamplesEditableGridProps } from './SamplesEditableGrid';
+import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
 
 const TYPE_GRID_PREFIX = 'find-by-id-';
 
@@ -298,3 +299,67 @@ const FindSamplesByIdsPageBaseImpl: FC<Props> = memo(props => {
 });
 
 export const FindSamplesByIdsPageBase = withQueryModels<OwnProps & WithRouterProps>(FindSamplesByIdsPageBaseImpl);
+
+async function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): Promise<string[]> {
+    // Not try/caught as caller is expected to handle errors
+    const result = await selectDistinctRows({
+        column: 'Ordinal',
+        queryName,
+        schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+        sort: 'Ordinal',
+    });
+
+    // find the gaps in the ordinals values as these correspond to ids we could not find
+    return findMissingValues(result.values, orderedIds);
+}
+
+function getFindSamplesByIdData(
+    sessionKey: string
+): Promise<{ ids: string[]; missingIds?: { [key: string]: string[] }; queryName: string }> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('experiment', 'saveOrderedSamplesQuery.api'),
+            method: 'POST',
+            jsonData: {
+                sessionKey,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    const { queryName, ids } = response.data;
+                    getSamplesIdsNotFound(queryName, ids)
+                        .then(notFound => {
+                            const missingIds = {
+                                [UNIQUE_ID_FIND_FIELD.label]: notFound
+                                    .filter(id => id.startsWith(UNIQUE_ID_FIND_FIELD.storageKeyPrefix))
+                                    .map(id => id.substring(UNIQUE_ID_FIND_FIELD.storageKeyPrefix.length)),
+                                [SAMPLE_ID_FIND_FIELD.label]: notFound
+                                    .filter(id => id.startsWith(SAMPLE_ID_FIND_FIELD.storageKeyPrefix))
+                                    .map(id => id.substring(SAMPLE_ID_FIND_FIELD.storageKeyPrefix.length)),
+                            };
+                            resolve({
+                                queryName,
+                                ids,
+                                missingIds,
+                            });
+                        })
+                        .catch(reason => {
+                            console.error('Problem retrieving data about samples not found', reason);
+                            resolve({
+                                queryName,
+                                ids,
+                            });
+                        });
+                } else {
+                    console.error('Unable to create session query');
+                    reject('There was a problem retrieving the samples. Your session may have expired.');
+                }
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error('There was a problem creating the query for the samples.', error);
+                reject(
+                    "There was a problem retrieving the samples. Please try again using the 'Find Samples' option from the Search menu."
+                );
+            }),
+        });
+    });
+}

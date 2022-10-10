@@ -28,10 +28,9 @@ import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
 import { Location } from '../../util/URL';
 import { createQueryConfigFilteredBySample, getSelectedData, getSelection } from '../../actions';
 
-import { caseInsensitive, downloadAttachment, findMissingValues, quoteValueWithDelimiters } from '../../util/utils';
+import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 
 import { ParentEntityLineageColumns } from '../entities/constants';
-import { getInitialParentChoices } from '../entities/utils';
 
 import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
@@ -40,13 +39,7 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { EXP_TABLES, SCHEMAS } from '../../schemas';
 
-import {
-    getContainerFilter,
-    getQueryDetails,
-    ISelectRowsResult,
-    selectDistinctRows,
-    selectRowsDeprecated,
-} from '../../query/api';
+import { getContainerFilter, ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
 
 import { buildURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -56,11 +49,9 @@ import { getSelectedPicklistSamples } from '../picklist/actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
 import { naturalSort, naturalSortByProperty } from '../../../public/sort';
-import { SHARED_CONTAINER_PATH } from '../../constants';
 import { AssayStateModel } from '../assay/models';
 import { createGridModelId } from '../../models';
 import { TimelineEventModel } from '../auditlog/models';
-import { QueryInfo } from '../../../public/QueryInfo';
 
 import { ViewInfo } from '../../ViewInfo';
 
@@ -410,64 +401,6 @@ export function getSelectionLineageData(
     });
 }
 
-export const getOriginalParentsFromLineage = async (
-    lineage: Record<string, any>,
-    parentDataTypes: EntityDataType[],
-    containerPath?: string
-): Promise<{
-    originalParents: Record<string, List<EntityChoice>>;
-    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
-}> => {
-    const originalParents = {};
-    let parentTypeOptions = Map<string, List<IEntityTypeOption>>();
-    const dataClassTypeData = await getParentTypeDataForLineage(
-        parentDataTypes.filter(
-            dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
-        )[0],
-        Object.values(lineage),
-        containerPath
-    );
-    const sampleTypeData = await getParentTypeDataForLineage(
-        parentDataTypes.filter(
-            dataType => dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
-        )[0],
-        Object.values(lineage),
-        containerPath
-    );
-
-    // iterate through both Data Classes and Sample Types for finding sample parents
-    parentDataTypes.forEach(dataType => {
-        const dataTypeOptions =
-            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
-                ? dataClassTypeData.parentTypeOptions
-                : sampleTypeData.parentTypeOptions;
-
-        const parentIdData =
-            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
-                ? dataClassTypeData.parentIdData
-                : sampleTypeData.parentIdData;
-        Object.keys(lineage).forEach(sampleId => {
-            if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
-
-            originalParents[sampleId] = originalParents[sampleId].concat(
-                getInitialParentChoices(dataTypeOptions, dataType, lineage[sampleId], parentIdData)
-            );
-        });
-
-        // filter out the current parent types from the dataTypeOptions
-        const originalParentTypeLsids = [];
-        Object.values(originalParents).forEach((parentTypes: List<EntityChoice>) => {
-            originalParentTypeLsids.push(...parentTypes.map(parentType => parentType.type.lsid).toArray());
-        });
-        parentTypeOptions = parentTypeOptions.set(
-            dataType.typeListingSchemaQuery.queryName,
-            dataTypeOptions.filter(option => originalParentTypeLsids.indexOf(option.lsid) === -1).toList()
-        );
-    });
-
-    return { originalParents, parentTypeOptions };
-};
-
 export const getParentTypeDataForLineage = async (
     parentDataType: EntityDataType,
     data: any[],
@@ -693,84 +626,6 @@ export function getGroupedSampleDisplayColumns(
     };
 }
 
-export function getEditSharedSampleTypeUrl(typeId: number): string {
-    return ActionURL.buildURL('experiment', 'editSampleType', SHARED_CONTAINER_PATH, {
-        RowId: typeId,
-        returnUrl: window.location.pathname + (window.location.hash ? window.location.hash : ''),
-    }).toString();
-}
-
-export function getDeleteSharedSampleTypeUrl(typeId: number): string {
-    return ActionURL.buildURL('experiment', 'deleteSampleTypes', SHARED_CONTAINER_PATH, {
-        singleObjectRowId: typeId,
-        returnUrl: window.location.pathname + '#/samples',
-    }).toString();
-}
-
-async function getSamplesIdsNotFound(queryName: string, orderedIds: string[]): Promise<string[]> {
-    // Not try/caught as caller is expected to handle errors
-    const result = await selectDistinctRows({
-        column: 'Ordinal',
-        queryName,
-        schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-        sort: 'Ordinal',
-    });
-
-    // find the gaps in the ordinals values as these correspond to ids we could not find
-    return findMissingValues(result.values, orderedIds);
-}
-
-export function getFindSamplesByIdData(
-    sessionKey: string
-): Promise<{ ids: string[]; missingIds?: { [key: string]: string[] }; queryName: string }> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('experiment', 'saveOrderedSamplesQuery.api'),
-            method: 'POST',
-            jsonData: {
-                sessionKey,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                if (response.success) {
-                    const { queryName, ids } = response.data;
-                    getSamplesIdsNotFound(queryName, ids)
-                        .then(notFound => {
-                            const missingIds = {
-                                [UNIQUE_ID_FIND_FIELD.label]: notFound
-                                    .filter(id => id.startsWith(UNIQUE_ID_FIND_FIELD.storageKeyPrefix))
-                                    .map(id => id.substring(UNIQUE_ID_FIND_FIELD.storageKeyPrefix.length)),
-                                [SAMPLE_ID_FIND_FIELD.label]: notFound
-                                    .filter(id => id.startsWith(SAMPLE_ID_FIND_FIELD.storageKeyPrefix))
-                                    .map(id => id.substring(SAMPLE_ID_FIND_FIELD.storageKeyPrefix.length)),
-                            };
-                            resolve({
-                                queryName,
-                                ids,
-                                missingIds,
-                            });
-                        })
-                        .catch(reason => {
-                            console.error('Problem retrieving data about samples not found', reason);
-                            resolve({
-                                queryName,
-                                ids,
-                            });
-                        });
-                } else {
-                    console.error('Unable to create session query');
-                    reject('There was a problem retrieving the samples. Your session may have expired.');
-                }
-            }),
-            failure: Utils.getCallbackWrapper(error => {
-                console.error('There was a problem creating the query for the samples.', error);
-                reject(
-                    "There was a problem retrieving the samples. Please try again using the 'Find Samples' option from the Search menu."
-                );
-            }),
-        });
-    });
-}
-
 export function saveIdsToFind(fieldType: FindField, ids: string[], sessionKey: string): Promise<string> {
     // list of ids deduplicated and prefixed with the field type's storage prefix
     const prefixedIds = [];
@@ -975,31 +830,6 @@ export function getSampleTypeRowId(name: string): Promise<number> {
     });
 }
 
-export function getSampleTypes(includeMedia?: boolean): Promise<Array<{ id: number; label: string }>> {
-    return new Promise((resolve, reject) => {
-        selectRowsDeprecated({
-            schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
-            queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-            sort: 'Name',
-            filterArray: includeMedia ? undefined : [Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL)],
-            containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-        })
-            .then(response => {
-                const { key, models, orderedModels } = response;
-                const sampleTypeOptions = [];
-                orderedModels[key].forEach(row => {
-                    const data = models[key][row];
-                    sampleTypeOptions.push({ id: data.RowId.value, label: data.Name.value });
-                });
-                resolve(sampleTypeOptions);
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            });
-    });
-}
-
 /**
  * Gets the Set of Ids from selected rowIds based on supplied fieldKey which should be a Lookup
  * @param schemaName of selected rows
@@ -1084,26 +914,3 @@ export function getTimelineEvents(sampleId: number, timezone?: string): Promise<
         });
     });
 }
-
-export const downloadSampleTypeTemplate = (
-    schemaQuery: SchemaQuery,
-    getUrl: (queryInfo: QueryInfo, importAliases: Record<string, string>, excludeColumns?: string[]) => string,
-    excludeColumns?: string[]
-): void => {
-    const promises = [];
-    promises.push(
-        getQueryDetails({
-            schemaName: schemaQuery.schemaName,
-            queryName: schemaQuery.queryName,
-        })
-    );
-    promises.push(getSampleTypeDetails(schemaQuery));
-    Promise.all(promises)
-        .then(results => {
-            const [queryInfo, domainDetails] = results;
-            downloadAttachment(getUrl(queryInfo, domainDetails.options?.get('importAliases'), excludeColumns), true);
-        })
-        .catch(reason => {
-            console.error('Unable to download sample type template', reason);
-        });
-};

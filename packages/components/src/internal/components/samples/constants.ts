@@ -4,6 +4,13 @@ import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
 
 import { FindField } from './models';
 
+export enum ALIQUOT_FILTER_MODE {
+    all = 'all',
+    samples = 'samples',
+    aliquots = 'aliquots',
+    none = 'none', // when using grid filter with 'is blank'
+}
+
 export const SAMPLE_INVENTORY_ITEM_SELECTION_KEY = 'inventoryItems';
 
 export const MAX_SELECTED_SAMPLES = 10000;
@@ -195,7 +202,6 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
     ...SAMPLE_EXPORT_CONFIG,
     includeColumn: ['AliquotedFromLSID'],
 };
-
 
 export const PROJECT_AUDIT_QUERY = { value: 'containerauditevent', label: 'Project Events' };
 export const ASSAY_AUDIT_QUERY = { value: 'experimentauditevent', label: 'Assay Events' };

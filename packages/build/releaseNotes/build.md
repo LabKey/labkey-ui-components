@@ -1,5 +1,13 @@
 # @labkey/build
 
+### version 6.3.0
+*Released*: 10 October 2022
+* Revert changes for build packages as ES Modules
+* webpack updates for @labkey/components `entities` subpackage
+  * add `@labkey/components/entities` alias for `npm run start-link`
+  * add `@labkey/components/entities` to "externals" to keep it out of bundles
+  * add `BundleAnalyzerPlugin` to package.config.js
+
 ### version 6.2.1
 *Released*: 23 September 2022
 * Update typescript_dev module loader rule regex to match Windows and Unix path operators.

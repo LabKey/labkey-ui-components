@@ -1,5 +1,5 @@
 import { TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN, TEST_USER_READER } from '../../userFixtures';
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 import { Picklist } from './models';
 

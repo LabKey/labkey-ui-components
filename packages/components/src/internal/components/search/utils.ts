@@ -1,4 +1,4 @@
-import { ActionURL, Filter, getServerContext, Utils, Query } from '@labkey/api';
+import { Filter, Utils, Query, getServerContext } from '@labkey/api';
 
 import { EntityDataType } from '../entities/models';
 import { JsonType } from '../domainproperties/PropDescType';
@@ -27,7 +27,7 @@ import {
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { getPrimaryAppProperties, isOntologyEnabled } from '../../app/utils';
+import { isOntologyEnabled } from '../../app/utils';
 
 import { formatDateTime } from '../../util/Date';
 
@@ -980,10 +980,6 @@ export function getUpdatedFilterSelection(
             secondFilterValue: shouldClear ? undefined : activeFilter?.secondFilterValue,
         },
     };
-}
-
-export function getSampleFinderLocalStorageKey(): string {
-    return getPrimaryAppProperties().productId + ActionURL.getContainer() + '-SampleFinder';
 }
 
 export function getSearchScopeFromContainerFilter(cf: Query.ContainerFilter): SearchScope {

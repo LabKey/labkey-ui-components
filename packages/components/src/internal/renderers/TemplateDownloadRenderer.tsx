@@ -5,31 +5,12 @@ import { Map } from 'immutable';
 import { Assay } from '@labkey/api';
 
 import { TemplateDownloadButton } from '../../public/files/TemplateDownloadButton';
-import { getSampleTypeTemplateUrl } from '../components/samples/utils';
-import { downloadSampleTypeTemplate } from '../components/samples/actions';
-import { SCHEMAS } from '../schemas';
-import { SchemaQuery } from '../../public/SchemaQuery';
 
 import { downloadAttachment } from '../util/utils';
 
 interface Props {
     excludeColumns?: string[];
     row?: Map<any, any>;
-}
-
-export class SampleTypeTemplateDownloadRenderer extends React.PureComponent<Props> {
-    onDownload = () => {
-        const { row, excludeColumns } = this.props;
-        const schemaQuery = SchemaQuery.create(
-            SCHEMAS.SAMPLE_SETS.SCHEMA,
-            row.getIn(['Name', 'value']) ?? row.getIn(['name', 'value'])
-        );
-        downloadSampleTypeTemplate(schemaQuery, getSampleTypeTemplateUrl, excludeColumns);
-    };
-
-    render(): ReactNode {
-        return <TemplateDownloadButton onClick={this.onDownload} text="Download" className="button-small-padding" />;
-    }
 }
 
 export class AssayResultTemplateDownloadRenderer extends React.PureComponent<Props> {

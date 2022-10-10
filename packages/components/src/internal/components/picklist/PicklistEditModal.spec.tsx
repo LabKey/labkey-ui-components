@@ -6,7 +6,7 @@ import { Button, Modal, ModalFooter, ModalTitle } from 'react-bootstrap';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getSamplesTestAPIWrapper } from '../samples/APIWrapper';
 import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
-import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../domainproperties/list/constants';
+import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 import { OperationConfirmationData } from '../entities/models';
 

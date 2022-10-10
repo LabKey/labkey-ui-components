@@ -7,21 +7,21 @@ import { List, Map } from 'immutable';
 
 import { ASSAYS_KEY, ProductFeature, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 
-import { getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './utils';
 import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-    TEST_LKSM_STARTER_MODULE_CONTEXT
-} from '../../../test/data/constants';
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
+} from '../../productFixtures';
+
+import { getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './utils';
 import { ASSAY_AUDIT_QUERY, SOURCE_AUDIT_QUERY, WORKFLOW_AUDIT_QUERY } from './constants';
 
-describe ('getAuditQueries', () => {
-
+describe('getAuditQueries', () => {
     test('LKS starter', () => {
         LABKEY.moduleContext = {
-            ... TEST_LKS_STARTER_MODULE_CONTEXT
+            ...TEST_LKS_STARTER_MODULE_CONTEXT,
         };
-        let auditQueries = getAuditQueries();
+        const auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(12);
         expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(5);
@@ -31,9 +31,9 @@ describe ('getAuditQueries', () => {
 
     test('LKSM starter', () => {
         LABKEY.moduleContext = {
-            ...TEST_LKSM_STARTER_MODULE_CONTEXT
+            ...TEST_LKSM_STARTER_MODULE_CONTEXT,
         };
-        let auditQueries = getAuditQueries();
+        const auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(11);
         expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(4);
         expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBe(-1);
@@ -41,19 +41,19 @@ describe ('getAuditQueries', () => {
         expect(auditQueries.findIndex(entry => entry == SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
     });
 
-    test("LKSM professional", () => {
+    test('LKSM professional', () => {
         LABKEY.moduleContext = {
-            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
+            ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
         };
-        let auditQueries = getAuditQueries();
+        const auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(13);
         expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(5);
         expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry == WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry == SOURCE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
-    })
+    });
 
-    test("LKB", () => {
+    test('LKB', () => {
         LABKEY.moduleContext = {
             api: {
                 moduleNames: ['biologics', 'samplemanagement', 'inventory', 'assay', 'labbook'],
@@ -62,16 +62,15 @@ describe ('getAuditQueries', () => {
             inventory: {},
             biologics: {},
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay]
-            }
+                productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay],
+            },
         };
-        let auditQueries = getAuditQueries();
+        const auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(12);
         expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(5);
         expect(auditQueries.findIndex(entry => entry == ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry == WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry == SOURCE_AUDIT_QUERY)).toBe(-1);
-
     });
 });
 

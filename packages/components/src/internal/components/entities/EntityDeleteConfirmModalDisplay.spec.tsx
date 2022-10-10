@@ -16,10 +16,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
+import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../productFixtures';
+
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { AssayRunDataType, SampleTypeDataType } from './constants';
 import { OperationConfirmationData } from './models';
-import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../../test/data/constants';
 
 describe('<EntityDeleteConfirmModal/>', () => {
     test('Can delete 1', () => {
@@ -235,7 +236,7 @@ describe('<EntityDeleteConfirmModal/>', () => {
             wrapper.find('.modal-body').text().indexOf("The sample you've selected cannot be deleted")
         ).toBeGreaterThan(-1);
         expect(
-            wrapper.find('.modal-body').text().indexOf("references in one or more active notebooks")
+            wrapper.find('.modal-body').text().indexOf('references in one or more active notebooks')
         ).toBeGreaterThan(-1);
     });
 
@@ -252,22 +253,18 @@ describe('<EntityDeleteConfirmModal/>', () => {
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={AssayRunDataType}
-                getDeletionDescription={(numToDelete) => {return `Added description for ${numToDelete} runs.`;}}
+                getDeletionDescription={numToDelete => {
+                    return `Added description for ${numToDelete} runs.`;
+                }}
             />
         );
         const wrapper = mount(component);
         expect(wrapper.find('.modal-title').text()).toBe('No Runs Can Be Deleted');
         const body = wrapper.find('.modal-body');
-        expect(
-            body.text().indexOf("Neither of the 2 runs you've selected can be deleted")
-        ).toBeGreaterThan(-1);
-        expect(
-            body.text().indexOf("references in one or more active notebooks")
-        ).toBeGreaterThan(-1);
+        expect(body.text().indexOf("Neither of the 2 runs you've selected can be deleted")).toBeGreaterThan(-1);
+        expect(body.text().indexOf('references in one or more active notebooks')).toBeGreaterThan(-1);
         // added description not added if nothing can be deleted
-        expect(
-            body.text().indexOf("Added description for 2 runs.")
-        ).toBe(-1);
+        expect(body.text().indexOf('Added description for 2 runs.')).toBe(-1);
     });
 
     test('Adding deletion description, can delete', () => {
@@ -283,22 +280,18 @@ describe('<EntityDeleteConfirmModal/>', () => {
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
                 entityDataType={AssayRunDataType}
-                getDeletionDescription={(numToDelete) => {return `Added description for ${numToDelete} runs.`;}}
+                getDeletionDescription={numToDelete => {
+                    return `Added description for ${numToDelete} runs.`;
+                }}
             />
         );
         const wrapper = mount(component);
         expect(wrapper.find('.modal-title').text()).toBe('Permanently Delete 1 Run?');
         const body = wrapper.find('.modal-body');
-        expect(
-            body.text().indexOf("only 1 can be deleted")
-        ).toBeGreaterThan(-1);
-        expect(
-            body.text().indexOf("references in one or more active notebooks")
-        ).toBeGreaterThan(-1);
+        expect(body.text().indexOf('only 1 can be deleted')).toBeGreaterThan(-1);
+        expect(body.text().indexOf('references in one or more active notebooks')).toBeGreaterThan(-1);
         // added description not added if nothing can be deleted
-        expect(
-            body.text().indexOf("Added description for 1 runs.")
-        ).toBeGreaterThan(-1);
+        expect(body.text().indexOf('Added description for 1 runs.')).toBeGreaterThan(-1);
     });
 
     test('button clicks', () => {

@@ -1,16 +1,30 @@
 {
   "name": "@labkey/components",
-  "version": "2.231.0",
+  "version": "2.232.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
-  "main": "dist/components.js",
-  "module": "dist/components.js",
   "sideEffects": false,
-  "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],
+  "main": "dist/components.js",
+  "module": "dist/components.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/components.js",
+    "./entities": "./dist/entities.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/index.d.ts"
+      ],
+      "entities": [
+        "dist/entities/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
-    "build": "npm run clean && cross-env NODE_ENV=production webpack --config node_modules/@labkey/build/webpack/package.config.js --color --progress --profile",
+    "build": "npm run clean && cross-env NODE_ENV=production webpack --config package.config.js --color --progress --profile",
     "clean": "rimraf dist",
     "cleanAll": "rimraf dist && rimraf node_modules",
     "prepublishOnly": "yarn install && cross-env WEBPACK_STATS=errors-only yarn build",
@@ -76,7 +90,7 @@
     "vis-network": "~6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "6.2.1",
+    "@labkey/build": "6.3.0",
     "@labkey/eslint-config-react": "~0.0.12",
     "@types/history": "~4.7.9",
     "@types/node": "~16.11.26",
@@ -99,6 +113,7 @@
     "jest-teamcity-reporter": "~0.9.0",
     "react-test-renderer": "~16.14.0",
     "ts-jest": "~28.0.7",
+    "webpack-merge": "~5.8.0",
     "xhr-mock": "~2.5.1"
   },
   "peerDependencies": {

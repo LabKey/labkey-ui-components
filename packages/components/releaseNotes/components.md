@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD October 2022
+### version 2.232.0
+*Released*: 10 October 2022
 * Components package update to split out `entities` components as separate entry point (subpackage)
   * move SampleTypeBasePage.tsx from LKSM to be used in both apps as a test case
   * create /src/entities dir and move components there that are to be included in /src/entities/index.ts

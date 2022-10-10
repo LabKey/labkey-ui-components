@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version TBD
-*Released*: TBD
+### version 6.3.0
+*Released*: 10 October 2022
 * Revert changes for build packages as ES Modules
 * webpack updates for @labkey/components `entities` subpackage
   * add `@labkey/components/entities` alias for `npm run start-link`

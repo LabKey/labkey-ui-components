@@ -9,6 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * add components package.config.js which extends build/package.config.js using webpack-merge
   * revert package build as ES Modules
 
+### version 2.231.0
+*Released*: 9 October 2022
+* Add File/Attachment link behavior option to domain designer
+
 ### version 2.230.1
 *Released*: 6 October 2022
 * Add EditorWithoutDelete role to `HOSTED_APPLICATION_SECURITY_ROLES`

@@ -33,6 +33,7 @@ export const DOMAIN_FIELD_LOOKUP_CONTAINER = 'lookupContainer';
 export const DOMAIN_FIELD_LOOKUP_QUERY = 'lookupQueryValue';
 export const DOMAIN_FIELD_LOOKUP_SCHEMA = 'lookupSchema';
 export const DOMAIN_FIELD_FORMAT = 'format';
+export const DOMAIN_FIELD_FILE_DISPLAY = 'format';
 export const DOMAIN_FIELD_DEFAULT_SCALE = 'defaultScale';
 export const DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING = 'excludeFromShifting';
 export const DOMAIN_FIELD_MEASURE = 'measure';
@@ -105,6 +106,10 @@ export const SEVERITY_LEVEL_WARN = 'Warning';
 // Default scale types
 export const DEFAULT_SCALE_LINEAR = 'LINEAR';
 export const DEFAULT_SCALE_LOG = 'LOG';
+
+// Default scale types
+export const FILE_DISPLAY_INLINE = 'inline';
+export const FILE_DISPLAY_ATTACHMENT = 'attachment';
 
 export const EXPAND_TRANSITION = 300;
 export const EXPAND_TRANSITION_FAST = 0;

@@ -56,7 +56,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
     if (config.dataTypeFilter && fieldDataType && !config.dataTypeFilter(fieldDataType)) return null;
 
     return (
-        <div>
+        <div className="margin-bottom">
             <Row>
                 <Col xs={12}>
                     <SectionHeading

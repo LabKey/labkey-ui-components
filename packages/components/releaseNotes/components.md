@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD October 2022
 * App Sample Type Consistency
   * Refactor SampleTypePage from apps to share via entities subpackage
+  * Refactor SampleNav from apps to share via entities subpackage
 
 ### version 2.232.0
 *Released*: 10 October 2022

@@ -1,5 +1,5 @@
 import { PICKLIST_SAMPLES_FILTER } from './models';
-import { getSampleTypes, getOriginalParentsFromLineage } from './actions';
+import { getSampleTypes, getOriginalParentsFromLineage, loadSampleTypes } from './actions';
 import {
     getSampleWizardURL,
     filterSampleRowsForOperation,
@@ -46,6 +46,7 @@ import { PicklistSubNav } from './PicklistSubnav';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
 import { SampleTypePage } from './SampleTypePage';
+import { SampleTypeDetailsNav, SampleIndexNav } from './SampleNav';
 
 export {
     PICKLIST_SAMPLES_FILTER,
@@ -59,6 +60,7 @@ export {
     getSampleTypes,
     getSampleWizardURL,
     isFindByIdsSchema,
+    loadSampleTypes,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
     EntityCrossProjectSelectionConfirmModal,
@@ -84,10 +86,12 @@ export {
     SampleCreationTypeModal,
     SampleDetailEditing,
     SampleFinderSection,
+    SampleIndexNav,
     SampleLineageGraph,
     SampleSetDeleteModal,
     SampleSetSummary,
     SampleTimelinePageBase,
+    SampleTypeDetailsNav,
     SampleTypePage,
     SampleTypeBasePage,
     SampleTypeInsightsPanel,

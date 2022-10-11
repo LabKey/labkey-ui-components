@@ -107,7 +107,7 @@ export function userCanReadRegistry(user: User): boolean {
     return userCanReadDataClasses(user);
 }
 
-function userCanReadDataClasses(user: User): boolean {
+export function userCanReadDataClasses(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.ReadDataClass]);
 }
 

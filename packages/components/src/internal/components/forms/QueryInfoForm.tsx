@@ -50,6 +50,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     maxCount?: number;
     onCancel?: () => void;
     onFormChange?: () => void;
+    onFormChangeWithData?: (formData?: any) => void; // allow passing of full form data, compare with onFormChange
     onHide?: () => void;
     onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
@@ -61,6 +62,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     submitForEditText?: string;
     submitText?: string;
     title?: string;
+    hideButtons?: boolean;
 }
 
 interface State {
@@ -76,6 +78,8 @@ interface State {
 }
 
 export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
+    formRef: React.RefObject<Formsy>;
+
     static defaultProps: Partial<QueryInfoFormProps> = {
         canSubmitForEdit: true,
         canSubmitNotDirty: true,
@@ -92,6 +96,8 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
 
     constructor(props: QueryInfoFormProps) {
         super(props);
+
+        this.formRef = React.createRef();
 
         this.state = {
             show: true,
@@ -119,7 +125,17 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
     };
 
     handleChange = (): void => {
-        this.props.onFormChange?.();
+        const { onFormChange, onFormChangeWithData } = this.props;
+
+        onFormChange?.();
+
+        if (onFormChangeWithData) {
+            const row = this.formRef?.['current']?.['getModel']?.();
+            if (row) {
+                const updatedRow = this.getUpdatedFields(row, ['numItems', 'creationType']);
+                onFormChangeWithData(updatedRow);
+            }
+        }
 
         if (!this.state.isDirty) {
             this.setState({ isDirty: true });
@@ -254,9 +270,13 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             onSubmitForEdit,
             pluralNoun,
             singularNoun,
+            hideButtons
         } = this.props;
 
         const { count, canSubmit, fieldEnabledCount, isSubmitting, isSubmitted, submitForEdit, isDirty } = this.state;
+
+        if (hideButtons)
+            return null;
 
         const inProgressText = isSubmitted ? isSubmittedText : isSubmitting ? isSubmittingText : undefined;
         const suffix = count > 1 ? pluralNoun : singularNoun;
@@ -372,6 +392,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                         onValid={this.enableSubmitButton}
                         onChange={this.handleChange}
                         onInvalid={this.disableSubmitButton}
+                        ref={this.formRef}
                     >
                         <QueryInfoQuantity
                             creationTypeOptions={creationTypeOptions}

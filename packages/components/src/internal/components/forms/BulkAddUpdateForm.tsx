@@ -6,15 +6,17 @@ import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
 import { EditorModel } from '../../models';
 
 import { QueryInfoForm, QueryInfoFormProps } from './QueryInfoForm';
+import {Filter} from "@labkey/api";
 
-interface Props extends Omit<QueryInfoFormProps, 'fieldValues'> {
+interface BulkAddUpdateFormProps extends Omit<QueryInfoFormProps, 'fieldValues'> {
     data: Map<any, Map<string, any>>;
     dataKeys: List<any>;
     editorModel: EditorModel;
     selectedRowIndexes: List<number>;
+    queryFilters?: {[key: string]: List<Filter.IFilter>},
 }
 
-export const BulkAddUpdateForm: FC<Props> = props => {
+export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
     const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, ...queryInfoFormProps } = props;
     const {
         pluralNoun,
@@ -38,6 +40,7 @@ export const BulkAddUpdateForm: FC<Props> = props => {
             queryInfo={queryInfo.getInsertQueryInfo()}
             submitForEditText={submitForEditText}
             title={title}
+            hideButtons={!queryInfoFormProps.asModal}
         />
     );
 };

@@ -16,7 +16,7 @@
 import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
-import { Query, Utils } from '@labkey/api';
+import {Filter, Query, Utils} from '@labkey/api';
 
 import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
 
@@ -59,6 +59,7 @@ export interface QueryFormInputsProps {
     renderFileInputs?: boolean;
     showLabelAsterisk?: boolean; // only used if checkRequiredFields is false, to show * for fields that are originally required
     showQuerySelectPreviewOptions?: boolean;
+    queryFilters?: {[key: string] : List<Filter.IFilter>};
 }
 
 interface State {
@@ -167,6 +168,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             renderFieldLabel,
             showQuerySelectPreviewOptions,
             onAdditionalFormDataChange,
+            queryFilters
         } = this.props;
 
         const filter = columnFilter ?? insertColumnFilter;
@@ -261,6 +263,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         showLabel
                                         value={value}
                                         valueColumn={col.lookup.keyColumn}
+                                        queryFilters={queryFilters?.[col.fieldKey]}
                                     />
                                 </React.Fragment>
                             );

@@ -45,6 +45,7 @@ import { PicklistOverview } from './PicklistOverview';
 import { PicklistSubNav } from './PicklistSubnav';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
+import { SampleTypePage } from './SampleTypePage';
 
 export {
     PICKLIST_SAMPLES_FILTER,
@@ -87,6 +88,7 @@ export {
     SampleSetDeleteModal,
     SampleSetSummary,
     SampleTimelinePageBase,
+    SampleTypePage,
     SampleTypeBasePage,
     SampleTypeInsightsPanel,
     SampleTypeTemplateDownloadRenderer,

@@ -33,7 +33,7 @@ export class FileColumnRenderer extends PureComponent<Props> {
         const { data } = this.props;
         const url = data?.get('url');
         if (url) {
-            downloadAttachment(url, true, attachment.name);
+            downloadAttachment(url, false, attachment.name);
         }
     };
 

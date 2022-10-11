@@ -5,7 +5,7 @@ import { createMemoryHistory, InjectedRouter, Route, Router } from 'react-router
 
 import { sleep } from '../../testHelpers';
 
-import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../../test/data/constants';
+import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../productFixtures';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 import { LoadingState } from '../../../public/LoadingState';

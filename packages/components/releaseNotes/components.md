@@ -6,6 +6,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `GridPanel` to set `calcWidths` only when room is needed for extra icons
 * Update `QueryConfig` to include an optional `filterArray` property that can be passed through to `QueryModel`
 
+### version 2.232.0
+*Released*: 10 October 2022
+* Components package update to split out `entities` components as separate entry point (subpackage)
+  * move SampleTypeBasePage.tsx from LKSM to be used in both apps as a test case
+  * create /src/entities dir and move components there that are to be included in /src/entities/index.ts
+  * add components package.config.js which extends build/package.config.js using webpack-merge
+  * revert package build as ES Modules
+
+### version 2.231.0
+*Released*: 9 October 2022
+* Add File/Attachment link behavior option to domain designer
+
 ### version 2.230.1
 *Released*: 6 October 2022
 * Add EditorWithoutDelete role to `HOSTED_APPLICATION_SECURITY_ROLES`

@@ -69,15 +69,12 @@ export const SampleTypeIndexNav: FC<WithRouterProps> = memo(location => {
 
     useEffect(() => {
         (async () => {
-            const includeMedia = isMediaEnabled(moduleContext);
-            const allSampleTypes = await loadSampleTypes(includeMedia);
+            const allSampleTypes = await loadSampleTypes(
+                false /* don't include media here since it is showing only in the sample type landing pages */
+            );
             const tabs_ = allSampleTypes
-                .filter(qi => !qi.isMedia)
                 .sort(naturalSortByProperty('title'))
-                .map(queryInfo => ({
-                    text: queryInfo.title,
-                    url: AppURL.create(SAMPLES_KEY, queryInfo.name),
-                }));
+                .map(queryInfo => ({ text: queryInfo.title, url: AppURL.create(SAMPLES_KEY, queryInfo.name) }));
             setTabs(List(tabs_));
         })();
     }, [location, moduleContext]);

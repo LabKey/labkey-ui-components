@@ -25,7 +25,7 @@ import { SubNav } from '../internal/components/navigation/SubNav';
 
 import { loadSampleTypes } from './actions';
 
-export const SampleTypeDetailsNav: FC<WithRouterProps> = memo(({ params }) => {
+export const SampleNav: FC<WithRouterProps> = memo(({ params }) => {
     const { id, sampleSet } = params;
     const [noun, setNoun] = useState<ITab>();
     const { user } = useServerContext();
@@ -62,7 +62,7 @@ export const SampleTypeDetailsNav: FC<WithRouterProps> = memo(({ params }) => {
     return <SubNav noun={noun} tabs={tabs} />;
 });
 
-export const SampleIndexNav: FC<WithRouterProps> = memo(location => {
+export const SampleTypeNav: FC<WithRouterProps> = memo(location => {
     const [tabs, setTabs] = useState<List<ITab>>(() => List());
     const noun = useMemo(() => ({ text: 'Samples', url: AppURL.create(SAMPLES_KEY) }), []);
     const { moduleContext } = useServerContext();

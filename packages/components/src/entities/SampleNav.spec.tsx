@@ -14,13 +14,13 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from '../internal/productFixtures';
 
-import { SampleTypeDetailsNav } from './SampleNav';
+import { SampleNav } from './SampleNav';
 
 beforeAll(() => {
     initQueryGridState();
 });
 
-describe('SampleDetailsNavImpl', () => {
+describe('SampleNav', () => {
     function validateTabText(wrapper: ReactWrapper, showLineage = true, showAssay = true, showWorkflow = true) {
         const subNav = wrapper.find(SubNav);
         const tabs = subNav.prop('tabs').toJS();
@@ -53,7 +53,7 @@ describe('SampleDetailsNavImpl', () => {
     test('reader', () => {
         const wrapper = mountWithServerContext(
             <AppContextProvider initialContext={{}}>
-                <SampleTypeDetailsNav
+                <SampleNav
                     params={{ sampleSet: 'test', id: '123' }}
                     location={undefined}
                     router={undefined}
@@ -68,7 +68,7 @@ describe('SampleDetailsNavImpl', () => {
     test('storage editor', () => {
         const wrapper = mountWithServerContext(
             <AppContextProvider initialContext={{}}>
-                <SampleTypeDetailsNav
+                <SampleNav
                     params={{ sampleSet: 'test', id: '123' }}
                     location={undefined}
                     router={undefined}
@@ -84,7 +84,7 @@ describe('SampleDetailsNavImpl', () => {
         LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
         const wrapper = mountWithServerContext(
             <AppContextProvider initialContext={{}}>
-                <SampleTypeDetailsNav
+                <SampleNav
                     params={{ sampleSet: 'test', id: '123' }}
                     location={undefined}
                     router={undefined}
@@ -100,7 +100,7 @@ describe('SampleDetailsNavImpl', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
         const wrapper = mountWithServerContext(
             <AppContextProvider initialContext={{}}>
-                <SampleTypeDetailsNav
+                <SampleNav
                     params={{ sampleSet: 'test', id: '123' }}
                     location={undefined}
                     router={undefined}
@@ -116,7 +116,7 @@ describe('SampleDetailsNavImpl', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
         const wrapper = mountWithServerContext(
             <AppContextProvider initialContext={{}}>
-                <SampleTypeDetailsNav
+                <SampleNav
                     params={{ sampleSet: 'test', id: '123' }}
                     location={undefined}
                     router={undefined}
@@ -132,7 +132,7 @@ describe('SampleDetailsNavImpl', () => {
         LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
         const wrapper = mountWithServerContext(
             <AppContextProvider initialContext={{}}>
-                <SampleTypeDetailsNav
+                <SampleNav
                     params={{ sampleSet: 'test', id: '123' }}
                     location={undefined}
                     router={undefined}

@@ -32,6 +32,7 @@ import {
     getStorageSectionConfig,
     hasPremiumModule,
     isAssayEnabled,
+    isAssayQCEnabled,
     isAssayRequestsEnabled,
     isBiologicsEnabled,
     isCommunityDistribution,
@@ -432,6 +433,17 @@ describe('utils', () => {
                 },
             })
         ).toBeTruthy(); // LKS Professional
+    });
+
+    test('isAssayQCEnabled', () => {
+        expect(isAssayQCEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(isAssayQCEnabled({ api: { moduleNames: ['assay'] } })).toBeFalsy();
+        expect(
+            isAssayQCEnabled({ api: { moduleNames: [] }, core: { productFeatures: [ProductFeature.AssayQC] } })
+        ).toBeFalsy();
+        expect(
+            isAssayQCEnabled({ api: { moduleNames: ['assay'] }, core: { productFeatures: [ProductFeature.AssayQC] } })
+        ).toBeTruthy();
     });
 
     test('isAssayRequestsEnabled', () => {

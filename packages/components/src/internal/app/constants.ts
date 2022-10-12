@@ -93,6 +93,7 @@ export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot
 // The enum values here should align with the ProductFeature.java enum values (some not currently used but included for completeness)
 export enum ProductFeature {
     Assay = 'Assay',
+    AssayQC = 'AssayQC',
     ELN = 'ELN',
     FreezerManagement = 'FreezerManagement',
     Media = 'Media',

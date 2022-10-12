@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * App Sample Type Consistency
   * Refactor SampleTypePage from apps to share via entities subpackage
   * Refactor SampleNav from apps to share via entities subpackage
+* Issue 45792: When dragging and dropping columns from grid headers, menu stays open and in the original location
 
 ### version 2.232.0
 *Released*: 10 October 2022

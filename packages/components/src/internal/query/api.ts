@@ -1031,7 +1031,7 @@ export function loadQueries(schemaQueries: SchemaQuery[]): Promise<QueryInfo[]> 
  * found on the "Name" column. The sample types themselves are on the "samples" schema. Here is what the parameters
  * would look like to load sample type QueryInfo's for each row in the "exp.SampleSets" table.
  *
- * targetSchemaQuery: exp.SampleSets
+ * tableSchemaQuery: exp.SampleSets
  * tableFieldKey: Name
  * targetSchemaName: samples
  *

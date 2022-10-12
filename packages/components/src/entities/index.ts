@@ -18,7 +18,6 @@ import { SampleAssayDetail } from './SampleAssayDetail';
 import { SampleDetailEditing } from './SampleDetailEditing';
 import { SampleLineageGraph } from './SampleLineageGraph';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
-import { SampleSetSummary } from './SampleSetSummary';
 import { SamplesDeriveButtonBase } from './SamplesDeriveButtonBase';
 import { SamplesEditButton } from './SamplesEditButton';
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
@@ -89,7 +88,6 @@ export {
     SampleIndexNav,
     SampleLineageGraph,
     SampleSetDeleteModal,
-    SampleSetSummary,
     SampleTimelinePageBase,
     SampleTypeIndexNav,
     SampleTypePage,

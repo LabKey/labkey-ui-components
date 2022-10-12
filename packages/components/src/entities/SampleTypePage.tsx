@@ -14,7 +14,7 @@ import { RequiresPermission } from '../internal/components/base/Permissions';
 
 import { SampleTypeEmptyAlert } from '../internal/components/samples/SampleEmptyAlert';
 
-import { SampleSetSummary } from './SampleSetSummary';
+import { SampleTypeSummary } from './SampleTypeSummary';
 
 interface Props {
     buttons: ReactNode;
@@ -48,7 +48,7 @@ export const SampleTypePage: FC<Props> = memo(props => {
                 }
             >
                 {hasSampleTypes && (
-                    <SampleSetSummary excludedSampleSets={excludedSampleTypes} navigate={navigate} user={user} />
+                    <SampleTypeSummary excludedSampleSets={excludedSampleTypes} navigate={navigate} user={user} />
                 )}
                 {!hasSampleTypes && <SampleTypeEmptyAlert user={user} />}
             </Section>

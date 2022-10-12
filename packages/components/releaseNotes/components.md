@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD October 2022
+* Issue 46472: Assay field editor update to remove check for spaces in transform script path when "Save Script Data for Debugging" is checked
+
 ### version 2.232.0
 *Released*: 10 October 2022
 * Components package update to split out `entities` components as separate entry point (subpackage)

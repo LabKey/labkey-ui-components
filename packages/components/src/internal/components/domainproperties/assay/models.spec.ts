@@ -237,7 +237,6 @@ describe('AssayProtocolModel', () => {
         expect(
             AssayProtocolModel.create({
                 ...base,
-                allowSpacesInPath: true,
                 saveScriptFiles: false,
                 protocolTransformScripts: ['foo.pl', 'bar.R'],
             }).validateTransformScripts()
@@ -245,7 +244,6 @@ describe('AssayProtocolModel', () => {
         expect(
             AssayProtocolModel.create({
                 ...base,
-                allowSpacesInPath: true,
                 saveScriptFiles: true,
                 protocolTransformScripts: ['foo.pl', 'bar.R'],
             }).validateTransformScripts()
@@ -253,7 +251,6 @@ describe('AssayProtocolModel', () => {
         expect(
             AssayProtocolModel.create({
                 ...base,
-                allowSpacesInPath: true,
                 saveScriptFiles: false,
                 protocolTransformScripts: ['foo.pl', '/path with space/bar.R'],
             }).validateTransformScripts()
@@ -261,42 +258,9 @@ describe('AssayProtocolModel', () => {
         expect(
             AssayProtocolModel.create({
                 ...base,
-                allowSpacesInPath: true,
                 saveScriptFiles: true,
                 protocolTransformScripts: ['foo.pl', '/path with space/bar.R'],
             }).validateTransformScripts()
         ).toBe(undefined);
-        expect(
-            AssayProtocolModel.create({
-                ...base,
-                allowSpacesInPath: false,
-                saveScriptFiles: false,
-                protocolTransformScripts: ['foo.pl', 'bar.R'],
-            }).validateTransformScripts()
-        ).toBe(undefined);
-        expect(
-            AssayProtocolModel.create({
-                ...base,
-                allowSpacesInPath: false,
-                saveScriptFiles: true,
-                protocolTransformScripts: ['foo.pl', 'bar.R'],
-            }).validateTransformScripts()
-        ).toBe(undefined);
-        expect(
-            AssayProtocolModel.create({
-                ...base,
-                allowSpacesInPath: false,
-                saveScriptFiles: false,
-                protocolTransformScripts: ['foo.pl', '/path with space/bar.R'],
-            }).validateTransformScripts()
-        ).toBe(undefined);
-        expect(
-            AssayProtocolModel.create({
-                ...base,
-                allowSpacesInPath: false,
-                saveScriptFiles: true,
-                protocolTransformScripts: ['foo.pl', '/path with space/bar.R'],
-            }).validateTransformScripts()
-        ).toContain('should not contain spaces');
     });
 });

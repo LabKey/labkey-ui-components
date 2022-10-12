@@ -25,20 +25,20 @@ import { SubNav } from '../internal/components/navigation/SubNav';
 
 import { loadSampleTypes } from './actions';
 
-export const SampleNav: FC<WithRouterProps> = memo(({ params }) => {
-    const { id, sampleSet } = params;
+export const SampleIndexNav: FC<WithRouterProps> = memo(({ params }) => {
+    const { id, sampleType } = params;
     const [noun, setNoun] = useState<ITab>();
     const { user } = useServerContext();
 
     useEffect(() => {
         (async () => {
-            const queryInfo = await getQueryDetails({ schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA, queryName: sampleSet });
+            const queryInfo = await getQueryDetails({ schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA, queryName: sampleType });
             setNoun({
                 text: queryInfo?.title ?? '',
-                url: AppURL.create(SAMPLES_KEY, sampleSet),
+                url: AppURL.create(SAMPLES_KEY, sampleType),
             });
         })();
-    }, [sampleSet]);
+    }, [sampleType]);
 
     const tabText = ['Overview'];
     if (userCanReadDataClasses(user)) tabText.push('Lineage');
@@ -50,19 +50,19 @@ export const SampleNav: FC<WithRouterProps> = memo(({ params }) => {
     const tabs = useMemo(
         () =>
             tabText.reduce((tabs, text) => {
-                const parts = [SAMPLES_KEY, sampleSet, id];
+                const parts = [SAMPLES_KEY, sampleType, id];
                 if (text !== 'Overview') {
                     parts.push(text.toLowerCase());
                 }
                 return tabs.push({ text, url: AppURL.create(...parts) });
             }, List<ITab>()),
-        [id, sampleSet]
+        [id, sampleType]
     );
 
     return <SubNav noun={noun} tabs={tabs} />;
 });
 
-export const SampleTypeNav: FC<WithRouterProps> = memo(location => {
+export const SampleTypeIndexNav: FC<WithRouterProps> = memo(location => {
     const [tabs, setTabs] = useState<List<ITab>>(() => List());
     const noun = useMemo(() => ({ text: 'Samples', url: AppURL.create(SAMPLES_KEY) }), []);
     const { moduleContext } = useServerContext();

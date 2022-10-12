@@ -46,7 +46,7 @@ import { PicklistSubNav } from './PicklistSubnav';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
 import { SampleTypePage } from './SampleTypePage';
-import { SampleNav, SampleTypeNav } from './SampleNav';
+import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
 
 export {
     PICKLIST_SAMPLES_FILTER,
@@ -86,12 +86,12 @@ export {
     SampleCreationTypeModal,
     SampleDetailEditing,
     SampleFinderSection,
+    SampleIndexNav,
     SampleLineageGraph,
     SampleSetDeleteModal,
     SampleSetSummary,
     SampleTimelinePageBase,
-    SampleNav,
-    SampleTypeNav,
+    SampleTypeIndexNav,
     SampleTypePage,
     SampleTypeBasePage,
     SampleTypeInsightsPanel,

@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import { Filter, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
 import { loadQueriesFromTable, selectRowsDeprecated } from '../internal/query/api';
 import { SCHEMAS } from '../internal/schemas';
@@ -8,6 +8,8 @@ import { EntityChoice, EntityDataType, IEntityTypeOption } from '../internal/com
 import { getParentTypeDataForLineage } from '../internal/components/samples/actions';
 import { getInitialParentChoices } from '../internal/components/entities/utils';
 import { QueryInfo } from '../public/QueryInfo';
+
+import { filterMediaSampleTypes } from './utils';
 
 // TODO: this file is temporary as we move things into an @labkey/components/entities subpackage. Instead of adding
 // anything to this file, we should create an API wrapper to be used for any new actions in this subpackage.
@@ -18,7 +20,7 @@ export function getSampleTypes(includeMedia?: boolean): Promise<Array<{ id: numb
             schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
             queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
             sort: 'Name',
-            filterArray: includeMedia ? undefined : [Filter.create('Category', 'media', Filter.Types.NEQ_OR_NULL)],
+            filterArray: filterMediaSampleTypes(includeMedia),
             containerFilter: Query.containerFilter.currentPlusProjectAndShared,
         })
             .then(response => {

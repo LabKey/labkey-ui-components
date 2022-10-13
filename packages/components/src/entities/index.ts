@@ -2,6 +2,7 @@ import { PICKLIST_SAMPLES_FILTER } from './models';
 import { getSampleTypes, getOriginalParentsFromLineage, loadSampleTypes } from './actions';
 import {
     getSampleWizardURL,
+    filterMediaSampleTypes,
     filterSampleRowsForOperation,
     getSampleSetMenuItem,
     isFindByIdsSchema,
@@ -51,6 +52,7 @@ export {
     PICKLIST_SAMPLES_FILTER,
     createEntityParentKey,
     downloadSampleTypeTemplate,
+    filterMediaSampleTypes,
     filterSampleRowsForOperation,
     getOriginalParentsFromLineage,
     getSampleSetMenuItem,

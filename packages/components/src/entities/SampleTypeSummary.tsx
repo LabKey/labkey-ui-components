@@ -24,13 +24,13 @@ const SAMPLE_QUERY_CONFIG = {
     containerFilter: Query.containerFilter.currentPlusProjectAndShared,
 };
 
-interface SampleSetSummaryProps {
+interface Props {
     excludedSampleSets?: string[];
     navigate: (url: string | AppURL) => any;
     user: User;
 }
 
-export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
+export const SampleTypeSummary: FC<Props> = memo(props => {
     const { navigate, user, excludedSampleSets } = props;
     const [selectedView, setSelectedView] = useState(SelectView.Grid);
 

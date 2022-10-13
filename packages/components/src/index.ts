@@ -192,6 +192,8 @@ import {
     selectDistinctRows,
     selectRowsDeprecated,
     updateRows,
+    loadQueries,
+    loadQueriesFromTable,
 } from './internal/query/api';
 import { registerFilterType } from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
@@ -630,6 +632,7 @@ import {
     userCanReadAssays,
     userCanReadMedia,
     userCanReadNotebooks,
+    userCanReadDataClasses,
     userCanReadRegistry,
     userCanReadSources,
 } from './internal/app/utils';
@@ -767,6 +770,7 @@ const App = {
     userCanReadAssays,
     userCanReadNotebooks,
     userCanReadMedia,
+    userCanReadDataClasses,
     userCanReadRegistry,
     userCanReadSources,
     userCanDeletePublicPicklists,
@@ -874,6 +878,8 @@ export {
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
     registerFilterType,
+    loadQueries,
+    loadQueriesFromTable,
     // editable grid related items
     loadEditorModelData,
     MAX_EDITABLE_GRID_ROWS,

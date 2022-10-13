@@ -103,5 +103,5 @@ export const loadSampleTypes = (includeMedia: boolean): Promise<QueryInfo[]> =>
         'Name',
         SCHEMAS.SAMPLE_SETS.SCHEMA,
         Query.containerFilter.currentPlusProjectAndShared,
-        includeMedia ? undefined : [Filter.create('category', 'media', Filter.Types.NOT_EQUAL_OR_MISSING)]
+        filterMediaSampleTypes(includeMedia)
     );

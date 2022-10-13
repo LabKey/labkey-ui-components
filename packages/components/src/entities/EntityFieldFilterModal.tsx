@@ -83,6 +83,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const onEntityClick = useCallback(
         async (selectedQueryName: string) => {
             try {
+                console.log(selectedQueryName);
                 let schemaName = entityDataType.instanceSchemaName;
                 let queryName = selectedQueryName;
                 if (!schemaName && entityDataType.getInstanceSchemaQuery) {
@@ -237,6 +238,12 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
         }.`;
     }, [entityDataType]);
 
+    const activeQueryLabel = useMemo(() => {
+        if (!entityQueries || !activeQuery)
+            return null;
+        return entityQueries.find(query => query.value.toLowerCase() === activeQuery.toLowerCase())?.label;
+    }, [entityQueries, activeQuery]);
+
     return (
         <Modal show bsSize="lg" onHide={closeModal}>
             <Modal.Header closeButton>
@@ -291,7 +298,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
                         queryInfo={activeQueryInfo}
                         skipDefaultViewCheck={skipDefaultViewCheck}
                         validFilterField={isValidFilterFieldExcludeLookups}
-                        hasNotInQueryFilterLabel={`Find Samples without ${activeQuery} results`}
+                        hasNotInQueryFilterLabel={`Find Samples without ${activeQueryLabel} results`}
                     />
                 </Row>
             </Modal.Body>

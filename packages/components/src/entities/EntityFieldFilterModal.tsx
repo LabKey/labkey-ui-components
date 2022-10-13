@@ -239,7 +239,7 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
 
     const activeQueryLabel = useMemo(() => {
         if (!entityQueries || !activeQuery) return null;
-        return entityQueries.find(query => query.value.toLowerCase() === activeQuery.toLowerCase())?.label;
+        return entityQueries.find(query => query?.value?.toLowerCase() === activeQuery.toLowerCase())?.label;
     }, [entityQueries, activeQuery]);
 
     return (

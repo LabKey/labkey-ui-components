@@ -23,10 +23,10 @@ import {
     IEntityTypeDetails,
     IEntityTypeOption,
 } from '../entities/models';
-import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
+import {deleteEntityType, getEntityTypeOptions, getSelectedItemSamples} from '../entities/actions';
 
-import { Location } from '../../util/URL';
-import { createQueryConfigFilteredBySample, getSelectedData, getSelection } from '../../actions';
+import {Location} from '../../util/URL';
+import {createQueryConfigFilteredBySample, getSelectedData, getSelection, getSnapshotSelections} from '../../actions';
 
 import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 
@@ -55,12 +55,7 @@ import { TimelineEventModel } from '../auditlog/models';
 
 import { ViewInfo } from '../../ViewInfo';
 
-import {
-    IS_ALIQUOT_COL,
-    SAMPLE_ID_FIND_FIELD,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
-    UNIQUE_ID_FIND_FIELD,
-} from './constants';
+import { IS_ALIQUOT_COL,SAMPLE_INVENTORY_ITEM_SELECTION_KEY, SAMPLE_STATUS_REQUIRED_COLUMNS } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 
 export function initSampleSetSelects(
@@ -232,6 +227,48 @@ export function loadSelectedSamples(location: Location, sampleColumn: QueryColum
 
         return OrderedMap();
     });
+}
+
+function getLocationQueryVal(location: Location, key: string): string {
+    if (!location.query) {
+        return undefined;
+    }
+
+    const val: string | string[] = location.query[key];
+    return Array.isArray(val) ? val[0] : val;
+}
+
+/**
+ * Get an array of sample RowIds from a URL selectionKey for the following scenarios:
+ *  - sample grid
+ *  - picklist
+ *  - assay
+ *  - storage items
+ */
+export async function getSelectedSampleIdsFromSelectionKey(location: Location): Promise<number[]> {
+    const key = getLocationQueryVal(location, 'selectionKey');
+    let sampleIds;
+
+    if (getLocationQueryVal(location, 'selectionKeyType') === SAMPLE_INVENTORY_ITEM_SELECTION_KEY) {
+        const response = await getSnapshotSelections(key);
+        sampleIds = await getSelectedItemSamples(response.selected);
+    } else if (getLocationQueryVal(location, 'isAssay')) {
+        const schemaName = getLocationQueryVal(location, 'assayProtocol');
+        const sampleFieldKey = getLocationQueryVal(location, 'sampleFieldKey');
+        const queryName = SCHEMAS.ASSAY_TABLES.RESULTS_QUERYNAME;
+        const response = await getSelection(location, schemaName, queryName);
+        sampleIds = await getFieldLookupFromSelection(schemaName, queryName, response?.selected, sampleFieldKey);
+    } else {
+        const picklistName = getLocationQueryVal(location, 'picklistName');
+        const response = await getSelection(location, SCHEMAS.PICKLIST_TABLES.SCHEMA, picklistName);
+        if (picklistName) {
+            sampleIds = await getSelectedPicklistSamples(picklistName, response.selected, false, undefined);
+        } else {
+            sampleIds = response.selected.map(Number);
+        }
+    }
+
+    return sampleIds;
 }
 
 export function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {

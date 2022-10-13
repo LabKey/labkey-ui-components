@@ -169,7 +169,6 @@ import {
     getSelected,
     getSelectedData,
     getSelection,
-    getSnapshotSelections,
     incrementClientSideMetricCount,
     replaceSelected,
     setSelected,
@@ -323,6 +322,7 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectionLineageData,
+    getSelectedSampleIdsFromSelectionKey,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 
@@ -430,7 +430,6 @@ import {
     getDataOperationConfirmationData,
     getOperationConfirmationData,
     getSampleOperationConfirmationData,
-    getSelectedItemSamples,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -510,6 +509,7 @@ import { ValidatorModal } from './internal/components/domainproperties/validatio
 import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
+import { AssayResultsForSamples } from './internal/components/assay/AssayResultsForSamples';
 import {
     makeQueryInfo,
     mountWithAppServerContext,
@@ -854,7 +854,6 @@ export {
     createGridModelId,
     clearSelected,
     // grid functions
-    getSnapshotSelections,
     getSelected,
     getSelectedData,
     getSelection,
@@ -1032,9 +1031,9 @@ export {
     getSampleSet,
     getSampleTypeDetails,
     getFieldLookupFromSelection,
-    getSelectedItemSamples,
     getSelectionLineageData,
     getLineageEditorUpdateColumns,
+    getSelectedSampleIdsFromSelectionKey,
     EntityInsertPanel,
     SampleTypeDataType,
     DataClassDataType,
@@ -1117,6 +1116,7 @@ export {
     fetchAllAssays,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     GENERAL_ASSAY_PROVIDER_NAME,
+    AssayResultsForSamples,
     // heatmap
     HeatMap,
     addDateRangeFilter,

@@ -33,6 +33,7 @@ const EXP_SCHEMA = 'exp';
 export const EXP_TABLES = {
     ASSAY_HEAT_MAP: SchemaQuery.create(EXP_SCHEMA, 'AssaysHeatMap'),
     ASSAY_RUNS: SchemaQuery.create(EXP_SCHEMA, 'AssayRuns'),
+    ASSAY_RUN_COUNT_PER_SAMPLE: SchemaQuery.create(EXP_SCHEMA, 'AssayRunCountPerSample'),
     DATA: SchemaQuery.create(EXP_SCHEMA, 'Data'),
     DATA_CLASSES: SchemaQuery.create(EXP_SCHEMA, 'DataClasses'),
     DATA_CLASS_CATEGORY_TYPE: SchemaQuery.create(EXP_SCHEMA, 'DataClassCategoryType'),

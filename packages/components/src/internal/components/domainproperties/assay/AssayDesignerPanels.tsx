@@ -19,7 +19,7 @@ export interface AssayDesignerPanelsProps {
     appIsValidMsg?: (model: AssayProtocolModel) => string;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: AssayProtocolModel) => void;
-    containerTop?: number;
+    containerTop?: number; // This sets the top of the sticky header, default is 0
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     hideEmptyBatchDomain?: boolean;
     initModel: AssayProtocolModel;

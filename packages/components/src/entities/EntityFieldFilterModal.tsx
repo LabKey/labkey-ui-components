@@ -83,7 +83,6 @@ export const EntityFieldFilterModal: FC<Props> = memo(props => {
     const onEntityClick = useCallback(
         async (selectedQueryName: string) => {
             try {
-                console.log(selectedQueryName);
                 let schemaName = entityDataType.instanceSchemaName;
                 let queryName = selectedQueryName;
                 if (!schemaName && entityDataType.getInstanceSchemaQuery) {

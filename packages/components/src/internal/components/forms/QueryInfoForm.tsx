@@ -43,6 +43,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     errorMessagePrefix?: string;
     footer?: ReactNode;
     header?: ReactNode;
+    hideButtons?: boolean;
     includeCountField?: boolean;
     isLoading?: boolean;
     isSubmittedText?: string;
@@ -50,9 +51,9 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     maxCount?: number;
     onCancel?: () => void;
     onFormChange?: () => void;
-    onFormChangeWithData?: (formData?: any) => void; // allow passing of full form data, compare with onFormChange
+    // allow passing of full form data, compare with onFormChange
+    onFormChangeWithData?: (formData?: any) => void;
     onHide?: () => void;
-    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSuccess?: (data: any, submitForEdit: boolean) => void;
     pluralNoun?: string;
@@ -62,7 +63,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     submitForEditText?: string;
     submitText?: string;
     title?: string;
-    hideButtons?: boolean;
+    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
 }
 
 interface State {
@@ -270,13 +271,12 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             onSubmitForEdit,
             pluralNoun,
             singularNoun,
-            hideButtons
+            hideButtons,
         } = this.props;
 
         const { count, canSubmit, fieldEnabledCount, isSubmitting, isSubmitted, submitForEdit, isDirty } = this.state;
 
-        if (hideButtons)
-            return null;
+        if (hideButtons) return null;
 
         const inProgressText = isSubmitted ? isSubmittedText : isSubmitting ? isSubmittingText : undefined;
         const suffix = count > 1 ? pluralNoun : singularNoun;

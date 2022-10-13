@@ -1,19 +1,20 @@
 import React, { FC, useMemo } from 'react';
 import { List, Map } from 'immutable';
-import {Alert} from "react-bootstrap";
+import { Alert } from 'react-bootstrap';
 
-import {Filter} from "@labkey/api";
+import { Filter } from '@labkey/api';
 
 import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
 import { EditorModel } from '../../models';
+
 import { QueryInfoForm, QueryInfoFormProps } from './QueryInfoForm';
 
 interface BulkAddUpdateFormProps extends Omit<QueryInfoFormProps, 'fieldValues'> {
     data: Map<any, Map<string, any>>;
     dataKeys: List<any>;
     editorModel: EditorModel;
+    queryFilters?: { [key: string]: List<Filter.IFilter> };
     selectedRowIndexes: List<number>;
-    queryFilters?: {[key: string]: List<Filter.IFilter>};
     warning?: string;
 }
 
@@ -46,7 +47,6 @@ export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
                 hideButtons={!queryInfoFormProps.asModal}
             />
         </>
-
     );
 };
 

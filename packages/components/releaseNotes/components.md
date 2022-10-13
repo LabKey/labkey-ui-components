@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.XX
+*Released*: XX October 2022
+* Freezer Management: Adding samples across terminal storage locations
+    * TODO
+
 ### version 2.233.1
 *Released*: 13 October 2022
 * Issue 46504: Assay name is not correct in SampleFinder's Assay filter picker

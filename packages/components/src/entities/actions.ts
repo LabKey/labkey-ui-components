@@ -1,12 +1,13 @@
 import { List, Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 
-import { selectRowsDeprecated } from '../internal/query/api';
+import { loadQueriesFromTable, selectRowsDeprecated } from '../internal/query/api';
 import { SCHEMAS } from '../internal/schemas';
 import { resolveErrorMessage } from '../internal/util/messaging';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
 import { getParentTypeDataForLineage } from '../internal/components/samples/actions';
 import { getInitialParentChoices } from '../internal/components/entities/utils';
+import { QueryInfo } from '../public/QueryInfo';
 
 // TODO: this file is temporary as we move things into an @labkey/components/entities subpackage. Instead of adding
 // anything to this file, we should create an API wrapper to be used for any new actions in this subpackage.
@@ -93,3 +94,12 @@ export const getOriginalParentsFromLineage = async (
 
     return { originalParents, parentTypeOptions };
 };
+
+export const loadSampleTypes = (includeMedia: boolean): Promise<QueryInfo[]> =>
+    loadQueriesFromTable(
+        SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+        'Name',
+        SCHEMAS.SAMPLE_SETS.SCHEMA,
+        Query.containerFilter.currentPlusProjectAndShared,
+        includeMedia ? undefined : [Filter.create('category', 'media', Filter.Types.NOT_EQUAL_OR_MISSING)]
+    );

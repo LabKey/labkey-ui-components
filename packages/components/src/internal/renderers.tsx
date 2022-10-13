@@ -244,7 +244,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
 
     return (
         <>
-            <span onClick={evt => onToggleClick(!open, evt)}>
+            <span>
                 <EditableColumnTitle
                     column={col}
                     onChange={onColumnTitleUpdate}

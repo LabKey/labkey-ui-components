@@ -1,5 +1,5 @@
 import { PICKLIST_SAMPLES_FILTER } from './models';
-import { getSampleTypes, getOriginalParentsFromLineage } from './actions';
+import { getSampleTypes, getOriginalParentsFromLineage, loadSampleTypes } from './actions';
 import {
     getSampleWizardURL,
     filterSampleRowsForOperation,
@@ -18,7 +18,6 @@ import { SampleAssayDetail } from './SampleAssayDetail';
 import { SampleDetailEditing } from './SampleDetailEditing';
 import { SampleLineageGraph } from './SampleLineageGraph';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
-import { SampleSetSummary } from './SampleSetSummary';
 import { SamplesDeriveButtonBase } from './SamplesDeriveButtonBase';
 import { SamplesEditButton } from './SamplesEditButton';
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
@@ -45,6 +44,8 @@ import { PicklistOverview } from './PicklistOverview';
 import { PicklistSubNav } from './PicklistSubnav';
 import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
+import { SampleTypePage } from './SampleTypePage';
+import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
 
 export {
     PICKLIST_SAMPLES_FILTER,
@@ -58,6 +59,7 @@ export {
     getSampleTypes,
     getSampleWizardURL,
     isFindByIdsSchema,
+    loadSampleTypes,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
     EntityCrossProjectSelectionConfirmModal,
@@ -83,10 +85,12 @@ export {
     SampleCreationTypeModal,
     SampleDetailEditing,
     SampleFinderSection,
+    SampleIndexNav,
     SampleLineageGraph,
     SampleSetDeleteModal,
-    SampleSetSummary,
     SampleTimelinePageBase,
+    SampleTypeIndexNav,
+    SampleTypePage,
     SampleTypeBasePage,
     SampleTypeInsightsPanel,
     SampleTypeTemplateDownloadRenderer,

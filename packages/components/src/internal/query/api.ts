@@ -1015,3 +1015,68 @@ export function selectDistinctRows(options: Query.SelectDistinctOptions): Promis
         });
     });
 }
+
+export function loadQueries(schemaQueries: SchemaQuery[]): Promise<QueryInfo[]> {
+    return Promise.all(
+        schemaQueries.map(sq => getQueryDetails({ schemaName: sq.getSchema(), queryName: sq.getQuery() }))
+    );
+}
+
+/**
+ * Loads a set of QueryInfo's sourced from a table (tableSchemaQuery)
+ * where the key field (tableFieldKey) specifies the query name on the specified schema (targetSchemaName).
+ *
+ * Example:
+ * The table "exp.SampleSets" contains a row per sample type defined in the container. The name of the sample type is
+ * found on the "Name" column. The sample types themselves are on the "samples" schema. Here is what the parameters
+ * would look like to load sample type QueryInfo's for each row in the "exp.SampleSets" table.
+ *
+ * tableSchemaQuery: exp.SampleSets
+ * tableFieldKey: Name
+ * targetSchemaName: samples
+ *
+ * @param tableSchemaQuery - The "meta" table containing a row per query found on the "targetSchemaName" schema.
+ * @param tableFieldKey - The fieldKey on a given row in the "tableSchemaQuery" that contains the name of the query.
+ * @param targetSchemaName - The target schemaName where the queries found on "tableFieldKey" can be found.
+ * @param containerFilter - Optional Query.ContainerFilter applied to tables request.
+ * @param filters - Optional Query filters applied to tables request.
+ */
+export async function loadQueriesFromTable(
+    tableSchemaQuery: SchemaQuery,
+    tableFieldKey: string,
+    targetSchemaName: string,
+    containerFilter?: Query.ContainerFilter,
+    filters?: Filter.IFilter[]
+): Promise<QueryInfo[]> {
+    const info = await getQueryDetails({
+        queryName: tableSchemaQuery.getQuery(),
+        schemaName: tableSchemaQuery.getSchema(),
+    });
+
+    const queryNameField = info.getColumn(tableFieldKey);
+
+    if (queryNameField) {
+        const { key, models } = await selectRowsDeprecated({
+            containerFilter,
+            columns: info
+                .getPkCols()
+                .map(col => col.fieldKey)
+                .toSet()
+                .add(queryNameField.name)
+                .join(','),
+            filterArray: filters,
+            queryName: tableSchemaQuery.getQuery(),
+            schemaName: tableSchemaQuery.getSchema(),
+            viewName: tableSchemaQuery.getView(),
+        });
+
+        const schemaQueries: SchemaQuery[] = Object.values(models[key])
+            .map(row => caseInsensitive(row, queryNameField.name)?.value)
+            .filter(queryName => queryName !== undefined)
+            .map(queryName => SchemaQuery.create(targetSchemaName, queryName));
+
+        return await loadQueries(schemaQueries);
+    }
+
+    return [];
+}

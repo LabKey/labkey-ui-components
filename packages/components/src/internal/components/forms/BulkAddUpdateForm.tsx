@@ -1,23 +1,24 @@
 import React, { FC, useMemo } from 'react';
 import { List, Map } from 'immutable';
+import {Alert} from "react-bootstrap";
+
+import {Filter} from "@labkey/api";
 
 import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
-
 import { EditorModel } from '../../models';
-
 import { QueryInfoForm, QueryInfoFormProps } from './QueryInfoForm';
-import {Filter} from "@labkey/api";
 
 interface BulkAddUpdateFormProps extends Omit<QueryInfoFormProps, 'fieldValues'> {
     data: Map<any, Map<string, any>>;
     dataKeys: List<any>;
     editorModel: EditorModel;
     selectedRowIndexes: List<number>;
-    queryFilters?: {[key: string]: List<Filter.IFilter>},
+    queryFilters?: {[key: string]: List<Filter.IFilter>};
+    warning?: string;
 }
 
 export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
-    const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, ...queryInfoFormProps } = props;
+    const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, warning, ...queryInfoFormProps } = props;
     const {
         pluralNoun,
         singularNoun,
@@ -34,14 +35,18 @@ export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
     }, [data, dataKeys, editorModel, queryInfo, selectedRowIndexes]);
 
     return (
-        <QueryInfoForm
-            {...queryInfoFormProps}
-            fieldValues={fieldValues}
-            queryInfo={queryInfo.getInsertQueryInfo()}
-            submitForEditText={submitForEditText}
-            title={title}
-            hideButtons={!queryInfoFormProps.asModal}
-        />
+        <>
+            {warning && <Alert bsStyle="warning">{warning}</Alert>}
+            <QueryInfoForm
+                {...queryInfoFormProps}
+                fieldValues={fieldValues}
+                queryInfo={queryInfo.getInsertQueryInfo()}
+                submitForEditText={submitForEditText}
+                title={title}
+                hideButtons={!queryInfoFormProps.asModal}
+            />
+        </>
+
     );
 };
 

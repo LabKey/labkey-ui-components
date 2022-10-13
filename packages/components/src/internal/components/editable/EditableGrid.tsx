@@ -63,7 +63,6 @@ import { Alert } from '../base/Alert';
 import { EDITABLE_GRID_CONTAINER_CLS } from './constants';
 import { Cell, CellActions } from './Cell';
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
-import {AssayPickerTabs} from "../assay/AssayPicker";
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -197,6 +196,7 @@ export interface BulkUpdateQueryInfoFormProps extends QueryInfoFormProps {
     excludeRowIdx?: number[], // the row ind to exclude for bulk update, row might be readonly or locked
     queryFilters?: {[key: string]: List<Filter.IFilter>},
     onClickBulkUpdate?: (selected: Set<number>) => Promise<boolean>,
+    warning?: string;
 }
 
 export interface SharedEditableGridProps {
@@ -236,6 +236,19 @@ export interface SharedEditableGridProps {
     updateColumns?: List<QueryColumn>;
     showAsTab?: boolean; // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
     activeEditTab?: EditableGridTabs;
+    primaryBtnProps?: EditableGridBtnProps;
+    cancelBtnProps?: EditableGridBtnProps;
+    tabBtnProps?: EditableGridBtnProps;
+    showBulkTabOnLoad?: boolean;
+}
+
+export interface EditableGridBtnProps {
+    cls?: string;
+    disabled?: boolean;
+    onClick?: (event?) => void;
+    caption?: string;
+    placement?: PlacementType;
+    show?: boolean;
 }
 
 export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
@@ -321,9 +334,17 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             modifyCell: this.modifyCell,
             selectCell: this.selectCell,
         };
+
+        let selectionCells = Set<number>();
+        let selectedState = GRID_CHECKBOX_OPTIONS.NONE;
+        if (props.activeEditTab === EditableGridTabs.BulkUpdate) {
+            selectionCells = Set<number>(props.dataKeys.map((v, i) => i, Set<number>()));
+            selectedState = GRID_CHECKBOX_OPTIONS.ALL;
+        }
+
         this.state = {
-            selected: Set<number>(),
-            selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+            selected: selectionCells,
+            selectedState: selectedState,
             showBulkAdd: false,
             showBulkUpdate: false,
             showMask: false,
@@ -1226,6 +1247,35 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
+    onSaveClick = () => {
+        const { primaryBtnProps } = this.props;
+        const { pendingBulkFormData } = this.state;
+
+        this.bulkUpdate(pendingBulkFormData)
+            .then(() => {
+                primaryBtnProps?.onClick?.();
+                this.setState(() => ({
+                    pendingBulkFormData: undefined
+                }));
+            })
+    };
+
+    renderTabButtons = () => {
+        const { primaryBtnProps, cancelBtnProps, tabBtnProps } = this.props;
+        if (!tabBtnProps.show)
+            return null;
+
+        const saveBtn = <Button bsStyle="primary" bsClass={primaryBtnProps.cls} disabled={primaryBtnProps.disabled} onClick={this.onSaveClick}>{primaryBtnProps.caption ?? 'Save'}</Button>;
+        const cancelBtn = <Button bsStyle="default" bsClass={cancelBtnProps.cls} onClick={cancelBtnProps.onClick}>{cancelBtnProps.caption ?? 'Cancel'}</Button>;
+
+        return (
+            <div className={tabBtnProps.cls}>
+                {saveBtn}
+                {cancelBtn}
+            </div>
+        );
+    };
+
     render() {
         const {
             addControlProps,
@@ -1241,7 +1291,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             queryInfo,
             striped,
             allowBulkUpdate,
-            showAsTab
+            showAsTab,
+            tabBtnProps
         } = this.props;
         const { showBulkAdd, showBulkUpdate, showMask, activeEditTab } = this.state;
         const wrapperClassName = classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask });
@@ -1288,36 +1339,43 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 selectedRowIndexes={this.getSelectedRowIndices()}
                 singularNoun={addControlProps.nounSingular}
                 asModal={!showAsTab}
+                warning={bulkUpdateProps?.warning}
             />
         );
 
+        const tabBtns = this.renderTabButtons();
+
         if (showAsTab) {
             return (
-                <Tab.Container
-                    activeKey={activeEditTab}
-                    id="editable-grid-tabs"
-                    onSelect={this.onTabChange}
-                >
-                    <div>
-                        <Nav bsStyle="tabs">
-                            {/*{allowBulkAdd && <NavItem eventKey={EditableGridTabs.BulkAdd}>Add Bulk</NavItem>} TODO tabbed bulk add not yet supported */}
-                            {allowBulkUpdate && <NavItem eventKey={EditableGridTabs.BulkUpdate}>Edit Bulk</NavItem>}
-                            <NavItem eventKey={EditableGridTabs.Grid}>Edit Individually</NavItem>
-                        </Nav>
-                        <Alert>{error}</Alert>
-                        <Tab.Content className="top-spacing">
-                            <Tab.Pane eventKey={EditableGridTabs.BulkAdd}>
-                                {(activeEditTab === EditableGridTabs.BulkAdd) && this.renderBulkAdd()}
-                            </Tab.Pane>
-                            <Tab.Pane eventKey={EditableGridTabs.BulkUpdate}>
-                                {(activeEditTab === EditableGridTabs.BulkUpdate) && bulkUpdateContent}
-                            </Tab.Pane>
-                            <Tab.Pane eventKey={EditableGridTabs.Grid}>
-                                {gridContent}
-                            </Tab.Pane>
-                        </Tab.Content>
-                    </div>
-                </Tab.Container>
+                <>
+                    {tabBtnProps.placement === 'top' && <>{tabBtns}</>}
+                    <Tab.Container
+                        activeKey={activeEditTab}
+                        id="editable-grid-tabs"
+                        onSelect={this.onTabChange}
+                    >
+                        <div>
+                            <Nav bsStyle="tabs">
+                                {/*{allowBulkAdd && <NavItem eventKey={EditableGridTabs.BulkAdd}>Add Bulk</NavItem>} TODO tabbed bulk add not yet supported */}
+                                {allowBulkUpdate && <NavItem disabled={this.state.selected.size === 0} eventKey={EditableGridTabs.BulkUpdate}>Edit Bulk</NavItem>}
+                                <NavItem eventKey={EditableGridTabs.Grid}>Edit Individually</NavItem>
+                            </Nav>
+                            <Alert>{error}</Alert>
+                            <Tab.Content className="top-spacing">
+                                <Tab.Pane eventKey={EditableGridTabs.BulkAdd}>
+                                    {(activeEditTab === EditableGridTabs.BulkAdd) && this.renderBulkAdd()}
+                                </Tab.Pane>
+                                <Tab.Pane eventKey={EditableGridTabs.BulkUpdate}>
+                                    {(activeEditTab === EditableGridTabs.BulkUpdate) && bulkUpdateContent}
+                                </Tab.Pane>
+                                <Tab.Pane eventKey={EditableGridTabs.Grid}>
+                                    {gridContent}
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </div>
+                    </Tab.Container>
+                    {tabBtnProps.placement === 'bottom' && <>{tabBtns}</>}
+                </>
             )
         }
 

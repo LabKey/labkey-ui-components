@@ -220,6 +220,7 @@ import {
     SamplesResolver,
 } from './internal/url/AppURLResolver';
 import { loadEditorModelData } from './internal/components/editable/utils';
+import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import {
@@ -880,6 +881,7 @@ export {
     EditableGridPanel,
     EditableGridPanelForUpdate,
     EditableGridPanelForUpdateWithLineage,
+    EditableGridTabs,
     LineageEditableGridLoaderFromSelection,
     UpdateGridTab,
     EditorModel,

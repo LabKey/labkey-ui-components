@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD October 2022
+### version 2.233.0
+*Released*: 13 October 2022
 * App Sample Type Consistency
   * Refactor SampleTypePage from apps to share via entities subpackage
   * Refactor SampleNav from apps to share via entities subpackage

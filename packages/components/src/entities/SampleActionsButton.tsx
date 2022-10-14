@@ -17,27 +17,24 @@ import React, { FC, memo, useMemo } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
-import { hasAnyPermissions, User } from '../internal/components/base/models/User';
+import { hasAnyPermissions, hasPermissions, User } from '../internal/components/base/models/User';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { PicklistCreationMenuItem } from '../internal/components/picklist/PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from '../internal/components/picklist/AddToPicklistMenuItem';
+import { AssayResultsForSamplesMenuItem } from '../internal/components/assay/AssayResultsForSamplesButton';
 
 interface Props {
     disabled?: boolean;
+    metricFeatureArea?: string;
     model: QueryModel;
     user: User;
-    metricFeatureArea?: string;
 }
 
 export const SampleActionsButton: FC<Props> = memo(props => {
     const { children, disabled, user, model, metricFeatureArea } = props;
     const sampleFieldKey = useMemo(() => model?.allColumns?.find(c => c.isSampleLookup())?.fieldKey, [model]);
     const id = 'sample-actions-menu';
-    const hasPerms = hasAnyPermissions(user, [
-        PermissionTypes.Insert,
-        PermissionTypes.Update,
-        PermissionTypes.ManagePicklists,
-    ]);
+    const hasPerms = hasAnyPermissions(user, [PermissionTypes.ReadAssay, PermissionTypes.ManagePicklists]);
 
     if (!(!!children || hasPerms)) {
         return null;
@@ -52,9 +49,9 @@ export const SampleActionsButton: FC<Props> = memo(props => {
             className="responsive-menu"
         >
             {children}
-            {!!children && hasPerms && <hr className="divider" />}
-            {hasPerms && (
+            {hasPermissions(user, [PermissionTypes.ManagePicklists]) && (
                 <>
+                    <hr className="divider" />
                     <MenuItem header>Picklists</MenuItem>
                     <AddToPicklistMenuItem
                         user={user}
@@ -67,6 +64,18 @@ export const SampleActionsButton: FC<Props> = memo(props => {
                         selectionKey={sampleFieldKey ? undefined : model.id}
                         queryModel={model}
                         sampleFieldKey={sampleFieldKey}
+                        metricFeatureArea={metricFeatureArea}
+                    />
+                </>
+            )}
+            {hasPermissions(user, [PermissionTypes.ReadAssay]) && (
+                <>
+                    <hr className="divider" />
+                    <MenuItem header>Reports</MenuItem>
+                    <AssayResultsForSamplesMenuItem
+                        model={model}
+                        user={user}
+                        isAssay
                         metricFeatureArea={metricFeatureArea}
                     />
                 </>

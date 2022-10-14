@@ -211,8 +211,8 @@ interface SampleAliquotsGridPanelProps extends Props {
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {
     const { sampleLsid, schemaQuery, rootLsid, user, omittedColumns } = props;
     const id = createGridModelId(
-        'sample-aliquots',
-        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery(), ViewInfo.DETAIL_NAME)
+        'sample-aliquots-' + sampleLsid,
+        SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery())
     );
     const omitted = omittedColumns
         ? [...getOmittedSampleTypeColumns(user), ...omittedColumns]

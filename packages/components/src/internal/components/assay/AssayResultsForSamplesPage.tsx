@@ -44,7 +44,7 @@ const AssayResultsForSamplesImpl: FC<WithRouterProps & InjectedQueryModels> = me
 
 const AssayResultsForSamplesWithModels = withQueryModels<WithRouterProps>(AssayResultsForSamplesImpl);
 
-export const AssayResultsForSamples: FC<WithRouterProps> = props => {
+export const AssayResultsForSamplesPage: FC<WithRouterProps> = props => {
     const { location } = props;
     const [sampleIds, setSampleIds] = useState<number[]>();
     const [error, setError] = useState<string>();

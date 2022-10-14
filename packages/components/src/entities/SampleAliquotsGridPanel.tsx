@@ -1,5 +1,4 @@
-import React, { FC, PureComponent } from 'react';
-import { List } from 'immutable';
+import React, { FC, PureComponent, ReactNode } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
 import { User } from '../internal/components/base/models/User';
@@ -11,22 +10,22 @@ import { ResponsiveMenuButtonGroup } from '../internal/components/buttons/Respon
 import { SchemaQuery } from '../public/SchemaQuery';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { GridPanel } from '../public/QueryModel/GridPanel';
-import { EntityDeleteModal } from './EntityDeleteModal';
+
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 import { createGridModelId } from '../internal/models';
 import { SCHEMAS } from '../internal/schemas';
 
-import {
-    InjectedQueryModels,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '../public/QueryModel/withQueryModels';
 
-import { SamplesAssayButton } from './SamplesAssayButton';
 import { JobsButton, SampleStorageButton } from '../internal/components/samples/models';
 import { getSampleAliquotsQueryConfig } from '../internal/components/samples/actions';
 import { getOmittedSampleTypeColumns } from '../internal/components/samples/utils';
 import { ViewInfo } from '../internal/ViewInfo';
+import { isAssayEnabled } from '../internal/app/utils';
+import { AssayResultsForSamplesButton } from '../internal/components/assay/AssayResultsForSamplesButton';
+
+import { SamplesAssayButton } from './SamplesAssayButton';
+import { EntityDeleteModal } from './EntityDeleteModal';
 
 const SUB_MENU_WIDTH = 800;
 
@@ -80,6 +79,12 @@ const AliquotGridButtons: FC<AliquotGridButtonsProps & RequiresModelAndActions> 
                 />
             ),
             perm: PermissionTypes.EditStorageData,
+        });
+    }
+    if (isAssayEnabled()) {
+        moreItems.push({
+            button: <AssayResultsForSamplesButton user={user} model={model} metricFeatureArea={metricFeatureArea} />,
+            perm: PermissionTypes.ReadAssay,
         });
     }
 
@@ -159,7 +164,7 @@ export class SampleAliquotsGridPanelImpl extends PureComponent<Props & InjectedQ
         return this.getQueryModel().hasSelections;
     }
 
-    render() {
+    render(): ReactNode {
         const { actions, storageButton, jobsButton, ...buttonProps } = this.props;
         const queryModel = this.getQueryModel();
 

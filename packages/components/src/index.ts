@@ -336,6 +336,7 @@ import {
     getOperationNotPermittedMessage,
     getSampleStatus,
     getSampleStatusType,
+    getURLParamsForSampleSelectionKey,
     isAllSamplesSchema,
     isSampleOperationPermitted,
     isSamplesSchema,
@@ -509,7 +510,8 @@ import { ValidatorModal } from './internal/components/domainproperties/validatio
 import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
-import { AssayResultsForSamples } from './internal/components/assay/AssayResultsForSamples';
+import { AssayResultsForSamplesPage } from './internal/components/assay/AssayResultsForSamplesPage';
+import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './internal/components/assay/AssayResultsForSamplesButton';
 import {
     makeQueryInfo,
     mountWithAppServerContext,
@@ -1012,6 +1014,7 @@ export {
     getFilterForSampleOperation,
     getSampleStatus,
     getSampleStatusType,
+    getURLParamsForSampleSelectionKey,
     DisableableMenuItem,
     SampleOperation,
     SampleStateType,
@@ -1116,7 +1119,9 @@ export {
     fetchAllAssays,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     GENERAL_ASSAY_PROVIDER_NAME,
-    AssayResultsForSamples,
+    AssayResultsForSamplesPage,
+    AssayResultsForSamplesButton,
+    AssayResultsForSamplesMenuItem,
     // heatmap
     HeatMap,
     addDateRangeFilter,

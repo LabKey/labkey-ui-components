@@ -4,8 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD October 2022
 * Assay Results for Selected Samples
-  * refactor getSelectedSampleIdsFromSelectionKey() from workflow package to be used in multiple app cases
-  * new AssayResultsForSamples component
+  * refactor getSelectedSampleIdsFromSelectionKey() and getURLParamsForSampleSelectionKey() from workflow package to be used in multiple app cases
+  * new AssayResultsForSamplesPage, AssayResultsForSamplesMenuItem, and AssayResultsForSamplesButton components
 
 ### version 2.233.2
 *Released*: 14 October 2022

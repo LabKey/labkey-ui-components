@@ -14,6 +14,10 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { ModuleContext } from '../base/ServerContext';
 
+import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
+
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import { SampleStatus } from './models';
 
 import {
@@ -193,4 +197,44 @@ export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
     }
 
     return false;
+}
+
+export function getURLParamsForSampleSelectionKey(
+    model: QueryModel,
+    picklistName?: string,
+    isAssay?: boolean,
+    sampleFieldKey?: string,
+    currentProductId?: string,
+    targetProductId?: string,
+    ignoreFilter?: boolean
+): Record<string, any> {
+    const { keyValue, queryInfo, selectionKey } = model;
+    let params = {};
+
+    if (queryInfo) {
+        const singleSelect = keyValue !== undefined;
+        const { schemaQuery } = queryInfo;
+        params['selectionKey'] = singleSelect
+            ? SchemaQuery.createAppSelectionKey(schemaQuery, [keyValue])
+            : selectionKey;
+
+        if (!ignoreFilter) {
+            model.filters.forEach(filter => {
+                // We don't need the picklist IN clause here since we're dealing with the samples selected in the grid
+                if (filter.getFilterType().getURLSuffix() !== PICKLIST_SAMPLES_FILTER.getURLSuffix()) {
+                    params[filter.getURLParameterName()] = filter.getURLParameterValue();
+                }
+            });
+        }
+
+        if (picklistName) {
+            params['picklistName'] = picklistName;
+        }
+
+        if (isAssay && sampleFieldKey) {
+            params = { ...params, ...{ assayProtocol: schemaQuery.schemaName, isAssay: true, sampleFieldKey } };
+        }
+    }
+
+    return params;
 }

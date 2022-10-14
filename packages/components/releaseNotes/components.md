@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.233.2
+*Released*: 14 October 2022
+* Issue 46472: Assay field editor update to remove check for spaces in transform script path when "Save Script Data for Debugging" is checked
+
 ### version 2.233.1
 *Released*: 13 October 2022
 * Issue 46504: Assay name is not correct in SampleFinder's Assay filter picker

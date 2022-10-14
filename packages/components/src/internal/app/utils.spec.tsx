@@ -442,7 +442,16 @@ describe('utils', () => {
             isAssayQCEnabled({ api: { moduleNames: [] }, core: { productFeatures: [ProductFeature.AssayQC] } })
         ).toBeFalsy();
         expect(
-            isAssayQCEnabled({ api: { moduleNames: ['assay'] }, core: { productFeatures: [ProductFeature.AssayQC] } })
+            isAssayQCEnabled({
+                api: { moduleNames: ['assay'] },
+                core: { productFeatures: [ProductFeature.Assay, ProductFeature.AssayQC] },
+            })
+        ).toBeFalsy();
+        expect(
+            isAssayQCEnabled({
+                api: { moduleNames: ['assay', 'premium'] },
+                core: { productFeatures: [ProductFeature.Assay, ProductFeature.AssayQC] },
+            })
         ).toBeTruthy();
     });
 

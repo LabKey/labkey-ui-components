@@ -220,7 +220,11 @@ export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isAssayQCEnabled(moduleContext?: ModuleContext): boolean {
-    return isAssayEnabled(moduleContext) && isFeatureEnabled(ProductFeature.AssayQC, moduleContext);
+    return (
+        isAssayEnabled(moduleContext) &&
+        hasPremiumModule(moduleContext) &&
+        isFeatureEnabled(ProductFeature.AssayQC, moduleContext)
+    );
 }
 
 export function isAssayRequestsEnabled(moduleContext?: ModuleContext): boolean {

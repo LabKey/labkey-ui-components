@@ -484,7 +484,6 @@ import { BasePropertiesPanel } from './internal/components/domainproperties/Base
 import { DomainFieldsDisplay } from './internal/components/domainproperties/DomainFieldsDisplay';
 import { fetchProtocol, saveAssayDesign } from './internal/components/domainproperties/assay/actions';
 import { AssayProtocolModel } from './internal/components/domainproperties/assay/models';
-import { AssayPropertiesPanel } from './internal/components/domainproperties/assay/AssayPropertiesPanel';
 import { AssayDesignerPanels } from './internal/components/domainproperties/assay/AssayDesignerPanels';
 import { ListModel } from './internal/components/domainproperties/list/models';
 import { IssuesListDefModel } from './internal/components/domainproperties/issues/models';
@@ -1206,7 +1205,6 @@ export {
     getServerFilePreview,
     InferDomainResponse,
     BasePropertiesPanel,
-    AssayPropertiesPanel,
     AssayDesignerPanels,
     saveAssayDesign,
     fetchProtocol,

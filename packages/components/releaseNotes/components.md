@@ -7,6 +7,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   * refactor getSelectedSampleIdsFromSelectionKey() from workflow package to be used in multiple app cases
   * new AssayResultsForSamples component
 
+### version 2.233.2
+*Released*: 14 October 2022
+* Issue 46472: Assay field editor update to remove check for spaces in transform script path when "Save Script Data for Debugging" is checked
+
+### version 2.233.1
+*Released*: 13 October 2022
+* Issue 46504: Assay name is not correct in SampleFinder's Assay filter picker
+  * Use assay label instead of name in facet selector
+
 ### version 2.233.0
 *Released*: 13 October 2022
 * App Sample Type Consistency

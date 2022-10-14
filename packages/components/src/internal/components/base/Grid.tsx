@@ -114,7 +114,9 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
     readonly state: State = { dragTarget: undefined };
 
     _handleClick(column: GridColumn, evt: any): void {
-        const isHeaderCellClick = evt.target.className?.startsWith('grid-header-cell');
+        const isHeaderCellClick =
+            evt.target.className?.startsWith('grid-header-cell') ||
+            evt.target.parentElement?.className?.startsWith('grid-header-cell');
         evt.stopPropagation();
         if (this.props.onCellClick && isHeaderCellClick) {
             this.props.onCellClick(column);

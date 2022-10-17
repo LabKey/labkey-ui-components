@@ -27,7 +27,7 @@ import { AssayResultsForSamplesButton } from '../internal/components/assay/Assay
 import { SamplesAssayButton } from './SamplesAssayButton';
 import { EntityDeleteModal } from './EntityDeleteModal';
 
-const SUB_MENU_WIDTH = 800;
+const SUB_MENU_WIDTH = 1350;
 
 interface AliquotGridButtonsProps {
     JobsButtonComponent?: JobsButton;

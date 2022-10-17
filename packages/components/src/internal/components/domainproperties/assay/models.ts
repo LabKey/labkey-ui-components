@@ -29,7 +29,6 @@ export class AssayProtocolModel extends Record({
     allowBackgroundUpload: false,
     allowEditableResults: false,
     allowQCStates: false,
-    allowSpacesInPath: false,
     allowTransformationScript: false,
     allowPlateMetadata: false,
     autoCopyTargetContainer: undefined,
@@ -62,7 +61,6 @@ export class AssayProtocolModel extends Record({
     declare allowBackgroundUpload: boolean;
     declare allowEditableResults: boolean;
     declare allowQCStates: boolean;
-    declare allowSpacesInPath: boolean;
     declare allowTransformationScript: boolean;
     declare allowPlateMetadata: boolean;
     declare autoCopyTargetContainer: {};
@@ -188,14 +186,6 @@ export class AssayProtocolModel extends Record({
         );
         if (hasEmptyScript) {
             return 'Missing required transform script path.';
-        }
-
-        // if not allowSpacesInPath, the path to the script should not contain spaces when the Save Script Data check box is selected
-        if (!this.allowSpacesInPath && this.saveScriptFiles) {
-            const hasSpacedScript = this.protocolTransformScripts.some((script, i) => script.indexOf(' ') > -1);
-            if (hasSpacedScript) {
-                return "The path to the transform script should not contain spaces when the 'Save Script Data for Debugging' check box is selected.";
-            }
         }
     }
 

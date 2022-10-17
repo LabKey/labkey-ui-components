@@ -101,6 +101,12 @@ export interface QueryConfig {
      */
     containerPath?: string;
     /**
+     * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
+     * filters to be applied to the QueryModel data load. These filters will be concatenated with base filters, URL filters,
+     * they keyValue filter, and view filters when applicable.
+     */
+    readonly filterArray?: Filter.IFilter[];
+    /**
      * Id value to use for referencing a given [[QueryModel]]. If not provided, one will be generated for this [[QueryModel]]
      * instance based on the [[SchemaQuery]] and keyValue where applicable.
      */
@@ -270,13 +276,13 @@ export class QueryModel {
      */
     readonly urlPrefix?: string;
 
-    // QueryModel only fields
     /**
      * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html)
      * filters to be applied to the QueryModel data load. These filters will be concatenated with base filters, URL filters,
      * they keyValue filter, and view filters when applicable.
      */
     readonly filterArray: Filter.IFilter[];
+    // QueryModel only fields
     /**
      * Array of [[GridMessage]]. When used with a [[GridPanel]], these message will be shown above the table of data rows.
      */
@@ -385,7 +391,7 @@ export class QueryModel {
         this.requiredColumns = queryConfig.requiredColumns ?? [];
         this.sorts = queryConfig.sorts ?? [];
         this.rowsError = undefined;
-        this.filterArray = [];
+        this.filterArray = queryConfig.filterArray ?? [];
         this.messages = [];
         this.queryInfo = undefined;
         this.queryInfoError = undefined;

@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD October 2022
 * Assay Results for Selected Samples
   * refactor getSelectedSampleIdsFromSelectionKey() and getURLParamsForSampleSelectionKey() from workflow package to be used in multiple app cases
+  * refactor getSamplesAssayGridQueryConfigs() from SampleAssayDetails component to be reused in AssayResultsForSamplesPage
   * new AssayResultsForSamplesPage, AssayResultsForSamplesMenuItem, and AssayResultsForSamplesButton components
   * add FindDerivativesMenuItem to go with FindDerivativesButton
 

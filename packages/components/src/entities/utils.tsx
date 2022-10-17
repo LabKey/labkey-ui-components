@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { List, Set } from 'immutable';
-import { ActionURL, Utils } from '@labkey/api';
+import { ActionURL, Filter, getServerContext, Utils } from '@labkey/api';
 
 import {
     getOperationNotPermittedMessage,
@@ -13,6 +13,7 @@ import { AppURL, createProductUrlFromParts } from '../internal/url/AppURL';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
 import {
+    ALIQUOT_FILTER_MODE,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
@@ -26,6 +27,10 @@ import { getPrimaryAppProperties, isELNEnabled } from '../internal/app/utils';
 import { QueryInfo } from '../public/QueryInfo';
 import { naturalSort } from '../public/sort';
 import { DELIMITER } from '../internal/components/forms/constants';
+import { getSampleAssayQueryConfigs } from '../internal/components/samples/actions';
+import { AssayStateModel } from '../internal/components/assay/models';
+import { SamplesAPIWrapper } from '../internal/components/samples/APIWrapper';
+import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -258,6 +263,102 @@ export function getUpdatedRowForParentChanges(
         }
     });
     return updatedValues;
+}
+
+export async function getSamplesAssayGridQueryConfigs(
+    api: SamplesAPIWrapper,
+    assayModel: AssayStateModel,
+    sampleId: string, // leave undefined/null for the multiple sample selection case
+    sampleRows: Array<Record<string, any>>,
+    gridSuffix: string,
+    gridPrefix: string,
+    sampleSchemaQuery?: SchemaQuery,
+    showAliquotViewSelector?: boolean,
+    activeSampleAliquotType?: ALIQUOT_FILTER_MODE,
+    allSampleRows?: Array<Record<string, any>>,
+    unfilteredGridPrefix?: string
+): Promise<QueryConfigMap> {
+    const allSampleRows_ = allSampleRows ?? sampleRows;
+    const sampleIds = sampleRows.map(row => caseInsensitive(row, 'RowId').value);
+    const allSampleIds = allSampleRows_.map(row => caseInsensitive(row, 'RowId').value);
+
+    const _configs = getSampleAssayQueryConfigs(
+        assayModel,
+        sampleIds,
+        gridSuffix,
+        gridPrefix,
+        false,
+        sampleSchemaQuery
+    );
+
+    let configs = _configs.reduce((_configs, config) => {
+        const modelId = config.id;
+        _configs[modelId] = config;
+        return _configs;
+    }, {});
+
+    // keep tab when "all" view has data, but filtered view is blank
+    const includeUnfilteredConfigs =
+        showAliquotViewSelector && activeSampleAliquotType && activeSampleAliquotType !== ALIQUOT_FILTER_MODE.all;
+    if (includeUnfilteredConfigs) {
+        const _unfilteredConfigs = getSampleAssayQueryConfigs(
+            assayModel,
+            allSampleIds,
+            gridSuffix,
+            unfilteredGridPrefix,
+            false,
+            sampleSchemaQuery
+        );
+
+        const unfilteredConfigs = _unfilteredConfigs.reduce((configs_, config) => {
+            const modelId = config.id;
+            configs_[modelId] = config;
+            return configs_;
+        }, {});
+
+        configs = { ...configs, ...unfilteredConfigs };
+    }
+
+    // add in the config objects for those module-defined sample assay result views (e.g. TargetedMS module),
+    // note that the moduleName from the config must be active/enabled in the container
+    let sampleAssayResultViewConfigs = [];
+    try {
+        sampleAssayResultViewConfigs = await api.getSampleAssayResultViewConfigs();
+    } catch (e) {
+        // no-op, don't fail all query configs if we can't get this SampleAssayResultView array
+    }
+    const activeModules = getServerContext().container.activeModules;
+    sampleAssayResultViewConfigs.forEach(config => {
+        if (activeModules?.indexOf(config.moduleName) > -1) {
+            const baseConfig = {
+                title: config.title,
+                schemaQuery: SchemaQuery.create(config.schemaName, config.queryName, config.viewName),
+                containerFilter: config.containerFilter,
+            };
+
+            let modelId = `${gridPrefix}:${config.title}:${sampleId ?? 'samples'}`;
+            let sampleFilterValues = sampleRows.map(row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value);
+            configs[modelId] = {
+                ...baseConfig,
+                id: modelId,
+                baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
+            };
+
+            if (includeUnfilteredConfigs) {
+                modelId = `${unfilteredGridPrefix}:${config.title}:${sampleId}`;
+                sampleFilterValues = allSampleRows_.map(
+                    row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value
+                );
+                configs[modelId] = {
+                    ...baseConfig,
+                    id: modelId,
+                    baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
+                };
+            }
+        }
+    });
+
+    return configs;
 }
 
 export function getUpdatedLineageRowsForBulkEdit(

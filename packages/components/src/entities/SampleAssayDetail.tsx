@@ -1,6 +1,5 @@
 import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
-import { Filter, getServerContext } from '@labkey/api';
 
 import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
 import { getImportItemsForAssayDefinitions } from '../internal/components/assay/actions';
@@ -17,11 +16,10 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { TabbedGridPanel } from '../public/QueryModel/TabbedGridPanel';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
 import { isLoading } from '../public/LoadingState';
-import { caseInsensitive } from '../internal/util/utils';
-import { SchemaQuery } from '../public/SchemaQuery';
 
 import {
     InjectedQueryModels,
+    QueryConfigMap,
     RequiresModelAndActions,
     withQueryModels,
 } from '../public/QueryModel/withQueryModels';
@@ -29,7 +27,7 @@ import {
 import { ALIQUOT_FILTER_MODE, SampleOperation } from '../internal/components/samples/constants';
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
-import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from '../internal/components/samples/actions';
+import { getSamplesAssayGridQueryConfigs } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -360,19 +358,9 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             });
     }, [api, createNotification, sampleId, showAliquotViewSelector]);
 
-    const [sampleAssayResultViewConfigs, setSampleAssayResultViewConfigs] =
-        useState<SampleAssayResultViewConfig[]>(undefined);
-    useEffect(() => {
-        api.samples
-            .getSampleAssayResultViewConfigs()
-            .then(setSampleAssayResultViewConfigs)
-            .catch(() => {
-                setSampleAssayResultViewConfigs([]);
-            });
-    }, [api]);
+    const [queryConfigs, setQueryConfigs] = useState<QueryConfigMap>();
 
-    const loadingDefinitions =
-        isLoading(assayModel.definitionsLoadingState) || sampleAssayResultViewConfigs === undefined;
+    const loadingDefinitions = isLoading(assayModel.definitionsLoadingState);
 
     const onSampleAliquotTypeChange = useCallback(type => {
         setActiveSampleAliquotType(type);
@@ -415,9 +403,6 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         isSourceSampleAssayGrid,
     ]);
 
-    const sampleIds = useMemo(() => sampleRows.map(row => caseInsensitive(row, 'RowId').value), [sampleRows]);
-    const allSampleIds = useMemo(() => allSampleRows.map(row => caseInsensitive(row, 'RowId').value), [allSampleRows]);
-
     const key = useMemo(() => {
         return (sampleId ?? sourceId) + '-' + activeSampleAliquotType;
     }, [sampleId, sourceId, activeSampleAliquotType]);
@@ -431,102 +416,50 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         return isSampleOperationPermitted(getSampleStatusType(sampleModel?.getRow()), SampleOperation.AddAssayData);
     }, [sampleModel]);
 
-    const queryConfigs = useMemo(() => {
+    useEffect(() => {
         if (loadingDefinitions) {
-            return {};
+            return;
         }
 
-        const queryGridSuffix = sampleId ?? sourceId + '-source';
-        const sampleSchemaQuery = isSourceSampleAssayGrid ? undefined : sampleModel.queryInfo.schemaQuery;
-        const _configs = getSampleAssayQueryConfigs(
-            assayModel,
-            sampleIds,
-            queryGridSuffix,
-            ASSAY_GRID_ID_PREFIX,
-            false,
-            sampleSchemaQuery
-        );
-
-        let configs = _configs.reduce((_configs, config) => {
-            const modelId = config.id;
-            _configs[modelId] = config;
-            return _configs;
-        }, {});
-
-        // keep tab when "all" view has data, but filtered view is blank
-        const includeUnfilteredConfigs =
-            showAliquotViewSelector && activeSampleAliquotType && activeSampleAliquotType !== ALIQUOT_FILTER_MODE.all;
-        if (includeUnfilteredConfigs) {
-            const _unfilteredConfigs = getSampleAssayQueryConfigs(
+        (async () => {
+            const queryGridSuffix = sampleId ?? sourceId + '-source';
+            const sampleSchemaQuery = isSourceSampleAssayGrid ? undefined : sampleModel.queryInfo.schemaQuery;
+            // handling try/catch within getSamplesAssayGridQueryConfigs
+            const queryConfigs_ = await getSamplesAssayGridQueryConfigs(
+                api.samples,
                 assayModel,
-                allSampleIds,
+                sampleId,
+                sampleRows,
                 queryGridSuffix,
-                UNFILTERED_GRID_ID_PREFIX,
-                false,
-                sampleSchemaQuery
+                ASSAY_GRID_ID_PREFIX,
+                sampleSchemaQuery,
+                showAliquotViewSelector,
+                activeSampleAliquotType,
+                allSampleRows,
+                UNFILTERED_GRID_ID_PREFIX
             );
-
-            const unfilteredConfigs = _unfilteredConfigs.reduce((_configs, config) => {
-                const modelId = config.id;
-                _configs[modelId] = config;
-                return _configs;
-            }, {});
-
-            configs = { ...configs, ...unfilteredConfigs };
-        }
-
-        // add in the config objects for those module-defined sample assay result views (e.g. TargetedMS module),
-        // note that the moduleName from the config must be active/enabled in the container
-        const activeModules = getServerContext().container.activeModules;
-        sampleAssayResultViewConfigs.forEach(config => {
-            if (activeModules?.indexOf(config.moduleName) > -1) {
-                const baseConfig = {
-                    title: config.title,
-                    schemaQuery: SchemaQuery.create(config.schemaName, config.queryName, config.viewName),
-                    containerFilter: config.containerFilter,
-                };
-
-                let modelId = `${ASSAY_GRID_ID_PREFIX}:${config.title}:${sampleId}`;
-                let sampleFilterValues = sampleRows.map(
-                    row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value
-                );
-                configs[modelId] = {
-                    ...baseConfig,
-                    id: modelId,
-                    baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
-                };
-
-                if (includeUnfilteredConfigs) {
-                    modelId = `${UNFILTERED_GRID_ID_PREFIX}:${config.title}:${sampleId}`;
-                    sampleFilterValues = allSampleRows.map(
-                        row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value
-                    );
-                    configs[modelId] = {
-                        ...baseConfig,
-                        id: modelId,
-                        baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
-                    };
-                }
-            }
-        });
-
-        return configs;
+            setQueryConfigs(queryConfigs_);
+        })();
     }, [
-        assayModel.definitions,
+        assayModel,
         loadingDefinitions,
         sampleModel,
         sampleId,
-        sampleIds,
+        sampleRows,
         activeSampleAliquotType,
         showAliquotViewSelector,
         sourceId,
-        allSampleIds,
+        allSampleRows,
         isSourceSampleAssayGrid,
-        sampleAssayResultViewConfigs,
-        sourceSampleRows,
+        api.samples,
+        createNotification,
     ]);
 
-    if (loadingDefinitions || (showAliquotViewSelector && !isSourceSampleAssayGrid && !aliquotRows)) {
+    if (
+        loadingDefinitions ||
+        queryConfigs === undefined ||
+        (showAliquotViewSelector && !isSourceSampleAssayGrid && !aliquotRows)
+    ) {
         return (
             <AssayResultPanel>
                 <LoadingSpinner />

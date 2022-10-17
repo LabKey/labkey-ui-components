@@ -3,8 +3,7 @@
  *
  */
 
-// We set overflow to auto on the body in order to hide the scrollbars be default. Really, the body shouldn't be
-// scrolling at all in our apps, instead the app-body is our scrollable area.
+// We set overflow to auto on the body in order to hide the scrollbars by default
 body {
     overflow: auto;
 }

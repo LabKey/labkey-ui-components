@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.233.0-fb-show-toggle.1",
+  "version": "2.234.0-fb-show-toggle.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

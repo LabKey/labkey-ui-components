@@ -454,6 +454,13 @@
         padding-left: 10px;
     }
 }
+.app-body .domain-floating-hdr {
+    top: 56px;
+}
+
+.app-body.with-sub-nav .domain-floating-hdr {
+    top: 97px;
+}
 
 .domain-form-preHdr-row {
   left: -24px;

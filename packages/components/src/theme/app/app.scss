@@ -1,13 +1,8 @@
-.app-wrapper {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
 .app-body {
-    flex-grow: 1;
-    overflow: auto;
+    margin-top: 56px;
+}
+.app-body.with-sub-nav {
+    margin-top: 97px;
 }
 
 .app-page {

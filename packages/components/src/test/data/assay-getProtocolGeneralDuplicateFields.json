@@ -495,7 +495,6 @@
     "allowTransformationScript" : true,
     "allowBackgroundUpload" : true,
     "allowEditableResults" : true,
-    "allowSpacesInPath" : true,
     "allowQCStates" : true,
     "availablePlateTemplates" : null
   },

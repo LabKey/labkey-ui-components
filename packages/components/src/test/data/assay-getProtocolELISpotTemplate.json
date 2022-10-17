@@ -1305,7 +1305,6 @@
     "allowTransformationScript" : true,
     "allowBackgroundUpload" : false,
     "allowEditableResults" : false,
-    "allowSpacesInPath" : true,
     "allowQCStates" : false,
     "availablePlateTemplates" : [ "EliSpot Plate Template", "NAb Single Plate Template" ]
   },

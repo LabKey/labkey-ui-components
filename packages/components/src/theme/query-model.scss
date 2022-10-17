@@ -144,9 +144,10 @@
 
 // Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
 .grid-panel .grid-header-cell .dropdown-menu {
-    position: absolute;
-    top: 23px;
-    z-index: 0;
+    position: fixed;
+    top: auto;
+    left: auto;
+    right: auto;
 }
 
 .responsive-btn-group {

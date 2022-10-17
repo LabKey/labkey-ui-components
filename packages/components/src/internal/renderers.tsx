@@ -215,9 +215,11 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
             if (wrapperEl.current) {
                 const menuEl = wrapperEl.current.querySelector<HTMLElement>('.dropdown-menu');
                 if (menuEl) {
+                    const headerRect = wrapperEl.current.parentElement.getBoundingClientRect();
                     const menuRect = menuEl.getBoundingClientRect();
                     Object.assign(menuEl.style, {
-                        left: `-${menuRect.width - 18}px`,
+                        top: headerRect.y + headerRect.height + 'px',
+                        left: headerRect.x + headerRect.width - menuRect.width + 'px',
                     });
                 }
             }

@@ -1251,8 +1251,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     onSaveClick = () => {
-        const { primaryBtnProps } = this.props;
+        const { primaryBtnProps, editorModel, maxRows } = this.props;
         const { pendingBulkFormData } = this.state;
+
+        if (editorModel.rowCount > maxRows) {
+            primaryBtnProps?.onClick?.(pendingBulkFormData);
+            this.setState(() => ({
+                pendingBulkFormData: undefined,
+            }));
+            return;
+        }
 
         this.bulkUpdate(pendingBulkFormData).then(() => {
             primaryBtnProps?.onClick?.();
@@ -1264,7 +1272,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     renderTabButtons = () => {
         const { primaryBtnProps, cancelBtnProps, tabBtnProps } = this.props;
-        if (!tabBtnProps.show) return null;
+        if (!tabBtnProps?.show) return null;
 
         const saveBtn = (
             <Button
@@ -1307,6 +1315,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             allowBulkUpdate,
             showAsTab,
             tabBtnProps,
+            maxRows,
         } = this.props;
         const { showBulkAdd, showBulkUpdate, showMask, activeEditTab } = this.state;
         const wrapperClassName = classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask });
@@ -1362,6 +1371,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const tabBtns = this.renderTabButtons();
 
         if (showAsTab) {
+            const bulkDisabled = this.state.selected.size === 0;
+            const gridDisabled = editorModel.rowCount > maxRows;
             return (
                 <>
                     {tabBtnProps.placement === 'top' && <>{tabBtns}</>}
@@ -1371,13 +1382,17 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                                 {/* {allowBulkAdd && <NavItem eventKey={EditableGridTabs.BulkAdd}>Add Bulk</NavItem>} TODO tabbed bulk add not yet supported */}
                                 {allowBulkUpdate && (
                                     <NavItem
-                                        disabled={this.state.selected.size === 0}
+                                        disabled={bulkDisabled}
                                         eventKey={EditableGridTabs.BulkUpdate}
                                     >
                                         Edit Bulk
                                     </NavItem>
                                 )}
-                                <NavItem eventKey={EditableGridTabs.Grid}>Edit Individually</NavItem>
+                                <NavItem
+                                    disabled={gridDisabled}
+                                    eventKey={EditableGridTabs.Grid}>
+                                    Edit Individually
+                                </NavItem>
                             </Nav>
                             <Alert>{error}</Alert>
                             <Tab.Content className="top-spacing">

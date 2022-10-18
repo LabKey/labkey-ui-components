@@ -25,8 +25,6 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QuerySelect } from '../forms/QuerySelect';
 import { ViewInfo } from '../../ViewInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { isAllSamplesSchema } from '../samples/utils';
-import { SAMPLES_WITH_TYPES_FILTER } from '../samples/constants';
 
 export const customStyles = {
     control: provided => ({

@@ -34,8 +34,6 @@ import { DatePickerInput } from './input/DatePickerInput';
 import { TextChoiceInput } from './input/TextChoiceInput';
 
 import { getQueryFormLabelFieldName, isQueryFormLabelField } from './utils';
-import { isAllSamplesSchema } from '../samples/utils';
-import { SAMPLES_WITH_TYPES_FILTER } from '../samples/constants';
 
 export interface QueryFormInputsProps {
     allowFieldDisable?: boolean;

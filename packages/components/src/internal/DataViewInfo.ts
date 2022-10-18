@@ -12,7 +12,6 @@ type DataViewInfoType =
     | DataViewInfoTypes.PieChart
     | DataViewInfoTypes.Query
     | DataViewInfoTypes.RReport
-    | DataViewInfoTypes.SampleComparison
     | DataViewInfoTypes.SampleFinderSavedSearch
     | DataViewInfoTypes.TimeChart
     | DataViewInfoTypes.XYScatterPlot

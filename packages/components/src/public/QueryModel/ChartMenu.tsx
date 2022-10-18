@@ -9,42 +9,22 @@ import { blurActiveElement } from '../../internal/util/utils';
 
 import { getQueryMetadata } from '../../internal/global';
 
-import { DataViewInfoTypes } from '../../internal/constants';
-
 import { RequiresModelAndActions } from './withQueryModels';
 
 interface Props extends RequiresModelAndActions {
     hideEmptyChartMenu: boolean;
-    onChartClicked?: (chart: DataViewInfo) => boolean;
-    onCreateReportClicked?: (type: DataViewInfoTypes) => void;
-    showSampleComparisonReports: boolean;
 }
 
 export class ChartMenu extends PureComponent<Props> {
     componentDidMount(): void {
-        const { model, actions, showSampleComparisonReports } = this.props;
-        actions.loadCharts(model.id, showSampleComparisonReports);
+        const { model, actions } = this.props;
+        actions.loadCharts(model.id);
     }
 
-    onCreateClicked = (): void => {
-        // We only support creating SampleComparison reports at the moment.
-        const { onCreateReportClicked } = this.props;
-
-        if (onCreateReportClicked) {
-            onCreateReportClicked(DataViewInfoTypes.SampleComparison);
-        }
-    };
-
     chartClicked = (chart: DataViewInfo): void => {
-        const { actions, onChartClicked, model } = this.props;
-
+        const { actions, model } = this.props;
         blurActiveElement();
-
-        // If the user supplies a click handler then we use the response from that to determine if we should render the
-        // chart modal. This is needed so Biologics and redirect to Sample Comparison Reports.
-        if (onChartClicked === undefined || onChartClicked(chart)) {
-            actions.selectReport(model.id, chart.reportId);
-        }
+        actions.selectReport(model.id, chart.reportId);
     };
 
     clearChart = (): void => {
@@ -57,7 +37,7 @@ export class ChartMenu extends PureComponent<Props> {
     );
 
     render(): ReactNode {
-        const { hideEmptyChartMenu, model, showSampleComparisonReports } = this.props;
+        const { hideEmptyChartMenu, model } = this.props;
         const {
             charts,
             chartsError,
@@ -72,19 +52,14 @@ export class ChartMenu extends PureComponent<Props> {
         } = model;
         const privateCharts = hasCharts ? charts.filter(chart => !chart.shared) : [];
         const publicCharts = hasCharts ? charts.filter(chart => chart.shared) : [];
-        const noCharts = hasCharts && charts.length === 0 && !showSampleComparisonReports;
+        const noCharts = hasCharts && charts.length === 0;
         const hasError = queryInfoError !== undefined || rowsError !== undefined;
         const disabled = isLoading || isLoadingCharts || noCharts || hasError;
         const selectedChart = charts?.find(chart => chart.reportId === selectedReportId);
         const showChartModal = queryInfo !== undefined && selectedChart !== undefined;
         const _hideEmptyChartMenu = getQueryMetadata().get('hideEmptyChartMenu', hideEmptyChartMenu);
 
-        if (
-            privateCharts.length === 0 &&
-            publicCharts.length === 0 &&
-            !showSampleComparisonReports &&
-            _hideEmptyChartMenu
-        ) {
+        if (privateCharts.length === 0 && publicCharts.length === 0 && _hideEmptyChartMenu) {
             return null;
         }
 
@@ -103,19 +78,6 @@ export class ChartMenu extends PureComponent<Props> {
                         )
                     }
                 >
-                    {showSampleComparisonReports && (
-                        <MenuItem header key="new-charts">
-                            New Charts & Reports
-                        </MenuItem>
-                    )}
-
-                    {showSampleComparisonReports && (
-                        <MenuItem key="preview-scr" onSelect={this.onCreateClicked}>
-                            <i className="chart-menu-icon fa fa-table" />
-                            <span className="chart-menu-label">Preview Sample Comparison Report</span>
-                        </MenuItem>
-                    )}
-
                     {chartsError !== undefined && <MenuItem>{chartsError}</MenuItem>}
 
                     {privateCharts.length > 0 && <MenuItem header>My Saved Charts</MenuItem>}

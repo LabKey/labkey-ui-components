@@ -28,7 +28,7 @@ export interface Actions {
     loadPreviousPage: (id: string) => void;
     loadFirstPage: (id: string) => void;
     loadLastPage: (id: string) => void;
-    loadCharts: (id: string, includeSampleComparison: boolean) => void;
+    loadCharts: (id: string) => void;
     replaceSelections: (id: string, selections: string[]) => void;
     selectAllRows: (id: string) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -653,7 +653,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadCharts = async (id: string, includeSampleComparison): Promise<void> => {
+        loadCharts = async (id: string): Promise<void> => {
             const { modelLoader } = this.props;
 
             this.setState(
@@ -663,7 +663,7 @@ export function withQueryModels<Props>(
             );
 
             try {
-                const charts = await modelLoader.loadCharts(this.state.queryModels[id], includeSampleComparison);
+                const charts = await modelLoader.loadCharts(this.state.queryModels[id]);
                 this.setState(
                     produce<State>(draft => {
                         const model = draft.queryModels[id];

@@ -72,7 +72,7 @@ export class MockQueryModelLoader implements QueryModelLoader {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    loadCharts = (model: QueryModel, includeSampleComparison: boolean): Promise<never> => {
+    loadCharts = (model: QueryModel): Promise<never> => {
         return Promise.reject('Not Implemented!');
     };
 }

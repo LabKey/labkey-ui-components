@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * new AssayResultsForSamplesPage, AssayResultsForSamplesMenuItem, and AssayResultsForSamplesButton components
   * add Assay Runs summary grid as tab to SampleAssayDetail
   * add FindDerivativesMenuItem to go with FindDerivativesButton
+  * remove Sample Comparison Report rendering and creation menu item
 
 ### version 2.233.3
 *Released*: 17 October 2022

@@ -25,9 +25,11 @@ import {
 } from '../public/QueryModel/withQueryModels';
 
 import { ALIQUOT_FILTER_MODE, SampleOperation } from '../internal/components/samples/constants';
-import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
-import { getSamplesAssayGridQueryConfigs } from './utils';
+
+import { ASSAY_RUNS_GRID_ID, getSamplesAssayGridQueryConfigs } from './utils';
+import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -46,6 +48,7 @@ interface Props {
     user: User;
 }
 
+// export for jest testing
 export const AssayResultPanel: FC = ({ children }) => {
     return (
         <Panel>
@@ -185,6 +188,8 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         activeTabId,
         user,
         exportPrefix,
+        sampleId,
+        sourceId,
     } = props;
     const [queryModelsWithData, setQueryModelsWithData] = useState<Record<string, QueryModel>>();
     const [tabOrder, setTabOrder] = useState<string[]>();
@@ -226,12 +231,26 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         });
 
         setQueryModelsWithData(models);
-        setTabOrder(
-            Object.values(models)
-                .sort(naturalSortByProperty('title'))
-                .map(model => model.id)
-        );
-    }, [allLoaded, queryModelsWithData, activeSampleAliquotType, queryModels, showAliquotViewSelector]);
+
+        const tabOrder_ = Object.values(models)
+            .sort(naturalSortByProperty('title'))
+            .map(model => model.id);
+        // make sure the ASSAY_RUNS_GRID_ID tab is first
+        const summaryGridId = `${ASSAY_GRID_ID_PREFIX}:${ASSAY_RUNS_GRID_ID}:${sampleId ?? sourceId + '-source'}`;
+        if (tabOrder_.indexOf(summaryGridId) > -1) {
+            tabOrder_.splice(tabOrder_.indexOf(summaryGridId), 1);
+            tabOrder_.unshift(summaryGridId);
+        }
+        setTabOrder(tabOrder_);
+    }, [
+        allLoaded,
+        queryModelsWithData,
+        activeSampleAliquotType,
+        queryModels,
+        showAliquotViewSelector,
+        sampleId,
+        sourceId,
+    ]);
 
     const getEmptyText = useCallback(
         activeModel => {
@@ -421,9 +440,13 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             return;
         }
 
+        // clear queryConfigs so that the full set of queryModels will get loaded in SampleAssayDetailBodyImpl
+        setQueryConfigs(undefined);
+
         (async () => {
             const queryGridSuffix = sampleId ?? sourceId + '-source';
             const sampleSchemaQuery = isSourceSampleAssayGrid ? undefined : sampleModel.queryInfo.schemaQuery;
+
             // handling try/catch within getSamplesAssayGridQueryConfigs
             const queryConfigs_ = await getSamplesAssayGridQueryConfigs(
                 api.samples,

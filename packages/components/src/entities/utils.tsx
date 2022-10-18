@@ -265,6 +265,8 @@ export function getUpdatedRowForParentChanges(
     return updatedValues;
 }
 
+export const ASSAY_RUNS_GRID_ID = 'assayruncount';
+
 export async function getSamplesAssayGridQueryConfigs(
     api: SamplesAPIWrapper,
     assayModel: AssayStateModel,
@@ -291,10 +293,17 @@ export async function getSamplesAssayGridQueryConfigs(
         sampleSchemaQuery
     );
 
-    let configs = _configs.reduce((_configs, config) => {
+    _configs.push({
+        id: `${gridPrefix}:${ASSAY_RUNS_GRID_ID}:${gridSuffix}`,
+        title: 'Assay Runs',
+        schemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUN_COUNT_PER_SAMPLE,
+        baseFilters: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+    });
+
+    let configs = _configs.reduce((configs_, config) => {
         const modelId = config.id;
-        _configs[modelId] = config;
-        return _configs;
+        configs_[modelId] = config;
+        return configs_;
     }, {});
 
     // keep tab when "all" view has data, but filtered view is blank
@@ -309,6 +318,13 @@ export async function getSamplesAssayGridQueryConfigs(
             false,
             sampleSchemaQuery
         );
+
+        _unfilteredConfigs.push({
+            id: `${unfilteredGridPrefix}:assayruncount:${gridSuffix}`,
+            title: 'Assay Runs',
+            schemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUN_COUNT_PER_SAMPLE,
+            baseFilters: [Filter.create('RowId', allSampleIds, Filter.Types.IN)],
+        });
 
         const unfilteredConfigs = _unfilteredConfigs.reduce((configs_, config) => {
             const modelId = config.id;

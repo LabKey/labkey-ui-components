@@ -300,7 +300,7 @@ describe('SampleAssayDetailImpl', () => {
         );
         await waitForLifecycle(wrapper);
         const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
-        expect(Object.keys(configs).length).toBe(0);
+        expect(Object.keys(configs).length).toBe(1); // just summary grid
         wrapper.unmount();
     });
 
@@ -327,7 +327,7 @@ describe('SampleAssayDetailImpl', () => {
         );
         await waitForLifecycle(wrapper);
         const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
-        expect(Object.keys(configs).length).toBe(0);
+        expect(Object.keys(configs).length).toBe(1); // just summary grid
         wrapper.unmount();
     });
 
@@ -347,9 +347,9 @@ describe('SampleAssayDetailImpl', () => {
         await waitForLifecycle(wrapper);
         const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
         const configKeys = Object.keys(configs);
-        expect(configKeys.length).toBe(1);
-        expect(configs[configKeys[0]].baseFilters[0].getColumnName()).toBe('filterKey');
-        expect(configs[configKeys[0]].baseFilters[0].getValue()).toStrictEqual([1]); // RowId value of sample row
+        expect(configKeys.length).toBe(2); // first is summary grid
+        expect(configs[configKeys[1]].baseFilters[0].getColumnName()).toBe('filterKey');
+        expect(configs[configKeys[1]].baseFilters[0].getValue()).toStrictEqual([1]); // RowId value of sample row
         wrapper.unmount();
     });
 
@@ -375,9 +375,9 @@ describe('SampleAssayDetailImpl', () => {
         await waitForLifecycle(wrapper);
         const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
         const configKeys = Object.keys(configs);
-        expect(configKeys.length).toBe(1);
-        expect(configs[configKeys[0]].baseFilters[0].getColumnName()).toBe('filterKey');
-        expect(configs[configKeys[0]].baseFilters[0].getValue()).toStrictEqual(['Name1']); // Name value of sample row
+        expect(configKeys.length).toBe(2); // first is summary grid
+        expect(configs[configKeys[1]].baseFilters[0].getColumnName()).toBe('filterKey');
+        expect(configs[configKeys[1]].baseFilters[0].getValue()).toStrictEqual(['Name1']); // Name value of sample row
         wrapper.unmount();
     });
 });

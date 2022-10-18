@@ -217,8 +217,16 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 if (menuEl) {
                     const headerRect = wrapperEl.current.parentElement.getBoundingClientRect();
                     const menuRect = menuEl.getBoundingClientRect();
+                    let top = headerRect.y + headerRect.height + 'px';
+
+                    if (headerRect.bottom + menuRect.height > window.innerHeight) {
+                        // Issue 45553 If the header is too close to the bottom of the window to render the whole menu
+                        // below it then we need to render it above the header.
+                        top = headerRect.y - menuRect.height - 5 + 'px';
+                    }
+
                     Object.assign(menuEl.style, {
-                        top: headerRect.y + headerRect.height + 'px',
+                        top,
                         left: headerRect.x + headerRect.width - menuRect.width + 'px',
                     });
                 }

@@ -264,7 +264,8 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         [activeSampleAliquotType, emptyAliquotViewMsg, emptySampleViewMsg]
     );
 
-    if (allModels.length === 0) {
+    // always contains the summary grid model, so consider empty if we only have 1
+    if (allModels.length === 1) {
         if (emptyAssayDefDisplay) return <>{emptyAssayDefDisplay}</>;
 
         return (
@@ -285,7 +286,8 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         );
     }
 
-    if (Object.keys(queryModelsWithData).length === 0) {
+    // always contains the summary grid model, so consider empty if we only have 1
+    if (Object.keys(queryModelsWithData).length === 1) {
         if (emptyAssayResultDisplay) return <>{emptyAssayResultDisplay}</>;
 
         return (

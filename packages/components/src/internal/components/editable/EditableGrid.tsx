@@ -248,7 +248,7 @@ export interface EditableGridBtnProps {
     caption?: string;
     cls?: string;
     disabled?: boolean;
-    onClick?: (event?) => void;
+    onClick?: (pendingBulkFormData?: OrderedMap<string, any>, editorModelChanges?: Partial<EditorModelProps>) => void;
     placement?: PlacementType;
     show?: boolean;
 }
@@ -1065,9 +1065,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return Promise.resolve();
     };
 
-    bulkUpdate = async (updatedData: OrderedMap<string, any>): Promise<void> => {
+    bulkUpdate = async (updatedData: OrderedMap<string, any>): Promise<Partial<EditorModelProps>> => {
         const { editorModel, queryInfo, onChange, bulkUpdateProps } = this.props;
-        if (!updatedData) return Promise.resolve();
+        if (!updatedData) return Promise.resolve(undefined);
 
         const selectedIndices = this.getSelectedRowIndices();
         const editorModelChanges = await updateGridFromBulkForm(
@@ -1079,7 +1079,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         );
         onChange(editorModelChanges);
         // The result of this promise is used by toggleBulkUpdate, which doesn't expect anything to be passed
-        return Promise.resolve();
+        return Promise.resolve(editorModelChanges);
     };
 
     addRows = async (count: number): Promise<void> => {
@@ -1262,12 +1262,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return;
         }
 
-        this.bulkUpdate(pendingBulkFormData).then(() => {
-            primaryBtnProps?.onClick?.();
+        this.bulkUpdate(pendingBulkFormData).then((updates) => {
             this.setState(() => ({
                 pendingBulkFormData: undefined,
             }));
+            primaryBtnProps?.onClick?.(undefined, updates); // send back the updates in case caller uses useState to update EditorModel, which is async without cb
         });
+    };
+
+    onCancelClick = () => {
+        this.props.cancelBtnProps?.onClick?.();
     };
 
     renderTabButtons = () => {
@@ -1285,7 +1289,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             </Button>
         );
         const cancelBtn = (
-            <Button bsStyle="default" bsClass={cancelBtnProps.cls} onClick={cancelBtnProps.onClick}>
+            <Button bsStyle="default" bsClass={cancelBtnProps.cls} onClick={this.onCancelClick}>
                 {cancelBtnProps.caption ?? 'Cancel'}
             </Button>
         );

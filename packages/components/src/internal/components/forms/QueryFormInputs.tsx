@@ -233,7 +233,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
                             const id = col.fieldKey + i + (componentKey ?? '');
-                            const queryFilters = isAllSamplesSchema(col.lookup.schemaQuery) ? List([SAMPLES_WITH_TYPES_FILTER]) : undefined;
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
@@ -258,7 +257,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
                                         previewOptions={col.previewOptions === true || showQuerySelectPreviewOptions}
-                                        queryFilters={queryFilters}
+                                        queryFilters={col.lookup.hasQueryFilters() ? List(col.lookup.getQueryFilters()) : undefined}
                                         renderFieldLabel={renderFieldLabel}
                                         required={col.required}
                                         schemaQuery={col.lookup.schemaQuery}

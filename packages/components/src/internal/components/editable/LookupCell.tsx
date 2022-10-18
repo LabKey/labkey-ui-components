@@ -141,9 +141,8 @@ export class LookupCell extends PureComponent<LookupCellProps> {
             queryFilters = queryFilters.push(Filter.create(lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN));
         }
 
-        // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded here
-        if (isAllSamplesSchema(lookup.schemaQuery)) {
-            queryFilters = queryFilters.push(SAMPLES_WITH_TYPES_FILTER)
+        if (lookup.hasQueryFilters()) {
+            queryFilters = queryFilters.push(...lookup.getQueryFilters())
         }
 
         return (

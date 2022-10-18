@@ -1,7 +1,7 @@
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
 import { Record } from 'immutable';
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -11,6 +11,8 @@ import {
 import { SCHEMAS } from '../internal/schemas';
 
 import { SchemaQuery } from './SchemaQuery';
+import { isAllSamplesSchema } from '../internal/components/samples/utils';
+import { SAMPLES_WITH_TYPES_FILTER } from '../internal/components/samples/constants';
 
 export class QueryLookup extends Record({
     containerFilter: undefined,
@@ -45,6 +47,20 @@ export class QueryLookup extends Record({
                 schemaQuery: SchemaQuery.create(rawLookup.schemaName, rawLookup.queryName, rawLookup.viewName),
             })
         );
+    }
+
+    hasQueryFilters(): boolean {
+        return isAllSamplesSchema(this.schemaQuery);
+    }
+
+    getQueryFilters(): Filter.IFilter[] {
+        // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded here
+        if (isAllSamplesSchema(this.schemaQuery)) {
+            return [SAMPLES_WITH_TYPES_FILTER];
+        }
+        else {
+            return undefined;
+        }
     }
 }
 

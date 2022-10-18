@@ -45,6 +45,8 @@ import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
 import { SampleTypePage } from './SampleTypePage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
+import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
+import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
 
 export {
     createEntityParentKey,
@@ -58,6 +60,10 @@ export {
     getSampleWizardURL,
     isFindByIdsSchema,
     loadSampleTypes,
+    AssayResultsForSamplesPage,
+    AssayResultsForSamplesSubNav,
+    AssayResultsForSamplesButton,
+    AssayResultsForSamplesMenuItem,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
     EntityCrossProjectSelectionConfirmModal,

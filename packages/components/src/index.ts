@@ -510,11 +510,6 @@ import { ValidatorModal } from './internal/components/domainproperties/validatio
 import { RangeValidationOptions } from './internal/components/domainproperties/validation/RangeValidationOptions';
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
-import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './internal/components/assay/AssayResultsForSamplesPage';
-import {
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
-} from './internal/components/assay/AssayResultsForSamplesButton';
 import {
     makeQueryInfo,
     mountWithAppServerContext,
@@ -1122,10 +1117,6 @@ export {
     fetchAllAssays,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     GENERAL_ASSAY_PROVIDER_NAME,
-    AssayResultsForSamplesPage,
-    AssayResultsForSamplesSubNav,
-    AssayResultsForSamplesButton,
-    AssayResultsForSamplesMenuItem,
     // heatmap
     HeatMap,
     addDateRangeFilter,

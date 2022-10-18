@@ -1,39 +1,39 @@
-import React, { FC, memo, useMemo, useEffect, useState } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 import { WithRouterProps } from 'react-router';
 import { List } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
-import { useServerContext } from '../base/ServerContext';
-import { isAssayEnabled, userCanReadAssays } from '../../app/utils';
-import { NotFound } from '../base/NotFound';
-import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
-import { Page } from '../base/Page';
-import { Section } from '../base/Section';
-import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
-import { getSelectedSampleIdsFromSelectionKey } from '../samples/actions';
-import { resolveErrorMessage } from '../../util/messaging';
-import { SCHEMAS } from '../../schemas';
-import { Alert } from '../base/Alert';
-import { LoadingPage } from '../base/LoadingPage';
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../public/QueryModel/withQueryModels';
+import { useServerContext } from '../internal/components/base/ServerContext';
+import { isAssayEnabled, userCanReadAssays } from '../internal/app/utils';
+import { NotFound } from '../internal/components/base/NotFound';
+import { InsufficientPermissionsPage } from '../internal/components/permissions/InsufficientPermissionsPage';
+import { Page } from '../internal/components/base/Page';
+import { Section } from '../internal/components/base/Section';
+import { TabbedGridPanel } from '../public/QueryModel/TabbedGridPanel';
+import { getSelectedSampleIdsFromSelectionKey } from '../internal/components/samples/actions';
+import { resolveErrorMessage } from '../internal/util/messaging';
+import { SCHEMAS } from '../internal/schemas';
+import { Alert } from '../internal/components/base/Alert';
+import { LoadingPage } from '../internal/components/base/LoadingPage';
 
-import { selectRows } from '../../query/selectRows';
-import { getSamplesAssayGridQueryConfigs } from '../../../entities/utils';
-import { useAppContext } from '../../AppContext';
-import { isLoading } from '../../../public/LoadingState';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { naturalSortByProperty } from '../../../public/sort';
+import { selectRows } from '../internal/query/selectRows';
+import { ASSAY_RUNS_GRID_ID, getSamplesAssayGridQueryConfigs } from './utils';
+import { useAppContext } from '../internal/AppContext';
+import { isLoading } from '../public/LoadingState';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { naturalSortByProperty } from '../public/sort';
 
-import { AppURL } from '../../url/AppURL';
-import { ASSAYS_KEY } from '../../app/constants';
-import { SubNav } from '../navigation/SubNav';
-import { ITab } from '../navigation/types';
+import { AppURL } from '../internal/url/AppURL';
+import { ASSAYS_KEY } from '../internal/app/constants';
+import { SubNav } from '../internal/components/navigation/SubNav';
+import { ITab } from '../internal/components/navigation/types';
 
-import { InjectedAssayModel, withAssayModels } from './withAssayModels';
+import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
 
 const PAGE_TITLE = 'Assay Results for Samples';
-const SUMMARY_GRID_ID = 'sampleresults-assay-run-count:samples';
 const ASSAY_GRID_ID_PREFIX = 'sampleresults-per-assay';
+const ASSAY_GRID_ID_SUFFIX = 'samples';
 
 interface OwnProps {
     sampleIds: number[];
@@ -67,9 +67,10 @@ const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props =
         const tabOrder_ = Object.values(models)
             .sort(naturalSortByProperty('title'))
             .map(model => model.id);
-        // make sure the summary tab is first
-        tabOrder_.splice(tabOrder_.indexOf(SUMMARY_GRID_ID), 1);
-        tabOrder_.unshift(SUMMARY_GRID_ID);
+        // make sure the ASSAY_RUNS_GRID_ID tab is first
+        const summaryGridId = `${ASSAY_GRID_ID_PREFIX}:${ASSAY_RUNS_GRID_ID}:${ASSAY_GRID_ID_SUFFIX}`;
+        tabOrder_.splice(tabOrder_.indexOf(summaryGridId), 1);
+        tabOrder_.unshift(summaryGridId);
         setTabOrder(tabOrder_);
     }, [allLoaded, tabOrder, allModels]);
 
@@ -110,6 +111,7 @@ const AssayResultsForSamplesPageBody: FC<Props> = props => {
             return;
         }
 
+        setAssayQueryConfigs(undefined);
         (async () => {
             try {
                 const sampleIds_ = await getSelectedSampleIdsFromSelectionKey(location);
@@ -126,7 +128,7 @@ const AssayResultsForSamplesPageBody: FC<Props> = props => {
                     assayModel,
                     undefined,
                     samplesResults.rows,
-                    'samples',
+                    ASSAY_GRID_ID_SUFFIX,
                     ASSAY_GRID_ID_PREFIX
                 );
                 setAssayQueryConfigs(assayQueryConfigs_);
@@ -136,22 +138,10 @@ const AssayResultsForSamplesPageBody: FC<Props> = props => {
         })();
     }, [api.samples, assayModel, loadingDefinitions, location]);
 
-    const queryConfigs: QueryConfigMap = useMemo(
-        () => ({
-            [SUMMARY_GRID_ID]: {
-                title: 'Assay Runs',
-                schemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUN_COUNT_PER_SAMPLE,
-                baseFilters: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
-            },
-            ...assayQueryConfigs,
-        }),
-        [sampleIds, assayQueryConfigs]
-    );
-
     if (error) return <Alert>{error}</Alert>;
     if (!sampleIds || loadingDefinitions || assayQueryConfigs === undefined) return <LoadingPage title={PAGE_TITLE} />;
 
-    return <AssayResultsForSamplesWithModels sampleIds={sampleIds} queryConfigs={queryConfigs} {...props} />;
+    return <AssayResultsForSamplesWithModels sampleIds={sampleIds} queryConfigs={assayQueryConfigs} {...props} />;
 };
 
 export const AssayResultsForSamplesPage = withAssayModels(AssayResultsForSamplesPageBody);

@@ -20,9 +20,8 @@ import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '.
 import { JobsButton, SampleStorageButton } from '../internal/components/samples/models';
 import { getSampleAliquotsQueryConfig } from '../internal/components/samples/actions';
 import { getOmittedSampleTypeColumns } from '../internal/components/samples/utils';
-import { ViewInfo } from '../internal/ViewInfo';
 import { isAssayEnabled } from '../internal/app/utils';
-import { AssayResultsForSamplesButton } from '../internal/components/assay/AssayResultsForSamplesButton';
+import { AssayResultsForSamplesButton } from './AssayResultsForSamplesButton';
 
 import { SamplesAssayButton } from './SamplesAssayButton';
 import { EntityDeleteModal } from './EntityDeleteModal';

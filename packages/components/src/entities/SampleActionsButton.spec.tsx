@@ -7,7 +7,7 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { PicklistCreationMenuItem } from '../internal/components/picklist/PicklistCreationMenuItem';
 import { AddToPicklistMenuItem } from '../internal/components/picklist/AddToPicklistMenuItem';
 
-import { AssayResultsForSamplesMenuItem } from '../internal/components/assay/AssayResultsForSamplesButton';
+import { AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
 
 import { SampleActionsButton } from './SampleActionsButton';
 

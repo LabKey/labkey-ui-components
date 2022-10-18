@@ -69,8 +69,10 @@ const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props =
             .map(model => model.id);
         // make sure the ASSAY_RUNS_GRID_ID tab is first
         const summaryGridId = `${ASSAY_GRID_ID_PREFIX}:${ASSAY_RUNS_GRID_ID}:${ASSAY_GRID_ID_SUFFIX}`;
-        tabOrder_.splice(tabOrder_.indexOf(summaryGridId), 1);
-        tabOrder_.unshift(summaryGridId);
+        if (tabOrder_.indexOf(summaryGridId) > -1) {
+            tabOrder_.splice(tabOrder_.indexOf(summaryGridId), 1);
+            tabOrder_.unshift(summaryGridId);
+        }
         setTabOrder(tabOrder_);
     }, [allLoaded, tabOrder, allModels]);
 

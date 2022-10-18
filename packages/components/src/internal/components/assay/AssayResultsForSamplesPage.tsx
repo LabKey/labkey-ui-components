@@ -1,6 +1,7 @@
 import React, { FC, memo, useMemo, useEffect, useState } from 'react';
 import { WithRouterProps } from 'react-router';
-import { Filter } from '@labkey/api';
+import { List } from 'immutable';
+import { Filter, Utils } from '@labkey/api';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { useServerContext } from '../base/ServerContext';
@@ -23,16 +24,25 @@ import { isLoading } from '../../../public/LoadingState';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { naturalSortByProperty } from '../../../public/sort';
 
+import { AppURL } from '../../url/AppURL';
+import { ASSAYS_KEY } from '../../app/constants';
+import { SubNav } from '../navigation/SubNav';
+import { ITab } from '../navigation/types';
+
 import { InjectedAssayModel, withAssayModels } from './withAssayModels';
 
 const PAGE_TITLE = 'Assay Results for Samples';
 const SUMMARY_GRID_ID = 'sampleresults-assay-run-count:samples';
 const ASSAY_GRID_ID_PREFIX = 'sampleresults-per-assay';
 
-type Props = WithRouterProps & InjectedAssayModel;
+interface OwnProps {
+    sampleIds: number[];
+}
+
+type Props = OwnProps & WithRouterProps & InjectedAssayModel;
 
 const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props => {
-    const { queryModels, actions } = props;
+    const { queryModels, actions, sampleIds } = props;
     const { user } = useServerContext();
     const [tabOrder, setTabOrder] = useState<string[]>();
     const allModels = Object.values(queryModels);
@@ -69,7 +79,7 @@ const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props =
 
     return (
         <Page title={PAGE_TITLE}>
-            <Section title={PAGE_TITLE}>
+            <Section title={`Assay Results for ${Utils.pluralBasic(sampleIds?.length, 'Sample')}`}>
                 <TabbedGridPanel
                     actions={actions}
                     alwaysShowTabs
@@ -78,7 +88,7 @@ const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props =
                     queryModels={queryModels}
                     showRowCountOnTabs
                     tabOrder={tabOrder}
-                    exportFilename={'AssayResultsForSamples'}
+                    exportFilename="AssayResultsForSamples"
                 />
             </Section>
         </Page>
@@ -141,7 +151,21 @@ const AssayResultsForSamplesPageBody: FC<Props> = props => {
     if (error) return <Alert>{error}</Alert>;
     if (!sampleIds || loadingDefinitions || assayQueryConfigs === undefined) return <LoadingPage title={PAGE_TITLE} />;
 
-    return <AssayResultsForSamplesWithModels queryConfigs={queryConfigs} {...props} />;
+    return <AssayResultsForSamplesWithModels sampleIds={sampleIds} queryConfigs={queryConfigs} {...props} />;
 };
 
 export const AssayResultsForSamplesPage = withAssayModels(AssayResultsForSamplesPageBody);
+
+export const AssayResultsForSamplesSubNav: FC = () => {
+    const parentTab: ITab = {
+        text: 'Assays',
+        url: AppURL.create(ASSAYS_KEY),
+    };
+
+    const tabs = List.of({
+        text: PAGE_TITLE,
+        url: AppURL.create(ASSAYS_KEY, 'sampleresults'),
+    } as ITab);
+
+    return <SubNav tabs={tabs} noun={parentTab} />;
+};

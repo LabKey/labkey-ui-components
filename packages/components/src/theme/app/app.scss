@@ -1,8 +1,20 @@
 .app-body {
     margin-top: 56px;
 }
+
 .app-body.with-sub-nav {
     margin-top: 97px;
+}
+
+// All elements below our app-body need scroll-margin applied in order for scrollIntoView to properly take into account
+// the floating navigation. This is useful for our client code (e.g. ELN ToC) and our Selenium tests which also use
+// scrollIntoView.
+.app-body * {
+    scroll-margin: 56px;
+}
+
+.app-body.with-sub-nav * {
+    scroll-margin: 97px;
 }
 
 .app-page {

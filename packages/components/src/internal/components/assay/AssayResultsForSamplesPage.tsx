@@ -54,11 +54,13 @@ const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props =
             }
         });
 
-        setTabOrder(
-            Object.values(models)
-                .sort(naturalSortByProperty('title'))
-                .map(model => model.id)
-        );
+        const tabOrder_ = Object.values(models)
+            .sort(naturalSortByProperty('title'))
+            .map(model => model.id);
+        // make sure the summary tab is first
+        tabOrder_.splice(tabOrder_.indexOf(SUMMARY_GRID_ID), 1);
+        tabOrder_.unshift(SUMMARY_GRID_ID);
+        setTabOrder(tabOrder_);
     }, [allLoaded, tabOrder, allModels]);
 
     if (!isAssayEnabled()) return <NotFound title={PAGE_TITLE} />;

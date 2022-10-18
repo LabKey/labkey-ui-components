@@ -158,6 +158,19 @@ describe('getSampleAssayDetailEmptyText', () => {
     });
 });
 
+const SUMMARY_GRID_ID = 'assay-detail:assayruncount:1';
+const SUMMARY_GRID_MODEL = makeTestQueryModel(
+    SchemaQuery.create('exp', 'AssayRunsPerSample'),
+    new QueryInfo(),
+    { 1: { RowId: { value: 1 }, Name: { value: 'Name1' } } },
+    ['1'],
+    1
+).mutate({
+    id: SUMMARY_GRID_ID,
+    queryInfoLoadingState: LoadingState.LOADED,
+    rowsLoadingState: LoadingState.LOADED,
+});
+
 const IMPL_PROPS = {
     assayModel,
     sampleModel: modelLoadedWithRow,
@@ -166,7 +179,7 @@ const IMPL_PROPS = {
     assayProtocol: undefined,
     onTabChange: jest.fn,
     actions: makeTestActions(),
-    queryModels: {},
+    queryModels: { [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL },
     user: TEST_USER_READER,
 };
 
@@ -206,6 +219,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
+                    [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL,
                     id1: modelLoadedNoRows,
                     id2: modelLoadedWithRow,
                     id3: modelLoading,
@@ -221,6 +235,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
+                    [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL,
                     id1: modelLoadedNoRows,
                 }}
             />
@@ -234,6 +249,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
+                    [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL,
                     id1: modelLoadedNoRows,
                 }}
                 emptyAssayResultDisplay={
@@ -252,6 +268,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
+                    [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL,
                     id1: modelLoadedNoRows.mutate({ id: 'id1' }),
                     id2: modelLoadedWithRow.mutate({ id: 'id2' }),
                 }}
@@ -259,10 +276,11 @@ describe('SampleAssayDetailBodyImpl', () => {
         );
         validate(wrapper, false, undefined, true);
         const modelKeys = Object.keys(wrapper.find(TabbedGridPanel).prop('queryModels'));
-        expect(modelKeys.indexOf('id1')).toBe(0);
-        expect(modelKeys.indexOf('id2')).toBe(1);
+        expect(modelKeys.indexOf(SUMMARY_GRID_ID)).toBe(0);
+        expect(modelKeys.indexOf('id1')).toBe(1);
+        expect(modelKeys.indexOf('id2')).toBe(2);
         const tabKeys = Object.keys(wrapper.find(TabbedGridPanel).prop('tabOrder'));
-        expect(tabKeys.length).toBe(1);
+        expect(tabKeys.length).toBe(2);
         expect(tabKeys[0]).toBe('0');
         wrapper.unmount();
     });
@@ -272,6 +290,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
+                    [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL,
                     id1: modelLoadedNoRows.mutate({ id: 'id1', title: 'C' }),
                     id2: modelLoadedWithRow.mutate({ id: 'id2', title: 'B' }),
                     id3: modelLoadedWithRow.mutate({ id: 'id3', title: 'A' }),
@@ -279,7 +298,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             />
         );
         validate(wrapper, false, undefined, true);
-        expect(wrapper.find(TabbedGridPanel).prop('tabOrder')).toStrictEqual(['id3', 'id2']);
+        expect(wrapper.find(TabbedGridPanel).prop('tabOrder')).toStrictEqual(['id3', 'id2', SUMMARY_GRID_ID]);
         wrapper.unmount();
     });
 });

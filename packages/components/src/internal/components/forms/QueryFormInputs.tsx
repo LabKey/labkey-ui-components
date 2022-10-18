@@ -34,6 +34,8 @@ import { DatePickerInput } from './input/DatePickerInput';
 import { TextChoiceInput } from './input/TextChoiceInput';
 
 import { getQueryFormLabelFieldName, isQueryFormLabelField } from './utils';
+import { isAllSamplesSchema } from '../samples/utils';
+import { SAMPLES_WITH_TYPES_FILTER } from '../samples/constants';
 
 export interface QueryFormInputsProps {
     allowFieldDisable?: boolean;
@@ -231,6 +233,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
                             const id = col.fieldKey + i + (componentKey ?? '');
+                            const queryFilters = isAllSamplesSchema(col.lookup.schemaQuery) ? List([SAMPLES_WITH_TYPES_FILTER]) : undefined;
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
@@ -255,6 +258,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
                                         previewOptions={col.previewOptions === true || showQuerySelectPreviewOptions}
+                                        queryFilters={queryFilters}
                                         renderFieldLabel={renderFieldLabel}
                                         required={col.required}
                                         schemaQuery={col.lookup.schemaQuery}

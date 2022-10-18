@@ -3,6 +3,7 @@ import { IDomainField } from '../domainproperties/models';
 import { SAMPLE_TYPE } from '../domainproperties/PropDescType';
 
 import { FindField } from './models';
+import { Filter } from '@labkey/api';
 
 export enum ALIQUOT_FILTER_MODE {
     all = 'all',
@@ -203,11 +204,5 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
     includeColumn: ['AliquotedFromLSID'],
 };
 
-export const PROJECT_AUDIT_QUERY = { value: 'containerauditevent', label: 'Project Events' };
-export const ASSAY_AUDIT_QUERY = { value: 'experimentauditevent', label: 'Assay Events' };
-export const WORKFLOW_AUDIT_QUERY = {
-    value: 'samplesworkflowauditevent',
-    label: 'Sample Workflow Events',
-    hasDetail: true,
-};
-export const SOURCE_AUDIT_QUERY = { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true };
+// Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded everywhere in the application
+export const SAMPLES_WITH_TYPES_FILTER = Filter.create('SampleSet', 'Material',  Filter.Types.NEQ);

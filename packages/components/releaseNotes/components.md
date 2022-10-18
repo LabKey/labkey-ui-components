@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 46037: Exclude samples from bogus 'Material' sample type created by some plate-based assays (e.g., NAB)
+  * Add `SAMPLES_WITH_TYPES_FILTER` constant
+  * Apply filter for lookups to exp.materials in query selects
+
 ### version 2.233.2
 *Released*: 17 October 2022
 * Update `GridPanel` to set `calcWidths` only when room is needed for extra icons

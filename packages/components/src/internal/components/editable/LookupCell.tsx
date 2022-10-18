@@ -25,6 +25,8 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { QuerySelect } from '../forms/QuerySelect';
 import { ViewInfo } from '../../ViewInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import { isAllSamplesSchema } from '../samples/utils';
+import { SAMPLES_WITH_TYPES_FILTER } from '../samples/constants';
 
 export const customStyles = {
     control: provided => ({
@@ -130,13 +132,18 @@ export class LookupCell extends PureComponent<LookupCellProps> {
 
         const lookup = col.lookup;
         const isMultiple = this.isMultiValue();
-        let queryFilters;
+        let queryFilters: List<Filter.IFilter> = List();
         if (filteredLookupValues) {
-            queryFilters = List([Filter.create(lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN)]);
+            queryFilters = queryFilters.push(Filter.create(lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN));
         }
 
         if (filteredLookupKeys) {
-            queryFilters = List([Filter.create(lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN)]);
+            queryFilters = queryFilters.push(Filter.create(lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN));
+        }
+
+        // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded here
+        if (isAllSamplesSchema(lookup.schemaQuery)) {
+            queryFilters = queryFilters.push(SAMPLES_WITH_TYPES_FILTER)
         }
 
         return (

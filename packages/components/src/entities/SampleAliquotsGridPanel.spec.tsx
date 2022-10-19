@@ -15,6 +15,11 @@ import { EntityDeleteModal } from './EntityDeleteModal';
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
 
 import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
+import {TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT} from "../internal/productFixtures";
+
+beforeEach(() => {
+    LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
+});
 
 describe('SampleAliquotsGridPanel', () => {
     const SCHEMA_QUERY = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');
@@ -32,6 +37,29 @@ describe('SampleAliquotsGridPanel', () => {
     };
 
     test('check buttons with permissions', () => {
+        const DummyButton1 = () => <div className="storage-button-test"> foo </div>;
+        const DummyButton2 = () => <div className="jobs-button-test"> bar </div>;
+
+        const wrapper = mountWithAppServerContext(
+            <SampleAliquotsGridPanelImpl
+                {...DEFAULT_PROPS}
+                user={TEST_USER_STORAGE_EDITOR}
+                lineageUpdateAllowed
+                storageButton={DummyButton1}
+                jobsButton={DummyButton2}
+            />,
+            {},
+            { user: TEST_USER_STORAGE_EDITOR }
+        );
+        expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(1);
+        const items = wrapper.find(ResponsiveMenuButtonGroup).prop('items');
+        expect(items.length).toBe(5);
+        wrapper.unmount();
+    });
+
+    test('LKSM Starter, without assay', () => {
+        LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
+
         const DummyButton1 = () => <div className="storage-button-test"> foo </div>;
         const DummyButton2 = () => <div className="jobs-button-test"> bar </div>;
 

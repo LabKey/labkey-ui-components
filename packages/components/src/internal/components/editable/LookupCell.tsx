@@ -130,13 +130,17 @@ export class LookupCell extends PureComponent<LookupCellProps> {
 
         const lookup = col.lookup;
         const isMultiple = this.isMultiValue();
-        let queryFilters;
+        let queryFilters: List<Filter.IFilter> = List();
         if (filteredLookupValues) {
-            queryFilters = List([Filter.create(lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN)]);
+            queryFilters = queryFilters.push(Filter.create(lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN));
         }
 
         if (filteredLookupKeys) {
-            queryFilters = List([Filter.create(lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN)]);
+            queryFilters = queryFilters.push(Filter.create(lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN));
+        }
+
+        if (lookup.hasQueryFilters()) {
+            queryFilters = queryFilters.push(...lookup.getQueryFilters())
         }
 
         return (

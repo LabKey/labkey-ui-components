@@ -19,14 +19,7 @@ function getAssayResultsHref(
     currentProductId?: string,
     targetProductId?: string
 ): string {
-    const params = getURLParamsForSampleSelectionKey(
-        model,
-        picklistName,
-        isAssay,
-        sampleFieldKey,
-        true
-    );
-
+    const params = getURLParamsForSampleSelectionKey(model, picklistName, isAssay, sampleFieldKey, true);
     const actionUrl = createProductUrlFromParts(targetProductId, currentProductId, params, ASSAYS_KEY, 'sampleresults');
     return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
 }

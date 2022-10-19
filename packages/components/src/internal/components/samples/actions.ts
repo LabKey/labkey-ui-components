@@ -728,7 +728,7 @@ export function getSampleAliquotRows(sampleId: number | string): Promise<Array<R
  * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
  * provide a filter for the sample column or columns defined in the assay design.
  */
-function createQueryConfigFilteredBySample(
+export function createQueryConfigFilteredBySample(
     model: AssayDefinitionModel,
     value,
     singleFilter: Filter.IFilterType,

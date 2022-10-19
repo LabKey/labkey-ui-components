@@ -1,4 +1,5 @@
 import { List, fromJS } from 'immutable';
+import { Filter } from '@labkey/api';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
@@ -6,7 +7,16 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DataClassDataType, SampleTypeDataType } from '../entities/constants';
 import { EntityChoice, IEntityTypeOption } from '../entities/models';
 
-import { getLineageEditorUpdateColumns, getUpdatedLineageRows, getRowIdsFromSelection } from './actions';
+import { AssayDefinitionModel } from '../../AssayDefinitionModel';
+import assayDefNoSampleIdJSON from '../../../test/data/assayDefinitionModelNoSampleId.json';
+import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
+
+import {
+    getLineageEditorUpdateColumns,
+    getUpdatedLineageRows,
+    getRowIdsFromSelection,
+    createQueryConfigFilteredBySample,
+} from './actions';
 
 let DATA = fromJS({
     '1': {
@@ -196,5 +206,65 @@ describe('getSampleRowIdsFromSelection', () => {
     test('not empty', () => {
         expect(JSON.stringify(getRowIdsFromSelection(List.of('1', '2', '3')))).toBe('[1,2,3]');
         expect(JSON.stringify(getRowIdsFromSelection(List.of(1, 2, 3)))).toBe('[1,2,3]');
+    });
+});
+
+describe('createQueryConfigFilteredBySample', () => {
+    const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
+    const modelWithoutSampleId = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
+
+    test('no sample column', () => {
+        expect(createQueryConfigFilteredBySample(modelWithoutSampleId, 1, Filter.Types.EQUALS, () => 'whereclause')).toBeUndefined();
+    });
+
+    test('with sample column', () => {
+        const result = createQueryConfigFilteredBySample(
+            modelWithSampleId,
+            1,
+            Filter.Types.EQUALS,
+            () => 'whereclause'
+        );
+        expect(result).toBeDefined();
+        expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
+        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/RowId~eq');
+        expect(result.omittedColumns).toBeUndefined();
+        expect(result.schemaQuery.getKey()).toBe('assay$pgeneral$pgpat 1/data');
+        expect(result.title).toBe('GPAT 1');
+        expect(result.urlPrefix).toBe('GPAT 1');
+    });
+
+    test('useLsid', () => {
+        const result = createQueryConfigFilteredBySample(
+            modelWithSampleId,
+            1,
+            Filter.Types.EQUALS,
+            () => 'whereclause',
+            true
+        );
+        expect(result).toBeDefined();
+        expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
+        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/LSID~eq');
+        expect(result.omittedColumns).toBeUndefined();
+        expect(result.schemaQuery.getKey()).toBe('assay$pgeneral$pgpat 1/data');
+        expect(result.title).toBe('GPAT 1');
+        expect(result.urlPrefix).toBe('GPAT 1');
+    });
+
+    test('omitSampleCols', () => {
+        const result = createQueryConfigFilteredBySample(
+            modelWithSampleId,
+            1,
+            Filter.Types.EQUALS,
+            () => 'whereclause',
+            false,
+            true
+        );
+        expect(result).toBeDefined();
+        expect(result.baseFilters[0].getURLParameterValue()).toBe(1);
+        expect(result.baseFilters[0].getURLParameterName()).toBe('query.SampleID/RowId~eq');
+        expect(result.omittedColumns).toStrictEqual(['SampleID']);
+        expect(result.schemaQuery.getKey()).toBe('assay$pgeneral$pgpat 1/data');
+        expect(result.title).toBe('GPAT 1');
+        expect(result.urlPrefix).toBe('GPAT 1');
     });
 });

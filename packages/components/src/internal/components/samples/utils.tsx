@@ -204,8 +204,6 @@ export function getURLParamsForSampleSelectionKey(
     picklistName?: string,
     isAssay?: boolean,
     sampleFieldKey?: string,
-    currentProductId?: string,
-    targetProductId?: string,
     ignoreFilter?: boolean
 ): Record<string, any> {
     const { keyValue, queryInfo, selectionKey } = model;

@@ -24,8 +24,6 @@ function getAssayResultsHref(
         picklistName,
         isAssay,
         sampleFieldKey,
-        currentProductId,
-        targetProductId,
         true
     );
 

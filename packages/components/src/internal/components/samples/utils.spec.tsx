@@ -2,29 +2,28 @@ import React from 'react';
 
 import { Filter } from '@labkey/api';
 
-import { mount } from 'enzyme';
-
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';
 
 import { TEST_USER_GUEST, TEST_USER_READER } from '../../userFixtures';
 
 import { SCHEMAS } from '../../schemas';
-import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { OperationConfirmationData } from '../entities/models';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { QueryInfo } from '../../../public/QueryInfo';
 
-import { SAMPLE_STATE_TYPE_COLUMN_NAME, SAMPLE_STORAGE_COLUMNS, SampleOperation, SampleStateType } from './constants';
+import { SAMPLE_STATE_TYPE_COLUMN_NAME, SampleOperation, SampleStateType } from './constants';
 import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     getSampleStatus,
     getSampleStatusType,
+    getURLParamsForSampleSelectionKey,
     isSampleOperationPermitted,
     isSamplesSchema,
 } from './utils';
+import {makeTestQueryModel} from "../../../public/QueryModel/testUtils";
+import {QueryInfo} from "../../../public/QueryInfo";
 
 const CHECKED_OUT_BY_FIELD = SCHEMAS.INVENTORY.CHECKED_OUT_BY_FIELD;
 const INVENTORY_COLS = SCHEMAS.INVENTORY.INVENTORY_COLS;
@@ -322,5 +321,38 @@ describe('getSampleStatus', () => {
         expect(getSampleStatus({ 'SampleID/SampleState/Description': { value: 'Desc2' } }).description).toBe('Desc2');
         expect(getSampleStatus({ Description: { value: undefined } }).description).toBeUndefined();
         expect(getSampleStatus({ Description: { value: 'Desc3' } }).description).toBe('Desc3');
+    });
+});
+
+const TEST_SQ = SchemaQuery.create('schema', 'query');
+const TEST_QUERY_INFO = new QueryInfo({ schemaQuery: TEST_SQ });
+const TEST_MODEL = makeTestQueryModel(TEST_SQ, TEST_QUERY_INFO).mutate({ id: 'model-id' });
+
+describe('getURLParamsForSampleSelectionKey', () => {
+    test('default props', () => {
+        expect(getURLParamsForSampleSelectionKey(TEST_MODEL)).toStrictEqual({ selectionKey: 'model-id' });
+    });
+
+    test('picklist', () => {
+        expect(getURLParamsForSampleSelectionKey(TEST_MODEL, 'picklist1')).toStrictEqual({
+            selectionKey: 'model-id',
+            picklistName: 'picklist1',
+        });
+    });
+
+    test('assay', () => {
+        expect(getURLParamsForSampleSelectionKey(TEST_MODEL, undefined, true, 'Name')).toStrictEqual({
+            selectionKey: 'model-id',
+            assayProtocol: 'schema',
+            isAssay: true,
+            sampleFieldKey: 'Name',
+        });
+    });
+
+    test('keyValue', () => {
+        const model = TEST_MODEL.mutate({ keyValue: 123 });
+        expect(getURLParamsForSampleSelectionKey(model)).toStrictEqual({
+            selectionKey: 'appkey|schema/query|123',
+        });
     });
 });

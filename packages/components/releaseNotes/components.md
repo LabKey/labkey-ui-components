@@ -6,7 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Freezer Management: Adding samples across terminal storage locations
     * Support tabbed Bulk Edit and Editable Grid
     * Exclude readonly cells from being updated by bulk update
-    * suppport queryFilters for select input fields in bulk update form
+    * support queryFilters for select input fields in bulk update form
 
 ### version 2.234.0
 *Released*: 19 October 2022

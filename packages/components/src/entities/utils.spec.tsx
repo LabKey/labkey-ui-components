@@ -4,6 +4,7 @@ import { List } from 'immutable';
 
 import { SamplesEditButtonSections } from '../internal/components/samples/utils';
 import {
+    ALIQUOT_FILTER_MODE,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
@@ -19,6 +20,12 @@ import { makeQueryInfo } from '../internal/testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 
+import { AssayStateModel } from '../internal/components/assay/models';
+import { LoadingState } from '../public/LoadingState';
+import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
+import assayDefJSON from '../test/data/assayDefinitionModel.json';
+import assayDefNoSampleIdJSON from '../test/data/assayDefinitionModelNoSampleId.json';
+
 import {
     getSampleWizardURL,
     filterSampleRowsForOperation,
@@ -29,7 +36,10 @@ import {
     createEntityParentKey,
     parentValuesDiffer,
     getUpdatedLineageRowsForBulkEdit,
+    getSamplesAssayGridQueryConfigs,
 } from './utils';
+import {getTestAPIWrapper} from "../internal/APIWrapper";
+import {getSamplesTestAPIWrapper} from "../internal/components/samples/APIWrapper";
 
 describe('getCrossFolderSelectionMsg', () => {
     test('without cross folder selection', () => {
@@ -802,5 +812,96 @@ describe('getUpdatedLineageRowsForBulkEdit', () => {
                 'MaterialInputs/Label 1': 'Val1,Val2',
             },
         ]);
+    });
+});
+
+describe('getSamplesAssayGridQueryConfigs', () => {
+    const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
+    const modelWithoutSampleId = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
+    const ASSAY_STATE_MODEL = new AssayStateModel({
+        definitionsLoadingState: LoadingState.LOADED,
+        definitions: [modelWithSampleId, modelWithoutSampleId],
+    });
+
+    test('default props', async () => {
+        const configs = await getSamplesAssayGridQueryConfigs(
+            getTestAPIWrapper(jest.fn, {
+                samples: getSamplesTestAPIWrapper(jest.fn, {
+                    getSampleAssayResultViewConfigs: () => Promise.resolve([]),
+                }),
+            }).samples,
+            ASSAY_STATE_MODEL,
+            'S-1',
+            [{ RowId: { value: 1 }, Name: { value: 'S-1' } }],
+            'suffix',
+            'prefix'
+        );
+        expect(Object.keys(configs)).toStrictEqual(['prefix:5051:suffix', 'prefix:assayruncount:suffix']);
+        expect(configs['prefix:5051:suffix'].baseFilters[0].getURLParameterValue()).toBe('1');
+        expect(configs['prefix:assayruncount:suffix'].baseFilters[0].getURLParameterValue()).toBe('1');
+    });
+
+    test('sampleAssayResultViewConfigs', async () => {
+        LABKEY.container.activeModules = ['testModule'];
+
+        const configs = await getSamplesAssayGridQueryConfigs(
+            getTestAPIWrapper(jest.fn, {
+                samples: getSamplesTestAPIWrapper(jest.fn, {
+                    getSampleAssayResultViewConfigs: () => Promise.resolve([{
+                        filterKey: 'testFilterKey',
+                        moduleName: 'testModule',
+                        queryName: 'testQuery',
+                        schemaName: 'testSchema',
+                        title: 'testTitle'
+                    }]),
+                }),
+            }).samples,
+            ASSAY_STATE_MODEL,
+            'S-1',
+            [{ RowId: { value: 1 }, Name: { value: 'S-1' } }],
+            'suffix',
+            'prefix'
+        );
+        expect(Object.keys(configs)).toStrictEqual([
+            'prefix:5051:suffix',
+            'prefix:assayruncount:suffix',
+            'prefix:testTitle:S-1',
+        ]);
+        expect(configs['prefix:5051:suffix'].baseFilters[0].getURLParameterValue()).toBe('1');
+        expect(configs['prefix:assayruncount:suffix'].baseFilters[0].getURLParameterValue()).toBe('1');
+        expect(configs['prefix:testTitle:S-1'].baseFilters[0].getURLParameterValue()).toBe('1');
+    });
+
+    test('activeSampleAliquotType', async () => {
+        const configs = await getSamplesAssayGridQueryConfigs(
+            getTestAPIWrapper(jest.fn, {
+                samples: getSamplesTestAPIWrapper(jest.fn, {
+                    getSampleAssayResultViewConfigs: () => Promise.resolve([]),
+                }),
+            }).samples,
+            ASSAY_STATE_MODEL,
+            'S-1',
+            [{ RowId: { value: 1 }, Name: { value: 'S-1' } }],
+            'suffix',
+            'prefix',
+            undefined,
+            true,
+            ALIQUOT_FILTER_MODE.aliquots,
+            [
+                { RowId: { value: 1 }, Name: { value: 'S-1' } },
+                { RowId: { value: 2 }, Name: { value: 'S-1-aliquot' } },
+            ],
+            'unfiltered'
+        );
+        expect(Object.keys(configs)).toStrictEqual([
+            'prefix:5051:suffix',
+            'prefix:assayruncount:suffix',
+            'unfiltered:5051:suffix',
+            'unfiltered:assayruncount:suffix',
+        ]);
+        expect(configs['prefix:5051:suffix'].baseFilters[0].getURLParameterValue()).toBe('1');
+        expect(configs['prefix:assayruncount:suffix'].baseFilters[0].getURLParameterValue()).toBe('1');
+        expect(configs['unfiltered:5051:suffix'].baseFilters[0].getURLParameterValue()).toBe('1;2');
+        expect(configs['unfiltered:assayruncount:suffix'].baseFilters[0].getURLParameterValue()).toBe('1;2');
     });
 });

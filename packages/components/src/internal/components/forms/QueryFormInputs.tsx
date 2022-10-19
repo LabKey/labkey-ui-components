@@ -234,6 +234,9 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
                             const id = col.fieldKey + i + (componentKey ?? '');
+                            const queryFilters = queryFilters?.[col.fieldKey] ?? (col.lookup.hasQueryFilters()
+                                ? List(col.lookup.getQueryFilters())
+                                : undefined);
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
@@ -258,18 +261,13 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         onToggleDisable={this.onToggleDisable}
                                         placeholder="Select or type to search..."
                                         previewOptions={col.previewOptions === true || showQuerySelectPreviewOptions}
-                                        queryFilters={
-                                            col.lookup.hasQueryFilters()
-                                                ? List(col.lookup.getQueryFilters())
-                                                : undefined
-                                        }
+                                        queryFilters={queryFilters}
                                         renderFieldLabel={renderFieldLabel}
                                         required={col.required}
                                         schemaQuery={col.lookup.schemaQuery}
                                         showLabel
                                         value={value}
                                         valueColumn={col.lookup.keyColumn}
-                                        queryFilters={queryFilters?.[col.fieldKey]}
                                     />
                                 </React.Fragment>
                             );

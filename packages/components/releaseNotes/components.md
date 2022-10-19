@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.235.0
-*Released*: ?? October 2022
+*Released*: 19 October 2022
 * EditInlineField: Add showToggle prop
 * Remove Footer
 * Add new app layout styles

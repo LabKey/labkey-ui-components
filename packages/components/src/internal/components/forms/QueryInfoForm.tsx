@@ -131,6 +131,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
 
         onFormChange?.();
 
+        // for tabbed bulk edit/editable grid, needs a way to pass form data from bulk to editable grid without submit
         if (onFormChangeWithData) {
             const row = this.formRef?.['current']?.['getModel']?.();
             if (row) {

@@ -193,9 +193,9 @@ export interface BulkAddData {
 }
 
 export interface BulkUpdateQueryInfoFormProps extends QueryInfoFormProps {
+    // the row ind to exclude for bulk update, row might be readonly or locked
     excludeRowIdx?: number[];
     onClickBulkUpdate?: (selected: Set<number>) => Promise<boolean>;
-    // the row ind to exclude for bulk update, row might be readonly or locked
     queryFilters?: { [key: string]: List<Filter.IFilter> };
     warning?: string;
 }

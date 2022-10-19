@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update `AssayImportSubMenuItem` to check for cross-folder selection when in the project container
+* Update container filters for assay import panels to use `currentPlusProjecAndShared`
+
 ### version 2.234.0
 *Released*: 19 October 2022
 * Issue 46037: Exclude samples from bogus 'Material' sample type created by some plate-based assays (e.g., NAB)

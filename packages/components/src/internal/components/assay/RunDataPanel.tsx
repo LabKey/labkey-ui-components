@@ -23,7 +23,7 @@ import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { EditorModel, EditorModelProps } from '../../models';
 
-import { helpLinkNode, DATA_IMPORT_TOPIC } from '../../util/helpLinks';
+import { DATA_IMPORT_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { EditableGridPanel } from '../editable/EditableGridPanel';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
@@ -38,6 +38,7 @@ import { Alert } from '../base/Alert';
 import { getRunPropertiesFileName } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
 import { getServerFilePreview } from './utils';
+import { Query } from '@labkey/api';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;
@@ -314,6 +315,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 title: 'Bulk Insert Assay Rows',
                                                 header: 'Add a batch of assay data rows that will share the properties set below.',
                                             }}
+                                            containerFilter={Query.containerFilter.currentPlusProjectAndShared}
                                             disabled={currentStep !== AssayUploadTabs.Grid}
                                             editorModel={editorModel}
                                             emptyGridMsg="Start by adding the quantity of assay data rows you want to create."

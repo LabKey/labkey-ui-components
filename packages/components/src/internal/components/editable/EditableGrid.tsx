@@ -211,16 +211,16 @@ export interface SharedEditableGridProps {
     allowRemove?: boolean;
     bordered?: boolean;
     bulkAddProps?: Partial<QueryInfoFormProps>;
+    bulkAddText?: string;
     bulkRemoveText?: string;
     bulkUpdateProps?: Partial<BulkUpdateQueryInfoFormProps>;
     bulkUpdateText?: string;
+    cancelBtnProps?: EditableGridBtnProps;
     columnMetadata?: Map<string, EditableColumnMetadata>;
     condensed?: boolean;
     containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
     emptyGridMsg?: string;
-    exportColFilter?: (col: QueryColumn) => boolean;
-    extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
     hideCountCol?: boolean;
     insertColumns?: List<QueryColumn>;
@@ -237,9 +237,9 @@ export interface SharedEditableGridProps {
     updateColumns?: List<QueryColumn>;
     // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
     showAsTab?: boolean;
-    bulkAddText?: string;
+    extraExportColumns?: Array<Partial<QueryColumn>>;
     showBulkTabOnLoad?: boolean;
-    cancelBtnProps?: EditableGridBtnProps;
+    exportColFilter?: (col: QueryColumn) => boolean;
     tabBtnProps?: EditableGridBtnProps;
     primaryBtnProps?: EditableGridBtnProps;
 }
@@ -1262,7 +1262,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return;
         }
 
-        this.bulkUpdate(pendingBulkFormData).then((updates) => {
+        this.bulkUpdate(pendingBulkFormData).then(updates => {
             this.setState(() => ({
                 pendingBulkFormData: undefined,
             }));
@@ -1385,16 +1385,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                             <Nav bsStyle="tabs">
                                 {/* {allowBulkAdd && <NavItem eventKey={EditableGridTabs.BulkAdd}>Add Bulk</NavItem>} TODO tabbed bulk add not yet supported */}
                                 {allowBulkUpdate && (
-                                    <NavItem
-                                        disabled={bulkDisabled}
-                                        eventKey={EditableGridTabs.BulkUpdate}
-                                    >
+                                    <NavItem disabled={bulkDisabled} eventKey={EditableGridTabs.BulkUpdate}>
                                         Edit Bulk
                                     </NavItem>
                                 )}
-                                <NavItem
-                                    disabled={gridDisabled}
-                                    eventKey={EditableGridTabs.Grid}>
+                                <NavItem disabled={gridDisabled} eventKey={EditableGridTabs.Grid}>
                                     Edit Individually
                                 </NavItem>
                             </Nav>

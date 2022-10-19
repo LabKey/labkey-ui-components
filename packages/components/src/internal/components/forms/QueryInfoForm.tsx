@@ -54,16 +54,17 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     // allow passing of full form data, compare with onFormChange
     onFormChangeWithData?: (formData?: any) => void;
     onHide?: () => void;
+    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSuccess?: (data: any, submitForEdit: boolean) => void;
     pluralNoun?: string;
-    queryInfo: QueryInfo; // required by QueryInfoForm
+    // required by QueryInfoForm
+    queryInfo: QueryInfo;
     showErrorsAtBottom?: boolean;
     singularNoun?: string;
     submitForEditText?: string;
     submitText?: string;
     title?: string;
-    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
 }
 
 interface State {

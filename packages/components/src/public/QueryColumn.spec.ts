@@ -2,7 +2,28 @@ import { FieldKey } from '@labkey/api';
 
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 
-import { insertColumnFilter, QueryColumn } from './QueryColumn';
+import { insertColumnFilter, QueryColumn, QueryLookup } from './QueryColumn';
+
+describe('QueryLookup', () => {
+    test("Not samples lookup", () => {
+        const lookup = QueryLookup.create({
+            schemaName: 'test',
+            queryName: 'lookup'
+        });
+        expect(lookup.hasQueryFilters()).toBe(false);
+        expect(lookup.getQueryFilters()).toBeUndefined();
+    });
+
+    test("Samples lookup", () => {
+        const lookup = QueryLookup.create({
+            schemaName: 'exp',
+            queryName: 'materials'
+        });
+        expect(lookup.hasQueryFilters()).toBe(true);
+        expect(lookup.getQueryFilters()).toHaveLength(1);
+    });
+
+});
 
 describe('QueryColumn', () => {
     // prepare stuff we need

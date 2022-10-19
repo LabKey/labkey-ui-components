@@ -6,7 +6,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Freezer Management: Adding samples across terminal storage locations
     * TODO
 
-### version 2.233.2
+### version 2.234.0
+*Released*: 19 October 2022
+* Issue 46037: Exclude samples from bogus 'Material' sample type created by some plate-based assays (e.g., NAB)
+  * Add `SAMPLES_WITH_TYPES_FILTER` constant
+  * Apply filter for lookups to exp.materials in query selects
+
+### version 2.233.3
 *Released*: 17 October 2022
 * Update `GridPanel` to set `calcWidths` only when room is needed for extra icons
 * Update `QueryConfig` to include an optional `filterArray` property that can be passed through to `QueryModel`

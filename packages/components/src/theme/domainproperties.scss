@@ -430,13 +430,21 @@
   cursor: default
 }
 
+.domain-field-row:first-child {
+    border-top: none;
+}
+
 .domain-floating-hdr {
     background-color: $white;
     border-color: transparent;
+    border-bottom-color: #cccccc;
     margin-bottom: 0;
     padding-top: 5px;
     padding-bottom: 15px;
     color: $gray-dark;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 
     .domain-row-action-section {
         padding-top: 0;
@@ -445,6 +453,13 @@
     .domain-field-check-icon {
         padding-left: 10px;
     }
+}
+.app-body .domain-floating-hdr {
+    top: 56px;
+}
+
+.app-body.with-sub-nav .domain-floating-hdr {
+    top: 97px;
 }
 
 .domain-form-preHdr-row {

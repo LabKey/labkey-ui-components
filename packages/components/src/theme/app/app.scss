@@ -1,19 +1,25 @@
-.content-wrapper {
-  min-height: calc( 100vh - ( #{$header-height} + #{$footer-height} ) );
-  width: 100%;
-  padding: 0 20px;
+.app-body {
+    margin-top: 56px;
 }
 
-.app-content-wrapper {
-  padding-top: $header-height;
+.app-body.with-sub-nav {
+    margin-top: 97px;
+}
 
-  &.with-sub-nav {
-    padding-top: $header-spacing-no-scroll;
+// All elements below our app-body need scroll-margin applied in order for scrollIntoView to properly take into account
+// the floating navigation. This is useful for our client code (e.g. ELN ToC) and our Selenium tests which also use
+// scrollIntoView.
+.app-body * {
+    scroll-margin: 56px;
+}
 
-    & > .content-wrapper {
-      min-height: calc( 100vh - ( #{$header-spacing-no-scroll} + #{$footer-height} ) );
-    }
-  }
+.app-body.with-sub-nav * {
+    scroll-margin: 97px;
+}
+
+.app-page {
+    padding-top: 20px;
+    padding-bottom: 40px;
 }
 
 .page-header {

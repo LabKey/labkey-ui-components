@@ -11,9 +11,7 @@ export interface ITab {
 
 export interface SubNavGlobalContext {
     clearNav: () => void;
-    ignoreShow: boolean;
     noun: ITab;
-    setIgnoreShow: (ignoreScrolled: boolean) => void;
     setNoun: (noun: ITab) => void;
     setTabs: (tabs: List<ITab>) => void;
     tabs: List<ITab>;

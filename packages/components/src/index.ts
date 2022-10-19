@@ -159,7 +159,6 @@ import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMe
 import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
 import { getMenuItemForSectionKey, getMenuItemsForSection } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
-import { Footer } from './internal/components/base/Footer';
 import { Setting } from './internal/components/base/Setting';
 import { ValueList } from './internal/components/base/ValueList';
 
@@ -695,7 +694,6 @@ import {
     SET_RELOAD_REQUIRED,
     SOURCE_TYPE_KEY,
     SOURCES_KEY,
-    STICKY_HEADER_HEIGHT,
     TEAM_KEY,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
@@ -811,7 +809,6 @@ const App = {
     PICKLIST_HOME_HREF,
     WORKFLOW_HOME_HREF,
     NOTIFICATION_TIMEOUT,
-    STICKY_HEADER_HEIGHT,
     SERVER_NOTIFICATION_MAX_ROWS,
     TEST_USER_GUEST,
     TEST_USER_READER,
@@ -1337,7 +1334,6 @@ export {
     Section,
     ConfirmModal,
     Cards,
-    Footer,
     DragDropHandle,
     FieldExpansionToggle,
     LoadingModal,

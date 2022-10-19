@@ -40,8 +40,10 @@ export const SearchBox: FC<Props> = memo(props => {
     return (
         <form className="grid-panel__search-form" onSubmit={onSubmit}>
             <div className="form-group">
-                <i className="fa fa-search grid-panel__search-icon" />
-                <span className="grid-panel__input-group">
+                <span className="grid-panel__input-group input-group">
+                    <span className="input-group-addon">
+                        <i className="fa fa-search" />
+                    </span>
                     <input
                         className="form-control grid-panel__search-input"
                         onChange={onChange}
@@ -51,7 +53,11 @@ export const SearchBox: FC<Props> = memo(props => {
                         value={searchValue}
                     />
                     {appliedSearch?.length > 0 && (
-                        <i className="fa fa-remove grid-panel__remove-icon" onClick={removeSearch} />
+                        <span className="input-group-btn">
+                            <button type="button" className="btn btn-default" onClick={removeSearch}>
+                                <span className="fa fa-remove" />
+                            </button>
+                        </span>
                     )}
                 </span>
             </div>

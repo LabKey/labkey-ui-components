@@ -12,9 +12,9 @@ import { getImportItemsForAssayDefinitions } from './actions';
 import { InjectedAssayModel, withAssayModels } from './withAssayModels';
 import { getCrossFolderSelectionResult } from '../entities/actions';
 import { MenuOption, SubMenu } from '../menus/SubMenu';
-import { EntityCrossProjectSelectionConfirmModal } from '../../../entities';
 import { List } from 'immutable';
 import { isProjectContainer } from '../../app/utils';
+import { EntityCrossProjectSelectionConfirmModal } from '../entities/EntityCrossProjectSelectionConfirmModal';
 
 interface Props extends SubMenuItemProps {
     currentProductId?: string;

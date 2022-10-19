@@ -221,27 +221,30 @@ export interface SharedEditableGridProps {
     containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
     emptyGridMsg?: string;
+    exportColFilter?: (col: QueryColumn) => boolean;
+    extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
     hideCountCol?: boolean;
     insertColumns?: List<QueryColumn>;
     isSubmitting?: boolean;
-    lockedRows?: List<any>; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
+    // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
+    lockedRows?: List<any>;
     maxRows?: number;
-    notDeletable?: List<any>; // list of key values that cannot be deleted.
-    processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
-    readOnlyColumns?: List<string>;
-    readonlyRows?: List<any>; // list of key values for rows that are readonly.
+    // list of key values that cannot be deleted.
+    notDeletable?: List<any>;
+    primaryBtnProps?: EditableGridBtnProps;
     removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
     striped?: boolean;
     updateColumns?: List<QueryColumn>;
     // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
     showAsTab?: boolean;
-    extraExportColumns?: Array<Partial<QueryColumn>>;
+    processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     showBulkTabOnLoad?: boolean;
-    exportColFilter?: (col: QueryColumn) => boolean;
+    readOnlyColumns?: List<string>;
     tabBtnProps?: EditableGridBtnProps;
-    primaryBtnProps?: EditableGridBtnProps;
+    // list of key values for rows that are readonly.
+    readonlyRows?: List<any>;
 }
 
 export interface EditableGridBtnProps {

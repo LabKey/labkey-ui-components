@@ -22,6 +22,7 @@ import { SamplesDeriveButtonBase } from './SamplesDeriveButtonBase';
 import { SamplesEditButton } from './SamplesEditButton';
 import { SampleAliquotDetailHeader } from './SampleAliquotDetailHeader';
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
+import { CreateSamplesMenuItem } from './CreateSamplesMenuItem';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
 import { SamplesAssayButton } from './SamplesAssayButton';
@@ -60,6 +61,7 @@ export {
     getSampleWizardURL,
     isFindByIdsSchema,
     loadSampleTypes,
+    CreateSamplesMenuItem,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
     EntityCrossProjectSelectionConfirmModal,

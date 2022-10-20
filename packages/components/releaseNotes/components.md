@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Limit selection for pooling only based on max parents per sample.
+
 ### version 2.235.0
 *Released*: 19 October 2022
 * EditInlineField: Add showToggle prop

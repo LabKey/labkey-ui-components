@@ -1,5 +1,11 @@
 # @labkey/build
 
+### version TBD
+*Released*: TBD October 2022
+* webpack updates for @labkey/components `assay` subpackage
+  * add `@labkey/components/entities` alias for `npm run start-link`
+  * add `@labkey/components/entities` to "externals" to keep it out of bundles
+
 ### version 6.3.0
 *Released*: 10 October 2022
 * Revert changes for build packages as ES Modules

@@ -26,6 +26,13 @@ import { LoadingState } from '../public/LoadingState';
 import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
 import assayDefNoSampleIdJSON from '../test/data/assayDefinitionModelNoSampleId.json';
+import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
+
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { ASSAY_DEFINITION_MODEL, TEST_ASSAY_STATE_MODEL } from '../test/data/constants';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/actions';
+import { getTestAPIWrapper } from '../internal/APIWrapper';
+import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
 import {
     getSampleWizardURL,
@@ -896,13 +903,16 @@ describe('getSamplesAssayGridQueryConfigs', () => {
         const configs = await getSamplesAssayGridQueryConfigs(
             getTestAPIWrapper(jest.fn, {
                 samples: getSamplesTestAPIWrapper(jest.fn, {
-                    getSampleAssayResultViewConfigs: () => Promise.resolve([{
-                        filterKey: 'testFilterKey',
-                        moduleName: 'testModule',
-                        queryName: 'testQuery',
-                        schemaName: 'testSchema',
-                        title: 'testTitle'
-                    }]),
+                    getSampleAssayResultViewConfigs: () =>
+                        Promise.resolve([
+                            {
+                                filterKey: 'testFilterKey',
+                                moduleName: 'testModule',
+                                queryName: 'testQuery',
+                                schemaName: 'testSchema',
+                                title: 'testTitle',
+                            },
+                        ]),
                 }),
             }).samples,
             ASSAY_STATE_MODEL,

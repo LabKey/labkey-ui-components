@@ -49,8 +49,10 @@ const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props =
     const allLoaded = allModels.every(model => !model.isLoading);
 
     useEffect(() => {
-        actions.loadAllModels(true);
-    }, [actions]);
+        if (isAssayEnabled() && userCanReadAssays(user)) {
+            actions.loadAllModels(true);
+        }
+    }, [actions, user]);
 
     useEffect(() => {
         // only calculate the tabOrder after all models have loaded and before any

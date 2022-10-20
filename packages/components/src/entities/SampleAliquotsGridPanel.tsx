@@ -202,15 +202,15 @@ const SampleAliquotsGridPanelWithModel = withQueryModels<Props>(SampleAliquotsGr
 interface SampleAliquotsGridPanelProps extends Props {
     omittedColumns?: string[];
     rootLsid?: string;
-    // if sample is an aliquot, use the aliquot's root to find subaliquots
-    sampleLsid: string;
+    sampleId: string | number;
+    sampleLsid: string; // if sample is an aliquot, use the aliquot's root to find subaliquots
     schemaQuery: SchemaQuery;
 }
 
 export const SampleAliquotsGridPanel: FC<SampleAliquotsGridPanelProps> = props => {
-    const { sampleLsid, schemaQuery, rootLsid, user, omittedColumns } = props;
+    const { sampleId, sampleLsid, schemaQuery, rootLsid, user, omittedColumns } = props;
     const id = createGridModelId(
-        'sample-aliquots-' + sampleLsid,
+        'sample-aliquots-' + sampleId,
         SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, schemaQuery.getQuery())
     );
     const omitted = omittedColumns

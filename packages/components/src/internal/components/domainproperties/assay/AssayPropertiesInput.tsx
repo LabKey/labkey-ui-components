@@ -94,7 +94,7 @@ export function DescriptionInput(props: InputProps) {
     );
 }
 
-export function QCStatesInput(props: InputProps) {
+export const QCStatesInput: FC<InputProps> = props => {
     return (
         <AssayPropertiesInput
             label="QC States"
@@ -108,7 +108,7 @@ export function QCStatesInput(props: InputProps) {
             <input type="checkbox" id={FORM_IDS.QC_ENABLED} checked={props.model.qcEnabled} onChange={props.onChange} />
         </AssayPropertiesInput>
     );
-}
+};
 
 export function PlateTemplatesInput(props: InputProps) {
     return (

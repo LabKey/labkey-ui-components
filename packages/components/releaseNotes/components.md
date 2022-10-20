@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Limit selection for pooling only based on max parents per sample.
+* Consolidate CreateSamplesMenuItem from LKB and LKSM into a common implementation in entities
 
 ### version 2.235.0
 *Released*: 19 October 2022

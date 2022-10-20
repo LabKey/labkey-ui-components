@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, ReactNode, useCallback } from 'react';
+import classNames from 'classnames';
+import React, { Children, FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
@@ -32,8 +33,6 @@ import { getPrimaryAppProperties } from '../../app/utils';
 import { User } from '../base/models/User';
 
 import { useServerContext } from '../base/ServerContext';
-
-import { HeaderWrapper } from './HeaderWrapper';
 
 import { ProductMenu } from './ProductMenu';
 import { UserMenu, UserMenuProps } from './UserMenu';
@@ -96,85 +95,84 @@ export const NavigationBar: FC<Props> = memo(props => {
         searchPlaceholder ?? getPrimaryAppProperties(moduleContext)?.searchPlaceholder ?? SEARCH_PLACEHOLDER;
     const _showNotifications = showNotifications !== false && !!notificationsConfig && !!user && !user.isGuest;
     const _showProductNav = showProductNav !== false && shouldShowProductNavigation(user, moduleContext);
-
+    const hasSubNav = Children.count(children) > 0;
+    const className = classNames('app-navigation', { 'with-sub-nav': hasSubNav });
     return (
-        <div className="sticky-on-top">
-            <HeaderWrapper>
-                <nav className="navbar navbar-container test-loc-nav-header">
-                    <div className="container">
-                        <div className="row">
-                            <div className="navbar-left col-xs-8 col-md-7">
-                                <span className="navbar-item pull-left">{brand}</span>
-                                {showFolderMenu && (
-                                    <span className="navbar-item">
-                                        <FolderMenu key={folderMenuContext.key} />
-                                    </span>
-                                )}
-                                {showNavMenu && !!model && (
-                                    <span className="navbar-item">
-                                        <ProductMenu model={model} sectionConfigs={menuSectionConfigs} />
-                                    </span>
-                                )}
-                            </div>
-                            <div className="navbar-right col-xs-4 col-md-5">
-                                {!!user && (
-                                    <div className="navbar-item pull-right">
-                                        <UserMenu
-                                            extraDevItems={extraDevItems}
-                                            extraUserItems={extraUserItems}
-                                            model={model}
-                                            onSignIn={onSignIn}
-                                            onSignOut={onSignOut}
-                                            signOutUrl={signOutUrl}
-                                            user={user}
+        <div className={className}>
+            <nav className="main-nav navbar navbar-container test-loc-nav-header">
+                <div className="container">
+                    <div className="row">
+                        <div className="navbar-left col-xs-8 col-md-7">
+                            <span className="navbar-item pull-left">{brand}</span>
+                            {showFolderMenu && (
+                                <span className="navbar-item">
+                                    <FolderMenu key={folderMenuContext.key} />
+                                </span>
+                            )}
+                            {showNavMenu && !!model && (
+                                <span className="navbar-item">
+                                    <ProductMenu model={model} sectionConfigs={menuSectionConfigs} />
+                                </span>
+                            )}
+                        </div>
+                        <div className="navbar-right col-xs-4 col-md-5">
+                            {!!user && (
+                                <div className="navbar-item pull-right">
+                                    <UserMenu
+                                        extraDevItems={extraDevItems}
+                                        extraUserItems={extraUserItems}
+                                        model={model}
+                                        onSignIn={onSignIn}
+                                        onSignOut={onSignOut}
+                                        signOutUrl={signOutUrl}
+                                        user={user}
+                                    />
+                                </div>
+                            )}
+                            {_showNotifications && (
+                                <div className="navbar-item pull-right navbar-item-notification">
+                                    <ServerNotifications {...notificationsConfig} />
+                                </div>
+                            )}
+                            {_showProductNav && (
+                                <div className="navbar-item pull-right navbar-item-product-navigation hidden-xs">
+                                    <ProductNavigation />
+                                </div>
+                            )}
+                            {showSearchBox && (
+                                <div className="navbar-item pull-right">
+                                    <div className="hidden-md hidden-sm hidden-xs">
+                                        <SearchBox
+                                            onSearch={onSearch}
+                                            placeholder={_searchPlaceholder}
+                                            onFindByIds={onFindByIds}
+                                            findNounPlural="samples"
                                         />
                                     </div>
-                                )}
-                                {_showNotifications && (
-                                    <div className="navbar-item pull-right navbar-item-notification">
-                                        <ServerNotifications {...notificationsConfig} />
-                                    </div>
-                                )}
-                                {_showProductNav && (
-                                    <div className="navbar-item pull-right navbar-item-product-navigation hidden-xs">
-                                        <ProductNavigation />
-                                    </div>
-                                )}
-                                {showSearchBox && (
-                                    <div className="navbar-item pull-right">
-                                        <div className="hidden-md hidden-sm hidden-xs">
-                                            <SearchBox
-                                                onSearch={onSearch}
-                                                placeholder={_searchPlaceholder}
-                                                onFindByIds={onFindByIds}
+                                    <div className="visible-md visible-sm visible-xs">
+                                        {onFindByIds ? (
+                                            <FindAndSearchDropdown
+                                                className="navbar__xs-find-dropdown"
+                                                title={<i className="fa fa-search navbar__xs-search-icon" />}
                                                 findNounPlural="samples"
+                                                onSearch={onSearchIconClick}
+                                                onFindByIds={onFindByIds}
                                             />
-                                        </div>
-                                        <div className="visible-md visible-sm visible-xs">
-                                            {onFindByIds ? (
-                                                <FindAndSearchDropdown
-                                                    className="navbar__xs-find-dropdown"
-                                                    title={<i className="fa fa-search navbar__xs-search-icon" />}
-                                                    findNounPlural="samples"
-                                                    onSearch={onSearchIconClick}
-                                                    onFindByIds={onFindByIds}
-                                                />
-                                            ) : (
-                                                <i
-                                                    className="fa fa-search navbar__xs-search-icon"
-                                                    onClick={onSearchIconClick}
-                                                />
-                                            )}
-                                        </div>
+                                        ) : (
+                                            <i
+                                                className="fa fa-search navbar__xs-search-icon"
+                                                onClick={onSearchIconClick}
+                                            />
+                                        )}
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     </div>
-                </nav>
+                </div>
+            </nav>
 
-                {children}
-            </HeaderWrapper>
+            <div className="sub-nav-wrapper">{children}</div>
         </div>
     );
 });

@@ -58,7 +58,6 @@ interface Props {
     onComplete: (model: DatasetModel) => void;
     useTheme?: boolean;
     saveBtnText?: string;
-    containerTop?: number; // This sets the top of the sticky header, default is 0
     successBsStyle?: string;
     testMode?: boolean;
 }
@@ -475,7 +474,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             currentPanelIndex,
             firstState,
             validatePanel,
-            containerTop,
             successBsStyle,
             saveBtnText,
             testMode,
@@ -533,7 +531,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                             ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState)
                             : 'COMPLETE'
                     }
-                    containerTop={containerTop}
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(1, collapsed, callback);
                     }}

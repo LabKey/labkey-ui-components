@@ -91,10 +91,10 @@ export class Page extends React.Component<PageProps, any> {
             }
 
             return (
-                <>
+                <div className="app-page">
                     {!hasHeader && <PageHeader showNotifications={showNotifications} />}
                     {children}
-                </>
+                </div>
             );
         }
 

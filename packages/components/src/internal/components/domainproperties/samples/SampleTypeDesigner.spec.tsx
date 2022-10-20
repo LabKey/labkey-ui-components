@@ -48,7 +48,6 @@ describe('SampleTypeDesigner', () => {
                 nameExpressionPlaceholder="name expression placeholder test"
                 headerText="header text test"
                 useTheme={true}
-                containerTop={10}
                 appPropertiesOnly={false}
                 successBsStyle="primary"
                 saveBtnText="Finish it up"

@@ -217,8 +217,19 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 if (menuEl) {
                     const headerRect = wrapperEl.current.parentElement.getBoundingClientRect();
                     const menuRect = menuEl.getBoundingClientRect();
+                    let top = headerRect.y + headerRect.height + 'px';
+
+                    // TODO: we need to do this so the menu doesn't render in a cut-off manner, however we need to also
+                    //  render the menu in a portal or any grids with a scrollbar will completely hide the menu. This
+                    //  will be addressed in a PR in the near future (it is prioritized). See Issue 45553.
+                    // if (headerRect.bottom + menuRect.height > window.innerHeight) {
+                    //     // Issue 45553 If the header is too close to the bottom of the window to render the whole menu
+                    //     // below it then we need to render it above the header.
+                    //     top = headerRect.y - menuRect.height - 5 + 'px';
+                    // }
+
                     Object.assign(menuEl.style, {
-                        top: headerRect.y + headerRect.height + 'px',
+                        top,
                         left: headerRect.x + headerRect.width - menuRect.width + 'px',
                     });
                 }

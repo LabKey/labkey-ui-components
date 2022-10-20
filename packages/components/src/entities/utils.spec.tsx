@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { List } from 'immutable';
+import { Filter } from '@labkey/api';
 
 import { SamplesEditButtonSections } from '../internal/components/samples/utils';
 import {
@@ -21,6 +22,7 @@ import { SampleTypeDataType } from '../internal/components/entities/constants';
 
 import {
     getSampleWizardURL,
+    filterMediaSampleTypes,
     filterSampleRowsForOperation,
     getCrossFolderSelectionMsg,
     shouldIncludeMenuItem,
@@ -77,6 +79,20 @@ describe('shouldIncludeMenuItem', () => {
             shouldIncludeMenuItem(SamplesEditButtonSections.DELETE, [SamplesEditButtonSections.IMPORT])
         ).toBeTruthy();
         expect(shouldIncludeMenuItem(SamplesEditButtonSections.IMPORT, [SamplesEditButtonSections.IMPORT])).toBeFalsy();
+    });
+});
+
+describe('filterMediaSampleTypes', () => {
+    test('expected filter', () => {
+        expect(filterMediaSampleTypes().length).toEqual(1);
+        expect(filterMediaSampleTypes(true).length).toEqual(0);
+
+        const excludeMediaFilters = filterMediaSampleTypes(false);
+        expect(excludeMediaFilters.length).toEqual(1);
+        const filter = excludeMediaFilters[0];
+        expect(filter.getColumnName()).toEqual('category');
+        expect(filter.getValue()).toEqual('media');
+        expect(filter.getFilterType()).toEqual(Filter.Types.NEQ_OR_NULL);
     });
 });
 

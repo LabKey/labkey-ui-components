@@ -3,7 +3,6 @@ import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
 import { Filter, getServerContext } from '@labkey/api';
 
 import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
-import { getImportItemsForAssayDefinitions } from '../internal/components/assay/actions';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
@@ -20,16 +19,15 @@ import { isLoading } from '../public/LoadingState';
 import { caseInsensitive } from '../internal/util/utils';
 import { SchemaQuery } from '../public/SchemaQuery';
 
-import {
-    InjectedQueryModels,
-    RequiresModelAndActions,
-    withQueryModels,
-} from '../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 import { ALIQUOT_FILTER_MODE, SampleOperation } from '../internal/components/samples/constants';
-import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from '../internal/components/samples/actions';
+
+import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+import { getImportItemsForAssayDefinitions } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;

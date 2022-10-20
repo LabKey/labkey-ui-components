@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ConfirmModal } from '../base/ConfirmModal';
+import { ConfirmModal } from '../internal/components/base/ConfirmModal';
 
 interface Props {
     assayDesignName?: string;

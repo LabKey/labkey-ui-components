@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
+import { Ajax, Utils } from '@labkey/api';
 
-import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
-import { AssayRunDataType } from '../entities/constants';
+import { deleteErrorMessage, deleteSuccessMessage } from '../internal/util/messaging';
+import { AssayRunDataType } from '../internal/components/entities/constants';
 
-import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { EntityDeleteConfirmModal } from '../entities/EntityDeleteConfirmModal';
-import { Progress } from '../base/Progress';
-
-import { deleteAssayRuns } from './actions';
+import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
+import { EntityDeleteConfirmModal } from '../internal/components/entities/EntityDeleteConfirmModal';
+import { Progress } from '../internal/components/base/Progress';
+import { buildURL } from '../internal/url/AppURL';
 
 interface Props {
     afterDelete: () => void;
@@ -93,3 +93,29 @@ export const AssayRunDeleteModal: FC<Props> = props => {
         </>
     );
 };
+
+function deleteAssayRuns(
+    selectionKey?: string,
+    rowIds?: string[],
+    cascadeDeleteReplacedRuns = false,
+    containerPath?: string
+): Promise<any> {
+    return new Promise((resolve, reject) => {
+        const jsonData: any = selectionKey ? { dataRegionSelectionKey: selectionKey } : { rowIds };
+        jsonData.cascade = cascadeDeleteReplacedRuns;
+
+        return Ajax.request({
+            url: buildURL('experiment', 'deleteRuns.api', undefined, {
+                container: containerPath,
+            }),
+            method: 'POST',
+            jsonData,
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                reject(response);
+            }),
+        });
+    });
+}

@@ -6,13 +6,13 @@ import React, { Component } from 'react';
 import { List } from 'immutable';
 import { WithRouterProps } from 'react-router';
 
-import { ASSAYS_KEY } from '../../app/constants';
-import { AppURL } from '../../url/AppURL';
+import { ASSAYS_KEY } from '../internal/app/constants';
+import { AppURL } from '../internal/url/AppURL';
 
-import { ITab } from '../navigation/types';
-import { SubNav } from '../navigation/SubNav';
+import { ITab } from '../internal/components/navigation/types';
+import { SubNav } from '../internal/components/navigation/SubNav';
 
-import { InjectedAssayModel, withAssayModelsFromLocation } from './withAssayModels';
+import { InjectedAssayModel, withAssayModelsFromLocation } from '../internal/components/assay/withAssayModels';
 
 const BATCHES_TAB = 'Batches';
 const TABS_WITHOUT_BATCHES = List<string>(['Overview', 'Runs', 'Results']);
@@ -23,7 +23,7 @@ interface AssaySubNavMenuProps {
 
 type Props = InjectedAssayModel & WithRouterProps & AssaySubNavMenuProps;
 
-export class AssaySubNavMenuImpl extends Component<Props> {
+class AssaySubNavMenuImpl extends Component<Props> {
     PARENT_TAB: ITab = {
         text: 'Assays',
         url: AppURL.create(ASSAYS_KEY),

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.236.2
+*Released*: 24 October 2022
+* ThreadBlock: Don't render user avatars
+
 ### version 2.236.1
 *Released*: 20 October 2022
 * Components package update to split out `assay` components as separate entry point (subpackage)

@@ -21,9 +21,9 @@ describe('SearchBox', () => {
 
     function validate(wrapper: ReactWrapper, hasAppliedSearchTerm: boolean): void {
         expect(wrapper.find('.grid-panel__search-form')).toHaveLength(1);
-        expect(wrapper.find('.grid-panel__search-icon')).toHaveLength(1);
+        expect(wrapper.find('.fa-search')).toHaveLength(1);
         expect(wrapper.find('.grid-panel__search-input')).toHaveLength(1);
-        expect(wrapper.find('.grid-panel__remove-icon')).toHaveLength(hasAppliedSearchTerm ? 1 : 0);
+        expect(wrapper.find('.fa-remove')).toHaveLength(hasAppliedSearchTerm ? 1 : 0);
     }
 
     test('no applied search term', () => {
@@ -55,7 +55,7 @@ describe('SearchBox', () => {
         validate(wrapper, true);
         expect(ON_SEARCH).toHaveBeenCalledTimes(0);
         expect(wrapper.find('.grid-panel__search-input').prop('value')).toBe(searchAction.value);
-        wrapper.find('.grid-panel__remove-icon').simulate('click');
+        wrapper.find('.fa-remove').simulate('click');
         expect(ON_SEARCH).toHaveBeenCalledTimes(1);
         expect(wrapper.find('.grid-panel__search-input').prop('value')).toBe('');
         wrapper.unmount();

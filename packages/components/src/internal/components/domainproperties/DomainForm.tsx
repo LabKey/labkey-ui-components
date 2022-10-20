@@ -18,9 +18,8 @@ import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Button, Checkbox, Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import classNames from 'classnames';
-import { Sticky, StickyContainer } from 'react-sticky';
 
-import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
+import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
 
 import { blurActiveElement, valueIsEmpty } from '../../util/utils';
 
@@ -108,7 +107,6 @@ interface IDomainFormInput {
     appDomainHeaderRenderer?: HeaderRenderer;
     appPropertiesOnly?: boolean; // Flag to indicate if LKS specific properties/features should be excluded, default to false
     collapsible?: boolean;
-    containerTop?: number; // This sets the top of the sticky header, default is 0
     controlledCollapse?: boolean;
     domain: DomainDesign;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
@@ -139,25 +137,25 @@ interface IDomainFormInput {
 }
 
 interface IDomainFormState {
-    expandedRowIndex: number;
-    expandTransition: number;
-    confirmDeleteRowIndex: number;
-    collapsed: boolean;
-    maxPhiLevel: string;
-    dragId?: number;
     availableTypes: List<PropDescType>;
-    selectAll: boolean;
-    visibleSelection: Set<number>;
-    visibleFieldsCount: number;
-    summaryViewMode: boolean;
-    search: string;
+    bulkDeleteConfirmInfo: BulkDeleteConfirmInfo;
+    collapsed: boolean;
+    confirmDeleteRowIndex: number;
+    dragId?: number;
+    expandTransition: number;
+    expandedRowIndex: number;
     // used for quicker access to field information (i.e. details display info and if a field is an ontology)
     fieldDetails: FieldDetails;
-    filePreviewData: InferDomainResponse;
     file: File;
+    filePreviewData: InferDomainResponse;
     filePreviewMsg: string;
-    bulkDeleteConfirmInfo: BulkDeleteConfirmInfo;
+    maxPhiLevel: string;
     reservedFieldsMsg: ReactNode;
+    search: string;
+    selectAll: boolean;
+    summaryViewMode: boolean;
+    visibleFieldsCount: number;
+    visibleSelection: Set<number>;
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -847,28 +845,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return undefined;
     }
 
-    stickyStyle = (style: any, isSticky: boolean): any => {
-        const { containerTop } = this.props;
-
-        const newStyle = { ...style, zIndex: 1000, top: containerTop ? containerTop : 0 };
-
-        // Sticking to top
-        if (isSticky) {
-            const newWidth = parseInt(style.width, 10) + 30; // Expand past panel padding
-            const width = newWidth + 'px';
-
-            return {
-                ...newStyle,
-                width,
-                marginLeft: '-15px',
-                paddingLeft: '15px',
-                boxShadow: '0 2px 4px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)',
-            };
-        }
-
-        return newStyle;
-    };
-
     renderFieldRemoveConfirm(): ReactNode {
         const { confirmDeleteRowIndex } = this.state;
         const field = this.props.domain.fields.get(confirmDeleteRowIndex);
@@ -884,57 +860,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             >
                 <div>Are you sure you want to remove {fieldName}? All of its data will be deleted as well.</div>
             </ConfirmModal>
-        );
-    }
-
-    renderRowHeaders(): ReactNode {
-        const { domainFormDisplayOptions } = this.props;
-        const { visibleSelection, selectAll, visibleFieldsCount, reservedFieldsMsg } = this.state;
-        const fieldPlural = visibleSelection.size !== 1 ? 'fields' : 'field';
-        const clearText =
-            visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount ? 'Clear All' : 'Clear';
-        return (
-            <div className="domain-field-row domain-row-border-default domain-floating-hdr">
-                <Alert bsStyle="info">{reservedFieldsMsg}</Alert>
-                <Row>
-                    <div className="domain-field-header">
-                        {visibleSelection.size} {fieldPlural} selected
-                        <Button
-                            className="domain-panel-header-clear-all"
-                            disabled={visibleSelection.size === 0}
-                            onClick={this.clearAllSelection}
-                        >
-                            {clearText}
-                        </Button>
-                    </div>
-                </Row>
-                <Row className="domain-row-container">
-                    <div className="domain-row-handle" />
-                    <div className="domain-row-action-section">
-                        <Checkbox
-                            className="domain-field-check-icon"
-                            name="domain-select-all-checkbox"
-                            id="domain-select-all-checkbox"
-                            checked={selectAll}
-                            onChange={this.toggleSelectAll}
-                        />
-                    </div>
-                    <div>
-                        <Col xs={6} className="domain-row-base-fields">
-                            <Col xs={6}>
-                                <b>Name *</b>
-                            </Col>
-                            <Col xs={4}>
-                                <b>Data Type *</b>
-                            </Col>
-                            <Col xs={2}>{!domainFormDisplayOptions?.hideRequired && <b>Required</b>}</Col>
-                        </Col>
-                        <Col xs={6}>
-                            <b>Details</b>
-                        </Col>
-                    </div>
-                </Row>
-            </div>
         );
     }
 
@@ -1145,7 +1070,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Col xs={helpTopic ? 9 : 12} />
                 {helpTopic && (
                     <Col xs={3}>
-                        {helpLinkNode(helpTopic, 'Learn more about this tool', 'domain-field-float-right')}
+                        <HelpLink topic={helpTopic} className="domain-field-float-right">
+                            Learn more about this tool
+                        </HelpLink>
                     </Col>
                 )}
             </Row>
@@ -1233,75 +1160,122 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domain,
             helpNoun,
             appPropertiesOnly,
-            containerTop,
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
             schemaName,
             queryName,
         } = this.props;
-        const { expandedRowIndex, expandTransition, fieldDetails, maxPhiLevel, dragId, availableTypes, search } =
-            this.state;
+        const {
+            expandedRowIndex,
+            expandTransition,
+            fieldDetails,
+            maxPhiLevel,
+            dragId,
+            availableTypes,
+            reservedFieldsMsg,
+            search,
+            selectAll,
+            visibleFieldsCount,
+            visibleSelection,
+        } = this.state;
+        const fieldPlural = visibleSelection.size !== 1 ? 'fields' : 'field';
+        const clearText =
+            visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount ? 'Clear All' : 'Clear';
 
         return (
             <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
-                <StickyContainer>
-                    <Sticky topOffset={containerTop ? -1 * containerTop : 0}>
-                        {({ style, isSticky }) => (
-                            <div style={this.stickyStyle(style, isSticky)}>{this.renderRowHeaders()}</div>
-                        )}
-                    </Sticky>
-                    <Droppable droppableId="domain-form-droppable">
-                        {provided => (
-                            <div ref={provided.innerRef} {...provided.droppableProps}>
-                                <Form>
-                                    {domain.fields.map((field, i) => {
-                                        // Need to preserve index so don't filter, instead just use empty div
-                                        if (!field.visible) return <div key={'domain-row-key-' + i} />;
+                <div className="domain-field-row domain-row-border-default domain-floating-hdr">
+                    <Alert bsStyle="info">{reservedFieldsMsg}</Alert>
+                    <Row>
+                        <div className="domain-field-header">
+                            {visibleSelection.size} {fieldPlural} selected
+                            <Button
+                                className="domain-panel-header-clear-all"
+                                disabled={visibleSelection.size === 0}
+                                onClick={this.clearAllSelection}
+                            >
+                                {clearText}
+                            </Button>
+                        </div>
+                    </Row>
+                    <Row className="domain-row-container">
+                        <div className="domain-row-handle" />
+                        <div className="domain-row-action-section">
+                            <Checkbox
+                                className="domain-field-check-icon"
+                                name="domain-select-all-checkbox"
+                                id="domain-select-all-checkbox"
+                                checked={selectAll}
+                                onChange={this.toggleSelectAll}
+                            />
+                        </div>
+                        <div>
+                            <Col xs={6} className="domain-row-base-fields">
+                                <Col xs={6}>
+                                    <b>Name *</b>
+                                </Col>
+                                <Col xs={4}>
+                                    <b>Data Type *</b>
+                                </Col>
+                                <Col xs={2}>{!domainFormDisplayOptions?.hideRequired && <b>Required</b>}</Col>
+                            </Col>
+                            <Col xs={6}>
+                                <b>Details</b>
+                            </Col>
+                        </div>
+                    </Row>
+                </div>
+                <Droppable droppableId="domain-form-droppable">
+                    {provided => (
+                        <div ref={provided.innerRef} {...provided.droppableProps}>
+                            <Form className="domain-form">
+                                {domain.fields.map((field, i) => {
+                                    // Need to preserve index so don't filter, instead just use empty div
+                                    if (!field.visible) return <div key={'domain-row-key-' + i} />;
 
-                                        return (
-                                            <DomainRow
-                                                ref={ref => {
-                                                    this.refsArray[i] = ref;
-                                                }}
-                                                domainId={domain.domainId}
-                                                helpNoun={helpNoun}
-                                                key={'domain-row-key-' + i}
-                                                field={field}
-                                                fieldError={this.getFieldError(domain, i)}
-                                                getDomainFields={this.getDomainFields}
-                                                fieldDetailsInfo={fieldDetails.detailsInfo}
-                                                domainIndex={domainIndex}
-                                                index={i}
-                                                expanded={expandedRowIndex === i}
-                                                expandTransition={expandTransition}
-                                                onChange={this.onFieldsChange}
-                                                onExpand={this.onFieldExpandToggle}
-                                                onDelete={this.onDeleteField}
-                                                maxPhiLevel={maxPhiLevel}
-                                                dragging={dragId === i}
-                                                availableTypes={availableTypes}
-                                                showDefaultValueSettings={domain.showDefaultValueSettings}
-                                                defaultDefaultValueType={domain.defaultDefaultValueType}
-                                                defaultValueOptions={domain.defaultValueOptions}
-                                                appPropertiesOnly={appPropertiesOnly}
-                                                successBsStyle={successBsStyle}
-                                                isDragDisabled={
-                                                    !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
-                                                }
-                                                domainFormDisplayOptions={domainFormDisplayOptions}
-                                                domainContainerPath={domain.container}
-                                                schemaName={schemaName ?? domain.schemaName}
-                                                queryName={queryName ?? domain.queryName}
-                                            />
-                                        );
-                                    })}
-                                    {provided.placeholder}
-                                </Form>
-                            </div>
-                        )}
-                    </Droppable>
-                </StickyContainer>
+                                    return (
+                                        <DomainRow
+                                            ref={ref => {
+                                                this.refsArray[i] = ref;
+                                            }}
+                                            domainId={domain.domainId}
+                                            helpNoun={helpNoun}
+                                            key={'domain-row-key-' + i}
+                                            field={field}
+                                            fieldError={this.getFieldError(domain, i)}
+                                            getDomainFields={this.getDomainFields}
+                                            fieldDetailsInfo={fieldDetails.detailsInfo}
+                                            domainIndex={domainIndex}
+                                            index={i}
+                                            expanded={expandedRowIndex === i}
+                                            expandTransition={expandTransition}
+                                            onChange={this.onFieldsChange}
+                                            onExpand={this.onFieldExpandToggle}
+                                            onDelete={this.onDeleteField}
+                                            maxPhiLevel={maxPhiLevel}
+                                            dragging={dragId === i}
+                                            availableTypes={availableTypes}
+                                            showDefaultValueSettings={domain.showDefaultValueSettings}
+                                            defaultDefaultValueType={domain.defaultDefaultValueType}
+                                            defaultValueOptions={domain.defaultValueOptions}
+                                            appPropertiesOnly={appPropertiesOnly}
+                                            successBsStyle={successBsStyle}
+                                            isDragDisabled={
+                                                !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
+                                            }
+                                            domainFormDisplayOptions={domainFormDisplayOptions}
+                                            domainContainerPath={domain.container}
+                                            schemaName={schemaName ?? domain.schemaName}
+                                            queryName={queryName ?? domain.queryName}
+                                        />
+                                    );
+                                })}
+                                {provided.placeholder}
+                            </Form>
+                        </div>
+                    )}
+                </Droppable>
             </DragDropContext>
         );
     };

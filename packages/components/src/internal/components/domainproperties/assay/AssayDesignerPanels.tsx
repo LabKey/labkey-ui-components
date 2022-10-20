@@ -21,7 +21,6 @@ interface Props {
     onComplete: (model: AssayProtocolModel) => void;
     initModel: AssayProtocolModel;
     hideEmptyBatchDomain?: boolean;
-    containerTop?: number; // This sets the top of the sticky header, default is 0
     appPropertiesOnly?: boolean;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     appDomainHeaders?: Map<string, HeaderRenderer>;
@@ -184,7 +183,6 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         const {
             appPropertiesOnly,
             domainFormDisplayOptions,
-            containerTop,
             useTheme,
             successBsStyle,
             currentPanelIndex,
@@ -260,7 +258,6 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                                     ? getDomainPanelStatus(i + 1, currentPanelIndex, visitedPanels, firstState)
                                     : 'COMPLETE'
                             }
-                            containerTop={containerTop}
                             helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
                             onChange={(updatedDomain, dirty) => {
                                 this.onDomainChange(i, updatedDomain, dirty);

@@ -5140,6 +5140,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       }
                     }
                     bulkAddText="Bulk Insert"
+                    containerFilter="CurrentPlusProjectAndShared"
                     disabled={true}
                     editorModel={
                       Immutable.Record {
@@ -6608,6 +6609,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       bulkUpdateText="Bulk Update"
                       columnMetadata={Immutable.Map {}}
                       condensed={false}
+                      containerFilter="CurrentPlusProjectAndShared"
                       data={Immutable.Map {}}
                       dataKeys={Immutable.List []}
                       disabled={true}
@@ -14766,6 +14768,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                       }
                     }
                     bulkAddText="Bulk Insert"
+                    containerFilter="CurrentPlusProjectAndShared"
                     disabled={true}
                     editorModel={
                       Immutable.Record {
@@ -16234,6 +16237,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                       bulkUpdateText="Bulk Update"
                       columnMetadata={Immutable.Map {}}
                       condensed={false}
+                      containerFilter="CurrentPlusProjectAndShared"
                       data={Immutable.Map {}}
                       dataKeys={Immutable.List []}
                       disabled={true}

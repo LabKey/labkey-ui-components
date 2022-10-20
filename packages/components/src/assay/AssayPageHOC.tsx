@@ -32,6 +32,8 @@ export function assayPage<Props>(
         const hasProtocol = assayName !== undefined;
         const { user } = useServerContext();
 
+        // TODO should this check for isAssayEnabled()?
+
         if (!userCanReadAssays(user)) {
             return <InsufficientPermissionsPage title="Assays" />;
         }

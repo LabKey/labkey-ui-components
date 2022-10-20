@@ -170,6 +170,19 @@ const TS_CHECKER_DEV_CONFIG = {
     }
 };
 
+const labkeyPackagesDev = process.env.LINK
+    ? {
+        // Note that for modules that don't have these packages, the aliases are just ignored and don't
+        // seem to cause any problems.
+        '@labkey/components': labkeyUIComponentsPath,
+        '@labkey/components/entities': labkeyUIComponentsPath + '/entities',
+        '@labkey/components/assay': labkeyUIComponentsPath + '/assay',
+        '@labkey/freezermanager': freezerManagerPath,
+        '@labkey/workflow': workflowPath,
+        '@labkey/eln': elnPath,
+    }
+    : {};
+
 module.exports = {
     lkModule,
     labkeyUIComponentsPath,
@@ -248,15 +261,7 @@ module.exports = {
             '@labkey/eln-scss': elnPath + '/dist/assets/scss/theme',
         },
         LABKEY_PACKAGES_DEV: {
-            // Note that for modules that don't have these packages, the aliases are just ignored and don't
-            // seem to cause any problems.
-            '@labkey/components': labkeyUIComponentsPath,
-            '@labkey/components/entities': labkeyUIComponentsPath + '/entities',
-            '@labkey/components/assay': labkeyUIComponentsPath + '/assay',
-            '@labkey/freezermanager': freezerManagerPath,
-            '@labkey/workflow': workflowPath,
-            '@labkey/eln': elnPath,
-
+            ...labkeyPackagesDev,
             // need to set the path based on the LINK var
             '@labkey/components-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme/app' : '/dist/assets/scss/theme/app'),

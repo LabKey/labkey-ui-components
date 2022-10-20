@@ -4,7 +4,7 @@ import { PermissionTypes } from '@labkey/api';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 
-import { AssayImportSubMenuItem } from '../internal/components/assay/AssayImportSubMenuItem';
+import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
 
 import { isLoading } from '../public/LoadingState';

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.236.1
+*Released*: 20 October 2022
+* Components package update to split out `assay` components as separate entry point (subpackage)
+  * Create new /assay/index.ts file and dir and move assay related app components
+  * add assay entry point to package.config.js and package.json
+
 ### version 2.236.0
 *Released*: 20 October 2022
 * Add `isAssayQCEnabled` to work in conjunction with new `AssayQC` product feature.

@@ -1,19 +1,22 @@
 import React, { FC, memo, useState, useEffect, useCallback } from 'react';
 
-import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
-import { AssayDefinitionModel } from '../../AssayDefinitionModel';
-import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { Ajax, Utils } from '@labkey/api';
 
-import { isLoading } from '../../../public/LoadingState';
-import { LoadingModal } from '../base/LoadingModal';
+import { deleteErrorMessage, deleteSuccessMessage } from '../internal/util/messaging';
+import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
+import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
+import { SchemaQuery } from '../public/SchemaQuery';
 
-import { Progress } from '../base/Progress';
+import { isLoading } from '../public/LoadingState';
+import { LoadingModal } from '../internal/components/base/LoadingModal';
 
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { Progress } from '../internal/components/base/Progress';
+
+import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
+
+import { buildURL } from '../internal/url/AppURL';
 
 import { AssayDesignDeleteConfirmModal } from './AssayDesignDeleteConfirmModal';
-import { deleteAssayDesign } from './actions';
 
 const ASSAY_RUN_MODEL_ID = 'assay-runs-all';
 
@@ -90,3 +93,22 @@ const AssayDesignDeleteModalImpl: FC<Props & InjectedQueryModels> = memo(props =
 });
 
 export const AssayDesignDeleteModal = withQueryModels<Props>(AssayDesignDeleteModalImpl);
+
+function deleteAssayDesign(rowId: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'deleteProtocolByRowIdsAPI.api'),
+            method: 'POST',
+            params: {
+                singleObjectRowId: rowId,
+                forceDelete: true,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                reject(response);
+            }),
+        });
+    });
+}

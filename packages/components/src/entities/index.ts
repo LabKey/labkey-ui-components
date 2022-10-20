@@ -47,6 +47,8 @@ import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
 import { SampleTypePage } from './SampleTypePage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
+import { SamplesResolver } from './SamplesResolver';
+import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 
 export {
     PICKLIST_SAMPLES_FILTER,
@@ -62,6 +64,7 @@ export {
     getSampleWizardURL,
     isFindByIdsSchema,
     loadSampleTypes,
+    AssayImportSubMenuItem,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
     EntityCrossProjectSelectionConfirmModal,
@@ -89,6 +92,7 @@ export {
     SampleFinderSection,
     SampleIndexNav,
     SampleLineageGraph,
+    SamplesResolver,
     SampleSetDeleteModal,
     SampleTimelinePageBase,
     SampleTypeIndexNav,

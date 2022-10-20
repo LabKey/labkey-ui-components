@@ -1,5 +1,10 @@
 import { Filter } from '@labkey/api';
 
+export interface AssaySampleColumnProp {
+    fieldKey: string;
+    lookupFieldKey: string;
+}
+
 /**
  * This implements the filter corresponding to PicklistSampleCompareType.  Updates there should also be reflected here.
  */

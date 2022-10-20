@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.236.0",
+  "version": "2.236.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -11,7 +11,8 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": "./dist/components.js",
-    "./entities": "./dist/entities.js"
+    "./entities": "./dist/entities.js",
+    "./assay": "./dist/assay.js"
   },
   "typesVersions": {
     "*": {
@@ -20,6 +21,9 @@
       ],
       "entities": [
         "dist/entities/index.d.ts"
+      ],
+      "assay": [
+        "dist/assay/index.d.ts"
       ]
     }
   },
@@ -89,7 +93,7 @@
     "vis-network": "~6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "6.3.0",
+    "@labkey/build": "6.3.1",
     "@labkey/eslint-config-react": "~0.0.12",
     "@types/history": "~4.7.9",
     "@types/node": "~16.11.26",

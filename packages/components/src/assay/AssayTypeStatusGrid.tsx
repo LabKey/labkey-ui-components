@@ -2,16 +2,16 @@ import React, { FC, memo, useMemo } from 'react';
 
 import { Filter, PermissionTypes } from '@labkey/api';
 
-import { Status } from '../domainproperties/assay/models';
+import { Status } from '../internal/components/domainproperties/assay/models';
 
-import { SCHEMAS } from '../../schemas';
+import { SCHEMAS } from '../internal/schemas';
 
-import { TabbedGridPanel } from '../../../public/QueryModel/TabbedGridPanel';
+import { TabbedGridPanel } from '../public/QueryModel/TabbedGridPanel';
 
-import { hasAnyPermissions } from '../base/models/User';
-import { useServerContext } from '../base/ServerContext';
+import { hasAnyPermissions } from '../internal/components/base/models/User';
+import { useServerContext } from '../internal/components/base/ServerContext';
 
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, withQueryModels } from '../public/QueryModel/withQueryModels';
 
 const ACTIVE_GRID_ID = 'active';
 const ALL_GRID_ID = 'all';
@@ -28,7 +28,7 @@ interface OwnProps {
     excludedAssayProviders?: string[];
 }
 
-export const StatusGridImpl: FC<InjectedQueryModels> = memo(props => {
+const AssayTypeStatusGridImpl: FC<InjectedQueryModels> = memo(props => {
     const { actions, queryModels } = props;
 
     return (
@@ -43,9 +43,9 @@ export const StatusGridImpl: FC<InjectedQueryModels> = memo(props => {
     );
 });
 
-export const StatusGridWithModels = withQueryModels(StatusGridImpl);
+export const AssayTypeStatusGridWithModels = withQueryModels(AssayTypeStatusGridImpl);
 
-export const StatusGrid: FC<OwnProps> = memo(props => {
+export const AssayTypeStatusGrid: FC<OwnProps> = memo(props => {
     const { assayTypes, excludedAssayProviders } = props;
     const { user } = useServerContext();
 
@@ -87,5 +87,5 @@ export const StatusGrid: FC<OwnProps> = memo(props => {
         };
     }, [assayTypes, excludedAssayProviders]);
 
-    return <StatusGridWithModels queryConfigs={queryConfigs} />;
+    return <AssayTypeStatusGridWithModels queryConfigs={queryConfigs} />;
 });

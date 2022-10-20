@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { List, Set } from 'immutable';
+import { List, OrderedMap, Set } from 'immutable';
 import { ActionURL, Filter, Utils } from '@labkey/api';
 
 import {
@@ -24,8 +24,12 @@ import { caseInsensitive, parseCsvString } from '../internal/util/utils';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { getPrimaryAppProperties, isELNEnabled } from '../internal/app/utils';
 import { QueryInfo } from '../public/QueryInfo';
-import { naturalSort } from '../public/sort';
+import { naturalSort, naturalSortByProperty } from '../public/sort';
 import { DELIMITER } from '../internal/components/forms/constants';
+import { AssayStateModel } from '../internal/components/assay/models';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
+import { AssayUploadTabs } from '../internal/constants';
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -318,4 +322,40 @@ export function getUpdatedLineageRowsForBulkEdit(
 
 export function getSampleFinderLocalStorageKey(): string {
     return getPrimaryAppProperties().productId + ActionURL.getContainer() + '-SampleFinder';
+}
+
+export function getImportItemsForAssayDefinitions(
+    assayStateModel: AssayStateModel,
+    sampleModel?: QueryModel,
+    providerType?: string,
+    isPicklist?: boolean,
+    currentProductId?: string,
+    targetProductId?: string,
+    ignoreFilter?: boolean
+): OrderedMap<AssayDefinitionModel, string> {
+    let targetSQ;
+    const selectionKey = sampleModel?.id;
+
+    if (sampleModel?.queryInfo) {
+        targetSQ = sampleModel.queryInfo.schemaQuery;
+    }
+
+    return assayStateModel.definitions
+        .filter(assay => providerType === undefined || assay.type === providerType)
+        .filter(assay => !targetSQ || assay.hasLookup(targetSQ, isPicklist))
+        .sort(naturalSortByProperty('name'))
+        .reduce((items, assay) => {
+            const href = assay.getImportUrl(
+                selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
+                selectionKey,
+                // Check for the existence of the "queryInfo" before getting filters from the model.
+                // This avoids `QueryModel` throwing an error when the "queryInfo" is not yet available.
+                sampleModel?.queryInfo ? List(sampleModel.filters) : undefined,
+                isPicklist,
+                currentProductId,
+                targetProductId,
+                ignoreFilter
+            );
+            return items.set(assay, href);
+        }, OrderedMap<AssayDefinitionModel, string>());
 }

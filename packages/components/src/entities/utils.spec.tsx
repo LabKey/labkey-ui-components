@@ -20,6 +20,12 @@ import { makeQueryInfo } from '../internal/testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { AssayStateModel } from '../internal/components/assay/models';
+import { ASSAY_DEFINITION_MODEL, TEST_ASSAY_STATE_MODEL } from '../test/data/constants';
+import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/actions';
+
 import {
     getSampleWizardURL,
     filterMediaSampleTypes,
@@ -31,6 +37,7 @@ import {
     createEntityParentKey,
     parentValuesDiffer,
     getUpdatedLineageRowsForBulkEdit,
+    getImportItemsForAssayDefinitions,
 } from './utils';
 
 describe('getCrossFolderSelectionMsg', () => {
@@ -818,5 +825,39 @@ describe('getUpdatedLineageRowsForBulkEdit', () => {
                 'MaterialInputs/Label 1': 'Val1,Val2',
             },
         ]);
+    });
+});
+
+describe('getImportItemsForAssayDefinitions', () => {
+    test('empty list', () => {
+        const sampleModel = makeTestQueryModel(SchemaQuery.create('samples', 'samples'));
+        const items = getImportItemsForAssayDefinitions(new AssayStateModel(), sampleModel);
+        expect(items.size).toBe(0);
+    });
+
+    test('with expected match', () => {
+        const assayStateModel = new AssayStateModel({ definitions: [ASSAY_DEFINITION_MODEL] });
+        let queryInfo = QueryInfo.create(sampleSet2QueryInfo);
+
+        // with a query name that DOES NOT match the assay def sampleColumn lookup
+        queryInfo = queryInfo.set('schemaQuery', SchemaQuery.create('samples', 'Sample set 1')) as QueryInfo;
+        let sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
+        let items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
+        expect(items.size).toBe(0);
+
+        // with a query name that DOES match the assay def sampleColumn lookup
+        queryInfo = queryInfo.set('schemaQuery', SchemaQuery.create('samples', 'Sample set 10')) as QueryInfo;
+        sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
+        items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
+        expect(items.size).toBe(1);
+    });
+
+    test('providerType filter', () => {
+        let items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, undefined);
+        expect(items.size).toBe(5);
+        items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, GENERAL_ASSAY_PROVIDER_NAME);
+        expect(items.size).toBe(2);
+        items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, 'NAb');
+        expect(items.size).toBe(1);
     });
 });

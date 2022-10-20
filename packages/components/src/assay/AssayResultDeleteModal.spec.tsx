@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { mountWithAppServerContext } from '../../testHelpers';
+import { mountWithAppServerContext } from '../internal/testHelpers';
 
-import { SCHEMAS } from '../../schemas';
+import { SCHEMAS } from '../internal/schemas';
 
 import { AssayResultDeleteModal } from './AssayResultDeleteModal';
 

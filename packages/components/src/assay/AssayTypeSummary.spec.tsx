@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { initUnitTestMocks } from '../../../test/testHelperMocks';
-import { selectOptionByText, SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
-import { mountWithAppServerContext } from '../../testHelpers';
-import { TEST_USER_EDITOR } from '../../userFixtures';
+import { initUnitTestMocks } from '../test/testHelperMocks';
+import { selectOptionByText, SELECT_INPUT_CONTROL_SELECTOR } from '../internal/components/forms/input/SelectInputTestUtils';
+import { mountWithAppServerContext } from '../internal/testHelpers';
+import { TEST_USER_EDITOR } from '../internal/userFixtures';
 
 import { AssayTypeSummary } from './AssayTypeSummary';
 

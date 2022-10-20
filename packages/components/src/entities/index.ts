@@ -1,6 +1,7 @@
 import { getSampleTypes, getOriginalParentsFromLineage, loadSampleTypes } from './actions';
 import {
     getSampleWizardURL,
+    filterMediaSampleTypes,
     filterSampleRowsForOperation,
     getSampleSetMenuItem,
     isFindByIdsSchema,
@@ -51,6 +52,7 @@ import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './Assa
 export {
     createEntityParentKey,
     downloadSampleTypeTemplate,
+    filterMediaSampleTypes,
     filterSampleRowsForOperation,
     getOriginalParentsFromLineage,
     getSampleSetMenuItem,

@@ -49,6 +49,14 @@ export function getCrossFolderSelectionMsg(
     return first + second;
 }
 
+/**
+ * Utility method to provide filters to include/exclude Media Sample Types.
+ * These filters are intended to work against queries of SCHEMAS.EXP_TABLES.SAMPLE_SETS.
+ */
+export function filterMediaSampleTypes(includeMedia?: boolean): Filter.IFilter[] {
+    return includeMedia ? [] : [Filter.create('category', 'media', Filter.Types.NEQ_OR_NULL)];
+}
+
 export function filterSampleRowsForOperation(
     rows: Record<string, any>,
     operation: SampleOperation,

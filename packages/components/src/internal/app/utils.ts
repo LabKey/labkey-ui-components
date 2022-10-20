@@ -212,19 +212,30 @@ export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppPrope
     }
 }
 
-export function isELNEnabled(moduleContext?: ModuleContext): boolean {
-    return hasModule('LabBook', moduleContext) && isFeatureEnabled(ProductFeature.ELN, moduleContext);
-}
-
-export function isRequestsEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true;
-}
-
 export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
     return (
         hasModule('assay', moduleContext) &&
         (isCommunityDistribution(moduleContext) || isFeatureEnabled(ProductFeature.Assay, moduleContext))
     );
+}
+
+export function isAssayQCEnabled(moduleContext?: ModuleContext): boolean {
+    return (
+        isAssayEnabled(moduleContext) &&
+        hasPremiumModule(moduleContext) &&
+        isFeatureEnabled(ProductFeature.AssayQC, moduleContext)
+    );
+}
+
+export function isAssayRequestsEnabled(moduleContext?: ModuleContext): boolean {
+    return (
+        hasModule('assayRequest', moduleContext) &&
+        resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_REQUESTS_MENU] === true
+    );
+}
+
+export function isELNEnabled(moduleContext?: ModuleContext): boolean {
+    return hasModule('LabBook', moduleContext) && isFeatureEnabled(ProductFeature.ELN, moduleContext);
 }
 
 export function isProtectedDataEnabled(moduleContext?: ModuleContext): boolean {
@@ -477,7 +488,7 @@ export function getMenuSectionConfigs(
         user,
         currentProductId,
         moduleContext,
-        isBioPrimary && isRequestsEnabled(moduleContext) ? 7 : 12
+        isBioPrimary && isAssayRequestsEnabled(moduleContext) ? 7 : 12
     );
 
     if (inSMApp) {
@@ -495,7 +506,7 @@ export function getMenuSectionConfigs(
         }
         sectionConfigs = sectionConfigs.push(configs);
     } else if (isBioPrimary) {
-        if (isRequestsEnabled(moduleContext)) {
+        if (isAssayRequestsEnabled(moduleContext)) {
             // When "Requests" are enabled render as two columns
             let requestsCol = Map({
                 [REQUESTS_KEY]: REQUESTS_SECTION_CONFIG,

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Filter } from '@labkey/api';
 
-import { mountWithAppServerContext } from '../../testHelpers';
-import { TEST_USER_EDITOR } from '../../userFixtures';
+import { mountWithAppServerContext } from '../internal/testHelpers';
+import { TEST_USER_EDITOR } from '../internal/userFixtures';
 
-import { StatusGrid, StatusGridWithModels } from './StatusGrid';
+import { AssayTypeStatusGrid, AssayTypeStatusGridWithModels } from './AssayTypeStatusGrid';
 
 describe('StatusGrid', () => {
     const validate = (filter: Filter.IFilter[], filterType: string, value: string[], filterLength: number) => {
@@ -17,11 +17,11 @@ describe('StatusGrid', () => {
     // If assayTypes exists, col filter on Type should be those in assayTypes
     test('StatusGrid assayTypes', () => {
         const wrapper = mountWithAppServerContext(
-            <StatusGrid assayTypes={['General']} />,
+            <AssayTypeStatusGrid assayTypes={['General']} />,
             {},
             { user: TEST_USER_EDITOR }
         );
-        const statusGridWithModelsProps = wrapper.find(StatusGridWithModels).props();
+        const statusGridWithModelsProps = wrapper.find(AssayTypeStatusGridWithModels).props();
 
         const activeFilter = statusGridWithModelsProps.queryConfigs.active.baseFilters;
         validate(activeFilter, 'Equals One Of', ['General'], 2);
@@ -35,13 +35,13 @@ describe('StatusGrid', () => {
     // If excludedAssayProviders exists, col filter on Type should be those not in excludedAssayProviders
     test('StatusGrid excludedAssayProviders', () => {
         const wrapper = mountWithAppServerContext(
-            <StatusGrid excludedAssayProviders={['Luminex']} />,
+            <AssayTypeStatusGrid excludedAssayProviders={['Luminex']} />,
             {},
             {
                 user: TEST_USER_EDITOR,
             }
         );
-        const statusGridWithModelsProps = wrapper.find(StatusGridWithModels).props();
+        const statusGridWithModelsProps = wrapper.find(AssayTypeStatusGridWithModels).props();
 
         const activeFilter = statusGridWithModelsProps.queryConfigs.active.baseFilters;
         validate(activeFilter, 'Does Not Equal Any Of', ['Luminex'], 2);
@@ -55,11 +55,11 @@ describe('StatusGrid', () => {
     // If both exist, only assayTypes is used
     test('StatusGrid assayTypes and excludedAssayProviders', () => {
         const wrapper = mountWithAppServerContext(
-            <StatusGrid assayTypes={['General']} excludedAssayProviders={['Luminex']} />,
+            <AssayTypeStatusGrid assayTypes={['General']} excludedAssayProviders={['Luminex']} />,
             {},
             { user: TEST_USER_EDITOR }
         );
-        const statusGridWithModelsProps = wrapper.find(StatusGridWithModels).props();
+        const statusGridWithModelsProps = wrapper.find(AssayTypeStatusGridWithModels).props();
 
         const activeFilter = statusGridWithModelsProps.queryConfigs.active.baseFilters;
         validate(activeFilter, 'Equals One Of', ['General'], 2);
@@ -72,8 +72,8 @@ describe('StatusGrid', () => {
 
     // If neither exist, no col filter on Type is used
     test('StatusGrid assayTypes nor excludedAssayProviders', () => {
-        const wrapper = mountWithAppServerContext(<StatusGrid />, {}, { user: TEST_USER_EDITOR });
-        const statusGridWithModelsProps = wrapper.find(StatusGridWithModels).props();
+        const wrapper = mountWithAppServerContext(<AssayTypeStatusGrid />, {}, { user: TEST_USER_EDITOR });
+        const statusGridWithModelsProps = wrapper.find(AssayTypeStatusGridWithModels).props();
 
         const activeFilter = statusGridWithModelsProps.queryConfigs.active.baseFilters;
         expect(activeFilter.length).toBe(1);

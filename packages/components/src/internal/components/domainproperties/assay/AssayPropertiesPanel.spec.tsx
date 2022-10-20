@@ -35,7 +35,11 @@ beforeAll(() => {
 });
 
 const SERVER_CONTEXT = {
-    moduleContext: { api: { moduleNames: ['assay', 'study'] }, core: { productFeatures: [ProductFeature.AssayQC] } },
+    // isAssayQCEnabled(moduleContext) === true
+    moduleContext: {
+        api: { moduleNames: ['assay', 'premium', 'study'] },
+        core: { productFeatures: [ProductFeature.Assay, ProductFeature.AssayQC] },
+    },
 };
 
 const BASE_PROPS = {

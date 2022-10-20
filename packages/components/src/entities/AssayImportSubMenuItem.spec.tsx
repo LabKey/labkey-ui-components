@@ -2,14 +2,14 @@ import React from 'react';
 import { MenuItem, OverlayTrigger } from 'react-bootstrap';
 import { mount } from 'enzyme';
 
-import { TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
+import { TEST_ASSAY_STATE_MODEL } from '../test/data/constants';
 
-import { SubMenuItem } from '../menus/SubMenuItem';
+import { SubMenuItem } from '../internal/components/menus/SubMenuItem';
 
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { SchemaQuery } from '../public/SchemaQuery';
 
-import { GENERAL_ASSAY_PROVIDER_NAME } from './actions';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/actions';
 import { AssayImportSubMenuItemImpl } from './AssayImportSubMenuItem';
 
 const DEFAULT_PROPS = {

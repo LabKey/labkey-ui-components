@@ -160,6 +160,7 @@ const TS_CHECKER_DEV_CONFIG = {
                 "paths": {
                     "@labkey/components": [labkeyUIComponentsPath],
                     "@labkey/components/entities": [labkeyUIComponentsPath + '/entities'],
+                    "@labkey/components/assay": [labkeyUIComponentsPath + '/assay'],
                     "@labkey/freezermanager": [freezerManagerPath],
                     "@labkey/workflow": [workflowPath],
                     "@labkey/eln": [elnPath],
@@ -251,6 +252,7 @@ module.exports = {
             // seem to cause any problems.
             '@labkey/components': labkeyUIComponentsPath,
             '@labkey/components/entities': labkeyUIComponentsPath + '/entities',
+            '@labkey/components/assay': labkeyUIComponentsPath + '/assay',
             '@labkey/freezermanager': freezerManagerPath,
             '@labkey/workflow': workflowPath,
             '@labkey/eln': elnPath,

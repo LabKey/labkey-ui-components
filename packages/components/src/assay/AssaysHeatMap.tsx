@@ -1,11 +1,11 @@
 import React, { FC, memo, useMemo } from 'react';
 import { Filter } from '@labkey/api';
 
-import { ASSAYS_KEY } from '../../app/constants';
-import { AppURL } from '../../url/AppURL';
-import { HeatMap, HeatMapCell } from '../heatmap/HeatMap';
-import { Alert } from '../base/Alert';
-import { SCHEMAS } from '../../schemas';
+import { ASSAYS_KEY } from '../internal/app/constants';
+import { AppURL } from '../internal/url/AppURL';
+import { HeatMap, HeatMapCell } from '../internal/components/heatmap/HeatMap';
+import { Alert } from '../internal/components/base/Alert';
+import { SCHEMAS } from '../internal/schemas';
 
 interface Props {
     excludedAssayProviders?: string[];

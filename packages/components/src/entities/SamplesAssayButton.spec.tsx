@@ -8,7 +8,7 @@ import { QueryInfo } from '../public/QueryInfo';
 import { mountWithServerContext } from '../internal/testHelpers';
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
 import { SCHEMAS } from '../internal/schemas';
-import { AssayImportSubMenuItem } from '../internal/components/assay/AssayImportSubMenuItem';
+import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/actions';
 

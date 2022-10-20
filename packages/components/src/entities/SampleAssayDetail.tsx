@@ -2,7 +2,6 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState }
 import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
 
 import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
-import { getImportItemsForAssayDefinitions } from '../internal/components/assay/actions';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapper';
 
@@ -30,6 +29,8 @@ import { getSampleStatusType, isSampleOperationPermitted } from '../internal/com
 
 import { ASSAY_RUNS_GRID_ID, getSamplesAssayGridQueryConfigs } from './utils';
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+
+import { getImportItemsForAssayDefinitions } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;

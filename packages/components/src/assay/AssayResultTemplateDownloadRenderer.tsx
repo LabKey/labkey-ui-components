@@ -4,9 +4,9 @@ import { Map } from 'immutable';
 
 import { Assay } from '@labkey/api';
 
-import { TemplateDownloadButton } from '../../public/files/TemplateDownloadButton';
+import { TemplateDownloadButton } from '../public/files/TemplateDownloadButton';
 
-import { downloadAttachment } from '../util/utils';
+import { downloadAttachment } from '../internal/util/utils';
 
 interface Props {
     excludeColumns?: string[];

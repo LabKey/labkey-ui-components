@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { ConfirmModal } from '../base/ConfirmModal';
+import { ConfirmModal } from '../internal/components/base/ConfirmModal';
 
 import { AssayDesignDeleteConfirmModal } from './AssayDesignDeleteConfirmModal';
 

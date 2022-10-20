@@ -46,6 +46,8 @@ import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
 import { SampleTypePage } from './SampleTypePage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
+import { SamplesResolver } from './SamplesResolver';
+import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
 
@@ -62,6 +64,7 @@ export {
     getSampleWizardURL,
     isFindByIdsSchema,
     loadSampleTypes,
+    AssayImportSubMenuItem,
     AssayResultsForSamplesPage,
     AssayResultsForSamplesSubNav,
     AssayResultsForSamplesButton,
@@ -94,6 +97,7 @@ export {
     SampleFinderSection,
     SampleIndexNav,
     SampleLineageGraph,
+    SamplesResolver,
     SampleSetDeleteModal,
     SampleTimelinePageBase,
     SampleTypeIndexNav,

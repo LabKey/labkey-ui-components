@@ -1,8 +1,8 @@
+import React from 'react';
 import { mount } from 'enzyme';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import React from 'react';
 import { getAssayRunDeleteMessage } from './utils';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 
 describe('getAssayDeleteMessage', () => {
     test('loading', () => {

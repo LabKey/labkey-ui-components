@@ -13,21 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, OrderedMap } from 'immutable';
+import { List, Map } from 'immutable';
 import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
-
-import { AssayUploadTabs } from '../../constants';
 
 import { SCHEMAS } from '../../schemas';
 import { User } from '../base/models/User';
-import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
+import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { buildURL } from '../../url/AppURL';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { naturalSortByProperty } from '../../../public/sort';
 import { caseInsensitive } from '../../util/utils';
 
 import { IAssayUploadOptions } from './AssayWizardModel';
-import { AssayStateModel, AssayUploadResultModel } from './models';
+import { AssayUploadResultModel } from './models';
 
 export const GENERAL_ASSAY_PROVIDER_NAME = 'General';
 
@@ -228,95 +224,6 @@ function collectFiles(source: Record<string, any>): FileMap {
     }, {} as FileMap);
 }
 
-export function deleteAssayRuns(
-    selectionKey?: string,
-    rowIds?: string[],
-    cascadeDeleteReplacedRuns = false,
-    containerPath?: string
-): Promise<any> {
-    return new Promise((resolve, reject) => {
-        const jsonData: any = selectionKey ? { dataRegionSelectionKey: selectionKey } : { rowIds };
-        jsonData.cascade = cascadeDeleteReplacedRuns;
-
-        return Ajax.request({
-            url: buildURL('experiment', 'deleteRuns.api', undefined, {
-                container: containerPath,
-            }),
-            method: 'POST',
-            jsonData,
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                reject(response);
-            }),
-        });
-    });
-}
-
-export function getImportItemsForAssayDefinitions(
-    assayStateModel: AssayStateModel,
-    sampleModel?: QueryModel,
-    providerType?: string,
-    isPicklist?: boolean,
-    currentProductId?: string,
-    targetProductId?: string,
-    ignoreFilter?: boolean
-): OrderedMap<AssayDefinitionModel, string> {
-    let targetSQ;
-    const selectionKey = sampleModel?.id;
-
-    if (sampleModel?.queryInfo) {
-        targetSQ = sampleModel.queryInfo.schemaQuery;
-    }
-
-    return assayStateModel.definitions
-        .filter(assay => providerType === undefined || assay.type === providerType)
-        .filter(assay => !targetSQ || assay.hasLookup(targetSQ, isPicklist))
-        .sort(naturalSortByProperty('name'))
-        .reduce((items, assay) => {
-            const href = assay.getImportUrl(
-                selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
-                selectionKey,
-                // Check for the existence of the "queryInfo" before getting filters from the model.
-                // This avoids `QueryModel` throwing an error when the "queryInfo" is not yet available.
-                sampleModel?.queryInfo ? List(sampleModel.filters) : undefined,
-                isPicklist,
-                currentProductId,
-                targetProductId,
-                ignoreFilter
-            );
-            return items.set(assay, href);
-        }, OrderedMap<AssayDefinitionModel, string>());
-}
-
-export interface AssaySampleColumnProp {
-    fieldKey: string;
-    lookupFieldKey: string;
-}
-
-export function getAssayDefinitionsWithResultSampleLookup(
-    assayStateModel: AssayStateModel,
-    providerType?: string
-): { [key: string]: AssaySampleColumnProp } {
-    const assays = assayStateModel.definitions.filter(
-        assay => providerType === undefined || assay.type?.toLowerCase() === providerType?.toLowerCase()
-    );
-
-    const results = {};
-    assays.forEach(assay => {
-        const sampleCol = assay.getSampleColumn(AssayDomainTypes.RESULT)?.column;
-        if (sampleCol) {
-            results[assay.name?.toLowerCase()] = {
-                fieldKey: sampleCol.fieldKey,
-                lookupFieldKey: sampleCol.lookup.keyColumn,
-            };
-        }
-    });
-
-    return results;
-}
-
 export interface DuplicateFilesResponse {
     duplicate: boolean;
     newFileNames: List<string>;
@@ -371,23 +278,4 @@ export function flattenQueryModelRow(rowData: Record<string, any>): Map<string, 
     }
 
     return Map<string, any>();
-}
-
-export function deleteAssayDesign(rowId: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('experiment', 'deleteProtocolByRowIdsAPI.api'),
-            method: 'POST',
-            params: {
-                singleObjectRowId: rowId,
-                forceDelete: true,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                reject(response);
-            }),
-        });
-    });
 }

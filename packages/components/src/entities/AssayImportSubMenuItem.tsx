@@ -1,15 +1,14 @@
 import React, { FC, useMemo } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
 
-import { SubMenuItem, SubMenuItemProps } from '../menus/SubMenuItem';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { DisableableMenuItem } from '../samples/DisableableMenuItem';
+import { SubMenuItem, SubMenuItemProps } from '../internal/components/menus/SubMenuItem';
+import { QueryModel } from '../public/QueryModel/QueryModel';
+import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 
-import { getImportItemsForAssayDefinitions } from './actions';
-
-import { InjectedAssayModel, withAssayModels } from './withAssayModels';
+import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
+import { getImportItemsForAssayDefinitions } from './utils';
 
 interface Props extends SubMenuItemProps {
     currentProductId?: string;

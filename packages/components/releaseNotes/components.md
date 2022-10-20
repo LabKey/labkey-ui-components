@@ -11,6 +11,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   * add FindDerivativesMenuItem to go with FindDerivativesButton
   * remove Sample Comparison Report rendering and creation menu item
 
+### version 2.236.1
+*Released*: 20 October 2022
+* Components package update to split out `assay` components as separate entry point (subpackage)
+  * Create new /assay/index.ts file and dir and move assay related app components
+  * add assay entry point to package.config.js and package.json
+
 ### version 2.236.0
 *Released*: 20 October 2022
 * Add `isAssayQCEnabled` to work in conjunction with new `AssayQC` product feature.

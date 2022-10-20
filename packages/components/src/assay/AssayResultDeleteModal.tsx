@@ -1,11 +1,11 @@
 import React, { FC, useMemo, useState } from 'react';
 
-import { deleteErrorMessage, deleteSuccessMessage } from '../../util/messaging';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { deleteRows } from '../../query/api';
-import { ConfirmModal } from '../base/ConfirmModal';
-import { Progress } from '../base/Progress';
+import { deleteErrorMessage, deleteSuccessMessage } from '../internal/util/messaging';
+import { SchemaQuery } from '../public/SchemaQuery';
+import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
+import { deleteRows } from '../internal/query/api';
+import { ConfirmModal } from '../internal/components/base/ConfirmModal';
+import { Progress } from '../internal/components/base/Progress';
 
 interface Props {
     afterDelete: () => void;

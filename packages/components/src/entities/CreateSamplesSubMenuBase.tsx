@@ -12,10 +12,8 @@ import { SCHEMAS } from '../internal/schemas';
 
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
 
-import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
-
 import { isSamplesSchema } from '../internal/components/samples/utils';
-import { SampleCreationTypeModal } from './SampleCreationTypeModal';
+
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
@@ -24,6 +22,10 @@ import {
     SampleCreationType,
     SampleCreationTypeModel,
 } from '../internal/components/samples/models';
+
+import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
+
+import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
@@ -50,8 +52,8 @@ interface CreateSamplesSubMenuProps {
     selectedType?: SampleCreationType;
     selectionNoun?: string;
     selectionNounPlural?: string;
-    targetProductId?: string;
     skipCrossFolderCheck?: boolean;
+    targetProductId?: string;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {

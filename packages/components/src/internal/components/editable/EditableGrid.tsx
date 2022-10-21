@@ -233,18 +233,18 @@ export interface SharedEditableGridProps {
     // list of key values that cannot be deleted.
     notDeletable?: List<any>;
     primaryBtnProps?: EditableGridBtnProps;
-    removeColumnTitle?: string;
-    rowNumColumn?: GridColumn;
-    striped?: boolean;
-    updateColumns?: List<QueryColumn>;
-    // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
-    showAsTab?: boolean;
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
-    showBulkTabOnLoad?: boolean;
     readOnlyColumns?: List<string>;
-    tabBtnProps?: EditableGridBtnProps;
     // list of key values for rows that are readonly.
     readonlyRows?: List<any>;
+    removeColumnTitle?: string;
+    rowNumColumn?: GridColumn;
+    // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
+    showAsTab?: boolean;
+    showBulkTabOnLoad?: boolean;
+    striped?: boolean;
+    tabBtnProps?: EditableGridBtnProps;
+    updateColumns?: List<QueryColumn>;
 }
 
 export interface EditableGridBtnProps {

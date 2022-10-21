@@ -83,7 +83,9 @@ export class FieldLabel extends Component<FieldLabelProps> {
                         inputFieldName={getFieldEnabledFieldName(column, fieldName)}
                         on={toggleProps && toggleProps.on ? toggleProps.on : 'Enabled'}
                         off={toggleProps && toggleProps.off ? toggleProps.off : 'Disabled'}
-                        style={style ? style : { float: 'right', width: 90, height: 28 }} /* fixed width and height needed for non-formsy inputs */
+                        style={
+                            style ? style : { float: 'right', width: 90, height: 28 }
+                        } /* fixed width and height needed for non-formsy inputs */
                         containerClassName={toggleClassName}
                     />
                 )}

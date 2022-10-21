@@ -39,7 +39,6 @@ interface Props {
     onComplete: (model: DataClassModel) => void;
     beforeFinish?: (model: DataClassModel) => void;
     useTheme?: boolean;
-    containerTop?: number; // This sets the top of the sticky header, default is 0
     appPropertiesOnly?: boolean;
     successBsStyle?: string;
     saveBtnText?: string;
@@ -264,7 +263,6 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
         const {
             onCancel,
             appPropertiesOnly,
-            containerTop,
             useTheme,
             nounSingular,
             nounPlural,
@@ -347,7 +345,6 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     panelStatus={
                         model.isNew ? getDomainPanelStatus(1, currentPanelIndex, visitedPanels, firstState) : 'COMPLETE'
                     }
-                    containerTop={containerTop}
                     onChange={this.onDomainChange}
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(1, collapsed, callback);

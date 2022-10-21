@@ -8,10 +8,8 @@ import { EntityDataType } from '../internal/components/entities/models';
 import { Section } from '../internal/components/base/Section';
 import { SchemaQuery } from '../public/SchemaQuery';
 
-import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SAMPLE_DATA_EXPORT_CONFIG } from '../internal/components/samples/constants';
 import { User } from '../internal/components/base/models/User';
-import { SamplesEditableGridProps } from './SamplesEditableGrid';
 
 import { SamplesEditButtonSections } from '../internal/components/samples/utils';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
@@ -37,8 +35,6 @@ import {
 
 import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
 
-import { AssaySampleColumnProp, getAssayDefinitionsWithResultSampleLookup } from '../internal/components/assay/actions';
-
 import { isLoading } from '../public/LoadingState';
 
 import { AssayResultDataType } from '../internal/components/entities/constants';
@@ -50,7 +46,7 @@ import {
     saveFinderSearch,
 } from '../internal/components/search/actions';
 import { FilterCards } from '../internal/components/search/FilterCards';
-import { getSampleFinderLocalStorageKey } from './utils';
+
 import {
     getFinderStartText,
     getFinderViewColumnsConfig,
@@ -62,13 +58,25 @@ import {
     searchFiltersFromJson,
     searchFiltersToJson,
 } from '../internal/components/search/utils';
-import { EntityFieldFilterModal } from './EntityFieldFilterModal';
 
 import { FieldFilter, FilterProps, FinderReport } from '../internal/components/search/models';
+
+import { SAMPLE_FINDER_SESSION_PREFIX } from '../internal/components/search/constants';
+
+import { AssayStateModel } from '../internal/components/assay/models';
+
+import { AssayDomainTypes } from '../internal/AssayDefinitionModel';
+
+import { getSampleFinderLocalStorageKey } from './utils';
+import { EntityFieldFilterModal } from './EntityFieldFilterModal';
+
 import { SampleFinderSavedViewsMenu } from './SampleFinderSavedViewsMenu';
 import { SampleFinderSaveViewModal } from './SampleFinderSaveViewModal';
 import { SampleFinderManageViewsModal } from './SampleFinderManageViewsModal';
-import { SAMPLE_FINDER_SESSION_PREFIX } from '../internal/components/search/constants';
+
+import { SamplesEditableGridProps } from './SamplesEditableGrid';
+import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
+import { AssaySampleColumnProp } from './models';
 
 interface SampleFinderSamplesGridProps {
     columnDisplayNames?: { [key: string]: string };
@@ -615,3 +623,25 @@ const SampleFinderSamples: FC<SampleFinderSamplesProps> = memo(props => {
         />
     );
 });
+
+function getAssayDefinitionsWithResultSampleLookup(
+    assayStateModel: AssayStateModel,
+    providerType?: string
+): { [key: string]: AssaySampleColumnProp } {
+    const assays = assayStateModel.definitions.filter(
+        assay => providerType === undefined || assay.type?.toLowerCase() === providerType?.toLowerCase()
+    );
+
+    const results = {};
+    assays.forEach(assay => {
+        const sampleCol = assay.getSampleColumn(AssayDomainTypes.RESULT)?.column;
+        if (sampleCol) {
+            results[assay.name?.toLowerCase()] = {
+                fieldKey: sampleCol.fieldKey,
+                lookupFieldKey: sampleCol.lookup.keyColumn,
+            };
+        }
+    });
+
+    return results;
+}

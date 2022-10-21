@@ -51,6 +51,7 @@ interface CreateSamplesSubMenuProps {
     selectionNoun?: string;
     selectionNounPlural?: string;
     targetProductId?: string;
+    skipCrossFolderCheck?: boolean;
 }
 
 export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(props => {
@@ -74,6 +75,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         targetProductId,
         selectionNoun = 'sample',
         selectionNounPlural = 'samples',
+        skipCrossFolderCheck,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -137,7 +139,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const onSampleCreationMenuSelectOnClick = useCallback(
         async (key: string) => {
             // check cross folder selection
-            if (parentQueryModel && selectedQuantity > 0 && selectingSampleParents) {
+            if (parentQueryModel && selectedQuantity > 0 && selectingSampleParents && !skipCrossFolderCheck) {
                 const dataType = parentQueryModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? 'data' : 'sample';
                 setCrossFolderSelectionResult(undefined);
                 const result = await getCrossFolderSelectionResult(parentQueryModel.id, dataType);

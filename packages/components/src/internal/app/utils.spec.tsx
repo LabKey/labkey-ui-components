@@ -32,6 +32,8 @@ import {
     getStorageSectionConfig,
     hasPremiumModule,
     isAssayEnabled,
+    isAssayQCEnabled,
+    isAssayRequestsEnabled,
     isBiologicsEnabled,
     isCommunityDistribution,
     isELNEnabled,
@@ -203,10 +205,19 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([4, 'user'])).toBeFalsy();
     });
 
-    test('LKB with requests enabled', () => {
+    test('LKB with assay requests enabled', () => {
         const moduleContext = {
             api: {
-                moduleNames: ['biologics', 'samplemanagement', 'study', 'premium', 'professional', 'labbook', 'assay'],
+                moduleNames: [
+                    'assay',
+                    'assayrequest',
+                    'biologics',
+                    'labbook',
+                    'premium',
+                    'professional',
+                    'samplemanagement',
+                    'study',
+                ],
             },
             samplemanagement: {
                 productId: SAMPLE_MANAGER_APP_PROPERTIES.productId,
@@ -422,6 +433,43 @@ describe('utils', () => {
                 },
             })
         ).toBeTruthy(); // LKS Professional
+    });
+
+    test('isAssayQCEnabled', () => {
+        expect(isAssayQCEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(isAssayQCEnabled({ api: { moduleNames: ['assay'] } })).toBeFalsy();
+        expect(
+            isAssayQCEnabled({ api: { moduleNames: [] }, core: { productFeatures: [ProductFeature.AssayQC] } })
+        ).toBeFalsy();
+        expect(
+            isAssayQCEnabled({
+                api: { moduleNames: ['assay'] },
+                core: { productFeatures: [ProductFeature.Assay, ProductFeature.AssayQC] },
+            })
+        ).toBeFalsy();
+        expect(
+            isAssayQCEnabled({
+                api: { moduleNames: ['assay', 'premium'] },
+                core: { productFeatures: [ProductFeature.Assay, ProductFeature.AssayQC] },
+            })
+        ).toBeTruthy();
+    });
+
+    test('isAssayRequestsEnabled', () => {
+        expect(isAssayRequestsEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(isAssayRequestsEnabled({ api: { moduleNames: ['assayrequest'] } })).toBeFalsy();
+        expect(
+            isAssayRequestsEnabled({
+                api: { moduleNames: ['assayrequest'] },
+                biologics: { [EXPERIMENTAL_REQUESTS_MENU]: false },
+            })
+        ).toBeFalsy();
+        expect(
+            isAssayRequestsEnabled({
+                api: { moduleNames: ['assayrequest'] },
+                biologics: { [EXPERIMENTAL_REQUESTS_MENU]: true },
+            })
+        ).toBeTruthy();
     });
 
     test('isProtectedDataEnabled', () => {

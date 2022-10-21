@@ -147,7 +147,7 @@ and for the Sample Manager app build it would look like:
    3. Note: any code in this subpackage should not be imported / used by the code in the `src/internal` directory
 2. Update the `packages/components/package.config.js` file to add the new entry
    1. adding the `import` path to the `index.ts` file mentioned in step 1.i
-   2. in most cases, the new entry will also `dependOn: 'compoenents'`
+   2. in most cases, the new entry will also `dependOn: 'components'`
 3. Update the `packages/components/package.json` file to add the new subpackage
    1. add to `"exports"` to indicate the location of the subpackage generated JS file
    2. add to `"typesVersions"` to indicate the location of the subpackage typings file

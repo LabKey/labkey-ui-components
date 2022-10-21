@@ -83,8 +83,6 @@ export const SERVER_NOTIFICATIONS_LOADING_END = 'app/SERVER_NOTIFICATIONS_LOADIN
 export const SERVER_NOTIFICATIONS_LOADING_ERROR = 'app/SERVER_NOTIFICATIONS_LOADING_ERROR';
 export const SERVER_NOTIFICATIONS_INVALIDATE = '/app/SERVER_NOTIFICATIONS_INVALIDATE';
 
-export const STICKY_HEADER_HEIGHT = 56; // Issue 38478
-
 export const NOTIFICATION_TIMEOUT = 500;
 
 export const SERVER_NOTIFICATION_MAX_ROWS = 8;
@@ -95,6 +93,7 @@ export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot
 // The enum values here should align with the ProductFeature.java enum values (some not currently used but included for completeness)
 export enum ProductFeature {
     Assay = 'Assay',
+    AssayQC = 'AssayQC',
     ELN = 'ELN',
     FreezerManagement = 'FreezerManagement',
     Media = 'Media',

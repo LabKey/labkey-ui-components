@@ -24,8 +24,6 @@ import { AssayResultDataType } from '../internal/components/entities/constants';
 
 import { COLUMN_NOT_IN_FILTER_TYPE } from '../internal/query/filter';
 
-import { AssaySampleColumnProp } from '../internal/components/assay/actions';
-
 import { FieldFilter, FilterProps } from '../internal/components/search/models';
 import {
     getDataTypeFiltersWithNotInQueryUpdate,
@@ -34,6 +32,8 @@ import {
     isValidFilterFieldExcludeLookups,
 } from '../internal/components/search/utils';
 import { QueryFilterPanel } from '../internal/components/search/QueryFilterPanel';
+
+import { AssaySampleColumnProp } from './models';
 
 interface Props {
     api?: ComponentsAPIWrapper;

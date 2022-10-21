@@ -62,18 +62,8 @@
     height: 34px;
     min-width: 85px;
 
-    .grid-panel__search-icon {
-        position: absolute;
-        margin: 9px 0 0 5px;
-        color: $gray-light;
-    }
-
-    .grid-panel__remove-icon {
-        position: relative;
-        float: right;
-        top: -25px;
-        right: 5px;
-        cursor: pointer;
+    .input-group-addon {
+        background-color: inherit;
     }
 
     .grid-panel__search-input {

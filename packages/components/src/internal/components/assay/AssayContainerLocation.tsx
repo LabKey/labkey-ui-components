@@ -1,5 +1,4 @@
 import React, { FC, memo, useMemo, useCallback, ReactNode } from 'react';
-import { Col, Row } from 'react-bootstrap';
 
 interface AssayContainerLocationProps {
     selected: string;

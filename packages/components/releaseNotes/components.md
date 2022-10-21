@@ -8,6 +8,33 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Exclude readonly cells from being updated by bulk update
     * support queryFilters for select input fields in bulk update form
 
+### version 2.236.1
+*Released*: 20 October 2022
+* Components package update to split out `assay` components as separate entry point (subpackage)
+  * Create new /assay/index.ts file and dir and move assay related app components
+  * add assay entry point to package.config.js and package.json
+
+### version 2.236.0
+*Released*: 20 October 2022
+* Add `isAssayQCEnabled` to work in conjunction with new `AssayQC` product feature.
+* Rename `isRequestsEnabled` to `isAssayRequestsEnabled`.
+* Define `filterMediaSampleTypes` to centralize creation of filters for excluding Media-based Sample Types.
+* Refactor `AssayPropertiesPanel` to more easily respect application settings checks via `useServerContext` hook.
+* Update `AssayPropertiesPanel` to check for presence of `study` module when linking in study settings.
+* Update `AssayPropertiesPanel` to respect `isAssayQCEnabled` when displaying `QCStatesInput`.
+
+### version 2.235.0
+*Released*: 19 October 2022
+* EditInlineField: Add showToggle prop
+* Remove Footer
+* Add new app layout styles
+  * Update NavigationBar and SubNav to account for new layout styles
+  * SubNav is now always visible when present, it no longer scrolls into and out of view
+* <Page /> components now wrap children in a div
+* DomainForm: Don't use react-sticky for sticky header
+  * This removes the containerTop prop from DomainForm, AssayDesignerPanels, DataclassDesigner, DatasetDesignerPanels,
+  IssueLIstDefDesignerPanels, and SampleTypeDesigner
+
 ### version 2.234.0
 *Released*: 19 October 2022
 * Issue 46037: Exclude samples from bogus 'Material' sample type created by some plate-based assays (e.g., NAB)

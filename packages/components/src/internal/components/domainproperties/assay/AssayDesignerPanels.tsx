@@ -14,36 +14,38 @@ import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
 
-interface Props {
-    onChange?: (model: AssayProtocolModel) => void;
-    onCancel: () => void;
-    beforeFinish?: (model: AssayProtocolModel) => void;
-    onComplete: (model: AssayProtocolModel) => void;
-    initModel: AssayProtocolModel;
-    hideEmptyBatchDomain?: boolean;
-    containerTop?: number; // This sets the top of the sticky header, default is 0
-    appPropertiesOnly?: boolean;
-    domainFormDisplayOptions?: IDomainFormDisplayOptions;
+export interface AssayDesignerPanelsProps {
     appDomainHeaders?: Map<string, HeaderRenderer>;
     appIsValidMsg?: (model: AssayProtocolModel) => string;
-    useTheme?: boolean;
-    successBsStyle?: string;
+    appPropertiesOnly?: boolean;
+    beforeFinish?: (model: AssayProtocolModel) => void;
+    containerTop?: number; // This sets the top of the sticky header, default is 0
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    hideEmptyBatchDomain?: boolean;
+    initModel: AssayProtocolModel;
+    onCancel: () => void;
+    onChange?: (model: AssayProtocolModel) => void;
+    onComplete: (model: AssayProtocolModel) => void;
     saveBtnText?: string;
+    successBsStyle?: string;
     testMode?: boolean;
+    useTheme?: boolean;
 }
+
+type Props = AssayDesignerPanelsProps & InjectedBaseDomainDesignerProps;
 
 interface State {
     protocolModel: AssayProtocolModel;
 }
 
-class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
     panelCount = 1; // start at 1 for the AssayPropertiesPanel, will updated count after domains are defined in constructor
 
     static defaultProps = {
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     };
 
-    constructor(props: Props & InjectedBaseDomainDesignerProps) {
+    constructor(props: Props) {
         super(props);
 
         this.panelCount = this.panelCount + props.initModel.domains.size;
@@ -53,7 +55,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         };
     }
 
-    onDomainChange = (index: number, updatedDomain: DomainDesign, dirty: boolean) => {
+    onDomainChange = (index: number, updatedDomain: DomainDesign, dirty: boolean): void => {
         const { onChange } = this.props;
 
         this.setState(
@@ -69,8 +71,8 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
             },
             () => {
                 // Issue 39918: use the dirty property that DomainForm onChange passes
-                if (onChange && dirty) {
-                    onChange(this.state.protocolModel);
+                if (dirty) {
+                    onChange?.(this.state.protocolModel);
                 }
             }
         );
@@ -82,7 +84,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         );
     }
 
-    onFinish = () => {
+    onFinish = (): void => {
         const { setSubmitting } = this.props;
         const { protocolModel } = this.state;
         const appIsValidMsg = this.getAppIsValidMsg();
@@ -103,13 +105,11 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         }
     };
 
-    saveDomain = () => {
+    saveDomain = (): void => {
         const { beforeFinish, setSubmitting } = this.props;
         const { protocolModel } = this.state;
 
-        if (beforeFinish) {
-            beforeFinish(protocolModel);
-        }
+        beforeFinish?.(protocolModel);
 
         saveAssayDesign(protocolModel)
             .then(response => {
@@ -157,19 +157,10 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         );
     }
 
-    onAssayPropertiesChange = (model: AssayProtocolModel) => {
-        const { onChange } = this.props;
-
-        this.setState(
-            () => ({
-                protocolModel: model,
-            }),
-            () => {
-                if (onChange) {
-                    onChange(model);
-                }
-            }
-        );
+    onAssayPropertiesChange = (protocolModel: AssayProtocolModel): void => {
+        this.setState({ protocolModel }, () => {
+            this.props.onChange?.(protocolModel);
+        });
     };
 
     getAppDomainHeaderRenderer = (domain: DomainDesign): HeaderRenderer => {
@@ -184,7 +175,6 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         const {
             appPropertiesOnly,
             domainFormDisplayOptions,
-            containerTop,
             useTheme,
             successBsStyle,
             currentPanelIndex,
@@ -260,7 +250,6 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                                     ? getDomainPanelStatus(i + 1, currentPanelIndex, visitedPanels, firstState)
                                     : 'COMPLETE'
                             }
-                            containerTop={containerTop}
                             helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
                             onChange={(updatedDomain, dirty) => {
                                 this.onDomainChange(i, updatedDomain, dirty);
@@ -291,4 +280,4 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
     }
 }
 
-export const AssayDesignerPanels = withBaseDomainDesigner<Props>(AssayDesignerPanelsImpl);
+export const AssayDesignerPanels = withBaseDomainDesigner<AssayDesignerPanelsProps>(AssayDesignerPanelsImpl);

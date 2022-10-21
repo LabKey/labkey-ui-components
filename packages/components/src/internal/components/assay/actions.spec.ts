@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 import { initQueryGridState } from '../../global';
-import { ASSAY_DEFINITION_MODEL, TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
-
-import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 
-import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-
-import { QueryInfo } from '../../../public/QueryInfo';
-
-import { AssayStateModel } from './models';
-import {
-    allowReimportAssayRun,
-    GENERAL_ASSAY_PROVIDER_NAME,
-    getImportItemsForAssayDefinitions,
-    getRunPropertiesFileName,
-} from './actions';
+import { allowReimportAssayRun, getRunPropertiesFileName } from './actions';
 
 beforeAll(() => {
     initQueryGridState();
@@ -48,40 +34,6 @@ describe('allowReimportAssayRun', () => {
         expect(allowReimportAssayRun(TEST_USER_EDITOR, '', '')).toBe(false);
         expect(allowReimportAssayRun(TEST_USER_EDITOR, 'a', 'A')).toBe(false);
         expect(allowReimportAssayRun(TEST_USER_EDITOR, 'B', 'B')).toBe(true);
-    });
-});
-
-describe('getImportItemsForAssayDefinitions', () => {
-    test('empty list', () => {
-        const sampleModel = makeTestQueryModel(SchemaQuery.create('samples', 'samples'));
-        const items = getImportItemsForAssayDefinitions(new AssayStateModel(), sampleModel);
-        expect(items.size).toBe(0);
-    });
-
-    test('with expected match', () => {
-        const assayStateModel = new AssayStateModel({ definitions: [ASSAY_DEFINITION_MODEL] });
-        let queryInfo = QueryInfo.create(sampleSet2QueryInfo);
-
-        // with a query name that DOES NOT match the assay def sampleColumn lookup
-        queryInfo = queryInfo.set('schemaQuery', SchemaQuery.create('samples', 'Sample set 1')) as QueryInfo;
-        let sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
-        let items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
-        expect(items.size).toBe(0);
-
-        // with a query name that DOES match the assay def sampleColumn lookup
-        queryInfo = queryInfo.set('schemaQuery', SchemaQuery.create('samples', 'Sample set 10')) as QueryInfo;
-        sampleModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
-        items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
-        expect(items.size).toBe(1);
-    });
-
-    test('providerType filter', () => {
-        let items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, undefined);
-        expect(items.size).toBe(5);
-        items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, GENERAL_ASSAY_PROVIDER_NAME);
-        expect(items.size).toBe(2);
-        items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, 'NAb');
-        expect(items.size).toBe(1);
     });
 });
 

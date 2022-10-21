@@ -6,6 +6,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `AssayImportSubMenuItem` to check for cross-folder selection when in the project container
 * Update container filters for assay import panels to use `currentPlusProjecAndShared`
 
+### version 2.236.1
+*Released*: 20 October 2022
+* Components package update to split out `assay` components as separate entry point (subpackage)
+  * Create new /assay/index.ts file and dir and move assay related app components
+  * add assay entry point to package.config.js and package.json
+
+### version 2.236.0
+*Released*: 20 October 2022
+* Add `isAssayQCEnabled` to work in conjunction with new `AssayQC` product feature.
+* Rename `isRequestsEnabled` to `isAssayRequestsEnabled`.
+* Define `filterMediaSampleTypes` to centralize creation of filters for excluding Media-based Sample Types.
+* Refactor `AssayPropertiesPanel` to more easily respect application settings checks via `useServerContext` hook.
+* Update `AssayPropertiesPanel` to check for presence of `study` module when linking in study settings.
+* Update `AssayPropertiesPanel` to respect `isAssayQCEnabled` when displaying `QCStatesInput`.
+
 ### version 2.235.0
 *Released*: 19 October 2022
 * EditInlineField: Add showToggle prop

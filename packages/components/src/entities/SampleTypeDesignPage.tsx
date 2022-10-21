@@ -257,7 +257,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                 <>
                     {isInOtherFolder && (
                         <Alert bsStyle="warning">
-                            This is a shared sample type. Changes made here may affect other folders.
+                            This is a shared sample type. Changes made here may affect other projects.
                         </Alert>
                     )}
                     <SampleTypeDesigner

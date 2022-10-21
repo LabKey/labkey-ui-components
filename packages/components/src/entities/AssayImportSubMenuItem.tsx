@@ -9,6 +9,13 @@ import { DisableableMenuItem } from '../internal/components/samples/DisableableM
 
 import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
 import { getImportItemsForAssayDefinitions } from './utils';
+import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
+import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
+import { List } from 'immutable';
+import { isProjectContainer } from '../internal/app/utils';
+import {
+    EntityCrossProjectSelectionConfirmModal
+} from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 
 interface Props extends SubMenuItemProps {
     currentProductId?: string;

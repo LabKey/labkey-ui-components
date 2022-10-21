@@ -20,6 +20,7 @@ import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 import { AssayPropertiesPanelProps } from './models';
 import { Query } from '@labkey/api';
+import { getContainerFilterForLookups } from '../../query/api';
 
 export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
     const { model, onChange, title = 'Batch Details', showQuerySelectPreviewOptions } = props;
@@ -40,7 +41,7 @@ export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props =>
                         fieldValues={model.batchProperties.toObject()}
                         queryColumns={model.batchColumns}
                         renderFileInputs
-                        containerFilter={Query.containerFilter.currentPlusProjectAndShared}
+                        containerFilter={getContainerFilterForLookups()}
                         showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
                     />
                 </Formsy>

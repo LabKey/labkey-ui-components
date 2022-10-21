@@ -25,6 +25,7 @@ import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 import { AssayPropertiesPanelProps } from './models';
 import { Query } from '@labkey/api';
+import { getContainerFilterForLookups } from '../../query/api';
 
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
     const { model, onChange, title = 'Run Details', showQuerySelectPreviewOptions } = props;
@@ -80,7 +81,7 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                             fieldValues={model.runProperties.toObject()}
                             queryColumns={model.runColumns}
                             renderFileInputs
-                            containerFilter={Query.containerFilter.currentPlusProjectAndShared}
+                            containerFilter={getContainerFilterForLookups()}
                             showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
                         />
                     )}

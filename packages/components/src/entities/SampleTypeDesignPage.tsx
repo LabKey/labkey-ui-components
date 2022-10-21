@@ -85,6 +85,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
         useSeparateDataClassesAliasMenu,
         validateNewSampleTypeUnit,
     } = useSampleTypeAppContext();
+    const [loadingSampleType, setLoadingSampleType] = useState<boolean>(true);
     const [sampleType, setSampleType] = useState<DomainDetails>();
     const [hasError, setHasError] = useState(false);
     const [_, setIsDirty] = useRouteLeave(router, routes);
@@ -108,6 +109,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
         if (queryName) {
             // Clear the current sample type so the Designer gets unmounted
             setSampleType(undefined);
+            setLoadingSampleType(true);
 
             try {
                 // Load the associated queryInfo to determine where the domain resides
@@ -149,6 +151,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                 setSampleType(createDefaultSampleType());
             }
         }
+        setLoadingSampleType(false);
     };
 
     useEffect(() => {
@@ -174,8 +177,8 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
 
     const onCancel = useCallback(() => {
         setIsDirty(false);
-        goToSampleType();
-    }, [goToSampleType, setIsDirty]);
+        router.goBack();
+    }, [router, setIsDirty]);
 
     const onComplete = useCallback(
         (domain: DomainDesign) => {
@@ -205,7 +208,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
 
     const title = sampleType?.domainDesign?.name ?? 'Sample Type';
     const pageTitle = isUpdate ? 'Edit Sample Type Design' : 'Create a New Sample Type';
-    const saveButtonText = isUpdate ? 'Finish Updating Sample Type' : 'Finish Creating Sample Type';
+    const saveButtonText = isUpdate ? `Finish Updating ${title}` : `Finish Creating ${title}`;
     const hasActiveJob = hasActivePipelineJob(menu, SAMPLES_KEY, queryName);
 
     const validateStorageUnit = useCallback(
@@ -230,7 +233,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
         };
     }, [hideConditionalFormatting]);
 
-    if (menu.isLoaded && !sampleType) {
+    if (menu.isLoaded && !loadingSampleType && !sampleType) {
         return <NotFound />;
     } else if (menu.isLoading || !domainContainerUser.isLoaded || !sampleType) {
         return <LoadingPage title={pageTitle} />;

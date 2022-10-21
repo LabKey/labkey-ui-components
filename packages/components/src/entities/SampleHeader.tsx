@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ComponentType, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { Container, PermissionTypes, User } from '@labkey/api';
 import { EntityDataType } from '../internal/components/entities/models';
@@ -54,6 +54,7 @@ interface HeaderProps {
     sampleContainer?: Container;
     user?: User;
     title?: string;
+    subtitle?: ReactNode;
     isCrossFolder?: boolean;
     StorageMenu?: ComponentType<StorageMenuProps>
 }
@@ -78,6 +79,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         isCrossFolder,
         jobCreationHref,
         title,
+        subtitle,
         StorageMenu,
     } = props;
     const { queryInfo } = sampleModel;
@@ -136,7 +138,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
     }, []);
 
     const row = sampleModel.getRow();
-    const color = sampleModel.getRowValue('SampleSet/LabelColor');
     const description = sampleModel.getRowValue('Description');
     const sampleName = sampleModel.getRowValue('Name');
     const sampleStatus = getSampleStatus(row);
@@ -152,7 +153,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         () => isSampleOperationPermitted(sampleStatus.statusType, SampleOperation.AddToWorkflow),
         [sampleStatus]
     );
-    const sampleType = caseInsensitive(row, 'SampleSet')?.displayValue;
+
     const { isMedia } = queryInfo;
 
     const headerTitle = useMemo(() => {
@@ -179,12 +180,20 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         parent = createEntityParentKey(sampleModel.schemaQuery, sampleId);
     }
 
+    const subTitle = useMemo(() => {
+        if (subtitle) return subtitle;
+
+        const sampleType = caseInsensitive(row, 'SampleSet')?.displayValue || undefined;
+        const color = caseInsensitive(row, 'SampleSet/LabelColor')?.value;
+        const labelDisplay = getTitleDisplay(sampleType, hasActiveJob);
+        return color ? <ColorIcon label={labelDisplay} useSmall value={color} /> : sampleType;
+    }, [row, subtitle]);
 
     return (
         <>
             <PageDetailHeader
                 title={headerTitle}
-                subTitle={<ColorIcon label={getTitleDisplay(sampleType, hasActiveJob)} useSmall value={color} />}
+                subTitle={subTitle}
                 description={showDescription ? description : undefined}
                 iconSrc={iconSrc}
                 leftColumns={9}

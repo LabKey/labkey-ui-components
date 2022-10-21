@@ -20,7 +20,6 @@ import { getTitleDisplay } from '../internal/components/pipeline/utils';
 import { CreatedModified } from '../internal/components/base/CreatedModified';
 import { RequiresPermission } from '../internal/components/base/Permissions';
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
-import { CreateSamplesMenuItem } from './CreateSamplesMenuItem';
 import { AddToPicklistMenuItem } from '../internal/components/picklist/AddToPicklistMenuItem';
 import { PicklistCreationMenuItem } from '../internal/components/picklist/PicklistCreationMenuItem';
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
@@ -34,6 +33,7 @@ import {
 } from '../internal/components/labels/LabelPrintingContextProvider';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
+import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 
 interface StorageMenuProps {
     sampleModel: QueryModel;
@@ -213,7 +213,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                     <RequiresPermission user={user} perms={PermissionTypes.Insert}>
                                         {isMedia && <MenuItem href={insertURL}>Create {entityDataType?.nounPlural ?? queryInfo.name}</MenuItem>}
                                         {!isMedia && (
-                                            <CreateSamplesMenuItem
+                                            <CreateSamplesSubMenu
                                                 disabled={!canCreateSamples}
                                                 selectedQueryInfo={sampleModel.queryInfo}
                                                 parentKey={parent}

@@ -17,6 +17,7 @@ import { SamplesAddButton } from './SamplesAddButton';
 import { SampleAssayDetail } from './SampleAssayDetail';
 import { SampleDetailEditing } from './SampleDetailEditing';
 import { SampleLineageGraph } from './SampleLineageGraph';
+import { SampleHeader } from './SampleHeader';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
 import { SamplesDeriveButtonBase } from './SamplesDeriveButtonBase';
 import { SamplesEditButton } from './SamplesEditButton';
@@ -47,6 +48,7 @@ import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
 import { SampleTypePage } from './SampleTypePage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
+import { onSampleChange, onSampleTypeChange, onSampleTypeDesignChange } from './actions';
 
 export {
     PICKLIST_SAMPLES_FILTER,
@@ -61,6 +63,9 @@ export {
     getSampleWizardURL,
     isFindByIdsSchema,
     loadSampleTypes,
+    onSampleChange,
+    onSampleTypeChange,
+    onSampleTypeDesignChange,
     CreateSamplesMenuItem,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
@@ -87,6 +92,7 @@ export {
     SampleCreationTypeModal,
     SampleDetailEditing,
     SampleFinderSection,
+    SampleHeader,
     SampleIndexNav,
     SampleLineageGraph,
     SampleSetDeleteModal,

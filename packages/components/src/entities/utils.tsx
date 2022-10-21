@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { List, Set } from 'immutable';
-import { ActionURL, Utils } from '@labkey/api';
+import { ActionURL, AuditBehaviorTypes, Utils } from '@labkey/api';
 
 import {
     getOperationNotPermittedMessage,
@@ -310,4 +310,8 @@ export function getUpdatedLineageRowsForBulkEdit(
 
 export function getSampleFinderLocalStorageKey(): string {
     return getPrimaryAppProperties().productId + ActionURL.getContainer() + '-SampleFinder';
+}
+
+export function getSampleAuditBehaviorType() {
+    return AuditBehaviorTypes.DETAILED;
 }

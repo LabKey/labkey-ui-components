@@ -347,13 +347,15 @@ export class Cell extends React.PureComponent<Props, State> {
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
             let cell;
 
-            if (showLookup || col.inputRenderer) {
+            if ((showLookup || col.inputRenderer)) {
                 cell = (
                     <div {...displayProps}>
                         <div className="cell-menu-value">{valueDisplay}</div>
-                        <span onClick={this.handleDblClick} className="cell-menu-selector">
+                        {!this.isReadOnly() && (
+                            <span onClick={this.handleDblClick} className="cell-menu-selector">
                             <i className="fa fa-chevron-down" />
                         </span>
+                        )}
                     </div>
                 );
             } else {

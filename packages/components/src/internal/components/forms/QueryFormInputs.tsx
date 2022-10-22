@@ -54,7 +54,7 @@ export interface QueryFormInputsProps {
     onFieldsEnabledChange?: (numEnabled: number) => void;
     onQSChange?: (name: string, value: string | any[], items: any) => void;
     queryColumns?: OrderedMap<string, QueryColumn>;
-    queryFilters?: { [key: string]: List<Filter.IFilter> };
+    queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo?: QueryInfo;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     renderFileInputs?: boolean;
@@ -234,9 +234,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
                             const id = col.fieldKey + i + (componentKey ?? '');
-                            const queryFilter =
-                                queryFilters?.[col.fieldKey] ??
-                                (col.lookup.hasQueryFilters() ? List(col.lookup.getQueryFilters()) : undefined);
+                            const queryFilter = col.lookup.hasQueryFilters() ? List(col.lookup.getQueryFilters()) : queryFilters?.[col.fieldKey];
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}

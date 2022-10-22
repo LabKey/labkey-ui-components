@@ -21,6 +21,7 @@ interface ReactBootstrapToggleProps {
     size?: 'xs' | 'sm' | 'lg';
     style?: CSSProperties;
     width?: number;
+    className?: string;
 }
 
 interface OwnProps {

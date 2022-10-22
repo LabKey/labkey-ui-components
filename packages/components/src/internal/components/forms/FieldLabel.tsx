@@ -20,9 +20,9 @@ export interface FieldLabelProps {
     showLabel?: boolean;
     showToggle?: boolean;
     style?: CSSProperties;
+    toggleClassName?: string;
     toggleProps?: Partial<ToggleWithInputFieldProps>;
     withLabelOverlay?: boolean;
-    toggleClassName?: string;
 }
 
 export class FieldLabel extends Component<FieldLabelProps> {
@@ -54,18 +54,19 @@ export class FieldLabel extends Component<FieldLabelProps> {
             style,
             toggleProps,
             withLabelOverlay,
-            toggleClassName
+            toggleClassName,
         } = this.props;
 
         if (!showLabel) return null;
 
         // when not displaying with Formsy and we are displaying the field toggle, we adjust
         // the columns since the toggle appears outside the label.
-        let toggleContainerClassName, toggleWrapperClassName = 'control-label-toggle-input';
+        let toggleContainerClassName,
+            toggleWrapperClassName = 'control-label-toggle-input';
         if (showToggle && labelOverlayProps && !labelOverlayProps.isFormsy && !labelOverlayProps.labelClass) {
             labelOverlayProps.labelClass = 'control-label col-sm-2 col-xs-11 text-left';
             toggleContainerClassName = 'col-xs-1';
-            toggleWrapperClassName +=  ' control-label-toggle-input-size-fixed';
+            toggleWrapperClassName += ' control-label-toggle-input-size-fixed';
         }
 
         let labelBody;

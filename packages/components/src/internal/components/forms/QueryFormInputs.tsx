@@ -234,7 +234,9 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
                             const id = col.fieldKey + i + (componentKey ?? '');
-                            const queryFilter = col.lookup.hasQueryFilters() ? List(col.lookup.getQueryFilters()) : queryFilters?.[col.fieldKey];
+                            const queryFilter = col.lookup.hasQueryFilters()
+                                ? List(col.lookup.getQueryFilters())
+                                : queryFilters?.[col.fieldKey];
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}

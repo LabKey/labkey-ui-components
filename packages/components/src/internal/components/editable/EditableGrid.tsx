@@ -1257,7 +1257,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { primaryBtnProps, editorModel, maxRows } = this.props;
         const { pendingBulkFormData } = this.state;
 
-        if (editorModel.rowCount > maxRows) { // only bulk edit is supported
+        if (editorModel.rowCount > maxRows) {
+            // only bulk edit is supported
             primaryBtnProps?.onClick?.(pendingBulkFormData);
             this.setState({
                 pendingBulkFormData: undefined,
@@ -1299,35 +1300,29 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderBulkUpdate = () => {
-        const {
-            addControlProps,
-            editorModel,
-            bulkUpdateProps,
-            data,
-            dataKeys,
-            queryInfo,
-            showAsTab,
-        } = this.props;
+        const { addControlProps, editorModel, bulkUpdateProps, data, dataKeys, queryInfo, showAsTab } = this.props;
 
-        return <BulkAddUpdateForm
-            data={data}
-            dataKeys={dataKeys}
-            editorModel={editorModel}
-            columnFilter={bulkUpdateProps?.columnFilter}
-            queryFilters={bulkUpdateProps?.queryFilters}
-            onCancel={this.toggleBulkUpdate}
-            onFormChangeWithData={showAsTab ? this.onBulkUpdateFormDataChange : undefined}
-            onHide={this.toggleBulkUpdate}
-            onSubmitForEdit={this.bulkUpdate}
-            onSuccess={this.toggleBulkUpdate}
-            pluralNoun={addControlProps.nounPlural}
-            queryInfo={queryInfo}
-            selectedRowIndexes={this.getSelectedRowIndices()}
-            singularNoun={addControlProps.nounSingular}
-            asModal={!showAsTab}
-            warning={bulkUpdateProps?.warning}
-        />;
-    }
+        return (
+            <BulkAddUpdateForm
+                data={data}
+                dataKeys={dataKeys}
+                editorModel={editorModel}
+                columnFilter={bulkUpdateProps?.columnFilter}
+                queryFilters={bulkUpdateProps?.queryFilters}
+                onCancel={this.toggleBulkUpdate}
+                onFormChangeWithData={showAsTab ? this.onBulkUpdateFormDataChange : undefined}
+                onHide={this.toggleBulkUpdate}
+                onSubmitForEdit={this.bulkUpdate}
+                onSuccess={this.toggleBulkUpdate}
+                pluralNoun={addControlProps.nounPlural}
+                queryInfo={queryInfo}
+                selectedRowIndexes={this.getSelectedRowIndices()}
+                singularNoun={addControlProps.nounSingular}
+                asModal={!showAsTab}
+                warning={bulkUpdateProps?.warning}
+            />
+        );
+    };
 
     render() {
         const {

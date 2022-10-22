@@ -4,8 +4,9 @@ import { List, Map } from 'immutable';
 import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
 import { EditorModel } from '../../models';
 
+import { Alert } from '../base/Alert';
+
 import { QueryInfoForm, QueryInfoFormProps } from './QueryInfoForm';
-import { Alert } from "../base/Alert";
 
 interface BulkAddUpdateFormProps extends Omit<QueryInfoFormProps, 'fieldValues'> {
     data: Map<any, Map<string, any>>;

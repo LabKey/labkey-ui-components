@@ -154,7 +154,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         });
     };
 
-    getUpdatedFields = (data: any, requiredFields?: string[]): OrderedMap<string, any> => {
+    getUpdatedFields = (data: any, additionalFields?: string[]): OrderedMap<string, any> => {
         const { submitForEdit } = this.state;
 
         const fieldsToUpdate = this.props.queryInfo.columns.filter(column => {
@@ -165,7 +165,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         let filteredData = OrderedMap<string, any>();
         for (const key in data) {
             if (data.hasOwnProperty(key)) {
-                if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1) {
+                if (fieldsToUpdate.has(key.toLowerCase()) || additionalFields.indexOf(key) !== -1) {
                     // Date values are Dates not strings. We convert them to strings in the desired format here.
                     // They are converted back to Dates when saving to the server.
                     const col = this.props.queryInfo?.getColumn(key);

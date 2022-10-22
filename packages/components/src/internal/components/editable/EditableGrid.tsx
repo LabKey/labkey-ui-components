@@ -1230,10 +1230,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         if (newTabKey === EditableGridTabs.Grid && activeEditTab === EditableGridTabs.BulkUpdate) {
             this.bulkUpdate(pendingBulkFormData).then(() => {
-                this.setState(() => ({
+                this.setState({
                     pendingBulkFormData: undefined,
                     activeEditTab: newTabKey,
-                }));
+                });
             });
         } else if (newTabKey === EditableGridTabs.BulkUpdate && activeEditTab === EditableGridTabs.Grid) {
             if (bulkUpdateProps?.onClickBulkUpdate) {
@@ -1242,13 +1242,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     .then(canEdit => {
                         if (!canEdit) return;
 
-                        this.setState(() => ({ activeEditTab: newTabKey }));
+                        this.setState({ activeEditTab: newTabKey });
                     })
                     .catch(error => {
                         console.error(error);
                     });
             } else {
-                this.setState(() => ({ activeEditTab: newTabKey }));
+                this.setState({ activeEditTab: newTabKey });
             }
         }
     };
@@ -1267,9 +1267,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
 
         this.bulkUpdate(pendingBulkFormData).then(updates => {
-            this.setState(() => ({
+            this.setState({
                 pendingBulkFormData: undefined,
-            }));
+            });
             primaryBtnProps?.onClick?.(undefined, updates); // send back the updates in case caller uses useState to update EditorModel, which is async without cb
         });
     };

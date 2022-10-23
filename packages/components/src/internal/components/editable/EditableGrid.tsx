@@ -197,6 +197,7 @@ export interface BulkUpdateQueryInfoFormProps extends QueryInfoFormProps {
     excludeRowIdx?: number[];
     onClickBulkUpdate?: (selected: Set<number>) => Promise<boolean>;
     warning?: string;
+    onBulkUpdateFormDataChange?: (pendingBulkFormData?: any) => void;
 }
 
 export interface SharedEditableGridProps {
@@ -1218,9 +1219,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     }
 
     onBulkUpdateFormDataChange = (pendingBulkFormData?: any): void => {
-        this.setState({
-            pendingBulkFormData,
-        });
+        const { showAsTab, bulkUpdateProps } = this.props;
+
+        if (bulkUpdateProps?.onBulkUpdateFormDataChange)
+            bulkUpdateProps?.onBulkUpdateFormDataChange?.(pendingBulkFormData);
+
+        if (showAsTab) {
+            this.setState({
+                pendingBulkFormData,
+            });
+        }
     };
 
     onTabChange = (event: SyntheticEvent<TabContainer, Event>) => {

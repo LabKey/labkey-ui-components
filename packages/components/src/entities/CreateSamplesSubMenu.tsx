@@ -3,13 +3,11 @@ import { List } from 'immutable';
 
 import { SchemaQuery } from '../public/SchemaQuery';
 
-import { ProductMenuModel } from '../internal/components/navigation/model';
 import { AppURL } from '../internal/url/AppURL';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 
 import { MenuOption } from '../internal/components/menus/SubMenu';
-import { getMenuItemForSectionKey, getMenuItemsForSection } from '../internal/components/buttons/utils';
-import { SAMPLES_KEY } from '../internal/app/constants';
+import { getMenuItemForSectionKey } from '../internal/components/buttons/utils';
 
 import { SampleCreationType } from '../internal/components/samples/models';
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
@@ -29,8 +27,6 @@ interface Props {
     id?: string;
     inlineItemsCount?: number;
     isSelectingSamples?: (schemaQuery: SchemaQuery) => boolean;
-    menu?: ProductMenuModel;
-    menuCurrentChoice?: string;
     loadSampleTypes?: (includeMedia: boolean) => Promise<QueryInfo[]>;
     menuText?: string;
     navigate: (url: string | AppURL) => void;
@@ -56,8 +52,6 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
         subMenuText,
         mediaOptions,
         menuText,
-        menuCurrentChoice,
-        menu,
         disabled,
         isSelectingSamples,
         currentProductId,
@@ -69,9 +63,6 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
     const isSamples = useMemo(() => isSamplesSchema(selectedQueryInfo?.schemaQuery), [selectedQueryInfo]);
 
     useEffect(() => {
-        if (menu)
-            return;
-
         // if we are showing this menu as a subMenu, only include the given selectedQueryInfo
         if (subMenuText && selectedQueryInfo) {
             setSampleQueryInfos([selectedQueryInfo] );
@@ -103,22 +94,15 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
                 getMenuItemForSectionKey(itemKey, subMenuText, undefined, useOnClick, itemActionFn, disabledMsg)
             );
         }
-
-        let options;
-        if (menu) {
-            options = getMenuItemsForSection(menu.getSection(SAMPLES_KEY), useOnClick, itemActionFn, disabledMsg);
-        }
-        else {
-            const qiOptions = sampleQueryInfos?.map(queryInfo => ({
-                key: queryInfo.name,
-                name: subMenuText ?? queryInfo.queryLabel,
-                disabled: disabledMsg !== undefined,
-                disabledMsg,
-                href: !useOnClick ? itemActionFn?.(queryInfo.name)?.toHref?.() : undefined,
-                onClick: useOnClick && !disabledMsg ? itemActionFn?.bind(this, queryInfo.name) : undefined,
-            })) ?? [];
-            options = List(qiOptions);
-        }
+        const qiOptions = sampleQueryInfos?.map(queryInfo => ({
+            key: queryInfo.name,
+            name: subMenuText ?? queryInfo.queryLabel,
+            disabled: disabledMsg !== undefined,
+            disabledMsg,
+            href: !useOnClick ? itemActionFn?.(queryInfo.name)?.toHref?.() : undefined,
+            onClick: useOnClick && !disabledMsg ? itemActionFn?.bind(this, queryInfo.name) : undefined,
+        })) ?? [];
+        const options = List(qiOptions);
 
         if (options?.size === 0) {
             return List.of({ name: 'No sample types defined', disabled: true } as MenuOption);
@@ -136,7 +120,7 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
             {...props}
             getOptions={getOptions}
             menuText={subMenuText ? null : menuText} // using null will render the submenu items inline in this button
-            menuCurrentChoice={isSamples ? selectedQueryInfo.schemaQuery?.queryName ?? menuCurrentChoice : undefined}
+            menuCurrentChoice={isSamples ? selectedQueryInfo.schemaQuery?.queryName  : undefined}
             maxParentPerSample={MAX_PARENTS_PER_SAMPLE}
             sampleWizardURL={getWizardUrl ?? getSampleWizardURL}
             isSelectingSamples={isSelectingSamples}

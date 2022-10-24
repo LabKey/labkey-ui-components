@@ -220,11 +220,15 @@ export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isAssayQCEnabled(moduleContext?: ModuleContext): boolean {
-    return (
-        isAssayEnabled(moduleContext) &&
-        hasPremiumModule(moduleContext) &&
-        isFeatureEnabled(ProductFeature.AssayQC, moduleContext)
-    );
+    // NK: The product tiers which include Assay QC are not fully defined.
+    // For now (v22.11+), we're going to continue offering Assay QC features until
+    // we can fully define all desired product tiers.
+    // return (
+    //     isAssayEnabled(moduleContext) &&
+    //     hasPremiumModule(moduleContext) &&
+    //     isFeatureEnabled(ProductFeature.AssayQC, moduleContext)
+    // );
+    return true;
 }
 
 export function isAssayRequestsEnabled(moduleContext?: ModuleContext): boolean {

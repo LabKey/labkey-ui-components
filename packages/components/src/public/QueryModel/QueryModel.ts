@@ -563,6 +563,9 @@ export class QueryModel {
         this.keyColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
         this.displayColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
         this.uniqueIdColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
+        // Issue 46478: Include update columns in request columns to ensure values are available.
+        this.updateColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
+
         let fieldKeys = Array.from(uniqueFieldKeys);
 
         if (_omittedColumns.length) {

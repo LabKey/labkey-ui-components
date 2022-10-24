@@ -56,19 +56,16 @@ export class EditableGridLoaderFromSelection implements IEditableGridLoader {
 
     fetch(gridModel: QueryModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
-            const { queryParameters, schemaQuery } = gridModel;
-            const columnString = gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns);
-            const sorts = gridModel.sortString;
-            const selectedIds = [...gridModel.selections];
+            const { queryName, queryParameters, schemaName, selections, sortString, viewName } = gridModel;
 
             return getSelectedData(
-                schemaQuery.schemaName,
-                schemaQuery.queryName,
-                selectedIds,
-                columnString,
-                sorts,
+                schemaName,
+                queryName,
+                [...selections],
+                gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true),
+                sortString,
                 queryParameters,
-                schemaQuery.viewName
+                viewName
             )
                 .then(response => {
                     const { data, dataIds, totalRows } = response;

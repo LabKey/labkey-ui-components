@@ -15,7 +15,7 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 import { Alert } from '../../internal/components/base/Alert';
 
 import { RequiresModelAndActions } from './withQueryModels';
-import { DetailPanel } from './DetailPanel';
+import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
 
 export interface EditableDetailPanelProps extends RequiresModelAndActions {
     appEditable?: boolean;
@@ -69,15 +69,15 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
     };
 
     disableSubmitButton = (): void => {
-        this.setState(() => ({ canSubmit: false }));
+        this.setState({ canSubmit: false });
     };
 
     enableSubmitButton = (): void => {
-        this.setState(() => ({ canSubmit: true }));
+        this.setState({ canSubmit: true });
     };
 
     handleFormChange = (): void => {
-        this.setState(() => ({ warning: undefined }));
+        this.setState({ warning: undefined });
     };
 
     fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
@@ -175,19 +175,38 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                         {!editing && (detailHeader ?? null)}
 
-                        <DetailPanel
-                            actions={actions}
-                            containerFilter={containerFilter}
-                            containerPath={containerPath}
-                            detailEditRenderer={detailEditRenderer}
-                            detailRenderer={detailRenderer}
-                            editColumns={editColumns}
-                            editingMode={editing}
-                            model={model}
-                            queryColumns={queryColumns}
-                            fileInputRenderer={this.fileInputRenderer}
-                            onAdditionalFormDataChange={onAdditionalFormDataChange}
-                        />
+                        {!editing && (
+                            <DetailPanel
+                                actions={actions}
+                                containerFilter={containerFilter}
+                                containerPath={containerPath}
+                                detailRenderer={detailRenderer}
+                                editingMode={false}
+                                model={model}
+                                queryColumns={queryColumns}
+                            />
+                        )}
+
+                        {/* When editing load a model that includes the update columns and editing mode rendering */}
+                        {editing && (
+                            <DetailPanelWithModel
+                                containerFilter={containerFilter}
+                                containerPath={containerPath}
+                                detailEditRenderer={detailEditRenderer}
+                                detailRenderer={detailRenderer}
+                                editColumns={editColumns}
+                                editingMode
+                                fileInputRenderer={this.fileInputRenderer}
+                                onAdditionalFormDataChange={onAdditionalFormDataChange}
+                                queryConfig={{
+                                    ...model.queryConfig,
+                                    // Issue 46478: Include update columns in request columns to ensure values are available
+                                    requiredColumns: model.requiredColumns.concat(
+                                        model.updateColumns.map(col => col.fieldKey)
+                                    ),
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

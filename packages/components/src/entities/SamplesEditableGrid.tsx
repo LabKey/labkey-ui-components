@@ -617,7 +617,7 @@ class StorageEditableGridLoaderFromSelection implements IEditableGridLoader {
     fetch(queryModel: QueryModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
             const { schemaName, queryName, queryParameters, viewName } = queryModel;
-            const columnString = queryModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns);
+            const columnString = queryModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true);
             const sorts = queryModel.sorts.join(',');
             const selectedIds = [...queryModel.selections];
             return getSelectedData(schemaName, queryName, selectedIds, columnString, sorts, queryParameters, viewName)

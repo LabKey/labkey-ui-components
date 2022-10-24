@@ -20,10 +20,13 @@ import {
     getSampleStatuses,
     getSampleStorageId,
     getTimelineEvents,
+    getSampleTypeDetails,
     SampleAssayResultViewConfig,
 } from './actions';
 import { SampleState } from './models';
 import { SampleOperation } from './constants';
+import {SchemaQuery} from "../../../public/SchemaQuery";
+import {DomainDetails} from "../domainproperties/models";
 
 export interface SamplesAPIWrapper {
     getFieldLookupFromSelection: (
@@ -58,6 +61,13 @@ export interface SamplesAPIWrapper {
     getTimelineEvents: (sampleId: number, timezone?: string) => Promise<TimelineEventModel[]>;
 
     loadFinderSearches: () => Promise<FinderReport[]>;
+
+    getSampleTypeDetails: (
+        query?: SchemaQuery,
+        domainId?: number,
+        containerPath?: string,
+        includeNamePreview?: boolean
+    ) => Promise<DomainDetails>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
@@ -70,6 +80,7 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getFieldLookupFromSelection = getFieldLookupFromSelection;
     loadFinderSearches = loadFinderSearches;
     getTimelineEvents = getTimelineEvents;
+    getSampleTypeDetails = getSampleTypeDetails;
 }
 
 /**
@@ -89,6 +100,7 @@ export function getSamplesTestAPIWrapper(
         getFieldLookupFromSelection: mockFn(),
         loadFinderSearches: mockFn(),
         getTimelineEvents: mockFn(),
+        getSampleTypeDetails: mockFn(),
         ...overrides,
     };
 }

@@ -15,9 +15,7 @@ import { useContainerUser } from '../internal/components/container/actions';
 import { MEDIA_KEY, SAMPLES_KEY } from '../internal/app/constants';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
-import { getQueryDetails, invalidateQueryDetailsCache } from '../internal/query/api';
-import { getSampleTypeDetails } from '../internal/components/samples/actions';
-import { loadNameExpressionOptions } from '../internal/components/settings/actions';
+import { invalidateQueryDetailsCache } from '../internal/query/api';
 import { AppURL } from '../internal/url/AppURL';
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 import { hasActivePipelineJob } from '../internal/components/pipeline/utils';
@@ -32,6 +30,7 @@ import { ProductMenuModel } from '../internal/components/navigation/model';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import {useAppContext} from "../internal/AppContext";
 
 const DESIGNER_HEADER =
     'Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.';
@@ -90,6 +89,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
     const [hasError, setHasError] = useState(false);
     const [_, setIsDirty] = useRouteLeave(router, routes);
     const [domainContainerPath, setDomainContainerPath] = useState<string>();
+    const { api } = useAppContext();
     const { container } = useServerContext();
     const { createNotification } = useNotificationsContext();
     const domainContainerUser = useContainerUser(domainContainerPath);
@@ -113,14 +113,14 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
 
             try {
                 // Load the associated queryInfo to determine where the domain resides
-                const details = await getQueryDetails({
+                const details = await api.query.getQueryDetails({
                     queryName: schemaQuery.queryName,
                     schemaName: schemaQuery.schemaName,
                 });
                 setDomainContainerPath(details.domainContainerPath);
 
                 // Request the DomainDetails from the domain's container path
-                const sampleType_ = await getSampleTypeDetails(schemaQuery, undefined, details.domainContainerPath);
+                const sampleType_ = await api.samples.getSampleTypeDetails(schemaQuery, undefined, details.domainContainerPath);
                 setHasError(false);
 
                 // Because LKB is not yet integrated with Study, we do not display timepoint-related field Data Types
@@ -140,8 +140,8 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
             }
         } else {
             try {
-                const sampleType_ = await getSampleTypeDetails();
-                const expressionOptions = await loadNameExpressionOptions();
+                const sampleType_ = await api.samples.getSampleTypeDetails();
+                const expressionOptions = await api.entity.loadNameExpressionOptions();
                 setDomainContainerPath(container.path);
                 setSampleType(
                     createDefaultSampleType(sampleType_.domainDesign, expressionOptions.prefix, showStudyProperties)

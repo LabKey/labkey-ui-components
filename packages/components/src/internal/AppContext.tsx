@@ -16,6 +16,7 @@
 import React, { createContext, PropsWithChildren, ReactElement, useContext, useMemo } from 'react';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
+import {SampleTypeAppContext} from "../entities";
 
 export interface NavigationSettings {
     showCurrentContainer: boolean;
@@ -24,6 +25,7 @@ export interface NavigationSettings {
 export interface AppContext {
     api?: ComponentsAPIWrapper;
     navigation?: NavigationSettings;
+    sampleType?: SampleTypeAppContext;
 }
 
 export type ExtendableAppContext<T> = T & AppContext;

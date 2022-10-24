@@ -72,8 +72,7 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
 
     return (
         <div className="thread-block-header">
-            <span className="thread-block-header__avatar">
-                <UserAvatar avatar={user.avatar} displayName={user.displayName} id={user.id} />
+            <span className="thread-block-header__user">
                 <span>{user.displayName}</span>
             </span>
             <div className="pull-right">

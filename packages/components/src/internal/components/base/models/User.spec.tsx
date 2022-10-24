@@ -132,15 +132,15 @@ describe('User permissions', () => {
         expect(TEST_USER_APP_ADMIN.hasDesignAssaysPermission()).toBeTruthy();
     });
 
-    test('hasDesignSampleSetsPermission', () => {
-        expect(TEST_USER_GUEST.hasDesignSampleSetsPermission()).toBeFalsy();
-        expect(TEST_USER_READER.hasDesignSampleSetsPermission()).toBeFalsy();
-        expect(TEST_USER_AUTHOR.hasDesignSampleSetsPermission()).toBeFalsy();
-        expect(TEST_USER_EDITOR.hasDesignSampleSetsPermission()).toBeFalsy();
-        expect(TEST_USER_ASSAY_DESIGNER.hasDesignSampleSetsPermission()).toBeFalsy();
-        expect(TEST_USER_FOLDER_ADMIN.hasDesignSampleSetsPermission()).toBeTruthy();
-        expect(TEST_USER_PROJECT_ADMIN.hasDesignSampleSetsPermission()).toBeTruthy();
-        expect(TEST_USER_APP_ADMIN.hasDesignSampleSetsPermission()).toBeTruthy();
+    test('hasDesignSampleTypesPermission', () => {
+        expect(TEST_USER_GUEST.hasDesignSampleTypesPermission()).toBeFalsy();
+        expect(TEST_USER_READER.hasDesignSampleTypesPermission()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.hasDesignSampleTypesPermission()).toBeFalsy();
+        expect(TEST_USER_EDITOR.hasDesignSampleTypesPermission()).toBeFalsy();
+        expect(TEST_USER_ASSAY_DESIGNER.hasDesignSampleTypesPermission()).toBeFalsy();
+        expect(TEST_USER_FOLDER_ADMIN.hasDesignSampleTypesPermission()).toBeTruthy();
+        expect(TEST_USER_PROJECT_ADMIN.hasDesignSampleTypesPermission()).toBeTruthy();
+        expect(TEST_USER_APP_ADMIN.hasDesignSampleTypesPermission()).toBeTruthy();
     });
 
     test('hasManageUsersPermission', () => {

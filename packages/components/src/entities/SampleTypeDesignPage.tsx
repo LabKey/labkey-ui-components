@@ -124,16 +124,16 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                 setHasError(false);
 
                 // Because LKB is not yet integrated with Study, we do not display timepoint-related field Data Types
-                let updatedSampleSet = sampleType_.setIn(
+                let updatedSampleType = sampleType_.setIn(
                     ['domainDesign', 'allowTimepointProperties'],
                     showStudyProperties
                 ) as DomainDetails;
 
                 if (readOnlyQueryNames?.indexOf(queryName.toLowerCase()) > -1) {
-                    updatedSampleSet = updatedSampleSet.set('nameReadOnly', true) as DomainDetails;
+                    updatedSampleType = updatedSampleType.set('nameReadOnly', true) as DomainDetails;
                 }
 
-                setSampleType(updatedSampleSet);
+                setSampleType(updatedSampleType);
             } catch (reason) {
                 console.error(reason);
                 setHasError(true);
@@ -237,7 +237,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
         return <NotFound />;
     } else if (menu.isLoading || !domainContainerUser.isLoaded || !sampleType) {
         return <LoadingPage title={pageTitle} />;
-    } else if (!domainContainerUser.user.hasDesignSampleSetsPermission()) {
+    } else if (!domainContainerUser.user.hasDesignSampleTypesPermission()) {
         return <InsufficientPermissionsPage title={pageTitle} />;
     }
 

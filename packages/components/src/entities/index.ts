@@ -27,7 +27,6 @@ import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
 import { SamplesAssayButton } from './SamplesAssayButton';
 import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
-import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
 import { FindSamplesByIdsPageBase } from './FindSamplesByIdsPageBase';
 import { SampleFinderSection } from './SampleFinderSection';
@@ -67,7 +66,6 @@ export {
     AssayImportSubMenuItem,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
-    EntityCrossProjectSelectionConfirmModal,
     EntityDeleteModal,
     EntityLineageEditMenuItem,
     EntityTypeDeleteConfirmModal,

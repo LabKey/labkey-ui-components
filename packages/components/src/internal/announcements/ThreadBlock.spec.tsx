@@ -26,7 +26,7 @@ describe('ThreadBlock', () => {
         expect(wrapper.find('.thread-editor').exists()).toEqual(false);
 
         // Displays header
-        expect(wrapper.find('.thread-block-header__avatar').text()).toEqual(COMMENTER.displayName);
+        expect(wrapper.find('.thread-block-header__user').text()).toEqual(COMMENTER.displayName);
 
         // Allows for reply
         expect(wrapper.find('.thread-block__reply').exists()).toEqual(true);

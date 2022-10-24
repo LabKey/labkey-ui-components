@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Consolidate from LKB `SampleCreateMenuItem` and LKSM `CreateSamplesSubMenu` into a common `CreateSamplesMenuItem`
   * Port LKB `Samples/Pages/Header.tsx` and LKSM `SampleHeader` into single `SampleHeader` implementation
 
+### version 2.236.3
+*Released*: 24 October 2022
+* ThreadBlock: Don't render user avatars
+
 ### version 2.236.1
 *Released*: 20 October 2022
 * Components package update to split out `assay` components as separate entry point (subpackage)

@@ -154,7 +154,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         [sampleStatus]
     );
 
-    const { isMedia } = queryInfo;
+    const isMedia  = queryInfo?.isMedia;
 
     const headerTitle = useMemo(() => {
         if (title) return title;
@@ -216,6 +216,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                             <CreateSamplesSubMenu
                                                 disabled={!canCreateSamples}
                                                 selectedQueryInfo={sampleModel.queryInfo}
+                                                parentType={SAMPLES_KEY}
                                                 parentKey={parent}
                                                 navigate={navigate}
                                             />

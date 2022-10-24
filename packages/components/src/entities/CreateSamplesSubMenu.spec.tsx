@@ -93,30 +93,7 @@ describe('CreateSamplesSubMenuBase', () => {
     });
 });
 
-let menu = new ProductMenuModel({ currentProductId: 'jest-test' });
-menu = menu.setLoadedSections(
-    List<MenuSectionModel>([
-        MenuSectionModel.create({
-            key: SAMPLES_KEY,
-            label: 'Samples',
-            totalCount: 2,
-            items: [
-                { id: 100, key: 'a', label: 'SampleSetA' },
-                { id: 200, key: 'b', label: 'SampleSetAB' },
-            ],
-            sectionKey: SAMPLES_KEY,
-        }),
-    ])
-);
 
-const DEFAULT_PROPS_MENU = {
-    menu,
-    user: TEST_USER_APP_ADMIN,
-    parentType: 'samples',
-    isSelectingSamples: () => false,
-    navigate: jest.fn(),
-
-};
 
 describe('CreateSamplesSubMenu', () => {
     function validate(
@@ -137,10 +114,11 @@ describe('CreateSamplesSubMenu', () => {
         return options;
     }
 
-    test('default props', () => {
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS_MENU} />);
+    test('default props', async () => {
+        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} />);
+        await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
-        expect(options.get(0).name).toBe('SampleSetA');
+        expect(options.get(0).name).toBe('A');
         expect(options.get(0).disabled).toBe(false);
         expect(options.get(0).disabledMsg).toBe(undefined);
         expect(options.get(0).href).toBe('#/samples/new?target=a');
@@ -175,7 +153,7 @@ describe('CreateSamplesSubMenu', () => {
             })}
         />);
         await waitForLifecycle(wrapper);
-        validate(wrapper, 2);
+        validate(wrapper, 2, 'Create Samples', 'Other');
         expect(wrapper.find(SubMenu).prop('currentMenuChoice')).toBe('Other');
         wrapper.unmount();
     });
@@ -189,19 +167,21 @@ describe('CreateSamplesSubMenu', () => {
         wrapper.unmount();
     });
 
-    test('useOnClick for parentKey', () => {
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS_MENU} parentKey="123" />);
+    test('useOnClick for parentKey', async () => {
+        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentKey="123" />);
+        await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).href).toBe(undefined);
         expect(options.get(0).onClick).toBeDefined();
         wrapper.unmount();
     });
 
-    test('useOnClick for parentQueryModel with selection', () => {
+    test('useOnClick for parentQueryModel with selection', async () => {
         const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections: new Set('1') });
         const wrapper = mount(
-            <CreateSamplesSubMenu {...DEFAULT_PROPS_MENU} parentQueryModel={model} isSelectingSamples={() => true} />
+            <CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} isSelectingSamples={() => true} />
         );
+        await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).href).toBe(undefined);
         expect(options.get(0).onClick).toBeDefined();
@@ -225,22 +205,24 @@ describe('CreateSamplesSubMenu', () => {
         wrapper.unmount();
     });
 
-    test('use href for parentQueryModel with non sample or source schema', () => {
+    test('use href for parentQueryModel with non sample or source schema', async () => {
         const model = makeTestQueryModel(SchemaQuery.create('other', 'Test')).mutate({ selections: new Set('1') });
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS_MENU} parentQueryModel={model} />);
+        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} />);
+        await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).href).toBe('#/samples/new?target=a&selectionKey=model');
         expect(options.get(0).onClick).toBe(undefined);
         wrapper.unmount();
     });
 
-    test('disabledMsg', () => {
+    test('disabledMsg', async () => {
         const selections = new Set<string>();
         for (var i = 0; i < MAX_PARENTS_PER_SAMPLE + 1; i++) {
             selections.add('' + i);
         }
         const model = makeTestQueryModel(SchemaQuery.create('samples', 'Test')).mutate({ selections });
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS_MENU} parentQueryModel={model} selectedType={SampleCreationType.PooledSamples}/>);
+        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} parentQueryModel={model} selectedType={SampleCreationType.PooledSamples}/>);
+        await waitForLifecycle(wrapper);
         const options = validate(wrapper, 2);
         expect(options.get(0).disabled).toBe(true);
         expect(options.get(0).disabledMsg).toBeDefined();
@@ -250,7 +232,7 @@ describe('CreateSamplesSubMenu', () => {
     });
 
     test('subMenuText', () => {
-        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS_MENU} subMenuText="subMenuText" />);
+        const wrapper = mount(<CreateSamplesSubMenu {...DEFAULT_PROPS} subMenuText="subMenuText" />);
         const options = validate(wrapper, 1, null);
         expect(options.get(0).name).toBe('subMenuText');
         expect(options.get(0).disabled).toBe(false);

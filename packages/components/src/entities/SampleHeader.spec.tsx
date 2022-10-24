@@ -4,7 +4,6 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { LoadingState } from '../public/LoadingState';
-import { ProductMenuModel } from '../internal/components/navigation/model';
 import { mountWithAppServerContext } from '../internal/testHelpers';
 import { TEST_USER_AUTHOR, TEST_USER_READER } from '../internal/userFixtures';
 import { SampleHeaderImpl } from './SampleHeader';
@@ -63,7 +62,6 @@ describe('SampleHeader', () => {
         printServiceUrl: undefined,
         canPrintLabels: undefined,
         onUpdate: jest.fn(),
-        menu: new ProductMenuModel(),
         navigate: jest.fn(),
     };
 
@@ -119,7 +117,7 @@ describe('SampleHeader', () => {
         );
 
         expect(wrapper.find('.detail__header--name').text()).toBe('Sample A');
-        expect(wrapper.find('.test-loc-detail-subtitle span').text()).toBe('TestSampleType');
+        expect(wrapper.find('.test-loc-detail-subtitle').text()).toBe('TestSampleType');
         expect(wrapper.find('.color-icon__circle-small')).toHaveLength(0);
         expect(wrapper.find('.detail__header--desc')).toHaveLength(0);
 

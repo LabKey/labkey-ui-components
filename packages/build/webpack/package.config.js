@@ -86,6 +86,7 @@ module.exports = {
         '@labkey/api',
         '@labkey/components',
         '@labkey/components/entities',
+        '@labkey/components/assay',
         '@remirror/pm',
         'boostrap-sass',
         'classnames',

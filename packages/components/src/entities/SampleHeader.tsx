@@ -23,7 +23,6 @@ import { ManageDropdownButton } from '../internal/components/buttons/ManageDropd
 import { AddToPicklistMenuItem } from '../internal/components/picklist/AddToPicklistMenuItem';
 import { PicklistCreationMenuItem } from '../internal/components/picklist/PicklistCreationMenuItem';
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
-import { AssayImportSubMenuItem } from '../internal/components/assay/AssayImportSubMenuItem';
 import { SAMPLE_TIMELINE_AUDIT_QUERY } from '../internal/components/auditlog/constants';
 import { EntityDeleteModal } from './EntityDeleteModal';
 import { SampleTypeDataType } from '../internal/components/entities/constants';
@@ -34,6 +33,7 @@ import {
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
+import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 
 interface StorageMenuProps {
     sampleModel: QueryModel;

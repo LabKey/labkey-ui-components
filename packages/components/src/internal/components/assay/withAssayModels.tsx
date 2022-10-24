@@ -5,18 +5,12 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 import { fetchProtocol } from '../domainproperties/assay/actions';
 
-import { isAssayEnabled, userCanReadAssays } from '../../app/utils';
+import { isAssayEnabled } from '../../app/utils';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { AssayProtocolModel } from '../domainproperties/assay/models';
 
-import { isLoading, LoadingState } from '../../../public/LoadingState';
-import { useServerContext } from '../base/ServerContext';
-import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
-import { LoadingPage } from '../base/LoadingPage';
-import { NotFound } from '../base/NotFound';
-import { Alert } from '../base/Alert';
-import { getActionErrorMessage } from '../../util/messaging';
+import { LoadingState } from '../../../public/LoadingState';
 
 import { AssayStateModel } from './models';
 import { clearAssayDefinitionCache, fetchAllAssays } from './actions';
@@ -27,7 +21,7 @@ export interface AssayLoader {
     loadProtocol: (protocolId: number, containerPath?: string) => Promise<AssayProtocolModel>;
 }
 
-export interface AssayContext {
+interface AssayContext {
     assayDefinition: AssayDefinitionModel;
     assayProtocol: AssayProtocolModel;
 }
@@ -259,47 +253,4 @@ export function withAssayModelsFromLocation<Props>(
     };
 
     return withRouter(AssayFromLocation);
-}
-
-/**
- * Returns a higher-order component wrapped with [[withAssayModelsFromLocation]] that provides common
- * "page"-level handling for edge cases (e.g. loading, protocol not found, errors during loading, etc).
- * @param ComponentToWrap: The component definition (e.g. class, function) to wrap.
- * This will have [[InjectedAssayModel]] props injected into it.
- * @param defaultProps: Provide alternative "defaultProps" for this wrapped component.
- */
-export function assayPage<Props>(
-    ComponentToWrap: ComponentType<Props & InjectedAssayModel>,
-    defaultProps?: WithAssayModelProps
-): ComponentType<Props & WithAssayModelProps & WithRouterProps> {
-    const AssayPageImpl: FC<Props & InjectedAssayModel & WithRouterProps> = props => {
-        const { assayModel, params } = props;
-        const assayName = params?.protocol;
-        const hasProtocol = assayName !== undefined;
-        const { user } = useServerContext();
-
-        if (!userCanReadAssays(user)) {
-            return <InsufficientPermissionsPage title="Assays" />;
-        }
-        if (
-            isLoading(assayModel.definitionsLoadingState) ||
-            (hasProtocol && isLoading(assayModel.protocolLoadingState))
-        ) {
-            return <LoadingPage />;
-        }
-
-        if (assayModel.definitionsError || assayModel.protocolError) {
-            if (hasProtocol && assayModel.getByName(assayName) === undefined) {
-                return <NotFound />;
-            }
-
-            return (
-                <Alert>{getActionErrorMessage('There was a problem loading the assay design.', 'assay design')}</Alert>
-            );
-        }
-
-        return <ComponentToWrap {...props} />;
-    };
-
-    return withAssayModelsFromLocation(AssayPageImpl, defaultProps);
 }

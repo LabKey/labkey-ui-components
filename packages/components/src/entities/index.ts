@@ -2,6 +2,7 @@ import { PICKLIST_SAMPLES_FILTER } from './models';
 import { getSampleTypes, getOriginalParentsFromLineage, loadSampleTypes } from './actions';
 import {
     getSampleWizardURL,
+    filterMediaSampleTypes,
     filterSampleRowsForOperation,
     getSampleSetMenuItem,
     isFindByIdsSchema,
@@ -47,12 +48,15 @@ import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
 import { SampleTypeTemplateDownloadRenderer, downloadSampleTypeTemplate } from './SampleTypeTemplateDownloadRenderer';
 import { SampleTypePage } from './SampleTypePage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
+import { SamplesResolver } from './SamplesResolver';
+import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { onSampleChange, onSampleTypeChange, onSampleTypeDesignChange } from './actions';
 
 export {
     PICKLIST_SAMPLES_FILTER,
     createEntityParentKey,
     downloadSampleTypeTemplate,
+    filterMediaSampleTypes,
     filterSampleRowsForOperation,
     getOriginalParentsFromLineage,
     getSampleSetMenuItem,
@@ -65,6 +69,7 @@ export {
     onSampleChange,
     onSampleTypeChange,
     onSampleTypeDesignChange,
+    AssayImportSubMenuItem,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
     EntityCrossProjectSelectionConfirmModal,
@@ -93,6 +98,7 @@ export {
     SampleHeader,
     SampleIndexNav,
     SampleLineageGraph,
+    SamplesResolver,
     SampleSetDeleteModal,
     SampleTimelinePageBase,
     SampleTypeIndexNav,

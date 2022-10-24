@@ -1,10 +1,14 @@
 import React from 'react';
 import { List } from 'immutable';
-import { mount } from 'enzyme';
 
 import { DomainDesign, DomainPanelStatus } from '../models';
 
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
+
+import { mountWithServerContext } from '../../../testHelpers';
+
+import { ProductFeature } from '../../../app/constants';
+
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
 import { AssayProtocolModel } from './models';
 
@@ -30,6 +34,14 @@ beforeAll(() => {
     initUnitTestMocks();
 });
 
+const SERVER_CONTEXT = {
+    // isAssayQCEnabled(moduleContext) === true
+    moduleContext: {
+        api: { moduleNames: ['assay', 'premium', 'study'] },
+        core: { productFeatures: [ProductFeature.Assay, ProductFeature.AssayQC] },
+    },
+};
+
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,
     validate: false,
@@ -50,19 +62,21 @@ const EMPTY_MODEL = AssayProtocolModel.create({
 
 describe('AssayPropertiesPanel', () => {
     test('default properties', () => {
-        const form = mount(<AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn} />);
+        const form = mountWithServerContext(
+            <AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn} />
+        );
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
     test('asPanel, helpTopic, and appPropertiesOnly', () => {
-        const form = mount(
+        const form = mountWithServerContext(
             <AssayPropertiesPanel
                 {...BASE_PROPS}
                 model={EMPTY_MODEL}
                 asPanel={false}
-                appPropertiesOnly={true}
+                appPropertiesOnly
                 helpTopic="defineAssaySchema"
                 onChange={jest.fn}
             />
@@ -73,12 +87,12 @@ describe('AssayPropertiesPanel', () => {
     });
 
     test('without helpTopic', () => {
-        const form = mount(
+        const form = mountWithServerContext(
             <AssayPropertiesPanel
                 {...BASE_PROPS}
                 model={EMPTY_MODEL}
                 helpTopic={null}
-                appPropertiesOnly={true}
+                appPropertiesOnly
                 onChange={jest.fn}
             />
         );
@@ -88,8 +102,8 @@ describe('AssayPropertiesPanel', () => {
     });
 
     test('panelCls, initCollapsed, and markComplete', () => {
-        const form = mount(
-            <AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} initCollapsed={true} onChange={jest.fn} />
+        const form = mountWithServerContext(
+            <AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} initCollapsed onChange={jest.fn} />
         );
 
         expect(form).toMatchSnapshot();
@@ -97,7 +111,7 @@ describe('AssayPropertiesPanel', () => {
     });
 
     test('with initial model', () => {
-        const form = mount(
+        const form = mountWithServerContext(
             <AssayPropertiesPanel
                 {...BASE_PROPS}
                 model={AssayProtocolModel.create({
@@ -116,26 +130,27 @@ describe('AssayPropertiesPanel', () => {
     });
 
     test('visible properties based on empty AssayProtocolModel', () => {
-        const simpleModelWrapper = mount(
-            <AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn} />
+        const wrapper = mountWithServerContext(
+            <AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn} />,
+            SERVER_CONTEXT
         );
 
-        expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(QCStatesInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(PlateMetadataInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(PlateTemplatesInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(DetectionMethodsInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(MetadataInputFormatsInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(EditableRunsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(EditableResultsInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(BackgroundUploadInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(TransformScriptsInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(AutoLinkDataInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(AutoLinkCategoryInput)).toHaveLength(1);
-        simpleModelWrapper.unmount();
+        expect(wrapper.find(NameInput)).toHaveLength(1);
+        expect(wrapper.find(DescriptionInput)).toHaveLength(1);
+        expect(wrapper.find(QCStatesInput)).toHaveLength(0);
+        expect(wrapper.find(PlateMetadataInput)).toHaveLength(0);
+        expect(wrapper.find(PlateTemplatesInput)).toHaveLength(0);
+        expect(wrapper.find(DetectionMethodsInput)).toHaveLength(0);
+        expect(wrapper.find(MetadataInputFormatsInput)).toHaveLength(0);
+        expect(wrapper.find(EditableRunsInput)).toHaveLength(1);
+        expect(wrapper.find(EditableResultsInput)).toHaveLength(0);
+        expect(wrapper.find(BackgroundUploadInput)).toHaveLength(0);
+        expect(wrapper.find(TransformScriptsInput)).toHaveLength(0);
+        expect(wrapper.find(SaveScriptDataInput)).toHaveLength(0);
+        expect(wrapper.find(ModuleProvidedScriptsInput)).toHaveLength(0);
+        expect(wrapper.find(AutoLinkDataInput)).toHaveLength(1);
+        expect(wrapper.find(AutoLinkCategoryInput)).toHaveLength(1);
+        wrapper.unmount();
     });
 
     test('visible properties based on populated AssayProtocolModel', () => {
@@ -151,24 +166,27 @@ describe('AssayPropertiesPanel', () => {
             moduleTransformScripts: ['validation.pl'],
         });
 
-        const simpleModelWrapper = mount(<AssayPropertiesPanel {...BASE_PROPS} model={model} onChange={jest.fn} />);
+        const wrapper = mountWithServerContext(
+            <AssayPropertiesPanel {...BASE_PROPS} model={model} onChange={jest.fn} />,
+            SERVER_CONTEXT
+        );
 
-        expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(PlateMetadataInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(QCStatesInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(PlateTemplatesInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(DetectionMethodsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(MetadataInputFormatsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(EditableRunsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(EditableResultsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(BackgroundUploadInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(TransformScriptsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(AutoLinkDataInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(AutoLinkCategoryInput)).toHaveLength(1);
-        simpleModelWrapper.unmount();
+        expect(wrapper.find(NameInput)).toHaveLength(1);
+        expect(wrapper.find(DescriptionInput)).toHaveLength(1);
+        expect(wrapper.find(PlateMetadataInput)).toHaveLength(1);
+        expect(wrapper.find(QCStatesInput)).toHaveLength(1);
+        expect(wrapper.find(PlateTemplatesInput)).toHaveLength(1);
+        expect(wrapper.find(DetectionMethodsInput)).toHaveLength(1);
+        expect(wrapper.find(MetadataInputFormatsInput)).toHaveLength(1);
+        expect(wrapper.find(EditableRunsInput)).toHaveLength(1);
+        expect(wrapper.find(EditableResultsInput)).toHaveLength(1);
+        expect(wrapper.find(BackgroundUploadInput)).toHaveLength(1);
+        expect(wrapper.find(TransformScriptsInput)).toHaveLength(1);
+        expect(wrapper.find(SaveScriptDataInput)).toHaveLength(1);
+        expect(wrapper.find(ModuleProvidedScriptsInput)).toHaveLength(1);
+        expect(wrapper.find(AutoLinkDataInput)).toHaveLength(1);
+        expect(wrapper.find(AutoLinkCategoryInput)).toHaveLength(1);
+        wrapper.unmount();
     });
 
     test('visible properties for appPropertiesOnly based on populated AssayProtocolModel', () => {
@@ -183,24 +201,25 @@ describe('AssayPropertiesPanel', () => {
             moduleTransformScripts: ['validation.pl'],
         });
 
-        const simpleModelWrapper = mount(
-            <AssayPropertiesPanel {...BASE_PROPS} model={model} onChange={jest.fn} appPropertiesOnly={true} />
+        const wrapper = mountWithServerContext(
+            <AssayPropertiesPanel {...BASE_PROPS} model={model} onChange={jest.fn} appPropertiesOnly />,
+            SERVER_CONTEXT
         );
-        expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(PlateMetadataInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(QCStatesInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(PlateTemplatesInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(DetectionMethodsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(MetadataInputFormatsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(EditableRunsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(EditableResultsInput)).toHaveLength(1);
-        expect(simpleModelWrapper.find(BackgroundUploadInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(TransformScriptsInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(AutoLinkDataInput)).toHaveLength(0);
-        expect(simpleModelWrapper.find(AutoLinkCategoryInput)).toHaveLength(0);
-        simpleModelWrapper.unmount();
+        expect(wrapper.find(NameInput)).toHaveLength(1);
+        expect(wrapper.find(DescriptionInput)).toHaveLength(1);
+        expect(wrapper.find(PlateMetadataInput)).toHaveLength(0);
+        expect(wrapper.find(QCStatesInput)).toHaveLength(0);
+        expect(wrapper.find(PlateTemplatesInput)).toHaveLength(1);
+        expect(wrapper.find(DetectionMethodsInput)).toHaveLength(1);
+        expect(wrapper.find(MetadataInputFormatsInput)).toHaveLength(1);
+        expect(wrapper.find(EditableRunsInput)).toHaveLength(1);
+        expect(wrapper.find(EditableResultsInput)).toHaveLength(1);
+        expect(wrapper.find(BackgroundUploadInput)).toHaveLength(0);
+        expect(wrapper.find(TransformScriptsInput)).toHaveLength(0);
+        expect(wrapper.find(SaveScriptDataInput)).toHaveLength(0);
+        expect(wrapper.find(ModuleProvidedScriptsInput)).toHaveLength(0);
+        expect(wrapper.find(AutoLinkDataInput)).toHaveLength(0);
+        expect(wrapper.find(AutoLinkCategoryInput)).toHaveLength(0);
+        wrapper.unmount();
     });
 });

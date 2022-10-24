@@ -1,18 +1,23 @@
 import React from 'react';
 import { List, Map } from 'immutable';
-import { mount } from 'enzyme';
 import { Panel } from 'react-bootstrap';
 
 import { DomainDesign } from '../models';
 
-import { sleep } from '../../../testHelpers';
+import { mountWithServerContext, waitForLifecycle } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../../test/testHelperMocks';
 
 import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
 
+import { ProductFeature } from '../../../app/constants';
+
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
-import { AssayDesignerPanels } from './AssayDesignerPanels';
+import { AssayDesignerPanels, AssayDesignerPanelsProps } from './AssayDesignerPanels';
+
+const SERVER_CONTEXT = {
+    moduleContext: { api: { moduleNames: ['assay', 'study'] }, core: { productFeatures: [ProductFeature.AssayQC] } },
+};
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,
@@ -65,68 +70,80 @@ function setAssayName(wrapper: any, value: string) {
         .simulate('change', { target: nameInputValue });
 }
 
-const BASE_PROPS = {
-    onComplete: jest.fn(),
-    onCancel: jest.fn(),
-    domainFormDisplayOptions: {
-        hideStudyPropertyTypes: true,
-    },
-    testMode: true,
-};
-
 beforeAll(() => {
     initUnitTestMocks();
 });
 
 describe('AssayDesignerPanels', () => {
+    function getDefaultProps(): AssayDesignerPanelsProps {
+        return {
+            domainFormDisplayOptions: {
+                hideStudyPropertyTypes: true,
+            },
+            initModel: EMPTY_MODEL,
+            onComplete: jest.fn(),
+            onCancel: jest.fn(),
+            testMode: true,
+        };
+    }
+
     test('default properties', async () => {
-        const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} />);
-        await sleep();
-        expect(form).toMatchSnapshot();
-        form.unmount();
+        const wrapper = mountWithServerContext(<AssayDesignerPanels {...getDefaultProps()} />, SERVER_CONTEXT);
+        await waitForLifecycle(wrapper);
+        expect(wrapper).toMatchSnapshot();
+        wrapper.unmount();
     });
 
     test('initModel', async () => {
-        const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} />);
-        await sleep();
-        expect(form).toMatchSnapshot();
-        form.unmount();
+        const wrapper = mountWithServerContext(
+            <AssayDesignerPanels {...getDefaultProps()} initModel={EXISTING_MODEL} />,
+            SERVER_CONTEXT
+        );
+        await waitForLifecycle(wrapper);
+        expect(wrapper).toMatchSnapshot();
+        wrapper.unmount();
     });
 
     test('hideEmptyBatchDomain for new assay', async () => {
-        const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} hideEmptyBatchDomain={true} />);
-        await sleep();
-        expect(form).toMatchSnapshot();
-        form.unmount();
+        const wrapper = mountWithServerContext(
+            <AssayDesignerPanels {...getDefaultProps()} hideEmptyBatchDomain />,
+            SERVER_CONTEXT
+        );
+        await waitForLifecycle(wrapper);
+        expect(wrapper).toMatchSnapshot();
+        wrapper.unmount();
     });
 
     test('hideEmptyBatchDomain with initModel', async () => {
-        const form = mount(
-            <AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} hideEmptyBatchDomain={true} />
+        const wrapper = mountWithServerContext(
+            <AssayDesignerPanels {...getDefaultProps()} initModel={EXISTING_MODEL} hideEmptyBatchDomain />,
+            SERVER_CONTEXT
         );
-        await sleep();
-        expect(form).toMatchSnapshot();
-        form.unmount();
+        await waitForLifecycle(wrapper);
+        expect(wrapper).toMatchSnapshot();
+        wrapper.unmount();
     });
 
     test('appPropertiesOnly for new assay', async () => {
-        const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} appPropertiesOnly={true} />);
-        await sleep();
-        expect(form).toMatchSnapshot();
-        form.unmount();
+        const wrapper = mountWithServerContext(<AssayDesignerPanels {...getDefaultProps()} appPropertiesOnly />);
+        await waitForLifecycle(wrapper);
+        expect(wrapper).toMatchSnapshot();
+        wrapper.unmount();
     });
 
     test('appPropertiesOnly with initModel', async () => {
-        const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} appPropertiesOnly={true} />);
-        await sleep();
-        expect(form).toMatchSnapshot();
-        form.unmount();
+        const wrapper = mountWithServerContext(
+            <AssayDesignerPanels {...getDefaultProps()} initModel={EXISTING_MODEL} appPropertiesOnly />
+        );
+        await waitForLifecycle(wrapper);
+        expect(wrapper).toMatchSnapshot();
+        wrapper.unmount();
     });
 
     test('new assay wizard', async () => {
-        const component = <AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} successBsStyle="primary" />;
-        const wrapper = mount(component);
-        await sleep();
+        const component = <AssayDesignerPanels {...getDefaultProps()} successBsStyle="primary" />;
+        const wrapper = mountWithServerContext(component);
+        await waitForLifecycle(wrapper);
 
         expect(wrapper.find('.domain-heading-collapsible').hostNodes()).toHaveLength(4);
         expect(wrapper.find('.domain-panel-status-icon').hostNodes()).toHaveLength(3);
@@ -143,11 +160,11 @@ describe('AssayDesignerPanels', () => {
         wrapper.unmount();
     });
 
-    test('infer from file', () => {
-        async function validateInferFromFile(model: AssayProtocolModel, shouldInfer: boolean) {
-            const component = <AssayDesignerPanels {...BASE_PROPS} initModel={model} />;
-            const wrapper = mount(component);
-            await sleep();
+    test('infer from file', async () => {
+        async function validateInferFromFile(model: AssayProtocolModel, shouldInfer: boolean): Promise<void> {
+            const component = <AssayDesignerPanels {...getDefaultProps()} initModel={model} />;
+            const wrapper = mountWithServerContext(component);
+            await waitForLifecycle(wrapper);
             setAssayName(wrapper, 'Foo');
             expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
             expect(wrapper.find('.file-form-formats').text()).toContain(
@@ -157,7 +174,7 @@ describe('AssayDesignerPanels', () => {
         }
 
         // General assay with Data domain should show infer from files component
-        validateInferFromFile(
+        await validateInferFromFile(
             AssayProtocolModel.create({
                 providerName: 'General',
                 domains: List([DomainDesign.create({ name: 'Data Fields' })]),
@@ -166,7 +183,7 @@ describe('AssayDesignerPanels', () => {
         );
 
         // General assay with non-Data domain should not show infer from files component
-        validateInferFromFile(
+        await validateInferFromFile(
             AssayProtocolModel.create({
                 providerName: 'General',
                 domains: List([DomainDesign.create({ name: 'Results Fields' })]),
@@ -175,7 +192,7 @@ describe('AssayDesignerPanels', () => {
         );
 
         // Other assay with Data domain should not show infer from files component
-        validateInferFromFile(
+        await validateInferFromFile(
             AssayProtocolModel.create({
                 providerName: 'Other',
                 domains: List([DomainDesign.create({ name: 'Data Fields' })]),
@@ -197,14 +214,14 @@ describe('AssayDesignerPanels', () => {
 
         const component = (
             <AssayDesignerPanels
-                {...BASE_PROPS}
+                {...getDefaultProps()}
                 initModel={EXISTING_MODEL}
                 appDomainHeaders={Map({ Sample: mockAppHeader })}
             />
         );
 
-        const wrapper = mount(component);
-        await sleep();
+        const wrapper = mountWithServerContext(component);
+        await waitForLifecycle(wrapper);
 
         // Open Sample Fields panel body
         wrapper

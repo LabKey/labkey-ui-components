@@ -91,7 +91,7 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
     });
 }
 
-export function setAssayDomainException(model: AssayProtocolModel, exception: DomainException): AssayProtocolModel {
+function setAssayDomainException(model: AssayProtocolModel, exception: DomainException): AssayProtocolModel {
     let updatedModel;
 
     // If a domain is identified in the exception, attach to that domain

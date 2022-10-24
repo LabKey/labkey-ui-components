@@ -15,8 +15,9 @@
  */
 import React, { createContext, PropsWithChildren, ReactElement, useContext, useMemo } from 'react';
 
+import { SampleTypeAppContext } from '../entities';
+
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
-import {SampleTypeAppContext} from "../entities";
 
 export interface NavigationSettings {
     showCurrentContainer: boolean;

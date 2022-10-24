@@ -12,6 +12,10 @@ import { loadFinderSearches } from '../search/actions';
 
 import { TimelineEventModel } from '../auditlog/models';
 
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { DomainDetails } from '../domainproperties/models';
+
 import {
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
@@ -25,8 +29,6 @@ import {
 } from './actions';
 import { SampleState } from './models';
 import { SampleOperation } from './constants';
-import {SchemaQuery} from "../../../public/SchemaQuery";
-import {DomainDetails} from "../domainproperties/models";
 
 export interface SamplesAPIWrapper {
     getFieldLookupFromSelection: (
@@ -50,6 +52,13 @@ export interface SamplesAPIWrapper {
 
     getSampleStorageId: (sampleRowId: number) => Promise<number>;
 
+    getSampleTypeDetails: (
+        query?: SchemaQuery,
+        domainId?: number,
+        containerPath?: string,
+        includeNamePreview?: boolean
+    ) => Promise<DomainDetails>;
+
     getSelectionLineageData: (
         selection: List<any>,
         schema: string,
@@ -61,13 +70,6 @@ export interface SamplesAPIWrapper {
     getTimelineEvents: (sampleId: number, timezone?: string) => Promise<TimelineEventModel[]>;
 
     loadFinderSearches: () => Promise<FinderReport[]>;
-
-    getSampleTypeDetails: (
-        query?: SchemaQuery,
-        domainId?: number,
-        containerPath?: string,
-        includeNamePreview?: boolean
-    ) => Promise<DomainDetails>;
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {

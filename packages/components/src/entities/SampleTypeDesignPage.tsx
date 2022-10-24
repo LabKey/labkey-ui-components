@@ -28,9 +28,10 @@ import { getActionErrorMessage } from '../internal/util/messaging';
 import { SampleTypeDesigner } from '../internal/components/domainproperties/samples/SampleTypeDesigner';
 import { ProductMenuModel } from '../internal/components/navigation/model';
 
+import { useAppContext } from '../internal/AppContext';
+
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
-import {useAppContext} from "../internal/AppContext";
 
 const DESIGNER_HEADER =
     'Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.';
@@ -120,7 +121,11 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                 setDomainContainerPath(details.domainContainerPath);
 
                 // Request the DomainDetails from the domain's container path
-                const sampleType_ = await api.samples.getSampleTypeDetails(schemaQuery, undefined, details.domainContainerPath);
+                const sampleType_ = await api.samples.getSampleTypeDetails(
+                    schemaQuery,
+                    undefined,
+                    details.domainContainerPath
+                );
                 setHasError(false);
 
                 // Because LKB is not yet integrated with Study, we do not display timepoint-related field Data Types

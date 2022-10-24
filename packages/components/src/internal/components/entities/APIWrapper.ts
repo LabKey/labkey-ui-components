@@ -1,7 +1,8 @@
+import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
+
 import { getDataOperationConfirmationData } from './actions';
 import { DataOperation } from './constants';
 import { OperationConfirmationData } from './models';
-import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
 
 export interface EntityAPIWrapper {
     getDataOperationConfirmationData: (

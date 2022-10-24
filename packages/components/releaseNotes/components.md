@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.236.4
+*Released*: 24 October 2022
 * Update `AssayImportSubMenuItem` to check for cross-folder selection when in the project container
 * Update container filters for assay import panels to use `currentPlusProjecAndShared`
 

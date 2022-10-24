@@ -21,7 +21,7 @@ import { SampleTypeDataType } from '../internal/components/entities/constants';
 
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
 
-import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
+import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 
 import { SampleDeleteMenuItem } from './SampleDeleteMenuItem';
 import { SamplesEditButtonSections } from '../internal/components/samples/utils';

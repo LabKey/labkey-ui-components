@@ -1,9 +1,9 @@
 import React, { FC, memo } from 'react';
 
-import { ConfirmModal } from '../internal/components/base/ConfirmModal';
-import { capitalizeFirstChar } from '../internal/util/utils';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { capitalizeFirstChar } from '../../util/utils';
 
-import { getCrossFolderSelectionMsg } from './utils';
+import { getCrossFolderSelectionMsg } from '../../../entities/utils';
 
 interface Props {
     crossFolderSelectionCount: number;

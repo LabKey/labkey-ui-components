@@ -160,8 +160,7 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
             views = views.asImmutable();
         }
 
-        // TODO get rid of the splitCamelCase?  It's only sometimes the right thing to do.
-        const queryLabel = Parsers.splitCamelCase(rawQueryInfo.title || _queryName);
+        const queryLabel = rawQueryInfo.title || _queryName;
 
         const defaultQueryMeta = {
             queryLabel,

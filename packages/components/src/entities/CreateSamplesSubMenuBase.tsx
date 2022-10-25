@@ -15,7 +15,7 @@ import { getCrossFolderSelectionResult } from '../internal/components/entities/a
 import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 
 import { isSamplesSchema } from '../internal/components/samples/utils';
-import { SampleCreationTypeModal } from './SampleCreationTypeModal';
+
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
@@ -24,6 +24,8 @@ import {
     SampleCreationType,
     SampleCreationTypeModel,
 } from '../internal/components/samples/models';
+
+import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 
 interface CreateSamplesSubMenuProps {
     allowPooledSamples?: boolean;
@@ -50,6 +52,7 @@ interface CreateSamplesSubMenuProps {
     selectedType?: SampleCreationType;
     selectionNoun?: string;
     selectionNounPlural?: string;
+    skipCrossFolderCheck?: boolean;
     targetProductId?: string;
 }
 
@@ -74,6 +77,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         targetProductId,
         selectionNoun = 'sample',
         selectionNounPlural = 'samples',
+        skipCrossFolderCheck,
     } = props;
 
     const [sampleCreationURL, setSampleCreationURL] = useState<string | AppURL>();
@@ -137,7 +141,7 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
     const onSampleCreationMenuSelectOnClick = useCallback(
         async (key: string) => {
             // check cross folder selection
-            if (parentQueryModel && selectedQuantity > 0 && selectingSampleParents) {
+            if (parentQueryModel && selectedQuantity > 0 && selectingSampleParents && !skipCrossFolderCheck) {
                 const dataType = parentQueryModel.schemaName === SCHEMAS.DATA_CLASSES.SCHEMA ? 'data' : 'sample';
                 setCrossFolderSelectionResult(undefined);
                 const result = await getCrossFolderSelectionResult(parentQueryModel.id, dataType);

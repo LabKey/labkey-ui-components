@@ -10,6 +10,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Remove Parsers.splitCamelCase for setting QueryInfo.queryLabel and schemaLabel.
 * Issue 46568: Update `SamplesTabbedGridPanel` to assure we have a model before de-referencing.
 
+### version 2.239.0
+*Released*: 25 October 2022
+* Freezer Management: Adding samples across terminal storage locations
+    * Support tabbed Bulk Edit and Editable Grid
+    * Exclude readonly cells from being updated by bulk update
+    * support queryFilters for select input fields in bulk update form
+
 ### version 2.238.0
 *Released*: 25 October 2022
 * Update `QueryModel.getRequestColumnsString()` to support inclusion of `updateColumns` in when building a request columns string.

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.238.1-sampleConsistency.18",
+  "version": "2.239.1-sampleConsistency.19",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

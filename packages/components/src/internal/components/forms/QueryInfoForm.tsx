@@ -43,6 +43,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     errorMessagePrefix?: string;
     footer?: ReactNode;
     header?: ReactNode;
+    hideButtons?: boolean;
     includeCountField?: boolean;
     isLoading?: boolean;
     isSubmittedText?: string;
@@ -50,12 +51,15 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     maxCount?: number;
     onCancel?: () => void;
     onFormChange?: () => void;
+    // allow passing of full form data, compare with onFormChange
+    onFormChangeWithData?: (formData?: any) => void;
     onHide?: () => void;
     onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
     onSuccess?: (data: any, submitForEdit: boolean) => void;
     pluralNoun?: string;
-    queryInfo: QueryInfo; // required by QueryInfoForm
+    // required by QueryInfoForm
+    queryInfo: QueryInfo;
     showErrorsAtBottom?: boolean;
     singularNoun?: string;
     submitForEditText?: string;
@@ -76,6 +80,8 @@ interface State {
 }
 
 export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
+    formRef: React.RefObject<Formsy>;
+
     static defaultProps: Partial<QueryInfoFormProps> = {
         canSubmitForEdit: true,
         canSubmitNotDirty: true,
@@ -92,6 +98,8 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
 
     constructor(props: QueryInfoFormProps) {
         super(props);
+
+        this.formRef = React.createRef();
 
         this.state = {
             show: true,
@@ -119,7 +127,18 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
     };
 
     handleChange = (): void => {
-        this.props.onFormChange?.();
+        const { onFormChange, onFormChangeWithData } = this.props;
+
+        onFormChange?.();
+
+        // for tabbed bulk edit/editable grid, needs a way to pass form data from bulk to editable grid without submit
+        if (onFormChangeWithData) {
+            const row = this.formRef?.['current']?.['getModel']?.();
+            if (row) {
+                const updatedRow = this.getUpdatedFields(row, ['numItems', 'creationType']);
+                onFormChangeWithData(updatedRow);
+            }
+        }
 
         if (!this.state.isDirty) {
             this.setState({ isDirty: true });
@@ -135,7 +154,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         });
     };
 
-    getUpdatedFields = (data: any, requiredFields?: string[]): OrderedMap<string, any> => {
+    getUpdatedFields = (data: any, additionalFields?: string[]): OrderedMap<string, any> => {
         const { submitForEdit } = this.state;
 
         const fieldsToUpdate = this.props.queryInfo.columns.filter(column => {
@@ -146,7 +165,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         let filteredData = OrderedMap<string, any>();
         for (const key in data) {
             if (data.hasOwnProperty(key)) {
-                if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1) {
+                if (fieldsToUpdate.has(key.toLowerCase()) || additionalFields.indexOf(key) !== -1) {
                     // Date values are Dates not strings. We convert them to strings in the desired format here.
                     // They are converted back to Dates when saving to the server.
                     const col = this.props.queryInfo?.getColumn(key);
@@ -254,9 +273,12 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             onSubmitForEdit,
             pluralNoun,
             singularNoun,
+            hideButtons,
         } = this.props;
 
         const { count, canSubmit, fieldEnabledCount, isSubmitting, isSubmitted, submitForEdit, isDirty } = this.state;
+
+        if (hideButtons) return null;
 
         const inProgressText = isSubmitted ? isSubmittedText : isSubmitting ? isSubmittingText : undefined;
         const suffix = count > 1 ? pluralNoun : singularNoun;
@@ -372,6 +394,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                         onValid={this.enableSubmitButton}
                         onChange={this.handleChange}
                         onInvalid={this.disableSubmitButton}
+                        ref={this.formRef}
                     >
                         <QueryInfoQuantity
                             creationTypeOptions={creationTypeOptions}

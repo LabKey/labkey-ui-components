@@ -10,6 +10,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { FieldLabel } from './FieldLabel';
 import { LabelOverlay } from './LabelOverlay';
+import { ToggleWithInputField } from './input/ToggleWithInputField';
 
 const queryColumn = QueryColumn.create({
     name: 'testColumn',
@@ -45,6 +46,64 @@ describe('FieldLabel', () => {
         const wrapper = mount(<FieldLabel column={queryColumn} />);
         expect(wrapper.text()).toContain(queryColumn.caption);
         expect(wrapper.find(LabelOverlay)).toHaveLength(1);
+    });
+
+    function verifyToggle(wrapper, className?: string, wrapperClassName?: string) {
+        expect(wrapper.find(ToggleWithInputField)).toHaveLength(1);
+
+        expect(wrapper.find(ToggleWithInputField).prop('className')).toEqual(className ?? 'control-label-toggle-input');
+        if (wrapperClassName)
+            expect(wrapper.find(ToggleWithInputField).prop('containerClassName')).toEqual(wrapperClassName);
+        else expect(wrapper.find(ToggleWithInputField).prop('containerClassName')).toBeUndefined();
+    }
+
+    test('showToggle', () => {
+        const wrapper = shallow(<FieldLabel column={queryColumn} showToggle />);
+        verifyToggle(wrapper);
+    });
+
+    test('showToggle, with labelOverlayProps, not formsy', () => {
+        const label = 'This is the label';
+        const props = {
+            label,
+            isFormsy: false,
+        };
+        const wrapper = shallow(<FieldLabel column={queryColumn} showToggle labelOverlayProps={props} />);
+        verifyToggle(wrapper, 'control-label-toggle-input control-label-toggle-input-size-fixed', 'col-xs-1');
+    });
+
+    test('showToggle, with labelOverlayProps, formsy', () => {
+        const label = 'This is the label';
+        const props = {
+            label,
+            isFormsy: true,
+        };
+        const wrapper = shallow(<FieldLabel column={queryColumn} showToggle labelOverlayProps={props} />);
+        verifyToggle(wrapper);
+    });
+
+    test('showToggle, with labelOverlayProps, formsy, with toggleClassName', () => {
+        const label = 'This is the label';
+        const props = {
+            label,
+            isFormsy: true,
+        };
+        const wrapper = shallow(
+            <FieldLabel column={queryColumn} showToggle labelOverlayProps={props} toggleClassName="toggle-wrapper" />
+        );
+        verifyToggle(wrapper, 'toggle-wrapper');
+    });
+
+    test('showToggle, with labelOverlayProps, not formsy, with toggleClassName', () => {
+        const label = 'This is the label';
+        const props = {
+            label,
+            isFormsy: false,
+        };
+        const wrapper = shallow(
+            <FieldLabel column={queryColumn} showToggle labelOverlayProps={props} toggleClassName="toggle-wrapper" />
+        );
+        verifyToggle(wrapper, 'toggle-wrapper', 'col-xs-1');
     });
 
     // TODO these tests fail with: TypeError: Cannot read property 'style' of null

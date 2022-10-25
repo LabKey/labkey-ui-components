@@ -108,6 +108,8 @@ export function resolveErrorMessage(error: any, noun = 'data', nounPlural?: stri
             return `There was a problem ${verb || 'importing'} your ${noun.toLowerCase() || 'data'}. One or more ${
                 noun.toLowerCase() || 'data'
             } already exist in a different project.`;
+        } else if (lcMessage.indexOf('inventory:item: row: ') >= 0) {
+            return trimExceptionPrefix('inventory:item: row: ', errorMsg);
         }
     }
     return errorMsg;

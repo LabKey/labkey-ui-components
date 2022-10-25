@@ -195,9 +195,9 @@ export interface BulkAddData {
 export interface BulkUpdateQueryInfoFormProps extends QueryInfoFormProps {
     // the row ind to exclude for bulk update, row might be readonly or locked
     excludeRowIdx?: number[];
+    onBulkUpdateFormDataChange?: (pendingBulkFormData?: any) => void;
     onClickBulkUpdate?: (selected: Set<number>) => Promise<boolean>;
     warning?: string;
-    onBulkUpdateFormDataChange?: (pendingBulkFormData?: any) => void;
 }
 
 export interface SharedEditableGridProps {

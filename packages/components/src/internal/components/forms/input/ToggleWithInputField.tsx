@@ -20,8 +20,8 @@ interface ReactBootstrapToggleProps {
     onstyle?: BootstrapEmphasis;
     recalculateOnResize?: boolean;
     size?: 'xs' | 'sm' | 'lg';
-    width?: number;
     style?: CSSProperties;
+    width?: number;
 }
 
 interface OwnProps {

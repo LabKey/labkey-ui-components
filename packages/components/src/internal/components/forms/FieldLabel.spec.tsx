@@ -10,7 +10,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { FieldLabel } from './FieldLabel';
 import { LabelOverlay } from './LabelOverlay';
-import { ToggleWithInputField } from "./input/ToggleWithInputField";
+import { ToggleWithInputField } from './input/ToggleWithInputField';
 
 const queryColumn = QueryColumn.create({
     name: 'testColumn',
@@ -54,8 +54,7 @@ describe('FieldLabel', () => {
         expect(wrapper.find(ToggleWithInputField).prop('className')).toEqual(className ?? 'control-label-toggle-input');
         if (wrapperClassName)
             expect(wrapper.find(ToggleWithInputField).prop('containerClassName')).toEqual(wrapperClassName);
-        else
-            expect(wrapper.find(ToggleWithInputField).prop('containerClassName')).toBeUndefined();
+        else expect(wrapper.find(ToggleWithInputField).prop('containerClassName')).toBeUndefined();
     }
 
     test('showToggle', () => {
@@ -67,7 +66,7 @@ describe('FieldLabel', () => {
         const label = 'This is the label';
         const props = {
             label,
-            isFormsy: false
+            isFormsy: false,
         };
         const wrapper = shallow(<FieldLabel column={queryColumn} showToggle labelOverlayProps={props} />);
         verifyToggle(wrapper, 'control-label-toggle-input control-label-toggle-input-size-fixed', 'col-xs-1');
@@ -77,7 +76,7 @@ describe('FieldLabel', () => {
         const label = 'This is the label';
         const props = {
             label,
-            isFormsy: true
+            isFormsy: true,
         };
         const wrapper = shallow(<FieldLabel column={queryColumn} showToggle labelOverlayProps={props} />);
         verifyToggle(wrapper);
@@ -87,9 +86,11 @@ describe('FieldLabel', () => {
         const label = 'This is the label';
         const props = {
             label,
-            isFormsy: true
+            isFormsy: true,
         };
-        const wrapper = shallow(<FieldLabel column={queryColumn} showToggle labelOverlayProps={props} toggleClassName="toggle-wrapper" />);
+        const wrapper = shallow(
+            <FieldLabel column={queryColumn} showToggle labelOverlayProps={props} toggleClassName="toggle-wrapper" />
+        );
         verifyToggle(wrapper, 'toggle-wrapper');
     });
 
@@ -97,9 +98,11 @@ describe('FieldLabel', () => {
         const label = 'This is the label';
         const props = {
             label,
-            isFormsy: false
+            isFormsy: false,
         };
-        const wrapper = shallow(<FieldLabel column={queryColumn} showToggle labelOverlayProps={props} toggleClassName="toggle-wrapper" />);
+        const wrapper = shallow(
+            <FieldLabel column={queryColumn} showToggle labelOverlayProps={props} toggleClassName="toggle-wrapper" />
+        );
         verifyToggle(wrapper, 'toggle-wrapper', 'col-xs-1');
     });
 

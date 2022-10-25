@@ -45,6 +45,7 @@ const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props =
     const { queryModels, actions, sampleIds } = props;
     const { user } = useServerContext();
     const [tabOrder, setTabOrder] = useState<string[]>();
+    const [allowViewCustomizationForGridIds, setAllowViewCustomizationForGridIds] = useState<string[]>();
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
 
@@ -76,6 +77,9 @@ const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props =
             tabOrder_.unshift(summaryGridId);
         }
         setTabOrder(tabOrder_);
+
+        // don't allow view customization for all but the summary grid (since it is a session temp query)
+        setAllowViewCustomizationForGridIds(Object.keys(models).filter(id => id !== summaryGridId));
     }, [allLoaded, tabOrder, allModels]);
 
     if (!isAssayEnabled()) return <NotFound title={PAGE_TITLE} />;
@@ -93,6 +97,7 @@ const AssayResultsForSamplesImpl: FC<Props & InjectedQueryModels> = memo(props =
                     queryModels={queryModels}
                     showRowCountOnTabs
                     tabOrder={tabOrder}
+                    allowViewCustomizationForGridIds={allowViewCustomizationForGridIds}
                     exportFilename="AssayResultsForSamples"
                 />
             </Section>
@@ -144,6 +149,7 @@ const AssayResultsForSamplesPageBody: FC<Props> = props => {
 
     if (error) return <Alert>{error}</Alert>;
     if (!sampleIds || loadingDefinitions || assayQueryConfigs === undefined) return <LoadingPage title={PAGE_TITLE} />;
+    if (sampleIds.length === 0) return <Alert>No sample IDs provided for the report.</Alert>
 
     return <AssayResultsForSamplesWithModels sampleIds={sampleIds} queryConfigs={assayQueryConfigs} {...props} />;
 };

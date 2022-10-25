@@ -194,6 +194,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
     } = props;
     const [queryModelsWithData, setQueryModelsWithData] = useState<Record<string, QueryModel>>();
     const [tabOrder, setTabOrder] = useState<string[]>();
+    const [allowViewCustomizationForGridIds, setAllowViewCustomizationForGridIds] = useState<string[]>();
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
 
@@ -243,6 +244,9 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
             tabOrder_.unshift(summaryGridId);
         }
         setTabOrder(tabOrder_);
+
+        // don't allow view customization for all but the summary grid (since it is a session temp query)
+        setAllowViewCustomizationForGridIds(Object.keys(models).filter(id => id !== summaryGridId));
     }, [
         allLoaded,
         queryModelsWithData,
@@ -331,6 +335,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
             tabOrder={tabOrder}
             onTabSelect={onTabChange}
             activeModelId={activeTabId}
+            allowViewCustomizationForGridIds={allowViewCustomizationForGridIds}
             exportFilename={exportPrefix && exportPrefix + '_assay_results'}
         />
     );

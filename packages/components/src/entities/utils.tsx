@@ -34,6 +34,7 @@ import { getSampleAssayQueryConfigs } from '../internal/components/samples/actio
 import { AssayStateModel } from '../internal/components/assay/models';
 import { SamplesAPIWrapper } from '../internal/components/samples/APIWrapper';
 import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
+import { selectRowsDeprecated } from "../internal/query/api";
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -304,12 +305,28 @@ export async function getSamplesAssayGridQueryConfigs(
         sampleSchemaQuery
     );
 
-    _configs.push({
-        id: `${gridPrefix}:${ASSAY_RUNS_GRID_ID}:${gridSuffix}`,
-        title: 'Assay Runs',
-        schemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUN_COUNT_PER_SAMPLE,
-        baseFilters: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+    // since we want to remove empty assay run columns from the Assay Run Summary grid, we need to inject the WHERE
+    // clause into the SQL before the PIVOT. We'll use a session query for this
+    const sessionAssayRuns = await selectRowsDeprecated({
+        saveInSession: true,
+        schemaName: 'exp',
+        sql: "SELECT RowId, SampleID, SampleType, Assay, COUNT(*) AS RunCount\n" +
+            "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM AssayRunsPerSample) X\n" +
+            "WHERE RowId IN (" + allSampleIds.join(',') + ")\n" +
+            "GROUP BY RowId, SampleID, SampleType, Assay\n" +
+            "PIVOT RunCount BY Assay",
+        maxRows: 0, // we don't need any data back here, we just need to get the temp session schema/query
     });
+    const sessionAssayRunsQueryInfo = sessionAssayRuns?.queries[sessionAssayRuns.key];
+    if (sessionAssayRunsQueryInfo) {
+        _configs.push({
+            id: `${gridPrefix}:${ASSAY_RUNS_GRID_ID}:${gridSuffix}`,
+            title: 'Assay Run Summary',
+            schemaQuery: sessionAssayRunsQueryInfo.schemaQuery,
+            baseFilters: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+            omittedColumns: ['RowId', 'NULL::RunCount'],
+        });
+    }
 
     let configs = _configs.reduce((configs_, config) => {
         const modelId = config.id;
@@ -330,12 +347,14 @@ export async function getSamplesAssayGridQueryConfigs(
             sampleSchemaQuery
         );
 
-        _unfilteredConfigs.push({
-            id: `${unfilteredGridPrefix}:assayruncount:${gridSuffix}`,
-            title: 'Assay Runs',
-            schemaQuery: SCHEMAS.EXP_TABLES.ASSAY_RUN_COUNT_PER_SAMPLE,
-            baseFilters: [Filter.create('RowId', allSampleIds, Filter.Types.IN)],
-        });
+        if (sessionAssayRunsQueryInfo) {
+            _unfilteredConfigs.push({
+                id: `${unfilteredGridPrefix}:assayruncount:${gridSuffix}`,
+                title: 'Assay Run Summary',
+                schemaQuery: sessionAssayRunsQueryInfo.schemaQuery,
+                omittedColumns: ['RowId', 'NULL::RunCount'],
+            });
+        }
 
         const unfilteredConfigs = _unfilteredConfigs.reduce((configs_, config) => {
             const modelId = config.id;

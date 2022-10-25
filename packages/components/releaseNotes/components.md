@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.237.1
+*Released*: 25 October 2022
+* Update logic for `isAssayQCEnabled` check.
+
 ### version 2.237.0
 *Released*: 25 October 2022
 * App Sample Type Consistency for Sample Type Designer

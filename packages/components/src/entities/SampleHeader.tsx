@@ -9,7 +9,7 @@ import { SampleOperation } from '../internal/components/samples/constants';
 import { AppURL } from '../internal/url/AppURL';
 import { AUDIT_KEY, MEDIA_KEY, SAMPLES_KEY } from '../internal/app/constants';
 import { onSampleChange } from './actions';
-import { getSampleStatus, isSampleOperationPermitted } from '../internal/components/samples/utils';
+import { getSampleStatus, getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 import { caseInsensitive } from '../internal/util/utils';
 import { SampleStatusTag } from '../internal/components/samples/SampleStatusTag';
 import { SCHEMAS } from '../internal/schemas';
@@ -34,6 +34,7 @@ import { useServerContext } from '../internal/components/base/ServerContext';
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
 import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
+import { invalidateLineageResults } from '../internal/components/lineage/actions';
 
 interface StorageMenuProps {
     sampleModel: QueryModel;
@@ -46,7 +47,6 @@ interface HeaderProps {
     onUpdate: () => void;
     sampleModel: QueryModel;
     showDescription?: boolean;
-    lastUpdatedCount?: number; // TODO Is this still needed? Probably added so the header would rerender after updates in the page
     hasActiveJob?: boolean;
     iconSrc?: string;
     jobCreationHref?: string;
@@ -92,11 +92,18 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
     const sampleIds = useMemo(() => [sampleId], [sampleId]);
     const { user } = useServerContext();
 
+    const isMedia  = queryInfo?.isMedia;
+
     useEffect((): void => {
         (async () => {
             try {
-                const confirmationData = await getSampleOperationConfirmationData(SampleOperation.Delete, undefined, sampleIds);
-                setCanDelete(confirmationData.allowed.length === 1);
+                if (
+                    user.hasDeletePermission() &&
+                    isSampleOperationPermitted(getSampleStatusType(sampleModel.getRow()), SampleOperation.Delete)
+                ) {
+                    const confirmationData = await getSampleOperationConfirmationData(SampleOperation.Delete, undefined, sampleIds);
+                    setCanDelete(confirmationData.allowed.length === 1);
+                }
             } catch (e) {
                 console.error('There was a problem retrieving the delete confirmation data.', e);
                 setCanDelete(false);
@@ -106,8 +113,9 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
     }, [sampleIds]);
 
     const onAfterDelete = useCallback((): void => {
-        navigate(AppURL.create(SAMPLES_KEY, sampleModel.queryName));
-    }, [navigate, sampleModel]);
+        invalidateLineageResults();
+        navigate(AppURL.create(isMedia ? MEDIA_KEY :SAMPLES_KEY, sampleModel.queryName));
+    }, [navigate, isMedia, sampleModel]);
 
     const onAfterPrint = useCallback((numSamples: number, numLabels: number): void => {
         setShowPrintDialog(false);
@@ -154,7 +162,6 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
         [sampleStatus]
     );
 
-    const isMedia  = queryInfo?.isMedia;
 
     const headerTitle = useMemo(() => {
         if (title) return title;
@@ -239,11 +246,11 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                     <RequiresPermission user={user} perms={PermissionTypes.ManagePicklists}>
                                         <AddToPicklistMenuItem
                                             queryModel={sampleModel}
-                                            sampleIds={[sampleId]}
+                                            sampleIds={sampleIds}
                                             user={user}
                                         />
                                         <PicklistCreationMenuItem
-                                            sampleIds={[sampleId]}
+                                            sampleIds={sampleIds}
                                             key="picklist"
                                             user={user}
                                         />
@@ -270,17 +277,17 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                                         </DisableableMenuItem>
                                     </RequiresPermission>
                                 )}
-                                {!isMedia && (
-                                    <RequiresPermission perms={PermissionTypes.CanSeeAuditLog}>
-                                        <MenuItem href={AppURL.create(AUDIT_KEY)
-                                            .addParams({
-                                                eventType: SAMPLE_TIMELINE_AUDIT_QUERY.value,
-                                                'query.sampleid~eq': sampleId
-                                            }).toHref()}>
-                                            View Audit History
-                                        </MenuItem>
-                                    </RequiresPermission>
-                                )}
+
+                                <RequiresPermission perms={PermissionTypes.CanSeeAuditLog}>
+                                    <MenuItem href={AppURL.create(AUDIT_KEY)
+                                        .addParams({
+                                            eventType: SAMPLE_TIMELINE_AUDIT_QUERY.value,
+                                            'query.sampleid~eq': sampleId
+                                        }).toHref()}>
+                                        View Audit History
+                                    </MenuItem>
+                                </RequiresPermission>
+
                             </ManageDropdownButton>
                         </span>
                 </RequiresPermission>
@@ -292,7 +299,7 @@ export const SampleHeaderImpl: FC<Props> = memo(props => {
                     beforeDelete={onBeforeDelete}
                     afterDelete={onAfterDelete}
                     onCancel={onHideModals}
-                    entityDataType={SampleTypeDataType}
+                    entityDataType={entityDataType ?? SampleTypeDataType}
                     auditBehavior={getSampleAuditBehaviorType()}
                     verb="deleted and removed from storage"
                     containerPath={sampleContainer?.path}

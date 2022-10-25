@@ -347,7 +347,6 @@ export interface GridProps {
     messages?: List<Map<string, string>>;
     onColumnDrag?: (sourceIndex: string) => void;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
-    onHeaderCellClick?: (column: GridColumn) => void;
     responsive?: boolean;
     /**
      * If a rowKey is specified the <Grid> will use it as a lookup key into each row. The associated value
@@ -379,7 +378,6 @@ export const Grid: FC<GridProps> = memo(props => {
         fixedHeight = false,
         columns,
         headerCell,
-        onHeaderCellClick,
         onColumnDrag,
         onColumnDrop,
         rowKey,
@@ -401,7 +399,6 @@ export const Grid: FC<GridProps> = memo(props => {
         calcWidths,
         columns: gridColumns,
         headerCell,
-        onCellClick: onHeaderCellClick,
         onColumnDrag,
         onColumnDrop,
         showHeader,

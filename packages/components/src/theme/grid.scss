@@ -77,6 +77,19 @@
     }
 }
 
+.grid-header-cell__body {
+    width: 100%;
+}
+
+.dropdown-menu.grid-header-cell__dropdown-menu {
+    display: block;
+    position: fixed;
+}
+
+.grid-panel__menu-icon {
+    margin-right: 8px;
+}
+
 .grid-header-draggable {
     cursor: pointer;
 }

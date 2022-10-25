@@ -174,9 +174,17 @@
 
         th {
             background-color: $white;
+            // Cancel the padding set by .table-condensed, see padding on .grid-header-cell__body below.
+            padding: 0;
 
             /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
             background-clip: padding-box;
+
+            &#__selection__,
+            .grid-header-cell__body {
+                // re-add the padding to the .grid-header-cell__body, this makes it so the entire th area is clickable
+                padding: $table-condensed-cell-padding;
+            }
         }
     }
 }

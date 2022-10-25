@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD October 2022
+### version 2.237.0
+*Released*: 25 October 2022
 * App Sample Type Consistency for Sample Type Designer
   * refactor SampleTypeDesignPage from LKB app to be used in LKSM as well
   * add SampleTypeAppContext to pass app specific properties to the designer

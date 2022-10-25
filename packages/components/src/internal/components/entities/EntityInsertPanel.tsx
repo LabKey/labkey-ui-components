@@ -42,11 +42,10 @@ import { SampleStatusLegend } from '../samples/SampleStatusLegend';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { applyEditableGridChangesToModels, loadEditorModelData } from '../editable/utils';
+import { applyEditableGridChangesToModels, initEditableGridModel } from '../editable/utils';
 
-import { EditorModel, EditorModelProps, IGridLoader, IGridResponse } from '../../models';
+import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, IGridResponse } from '../../models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { LoadingState } from '../../../public/LoadingState';
 import { SampleCreationType, SampleCreationTypeModel } from '../samples/models';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from '../forms/FormStep';
 import { User } from '../base/models/User';
@@ -96,15 +95,20 @@ const ALIQUOT_FIELD_COLS = ['aliquotedfrom', 'name', 'description', 'samplestate
 const ALIQUOT_NOUN_SINGULAR = 'Aliquot';
 const ALIQUOT_NOUN_PLURAL = 'Aliquots';
 
-class EntityGridLoader implements IGridLoader {
+class EntityGridLoader implements IEditableGridLoader {
+    id: string;
+    mode: EditorMode;
     model: EntityIdCreationModel;
+    queryInfo: QueryInfo;
 
-    constructor(model: EntityIdCreationModel) {
+    constructor(model: EntityIdCreationModel, queryInfo: QueryInfo) {
+        this.mode = EditorMode.Insert;
         this.model = model;
+        this.queryInfo = queryInfo;
     }
 
     fetch(gridModel: QueryModel): Promise<IGridResponse> {
-        const data = this.model.getGridValues(gridModel.queryInfo, true);
+        const data = this.model.getGridValues(this.queryInfo, true);
 
         return Promise.resolve({
             data,
@@ -112,34 +116,6 @@ class EntityGridLoader implements IGridLoader {
         });
     }
 }
-
-const initEditableGridModel = async (
-    insertModel: EntityIdCreationModel,
-    dataModel: QueryModel,
-    editorModel: EditorModel
-): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
-    const loader = new EntityGridLoader(insertModel);
-    const response = await loader.fetch(dataModel);
-    const gridData = {
-        rows: response.data.toJS(),
-        orderedRows: response.dataIds.toArray(),
-        queryInfo: dataModel.queryInfo,
-    };
-
-    const updatedDataModel = dataModel.mutate({
-        ...gridData,
-        rowsLoadingState: LoadingState.LOADED,
-        queryInfoLoadingState: LoadingState.LOADED,
-    });
-
-    const editorModelData = await loadEditorModelData(gridData);
-    const updatedEditorModel = editorModel.merge(editorModelData) as EditorModel;
-
-    return {
-        dataModel: updatedDataModel,
-        editorModel: updatedEditorModel,
-    };
-};
 
 interface OwnProps {
     acceptedFormats?: string;
@@ -425,14 +401,17 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                     }));
                                 });
 
-                            const queryInfo = this.getGridQueryInfo();
-                            const dataModel = new QueryModel({ id: ENTITY_GRID_ID, schemaQuery }).mutate({ queryInfo });
-                            const editorModel = new EditorModel({ id: ENTITY_GRID_ID, queryInfo });
-                            const results = await initEditableGridModel(insertModel, dataModel, editorModel);
-                            this.setState(() => ({
+                            const queryModel = new QueryModel({ id: ENTITY_GRID_ID, schemaQuery }).mutate({
+                                queryInfo: this.getGridQueryInfo(),
+                            });
+                            const editorModel = new EditorModel({ id: ENTITY_GRID_ID });
+                            const loader = new EntityGridLoader(insertModel, queryModel.queryInfo);
+                            const results = await initEditableGridModel(queryModel, editorModel, queryModel, loader);
+
+                            this.setState({
                                 dataModel: results.dataModel,
                                 editorModel: results.editorModel,
-                            }));
+                            });
                         }
                     );
                 })

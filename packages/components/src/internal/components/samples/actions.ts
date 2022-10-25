@@ -16,13 +16,7 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
-import {
-    EntityChoice,
-    EntityDataType,
-    EntityParentType,
-    IEntityTypeDetails,
-    IEntityTypeOption,
-} from '../entities/models';
+import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
 import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
 
 import { Location } from '../../util/URL';
@@ -47,7 +41,7 @@ import { DomainDetails } from '../domainproperties/models';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { getSelectedPicklistSamples } from '../picklist/actions';
 import { resolveErrorMessage } from '../../util/messaging';
-import { QueryConfig, QueryModel } from '../../../public/QueryModel/QueryModel';
+import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { naturalSort, naturalSortByProperty } from '../../../public/sort';
 import { AssayStateModel } from '../assay/models';
 import { createGridModelId } from '../../models';
@@ -116,8 +110,7 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
 export function getSampleTypeDetails(
     query?: SchemaQuery,
     domainId?: number,
-    containerPath?: string,
-    includeNamePreview?: boolean
+    containerPath?: string
 ): Promise<DomainDetails> {
     return new Promise((resolve, reject) => {
         return Domain.getDomainDetails({
@@ -425,48 +418,6 @@ export const getParentTypeDataForLineage = async (
     }
     return { parentTypeOptions, parentIdData };
 };
-
-export function getLineageEditorUpdateColumns(
-    displayQueryModel: QueryModel,
-    originalParents: Record<string, List<EntityChoice>>
-): { queryInfoColumns: OrderedMap<string, QueryColumn>; updateColumns: List<QueryColumn> } {
-    // model columns should include RowId, Name, and one column for each distinct existing parent (source and/or
-    // sample type) of the selected samples.
-    let queryInfoColumns = OrderedMap<string, QueryColumn>();
-    let updateColumns = List<QueryColumn>();
-    displayQueryModel.queryInfo.columns.forEach((column, key) => {
-        if (key === 'rowid') {
-            queryInfoColumns = queryInfoColumns.set(key, column);
-        } else if (key === 'name') {
-            queryInfoColumns = queryInfoColumns.set(key, column);
-            updateColumns = updateColumns.push(column);
-        }
-    });
-    const parentColumns = {};
-    let parentColIndex = 0;
-    Object.values(originalParents).forEach(sampleParents => {
-        sampleParents.forEach(sampleParent => {
-            const { schema, query } = sampleParent.type;
-            const parentCol = EntityParentType.create({ index: parentColIndex, schema, query }).generateColumn(
-                sampleParent.type.entityDataType.uniqueFieldKey,
-                displayQueryModel.schemaName
-            );
-
-            if (!parentColumns[parentCol.fieldKey]) {
-                parentColumns[parentCol.fieldKey] = parentCol;
-                parentColIndex++;
-            }
-        });
-    });
-    Object.keys(parentColumns)
-        .sort() // Order parent columns so sources come first before sample types, and then alphabetically ordered within the types
-        .forEach(key => {
-            queryInfoColumns = queryInfoColumns.set(key, parentColumns[key]);
-            updateColumns = updateColumns.push(parentColumns[key]);
-        });
-
-    return { queryInfoColumns, updateColumns };
-}
 
 export function getUpdatedLineageRows(
     lineageRows: Array<Record<string, any>>,

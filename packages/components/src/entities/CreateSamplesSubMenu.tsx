@@ -28,6 +28,7 @@ interface Props {
     inlineItemsCount?: number;
     isSelectingSamples?: (schemaQuery: SchemaQuery) => boolean;
     loadSampleTypes?: (includeMedia: boolean) => Promise<QueryInfo[]>;
+    menuCurrentChoice?: string;
     menuText?: string;
     navigate: (url: string | AppURL) => void;
     parentKey?: string;
@@ -46,6 +47,7 @@ export const MAX_PARENTS_PER_SAMPLE = 20;
 
 export const CreateSamplesSubMenu: FC<Props> = memo(props => {
     const {
+        menuCurrentChoice,
         getWizardUrl,
         loadSampleTypes,
         parentQueryModel,
@@ -120,7 +122,7 @@ export const CreateSamplesSubMenu: FC<Props> = memo(props => {
             {...props}
             getOptions={getOptions}
             menuText={subMenuText ? null : menuText} // using null will render the submenu items inline in this button
-            menuCurrentChoice={isSamples ? selectedQueryInfo.schemaQuery?.queryName  : undefined}
+            menuCurrentChoice={itemKey ?? (menuCurrentChoice ?? selectedQueryInfo?.schemaQuery?.queryName)}
             maxParentPerSample={MAX_PARENTS_PER_SAMPLE}
             sampleWizardURL={getWizardUrl ?? getSampleWizardURL}
             isSelectingSamples={isSelectingSamples}

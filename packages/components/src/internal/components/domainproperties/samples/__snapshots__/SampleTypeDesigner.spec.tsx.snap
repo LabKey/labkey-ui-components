@@ -1047,6 +1047,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         },
         "entity": EntityServerAPIWrapper {
           "getDataOperationConfirmationData": [Function],
+          "loadNameExpressionOptions": [Function],
         },
         "folder": ServerFolderAPIWrapper {
           "createProject": [Function],
@@ -1078,6 +1079,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "getSampleOperationConfirmationData": [Function],
           "getSampleStatuses": [Function],
           "getSampleStorageId": [Function],
+          "getSampleTypeDetails": [Function],
           "getSelectionLineageData": [Function],
           "getTimelineEvents": [Function],
           "loadFinderSearches": [Function],

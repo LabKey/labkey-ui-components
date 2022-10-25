@@ -12,6 +12,8 @@ import { SCHEMAS } from '../internal/schemas';
 
 import { getCrossFolderSelectionResult } from '../internal/components/entities/actions';
 
+import { EntityCrossProjectSelectionConfirmModal } from '../internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+
 import { isSamplesSchema } from '../internal/components/samples/utils';
 
 import {
@@ -22,8 +24,6 @@ import {
     SampleCreationType,
     SampleCreationTypeModel,
 } from '../internal/components/samples/models';
-
-import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
 
 import { SampleCreationTypeModal } from './SampleCreationTypeModal';
 

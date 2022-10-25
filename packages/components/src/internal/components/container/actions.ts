@@ -34,8 +34,8 @@ function applyPermissions(container: Container, user: User): User {
 
 export interface ContainerUser {
     container: Container;
-    user: User;
     containerUsers?: { [key: string]: ContainerUser };
+    user: User;
 }
 
 export interface UseContainerUser extends ContainerUser {
@@ -69,7 +69,7 @@ export interface UseContainerUser extends ContainerUser {
  *                    <span>Folder Path: {container.path}</span>
  *                    {user.hasInsertPermission() && <span>{user.displayName} can insert data into {container.path}.</span>>}
  *                    {user.hasDeletePermission() && <span>{user.displayName} can delete data in {container.path}.</span>>}
- *                    {user.hasDesignSampleSetsPermission() && <span>{user.displayName} can design sample types in {container.path}.</span>>}
+ *                    {user.hasDesignSampleTypesPermission() && <span>{user.displayName} can design sample types in {container.path}.</span>>}
  *                </>
  *            )}
  *        </div>

@@ -220,11 +220,12 @@ export function isAssayEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isAssayQCEnabled(moduleContext?: ModuleContext): boolean {
-    return (
-        isAssayEnabled(moduleContext) &&
-        hasPremiumModule(moduleContext) &&
-        isFeatureEnabled(ProductFeature.AssayQC, moduleContext)
-    );
+    // NK: The product tiers which include Assay QC are not fully defined.
+    // For now (v22.11+), we're going to continue offering Assay QC features until
+    // we can fully define all desired product tiers. Once that is done we can respect
+    // the associated feature flag instead.
+    // isFeatureEnabled(ProductFeature.AssayQC, moduleContext)
+    return isAssayEnabled(moduleContext) && hasPremiumModule(moduleContext);
 }
 
 export function isAssayRequestsEnabled(moduleContext?: ModuleContext): boolean {
@@ -356,7 +357,7 @@ export function addSamplesSectionConfig(
         maxItemsPerColumn: 12,
         seeAllURL: appBase + AppURL.create(SAMPLES_KEY).addParam('viewAs', 'cards').toHref(),
     });
-    if (user.hasDesignSampleSetsPermission()) {
+    if (user.hasDesignSampleTypesPermission()) {
         samplesMenuConfig = samplesMenuConfig.merge({
             emptyURL: appBase + NEW_SAMPLE_TYPE_HREF.toHref(),
             emptyURLText: 'Create a sample type',

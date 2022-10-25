@@ -3,7 +3,7 @@ import { Utils, UtilsDOM } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { EditorModel, EditorModelProps, ValueDescriptor } from '../../models';
+import { EditorMode, EditorModel, EditorModelProps, IEditableGridLoader, ValueDescriptor } from '../../models';
 import { getLookupValueDescriptors } from '../../actions';
 import { genCellKey } from '../../utils';
 
@@ -13,8 +13,11 @@ import { getUpdatedDataFromGrid } from '../../util/utils';
 
 import { EXPORT_TYPES } from '../../constants';
 
-import { EditableGridLoaderFromSelection } from './EditableGridLoaderFromSelection';
-
+/**
+ * @deprecated Use initEditableGridModel() or initEditableGridModels() instead.
+ * This method does not make use the grid loader paradigm. Usages of this method directly
+ * is susceptible to data misalignment errors with the associated view.
+ */
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
     editorColumns?: List<QueryColumn>,
@@ -87,6 +90,49 @@ export const loadEditorModelData = async (
     };
 };
 
+export const initEditableGridModel = async (
+    dataModel: QueryModel,
+    editorModel: EditorModel,
+    queryModel: QueryModel,
+    loader: IEditableGridLoader,
+    includeColumns?: Array<Partial<QueryColumn>>
+): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
+    const response = await loader.fetch(queryModel);
+    const gridData: Partial<QueryModel> = {
+        rows: response.data.toJS(),
+        orderedRows: response.dataIds.toArray(),
+        queryInfo: loader.queryInfo,
+    };
+
+    const extraColumns: QueryColumn[] = [];
+    includeColumns?.forEach(col => {
+        const column = queryModel.getColumn(col.fieldKey);
+        if (column) {
+            extraColumns.push(column);
+        }
+    });
+
+    let columns: List<QueryColumn>;
+    const forUpdate = loader.mode === EditorMode.Update;
+
+    if (loader.columns) {
+        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, loader.columns, loader.columns);
+    } else {
+        columns = editorModel.getColumns(gridData.queryInfo, forUpdate);
+    }
+
+    const editorModelData = await loadEditorModelData(gridData, columns, extraColumns);
+
+    return {
+        dataModel: dataModel.mutate({
+            ...gridData,
+            rowsLoadingState: LoadingState.LOADED,
+            queryInfoLoadingState: LoadingState.LOADED,
+        }),
+        editorModel: editorModel.merge(editorModelData) as EditorModel,
+    };
+};
+
 export interface EditableGridModels {
     dataModels: QueryModel[];
     editorModels: EditorModel[];
@@ -96,52 +142,21 @@ export const initEditableGridModels = async (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
     queryModel: QueryModel,
-    loaders: EditableGridLoaderFromSelection[],
+    loaders: IEditableGridLoader[],
     includeColumns?: Array<Partial<QueryColumn>>
 ): Promise<EditableGridModels> => {
     const updatedDataModels = [];
     const updatedEditorModels = [];
 
     const results = await Promise.all(
-        loaders.map(
-            loader =>
-                new Promise<{ editorModelData: Partial<EditorModel>; gridData: Record<string, any> }>(resolve => {
-                    let gridData;
-                    loader
-                        .fetch(queryModel)
-                        .then(response => {
-                            gridData = {
-                                rows: response.data.toJS(),
-                                orderedRows: response.dataIds.toArray(),
-                                queryInfo: loader.queryInfo,
-                            };
-                            const extraColumns = [];
-                            if (includeColumns) {
-                                includeColumns.forEach(col => {
-                                    const column = queryModel.getColumn(col.fieldKey);
-                                    if (column) extraColumns.push(column);
-                                });
-                            }
-                            return loadEditorModelData(gridData, loader.updateColumns, extraColumns);
-                        })
-                        .then(editorModelData => {
-                            resolve({ editorModelData, gridData });
-                        });
-                })
+        dataModels.map((dataModel, i) =>
+            initEditableGridModel(dataModels[i], editorModels[i], queryModel, loaders[i], includeColumns)
         )
     );
 
-    results.forEach((result, index) => {
-        const { editorModelData, gridData } = result;
-
-        updatedDataModels.push(
-            dataModels[index].mutate({
-                ...gridData,
-                rowsLoadingState: LoadingState.LOADED,
-                queryInfoLoadingState: LoadingState.LOADED,
-            })
-        );
-        updatedEditorModels.push(editorModels[index].merge(editorModelData) as EditorModel);
+    results.forEach(result => {
+        updatedDataModels.push(result.dataModel);
+        updatedEditorModels.push(result.editorModel);
     });
 
     return {

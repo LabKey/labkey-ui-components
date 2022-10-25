@@ -155,6 +155,11 @@ export function getPkData(queryInfo: QueryInfo, row: Map<string, any>) {
     return data;
 }
 
+export enum EditorMode {
+    Insert,
+    Update,
+}
+
 export class EditorModel
     extends Record({
         cellMessages: Map<string, CellMessage>(),
@@ -231,9 +236,9 @@ export class EditorModel
         let columns;
 
         if (forUpdate) {
-            columns = updateColumns ? updateColumns : queryInfo.getUpdateColumns(readOnlyColumns);
+            columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns);
         } else {
-            columns = insertColumns ? insertColumns : queryInfo.getInsertColumns();
+            columns = insertColumns ?? queryInfo.getInsertColumns();
         }
 
         if (colFilter) columns = columns.filter(colFilter);
@@ -633,11 +638,12 @@ export interface IGridLoader {
 }
 
 export interface IEditableGridLoader extends IGridLoader {
+    columns?: List<QueryColumn>;
     id: string;
+    mode: EditorMode;
     omittedColumns?: string[];
     queryInfo: QueryInfo;
     requiredColumns?: string[];
-    updateColumns?: List<QueryColumn>;
 }
 
 export interface IGridResponse {

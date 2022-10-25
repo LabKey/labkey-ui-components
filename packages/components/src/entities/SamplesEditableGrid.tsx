@@ -9,7 +9,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../internal/APIWrapp
 
 import { UpdateGridTab } from '../internal/components/editable/EditableGridPanelForUpdateWithLineage';
 
-import { EditorModel, IEditableGridLoader, IGridResponse } from '../internal/models';
+import { EditorMode, EditorModel, IEditableGridLoader, IGridResponse } from '../internal/models';
 
 import { isFreezerManagementEnabled } from '../internal/app/utils';
 
@@ -19,7 +19,6 @@ import {
     NotificationsContextProps,
     withNotificationsContext,
 } from '../internal/components/notifications/NotificationsContext';
-import { User } from '../internal/components/base/models/User';
 
 import { caseInsensitive } from '../internal/util/utils';
 import { NO_UPDATES_MESSAGE } from '../internal/constants';
@@ -35,11 +34,15 @@ import { LineageEditableGridLoaderFromSelection } from '../internal/components/e
 import { getSelectedData } from '../internal/actions';
 
 import { SampleStateType } from '../internal/components/samples/constants';
+
+import { getUpdatedLineageRows } from '../internal/components/samples/actions';
+
+import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
+
 import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
-import { getLineageEditorUpdateColumns, getUpdatedLineageRows } from '../internal/components/samples/actions';
-import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
+
 import { getOriginalParentsFromLineage } from './actions';
 
 export interface SamplesEditableGridProps {
@@ -56,14 +59,13 @@ export interface SamplesEditableGridProps {
     ) => any;
     getIsDirty?: () => boolean;
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;
-    onGridEditCancel: () => any;
-    onGridEditComplete: () => any;
+    onGridEditCancel: () => void;
+    onGridEditComplete: () => void;
     parentDataTypes: List<EntityDataType>;
     samplesGridOmittedColumns?: List<string>;
     samplesGridRequiredColumns?: string[];
     selectionData: Map<string, any>;
     setIsDirty?: (isDirty: boolean) => void;
-    user: User;
 }
 
 type Props = SamplesEditableGridProps &
@@ -489,7 +491,7 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
 
         if (determineLineage && this.hasParentDataTypes() && !originalParents) return <LoadingSpinner />;
 
-        const loaders = [];
+        const loaders: IEditableGridLoader[] = [];
         if (determineSampleData) {
             loaders.push(
                 new EditableGridLoaderFromSelection(
@@ -539,17 +541,10 @@ class SamplesEditableGridBase extends React.Component<Props, State> {
         }
 
         if (determineLineage && this.hasParentDataTypes()) {
-            const { queryInfoColumns, updateColumns } = getLineageEditorUpdateColumns(
-                displayQueryModel,
-                originalParents
-            );
-            const lineageQueryInfo = displayQueryModel.queryInfo.merge({ columns: queryInfoColumns }) as QueryInfo;
-
             loaders.push(
                 new LineageEditableGridLoaderFromSelection(
                     SAMPLES_LINEAGE_EDIT_GRID_ID,
-                    lineageQueryInfo,
-                    updateColumns,
+                    displayQueryModel,
                     originalParents,
                     sampleLineageKeys,
                     sampleLineage,
@@ -601,30 +596,32 @@ export const SamplesEditableGrid = SamplesSelectionProvider<SamplesEditableGridP
 );
 
 class StorageEditableGridLoaderFromSelection implements IEditableGridLoader {
+    columns: List<QueryColumn>;
     id: string;
+    mode: EditorMode;
     queryInfo: QueryInfo;
     requiredColumns: string[];
     omittedColumns: string[];
-    updateColumns: List<QueryColumn>;
 
     constructor(
         id: string,
         queryInfo: QueryInfo,
         requiredColumns: string[],
         omittedColumns: string[],
-        updateColumns: List<QueryColumn>
+        columns: List<QueryColumn>
     ) {
+        this.columns = columns;
         this.id = id;
+        this.mode = EditorMode.Update;
         this.queryInfo = queryInfo;
         this.requiredColumns = requiredColumns;
         this.omittedColumns = omittedColumns;
-        this.updateColumns = updateColumns;
     }
 
     fetch(queryModel: QueryModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
             const { schemaName, queryName, queryParameters, viewName } = queryModel;
-            const columnString = queryModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns);
+            const columnString = queryModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true);
             const sorts = queryModel.sorts.join(',');
             const selectedIds = [...queryModel.selections];
             return getSelectedData(schemaName, queryName, selectedIds, columnString, sorts, queryParameters, viewName)

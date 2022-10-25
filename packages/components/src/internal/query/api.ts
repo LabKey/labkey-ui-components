@@ -165,7 +165,7 @@ export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, query
         const defaultQueryMeta = {
             queryLabel,
             plural: queryLabel,
-            schemaLabel: Parsers.splitCamelCase(_schemaName),
+            schemaLabel: _schemaName,
             singular: queryLabel,
         };
 
@@ -273,25 +273,6 @@ function applyViewColumns(
     }
 
     return columns;
-}
-
-class Parsers {
-    static splitCamelCase(value) {
-        if (value) {
-            return (
-                value
-                    // insert a space before all caps
-                    .replace(/([A-Z])/g, ' $1')
-                    // uppercase the first character
-                    .replace(/^./, function (str) {
-                        return str.toUpperCase();
-                    })
-                    .trim()
-            );
-        }
-
-        return value;
-    }
 }
 
 class Renderers {

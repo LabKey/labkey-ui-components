@@ -9,11 +9,13 @@ import { List } from 'immutable';
 
 import { ExportOptions, getExportParams } from '../../internal/actions';
 
-import { ActionValue } from './grid/actions/Action';
 import { QuerySort } from '../QuerySort';
-import { QueryModel } from './QueryModel';
+
 import { QueryColumn } from '../QueryColumn';
 import { EXPORT_TYPES } from '../../internal/constants';
+
+import { QueryModel } from './QueryModel';
+import { ActionValue } from './grid/actions/Action';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;
@@ -105,15 +107,17 @@ export function getQueryModelExportParams(
     model: QueryModel,
     type: EXPORT_TYPES,
     advancedOptions?: Record<string, any>
-): any {
-    const { id, filters, hasSelections, schemaQuery, exportColumnString, sortString, } = model;
-    const showRows = hasSelections ? 'SELECTED' : 'ALL';
+): Record<string, any> {
+    const { containerFilter, containerPath, exportColumnString, filters, hasSelections, id, schemaQuery, sortString } =
+        model;
     const exportOptions: ExportOptions = {
         filters: List(filters),
         columns: exportColumnString,
+        containerFilter,
+        containerPath,
         sorts: sortString,
         selectionKey: id,
-        showRows,
+        showRows: hasSelections ? 'SELECTED' : 'ALL',
     };
     return getExportParams(type, schemaQuery, exportOptions, advancedOptions);
 }

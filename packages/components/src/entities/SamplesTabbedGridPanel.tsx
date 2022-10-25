@@ -308,7 +308,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         initAliquotMode: activeActiveAliquotMode,
     };
 
-    const isMedia = activeModel.queryInfo?.isMedia;
+    const isMedia = activeModel?.queryInfo?.isMedia;
 
     return (
         <>
@@ -325,7 +325,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     onGridEditComplete={onGridEditComplete}
                     getIsDirty={getIsDirty}
                     setIsDirty={setIsDirty}
-                    sampleSet={activeModel.schemaQuery.queryName}
+                    sampleSet={activeModel?.schemaQuery.queryName}
                     selection={selection}
                     selectionData={selectionData}
                 />
@@ -352,10 +352,10 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     containerFilter={containerFilter}
                     determineSampleData
                     selection={selection}
-                    sampleSet={activeModel.schemaQuery.queryName}
-                    sampleSetLabel={activeModel.queryInfo.title}
+                    sampleSet={activeModel?.schemaQuery.queryName}
+                    sampleSetLabel={activeModel?.queryInfo.title}
                     queryModel={activeModel}
-                    viewName={activeModel.viewName}
+                    viewName={activeModel?.viewName}
                     hasValidMaxSelection={hasValidMaxSelection}
                     onCancel={resetState}
                     onBulkUpdateError={onBulkUpdateError}
@@ -372,8 +372,8 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     labelTemplate={labelTemplate}
                     printServiceUrl={printServiceUrl}
                     onCancel={onCancelPrint}
-                    queryName={activeModel.queryName}
-                    schemaName={activeModel.schemaName}
+                    queryName={activeModel?.queryName}
+                    schemaName={activeModel?.schemaName}
                     sampleIds={[...printDialogModel.selections]}
                     show={true}
                     showSelection={true}

@@ -1201,20 +1201,25 @@ export class DomainField
             details.push(period + this.sourceOntology);
             period = '. ';
         } else if (this.dataType.isTextChoice()) {
-            const validValuesStr = getValidValuesDetailStr(this.textChoiceValidator?.properties.validValues);
-            details.push(period);
-            if (validValuesStr) {
-                details.push(validValuesStr);
-            } else if (this.textChoiceValidator?.shouldShowWarning) {
-                details.push(
-                    <DomainRowWarning
-                        index={index}
-                        extraInfo={FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO}
-                        msg={FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG}
-                        name={this.name}
-                        severity={SEVERITY_LEVEL_WARN}
-                    />
-                );
+            if (this.isPHI() && this.PHI !== undefined) {
+                const text = ' Note: These text choice options are visible to all administrators, including those not granted any PHI reader role';
+                details.push(period + text);
+            } else {
+                const validValuesStr = getValidValuesDetailStr(this.textChoiceValidator?.properties.validValues);
+                details.push(period);
+                if (validValuesStr) {
+                    details.push(validValuesStr);
+                } else if (this.textChoiceValidator?.shouldShowWarning) {
+                    details.push(
+                        <DomainRowWarning
+                            index={index}
+                            extraInfo={FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO}
+                            msg={FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG}
+                            name={this.name}
+                            severity={SEVERITY_LEVEL_WARN}
+                        />
+                    );
+                }
             }
             period = '. ';
         }

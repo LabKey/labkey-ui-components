@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * add Assay Runs summary grid as tab to SampleAssayDetail
   * add FindDerivativesMenuItem to go with FindDerivativesButton
   * remove Sample Comparison Report rendering and creation menu item
+  * Issue 46554: App Sample Assay menu doesn't show any options if > 1000 samples selected
 
 ### version 2.237.0
 *Released*: 25 October 2022

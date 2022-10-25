@@ -416,6 +416,7 @@ import {
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
+import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
@@ -1008,6 +1009,7 @@ export {
     getLineageEditorUpdateColumns,
     getSelectedSampleIdsFromSelectionKey,
     EntityInsertPanel,
+    EntityCrossProjectSelectionConfirmModal,
     SampleTypeDataType,
     DataClassDataType,
     AssayResultDataType,

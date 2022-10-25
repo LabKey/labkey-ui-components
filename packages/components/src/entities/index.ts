@@ -26,7 +26,6 @@ import { CreateSamplesSubMenu } from './CreateSamplesSubMenu';
 import { CreateSamplesSubMenuBase } from './CreateSamplesSubMenuBase';
 import { SamplesAssayButton } from './SamplesAssayButton';
 import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
-import { EntityCrossProjectSelectionConfirmModal } from './EntityCrossProjectSelectionConfirmModal';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
 import { FindSamplesByIdsPageBase } from './FindSamplesByIdsPageBase';
 import { SampleFinderSection } from './SampleFinderSection';
@@ -48,6 +47,8 @@ import { SampleTypePage } from './SampleTypePage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
 import { SamplesResolver } from './SamplesResolver';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
+import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
 
@@ -64,6 +65,7 @@ export {
     getSampleWizardURL,
     isFindByIdsSchema,
     loadSampleTypes,
+    useSampleTypeAppContext,
     AssayImportSubMenuItem,
     AssayResultsForSamplesPage,
     AssayResultsForSamplesSubNav,
@@ -71,7 +73,6 @@ export {
     AssayResultsForSamplesMenuItem,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
-    EntityCrossProjectSelectionConfirmModal,
     EntityDeleteModal,
     EntityLineageEditMenuItem,
     EntityTypeDeleteConfirmModal,
@@ -103,6 +104,7 @@ export {
     SampleTypeIndexNav,
     SampleTypePage,
     SampleTypeBasePage,
+    SampleTypeDesignPage,
     SampleTypeInsightsPanel,
     SampleTypeTemplateDownloadRenderer,
     SamplesAssayButton,
@@ -111,4 +113,9 @@ export {
     SamplesTabbedGridPanel,
 };
 
+//  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
+//  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
+//  separately.
+//  https://github.com/babel/babel-loader/issues/603
 export type { SamplesEditableGridProps } from './SamplesEditableGrid';
+export type { SampleTypeAppContext, WithSampleTypeAppContext, AppContextWithSampleType } from './SampleTypeAppContext';

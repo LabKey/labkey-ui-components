@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.238.0
+*Released*: 25 October 2022
+* Update `QueryModel.getRequestColumnsString()` to support inclusion of `updateColumns` in when building a request columns string.
+* Refactor and privatize usage of `getLineageEditorUpdateColumns` by making this a part of `LineageEditableGridLoaderFromSelection` initialization.
+* Factor out `initEditableGridModel` (singular) from `initEditableGridModels` (multiple). This allowed for consolidated usage for `EntityInsertPanel`.
+* Deprecate `loadEditorModelData` in favor of `initEditableGridModel`.
+* Introduce `EditorMode` for `IEditableGridLoader` to make it more clear what purpose this loader is used for and make it easier to interpolate which columns, etc should be utilized.
+* Make prop pass-through on `DetailPanelWithModel` more succinct. Support all properties.
+* Fix hook dependencies in `SamplesTabbedGridPanel`.
+
 ### version 2.237.1
 *Released*: 25 October 2022
 * Update logic for `isAssayQCEnabled` check.

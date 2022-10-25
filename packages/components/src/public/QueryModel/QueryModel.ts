@@ -554,7 +554,11 @@ export class QueryModel {
         return this.getRequestColumnsString();
     }
 
-    getRequestColumnsString(requiredColumns?: string[], omittedColumns?: string[]): string {
+    getRequestColumnsString(
+        requiredColumns?: string[],
+        omittedColumns?: string[],
+        requestUpdateColumns?: boolean
+    ): string {
         const _requiredColumns = requiredColumns ?? this.requiredColumns;
         const _omittedColumns = omittedColumns ?? this.omittedColumns;
 
@@ -563,6 +567,12 @@ export class QueryModel {
         this.keyColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
         this.displayColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
         this.uniqueIdColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
+
+        // Issue 46478: Include update columns in requested columns to ensure values are available
+        if (requestUpdateColumns) {
+            this.updateColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
+        }
+
         let fieldKeys = Array.from(uniqueFieldKeys);
 
         if (_omittedColumns.length) {
@@ -930,6 +940,30 @@ export class QueryModel {
             this.filterArray?.length > 0 ||
             this.queryInfo?.getFilters(this.schemaQuery.viewName)?.size > 0
         );
+    }
+
+    get queryConfig(): QueryConfig {
+        return {
+            baseFilters: Array.from(this.baseFilters),
+            bindURL: this.bindURL,
+            containerFilter: this.containerFilter,
+            containerPath: this.containerPath,
+            filterArray: Array.from(this.filterArray),
+            id: this.id,
+            includeDetailsColumn: this.includeDetailsColumn,
+            keyValue: this.keyValue,
+            maxRows: this.maxRows,
+            offset: this.offset,
+            omittedColumns: Array.from(this.omittedColumns),
+            queryParameters: {
+                ...this.queryParameters,
+            },
+            requiredColumns: Array.from(this.requiredColumns),
+            schemaQuery: this.schemaQuery,
+            sorts: this.sorts,
+            title: this.title,
+            urlPrefix: this.urlPrefix,
+        };
     }
 
     /**

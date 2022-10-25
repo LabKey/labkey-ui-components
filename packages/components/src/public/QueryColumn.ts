@@ -10,9 +10,10 @@ import {
 } from '../internal/components/domainproperties/constants';
 import { SCHEMAS } from '../internal/schemas';
 
-import { SchemaQuery } from './SchemaQuery';
 import { isAllSamplesSchema } from '../internal/components/samples/utils';
 import { SAMPLES_WITH_TYPES_FILTER } from '../internal/components/samples/constants';
+
+import { SchemaQuery } from './SchemaQuery';
 
 export class QueryLookup extends Record({
     containerFilter: undefined,
@@ -57,8 +58,7 @@ export class QueryLookup extends Record({
         // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded here
         if (isAllSamplesSchema(this.schemaQuery)) {
             return [SAMPLES_WITH_TYPES_FILTER];
-        }
-        else {
+        } else {
             return undefined;
         }
     }
@@ -289,7 +289,7 @@ export class QueryColumn extends Record({
         );
     }
 
-    isEditable() {
+    isEditable(): boolean {
         return !this.readOnly && this.userEditable && this.shownInUpdateView;
     }
 

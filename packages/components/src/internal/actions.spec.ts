@@ -494,18 +494,6 @@ describe('getExportParams', () => {
             'query.showRows': ['ALL'],
             'query.containerFilterName': Query.ContainerFilter.currentAndFirstChildren,
         });
-
-        // top-level folder container path
-        expect(
-            getExportParams(EXPORT_TYPES.TSV, schemaQuery, {
-                containerPath: '/TopLevelFolder',
-            })
-        ).toStrictEqual({
-            schemaName,
-            'query.queryName': queryName,
-            'query.showRows': ['ALL'],
-            'query.containerFilterName': Query.ContainerFilter.currentAndSubfoldersPlusShared,
-        });
     });
 });
 

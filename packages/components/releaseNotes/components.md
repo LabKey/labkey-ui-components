@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Limit selection for pooling only based on max parents per sample.
   * Consolidate from LKB `SampleCreateMenuItem` and LKSM `CreateSamplesSubMenu` into a common `CreateSamplesMenuItem`
   * Port LKB `Samples/Pages/Header.tsx` and LKSM `SampleHeader` into single `SampleHeader` implementation
+  * Remove usage of splitCamelCase for setting QueryInfo.queryLabel
 
 ### version 2.236.4
 *Released*: 24 October 2022

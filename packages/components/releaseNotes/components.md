@@ -7,6 +7,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   * refactor SampleTypeDesignPage from LKB app to be used in LKSM as well
   * add SampleTypeAppContext to pass app specific properties to the designer
 
+### version 2.236.4
+*Released*: 24 October 2022
+* Update `AssayImportSubMenuItem` to check for cross-folder selection when in the project container
+* Update container filters for assay import panels to use `currentPlusProjecAndShared`
+
+### version 2.236.3
+*Released*: 24 October 2022
+* ThreadBlock: Don't render user avatars
+
 ### version 2.236.1
 *Released*: 20 October 2022
 * Components package update to split out `assay` components as separate entry point (subpackage)

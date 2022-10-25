@@ -30,11 +30,10 @@ import { DELIMITER } from '../internal/components/forms/constants';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
 import { AssayUploadTabs } from '../internal/constants';
-import { getSampleAssayQueryConfigs } from '../internal/components/samples/actions';
+import { getSampleAssayQueryConfigs} from '../internal/components/samples/actions';
 import { AssayStateModel } from '../internal/components/assay/models';
 import { SamplesAPIWrapper } from '../internal/components/samples/APIWrapper';
 import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
-import { selectRowsDeprecated } from "../internal/query/api";
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -307,16 +306,7 @@ export async function getSamplesAssayGridQueryConfigs(
 
     // since we want to remove empty assay run columns from the Assay Run Summary grid, we need to inject the WHERE
     // clause into the SQL before the PIVOT. We'll use a session query for this
-    const sessionAssayRuns = await selectRowsDeprecated({
-        saveInSession: true,
-        schemaName: 'exp',
-        sql: "SELECT RowId, SampleID, SampleType, Assay, COUNT(*) AS RunCount\n" +
-            "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM AssayRunsPerSample) X\n" +
-            "WHERE RowId IN (" + allSampleIds.join(',') + ")\n" +
-            "GROUP BY RowId, SampleID, SampleType, Assay\n" +
-            "PIVOT RunCount BY Assay",
-        maxRows: 0, // we don't need any data back here, we just need to get the temp session schema/query
-    });
+    const sessionAssayRuns = await api.createSessionAssayRunSummaryQuery(allSampleIds);
     const sessionAssayRunsQueryInfo = sessionAssayRuns?.queries[sessionAssayRuns.key];
     if (sessionAssayRunsQueryInfo) {
         _configs.push({

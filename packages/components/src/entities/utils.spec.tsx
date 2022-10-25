@@ -878,11 +878,13 @@ describe('getSamplesAssayGridQueryConfigs', () => {
         definitionsLoadingState: LoadingState.LOADED,
         definitions: [modelWithSampleId, modelWithoutSampleId],
     });
+    const sessionQueryResponse = { key: 'key', queries: { key: QueryInfo.create({schemaName: 'exp', name: 'AssayRunsPerSample'}) }, models: undefined, orderedModels: undefined, totalRows: 0 };
 
     test('default props', async () => {
         const configs = await getSamplesAssayGridQueryConfigs(
             getTestAPIWrapper(jest.fn, {
                 samples: getSamplesTestAPIWrapper(jest.fn, {
+                    createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                     getSampleAssayResultViewConfigs: () => Promise.resolve([]),
                 }),
             }).samples,
@@ -903,6 +905,7 @@ describe('getSamplesAssayGridQueryConfigs', () => {
         const configs = await getSamplesAssayGridQueryConfigs(
             getTestAPIWrapper(jest.fn, {
                 samples: getSamplesTestAPIWrapper(jest.fn, {
+                    createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                     getSampleAssayResultViewConfigs: () =>
                         Promise.resolve([
                             {
@@ -935,6 +938,7 @@ describe('getSamplesAssayGridQueryConfigs', () => {
         const configs = await getSamplesAssayGridQueryConfigs(
             getTestAPIWrapper(jest.fn, {
                 samples: getSamplesTestAPIWrapper(jest.fn, {
+                    createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                     getSampleAssayResultViewConfigs: () => Promise.resolve([]),
                 }),
             }).samples,
@@ -961,6 +965,6 @@ describe('getSamplesAssayGridQueryConfigs', () => {
         expect(configs['prefix:5051:suffix'].baseFilters[0].getURLParameterValue()).toBe('1');
         expect(configs['prefix:assayruncount:suffix'].baseFilters[0].getURLParameterValue()).toBe('1');
         expect(configs['unfiltered:5051:suffix'].baseFilters[0].getURLParameterValue()).toBe('1;2');
-        expect(configs['unfiltered:assayruncount:suffix'].baseFilters[0].getURLParameterValue()).toBe('1;2');
+        expect(configs['unfiltered:assayruncount:suffix'].baseFilters).toBeUndefined();
     });
 });

@@ -306,12 +306,15 @@ describe('SampleAssayDetailBodyImpl', () => {
 describe('SampleAssayDetailImpl', () => {
     // TODO more test cases for other parts of the SampleAssayDetailImpl to be added
 
+    const sessionQueryResponse = { key: 'key', queries: { key: QueryInfo.create({schemaName: 'exp', name: 'AssayRunsPerSample'}) }, models: undefined, orderedModels: undefined, totalRows: 0 };
+
     test('sampleAssayResultViewConfigs - none', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
+                        createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                         getSampleAssayResultViewConfigs: () => Promise.resolve([]),
                     }),
                 })}
@@ -339,6 +342,7 @@ describe('SampleAssayDetailImpl', () => {
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
+                        createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                         getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
                     }),
                 })}
@@ -358,6 +362,7 @@ describe('SampleAssayDetailImpl', () => {
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
+                        createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                         getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
                     }),
                 })}
@@ -380,6 +385,7 @@ describe('SampleAssayDetailImpl', () => {
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
+                        createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                         getSampleAssayResultViewConfigs: () =>
                             Promise.resolve([
                                 {

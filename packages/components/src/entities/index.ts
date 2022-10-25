@@ -48,6 +48,8 @@ import { SampleTypePage } from './SampleTypePage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
 import { SamplesResolver } from './SamplesResolver';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
+import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 
 export {
     PICKLIST_SAMPLES_FILTER,
@@ -63,6 +65,7 @@ export {
     getSampleWizardURL,
     isFindByIdsSchema,
     loadSampleTypes,
+    useSampleTypeAppContext,
     AssayImportSubMenuItem,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
@@ -96,6 +99,7 @@ export {
     SampleTypeIndexNav,
     SampleTypePage,
     SampleTypeBasePage,
+    SampleTypeDesignPage,
     SampleTypeInsightsPanel,
     SampleTypeTemplateDownloadRenderer,
     SamplesAssayButton,
@@ -104,4 +108,9 @@ export {
     SamplesTabbedGridPanel,
 };
 
+//  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
+//  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
+//  separately.
+//  https://github.com/babel/babel-loader/issues/603
 export type { SamplesEditableGridProps } from './SamplesEditableGrid';
+export type { SampleTypeAppContext, WithSampleTypeAppContext, AppContextWithSampleType } from './SampleTypeAppContext';

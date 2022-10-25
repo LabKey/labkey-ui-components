@@ -356,7 +356,7 @@ export function addSamplesSectionConfig(
         maxItemsPerColumn: 12,
         seeAllURL: appBase + AppURL.create(SAMPLES_KEY).addParam('viewAs', 'cards').toHref(),
     });
-    if (user.hasDesignSampleSetsPermission()) {
+    if (user.hasDesignSampleTypesPermission()) {
         samplesMenuConfig = samplesMenuConfig.merge({
             emptyURL: appBase + NEW_SAMPLE_TYPE_HREF.toHref(),
             emptyURLText: 'Create a sample type',

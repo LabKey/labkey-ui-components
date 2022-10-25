@@ -12,6 +12,10 @@ import { loadFinderSearches } from '../search/actions';
 
 import { TimelineEventModel } from '../auditlog/models';
 
+import { SchemaQuery } from '../../../public/SchemaQuery';
+
+import { DomainDetails } from '../domainproperties/models';
+
 import {
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
@@ -20,6 +24,7 @@ import {
     getSampleStatuses,
     getSampleStorageId,
     getTimelineEvents,
+    getSampleTypeDetails,
     SampleAssayResultViewConfig,
 } from './actions';
 import { SampleState } from './models';
@@ -47,6 +52,13 @@ export interface SamplesAPIWrapper {
 
     getSampleStorageId: (sampleRowId: number) => Promise<number>;
 
+    getSampleTypeDetails: (
+        query?: SchemaQuery,
+        domainId?: number,
+        containerPath?: string,
+        includeNamePreview?: boolean
+    ) => Promise<DomainDetails>;
+
     getSelectionLineageData: (
         selection: List<any>,
         schema: string,
@@ -70,6 +82,7 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getFieldLookupFromSelection = getFieldLookupFromSelection;
     loadFinderSearches = loadFinderSearches;
     getTimelineEvents = getTimelineEvents;
+    getSampleTypeDetails = getSampleTypeDetails;
 }
 
 /**
@@ -89,6 +102,7 @@ export function getSamplesTestAPIWrapper(
         getFieldLookupFromSelection: mockFn(),
         loadFinderSearches: mockFn(),
         getTimelineEvents: mockFn(),
+        getSampleTypeDetails: mockFn(),
         ...overrides,
     };
 }

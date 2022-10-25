@@ -85,7 +85,7 @@ export class User extends Record(defaultUser) implements IUserProps {
         return hasAllPermissions(this, [PermissionTypes.DesignAssay]);
     }
 
-    hasDesignSampleSetsPermission(): boolean {
+    hasDesignSampleTypesPermission(): boolean {
         return hasAllPermissions(this, [PermissionTypes.DesignSampleSet]);
     }
 

@@ -6,17 +6,18 @@ type BootstrapEmphasis = 'danger' | 'default' | 'info' | 'primary' | 'success' |
 
 interface ReactBootstrapToggleProps {
     active: boolean;
-    handlestyle?: BootstrapEmphasis;
+    className?: string;
     handleClassName?: string;
+    handlestyle?: BootstrapEmphasis;
     height?: number;
     id?: string;
     off?: ReactNode;
-    offstyle?: BootstrapEmphasis;
     offClassName?: string;
+    offstyle?: BootstrapEmphasis;
     on?: ReactNode;
-    onstyle?: BootstrapEmphasis;
     onClassName?: string;
     onClick: (state: any, node: any, evt: any) => void;
+    onstyle?: BootstrapEmphasis;
     recalculateOnResize?: boolean;
     size?: 'xs' | 'sm' | 'lg';
     style?: CSSProperties;

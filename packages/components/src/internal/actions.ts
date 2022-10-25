@@ -1861,7 +1861,8 @@ export async function updateGridFromBulkForm(
     editorModel: EditorModel,
     queryInfo: QueryInfo,
     rowData: OrderedMap<string, any>,
-    dataRowIndexes: List<number>
+    dataRowIndexes: List<number>,
+    lockedOrReadonlyRows?: number[]
 ): Promise<Partial<EditorModel>> {
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
@@ -1870,6 +1871,8 @@ export async function updateGridFromBulkForm(
     const { values, messages } = preparedData; // {3: 'x', 4: 'z}
 
     dataRowIndexes.forEach(rowIdx => {
+        if (lockedOrReadonlyRows && lockedOrReadonlyRows.indexOf(rowIdx) > -1) return;
+
         values.forEach((value, colIdx) => {
             const cellKey = genCellKey(colIdx, rowIdx);
             cellMessages = cellMessages.set(cellKey, messages.get(colIdx));

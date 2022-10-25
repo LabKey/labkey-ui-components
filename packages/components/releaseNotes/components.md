@@ -9,6 +9,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Port LKB `Samples/Pages/Header.tsx` and LKSM `SampleHeader` into single `SampleHeader` implementation
   * Remove usage of splitCamelCase for setting QueryInfo.queryLabel
 
+### version 2.237.0
+*Released*: 25 October 2022
+* App Sample Type Consistency for Sample Type Designer
+  * refactor SampleTypeDesignPage from LKB app to be used in LKSM as well
+  * add SampleTypeAppContext to pass app specific properties to the designer
+
 ### version 2.236.4
 *Released*: 24 October 2022
 * Update `AssayImportSubMenuItem` to check for cross-folder selection when in the project container

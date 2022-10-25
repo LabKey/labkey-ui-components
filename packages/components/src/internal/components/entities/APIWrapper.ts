@@ -1,17 +1,22 @@
+import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
+
 import { getDataOperationConfirmationData } from './actions';
 import { DataOperation } from './constants';
 import { OperationConfirmationData } from './models';
 
 export interface EntityAPIWrapper {
-    getDataOperationConfirmationData(
+    getDataOperationConfirmationData: (
         operation: DataOperation,
         selectionKey: string,
         rowIds?: string[] | number[]
-    ): Promise<OperationConfirmationData>;
+    ) => Promise<OperationConfirmationData>;
+
+    loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {
     getDataOperationConfirmationData = getDataOperationConfirmationData;
+    loadNameExpressionOptions = loadNameExpressionOptions;
 }
 
 /**
@@ -23,6 +28,7 @@ export function getEntityTestAPIWrapper(
 ): EntityAPIWrapper {
     return {
         getDataOperationConfirmationData: mockFn(),
+        loadNameExpressionOptions: mockFn(),
         ...overrides,
     };
 }

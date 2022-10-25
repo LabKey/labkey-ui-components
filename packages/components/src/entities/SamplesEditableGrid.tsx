@@ -34,11 +34,15 @@ import { LineageEditableGridLoaderFromSelection } from '../internal/components/e
 import { getSelectedData } from '../internal/actions';
 
 import { SampleStateType } from '../internal/components/samples/constants';
+
+import { getUpdatedLineageRows } from '../internal/components/samples/actions';
+
+import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
+
 import { SamplesEditableGridPanelForUpdate } from './SamplesEditableGridPanelForUpdate';
 import { DiscardConsumedSamplesModal } from './DiscardConsumedSamplesModal';
 import { SamplesSelectionProvider } from './SamplesSelectionContextProvider';
-import { getUpdatedLineageRows } from '../internal/components/samples/actions';
-import { SamplesSelectionProviderProps, SamplesSelectionResultProps } from '../internal/components/samples/models';
+
 import { getOriginalParentsFromLineage } from './actions';
 
 export interface SamplesEditableGridProps {

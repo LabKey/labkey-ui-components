@@ -436,25 +436,23 @@ describe('utils', () => {
     });
 
     test('isAssayQCEnabled', () => {
-        // TODO: These checks can be re-enabled once isAssayQCEnabled() has been reassessed. See isAssayQCEnabled().
-        // expect(isAssayQCEnabled({ api: { moduleNames: [] } })).toBeFalsy();
-        // expect(isAssayQCEnabled({ api: { moduleNames: ['assay'] } })).toBeFalsy();
-        // expect(
-        //     isAssayQCEnabled({ api: { moduleNames: [] }, core: { productFeatures: [ProductFeature.AssayQC] } })
-        // ).toBeFalsy();
-        // expect(
-        //     isAssayQCEnabled({
-        //         api: { moduleNames: ['assay'] },
-        //         core: { productFeatures: [ProductFeature.Assay, ProductFeature.AssayQC] },
-        //     })
-        // ).toBeFalsy();
-        // expect(
-        //     isAssayQCEnabled({
-        //         api: { moduleNames: ['assay', 'premium'] },
-        //         core: { productFeatures: [ProductFeature.Assay, ProductFeature.AssayQC] },
-        //     })
-        // ).toBeTruthy();
-        expect(isAssayQCEnabled()).toBeTruthy();
+        expect(isAssayQCEnabled({ api: { moduleNames: [] } })).toBeFalsy();
+        expect(isAssayQCEnabled({ api: { moduleNames: ['assay'] } })).toBeFalsy();
+        expect(
+            isAssayQCEnabled({ api: { moduleNames: [] }, core: { productFeatures: [ProductFeature.AssayQC] } })
+        ).toBeFalsy();
+        expect(
+            isAssayQCEnabled({
+                api: { moduleNames: ['assay'] },
+                core: { productFeatures: [ProductFeature.Assay, ProductFeature.AssayQC] },
+            })
+        ).toBeFalsy();
+        expect(
+            isAssayQCEnabled({
+                api: { moduleNames: ['assay', 'premium'] },
+                core: { productFeatures: [ProductFeature.Assay, ProductFeature.AssayQC] },
+            })
+        ).toBeTruthy();
     });
 
     test('isAssayRequestsEnabled', () => {

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import classNames from 'classnames';
 import React, {
     ChangeEvent,
     CSSProperties,
@@ -265,8 +266,12 @@ export const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(prop
         };
     }, [updateMenuStyle, open]);
 
+    // Technically we don't need to add and remove this open class because it doesn't affect visibility, we do that
+    // above via the visibility css property. We need this class so tests can look for the currently open menu.
+    const className = classNames('grid-header-cell__dropdown-menu dropdown-menu', { open });
+
     const body = (
-        <ul className="grid-header-cell__dropdown-menu dropdown-menu open" ref={menuEl} style={menuStyle}>
+        <ul className={className} ref={menuEl} style={menuStyle}>
             {allowColFilter && (
                 <>
                     <MenuItem onSelect={openFilterPanel}>
@@ -429,7 +434,6 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
             </span>
             {includeDropdown && !editingTitle && (
                 <HeaderCellDropdownMenu
-                    {...props}
                     allowColFilter={allowColFilter}
                     allowColSort={allowColSort}
                     colFilters={colFilters}

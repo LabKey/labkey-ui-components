@@ -137,67 +137,6 @@ describe('getUpdatedLineageRows', () => {
     });
 });
 
-describe('getLineageEditorUpdateColumns', () => {
-    const MODEL = makeTestQueryModel(
-        SchemaQuery.create('schema', 'query'),
-        new QueryInfo({
-            columns: fromJS({
-                rowid: { fieldKey: 'rowid' },
-                name: { fieldKey: 'name' },
-                other: { fieldKey: 'other' },
-            }),
-        })
-    );
-
-    test('no parent types', () => {
-        const cols = getLineageEditorUpdateColumns(MODEL, {});
-        expect(cols.queryInfoColumns.size).toBe(2);
-        expect(cols.queryInfoColumns.get('rowid')).toBeDefined();
-        expect(cols.queryInfoColumns.get('name')).toBeDefined();
-        expect(cols.queryInfoColumns.get('other')).toBeUndefined();
-        expect(cols.updateColumns.size).toBe(1);
-        expect(cols.updateColumns.get(0).get('fieldKey')).toBe('name');
-    });
-
-    test('with parent types', () => {
-        const cols = getLineageEditorUpdateColumns(MODEL, {
-            s1: List.of({
-                type: {
-                    lsid: 'a',
-                    rowId: 1,
-                    schema: 'exp',
-                    query: 'test1',
-                    entityDataType: SampleTypeDataType,
-                } as IEntityTypeOption,
-                ids: [],
-                value: '',
-            } as EntityChoice),
-            s2: List.of({
-                type: {
-                    lsid: 'b',
-                    rowId: 1,
-                    schema: 'exp.data',
-                    query: 'test2',
-                    entityDataType: DataClassDataType,
-                } as IEntityTypeOption,
-                ids: [],
-                value: '',
-            } as EntityChoice),
-            s3: List.of(),
-        });
-        expect(cols.queryInfoColumns.size).toBe(4);
-        expect(cols.queryInfoColumns.get('rowid')).toBeDefined();
-        expect(cols.queryInfoColumns.get('name')).toBeDefined();
-        expect(cols.queryInfoColumns.get('other')).toBeUndefined();
-        expect(cols.queryInfoColumns.get('MaterialInputs/Test1')).toBeDefined();
-        expect(cols.queryInfoColumns.get('DataInputs/Test2')).toBeDefined();
-        expect(cols.updateColumns.size).toBe(3);
-        expect(cols.updateColumns.get(0).get('fieldKey')).toBe('name');
-        expect(cols.updateColumns.get(1).get('fieldKey')).toBe('DataInputs/Test2');
-        expect(cols.updateColumns.get(2).get('fieldKey')).toBe('MaterialInputs/Test1');
-    });
-});
-
 describe('getSampleRowIdsFromSelection', () => {
     test('none', () => {
         expect(JSON.stringify(getRowIdsFromSelection(undefined))).toBe('[]');

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import classNames from 'classnames';
-import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode } from 'react';
-import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
+import { Button, Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
 import { List, Map, OrderedMap, Set } from 'immutable';
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import {
     addRows,
@@ -192,7 +192,16 @@ export interface BulkAddData {
     validationMsg?: ReactNode;
 }
 
+export interface BulkUpdateQueryInfoFormProps extends QueryInfoFormProps {
+    // the row ind to exclude for bulk update, row might be readonly or locked
+    excludeRowIdx?: number[];
+    onBulkUpdateFormDataChange?: (pendingBulkFormData?: any) => void;
+    onClickBulkUpdate?: (selected: Set<number>) => Promise<boolean>;
+    warning?: string;
+}
+
 export interface SharedEditableGridProps {
+    activeEditTab?: EditableGridTabs;
     addControlProps?: Partial<AddRowsControlProps>;
     allowAdd?: boolean;
     allowBulkAdd?: boolean;
@@ -204,8 +213,9 @@ export interface SharedEditableGridProps {
     bulkAddProps?: Partial<QueryInfoFormProps>;
     bulkAddText?: string;
     bulkRemoveText?: string;
-    bulkUpdateProps?: Partial<QueryInfoFormProps>;
+    bulkUpdateProps?: Partial<BulkUpdateQueryInfoFormProps>;
     bulkUpdateText?: string;
+    cancelBtnProps?: EditableGridBtnProps;
     columnMetadata?: Map<string, EditableColumnMetadata>;
     condensed?: boolean;
     containerFilter?: Query.ContainerFilter;
@@ -217,16 +227,33 @@ export interface SharedEditableGridProps {
     hideCountCol?: boolean;
     insertColumns?: List<QueryColumn>;
     isSubmitting?: boolean;
-    lockedRows?: List<any>; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
+    // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
+    lockedRows?: List<any>;
     maxRows?: number;
-    notDeletable?: List<any>; // list of key values that cannot be deleted.
+    // list of key values that cannot be deleted.
+    notDeletable?: List<any>;
+    primaryBtnProps?: EditableGridBtnProps;
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: List<string>;
-    readonlyRows?: List<any>; // list of key values for rows that are readonly.
+    // list of key values for rows that are readonly.
+    readonlyRows?: List<any>;
     removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
+    // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
+    showAsTab?: boolean;
+    showBulkTabOnLoad?: boolean;
     striped?: boolean;
+    tabBtnProps?: EditableGridBtnProps;
     updateColumns?: List<QueryColumn>;
+}
+
+export interface EditableGridBtnProps {
+    caption?: string;
+    cls?: string;
+    disabled?: boolean;
+    onClick?: (pendingBulkFormData?: OrderedMap<string, any>, editorModelChanges?: Partial<EditorModelProps>) => void;
+    placement?: PlacementType;
+    show?: boolean;
 }
 
 export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
@@ -256,11 +283,19 @@ export interface EditableGridProps extends SharedEditableGridProps {
 }
 
 export interface EditableGridState {
+    activeEditTab?: EditableGridTabs;
+    pendingBulkFormData?: any;
     selected: Set<number>;
     selectedState: GRID_CHECKBOX_OPTIONS;
     showBulkAdd: boolean;
     showBulkUpdate: boolean;
     showMask: boolean;
+}
+
+export enum EditableGridTabs {
+    BulkAdd = 'BulkAdd',
+    BulkUpdate = 'BulkUpdate',
+    Grid = 'Grid',
 }
 
 export class EditableGrid extends PureComponent<EditableGridProps, EditableGridState> {
@@ -304,12 +339,21 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             modifyCell: this.modifyCell,
             selectCell: this.selectCell,
         };
+
+        let selectionCells = Set<number>();
+        let selectedState = GRID_CHECKBOX_OPTIONS.NONE;
+        if (props.activeEditTab === EditableGridTabs.BulkUpdate) {
+            selectionCells = Set<number>(props.dataKeys.map((v, i) => i, Set<number>()));
+            selectedState = GRID_CHECKBOX_OPTIONS.ALL;
+        }
+
         this.state = {
-            selected: Set<number>(),
-            selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+            selected: selectionCells,
+            selectedState,
             showBulkAdd: false,
             showBulkUpdate: false,
             showMask: false,
+            activeEditTab: props.activeEditTab ? props.activeEditTab : EditableGridTabs.Grid,
         };
     }
 
@@ -931,11 +975,30 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     toggleBulkUpdate = (): void => {
-        this.setState(
-            state => ({ showBulkUpdate: !state.showBulkUpdate }),
-            // Issue 38420: Without this, the BulkUpdate button always retains focus after modal is shown
-            blurActiveElement
-        );
+        const { bulkUpdateProps } = this.props;
+        if (bulkUpdateProps?.onClickBulkUpdate) {
+            bulkUpdateProps
+                .onClickBulkUpdate(this.state.selected)
+                .then(canEdit => {
+                    // the selected rows might not be updatable, for examples, all selected are readonly
+                    if (!canEdit) return;
+
+                    this.setState(
+                        state => ({ showBulkUpdate: !state.showBulkUpdate }),
+                        // Issue 38420: Without this, the BulkUpdate button always retains focus after modal is shown
+                        blurActiveElement
+                    );
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        } else {
+            this.setState(
+                state => ({ showBulkUpdate: !state.showBulkUpdate }),
+                // Issue 38420: Without this, the BulkUpdate button always retains focus after modal is shown
+                blurActiveElement
+            );
+        }
     };
 
     getSelectedRowIndices = (): List<number> => {
@@ -1006,13 +1069,21 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return Promise.resolve();
     };
 
-    bulkUpdate = async (updatedData: OrderedMap<string, any>): Promise<void> => {
-        const { editorModel, queryInfo, onChange } = this.props;
+    bulkUpdate = async (updatedData: OrderedMap<string, any>): Promise<Partial<EditorModelProps>> => {
+        const { editorModel, queryInfo, onChange, bulkUpdateProps } = this.props;
+        if (!updatedData) return Promise.resolve(undefined);
+
         const selectedIndices = this.getSelectedRowIndices();
-        const editorModelChanges = await updateGridFromBulkForm(editorModel, queryInfo, updatedData, selectedIndices);
+        const editorModelChanges = await updateGridFromBulkForm(
+            editorModel,
+            queryInfo,
+            updatedData,
+            selectedIndices,
+            bulkUpdateProps?.excludeRowIdx
+        );
         onChange(editorModelChanges);
         // The result of this promise is used by toggleBulkUpdate, which doesn't expect anything to be passed
-        return Promise.resolve();
+        return Promise.resolve(editorModelChanges);
     };
 
     addRows = async (count: number): Promise<void> => {
@@ -1057,6 +1128,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             maxRows,
             editorModel,
             exportHandler,
+            showAsTab,
         } = this.props;
         const nounPlural = addControlProps?.nounPlural ?? 'rows';
         const showAddOnTop = allowAdd && this.getControlsPlacement() !== 'bottom';
@@ -1072,14 +1144,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             <div className="row QueryGrid-bottom-spacing">
                 {showAddOnTop && <div className="col-sm-3">{this.renderAddRowsControl('top')}</div>}
                 <div className={showAddOnTop ? 'col-sm-9' : 'col-sm-12'}>
-                    {allowBulkAdd && (
+                    {!showAsTab && allowBulkAdd && (
                         <span className="control-right">
                             <Button title={addTitle} disabled={!canAddRows} onClick={this.toggleBulkAdd}>
                                 {bulkAddText}
                             </Button>
                         </span>
                     )}
-                    {allowBulkUpdate && (
+                    {!showAsTab && allowBulkUpdate && (
                         <span className="control-right">
                             <Button className="control-right" disabled={invalidSel} onClick={this.toggleBulkUpdate}>
                                 {bulkUpdateText}
@@ -1146,6 +1218,120 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             .toList();
     }
 
+    onBulkUpdateFormDataChange = (pendingBulkFormData?: any): void => {
+        const { showAsTab, bulkUpdateProps } = this.props;
+
+        if (bulkUpdateProps?.onBulkUpdateFormDataChange)
+            bulkUpdateProps?.onBulkUpdateFormDataChange?.(pendingBulkFormData);
+
+        if (showAsTab) {
+            this.setState({
+                pendingBulkFormData,
+            });
+        }
+    };
+
+    onTabChange = (event: SyntheticEvent<TabContainer, Event>) => {
+        const { bulkUpdateProps } = this.props;
+        const { activeEditTab, pendingBulkFormData } = this.state;
+        const newTabKey: EditableGridTabs = event as any; // Crummy cast to make TS happy
+
+        if (newTabKey === EditableGridTabs.Grid && activeEditTab === EditableGridTabs.BulkUpdate) {
+            this.bulkUpdate(pendingBulkFormData).then(() => {
+                this.setState({
+                    pendingBulkFormData: undefined,
+                    activeEditTab: newTabKey,
+                });
+            });
+        } else if (newTabKey === EditableGridTabs.BulkUpdate && activeEditTab === EditableGridTabs.Grid) {
+            if (bulkUpdateProps?.onClickBulkUpdate) {
+                bulkUpdateProps
+                    .onClickBulkUpdate(this.state.selected)
+                    .then(canEdit => {
+                        if (!canEdit) return;
+
+                        this.setState({ activeEditTab: newTabKey });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            } else {
+                this.setState({ activeEditTab: newTabKey });
+            }
+        }
+    };
+
+    onSaveClick = () => {
+        const { primaryBtnProps, editorModel, maxRows } = this.props;
+        const { pendingBulkFormData } = this.state;
+
+        if (editorModel.rowCount > maxRows) {
+            // only bulk edit is supported
+            primaryBtnProps?.onClick?.(pendingBulkFormData);
+            this.setState({
+                pendingBulkFormData: undefined,
+            });
+            return;
+        }
+
+        this.bulkUpdate(pendingBulkFormData).then(updates => {
+            this.setState({
+                pendingBulkFormData: undefined,
+            });
+            primaryBtnProps?.onClick?.(undefined, updates); // send back the updates in case caller uses useState to update EditorModel, which is async without cb
+        });
+    };
+
+    onCancelClick = () => {
+        this.props.cancelBtnProps?.onClick?.();
+    };
+
+    renderTabButtons = () => {
+        const { primaryBtnProps, cancelBtnProps, tabBtnProps } = this.props;
+        if (!tabBtnProps?.show) return null;
+
+        return (
+            <div className={tabBtnProps.cls}>
+                <Button
+                    bsStyle="primary"
+                    bsClass={primaryBtnProps.cls}
+                    disabled={primaryBtnProps.disabled}
+                    onClick={this.onSaveClick}
+                >
+                    {primaryBtnProps.caption ?? 'Save'}
+                </Button>
+                <Button bsStyle="default" bsClass={cancelBtnProps.cls} onClick={this.onCancelClick}>
+                    {cancelBtnProps.caption ?? 'Cancel'}
+                </Button>
+            </div>
+        );
+    };
+
+    renderBulkUpdate = () => {
+        const { addControlProps, editorModel, bulkUpdateProps, data, dataKeys, queryInfo, showAsTab } = this.props;
+
+        return (
+            <BulkAddUpdateForm
+                data={data}
+                dataKeys={dataKeys}
+                editorModel={editorModel}
+                columnFilter={bulkUpdateProps?.columnFilter}
+                queryFilters={bulkUpdateProps?.queryFilters}
+                onCancel={this.toggleBulkUpdate}
+                onFormChangeWithData={showAsTab ? this.onBulkUpdateFormDataChange : undefined}
+                onHide={this.toggleBulkUpdate}
+                onSubmitForEdit={this.bulkUpdate}
+                onSuccess={this.toggleBulkUpdate}
+                pluralNoun={addControlProps.nounPlural}
+                queryInfo={queryInfo}
+                selectedRowIndexes={this.getSelectedRowIndices()}
+                singularNoun={addControlProps.nounSingular}
+                asModal={!showAsTab}
+                warning={bulkUpdateProps?.warning}
+            />
+        );
+    };
+
     render() {
         const {
             addControlProps,
@@ -1160,12 +1346,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             emptyGridMsg,
             queryInfo,
             striped,
+            allowBulkUpdate,
+            showAsTab,
+            tabBtnProps,
+            maxRows,
         } = this.props;
-        const { showBulkAdd, showBulkUpdate, showMask } = this.state;
+        const { showBulkAdd, showBulkUpdate, showMask, activeEditTab } = this.state;
         const wrapperClassName = classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask });
 
-        return (
-            <div>
+        const gridContent = (
+            <>
                 {this.renderTopControls()}
                 <div
                     className={wrapperClassName}
@@ -1188,24 +1378,53 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     />
                 </div>
                 {allowAdd && this.getControlsPlacement() !== 'top' && this.renderAddRowsControl('bottom')}
+            </>
+        );
+
+        const tabBtns = this.renderTabButtons();
+
+        if (showAsTab) {
+            const bulkDisabled = this.state.selected.size === 0;
+            const gridDisabled = editorModel.rowCount > maxRows;
+            return (
+                <>
+                    {tabBtnProps.placement === 'top' && <>{tabBtns}</>}
+                    <Tab.Container activeKey={activeEditTab} id="editable-grid-tabs" onSelect={this.onTabChange}>
+                        <div>
+                            <Nav bsStyle="tabs">
+                                {/* {allowBulkAdd && <NavItem eventKey={EditableGridTabs.BulkAdd}>Add Bulk</NavItem>} TODO tabbed bulk add not yet supported */}
+                                {allowBulkUpdate && (
+                                    <NavItem disabled={bulkDisabled} eventKey={EditableGridTabs.BulkUpdate}>
+                                        Edit in Bulk
+                                    </NavItem>
+                                )}
+                                <NavItem disabled={gridDisabled} eventKey={EditableGridTabs.Grid}>
+                                    Edit Individually
+                                </NavItem>
+                            </Nav>
+                            <Alert>{error}</Alert>
+                            <Tab.Content className="top-spacing">
+                                <Tab.Pane eventKey={EditableGridTabs.BulkAdd}>
+                                    {activeEditTab === EditableGridTabs.BulkAdd && this.renderBulkAdd()}
+                                </Tab.Pane>
+                                <Tab.Pane eventKey={EditableGridTabs.BulkUpdate}>
+                                    {activeEditTab === EditableGridTabs.BulkUpdate && this.renderBulkUpdate()}
+                                </Tab.Pane>
+                                <Tab.Pane eventKey={EditableGridTabs.Grid}>{gridContent}</Tab.Pane>
+                            </Tab.Content>
+                        </div>
+                    </Tab.Container>
+                    {tabBtnProps.placement === 'bottom' && <>{tabBtns}</>}
+                </>
+            );
+        }
+
+        return (
+            <div>
+                {gridContent}
                 {error && <Alert className="margin-top">{error}</Alert>}
                 {showBulkAdd && this.renderBulkAdd()}
-                {showBulkUpdate && (
-                    <BulkAddUpdateForm
-                        data={data}
-                        dataKeys={dataKeys}
-                        editorModel={editorModel}
-                        columnFilter={bulkUpdateProps?.columnFilter}
-                        onCancel={this.toggleBulkUpdate}
-                        onHide={this.toggleBulkUpdate}
-                        onSubmitForEdit={this.bulkUpdate}
-                        onSuccess={this.toggleBulkUpdate}
-                        pluralNoun={addControlProps.nounPlural}
-                        queryInfo={queryInfo}
-                        selectedRowIndexes={this.getSelectedRowIndices()}
-                        singularNoun={addControlProps.nounSingular}
-                    />
-                )}
+                {showBulkUpdate && this.renderBulkUpdate()}
             </div>
         );
     }

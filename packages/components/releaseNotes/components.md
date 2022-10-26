@@ -12,6 +12,27 @@ Components, models, actions, and utility functions for LabKey applications and p
   * remove Sample Comparison Report rendering and creation menu item
   * Issue 46554: App Sample Assay menu doesn't show any options if > 1000 samples selected
 
+### version 2.239.0
+*Released*: 25 October 2022
+* Freezer Management: Adding samples across terminal storage locations
+    * Support tabbed Bulk Edit and Editable Grid
+    * Exclude readonly cells from being updated by bulk update
+    * support queryFilters for select input fields in bulk update form
+
+### version 2.238.0
+*Released*: 25 October 2022
+* Update `QueryModel.getRequestColumnsString()` to support inclusion of `updateColumns` in when building a request columns string.
+* Refactor and privatize usage of `getLineageEditorUpdateColumns` by making this a part of `LineageEditableGridLoaderFromSelection` initialization.
+* Factor out `initEditableGridModel` (singular) from `initEditableGridModels` (multiple). This allowed for consolidated usage for `EntityInsertPanel`.
+* Deprecate `loadEditorModelData` in favor of `initEditableGridModel`.
+* Introduce `EditorMode` for `IEditableGridLoader` to make it more clear what purpose this loader is used for and make it easier to interpolate which columns, etc should be utilized.
+* Make prop pass-through on `DetailPanelWithModel` more succinct. Support all properties.
+* Fix hook dependencies in `SamplesTabbedGridPanel`.
+
+### version 2.237.1
+*Released*: 25 October 2022
+* Update logic for `isAssayQCEnabled` check.
+
 ### version 2.237.0
 *Released*: 25 October 2022
 * App Sample Type Consistency for Sample Type Designer

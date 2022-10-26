@@ -15,14 +15,13 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { EditorModel, EditorModelProps } from '../../models';
+import { EditorModel, EditorModelProps, IEditableGridLoader } from '../../models';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { Alert } from '../base/Alert';
 
 import { EditableGridPanel } from './EditableGridPanel';
-import { EditableGridLoaderFromSelection } from './EditableGridLoaderFromSelection';
 import { SharedEditableGridPanelProps } from './EditableGrid';
 import {
     applyEditableGridChangesToModels,
@@ -51,7 +50,7 @@ export interface EditableGridPanelForUpdateWithLineageProps
     getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
     idField: string;
     includedTabs: UpdateGridTab[];
-    loaders: EditableGridLoaderFromSelection[];
+    loaders: IEditableGridLoader[];
     onCancel: () => void;
     onComplete: () => void;
     parentDataTypes: List<EntityDataType>;
@@ -163,7 +162,7 @@ export const EditableGridPanelForUpdateWithLineage: FC<EditableGridPanelForUpdat
             );
             setIsDirty?.(true);
         },
-        []
+        [setIsDirty]
     );
 
     const onSubmit = useCallback((): void => {

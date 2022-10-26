@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.237.0-fb-assayResultsForSamples.2",
+  "version": "2.239.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

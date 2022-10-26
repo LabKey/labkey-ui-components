@@ -16,15 +16,17 @@ import { updateRows } from '../internal/query/api';
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 import { SampleTypeDataType } from '../internal/components/entities/constants';
 import { resolveErrorMessage } from '../internal/util/messaging';
-import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 
 import { ALIQUOT_FILTER_MODE, IS_ALIQUOT_COL } from '../internal/components/samples/constants';
 import { SampleGridButtonProps } from '../internal/components/samples/models';
-import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
-import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
+
 import { PrintLabelsModal } from '../internal/components/labels/PrintLabelsModal';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { useLabelPrintingContext } from '../internal/components/labels/LabelPrintingContextProvider';
+
+import { SamplesEditableGrid, SamplesEditableGridProps } from './SamplesEditableGrid';
+import { SamplesBulkUpdateForm } from './SamplesBulkUpdateForm';
+import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 
 const EXPORT_TYPES_WITH_LABEL = Set.of(EXPORT_TYPES.CSV, EXPORT_TYPES.EXCEL, EXPORT_TYPES.TSV, EXPORT_TYPES.LABEL);
 
@@ -47,10 +49,10 @@ interface Props extends InjectedQueryModels {
     sampleAliquotType?: ALIQUOT_FILTER_MODE;
     samplesEditableGridProps?: Partial<SamplesEditableGridProps>;
     setIsDirty?: (isDirty: boolean) => void;
+    showLabelOption?: boolean;
     tabbedGridPanelProps?: Partial<TabbedGridPanelProps>;
     user: User;
     withTitle?: boolean;
-    showLabelOption?: boolean;
 }
 
 export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
@@ -83,10 +85,13 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         return modelId ? [modelId] : Object.keys(queryModels);
     }, [modelId, queryModels]);
     const [activeTabId, setActiveTabId] = useState<string>(initialTabId ?? tabs[0]);
-    const onTabSelect = useCallback((tab: string) => {
-        setActiveTabId(tab);
-        onSampleTabSelect?.(tab);
-    }, []);
+    const onTabSelect = useCallback(
+        (tab: string) => {
+            setActiveTabId(tab);
+            onSampleTabSelect?.(tab);
+        },
+        [onSampleTabSelect]
+    );
     const activeModel = useMemo(() => queryModels[activeTabId], [activeTabId, queryModels]);
     const hasSelections = activeModel?.hasSelections;
     const selections = activeModel?.selections;
@@ -102,7 +107,10 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
     const [selectionData, setSelectionData] = useState<Map<string, any>>();
     const [editableGridUpdateData, setEditableGridUpdateData] = useState<OrderedMap<string, any>>();
     // This prevents type error requiring otherwise unused properties
-    const editableGridProps = useMemo(() => samplesEditableGridProps as SamplesEditableGridProps, [samplesEditableGridProps]);
+    const editableGridProps = useMemo(
+        () => samplesEditableGridProps as SamplesEditableGridProps,
+        [samplesEditableGridProps]
+    );
 
     const [printDialogModel, setPrintDialogModel] = useState<QueryModel>();
     const { canPrintLabels, printServiceUrl, labelTemplate } = useLabelPrintingContext();
@@ -156,7 +164,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             dismissNotifications();
             setShowBulkUpdate(true);
         }
-    }, [hasSelections]);
+    }, [dismissNotifications, hasSelections]);
 
     const onBulkUpdateError = useCallback(
         (message: string) => {
@@ -183,7 +191,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         setIsEditing(false);
         setShowBulkUpdate(false);
         setIsDirty?.(false);
-    }, []);
+    }, [setIsDirty]);
 
     const toggleEditWithGridUpdate = useCallback(() => {
         if (isEditing) {
@@ -192,7 +200,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             dismissNotifications();
             setIsEditing(true);
         }
-    }, [isEditing, hasValidMaxSelection, resetState]);
+    }, [isEditing, hasValidMaxSelection, resetState, dismissNotifications]);
 
     const onGridEditComplete = useCallback(() => {
         afterSampleActionComplete?.();
@@ -206,7 +214,7 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
             afterSampleActionComplete?.(hasDelete);
             resetState();
         },
-        [actions, activeModelId, afterSampleActionComplete, resetState]
+        [actions, activeModelId, afterSampleActionComplete, dismissNotifications, resetState]
     );
 
     const afterSampleDelete = useCallback(
@@ -260,26 +268,32 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
         [createNotification, dismissNotifications, getSampleAuditBehaviorType]
     );
 
-    const onPrintLabel = useCallback((modelId: string): void => {
-        const _model = queryModels[modelId] ?? activeModel;
-        setPrintDialogModel(_model);
-    },[queryModels, activeModel]);
+    const onPrintLabel = useCallback(
+        (modelId: string): void => {
+            const _model = queryModels[modelId] ?? activeModel;
+            setPrintDialogModel(_model);
+        },
+        [queryModels, activeModel]
+    );
 
     const onLabelExport = { [EXPORT_TYPES.LABEL]: onPrintLabel };
 
-    const onCancelPrint = useCallback(():void => {
+    const onCancelPrint = useCallback((): void => {
         setPrintDialogModel(undefined);
     }, []);
 
-    const afterPrint = useCallback((numSamples: number, numLabels: number): void => {
-        setPrintDialogModel(undefined);
-        createNotification(
-            'Successfully printed ' +
-            numLabels +
-            (numSamples === 0 ? ' blank ' : '') +
-            (numLabels > 1 ? ' labels.' : ' label.')
-        );
-    }, [createNotification]);
+    const afterPrint = useCallback(
+        (numSamples: number, numLabels: number): void => {
+            setPrintDialogModel(undefined);
+            createNotification(
+                'Successfully printed ' +
+                    numLabels +
+                    (numSamples === 0 ? ' blank ' : '') +
+                    (numLabels > 1 ? ' labels.' : ' label.')
+            );
+        },
+        [createNotification]
+    );
 
     const _gridButtonProps = {
         ...gridButtonProps,
@@ -314,7 +328,6 @@ export const SamplesTabbedGridPanel: FC<Props> = memo(props => {
                     sampleSet={activeModel.schemaQuery.queryName}
                     selection={selection}
                     selectionData={selectionData}
-                    user={user}
                 />
             ) : (
                 <TabbedGridPanel

@@ -5,12 +5,9 @@ import { getUniqueIdColumnMetadata } from '../internal/components/entities/utils
 
 import {
     EditableGridPanelForUpdateWithLineage,
+    EditableGridPanelForUpdateWithLineageProps,
     UpdateGridTab,
 } from '../internal/components/editable/EditableGridPanelForUpdateWithLineage';
-
-import { EditableGridLoaderFromSelection } from '../internal/components/editable/EditableGridLoaderFromSelection';
-import { QueryModel } from '../public/QueryModel/QueryModel';
-import { EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
 
 import { QueryColumn } from '../public/QueryColumn';
 import { EditableColumnMetadata } from '../internal/components/editable/EditableGrid';
@@ -21,37 +18,33 @@ import { SAMPLE_STATE_COLUMN_NAME } from '../internal/components/samples/constan
 import { GroupedSampleFields } from '../internal/components/samples/models';
 import { SampleStatusLegend } from '../internal/components/samples/SampleStatusLegend';
 
-interface Props {
-    idField: string;
-    includedTabs: UpdateGridTab[];
-    loaders: EditableGridLoaderFromSelection[];
-    onCancel: () => any;
-    onComplete: () => any;
-    getIsDirty?: () => boolean;
-    setIsDirty?: (isDirty: boolean) => void;
-    pluralNoun?: string;
-    queryModel: QueryModel;
-    readOnlyColumns?: List<string>;
-    updateAllTabRows: (updateData: any[]) => Promise<any>;
-    singularNoun?: string;
-    selectionData?: Map<string, any>;
+const extraExportColumns = [
+    {
+        fieldKey: QueryColumn.ALIQUOTED_FROM_LSID,
+        caption: QueryColumn.ALIQUOTED_FROM,
+    },
+];
 
-    // passed through from SampleEditableGrid
-    aliquots: any[];
-    combineParentTypes?: boolean;
+interface Props
+    extends Omit<
+        EditableGridPanelForUpdateWithLineageProps,
+        | 'extraExportColumns'
+        | 'getColumnMetadata'
+        | 'getParentTypeWarning'
+        | 'getReadOnlyRows'
+        | 'getTabHeader'
+        | 'getTabTitle'
+        | 'targetEntityDataType'
+    > {
+    aliquots: any[]; // passed through from SampleEditableGrid
     noStorageSamples: any[];
-    parentDataTypes: List<EntityDataType>;
-    parentTypeOptions: Map<string, List<IEntityTypeOption>>;
+    readOnlyColumns?: List<string>;
     sampleTypeDomainFields: GroupedSampleFields;
-
-    getUpdateColumns?: (tabId?: number) => List<QueryColumn>;
-    exportColFilter?: (col: QueryColumn) => boolean;
 }
 
 export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
     hasAliquots = (): boolean => {
-        const { aliquots } = this.props;
-        return aliquots && aliquots.length > 0;
+        return this.props.aliquots?.length > 0;
     };
 
     getCurrentTab = (tabInd: number): number => {
@@ -116,17 +109,13 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
         const allAliquots = this.hasAliquots() && aliquots.length === queryModel.selections.size;
         sampleTypeDomainFields.aliquotFields.forEach(field => {
             columnMetadata = columnMetadata.set(field, {
-                isReadOnlyCell: key => {
-                    return aliquots.indexOf(key) === -1;
-                },
+                isReadOnlyCell: key => aliquots.indexOf(key) === -1,
             });
         });
 
         sampleTypeDomainFields.metaFields.forEach(field => {
             columnMetadata = columnMetadata.set(field, {
-                isReadOnlyCell: key => {
-                    return allAliquots || aliquots.indexOf(key) > -1;
-                },
+                isReadOnlyCell: key => allAliquots || aliquots.indexOf(key) > -1,
             });
         });
 
@@ -134,26 +123,21 @@ export class SamplesEditableGridPanelForUpdate extends React.Component<Props> {
     };
 
     render() {
-        const { ...editableGridProps } = this.props;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { aliquots, noStorageSamples, readOnlyColumns, sampleTypeDomainFields, ...editableGridProps } =
+            this.props;
 
         return (
-            <>
-                <EditableGridPanelForUpdateWithLineage
-                    {...editableGridProps}
-                    getColumnMetadata={this.getSamplesColumnMetadata}
-                    getTabTitle={this.getTabTitle}
-                    getReadOnlyRows={this.getReadOnlyRows}
-                    getTabHeader={this.getTabHeader}
-                    targetEntityDataType={SampleTypeDataType}
-                    getParentTypeWarning={this.getParentTypeWarning}
-                    extraExportColumns={[
-                        {
-                            fieldKey: QueryColumn.ALIQUOTED_FROM_LSID,
-                            caption: QueryColumn.ALIQUOTED_FROM,
-                        },
-                    ]}
-                />
-            </>
+            <EditableGridPanelForUpdateWithLineage
+                {...editableGridProps}
+                extraExportColumns={extraExportColumns}
+                getColumnMetadata={this.getSamplesColumnMetadata}
+                getParentTypeWarning={this.getParentTypeWarning}
+                getReadOnlyRows={this.getReadOnlyRows}
+                getTabHeader={this.getTabHeader}
+                getTabTitle={this.getTabTitle}
+                targetEntityDataType={SampleTypeDataType}
+            />
         );
     }
 }

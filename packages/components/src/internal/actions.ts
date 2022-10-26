@@ -22,7 +22,7 @@ import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
 
 import { QueryInfo } from '../public/QueryInfo';
 
-import { invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
+import { getContainerFilter, invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
 import { Location } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
@@ -47,7 +47,14 @@ import {
 import { DataViewInfo } from './DataViewInfo';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 
-import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from './util/utils';
+import {
+    caseInsensitive,
+    handleRequestFailure,
+    isFloat,
+    isInteger,
+    parseCsvString,
+    parseScientificInt,
+} from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 import { hasModule } from './app/utils';
 import { buildURL } from './url/AppURL';
@@ -64,7 +71,7 @@ export function selectAll(
     queryName: string,
     filterList: List<Filter.IFilter>,
     containerPath?: string,
-    queryParameters?: { [key: string]: any }
+    queryParameters?: Record<string, any>
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -76,13 +83,9 @@ export function selectAll(
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper(
-                response => {
-                    console.error('Problem in selecting all items in the grid', key, schemaName, queryName, response);
-                    reject(response);
-                },
-                this,
-                true
+            failure: handleRequestFailure(
+                reject,
+                `Problem in selecting all items in the grid ${key} ${schemaName} ${queryName}`
             ),
         });
     });
@@ -123,6 +126,8 @@ export async function getLookupValueDescriptors(
 
 export interface ExportOptions {
     columns?: string;
+    containerFilter?: Query.ContainerFilter;
+    containerPath?: string;
     filters?: List<Filter.IFilter>;
     selectionKey?: string;
     showRows?: 'ALL' | 'SELECTED' | 'UNSELECTED';
@@ -139,7 +144,6 @@ export function getExportParams(
         schemaName: schemaQuery.schemaName,
         'query.queryName': schemaQuery.queryName,
         'query.showRows': options?.showRows ? [options.showRows] : ['ALL'],
-        'query.selectionKey': options?.selectionKey ? options.selectionKey : undefined,
     };
 
     if (advancedOptions) params = { ...params, ...advancedOptions };
@@ -148,7 +152,7 @@ export function getExportParams(
         params['query.viewName'] = schemaQuery.viewName;
     }
 
-    // 32052: Apply default headers (CRSF, etc)
+    // Issue 32052: Apply default headers (CRSF, etc)
     const { defaultHeaders } = getServerContext();
     for (const i in defaultHeaders) {
         if (defaultHeaders.hasOwnProperty(i)) {
@@ -157,19 +161,19 @@ export function getExportParams(
     }
 
     if (type === EXPORT_TYPES.CSV) {
-        params['delim'] = 'COMMA';
+        params.delim = 'COMMA';
     }
 
     if (options) {
         if (options.columns) {
             let columnsString = options.columns;
-            if (advancedOptions && advancedOptions['includeColumn'])
-                columnsString = columnsString + ',' + advancedOptions['includeColumn'].join(',');
-            if (advancedOptions && advancedOptions['excludeColumn']) {
-                const toExclude = advancedOptions['excludeColumn'];
+            if (advancedOptions?.includeColumn)
+                columnsString = columnsString + ',' + advancedOptions.includeColumn.join(',');
+            if (advancedOptions?.excludeColumn) {
+                const toExclude = advancedOptions.excludeColumn;
                 const columns = [];
                 columnsString.split(',').forEach(col => {
-                    if (toExclude.indexOf(col) == -1 && toExclude.indexOf(col.toLowerCase()) == -1) {
+                    if (toExclude.indexOf(col) === -1 && toExclude.indexOf(col.toLowerCase()) === -1) {
                         columns.push(col);
                     }
                 });
@@ -179,13 +183,23 @@ export function getExportParams(
             }
         }
 
-        if (options.filters) {
-            options.filters.forEach(f => {
-                if (f) {
-                    if (!params[f.getURLParameterName()]) params[f.getURLParameterName()] = [];
-                    params[f.getURLParameterName()].push(f.getURLParameterValue());
+        const containerFilter = options.containerFilter ?? getContainerFilter(options.containerPath);
+        if (containerFilter) {
+            params['query.containerFilterName'] = containerFilter;
+        }
+
+        options.filters?.forEach(f => {
+            if (f) {
+                const name = f.getURLParameterName();
+                if (!params[name]) {
+                    params[name] = [];
                 }
-            });
+                params[name].push(f.getURLParameterValue());
+            }
+        });
+
+        if (options.selectionKey !== undefined) {
+            params['query.selectionKey'] = options.selectionKey;
         }
 
         if (options.sorts) {
@@ -216,7 +230,7 @@ export function exportTabsXlsx(filename: string, queryForms: SchemaQuery[]): Pro
     });
 }
 
-export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>): void {
+export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>, containerPath?: string): void {
     const form = new FormData();
     Object.keys(exportParams).forEach(key => {
         const value = exportParams[key];
@@ -250,8 +264,12 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
         throw new Error('Unknown export type: ' + type);
     }
 
-    const url = buildURL(controller, action, undefined, { returnUrl: false });
-    Ajax.request({ url, method: 'POST', form, downloadFile: true });
+    Ajax.request({
+        url: buildURL(controller, action, undefined, { container: containerPath, returnUrl: false }),
+        method: 'POST',
+        form,
+        downloadFile: true,
+    });
 }
 
 interface IGetSelectedResponse {
@@ -263,8 +281,8 @@ function getFilteredQueryParams(
     schemaName: string,
     queryName: string,
     filterList: List<Filter.IFilter>,
-    queryParameters?: { [key: string]: any }
-): any {
+    queryParameters?: Record<string, any>
+): Record<string, any> {
     if (schemaName && queryName && filterList && !filterList.isEmpty()) {
         return getQueryParams(key, schemaName, queryName, filterList, queryParameters);
     } else {
@@ -279,8 +297,8 @@ function getQueryParams(
     schemaName: string,
     queryName: string,
     filterList: List<Filter.IFilter>,
-    queryParameters?: { [key: string]: any }
-): any {
+    queryParameters?: Record<string, any>
+): Record<string, any> {
     const filters = filterList.reduce((prev, next) => {
         return Object.assign(prev, { [next.getURLParameterName()]: next.getURLParameterValue() });
     }, {});
@@ -318,7 +336,7 @@ export function getSelected(
     queryName?: string,
     filterList?: List<Filter.IFilter>,
     containerPath?: string,
-    queryParameters?: { [key: string]: any }
+    queryParameters?: Record<string, any>
 ): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -330,13 +348,7 @@ export function getSelected(
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper(
-                response => {
-                    reject(response);
-                },
-                this,
-                true
-            ),
+            failure: handleRequestFailure(reject, 'Failed to get selected.'),
         });
     });
 }
@@ -363,14 +375,7 @@ export function clearSelected(
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper(
-                response => {
-                    console.error('Problem clearing the selection ', key, schemaName, queryName, response);
-                    reject(response);
-                },
-                this,
-                true
-            ),
+            failure: handleRequestFailure(reject, `Problem clearing the selection ${key} ${schemaName} ${queryName}`),
         });
     });
 }
@@ -392,12 +397,11 @@ export function setSelected(
     checked: boolean,
     ids: string[] | string,
     containerPath?: string,
-
     validateIds?: boolean,
     schemaName?: string,
     queryName?: string,
     filterList?: List<Filter.IFilter>,
-    queryParameters?: { [key: string]: any }
+    queryParameters?: Record<string, any>
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -418,13 +422,7 @@ export function setSelected(
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper(
-                response => {
-                    reject(response);
-                },
-                this,
-                true
-            ),
+            failure: handleRequestFailure(reject, 'Failed to set selection.'),
         });
     });
 }
@@ -449,13 +447,7 @@ export function replaceSelected(key: string, ids: string[] | string, containerPa
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper(
-                response => {
-                    reject(response);
-                },
-                this,
-                true
-            ),
+            failure: handleRequestFailure(reject, 'Failed to replace selection.'),
         });
     });
 }
@@ -484,13 +476,7 @@ export function setSnapshotSelections(
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper(
-                response => {
-                    reject(response);
-                },
-                this,
-                true
-            ),
+            failure: handleRequestFailure(reject, 'Failed to set snapshot selection.'),
         });
     });
 }
@@ -513,13 +499,7 @@ export function getSnapshotSelections(key: string, containerPath?: string): Prom
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper(
-                response => {
-                    reject(response);
-                },
-                this,
-                true
-            ),
+            failure: handleRequestFailure(reject, 'Failed to get snapshot selection.'),
         });
     });
 }
@@ -571,9 +551,7 @@ export function getSelection(location: any, schemaName?: string, queryName?: str
                 key,
                 schemaQuery.schemaName,
                 schemaQuery.queryName,
-                getFilterListFromQuery(location),
-                undefined,
-                undefined
+                getFilterListFromQuery(location)
             ).then(response => {
                 resolve({
                     resolved: true,
@@ -596,19 +574,16 @@ export function getSelectedData(
     selections?: string[],
     columns?: string,
     sorts?: string,
-    queryParameters?: { [key: string]: any },
+    queryParameters?: Record<string, any>,
     viewName?: string,
     keyColumn = 'RowId'
 ): Promise<IGridResponse> {
-    const filterArray = [];
-    filterArray.push(Filter.create(keyColumn, selections, Filter.Types.IN));
-
     return new Promise((resolve, reject) =>
         selectRowsDeprecated({
             schemaName,
             queryName,
             viewName,
-            filterArray,
+            filterArray: [Filter.create(keyColumn, selections, Filter.Types.IN)],
             parameters: queryParameters,
             sort: sorts,
             columns,
@@ -678,13 +653,7 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
                     });
                 }
             }),
-            failure: Utils.getCallbackWrapper(
-                error => {
-                    reject(error);
-                },
-                this,
-                true
-            ),
+            failure: handleRequestFailure(reject),
         });
     });
 }

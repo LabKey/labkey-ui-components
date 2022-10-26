@@ -11,11 +11,10 @@ import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
 
 interface ExportMenuProps {
-    // pageSizes is expected to be sorted (ascending)
+    advancedOptions?: Record<string, any>;
     model: QueryModel;
-    advancedOptions?: { [key: string]: any };
+    onExport?: Record<string, (modelId?: string) => void>;
     supportedTypes?: Set<EXPORT_TYPES>;
-    onExport?: { [key: string]: (modelId?: string) => any };
 }
 
 export interface ExportOption {
@@ -54,7 +53,7 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
                 exportHandler(option);
             }
         },
-        [exportHandler, onExport]
+        [exportHandler, id, onExport]
     );
 
     return (
@@ -107,11 +106,11 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
     export = (option: ExportOption): void => {
         const { model, advancedOptions, onExport } = this.props;
         const { type } = option;
-        const exportParams = getQueryModelExportParams(model, type, advancedOptions);
-        if (onExport && onExport[type]) {
+
+        if (onExport?.[type]) {
             onExport[type](model.id);
         } else {
-            exportRows(type, exportParams);
+            exportRows(type, getQueryModelExportParams(model, type, advancedOptions), model.containerPath);
         }
     };
 

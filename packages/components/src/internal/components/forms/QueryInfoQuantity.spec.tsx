@@ -80,7 +80,7 @@ describe('<QueryInfoQuantity>', () => {
         const inputs = wrapper.find({ type: 'radio' });
         expect(inputs).toHaveLength(2);
         expect(wrapper.find('.control-label')).toHaveLength(1);
-        expect(wrapper.find('.control-label').text()).toBe('Derivatives per parent *');
+        expect(wrapper.find('.control-label').text()).toBe('Derivatives Per Parent *');
         wrapper.unmount();
     });
 });

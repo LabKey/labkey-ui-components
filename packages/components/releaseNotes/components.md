@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 46378: Update labeling for aliquot fields
+* Use title casing more consistently
+* Issue 46553: Use Details view when getting data for original parent panel to avoid customized default view
+
 ### version 2.239.0
 *Released*: 25 October 2022
 * Freezer Management: Adding samples across terminal storage locations

@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version TBD
-*Released*: TBD October 2022
+### version 6.3.2
+*Released*: 26 October 2022
 * webpack alias fix for `npm run start`
 
 ### version 6.3.1

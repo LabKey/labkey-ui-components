@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD October 2022
+### version 2.241.0
+*Released*: 26 October 2022
 * Assay Results for Selected Samples
   * refactor getSelectedSampleIdsFromSelectionKey() and getURLParamsForSampleSelectionKey() from workflow package to be used in multiple app cases
   * refactor getSamplesAssayGridQueryConfigs() from SampleAssayDetails component to be reused in AssayResultsForSamplesPage

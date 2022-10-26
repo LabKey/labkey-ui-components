@@ -218,8 +218,13 @@ export function getURLParamsForSampleSelectionKey(
 
         if (!ignoreFilter) {
             model.filters.forEach(filter => {
+                const filterURLSuffix = filter.getFilterType().getURLSuffix();
                 // We don't need the picklist IN clause here since we're dealing with the samples selected in the grid
-                if (filter.getFilterType().getURLSuffix() !== PICKLIST_SAMPLES_FILTER.getURLSuffix()) {
+                const isPicklistFilterType = filterURLSuffix === PICKLIST_SAMPLES_FILTER.getURLSuffix();
+                // and we don't need the LSID LineageOf clause either
+                const isLineageOfFilterType = filterURLSuffix === Filter.Types.EXP_LINEAGE_OF.getURLSuffix();
+
+                if (!isPicklistFilterType && !isLineageOfFilterType) {
                     params[filter.getURLParameterName()] = filter.getURLParameterValue();
                 }
             });

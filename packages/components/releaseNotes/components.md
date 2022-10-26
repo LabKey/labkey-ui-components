@@ -12,6 +12,16 @@ Components, models, actions, and utility functions for LabKey applications and p
   * remove Sample Comparison Report rendering and creation menu item
   * Issue 46554: App Sample Assay menu doesn't show any options if > 1000 samples selected
 
+### version 2.240.0
+*Released*: 26 October 2022
+* Updates for Sample Type consistency
+  * Limit selection for pooling only based on max parents per sample.
+  * Consolidate from LKB `SampleCreateMenuItem` and LKSM `CreateSamplesSubMenu` into a common `CreateSamplesMenuItem`
+  * Port LKB `Samples/Pages/Header.tsx` and LKSM `SampleHeader` into single `SampleHeader` implementation
+  * Remove Parsers.splitCamelCase for setting QueryInfo.queryLabel and schemaLabel.
+* Issue 46568: Update `SamplesTabbedGridPanel` to assure we have a model before de-referencing.
+* Fix AssayImportSubMenu when checking cross-folder data from picklists
+
 ### version 2.239.0
 *Released*: 25 October 2022
 * Freezer Management: Adding samples across terminal storage locations

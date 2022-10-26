@@ -388,6 +388,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     const [queryConfigs, setQueryConfigs] = useState<QueryConfigMap>();
 
     const loadingDefinitions = isLoading(assayModel.definitionsLoadingState);
+    const loadingAliquots = showAliquotViewSelector && !isSourceSampleAssayGrid && !aliquotRows;
 
     const onSampleAliquotTypeChange = useCallback(type => {
         setActiveSampleAliquotType(type);
@@ -444,7 +445,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     }, [sampleModel]);
 
     useEffect(() => {
-        if (loadingDefinitions) {
+        if (loadingDefinitions || loadingAliquots) {
             return;
         }
 
@@ -474,6 +475,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
     }, [
         assayModel,
         loadingDefinitions,
+        loadingAliquots,
         sampleModel,
         sampleId,
         sampleRows,
@@ -486,11 +488,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         createNotification,
     ]);
 
-    if (
-        loadingDefinitions ||
-        queryConfigs === undefined ||
-        (showAliquotViewSelector && !isSourceSampleAssayGrid && !aliquotRows)
-    ) {
+    if (loadingDefinitions || loadingAliquots || queryConfigs === undefined) {
         return (
             <AssayResultPanel>
                 <LoadingSpinner />

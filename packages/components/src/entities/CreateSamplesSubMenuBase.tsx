@@ -98,10 +98,10 @@ export const CreateSamplesSubMenuBase: FC<CreateSamplesSubMenuProps> = memo(prop
         disabledMsg = `Select two or more ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'}.`;
     } else if (selectedQuantity === 0) {
         disabledMsg = `Select one or more ${isSamplesSchema(schemaQuery) ? 'samples' : 'items'}.`;
-    } else if (selectedQuantity > maxParentPerSample) {
+    } else if (selectedType === SampleCreationType.PooledSamples && selectedQuantity > maxParentPerSample) {
         disabledMsg = `At most ${maxParentPerSample} ${
             isSamplesSchema(schemaQuery) ? 'samples' : 'items'
-        } can be selected`;
+        } can be selected for pooling`;
     }
 
     const useOnClick = parentKey !== undefined || (parentQueryModel && selectedQuantity > 0 && selectingSampleParents);

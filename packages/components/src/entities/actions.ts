@@ -1,13 +1,15 @@
 import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { loadQueriesFromTable, selectRowsDeprecated } from '../internal/query/api';
+import { invalidateQueryDetailsCache, loadQueriesFromTable, selectRowsDeprecated } from '../internal/query/api';
 import { SCHEMAS } from '../internal/schemas';
 import { resolveErrorMessage } from '../internal/util/messaging';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from '../internal/components/entities/models';
 import { getParentTypeDataForLineage } from '../internal/components/samples/actions';
 import { getInitialParentChoices } from '../internal/components/entities/utils';
 import { QueryInfo } from '../public/QueryInfo';
+import { invalidateLineageResults } from '../internal/components/lineage/actions';
+import { SchemaQuery } from '../public/SchemaQuery';
 
 import { filterMediaSampleTypes } from './utils';
 
@@ -105,3 +107,16 @@ export const loadSampleTypes = (includeMedia: boolean): Promise<QueryInfo[]> =>
         Query.containerFilter.currentPlusProjectAndShared,
         filterMediaSampleTypes(includeMedia)
     );
+
+export function onSampleChange() {
+    onSampleTypeChange();
+}
+
+export function onSampleTypeChange() {
+    invalidateLineageResults();
+}
+
+export function onSampleTypeDesignChange(schemaQuery: SchemaQuery) {
+    invalidateQueryDetailsCache(schemaQuery);
+    invalidateLineageResults();
+}

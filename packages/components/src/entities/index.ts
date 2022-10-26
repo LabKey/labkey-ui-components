@@ -18,6 +18,7 @@ import { SamplesAddButton } from './SamplesAddButton';
 import { SampleAssayDetail } from './SampleAssayDetail';
 import { SampleDetailEditing } from './SampleDetailEditing';
 import { SampleLineageGraph } from './SampleLineageGraph';
+import { SampleHeader } from './SampleHeader';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
 import { SamplesDeriveButtonBase } from './SamplesDeriveButtonBase';
 import { SamplesEditButton } from './SamplesEditButton';
@@ -48,6 +49,7 @@ import { SampleTypePage } from './SampleTypePage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
 import { SamplesResolver } from './SamplesResolver';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
+import { onSampleChange, onSampleTypeChange, onSampleTypeDesignChange } from './actions';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 
@@ -65,6 +67,9 @@ export {
     getSampleWizardURL,
     isFindByIdsSchema,
     loadSampleTypes,
+    onSampleChange,
+    onSampleTypeChange,
+    onSampleTypeDesignChange,
     useSampleTypeAppContext,
     AssayImportSubMenuItem,
     CreateSamplesSubMenu,
@@ -91,6 +96,7 @@ export {
     SampleCreationTypeModal,
     SampleDetailEditing,
     SampleFinderSection,
+    SampleHeader,
     SampleIndexNav,
     SampleLineageGraph,
     SamplesResolver,

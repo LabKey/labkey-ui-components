@@ -443,6 +443,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     handleSort={handleSort}
                     isSortAsc={isSortAsc}
                     isSortDesc={isSortDesc}
+                    model={model}
                     open={open}
                     onEditTitleClicked={editTitle}
                     queryColumn={queryColumn}

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.241.1
+*Released*: 26 October 2022
+* Update `ExportOptions` to include optional `containerFilter` and `containerPath` properties.
+* Fallback to `getContainerFilter()` when determining the container filter for export.
+
 ### version 2.241.0
 *Released*: 26 October 2022
 * Assay Results for Selected Samples

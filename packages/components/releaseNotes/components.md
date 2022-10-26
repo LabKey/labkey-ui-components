@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Port LKB `Samples/Pages/Header.tsx` and LKSM `SampleHeader` into single `SampleHeader` implementation
   * Remove Parsers.splitCamelCase for setting QueryInfo.queryLabel and schemaLabel.
 * Issue 46568: Update `SamplesTabbedGridPanel` to assure we have a model before de-referencing.
+* Fix AssayImportSubMenu when checking cross-folder data from picklists
 
 ### version 2.239.0
 *Released*: 25 October 2022

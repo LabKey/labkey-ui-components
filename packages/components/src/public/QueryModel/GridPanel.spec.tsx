@@ -149,15 +149,12 @@ describe('GridPanel', () => {
         });
         wrapper.setProps({ hideEmptyChartMenu: false, model });
 
-        // Chart menu should be disabled if no charts are present and showSampleComparisonReports is false.
+        // Chart menu should be disabled if no charts are present
         expectChartMenu(wrapper, true);
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).first().text()).toEqual('1 - 20 of 661');
         expect(wrapper.find(PAGINATION_SELECTOR).first().exists()).toEqual(true);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(FILTER_STATUS_SELECTOR).exists()).toEqual(true);
-
-        wrapper.setProps({ showSampleComparisonReports: true });
-        expectChartMenu(wrapper, false);
 
         // Previous, Page Menu, Next buttons should be present.
         let paginationButtons = wrapper.find(PAGINATION_SELECTOR).first().find('button');

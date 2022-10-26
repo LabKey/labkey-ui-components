@@ -16,11 +16,17 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
-import { EntityChoice, EntityDataType, IEntityTypeDetails, IEntityTypeOption } from '../entities/models';
-import { deleteEntityType, getEntityTypeOptions } from '../entities/actions';
+import {
+    EntityChoice,
+    EntityDataType,
+    EntityParentType,
+    IEntityTypeDetails,
+    IEntityTypeOption,
+} from '../entities/models';
+import { deleteEntityType, getEntityTypeOptions, getSelectedItemSamples } from '../entities/actions';
 
 import { Location } from '../../util/URL';
-import { createQueryConfigFilteredBySample, getSelectedData, getSelection } from '../../actions';
+import { getSelectedData, getSelection, getSnapshotSelections } from '../../actions';
 
 import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 
@@ -44,17 +50,13 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { naturalSort, naturalSortByProperty } from '../../../public/sort';
 import { AssayStateModel } from '../assay/models';
-import { createGridModelId } from '../../models';
 import { TimelineEventModel } from '../auditlog/models';
 
 import { ViewInfo } from '../../ViewInfo';
 
-import {
-    IS_ALIQUOT_COL,
-    SAMPLE_ID_FIND_FIELD,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
-    UNIQUE_ID_FIND_FIELD,
-} from './constants';
+import { AssayDefinitionModel } from '../../AssayDefinitionModel';
+
+import { IS_ALIQUOT_COL, SAMPLE_INVENTORY_ITEM_SELECTION_KEY, SAMPLE_STATUS_REQUIRED_COLUMNS } from './constants';
 import { FindField, GroupedSampleFields, SampleAliquotsStats, SampleState } from './models';
 
 export function initSampleSetSelects(
@@ -225,6 +227,48 @@ export function loadSelectedSamples(location: Location, sampleColumn: QueryColum
 
         return OrderedMap();
     });
+}
+
+function getLocationQueryVal(location: Location, key: string): string {
+    if (!location.query) {
+        return undefined;
+    }
+
+    const val: string | string[] = location.query[key];
+    return Array.isArray(val) ? val[0] : val;
+}
+
+/**
+ * Get an array of sample RowIds from a URL selectionKey for the following scenarios:
+ *  - sample grid
+ *  - picklist
+ *  - assay
+ *  - storage items
+ */
+export async function getSelectedSampleIdsFromSelectionKey(location: Location): Promise<number[]> {
+    const key = getLocationQueryVal(location, 'selectionKey');
+    let sampleIds;
+
+    if (getLocationQueryVal(location, 'selectionKeyType') === SAMPLE_INVENTORY_ITEM_SELECTION_KEY) {
+        const response = await getSnapshotSelections(key);
+        sampleIds = await getSelectedItemSamples(response.selected);
+    } else if (getLocationQueryVal(location, 'isAssay')) {
+        const schemaName = getLocationQueryVal(location, 'assayProtocol');
+        const sampleFieldKey = getLocationQueryVal(location, 'sampleFieldKey');
+        const queryName = SCHEMAS.ASSAY_TABLES.RESULTS_QUERYNAME;
+        const response = await getSelection(location, schemaName, queryName);
+        sampleIds = await getFieldLookupFromSelection(schemaName, queryName, response?.selected, sampleFieldKey);
+    } else {
+        const picklistName = getLocationQueryVal(location, 'picklistName');
+        const response = await getSelection(location, SCHEMAS.PICKLIST_TABLES.SCHEMA, picklistName);
+        if (picklistName) {
+            sampleIds = await getSelectedPicklistSamples(picklistName, response.selected, false, undefined);
+        } else {
+            sampleIds = response.selected.map(Number);
+        }
+    }
+
+    return sampleIds;
 }
 
 export function getGroupedSampleDomainFields(sampleType: string): Promise<GroupedSampleFields> {
@@ -634,6 +678,39 @@ export function getSampleAliquotRows(sampleId: number | string): Promise<Array<R
     });
 }
 
+/**
+ * Create a QueryConfig for this assay's Data grid, filtered to samples for the provided `value`
+ * if the assay design has one or more sample lookup columns.
+ *
+ * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
+ * provide a filter for the sample column or columns defined in the assay design.
+ */
+export function createQueryConfigFilteredBySample(
+    model: AssayDefinitionModel,
+    value,
+    singleFilter: Filter.IFilterType,
+    whereClausePart: (fieldKey, value) => string,
+    useLsid?: boolean,
+    omitSampleCols?: boolean,
+    singleFilterValue?: any
+): QueryConfig {
+    const sampleColumns = model.getSampleColumnFieldKeys();
+
+    if (sampleColumns.isEmpty()) {
+        return undefined;
+    }
+
+    return {
+        baseFilters: [
+            model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid, singleFilterValue),
+        ],
+        omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
+        schemaQuery: SchemaQuery.create(model.protocolSchemaName, 'Data'),
+        title: model.name,
+        urlPrefix: model.name,
+    };
+}
+
 export function getSampleAssayQueryConfigs(
     assayModel: AssayStateModel,
     sampleIds: Array<string | number>,
@@ -702,10 +779,6 @@ export function getSampleAliquotsQueryConfig(
 
     // use Detail view so we get all info even if default view has been filtered
     return {
-        id: createGridModelId(
-            'sample-aliquots',
-            SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME)
-        ),
         schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME),
         bindURL: forGridView,
         maxRows: forGridView ? undefined : -1,
@@ -742,6 +815,22 @@ export function getSampleAssayResultViewConfigs(): Promise<SampleAssayResultView
                 reject(response);
             }),
         });
+    });
+}
+
+export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Promise<ISelectRowsResult> {
+    return await selectRowsDeprecated({
+        saveInSession: true,
+        schemaName: 'exp',
+        sql:
+            'SELECT RowId, SampleID, SampleType, Assay, COUNT(*) AS RunCount\n' +
+            "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM AssayRunsPerSample) X\n" +
+            'WHERE RowId IN (' +
+            sampleIds.join(',') +
+            ')\n' +
+            'GROUP BY RowId, SampleID, SampleType, Assay\n' +
+            'PIVOT RunCount BY Assay',
+        maxRows: 0, // we don't need any data back here, we just need to get the temp session schema/query
     });
 }
 

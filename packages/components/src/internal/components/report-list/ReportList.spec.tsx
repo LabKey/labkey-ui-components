@@ -34,10 +34,6 @@ const createdBySelector = '.report-list-item__person';
 const urlMapper = report => {
     const { schemaName, queryName, viewName } = report;
 
-    if (report.type === 'Sample Comparison') {
-        return AppURL.create('reports', report.reportId.replace('db:', ''));
-    }
-
     if (!queryName) {
         return null;
     }
@@ -152,9 +148,8 @@ describe('<ReportItemModal />', () => {
         const wrapper = mount(<ReportItemModal report={report} onClose={onClose} />);
 
         // Assert
-        // Verify modal displays properly (in this case a SampleComparisonReportBody)
+        // Verify modal displays properly
         expect(wrapper.find('.report-item-modal .modal-title').text()).toEqual(report.name);
-        expect(wrapper.find('.report-item-modal .report-list__scr-preview').exists()).toEqual(true);
 
         // Verify report items are listed
         const reportItems = wrapper.find('.report-item-modal .report-item__metadata-item span');

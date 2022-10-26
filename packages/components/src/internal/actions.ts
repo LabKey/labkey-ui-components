@@ -22,8 +22,6 @@ import { resolveKey, SchemaQuery } from '../public/SchemaQuery';
 
 import { QueryInfo } from '../public/QueryInfo';
 
-import { QueryConfig } from '../public/QueryModel/QueryModel';
-
 import { invalidateQueryDetailsCache, selectRowsDeprecated } from './query/api';
 import { Location } from './util/URL';
 import {
@@ -53,8 +51,6 @@ import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt
 import { resolveErrorMessage } from './util/messaging';
 import { hasModule } from './app/utils';
 import { buildURL } from './url/AppURL';
-
-import { AssayDefinitionModel } from './AssayDefinitionModel';
 
 import { ViewInfo } from './ViewInfo';
 import { decimalDifference, genCellKey, getSortedCellKeys, parseCellKey } from './utils';
@@ -1924,39 +1920,6 @@ async function prepareUpdateRowDataFromBulkForm(
     }
 
     return { values, messages };
-}
-
-/**
- * Create a QueryConfig for this assay's Data grid, filtered to samples for the provided `value`
- * iff the assay design has one or more sample lookup columns.
- *
- * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
- * provide a filter for the sample column or columns defined in the assay design.
- */
-export function createQueryConfigFilteredBySample(
-    model: AssayDefinitionModel,
-    value,
-    singleFilter: Filter.IFilterType,
-    whereClausePart: (fieldKey, value) => string,
-    useLsid?: boolean,
-    omitSampleCols?: boolean,
-    singleFilterValue?: any
-): QueryConfig {
-    const sampleColumns = model.getSampleColumnFieldKeys();
-
-    if (sampleColumns.isEmpty()) {
-        return undefined;
-    }
-
-    return {
-        baseFilters: [
-            model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart, useLsid, singleFilterValue),
-        ],
-        omittedColumns: omitSampleCols ? sampleColumns.toArray() : undefined,
-        schemaQuery: SchemaQuery.create(model.protocolSchemaName, 'Data'),
-        title: model.name,
-        urlPrefix: model.name,
-    };
 }
 
 /**

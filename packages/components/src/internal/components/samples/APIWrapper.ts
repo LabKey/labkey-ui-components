@@ -26,11 +26,14 @@ import {
     getTimelineEvents,
     getSampleTypeDetails,
     SampleAssayResultViewConfig,
+    createSessionAssayRunSummaryQuery,
 } from './actions';
 import { SampleState } from './models';
 import { SampleOperation } from './constants';
 
 export interface SamplesAPIWrapper {
+    createSessionAssayRunSummaryQuery: (sampleIds: number[]) => Promise<ISelectRowsResult>;
+
     getFieldLookupFromSelection: (
         schemaName: string,
         queryName: string,
@@ -73,6 +76,7 @@ export interface SamplesAPIWrapper {
 }
 
 export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
+    createSessionAssayRunSummaryQuery = createSessionAssayRunSummaryQuery;
     getSampleAliquotRows = getSampleAliquotRows;
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
     getSelectionLineageData = getSelectionLineageData;
@@ -93,6 +97,7 @@ export function getSamplesTestAPIWrapper(
     overrides: Partial<SamplesAPIWrapper> = {}
 ): SamplesAPIWrapper {
     return {
+        createSessionAssayRunSummaryQuery: mockFn(),
         getSampleAliquotRows: mockFn(),
         getSampleAssayResultViewConfigs: mockFn(),
         getSelectionLineageData: mockFn(),

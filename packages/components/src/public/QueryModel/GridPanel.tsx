@@ -5,8 +5,7 @@ import { Filter, getServerContext, Query } from '@labkey/api';
 
 import { MenuItem, SplitButton } from 'react-bootstrap';
 
-import { DataViewInfoTypes, EXPORT_TYPES, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
-import { DataViewInfo } from '../../internal/DataViewInfo';
+import { EXPORT_TYPES, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
 import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
 import {
@@ -82,8 +81,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     hideEmptyViewMenu?: boolean;
     highlightLastSelectedRow?: boolean;
     loadOnMount?: boolean;
-    onChartClicked?: (chart: DataViewInfo) => boolean;
-    onCreateReportClicked?: (type: DataViewInfoTypes) => void;
     onExport?: { [key: string]: (modelId?: string) => any };
     pageSizes?: number[];
     showButtonBar?: boolean;
@@ -93,7 +90,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showFiltersButton?: boolean;
     showHeader?: boolean;
     showPagination?: boolean;
-    showSampleComparisonReports?: boolean;
     showSearchInput?: boolean;
     showViewMenu?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
@@ -149,8 +145,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             ButtonsComponentRight,
             hideEmptyChartMenu,
             hideEmptyViewMenu,
-            onChartClicked,
-            onCreateReportClicked,
             onCustomizeView,
             onExport,
             onFilter,
@@ -163,7 +157,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             showExport,
             showFiltersButton,
             showPagination,
-            showSampleComparisonReports,
             showSearchInput,
             showViewMenu,
             supportedExportTypes,
@@ -220,14 +213,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 />
                             )}
                             {showChartMenu && (
-                                <ChartMenu
-                                    hideEmptyChartMenu={hideEmptyChartMenu}
-                                    actions={actions}
-                                    model={model}
-                                    onChartClicked={onChartClicked}
-                                    onCreateReportClicked={onCreateReportClicked}
-                                    showSampleComparisonReports={showSampleComparisonReports}
-                                />
+                                <ChartMenu hideEmptyChartMenu={hideEmptyChartMenu} actions={actions} model={model} />
                             )}
                             {canSelectView && (
                                 <ViewMenu
@@ -402,7 +388,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showExport: true,
         showFiltersButton: true,
         showFilterStatus: true,
-        showSampleComparisonReports: false,
         showSearchInput: true,
         showViewMenu: true,
         showHeader: true,

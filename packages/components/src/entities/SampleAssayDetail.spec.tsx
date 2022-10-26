@@ -17,8 +17,11 @@ import { mountWithAppServerContext, mountWithServerContext, waitForLifecycle } f
 import { TEST_USER_AUTHOR, TEST_USER_READER } from '../internal/userFixtures';
 import { getTestAPIWrapper } from '../internal/APIWrapper';
 
-import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import { ALIQUOT_FILTER_MODE } from '../internal/components/samples/constants';
+
+import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
+
+import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import {
     AssayResultPanel,
     getSampleAssayDetailEmptyText,
@@ -28,7 +31,6 @@ import {
     SampleAssayDetailButtonsRight,
     SampleAssayDetailImpl,
 } from './SampleAssayDetail';
-import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
 const assayModel = new AssayStateModel({
     definitions: [
@@ -158,6 +160,19 @@ describe('getSampleAssayDetailEmptyText', () => {
     });
 });
 
+const SUMMARY_GRID_ID = 'assay-detail:assayruncount:1';
+const SUMMARY_GRID_MODEL = makeTestQueryModel(
+    SchemaQuery.create('exp', 'AssayRunsPerSample'),
+    new QueryInfo(),
+    { 1: { RowId: { value: 1 }, Name: { value: 'Name1' } } },
+    ['1'],
+    1
+).mutate({
+    id: SUMMARY_GRID_ID,
+    queryInfoLoadingState: LoadingState.LOADED,
+    rowsLoadingState: LoadingState.LOADED,
+});
+
 const IMPL_PROPS = {
     assayModel,
     sampleModel: modelLoadedWithRow,
@@ -166,7 +181,7 @@ const IMPL_PROPS = {
     assayProtocol: undefined,
     onTabChange: jest.fn,
     actions: makeTestActions(),
-    queryModels: {},
+    queryModels: { [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL },
     user: TEST_USER_READER,
 };
 
@@ -206,6 +221,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
+                    [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL,
                     id1: modelLoadedNoRows,
                     id2: modelLoadedWithRow,
                     id3: modelLoading,
@@ -221,6 +237,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
+                    [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL,
                     id1: modelLoadedNoRows,
                 }}
             />
@@ -234,6 +251,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
+                    [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL,
                     id1: modelLoadedNoRows,
                 }}
                 emptyAssayResultDisplay={
@@ -252,6 +270,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
+                    [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL,
                     id1: modelLoadedNoRows.mutate({ id: 'id1' }),
                     id2: modelLoadedWithRow.mutate({ id: 'id2' }),
                 }}
@@ -259,10 +278,11 @@ describe('SampleAssayDetailBodyImpl', () => {
         );
         validate(wrapper, false, undefined, true);
         const modelKeys = Object.keys(wrapper.find(TabbedGridPanel).prop('queryModels'));
-        expect(modelKeys.indexOf('id1')).toBe(0);
-        expect(modelKeys.indexOf('id2')).toBe(1);
+        expect(modelKeys.indexOf(SUMMARY_GRID_ID)).toBe(0);
+        expect(modelKeys.indexOf('id1')).toBe(1);
+        expect(modelKeys.indexOf('id2')).toBe(2);
         const tabKeys = Object.keys(wrapper.find(TabbedGridPanel).prop('tabOrder'));
-        expect(tabKeys.length).toBe(1);
+        expect(tabKeys.length).toBe(2);
         expect(tabKeys[0]).toBe('0');
         wrapper.unmount();
     });
@@ -272,6 +292,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             <SampleAssayDetailBodyImpl
                 {...IMPL_PROPS}
                 queryModels={{
+                    [SUMMARY_GRID_ID]: SUMMARY_GRID_MODEL,
                     id1: modelLoadedNoRows.mutate({ id: 'id1', title: 'C' }),
                     id2: modelLoadedWithRow.mutate({ id: 'id2', title: 'B' }),
                     id3: modelLoadedWithRow.mutate({ id: 'id3', title: 'A' }),
@@ -279,7 +300,7 @@ describe('SampleAssayDetailBodyImpl', () => {
             />
         );
         validate(wrapper, false, undefined, true);
-        expect(wrapper.find(TabbedGridPanel).prop('tabOrder')).toStrictEqual(['id3', 'id2']);
+        expect(wrapper.find(TabbedGridPanel).prop('tabOrder')).toStrictEqual(['id3', 'id2', SUMMARY_GRID_ID]);
         wrapper.unmount();
     });
 });
@@ -287,12 +308,21 @@ describe('SampleAssayDetailBodyImpl', () => {
 describe('SampleAssayDetailImpl', () => {
     // TODO more test cases for other parts of the SampleAssayDetailImpl to be added
 
+    const sessionQueryResponse = {
+        key: 'key',
+        queries: { key: QueryInfo.create({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
+        models: undefined,
+        orderedModels: undefined,
+        totalRows: 0,
+    };
+
     test('sampleAssayResultViewConfigs - none', async () => {
         const wrapper = mountWithAppServerContext(
             <SampleAssayDetailImpl
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
+                        createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                         getSampleAssayResultViewConfigs: () => Promise.resolve([]),
                     }),
                 })}
@@ -300,7 +330,7 @@ describe('SampleAssayDetailImpl', () => {
         );
         await waitForLifecycle(wrapper);
         const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
-        expect(Object.keys(configs).length).toBe(0);
+        expect(Object.keys(configs).length).toBe(1); // just summary grid
         wrapper.unmount();
     });
 
@@ -320,6 +350,7 @@ describe('SampleAssayDetailImpl', () => {
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
+                        createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                         getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
                     }),
                 })}
@@ -327,7 +358,7 @@ describe('SampleAssayDetailImpl', () => {
         );
         await waitForLifecycle(wrapper);
         const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
-        expect(Object.keys(configs).length).toBe(0);
+        expect(Object.keys(configs).length).toBe(1); // just summary grid
         wrapper.unmount();
     });
 
@@ -339,6 +370,7 @@ describe('SampleAssayDetailImpl', () => {
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
+                        createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                         getSampleAssayResultViewConfigs: () => Promise.resolve([moduleAssayConfig]),
                     }),
                 })}
@@ -347,9 +379,9 @@ describe('SampleAssayDetailImpl', () => {
         await waitForLifecycle(wrapper);
         const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
         const configKeys = Object.keys(configs);
-        expect(configKeys.length).toBe(1);
-        expect(configs[configKeys[0]].baseFilters[0].getColumnName()).toBe('filterKey');
-        expect(configs[configKeys[0]].baseFilters[0].getValue()).toStrictEqual([1]); // RowId value of sample row
+        expect(configKeys.length).toBe(2); // first is summary grid
+        expect(configs[configKeys[1]].baseFilters[0].getColumnName()).toBe('filterKey');
+        expect(configs[configKeys[1]].baseFilters[0].getValue()).toStrictEqual([1]); // RowId value of sample row
         wrapper.unmount();
     });
 
@@ -361,6 +393,7 @@ describe('SampleAssayDetailImpl', () => {
                 {...IMPL_PROPS}
                 api={getTestAPIWrapper(jest.fn, {
                     samples: getSamplesTestAPIWrapper(jest.fn, {
+                        createSessionAssayRunSummaryQuery: () => Promise.resolve(sessionQueryResponse),
                         getSampleAssayResultViewConfigs: () =>
                             Promise.resolve([
                                 {
@@ -375,9 +408,9 @@ describe('SampleAssayDetailImpl', () => {
         await waitForLifecycle(wrapper);
         const configs = wrapper.find(SampleAssayDetailBody).prop('queryConfigs');
         const configKeys = Object.keys(configs);
-        expect(configKeys.length).toBe(1);
-        expect(configs[configKeys[0]].baseFilters[0].getColumnName()).toBe('filterKey');
-        expect(configs[configKeys[0]].baseFilters[0].getValue()).toStrictEqual(['Name1']); // Name value of sample row
+        expect(configKeys.length).toBe(2); // first is summary grid
+        expect(configs[configKeys[1]].baseFilters[0].getColumnName()).toBe('filterKey');
+        expect(configs[configKeys[1]].baseFilters[0].getValue()).toStrictEqual(['Name1']); // Name value of sample row
         wrapper.unmount();
     });
 });

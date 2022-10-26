@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.241.0
+*Released*: 26 October 2022
+* Assay Results for Selected Samples
+  * refactor getSelectedSampleIdsFromSelectionKey() and getURLParamsForSampleSelectionKey() from workflow package to be used in multiple app cases
+  * refactor getSamplesAssayGridQueryConfigs() from SampleAssayDetails component to be reused in AssayResultsForSamplesPage
+  * new AssayResultsForSamplesPage, AssayResultsForSamplesMenuItem, and AssayResultsForSamplesButton components
+  * add Assay Runs summary grid as tab to SampleAssayDetail
+  * add FindDerivativesMenuItem to go with FindDerivativesButton
+  * remove Sample Comparison Report rendering and creation menu item
+  * Issue 46554: App Sample Assay menu doesn't show any options if > 1000 samples selected
+
 ### version 2.240.0
 *Released*: 26 October 2022
 * Updates for Sample Type consistency

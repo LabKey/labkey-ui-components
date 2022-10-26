@@ -163,7 +163,6 @@ import {
     getSelected,
     getSelectedData,
     getSelection,
-    getSnapshotSelections,
     incrementClientSideMetricCount,
     replaceSelected,
     setSelected,
@@ -310,6 +309,7 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectionLineageData,
+    getSelectedSampleIdsFromSelectionKey,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 
@@ -323,6 +323,7 @@ import {
     getOperationNotPermittedMessage,
     getSampleStatus,
     getSampleStatusType,
+    getURLParamsForSampleSelectionKey,
     isAllSamplesSchema,
     isSampleOperationPermitted,
     isSamplesSchema,
@@ -405,7 +406,6 @@ import {
     getDataOperationConfirmationData,
     getOperationConfirmationData,
     getSampleOperationConfirmationData,
-    getSelectedItemSamples,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -830,7 +830,6 @@ export {
     createGridModelId,
     clearSelected,
     // grid functions
-    getSnapshotSelections,
     getSelected,
     getSelectedData,
     getSelection,
@@ -986,6 +985,7 @@ export {
     getFilterForSampleOperation,
     getSampleStatus,
     getSampleStatusType,
+    getURLParamsForSampleSelectionKey,
     DisableableMenuItem,
     SampleOperation,
     SampleStateType,
@@ -1006,8 +1006,8 @@ export {
     getSampleSet,
     getSampleTypeDetails,
     getFieldLookupFromSelection,
-    getSelectedItemSamples,
     getSelectionLineageData,
+    getSelectedSampleIdsFromSelectionKey,
     EntityInsertPanel,
     EntityCrossProjectSelectionConfirmModal,
     SampleTypeDataType,

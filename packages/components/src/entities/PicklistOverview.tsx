@@ -9,7 +9,7 @@ import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from '../internal
 import { PICKLIST_KEY } from '../internal/app/constants';
 
 import { AppURL } from '../internal/url/AppURL';
-import { SamplesEditableGridProps } from './SamplesEditableGrid';
+
 import { User } from '../internal/components/base/models/User';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
 import { resolveErrorMessage } from '../internal/util/messaging';
@@ -17,7 +17,7 @@ import { invalidateLineageResults } from '../internal/components/lineage/actions
 import { Page } from '../internal/components/base/Page';
 import { PageDetailHeader } from '../internal/components/forms/PageDetailHeader';
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
-import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
+
 import { SCHEMAS } from '../internal/schemas';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
@@ -31,11 +31,15 @@ import {
     withQueryModels,
 } from '../public/QueryModel/withQueryModels';
 
-import { PicklistGridButtons } from './PicklistGridButtons';
 import { PicklistEditModal } from '../internal/components/picklist/PicklistEditModal';
-import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
+
 import { Picklist, PICKLIST_SAMPLES_FILTER } from '../internal/components/picklist/models';
 import { deletePicklists, updatePicklist } from '../internal/components/picklist/actions';
+
+import { PicklistDeleteConfirm } from './PicklistDeleteConfirm';
+import { PicklistGridButtons } from './PicklistGridButtons';
+import { SamplesTabbedGridPanel } from './SamplesTabbedGridPanel';
+import { SamplesEditableGridProps } from './SamplesEditableGrid';
 
 const PICKLIST_ITEMS_ID_PREFIX = 'picklist-items-';
 const PICKLIST_PER_SAMPLE_TYPE_ID_PREFIX = 'picklist-per-sample-type-';

@@ -1,10 +1,13 @@
 import { Draft, immerable, produce } from 'immer';
 
+import { Filter } from '@labkey/api';
+
 import { User } from '../base/models/User';
-import { PUBLIC_PICKLIST_CATEGORY } from './constants';
+
 import { userCanDeletePublicPicklists, userCanManagePicklists } from '../../app/utils';
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
-import {Filter} from "@labkey/api";
+
+import { PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 export const PICKLIST_SAMPLE_ID_COLUMN = 'SampleID';
 export const PICKLIST_KEY_COLUMN = 'id';

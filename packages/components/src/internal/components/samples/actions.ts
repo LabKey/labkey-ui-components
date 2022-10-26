@@ -822,11 +822,14 @@ export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Pr
     return await selectRowsDeprecated({
         saveInSession: true,
         schemaName: 'exp',
-        sql: "SELECT RowId, SampleID, SampleType, Assay, COUNT(*) AS RunCount\n" +
+        sql:
+            'SELECT RowId, SampleID, SampleType, Assay, COUNT(*) AS RunCount\n' +
             "FROM (SELECT RowId, SampleID, SampleType, Assay || ' Run Count' AS Assay FROM AssayRunsPerSample) X\n" +
-            "WHERE RowId IN (" + sampleIds.join(',') + ")\n" +
-            "GROUP BY RowId, SampleID, SampleType, Assay\n" +
-            "PIVOT RunCount BY Assay",
+            'WHERE RowId IN (' +
+            sampleIds.join(',') +
+            ')\n' +
+            'GROUP BY RowId, SampleID, SampleType, Assay\n' +
+            'PIVOT RunCount BY Assay',
         maxRows: 0, // we don't need any data back here, we just need to get the temp session schema/query
     });
 }

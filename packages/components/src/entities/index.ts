@@ -1,4 +1,11 @@
-import { getSampleTypes, getOriginalParentsFromLineage, loadSampleTypes } from './actions';
+import {
+    getSampleTypes,
+    getOriginalParentsFromLineage,
+    loadSampleTypes,
+    onSampleChange,
+    onSampleTypeChange,
+    onSampleTypeDesignChange,
+} from './actions';
 import {
     getSampleWizardURL,
     filterMediaSampleTypes,
@@ -48,7 +55,6 @@ import { SampleTypePage } from './SampleTypePage';
 import { SampleIndexNav, SampleTypeIndexNav } from './SampleNav';
 import { SamplesResolver } from './SamplesResolver';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
-import { onSampleChange, onSampleTypeChange, onSampleTypeDesignChange } from './actions';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';

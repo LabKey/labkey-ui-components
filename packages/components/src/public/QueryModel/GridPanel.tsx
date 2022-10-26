@@ -213,11 +213,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 />
                             )}
                             {showChartMenu && (
-                                <ChartMenu
-                                    hideEmptyChartMenu={hideEmptyChartMenu}
-                                    actions={actions}
-                                    model={model}
-                                />
+                                <ChartMenu hideEmptyChartMenu={hideEmptyChartMenu} actions={actions} model={model} />
                             )}
                             {canSelectView && (
                                 <ViewMenu

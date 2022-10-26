@@ -18,10 +18,11 @@ import { useAppContext } from '../internal/AppContext';
 
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 
-import { getSampleFinderLocalStorageKey } from './utils';
 import { isValidFilterFieldSampleFinder, searchFiltersToJson } from '../internal/components/search/utils';
 import { FieldFilter, FilterProps } from '../internal/components/search/models';
 import { SAMPLE_FINDER_SESSION_PREFIX } from '../internal/components/search/constants';
+
+import { getSampleFinderLocalStorageKey } from './utils';
 
 const DISABLED_FIND_DERIVATIVES_MSG =
     'Unable to find derivative samples using search filters or filters on multi-valued lookup fields';

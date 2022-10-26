@@ -30,7 +30,7 @@ import { DELIMITER } from '../internal/components/forms/constants';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
 import { AssayUploadTabs } from '../internal/constants';
-import { getSampleAssayQueryConfigs} from '../internal/components/samples/actions';
+import { getSampleAssayQueryConfigs } from '../internal/components/samples/actions';
 import { AssayStateModel } from '../internal/components/assay/models';
 import { SamplesAPIWrapper } from '../internal/components/samples/APIWrapper';
 import { QueryConfigMap } from '../public/QueryModel/withQueryModels';

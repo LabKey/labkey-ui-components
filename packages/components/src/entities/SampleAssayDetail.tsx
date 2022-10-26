@@ -27,10 +27,8 @@ import { ALIQUOT_FILTER_MODE, SampleOperation } from '../internal/components/sam
 
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
 
-import { ASSAY_RUNS_GRID_ID, getSamplesAssayGridQueryConfigs } from './utils';
+import { ASSAY_RUNS_GRID_ID, getSamplesAssayGridQueryConfigs, getImportItemsForAssayDefinitions } from './utils';
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
-
-import { getImportItemsForAssayDefinitions } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;

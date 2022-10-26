@@ -234,7 +234,11 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
 
     const gridDisplay = getGridPanelDisplay?.(activeId, exportHandlers) ?? (
         <GridPanel
-            allowViewCustomization={allowViewCustomizationForGridIds ? allowViewCustomizationForGridIds.indexOf(activeId) > -1 : allowViewCustomization}
+            allowViewCustomization={
+                allowViewCustomizationForGridIds
+                    ? allowViewCustomizationForGridIds.indexOf(activeId) > -1
+                    : allowViewCustomization
+            }
             key={activeId}
             actions={actions}
             hasHeader={!hasTabs}

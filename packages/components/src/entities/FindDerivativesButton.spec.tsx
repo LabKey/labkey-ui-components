@@ -12,8 +12,9 @@ import { mountWithAppServerContext } from '../internal/testHelpers';
 import { QueryInfo } from '../public/QueryInfo';
 import { ViewInfo } from '../internal/ViewInfo';
 
+import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
+
 import { FindDerivativesMenuItem, getFieldFilter, getSessionSearchFilterProps } from './FindDerivativesButton';
-import {DisableableMenuItem} from "../internal/components/samples/DisableableMenuItem";
 
 const VIEW_NAME = 'TEST_VIEW';
 const VIEW = ViewInfo.create({

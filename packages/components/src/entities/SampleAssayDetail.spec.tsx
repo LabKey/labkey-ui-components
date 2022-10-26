@@ -17,8 +17,11 @@ import { mountWithAppServerContext, mountWithServerContext, waitForLifecycle } f
 import { TEST_USER_AUTHOR, TEST_USER_READER } from '../internal/userFixtures';
 import { getTestAPIWrapper } from '../internal/APIWrapper';
 
-import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import { ALIQUOT_FILTER_MODE } from '../internal/components/samples/constants';
+
+import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
+
+import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import {
     AssayResultPanel,
     getSampleAssayDetailEmptyText,
@@ -28,7 +31,6 @@ import {
     SampleAssayDetailButtonsRight,
     SampleAssayDetailImpl,
 } from './SampleAssayDetail';
-import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
 const assayModel = new AssayStateModel({
     definitions: [
@@ -306,7 +308,13 @@ describe('SampleAssayDetailBodyImpl', () => {
 describe('SampleAssayDetailImpl', () => {
     // TODO more test cases for other parts of the SampleAssayDetailImpl to be added
 
-    const sessionQueryResponse = { key: 'key', queries: { key: QueryInfo.create({schemaName: 'exp', name: 'AssayRunsPerSample'}) }, models: undefined, orderedModels: undefined, totalRows: 0 };
+    const sessionQueryResponse = {
+        key: 'key',
+        queries: { key: QueryInfo.create({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
+        models: undefined,
+        orderedModels: undefined,
+        totalRows: 0,
+    };
 
     test('sampleAssayResultViewConfigs - none', async () => {
         const wrapper = mountWithAppServerContext(

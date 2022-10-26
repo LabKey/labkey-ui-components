@@ -153,7 +153,9 @@ describe('createQueryConfigFilteredBySample', () => {
     const modelWithoutSampleId = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
 
     test('no sample column', () => {
-        expect(createQueryConfigFilteredBySample(modelWithoutSampleId, 1, Filter.Types.EQUALS, () => 'whereclause')).toBeUndefined();
+        expect(
+            createQueryConfigFilteredBySample(modelWithoutSampleId, 1, Filter.Types.EQUALS, () => 'whereclause')
+        ).toBeUndefined();
     });
 
     test('with sample column', () => {

@@ -878,7 +878,13 @@ describe('getSamplesAssayGridQueryConfigs', () => {
         definitionsLoadingState: LoadingState.LOADED,
         definitions: [modelWithSampleId, modelWithoutSampleId],
     });
-    const sessionQueryResponse = { key: 'key', queries: { key: QueryInfo.create({schemaName: 'exp', name: 'AssayRunsPerSample'}) }, models: undefined, orderedModels: undefined, totalRows: 0 };
+    const sessionQueryResponse = {
+        key: 'key',
+        queries: { key: QueryInfo.create({ schemaName: 'exp', name: 'AssayRunsPerSample' }) },
+        models: undefined,
+        orderedModels: undefined,
+        totalRows: 0,
+    };
 
     test('default props', async () => {
         const configs = await getSamplesAssayGridQueryConfigs(

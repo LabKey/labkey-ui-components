@@ -18,7 +18,7 @@ import { Alert } from '../internal/components/base/Alert';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
 
 import { selectRows } from '../internal/query/selectRows';
-import { ASSAY_RUNS_GRID_ID, getSamplesAssayGridQueryConfigs } from './utils';
+
 import { useAppContext } from '../internal/AppContext';
 import { isLoading } from '../public/LoadingState';
 import { QueryModel } from '../public/QueryModel/QueryModel';
@@ -30,6 +30,8 @@ import { SubNav } from '../internal/components/navigation/SubNav';
 import { ITab } from '../internal/components/navigation/types';
 
 import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
+
+import { ASSAY_RUNS_GRID_ID, getSamplesAssayGridQueryConfigs } from './utils';
 
 const PAGE_TITLE = 'Assay Results for Samples';
 const ASSAY_GRID_ID_PREFIX = 'sampleresults-per-assay';
@@ -149,7 +151,7 @@ const AssayResultsForSamplesPageBody: FC<Props> = props => {
 
     if (error) return <Alert>{error}</Alert>;
     if (!sampleIds || loadingDefinitions || assayQueryConfigs === undefined) return <LoadingPage title={PAGE_TITLE} />;
-    if (sampleIds.length === 0) return <Alert>No sample IDs provided for the report.</Alert>
+    if (sampleIds.length === 0) return <Alert>No sample IDs provided for the report.</Alert>;
 
     return <AssayResultsForSamplesWithModels sampleIds={sampleIds} queryConfigs={assayQueryConfigs} {...props} />;
 };

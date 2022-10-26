@@ -11,11 +11,14 @@ import { QueryInfo } from '../public/QueryInfo';
 import { ResponsiveMenuButtonGroup } from '../internal/components/buttons/ResponsiveMenuButtonGroup';
 import { LoadingState } from '../public/LoadingState';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
-import { EntityDeleteModal } from './EntityDeleteModal';
+
 import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
 
+import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT } from '../internal/productFixtures';
+
+import { EntityDeleteModal } from './EntityDeleteModal';
+
 import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
-import {TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT} from "../internal/productFixtures";
 
 beforeEach(() => {
     LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };

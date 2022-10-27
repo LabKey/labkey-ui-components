@@ -99,7 +99,6 @@ interface GridHeaderProps {
     columns: List<GridColumn>;
     headerCell?: any;
     onCellClick?: (column: GridColumn) => void;
-    onColumnDrag?: (sourceIndex: string) => void;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     showHeader?: boolean;
     transpose?: boolean;
@@ -125,7 +124,6 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
 
     handleDragStart = (e): void => {
         const dragIndex = e.target.id;
-        this.props?.onColumnDrag(dragIndex);
 
         if (e.target?.tagName.toLowerCase() === 'th' && dragIndex !== GRID_SELECTION_INDEX) {
             e.dataTransfer.setData('dragIndex', dragIndex);
@@ -345,7 +343,6 @@ export interface GridProps {
     isLoading?: boolean;
     loadingText?: ReactNode;
     messages?: List<Map<string, string>>;
-    onColumnDrag?: (sourceIndex: string) => void;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     responsive?: boolean;
     /**
@@ -378,7 +375,6 @@ export const Grid: FC<GridProps> = memo(props => {
         fixedHeight = false,
         columns,
         headerCell,
-        onColumnDrag,
         onColumnDrop,
         rowKey,
         highlightRowIndexes,
@@ -399,7 +395,6 @@ export const Grid: FC<GridProps> = memo(props => {
         calcWidths,
         columns: gridColumns,
         headerCell,
-        onColumnDrag,
         onColumnDrop,
         showHeader,
         transpose,

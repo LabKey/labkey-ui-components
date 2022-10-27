@@ -8,11 +8,11 @@ exports[`<RemoveEntityButton /> Default properties 1`] = `
     className="container--action-button"
     onClick={
       [MockFunction] {
-        "calls": Array [
-          Array [],
+        "calls": [
+          [],
         ],
-        "results": Array [
-          Object {
+        "results": [
+          {
             "type": "return",
             "value": undefined,
           },

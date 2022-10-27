@@ -13,7 +13,7 @@ exports[`<ExpandableContainer/> custom props 1`] = `
       <i
         className="fa fa-fa-test"
         style={
-          Object {
+          {
             "padding": "5px",
           }
         }

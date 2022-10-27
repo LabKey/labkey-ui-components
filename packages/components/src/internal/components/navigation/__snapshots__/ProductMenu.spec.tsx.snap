@@ -242,7 +242,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
       "message": undefined,
       "currentProductId": undefined,
       "userMenuProductId": undefined,
-      "productIds": Array [
+      "productIds": [
         "testProduct3Columns",
       ],
       "needsReload": false,
@@ -827,7 +827,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
       "message": undefined,
       "currentProductId": undefined,
       "userMenuProductId": undefined,
-      "productIds": Array [
+      "productIds": [
         "testProduct2Columns",
       ],
       "needsReload": false,

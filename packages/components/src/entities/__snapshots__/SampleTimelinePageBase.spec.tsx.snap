@@ -838,7 +838,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
           >
             <thead
               style={
-                Object {
+                {
                   "display": "none",
                 }
               }
@@ -849,7 +849,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
               >
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -858,7 +858,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                 </td>
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -875,7 +875,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
               >
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -884,7 +884,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                 </td>
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -901,7 +901,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
               >
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -910,7 +910,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                 </td>
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -927,7 +927,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
               >
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -936,7 +936,7 @@ exports[`<SampleTimelinePageBase/> With selected assay re-import event 1`] = `
                 </td>
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -1803,7 +1803,7 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
           >
             <thead
               style={
-                Object {
+                {
                   "display": "none",
                 }
               }
@@ -1814,7 +1814,7 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
               >
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -1823,7 +1823,7 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                 </td>
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -1840,7 +1840,7 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
               >
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -1849,7 +1849,7 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                 </td>
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -1866,7 +1866,7 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
               >
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }
@@ -1875,7 +1875,7 @@ exports[`<SampleTimelinePageBase/> With selected job 1`] = `
                 </td>
                 <td
                   style={
-                    Object {
+                    {
                       "textAlign": "left",
                     }
                   }

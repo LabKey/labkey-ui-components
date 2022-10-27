@@ -58,7 +58,7 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
             <Tip
               caption="Export"
               trigger={
-                Array [
+                [
                   "focus",
                   "hover",
                 ]
@@ -400,7 +400,7 @@ exports[`<SampleEventListing/> Filter by event type and date 1`] = `
       >
         <TimelineView
           events={
-            Array [
+            [
               Immutable.Record {
                 "rowId": 546,
                 "eventType": "workflow",
@@ -660,7 +660,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
             <Tip
               caption="Export"
               trigger={
-                Array [
+                [
                   "focus",
                   "hover",
                 ]
@@ -706,7 +706,7 @@ exports[`<SampleEventListing/> Sort by latest 1`] = `
       >
         <TimelineView
           events={
-            Array [
+            [
               Immutable.Record {
                 "rowId": 550,
                 "eventType": "workflow",
@@ -3207,7 +3207,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
             <Tip
               caption="Export"
               trigger={
-                Array [
+                [
                   "focus",
                   "hover",
                 ]
@@ -3549,7 +3549,7 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
       >
         <TimelineView
           events={
-            Array [
+            [
               Immutable.Record {
                 "rowId": 1548,
                 "eventType": "assays",
@@ -3856,8 +3856,8 @@ exports[`<SampleEventListing/> With selected job that is completed and with filt
           }
           onEventSelection={[MockFunction]}
           selectedEntityConnectionInfo={
-            Array [
-              Object {
+            [
+              {
                 "firstEvent": Immutable.Record {
                   "rowId": 544,
                   "eventType": "workflow",

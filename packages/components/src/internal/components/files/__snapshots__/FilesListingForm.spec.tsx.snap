@@ -92,7 +92,7 @@ exports[`<FilesListingForm/> with editable and noReadOnlyFilesMessage 1`] = `
     canDelete={true}
     files={
       Immutable.List [
-        Object {
+        {
           "created": "2019-11-08 12:26:30.064",
           "createdBy": "Vader",
           "createdById": 1005,
@@ -101,7 +101,7 @@ exports[`<FilesListingForm/> with editable and noReadOnlyFilesMessage 1`] = `
           "iconFontCls": "fa fa-file-excel-o",
           "name": "exam.xlsx",
         },
-        Object {
+        {
           "created": "2019-11-14 15:47:51.931",
           "createdBy": "Skywalker",
           "createdById": 1100,
@@ -110,7 +110,7 @@ exports[`<FilesListingForm/> with editable and noReadOnlyFilesMessage 1`] = `
           "iconFontCls": "fa fa-file-image-o",
           "name": "xray.gif",
         },
-        Object {
+        {
           "created": "2019-11-14 15:48:11.472",
           "createdBy": "Vader",
           "createdById": 1005,
@@ -176,7 +176,7 @@ exports[`<FilesListingForm/> with files custom props 1`] = `
     canDelete={true}
     files={
       Immutable.List [
-        Object {
+        {
           "created": "2019-11-08 12:26:30.064",
           "createdBy": "Vader",
           "createdById": 1005,
@@ -185,7 +185,7 @@ exports[`<FilesListingForm/> with files custom props 1`] = `
           "iconFontCls": "fa fa-file-excel-o",
           "name": "exam.xlsx",
         },
-        Object {
+        {
           "created": "2019-11-14 15:47:51.931",
           "createdBy": "Skywalker",
           "createdById": 1100,
@@ -194,7 +194,7 @@ exports[`<FilesListingForm/> with files custom props 1`] = `
           "iconFontCls": "fa fa-file-image-o",
           "name": "xray.gif",
         },
-        Object {
+        {
           "created": "2019-11-14 15:48:11.472",
           "createdBy": "Vader",
           "createdById": 1005,
@@ -246,7 +246,7 @@ exports[`<FilesListingForm/> with files default props 1`] = `
   <FilesListing
     files={
       Immutable.List [
-        Object {
+        {
           "created": "2019-11-08 12:26:30.064",
           "createdBy": "Vader",
           "createdById": 1005,
@@ -255,7 +255,7 @@ exports[`<FilesListingForm/> with files default props 1`] = `
           "iconFontCls": "fa fa-file-excel-o",
           "name": "exam.xlsx",
         },
-        Object {
+        {
           "created": "2019-11-14 15:47:51.931",
           "createdBy": "Skywalker",
           "createdById": 1100,
@@ -264,7 +264,7 @@ exports[`<FilesListingForm/> with files default props 1`] = `
           "iconFontCls": "fa fa-file-image-o",
           "name": "xray.gif",
         },
-        Object {
+        {
           "created": "2019-11-14 15:48:11.472",
           "createdBy": "Vader",
           "createdById": 1005,
@@ -358,7 +358,7 @@ exports[`<FilesListingForm/> with only readOnly files 1`] = `
     canDelete={false}
     files={
       Immutable.List [
-        Object {
+        {
           "created": "2019-11-08 12:26:30.064",
           "createdBy": "Vader",
           "createdById": 1005,
@@ -367,7 +367,7 @@ exports[`<FilesListingForm/> with only readOnly files 1`] = `
           "iconFontCls": "fa fa-file-excel-o",
           "name": "exam.xlsx",
         },
-        Object {
+        {
           "created": "2019-11-14 15:47:51.931",
           "createdBy": "Skywalker",
           "createdById": 1100,
@@ -376,7 +376,7 @@ exports[`<FilesListingForm/> with only readOnly files 1`] = `
           "iconFontCls": "fa fa-file-image-o",
           "name": "xray.gif",
         },
-        Object {
+        {
           "created": "2019-11-14 15:48:11.472",
           "createdBy": "Vader",
           "createdById": 1005,
@@ -441,7 +441,7 @@ exports[`<FilesListingForm/> with readOnly and editable files 1`] = `
     canDelete={false}
     files={
       Immutable.List [
-        Object {
+        {
           "created": "2019-11-08 12:26:30.064",
           "createdBy": "Someone",
           "createdById": 1005,
@@ -450,7 +450,7 @@ exports[`<FilesListingForm/> with readOnly and editable files 1`] = `
           "iconFontCls": "fa fa-file-excel-o",
           "name": "second.xlsx",
         },
-        Object {
+        {
           "created": "2019-11-14 15:47:51.931",
           "createdBy": "Skywalker",
           "createdById": 1100,
@@ -471,7 +471,7 @@ exports[`<FilesListingForm/> with readOnly and editable files 1`] = `
     canDelete={true}
     files={
       Immutable.List [
-        Object {
+        {
           "created": "2019-11-08 12:26:30.064",
           "createdBy": "Vader",
           "createdById": 1005,
@@ -480,7 +480,7 @@ exports[`<FilesListingForm/> with readOnly and editable files 1`] = `
           "iconFontCls": "fa fa-file-excel-o",
           "name": "exam.xlsx",
         },
-        Object {
+        {
           "created": "2019-11-14 15:47:51.931",
           "createdBy": "Skywalker",
           "createdById": 1100,
@@ -489,7 +489,7 @@ exports[`<FilesListingForm/> with readOnly and editable files 1`] = `
           "iconFontCls": "fa fa-file-image-o",
           "name": "xray.gif",
         },
-        Object {
+        {
           "created": "2019-11-14 15:48:11.472",
           "createdBy": "Vader",
           "createdById": 1005,
@@ -555,7 +555,7 @@ exports[`<FilesListingForm/> with readOnly and noFilesMessage 1`] = `
     canDelete={false}
     files={
       Immutable.List [
-        Object {
+        {
           "created": "2019-11-08 12:26:30.064",
           "createdBy": "Someone",
           "createdById": 1005,
@@ -564,7 +564,7 @@ exports[`<FilesListingForm/> with readOnly and noFilesMessage 1`] = `
           "iconFontCls": "fa fa-file-excel-o",
           "name": "second.xlsx",
         },
-        Object {
+        {
           "created": "2019-11-14 15:47:51.931",
           "createdBy": "Skywalker",
           "createdById": 1100,

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SampleTypeDesigner custom properties 1`] = `
-Array [
+[
   <div
     className="domain-form-panel lk-border-theme-light panel panel-default"
   >
@@ -25,14 +25,14 @@ Array [
           data-prefix="fas"
           focusable="false"
           role="img"
-          style={Object {}}
+          style={{}}
           viewBox="0 0 448 512"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
             d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM92 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H92z"
             fill="currentColor"
-            style={Object {}}
+            style={{}}
           />
         </svg>
       </span>
@@ -128,14 +128,14 @@ Array [
                     data-prefix="fas"
                     focusable="false"
                     role="img"
-                    style={Object {}}
+                    style={{}}
                     viewBox="0 0 512 512"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                       fill="currentColor"
-                      style={Object {}}
+                      style={{}}
                     />
                   </svg>
                 </span>
@@ -180,14 +180,14 @@ Array [
                       data-prefix="fas"
                       focusable="false"
                       role="img"
-                      style={Object {}}
+                      style={{}}
                       viewBox="0 0 512 512"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                         fill="currentColor"
-                        style={Object {}}
+                        style={{}}
                       />
                     </svg>
                   </span>
@@ -235,14 +235,14 @@ Array [
             data-prefix="fas"
             focusable="false"
             role="img"
-            style={Object {}}
+            style={{}}
             viewBox="0 0 512 512"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
               d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
               fill="currentColor"
-              style={Object {}}
+              style={{}}
             />
           </svg>
         </span>
@@ -262,14 +262,14 @@ Array [
           data-prefix="fas"
           focusable="false"
           role="img"
-          style={Object {}}
+          style={{}}
           viewBox="0 0 448 512"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
             d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
             fill="currentColor"
-            style={Object {}}
+            style={{}}
           />
         </svg>
       </span>
@@ -421,7 +421,7 @@ Array [
 `;
 
 exports[`SampleTypeDesigner default properties 1`] = `
-Array [
+[
   <div
     className="domain-form-panel domain-panel-no-theme panel panel-default"
   >
@@ -445,14 +445,14 @@ Array [
           data-prefix="fas"
           focusable="false"
           role="img"
-          style={Object {}}
+          style={{}}
           viewBox="0 0 448 512"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
             d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM92 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H92z"
             fill="currentColor"
-            style={Object {}}
+            style={{}}
           />
         </svg>
       </span>
@@ -544,14 +544,14 @@ Array [
                     data-prefix="fas"
                     focusable="false"
                     role="img"
-                    style={Object {}}
+                    style={{}}
                     viewBox="0 0 512 512"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                       fill="currentColor"
-                      style={Object {}}
+                      style={{}}
                     />
                   </svg>
                 </span>
@@ -596,14 +596,14 @@ Array [
                       data-prefix="fas"
                       focusable="false"
                       role="img"
-                      style={Object {}}
+                      style={{}}
                       viewBox="0 0 512 512"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
                         d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                         fill="currentColor"
-                        style={Object {}}
+                        style={{}}
                       />
                     </svg>
                   </span>
@@ -653,14 +653,14 @@ Array [
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -715,14 +715,14 @@ Array [
             data-prefix="fas"
             focusable="false"
             role="img"
-            style={Object {}}
+            style={{}}
             viewBox="0 0 512 512"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
               d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
               fill="currentColor"
-              style={Object {}}
+              style={{}}
             />
           </svg>
         </span>
@@ -742,14 +742,14 @@ Array [
           data-prefix="fas"
           focusable="false"
           role="img"
-          style={Object {}}
+          style={{}}
           viewBox="0 0 448 512"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
             d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
             fill="currentColor"
-            style={Object {}}
+            style={{}}
           />
         </svg>
       </span>
@@ -904,7 +904,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
 <ComponentWithBaseDomainDesigner
   appPropertiesOnly={true}
   domainFormDisplayOptions={
-    Object {
+    {
       "hideConditionalFormatting": true,
     }
   }
@@ -984,7 +984,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "lookupSchema": undefined,
               "lookupQuery": undefined,
             },
-            "original": Object {
+            "original": {
               "conceptURI": undefined,
               "dataType": Immutable.Record {
                 "conceptURI": undefined,
@@ -1037,7 +1037,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
 >
   <SampleTypeDesignerImpl
     api={
-      Object {
+      {
         "domain": DomainPropertiesAPIWrapper {
           "getDomainNamePreviews": [Function],
           "getGenId": [Function],
@@ -1102,7 +1102,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     appPropertiesOnly={true}
     currentPanelIndex={0}
     defaultSampleFieldConfig={
-      Object {
+      {
         "conceptURI": "http://www.labkey.org/exp/xml#sample",
         "dataType": Immutable.Record {
           "conceptURI": "http://www.labkey.org/exp/xml#sample",
@@ -1117,7 +1117,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "label": "Sample ID",
         "lookupQuery": "Materials",
         "lookupSchema": "exp",
-        "lookupType": Object {
+        "lookupType": {
           "_map": Immutable.Map {
             "name": "sample",
             "display": "Sample",
@@ -1131,7 +1131,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       }
     }
     domainFormDisplayOptions={
-      Object {
+      {
         "hideConditionalFormatting": true,
       }
     }
@@ -1214,7 +1214,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "lookupSchema": undefined,
                 "lookupQuery": undefined,
               },
-              "original": Object {
+              "original": {
                 "conceptURI": undefined,
                 "dataType": Immutable.Record {
                   "conceptURI": undefined,
@@ -1354,7 +1354,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "lookupSchema": undefined,
                   "lookupQuery": undefined,
                 },
-                "original": Object {
+                "original": {
                   "conceptURI": undefined,
                   "dataType": Immutable.Record {
                     "conceptURI": undefined,
@@ -1500,7 +1500,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                   },
-                  "original": Object {
+                  "original": {
                     "conceptURI": undefined,
                     "dataType": Immutable.Record {
                       "conceptURI": undefined,
@@ -1575,7 +1575,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           helpTopic="createSampleType"
           includeDataClasses={false}
           metricUnitProps={
-            Object {
+            {
               "metricUnitHelpMsg": "The unit of measurement used for the sample type.",
               "metricUnitLabel": "Metric Unit",
             }
@@ -1667,7 +1667,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
-                    "original": Object {
+                    "original": {
                       "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
@@ -1748,7 +1748,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             includeDataClasses={false}
             isValid={true}
             metricUnitProps={
-              Object {
+              {
                 "metricUnitHelpMsg": "The unit of measurement used for the sample type.",
                 "metricUnitLabel": "Metric Unit",
               }
@@ -1840,7 +1840,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                         "lookupSchema": undefined,
                         "lookupQuery": undefined,
                       },
-                      "original": Object {
+                      "original": {
                         "conceptURI": undefined,
                         "dataType": Immutable.Record {
                           "conceptURI": undefined,
@@ -1973,11 +1973,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                               fixedWidth={false}
                               flip={false}
                               icon={
-                                Object {
-                                  "icon": Array [
+                                {
+                                  "icon": [
                                     448,
                                     512,
-                                    Array [],
+                                    [],
                                     "f146",
                                     "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM92 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H92z",
                                   ],
@@ -2010,14 +2010,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                 data-prefix="fas"
                                 focusable="false"
                                 role="img"
-                                style={Object {}}
+                                style={{}}
                                 viewBox="0 0 448 512"
                                 xmlns="http://www.w3.org/2000/svg"
                               >
                                 <path
                                   d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM92 296c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h264c6.6 0 12 5.4 12 12v56c0 6.6-5.4 12-12 12H92z"
                                   fill="currentColor"
-                                  style={Object {}}
+                                  style={{}}
                                 />
                               </svg>
                             </FontAwesomeIcon>
@@ -2218,7 +2218,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                               "lookupSchema": undefined,
                                               "lookupQuery": undefined,
                                             },
-                                            "original": Object {
+                                            "original": {
                                               "conceptURI": undefined,
                                               "dataType": Immutable.Record {
                                                 "conceptURI": undefined,
@@ -2370,7 +2370,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                 >
                                                   Description
                                                   <Component
-                                                    customStyle={Object {}}
+                                                    customStyle={{}}
                                                     id="tooltip"
                                                     size="1x"
                                                     title="Description"
@@ -2390,11 +2390,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         fixedWidth={false}
                                                         flip={false}
                                                         icon={
-                                                          Object {
-                                                            "icon": Array [
+                                                          {
+                                                            "icon": [
                                                               512,
                                                               512,
-                                                              Array [],
+                                                              [],
                                                               "f059",
                                                               "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                                             ],
@@ -2414,7 +2414,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         spin={false}
                                                         spinPulse={false}
                                                         spinReverse={false}
-                                                        style={Object {}}
+                                                        style={{}}
                                                         swapOpacity={false}
                                                         symbol={false}
                                                         title=""
@@ -2428,14 +2428,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           data-prefix="fas"
                                                           focusable="false"
                                                           role="img"
-                                                          style={Object {}}
+                                                          style={{}}
                                                           viewBox="0 0 512 512"
                                                           xmlns="http://www.w3.org/2000/svg"
                                                         >
                                                           <path
                                                             d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                                             fill="currentColor"
-                                                            style={Object {}}
+                                                            style={{}}
                                                           />
                                                         </svg>
                                                       </FontAwesomeIcon>
@@ -2523,7 +2523,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   >
                                                     Pattern
                                                     <Component
-                                                      customStyle={Object {}}
+                                                      customStyle={{}}
                                                       id="tooltip"
                                                       size="1x"
                                                       title="Naming Pattern"
@@ -2543,11 +2543,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           fixedWidth={false}
                                                           flip={false}
                                                           icon={
-                                                            Object {
-                                                              "icon": Array [
+                                                            {
+                                                              "icon": [
                                                                 512,
                                                                 512,
-                                                                Array [],
+                                                                [],
                                                                 "f059",
                                                                 "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                                               ],
@@ -2567,7 +2567,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           spin={false}
                                                           spinPulse={false}
                                                           spinReverse={false}
-                                                          style={Object {}}
+                                                          style={{}}
                                                           swapOpacity={false}
                                                           symbol={false}
                                                           title=""
@@ -2581,14 +2581,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             data-prefix="fas"
                                                             focusable="false"
                                                             role="img"
-                                                            style={Object {}}
+                                                            style={{}}
                                                             viewBox="0 0 512 512"
                                                             xmlns="http://www.w3.org/2000/svg"
                                                           >
                                                             <path
                                                               d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                                               fill="currentColor"
-                                                              style={Object {}}
+                                                              style={{}}
                                                             />
                                                           </svg>
                                                         </FontAwesomeIcon>
@@ -2682,7 +2682,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                           >
                                             Color
                                             <Component
-                                              customStyle={Object {}}
+                                              customStyle={{}}
                                               id="tooltip"
                                               size="1x"
                                               title="Label Color"
@@ -2702,11 +2702,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   fixedWidth={false}
                                                   flip={false}
                                                   icon={
-                                                    Object {
-                                                      "icon": Array [
+                                                    {
+                                                      "icon": [
                                                         512,
                                                         512,
-                                                        Array [],
+                                                        [],
                                                         "f059",
                                                         "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                                       ],
@@ -2726,7 +2726,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   spin={false}
                                                   spinPulse={false}
                                                   spinReverse={false}
-                                                  style={Object {}}
+                                                  style={{}}
                                                   swapOpacity={false}
                                                   symbol={false}
                                                   title=""
@@ -2740,14 +2740,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                     data-prefix="fas"
                                                     focusable="false"
                                                     role="img"
-                                                    style={Object {}}
+                                                    style={{}}
                                                     viewBox="0 0 512 512"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                   >
                                                     <path
                                                       d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                                       fill="currentColor"
-                                                      style={Object {}}
+                                                      style={{}}
                                                     />
                                                   </svg>
                                                 </FontAwesomeIcon>
@@ -2897,7 +2897,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "lookupSchema": undefined,
                   "lookupQuery": undefined,
                 },
-                "original": Object {
+                "original": {
                   "conceptURI": undefined,
                   "dataType": Immutable.Record {
                     "conceptURI": undefined,
@@ -2942,8 +2942,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           }
         }
         domainFormDisplayOptions={
-          Object {
-            "derivationDataScopeConfig": Object {
+          {
+            "derivationDataScopeConfig": {
               "dataTypeFilter": [Function],
               "helpLinkNode": <div>
                 <p>
@@ -2994,7 +2994,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         initCollapsed={true}
         key="0"
         newFieldConfig={
-          Object {
+          {
             "derivationDataScope": "ParentOnly",
           }
         }
@@ -3085,7 +3085,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
-                    "original": Object {
+                    "original": {
                       "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
@@ -3130,8 +3130,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               }
             }
             domainFormDisplayOptions={
-              Object {
-                "derivationDataScopeConfig": Object {
+              {
+                "derivationDataScopeConfig": {
                   "dataTypeFilter": [Function],
                   "helpLinkNode": <div>
                     <p>
@@ -3183,7 +3183,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             initCollapsed={true}
             isNew={false}
             newFieldConfig={
-              Object {
+              {
                 "derivationDataScope": "ParentOnly",
               }
             }
@@ -3241,7 +3241,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                           onClick={[Function]}
                         >
                           <Component
-                            customStyle={Object {}}
+                            customStyle={{}}
                             iconComponent={
                               <span
                                 className="domain-panel-status-icon domain-panel-status-icon-blue"
@@ -3256,11 +3256,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                   fixedWidth={false}
                                   flip={false}
                                   icon={
-                                    Object {
-                                      "icon": Array [
+                                    {
+                                      "icon": [
                                         512,
                                         512,
-                                        Array [],
+                                        [],
                                         "f06a",
                                         "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z",
                                       ],
@@ -3311,11 +3311,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                   fixedWidth={false}
                                   flip={false}
                                   icon={
-                                    Object {
-                                      "icon": Array [
+                                    {
+                                      "icon": [
                                         512,
                                         512,
-                                        Array [],
+                                        [],
                                         "f06a",
                                         "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z",
                                       ],
@@ -3348,14 +3348,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                     data-prefix="fas"
                                     focusable="false"
                                     role="img"
-                                    style={Object {}}
+                                    style={{}}
                                     viewBox="0 0 512 512"
                                     xmlns="http://www.w3.org/2000/svg"
                                   >
                                     <path
                                       d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
                                       fill="currentColor"
-                                      style={Object {}}
+                                      style={{}}
                                     />
                                   </svg>
                                 </FontAwesomeIcon>
@@ -3393,11 +3393,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                               fixedWidth={false}
                               flip={false}
                               icon={
-                                Object {
-                                  "icon": Array [
+                                {
+                                  "icon": [
                                     448,
                                     512,
-                                    Array [],
+                                    [],
                                     "f0fe",
                                     "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
                                   ],
@@ -3430,14 +3430,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                 data-prefix="fas"
                                 focusable="false"
                                 role="img"
-                                style={Object {}}
+                                style={{}}
                                 viewBox="0 0 448 512"
                                 xmlns="http://www.w3.org/2000/svg"
                               >
                                 <path
                                   d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
                                   fill="currentColor"
-                                  style={Object {}}
+                                  style={{}}
                                 />
                               </svg>
                             </FontAwesomeIcon>
@@ -3659,19 +3659,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                     >
                                       <Provider
                                         context={
-                                          Object {
+                                          {
                                             "$$typeof": Symbol(react.context),
-                                            "Consumer": Object {
+                                            "Consumer": {
                                               "$$typeof": Symbol(react.context),
                                               "_calculateChangedBits": null,
                                               "_context": [Circular],
                                             },
-                                            "Provider": Object {
+                                            "Provider": {
                                               "$$typeof": Symbol(react.provider),
                                               "_context": [Circular],
                                             },
                                             "_calculateChangedBits": null,
-                                            "_currentRenderer": Object {},
+                                            "_currentRenderer": {},
                                             "_currentRenderer2": null,
                                             "_currentValue": null,
                                             "_currentValue2": null,
@@ -3679,7 +3679,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                           }
                                         }
                                         store={
-                                          Object {
+                                          {
                                             "@@observable": [Function],
                                             "dispatch": [Function],
                                             "getState": [Function],
@@ -3863,7 +3863,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             renderClone={null}
                                             shouldAnimatePlaceholder={false}
                                             snapshot={
-                                              Object {
+                                              {
                                                 "draggingFromThisWith": null,
                                                 "draggingOverWith": null,
                                                 "isDraggingOver": false,
@@ -4016,8 +4016,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                     }
                                                     defaultValueOptions={Immutable.List []}
                                                     domainFormDisplayOptions={
-                                                      Object {
-                                                        "derivationDataScopeConfig": Object {
+                                                      {
+                                                        "derivationDataScopeConfig": {
                                                           "dataTypeFilter": [Function],
                                                           "helpLinkNode": <div>
                                                             <p>
@@ -4126,7 +4126,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           "lookupSchema": undefined,
                                                           "lookupQuery": undefined,
                                                         },
-                                                        "original": Object {
+                                                        "original": {
                                                           "conceptURI": undefined,
                                                           "dataType": Immutable.Record {
                                                             "conceptURI": undefined,
@@ -4157,7 +4157,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         "scannable": false,
                                                       }
                                                     }
-                                                    fieldDetailsInfo={Object {}}
+                                                    fieldDetailsInfo={{}}
                                                     getDomainFields={[Function]}
                                                     helpNoun="field designer"
                                                     index={0}
@@ -4197,14 +4197,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             isClone={false}
                                                             isEnabled={true}
                                                             mapped={
-                                                              Object {
+                                                              {
                                                                 "combineTargetFor": null,
-                                                                "offset": Object {
+                                                                "offset": {
                                                                   "x": 0,
                                                                   "y": 0,
                                                                 },
                                                                 "shouldAnimateDisplacement": true,
-                                                                "snapshot": Object {
+                                                                "snapshot": {
                                                                   "combineTargetFor": null,
                                                                   "combineWith": null,
                                                                   "draggingOver": null,
@@ -4225,7 +4225,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                               data-rbd-draggable-id="domainpropertiesrow-domaindrag-0-0"
                                                               onTransitionEnd={null}
                                                               style={
-                                                                Object {
+                                                                {
                                                                   "transform": null,
                                                                   "transition": null,
                                                                 }
@@ -4244,8 +4244,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                   <AdvancedSettings
                                                                     defaultValueOptions={Immutable.List []}
                                                                     domainFormDisplayOptions={
-                                                                      Object {
-                                                                        "derivationDataScopeConfig": Object {
+                                                                      {
+                                                                        "derivationDataScopeConfig": {
                                                                           "dataTypeFilter": [Function],
                                                                           "helpLinkNode": <div>
                                                                             <p>
@@ -4351,7 +4351,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                           "lookupSchema": undefined,
                                                                           "lookupQuery": undefined,
                                                                         },
-                                                                        "original": Object {
+                                                                        "original": {
                                                                           "conceptURI": undefined,
                                                                           "dataType": Immutable.Record {
                                                                             "conceptURI": undefined,
@@ -4403,12 +4403,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                       manager={
                                                                         ModalManager {
                                                                           "add": [Function],
-                                                                          "containers": Array [],
-                                                                          "data": Array [],
+                                                                          "containers": [],
+                                                                          "data": [],
                                                                           "handleContainerOverflow": true,
                                                                           "hideSiblingNodes": true,
                                                                           "isTopModal": [Function],
-                                                                          "modals": Array [],
+                                                                          "modals": [],
                                                                           "remove": [Function],
                                                                         }
                                                                       }
@@ -4429,12 +4429,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         manager={
                                                                           ModalManager {
                                                                             "add": [Function],
-                                                                            "containers": Array [],
-                                                                            "data": Array [],
+                                                                            "containers": [],
+                                                                            "data": [],
                                                                             "handleContainerOverflow": true,
                                                                             "hideSiblingNodes": true,
                                                                             "isTopModal": [Function],
-                                                                            "modals": Array [],
+                                                                            "modals": [],
                                                                             "remove": [Function],
                                                                           }
                                                                         }
@@ -4471,11 +4471,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         fixedWidth={false}
                                                                         flip={false}
                                                                         icon={
-                                                                          Object {
-                                                                            "icon": Array [
+                                                                          {
+                                                                            "icon": [
                                                                               320,
                                                                               512,
-                                                                              Array [],
+                                                                              [],
                                                                               "f58e",
                                                                               "M96 32H32C14.33 32 0 46.33 0 64v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zm0 160H32c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zm0 160H32c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zM288 32h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zm0 160h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zm0 160h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32z",
                                                                             ],
@@ -4508,14 +4508,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                           data-prefix="fas"
                                                                           focusable="false"
                                                                           role="img"
-                                                                          style={Object {}}
+                                                                          style={{}}
                                                                           viewBox="0 0 320 512"
                                                                           xmlns="http://www.w3.org/2000/svg"
                                                                         >
                                                                           <path
                                                                             d="M96 32H32C14.33 32 0 46.33 0 64v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zm0 160H32c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zm0 160H32c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zM288 32h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zm0 160h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zm0 160h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32z"
                                                                             fill="currentColor"
-                                                                            style={Object {}}
+                                                                            style={{}}
                                                                           />
                                                                         </svg>
                                                                       </FontAwesomeIcon>
@@ -4576,11 +4576,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                           fixedWidth={false}
                                                                           flip={false}
                                                                           icon={
-                                                                            Object {
-                                                                              "icon": Array [
+                                                                            {
+                                                                              "icon": [
                                                                                 448,
                                                                                 512,
-                                                                                Array [],
+                                                                                [],
                                                                                 "f0fe",
                                                                                 "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
                                                                               ],
@@ -4613,14 +4613,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             data-prefix="fas"
                                                                             focusable="false"
                                                                             role="img"
-                                                                            style={Object {}}
+                                                                            style={{}}
                                                                             viewBox="0 0 448 512"
                                                                             xmlns="http://www.w3.org/2000/svg"
                                                                           >
                                                                             <path
                                                                               d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
                                                                               fill="currentColor"
-                                                                              style={Object {}}
+                                                                              style={{}}
                                                                             />
                                                                           </svg>
                                                                         </FontAwesomeIcon>
@@ -4840,11 +4840,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                 fixedWidth={false}
                                                                                 flip={false}
                                                                                 icon={
-                                                                                  Object {
-                                                                                    "icon": Array [
+                                                                                  {
+                                                                                    "icon": [
                                                                                       512,
                                                                                       512,
-                                                                                      Array [],
+                                                                                      [],
                                                                                       "f057",
                                                                                       "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z",
                                                                                     ],
@@ -4877,14 +4877,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   data-prefix="fas"
                                                                                   focusable="false"
                                                                                   role="img"
-                                                                                  style={Object {}}
+                                                                                  style={{}}
                                                                                   viewBox="0 0 512 512"
                                                                                   xmlns="http://www.w3.org/2000/svg"
                                                                                 >
                                                                                   <path
                                                                                     d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"
                                                                                     fill="currentColor"
-                                                                                    style={Object {}}
+                                                                                    style={{}}
                                                                                   />
                                                                                 </svg>
                                                                               </FontAwesomeIcon>
@@ -4930,8 +4930,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                     <DomainRowExpandedOptions
                                                                       appPropertiesOnly={true}
                                                                       domainFormDisplayOptions={
-                                                                        Object {
-                                                                          "derivationDataScopeConfig": Object {
+                                                                        {
+                                                                          "derivationDataScopeConfig": {
                                                                             "dataTypeFilter": [Function],
                                                                             "helpLinkNode": <div>
                                                                               <p>
@@ -5036,7 +5036,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "lookupSchema": undefined,
                                                                             "lookupQuery": undefined,
                                                                           },
-                                                                          "original": Object {
+                                                                          "original": {
                                                                             "conceptURI": undefined,
                                                                             "dataType": Immutable.Record {
                                                                               "conceptURI": undefined,
@@ -5168,7 +5168,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                               >
                                                                                                 Length
                                                                                                 <Component
-                                                                                                  customStyle={Object {}}
+                                                                                                  customStyle={{}}
                                                                                                   id="tooltip"
                                                                                                   size="1x"
                                                                                                   title="Maximum Text Length"
@@ -5188,11 +5188,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       fixedWidth={false}
                                                                                                       flip={false}
                                                                                                       icon={
-                                                                                                        Object {
-                                                                                                          "icon": Array [
+                                                                                                        {
+                                                                                                          "icon": [
                                                                                                             512,
                                                                                                             512,
-                                                                                                            Array [],
+                                                                                                            [],
                                                                                                             "f059",
                                                                                                             "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                                                                                           ],
@@ -5212,7 +5212,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       spin={false}
                                                                                                       spinPulse={false}
                                                                                                       spinReverse={false}
-                                                                                                      style={Object {}}
+                                                                                                      style={{}}
                                                                                                       swapOpacity={false}
                                                                                                       symbol={false}
                                                                                                       title=""
@@ -5226,14 +5226,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         data-prefix="fas"
                                                                                                         focusable="false"
                                                                                                         role="img"
-                                                                                                        style={Object {}}
+                                                                                                        style={{}}
                                                                                                         viewBox="0 0 512 512"
                                                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                                                       >
                                                                                                         <path
                                                                                                           d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                                                                                           fill="currentColor"
-                                                                                                          style={Object {}}
+                                                                                                          style={{}}
                                                                                                         />
                                                                                                       </svg>
                                                                                                     </FontAwesomeIcon>
@@ -5441,7 +5441,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                             >
                                                                                               <DomainFieldLabel
                                                                                                 helpTipBody="When using the Find Samples dialog from the search bar and choosing the
-                                        \\"Barcodes\\" option, fields
+                                        "Barcodes" option, fields
                                         that are designated as Barcode fields will be queried
                                         along with any UniqueId fields for this sample type."
                                                                                                 label="Barcode Field"
@@ -5452,7 +5452,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                 >
                                                                                                   Field
                                                                                                   <Component
-                                                                                                    customStyle={Object {}}
+                                                                                                    customStyle={{}}
                                                                                                     id="tooltip"
                                                                                                     size="1x"
                                                                                                     title="Barcode Field"
@@ -5472,11 +5472,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         fixedWidth={false}
                                                                                                         flip={false}
                                                                                                         icon={
-                                                                                                          Object {
-                                                                                                            "icon": Array [
+                                                                                                          {
+                                                                                                            "icon": [
                                                                                                               512,
                                                                                                               512,
-                                                                                                              Array [],
+                                                                                                              [],
                                                                                                               "f059",
                                                                                                               "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                                                                                             ],
@@ -5496,7 +5496,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         spin={false}
                                                                                                         spinPulse={false}
                                                                                                         spinReverse={false}
-                                                                                                        style={Object {}}
+                                                                                                        style={{}}
                                                                                                         swapOpacity={false}
                                                                                                         symbol={false}
                                                                                                         title=""
@@ -5510,14 +5510,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                           data-prefix="fas"
                                                                                                           focusable="false"
                                                                                                           role="img"
-                                                                                                          style={Object {}}
+                                                                                                          style={{}}
                                                                                                           viewBox="0 0 512 512"
                                                                                                           xmlns="http://www.w3.org/2000/svg"
                                                                                                         >
                                                                                                           <path
                                                                                                             d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                                                                                             fill="currentColor"
-                                                                                                            style={Object {}}
+                                                                                                            style={{}}
                                                                                                           />
                                                                                                         </svg>
                                                                                                       </FontAwesomeIcon>
@@ -5603,8 +5603,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               <NameAndLinkingOptions
                                                                                 appPropertiesOnly={true}
                                                                                 domainFormDisplayOptions={
-                                                                                  Object {
-                                                                                    "derivationDataScopeConfig": Object {
+                                                                                  {
+                                                                                    "derivationDataScopeConfig": {
                                                                                       "dataTypeFilter": [Function],
                                                                                       "helpLinkNode": <div>
                                                                                         <p>
@@ -5709,7 +5709,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                       "lookupSchema": undefined,
                                                                                       "lookupQuery": undefined,
                                                                                     },
-                                                                                    "original": Object {
+                                                                                    "original": {
                                                                                       "conceptURI": undefined,
                                                                                       "dataType": Immutable.Record {
                                                                                         "conceptURI": undefined,
@@ -5869,7 +5869,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                               >
                                                                                                 Aliases
                                                                                                 <Component
-                                                                                                  customStyle={Object {}}
+                                                                                                  customStyle={{}}
                                                                                                   id="tooltip"
                                                                                                   size="1x"
                                                                                                   title="Import Aliases"
@@ -5889,11 +5889,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       fixedWidth={false}
                                                                                                       flip={false}
                                                                                                       icon={
-                                                                                                        Object {
-                                                                                                          "icon": Array [
+                                                                                                        {
+                                                                                                          "icon": [
                                                                                                             512,
                                                                                                             512,
-                                                                                                            Array [],
+                                                                                                            [],
                                                                                                             "f059",
                                                                                                             "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                                                                                           ],
@@ -5913,7 +5913,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       spin={false}
                                                                                                       spinPulse={false}
                                                                                                       spinReverse={false}
-                                                                                                      style={Object {}}
+                                                                                                      style={{}}
                                                                                                       swapOpacity={false}
                                                                                                       symbol={false}
                                                                                                       title=""
@@ -5927,14 +5927,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         data-prefix="fas"
                                                                                                         focusable="false"
                                                                                                         role="img"
-                                                                                                        style={Object {}}
+                                                                                                        style={{}}
                                                                                                         viewBox="0 0 512 512"
                                                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                                                       >
                                                                                                         <path
                                                                                                           d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                                                                                           fill="currentColor"
-                                                                                                          style={Object {}}
+                                                                                                          style={{}}
                                                                                                         />
                                                                                                       </svg>
                                                                                                     </FontAwesomeIcon>
@@ -6011,7 +6011,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                               >
                                                                                                 URL
                                                                                                 <Component
-                                                                                                  customStyle={Object {}}
+                                                                                                  customStyle={{}}
                                                                                                   id="tooltip"
                                                                                                   size="1x"
                                                                                                   title="URL"
@@ -6031,11 +6031,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       fixedWidth={false}
                                                                                                       flip={false}
                                                                                                       icon={
-                                                                                                        Object {
-                                                                                                          "icon": Array [
+                                                                                                        {
+                                                                                                          "icon": [
                                                                                                             512,
                                                                                                             512,
-                                                                                                            Array [],
+                                                                                                            [],
                                                                                                             "f059",
                                                                                                             "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                                                                                           ],
@@ -6055,7 +6055,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       spin={false}
                                                                                                       spinPulse={false}
                                                                                                       spinReverse={false}
-                                                                                                      style={Object {}}
+                                                                                                      style={{}}
                                                                                                       swapOpacity={false}
                                                                                                       symbol={false}
                                                                                                       title=""
@@ -6069,14 +6069,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         data-prefix="fas"
                                                                                                         focusable="false"
                                                                                                         role="img"
-                                                                                                        style={Object {}}
+                                                                                                        style={{}}
                                                                                                         viewBox="0 0 512 512"
                                                                                                         xmlns="http://www.w3.org/2000/svg"
                                                                                                       >
                                                                                                         <path
                                                                                                           d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                                                                                           fill="currentColor"
-                                                                                                          style={Object {}}
+                                                                                                          style={{}}
                                                                                                         />
                                                                                                       </svg>
                                                                                                     </FontAwesomeIcon>
@@ -6136,8 +6136,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             >
                                                                               <ConditionalFormattingAndValidation
                                                                                 domainFormDisplayOptions={
-                                                                                  Object {
-                                                                                    "derivationDataScopeConfig": Object {
+                                                                                  {
+                                                                                    "derivationDataScopeConfig": {
                                                                                       "dataTypeFilter": [Function],
                                                                                       "helpLinkNode": <div>
                                                                                         <p>
@@ -6242,7 +6242,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                       "lookupSchema": undefined,
                                                                                       "lookupQuery": undefined,
                                                                                     },
-                                                                                    "original": Object {
+                                                                                    "original": {
                                                                                       "conceptURI": undefined,
                                                                                       "dataType": Immutable.Record {
                                                                                         "conceptURI": undefined,
@@ -6354,7 +6354,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                 >
                                                                                                   Validator
                                                                                                   <Component
-                                                                                                    customStyle={Object {}}
+                                                                                                    customStyle={{}}
                                                                                                     id="tooltip"
                                                                                                     size="1x"
                                                                                                     title="Create Regular Expression Validator"
@@ -6374,11 +6374,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         fixedWidth={false}
                                                                                                         flip={false}
                                                                                                         icon={
-                                                                                                          Object {
-                                                                                                            "icon": Array [
+                                                                                                          {
+                                                                                                            "icon": [
                                                                                                               512,
                                                                                                               512,
-                                                                                                              Array [],
+                                                                                                              [],
                                                                                                               "f059",
                                                                                                               "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                                                                                             ],
@@ -6398,7 +6398,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         spin={false}
                                                                                                         spinPulse={false}
                                                                                                         spinReverse={false}
-                                                                                                        style={Object {}}
+                                                                                                        style={{}}
                                                                                                         swapOpacity={false}
                                                                                                         symbol={false}
                                                                                                         title=""
@@ -6412,14 +6412,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                           data-prefix="fas"
                                                                                                           focusable="false"
                                                                                                           role="img"
-                                                                                                          style={Object {}}
+                                                                                                          style={{}}
                                                                                                           viewBox="0 0 512 512"
                                                                                                           xmlns="http://www.w3.org/2000/svg"
                                                                                                         >
                                                                                                           <path
                                                                                                             d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                                                                                             fill="currentColor"
-                                                                                                            style={Object {}}
+                                                                                                            style={{}}
                                                                                                           />
                                                                                                         </svg>
                                                                                                       </FontAwesomeIcon>

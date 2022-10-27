@@ -98,14 +98,14 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
                 data-prefix="fas"
                 focusable="false"
                 role="img"
-                style={Object {}}
+                style={{}}
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                   fill="currentColor"
-                  style={Object {}}
+                  style={{}}
                 />
               </svg>
             </span>
@@ -150,14 +150,14 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -215,14 +215,14 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -259,14 +259,14 @@ exports[`<SampleTypePropertiesPanel/> appPropertiesOnly 1`] = `
               data-prefix="fas"
               focusable="false"
               role="img"
-              style={Object {}}
+              style={{}}
               viewBox="0 0 512 512"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                 fill="currentColor"
-                style={Object {}}
+                style={{}}
               />
             </svg>
           </span>
@@ -392,14 +392,14 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
                 data-prefix="fas"
                 focusable="false"
                 role="img"
-                style={Object {}}
+                style={{}}
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                   fill="currentColor"
-                  style={Object {}}
+                  style={{}}
                 />
               </svg>
             </span>
@@ -444,14 +444,14 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -509,14 +509,14 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -622,14 +622,14 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
                 data-prefix="fas"
                 focusable="false"
                 role="img"
-                style={Object {}}
+                style={{}}
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                   fill="currentColor"
-                  style={Object {}}
+                  style={{}}
                 />
               </svg>
             </span>
@@ -674,14 +674,14 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -739,14 +739,14 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -791,14 +791,14 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -909,14 +909,14 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
                 data-prefix="fas"
                 focusable="false"
                 role="img"
-                style={Object {}}
+                style={{}}
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                   fill="currentColor"
-                  style={Object {}}
+                  style={{}}
                 />
               </svg>
             </span>
@@ -961,14 +961,14 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -1026,14 +1026,14 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -1070,14 +1070,14 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
               data-prefix="fas"
               focusable="false"
               role="img"
-              style={Object {}}
+              style={{}}
               viewBox="0 0 512 512"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                 fill="currentColor"
-                style={Object {}}
+                style={{}}
               />
             </svg>
           </span>
@@ -1129,14 +1129,14 @@ exports[`<SampleTypePropertiesPanel/> includeMetricUnitProperty 1`] = `
               data-prefix="fas"
               focusable="false"
               role="img"
-              style={Object {}}
+              style={{}}
               viewBox="0 0 512 512"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                 fill="currentColor"
-                style={Object {}}
+                style={{}}
               />
             </svg>
           </span>
@@ -1257,14 +1257,14 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
                 data-prefix="fas"
                 focusable="false"
                 role="img"
-                style={Object {}}
+                style={{}}
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                   fill="currentColor"
-                  style={Object {}}
+                  style={{}}
                 />
               </svg>
             </span>
@@ -1309,14 +1309,14 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -1374,14 +1374,14 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -1418,14 +1418,14 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
               data-prefix="fas"
               focusable="false"
               role="img"
-              style={Object {}}
+              style={{}}
               viewBox="0 0 512 512"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                 fill="currentColor"
-                style={Object {}}
+                style={{}}
               />
             </svg>
           </span>
@@ -1477,14 +1477,14 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
               data-prefix="fas"
               focusable="false"
               role="img"
-              style={Object {}}
+              style={{}}
               viewBox="0 0 512 512"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                 fill="currentColor"
-                style={Object {}}
+                style={{}}
               />
             </svg>
           </span>
@@ -1530,7 +1530,7 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
                     <div
                       className="select-input__input"
                       style={
-                        Object {
+                        {
                           "display": "inline-block",
                         }
                       }
@@ -1548,7 +1548,7 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
                         required={true}
                         spellCheck="false"
                         style={
-                          Object {
+                          {
                             "background": 0,
                             "border": 0,
                             "boxSizing": "content-box",
@@ -1567,7 +1567,7 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
                       />
                       <div
                         style={
-                          Object {
+                          {
                             "height": 0,
                             "left": 0,
                             "overflow": "scroll",
@@ -1717,14 +1717,14 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
                 data-prefix="fas"
                 focusable="false"
                 role="img"
-                style={Object {}}
+                style={{}}
                 viewBox="0 0 512 512"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                   fill="currentColor"
-                  style={Object {}}
+                  style={{}}
                 />
               </svg>
             </span>
@@ -1769,14 +1769,14 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -1834,14 +1834,14 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
                   data-prefix="fas"
                   focusable="false"
                   role="img"
-                  style={Object {}}
+                  style={{}}
                   viewBox="0 0 512 512"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                     fill="currentColor"
-                    style={Object {}}
+                    style={{}}
                   />
                 </svg>
               </span>
@@ -1857,7 +1857,7 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
 exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
 <ComponentWithDomainPropertiesPanelCollapse
   aliquotNamePatternProps={
-    Object {
+    {
       "showAliquotNameExpression": true,
     }
   }
@@ -1910,7 +1910,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
     }
   }
   namePreviews={
-    Array [
+    [
       null,
       "S-parentSample-1",
     ]
@@ -1920,14 +1920,14 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
   onParentAliasChange={[Function]}
   onRemoveParentAlias={[Function]}
   panelStatus="NONE"
-  parentOptions={Array []}
+  parentOptions={[]}
   updateModel={[Function]}
   useTheme={false}
   validate={false}
 >
   <SampleTypePropertiesPanelImpl
     aliquotNamePatternProps={
-      Object {
+      {
         "showAliquotNameExpression": true,
       }
     }
@@ -1939,7 +1939,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
     dataClassTypeCaption="Data Class"
     helpTopic="createSampleSet"
     metricUnitProps={
-      Object {
+      {
         "metricUnitHelpMsg": "The unit of measurement used for the sample type.",
         "metricUnitLabel": "Metric Unit",
       }
@@ -1991,7 +1991,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
     nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs&referrer=inPage"
     nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
     namePreviews={
-      Array [
+      [
         null,
         "S-parentSample-1",
       ]
@@ -2003,7 +2003,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
     onParentAliasChange={[Function]}
     onRemoveParentAlias={[Function]}
     panelStatus="NONE"
-    parentOptions={Array []}
+    parentOptions={[]}
     sampleAliasCaption="Sample Alias"
     sampleTypeCaption="Sample Type"
     showLinkToStudy={true}
@@ -2014,7 +2014,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
   >
     <BasePropertiesPanel
       aliquotNamePatternProps={
-        Object {
+        {
           "showAliquotNameExpression": true,
         }
       }
@@ -2028,7 +2028,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
       helpTopic="createSampleSet"
       isValid={true}
       metricUnitProps={
-        Object {
+        {
           "metricUnitHelpMsg": "The unit of measurement used for the sample type.",
           "metricUnitLabel": "Metric Unit",
         }
@@ -2080,7 +2080,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
       nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs&referrer=inPage"
       nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
       namePreviews={
-        Array [
+        [
           null,
           "S-parentSample-1",
         ]
@@ -2092,7 +2092,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
       onParentAliasChange={[Function]}
       onRemoveParentAlias={[Function]}
       panelStatus="NONE"
-      parentOptions={Array []}
+      parentOptions={[]}
       sampleAliasCaption="Sample Alias"
       sampleTypeCaption="Sample Type"
       showLinkToStudy={true}
@@ -2364,7 +2364,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                   >
                                     Description
                                     <Component
-                                      customStyle={Object {}}
+                                      customStyle={{}}
                                       id="tooltip"
                                       size="1x"
                                       title="Description"
@@ -2384,11 +2384,11 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                           fixedWidth={false}
                                           flip={false}
                                           icon={
-                                            Object {
-                                              "icon": Array [
+                                            {
+                                              "icon": [
                                                 512,
                                                 512,
-                                                Array [],
+                                                [],
                                                 "f059",
                                                 "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                               ],
@@ -2408,7 +2408,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                           spin={false}
                                           spinPulse={false}
                                           spinReverse={false}
-                                          style={Object {}}
+                                          style={{}}
                                           swapOpacity={false}
                                           symbol={false}
                                           title=""
@@ -2422,14 +2422,14 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                             data-prefix="fas"
                                             focusable="false"
                                             role="img"
-                                            style={Object {}}
+                                            style={{}}
                                             viewBox="0 0 512 512"
                                             xmlns="http://www.w3.org/2000/svg"
                                           >
                                             <path
                                               d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                               fill="currentColor"
-                                              style={Object {}}
+                                              style={{}}
                                             />
                                           </svg>
                                         </FontAwesomeIcon>
@@ -2517,7 +2517,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                     >
                                       Pattern
                                       <Component
-                                        customStyle={Object {}}
+                                        customStyle={{}}
                                         id="tooltip"
                                         size="1x"
                                         title="Naming Pattern"
@@ -2537,11 +2537,11 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                             fixedWidth={false}
                                             flip={false}
                                             icon={
-                                              Object {
-                                                "icon": Array [
+                                              {
+                                                "icon": [
                                                   512,
                                                   512,
-                                                  Array [],
+                                                  [],
                                                   "f059",
                                                   "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                                 ],
@@ -2561,7 +2561,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                             spin={false}
                                             spinPulse={false}
                                             spinReverse={false}
-                                            style={Object {}}
+                                            style={{}}
                                             swapOpacity={false}
                                             symbol={false}
                                             title=""
@@ -2575,14 +2575,14 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                               data-prefix="fas"
                                               focusable="false"
                                               role="img"
-                                              style={Object {}}
+                                              style={{}}
                                               viewBox="0 0 512 512"
                                               xmlns="http://www.w3.org/2000/svg"
                                             >
                                               <path
                                                 d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                                 fill="currentColor"
-                                                style={Object {}}
+                                                style={{}}
                                               />
                                             </svg>
                                           </FontAwesomeIcon>
@@ -2693,7 +2693,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                               >
                                 Pattern
                                 <Component
-                                  customStyle={Object {}}
+                                  customStyle={{}}
                                   id="tooltip"
                                   size="1x"
                                   title="Aliquot Naming Pattern"
@@ -2713,11 +2713,11 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                       fixedWidth={false}
                                       flip={false}
                                       icon={
-                                        Object {
-                                          "icon": Array [
+                                        {
+                                          "icon": [
                                             512,
                                             512,
-                                            Array [],
+                                            [],
                                             "f059",
                                             "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                           ],
@@ -2737,7 +2737,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                       spin={false}
                                       spinPulse={false}
                                       spinReverse={false}
-                                      style={Object {}}
+                                      style={{}}
                                       swapOpacity={false}
                                       symbol={false}
                                       title=""
@@ -2751,14 +2751,14 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                         data-prefix="fas"
                                         focusable="false"
                                         role="img"
-                                        style={Object {}}
+                                        style={{}}
                                         viewBox="0 0 512 512"
                                         xmlns="http://www.w3.org/2000/svg"
                                       >
                                         <path
                                           d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                           fill="currentColor"
-                                          style={Object {}}
+                                          style={{}}
                                         />
                                       </svg>
                                     </FontAwesomeIcon>
@@ -2890,7 +2890,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                       Parent Alias
                                     </span>
                                     <Component
-                                      customStyle={Object {}}
+                                      customStyle={{}}
                                       id="tooltip"
                                       size="1x"
                                       title="More Info"
@@ -2910,11 +2910,11 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                           fixedWidth={false}
                                           flip={false}
                                           icon={
-                                            Object {
-                                              "icon": Array [
+                                            {
+                                              "icon": [
                                                 512,
                                                 512,
-                                                Array [],
+                                                [],
                                                 "f059",
                                                 "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                               ],
@@ -2934,7 +2934,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                           spin={false}
                                           spinPulse={false}
                                           spinReverse={false}
-                                          style={Object {}}
+                                          style={{}}
                                           swapOpacity={false}
                                           symbol={false}
                                           title=""
@@ -2948,14 +2948,14 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                             data-prefix="fas"
                                             focusable="false"
                                             role="img"
-                                            style={Object {}}
+                                            style={{}}
                                             viewBox="0 0 512 512"
                                             xmlns="http://www.w3.org/2000/svg"
                                           >
                                             <path
                                               d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                               fill="currentColor"
-                                              style={Object {}}
+                                              style={{}}
                                             />
                                           </svg>
                                         </FontAwesomeIcon>
@@ -3036,7 +3036,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                             >
                               Barcodes
                               <Component
-                                customStyle={Object {}}
+                                customStyle={{}}
                                 id="tooltip"
                                 size="1x"
                                 title="Barcodes"
@@ -3056,11 +3056,11 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                     fixedWidth={false}
                                     flip={false}
                                     icon={
-                                      Object {
-                                        "icon": Array [
+                                      {
+                                        "icon": [
                                           512,
                                           512,
-                                          Array [],
+                                          [],
                                           "f059",
                                           "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
                                         ],
@@ -3080,7 +3080,7 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                     spin={false}
                                     spinPulse={false}
                                     spinReverse={false}
-                                    style={Object {}}
+                                    style={{}}
                                     swapOpacity={false}
                                     symbol={false}
                                     title=""
@@ -3094,14 +3094,14 @@ exports[`<SampleTypePropertiesPanel/> with aliquot preview name 1`] = `
                                       data-prefix="fas"
                                       focusable="false"
                                       role="img"
-                                      style={Object {}}
+                                      style={{}}
                                       viewBox="0 0 512 512"
                                       xmlns="http://www.w3.org/2000/svg"
                                     >
                                       <path
                                         d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
                                         fill="currentColor"
-                                        style={Object {}}
+                                        style={{}}
                                       />
                                     </svg>
                                   </FontAwesomeIcon>

@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.241.3
+*Released*: 27 October 2022
+* Fix Issue 45553
+    * We now render grid header dropdown menus in a portal
+* Add usePortalRef hook
+  * Useful when you want to use ReactDOM's createPortal, it will automatically create a DOM element to use with
+    createPortal, and clean it up when it is no longer used.
+
 ### version 2.241.2
 *Released*: 27 October 2022
 * Issue 46378: Update labeling for aliquot fields

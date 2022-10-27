@@ -688,7 +688,7 @@ import { Discussions } from './internal/announcements/Discussions';
 import { Thread } from './internal/announcements/Thread';
 import { ThreadBlock } from './internal/announcements/ThreadBlock';
 import { ThreadEditor } from './internal/announcements/ThreadEditor';
-import { useNotAuthorized, useNotFound } from './internal/hooks';
+import { useNotAuthorized, useNotFound, usePortalRef } from './internal/hooks';
 import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
@@ -1417,6 +1417,7 @@ export {
     LabelPrintingProvider,
     withLabelPrintingContext,
     useLabelPrintingContext,
+    usePortalRef,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

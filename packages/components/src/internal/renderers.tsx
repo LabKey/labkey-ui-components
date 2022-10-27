@@ -13,9 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import classNames from 'classnames';
+import React, {
+    ChangeEvent,
+    CSSProperties,
+    FC,
+    memo,
+    ReactNode,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
+import { MenuItem, SelectCallback } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
+import { createPortal } from 'react-dom';
 
 import { QueryColumn } from '../public/QueryColumn';
 
@@ -23,7 +37,6 @@ import { useEnterEscape } from '../public/useEnterEscape';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 
-import { CustomToggle } from './components/base/CustomToggle';
 import { HelpTipRenderer } from './components/forms/HelpTipRenderer';
 import { APP_FIELD_CANNOT_BE_REMOVED_MESSAGE, GRID_CHECKBOX_OPTIONS } from './constants';
 
@@ -31,6 +44,8 @@ import { GridColumn } from './components/base/models/GridColumn';
 
 import { LabelHelpTip } from './components/base/LabelHelpTip';
 import { DisableableMenuItem } from './components/samples/DisableableMenuItem';
+import { cancelEvent } from './events';
+import { usePortalRef } from './hooks';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -39,13 +54,13 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
 interface EditableColumnTitleProps {
     column: QueryColumn;
     editing?: boolean;
+    onCancel: () => void;
     onChange: (newValue: string) => void;
-    onEditToggle: (editing: boolean) => void;
 }
 
 // exported for jest tests
 export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
-    const { column, editing, onChange, onEditToggle } = props;
+    const { column, editing, onChange, onCancel } = props;
     const initialTitle = useMemo(() => {
         return column.caption ?? column.name;
     }, [column.caption, column.name]);
@@ -62,19 +77,21 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     }, []);
 
     const onCancelEdit = useCallback(() => {
-        onEditToggle(false);
+        onCancel();
         setTitle(initialTitle);
-    }, [initialTitle]);
+    }, [initialTitle, onCancel]);
 
     const onEditFinish = useCallback(() => {
-        onEditToggle(false);
         const trimmedTitle = title?.trim();
-        if (!trimmedTitle) {
-            setTitle(initialTitle);
-        } else if (trimmedTitle !== initialTitle) {
+
+        if (trimmedTitle && trimmedTitle !== initialTitle) {
             onChange(trimmedTitle);
+            return;
         }
-    }, [initialTitle, onChange, onEditToggle, title]);
+
+        setTitle(initialTitle);
+        onCancel();
+    }, [initialTitle, onCancel, onChange, title]);
 
     const onKeyDown = useEnterEscape(onEditFinish, onCancelEdit);
 
@@ -98,16 +115,234 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     return <>{initialTitle}</>;
 });
 
-interface HeaderCellDropdownProps {
-    column: GridColumn;
-    columnCount?: number;
+interface SharedHeaderCellProps {
     handleAddColumn?: (column: QueryColumn) => void;
     handleFilter?: (column: QueryColumn, remove?: boolean) => void;
     handleHideColumn?: (column: QueryColumn) => void;
     handleSort?: (column: QueryColumn, dir?: string) => void;
-    headerClickCount?: number;
-    i: number;
     model?: QueryModel;
+}
+
+interface HeaderCellDropdownMenuProps extends SharedHeaderCellProps {
+    allowColFilter: boolean;
+    allowColSort: boolean;
+    colFilters: Filter.IFilter[];
+    isSortAsc: boolean;
+    isSortDesc: boolean;
+    onEditTitleClicked?: () => void;
+    open: boolean;
+    queryColumn: QueryColumn;
+    setOpen: (open: boolean) => void;
+}
+
+const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
+    const {
+        allowColFilter,
+        allowColSort,
+        colFilters,
+        handleAddColumn,
+        handleFilter,
+        handleHideColumn,
+        handleSort,
+        isSortAsc,
+        isSortDesc,
+        model,
+        onEditTitleClicked,
+        open,
+        queryColumn,
+        setOpen,
+    } = props;
+    const showGridCustomization = handleHideColumn || handleAddColumn;
+    const toggleEl = useRef<HTMLSpanElement>();
+    const menuEl = useRef<HTMLUListElement>();
+    const portalRef = usePortalRef('header-cell-dropdown-menu-portal');
+    // Note: We need to make sure we cancel all events in our menu handlers or we also trigger the click handler in
+    // HeaderCellDropdown, which will reset the open value to true, which will keep the menu open.
+    const openFilterPanel = useCallback(
+        (_: any, event: SyntheticEvent) => {
+            cancelEvent(event);
+            setOpen(false);
+            handleFilter(queryColumn, false);
+        },
+        [setOpen, handleFilter, queryColumn]
+    ) as SelectCallback;
+    const removeFilter = useCallback(
+        (_: any, event: SyntheticEvent) => {
+            cancelEvent(event);
+            setOpen(false);
+            handleFilter(queryColumn, true);
+        },
+        [queryColumn, handleFilter, setOpen]
+    ) as SelectCallback;
+
+    const sort = useCallback(
+        (event: SyntheticEvent, dir?: string) => {
+            cancelEvent(event);
+            setOpen(false);
+            handleSort(queryColumn, dir);
+        },
+        [queryColumn, handleSort, setOpen]
+    );
+    // There is something wrong with the React Bootstrap types, the only way to get these callbacks properly typed is to
+    // use "as SelectCallback", even though their type signature matches perfectly.
+    const sortAsc = useCallback((_: any, event: SyntheticEvent): void => sort(event, '+'), [sort]) as SelectCallback;
+    const sortDesc = useCallback((_: any, event: SyntheticEvent): void => sort(event, '-'), [sort]) as SelectCallback;
+    const clearSort = useCallback((_: any, event: SyntheticEvent): void => sort(event), [sort]) as SelectCallback;
+    const hideColumn = useCallback(
+        (_: any, event: SyntheticEvent): void => {
+            cancelEvent(event);
+            setOpen(false);
+            handleHideColumn(queryColumn);
+        },
+        [queryColumn, handleHideColumn, setOpen]
+    ) as SelectCallback;
+    const addColumn = useCallback(
+        (_: any, event: SyntheticEvent): void => {
+            cancelEvent(event);
+            setOpen(false);
+            handleAddColumn(queryColumn);
+        },
+        [queryColumn, handleAddColumn, setOpen]
+    ) as SelectCallback;
+    const editColumnTitle = useCallback(
+        (_: any, event: SyntheticEvent): void => {
+            cancelEvent(event);
+            onEditTitleClicked();
+        },
+        [onEditTitleClicked]
+    ) as SelectCallback;
+
+    const [menuStyle, setMenuStyle] = useState<CSSProperties>({});
+    const updateMenuStyle = useCallback(() => {
+        let top;
+        let left;
+
+        if (toggleEl.current && menuEl.current) {
+            const headerRect = toggleEl.current.parentElement.getBoundingClientRect();
+            const menuRect = menuEl.current.getBoundingClientRect();
+            left = headerRect.x - menuRect.width + 18 + 'px';
+            top = headerRect.y + headerRect.height + 5 + 'px';
+
+            // Issue 45553
+            // Render the dropdown menu above the header if the header is too close to the bottom of the screen.
+            if (headerRect.bottom + menuRect.height > window.innerHeight) {
+                top = headerRect.y - menuRect.height - 10 + 'px';
+            }
+        }
+
+        setMenuStyle({
+            left,
+            // use visibility so we can know the rendered size of the menu before making it visible
+            visibility: open ? 'visible' : 'hidden',
+            top,
+        });
+    }, [open]);
+
+    // In order to close the menu when the user clicks outside of it we have to add a click handler to the document and
+    // close the menu when the user clicks on anything outside of the menu.
+    const documentClickHandler = useCallback(
+        event => {
+            if (open && !menuEl.current.contains(event.target)) {
+                setOpen(false);
+            }
+        },
+        [setOpen, open]
+    );
+
+    useEffect(() => {
+        document.addEventListener('click', documentClickHandler);
+        return () => {
+            document.removeEventListener('click', documentClickHandler);
+        };
+    }, [documentClickHandler]);
+
+    // TODO: investigate passing down a ref of the .table-responsive div so we can add a scroll handler to it here the
+    //  same way we add one to the document, then we can update the menu positions when the table is also scrolled.
+    useEffect(() => {
+        updateMenuStyle();
+        window.addEventListener('scroll', updateMenuStyle);
+        return () => {
+            window.removeEventListener('scroll', updateMenuStyle);
+        };
+    }, [updateMenuStyle, open]);
+
+    // Technically we don't need to add and remove this open class because it doesn't affect visibility, we do that
+    // above via the visibility css property. We need this class so tests can look for the currently open menu.
+    const className = classNames('grid-header-cell__dropdown-menu dropdown-menu', { open });
+
+    const body = (
+        <ul className={className} ref={menuEl} style={menuStyle}>
+            {allowColFilter && (
+                <>
+                    <MenuItem onSelect={openFilterPanel}>
+                        <span className="fa fa-filter grid-panel__menu-icon" />
+                        Filter...
+                    </MenuItem>
+                    <MenuItem disabled={!colFilters || colFilters?.length === 0} onSelect={removeFilter}>
+                        <span className="grid-panel__menu-icon-spacer" />
+                        Remove filter{colFilters?.length > 1 ? 's' : ''}
+                    </MenuItem>
+                    {allowColSort && <MenuItem divider />}
+                </>
+            )}
+            {allowColSort && (
+                <>
+                    <MenuItem disabled={isSortAsc} onSelect={sortAsc}>
+                        <span className="fa fa-sort-amount-asc grid-panel__menu-icon" />
+                        Sort ascending
+                    </MenuItem>
+                    <MenuItem disabled={isSortDesc} onSelect={sortDesc}>
+                        <span className="fa fa-sort-amount-desc grid-panel__menu-icon" />
+                        Sort descending
+                    </MenuItem>
+                    {/* Clear sort only applies for the grids that are backed by QueryModel */}
+                    {model && (
+                        <MenuItem disabled={!isSortDesc && !isSortAsc} onSelect={clearSort}>
+                            <span className="grid-panel__menu-icon-spacer" />
+                            Clear sort
+                        </MenuItem>
+                    )}
+                </>
+            )}
+            {showGridCustomization && (
+                <>
+                    {(allowColSort || allowColFilter) && <MenuItem divider />}
+                    <MenuItem onSelect={editColumnTitle}>
+                        <span className="fa fa-pencil grid-panel__menu-icon" />
+                        Edit Label
+                    </MenuItem>
+                    {handleAddColumn && (
+                        <MenuItem onSelect={addColumn}>
+                            <span className="fa fa-plus grid-panel__menu-icon" />
+                            Insert Column
+                        </MenuItem>
+                    )}
+                    <DisableableMenuItem
+                        operationPermitted={handleHideColumn && !!model}
+                        onSelect={hideColumn}
+                        disabledMessage={APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
+                    >
+                        <span className="fa fa-eye-slash grid-panel__menu-icon" />
+                        Hide Column
+                    </DisableableMenuItem>
+                </>
+            )}
+        </ul>
+    );
+
+    return (
+        <div className="pull-right grid-panel__menu-toggle">
+            {/* Note: we don't need a click handler on this icon because there is one on the wrapping div above */}
+            <span className="fa fa-chevron-circle-down" ref={toggleEl} />
+            {createPortal(body, portalRef)}
+        </div>
+    );
+});
+
+interface HeaderCellDropdownProps extends SharedHeaderCellProps {
+    column: GridColumn;
+    columnCount?: number;
+    i: number;
     onColumnTitleChange?: (column: QueryColumn) => void;
     onColumnTitleEdit?: (column: QueryColumn) => void;
     selectable?: boolean;
@@ -116,151 +351,68 @@ interface HeaderCellDropdownProps {
 // exported for jest testing
 export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const {
-        i,
         column,
         handleSort,
         handleFilter,
         handleAddColumn,
         handleHideColumn,
-        headerClickCount,
         model,
         onColumnTitleChange,
         onColumnTitleEdit,
     } = props;
-    const col: QueryColumn = column.raw;
-    const [open, setOpen] = useState<boolean>();
+    const queryColumn: QueryColumn = column.raw;
     const [editingTitle, setEditingTitle] = useState<boolean>(false);
-    const wrapperEl = useRef<HTMLSpanElement>();
-    const view = useMemo(() => model?.queryInfo?.getView(model?.viewName, true), [model?.queryInfo, model?.viewName]);
-
-    const allowColSort = handleSort && col?.sortable;
-    const allowColFilter = handleFilter && col?.filterable;
+    const [open, setOpen] = useState<boolean>(false);
+    const click = useCallback(event => {
+        const { classList, tagName } = event.target;
+        // Don't trigger the menu when the user clicks any of the header icons
+        if (tagName === 'path' || tagName === 'svg' || classList.contains('grid-panel__col-header-icon')) return;
+        setOpen(true);
+    }, []);
+    const allowColSort = handleSort && queryColumn?.sortable;
+    const allowColFilter = handleFilter && queryColumn?.filterable;
     const allowColumnViewChange = (handleHideColumn || handleAddColumn) && !!model;
     const includeDropdown = allowColSort || allowColFilter || allowColumnViewChange;
-
-    useEffect(() => {
-        return () => {
-            setOpen(false);
-        };
-    }, []);
-
-    const onToggleClick = useCallback(
-        (shouldOpen: boolean, evt?: any) => {
-            if (!includeDropdown || editingTitle) return;
-
-            // when menu is closed skip any clicks on icons by just checking for span el type
-            if (shouldOpen && evt && evt.target.tagName.toLowerCase() !== 'span') return;
-
-            setOpen(shouldOpen);
-        },
-        [includeDropdown]
-    );
-
-    const _handleFilter = useCallback(
-        (remove?: boolean) => {
-            handleFilter(col, remove);
-            setOpen(false);
-        },
-        [col, handleFilter]
-    );
-
-    const _handleSort = useCallback(
-        (dir?: string) => {
-            handleSort(col, dir);
-            setOpen(false);
-        },
-        [col, handleSort]
-    );
-
-    const _handleHideColumn = useCallback(() => {
-        setOpen(false);
-        handleHideColumn(col);
-    }, [col, handleHideColumn]);
-
-    const _handleAddColumn = useCallback(() => {
-        setOpen(false);
-        handleAddColumn(col);
-    }, [col, handleAddColumn]);
-
-    const editColumnTitle = useCallback(() => {
-        setOpen(false);
-        setEditingTitle(true);
-        onColumnTitleEdit?.(col);
-    }, [col, onColumnTitleEdit]);
-
     const onColumnTitleUpdate = useCallback(
         (newTitle: string) => {
-            onColumnTitleChange(col.set('caption', newTitle) as QueryColumn);
+            setEditingTitle(false);
+            onColumnTitleChange(queryColumn.set('caption', newTitle) as QueryColumn);
+            onColumnTitleEdit?.(queryColumn);
         },
-        [col, onColumnTitleChange]
+        [onColumnTitleChange, queryColumn, onColumnTitleEdit]
     );
+    const editTitle = useCallback(() => {
+        setOpen(false);
+        onColumnTitleEdit?.(queryColumn);
+        setEditingTitle(true);
+    }, [onColumnTitleEdit, queryColumn]);
+    const cancelEditTitle = useCallback(() => {
+        setEditingTitle(false);
+        onColumnTitleEdit?.(queryColumn);
+    }, [onColumnTitleEdit, queryColumn]);
+    const view = useMemo(() => model?.queryInfo?.getView(model?.viewName, true), [model?.queryInfo, model?.viewName]);
 
-    const onEditTitleToggle = useCallback(
-        (value: boolean) => {
-            setEditingTitle(value);
-            onColumnTitleEdit?.(col);
-        },
-        [col, onColumnTitleEdit]
-    );
-
-    // headerClickCount is tracked by the GridPanel, if it changes we will open the dropdown menu
-    useEffect(() => {
-        setOpen(headerClickCount !== undefined);
-    }, [headerClickCount]);
-
-    useEffect(() => {
-        if (open) {
-            // Issue 45139: grid header menu is clipped by the bounding container instead of overflowing it
-            // (see related SCSS in query-model.scss)
-            if (wrapperEl.current) {
-                const menuEl = wrapperEl.current.querySelector<HTMLElement>('.dropdown-menu');
-                if (menuEl) {
-                    const headerRect = wrapperEl.current.parentElement.getBoundingClientRect();
-                    const menuRect = menuEl.getBoundingClientRect();
-                    let top = headerRect.y + headerRect.height + 'px';
-
-                    // TODO: we need to do this so the menu doesn't render in a cut-off manner, however we need to also
-                    //  render the menu in a portal or any grids with a scrollbar will completely hide the menu. This
-                    //  will be addressed in a PR in the near future (it is prioritized). See Issue 45553.
-                    // if (headerRect.bottom + menuRect.height > window.innerHeight) {
-                    //     // Issue 45553 If the header is too close to the bottom of the window to render the whole menu
-                    //     // below it then we need to render it above the header.
-                    //     top = headerRect.y - menuRect.height - 5 + 'px';
-                    // }
-
-                    Object.assign(menuEl.style, {
-                        top,
-                        left: headerRect.x + headerRect.width - menuRect.width + 'px',
-                    });
-                }
-            }
-        }
-    }, [open]);
-
-    if (!col) return null;
+    if (!queryColumn) return null;
 
     // using filterArray to indicate user-defined filters only and concatenating with any view filters
-    let colFilters = model?.filterArray.filter(filter => isFilterColumnNameMatch(filter, col));
-    const viewColFilters = view?.filters.toArray().filter(filter => isFilterColumnNameMatch(filter, col));
+    let colFilters = model?.filterArray.filter(filter => isFilterColumnNameMatch(filter, queryColumn));
+    const viewColFilters = view?.filters.toArray().filter(filter => isFilterColumnNameMatch(filter, queryColumn));
     if (viewColFilters?.length) colFilters = colFilters.concat(viewColFilters);
-
     // first check the model users (user-defined) and then fall back to the view sorts
     const colQuerySortDir =
-        model?.sorts?.find(sort => sort.get('fieldKey') === col.resolveFieldKey())?.get('dir') ??
-        view?.sorts?.find(sort => sort.get('fieldKey') === col.resolveFieldKey())?.get('dir');
-
-    const isSortAsc = col.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
-    const isSortDesc = col.sorts === '-' || colQuerySortDir === '-';
-    const showGridCustomization = handleHideColumn || handleAddColumn;
+        model?.sorts?.find(sort => sort.get('fieldKey') === queryColumn.resolveFieldKey())?.get('dir') ??
+        view?.sorts?.find(sort => sort.get('fieldKey') === queryColumn.resolveFieldKey())?.get('dir');
+    const isSortAsc = queryColumn.sorts === '+' || colQuerySortDir === '+' || colQuerySortDir === '';
+    const isSortDesc = queryColumn.sorts === '-' || colQuerySortDir === '-';
 
     return (
-        <>
+        <div className="grid-header-cell__body" onClick={click}>
             <span>
                 <EditableColumnTitle
-                    column={col}
+                    column={queryColumn}
                     onChange={onColumnTitleUpdate}
                     editing={editingTitle}
-                    onEditToggle={onEditTitleToggle}
+                    onCancel={cancelEditTitle}
                 />
 
                 {!editingTitle && colFilters?.length > 0 && (
@@ -282,106 +434,24 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                 )}
             </span>
             {includeDropdown && !editingTitle && (
-                <span className="pull-right" ref={wrapperEl}>
-                    <Dropdown id={`grid-menu-${i}`} onToggle={onToggleClick} open={open}>
-                        <CustomToggle bsRole="toggle">
-                            <span className="fa fa-chevron-circle-down grid-panel__menu-toggle" />
-                        </CustomToggle>
-                        <Dropdown.Menu>
-                            {allowColFilter && (
-                                <>
-                                    <MenuItem onClick={() => _handleFilter()}>
-                                        <span className="fa fa-filter grid-panel__menu-icon" />
-                                        &nbsp; Filter...
-                                    </MenuItem>
-                                    <MenuItem
-                                        disabled={!colFilters || colFilters?.length === 0}
-                                        onClick={
-                                            colFilters?.length
-                                                ? () => {
-                                                      _handleFilter(true);
-                                                  }
-                                                : undefined
-                                        }
-                                    >
-                                        <span className="grid-panel__menu-icon-spacer" />
-                                        &nbsp; Remove filter{colFilters?.length > 1 ? 's' : ''}
-                                    </MenuItem>
-                                    {allowColSort && <MenuItem divider />}
-                                </>
-                            )}
-                            {allowColSort && (
-                                <>
-                                    <MenuItem
-                                        disabled={isSortAsc}
-                                        onClick={
-                                            !isSortAsc
-                                                ? () => {
-                                                      _handleSort('+');
-                                                  }
-                                                : undefined
-                                        }
-                                    >
-                                        <span className="fa fa-sort-amount-asc grid-panel__menu-icon" />
-                                        &nbsp; Sort ascending
-                                    </MenuItem>
-                                    <MenuItem
-                                        disabled={isSortDesc}
-                                        onClick={
-                                            !isSortDesc
-                                                ? () => {
-                                                      _handleSort('-');
-                                                  }
-                                                : undefined
-                                        }
-                                    >
-                                        <span className="fa fa-sort-amount-desc grid-panel__menu-icon" />
-                                        &nbsp; Sort descending
-                                    </MenuItem>
-                                    {/* Clear sort only applies for the grids that are backed by QueryModel */}
-                                    {model && (
-                                        <MenuItem
-                                            disabled={!isSortDesc && !isSortAsc}
-                                            onClick={
-                                                isSortDesc || isSortAsc
-                                                    ? () => {
-                                                          _handleSort();
-                                                      }
-                                                    : undefined
-                                            }
-                                        >
-                                            <span className="grid-panel__menu-icon-spacer" />
-                                            &nbsp; Clear sort
-                                        </MenuItem>
-                                    )}
-                                </>
-                            )}
-                            {showGridCustomization && (
-                                <>
-                                    {(allowColSort || allowColFilter) && <MenuItem divider />}
-                                    <MenuItem onClick={editColumnTitle}>
-                                        <span className="fa fa-pencil grid-panel__menu-icon" /> Edit Label
-                                    </MenuItem>
-                                    {handleAddColumn && (
-                                        <MenuItem onClick={_handleAddColumn}>
-                                            <span className="fa fa-plus grid-panel__menu-icon" /> Insert Column
-                                        </MenuItem>
-                                    )}
-                                    <DisableableMenuItem
-                                        operationPermitted={handleHideColumn && !!model}
-                                        onClick={() => _handleHideColumn()}
-                                        disabledMessage={APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
-                                    >
-                                        <span className="fa fa-eye-slash grid-panel__menu-icon" />
-                                        &nbsp; Hide Column
-                                    </DisableableMenuItem>
-                                </>
-                            )}
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </span>
+                <HeaderCellDropdownMenu
+                    allowColFilter={allowColFilter}
+                    allowColSort={allowColSort}
+                    colFilters={colFilters}
+                    handleAddColumn={handleAddColumn}
+                    handleFilter={handleFilter}
+                    handleHideColumn={handleHideColumn}
+                    handleSort={handleSort}
+                    isSortAsc={isSortAsc}
+                    isSortDesc={isSortDesc}
+                    model={model}
+                    open={open}
+                    onEditTitleClicked={editTitle}
+                    queryColumn={queryColumn}
+                    setOpen={setOpen}
+                />
             )}
-        </>
+        </div>
     );
 });
 
@@ -396,8 +466,7 @@ export function headerCell(
     handleHideColumn?: (column: QueryColumn) => void,
     onColumnTitleEdit?: (column: QueryColumn) => void,
     onColumnTitleChange?: (column: QueryColumn) => void,
-    model?: QueryModel,
-    headerClickCount?: number
+    model?: QueryModel
 ): ReactNode {
     return (
         <HeaderCellDropdown
@@ -409,7 +478,6 @@ export function headerCell(
             handleFilter={handleFilter}
             handleAddColumn={handleAddColumn}
             handleHideColumn={handleHideColumn}
-            headerClickCount={headerClickCount}
             model={model}
             onColumnTitleChange={onColumnTitleChange}
             onColumnTitleEdit={onColumnTitleEdit}

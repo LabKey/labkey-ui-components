@@ -43,7 +43,7 @@ export class SampleAliquotDetailHeader extends PureComponent<SampleAliquotDetail
             <>
                 <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-details-table">
                     <tbody>
-                        {this.renderDetailRow('Aliquoted From', parent, 'aliquotedfrom')}
+                        {this.renderDetailRow(QueryColumn.ALIQUOTED_FROM_CAPTION, parent, 'aliquotedfrom')}
                         {this.renderDetailRow('Aliquoted By', createdBy, 'aliquotedby')}
                         {this.renderDetailRow('Aliquot Date', created, 'aliquoteddate')}
                         {this.renderDetailRow('Aliquot Description', description, 'aliquoteddescription')}

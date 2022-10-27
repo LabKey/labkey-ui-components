@@ -41,7 +41,7 @@ export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
     description: 'Create multiple output samples per parent.',
     minParentsPerSample: 1,
     iconSrc: 'derivatives',
-    quantityLabel: 'New Samples Per Parent',
+    quantityLabel: 'New Samples per Parent',
     typeGroup: SampleCreationTypeGroup.samples,
 };
 
@@ -51,7 +51,7 @@ export const DERIVATIVE_CREATION: SampleCreationTypeModel = {
     disabledDescription: 'Only one parent sample type is allowed when creating derivative samples.',
     minParentsPerSample: 1,
     iconSrc: 'derivatives',
-    quantityLabel: 'Derivatives Per Parent',
+    quantityLabel: 'Derivatives per Parent',
     typeGroup: SampleCreationTypeGroup.samples,
 };
 
@@ -60,7 +60,7 @@ export const POOLED_SAMPLE_CREATION: SampleCreationTypeModel = {
     description: 'Put multiple samples into pooled outputs.',
     minParentsPerSample: 2,
     iconSrc: 'pooled',
-    quantityLabel: 'New Samples Per Parent Group',
+    quantityLabel: 'New Samples per Parent Group',
     typeGroup: SampleCreationTypeGroup.samples,
 };
 
@@ -69,7 +69,7 @@ export const ALIQUOT_CREATION: SampleCreationTypeModel = {
     description: 'Create aliquot copies from each parent sample.',
     minParentsPerSample: 1,
     iconSrc: 'aliquots',
-    quantityLabel: 'Aliquots Per Parent',
+    quantityLabel: 'Aliquots per Parent',
     typeGroup: SampleCreationTypeGroup.aliquots,
 };
 

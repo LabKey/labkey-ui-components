@@ -1,0 +1,58 @@
+import React from 'react';
+
+import { makeTestQueryModel } from '../public/QueryModel/testUtils';
+import { SchemaQuery } from '../public/SchemaQuery';
+import { mountWithAppServerContext } from '../internal/testHelpers';
+import { QueryInfo } from '../public/QueryInfo';
+
+import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
+import { TEST_USER_READER, TEST_USER_STORAGE_EDITOR } from '../internal/userFixtures';
+
+import { AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
+
+const MODEL = makeTestQueryModel(SchemaQuery.create('samples', 'query'), new QueryInfo());
+
+describe('AssayResultsForSamplesButton', () => {
+    const DEFAULT_PROPS = {
+        model: MODEL,
+        user: TEST_USER_READER,
+    };
+
+    test('default props', () => {
+        const wrapper = mountWithAppServerContext(<AssayResultsForSamplesMenuItem {...DEFAULT_PROPS} asSubMenu />);
+        expect(wrapper.find(SelectionMenuItem)).toHaveLength(1);
+        expect(wrapper.find(SelectionMenuItem).prop('nounPlural')).toBe('samples');
+        expect(wrapper.find(SelectionMenuItem).prop('href')).toBe('#/assays/sampleresults?selectionKey=model');
+        wrapper.unmount();
+    });
+
+    test('for picklist', () => {
+        const wrapper = mountWithAppServerContext(
+            <AssayResultsForSamplesMenuItem {...DEFAULT_PROPS} asSubMenu isPicklist />
+        );
+        expect(wrapper.find(SelectionMenuItem)).toHaveLength(1);
+        expect(wrapper.find(SelectionMenuItem).prop('href')).toBe(
+            '#/assays/sampleresults?selectionKey=model&picklistName=query'
+        );
+        wrapper.unmount();
+    });
+
+    test('for different product id', () => {
+        const wrapper = mountWithAppServerContext(
+            <AssayResultsForSamplesMenuItem {...DEFAULT_PROPS} asSubMenu currentProductId="A" targetProductId="B" />
+        );
+        expect(wrapper.find(SelectionMenuItem)).toHaveLength(1);
+        expect(wrapper.find(SelectionMenuItem).prop('href')).toBe(
+            '/labkey/b/app.view#/assays/sampleresults?selectionKey=model'
+        );
+        wrapper.unmount();
+    });
+
+    test('without read assay perm', () => {
+        const wrapper = mountWithAppServerContext(
+            <AssayResultsForSamplesMenuItem {...DEFAULT_PROPS} asSubMenu user={TEST_USER_STORAGE_EDITOR} />
+        );
+        expect(wrapper.find(SelectionMenuItem)).toHaveLength(0);
+        wrapper.unmount();
+    });
+});

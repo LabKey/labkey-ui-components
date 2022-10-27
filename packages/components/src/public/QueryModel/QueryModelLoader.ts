@@ -10,14 +10,13 @@ import {
     selectAll,
     setSelected,
 } from '../../internal/actions';
-import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../internal/constants';
+import { VISUALIZATION_REPORTS } from '../../internal/constants';
 
 import { DataViewInfo, IDataViewInfo } from '../../internal/DataViewInfo';
 
 import { QueryInfo } from '../QueryInfo';
 import { getQueryDetails, selectRowsDeprecated } from '../../internal/query/api';
 import { naturalSortByProperty } from '../sort';
-import { loadReports } from '../../internal/query/reports';
 import { QueryColumn } from '../QueryColumn';
 import { getQueryColumnRenderers } from '../../internal/global';
 import { DefaultRenderer } from '../../internal/renderers/DefaultRenderer';
@@ -102,11 +101,8 @@ export interface QueryModelLoader {
     /**
      * Loads the charts (DataViewInfos) for a given model.
      * @param model
-     * @param includeSampleComparison: boolean, loads DataViewInfos via browseDataTree.api and includes SampleComparison
-     * reports in the results. If false loads DataViewInfos via getReportInfos and does not include SampleComparison
-     * reports.
      */
-    loadCharts: (model: QueryModel, includeSampleComparison: boolean) => Promise<DataViewInfo[]>;
+    loadCharts: (model: QueryModel) => Promise<DataViewInfo[]>;
 }
 
 export const DefaultQueryModelLoader: QueryModelLoader = {
@@ -148,7 +144,14 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     },
     async loadSelections(model) {
         const { selectionKey, schemaName, queryName, filters, containerPath, queryParameters } = model;
-        const result = await getSelected(selectionKey, schemaName, queryName, List(filters), containerPath, queryParameters);
+        const result = await getSelected(
+            selectionKey,
+            schemaName,
+            queryName,
+            List(filters),
+            containerPath,
+            queryParameters
+        );
         return new Set(result.selected);
     },
     setSelections(model, checked: boolean, selections: string[]) {
@@ -164,29 +167,14 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         await selectAll(selectionKey, schemaName, queryName, List(filters), containerPath, queryParameters);
         return DefaultQueryModelLoader.loadSelections(model);
     },
-    async loadCharts(model, includeSampleComparison) {
+    async loadCharts(model) {
         const { schemaQuery, containerPath } = model;
         const sortByName = naturalSortByProperty<IDataViewInfo>('name');
 
-        if (includeSampleComparison) {
-            const { schemaName, queryName } = schemaQuery;
-            const charts = await loadReports();
-            return charts
-                .filter((report): boolean => {
-                    const { type } = report;
-                    const matchingSq = report.schemaName === schemaName && report.queryName === queryName;
-                    const isVisualization = VISUALIZATION_REPORTS.contains(type);
-                    const isSampleComparison = type === DataViewInfoTypes.SampleComparison;
-                    return matchingSq && (isVisualization || isSampleComparison);
-                })
-                .sort(sortByName)
-                .map(obj => new DataViewInfo(obj));
-        } else {
-            const charts = await fetchCharts(schemaQuery, containerPath);
-            return charts
-                .toArray()
-                .sort(sortByName)
-                .filter(report => VISUALIZATION_REPORTS.contains(report.type));
-        }
+        const charts = await fetchCharts(schemaQuery, containerPath);
+        return charts
+            .toArray()
+            .sort(sortByName)
+            .filter(report => VISUALIZATION_REPORTS.contains(report.type));
     },
 };

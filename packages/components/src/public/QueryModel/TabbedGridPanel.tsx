@@ -65,6 +65,10 @@ export interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      */
     allowViewCustomization?: boolean;
     /**
+     * Determines which grid IDs to allow the grid view to be customized (e.g., columns added, removed, or relabeled)
+     */
+    allowViewCustomizationForGridIds?: string[];
+    /**
      * By default, if there is only one model, the tabs will not be shown.  Setting this to true will show the tab
      * even if there is only one model.
      */
@@ -125,6 +129,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         activeModelId,
         actions,
         allowViewCustomization = true,
+        allowViewCustomizationForGridIds,
         alwaysShowTabs,
         asPanel = true,
         onTabSelect,
@@ -229,7 +234,11 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
 
     const gridDisplay = getGridPanelDisplay?.(activeId, exportHandlers) ?? (
         <GridPanel
-            allowViewCustomization={allowViewCustomization}
+            allowViewCustomization={
+                allowViewCustomizationForGridIds
+                    ? allowViewCustomizationForGridIds.indexOf(activeId) > -1
+                    : allowViewCustomization
+            }
             key={activeId}
             actions={actions}
             hasHeader={!hasTabs}

@@ -7,6 +7,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Use title casing more consistently
 * Issue 46553: Use Details view when getting data for original parent panel to avoid customized default view
 
+### version 2.241.1
+*Released*: 26 October 2022
+* Update `ExportOptions` to include optional `containerFilter` and `containerPath` properties.
+* Fallback to `getContainerFilter()` when determining the container filter for export.
+
+### version 2.241.0
+*Released*: 26 October 2022
+* Assay Results for Selected Samples
+  * refactor getSelectedSampleIdsFromSelectionKey() and getURLParamsForSampleSelectionKey() from workflow package to be used in multiple app cases
+  * refactor getSamplesAssayGridQueryConfigs() from SampleAssayDetails component to be reused in AssayResultsForSamplesPage
+  * new AssayResultsForSamplesPage, AssayResultsForSamplesMenuItem, and AssayResultsForSamplesButton components
+  * add Assay Runs summary grid as tab to SampleAssayDetail
+  * add FindDerivativesMenuItem to go with FindDerivativesButton
+  * remove Sample Comparison Report rendering and creation menu item
+  * Issue 46554: App Sample Assay menu doesn't show any options if > 1000 samples selected
+
 ### version 2.240.0
 *Released*: 26 October 2022
 * Updates for Sample Type consistency

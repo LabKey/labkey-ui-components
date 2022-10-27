@@ -1,4 +1,5 @@
 import { Record } from 'immutable';
+
 import { DataViewInfoTypes } from './constants';
 import { AppURL } from './url/AppURL';
 
@@ -12,7 +13,6 @@ type DataViewInfoType =
     | DataViewInfoTypes.PieChart
     | DataViewInfoTypes.Query
     | DataViewInfoTypes.RReport
-    | DataViewInfoTypes.SampleComparison
     | DataViewInfoTypes.SampleFinderSavedSearch
     | DataViewInfoTypes.TimeChart
     | DataViewInfoTypes.XYScatterPlot

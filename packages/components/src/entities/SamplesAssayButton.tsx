@@ -4,7 +4,6 @@ import { PermissionTypes } from '@labkey/api';
 
 import { QueryModel } from '../public/QueryModel/QueryModel';
 
-import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
 
 import { isLoading } from '../public/LoadingState';
@@ -12,6 +11,10 @@ import { RequiresPermission } from '../internal/components/base/Permissions';
 import { ResponsiveMenuButton } from '../internal/components/buttons/ResponsiveMenuButton';
 
 import { isSamplesSchema } from '../internal/components/samples/utils';
+import { MAX_EDITABLE_GRID_ROWS } from '../internal/constants';
+import { DisableableButton } from '../internal/components/buttons/DisableableButton';
+
+import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 
 interface Props {
     asSubMenu?: boolean;
@@ -46,6 +49,22 @@ export const SamplesAssayButtonImpl: FC<Props & InjectedAssayModel> = memo(props
 
     if (!isLoading(assayModel?.definitionsLoadingState) && assayModel.definitions.length === 0) {
         items = <MenuItem disabled>No assays defined</MenuItem>;
+    }
+
+    const selectedCount = model?.selections?.size ?? -1;
+    if (!asSubMenu && selectedCount > MAX_EDITABLE_GRID_ROWS) {
+        return (
+            <RequiresPermission permissionCheck="any" perms={PermissionTypes.Insert}>
+                <DisableableButton
+                    bsStyle="default"
+                    className="responsive-menu"
+                    disabledMsg={'At most ' + MAX_EDITABLE_GRID_ROWS + ' samples can be selected.'}
+                    onClick={undefined}
+                >
+                    Assay
+                </DisableableButton>
+            </RequiresPermission>
+        );
     }
 
     return (

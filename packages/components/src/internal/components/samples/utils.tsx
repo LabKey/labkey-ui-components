@@ -14,6 +14,10 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { ModuleContext } from '../base/ServerContext';
 
+import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
+
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import { SampleStatus } from './models';
 
 import {
@@ -193,4 +197,47 @@ export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
     }
 
     return false;
+}
+
+export function getURLParamsForSampleSelectionKey(
+    model: QueryModel,
+    picklistName?: string,
+    isAssay?: boolean,
+    sampleFieldKey?: string,
+    ignoreFilter?: boolean
+): Record<string, any> {
+    const { keyValue, queryInfo, selectionKey } = model;
+    let params = {};
+
+    if (queryInfo) {
+        const singleSelect = keyValue !== undefined;
+        const { schemaQuery } = queryInfo;
+        params['selectionKey'] = singleSelect
+            ? SchemaQuery.createAppSelectionKey(schemaQuery, [keyValue])
+            : selectionKey;
+
+        if (!ignoreFilter) {
+            model.filters.forEach(filter => {
+                const filterURLSuffix = filter.getFilterType().getURLSuffix();
+                // We don't need the picklist IN clause here since we're dealing with the samples selected in the grid
+                const isPicklistFilterType = filterURLSuffix === PICKLIST_SAMPLES_FILTER.getURLSuffix();
+                // and we don't need the LSID LineageOf clause either
+                const isLineageOfFilterType = filterURLSuffix === Filter.Types.EXP_LINEAGE_OF.getURLSuffix();
+
+                if (!isPicklistFilterType && !isLineageOfFilterType) {
+                    params[filter.getURLParameterName()] = filter.getURLParameterValue();
+                }
+            });
+        }
+
+        if (picklistName) {
+            params['picklistName'] = picklistName;
+        }
+
+        if (isAssay && sampleFieldKey) {
+            params = { ...params, ...{ assayProtocol: schemaQuery.schemaName, isAssay: true, sampleFieldKey } };
+        }
+    }
+
+    return params;
 }

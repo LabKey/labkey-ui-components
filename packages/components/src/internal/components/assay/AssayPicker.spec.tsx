@@ -2,7 +2,7 @@ import React from 'react';
 
 import { initUnitTestMocks } from '../../../test/testHelperMocks';
 import { initAssayPickerOptions } from '../../../test/mock';
-import { mountWithAppServerContext, sleep } from '../../testHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../testHelpers';
 
 import { AssayPicker, AssayPickerTabs } from './AssayPicker';
 
@@ -12,17 +12,15 @@ beforeAll(() => {
 
 describe('AssayPicker', () => {
     test('AssayPicker', async () => {
-        const component = (
-            <AssayPicker showImport={true} showContainerSelect={true} onChange={jest.fn()} hasPremium={true} />
+        const wrapper = mountWithAppServerContext(
+            <AssayPicker hasPremium onChange={jest.fn()} showContainerSelect showImport />
         );
-
-        const wrapper = mountWithAppServerContext(component);
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         // Verify all three tabs shown and standard assay selected
         expect(wrapper.find('.nav-tabs li')).toHaveLength(3);
         expect(wrapper.find('.nav-tabs li.active a#assay-picker-tabs-tab-standard')).toHaveLength(1);
-        expect(wrapper.find('#assay-type-select-container')).toHaveLength(2); // Specialty tab doesn't show this option if no providers
+        expect(wrapper.find('#assay-type-select-container')).toHaveLength(3);
 
         // Click import tab and verify it's shown
         expect(wrapper.find('.nav-tabs li.active a#assay-picker-tabs-tab-import')).toHaveLength(0);
@@ -37,18 +35,16 @@ describe('AssayPicker', () => {
     });
 
     test('AssayPicker No Import, No Container, Selected Specialty tab, No premium', async () => {
-        const component = (
+        const wrapper = mountWithAppServerContext(
             <AssayPicker
-                showImport={false}
-                showContainerSelect={false}
-                selectedTab={AssayPickerTabs.SPECIALTY_ASSAY_TAB}
-                onChange={jest.fn()}
+                defaultTab={AssayPickerTabs.SPECIALTY_ASSAY_TAB}
                 hasPremium={false}
+                onChange={jest.fn()}
+                showContainerSelect={false}
+                showImport={false}
             />
         );
-
-        const wrapper = mountWithAppServerContext(component);
-        await sleep(1000);
+        await waitForLifecycle(wrapper);
 
         // Verify only two tabs and specialty tab selected
         expect(wrapper.find('.nav-tabs li')).toHaveLength(2);

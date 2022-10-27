@@ -26,6 +26,7 @@ import { DISCARD_CONSUMED_CHECKBOX_FIELD, DISCARD_CONSUMED_COMMENT_FIELD } from 
 import { IS_ALIQUOT_COL, SAMPLE_STATUS_REQUIRED_COLUMNS } from '../internal/components/samples/constants';
 import { getGroupedSampleDisplayColumns, getGroupedSampleDomainFields, GroupedSampleDisplayColumns } from '../internal/components/samples/actions';
 import { GroupedSampleFields } from '../internal/components/samples/models';
+import { ViewInfo } from '../internal/ViewInfo';
 
 interface Props extends EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
@@ -102,7 +103,7 @@ class SampleDetailEditingImpl extends PureComponent<Props & NotificationsContext
         const rootLsid = model.getRowValue('RootMaterialLSID');
 
         return {
-            schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet),
+            schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSet, ViewInfo.DETAIL_NAME),
             baseFilters: [Filter.create('lsid', rootLsid)],
             requiredColumns: ['Name', 'Description', ...SAMPLE_STATUS_REQUIRED_COLUMNS],
             omittedColumns: [IS_ALIQUOT_COL],

@@ -98,7 +98,6 @@ interface GridHeaderProps {
     calcWidths?: boolean;
     columns: List<GridColumn>;
     headerCell?: any;
-    onCellClick?: (column: GridColumn) => void;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     showHeader?: boolean;
     transpose?: boolean;
@@ -111,16 +110,6 @@ interface State {
 // export for jest testing
 export class GridHeader extends PureComponent<GridHeaderProps, State> {
     readonly state: State = { dragTarget: undefined };
-
-    _handleClick(column: GridColumn, evt: any): void {
-        const isHeaderCellClick =
-            evt.target.className?.startsWith('grid-header-cell') ||
-            evt.target.parentElement?.className?.startsWith('grid-header-cell');
-        evt.stopPropagation();
-        if (this.props.onCellClick && isHeaderCellClick) {
-            this.props.onCellClick(column);
-        }
-    }
 
     handleDragStart = (e): void => {
         const dragIndex = e.target.id;
@@ -188,7 +177,6 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                     id={index}
                                     key={index}
                                     className={className}
-                                    onClick={this._handleClick.bind(this, column)}
                                     style={{ minWidth }}
                                     title={hideTooltip ? undefined : description}
                                     draggable={draggable}

@@ -4,7 +4,6 @@ import {
     loadSampleTypes,
     onSampleChange,
     onSampleTypeChange,
-    onSampleTypeDesignChange,
 } from './actions';
 import {
     getSampleWizardURL,
@@ -75,7 +74,6 @@ export {
     loadSampleTypes,
     onSampleChange,
     onSampleTypeChange,
-    onSampleTypeDesignChange,
     useSampleTypeAppContext,
     AssayImportSubMenuItem,
     AssayResultsForSamplesPage,

@@ -15,9 +15,7 @@ import { useContainerUser } from '../internal/components/container/actions';
 import { MEDIA_KEY, SAMPLES_KEY } from '../internal/app/constants';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
-import { invalidateQueryDetailsCache } from '../internal/query/api';
 import { AppURL } from '../internal/url/AppURL';
-import { invalidateLineageResults } from '../internal/components/lineage/actions';
 import { hasActivePipelineJob } from '../internal/components/pipeline/utils';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../internal/components/domainproperties/constants';
 import { NotFound } from '../internal/components/base/NotFound';
@@ -32,6 +30,7 @@ import { useAppContext } from '../internal/AppContext';
 
 import { SampleTypeBasePage } from './SampleTypeBasePage';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { onSampleTypeChange } from './actions';
 
 const DESIGNER_HEADER =
     'Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.';
@@ -188,8 +187,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
     const onComplete = useCallback(
         (domain: DomainDesign) => {
             setIsDirty(false);
-            invalidateQueryDetailsCache(schemaQuery);
-            invalidateLineageResults();
+            onSampleTypeChange(schemaQuery, domainContainerPath);
             menuInit();
 
             const newName = domain.name;
@@ -200,7 +198,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
             const action = queryName ? 'updated' : 'created';
             createNotification(`Successfully ${action} sample type.`, true);
         },
-        [setIsDirty, queryName, schemaQuery, goToSampleType, createNotification, menuInit]
+        [setIsDirty, schemaQuery, domainContainerPath, menuInit, goToSampleType, queryName, createNotification]
     );
 
     const isUpdate = useMemo(() => {

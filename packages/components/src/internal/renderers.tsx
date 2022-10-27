@@ -135,7 +135,7 @@ interface HeaderCellDropdownMenuProps extends SharedHeaderCellProps {
     setOpen: (open: boolean) => void;
 }
 
-export const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
+const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     const {
         allowColFilter,
         allowColSort,
@@ -164,7 +164,7 @@ export const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(prop
             setOpen(false);
             handleFilter(queryColumn, false);
         },
-        [queryColumn, handleFilter]
+        [setOpen, handleFilter, queryColumn]
     ) as SelectCallback;
     const removeFilter = useCallback(
         (_: any, event: SyntheticEvent) => {
@@ -364,8 +364,9 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const [editingTitle, setEditingTitle] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     const click = useCallback(event => {
+        const { classList, tagName } = event.target;
         // Don't trigger the menu when the user clicks any of the header icons
-        if (event.target.classList.contains('grid-panel__col-header-icon')) return;
+        if (tagName === 'path' || tagName === 'svg' || classList.contains('grid-panel__col-header-icon')) return;
         setOpen(true);
     }, []);
     const allowColSort = handleSort && queryColumn?.sortable;
@@ -378,7 +379,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
             onColumnTitleChange(queryColumn.set('caption', newTitle) as QueryColumn);
             onColumnTitleEdit?.(queryColumn);
         },
-        [queryColumn, onColumnTitleChange]
+        [onColumnTitleChange, queryColumn, onColumnTitleEdit]
     );
     const editTitle = useCallback(() => {
         setOpen(false);
@@ -388,7 +389,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const cancelEditTitle = useCallback(() => {
         setEditingTitle(false);
         onColumnTitleEdit?.(queryColumn);
-    }, [queryColumn, onColumnTitleChange]);
+    }, [onColumnTitleEdit, queryColumn]);
     const view = useMemo(() => model?.queryInfo?.getView(model?.viewName, true), [model?.queryInfo, model?.viewName]);
 
     if (!queryColumn) return null;

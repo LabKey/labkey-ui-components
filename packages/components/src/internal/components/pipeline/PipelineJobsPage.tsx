@@ -10,6 +10,7 @@ import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { PageHeader } from '../base/PageHeader';
 import { Page } from '../base/Page';
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { getContainerFilter } from "../../query/api";
 
 interface Props {
     autoRefresh: boolean;
@@ -53,6 +54,7 @@ export class PipelineJobsPageImpl extends React.PureComponent<Props & InjectedQu
             baseFilters,
             sorts: [new QuerySort({ fieldKey: 'Created', dir: '-' })],
             requiredColumns: ['Provider'],
+            containerFilter: getContainerFilter()
         };
         actions.addModel(queryConfig, true);
     }

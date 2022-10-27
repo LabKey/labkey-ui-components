@@ -52,7 +52,7 @@ export interface DatePickerInputProps extends DisableableInputProps {
     showRequired?: Function;// from formsy-react
     value?: any;
     wrapperClassName?: string;
-    showTime?: boolean;
+    hideTime?: boolean;
     validations?: any;// from formsy-react
 }
 
@@ -132,13 +132,13 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
     };
 
     getDateFormat(): string {
-        const { dateFormat, queryColumn } = this.props;
-        return getColDateFormat(queryColumn, dateFormat);
+        const { dateFormat, queryColumn, hideTime } = this.props;
+        return getColDateFormat(queryColumn, hideTime ? 'Date' : dateFormat);
     }
 
     shouldShowTime(): boolean {
-        const { showTime, queryColumn } = this.props;
-        return showTime || isDateTimeCol(queryColumn);
+        const { hideTime, queryColumn } = this.props;
+        return !hideTime && isDateTimeCol(queryColumn);
     }
 
     render(): ReactNode {

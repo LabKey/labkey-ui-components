@@ -28,6 +28,8 @@ interface Props {
     columnIndex?: number;
 }
 
+const TARGET_BLANK = '_blank';
+const URL_REL = 'noopener noreferrer';
 /**
  * This is the default cell renderer for Details/Grids using a QueryGridModel.
  */
@@ -55,8 +57,9 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data }) => {
             }
 
             if (data.get('url')) {
+                const targetBlank = data.get('urlTarget') === TARGET_BLANK;
                 return (
-                    <a className={className} href={data.get('url')}>
+                    <a className={className} href={data.get('url')} target={targetBlank ? TARGET_BLANK : undefined} rel={targetBlank ? URL_REL : undefined}>
                         {display}
                     </a>
                 );

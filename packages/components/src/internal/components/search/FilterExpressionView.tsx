@@ -6,7 +6,7 @@ import { Filter } from '@labkey/api';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
 
-import { getJsonDateTimeFormatString, isDateTimeCol } from '../../util/Date';
+import { getJsonDateFormatString } from '../../util/Date';
 
 import { isOntologyEnabled } from '../../app/utils';
 
@@ -159,7 +159,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     );
 
     const updateDateFilterFieldValue = useCallback(
-        (filterIndex: number, newValue: any, isTime: boolean, isSecondInput?: boolean) => {
+        (filterIndex: number, newValue: any, isSecondInput?: boolean) => {
             const update: Partial<FilterSelection> = {};
             if (isSecondInput) {
                 update.secondFilterValue = newValue;
@@ -211,8 +211,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const isConceptColumn = field.isConceptCodeColumn && isOntologyEnabled();
 
             if (jsonType === 'date') {
-                const showTimeStamp = isDateTimeCol(field);
-                return (
+                 return (
                     <DatePickerInput
                         formsy={false}
                         inputClassName="form-control filter-expression__input"
@@ -223,13 +222,12 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         initValueFormatted={false}
                         showLabel={false}
                         isClearable
-                        showTime={showTimeStamp}
+                        hideTime={true} // always filter by date only, without timepicker
                         disabled={disabled}
                         onChange={newDate =>
                             updateDateFilterFieldValue(
                                 filterIndex,
-                                getJsonDateTimeFormatString(newDate),
-                                showTimeStamp,
+                                getJsonDateFormatString(newDate),
                                 isSecondInput
                             )
                         }

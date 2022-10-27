@@ -31,6 +31,7 @@ export const SamplesDeriveButtonBase: FC<Props> = memo(props => {
                 subMenuText="Aliquot Selected"
                 selectedType={SampleCreationType.Aliquots}
                 parentQueryModel={model}
+                selectedQueryInfo={model.queryInfo}
             />
             <CreateSamplesSubMenu
                 {...props}
@@ -46,6 +47,7 @@ export const SamplesDeriveButtonBase: FC<Props> = memo(props => {
                 subMenuText="Pool Selected"
                 selectedType={SampleCreationType.PooledSamples}
                 parentQueryModel={model}
+                selectedQueryInfo={model.queryInfo}
             />
         </>
     );

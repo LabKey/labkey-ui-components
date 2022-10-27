@@ -232,6 +232,7 @@ export class QueryColumn extends Record({
     static DATA_INPUTS = 'DataInputs';
     static MATERIAL_INPUTS = 'MaterialInputs';
     static ALIQUOTED_FROM = 'AliquotedFrom';
+    static ALIQUOTED_FROM_CAPTION = 'Aliquoted From';
     static ALIQUOTED_FROM_LSID = 'AliquotedFromLSID';
 
     get index(): string {

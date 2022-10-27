@@ -7,7 +7,7 @@ exports[`<SampleAliquotDetailHeader/> aliquot detail header 1`] = `
   <tbody>
     <tr>
       <td>
-        Aliquoted from
+        Aliquoted From
       </td>
       <td>
         <a
@@ -20,7 +20,7 @@ exports[`<SampleAliquotDetailHeader/> aliquot detail header 1`] = `
     </tr>
     <tr>
       <td>
-        Aliquoted by
+        Aliquoted By
       </td>
       <td>
         <a
@@ -33,7 +33,7 @@ exports[`<SampleAliquotDetailHeader/> aliquot detail header 1`] = `
     </tr>
     <tr>
       <td>
-        Aliquot date
+        Aliquot Date
       </td>
       <td>
         <span
@@ -45,7 +45,7 @@ exports[`<SampleAliquotDetailHeader/> aliquot detail header 1`] = `
     </tr>
     <tr>
       <td>
-        Aliquot description
+        Aliquot Description
       </td>
       <td>
         <span

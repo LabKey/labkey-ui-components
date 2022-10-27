@@ -30,7 +30,6 @@ describe('AssayPicker', () => {
         expect(wrapper.find('.nav-tabs li.active a#assay-picker-tabs-tab-import')).toHaveLength(1);
         expect(wrapper.find('.file-upload--container')).toHaveLength(1);
 
-        expect(wrapper).toMatchSnapshot();
         wrapper.unmount();
     });
 

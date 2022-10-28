@@ -73,7 +73,7 @@ export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, 
     return rawFormat.replace('YYYY', 'yyyy').replace('YY', 'yy').replace('DD', 'dd');
 }
 
-export function getColFormattedDateFilterValue(column: QueryColumn, value: string): string {
+export function getColFormattedDateFilterValue(column: QueryColumn, value: string | Date): string {
     let valueFull = value;
     if (value && typeof value === 'string' && value.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
         valueFull = value + 'T00:00:00'; // Force local timezone. In ISO format, if you provide time and Z is not present in the end of string, the date will be local time zone instead of UTC time zone.

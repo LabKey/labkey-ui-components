@@ -281,7 +281,7 @@ export const ASSAY_RUNS_GRID_ID = 'assayruncount';
 export async function getSamplesAssayGridQueryConfigs(
     api: SamplesAPIWrapper,
     assayModel: AssayStateModel,
-    sampleId: string, // leave undefined/null for the multiple sample selection case
+    sampleId: string | number, // leave undefined/null for the multiple sample selection case
     sampleRows: Array<Record<string, any>>,
     gridSuffix: string,
     gridPrefix: string,

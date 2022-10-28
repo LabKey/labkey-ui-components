@@ -38,7 +38,7 @@ interface Props {
     emptySampleViewMsg?: string;
     exportPrefix?: string;
     sampleAliquotType?: ALIQUOT_FILTER_MODE;
-    sampleId?: string;
+    sampleId?: string | number;
     sampleModel?: QueryModel;
     showAliquotViewSelector?: boolean;
     sourceAliquotRows?: Array<Record<string, any>>;
@@ -451,7 +451,7 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         setQueryConfigs(undefined);
 
         (async () => {
-            const queryGridSuffix = sampleId ?? sourceId + '-source';
+            const queryGridSuffix = (sampleId ?? sourceId + '-source') + '';
             const sampleSchemaQuery = isSourceSampleAssayGrid ? undefined : sampleModel.queryInfo.schemaQuery;
 
             // handling try/catch within getSamplesAssayGridQueryConfigs

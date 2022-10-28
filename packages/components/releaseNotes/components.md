@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.TBD
+*Released*: TBD
+* Fix Issue 45944: Decode $ in MenuItem keys
+
 ### version 2.242.0
 *Released*: 28 October 2022
 * Issue 46460: Filter by date only (not time)

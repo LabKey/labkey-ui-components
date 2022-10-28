@@ -15,7 +15,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { LabelOverlay } from '../LabelOverlay';
 
 import { QuerySelect } from '../QuerySelect';
-import { InputRenderer } from '../renderers';
+import { InputRenderer } from '../InputRenderer';
 import { resolveDetailFieldValue } from '../utils';
 
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';

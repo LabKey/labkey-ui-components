@@ -54,7 +54,7 @@ interface WorkflowTaskInputProps extends DisableableInputProps {
 }
 
 // Note: this component is specific to Workflow, and ideally would live in the Workflow package, however we do not
-// currently have a way for our Apps to override the InputRenderers used by resolveRenderer (see renderers.tsx).
+// currently have a way for our Apps to override the InputRenderers (see InputRenderer.tsx).
 export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
     const {
         assayId,

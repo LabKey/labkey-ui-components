@@ -27,7 +27,7 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { InputRenderer } from '../forms/renderers';
+import { InputRenderer } from '../forms/InputRenderer';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { DateInputCell, DateInputCellProps } from './DateInputCell';

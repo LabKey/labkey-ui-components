@@ -96,6 +96,7 @@ export const InputRenderer: FC<InputRendererProps> = memo(props => {
     }, []);
 
     if (!col.inputRenderer) {
+        console.warn('InputRenderer: a column was provided that does not have an "inputRenderer" configured.');
         return null;
     }
 

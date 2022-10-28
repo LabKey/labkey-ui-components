@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Remove colon after field label for audit details
 * Remove colons after user detail labels
 * Remove colons after EditInlineField labels
+* Don't put empty aliquots message in the table (remove extraneous horizontal line)
 
 ### version 2.241.3
 *Released*: 27 October 2022

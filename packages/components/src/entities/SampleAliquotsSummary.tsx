@@ -119,21 +119,16 @@ export class SampleAliquotsSummaryWithModels extends PureComponent<Props & Sampl
             <Panel>
                 <Panel.Heading>Aliquots</Panel.Heading>
                 <Panel.Body>
+                    {!stats && (
+                        <span className="sample-aliquots-stats-empty">This sample has no aliquots.</span>
+                    )}
+                    {!!stats && (
                     <table className="table table-responsive table-condensed detail-component--table__fixed sample-aliquots-stats-table">
                         <tbody>
-                            {stats ? (
-                                this.renderStats(stats, hideAssayData)
-                            ) : (
-                                <tr>
-                                    <td>
-                                        <span className="sample-aliquots-stats-empty">
-                                            This sample has no aliquots.
-                                        </span>
-                                    </td>
-                                </tr>
-                            )}
+                            {this.renderStats(stats, hideAssayData)}
                         </tbody>
                     </table>
+                    )}
                 </Panel.Body>
             </Panel>
         );

@@ -81,7 +81,7 @@ export class MenuItemModel extends Record({
             const dataProductId = rawData.productId ? rawData.productId.toLowerCase() : undefined;
 
             if (rawData.key && sectionKey !== 'user') {
-                const parts = rawData.key.split('?');
+                const parts = rawData.key.split('?');  //TODO: This may cause issues with non-url keys that have '?' as they will be split unexpectedly. Issue #46611
 
                 // for assay name that contains slash, full raw key (protocol/assayname: general/a/b) is encoded using QueryKey.encodePart as general/a$Sb on server side
                 // use QueryKey.decodePart to decode the assay name so url can be correctly called by encodeURIComponent and key be used to display decoded assay name
@@ -90,7 +90,7 @@ export class MenuItemModel extends Record({
                     .filter(val => val !== '')
                     .map(QueryKey.decodePart);
 
-                const decodedPart = subParts.join('/');
+                const decodedPart = subParts.join('/').replace('$','$$$$'); // Need to escape any '$' in the replacement string https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement
                 const decodedKey = rawData.key.replace(parts[0], decodedPart);
 
                 let params;

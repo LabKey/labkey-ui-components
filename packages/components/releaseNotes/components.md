@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update sample type download template URL to use query name as prefix
 * Remove colon after field label for audit details
+* Remove colons from user detail labels as well
 
 ### version 2.241.3
 *Released*: 27 October 2022

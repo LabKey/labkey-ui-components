@@ -77,6 +77,15 @@
     }
 }
 
+.grid-header-cell__body {
+    width: 100%;
+}
+
+.dropdown-menu.grid-header-cell__dropdown-menu {
+    display: block;
+    position: fixed;
+}
+
 .grid-header-draggable {
     cursor: pointer;
 }

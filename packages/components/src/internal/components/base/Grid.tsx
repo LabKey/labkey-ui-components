@@ -98,8 +98,6 @@ interface GridHeaderProps {
     calcWidths?: boolean;
     columns: List<GridColumn>;
     headerCell?: any;
-    onCellClick?: (column: GridColumn) => void;
-    onColumnDrag?: (sourceIndex: string) => void;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     showHeader?: boolean;
     transpose?: boolean;
@@ -113,19 +111,8 @@ interface State {
 export class GridHeader extends PureComponent<GridHeaderProps, State> {
     readonly state: State = { dragTarget: undefined };
 
-    _handleClick(column: GridColumn, evt: any): void {
-        const isHeaderCellClick =
-            evt.target.className?.startsWith('grid-header-cell') ||
-            evt.target.parentElement?.className?.startsWith('grid-header-cell');
-        evt.stopPropagation();
-        if (this.props.onCellClick && isHeaderCellClick) {
-            this.props.onCellClick(column);
-        }
-    }
-
     handleDragStart = (e): void => {
         const dragIndex = e.target.id;
-        this.props?.onColumnDrag(dragIndex);
 
         if (e.target?.tagName.toLowerCase() === 'th' && dragIndex !== GRID_SELECTION_INDEX) {
             e.dataTransfer.setData('dragIndex', dragIndex);
@@ -190,7 +177,6 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                     id={index}
                                     key={index}
                                     className={className}
-                                    onClick={this._handleClick.bind(this, column)}
                                     style={{ minWidth }}
                                     title={hideTooltip ? undefined : description}
                                     draggable={draggable}
@@ -345,9 +331,7 @@ export interface GridProps {
     isLoading?: boolean;
     loadingText?: ReactNode;
     messages?: List<Map<string, string>>;
-    onColumnDrag?: (sourceIndex: string) => void;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
-    onHeaderCellClick?: (column: GridColumn) => void;
     responsive?: boolean;
     /**
      * If a rowKey is specified the <Grid> will use it as a lookup key into each row. The associated value
@@ -379,8 +363,6 @@ export const Grid: FC<GridProps> = memo(props => {
         fixedHeight = false,
         columns,
         headerCell,
-        onHeaderCellClick,
-        onColumnDrag,
         onColumnDrop,
         rowKey,
         highlightRowIndexes,
@@ -401,8 +383,6 @@ export const Grid: FC<GridProps> = memo(props => {
         calcWidths,
         columns: gridColumns,
         headerCell,
-        onCellClick: onHeaderCellClick,
-        onColumnDrag,
         onColumnDrop,
         showHeader,
         transpose,

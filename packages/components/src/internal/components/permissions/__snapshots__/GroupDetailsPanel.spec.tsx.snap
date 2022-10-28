@@ -86,7 +86,7 @@ exports[`<GroupDetailsPanel/> as site group 1`] = `
     <div
       className="principal-detail-label"
     >
-      Effective Roles:
+      Effective Roles
     </div>
     <ul
       className="permissions-groups-ul"
@@ -207,7 +207,7 @@ exports[`<GroupDetailsPanel/> with principal and members 1`] = `
     <div
       className="principal-detail-label"
     >
-      Effective Roles:
+      Effective Roles
     </div>
     <ul
       className="permissions-groups-ul"

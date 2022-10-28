@@ -221,7 +221,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                             unselectable="on"
                             title={allowEdit ? tooltip : undefined}
                         >
-                            {label}:
+                            {label}
                         </span>
                     )}
                     <span

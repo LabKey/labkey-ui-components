@@ -36,7 +36,7 @@ describe('EditInlineField', () => {
         expect(wrapper.find('.edit-inline-field__toggle')).toHaveLength(!editing && allowEdit ? 1 : 0);
         expect(wrapper.find('.fa-pencil')).toHaveLength(!editing && allowEdit ? 1 : 0);
         if (!editing) {
-            expect(wrapper.find('.edit-inline-field__label').text()).toBe('Test Label:');
+            expect(wrapper.find('.edit-inline-field__label').text()).toBe('Test Label');
         }
 
         expect(wrapper.find(DateInput)).toHaveLength(type?.date ?? 0);

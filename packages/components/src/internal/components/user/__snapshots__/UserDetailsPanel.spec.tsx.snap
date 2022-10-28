@@ -43,7 +43,6 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Email
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -58,7 +57,6 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
         className="principal-detail-label col-xs-4"
       >
         First Name
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -73,7 +71,6 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Last Name
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -91,7 +88,6 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Description
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -109,7 +105,6 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Created
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -124,7 +119,6 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Last Login
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -138,7 +132,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
     <div
       className="principal-detail-label"
     >
-      Member of:
+      Member of
     </div>
     <ul
       className="permissions-groups-ul"
@@ -214,7 +208,6 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
         className="principal-detail-label col-xs-4"
       >
         Email
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -229,7 +222,6 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
         className="principal-detail-label col-xs-4"
       >
         First Name
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -244,7 +236,6 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
         className="principal-detail-label col-xs-4"
       >
         Last Name
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -262,7 +253,6 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
         className="principal-detail-label col-xs-4"
       >
         Description
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -280,7 +270,6 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
         className="principal-detail-label col-xs-4"
       >
         Created
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -295,7 +284,6 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
         className="principal-detail-label col-xs-4"
       >
         Last Login
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -309,7 +297,7 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
     <div
       className="principal-detail-label"
     >
-      Member of:
+      Member of
     </div>
     <ul
       className="permissions-groups-ul"
@@ -364,7 +352,6 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Email
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -379,7 +366,6 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         className="principal-detail-label col-xs-4"
       >
         First Name
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -394,7 +380,6 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Last Name
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -412,7 +397,6 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Description
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -430,7 +414,6 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Created
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -445,7 +428,6 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Last Login
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -459,7 +441,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
     <div
       className="principal-detail-label"
     >
-      Effective Roles:
+      Effective Roles
     </div>
     <ul
       className="permissions-groups-ul"
@@ -489,7 +471,7 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
     <div
       className="principal-detail-label"
     >
-      Member of:
+      Member of
     </div>
     <ul
       className="permissions-groups-ul"

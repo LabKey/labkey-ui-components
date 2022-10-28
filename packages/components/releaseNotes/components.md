@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.242.0
+*Released*: 28 October 2022
+* Issue 46460: Filter by date only (not time)
+* Issue 46292: Sample Manager: Grid column URL doesn't respect urlTarget property configured in in query metadata
+* Issue 45405: Async import status from other folders are registering in the current LKSM folder.
+
 ### version 2.241.3
 *Released*: 27 October 2022
 * Fix Issue 45553

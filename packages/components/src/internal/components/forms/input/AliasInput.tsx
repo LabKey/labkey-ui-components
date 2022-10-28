@@ -10,13 +10,14 @@ interface Props {
     allowDisable?: boolean;
     col: QueryColumn;
     data?: any;
+    formsy?: boolean;
     initiallyDisabled?: boolean;
     isDetailInput?: boolean;
     onToggleDisable?: (disabled: boolean) => void;
 }
 
 export const AliasInput: FC<Props> = memo(props => {
-    const { allowDisable, col, data, isDetailInput, initiallyDisabled, onToggleDisable } = props;
+    const { allowDisable, col, data, formsy, isDetailInput, initiallyDisabled, onToggleDisable } = props;
     const id = useMemo(() => generateId(), []);
     const promptTextCreator = useCallback((text: string) => `Create alias "${text}"`, []);
 
@@ -42,7 +43,7 @@ export const AliasInput: FC<Props> = memo(props => {
             allowCreate
             allowDisable={allowDisable}
             description={col.description}
-            formsy
+            formsy={formsy}
             id={id}
             initiallyDisabled={initiallyDisabled}
             inputClass={isDetailInput ? 'col-sm-12' : undefined}
@@ -62,5 +63,9 @@ export const AliasInput: FC<Props> = memo(props => {
         />
     );
 });
+
+AliasInput.defaultProps = {
+    formsy: true,
+};
 
 AliasInput.displayName = 'AliasInput';

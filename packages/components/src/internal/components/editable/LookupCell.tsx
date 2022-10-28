@@ -140,7 +140,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         }
 
         if (lookup.hasQueryFilters()) {
-            queryFilters = queryFilters.push(...lookup.getQueryFilters())
+            queryFilters = queryFilters.push(...lookup.getQueryFilters());
         }
 
         return (

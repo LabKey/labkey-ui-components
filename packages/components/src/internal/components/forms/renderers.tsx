@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode, ReactText } from 'react';
+import React, { FC, memo, ReactNode, useEffect } from 'react';
 import { Query } from '@labkey/api';
 import { Input } from 'formsy-react-components';
 import { addValidationRule, validationRules } from 'formsy-react';
@@ -30,176 +30,141 @@ import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
 import { SampleStatusInput } from './input/SampleStatusInput';
 
-type InputRenderer = (
-    col: QueryColumn,
-    key: ReactText,
-    data: any, // The data for the entire row/form section
-    value: any,
-    isDetailInput: boolean, // Indicates whether or not the input is being rendered inside an EditableDetailPanel
-    allowFieldDisable?: boolean,
-    initiallyDisabled?: boolean,
-    onToggleDisable?: (disabled: boolean) => void,
-    onQSChange?: (name: string, value: string | any[], items: any) => void,
-    renderLabelField?: (col: QueryColumn) => ReactNode,
-    showAsteriskSymbol?: boolean,
-    onAdditionalFormDataChange?: (name: string, value: any) => any,
-    inputClass?: string,
-    containerPath?: string,
-    containerFilter?: Query.ContainerFilter,
-    isGridInput?: boolean
-) => ReactNode;
-
-const AliasInputRenderer: InputRenderer = (
-    col: QueryColumn,
-    key: ReactText,
-    data: any,
-    value: any,
-    isDetailInput: boolean,
-    allowFieldDisable = false,
-    initiallyDisabled = false,
-    onToggleDisable?: (disabled: boolean) => void
-) => (
-    <AliasInput
-        col={col}
-        data={data}
-        isDetailInput={isDetailInput}
-        key={key}
-        allowDisable={allowFieldDisable}
-        initiallyDisabled={initiallyDisabled}
-        onToggleDisable={onToggleDisable}
-    />
-);
-
-const AppendUnitsInputRenderer: InputRenderer = (
-    col: QueryColumn,
-    key: ReactText,
-    data: any,
-    value: any,
-    isDetailInput: boolean,
-    allowFieldDisable = false,
-    initiallyDisabled = false
-) => (
-    <Input
-        allowDisable={allowFieldDisable}
-        disabled={initiallyDisabled}
-        addonAfter={<span>{col.units}</span>}
-        changeDebounceInterval={0}
-        elementWrapperClassName={isDetailInput ? [{ 'col-sm-9': false }, 'col-sm-12'] : undefined}
-        id={col.name}
-        key={key}
-        label={<LabelOverlay column={col} inputId={col.name} />}
-        labelClassName="control-label text-left"
-        name={col.name}
-        required={col.required}
-        type="text"
-        value={value}
-        validations="isNumericWithError"
-    />
-);
-
-const SampleStatusInputRenderer: InputRenderer = (
-    col: QueryColumn,
-    key: ReactText,
-    data: any, // The data for the entire row/form section
-    value: any,
-    isDetailInput: boolean, // Indicates whether or not the input is being rendered inside an EditableDetailPanel, always false for SampleStatusInputRenderer
-    allowFieldDisable?: boolean,
-    initiallyDisabled?: boolean,
-    onToggleDisable?: (disabled: boolean) => void,
-    onQSChange?: (name: string, value: string | any[], items: any) => void,
-    renderLabelField?: (col: QueryColumn) => ReactNode,
-    showAsteriskSymbol?: boolean,
-    onAdditionalFormDataChange?: (name: string, value: any) => any,
-    inputClass?: string,
-    containerPath?: string,
-    containerFilter?: Query.ContainerFilter,
-    isGridInput?: boolean
-) => {
-    return (
-        <SampleStatusInput
-            col={col}
-            key={key}
-            data={data}
-            value={value}
-            allowDisable={allowFieldDisable}
-            initiallyDisabled={initiallyDisabled}
-            onToggleDisable={onToggleDisable}
-            onQSChange={onQSChange}
-            renderLabelField={renderLabelField}
-            showAsteriskSymbol={showAsteriskSymbol}
-            onAdditionalFormDataChange={onAdditionalFormDataChange}
-            inputClass={inputClass}
-            containerFilter={containerFilter}
-            containerPath={containerPath}
-            isGridInput={isGridInput}
-        />
-    );
-};
-
 const ASSAY_ID_INDEX = 'Protocol/RowId';
 
-const AssayTaskInputRenderer: InputRenderer = (
-    col: QueryColumn,
-    key: ReactText,
-    data: any,
-    value: any,
-    isDetailInput: boolean,
-    allowFieldDisable?: boolean,
-    initiallyDisabled?: boolean,
-    onToggleDisable?: (disabled: boolean) => void,
-    onQSChange?: (name: string, value: string | any[], items: any) => void,
-    renderLabelField?: (col: QueryColumn) => ReactNode,
-    showAsteriskSymbol?: boolean,
-    onAdditionalFormDataChange?: (name: string, value: any) => any,
-    inputClass?: string,
-    containerPath?: string,
-    containerFilter?: Query.ContainerFilter,
-    isGridInput?: boolean
-) => {
+// TODO: Rethink how this is resolved. The input renderer should not be responsible for processing this data.
+function resolveAssayId(data: any): any {
     // Used in multiple contexts so need to check various data formats
     let assayId = Map.isMap(data) ? data.get(ASSAY_ID_INDEX) : data[ASSAY_ID_INDEX];
-    if (!assayId) assayId = Map.isMap(data) ? data.get(encodePart(ASSAY_ID_INDEX)) : data[encodePart(ASSAY_ID_INDEX)];
-    if (List.isList(assayId)) assayId = assayId.get(0);
-    assayId = assayId?.value ?? assayId;
-    assayId = assayId?.get?.('value') ?? assayId;
-
-    return (
-        <AssayTaskInput
-            assayId={assayId}
-            isDetailInput={isDetailInput}
-            name={col.name}
-            value={value}
-            allowDisable={allowFieldDisable}
-            initiallyDisabled={initiallyDisabled}
-            onToggleDisable={onToggleDisable}
-            onChange={onQSChange}
-            isGridInput={isGridInput}
-        />
-    );
-};
-
-export function resolveRenderer(column: QueryColumn): InputRenderer {
-    // 23462: Global Formsy validation rule for numbers
-    if (!validationRules.isNumericWithError) {
-        addValidationRule('isNumericWithError', (values: any, value: string | number) => {
-            return validationRules.isNumeric(values, value) || 'Please enter a number.';
-        });
+    if (!assayId) {
+        assayId = Map.isMap(data) ? data.get(encodePart(ASSAY_ID_INDEX)) : data[encodePart(ASSAY_ID_INDEX)];
     }
-
-    if (column?.inputRenderer) {
-        switch (column.inputRenderer.toLowerCase()) {
-            case 'experimentalias':
-                return AliasInputRenderer;
-            case 'appendunitsinput':
-                return AppendUnitsInputRenderer;
-            case 'workflowtask':
-                return AssayTaskInputRenderer;
-            case 'samplestatusinput':
-                return SampleStatusInputRenderer;
-            default:
-                break;
-        }
+    if (List.isList(assayId)) {
+        assayId = assayId.get(0);
     }
-
-    return undefined;
+    return assayId?.get?.('value') ?? assayId?.value ?? assayId;
 }
+
+interface InputRendererProps {
+    allowFieldDisable?: boolean;
+    col: QueryColumn;
+    containerFilter?: Query.ContainerFilter;
+    containerPath?: string;
+    // The data for the entire row/form section
+    data: any;
+    initiallyDisabled?: boolean;
+    inputClass?: string;
+    // Indicates whether or not the input is being rendered inside an EditableDetailPanel
+    isDetailInput?: boolean;
+    // Indicates whether or not the input is being rendered inside an EditableGrid
+    isGridInput?: boolean;
+    onAdditionalFormDataChange?: (name: string, value: any) => void;
+    onQSChange?: (name: string, value: string | any[], items: any) => void;
+    onToggleDisable?: (disabled: boolean) => void;
+    renderLabelField?: (col: QueryColumn) => ReactNode;
+    showAsteriskSymbol?: boolean;
+    value: any;
+}
+
+export const InputRenderer: FC<InputRendererProps> = memo(props => {
+    const {
+        allowFieldDisable = false,
+        col,
+        containerFilter,
+        containerPath,
+        data,
+        isDetailInput = false,
+        isGridInput = false,
+        initiallyDisabled = false,
+        inputClass,
+        onAdditionalFormDataChange,
+        onQSChange,
+        onToggleDisable,
+        renderLabelField,
+        showAsteriskSymbol,
+        value,
+    } = props;
+
+    useEffect(() => {
+        // Issue 23462: Global Formsy validation rule for numbers
+        if (!validationRules.isNumericWithError) {
+            addValidationRule(
+                'isNumericWithError',
+                (values: any, v: string | number) => validationRules.isNumeric(values, v) || 'Please enter a number.'
+            );
+        }
+    }, []);
+
+    if (!col.inputRenderer) {
+        return null;
+    }
+
+    switch (col.inputRenderer.toLowerCase()) {
+        case 'appendunitsinput':
+            return (
+                <Input
+                    allowDisable={allowFieldDisable}
+                    disabled={initiallyDisabled}
+                    addonAfter={<span>{col.units}</span>}
+                    changeDebounceInterval={0}
+                    elementWrapperClassName={isDetailInput ? [{ 'col-sm-9': false }, 'col-sm-12'] : undefined}
+                    id={col.name}
+                    label={<LabelOverlay column={col} inputId={col.name} />}
+                    labelClassName="control-label text-left"
+                    name={col.name}
+                    required={col.required}
+                    type="text"
+                    value={value}
+                    validations="isNumericWithError"
+                />
+            );
+        case 'experimentalias':
+            return (
+                <AliasInput
+                    col={col}
+                    data={data}
+                    isDetailInput={isDetailInput}
+                    allowDisable={allowFieldDisable}
+                    initiallyDisabled={initiallyDisabled}
+                    onToggleDisable={onToggleDisable}
+                />
+            );
+        case 'samplestatusinput':
+            return (
+                <SampleStatusInput
+                    addLabelAsterisk={showAsteriskSymbol}
+                    col={col}
+                    data={data}
+                    value={value}
+                    allowDisable={allowFieldDisable}
+                    initiallyDisabled={initiallyDisabled}
+                    onToggleDisable={onToggleDisable}
+                    onQSChange={onQSChange}
+                    renderLabelField={renderLabelField}
+                    onAdditionalFormDataChange={onAdditionalFormDataChange}
+                    inputClass={inputClass}
+                    containerFilter={containerFilter}
+                    containerPath={containerPath}
+                    isGridInput={isGridInput}
+                />
+            );
+        case 'workflowtask':
+            return (
+                <AssayTaskInput
+                    assayId={resolveAssayId(data)}
+                    isDetailInput={isDetailInput}
+                    name={col.name}
+                    value={value}
+                    allowDisable={allowFieldDisable}
+                    initiallyDisabled={initiallyDisabled}
+                    onToggleDisable={onToggleDisable}
+                    onChange={onQSChange}
+                    isGridInput={isGridInput}
+                />
+            );
+        default:
+            throw new Error(`InputRenderer: Does not support the inputRenderer "${col.inputRenderer}"`);
+    }
+});
+
+InputRenderer.displayName = 'InputRenderer';

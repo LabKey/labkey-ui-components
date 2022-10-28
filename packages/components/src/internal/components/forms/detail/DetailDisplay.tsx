@@ -15,7 +15,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { LabelOverlay } from '../LabelOverlay';
 
 import { QuerySelect } from '../QuerySelect';
-import { resolveRenderer } from '../renderers';
+import { InputRenderer } from '../renderers';
 import { resolveDetailFieldValue } from '../utils';
 
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
@@ -261,29 +261,19 @@ export function resolveDetailEditRenderer(
         let value = resolveDetailFieldValue(data, col.isLookup());
 
         if (col.inputRenderer) {
-            const renderer = resolveRenderer(col);
-
-            if (renderer) {
-                return renderer(
-                    col,
-                    col.name,
-                    row,
-                    value,
-                    true,
-                    false,
-                    false,
-                    null,
-                    null,
-                    null,
-                    false,
-                    onAdditionalFormDataChange,
-                    'col-sm-12',
-                    options?.containerPath,
-                    options?.containerFilter
-                );
-            }
-
-            throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);
+            return (
+                <InputRenderer
+                    col={col}
+                    containerFilter={options?.containerFilter}
+                    containerPath={options?.containerPath}
+                    data={row}
+                    inputClass="col-sm-12"
+                    isDetailInput
+                    key={col.name}
+                    onAdditionalFormDataChange={onAdditionalFormDataChange}
+                    value={value}
+                />
+            );
         }
 
         if (col.isPublicLookup()) {

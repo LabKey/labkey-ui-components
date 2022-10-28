@@ -27,7 +27,7 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { resolveRenderer } from '../forms/renderers';
+import { InputRenderer } from '../forms/renderers';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { DateInputCell, DateInputCellProps } from './DateInputCell';
@@ -137,7 +137,6 @@ export class Cell extends React.PureComponent<Props, State> {
 
     handleBlur = (evt: any): void => {
         clearTimeout(this.changeTO);
-        const { colIdx, rowIdx, cellActions } = this.props;
         this.replaceCurrentCellValue(evt.target.value, evt.target.value);
     };
 
@@ -166,7 +165,7 @@ export class Cell extends React.PureComponent<Props, State> {
         cellActions.focusCell(colIdx, rowIdx);
     };
 
-    handleKeys = (event: React.KeyboardEvent<HTMLElement>) => {
+    handleKeys = (event: React.KeyboardEvent<HTMLElement>): void => {
         const { cellActions, colIdx, focused, rowIdx, selected } = this.props;
         const { focusCell, modifyCell, selectCell, fillDown } = cellActions;
 
@@ -264,35 +263,8 @@ export class Cell extends React.PureComponent<Props, State> {
         }
     };
 
-    getRenderer = (): ReactNode => {
-        const { cellActions, col, colIdx, rowIdx, values, row } = this.props;
-
-        const renderer = resolveRenderer(col);
-
-        if (renderer) {
-            const onQSChange = (name: string, value: string | any[], items: any) => {
-                this.replaceCurrentCellValue(items?.label, items?.value);
-            };
-
-            return renderer(
-                col,
-                col.name,
-                row,
-                values?.get(0)?.raw,
-                false,
-                false,
-                false,
-                null,
-                onQSChange,
-                null,
-                false,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                true
-            );
-        }
+    onQSChange = (name: string, value: string | any[], items: any): void => {
+        this.replaceCurrentCellValue(items?.label, items?.value);
     };
 
     render() {
@@ -305,12 +277,12 @@ export class Cell extends React.PureComponent<Props, State> {
             lastSelection,
             message,
             placeholder,
+            row,
             rowIdx,
             selected,
             selection,
             values,
             filteredLookupValues,
-            row,
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
@@ -388,7 +360,16 @@ export class Cell extends React.PureComponent<Props, State> {
         }
 
         if (col.inputRenderer) {
-            return this.getRenderer();
+            // TODO: This should respect disabled
+            return (
+                <InputRenderer
+                    col={col}
+                    data={row}
+                    isGridInput
+                    onQSChange={this.onQSChange}
+                    value={values?.get(0)?.raw}
+                />
+            );
         }
 
         if (showLookup) {

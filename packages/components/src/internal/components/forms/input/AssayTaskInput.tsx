@@ -5,11 +5,11 @@ import { selectRowsDeprecated } from '../../../query/api';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { Alert } from '../../base/Alert';
 
-import { customStyles, customTheme, LookupCell } from '../../editable/LookupCell';
+import { customStyles, customTheme } from '../../editable/LookupCell';
 
 import { SelectInput } from './SelectInput';
 import { DisableableInputProps } from './DisableableInput';
-import {customBulkStyles} from "./SampleStatusInput";
+import { customBulkStyles } from './SampleStatusInput';
 
 export interface InputOption {
     label: string;

@@ -239,7 +239,6 @@ import {
 } from './internal/renderers/ImportAliasRenderer';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
-import { resolveRenderer } from './internal/components/forms/renderers';
 import {
     getQueryFormLabelFieldName,
     isQueryFormLabelField,
@@ -904,7 +903,6 @@ export {
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
     resolveDetailRenderer,
-    resolveRenderer,
     // form related items
     BulkUpdateForm,
     QueryFormInputs,

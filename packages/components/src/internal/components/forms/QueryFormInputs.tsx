@@ -24,7 +24,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { caseInsensitive } from '../../util/utils';
 
-import { resolveRenderer } from './renderers';
+import { InputRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';
 import { TextInput } from './input/TextInput';
 import { CheckboxInput } from './input/CheckboxInput';
@@ -206,25 +206,21 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
 
                     if (col.inputRenderer) {
-                        const renderer = resolveRenderer(col);
-                        if (renderer) {
-                            return renderer(
-                                col,
-                                i,
-                                fieldValues,
-                                value,
-                                false,
-                                allowFieldDisable,
-                                shouldDisableField,
-                                this.onToggleDisable,
-                                this.onQSChange,
-                                this.renderLabelField,
-                                showAsteriskSymbol,
-                                onAdditionalFormDataChange
-                            );
-                        }
-
-                        throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);
+                        return (
+                            <InputRenderer
+                                allowFieldDisable={allowFieldDisable}
+                                col={col}
+                                data={fieldValues}
+                                initiallyDisabled={shouldDisableField}
+                                key={i}
+                                onAdditionalFormDataChange={onAdditionalFormDataChange}
+                                onQSChange={this.onQSChange}
+                                onToggleDisable={this.onToggleDisable}
+                                renderLabelField={this.renderLabelField}
+                                showAsteriskSymbol={showAsteriskSymbol}
+                                value={value}
+                            />
+                        );
                     }
 
                     if (col.isPublicLookup()) {

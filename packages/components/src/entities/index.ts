@@ -58,6 +58,10 @@ import { useSampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
 import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
 import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
+import { SampleOverviewPanel } from './SampleOverviewPanel';
+import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
+import { SampleAssaysPage } from './SampleAssaysPage';
+import { SampleLineagePage } from './SampleLineagePage';
 
 export {
     createEntityParentKey,
@@ -102,12 +106,17 @@ export {
     SampleAliquotsSummary,
     SamplesAddButton,
     SampleAssayDetail,
+    SampleAssaysPage,
     SampleCreationTypeModal,
     SampleDetailEditing,
+    SampleDetailPage,
+    SampleDetailContextConsumer,
     SampleFinderSection,
     SampleHeader,
     SampleIndexNav,
     SampleLineageGraph,
+    SampleLineagePage,
+    SampleOverviewPanel,
     SamplesResolver,
     SampleSetDeleteModal,
     SampleTimelinePageBase,

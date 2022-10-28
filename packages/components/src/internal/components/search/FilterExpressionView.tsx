@@ -211,7 +211,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const isConceptColumn = field.isConceptCodeColumn && isOntologyEnabled();
 
             if (jsonType === 'date') {
-                 return (
+                return (
                     <DatePickerInput
                         formsy={false}
                         inputClassName="form-control filter-expression__input"
@@ -225,11 +225,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         hideTime={true} // always filter by date only, without timepicker
                         disabled={disabled}
                         onChange={newDate =>
-                            updateDateFilterFieldValue(
-                                filterIndex,
-                                getJsonDateFormatString(newDate),
-                                isSecondInput
-                            )
+                            updateDateFilterFieldValue(filterIndex, getJsonDateFormatString(newDate), isSecondInput)
                         }
                     />
                 );

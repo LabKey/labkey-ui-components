@@ -59,10 +59,8 @@ export function isDateTimeCol(col: QueryColumn): boolean {
 export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {
     let rawFormat = dateFormat || queryColumn.format;
     if (!rawFormat) {
-        if (dateOnly)
-            rawFormat = getDateFormat();
-        else
-            rawFormat = datePlaceholder(queryColumn);
+        if (dateOnly) rawFormat = getDateFormat();
+        else rawFormat = datePlaceholder(queryColumn);
     }
 
     // Issue 44011: account for the shortcut values (i.e. "Date", "DateTime", and "Time")
@@ -78,7 +76,7 @@ export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, 
 export function getColFormattedDateFilterValue(column: QueryColumn, value: string): string {
     let valueFull = value;
     if (value?.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
-        valueFull = value + "T00:00:00"; // Force local timezone. In ISO format, if you provide time and Z is not present in the end of string, the date will be local time zone instead of UTC time zone.
+        valueFull = value + 'T00:00:00'; // Force local timezone. In ISO format, if you provide time and Z is not present in the end of string, the date will be local time zone instead of UTC time zone.
     }
     const dateFormat = getColDateFormat(column, null, true); // date or datetime fields always filter by 'date' portion only
     return formatDate(new Date(valueFull), null, dateFormat);

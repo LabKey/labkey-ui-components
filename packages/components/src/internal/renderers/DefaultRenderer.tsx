@@ -22,10 +22,10 @@ import { MultiValueRenderer } from './MultiValueRenderer';
 
 interface Props {
     col?: QueryColumn;
+    columnIndex?: number;
     data: any;
     row?: any;
     rowIndex?: number;
-    columnIndex?: number;
 }
 
 const TARGET_BLANK = '_blank';
@@ -59,7 +59,12 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data }) => {
             if (data.get('url')) {
                 const targetBlank = data.get('urlTarget') === TARGET_BLANK;
                 return (
-                    <a className={className} href={data.get('url')} target={targetBlank ? TARGET_BLANK : undefined} rel={targetBlank ? URL_REL : undefined}>
+                    <a
+                        className={className}
+                        href={data.get('url')}
+                        target={targetBlank ? TARGET_BLANK : undefined}
+                        rel={targetBlank ? URL_REL : undefined}
+                    >
                         {display}
                     </a>
                 );

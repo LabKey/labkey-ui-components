@@ -74,8 +74,8 @@ describe('HeaderCellDropdown', () => {
     function validate(wrapper: ReactWrapper, gridColHeaderIcons: number, menuItemCount: number): void {
         expect(wrapper.find('.grid-panel__col-header-icon')).toHaveLength(gridColHeaderIcons);
         expect(wrapper.find(LabelHelpTip)).toHaveLength(0);
-        expect(wrapper.find(Dropdown)).toHaveLength(menuItemCount > 0 ? 1 : 0);
-        expect(wrapper.find(CustomToggle)).toHaveLength(menuItemCount > 0 ? 1 : 0);
+        expect(wrapper.find('.dropdown-menu')).toHaveLength(menuItemCount > 0 ? 1 : 0);
+        expect(wrapper.find('.grid-panel__menu-toggle .fa-chevron-circle-down')).toHaveLength(menuItemCount > 0 ? 1 : 0);
         expect(wrapper.find(MenuItem)).toHaveLength(menuItemCount);
     }
 
@@ -371,7 +371,7 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
         const removeFilterItem = wrapper.find(MenuItem).at(1);
-        expect(removeFilterItem.text()).toBe('  Remove filter');
+        expect(removeFilterItem.text()).toBe('Remove filter');
         expect(removeFilterItem.prop('disabled')).toBe(false);
         wrapper.unmount();
     });
@@ -390,7 +390,7 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
         const removeFilterItem = wrapper.find(MenuItem).at(1);
-        expect(removeFilterItem.text()).toBe('  Remove filter');
+        expect(removeFilterItem.text()).toBe('Remove filter');
         expect(removeFilterItem.prop('disabled')).toBe(false);
         wrapper.unmount();
     });
@@ -409,7 +409,7 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
         const removeFilterItem = wrapper.find(MenuItem).at(1);
-        expect(removeFilterItem.text()).toBe('  Remove filters');
+        expect(removeFilterItem.text()).toBe('Remove filters');
         expect(removeFilterItem.prop('disabled')).toBe(false);
         wrapper.unmount();
     });
@@ -421,7 +421,7 @@ describe('EditableColumnTitle', () => {
             caption: 'Test Column',
             name: 'Testing',
         });
-        const wrapper = mount(<EditableColumnTitle column={column} onChange={jest.fn()} onEditToggle={jest.fn()} />);
+        const wrapper = mount(<EditableColumnTitle column={column} onChange={jest.fn()} onCancel={jest.fn()} />);
         expect(wrapper.find('input').exists()).toBe(false);
         expect(wrapper.text()).toBe(column.caption);
         wrapper.unmount();
@@ -432,7 +432,7 @@ describe('EditableColumnTitle', () => {
             <EditableColumnTitle
                 column={QueryColumn.create({ name: 'TestName' })}
                 onChange={jest.fn()}
-                onEditToggle={jest.fn()}
+                onCancel={jest.fn()}
             />
         );
         expect(wrapper.find('input').exists()).toBe(false);
@@ -445,7 +445,7 @@ describe('EditableColumnTitle', () => {
             <EditableColumnTitle
                 column={QueryColumn.create({ name: 'TestName', caption: '&nbsp;' })}
                 onChange={jest.fn()}
-                onEditToggle={jest.fn()}
+                onCancel={jest.fn()}
             />
         );
         expect(wrapper.find('input').exists()).toBe(false);
@@ -458,7 +458,7 @@ describe('EditableColumnTitle', () => {
             <EditableColumnTitle
                 column={QueryColumn.create({ name: 'TestName', caption: '&nbsp;' })}
                 onChange={jest.fn()}
-                onEditToggle={jest.fn()}
+                onCancel={jest.fn()}
                 editing
             />
         );
@@ -475,7 +475,7 @@ describe('EditableColumnTitle', () => {
         const changeFn = jest.fn();
         const editToggleFn = jest.fn();
         const wrapper = mount(
-            <EditableColumnTitle column={column} onChange={changeFn} onEditToggle={editToggleFn} editing />
+            <EditableColumnTitle column={column} onChange={changeFn} onCancel={editToggleFn} editing />
         );
         const inputField = wrapper.find('input');
         expect(inputField.exists()).toBe(true);

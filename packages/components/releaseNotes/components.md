@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update sample type download template URL to use query name as prefix
+
 ### version 2.241.3
 *Released*: 27 October 2022
 * Fix Issue 45553

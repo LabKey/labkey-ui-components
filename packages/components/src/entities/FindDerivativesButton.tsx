@@ -18,12 +18,11 @@ import { useAppContext } from '../internal/AppContext';
 
 import { DisableableMenuItem } from '../internal/components/samples/DisableableMenuItem';
 
-import { DisableableButton } from '../internal/components/buttons/DisableableButton';
-
-import { getSampleFinderLocalStorageKey } from './utils';
 import { isValidFilterFieldSampleFinder, searchFiltersToJson } from '../internal/components/search/utils';
 import { FieldFilter, FilterProps } from '../internal/components/search/models';
 import { SAMPLE_FINDER_SESSION_PREFIX } from '../internal/components/search/constants';
+
+import { getSampleFinderLocalStorageKey } from './utils';
 
 const DISABLED_FIND_DERIVATIVES_MSG =
     'Unable to find derivative samples using search filters or filters on multi-valued lookup fields';
@@ -85,8 +84,8 @@ interface Props {
     model: QueryModel;
 }
 
-export const FindDerivativesButton: FC<Props> = memo(props => {
-    const { baseEntityDataType, baseModel, baseFilter, model, entityDataType, asSubMenu, metricFeatureArea } = props;
+export const FindDerivativesMenuItem: FC<Props> = memo(props => {
+    const { baseEntityDataType, baseModel, baseFilter, model, entityDataType, metricFeatureArea } = props;
     const { api } = useAppContext();
 
     const viewAndUserFilters = useMemo(
@@ -132,30 +131,19 @@ export const FindDerivativesButton: FC<Props> = memo(props => {
 
     if (!model.queryInfo) return null;
 
-    if (asSubMenu) {
-        const items = (
-            <DisableableMenuItem
-                operationPermitted={!invalidFilterNames}
-                disabledMessage={DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').'}
-                onClick={onClick}
-                placement="right"
-            >
-                Find Derivatives
-            </DisableableMenuItem>
-        );
-        return <ResponsiveMenuButton id="samples-finder-menu" items={items} text="Find" asSubMenu={asSubMenu} />;
-    }
-
     return (
-        <DisableableButton
-            className="responsive-menu"
-            bsStyle="default"
+        <DisableableMenuItem
+            operationPermitted={!invalidFilterNames}
+            disabledMessage={DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').'}
             onClick={onClick}
-            disabledMsg={
-                invalidFilterNames ? DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').' : undefined
-            }
+            placement="right"
         >
-            Find Derivatives
-        </DisableableButton>
+            Find Derivatives in Sample Finder
+        </DisableableMenuItem>
     );
+});
+
+export const FindDerivativesButton: FC<Props> = memo(props => {
+    const items = <FindDerivativesMenuItem {...props} />;
+    return <ResponsiveMenuButton id="sample-reports-menu" items={items} text="Reports" asSubMenu={props.asSubMenu} />;
 });

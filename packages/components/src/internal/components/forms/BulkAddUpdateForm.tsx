@@ -2,20 +2,22 @@ import React, { FC, useMemo } from 'react';
 import { List, Map } from 'immutable';
 
 import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
-
 import { EditorModel } from '../../models';
+
+import { Alert } from '../base/Alert';
 
 import { QueryInfoForm, QueryInfoFormProps } from './QueryInfoForm';
 
-interface Props extends Omit<QueryInfoFormProps, 'fieldValues'> {
+interface BulkAddUpdateFormProps extends Omit<QueryInfoFormProps, 'fieldValues'> {
     data: Map<any, Map<string, any>>;
     dataKeys: List<any>;
     editorModel: EditorModel;
     selectedRowIndexes: List<number>;
+    warning?: string;
 }
 
-export const BulkAddUpdateForm: FC<Props> = props => {
-    const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, ...queryInfoFormProps } = props;
+export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
+    const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, warning, ...queryInfoFormProps } = props;
     const {
         pluralNoun,
         singularNoun,
@@ -32,13 +34,17 @@ export const BulkAddUpdateForm: FC<Props> = props => {
     }, [data, dataKeys, editorModel, queryInfo, selectedRowIndexes]);
 
     return (
-        <QueryInfoForm
-            {...queryInfoFormProps}
-            fieldValues={fieldValues}
-            queryInfo={queryInfo.getInsertQueryInfo()}
-            submitForEditText={submitForEditText}
-            title={title}
-        />
+        <>
+            <Alert bsStyle="warning">{warning}</Alert>
+            <QueryInfoForm
+                {...queryInfoFormProps}
+                fieldValues={fieldValues}
+                queryInfo={queryInfo.getInsertQueryInfo()}
+                submitForEditText={submitForEditText}
+                title={title}
+                hideButtons={!queryInfoFormProps.asModal}
+            />
+        </>
     );
 };
 

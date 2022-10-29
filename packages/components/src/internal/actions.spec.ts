@@ -15,7 +15,7 @@
  */
 import { List, Map, OrderedMap, fromJS } from 'immutable';
 
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 
@@ -34,10 +34,6 @@ import {
     parseIntIfNumber,
 } from './actions';
 import { EXPORT_TYPES } from './constants';
-
-// FIXME, when the editableGridWithData file is read in, the objects are automatically
-//  converted to Maps, which means accessing them like objects doesn't work.  That's a problem.
-// const editableGridWithData = require("./test/data/sampleSet2-editableGridWithData.json");
 
 const editableGridWithData = {
     cellMessages: Map<string, CellMessage>({
@@ -99,11 +95,6 @@ const editableGridWithData = {
     selectionCells: [],
 };
 
-const schemaQ = new SchemaQuery({
-    schemaName: 'samples',
-    queryName: 'Sample Set 2',
-});
-
 const dataRows = {
     '1': {
         Description: 'S-1 Description',
@@ -116,7 +107,10 @@ const dataRows = {
 const dataKeys = ['1', '2'];
 
 const queryModel = makeTestQueryModel(
-    schemaQ,
+    new SchemaQuery({
+        schemaName: 'samples',
+        queryName: 'Sample Set 2',
+    }),
     QueryInfo.fromJSON(sampleSet2QueryInfo),
     dataRows,
     dataKeys,
@@ -339,7 +333,6 @@ describe('getExportParams', () => {
             schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],
-            'query.selectionKey': undefined,
         });
     });
 
@@ -348,7 +341,6 @@ describe('getExportParams', () => {
             schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],
-            'query.selectionKey': undefined,
             'query.viewName': 'testView',
         });
     });
@@ -358,7 +350,6 @@ describe('getExportParams', () => {
             schemaName,
             'query.queryName': queryName,
             'query.showRows': ['ALL'],
-            'query.selectionKey': undefined,
             delim: 'COMMA',
         });
     });
@@ -488,6 +479,20 @@ describe('getExportParams', () => {
             'query.Field3~neq': ['value'],
             includeColumn: ['extra1', 'extra2'],
             excludeColumn: ['Field3', 'extra2'],
+        });
+    });
+
+    test('container filter', () => {
+        // explicit container filter
+        expect(
+            getExportParams(EXPORT_TYPES.TSV, schemaQuery, {
+                containerFilter: Query.ContainerFilter.currentAndFirstChildren,
+            })
+        ).toStrictEqual({
+            schemaName,
+            'query.queryName': queryName,
+            'query.showRows': ['ALL'],
+            'query.containerFilterName': Query.ContainerFilter.currentAndFirstChildren,
         });
     });
 });

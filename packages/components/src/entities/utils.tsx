@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { List, OrderedMap, Set } from 'immutable';
-import { ActionURL, Filter, Utils } from '@labkey/api';
+import { ActionURL, AuditBehaviorTypes, Filter, Utils, getServerContext } from '@labkey/api';
 
 import {
     getOperationNotPermittedMessage,
@@ -13,6 +13,7 @@ import { AppURL, createProductUrlFromParts } from '../internal/url/AppURL';
 import { SchemaQuery } from '../public/SchemaQuery';
 import { SCHEMAS } from '../internal/schemas';
 import {
+    ALIQUOT_FILTER_MODE,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
@@ -26,10 +27,13 @@ import { getPrimaryAppProperties, isELNEnabled } from '../internal/app/utils';
 import { QueryInfo } from '../public/QueryInfo';
 import { naturalSort, naturalSortByProperty } from '../public/sort';
 import { DELIMITER } from '../internal/components/forms/constants';
-import { AssayStateModel } from '../internal/components/assay/models';
 import { QueryModel } from '../public/QueryModel/QueryModel';
 import { AssayDefinitionModel } from '../internal/AssayDefinitionModel';
 import { AssayUploadTabs } from '../internal/constants';
+import { getSampleAssayQueryConfigs } from '../internal/components/samples/actions';
+import { AssayStateModel } from '../internal/components/assay/models';
+import { SamplesAPIWrapper } from '../internal/components/samples/APIWrapper';
+import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
 
 export function getCrossFolderSelectionMsg(
     crossFolderSelectionCount: number,
@@ -272,6 +276,127 @@ export function getUpdatedRowForParentChanges(
     return updatedValues;
 }
 
+export const ASSAY_RUNS_GRID_ID = 'assayruncount';
+
+export async function getSamplesAssayGridQueryConfigs(
+    api: SamplesAPIWrapper,
+    assayModel: AssayStateModel,
+    sampleId: string, // leave undefined/null for the multiple sample selection case
+    sampleRows: Array<Record<string, any>>,
+    gridSuffix: string,
+    gridPrefix: string,
+    sampleSchemaQuery?: SchemaQuery,
+    showAliquotViewSelector?: boolean,
+    activeSampleAliquotType?: ALIQUOT_FILTER_MODE,
+    allSampleRows?: Array<Record<string, any>>,
+    unfilteredGridPrefix?: string
+): Promise<QueryConfigMap> {
+    const allSampleRows_ = allSampleRows ?? sampleRows;
+    const sampleIds = sampleRows.map(row => caseInsensitive(row, 'RowId').value);
+    const allSampleIds = allSampleRows_.map(row => caseInsensitive(row, 'RowId').value);
+
+    const _configs = getSampleAssayQueryConfigs(
+        assayModel,
+        sampleIds,
+        gridSuffix,
+        gridPrefix,
+        false,
+        sampleSchemaQuery
+    );
+
+    // since we want to remove empty assay run columns from the Assay Run Summary grid, we need to inject the WHERE
+    // clause into the SQL before the PIVOT. We'll use a session query for this
+    const sessionAssayRuns = await api.createSessionAssayRunSummaryQuery(allSampleIds);
+    const sessionAssayRunsQueryInfo = sessionAssayRuns?.queries[sessionAssayRuns.key];
+    if (sessionAssayRunsQueryInfo) {
+        _configs.push({
+            id: `${gridPrefix}:${ASSAY_RUNS_GRID_ID}:${gridSuffix}`,
+            title: 'Assay Run Summary',
+            schemaQuery: sessionAssayRunsQueryInfo.schemaQuery,
+            baseFilters: [Filter.create('RowId', sampleIds, Filter.Types.IN)],
+            omittedColumns: ['RowId', 'NULL::RunCount'],
+        });
+    }
+
+    let configs = _configs.reduce((configs_, config) => {
+        const modelId = config.id;
+        configs_[modelId] = config;
+        return configs_;
+    }, {});
+
+    // keep tab when "all" view has data, but filtered view is blank
+    const includeUnfilteredConfigs =
+        showAliquotViewSelector && activeSampleAliquotType && activeSampleAliquotType !== ALIQUOT_FILTER_MODE.all;
+    if (includeUnfilteredConfigs) {
+        const _unfilteredConfigs = getSampleAssayQueryConfigs(
+            assayModel,
+            allSampleIds,
+            gridSuffix,
+            unfilteredGridPrefix,
+            false,
+            sampleSchemaQuery
+        );
+
+        if (sessionAssayRunsQueryInfo) {
+            _unfilteredConfigs.push({
+                id: `${unfilteredGridPrefix}:assayruncount:${gridSuffix}`,
+                title: 'Assay Run Summary',
+                schemaQuery: sessionAssayRunsQueryInfo.schemaQuery,
+                omittedColumns: ['RowId', 'NULL::RunCount'],
+            });
+        }
+
+        const unfilteredConfigs = _unfilteredConfigs.reduce((configs_, config) => {
+            const modelId = config.id;
+            configs_[modelId] = config;
+            return configs_;
+        }, {});
+
+        configs = { ...configs, ...unfilteredConfigs };
+    }
+
+    // add in the config objects for those module-defined sample assay result views (e.g. TargetedMS module),
+    // note that the moduleName from the config must be active/enabled in the container
+    let sampleAssayResultViewConfigs = [];
+    try {
+        sampleAssayResultViewConfigs = await api.getSampleAssayResultViewConfigs();
+    } catch (e) {
+        // no-op, don't fail all query configs if we can't get this SampleAssayResultView array
+    }
+    const activeModules = getServerContext().container.activeModules;
+    sampleAssayResultViewConfigs.forEach(config => {
+        if (activeModules?.indexOf(config.moduleName) > -1) {
+            const baseConfig = {
+                title: config.title,
+                schemaQuery: SchemaQuery.create(config.schemaName, config.queryName, config.viewName),
+                containerFilter: config.containerFilter,
+            };
+
+            let modelId = `${gridPrefix}:${config.title}:${sampleId ?? 'samples'}`;
+            let sampleFilterValues = sampleRows.map(row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value);
+            configs[modelId] = {
+                ...baseConfig,
+                id: modelId,
+                baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
+            };
+
+            if (includeUnfilteredConfigs) {
+                modelId = `${unfilteredGridPrefix}:${config.title}:${sampleId}`;
+                sampleFilterValues = allSampleRows_.map(
+                    row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value
+                );
+                configs[modelId] = {
+                    ...baseConfig,
+                    id: modelId,
+                    baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
+                };
+            }
+        }
+    });
+
+    return configs;
+}
+
 export function getUpdatedLineageRowsForBulkEdit(
     nonAliquots: Record<string, any>,
     selectedParents: List<EntityChoice>,
@@ -358,4 +483,8 @@ export function getImportItemsForAssayDefinitions(
             );
             return items.set(assay, href);
         }, OrderedMap<AssayDefinitionModel, string>());
+}
+
+export function getSampleAuditBehaviorType() {
+    return AuditBehaviorTypes.DETAILED;
 }

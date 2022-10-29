@@ -17,15 +17,12 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router';
 import { Image, Media, Modal, Panel } from 'react-bootstrap';
 
-import { ActionURL, Ajax, Utils } from '@labkey/api';
-
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
 
 import { DataViewInfo, IDataViewInfo } from '../../DataViewInfo';
 import { DataViewInfoTypes, GRID_REPORTS, VISUALIZATION_REPORTS } from '../../constants';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from '../base/Alert';
 import { SVGIcon } from '../base/SVGIcon';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -36,7 +33,6 @@ const ICONS = {
     [DataViewInfoTypes.Dataset]: 'custom_grid',
     [DataViewInfoTypes.PieChart]: 'pie_chart',
     [DataViewInfoTypes.Query]: 'custom_grid',
-    [DataViewInfoTypes.SampleComparison]: 'sample_comparison',
     [DataViewInfoTypes.TimeChart]: 'xy_line',
     [DataViewInfoTypes.XYScatterPlot]: 'xy_scatter',
     [DataViewInfoTypes.XYSeriesLinePlot]: 'xy_line',
@@ -157,99 +153,6 @@ class ChartReportBody extends PureComponent<ReportConsumer, any> {
     }
 }
 
-interface SampleComparisonState {
-    error?: string;
-    loading?: boolean;
-    report?: any;
-}
-
-class SampleComparisonReportBody extends PureComponent<ReportConsumer, SampleComparisonState> {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            loading: false,
-            report: null,
-            error: null,
-        };
-    }
-
-    componentDidMount() {
-        this.fetchReport();
-    }
-
-    getReportId = () => {
-        const { report } = this.props;
-        return report.reportId.replace('db:', '');
-    };
-
-    fetchReport = () => {
-        const id = this.getReportId();
-        this.setState({ loading: true });
-
-        Ajax.request({
-            url: ActionURL.buildURL('assayreport', 'get.api'),
-            params: { id },
-            method: 'GET',
-            success: Utils.getCallbackWrapper(data => {
-                this.setState({ loading: false, report: data.data });
-            }),
-            failure: Utils.getCallbackWrapper(error => {
-                this.setState({ loading: false, error: 'Error loading Sample Comparison Report' });
-            }),
-        });
-    };
-
-    render() {
-        const { runUrl, appUrl } = this.props.report;
-        const { loading, report, error } = this.state;
-        const container = ActionURL.getContainer();
-        const id = this.getReportId();
-        const editUrl = ActionURL.buildURL('assayreport', 'edit', container, { id });
-        let body = <LoadingSpinner msg="Loading report definition..." />;
-
-        if (!loading && report) {
-            const columns = report.config.selectedColumns;
-            const numColumns = columns.length;
-            const uniqueAssays = columns.reduce((result, column) => {
-                if (column.schemaName) {
-                    const schema = column.schemaName.join('/');
-                    result[schema] = true;
-                }
-                return result;
-            }, {});
-            const numAssays = Object.keys(uniqueAssays).length;
-            body = (
-                <div>
-                    This report includes {numColumns} columns from {numAssays} assays.
-                </div>
-            );
-        } else if (error) {
-            body = <Alert bsStyle="danger">{this.state.error}</Alert>;
-        }
-
-        return (
-            <div className="report-list__scr-preview">
-                <div className="report-item__links">
-                    <p>
-                        <a href={runUrl}>View in LabKey Server</a>
-                    </p>
-                    <p>
-                        <a href={editUrl}>Edit in LabKey Server</a>
-                    </p>
-                    <p>
-                        <Link to={appUrl.toString()}>View in Biologics</Link>
-                    </p>
-                </div>
-
-                <div>{body}</div>
-
-                <ReportMetadata report={this.props.report} />
-            </div>
-        );
-    }
-}
-
 export class ReportItemModal extends PureComponent<ReportItemModalProps> {
     render() {
         const { name, type } = this.props.report;
@@ -260,8 +163,6 @@ export class ReportItemModal extends PureComponent<ReportItemModalProps> {
             BodyRenderer = GridReportBody;
         } else if (VISUALIZATION_REPORTS.contains(type as DataViewInfoTypes)) {
             BodyRenderer = ChartReportBody;
-        } else if (type === DataViewInfoTypes.SampleComparison) {
-            BodyRenderer = SampleComparisonReportBody;
         }
 
         return (

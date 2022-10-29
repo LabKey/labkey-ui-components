@@ -32,8 +32,10 @@ export interface DatePickerInputProps extends DisableableInputProps {
     dateFormat?: string;
     disabled?: boolean;
     formsy?: boolean;
-    getErrorMessage?: Function;// from formsy-react
-    getValue?: Function;// from formsy-react
+    getErrorMessage?: Function; // from formsy-react
+    // from formsy-react
+    getValue?: Function;
+    hideTime?: boolean;
     initValueFormatted?: boolean;
     inputClassName?: string;
     inputWrapperClassName?: string;
@@ -42,18 +44,17 @@ export interface DatePickerInputProps extends DisableableInputProps {
     label?: any;
     labelClassName?: string;
     name?: string;
-    onChange?: (newDate?: Date) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    setValue?: Function;// from formsy-react
+    setValue?: Function; // from formsy-react
     showLabel?: boolean;
-    showRequired?: Function;// from formsy-react
+    showRequired?: Function; // from formsy-react
     value?: any;
     wrapperClassName?: string;
-    showTime?: boolean;
-    validations?: any;// from formsy-react
+    onChange?: (newDate?: Date) => void;
+    validations?: any; // from formsy-react
 }
 
 interface DatePickerInputState extends DisableableInputState {
@@ -132,13 +133,13 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
     };
 
     getDateFormat(): string {
-        const { dateFormat, queryColumn } = this.props;
-        return getColDateFormat(queryColumn, dateFormat);
+        const { dateFormat, queryColumn, hideTime } = this.props;
+        return getColDateFormat(queryColumn, hideTime ? 'Date' : dateFormat);
     }
 
     shouldShowTime(): boolean {
-        const { showTime, queryColumn } = this.props;
-        return showTime || isDateTimeCol(queryColumn);
+        const { hideTime, queryColumn } = this.props;
+        return !hideTime && isDateTimeCol(queryColumn);
     }
 
     render(): ReactNode {

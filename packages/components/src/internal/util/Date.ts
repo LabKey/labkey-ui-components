@@ -56,8 +56,12 @@ export function isDateTimeCol(col: QueryColumn): boolean {
     return false;
 }
 
-export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string): string {
-    let rawFormat = dateFormat || queryColumn.format || datePlaceholder(queryColumn);
+export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {
+    let rawFormat = dateFormat || queryColumn.format;
+    if (!rawFormat) {
+        if (dateOnly) rawFormat = getDateFormat();
+        else rawFormat = datePlaceholder(queryColumn);
+    }
 
     // Issue 44011: account for the shortcut values (i.e. "Date", "DateTime", and "Time")
     if (rawFormat === 'Date') rawFormat = getDateFormat();
@@ -69,11 +73,13 @@ export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string):
     return rawFormat.replace('YYYY', 'yyyy').replace('YY', 'yy').replace('DD', 'dd');
 }
 
-export function getColFormattedDateValue(column: QueryColumn, value: string): string {
-    const dateFormat = getColDateFormat(column);
-    return isDateTimeCol(column)
-        ? formatDateTime(new Date(value), null, dateFormat)
-        : formatDate(new Date(value), null, dateFormat);
+export function getColFormattedDateFilterValue(column: QueryColumn, value: string | Date): string {
+    let valueFull = value;
+    if (value && typeof value === 'string' && value.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
+        valueFull = value + 'T00:00:00'; // Force local timezone. In ISO format, if you provide time and Z is not present in the end of string, the date will be local time zone instead of UTC time zone.
+    }
+    const dateFormat = getColDateFormat(column, null, true); // date or datetime fields always filter by 'date' portion only
+    return formatDate(new Date(valueFull), null, dateFormat);
 }
 
 // 30834: get look and feel display formats
@@ -147,6 +153,10 @@ export function getUnFormattedNumber(n): number {
 // provided by the LabKey server for the API response, from a JS Date object
 export function getJsonDateTimeFormatString(date: Date): string {
     return _formatDate(date, 'YYYY-MM-dd HH:mm:ss');
+}
+
+export function getJsonDateFormatString(date: Date): string {
+    return _formatDate(date, 'YYYY-MM-dd');
 }
 
 export function generateNameWithTimestamp(name: string): string {

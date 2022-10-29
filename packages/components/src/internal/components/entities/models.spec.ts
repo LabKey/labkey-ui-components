@@ -69,7 +69,7 @@ describe('EntityParentType', () => {
             'Display Column',
             SCHEMAS.SAMPLE_SETS.SCHEMA
         );
-        expect(col.caption).toBe('AliquotedFrom');
+        expect(col.caption).toBe('Aliquoted From');
         expect(col.description).toBe('The parent sample of the aliquot');
         expect(col.lookup.multiValued).toBe(undefined);
         expect(col.required).toBe(true);

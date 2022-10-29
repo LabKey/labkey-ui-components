@@ -42,12 +42,8 @@ exports[`<ReportList /> Render with data 1`] = `
         <div
           className="media-left"
         >
-          <img
-            alt="sample_comparison-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/sample_comparison.svg"
-            width="100%"
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
           />
         </div>
         <div
@@ -57,8 +53,8 @@ exports[`<ReportList /> Render with data 1`] = `
             className="report-list-item__name media-heading"
           >
             <a
+              href="/labkey/Biologics/assayreport-view.view?id=37"
               onClick={[Function]}
-              style={Object {}}
             >
               Example SCR
             </a>

@@ -5,6 +5,59 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * todo
 
+### version 2.242.0
+*Released*: 28 October 2022
+* Issue 46460: Filter by date only (not time)
+* Issue 46292: Sample Manager: Grid column URL doesn't respect urlTarget property configured in in query metadata
+* Issue 45405: Async import status from other folders are registering in the current LKSM folder.
+
+### version 2.241.3
+*Released*: 27 October 2022
+* Fix Issue 45553
+    * We now render grid header dropdown menus in a portal
+* Add usePortalRef hook
+  * Useful when you want to use ReactDOM's createPortal, it will automatically create a DOM element to use with
+    createPortal, and clean it up when it is no longer used.
+
+### version 2.241.2
+*Released*: 27 October 2022
+* Issue 46378: Update labeling for aliquot fields
+* Use title casing more consistently
+* Issue 46553: Use Details view when getting data for original parent panel to avoid customized default view
+
+### version 2.241.1
+*Released*: 26 October 2022
+* Update `ExportOptions` to include optional `containerFilter` and `containerPath` properties.
+* Fallback to `getContainerFilter()` when determining the container filter for export.
+
+### version 2.241.0
+*Released*: 26 October 2022
+* Assay Results for Selected Samples
+  * refactor getSelectedSampleIdsFromSelectionKey() and getURLParamsForSampleSelectionKey() from workflow package to be used in multiple app cases
+  * refactor getSamplesAssayGridQueryConfigs() from SampleAssayDetails component to be reused in AssayResultsForSamplesPage
+  * new AssayResultsForSamplesPage, AssayResultsForSamplesMenuItem, and AssayResultsForSamplesButton components
+  * add Assay Runs summary grid as tab to SampleAssayDetail
+  * add FindDerivativesMenuItem to go with FindDerivativesButton
+  * remove Sample Comparison Report rendering and creation menu item
+  * Issue 46554: App Sample Assay menu doesn't show any options if > 1000 samples selected
+
+### version 2.240.0
+*Released*: 26 October 2022
+* Updates for Sample Type consistency
+  * Limit selection for pooling only based on max parents per sample.
+  * Consolidate from LKB `SampleCreateMenuItem` and LKSM `CreateSamplesSubMenu` into a common `CreateSamplesMenuItem`
+  * Port LKB `Samples/Pages/Header.tsx` and LKSM `SampleHeader` into single `SampleHeader` implementation
+  * Remove Parsers.splitCamelCase for setting QueryInfo.queryLabel and schemaLabel.
+* Issue 46568: Update `SamplesTabbedGridPanel` to assure we have a model before de-referencing.
+* Fix AssayImportSubMenu when checking cross-folder data from picklists
+
+### version 2.239.0
+*Released*: 25 October 2022
+* Freezer Management: Adding samples across terminal storage locations
+    * Support tabbed Bulk Edit and Editable Grid
+    * Exclude readonly cells from being updated by bulk update
+    * support queryFilters for select input fields in bulk update form
+
 ### version 2.238.0
 *Released*: 25 October 2022
 * Update `QueryModel.getRequestColumnsString()` to support inclusion of `updateColumns` in when building a request columns string.

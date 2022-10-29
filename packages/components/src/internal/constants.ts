@@ -209,7 +209,6 @@ export enum DataViewInfoTypes {
     PieChart = 'Pie Chart',
     Query = 'Query',
     RReport = 'R Report',
-    SampleComparison = 'Sample Comparison',
     SampleFinderSavedSearch = 'Sample Finder Saved Search',
     TimeChart = 'Time Chart',
     XYScatterPlot = 'XY Scatter Plot',

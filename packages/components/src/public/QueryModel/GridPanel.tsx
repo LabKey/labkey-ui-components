@@ -5,8 +5,7 @@ import { Filter, getServerContext, Query } from '@labkey/api';
 
 import { MenuItem, SplitButton } from 'react-bootstrap';
 
-import { DataViewInfoTypes, EXPORT_TYPES, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
-import { DataViewInfo } from '../../internal/DataViewInfo';
+import { EXPORT_TYPES, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
 import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
 import {
@@ -82,8 +81,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     hideEmptyViewMenu?: boolean;
     highlightLastSelectedRow?: boolean;
     loadOnMount?: boolean;
-    onChartClicked?: (chart: DataViewInfo) => boolean;
-    onCreateReportClicked?: (type: DataViewInfoTypes) => void;
     onExport?: { [key: string]: (modelId?: string) => any };
     pageSizes?: number[];
     showButtonBar?: boolean;
@@ -93,7 +90,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showFiltersButton?: boolean;
     showHeader?: boolean;
     showPagination?: boolean;
-    showSampleComparisonReports?: boolean;
     showSearchInput?: boolean;
     showViewMenu?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
@@ -149,8 +145,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             ButtonsComponentRight,
             hideEmptyChartMenu,
             hideEmptyViewMenu,
-            onChartClicked,
-            onCreateReportClicked,
             onCustomizeView,
             onExport,
             onFilter,
@@ -163,7 +157,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             showExport,
             showFiltersButton,
             showPagination,
-            showSampleComparisonReports,
             showSearchInput,
             showViewMenu,
             supportedExportTypes,
@@ -220,14 +213,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 />
                             )}
                             {showChartMenu && (
-                                <ChartMenu
-                                    hideEmptyChartMenu={hideEmptyChartMenu}
-                                    actions={actions}
-                                    model={model}
-                                    onChartClicked={onChartClicked}
-                                    onCreateReportClicked={onCreateReportClicked}
-                                    showSampleComparisonReports={showSampleComparisonReports}
-                                />
+                                <ChartMenu hideEmptyChartMenu={hideEmptyChartMenu} actions={actions} model={model} />
                             )}
                             {canSelectView && (
                                 <ViewMenu
@@ -373,7 +359,6 @@ interface State {
     actionValues: ActionValue[];
     disableColumnDrag: boolean;
     errorMsg: React.ReactNode;
-    headerClickCount: { [key: string]: number };
     isViewSaved: boolean;
     selectedColumn: QueryColumn;
     showCustomizeViewModal: boolean;
@@ -402,7 +387,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showExport: true,
         showFiltersButton: true,
         showFilterStatus: true,
-        showSampleComparisonReports: false,
         showSearchInput: true,
         showViewMenu: true,
         showHeader: true,
@@ -426,7 +410,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showSaveViewModal: false,
             showCustomizeViewModal: false,
             showManageViewsModal: false,
-            headerClickCount: {},
             errorMsg: undefined,
             isViewSaved: false,
             selectedColumn: undefined,
@@ -579,11 +562,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 }
             }
 
-            // Defer model updates after localState is updated so we don't unnecessarily repopulate the grid actionValues
-            this.setState({ headerClickCount: {} }, () => {
-                actions.setFilters(model.id, newFilters, allowSelections);
-                if (viewUpdates) this.saveAsSessionView(viewUpdates);
-            });
+            actions.setFilters(model.id, newFilters, allowSelections);
+            if (viewUpdates) this.saveAsSessionView(viewUpdates);
         }
     };
 
@@ -595,7 +575,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 showFilterModalFieldKey: undefined,
                 showSaveViewModal: false,
                 showManageViewsModal: false,
-                headerClickCount: {},
             },
             () => actions.setFilters(model.id, newFilters, allowSelections)
         );
@@ -634,8 +613,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             newSorts.push(newQuerySort);
         }
 
-        // Defer sorts update to after setState is complete so we don't unnecessarily repopulate the grid actionValues
-        this.setState({ headerClickCount: {} }, () => actions.setSorts(model.id, newSorts));
+        actions.setSorts(model.id, newSorts)
     };
 
     onSearch = (value: string): void => {
@@ -656,8 +634,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             newFilters = newFilters.concat(Filter.create('*', value, Filter.Types.Q));
         }
 
-        // Defer search update to after setState so we don't unnecessarily repopulate the grid actionValues
-        this.setState({ headerClickCount: {} }, () => actions.setFilters(model.id, newFilters, allowSelections));
+        actions.setFilters(model.id, newFilters, allowSelections)
     };
 
     onRevertView = (): void => {
@@ -781,7 +758,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { actions, model, allowSelections } = this.props;
         actions.loadModel(model.id, allowSelections);
         this.setState({
-            headerClickCount: {},
             errorMsg: undefined,
         });
     };
@@ -916,20 +892,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     onViewSelect = (viewName: string): void => {
         const { actions, model, allowSelections } = this.props;
-        let updateViewCallback: () => void;
 
         if (viewName !== undefined && viewName !== null && viewName !== '') {
             if (viewName !== model.viewName) {
                 // Only trigger view change if the viewName has changed
-                updateViewCallback = () => actions.setView(model.id, viewName, allowSelections);
+                actions.setView(model.id, viewName, allowSelections);
             }
         } else {
-            updateViewCallback = () => actions.setView(model.id, undefined, allowSelections);
+            actions.setView(model.id, undefined, allowSelections);
         }
-
-        // Defer view update to after setState so we don't unnecessarily repopulate the grid actionValues.
-        // View change will refresh the grid, so clear the headerClickCount values
-        if (updateViewCallback) this.setState({ headerClickCount: {} }, updateViewCallback);
     };
 
     getGridColumns = (): List<GridColumn | QueryColumn> => {
@@ -964,22 +935,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         return List(model.displayColumns);
     };
 
-    onHeaderCellClick = (column: GridColumn): void => {
-        this.setState(state => {
-            return {
-                headerClickCount: {
-                    ...state.headerClickCount,
-                    [column.index]: (state.headerClickCount[column.index] ?? 0) + 1,
-                },
-            };
-        });
-    };
-
-    onColumnDrag = (): void => {
-        // clear headerClickCount so that all menus are closed
-        this.setState(() => ({ headerClickCount: {} }));
-    };
-
     onColumnDrop = (source: string, target: string): void => {
         const { displayColumns } = this.props.model;
 
@@ -1008,7 +963,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
-        const { headerClickCount } = this.state;
         const { allowSelections, allowSorting, allowFiltering, allowViewCustomization, model } = this.props;
         const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
         const disabled = isLoadingSelections || isLoading || (hasRows && rowCount === 0);
@@ -1029,8 +983,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             allowViewCustomization && nonSelectableColumnCount > 1 ? this.hideColumn : undefined,
             allowViewCustomization ? this.onColumnTitleEdit : undefined,
             allowViewCustomization ? this.updateColumnTitle : undefined,
-            model,
-            headerClickCount[column.index]
+            model
         );
     };
 
@@ -1161,8 +1114,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             {!hasGridError && hasData && (
                                 <Grid
                                     headerCell={this.headerCell}
-                                    onHeaderCellClick={this.onHeaderCellClick}
-                                    onColumnDrag={this.onColumnDrag}
                                     onColumnDrop={
                                         allowViewCustomization && !disableColumnDrag ? this.onColumnDrop : undefined
                                     }

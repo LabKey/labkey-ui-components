@@ -163,7 +163,6 @@ import {
     getSelected,
     getSelectedData,
     getSelection,
-    getSnapshotSelections,
     incrementClientSideMetricCount,
     replaceSelected,
     setSelected,
@@ -210,6 +209,7 @@ import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/u
 import { getHelpLink, HELP_LINK_REFERRER, HelpLink, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { loadEditorModelData } from './internal/components/editable/utils';
+import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import {
@@ -309,6 +309,7 @@ import {
     getSampleSet,
     getSampleTypeDetails,
     getSelectionLineageData,
+    getSelectedSampleIdsFromSelectionKey,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 
@@ -322,6 +323,7 @@ import {
     getOperationNotPermittedMessage,
     getSampleStatus,
     getSampleStatusType,
+    getURLParamsForSampleSelectionKey,
     isAllSamplesSchema,
     isSampleOperationPermitted,
     isSamplesSchema,
@@ -404,7 +406,6 @@ import {
     getDataOperationConfirmationData,
     getOperationConfirmationData,
     getSampleOperationConfirmationData,
-    getSelectedItemSamples,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -687,7 +688,7 @@ import { Discussions } from './internal/announcements/Discussions';
 import { Thread } from './internal/announcements/Thread';
 import { ThreadBlock } from './internal/announcements/ThreadBlock';
 import { ThreadEditor } from './internal/announcements/ThreadEditor';
-import { useNotAuthorized, useNotFound } from './internal/hooks';
+import { useNotAuthorized, useNotFound, usePortalRef } from './internal/hooks';
 import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
@@ -829,7 +830,6 @@ export {
     createGridModelId,
     clearSelected,
     // grid functions
-    getSnapshotSelections,
     getSelected,
     getSelectedData,
     getSelection,
@@ -861,6 +861,7 @@ export {
     EditableGridPanel,
     EditableGridPanelForUpdate,
     EditableGridPanelForUpdateWithLineage,
+    EditableGridTabs,
     LineageEditableGridLoaderFromSelection,
     UpdateGridTab,
     EditorModel,
@@ -984,6 +985,7 @@ export {
     getFilterForSampleOperation,
     getSampleStatus,
     getSampleStatusType,
+    getURLParamsForSampleSelectionKey,
     DisableableMenuItem,
     SampleOperation,
     SampleStateType,
@@ -1004,8 +1006,8 @@ export {
     getSampleSet,
     getSampleTypeDetails,
     getFieldLookupFromSelection,
-    getSelectedItemSamples,
     getSelectionLineageData,
+    getSelectedSampleIdsFromSelectionKey,
     EntityInsertPanel,
     EntityCrossProjectSelectionConfirmModal,
     SampleTypeDataType,
@@ -1415,6 +1417,7 @@ export {
     LabelPrintingProvider,
     withLabelPrintingContext,
     useLabelPrintingContext,
+    usePortalRef,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

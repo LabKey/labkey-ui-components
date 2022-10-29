@@ -1,5 +1,11 @@
-import { PICKLIST_SAMPLES_FILTER } from './models';
-import { getSampleTypes, getOriginalParentsFromLineage, loadSampleTypes } from './actions';
+import {
+    getSampleTypes,
+    getOriginalParentsFromLineage,
+    loadSampleTypes,
+    onSampleChange,
+    onSampleTypeChange,
+    onSampleTypeDesignChange,
+} from './actions';
 import {
     getSampleWizardURL,
     filterMediaSampleTypes,
@@ -18,6 +24,7 @@ import { SamplesAddButton } from './SamplesAddButton';
 import { SampleAssayDetail } from './SampleAssayDetail';
 import { SampleDetailEditing } from './SampleDetailEditing';
 import { SampleLineageGraph } from './SampleLineageGraph';
+import { SampleHeader } from './SampleHeader';
 import { SampleSetDeleteModal } from './SampleSetDeleteModal';
 import { SamplesDeriveButtonBase } from './SamplesDeriveButtonBase';
 import { SamplesEditButton } from './SamplesEditButton';
@@ -30,7 +37,7 @@ import { SampleTypeInsightsPanel } from './SampleTypeInsightsPanel';
 import { FindSamplesByIdHeaderPanel } from './FindSamplesByIdHeaderPanel';
 import { FindSamplesByIdsPageBase } from './FindSamplesByIdsPageBase';
 import { SampleFinderSection } from './SampleFinderSection';
-import { FindDerivativesButton } from './FindDerivativesButton';
+import { FindDerivativesButton, FindDerivativesMenuItem } from './FindDerivativesButton';
 import { GridAliquotViewSelector } from './GridAliquotViewSelector';
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
 import { SampleTimelinePageBase } from './SampleTimelinePageBase';
@@ -50,9 +57,10 @@ import { SamplesResolver } from './SamplesResolver';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
 import { SampleTypeDesignPage } from './SampleTypeDesignPage';
+import { AssayResultsForSamplesButton, AssayResultsForSamplesMenuItem } from './AssayResultsForSamplesButton';
+import { AssayResultsForSamplesPage, AssayResultsForSamplesSubNav } from './AssayResultsForSamplesPage';
 
 export {
-    PICKLIST_SAMPLES_FILTER,
     createEntityParentKey,
     downloadSampleTypeTemplate,
     filterMediaSampleTypes,
@@ -65,14 +73,22 @@ export {
     getSampleWizardURL,
     isFindByIdsSchema,
     loadSampleTypes,
+    onSampleChange,
+    onSampleTypeChange,
+    onSampleTypeDesignChange,
     useSampleTypeAppContext,
     AssayImportSubMenuItem,
+    AssayResultsForSamplesPage,
+    AssayResultsForSamplesSubNav,
+    AssayResultsForSamplesButton,
+    AssayResultsForSamplesMenuItem,
     CreateSamplesSubMenu,
     CreateSamplesSubMenuBase,
     EntityDeleteModal,
     EntityLineageEditMenuItem,
     EntityTypeDeleteConfirmModal,
     FindDerivativesButton,
+    FindDerivativesMenuItem,
     FindSamplesByIdHeaderPanel,
     FindSamplesByIdsPageBase,
     GridAliquotViewSelector,
@@ -91,6 +107,7 @@ export {
     SampleCreationTypeModal,
     SampleDetailEditing,
     SampleFinderSection,
+    SampleHeader,
     SampleIndexNav,
     SampleLineageGraph,
     SamplesResolver,

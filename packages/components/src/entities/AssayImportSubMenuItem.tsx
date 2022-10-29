@@ -54,7 +54,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
             // check cross folder selection
             if (queryModel?.hasSelections) {
                 setCrossFolderSelectionResult(undefined);
-                const result = await getCrossFolderSelectionResult(queryModel.id, 'sample');
+                const result = await getCrossFolderSelectionResult(queryModel.id, 'sample', undefined, picklistName);
 
                 if (result.crossFolderSelectionCount > 0) {
 

@@ -1,6 +1,5 @@
 import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, MenuItem, Panel, SplitButton } from 'react-bootstrap';
-import { Filter, getServerContext } from '@labkey/api';
 
 import { InjectedAssayModel, withAssayModels } from '../internal/components/assay/withAssayModels';
 
@@ -16,18 +15,20 @@ import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { TabbedGridPanel } from '../public/QueryModel/TabbedGridPanel';
 import { useNotificationsContext } from '../internal/components/notifications/NotificationsContext';
 import { isLoading } from '../public/LoadingState';
-import { caseInsensitive } from '../internal/util/utils';
-import { SchemaQuery } from '../public/SchemaQuery';
 
-import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from '../public/QueryModel/withQueryModels';
+import {
+    InjectedQueryModels,
+    QueryConfigMap,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../public/QueryModel/withQueryModels';
 
 import { ALIQUOT_FILTER_MODE, SampleOperation } from '../internal/components/samples/constants';
 
 import { getSampleStatusType, isSampleOperationPermitted } from '../internal/components/samples/utils';
-import { getSampleAssayQueryConfigs, SampleAssayResultViewConfig } from '../internal/components/samples/actions';
 
+import { ASSAY_RUNS_GRID_ID, getSamplesAssayGridQueryConfigs, getImportItemsForAssayDefinitions } from './utils';
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
-import { getImportItemsForAssayDefinitions } from './utils';
 
 interface Props {
     api?: ComponentsAPIWrapper;
@@ -46,6 +47,7 @@ interface Props {
     user: User;
 }
 
+// export for jest testing
 export const AssayResultPanel: FC = ({ children }) => {
     return (
         <Panel>
@@ -185,9 +187,12 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         activeTabId,
         user,
         exportPrefix,
+        sampleId,
+        sourceId,
     } = props;
     const [queryModelsWithData, setQueryModelsWithData] = useState<Record<string, QueryModel>>();
     const [tabOrder, setTabOrder] = useState<string[]>();
+    const [allowViewCustomizationForGridIds, setAllowViewCustomizationForGridIds] = useState<string[]>();
     const allModels = Object.values(queryModels);
     const allLoaded = allModels.every(model => !model.isLoading);
 
@@ -226,12 +231,29 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         });
 
         setQueryModelsWithData(models);
-        setTabOrder(
-            Object.values(models)
-                .sort(naturalSortByProperty('title'))
-                .map(model => model.id)
-        );
-    }, [allLoaded, queryModelsWithData, activeSampleAliquotType, queryModels, showAliquotViewSelector]);
+
+        const tabOrder_ = Object.values(models)
+            .sort(naturalSortByProperty('title'))
+            .map(model => model.id);
+        // make sure the ASSAY_RUNS_GRID_ID tab is first
+        const summaryGridId = `${ASSAY_GRID_ID_PREFIX}:${ASSAY_RUNS_GRID_ID}:${sampleId ?? sourceId + '-source'}`;
+        if (tabOrder_.indexOf(summaryGridId) > -1) {
+            tabOrder_.splice(tabOrder_.indexOf(summaryGridId), 1);
+            tabOrder_.unshift(summaryGridId);
+        }
+        setTabOrder(tabOrder_);
+
+        // don't allow view customization for all but the summary grid (since it is a session temp query)
+        setAllowViewCustomizationForGridIds(Object.keys(models).filter(id => id !== summaryGridId));
+    }, [
+        allLoaded,
+        queryModelsWithData,
+        activeSampleAliquotType,
+        queryModels,
+        showAliquotViewSelector,
+        sampleId,
+        sourceId,
+    ]);
 
     const getEmptyText = useCallback(
         activeModel => {
@@ -245,7 +267,8 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         [activeSampleAliquotType, emptyAliquotViewMsg, emptySampleViewMsg]
     );
 
-    if (allModels.length === 0) {
+    // always contains the summary grid model, so consider empty if we only have 1
+    if (allModels.length === 1) {
         if (emptyAssayDefDisplay) return <>{emptyAssayDefDisplay}</>;
 
         return (
@@ -266,7 +289,8 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
         );
     }
 
-    if (Object.keys(queryModelsWithData).length === 0) {
+    // always contains the summary grid model, so consider empty if we only have 1
+    if (Object.keys(queryModelsWithData).length === 1) {
         if (emptyAssayResultDisplay) return <>{emptyAssayResultDisplay}</>;
 
         return (
@@ -309,6 +333,7 @@ export const SampleAssayDetailBodyImpl: FC<SampleAssayDetailBodyProps & Injected
             tabOrder={tabOrder}
             onTabSelect={onTabChange}
             activeModelId={activeTabId}
+            allowViewCustomizationForGridIds={allowViewCustomizationForGridIds}
             exportFilename={exportPrefix && exportPrefix + '_assay_results'}
         />
     );
@@ -358,19 +383,10 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
             });
     }, [api, createNotification, sampleId, showAliquotViewSelector]);
 
-    const [sampleAssayResultViewConfigs, setSampleAssayResultViewConfigs] =
-        useState<SampleAssayResultViewConfig[]>(undefined);
-    useEffect(() => {
-        api.samples
-            .getSampleAssayResultViewConfigs()
-            .then(setSampleAssayResultViewConfigs)
-            .catch(() => {
-                setSampleAssayResultViewConfigs([]);
-            });
-    }, [api]);
+    const [queryConfigs, setQueryConfigs] = useState<QueryConfigMap>();
 
-    const loadingDefinitions =
-        isLoading(assayModel.definitionsLoadingState) || sampleAssayResultViewConfigs === undefined;
+    const loadingDefinitions = isLoading(assayModel.definitionsLoadingState);
+    const loadingAliquots = showAliquotViewSelector && !isSourceSampleAssayGrid && !aliquotRows;
 
     const onSampleAliquotTypeChange = useCallback(type => {
         setActiveSampleAliquotType(type);
@@ -413,9 +429,6 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         isSourceSampleAssayGrid,
     ]);
 
-    const sampleIds = useMemo(() => sampleRows.map(row => caseInsensitive(row, 'RowId').value), [sampleRows]);
-    const allSampleIds = useMemo(() => allSampleRows.map(row => caseInsensitive(row, 'RowId').value), [allSampleRows]);
-
     const key = useMemo(() => {
         return (sampleId ?? sourceId) + '-' + activeSampleAliquotType;
     }, [sampleId, sourceId, activeSampleAliquotType]);
@@ -429,102 +442,51 @@ export const SampleAssayDetailImpl: FC<Props & InjectedAssayModel> = props => {
         return isSampleOperationPermitted(getSampleStatusType(sampleModel?.getRow()), SampleOperation.AddAssayData);
     }, [sampleModel]);
 
-    const queryConfigs = useMemo(() => {
-        if (loadingDefinitions) {
-            return {};
+    useEffect(() => {
+        if (loadingDefinitions || loadingAliquots) {
+            return;
         }
 
-        const queryGridSuffix = sampleId ?? sourceId + '-source';
-        const sampleSchemaQuery = isSourceSampleAssayGrid ? undefined : sampleModel.queryInfo.schemaQuery;
-        const _configs = getSampleAssayQueryConfigs(
-            assayModel,
-            sampleIds,
-            queryGridSuffix,
-            ASSAY_GRID_ID_PREFIX,
-            false,
-            sampleSchemaQuery
-        );
+        // clear queryConfigs so that the full set of queryModels will get loaded in SampleAssayDetailBodyImpl
+        setQueryConfigs(undefined);
 
-        let configs = _configs.reduce((_configs, config) => {
-            const modelId = config.id;
-            _configs[modelId] = config;
-            return _configs;
-        }, {});
+        (async () => {
+            const queryGridSuffix = sampleId ?? sourceId + '-source';
+            const sampleSchemaQuery = isSourceSampleAssayGrid ? undefined : sampleModel.queryInfo.schemaQuery;
 
-        // keep tab when "all" view has data, but filtered view is blank
-        const includeUnfilteredConfigs =
-            showAliquotViewSelector && activeSampleAliquotType && activeSampleAliquotType !== ALIQUOT_FILTER_MODE.all;
-        if (includeUnfilteredConfigs) {
-            const _unfilteredConfigs = getSampleAssayQueryConfigs(
+            // handling try/catch within getSamplesAssayGridQueryConfigs
+            const queryConfigs_ = await getSamplesAssayGridQueryConfigs(
+                api.samples,
                 assayModel,
-                allSampleIds,
+                sampleId,
+                sampleRows,
                 queryGridSuffix,
-                UNFILTERED_GRID_ID_PREFIX,
-                false,
-                sampleSchemaQuery
+                ASSAY_GRID_ID_PREFIX,
+                sampleSchemaQuery,
+                showAliquotViewSelector,
+                activeSampleAliquotType,
+                allSampleRows,
+                UNFILTERED_GRID_ID_PREFIX
             );
-
-            const unfilteredConfigs = _unfilteredConfigs.reduce((_configs, config) => {
-                const modelId = config.id;
-                _configs[modelId] = config;
-                return _configs;
-            }, {});
-
-            configs = { ...configs, ...unfilteredConfigs };
-        }
-
-        // add in the config objects for those module-defined sample assay result views (e.g. TargetedMS module),
-        // note that the moduleName from the config must be active/enabled in the container
-        const activeModules = getServerContext().container.activeModules;
-        sampleAssayResultViewConfigs.forEach(config => {
-            if (activeModules?.indexOf(config.moduleName) > -1) {
-                const baseConfig = {
-                    title: config.title,
-                    schemaQuery: SchemaQuery.create(config.schemaName, config.queryName, config.viewName),
-                    containerFilter: config.containerFilter,
-                };
-
-                let modelId = `${ASSAY_GRID_ID_PREFIX}:${config.title}:${sampleId}`;
-                let sampleFilterValues = sampleRows.map(
-                    row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value
-                );
-                configs[modelId] = {
-                    ...baseConfig,
-                    id: modelId,
-                    baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
-                };
-
-                if (includeUnfilteredConfigs) {
-                    modelId = `${UNFILTERED_GRID_ID_PREFIX}:${config.title}:${sampleId}`;
-                    sampleFilterValues = allSampleRows.map(
-                        row => caseInsensitive(row, config.sampleRowKey ?? 'RowId')?.value
-                    );
-                    configs[modelId] = {
-                        ...baseConfig,
-                        id: modelId,
-                        baseFilters: [Filter.create(config.filterKey, sampleFilterValues, Filter.Types.IN)],
-                    };
-                }
-            }
-        });
-
-        return configs;
+            setQueryConfigs(queryConfigs_);
+        })();
     }, [
-        assayModel.definitions,
+        assayModel,
         loadingDefinitions,
+        loadingAliquots,
         sampleModel,
         sampleId,
-        sampleIds,
+        sampleRows,
         activeSampleAliquotType,
         showAliquotViewSelector,
         sourceId,
-        allSampleIds,
+        allSampleRows,
         isSourceSampleAssayGrid,
-        sampleAssayResultViewConfigs,
-        sourceSampleRows,
+        api.samples,
+        createNotification,
     ]);
 
-    if (loadingDefinitions || (showAliquotViewSelector && !isSourceSampleAssayGrid && !aliquotRows)) {
+    if (loadingDefinitions || loadingAliquots || queryConfigs === undefined) {
         return (
             <AssayResultPanel>
                 <LoadingSpinner />

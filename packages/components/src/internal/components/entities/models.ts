@@ -137,7 +137,7 @@ export class EntityParentType extends Record({
         }
 
         return QueryColumn.create({
-            caption: this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM : formattedQueryName + captionSuffix,
+            caption: this.isAliquotParent ? QueryColumn.ALIQUOTED_FROM_CAPTION : formattedQueryName + captionSuffix,
             description: this.isAliquotParent
                 ? 'The parent sample of the aliquot'
                 : 'Contains optional parent entity for this ' + formattedQueryName,

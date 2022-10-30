@@ -267,6 +267,7 @@ export function resolveDetailEditRenderer(
                     containerFilter={options?.containerFilter}
                     containerPath={options?.containerPath}
                     data={row}
+                    formsy
                     inputClass="col-sm-12"
                     isDetailInput
                     key={col.name}

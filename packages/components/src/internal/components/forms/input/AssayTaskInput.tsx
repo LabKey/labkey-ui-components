@@ -1,15 +1,16 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { Filter } from '@labkey/api';
 
-import { selectRowsDeprecated } from '../../../query/api';
+import { selectRows } from '../../../query/selectRows';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { Alert } from '../../base/Alert';
 
-import { customStyles, customTheme } from '../../editable/LookupCell';
+import { SchemaQuery } from '../../../../public/SchemaQuery';
+import { ViewInfo } from '../../../ViewInfo';
+import { caseInsensitive } from '../../../util/utils';
 
-import { SelectInput } from './SelectInput';
 import { DisableableInputProps } from './DisableableInput';
-import { customBulkStyles } from './SampleStatusInput';
+import { SelectInput, SelectInputProps } from './SelectInput';
 
 export interface InputOption {
     label: string;
@@ -17,24 +18,22 @@ export interface InputOption {
 }
 
 async function loadInputOptions(assayId: number): Promise<InputOption[]> {
-    const { key, models } = await selectRowsDeprecated({
-        schemaName: 'samplemanagement',
-        queryName: 'Tasks',
-        columns: 'RowId,Name,AssayTypes,Run/Name',
+    const result = await selectRows({
+        columns: 'RowId, Name, AssayTypes, Run/Name',
         filterArray: [
             Filter.create('AssayTypes', undefined, Filter.Types.NONBLANK),
             Filter.create('Status/Value', 'In Progress'),
         ],
         maxRows: -1,
+        schemaQuery: SchemaQuery.create('samplemanagement', 'Tasks', ViewInfo.DETAIL_NAME),
     });
-    const rows = Object.values(models[key]);
-    const taskOptions = [];
+    const taskOptions: InputOption[] = [];
 
-    rows.forEach(row => {
-        const taskId = row['RowId'].value;
-        const jobName = row['Run/Name'].value;
-        const taskName = row['Name'].value;
-        const assays = row['AssayTypes'].value.split(',').map(Number);
+    result.rows.forEach(row => {
+        const taskId = caseInsensitive(row, 'RowId').value;
+        const jobName = caseInsensitive(row, 'Run/Name').value;
+        const taskName = caseInsensitive(row, 'Name').value;
+        const assays = caseInsensitive(row, 'AssayTypes').value.split(',').map(Number);
         const hasAssay = assays.find(id => assayId === id);
 
         if (hasAssay) {
@@ -45,52 +44,40 @@ async function loadInputOptions(assayId: number): Promise<InputOption[]> {
     return taskOptions;
 }
 
-interface WorkflowTaskInputProps extends DisableableInputProps {
+interface WorkflowTaskInputProps
+    extends DisableableInputProps,
+        Omit<SelectInputProps, 'isLoading' | 'loadOptions' | 'options'> {
     assayId: number;
-    isDetailInput: boolean;
-    isGridInput: boolean;
-    name: string;
-    onChange?: (name: string, value: string | any[], items: any) => void;
 }
 
 // Note: this component is specific to Workflow, and ideally would live in the Workflow package, however we do not
 // currently have a way for our Apps to override the InputRenderers (see InputRenderer.tsx).
 export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
-    const {
-        assayId,
-        isDetailInput,
-        allowDisable,
-        initiallyDisabled,
-        onToggleDisable,
-        name,
-        value,
-        onChange,
-        isGridInput,
-    } = props;
+    const { assayId, ...selectInputProps } = props;
     const [loading, setLoading] = useState<boolean>(true);
-    const [taskOptions, setTaskOptions] = useState<InputOption[]>(undefined);
-    const [error, setError] = useState<string>(undefined);
-    const load = async (): Promise<void> => {
-        if (assayId === undefined) {
-            // If the components rendering the QueryFormInputs or EditableDetailPanel don't properly inject the assayId
-            // into the form data (via ASSAY_INDEX key defined above) then this will happen.
-            setError('Assay ID not set, cannot load workflow tasks');
-            setLoading(false);
-            return;
-        }
+    const [taskOptions, setTaskOptions] = useState<InputOption[]>();
+    const [error, setError] = useState<string>();
 
-        try {
-            const options = await loadInputOptions(assayId);
-            setTaskOptions(options);
-        } catch (error) {
-            console.error(error.exception);
-            setError('Error loading workflow tasks');
-        } finally {
-            setLoading(false);
-        }
-    };
     useEffect(() => {
-        load();
+        (async () => {
+            if (assayId === undefined) {
+                // If the components rendering the QueryFormInputs or EditableDetailPanel don't properly inject the assayId
+                // into the form data (via ASSAY_INDEX key defined above) then this will happen.
+                setError('Assay ID not set, cannot load workflow tasks');
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const options = await loadInputOptions(assayId);
+                setTaskOptions(options);
+            } catch (e) {
+                console.error(e.exception);
+                setError('Error loading workflow tasks');
+            } finally {
+                setLoading(false);
+            }
+        })();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
@@ -99,28 +86,15 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
 
             {!loading && error && <Alert>{error}</Alert>}
 
-            {!loading && !error && (
-                <SelectInput
-                    formsy={!isGridInput}
-                    clearable
-                    description={isDetailInput ? undefined : 'The workflow task associated with this Run'}
-                    disabled={taskOptions === undefined}
-                    inputClass={isDetailInput ? 'col-sm-12' : isGridInput ? 'select-input-cell' : undefined}
-                    containerClass={isGridInput ? 'select-input-cell-container' : undefined}
-                    isLoading={loading}
-                    label={isDetailInput || isGridInput ? undefined : 'Workflow Task'}
-                    name={name}
-                    options={taskOptions}
-                    value={value}
-                    allowDisable={allowDisable}
-                    initiallyDisabled={initiallyDisabled}
-                    onToggleDisable={onToggleDisable}
-                    onChange={onChange}
-                    menuPosition={isGridInput ? 'fixed' : undefined}
-                    customStyles={isGridInput ? customStyles : isDetailInput ? undefined : customBulkStyles}
-                    customTheme={isGridInput ? customTheme : undefined}
-                />
-            )}
+            {!loading && !error && <SelectInput {...selectInputProps} options={taskOptions} />}
         </div>
     );
 });
+
+AssayTaskInput.defaultProps = {
+    clearable: true,
+    description: 'The workflow task associated with this Run',
+    label: 'Workflow Task',
+};
+
+AssayTaskInput.displayName = 'AssayTaskInput';

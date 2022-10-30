@@ -1468,10 +1468,14 @@ export type {
     IParentOption,
     EntityChoice,
 } from './internal/components/entities/models';
-export type { SelectInputOption, SelectInputProps } from './internal/components/forms/input/SelectInput';
+export type {
+    SelectInputChange,
+    SelectInputOption,
+    SelectInputProps,
+} from './internal/components/forms/input/SelectInput';
 export type { InjectedPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 export type { ISelectInitData } from './internal/components/forms/model';
-export type { QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
+export type { QuerySelectChange, QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
 export type {
     SampleCreationTypeModel,
     SampleStatus,

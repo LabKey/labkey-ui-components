@@ -4,22 +4,16 @@ import { Map } from 'immutable';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { caseInsensitive, generateId } from '../../../util/utils';
 
-import { SelectInput } from './SelectInput';
+import { SelectInput, SelectInputProps } from './SelectInput';
 
-interface Props {
-    allowDisable?: boolean;
+interface Props extends Omit<SelectInputProps, 'loadOptions' | 'options' | 'resolveFormValue' | 'value'> {
     col: QueryColumn;
     data?: any;
-    formsy?: boolean;
-    initiallyDisabled?: boolean;
-    isDetailInput?: boolean;
-    onToggleDisable?: (disabled: boolean) => void;
 }
 
 export const AliasInput: FC<Props> = memo(props => {
-    const { allowDisable, col, data, formsy, isDetailInput, initiallyDisabled, onToggleDisable } = props;
-    const id = useMemo(() => generateId(), []);
-    const promptTextCreator = useCallback((text: string) => `Create alias "${text}"`, []);
+    const { col, data, ...selectProps } = props;
+    const generatedId = useMemo(() => generateId(), []);
 
     // AliasInput supplies its own formValue resolution
     // - The value is mapped from the "label"
@@ -40,32 +34,28 @@ export const AliasInput: FC<Props> = memo(props => {
 
     return (
         <SelectInput
-            allowCreate
-            allowDisable={allowDisable}
             description={col.description}
-            formsy={formsy}
-            id={id}
-            initiallyDisabled={initiallyDisabled}
-            inputClass={isDetailInput ? 'col-sm-12' : undefined}
-            joinValues
+            id={props.id ?? generatedId}
             label={col.caption}
-            multiple
             name={col.fieldKey}
-            noResultsText="Enter alias name(s)"
-            onToggleDisable={onToggleDisable}
-            placeholder="Enter alias name(s)"
-            promptTextCreator={promptTextCreator}
             required={col.required}
+            {...selectProps}
             resolveFormValue={resolveFormValue}
-            saveOnBlur
-            showLabel
             value={value}
         />
     );
 });
 
 AliasInput.defaultProps = {
+    allowCreate: true,
     formsy: true,
+    joinValues: true,
+    multiple: true,
+    noResultsText: 'Enter alias name(s)',
+    placeholder: 'Enter alias name(s)',
+    promptTextCreator: (text: string) => `Create alias "${text}"`,
+    saveOnBlur: true,
+    showLabel: true,
 };
 
 AliasInput.displayName = 'AliasInput';

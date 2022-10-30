@@ -16,7 +16,7 @@
 import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
-import { Filter, Query, Utils } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
 
@@ -25,7 +25,8 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { caseInsensitive } from '../../util/utils';
 
 import { InputRenderer } from './InputRenderer';
-import { QuerySelect } from './QuerySelect';
+import { QuerySelect, QuerySelectChange } from './QuerySelect';
+import { SelectInputChange, SelectInputOption } from './input/SelectInput';
 import { TextInput } from './input/TextInput';
 import { CheckboxInput } from './input/CheckboxInput';
 import { TextAreaInput } from './input/TextAreaInput';
@@ -52,7 +53,8 @@ export interface QueryFormInputsProps {
     lookups?: Map<string, number>;
     onAdditionalFormDataChange?: (name: string, value: any) => void;
     onFieldsEnabledChange?: (numEnabled: number) => void;
-    onQSChange?: (name: string, value: string | any[], items: any) => void;
+    onSelectChange?: SelectInputChange;
+    onQSChange?: QuerySelectChange;
     queryColumns?: OrderedMap<string, QueryColumn>;
     queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo?: QueryInfo;
@@ -106,14 +108,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             }, {});
     }
 
-    onQSChange = (name: string, value: string | any[], items: any): void => {
-        const { includeLabelField, onQSChange } = this.props;
+    updateLabels = (name: string, selectedOptions: SelectInputOption | SelectInputOption[]): void => {
+        const { includeLabelField } = this.props;
 
         if (includeLabelField) {
-            let allItems: any[] = items;
-            if (!Utils.isArray(allItems)) {
-                allItems = [allItems];
-            }
+            const allItems = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions];
 
             this.setState((prevState: State) => ({
                 labels: {
@@ -126,8 +125,16 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                 },
             }));
         }
+    };
 
-        onQSChange?.(name, value, items);
+    onQSChange: QuerySelectChange = (name, value, selectedOptions, props, selectedItems): void => {
+        this.updateLabels(name, selectedOptions);
+        this.props.onQSChange?.(name, value, selectedOptions, props, selectedItems);
+    };
+
+    onSelectChange: SelectInputChange = (name, value, selectedOptions, props): void => {
+        this.updateLabels(name, selectedOptions);
+        this.props.onSelectChange?.(name, value, selectedOptions, props);
     };
 
     onToggleDisable = (disabled: boolean): void => {
@@ -211,10 +218,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 allowFieldDisable={allowFieldDisable}
                                 col={col}
                                 data={fieldValues}
+                                formsy
                                 initiallyDisabled={shouldDisableField}
                                 key={i}
                                 onAdditionalFormDataChange={onAdditionalFormDataChange}
-                                onQSChange={this.onQSChange}
+                                onSelectChange={this.onSelectChange}
                                 onToggleDisable={this.onToggleDisable}
                                 renderLabelField={this.renderLabelField}
                                 showAsteriskSymbol={showAsteriskSymbol}

@@ -107,12 +107,12 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         );
     }
 
-    onChange = (name, value) => {
-        const { onChange } = this.props;
+    onChange = (name: string, value: any): void => {
+        if (this.props.allowDisable) {
+            this.setState({ inputValue: value });
+        }
 
-        if (this.props.allowDisable) this.setState({ inputValue: value });
-
-        if (onChange) onChange(value);
+        this.props.onChange?.(value);
     };
 
     render() {

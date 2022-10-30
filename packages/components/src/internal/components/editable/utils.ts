@@ -11,7 +11,11 @@ import { LoadingState } from '../../../public/LoadingState';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { getUpdatedDataFromGrid } from '../../util/utils';
 
-import { EXPORT_TYPES } from '../../constants';
+import { EXPORT_TYPES, MODIFICATION_TYPES } from '../../constants';
+
+import { SelectInputOption } from '../forms/input/SelectInput';
+
+import { CellActions } from './constants';
 
 /**
  * @deprecated Use initEditableGridModel() or initEditableGridModels() instead.
@@ -347,3 +351,31 @@ export const getEditorTableData = (
     });
     return [headings, editorData];
 };
+
+export function onCellSelectChange(
+    cellActions: Partial<CellActions>,
+    colIdx: number,
+    rowIdx: number,
+    selectedOptions: SelectInputOption | SelectInputOption[],
+    multiple: boolean
+): void {
+    const { modifyCell, selectCell } = cellActions;
+
+    if (multiple) {
+        if (selectedOptions.length === 0) {
+            modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
+        } else {
+            const valueDescriptors = selectedOptions.map(item => ({ raw: item.value, display: item.label }));
+            modifyCell(colIdx, rowIdx, valueDescriptors, MODIFICATION_TYPES.REPLACE);
+        }
+    } else {
+        const selectedOption = selectedOptions as SelectInputOption;
+        modifyCell(
+            colIdx,
+            rowIdx,
+            [{ raw: selectedOption?.value, display: selectedOption?.label }],
+            MODIFICATION_TYPES.REPLACE
+        );
+        selectCell(colIdx, rowIdx);
+    }
+}

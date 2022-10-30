@@ -89,12 +89,18 @@ const CustomOption = props => {
 };
 
 // Molded from @types/react-select/src/filter.d.ts
-export interface SelectInputOption {
-    [key: string]: any;
+export interface SelectInputOption extends Record<string, any> {
     data?: any;
     label?: string;
     value?: any;
 }
+
+export type SelectInputChange = (
+    name: string,
+    value: any,
+    selectedOptions: SelectInputOption | SelectInputOption[],
+    props: Partial<SelectInputProps>
+) => void;
 
 // Copied from @types/react-select/src/Select.d.ts
 export type FilterOption = ((option: SelectInputOption, rawInput: string) => boolean) | null;
@@ -133,7 +139,17 @@ export function initOptions(props: SelectInputProps): SelectInputOption | Select
     return options;
 }
 
-export interface SelectInputProps {
+interface SupportedFormsyInputProps {
+    // from formsy-react
+    getErrorMessage?: Function;
+    getValue?: Function;
+    setValue?: Function;
+    showRequired?: Function;
+    validations?: any;
+}
+
+// eslint-disable-next-line typescript-sort-keys/interface
+export interface SelectInputProps extends SupportedFormsyInputProps {
     addLabelAsterisk?: boolean;
     allowCreate?: boolean;
     allowDisable?: boolean;
@@ -162,12 +178,15 @@ export interface SelectInputProps {
     joinValues?: boolean;
     label?: ReactNode;
     labelClass?: string;
+    labelKey?: string;
+    loadOptions?: (input: string) => Promise<SelectInputOption[]>;
     menuPosition?: string;
     multiple?: boolean;
     name?: string;
     noResultsText?: string;
     onBlur?: (event: FocusEvent<HTMLElement>) => void;
-    onChange?: Function; // this is getting confused with formsy on change, need to separate
+    // TODO: this is getting confused with formsy on change, need to separate
+    onChange?: SelectInputChange;
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
     onToggleDisable?: (disabled: boolean) => void;
     openMenuOnFocus?: boolean;
@@ -184,16 +203,6 @@ export interface SelectInputProps {
     value?: any;
     valueKey?: string;
     valueRenderer?: any;
-
-    labelKey?: string;
-    loadOptions?: (input: string) => Promise<SelectInputOption[]>;
-
-    // from formsy-react
-    getErrorMessage?: Function;
-    getValue?: Function;
-    setValue?: Function;
-    showRequired?: Function;
-    validations?: any;
 }
 
 interface State {
@@ -307,7 +316,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
         const formValue = this._setOptionsAndValue(selectedOptions);
 
-        onChange?.(name, formValue, selectedOptions, this.refs.reactSelect);
+        onChange?.(name, formValue, selectedOptions, this.props);
     };
 
     handleFocus = (event): void => {

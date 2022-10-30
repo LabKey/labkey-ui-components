@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -29,17 +29,12 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { InputRenderer } from '../forms/InputRenderer';
 
+import { SelectInputChange } from '../forms/input/SelectInput';
+
+import { CellActions } from './constants';
+import { onCellSelectChange } from './utils';
 import { LookupCell, LookupCellProps } from './LookupCell';
 import { DateInputCell, DateInputCellProps } from './DateInputCell';
-
-export interface CellActions {
-    clearSelection: () => void;
-    fillDown: () => void;
-    focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
-    inDrag: () => boolean; // Not really an action, but useful to be part of this interface
-    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
-    selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
-}
 
 interface Props {
     cellActions: CellActions;
@@ -263,8 +258,9 @@ export class Cell extends React.PureComponent<Props, State> {
         }
     };
 
-    onQSChange = (name: string, value: string | any[], items: any): void => {
-        this.replaceCurrentCellValue(items?.label, items?.value);
+    onSelectChange: SelectInputChange = (name, value, selectedOptions, props_): void => {
+        const { cellActions, colIdx, rowIdx } = this.props;
+        onCellSelectChange(cellActions, colIdx, rowIdx, selectedOptions, props_.multiple);
     };
 
     render() {
@@ -360,13 +356,14 @@ export class Cell extends React.PureComponent<Props, State> {
         }
 
         if (col.inputRenderer) {
-            // TODO: This should respect disabled
+            // TODO: This should respect this.isReadOnly()
             return (
                 <InputRenderer
                     col={col}
                     data={row}
+                    formsy={false}
                     isGridInput
-                    onQSChange={this.onQSChange}
+                    onSelectChange={this.onSelectChange}
                     value={values?.get(0)?.raw}
                 />
             );

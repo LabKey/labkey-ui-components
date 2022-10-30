@@ -24,11 +24,14 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { encodePart } from '../../../public/SchemaQuery';
 
+import { customStyles, customBulkStyles, customTheme } from '../editable/constants';
+
 import { AssayTaskInput } from './input/AssayTaskInput';
 
 import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
 import { SampleStatusInput } from './input/SampleStatusInput';
+import { SelectInputChange, SelectInputProps } from './input/SelectInput';
 
 const ASSAY_ID_INDEX = 'Protocol/RowId';
 
@@ -52,6 +55,7 @@ interface InputRendererProps {
     containerPath?: string;
     // The data for the entire row/form section
     data: any;
+    formsy?: boolean;
     initiallyDisabled?: boolean;
     inputClass?: string;
     // Indicates whether or not the input is being rendered inside an EditableDetailPanel
@@ -59,26 +63,38 @@ interface InputRendererProps {
     // Indicates whether or not the input is being rendered inside an EditableGrid
     isGridInput?: boolean;
     onAdditionalFormDataChange?: (name: string, value: any) => void;
-    onQSChange?: (name: string, value: string | any[], items: any) => void;
+    onSelectChange?: SelectInputChange;
     onToggleDisable?: (disabled: boolean) => void;
     renderLabelField?: (col: QueryColumn) => ReactNode;
     showAsteriskSymbol?: boolean;
     value: any;
 }
 
+function commonSelectInputProps(props: InputRendererProps): Partial<SelectInputProps> {
+    const { inputClass, isDetailInput, isGridInput } = props;
+    return {
+        containerClass: isGridInput ? 'select-input-cell-container' : undefined,
+        customStyles: isGridInput ? customStyles : isDetailInput ? undefined : customBulkStyles,
+        customTheme: isGridInput ? customTheme : undefined,
+        inputClass: isGridInput ? 'select-input-cell' : inputClass,
+        menuPosition: isGridInput ? 'fixed' : undefined,
+        placeholder: isGridInput ? '' : 'Select or type to search...',
+        showLabel: !isDetailInput && !isGridInput,
+    };
+}
+
 export const InputRenderer: FC<InputRendererProps> = memo(props => {
     const {
-        allowFieldDisable = false,
+        allowFieldDisable,
         col,
         containerFilter,
         containerPath,
         data,
-        isDetailInput = false,
-        isGridInput = false,
-        initiallyDisabled = false,
-        inputClass,
+        formsy,
+        isDetailInput,
+        initiallyDisabled,
         onAdditionalFormDataChange,
-        onQSChange,
+        onSelectChange,
         onToggleDisable,
         renderLabelField,
         showAsteriskSymbol,
@@ -102,6 +118,7 @@ export const InputRenderer: FC<InputRendererProps> = memo(props => {
 
     switch (col.inputRenderer.toLowerCase()) {
         case 'appendunitsinput':
+            // TODO: Support a non-formsy alternative
             return (
                 <Input
                     allowDisable={allowFieldDisable}
@@ -115,52 +132,54 @@ export const InputRenderer: FC<InputRendererProps> = memo(props => {
                     name={col.name}
                     required={col.required}
                     type="text"
-                    value={value}
                     validations="isNumericWithError"
+                    value={value}
                 />
             );
         case 'experimentalias':
             return (
                 <AliasInput
+                    {...commonSelectInputProps(props)}
+                    allowDisable={allowFieldDisable}
                     col={col}
                     data={data}
-                    isDetailInput={isDetailInput}
-                    allowDisable={allowFieldDisable}
+                    formsy={formsy}
                     initiallyDisabled={initiallyDisabled}
+                    label={col.caption}
+                    onChange={onSelectChange}
                     onToggleDisable={onToggleDisable}
                 />
             );
         case 'samplestatusinput':
             return (
                 <SampleStatusInput
+                    {...commonSelectInputProps(props)}
                     addLabelAsterisk={showAsteriskSymbol}
-                    col={col}
-                    data={data}
-                    value={value}
                     allowDisable={allowFieldDisable}
-                    initiallyDisabled={initiallyDisabled}
-                    onToggleDisable={onToggleDisable}
-                    onQSChange={onQSChange}
-                    renderLabelField={renderLabelField}
-                    onAdditionalFormDataChange={onAdditionalFormDataChange}
-                    inputClass={inputClass}
+                    col={col}
                     containerFilter={containerFilter}
                     containerPath={containerPath}
-                    isGridInput={isGridInput}
+                    formsy={formsy}
+                    initiallyDisabled={initiallyDisabled}
+                    onAdditionalFormDataChange={onAdditionalFormDataChange}
+                    onQSChange={onSelectChange}
+                    onToggleDisable={onToggleDisable}
+                    renderLabelField={renderLabelField}
+                    value={value}
                 />
             );
         case 'workflowtask':
             return (
                 <AssayTaskInput
-                    assayId={resolveAssayId(data)}
-                    isDetailInput={isDetailInput}
-                    name={col.name}
-                    value={value}
+                    {...commonSelectInputProps(props)}
                     allowDisable={allowFieldDisable}
+                    assayId={resolveAssayId(data)}
+                    formsy={formsy}
                     initiallyDisabled={initiallyDisabled}
+                    name={col.name}
+                    onChange={onSelectChange}
                     onToggleDisable={onToggleDisable}
-                    onChange={onQSChange}
-                    isGridInput={isGridInput}
+                    value={value}
                 />
             );
         default:

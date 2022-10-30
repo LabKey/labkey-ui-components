@@ -293,22 +293,28 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                             }
 
                             if (props.fireQSChangeOnInit && Utils.isFunction(props.onQSChange)) {
-                                let items: SelectInputOption | SelectInputOption[] = formatResults(
+                                let selectOptions: SelectInputOption | SelectInputOption[] = formatResults(
                                     model,
                                     model.selectedItems
                                 );
 
                                 // mimic ReactSelect in that it will return a single option if multiple is not true
                                 if (props.multiple === false) {
-                                    items = items[0];
+                                    selectOptions = selectOptions[0];
                                 }
 
-                                props.onQSChange(props.name, model.rawSelectedValue, items, model.selectedItems);
+                                props.onQSChange(
+                                    props.name,
+                                    model.rawSelectedValue,
+                                    selectOptions,
+                                    props,
+                                    model.selectedItems
+                                );
                             }
 
                             // fire listener if given an initial value and a listener function
-                            if (model.rawSelectedValue && Utils.isFunction(props.onInitValue)) {
-                                props.onInitValue(model.rawSelectedValue, model.selectedItems.toList());
+                            if (model.rawSelectedValue) {
+                                props.onInitValue?.(model.rawSelectedValue, model.selectedItems.toList());
                             }
 
                             resolve(model);

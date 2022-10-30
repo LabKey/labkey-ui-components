@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* todo
+* Issue 44598: PHI TextChoice domain fields now warn
 
 ### version 2.242.0
 *Released*: 28 October 2022

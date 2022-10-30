@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, Record } from 'immutable';
-import { ActionURL, Domain, getServerContext, Utils } from '@labkey/api';
-import React, { ReactNode } from 'react';
+import {fromJS, List, Map, Record} from 'immutable';
+import {ActionURL, Domain, getServerContext, Utils} from '@labkey/api';
+import React, {ReactNode} from 'react';
 
-import { Checkbox } from 'react-bootstrap';
+import {Checkbox} from 'react-bootstrap';
 
-import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
+import {GRID_NAME_INDEX, GRID_SELECTION_INDEX} from '../../constants';
 
-import { camelCaseToTitleCase, valueIsEmpty } from '../../util/utils';
+import {camelCaseToTitleCase, valueIsEmpty} from '../../util/utils';
 
-import { getConceptForCode } from '../ontology/actions';
+import {getConceptForCode} from '../ontology/actions';
 
-import { getCurrentAppProperties, hasPremiumModule } from '../../app/utils';
+import {getCurrentAppProperties, hasPremiumModule} from '../../app/utils';
 
-import { GridColumn } from '../base/models/GridColumn';
+import {GridColumn} from '../base/models/GridColumn';
 
-import { SCHEMAS } from '../../schemas';
+import {SCHEMAS} from '../../schemas';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -56,6 +56,7 @@ import {
     STRING_CONVERT_URIS,
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
+    TEXT_CHOICE_PHI_NOTE,
     UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
@@ -84,9 +85,9 @@ import {
     removeUnusedProperties,
     reorderSummaryColumns,
 } from './propertiesUtil';
-import { INT_LIST, VAR_LIST } from './list/constants';
-import { DomainRowWarning } from './DomainRowWarning';
-import { createFormInputId } from './utils';
+import {INT_LIST, VAR_LIST} from './list/constants';
+import {DomainRowWarning} from './DomainRowWarning';
+import {createFormInputId} from './utils';
 
 export interface IFieldChange {
     id: string;
@@ -1201,11 +1202,10 @@ export class DomainField
             details.push(period + this.sourceOntology);
             period = '. ';
         } else if (this.dataType.isTextChoice()) {
-            if (this.isPHI() && this.PHI !== undefined) {
-                const text = ' Note: These text choice options are visible to all administrators, including those not granted any PHI reader role';
-                details.push(period + text);
+            const validValuesStr = getValidValuesDetailStr(this.textChoiceValidator?.properties.validValues);
+            if (this.isPHI() && this.PHI !== undefined && validValuesStr) {
+                details.push(period + TEXT_CHOICE_PHI_NOTE);
             } else {
-                const validValuesStr = getValidValuesDetailStr(this.textChoiceValidator?.properties.validValues);
                 details.push(period);
                 if (validValuesStr) {
                     details.push(validValuesStr);

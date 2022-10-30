@@ -47,7 +47,7 @@ export class AuditDetails extends Component<Props, State> {
     };
 
     static isUserFieldLabel(field: string): boolean {
-        return ['createdby', 'modifiedby'].indexOf(field.toLowerCase()) > -1;
+        return ['createdby', 'created by', 'modifiedby', 'modified by'].indexOf(field.toLowerCase()) > -1;
     }
 
     constructor(props: Props) {

@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {fromJS, List, Map, Record} from 'immutable';
-import {ActionURL, Domain, getServerContext, Utils} from '@labkey/api';
-import React, {ReactNode} from 'react';
+import { fromJS, List, Map, Record } from 'immutable';
+import { ActionURL, Domain, getServerContext, Utils } from '@labkey/api';
+import React, { ReactNode } from 'react';
 
-import {Checkbox} from 'react-bootstrap';
+import { Checkbox } from 'react-bootstrap';
 
-import {GRID_NAME_INDEX, GRID_SELECTION_INDEX} from '../../constants';
+import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
-import {camelCaseToTitleCase, valueIsEmpty} from '../../util/utils';
+import { camelCaseToTitleCase, valueIsEmpty } from '../../util/utils';
 
-import {getConceptForCode} from '../ontology/actions';
+import { getConceptForCode } from '../ontology/actions';
 
-import {getCurrentAppProperties, hasPremiumModule} from '../../app/utils';
+import { getCurrentAppProperties, hasPremiumModule } from '../../app/utils';
 
-import {GridColumn} from '../base/models/GridColumn';
+import { GridColumn } from '../base/models/GridColumn';
 
-import {SCHEMAS} from '../../schemas';
+import { SCHEMAS } from '../../schemas';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -85,9 +85,9 @@ import {
     removeUnusedProperties,
     reorderSummaryColumns,
 } from './propertiesUtil';
-import {INT_LIST, VAR_LIST} from './list/constants';
-import {DomainRowWarning} from './DomainRowWarning';
-import {createFormInputId} from './utils';
+import { INT_LIST, VAR_LIST } from './list/constants';
+import { DomainRowWarning } from './DomainRowWarning';
+import { createFormInputId } from './utils';
 
 export interface IFieldChange {
     id: string;
@@ -754,6 +754,7 @@ export interface IDomainField {
     rangeURI: string;
     rangeValidators: List<PropertyValidator>;
     recommendedVariable?: boolean;
+    regexValidators: List<PropertyValidator>;
     required?: boolean;
     scale?: number;
     scannable?: boolean;
@@ -764,7 +765,6 @@ export interface IDomainField {
     textChoiceValidator?: PropertyValidator;
     updatedField: boolean;
     visible: boolean;
-    regexValidators: List<PropertyValidator>;
 }
 
 export class DomainField

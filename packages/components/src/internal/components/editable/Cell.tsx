@@ -33,8 +33,8 @@ import { SelectInputChange } from '../forms/input/SelectInput';
 
 import { CellActions } from './constants';
 import { onCellSelectChange } from './utils';
-import { LookupCell, LookupCellProps } from './LookupCell';
-import { DateInputCell, DateInputCellProps } from './DateInputCell';
+import { LookupCell } from './LookupCell';
+import { DateInputCell } from './DateInputCell';
 
 interface Props {
     cellActions: CellActions;
@@ -370,36 +370,36 @@ export class Cell extends React.PureComponent<Props, State> {
         }
 
         if (showLookup) {
-            const lookupProps: LookupCellProps = {
-                col,
-                colIdx,
-                containerFilter,
-                disabled: this.isReadOnly(),
-                modifyCell: cellActions.modifyCell,
-                rowIdx,
-                select: cellActions.selectCell,
-                values,
-                filteredLookupValues,
-                filteredLookupKeys,
-            };
-
-            return <LookupCell {...lookupProps} />;
+            return (
+                <LookupCell
+                    col={col}
+                    colIdx={colIdx}
+                    containerFilter={containerFilter}
+                    disabled={this.isReadOnly()}
+                    filteredLookupKeys={filteredLookupKeys}
+                    filteredLookupValues={filteredLookupValues}
+                    modifyCell={cellActions.modifyCell}
+                    rowIdx={rowIdx}
+                    select={cellActions.selectCell}
+                    values={values}
+                />
+            );
         }
 
         if (isDateField) {
             const rawDateValue = values.size === 0 ? '' : values.first().raw !== undefined ? values.first().raw : '';
-            const dateProps: DateInputCellProps = {
-                col,
-                colIdx,
-                rowIdx,
-                disabled: this.isReadOnly(),
-                modifyCell: cellActions.modifyCell,
-                select: cellActions.selectCell,
-                defaultValue: rawDateValue,
-                onKeyDown: this.handleKeys,
-            };
-
-            return <DateInputCell {...dateProps} />;
+            return (
+                <DateInputCell
+                    col={col}
+                    colIdx={colIdx}
+                    defaultValue={rawDateValue}
+                    disabled={this.isReadOnly()}
+                    modifyCell={cellActions.modifyCell}
+                    onKeyDown={this.handleKeys}
+                    select={cellActions.selectCell}
+                    rowIdx={rowIdx}
+                />
+            );
         }
 
         // Some cells have custom displays such as multi value comma separated values like alias so
@@ -418,19 +418,19 @@ export class Cell extends React.PureComponent<Props, State> {
             defaultValue = values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : '';
         }
 
-        const inputProps = {
-            autoFocus: true,
-            defaultValue,
-            disabled: this.isReadOnly(),
-            className: 'cellular-input',
-            onBlur: this.handleBlur,
-            onChange: this.handleChange,
-            onKeyDown: this.handleKeys,
-            placeholder,
-            tabIndex: -1,
-            type: 'text',
-        };
-
-        return <input {...inputProps} />;
+        return (
+            <input
+                autoFocus
+                className="cellular-input"
+                defaultValue={defaultValue}
+                disabled={this.isReadOnly()}
+                onBlur={this.handleBlur}
+                onChange={this.handleChange}
+                onKeyDown={this.handleKeys}
+                placeholder={placeholder}
+                tabIndex={-1}
+                type="text"
+            />
+        );
     }
 }

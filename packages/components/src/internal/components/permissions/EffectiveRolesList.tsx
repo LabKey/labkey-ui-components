@@ -35,7 +35,7 @@ export class EffectiveRolesList extends React.PureComponent<Props, any> {
         return (
             <>
                 <hr className="principal-hr" />
-                <div className="principal-detail-label">Effective Roles:</div>
+                <div className="principal-detail-label">Effective Roles</div>
                 <ul className="permissions-groups-ul">
                     {assignments.map(assignment => {
                         const role = rolesByUniqueName.get(assignment.role);

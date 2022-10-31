@@ -47,7 +47,7 @@ export class AuditDetails extends Component<Props, State> {
     };
 
     static isUserFieldLabel(field: string): boolean {
-        return ['createdby', 'modifiedby'].indexOf(field.toLowerCase()) > -1;
+        return ['created by', 'modified by'].indexOf(field.toLowerCase()) > -1;
     }
 
     constructor(props: Props) {
@@ -159,7 +159,7 @@ export class AuditDetails extends Component<Props, State> {
         return (
             <Row className="margin-bottom" key={field}>
                 <Col className="left-spacing right-spacing">
-                    <span className="audit-detail-row-label right-spacing">{capitalizeFirstChar(field)}:</span>
+                    <span className="audit-detail-row-label right-spacing">{capitalizeFirstChar(field)}</span>
                 </Col>
                 <Col className="left-spacing right-spacing">
                     {valueRenderer(this.getValueDisplay(field, oldVal), this.getValueDisplay(field, newVal))}

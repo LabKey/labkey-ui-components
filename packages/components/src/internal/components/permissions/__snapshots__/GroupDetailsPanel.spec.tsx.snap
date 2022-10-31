@@ -24,7 +24,6 @@ exports[`<GroupDetailsPanel/> as site group 1`] = `
         className="principal-detail-label col-xs-4"
       >
         User Count
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -39,7 +38,6 @@ exports[`<GroupDetailsPanel/> as site group 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Group Count
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -57,7 +55,6 @@ exports[`<GroupDetailsPanel/> as site group 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Created
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -72,7 +69,6 @@ exports[`<GroupDetailsPanel/> as site group 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Site Group
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -86,7 +82,7 @@ exports[`<GroupDetailsPanel/> as site group 1`] = `
     <div
       className="principal-detail-label"
     >
-      Effective Roles:
+      Effective Roles
     </div>
     <ul
       className="permissions-groups-ul"
@@ -101,7 +97,7 @@ exports[`<GroupDetailsPanel/> as site group 1`] = `
     <div
       className="principal-detail-label"
     >
-      Members:
+      Members
     </div>
     <ul
       className="permissions-groups-ul"
@@ -160,7 +156,6 @@ exports[`<GroupDetailsPanel/> with principal and members 1`] = `
         className="principal-detail-label col-xs-4"
       >
         User Count
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -175,7 +170,6 @@ exports[`<GroupDetailsPanel/> with principal and members 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Group Count
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -193,7 +187,6 @@ exports[`<GroupDetailsPanel/> with principal and members 1`] = `
         className="principal-detail-label col-xs-4"
       >
         Created
-        :
       </div>
       <div
         className="principal-detail-value col-xs-8"
@@ -207,7 +200,7 @@ exports[`<GroupDetailsPanel/> with principal and members 1`] = `
     <div
       className="principal-detail-label"
     >
-      Effective Roles:
+      Effective Roles
     </div>
     <ul
       className="permissions-groups-ul"
@@ -222,7 +215,7 @@ exports[`<GroupDetailsPanel/> with principal and members 1`] = `
     <div
       className="principal-detail-label"
     >
-      Members:
+      Members
     </div>
     <ul
       className="permissions-groups-ul"

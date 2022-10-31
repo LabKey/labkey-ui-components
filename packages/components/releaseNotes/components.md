@@ -5,6 +5,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 44598: PHI TextChoice domain fields now warn
 
+### version 2.242.1
+*Released*: 31 October 2022
+* Update sample type download template URL to use query name as prefix
+* Remove colon after field label for audit details
+* Remove colons after user detail labels
+* Remove colons after EditInlineField labels
+* Don't put empty aliquots message in the table (remove extraneous horizontal line)
+* In ParentEntityEditPanel, don't show hr unless editing when there are no parents
+
 ### version 2.242.0
 *Released*: 28 October 2022
 * Issue 46460: Filter by date only (not time)

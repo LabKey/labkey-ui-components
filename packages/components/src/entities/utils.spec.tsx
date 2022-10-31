@@ -267,7 +267,27 @@ describe('getSampleDeleteMessage', () => {
 
 describe('getSampleTypeTemplateUrl', () => {
     const BASE_URL =
-        '/labkey/query/ExportExcelTemplate.view?exportAlias.name=Sample%20ID&exportAlias.aliquotedFromLSID=AliquotedFrom&exportAlias.sampleState=Status&schemaName=schema&query.queryName=query&headerType=DisplayFieldKey&excludeColumn=flag&excludeColumn=Ancestors&includeColumn=StorageLocation&includeColumn=StorageRow&includeColumn=StorageCol&includeColumn=StoredAmount&includeColumn=Units&includeColumn=FreezeThawCount&includeColumn=EnteredStorage&includeColumn=CheckedOut&includeColumn=CheckedOutBy&includeColumn=StorageComment&includeColumn=AliquotedFrom';
+        '/labkey/query/ExportExcelTemplate.view?' +
+        'exportAlias.name=Sample%20ID' +
+        '&exportAlias.aliquotedFromLSID=AliquotedFrom' +
+        '&exportAlias.sampleState=Status' +
+        '&schemaName=schema' +
+        '&query.queryName=query' +
+        '&headerType=DisplayFieldKey' +
+        '&excludeColumn=flag' +
+        '&excludeColumn=Ancestors' +
+        '&includeColumn=StorageLocation' +
+        '&includeColumn=StorageRow' +
+        '&includeColumn=StorageCol' +
+        '&includeColumn=StoredAmount' +
+        '&includeColumn=Units' +
+        '&includeColumn=FreezeThawCount' +
+        '&includeColumn=EnteredStorage' +
+        '&includeColumn=CheckedOut' +
+        '&includeColumn=CheckedOutBy' +
+        '&includeColumn=StorageComment' +
+        '&includeColumn=AliquotedFrom' +
+        '&filenamePrefix=query';
 
     test('no schemaQuery', () => {
         expect(getSampleTypeTemplateUrl(QueryInfo.create({}), undefined)).toBe(undefined);

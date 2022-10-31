@@ -146,7 +146,7 @@ export const SampleTimelinePageBaseImpl: FC<OwnProps & InjectedQueryModels> = me
     };
 
     const auditDetailValueRenderer = (field: string, value: string, displayValue: any): any => {
-        if (field.toLowerCase() === 'sampleid') {
+        if (field.toLowerCase() === 'sample id') {
             const sampleLink = AppURL.create(SAMPLES_KEY, sampleSet, sampleId).toHref();
             return <a href={sampleLink}>{value}</a>;
         }

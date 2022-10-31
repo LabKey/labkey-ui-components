@@ -4,6 +4,8 @@ import { Map } from 'immutable';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { caseInsensitive, generateId } from '../../../util/utils';
 
+import { InputRendererProps } from './types';
+
 import { SelectInput, SelectInputProps } from './SelectInput';
 
 interface Props extends Omit<SelectInputProps, 'loadOptions' | 'options' | 'resolveFormValue' | 'value'> {
@@ -11,7 +13,7 @@ interface Props extends Omit<SelectInputProps, 'loadOptions' | 'options' | 'reso
     data?: any;
 }
 
-export const AliasInput: FC<Props> = memo(props => {
+export const AliasSelectInput: FC<Props> = memo(props => {
     const { col, data, ...selectProps } = props;
     const generatedId = useMemo(() => generateId(), []);
 
@@ -46,7 +48,7 @@ export const AliasInput: FC<Props> = memo(props => {
     );
 });
 
-AliasInput.defaultProps = {
+AliasSelectInput.defaultProps = {
     allowCreate: true,
     formsy: true,
     joinValues: true,
@@ -58,4 +60,30 @@ AliasInput.defaultProps = {
     showLabel: true,
 };
 
-AliasInput.displayName = 'AliasInput';
+AliasSelectInput.displayName = 'AliasInput';
+
+export const AliasInput: FC<InputRendererProps> = memo(props => {
+    const {
+        allowFieldDisable,
+        col,
+        data,
+        formsy,
+        initiallyDisabled,
+        onSelectChange,
+        onToggleDisable,
+        selectInputProps,
+    } = props;
+
+    return (
+        <AliasSelectInput
+            {...selectInputProps}
+            allowDisable={allowFieldDisable}
+            col={col}
+            data={data}
+            formsy={formsy}
+            initiallyDisabled={initiallyDisabled}
+            onChange={onSelectChange}
+            onToggleDisable={onToggleDisable}
+        />
+    );
+});

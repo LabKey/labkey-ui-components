@@ -15,7 +15,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { LabelOverlay } from '../LabelOverlay';
 
 import { QuerySelect } from '../QuerySelect';
-import { InputRenderer } from '../InputRenderer';
+import { resolveInputRenderer } from '../input/inputRenderFactory';
 import { resolveDetailFieldValue } from '../utils';
 
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
@@ -260,18 +260,19 @@ export function resolveDetailEditRenderer(
 
         let value = resolveDetailFieldValue(data, col.isLookup());
 
-        if (col.inputRenderer) {
+        const ColumnInputRenderer = resolveInputRenderer(col);
+        if (ColumnInputRenderer) {
             return (
-                <InputRenderer
+                <ColumnInputRenderer
                     col={col}
                     containerFilter={options?.containerFilter}
                     containerPath={options?.containerPath}
                     data={row}
                     formsy
                     inputClass="col-sm-12"
-                    isDetailInput
                     key={col.name}
                     onAdditionalFormDataChange={onAdditionalFormDataChange}
+                    selectInputProps={{ customStyles: undefined, showLabel: false }}
                     value={value}
                 />
             );

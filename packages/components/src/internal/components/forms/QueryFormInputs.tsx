@@ -24,7 +24,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { caseInsensitive } from '../../util/utils';
 
-import { InputRenderer } from './InputRenderer';
+import { resolveInputRenderer } from './input/inputRenderFactory';
 import { QuerySelect, QuerySelectChange } from './QuerySelect';
 import { SelectInputChange, SelectInputOption } from './input/SelectInput';
 import { TextInput } from './input/TextInput';
@@ -212,9 +212,10 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         value = false;
                     }
 
-                    if (col.inputRenderer) {
+                    const ColumnInputRenderer = resolveInputRenderer(col);
+                    if (ColumnInputRenderer) {
                         return (
-                            <InputRenderer
+                            <ColumnInputRenderer
                                 allowFieldDisable={allowFieldDisable}
                                 col={col}
                                 data={fieldValues}

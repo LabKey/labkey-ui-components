@@ -14,6 +14,7 @@ import { userCanEditStorageData } from '../../../app/utils';
 import { useServerContext } from '../../base/ServerContext';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
+import { InputRendererProps } from './types';
 
 interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'schemaQuery' | 'valueColumn'> {
     api?: ComponentsAPIWrapper;
@@ -135,3 +136,39 @@ SampleStatusInput.defaultProps = {
     api: getDefaultAPIWrapper(),
     formsy: true,
 };
+
+export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
+    const {
+        allowFieldDisable,
+        col,
+        containerFilter,
+        containerPath,
+        formsy,
+        initiallyDisabled,
+        onAdditionalFormDataChange,
+        onSelectChange,
+        onToggleDisable,
+        renderLabelField,
+        selectInputProps,
+        showAsteriskSymbol,
+        value,
+    } = props;
+
+    return (
+        <SampleStatusInput
+            {...selectInputProps}
+            addLabelAsterisk={showAsteriskSymbol}
+            allowDisable={allowFieldDisable}
+            col={col}
+            containerFilter={containerFilter}
+            containerPath={containerPath}
+            formsy={formsy}
+            initiallyDisabled={initiallyDisabled}
+            onAdditionalFormDataChange={onAdditionalFormDataChange}
+            onQSChange={onSelectChange}
+            onToggleDisable={onToggleDisable}
+            renderLabelField={renderLabelField}
+            value={value}
+        />
+    );
+});

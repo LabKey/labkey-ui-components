@@ -13,7 +13,7 @@ import { getUpdatedDataFromGrid } from '../../util/utils';
 
 import { EXPORT_TYPES, MODIFICATION_TYPES } from '../../constants';
 
-import { SelectInputOption } from '../forms/input/SelectInput';
+import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
 import { CellActions } from './constants';
 
@@ -379,3 +379,47 @@ export function onCellSelectChange(
         selectCell(colIdx, rowIdx);
     }
 }
+
+export const gridCellSelectInputProps: Partial<SelectInputProps> = {
+    containerClass: 'select-input-cell-container',
+    customStyles: {
+        control: provided => ({
+            ...provided,
+            minHeight: 24,
+            borderRadius: 0,
+        }),
+        valueContainer: provided => ({
+            ...provided,
+            minHeight: 24,
+            padding: '0 4px',
+        }),
+        input: provided => ({
+            ...provided,
+            margin: '0px',
+        }),
+        indicatorsContainer: provided => ({
+            ...provided,
+            minHeight: 24,
+            padding: '0 4px',
+        }),
+    },
+    customTheme: theme => ({
+        ...theme,
+        colors: {
+            ...theme.colors,
+            danger: '#D9534F',
+            primary: '#2980B9',
+            primary75: '#009BF9',
+            primary50: '#F2F9FC',
+            primary25: 'rgba(41, 128, 185, 0.1)',
+        },
+        spacing: {
+            ...theme.spacing,
+            baseUnit: 2,
+        },
+    }),
+    inputClass: 'select-input-cell',
+    menuPosition: 'fixed', // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
+    placeholder: '',
+    showLabel: false,
+};

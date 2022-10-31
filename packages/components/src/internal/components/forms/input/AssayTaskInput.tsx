@@ -1,11 +1,14 @@
 import React, { FC, memo, useEffect, useState } from 'react';
+import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { selectRows } from '../../../query/selectRows';
 
-import { SchemaQuery } from '../../../../public/SchemaQuery';
+import { encodePart, SchemaQuery } from '../../../../public/SchemaQuery';
 import { ViewInfo } from '../../../ViewInfo';
 import { caseInsensitive } from '../../../util/utils';
+
+import { InputRendererProps } from './types';
 
 import { DisableableInputProps } from './DisableableInput';
 import { SelectInput, SelectInputProps } from './SelectInput';
@@ -96,3 +99,45 @@ AssayTaskInput.defaultProps = {
 };
 
 AssayTaskInput.displayName = 'AssayTaskInput';
+
+const ASSAY_ID_INDEX = 'Protocol/RowId';
+
+function resolveAssayId(data: any): any {
+    // Used in multiple contexts so need to check various data formats
+    let assayId = Map.isMap(data) ? data.get(ASSAY_ID_INDEX) : data[ASSAY_ID_INDEX];
+    if (!assayId) {
+        assayId = Map.isMap(data) ? data.get(encodePart(ASSAY_ID_INDEX)) : data[encodePart(ASSAY_ID_INDEX)];
+    }
+    if (List.isList(assayId)) {
+        assayId = assayId.get(0);
+    }
+    return assayId?.get?.('value') ?? assayId?.value ?? assayId;
+}
+
+export const AssayTaskInputRenderer: FC<InputRendererProps> = memo(props => {
+    const {
+        allowFieldDisable,
+        col,
+        data,
+        formsy,
+        initiallyDisabled,
+        onSelectChange,
+        onToggleDisable,
+        selectInputProps,
+        value,
+    } = props;
+
+    return (
+        <AssayTaskInput
+            {...selectInputProps}
+            allowDisable={allowFieldDisable}
+            assayId={resolveAssayId(data)}
+            formsy={formsy}
+            initiallyDisabled={initiallyDisabled}
+            name={col.name}
+            onChange={onSelectChange}
+            onToggleDisable={onToggleDisable}
+            value={value}
+        />
+    );
+});

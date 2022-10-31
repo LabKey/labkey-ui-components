@@ -27,8 +27,7 @@ import { SelectInputChange } from '../forms/input/SelectInput';
 import { ViewInfo } from '../../ViewInfo';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { customStyles, customTheme } from './constants';
-import { onCellSelectChange } from './utils';
+import { gridCellSelectInputProps, onCellSelectChange } from './utils';
 
 export interface LookupCellProps {
     col: QueryColumn;
@@ -64,18 +63,12 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         if (col.validValues) {
             return (
                 <TextChoiceInput
+                    {...gridCellSelectInputProps}
                     autoFocus
-                    queryColumn={col}
                     disabled={disabled}
-                    containerClass="select-input-cell-container"
-                    customTheme={customTheme}
-                    customStyles={customStyles}
-                    menuPosition="fixed" // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
-                    openMenuOnFocus
-                    inputClass="select-input-cell"
-                    placeholder=""
                     onChange={this.onSelectChange}
-                    showLabel={false}
+                    openMenuOnFocus
+                    queryColumn={col}
                     value={rawValues[0]}
                 />
             );
@@ -102,6 +95,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
 
         return (
             <QuerySelect
+                {...gridCellSelectInputProps}
                 autoFocus
                 containerFilter={lookup.containerFilter ?? containerFilter}
                 disabled={disabled}
@@ -116,16 +110,9 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 key={col.lookupKey}
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 containerPath={lookup.containerPath}
-                containerClass="select-input-cell-container"
-                customTheme={customTheme}
-                customStyles={customStyles}
-                menuPosition="fixed" // note that there is an open issue related to scrolling when the menu is open: https://github.com/JedWatson/react-select/issues/4088
                 openMenuOnFocus={!isMultiple} // If set to true for the multi-select case, it's not possible to tab out of the cell.
-                inputClass="select-input-cell"
-                placeholder=""
                 onQSChange={this.onSelectChange}
                 preLoad
-                showLabel={false}
                 value={isMultiple ? rawValues : rawValues[0]}
             />
         );

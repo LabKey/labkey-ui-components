@@ -27,12 +27,12 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { InputRenderer } from '../forms/InputRenderer';
+import { resolveInputRenderer } from '../forms/input/inputRenderFactory';
 
 import { SelectInputChange } from '../forms/input/SelectInput';
 
 import { CellActions } from './constants';
-import { onCellSelectChange } from './utils';
+import { gridCellSelectInputProps, onCellSelectChange } from './utils';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
 
@@ -355,15 +355,15 @@ export class Cell extends React.PureComponent<Props, State> {
             );
         }
 
-        if (col.inputRenderer) {
-            // TODO: This should respect this.isReadOnly()
+        const ColumnInputRenderer = resolveInputRenderer(col, true);
+        if (ColumnInputRenderer) {
             return (
-                <InputRenderer
+                <ColumnInputRenderer
                     col={col}
                     data={row}
                     formsy={false}
-                    isGridInput
                     onSelectChange={this.onSelectChange}
+                    selectInputProps={gridCellSelectInputProps}
                     value={values?.get(0)?.raw}
                 />
             );

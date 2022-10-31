@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.242.1
+*Released*: 31 October 2022
 * Update sample type download template URL to use query name as prefix
 * Remove colon after field label for audit details
 * Remove colons after user detail labels

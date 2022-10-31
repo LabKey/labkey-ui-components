@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Updates for Sample Type consistency of Sample detail pages
+  * ...
+
 ### version 2.242.1
 *Released*: 31 October 2022
 * Update sample type download template URL to use query name as prefix

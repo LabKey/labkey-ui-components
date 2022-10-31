@@ -353,7 +353,7 @@ export class ParentEntityEditPanel extends Component<Props, State> {
 
         return (
             <div>
-                {!this.compactEditDisplay() && <hr />}
+                {editing && !this.compactEditDisplay() && <hr />}
                 <SingleParentEntityPanel
                     editing={editing}
                     containerPath={childContainerPath}

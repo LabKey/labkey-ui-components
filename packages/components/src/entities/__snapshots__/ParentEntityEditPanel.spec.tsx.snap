@@ -4896,7 +4896,6 @@ exports[`ParentEntityEditPanel error state 1`] = `
                 </b>
               </div>
               <div>
-                <hr />
                 <Memo()
                   childNounSingular="Testing"
                   containerFilter="CurrentPlusProjectAndShared"

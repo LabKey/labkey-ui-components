@@ -1460,11 +1460,11 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
       <div
         className="col-xs-2"
       >
-        Display stored amount 
+        Stored Amount Display 
         <span
           className="domain-no-wrap"
         >
-          in
+          Unit
           <span
             className="label-help-target"
             onMouseOut={[Function]}

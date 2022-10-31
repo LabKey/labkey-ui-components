@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Ajax, Filter, getServerContext, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, Utils } from '@labkey/api';
 
 import { buildURL } from '../../url/AppURL';
 import { resolveErrorMessage } from '../../util/messaging';
-import { selectRowsDeprecated } from '../../query/api';
+import { getContainerFilter, selectRowsDeprecated } from '../../query/api';
 
 import { ServerActivity, ServerActivityData } from './model';
 
@@ -38,7 +38,7 @@ export function getServerNotifications(typeLabels?: string[], maxRows?: number):
         Ajax.request({
             url: ActionURL.buildURL('notification', 'getUserNotifications.api'),
             method: 'GET',
-            params: { container: getServerContext().container.id, typeLabels, maxRows },
+            params: { byContainer: true, containerFilter: getContainerFilter(), typeLabels, maxRows },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     const notifications = response.notifications.map(
@@ -147,7 +147,7 @@ export function markAllNotificationsAsRead(typeLabels: string[]): Promise<boolea
         Ajax.request({
             url: ActionURL.buildURL('notification', 'markAllNotificationAsRead.api'),
             method: 'POST',
-            jsonData: { container: getServerContext().container.id, typeLabels },
+            jsonData: { byContainer: true, containerFilter: getContainerFilter(), typeLabels },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     resolve(true);

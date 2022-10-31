@@ -8,7 +8,7 @@ Array [
   <div
     className="principal-detail-label"
   >
-    Effective Roles:
+    Effective Roles
   </div>,
   <ul
     className="permissions-groups-ul"
@@ -45,7 +45,7 @@ Array [
   <div
     className="principal-detail-label"
   >
-    Effective Roles:
+    Effective Roles
   </div>,
   <ul
     className="permissions-groups-ul"
@@ -65,7 +65,7 @@ Array [
   <div
     className="principal-detail-label"
   >
-    Effective Roles:
+    Effective Roles
   </div>,
   <ul
     className="permissions-groups-ul"

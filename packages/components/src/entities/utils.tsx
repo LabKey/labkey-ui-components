@@ -185,6 +185,7 @@ export const getSampleTypeTemplateUrl = (
             ? excludeColumns.concat(queryInfo.getFileColumnFieldKeys())
             : queryInfo.getFileColumnFieldKeys(),
         includeColumn: extraColumns,
+        filenamePrefix: schemaQuery.getQuery(),
     });
 };
 

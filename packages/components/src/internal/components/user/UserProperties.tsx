@@ -12,7 +12,7 @@ export const UserProperties: FC<Props> = memo(props => {
     return (
         <Row>
             <Col xs={4} className="principal-detail-label">
-                {title}:
+                {title}
             </Col>
             <Col xs={8} className="principal-detail-value">
                 {prop}

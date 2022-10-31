@@ -43,4 +43,14 @@ export const COMMON_AUDIT_QUERIES = [
     USER_AUDIT_QUERY,
 ];
 
+export const NOTEBOOK_AUDIT_QUERY = {
+    value: 'LabBookEvent',
+    label: 'Notebook Events'
+}
+
+export const NOTEBOOK_REVIEW_AUDIT_QUERY = {
+    value: 'NotebookEvent',
+    label: 'Notebook Review Events',
+}
+
 export const AUDIT_EVENT_TYPE_PARAM = 'eventType';

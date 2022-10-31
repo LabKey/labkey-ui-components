@@ -18,25 +18,14 @@ import { SampleAliquotsSummary } from './SampleAliquotsSummary';
 import { SampleDetailEditing } from './SampleDetailEditing';
 
 import { getSampleAuditBehaviorType } from './utils';
-import { ReferencingNotebooks, SampleStorageLocation } from './models';
+import { SampleStorageLocation } from './models';
+import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
 interface Props {
-    ReferencingNotebooksComponent: ReferencingNotebooks;
     SampleStorageLocationComponent: SampleStorageLocation;
     actionChangeCount: number;
     actions: Actions;
     canUpdate: boolean;
-    getWorkflowGridQueryConfigs: (
-        visibleTabs: string[],
-        gridPrefix: string,
-        user: User,
-        schemaQuery?: SchemaQuery,
-        initialFilters?: Filter.IFilter[],
-        sampleLSID?: string,
-        sourceLSID?: string,
-        activeSampleAliquotType?: ALIQUOT_FILTER_MODE,
-        containerPath?: string
-    ) => QueryConfigMap;
     onDetailUpdate: (skipChangeCount?: boolean) => void;
     sampleContainer: Container;
     sampleModel: QueryModel;
@@ -56,10 +45,9 @@ export const SampleOverviewPanel: FC<Props> = memo(props => {
         actionChangeCount,
         actions,
         user,
-        getWorkflowGridQueryConfigs,
         SampleStorageLocationComponent,
-        ReferencingNotebooksComponent,
     } = props;
+    const { getWorkflowGridQueryConfigs, ReferencingNotebooksComponent } = useSampleTypeAppContext();
     const [isEditing, setIsEditing] = useState(false);
     const row = useMemo(() => {
         return !sampleModel.isLoading ? sampleModel.getRow() : undefined;

@@ -1,13 +1,8 @@
 import React, { FC, memo, useCallback, useMemo, useState, createContext } from 'react';
-import { Filter } from '@labkey/api';
 
 import { User } from '../internal/components/base/models/User';
 import { SchemaQuery } from '../public/SchemaQuery';
-import {
-    ALIQUOT_FILTER_MODE,
-    IS_ALIQUOT_COL,
-    SAMPLE_STATUS_REQUIRED_COLUMNS,
-} from '../internal/components/samples/constants';
+import { IS_ALIQUOT_COL, SAMPLE_STATUS_REQUIRED_COLUMNS } from '../internal/components/samples/constants';
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../public/QueryModel/withQueryModels';
 import { SampleStatus } from '../internal/components/samples/models';
 import { QueryModel } from '../public/QueryModel/QueryModel';
@@ -29,9 +24,9 @@ import { createGridModelId } from '../internal/models';
 import { ProductMenuModel } from '../internal/components/navigation/model';
 import { AppURL } from '../internal/url/AppURL';
 
-import { ReferencingNotebooks, SampleStorageLocation, SampleStorageMenu } from './models';
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
+import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
 // These are additional columns required for details
 const requiredColumns = ParentEntityRequiredColumns.concat(
@@ -63,20 +58,6 @@ const SampleDetailContextProvider = Context.Provider;
 export const SampleDetailContextConsumer = Context.Consumer;
 
 interface OwnProps {
-    ReferencingNotebooksComponent?: ReferencingNotebooks;
-    SampleStorageLocationComponent?: SampleStorageLocation;
-    SampleStorageMenuComponent?: SampleStorageMenu;
-    getWorkflowGridQueryConfigs?: (
-        visibleTabs: string[],
-        gridPrefix: string,
-        user: User,
-        schemaQuery?: SchemaQuery,
-        initialFilters?: Filter.IFilter[],
-        sampleLSID?: string,
-        sourceLSID?: string,
-        activeSampleAliquotType?: ALIQUOT_FILTER_MODE,
-        containerPath?: string
-    ) => QueryConfigMap;
     location?: any;
     menu: ProductMenuModel;
     navigate: (url: string | AppURL, replace?: boolean) => void;
@@ -102,10 +83,6 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
         title,
         showOverview,
         children,
-        ReferencingNotebooksComponent,
-        SampleStorageLocationComponent,
-        SampleStorageMenuComponent,
-        getWorkflowGridQueryConfigs,
         navigate,
     } = props;
     const [actionChangeCount, setActionChangeCount] = useState<number>(0);
@@ -118,6 +95,7 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
     const containerUserLoaded = containerUser.isLoaded;
     const user = containerUser.user;
     const { container } = useServerContext();
+    const { SampleStorageMenuComponent, SampleStorageLocationComponent } = useSampleTypeAppContext();
 
     const onDetailUpdate = useCallback(
         (skipChangeCount?: boolean): void => {
@@ -190,8 +168,6 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
                         actions={actions}
                         user={user}
                         sampleContainer={sampleContainer}
-                        getWorkflowGridQueryConfigs={getWorkflowGridQueryConfigs}
-                        ReferencingNotebooksComponent={ReferencingNotebooksComponent}
                         SampleStorageLocationComponent={SampleStorageLocationComponent}
                     />
                 )}

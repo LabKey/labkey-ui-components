@@ -1,11 +1,33 @@
+import { Filter } from '@labkey/api';
+
 import { ExtendableAppContext, useAppContext } from '../internal/AppContext';
 import { DomainDetails } from '../internal/components/domainproperties/models';
+import { User } from '../internal/components/base/models/User';
+import { SchemaQuery } from '../public/SchemaQuery';
+import { ALIQUOT_FILTER_MODE } from '../internal/components/samples/constants';
+import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
+
+import { ReferencingNotebooks, SampleStorageMenu, SampleStorageLocation } from './models';
 
 export interface SampleTypeAppContext {
+    ReferencingNotebooksComponent: ReferencingNotebooks;
+    SampleStorageMenuComponent: SampleStorageMenu;
+    SampleStorageLocationComponent: SampleStorageLocation;
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
     dataClassTypeCaption?: string;
     getMetricUnitOptions: () => any[];
+    getWorkflowGridQueryConfigs?: (
+        visibleTabs: string[],
+        gridPrefix: string,
+        user: User,
+        schemaQuery?: SchemaQuery,
+        initialFilters?: Filter.IFilter[],
+        sampleLSID?: string,
+        sourceLSID?: string,
+        activeSampleAliquotType?: ALIQUOT_FILTER_MODE,
+        containerPath?: string
+    ) => QueryConfigMap;
     hideConditionalFormatting: boolean;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
     readOnlyQueryNames?: string[];

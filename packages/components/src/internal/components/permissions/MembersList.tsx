@@ -14,7 +14,7 @@ export const MembersList: FC<Props> = memo(props => {
     ) : (
         <>
             <hr className="principal-hr" />
-            <div className="principal-detail-label">Members:</div>
+            <div className="principal-detail-label">Members</div>
             <ul className="permissions-groups-ul">
                 {members.map(member => (
                     <li key={member.id}>{member.name}</li>

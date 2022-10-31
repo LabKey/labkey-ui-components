@@ -894,7 +894,7 @@ describe('DomainField', () => {
         }) as DomainField;
 
         expect(fieldSaved.getDetailsTextArray(0)[0]).toBe('');
-        expect(fieldSaved.getDetailsTextArray(0)[1].props.msg).toBe('No text choice values defined');
+        expect(fieldSaved.getDetailsTextArray(0)[1].props.msg).toBe('No text choice values defined.');
 
         // Saved PHI fields with no choice values should warn similarly
         fieldSaved = fieldSaved.merge({
@@ -902,7 +902,7 @@ describe('DomainField', () => {
         }) as DomainField;
 
         expect(fieldSaved.getDetailsTextArray(0)[0]).toBe('');
-        expect(fieldSaved.getDetailsTextArray(0)[1].props.msg).toBe('No text choice values defined');
+        expect(fieldSaved.getDetailsTextArray(0)[1].props.msg).toBe('No text choice values defined.');
 
         // Only saved PHI fields with text choice values should notify that values will be visible
         fieldSaved = fieldSaved.merge({
@@ -915,7 +915,7 @@ describe('DomainField', () => {
         }) as DomainField;
 
         expect(fieldSaved.getDetailsTextArray(0).join('')).toBe(
-            ' Note: These text choice options are visible to all administrators, including those not granted any PHI reader role'
+            'Note: These text choice options are visible to all administrators, including those not granted any PHI reader role.'
         );
     });
 

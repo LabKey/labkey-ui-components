@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.242.3
+*Released*: 31 October 2022
 * Issue 44598: PHI TextChoice domain fields now warn
 
 ### version 2.242.2

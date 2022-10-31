@@ -88,6 +88,7 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
             isLoading={loading}
             options={taskOptions}
             placeholder={error ? `Error: ${error}` : props.placeholder}
+            value={loading ? undefined : selectInputProps.value}
         />
     );
 });

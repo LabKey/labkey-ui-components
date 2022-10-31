@@ -285,7 +285,7 @@ export const SampleTypeDesignPage: FC<Props> = memo(props => {
                         showParentLabelPrefix={showParentLabelPrefix}
                         metricUnitProps={{
                             includeMetricUnitProperty: includeStorageOptions,
-                            metricUnitLabel: 'Display stored amount in',
+                            metricUnitLabel: 'Stored Amount Display Units',
                             metricUnitRequired: includeStorageOptions && (!isUpdate || metricUnit != null), // allow existing sample types without unit to continue to have blank unit
                             metricUnitHelpMsg:
                                 'Sample storage amount will be displayed using the selected metric unit.',

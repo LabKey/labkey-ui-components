@@ -2729,7 +2729,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               ModifiedBy
-              :
             </span>
           </div>
           <div
@@ -2752,7 +2751,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               LSID
-              :
             </span>
           </div>
           <div
@@ -2775,7 +2773,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               _rowNumber
-              :
             </span>
           </div>
           <div
@@ -2798,7 +2795,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               Created
-              :
             </span>
           </div>
           <div
@@ -2821,7 +2817,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               Modified
-              :
             </span>
           </div>
           <div
@@ -2844,7 +2839,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               GenId
-              :
             </span>
           </div>
           <div
@@ -2867,7 +2861,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               Name
-              :
             </span>
           </div>
           <div
@@ -2890,7 +2883,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               Folder
-              :
             </span>
           </div>
           <div
@@ -2913,7 +2905,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               MaterialInputs/Test
-              :
             </span>
           </div>
           <div
@@ -2936,7 +2927,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               RowId
-              :
             </span>
           </div>
           <div
@@ -2959,7 +2949,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               CpasType
-              :
             </span>
           </div>
           <div
@@ -2982,7 +2971,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               Description
-              :
             </span>
           </div>
           <div
@@ -3005,7 +2993,6 @@ exports[`<SampleTimelinePageBase/> With selected sample registration event 1`] =
               className="audit-detail-row-label right-spacing"
             >
               CreatedBy
-              :
             </span>
           </div>
           <div
@@ -3861,7 +3848,6 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
               className="audit-detail-row-label right-spacing"
             >
               Description
-              :
             </span>
           </div>
           <div
@@ -3892,7 +3878,6 @@ exports[`<SampleTimelinePageBase/> With selected sample update event 1`] = `
               className="audit-detail-row-label right-spacing"
             >
               Modified
-              :
             </span>
           </div>
           <div

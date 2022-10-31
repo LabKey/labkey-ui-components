@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.242.3
+*Released*: 31 October 2022
+* Issue 44598: PHI TextChoice domain fields now warn
+
 ### version 2.242.2
 *Released*: 31 October 2022
 * Add ELN audit queries to audit log listing.

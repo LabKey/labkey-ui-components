@@ -56,6 +56,7 @@ import {
     STRING_CONVERT_URIS,
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
+    TEXT_CHOICE_PHI_NOTE,
     UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
@@ -753,6 +754,7 @@ export interface IDomainField {
     rangeURI: string;
     rangeValidators: List<PropertyValidator>;
     recommendedVariable?: boolean;
+    regexValidators: List<PropertyValidator>;
     required?: boolean;
     scale?: number;
     scannable?: boolean;
@@ -763,7 +765,6 @@ export interface IDomainField {
     textChoiceValidator?: PropertyValidator;
     updatedField: boolean;
     visible: boolean;
-    regexValidators: List<PropertyValidator>;
 }
 
 export class DomainField
@@ -1202,19 +1203,23 @@ export class DomainField
             period = '. ';
         } else if (this.dataType.isTextChoice()) {
             const validValuesStr = getValidValuesDetailStr(this.textChoiceValidator?.properties.validValues);
-            details.push(period);
-            if (validValuesStr) {
-                details.push(validValuesStr);
-            } else if (this.textChoiceValidator?.shouldShowWarning) {
-                details.push(
-                    <DomainRowWarning
-                        index={index}
-                        extraInfo={FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO}
-                        msg={FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG}
-                        name={this.name}
-                        severity={SEVERITY_LEVEL_WARN}
-                    />
-                );
+            if (this.isPHI() && this.PHI !== undefined && validValuesStr) {
+                details.push(period + TEXT_CHOICE_PHI_NOTE);
+            } else {
+                details.push(period);
+                if (validValuesStr) {
+                    details.push(validValuesStr);
+                } else if (this.textChoiceValidator?.shouldShowWarning) {
+                    details.push(
+                        <DomainRowWarning
+                            index={index}
+                            extraInfo={FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO}
+                            msg={FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG}
+                            name={this.name}
+                            severity={SEVERITY_LEVEL_WARN}
+                        />
+                    );
+                }
             }
             period = '. ';
         }

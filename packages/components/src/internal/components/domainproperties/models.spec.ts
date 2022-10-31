@@ -880,6 +880,43 @@ describe('DomainField', () => {
             }),
         }) as DomainField;
         expect(field.getDetailsTextArray(0).join('')).toBe('New Field. a, b, c, d (and 2 more)');
+
+        // Saved fields with no choice values should warn
+        let fieldSaved = DomainField.create({ propertyId: 1, name: 'testSaved', rangeURI: TEXT_CHOICE_TYPE.rangeURI });
+        fieldSaved = fieldSaved.merge({
+            dataType: TEXT_CHOICE_TYPE,
+            textChoiceValidator: new PropertyValidator({
+                type: 'TextChoice',
+                name: 'Text Choice Validator',
+                properties: { validValues: [] },
+                shouldShowWarning: true,
+            }),
+        }) as DomainField;
+
+        expect(fieldSaved.getDetailsTextArray(0)[0]).toBe('');
+        expect(fieldSaved.getDetailsTextArray(0)[1].props.msg).toBe('No text choice values defined.');
+
+        // Saved PHI fields with no choice values should warn similarly
+        fieldSaved = fieldSaved.merge({
+            PHI: PHILEVEL_LIMITED_PHI,
+        }) as DomainField;
+
+        expect(fieldSaved.getDetailsTextArray(0)[0]).toBe('');
+        expect(fieldSaved.getDetailsTextArray(0)[1].props.msg).toBe('No text choice values defined.');
+
+        // Only saved PHI fields with text choice values should notify that values will be visible
+        fieldSaved = fieldSaved.merge({
+            textChoiceValidator: new PropertyValidator({
+                type: 'TextChoice',
+                name: 'Text Choice Validator',
+                properties: { validValues: ['a', 'b'] },
+                shouldShowWarning: true,
+            }),
+        }) as DomainField;
+
+        expect(fieldSaved.getDetailsTextArray(0).join('')).toBe(
+            'Note: These text choice options are visible to all administrators, including those not granted any PHI reader role.'
+        );
     });
 
     test('serialize, name trim', () => {

@@ -8,6 +8,7 @@ import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 import { AssaySubNavMenu } from './AssaySubNavMenu';
 import { AssayTypeSummary } from './AssayTypeSummary';
 import { getAssayImportNotificationMsg, getAssayRunDeleteMessage } from './utils';
+import { AssayExportDesignButton } from './AssayButtons';
 
 export {
     assayPage,
@@ -22,4 +23,5 @@ export {
     AssayRunDeleteModal,
     AssaySubNavMenu,
     AssayTypeSummary,
+    AssayExportDesignButton,
 };

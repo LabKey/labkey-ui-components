@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Refactor for more assay component and page reuse
+  * Move assay buttons into AssaysButtons file
+
 ### version 2.242.3
 *Released*: 31 October 2022
 * Issue 44598: PHI TextChoice domain fields now warn

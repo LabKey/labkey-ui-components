@@ -124,7 +124,7 @@ import { DEFAULT_FILE } from './internal/components/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
-import { getWebDavFiles, uploadWebDavFile, createWebDavDirectory, WebDavFile } from './public/files/WebDav';
+import { createWebDavDirectory, getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notifications } from './internal/components/notifications/Notifications';
 import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/components/notifications/actions';
@@ -182,11 +182,11 @@ import {
     InsertRowsResponse,
     invalidateQueryDetailsCache,
     invalidateQueryDetailsCacheKey,
+    loadQueries,
+    loadQueriesFromTable,
     selectDistinctRows,
     selectRowsDeprecated,
     updateRows,
-    loadQueries,
-    loadQueriesFromTable,
 } from './internal/query/api';
 import { registerFilterType } from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
@@ -216,7 +216,9 @@ import {
     EditableGridPanelForUpdateWithLineage,
     UpdateGridTab,
 } from './internal/components/editable/EditableGridPanelForUpdateWithLineage';
-import { LineageEditableGridLoaderFromSelection } from './internal/components/editable/LineageEditableGridLoaderFromSelection';
+import {
+    LineageEditableGridLoaderFromSelection
+} from './internal/components/editable/LineageEditableGridLoaderFromSelection';
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
@@ -308,8 +310,8 @@ import {
     getFieldLookupFromSelection,
     getSampleSet,
     getSampleTypeDetails,
-    getSelectionLineageData,
     getSelectedSampleIdsFromSelectionKey,
+    getSelectionLineageData,
 } from './internal/components/samples/actions';
 import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 
@@ -416,7 +418,9 @@ import {
 } from './internal/components/entities/constants';
 import { getUniqueIdColumnMetadata } from './internal/components/entities/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
-import { EntityCrossProjectSelectionConfirmModal } from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
+import {
+    EntityCrossProjectSelectionConfirmModal
+} from './internal/components/entities/EntityCrossProjectSelectionConfirmModal';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
@@ -526,10 +530,10 @@ import { DisableableMenuItem } from './internal/components/samples/DisableableMe
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
 import {
+    ALIQUOT_FILTER_MODE,
     DEFAULT_SAMPLE_FIELD_CONFIG,
     FIND_BY_IDS_QUERY_PARAM,
     IS_ALIQUOT_COL,
-    SAMPLES_WITH_TYPES_FILTER,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
@@ -539,8 +543,8 @@ import {
     SAMPLE_STATUS_REQUIRED_COLUMNS,
     SAMPLE_STORAGE_COLUMNS,
     SampleOperation,
+    SAMPLES_WITH_TYPES_FILTER,
     SampleStateType,
-    ALIQUOT_FILTER_MODE,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -581,6 +585,7 @@ import {
     getProjectPath,
     hasModule,
     hasPremiumModule,
+    isAssayDesignExportEnabled,
     isAssayEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
@@ -606,9 +611,9 @@ import {
     userCanManagePicklists,
     userCanManageSampleWorkflow,
     userCanReadAssays,
+    userCanReadDataClasses,
     userCanReadMedia,
     userCanReadNotebooks,
-    userCanReadDataClasses,
     userCanReadRegistry,
     userCanReadSources,
 } from './internal/app/utils';
@@ -656,6 +661,7 @@ import {
     NEW_SAMPLE_TYPE_HREF,
     NEW_SAMPLES_HREF,
     NEW_SOURCE_TYPE_HREF,
+    NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTIFICATION_TIMEOUT,
     PICKLIST_HOME_HREF,
     PICKLIST_KEY,
@@ -710,6 +716,7 @@ const App = {
     isAssayEnabled,
     isAssayQCEnabled,
     isAssayRequestsEnabled,
+    isAssayDesignExportEnabled,
     isMediaEnabled,
     isWorkflowEnabled,
     isELNEnabled,
@@ -782,6 +789,7 @@ const App = {
     NEW_SOURCE_TYPE_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_ASSAY_DESIGN_HREF,
+    NEW_STANDARD_ASSAY_DESIGN_HREF,
     FIND_SAMPLES_BY_FILTER_HREF,
     FIND_SAMPLES_BY_ID_HREF,
     PICKLIST_HOME_HREF,

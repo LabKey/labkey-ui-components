@@ -235,6 +235,10 @@ export function isAssayRequestsEnabled(moduleContext?: ModuleContext): boolean {
     );
 }
 
+export function isAssayDesignExportEnabled(moduleContext?: ModuleContext): boolean {
+    return hasPremiumModule(moduleContext);
+}
+
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('LabBook', moduleContext) && isFeatureEnabled(ProductFeature.ELN, moduleContext);
 }

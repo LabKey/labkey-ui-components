@@ -62,6 +62,8 @@ import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
 import { SampleAssaysPage } from './SampleAssaysPage';
 import { SampleLineagePage } from './SampleLineagePage';
+import { SampleAliquotsPage } from './SampleAliquotsPage';
+import { SampleJobsPage } from './SampleJobsPage';
 
 export {
     createEntityParentKey,
@@ -102,9 +104,10 @@ export {
     SampleActionsButton,
     SampleAliquotDetailHeader,
     SampleAliquotViewSelector,
-    SampleAliquotsGridPanel,
+    SampleAliquotsGridPanel, // TODO remove this after LKB is updated
     SampleAliquotsSummary,
     SamplesAddButton,
+    SampleAliquotsPage,
     SampleAssayDetail,
     SampleAssaysPage,
     SampleCreationTypeModal,
@@ -114,6 +117,7 @@ export {
     SampleFinderSection,
     SampleHeader,
     SampleIndexNav,
+    SampleJobsPage,
     SampleLineageGraph,
     SampleLineagePage,
     SampleOverviewPanel,

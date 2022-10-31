@@ -8,11 +8,15 @@ import { ALIQUOT_FILTER_MODE } from '../internal/components/samples/constants';
 import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
 
 import { ReferencingNotebooks, SampleStorageMenu, SampleStorageLocation } from './models';
+import { JobsButton, SampleStorageButton, WorkflowGrid } from '../internal/components/samples/models';
 
 export interface SampleTypeAppContext {
+    JobsButtonComponent: JobsButton;
     ReferencingNotebooksComponent: ReferencingNotebooks;
-    SampleStorageMenuComponent: SampleStorageMenu;
+    SampleStorageButtonComponent: SampleStorageButton;
     SampleStorageLocationComponent: SampleStorageLocation;
+    SampleStorageMenuComponent: SampleStorageMenu;
+    WorkflowGridComponent: WorkflowGrid;
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
     dataClassTypeCaption?: string;

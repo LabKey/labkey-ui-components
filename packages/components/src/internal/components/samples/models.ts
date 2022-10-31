@@ -146,6 +146,21 @@ interface JobsButtonsComponentProps {
 
 export type JobsButton = ComponentType<JobsButtonsComponentProps>;
 
+interface WorkflowGridComponentProps {
+    containerPath?: string;
+    gridPrefix?: string;
+    sampleAliquotType?: ALIQUOT_FILTER_MODE;
+    sampleId?: number;
+    sampleLSID?: string;
+    showAliquotViewSelector?: boolean;
+    showStartButton?: boolean;
+    showTemplateTabs?: boolean;
+    user: User;
+    visibleTabs?: string[];
+}
+
+export type WorkflowGrid = ComponentType<WorkflowGridComponentProps>;
+
 export class SampleState {
     [immerable] = true;
 

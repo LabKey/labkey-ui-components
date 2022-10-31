@@ -8,6 +8,7 @@ import { Query } from '@labkey/api';
 
 import {
     isAssayEnabled,
+    isELNEnabled,
     isProductProjectsEnabled,
     isSampleManagerEnabled,
     isWorkflowEnabled,
@@ -16,7 +17,15 @@ import {
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 import { naturalSortByProperty } from '../../../public/sort';
 import { AppURL } from '../../url/AppURL';
-import { ASSAY_AUDIT_QUERY, COMMON_AUDIT_QUERIES, PROJECT_AUDIT_QUERY, SOURCE_AUDIT_QUERY, WORKFLOW_AUDIT_QUERY } from './constants';
+import {
+    ASSAY_AUDIT_QUERY,
+    COMMON_AUDIT_QUERIES,
+    NOTEBOOK_AUDIT_QUERY,
+    NOTEBOOK_REVIEW_AUDIT_QUERY,
+    PROJECT_AUDIT_QUERY,
+    SOURCE_AUDIT_QUERY,
+    WORKFLOW_AUDIT_QUERY
+} from './constants';
 
 export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;
@@ -31,6 +40,10 @@ export function getAuditQueries(): AuditQuery[] {
     if (isWorkflowEnabled()) queries.push(WORKFLOW_AUDIT_QUERY);
     if (isAssayEnabled()) queries.push(ASSAY_AUDIT_QUERY);
     if (isSampleManagerEnabled() && sampleManagerIsPrimaryApp()) queries.push(SOURCE_AUDIT_QUERY);
+    if (isELNEnabled()) {
+        queries.push(NOTEBOOK_AUDIT_QUERY);
+        queries.push(NOTEBOOK_REVIEW_AUDIT_QUERY);
+    }
     return queries.sort(naturalSortByProperty('label'));
 }
 

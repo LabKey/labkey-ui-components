@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.242.2
+*Released*: 31 October 2022
+* Add ELN audit queries to audit log listing.
+
 ### version 2.242.1
 *Released*: 31 October 2022
 * Update sample type download template URL to use query name as prefix

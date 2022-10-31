@@ -19,6 +19,7 @@ import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT
 import { EntityDeleteModal } from './EntityDeleteModal';
 
 import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
+import { SampleTypeAppContext } from "./SampleTypeAppContext";
 
 beforeEach(() => {
     LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
@@ -27,6 +28,7 @@ beforeEach(() => {
 describe('SampleAliquotsGridPanel', () => {
     const SCHEMA_QUERY = SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'SampleTypeName');
     const DEFAULT_CONTEXT = { user: TEST_USER_EDITOR };
+    const SAMPLE_TYPE_APP_CONTEXT = {} as SampleTypeAppContext;
 
     const DEFAULT_PROPS = {
         actions: makeTestActions(jest.fn),
@@ -44,14 +46,14 @@ describe('SampleAliquotsGridPanel', () => {
         const DummyButton2 = () => <div className="jobs-button-test"> bar </div>;
 
         const wrapper = mountWithAppServerContext(
-            <SampleAliquotsGridPanelImpl
-                {...DEFAULT_PROPS}
-                user={TEST_USER_STORAGE_EDITOR}
-                lineageUpdateAllowed
-                storageButton={DummyButton1}
-                jobsButton={DummyButton2}
-            />,
-            {},
+            <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_STORAGE_EDITOR} lineageUpdateAllowed />,
+            {
+                sampleType: {
+                    ...SAMPLE_TYPE_APP_CONTEXT,
+                    SampleStorageButtonComponent: DummyButton1,
+                    JobsButtonComponent: DummyButton2,
+                },
+            },
             { user: TEST_USER_STORAGE_EDITOR }
         );
         expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(1);
@@ -67,14 +69,14 @@ describe('SampleAliquotsGridPanel', () => {
         const DummyButton2 = () => <div className="jobs-button-test"> bar </div>;
 
         const wrapper = mountWithAppServerContext(
-            <SampleAliquotsGridPanelImpl
-                {...DEFAULT_PROPS}
-                user={TEST_USER_STORAGE_EDITOR}
-                lineageUpdateAllowed
-                storageButton={DummyButton1}
-                jobsButton={DummyButton2}
-            />,
-            {},
+            <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_STORAGE_EDITOR} lineageUpdateAllowed />,
+            {
+                sampleType: {
+                    ...SAMPLE_TYPE_APP_CONTEXT,
+                    SampleStorageButtonComponent: DummyButton1,
+                    JobsButtonComponent: DummyButton2,
+                },
+            },
             { user: TEST_USER_STORAGE_EDITOR }
         );
         expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(1);
@@ -88,14 +90,14 @@ describe('SampleAliquotsGridPanel', () => {
         const DummyButton2 = () => <div className="jobs-button-test"> bar </div>;
 
         const wrapper = mountWithAppServerContext(
-            <SampleAliquotsGridPanelImpl
-                {...DEFAULT_PROPS}
-                user={TEST_USER_READER}
-                lineageUpdateAllowed
-                storageButton={DummyButton1}
-                jobsButton={DummyButton2}
-            />,
-            {},
+            <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_READER} lineageUpdateAllowed />,
+            {
+                sampleType: {
+                    ...SAMPLE_TYPE_APP_CONTEXT,
+                    SampleStorageButtonComponent: DummyButton1,
+                    JobsButtonComponent: DummyButton2,
+                },
+            },
             { user: TEST_USER_READER }
         );
         expect(wrapper.find(ResponsiveMenuButtonGroup)).toHaveLength(0);
@@ -108,7 +110,7 @@ describe('SampleAliquotsGridPanel', () => {
 
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl {...props} queryModels={{ model }} lineageUpdateAllowed={true} />,
-            {},
+            { sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
 
@@ -119,7 +121,7 @@ describe('SampleAliquotsGridPanel', () => {
     test('show confirm delete', () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={true} />,
-            {},
+            { sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         wrapper.setState({ showConfirmDelete: true });
@@ -130,7 +132,7 @@ describe('SampleAliquotsGridPanel', () => {
     test('lineage update not allowed', () => {
         const wrapper = mountWithAppServerContext(
             <SampleAliquotsGridPanelImpl {...DEFAULT_PROPS} lineageUpdateAllowed={false} />,
-            {},
+            { sampleType: SAMPLE_TYPE_APP_CONTEXT },
             DEFAULT_CONTEXT
         );
         expect(wrapper.find(ManageDropdownButton).exists()).toBeFalsy();

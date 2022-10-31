@@ -16,8 +16,6 @@ export interface InputRendererProps {
     formsy?: boolean;
     initiallyDisabled?: boolean;
     inputClass?: string;
-    // Indicates whether or not the input is being rendered inside an EditableDetailPanel
-    isDetailInput?: boolean;
     onAdditionalFormDataChange?: (name: string, value: any) => void;
     onSelectChange?: SelectInputChange;
     onToggleDisable?: (disabled: boolean) => void;

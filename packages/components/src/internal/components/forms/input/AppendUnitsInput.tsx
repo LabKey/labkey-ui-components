@@ -7,7 +7,7 @@ import { InputRendererProps } from './types';
 import { LabelOverlay } from '../LabelOverlay';
 
 export const AppendUnitsInput: FC<InputRendererProps> = memo(props => {
-    const { allowFieldDisable, col, initiallyDisabled, isDetailInput, value } = props;
+    const { allowFieldDisable, col, initiallyDisabled, value } = props;
 
     useEffect(() => {
         // Issue 23462: Global Formsy validation rule for numbers
@@ -25,10 +25,10 @@ export const AppendUnitsInput: FC<InputRendererProps> = memo(props => {
             disabled={initiallyDisabled}
             addonAfter={<span>{col.units}</span>}
             changeDebounceInterval={0}
-            elementWrapperClassName={isDetailInput ? [{ 'col-sm-9': false }, 'col-sm-12'] : undefined}
+            elementWrapperClassName="col-md-9 col-xs-12"
             id={col.name}
             label={<LabelOverlay column={col} inputId={col.name} />}
-            labelClassName="control-label text-left"
+            labelClassName="control-label text-left col-xs-12"
             name={col.name}
             required={col.required}
             type="text"

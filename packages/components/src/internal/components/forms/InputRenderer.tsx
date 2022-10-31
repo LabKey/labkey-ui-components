@@ -145,7 +145,6 @@ export const InputRenderer: FC<InputRendererProps> = memo(props => {
                     data={data}
                     formsy={formsy}
                     initiallyDisabled={initiallyDisabled}
-                    label={col.caption}
                     onChange={onSelectChange}
                     onToggleDisable={onToggleDisable}
                 />

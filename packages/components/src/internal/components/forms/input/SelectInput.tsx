@@ -23,7 +23,7 @@ import { getServerContext, Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { DELIMITER } from '../constants';
+import { DELIMITER, WithFormsyProps } from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
 
@@ -139,17 +139,7 @@ export function initOptions(props: SelectInputProps): SelectInputOption | Select
     return options;
 }
 
-interface SupportedFormsyInputProps {
-    // from formsy-react
-    getErrorMessage?: Function;
-    getValue?: Function;
-    setValue?: Function;
-    showRequired?: Function;
-    validations?: any;
-}
-
-// eslint-disable-next-line typescript-sort-keys/interface
-export interface SelectInputProps extends SupportedFormsyInputProps {
+export interface SelectInputProps extends WithFormsyProps {
     addLabelAsterisk?: boolean;
     allowCreate?: boolean;
     allowDisable?: boolean;

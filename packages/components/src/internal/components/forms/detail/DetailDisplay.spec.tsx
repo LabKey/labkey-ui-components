@@ -1,28 +1,30 @@
-import {List, fromJS, Map} from 'immutable';
+import { List, fromJS, Map } from 'immutable';
 import React from 'react';
 import Formsy from 'formsy-react';
-import {mount, ReactWrapper} from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
+
+import { Checkbox, Input, Textarea } from 'formsy-react-components';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
-import { DetailDisplay, resolveDetailEditRenderer, resolveDetailRenderer, defaultTitleRenderer } from './DetailDisplay';
-import {LabelOverlay} from "../LabelOverlay";
-import {AliasInput} from "../input/AliasInput";
-import {QuerySelect} from "../QuerySelect";
-import {DatePickerInput} from "../input/DatePickerInput";
-import {FileInput} from "../input/FileInput";
-import {TextChoiceInput} from "../input/TextChoiceInput";
-import {MultiValueRenderer} from "../../../renderers/MultiValueRenderer";
-import {AliasRenderer} from "../../../renderers/AliasRenderer";
-import {AppendUnits} from "../../../renderers/AppendUnits";
-import {AssayRunReferenceRenderer} from "../../../renderers/AssayRunReferenceRenderer";
-import {LabelColorRenderer} from "../../../renderers/LabelColorRenderer";
-import {FileColumnRenderer} from "../../../renderers/FileColumnRenderer";
-import { Checkbox, Input, Textarea } from 'formsy-react-components';
+import { LabelOverlay } from '../LabelOverlay';
+import { AliasInput } from '../input/AliasInput';
+import { QuerySelect } from '../QuerySelect';
+import { DatePickerInput } from '../input/DatePickerInput';
+import { FileInput } from '../input/FileInput';
+import { TextChoiceInput } from '../input/TextChoiceInput';
+import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
+import { AliasRenderer } from '../../../renderers/AliasRenderer';
+import { AppendUnits } from '../../../renderers/AppendUnits';
+import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
+import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
+import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 
-describe('<DetailDisplay/>', () => {
+import { DetailDisplay, resolveDetailEditRenderer, resolveDetailRenderer, defaultTitleRenderer } from './DetailDisplay';
+
+describe('DetailDisplay', () => {
     const namePatternCol = new QueryColumn({
         align: 'left',
         caption: 'Naming Pattern',

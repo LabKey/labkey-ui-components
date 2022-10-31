@@ -35,7 +35,7 @@ export const AliasInput: FC<Props> = memo(props => {
     return (
         <SelectInput
             description={col.description}
-            id={props.id ?? generatedId}
+            id={generatedId}
             label={col.caption}
             name={col.fieldKey}
             required={col.required}

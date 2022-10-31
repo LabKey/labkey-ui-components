@@ -69,7 +69,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         const { queryColumn, startFocused } = this.props;
         const { didFocus } = this.state;
 
@@ -80,7 +80,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         }
     }
 
-    shouldComponentUpdate(nextProps: TextInputProps, nextState: TextInputState) {
+    shouldComponentUpdate(nextProps: TextInputProps, nextState: TextInputState): boolean {
         return this.state.didFocus === nextState.didFocus;
     }
 
@@ -157,9 +157,9 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                 id={queryColumn.fieldKey}
                 label={this.renderLabel()}
                 labelClassName={labelClassName}
-                name={name ? name : queryColumn.fieldKey}
+                name={name ?? queryColumn.fieldKey}
                 onChange={this.onChange}
-                placeholder={placeholder || `Enter ${queryColumn.caption.toLowerCase()}`}
+                placeholder={placeholder ?? `Enter ${queryColumn.caption.toLowerCase()}`}
                 required={queryColumn.required}
                 rowClassName={rowClassName}
                 step={step}

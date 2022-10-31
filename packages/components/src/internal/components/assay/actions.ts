@@ -15,8 +15,6 @@
  */
 import { List, Map } from 'immutable';
 import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
-
-import { SCHEMAS } from '../../schemas';
 import { User } from '../base/models/User';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { buildURL } from '../../url/AppURL';
@@ -24,23 +22,6 @@ import { caseInsensitive } from '../../util/utils';
 
 import { IAssayUploadOptions } from './AssayWizardModel';
 import { AssayUploadResultModel } from './models';
-
-export const GENERAL_ASSAY_PROVIDER_NAME = 'General';
-
-export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
-    'Name',
-    'RowId',
-    'ReplacesRun',
-    'ReplacedByRun',
-    'DataOutputs',
-    'DataOutputs/DataFileUrl',
-    'Batch',
-    'Folder',
-    // Below Columns are required for us to render the WorkflowTask in EditableDetails components
-    'WorkflowTask',
-    'WorkflowTask/Run',
-    'Protocol/RowId'
-).toList();
 
 /**
  * Only support option to re-import run if user has insert permissions in current container

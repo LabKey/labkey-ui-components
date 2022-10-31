@@ -30,7 +30,6 @@ import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 
 import { makeTestQueryModel } from '../public/QueryModel/testUtils';
 import { ASSAY_DEFINITION_MODEL, TEST_ASSAY_STATE_MODEL } from '../test/data/constants';
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/actions';
 import { getTestAPIWrapper } from '../internal/APIWrapper';
 import { getSamplesTestAPIWrapper } from '../internal/components/samples/APIWrapper';
 
@@ -48,6 +47,7 @@ import {
     getImportItemsForAssayDefinitions,
     getSamplesAssayGridQueryConfigs,
 } from './utils';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
 describe('getCrossFolderSelectionMsg', () => {
     test('without cross folder selection', () => {

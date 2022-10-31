@@ -8,11 +8,11 @@ import { Map } from 'immutable';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
-import { GENERAL_ASSAY_PROVIDER_NAME } from './actions';
 import { AssayContainerLocation } from './AssayContainerLocation';
 import { SpecialtyAssayPanel } from './SpecialtyAssayPanel';
 import { AssayDesignUploadPanel } from './AssayDesignUploadPanel';
 import { StandardAssayPanel } from './StandardAssayPanel';
+import { GENERAL_ASSAY_PROVIDER_NAME } from './constants';
 
 export interface AssayProvider {
     description: string;

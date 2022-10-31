@@ -10,11 +10,10 @@ import { TEST_USER_EDITOR, TEST_USER_READER } from '../internal/userFixtures';
 import { SCHEMAS } from '../internal/schemas';
 import { AssayImportSubMenuItem } from './AssayImportSubMenuItem';
 
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/actions';
-
 import { TEST_ASSAY_STATE_MODEL } from '../test/data/constants';
 
 import { SamplesAssayButtonImpl } from './SamplesAssayButton';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/constants';
 
 describe('SamplesAssayButton', () => {
     const DEFAULT_PROPS = {

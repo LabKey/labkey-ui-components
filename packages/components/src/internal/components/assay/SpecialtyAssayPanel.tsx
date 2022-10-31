@@ -6,7 +6,7 @@ import { Alert } from '../base/Alert';
 import { getHelpLink } from '../../util/helpLinks';
 
 import { AssayProvider } from './AssayPicker';
-import { GENERAL_ASSAY_PROVIDER_NAME } from './actions';
+import { GENERAL_ASSAY_PROVIDER_NAME } from './constants';
 
 interface SpecialtyAssayPanelProps {
     hasPremium: boolean;

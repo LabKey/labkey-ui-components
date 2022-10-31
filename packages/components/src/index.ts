@@ -343,8 +343,7 @@ import {
     allowReimportAssayRun,
     clearAssayDefinitionCache,
     fetchAllAssays,
-    GENERAL_ASSAY_PROVIDER_NAME,
-    RUN_PROPERTIES_REQUIRED_COLUMNS,
+
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import {
@@ -700,6 +699,7 @@ import {
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from './internal/productFixtures';
+import { GENERAL_ASSAY_PROVIDER_NAME, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();

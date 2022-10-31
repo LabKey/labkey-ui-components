@@ -23,7 +23,6 @@ import { DELETE_SAMPLES_TOPIC } from '../../internal/util/helpLinks';
 import { AssayDefinitionModel, AssayDomainTypes } from '../../internal/AssayDefinitionModel';
 import { QueryInfo } from '../../public/QueryInfo';
 import { IFile } from '../../internal/components/files/models';
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../../internal/components/assay/actions';
 import { LoadingState } from '../../public/LoadingState';
 import { AssayStateModel } from '../../internal/components/assay/models';
 import { Container } from '../../internal/components/base/models/Container';
@@ -31,6 +30,7 @@ import { SchemaQuery } from '../../public/SchemaQuery';
 import { EntityDataType } from '../../internal/components/entities/models';
 
 import assayWizardJSON from './assayWizardModel.json';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../../internal/components/assay/constants';
 
 export const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
 export const ASSAY_WIZARD_MODEL = new AssayWizardModel({

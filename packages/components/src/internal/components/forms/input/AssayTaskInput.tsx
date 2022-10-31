@@ -2,8 +2,6 @@ import React, { FC, memo, useEffect, useState } from 'react';
 import { Filter } from '@labkey/api';
 
 import { selectRows } from '../../../query/selectRows';
-import { LoadingSpinner } from '../../base/LoadingSpinner';
-import { Alert } from '../../base/Alert';
 
 import { SchemaQuery } from '../../../../public/SchemaQuery';
 import { ViewInfo } from '../../../ViewInfo';
@@ -81,13 +79,13 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <div className="workflow-task-input">
-            {loading && <LoadingSpinner msg="Loading tasks" />}
-
-            {!loading && error && <Alert>{error}</Alert>}
-
-            {!loading && !error && <SelectInput {...selectInputProps} options={taskOptions} />}
-        </div>
+        <SelectInput
+            {...selectInputProps}
+            disabled={error ? true : props.disabled}
+            isLoading={loading}
+            options={taskOptions}
+            placeholder={error ? `Error: ${error}` : props.placeholder}
+        />
     );
 });
 

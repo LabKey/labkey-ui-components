@@ -23,9 +23,9 @@ import { isWorkflowEnabled } from '../../app/utils';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 
-import { AssayPropertiesPanelProps } from './models';
-import { Query } from '@labkey/api';
 import { getContainerFilterForLookups } from '../../query/api';
+
+import { AssayPropertiesPanelProps } from './models';
 
 export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
     const { model, onChange, title = 'Run Details', showQuerySelectPreviewOptions } = props;
@@ -68,7 +68,12 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
                         value={model.comment}
                     />
                     {isWorkflowEnabled() && (
-                        <AssayTaskInput assayId={model.assayDef.id} name="workflowtask" value={model.workflowTask} />
+                        <AssayTaskInput
+                            assayId={model.assayDef.id}
+                            formsy
+                            name="workflowtask"
+                            value={model.workflowTask}
+                        />
                     )}
                     {model.runColumns.size !== 0 && (
                         <QueryFormInputs

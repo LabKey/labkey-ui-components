@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Refactor for more assay component and page reuse
   * Move assay buttons into AssaysButtons file
   * Move AssayHeader component here from LKSM
+  * in `isPropertyTypeAllowed`, respect the `show` properties even if `appPropetiesOnly` is false
 
 ### version 2.242.3
 *Released*: 31 October 2022

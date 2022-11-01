@@ -58,7 +58,7 @@ export function setQueryMetadata(metadata: Map<string, any>): void {
 }
 
 /**
- * Get the query grid column renderers map from the global state.
+ * Get the query grid column renderers from the global state.
  */
 export function getQueryColumnRenderers(): Record<string, any> {
     return _queryColumnRenderers;
@@ -66,7 +66,7 @@ export function getQueryColumnRenderers(): Record<string, any> {
 
 /**
  * Sets the valid column renderers for this application in the global state.
- * @param columnRenderers Map of query grid column renderers to be bound to the queryInfo columns
+ * @param columnRenderers Query grid column renderers to be bound to the queryInfo columns
  */
 export function setQueryColumnRenderers(columnRenderers: Record<string, any>): void {
     _queryColumnRenderers = columnRenderers;

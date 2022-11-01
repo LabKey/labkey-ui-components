@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.242.?
+*Released*: ?? November 2022
+* EditInlineField: remove showToggle prop, always render edit icon at end of content
+* ThreadEditor: Don't render user icon
+
 ### version 2.242.3
 *Released*: 31 October 2022
 * Issue 44598: PHI TextChoice domain fields now warn

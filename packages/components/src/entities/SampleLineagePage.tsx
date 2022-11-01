@@ -6,11 +6,13 @@ import { ProductMenuModel } from '../internal/components/navigation/model';
 import { AppURL } from '../internal/url/AppURL';
 import { SOURCES_KEY } from '../internal/app/constants';
 import { VisGraphNode } from '../internal/components/lineage/models';
-import { userCanReadSources } from '../internal/app/utils';
 import { InsufficientPermissionsAlert } from '../internal/components/permissions/InsufficientPermissionsAlert';
+
+import { hasAllPermissions } from '../internal/components/base/models/User';
 
 import { SampleLineageGraph } from './SampleLineageGraph';
 import { SampleDetailContextConsumer, SampleDetailPage } from './SampleDetailPage';
+import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
 interface PageProps {
     menu: ProductMenuModel;
@@ -66,17 +68,21 @@ class SampleLineagePanel extends PureComponent<Props> {
     }
 }
 
-export const SampleLineagePage: FC<PageProps> = memo(props => (
-    <SampleDetailPage {...props} title="Sample Lineage">
-        <SampleDetailContextConsumer>
-            {({ sampleName, sampleLsid, user }) => {
-                // can't render lineage if the user can't see all entities in the lineage
-                if (!userCanReadSources(user)) {
-                    return <InsufficientPermissionsAlert />;
-                }
+export const SampleLineagePage: FC<PageProps> = memo(props => {
+    const { linagePagePermissions } = useSampleTypeAppContext();
 
-                return <SampleLineagePanel {...props} sampleLsid={sampleLsid} sampleID={sampleName} />;
-            }}
-        </SampleDetailContextConsumer>
-    </SampleDetailPage>
-));
+    return (
+        <SampleDetailPage {...props} title="Sample Lineage">
+            <SampleDetailContextConsumer>
+                {({ sampleName, sampleLsid, user }) => {
+                    // can't render lineage if the user can't see all entities in the lineage
+                    if (!hasAllPermissions(user, linagePagePermissions)) {
+                        return <InsufficientPermissionsAlert />;
+                    }
+
+                    return <SampleLineagePanel {...props} sampleLsid={sampleLsid} sampleID={sampleName} />;
+                }}
+            </SampleDetailContextConsumer>
+        </SampleDetailPage>
+    );
+});

@@ -37,6 +37,7 @@ export interface SampleTypeAppContext {
     ) => QueryConfigMap;
     hideConditionalFormatting: boolean;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
+    linagePagePermissions: string[];
     readOnlyQueryNames?: string[];
     showParentLabelPrefix: boolean;
     showStudyProperties: boolean;

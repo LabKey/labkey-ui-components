@@ -9,12 +9,15 @@ import { AssaySubNavMenu } from './AssaySubNavMenu';
 import { AssayTypeSummary } from './AssayTypeSummary';
 import { getAssayImportNotificationMsg, getAssayRunDeleteMessage } from './utils';
 import { AssayExportDesignButton } from './AssayButtons';
+import { AssayHeader } from './AssayHeader';
+import { onAssayRunChange, onAssayDesignChange } from './actions';
 
 export {
     assayPage,
     getAssayImportNotificationMsg,
     getAssayRunDeleteMessage,
     AssayDesignDeleteModal,
+    AssayHeader,
     AssayReimportRunButton,
     AssayResolver,
     AssayRunResolver,
@@ -24,4 +27,6 @@ export {
     AssaySubNavMenu,
     AssayTypeSummary,
     AssayExportDesignButton,
+    onAssayRunChange,
+    onAssayDesignChange
 };

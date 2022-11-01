@@ -24,7 +24,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { caseInsensitive } from '../../util/utils';
 
-import { resolveInputRenderer } from './input/inputRenderFactory';
+import { resolveInputRenderer } from './input/InputRenderFactory';
 import { QuerySelect, QuerySelectChange } from './QuerySelect';
 import { SelectInputChange, SelectInputOption } from './input/SelectInput';
 import { TextInput } from './input/TextInput';

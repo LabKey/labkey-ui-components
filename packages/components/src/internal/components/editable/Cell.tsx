@@ -27,7 +27,7 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { resolveInputRenderer } from '../forms/input/inputRenderFactory';
+import { resolveInputRenderer } from '../forms/input/InputRenderFactory';
 
 import { SelectInputChange } from '../forms/input/SelectInput';
 

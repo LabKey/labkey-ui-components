@@ -101,7 +101,7 @@ export const AssayHeader: FC<Props> = props => {
                                         'copy'
                                     ).toHref()}
                                 >
-                                    Copy Design
+                                    Copy Assay Design
                                 </MenuItem>
                             </RequiresPermission>
                             {isAssayDesignExportEnabled() && <AssayExportDesignButton asMenuItem />}

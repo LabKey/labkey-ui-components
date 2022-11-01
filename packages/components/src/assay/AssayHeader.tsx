@@ -89,9 +89,16 @@ export const AssayHeader: FC<Props> = props => {
                         <ManageDropdownButton id={'assayheader'} pullRight collapsed>
 
                             <RequiresPermission perms={PermissionTypes.DesignAssay}>
-                                <MenuItem href={AppURL.create(ASSAYS_KEY, assayDefinition.type, assayDefinition.name, 'design').toHref()}>Edit Assay Design</MenuItem>
+                                <MenuItem
+                                    href={AppURL.create(
+                                        ASSAY_DESIGN_KEY,
+                                        assayDefinition.type,
+                                        assayDefinition.name
+                                    ).toHref()}
+                                >
+                                    Edit Assay Design
+                                </MenuItem>
                             </RequiresPermission>
-                            {/* Allow linking to copy design if user has permissions in current container */}
                             <RequiresPermission perms={PermissionTypes.DesignAssay}>
                                 <MenuItem
                                     href={AppURL.create(

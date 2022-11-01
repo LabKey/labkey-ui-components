@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Map, OrderedMap } from 'immutable';
+import { List, OrderedMap } from 'immutable';
 
 import {
     clearSelected,
@@ -25,12 +25,12 @@ import { GridMessage, QueryModel } from './QueryModel';
 
 export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
     if (columns) {
-        const columnRenderers: Map<string, any> = getQueryColumnRenderers();
+        const columnRenderers = getQueryColumnRenderers();
 
         return columns.map(queryCol => {
             let node = DefaultRenderer;
-            if (queryCol && queryCol.columnRenderer && columnRenderers.has(queryCol.columnRenderer.toLowerCase())) {
-                node = columnRenderers.get(queryCol.columnRenderer.toLowerCase());
+            if (queryCol?.columnRenderer && columnRenderers.hasOwnProperty(queryCol.columnRenderer.toLowerCase())) {
+                node = columnRenderers[queryCol.columnRenderer.toLowerCase()];
             }
 
             // TODO: Just generate one function per type
@@ -45,13 +45,25 @@ export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): O
 
 export interface RowsResponse {
     messages: GridMessage[];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    rows: { [key: string]: any };
     orderedRows: string[];
     rowCount: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    rows: { [key: string]: any };
 }
 
 export interface QueryModelLoader {
+    /**
+     * Clear all selected rows for a given QueryModel.
+     * @param model: QueryModel
+     */
+    clearSelections: (model: QueryModel) => Promise<ISelectResponse>;
+
+    /**
+     * Loads the charts (DataViewInfos) for a given model.
+     * @param model
+     */
+    loadCharts: (model: QueryModel) => Promise<DataViewInfo[]>;
+
     /**
      * Loads the QueryInfo for the specified model.
      * @param model: QueryModel
@@ -63,12 +75,6 @@ export interface QueryModelLoader {
      * @param model: QueryModel
      */
     loadRows: (model: QueryModel) => Promise<RowsResponse>;
-
-    /**
-     * Clear all selected rows for a given QueryModel.
-     * @param model: QueryModel
-     */
-    clearSelections: (model: QueryModel) => Promise<ISelectResponse>;
 
     /**
      * Loads the selected RowIds (or PK values) for the specified model.
@@ -85,24 +91,18 @@ export interface QueryModelLoader {
     replaceSelections: (model: QueryModel, selections: string[]) => Promise<ISelectResponse>;
 
     /**
-     * Sets the selected status for the list of selections.
-     * @param model: QueryModel
-     * @param checked: boolean, the checked status of the ids
-     * @param selections: A list of stringified RowIds.
-     */
-    setSelections: (model: QueryModel, checked, selections: string[]) => Promise<ISelectResponse>;
-
-    /**
      * Select all rows for a given QueryModel.
      * @param model: QueryModel
      */
     selectAllRows: (model: QueryModel) => Promise<Set<string>>;
 
     /**
-     * Loads the charts (DataViewInfos) for a given model.
-     * @param model
+     * Sets the selected status for the list of selections.
+     * @param model: QueryModel
+     * @param checked: boolean, the checked status of the ids
+     * @param selections: A list of stringified RowIds.
      */
-    loadCharts: (model: QueryModel) => Promise<DataViewInfo[]>;
+    setSelections: (model: QueryModel, checked, selections: string[]) => Promise<ISelectResponse>;
 }
 
 export const DefaultQueryModelLoader: QueryModelLoader = {

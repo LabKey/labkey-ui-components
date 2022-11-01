@@ -407,7 +407,7 @@ export class Cell extends React.PureComponent<Props, State> {
         let renderer;
         let defaultValue;
         if (col.columnRenderer) {
-            renderer = getQueryColumnRenderers().get(col.columnRenderer.toLowerCase());
+            renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
         }
 
         if (renderer?.getEditableValue) {

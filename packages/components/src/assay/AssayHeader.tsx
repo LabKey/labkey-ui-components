@@ -24,7 +24,7 @@ interface Props {
     assayProtocol?: AssayProtocolModel;
     title?: ReactNode;
     subTitle?: ReactNode;
-    staticTitle?: ReactNode; // TODO LKB uses this. Unclear when.
+    staticTitle?: ReactNode;
     description?: ReactNode;
     renderButtons?: () => ReactNode;
     menu: ProductMenuModel,

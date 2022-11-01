@@ -9,6 +9,7 @@ import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
 
 import { ReferencingNotebooks, SampleStorageMenu, SampleStorageLocation } from './models';
 import { JobsButton, SampleStorageButton, WorkflowGrid } from '../internal/components/samples/models';
+import {DetailRenderer} from "../internal/components/forms/detail/DetailDisplay";
 
 export interface SampleTypeAppContext {
     JobsButtonComponent: JobsButton;
@@ -21,6 +22,7 @@ export interface SampleTypeAppContext {
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
     dataClassTypeCaption?: string;
+    detailRenderer?: DetailRenderer;
     getMetricUnitOptions: () => any[];
     getWorkflowGridQueryConfigs?: (
         visibleTabs: string[],

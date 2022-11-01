@@ -13,7 +13,6 @@ import { useContainerUser } from '../internal/components/container/actions';
 import { NotFound } from '../internal/components/base/NotFound';
 import { LoadingPage } from '../internal/components/base/LoadingPage';
 import { Page } from '../internal/components/base/Page';
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../internal/components/assay/actions';
 import { useServerContext } from '../internal/components/base/ServerContext';
 import { invalidateLineageResults } from '../internal/components/lineage/actions';
 import { getSampleStatus } from '../internal/components/samples/utils';
@@ -27,19 +26,23 @@ import { AppURL } from '../internal/url/AppURL';
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
+import { EntityDataType } from '../internal/components/entities/models';
 
 // These are additional columns required for details
 const requiredColumns = ParentEntityRequiredColumns.concat(
+    'AliquotVolume',
+    'AliquotCount',
+    'Folder',
     'SampleSet',
     'SampleSet/LabelColor',
-    'AliquotVolume',
-    'Units',
     'StorageStatus',
+    'Units',
     ...SAMPLE_STATUS_REQUIRED_COLUMNS
 ).toList();
 
 interface SampleDetailContext {
     isAliquot: boolean;
+    isMedia: boolean;
     location: any;
     onUpdate: (skipChangeCount?: boolean) => void;
     rootLsid: string;
@@ -58,9 +61,11 @@ const SampleDetailContextProvider = Context.Provider;
 export const SampleDetailContextConsumer = Context.Consumer;
 
 interface OwnProps {
+    entityDataType?: EntityDataType;
     location?: any;
     menu: ProductMenuModel;
     navigate: (url: string | AppURL, replace?: boolean) => void;
+    noun?: string;
     params?: any;
     showOverview?: boolean;
     title: string;
@@ -84,6 +89,8 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
         showOverview,
         children,
         navigate,
+        entityDataType,
+        noun,
     } = props;
     const [actionChangeCount, setActionChangeCount] = useState<number>(0);
     const { sampleType } = params;
@@ -95,7 +102,7 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
     const containerUserLoaded = containerUser.isLoaded;
     const user = containerUser.user;
     const { container } = useServerContext();
-    const { SampleStorageMenuComponent, SampleStorageLocationComponent } = useSampleTypeAppContext();
+    const { SampleStorageMenuComponent, SampleStorageLocationComponent, assayProviderType } = useSampleTypeAppContext();
 
     const onDetailUpdate = useCallback(
         (skipChangeCount?: boolean): void => {
@@ -115,9 +122,11 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
         const isAliquot = sampleModel.getRowValue(IS_ALIQUOT_COL);
         const rootLsid = sampleModel.getRowValue('RootMaterialLSID');
         const sampleStatus = getSampleStatus(row);
+        const isMedia = sampleModel?.queryInfo?.isMedia;
 
         return {
             isAliquot,
+            isMedia,
             location,
             onUpdate: onDetailUpdate,
             sampleContainer,
@@ -144,22 +153,22 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
     return (
         <Page title={context.sampleName + ' - ' + title} hasHeader>
             <SampleHeader
-                assayProviderType={GENERAL_ASSAY_PROVIDER_NAME}
+                assayProviderType={assayProviderType}
                 navigate={navigate}
                 sampleModel={sampleModel}
                 onUpdate={onDetailUpdate}
                 showDescription={!showOverview}
                 hasActiveJob={hasActivePipelineJob(menu, SAMPLES_KEY, sampleType)}
                 sampleContainer={sampleContainer}
+                entityDataType={entityDataType}
                 user={user}
                 isCrossFolder={sampleContainer.id !== container.id}
-                StorageMenu={SampleStorageMenuComponent}
+                StorageMenu={context.isMedia ? undefined : SampleStorageMenuComponent}
             />
             <Notifications />
             <SampleDetailContextProvider value={context}>
                 {showOverview && (
                     <SampleOverviewPanel
-                        sampleSet={sampleType}
                         title={title}
                         onDetailUpdate={onDetailUpdate}
                         actionChangeCount={actionChangeCount}
@@ -167,6 +176,7 @@ const SampleDetailPageBody: FC<Props> = memo(props => {
                         sampleModel={sampleModel}
                         actions={actions}
                         user={user}
+                        noun={noun}
                         sampleContainer={sampleContainer}
                         SampleStorageLocationComponent={SampleStorageLocationComponent}
                     />

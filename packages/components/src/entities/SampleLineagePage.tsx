@@ -39,12 +39,16 @@ class SampleLineagePanel extends PureComponent<Props> {
 
     getSourceParentTitlesForLineage(): Map<LINEAGE_DIRECTIONS, Map<string, string>> {
         const { menu } = this.props;
-        let titleMap = Map<string, string>();
-        menu.getSection(SOURCES_KEY).items.forEach(item => {
-            titleMap = titleMap.set(item.label, 'Sources');
-        });
-        const parentMap = Map<LINEAGE_DIRECTIONS, Map<string, string>>();
-        return parentMap.set(LINEAGE_DIRECTIONS.Parent, titleMap);
+        if (menu.getSection(SOURCES_KEY)) {
+            let titleMap = Map<string, string>();
+            menu.getSection(SOURCES_KEY)?.items.forEach(item => {
+                titleMap = titleMap.set(item.label, 'Sources');
+            });
+            const parentMap = Map<LINEAGE_DIRECTIONS, Map<string, string>>();
+            return parentMap.set(LINEAGE_DIRECTIONS.Parent, titleMap);
+        }
+
+        return undefined;
     }
 
     render() {

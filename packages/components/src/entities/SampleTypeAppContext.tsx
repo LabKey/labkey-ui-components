@@ -17,6 +17,7 @@ export interface SampleTypeAppContext {
     SampleStorageLocationComponent: SampleStorageLocation;
     SampleStorageMenuComponent: SampleStorageMenu;
     WorkflowGridComponent: WorkflowGrid;
+    assayProviderType?: string;
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
     dataClassTypeCaption?: string;

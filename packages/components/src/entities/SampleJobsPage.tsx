@@ -24,7 +24,10 @@ export const SampleJobsPage: FC<Props> = memo(props => {
             <SampleDetailContextConsumer>
                 {({ sampleId, sampleLsid, sampleModel, sampleContainer, isAliquot, location, user }) => {
                     // if sample is aliquot, include jobs that contain the exact aliquot only, without rollup
-                    const sampleAliquotType = isAliquot ? ALIQUOT_FILTER_MODE.samples : location?.query?.sampleAliquotType;
+                    const sampleAliquotType = isAliquot
+                        ? ALIQUOT_FILTER_MODE.samples
+                        : location?.query?.sampleAliquotType;
+
                     return (
                         <WorkflowGridComponent
                             containerPath={sampleContainer.path}

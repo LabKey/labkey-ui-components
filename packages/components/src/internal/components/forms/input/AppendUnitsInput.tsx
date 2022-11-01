@@ -7,7 +7,7 @@ import { InputRendererProps } from './types';
 import { LabelOverlay } from '../LabelOverlay';
 
 export const AppendUnitsInput: FC<InputRendererProps> = memo(props => {
-    const { allowFieldDisable, col, initiallyDisabled, value } = props;
+    const { col, formsy, initiallyDisabled, value } = props;
 
     useEffect(() => {
         // Issue 23462: Global Formsy validation rule for numbers
@@ -19,9 +19,14 @@ export const AppendUnitsInput: FC<InputRendererProps> = memo(props => {
         }
     }, []);
 
+    // If/when we migrate away from formsy we can implement this using our non-formsy input component
+    if (!formsy) {
+        console.warn('AppendUnitsInput is only supported in Formsy-based forms.');
+        return null;
+    }
+
     return (
         <Input
-            allowDisable={allowFieldDisable}
             disabled={initiallyDisabled}
             addonAfter={<span>{col.units}</span>}
             changeDebounceInterval={0}

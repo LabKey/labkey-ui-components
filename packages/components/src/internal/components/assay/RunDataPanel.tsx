@@ -38,7 +38,6 @@ import { Alert } from '../base/Alert';
 import { getRunPropertiesFileName } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
 import { getServerFilePreview } from './utils';
-import { Query } from '@labkey/api';
 import { getContainerFilterForLookups } from '../../query/api';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];

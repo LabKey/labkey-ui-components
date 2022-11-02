@@ -38,7 +38,7 @@ export const AssayHeader: FC<Props> = props => {
                 title={titleDisplay}
                 subTitle={subTitle}
                 description={descriptionDisplay}
-                leftColumns={9}
+                leftColumns={runId ? 8 : 9} // On run details pages allow for more room for the name of the run
             >
                 <TemplateDownloadButton templateUrl={assayDefinition?.templateLink} className="button-right-spacing" />
                 {runId != null && (

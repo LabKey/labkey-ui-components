@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 2.TBD
+*Released*: TBD
+* Fix Issue 45944: Decode $ in MenuItem keys
+
 ### version 2.242.4
 *Released*: 2 November 2022
 * EditInlineField: remove showToggle prop, always render edit icon at end of content

@@ -19,7 +19,7 @@ import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT
 import { EntityDeleteModal } from './EntityDeleteModal';
 
 import { SampleAliquotsGridPanelImpl } from './SampleAliquotsGridPanel';
-import { SampleTypeAppContext } from "./SampleTypeAppContext";
+import { SampleTypeAppContext } from './SampleTypeAppContext';
 
 beforeEach(() => {
     LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };

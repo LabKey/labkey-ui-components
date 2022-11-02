@@ -23,10 +23,11 @@ import { createGridModelId } from '../internal/models';
 import { ProductMenuModel } from '../internal/components/navigation/model';
 import { AppURL } from '../internal/url/AppURL';
 
+import { EntityDataType } from '../internal/components/entities/models';
+
 import { SampleHeader } from './SampleHeader';
 import { SampleOverviewPanel } from './SampleOverviewPanel';
 import { useSampleTypeAppContext } from './SampleTypeAppContext';
-import { EntityDataType } from '../internal/components/entities/models';
 
 // These are additional columns required for details
 const REQUIRED_COLUMNS = ParentEntityRequiredColumns.concat(

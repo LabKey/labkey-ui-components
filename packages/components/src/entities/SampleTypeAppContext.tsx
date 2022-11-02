@@ -7,9 +7,10 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { ALIQUOT_FILTER_MODE } from '../internal/components/samples/constants';
 import { QueryConfigMap } from '../public/QueryModel/withQueryModels';
 
-import { ReferencingNotebooks, SampleStorageMenu, SampleStorageLocation } from './models';
 import { JobsButton, SampleStorageButton, WorkflowGrid } from '../internal/components/samples/models';
-import {DetailRenderer} from "../internal/components/forms/detail/DetailDisplay";
+import { DetailRenderer } from '../internal/components/forms/detail/DetailDisplay';
+
+import { ReferencingNotebooks, SampleStorageMenu, SampleStorageLocation } from './models';
 
 export interface SampleTypeAppContext {
     JobsButtonComponent: JobsButton;

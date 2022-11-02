@@ -25,7 +25,7 @@ import { AssayResultsForSamplesButton } from './AssayResultsForSamplesButton';
 
 import { SamplesAssayButton } from './SamplesAssayButton';
 import { EntityDeleteModal } from './EntityDeleteModal';
-import {useSampleTypeAppContext} from "./SampleTypeAppContext";
+import { useSampleTypeAppContext } from './SampleTypeAppContext';
 
 const SUB_MENU_WIDTH = 1350;
 

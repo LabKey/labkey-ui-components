@@ -22,7 +22,7 @@ exports[`Grid component hide tooltip 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -39,7 +39,7 @@ exports[`Grid component hide tooltip 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -56,7 +56,7 @@ exports[`Grid component hide tooltip 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -73,7 +73,7 @@ exports[`Grid component hide tooltip 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -88,7 +88,7 @@ exports[`Grid component hide tooltip 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -97,7 +97,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -106,7 +106,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -115,7 +115,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -126,7 +126,7 @@ exports[`Grid component hide tooltip 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -135,7 +135,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -144,7 +144,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -153,7 +153,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -164,7 +164,7 @@ exports[`Grid component hide tooltip 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -173,7 +173,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -182,7 +182,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -191,7 +191,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -202,7 +202,7 @@ exports[`Grid component hide tooltip 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -211,7 +211,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -220,7 +220,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -229,7 +229,7 @@ exports[`Grid component hide tooltip 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -262,7 +262,7 @@ exports[`Grid component loading text and action 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -279,7 +279,7 @@ exports[`Grid component loading text and action 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -296,7 +296,7 @@ exports[`Grid component loading text and action 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -348,7 +348,7 @@ exports[`Grid component render with messages 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -365,7 +365,7 @@ exports[`Grid component render with messages 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -382,7 +382,7 @@ exports[`Grid component render with messages 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -397,7 +397,7 @@ exports[`Grid component render with messages 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -406,7 +406,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -415,7 +415,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -428,7 +428,7 @@ exports[`Grid component render with messages 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -437,7 +437,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -446,7 +446,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -459,7 +459,7 @@ exports[`Grid component render with messages 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -468,7 +468,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -477,7 +477,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -490,7 +490,7 @@ exports[`Grid component render with messages 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -499,7 +499,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -508,7 +508,7 @@ exports[`Grid component render with messages 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -543,7 +543,7 @@ exports[`Grid component render with non-default properties 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": "150px",
             }
           }
@@ -560,7 +560,7 @@ exports[`Grid component render with non-default properties 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": "150px",
             }
           }
@@ -577,7 +577,7 @@ exports[`Grid component render with non-default properties 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": "150px",
             }
           }
@@ -592,7 +592,7 @@ exports[`Grid component render with non-default properties 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -601,7 +601,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -610,7 +610,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -623,7 +623,7 @@ exports[`Grid component render with non-default properties 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -632,7 +632,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -641,7 +641,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -654,7 +654,7 @@ exports[`Grid component render with non-default properties 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -663,7 +663,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -672,7 +672,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -685,7 +685,7 @@ exports[`Grid component render with non-default properties 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -694,7 +694,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -703,7 +703,7 @@ exports[`Grid component render with non-default properties 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -738,7 +738,7 @@ exports[`Grid component rendering with data 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -755,7 +755,7 @@ exports[`Grid component rendering with data 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -772,7 +772,7 @@ exports[`Grid component rendering with data 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -787,7 +787,7 @@ exports[`Grid component rendering with data 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -796,7 +796,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -805,7 +805,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -818,7 +818,7 @@ exports[`Grid component rendering with data 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -827,7 +827,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -836,7 +836,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -849,7 +849,7 @@ exports[`Grid component rendering with data 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -858,7 +858,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -867,7 +867,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -880,7 +880,7 @@ exports[`Grid component rendering with data 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -889,7 +889,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -898,7 +898,7 @@ exports[`Grid component rendering with data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -933,7 +933,7 @@ exports[`Grid component rendering with data and columns 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -950,7 +950,7 @@ exports[`Grid component rendering with data and columns 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -967,7 +967,7 @@ exports[`Grid component rendering with data and columns 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -982,7 +982,7 @@ exports[`Grid component rendering with data and columns 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -991,7 +991,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1000,7 +1000,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1013,7 +1013,7 @@ exports[`Grid component rendering with data and columns 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1022,7 +1022,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1031,7 +1031,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1044,7 +1044,7 @@ exports[`Grid component rendering with data and columns 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1053,7 +1053,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1062,7 +1062,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1075,7 +1075,7 @@ exports[`Grid component rendering with data and columns 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1084,7 +1084,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1093,7 +1093,7 @@ exports[`Grid component rendering with data and columns 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1129,7 +1129,7 @@ exports[`Grid component rendering with no data and columns 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -1146,7 +1146,7 @@ exports[`Grid component rendering with no data and columns 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -1163,7 +1163,7 @@ exports[`Grid component rendering with no data and columns 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -1209,7 +1209,7 @@ exports[`Grid component with phi data 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -1226,7 +1226,7 @@ exports[`Grid component with phi data 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -1243,7 +1243,7 @@ exports[`Grid component with phi data 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -1260,7 +1260,7 @@ exports[`Grid component with phi data 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -1278,7 +1278,7 @@ exports[`Grid component with phi data 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -1296,7 +1296,7 @@ exports[`Grid component with phi data 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -1314,7 +1314,7 @@ exports[`Grid component with phi data 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           style={
-            Object {
+            {
               "minWidth": undefined,
             }
           }
@@ -1329,7 +1329,7 @@ exports[`Grid component with phi data 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1338,7 +1338,7 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1347,7 +1347,7 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1356,28 +1356,28 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1388,7 +1388,7 @@ exports[`Grid component with phi data 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1397,7 +1397,7 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1406,7 +1406,7 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1415,28 +1415,28 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1447,7 +1447,7 @@ exports[`Grid component with phi data 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1456,7 +1456,7 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1465,7 +1465,7 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1474,28 +1474,28 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1506,7 +1506,7 @@ exports[`Grid component with phi data 1`] = `
       >
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1515,7 +1515,7 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1524,7 +1524,7 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
@@ -1533,28 +1533,28 @@ exports[`Grid component with phi data 1`] = `
         </td>
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }
         />
         <td
           style={
-            Object {
+            {
               "textAlign": "left",
             }
           }

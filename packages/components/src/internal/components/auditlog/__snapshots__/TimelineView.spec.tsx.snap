@@ -547,7 +547,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </div>
            
           <LabelHelpTip
-            customStyle={Object {}}
+            customStyle={{}}
             iconComponent={
               <i
                 className="timeline-comments-icon fa fa-comments"
@@ -1086,7 +1086,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </div>
            
           <LabelHelpTip
-            customStyle={Object {}}
+            customStyle={{}}
             iconComponent={
               <i
                 className="timeline-comments-icon fa fa-comments"
@@ -1669,7 +1669,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </div>
            
           <LabelHelpTip
-            customStyle={Object {}}
+            customStyle={{}}
             iconComponent={
               <i
                 className="timeline-comments-icon fa fa-comments"
@@ -2252,7 +2252,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </div>
            
           <LabelHelpTip
-            customStyle={Object {}}
+            customStyle={{}}
             iconComponent={
               <i
                 className="timeline-comments-icon fa fa-comments"

@@ -12,7 +12,7 @@ exports[`ColorPickerInput allowRemove 1`] = `
     <i
       className="color-picker__chip-small"
       style={
-        Object {
+        {
           "backgroundColor": "#000000",
         }
       }
@@ -52,7 +52,7 @@ exports[`ColorPickerInput default props 1`] = `
     <i
       className="color-picker__chip-small"
       style={
-        Object {
+        {
           "backgroundColor": "#000000",
         }
       }
@@ -95,7 +95,7 @@ exports[`ColorPickerInput showPicker 1`] = `
     <ColorPicker
       color="#000000"
       colors={
-        Array [
+        [
           "#4D4D4D",
           "#999999",
           "#FFFFFF",
@@ -135,7 +135,7 @@ exports[`ColorPickerInput showPicker 1`] = `
         ]
       }
       onChangeComplete={[Function]}
-      styles={Object {}}
+      styles={{}}
     />
   </div>
 </div>
@@ -158,7 +158,7 @@ exports[`ColorPickerInput with button text 1`] = `
   <i
     className="color-picker__chip"
     style={
-      Object {
+      {
         "backgroundColor": "#000000",
       }
     }

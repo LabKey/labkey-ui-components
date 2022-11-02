@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<EffectiveRolesList/> multiple roles 1`] = `
-Array [
+[
   <hr
     className="principal-hr"
   />,
@@ -38,7 +38,7 @@ Array [
 exports[`<EffectiveRolesList/> no roles 1`] = `null`;
 
 exports[`<EffectiveRolesList/> single role 1`] = `
-Array [
+[
   <hr
     className="principal-hr"
   />,
@@ -58,7 +58,7 @@ Array [
 `;
 
 exports[`<EffectiveRolesList/> with root policy 1`] = `
-Array [
+[
   <hr
     className="principal-hr"
   />,

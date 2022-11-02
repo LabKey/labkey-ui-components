@@ -24,10 +24,6 @@ module.exports = {
                 }
             }
         },
-        'ts-jest': {
-            // This increases test perf by a considerable margin
-            isolatedModules: true,
-        }
     },
     moduleFileExtensions: ['ts', 'tsx', 'js'],
     roots: ['<rootDir>'],
@@ -44,6 +40,12 @@ module.exports = {
     testRegex: '(\\.(test|spec))\\.(ts|tsx)$',
     testResultsProcessor: 'jest-teamcity-reporter',
     transform: {
-        '^.+\\.tsx?$': 'ts-jest',
+        '^.+\\.tsx?$': [
+            'ts-jest',
+            {
+                // This increases test perf by a considerable margin
+                isolatedModules: true,
+            }
+        ],
     },
 };

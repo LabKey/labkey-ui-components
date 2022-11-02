@@ -27,10 +27,11 @@ export class DateInput extends PureComponent<ReactDatePickerProps> {
         this.input.current?.setFocus();
     };
 
-    onSelect = (): void => {
+    onSelect = (date: Date, event: React.SyntheticEvent<any> | undefined): void => {
         // focus the input so an onBlur action gets triggered after selection has been made
-        this.input.current?.setFocus()
-    }
+        this.input.current?.setFocus();
+        this.props.onSelect?.(date, event);
+    };
 
     render(): ReactNode {
         return (

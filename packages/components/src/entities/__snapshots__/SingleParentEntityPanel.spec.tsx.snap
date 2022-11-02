@@ -6,7 +6,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
   editing={true}
   index={0}
   parentDataType={
-    Object {
+    {
       "ancestorColumnName": "Ancestors/OtherData",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived data or sample dependencies",
@@ -41,7 +41,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
   }
   parentTypeOptions={
     Immutable.List [
-      Object {
+      {
         "label": "Second Source",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
         "query": "Second Source",
@@ -49,7 +49,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         "schema": "exp.data",
         "value": "second source",
       },
-      Object {
+      {
         "label": "Source 1",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
         "query": "Source 1",
@@ -57,7 +57,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         "schema": "exp.data",
         "value": "source 1",
       },
-      Object {
+      {
         "label": "Vendor 3",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
         "query": "Vendor 3",
@@ -75,7 +75,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
     onTypeChange={[Function]}
     onValueChange={[Function]}
     parentDataType={
-      Object {
+      {
         "ancestorColumnName": "Ancestors/OtherData",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived data or sample dependencies",
@@ -110,7 +110,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
     }
     parentTypeOptions={
       Immutable.List [
-        Object {
+        {
           "label": "Second Source",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
           "query": "Second Source",
@@ -118,7 +118,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
           "schema": "exp.data",
           "value": "second source",
         },
-        Object {
+        {
           "label": "Source 1",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
           "query": "Source 1",
@@ -126,7 +126,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
           "schema": "exp.data",
           "value": "source 1",
         },
-        Object {
+        {
           "label": "Vendor 3",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
           "query": "Vendor 3",
@@ -136,7 +136,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         },
       ]
     }
-    queryConfigs={Object {}}
+    queryConfigs={{}}
   >
     <ComponentWithQueryModels
       autoLoad={false}
@@ -144,7 +144,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       editing={true}
       index={0}
       modelLoader={
-        Object {
+        {
           "clearSelections": [Function],
           "loadCharts": [Function],
           "loadQueryInfo": [Function],
@@ -158,7 +158,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       onTypeChange={[Function]}
       onValueChange={[Function]}
       parentDataType={
-        Object {
+        {
           "ancestorColumnName": "Ancestors/OtherData",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived data or sample dependencies",
@@ -193,7 +193,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
       }
       parentTypeOptions={
         Immutable.List [
-          Object {
+          {
             "label": "Second Source",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
             "query": "Second Source",
@@ -201,7 +201,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
             "schema": "exp.data",
             "value": "second source",
           },
-          Object {
+          {
             "label": "Source 1",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
             "query": "Source 1",
@@ -209,7 +209,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
             "schema": "exp.data",
             "value": "source 1",
           },
-          Object {
+          {
             "label": "Vendor 3",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
             "query": "Vendor 3",
@@ -219,11 +219,11 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
           },
         ]
       }
-      queryConfigs={Object {}}
+      queryConfigs={{}}
     >
       <SingleParentEntity
         actions={
-          Object {
+          {
             "addModel": [Function],
             "clearSelections": [Function],
             "loadAllModels": [Function],
@@ -255,7 +255,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         onTypeChange={[Function]}
         onValueChange={[Function]}
         parentDataType={
-          Object {
+          {
             "ancestorColumnName": "Ancestors/OtherData",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived data or sample dependencies",
@@ -290,7 +290,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
         }
         parentTypeOptions={
           Immutable.List [
-            Object {
+            {
               "label": "Second Source",
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
               "query": "Second Source",
@@ -298,7 +298,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
               "schema": "exp.data",
               "value": "second source",
             },
-            Object {
+            {
               "label": "Source 1",
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
               "query": "Source 1",
@@ -306,7 +306,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
               "schema": "exp.data",
               "value": "source 1",
             },
-            Object {
+            {
               "label": "Vendor 3",
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
               "query": "Vendor 3",
@@ -316,7 +316,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
             },
           ]
         }
-        queryModels={Object {}}
+        queryModels={{}}
       >
         <div
           className="bottom-spacing"
@@ -334,8 +334,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
               name="entityType0"
               onChange={[Function]}
               options={
-                Array [
-                  Object {
+                [
+                  {
                     "label": "Second Source",
                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                     "query": "Second Source",
@@ -343,7 +343,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                     "schema": "exp.data",
                     "value": "second source",
                   },
-                  Object {
+                  {
                     "label": "Source 1",
                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                     "query": "Source 1",
@@ -351,7 +351,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                     "schema": "exp.data",
                     "value": "source 1",
                   },
-                  Object {
+                  {
                     "label": "Vendor 3",
                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                     "query": "Vendor 3",
@@ -382,8 +382,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                 onChange={[Function]}
                 openMenuOnFocus={false}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "Second Source",
                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                       "query": "Second Source",
@@ -391,7 +391,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                       "schema": "exp.data",
                       "value": "second source",
                     },
-                    Object {
+                    {
                       "label": "Source 1",
                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                       "query": "Source 1",
@@ -399,7 +399,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                       "schema": "exp.data",
                       "value": "source 1",
                     },
-                    Object {
+                    {
                       "label": "Vendor 3",
                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                       "query": "Vendor 3",
@@ -422,7 +422,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                     id="selectinput-0"
                     isDisabled={false}
                     labelOverlayProps={
-                      Object {
+                      {
                         "addLabelAsterisk": undefined,
                         "description": "Select a Data Type 1",
                         "helpTipRenderer": undefined,
@@ -436,7 +436,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                     showLabel={true}
                     showToggle={false}
                     toggleProps={
-                      Object {
+                      {
                         "onClick": [Function],
                       }
                     }
@@ -487,7 +487,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                             </Popover>
                           }
                           trigger={
-                            Array [
+                            [
                               "hover",
                               "focus",
                             ]
@@ -518,7 +518,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                       className="select-input"
                       classNamePrefix="select-input"
                       components={
-                        Object {
+                        {
                           "Input": [Function],
                         }
                       }
@@ -537,8 +537,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                       onFocus={[Function]}
                       openMenuOnFocus={false}
                       options={
-                        Array [
-                          Object {
+                        [
+                          {
                             "label": "Second Source",
                             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                             "query": "Second Source",
@@ -546,7 +546,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                             "schema": "exp.data",
                             "value": "second source",
                           },
-                          Object {
+                          {
                             "label": "Source 1",
                             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                             "query": "Source 1",
@@ -554,7 +554,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                             "schema": "exp.data",
                             "value": "source 1",
                           },
-                          Object {
+                          {
                             "label": "Vendor 3",
                             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                             "query": "Vendor 3",
@@ -566,7 +566,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                       }
                       placeholder="Select a Data Type ..."
                       styles={
-                        Object {
+                        {
                           "menu": [Function],
                           "menuPortal": [Function],
                           "multiValue": [Function],
@@ -587,7 +587,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                         closeMenuOnScroll={false}
                         closeMenuOnSelect={true}
                         components={
-                          Object {
+                          {
                             "Input": [Function],
                           }
                         }
@@ -626,8 +626,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                         openMenuOnClick={true}
                         openMenuOnFocus={false}
                         options={
-                          Array [
-                            Object {
+                          [
+                            {
                               "label": "Second Source",
                               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                               "query": "Second Source",
@@ -635,7 +635,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                               "schema": "exp.data",
                               "value": "second source",
                             },
-                            Object {
+                            {
                               "label": "Source 1",
                               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                               "query": "Source 1",
@@ -643,7 +643,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                               "schema": "exp.data",
                               "value": "source 1",
                             },
-                            Object {
+                            {
                               "label": "Vendor 3",
                               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                               "query": "Vendor 3",
@@ -657,7 +657,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                         placeholder="Select a Data Type ..."
                         screenReaderStatus={[Function]}
                         styles={
-                          Object {
+                          {
                             "menu": [Function],
                             "menuPortal": [Function],
                             "multiValue": [Function],
@@ -678,7 +678,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                           getValue={[Function]}
                           hasValue={false}
                           innerProps={
-                            Object {
+                            {
                               "id": "selectinput-0",
                               "onKeyDown": [Function],
                             }
@@ -688,8 +688,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                           isMulti={false}
                           isRtl={false}
                           options={
-                            Array [
-                              Object {
+                            [
+                              {
                                 "label": "Second Source",
                                 "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                 "query": "Second Source",
@@ -697,7 +697,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 "schema": "exp.data",
                                 "value": "second source",
                               },
-                              Object {
+                              {
                                 "label": "Source 1",
                                 "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                 "query": "Source 1",
@@ -705,7 +705,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 "schema": "exp.data",
                                 "value": "source 1",
                               },
-                              Object {
+                              {
                                 "label": "Vendor 3",
                                 "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                 "query": "Vendor 3",
@@ -717,7 +717,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                           }
                           selectOption={[Function]}
                           selectProps={
-                            Object {
+                            {
                               "aria-live": "polite",
                               "autoFocus": undefined,
                               "backspaceRemovesValue": true,
@@ -727,7 +727,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                               "classNamePrefix": "select-input",
                               "closeMenuOnScroll": false,
                               "closeMenuOnSelect": true,
-                              "components": Object {
+                              "components": {
                                 "Input": [Function],
                               },
                               "controlShouldRenderValue": true,
@@ -764,8 +764,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                               "onMenuOpen": [Function],
                               "openMenuOnClick": true,
                               "openMenuOnFocus": false,
-                              "options": Array [
-                                Object {
+                              "options": [
+                                {
                                   "label": "Second Source",
                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                   "query": "Second Source",
@@ -773,7 +773,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                   "schema": "exp.data",
                                   "value": "second source",
                                 },
-                                Object {
+                                {
                                   "label": "Source 1",
                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                   "query": "Source 1",
@@ -781,7 +781,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                   "schema": "exp.data",
                                   "value": "source 1",
                                 },
-                                Object {
+                                {
                                   "label": "Vendor 3",
                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                   "query": "Vendor 3",
@@ -794,7 +794,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                               "placeholder": "Select a Data Type ...",
                               "promptTextCreator": undefined,
                               "screenReaderStatus": [Function],
-                              "styles": Object {
+                              "styles": {
                                 "menu": [Function],
                                 "menuPortal": [Function],
                                 "multiValue": [Function],
@@ -809,9 +809,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                           }
                           setValue={[Function]}
                           theme={
-                            Object {
+                            {
                               "borderRadius": 4,
-                              "colors": Object {
+                              "colors": {
                                 "danger": "#D9534F",
                                 "dangerLight": "#FFBDAD",
                                 "neutral0": "hsl(0, 0%, 100%)",
@@ -830,7 +830,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 "primary50": "#F2F9FC",
                                 "primary75": "#009BF9",
                               },
-                              "spacing": Object {
+                              "spacing": {
                                 "baseUnit": 4,
                                 "controlHeight": 38,
                                 "menuGutter": 8,
@@ -843,7 +843,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                             __EMOTION_TYPE_PLEASE_DO_NOT_USE__="div"
                             className="select-input"
                             css={
-                              Object {
+                              {
                                 "boxSizing": "border-box",
                                 "direction": null,
                                 "label": "container",
@@ -856,9 +856,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                           >
                             <Insertion
                               cache={
-                                Object {
+                                {
                                   "insert": [Function],
-                                  "inserted": Object {
+                                  "inserted": {
                                     "1f43avz-a11yText-A11yText": true,
                                     "1hb7zxy-IndicatorsContainer": true,
                                     "1okebmr-indicatorSeparator": true,
@@ -872,7 +872,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                   },
                                   "key": "css",
                                   "nonce": undefined,
-                                  "registered": Object {},
+                                  "registered": {},
                                   "sheet": StyleSheet {
                                     "_alreadyInsertedOrderInsensitiveRule": true,
                                     "_insertTag": [Function],
@@ -990,7 +990,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "key": "css",
                                     "nonce": undefined,
                                     "prepend": undefined,
-                                    "tags": Array [
+                                    "tags": [
                                       <style
                                         data-emotion="css"
                                         data-s=""
@@ -1102,7 +1102,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                               }
                               isStringTag={true}
                               serialized={
-                                Object {
+                                {
                                   "map": undefined,
                                   "name": "2b097c-container",
                                   "next": undefined,
@@ -1120,7 +1120,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 ariaSelection={null}
                                 clearValue={[Function]}
                                 cx={[Function]}
-                                focusableOptions={Array []}
+                                focusableOptions={[]}
                                 focusedOption={null}
                                 focusedValue={null}
                                 getStyles={[Function]}
@@ -1130,8 +1130,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 isMulti={false}
                                 isRtl={false}
                                 options={
-                                  Array [
-                                    Object {
+                                  [
+                                    {
                                       "label": "Second Source",
                                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                       "query": "Second Source",
@@ -1139,7 +1139,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       "schema": "exp.data",
                                       "value": "second source",
                                     },
-                                    Object {
+                                    {
                                       "label": "Source 1",
                                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                       "query": "Source 1",
@@ -1147,7 +1147,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       "schema": "exp.data",
                                       "value": "source 1",
                                     },
-                                    Object {
+                                    {
                                       "label": "Vendor 3",
                                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                       "query": "Vendor 3",
@@ -1159,7 +1159,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 }
                                 selectOption={[Function]}
                                 selectProps={
-                                  Object {
+                                  {
                                     "aria-live": "polite",
                                     "autoFocus": undefined,
                                     "backspaceRemovesValue": true,
@@ -1169,7 +1169,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "classNamePrefix": "select-input",
                                     "closeMenuOnScroll": false,
                                     "closeMenuOnSelect": true,
-                                    "components": Object {
+                                    "components": {
                                       "Input": [Function],
                                     },
                                     "controlShouldRenderValue": true,
@@ -1206,8 +1206,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "onMenuOpen": [Function],
                                     "openMenuOnClick": true,
                                     "openMenuOnFocus": false,
-                                    "options": Array [
-                                      Object {
+                                    "options": [
+                                      {
                                         "label": "Second Source",
                                         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                         "query": "Second Source",
@@ -1215,7 +1215,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                         "schema": "exp.data",
                                         "value": "second source",
                                       },
-                                      Object {
+                                      {
                                         "label": "Source 1",
                                         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                         "query": "Source 1",
@@ -1223,7 +1223,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                         "schema": "exp.data",
                                         "value": "source 1",
                                       },
-                                      Object {
+                                      {
                                         "label": "Vendor 3",
                                         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                         "query": "Vendor 3",
@@ -1236,7 +1236,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "placeholder": "Select a Data Type ...",
                                     "promptTextCreator": undefined,
                                     "screenReaderStatus": [Function],
-                                    "styles": Object {
+                                    "styles": {
                                       "menu": [Function],
                                       "menuPortal": [Function],
                                       "multiValue": [Function],
@@ -1249,12 +1249,12 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "value": null,
                                   }
                                 }
-                                selectValue={Array []}
+                                selectValue={[]}
                                 setValue={[Function]}
                                 theme={
-                                  Object {
+                                  {
                                     "borderRadius": 4,
-                                    "colors": Object {
+                                    "colors": {
                                       "danger": "#D9534F",
                                       "dangerLight": "#FFBDAD",
                                       "neutral0": "hsl(0, 0%, 100%)",
@@ -1273,7 +1273,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       "primary50": "#F2F9FC",
                                       "primary75": "#009BF9",
                                     },
-                                    "spacing": Object {
+                                    "spacing": {
                                       "baseUnit": 4,
                                       "controlHeight": 38,
                                       "menuGutter": 8,
@@ -1292,7 +1292,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     aria-live="polite"
                                     aria-relevant="additions text"
                                     css={
-                                      Object {
+                                      {
                                         "map": "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkExMXlUZXh0LmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQVFJIiwiZmlsZSI6IkExMXlUZXh0LmpzIiwic291cmNlc0NvbnRlbnQiOlsiLy8gQGZsb3dcbi8qKiBAanN4IGpzeCAqL1xuaW1wb3J0IHsgdHlwZSBFbGVtZW50Q29uZmlnIH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsganN4IH0gZnJvbSAnQGVtb3Rpb24vcmVhY3QnO1xuXG4vLyBBc3Npc3RpdmUgdGV4dCB0byBkZXNjcmliZSB2aXN1YWwgZWxlbWVudHMuIEhpZGRlbiBmb3Igc2lnaHRlZCB1c2Vycy5cbmNvbnN0IEExMXlUZXh0ID0gKHByb3BzOiBFbGVtZW50Q29uZmlnPCdzcGFuJz4pID0+IChcbiAgPHNwYW5cbiAgICBjc3M9e3tcbiAgICAgIGxhYmVsOiAnYTExeVRleHQnLFxuICAgICAgekluZGV4OiA5OTk5LFxuICAgICAgYm9yZGVyOiAwLFxuICAgICAgY2xpcDogJ3JlY3QoMXB4LCAxcHgsIDFweCwgMXB4KScsXG4gICAgICBoZWlnaHQ6IDEsXG4gICAgICB3aWR0aDogMSxcbiAgICAgIHBvc2l0aW9uOiAnYWJzb2x1dGUnLFxuICAgICAgb3ZlcmZsb3c6ICdoaWRkZW4nLFxuICAgICAgcGFkZGluZzogMCxcbiAgICAgIHdoaXRlU3BhY2U6ICdub3dyYXAnLFxuICAgIH19XG4gICAgey4uLnByb3BzfVxuICAvPlxuKTtcblxuZXhwb3J0IGRlZmF1bHQgQTExeVRleHQ7XG4iXX0= */",
                                         "name": "1f43avz-a11yText-A11yText",
                                         "styles": "label:a11yText;z-index:9999;border:0;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0;white-space:nowrap;label:A11yText;",
@@ -1302,9 +1302,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                   >
                                     <Insertion
                                       cache={
-                                        Object {
+                                        {
                                           "insert": [Function],
-                                          "inserted": Object {
+                                          "inserted": {
                                             "1f43avz-a11yText-A11yText": true,
                                             "1hb7zxy-IndicatorsContainer": true,
                                             "1okebmr-indicatorSeparator": true,
@@ -1318,7 +1318,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           },
                                           "key": "css",
                                           "nonce": undefined,
-                                          "registered": Object {},
+                                          "registered": {},
                                           "sheet": StyleSheet {
                                             "_alreadyInsertedOrderInsensitiveRule": true,
                                             "_insertTag": [Function],
@@ -1436,7 +1436,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             "key": "css",
                                             "nonce": undefined,
                                             "prepend": undefined,
-                                            "tags": Array [
+                                            "tags": [
                                               <style
                                                 data-emotion="css"
                                                 data-s=""
@@ -1548,7 +1548,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       }
                                       isStringTag={true}
                                       serialized={
-                                        Object {
+                                        {
                                           "map": "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkExMXlUZXh0LmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQVFJIiwiZmlsZSI6IkExMXlUZXh0LmpzIiwic291cmNlc0NvbnRlbnQiOlsiLy8gQGZsb3dcbi8qKiBAanN4IGpzeCAqL1xuaW1wb3J0IHsgdHlwZSBFbGVtZW50Q29uZmlnIH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsganN4IH0gZnJvbSAnQGVtb3Rpb24vcmVhY3QnO1xuXG4vLyBBc3Npc3RpdmUgdGV4dCB0byBkZXNjcmliZSB2aXN1YWwgZWxlbWVudHMuIEhpZGRlbiBmb3Igc2lnaHRlZCB1c2Vycy5cbmNvbnN0IEExMXlUZXh0ID0gKHByb3BzOiBFbGVtZW50Q29uZmlnPCdzcGFuJz4pID0+IChcbiAgPHNwYW5cbiAgICBjc3M9e3tcbiAgICAgIGxhYmVsOiAnYTExeVRleHQnLFxuICAgICAgekluZGV4OiA5OTk5LFxuICAgICAgYm9yZGVyOiAwLFxuICAgICAgY2xpcDogJ3JlY3QoMXB4LCAxcHgsIDFweCwgMXB4KScsXG4gICAgICBoZWlnaHQ6IDEsXG4gICAgICB3aWR0aDogMSxcbiAgICAgIHBvc2l0aW9uOiAnYWJzb2x1dGUnLFxuICAgICAgb3ZlcmZsb3c6ICdoaWRkZW4nLFxuICAgICAgcGFkZGluZzogMCxcbiAgICAgIHdoaXRlU3BhY2U6ICdub3dyYXAnLFxuICAgIH19XG4gICAgey4uLnByb3BzfVxuICAvPlxuKTtcblxuZXhwb3J0IGRlZmF1bHQgQTExeVRleHQ7XG4iXX0= */",
                                           "name": "1f43avz-a11yText-A11yText",
                                           "styles": "label:a11yText;z-index:9999;border:0;clip:rect(1px, 1px, 1px, 1px);height:1px;width:1px;position:absolute;overflow:hidden;padding:0;white-space:nowrap;label:A11yText;",
@@ -1572,7 +1572,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 getValue={[Function]}
                                 hasValue={false}
                                 innerProps={
-                                  Object {
+                                  {
                                     "onMouseDown": [Function],
                                     "onTouchEnd": [Function],
                                   }
@@ -1584,8 +1584,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 isRtl={false}
                                 menuIsOpen={false}
                                 options={
-                                  Array [
-                                    Object {
+                                  [
+                                    {
                                       "label": "Second Source",
                                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                       "query": "Second Source",
@@ -1593,7 +1593,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       "schema": "exp.data",
                                       "value": "second source",
                                     },
-                                    Object {
+                                    {
                                       "label": "Source 1",
                                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                       "query": "Source 1",
@@ -1601,7 +1601,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       "schema": "exp.data",
                                       "value": "source 1",
                                     },
-                                    Object {
+                                    {
                                       "label": "Vendor 3",
                                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                       "query": "Vendor 3",
@@ -1613,7 +1613,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 }
                                 selectOption={[Function]}
                                 selectProps={
-                                  Object {
+                                  {
                                     "aria-live": "polite",
                                     "autoFocus": undefined,
                                     "backspaceRemovesValue": true,
@@ -1623,7 +1623,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "classNamePrefix": "select-input",
                                     "closeMenuOnScroll": false,
                                     "closeMenuOnSelect": true,
-                                    "components": Object {
+                                    "components": {
                                       "Input": [Function],
                                     },
                                     "controlShouldRenderValue": true,
@@ -1660,8 +1660,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "onMenuOpen": [Function],
                                     "openMenuOnClick": true,
                                     "openMenuOnFocus": false,
-                                    "options": Array [
-                                      Object {
+                                    "options": [
+                                      {
                                         "label": "Second Source",
                                         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                         "query": "Second Source",
@@ -1669,7 +1669,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                         "schema": "exp.data",
                                         "value": "second source",
                                       },
-                                      Object {
+                                      {
                                         "label": "Source 1",
                                         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                         "query": "Source 1",
@@ -1677,7 +1677,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                         "schema": "exp.data",
                                         "value": "source 1",
                                       },
-                                      Object {
+                                      {
                                         "label": "Vendor 3",
                                         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                         "query": "Vendor 3",
@@ -1690,7 +1690,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     "placeholder": "Select a Data Type ...",
                                     "promptTextCreator": undefined,
                                     "screenReaderStatus": [Function],
-                                    "styles": Object {
+                                    "styles": {
                                       "menu": [Function],
                                       "menuPortal": [Function],
                                       "multiValue": [Function],
@@ -1705,9 +1705,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 }
                                 setValue={[Function]}
                                 theme={
-                                  Object {
+                                  {
                                     "borderRadius": 4,
-                                    "colors": Object {
+                                    "colors": {
                                       "danger": "#D9534F",
                                       "dangerLight": "#FFBDAD",
                                       "neutral0": "hsl(0, 0%, 100%)",
@@ -1726,7 +1726,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       "primary50": "#F2F9FC",
                                       "primary75": "#009BF9",
                                     },
-                                    "spacing": Object {
+                                    "spacing": {
                                       "baseUnit": 4,
                                       "controlHeight": 38,
                                       "menuGutter": 8,
@@ -1739,8 +1739,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                   __EMOTION_TYPE_PLEASE_DO_NOT_USE__="div"
                                   className="select-input__control"
                                   css={
-                                    Object {
-                                      "&:hover": Object {
+                                    {
+                                      "&:hover": {
                                         "borderColor": "hsl(0, 0%, 70%)",
                                       },
                                       "alignItems": "center",
@@ -1767,9 +1767,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                 >
                                   <Insertion
                                     cache={
-                                      Object {
+                                      {
                                         "insert": [Function],
-                                        "inserted": Object {
+                                        "inserted": {
                                           "1f43avz-a11yText-A11yText": true,
                                           "1hb7zxy-IndicatorsContainer": true,
                                           "1okebmr-indicatorSeparator": true,
@@ -1783,7 +1783,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                         },
                                         "key": "css",
                                         "nonce": undefined,
-                                        "registered": Object {},
+                                        "registered": {},
                                         "sheet": StyleSheet {
                                           "_alreadyInsertedOrderInsensitiveRule": true,
                                           "_insertTag": [Function],
@@ -1901,7 +1901,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "key": "css",
                                           "nonce": undefined,
                                           "prepend": undefined,
-                                          "tags": Array [
+                                          "tags": [
                                             <style
                                               data-emotion="css"
                                               data-s=""
@@ -2013,7 +2013,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                     }
                                     isStringTag={true}
                                     serialized={
-                                      Object {
+                                      {
                                         "map": undefined,
                                         "name": "yk16xz-control",
                                         "next": undefined,
@@ -2037,8 +2037,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       isMulti={false}
                                       isRtl={false}
                                       options={
-                                        Array [
-                                          Object {
+                                        [
+                                          {
                                             "label": "Second Source",
                                             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                             "query": "Second Source",
@@ -2046,7 +2046,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             "schema": "exp.data",
                                             "value": "second source",
                                           },
-                                          Object {
+                                          {
                                             "label": "Source 1",
                                             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                             "query": "Source 1",
@@ -2054,7 +2054,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             "schema": "exp.data",
                                             "value": "source 1",
                                           },
-                                          Object {
+                                          {
                                             "label": "Vendor 3",
                                             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                             "query": "Vendor 3",
@@ -2066,7 +2066,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       }
                                       selectOption={[Function]}
                                       selectProps={
-                                        Object {
+                                        {
                                           "aria-live": "polite",
                                           "autoFocus": undefined,
                                           "backspaceRemovesValue": true,
@@ -2076,7 +2076,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "classNamePrefix": "select-input",
                                           "closeMenuOnScroll": false,
                                           "closeMenuOnSelect": true,
-                                          "components": Object {
+                                          "components": {
                                             "Input": [Function],
                                           },
                                           "controlShouldRenderValue": true,
@@ -2113,8 +2113,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "onMenuOpen": [Function],
                                           "openMenuOnClick": true,
                                           "openMenuOnFocus": false,
-                                          "options": Array [
-                                            Object {
+                                          "options": [
+                                            {
                                               "label": "Second Source",
                                               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                               "query": "Second Source",
@@ -2122,7 +2122,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               "schema": "exp.data",
                                               "value": "second source",
                                             },
-                                            Object {
+                                            {
                                               "label": "Source 1",
                                               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                               "query": "Source 1",
@@ -2130,7 +2130,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               "schema": "exp.data",
                                               "value": "source 1",
                                             },
-                                            Object {
+                                            {
                                               "label": "Vendor 3",
                                               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                               "query": "Vendor 3",
@@ -2143,7 +2143,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "placeholder": "Select a Data Type ...",
                                           "promptTextCreator": undefined,
                                           "screenReaderStatus": [Function],
-                                          "styles": Object {
+                                          "styles": {
                                             "menu": [Function],
                                             "menuPortal": [Function],
                                             "multiValue": [Function],
@@ -2158,9 +2158,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       }
                                       setValue={[Function]}
                                       theme={
-                                        Object {
+                                        {
                                           "borderRadius": 4,
-                                          "colors": Object {
+                                          "colors": {
                                             "danger": "#D9534F",
                                             "dangerLight": "#FFBDAD",
                                             "neutral0": "hsl(0, 0%, 100%)",
@@ -2179,7 +2179,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             "primary50": "#F2F9FC",
                                             "primary75": "#009BF9",
                                           },
-                                          "spacing": Object {
+                                          "spacing": {
                                             "baseUnit": 4,
                                             "controlHeight": 38,
                                             "menuGutter": 8,
@@ -2192,7 +2192,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                         __EMOTION_TYPE_PLEASE_DO_NOT_USE__="div"
                                         className="select-input__value-container"
                                         css={
-                                          Object {
+                                          {
                                             "WebkitOverflowScrolling": "touch",
                                             "alignItems": "center",
                                             "boxSizing": "border-box",
@@ -2207,9 +2207,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       >
                                         <Insertion
                                           cache={
-                                            Object {
+                                            {
                                               "insert": [Function],
-                                              "inserted": Object {
+                                              "inserted": {
                                                 "1f43avz-a11yText-A11yText": true,
                                                 "1hb7zxy-IndicatorsContainer": true,
                                                 "1okebmr-indicatorSeparator": true,
@@ -2223,7 +2223,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               },
                                               "key": "css",
                                               "nonce": undefined,
-                                              "registered": Object {},
+                                              "registered": {},
                                               "sheet": StyleSheet {
                                                 "_alreadyInsertedOrderInsensitiveRule": true,
                                                 "_insertTag": [Function],
@@ -2341,7 +2341,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "key": "css",
                                                 "nonce": undefined,
                                                 "prepend": undefined,
-                                                "tags": Array [
+                                                "tags": [
                                                   <style
                                                     data-emotion="css"
                                                     data-s=""
@@ -2453,7 +2453,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           }
                                           isStringTag={true}
                                           serialized={
-                                            Object {
+                                            {
                                               "map": undefined,
                                               "name": "g1d714-ValueContainer",
                                               "next": undefined,
@@ -2477,8 +2477,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             isRtl={false}
                                             key="placeholder"
                                             options={
-                                              Array [
-                                                Object {
+                                              [
+                                                {
                                                   "label": "Second Source",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                                   "query": "Second Source",
@@ -2486,7 +2486,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "schema": "exp.data",
                                                   "value": "second source",
                                                 },
-                                                Object {
+                                                {
                                                   "label": "Source 1",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                                   "query": "Source 1",
@@ -2494,7 +2494,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "schema": "exp.data",
                                                   "value": "source 1",
                                                 },
-                                                Object {
+                                                {
                                                   "label": "Vendor 3",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                                   "query": "Vendor 3",
@@ -2506,7 +2506,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             }
                                             selectOption={[Function]}
                                             selectProps={
-                                              Object {
+                                              {
                                                 "aria-live": "polite",
                                                 "autoFocus": undefined,
                                                 "backspaceRemovesValue": true,
@@ -2516,7 +2516,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "classNamePrefix": "select-input",
                                                 "closeMenuOnScroll": false,
                                                 "closeMenuOnSelect": true,
-                                                "components": Object {
+                                                "components": {
                                                   "Input": [Function],
                                                 },
                                                 "controlShouldRenderValue": true,
@@ -2553,8 +2553,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "onMenuOpen": [Function],
                                                 "openMenuOnClick": true,
                                                 "openMenuOnFocus": false,
-                                                "options": Array [
-                                                  Object {
+                                                "options": [
+                                                  {
                                                     "label": "Second Source",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                                     "query": "Second Source",
@@ -2562,7 +2562,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "schema": "exp.data",
                                                     "value": "second source",
                                                   },
-                                                  Object {
+                                                  {
                                                     "label": "Source 1",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                                     "query": "Source 1",
@@ -2570,7 +2570,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "schema": "exp.data",
                                                     "value": "source 1",
                                                   },
-                                                  Object {
+                                                  {
                                                     "label": "Vendor 3",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                                     "query": "Vendor 3",
@@ -2583,7 +2583,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "placeholder": "Select a Data Type ...",
                                                 "promptTextCreator": undefined,
                                                 "screenReaderStatus": [Function],
-                                                "styles": Object {
+                                                "styles": {
                                                   "menu": [Function],
                                                   "menuPortal": [Function],
                                                   "multiValue": [Function],
@@ -2598,9 +2598,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             }
                                             setValue={[Function]}
                                             theme={
-                                              Object {
+                                              {
                                                 "borderRadius": 4,
-                                                "colors": Object {
+                                                "colors": {
                                                   "danger": "#D9534F",
                                                   "dangerLight": "#FFBDAD",
                                                   "neutral0": "hsl(0, 0%, 100%)",
@@ -2619,7 +2619,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "primary50": "#F2F9FC",
                                                   "primary75": "#009BF9",
                                                 },
-                                                "spacing": Object {
+                                                "spacing": {
                                                   "baseUnit": 4,
                                                   "controlHeight": 38,
                                                   "menuGutter": 8,
@@ -2632,7 +2632,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               __EMOTION_TYPE_PLEASE_DO_NOT_USE__="div"
                                               className="select-input__placeholder"
                                               css={
-                                                Object {
+                                                {
                                                   "boxSizing": "border-box",
                                                   "color": "hsl(0, 0%, 50%)",
                                                   "label": "placeholder",
@@ -2646,9 +2646,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             >
                                               <Insertion
                                                 cache={
-                                                  Object {
+                                                  {
                                                     "insert": [Function],
-                                                    "inserted": Object {
+                                                    "inserted": {
                                                       "1f43avz-a11yText-A11yText": true,
                                                       "1hb7zxy-IndicatorsContainer": true,
                                                       "1okebmr-indicatorSeparator": true,
@@ -2662,7 +2662,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     },
                                                     "key": "css",
                                                     "nonce": undefined,
-                                                    "registered": Object {},
+                                                    "registered": {},
                                                     "sheet": StyleSheet {
                                                       "_alreadyInsertedOrderInsensitiveRule": true,
                                                       "_insertTag": [Function],
@@ -2780,7 +2780,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                       "key": "css",
                                                       "nonce": undefined,
                                                       "prepend": undefined,
-                                                      "tags": Array [
+                                                      "tags": [
                                                         <style
                                                           data-emotion="css"
                                                           data-s=""
@@ -2892,7 +2892,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 }
                                                 isStringTag={true}
                                                 serialized={
-                                                  Object {
+                                                  {
                                                     "map": undefined,
                                                     "name": "1wa3eu0-placeholder",
                                                     "next": undefined,
@@ -2928,8 +2928,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             onChange={[Function]}
                                             onFocus={[Function]}
                                             options={
-                                              Array [
-                                                Object {
+                                              [
+                                                {
                                                   "label": "Second Source",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                                   "query": "Second Source",
@@ -2937,7 +2937,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "schema": "exp.data",
                                                   "value": "second source",
                                                 },
-                                                Object {
+                                                {
                                                   "label": "Source 1",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                                   "query": "Source 1",
@@ -2945,7 +2945,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "schema": "exp.data",
                                                   "value": "source 1",
                                                 },
-                                                Object {
+                                                {
                                                   "label": "Vendor 3",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                                   "query": "Vendor 3",
@@ -2957,7 +2957,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             }
                                             selectOption={[Function]}
                                             selectProps={
-                                              Object {
+                                              {
                                                 "aria-live": "polite",
                                                 "autoFocus": undefined,
                                                 "backspaceRemovesValue": true,
@@ -2967,7 +2967,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "classNamePrefix": "select-input",
                                                 "closeMenuOnScroll": false,
                                                 "closeMenuOnSelect": true,
-                                                "components": Object {
+                                                "components": {
                                                   "Input": [Function],
                                                 },
                                                 "controlShouldRenderValue": true,
@@ -3004,8 +3004,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "onMenuOpen": [Function],
                                                 "openMenuOnClick": true,
                                                 "openMenuOnFocus": false,
-                                                "options": Array [
-                                                  Object {
+                                                "options": [
+                                                  {
                                                     "label": "Second Source",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                                     "query": "Second Source",
@@ -3013,7 +3013,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "schema": "exp.data",
                                                     "value": "second source",
                                                   },
-                                                  Object {
+                                                  {
                                                     "label": "Source 1",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                                     "query": "Source 1",
@@ -3021,7 +3021,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "schema": "exp.data",
                                                     "value": "source 1",
                                                   },
-                                                  Object {
+                                                  {
                                                     "label": "Vendor 3",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                                     "query": "Vendor 3",
@@ -3034,7 +3034,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "placeholder": "Select a Data Type ...",
                                                 "promptTextCreator": undefined,
                                                 "screenReaderStatus": [Function],
-                                                "styles": Object {
+                                                "styles": {
                                                   "menu": [Function],
                                                   "menuPortal": [Function],
                                                   "multiValue": [Function],
@@ -3051,9 +3051,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             spellCheck="false"
                                             tabIndex="0"
                                             theme={
-                                              Object {
+                                              {
                                                 "borderRadius": 4,
-                                                "colors": Object {
+                                                "colors": {
                                                   "danger": "#D9534F",
                                                   "dangerLight": "#FFBDAD",
                                                   "neutral0": "hsl(0, 0%, 100%)",
@@ -3072,7 +3072,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "primary50": "#F2F9FC",
                                                   "primary75": "#009BF9",
                                                 },
-                                                "spacing": Object {
+                                                "spacing": {
                                                   "baseUnit": 4,
                                                   "controlHeight": 38,
                                                   "menuGutter": 8,
@@ -3102,8 +3102,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               onChange={[Function]}
                                               onFocus={[Function]}
                                               options={
-                                                Array [
-                                                  Object {
+                                                [
+                                                  {
                                                     "label": "Second Source",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                                     "query": "Second Source",
@@ -3111,7 +3111,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "schema": "exp.data",
                                                     "value": "second source",
                                                   },
-                                                  Object {
+                                                  {
                                                     "label": "Source 1",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                                     "query": "Source 1",
@@ -3119,7 +3119,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "schema": "exp.data",
                                                     "value": "source 1",
                                                   },
-                                                  Object {
+                                                  {
                                                     "label": "Vendor 3",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                                     "query": "Vendor 3",
@@ -3132,7 +3132,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               required={true}
                                               selectOption={[Function]}
                                               selectProps={
-                                                Object {
+                                                {
                                                   "aria-live": "polite",
                                                   "autoFocus": undefined,
                                                   "backspaceRemovesValue": true,
@@ -3142,7 +3142,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "classNamePrefix": "select-input",
                                                   "closeMenuOnScroll": false,
                                                   "closeMenuOnSelect": true,
-                                                  "components": Object {
+                                                  "components": {
                                                     "Input": [Function],
                                                   },
                                                   "controlShouldRenderValue": true,
@@ -3179,8 +3179,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "onMenuOpen": [Function],
                                                   "openMenuOnClick": true,
                                                   "openMenuOnFocus": false,
-                                                  "options": Array [
-                                                    Object {
+                                                  "options": [
+                                                    {
                                                       "label": "Second Source",
                                                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                                       "query": "Second Source",
@@ -3188,7 +3188,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                       "schema": "exp.data",
                                                       "value": "second source",
                                                     },
-                                                    Object {
+                                                    {
                                                       "label": "Source 1",
                                                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                                       "query": "Source 1",
@@ -3196,7 +3196,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                       "schema": "exp.data",
                                                       "value": "source 1",
                                                     },
-                                                    Object {
+                                                    {
                                                       "label": "Vendor 3",
                                                       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                                       "query": "Vendor 3",
@@ -3209,7 +3209,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "placeholder": "Select a Data Type ...",
                                                   "promptTextCreator": undefined,
                                                   "screenReaderStatus": [Function],
-                                                  "styles": Object {
+                                                  "styles": {
                                                     "menu": [Function],
                                                     "menuPortal": [Function],
                                                     "multiValue": [Function],
@@ -3226,9 +3226,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               spellCheck="false"
                                               tabIndex="0"
                                               theme={
-                                                Object {
+                                                {
                                                   "borderRadius": 4,
-                                                  "colors": Object {
+                                                  "colors": {
                                                     "danger": "#D9534F",
                                                     "dangerLight": "#FFBDAD",
                                                     "neutral0": "hsl(0, 0%, 100%)",
@@ -3247,7 +3247,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "primary50": "#F2F9FC",
                                                     "primary75": "#009BF9",
                                                   },
-                                                  "spacing": Object {
+                                                  "spacing": {
                                                     "baseUnit": 4,
                                                     "controlHeight": 38,
                                                     "menuGutter": 8,
@@ -3261,7 +3261,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 __EMOTION_LABEL_PLEASE_DO_NOT_USE__="Input"
                                                 __EMOTION_TYPE_PLEASE_DO_NOT_USE__="div"
                                                 css={
-                                                  Object {
+                                                  {
                                                     "boxSizing": "border-box",
                                                     "color": "hsl(0, 0%, 20%)",
                                                     "margin": 2,
@@ -3273,9 +3273,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               >
                                                 <Insertion
                                                   cache={
-                                                    Object {
+                                                    {
                                                       "insert": [Function],
-                                                      "inserted": Object {
+                                                      "inserted": {
                                                         "1f43avz-a11yText-A11yText": true,
                                                         "1hb7zxy-IndicatorsContainer": true,
                                                         "1okebmr-indicatorSeparator": true,
@@ -3289,7 +3289,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                       },
                                                       "key": "css",
                                                       "nonce": undefined,
-                                                      "registered": Object {},
+                                                      "registered": {},
                                                       "sheet": StyleSheet {
                                                         "_alreadyInsertedOrderInsensitiveRule": true,
                                                         "_insertTag": [Function],
@@ -3407,7 +3407,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                         "key": "css",
                                                         "nonce": undefined,
                                                         "prepend": undefined,
-                                                        "tags": Array [
+                                                        "tags": [
                                                           <style
                                                             data-emotion="css"
                                                             data-s=""
@@ -3519,7 +3519,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   }
                                                   isStringTag={true}
                                                   serialized={
-                                                    Object {
+                                                    {
                                                       "map": undefined,
                                                       "name": "b8ldur-Input",
                                                       "next": undefined,
@@ -3542,7 +3542,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     injectStyles={true}
                                                     inputRef={[Function]}
                                                     inputStyle={
-                                                      Object {
+                                                      {
                                                         "background": 0,
                                                         "border": 0,
                                                         "color": "inherit",
@@ -3566,7 +3566,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     <div
                                                       className="select-input__input"
                                                       style={
-                                                        Object {
+                                                        {
                                                           "display": "inline-block",
                                                         }
                                                       }
@@ -3584,7 +3584,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                         required={true}
                                                         spellCheck="false"
                                                         style={
-                                                          Object {
+                                                          {
                                                             "background": 0,
                                                             "border": 0,
                                                             "boxSizing": "content-box",
@@ -3603,7 +3603,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                       />
                                                       <div
                                                         style={
-                                                          Object {
+                                                          {
                                                             "height": 0,
                                                             "left": 0,
                                                             "overflow": "scroll",
@@ -3633,8 +3633,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       isMulti={false}
                                       isRtl={false}
                                       options={
-                                        Array [
-                                          Object {
+                                        [
+                                          {
                                             "label": "Second Source",
                                             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                             "query": "Second Source",
@@ -3642,7 +3642,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             "schema": "exp.data",
                                             "value": "second source",
                                           },
-                                          Object {
+                                          {
                                             "label": "Source 1",
                                             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                             "query": "Source 1",
@@ -3650,7 +3650,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             "schema": "exp.data",
                                             "value": "source 1",
                                           },
-                                          Object {
+                                          {
                                             "label": "Vendor 3",
                                             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                             "query": "Vendor 3",
@@ -3662,7 +3662,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       }
                                       selectOption={[Function]}
                                       selectProps={
-                                        Object {
+                                        {
                                           "aria-live": "polite",
                                           "autoFocus": undefined,
                                           "backspaceRemovesValue": true,
@@ -3672,7 +3672,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "classNamePrefix": "select-input",
                                           "closeMenuOnScroll": false,
                                           "closeMenuOnSelect": true,
-                                          "components": Object {
+                                          "components": {
                                             "Input": [Function],
                                           },
                                           "controlShouldRenderValue": true,
@@ -3709,8 +3709,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "onMenuOpen": [Function],
                                           "openMenuOnClick": true,
                                           "openMenuOnFocus": false,
-                                          "options": Array [
-                                            Object {
+                                          "options": [
+                                            {
                                               "label": "Second Source",
                                               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                               "query": "Second Source",
@@ -3718,7 +3718,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               "schema": "exp.data",
                                               "value": "second source",
                                             },
-                                            Object {
+                                            {
                                               "label": "Source 1",
                                               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                               "query": "Source 1",
@@ -3726,7 +3726,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               "schema": "exp.data",
                                               "value": "source 1",
                                             },
-                                            Object {
+                                            {
                                               "label": "Vendor 3",
                                               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                               "query": "Vendor 3",
@@ -3739,7 +3739,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           "placeholder": "Select a Data Type ...",
                                           "promptTextCreator": undefined,
                                           "screenReaderStatus": [Function],
-                                          "styles": Object {
+                                          "styles": {
                                             "menu": [Function],
                                             "menuPortal": [Function],
                                             "multiValue": [Function],
@@ -3754,9 +3754,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       }
                                       setValue={[Function]}
                                       theme={
-                                        Object {
+                                        {
                                           "borderRadius": 4,
-                                          "colors": Object {
+                                          "colors": {
                                             "danger": "#D9534F",
                                             "dangerLight": "#FFBDAD",
                                             "neutral0": "hsl(0, 0%, 100%)",
@@ -3775,7 +3775,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             "primary50": "#F2F9FC",
                                             "primary75": "#009BF9",
                                           },
-                                          "spacing": Object {
+                                          "spacing": {
                                             "baseUnit": 4,
                                             "controlHeight": 38,
                                             "menuGutter": 8,
@@ -3788,7 +3788,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                         __EMOTION_TYPE_PLEASE_DO_NOT_USE__="div"
                                         className="select-input__indicators"
                                         css={
-                                          Object {
+                                          {
                                             "alignItems": "center",
                                             "alignSelf": "stretch",
                                             "boxSizing": "border-box",
@@ -3799,9 +3799,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                       >
                                         <Insertion
                                           cache={
-                                            Object {
+                                            {
                                               "insert": [Function],
-                                              "inserted": Object {
+                                              "inserted": {
                                                 "1f43avz-a11yText-A11yText": true,
                                                 "1hb7zxy-IndicatorsContainer": true,
                                                 "1okebmr-indicatorSeparator": true,
@@ -3815,7 +3815,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               },
                                               "key": "css",
                                               "nonce": undefined,
-                                              "registered": Object {},
+                                              "registered": {},
                                               "sheet": StyleSheet {
                                                 "_alreadyInsertedOrderInsensitiveRule": true,
                                                 "_insertTag": [Function],
@@ -3933,7 +3933,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "key": "css",
                                                 "nonce": undefined,
                                                 "prepend": undefined,
-                                                "tags": Array [
+                                                "tags": [
                                                   <style
                                                     data-emotion="css"
                                                     data-s=""
@@ -4045,7 +4045,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                           }
                                           isStringTag={true}
                                           serialized={
-                                            Object {
+                                            {
                                               "map": undefined,
                                               "name": "1hb7zxy-IndicatorsContainer",
                                               "next": undefined,
@@ -4068,8 +4068,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             isMulti={false}
                                             isRtl={false}
                                             options={
-                                              Array [
-                                                Object {
+                                              [
+                                                {
                                                   "label": "Second Source",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                                   "query": "Second Source",
@@ -4077,7 +4077,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "schema": "exp.data",
                                                   "value": "second source",
                                                 },
-                                                Object {
+                                                {
                                                   "label": "Source 1",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                                   "query": "Source 1",
@@ -4085,7 +4085,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "schema": "exp.data",
                                                   "value": "source 1",
                                                 },
-                                                Object {
+                                                {
                                                   "label": "Vendor 3",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                                   "query": "Vendor 3",
@@ -4097,7 +4097,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             }
                                             selectOption={[Function]}
                                             selectProps={
-                                              Object {
+                                              {
                                                 "aria-live": "polite",
                                                 "autoFocus": undefined,
                                                 "backspaceRemovesValue": true,
@@ -4107,7 +4107,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "classNamePrefix": "select-input",
                                                 "closeMenuOnScroll": false,
                                                 "closeMenuOnSelect": true,
-                                                "components": Object {
+                                                "components": {
                                                   "Input": [Function],
                                                 },
                                                 "controlShouldRenderValue": true,
@@ -4144,8 +4144,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "onMenuOpen": [Function],
                                                 "openMenuOnClick": true,
                                                 "openMenuOnFocus": false,
-                                                "options": Array [
-                                                  Object {
+                                                "options": [
+                                                  {
                                                     "label": "Second Source",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                                     "query": "Second Source",
@@ -4153,7 +4153,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "schema": "exp.data",
                                                     "value": "second source",
                                                   },
-                                                  Object {
+                                                  {
                                                     "label": "Source 1",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                                     "query": "Source 1",
@@ -4161,7 +4161,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "schema": "exp.data",
                                                     "value": "source 1",
                                                   },
-                                                  Object {
+                                                  {
                                                     "label": "Vendor 3",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                                     "query": "Vendor 3",
@@ -4174,7 +4174,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "placeholder": "Select a Data Type ...",
                                                 "promptTextCreator": undefined,
                                                 "screenReaderStatus": [Function],
-                                                "styles": Object {
+                                                "styles": {
                                                   "menu": [Function],
                                                   "menuPortal": [Function],
                                                   "multiValue": [Function],
@@ -4189,9 +4189,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             }
                                             setValue={[Function]}
                                             theme={
-                                              Object {
+                                              {
                                                 "borderRadius": 4,
-                                                "colors": Object {
+                                                "colors": {
                                                   "danger": "#D9534F",
                                                   "dangerLight": "#FFBDAD",
                                                   "neutral0": "hsl(0, 0%, 100%)",
@@ -4210,7 +4210,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "primary50": "#F2F9FC",
                                                   "primary75": "#009BF9",
                                                 },
-                                                "spacing": Object {
+                                                "spacing": {
                                                   "baseUnit": 4,
                                                   "controlHeight": 38,
                                                   "menuGutter": 8,
@@ -4223,7 +4223,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               __EMOTION_TYPE_PLEASE_DO_NOT_USE__="span"
                                               className="select-input__indicator-separator"
                                               css={
-                                                Object {
+                                                {
                                                   "alignSelf": "stretch",
                                                   "backgroundColor": "hsl(0, 0%, 80%)",
                                                   "boxSizing": "border-box",
@@ -4236,9 +4236,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             >
                                               <Insertion
                                                 cache={
-                                                  Object {
+                                                  {
                                                     "insert": [Function],
-                                                    "inserted": Object {
+                                                    "inserted": {
                                                       "1f43avz-a11yText-A11yText": true,
                                                       "1hb7zxy-IndicatorsContainer": true,
                                                       "1okebmr-indicatorSeparator": true,
@@ -4252,7 +4252,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     },
                                                     "key": "css",
                                                     "nonce": undefined,
-                                                    "registered": Object {},
+                                                    "registered": {},
                                                     "sheet": StyleSheet {
                                                       "_alreadyInsertedOrderInsensitiveRule": true,
                                                       "_insertTag": [Function],
@@ -4370,7 +4370,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                       "key": "css",
                                                       "nonce": undefined,
                                                       "prepend": undefined,
-                                                      "tags": Array [
+                                                      "tags": [
                                                         <style
                                                           data-emotion="css"
                                                           data-s=""
@@ -4482,7 +4482,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 }
                                                 isStringTag={true}
                                                 serialized={
-                                                  Object {
+                                                  {
                                                     "map": undefined,
                                                     "name": "1okebmr-indicatorSeparator",
                                                     "next": undefined,
@@ -4503,7 +4503,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             getValue={[Function]}
                                             hasValue={false}
                                             innerProps={
-                                              Object {
+                                              {
                                                 "aria-hidden": "true",
                                                 "onMouseDown": [Function],
                                                 "onTouchEnd": [Function],
@@ -4514,8 +4514,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             isMulti={false}
                                             isRtl={false}
                                             options={
-                                              Array [
-                                                Object {
+                                              [
+                                                {
                                                   "label": "Second Source",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                                   "query": "Second Source",
@@ -4523,7 +4523,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "schema": "exp.data",
                                                   "value": "second source",
                                                 },
-                                                Object {
+                                                {
                                                   "label": "Source 1",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                                   "query": "Source 1",
@@ -4531,7 +4531,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "schema": "exp.data",
                                                   "value": "source 1",
                                                 },
-                                                Object {
+                                                {
                                                   "label": "Vendor 3",
                                                   "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                                   "query": "Vendor 3",
@@ -4543,7 +4543,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             }
                                             selectOption={[Function]}
                                             selectProps={
-                                              Object {
+                                              {
                                                 "aria-live": "polite",
                                                 "autoFocus": undefined,
                                                 "backspaceRemovesValue": true,
@@ -4553,7 +4553,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "classNamePrefix": "select-input",
                                                 "closeMenuOnScroll": false,
                                                 "closeMenuOnSelect": true,
-                                                "components": Object {
+                                                "components": {
                                                   "Input": [Function],
                                                 },
                                                 "controlShouldRenderValue": true,
@@ -4590,8 +4590,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "onMenuOpen": [Function],
                                                 "openMenuOnClick": true,
                                                 "openMenuOnFocus": false,
-                                                "options": Array [
-                                                  Object {
+                                                "options": [
+                                                  {
                                                     "label": "Second Source",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
                                                     "query": "Second Source",
@@ -4599,7 +4599,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "schema": "exp.data",
                                                     "value": "second source",
                                                   },
-                                                  Object {
+                                                  {
                                                     "label": "Source 1",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
                                                     "query": "Source 1",
@@ -4607,7 +4607,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     "schema": "exp.data",
                                                     "value": "source 1",
                                                   },
-                                                  Object {
+                                                  {
                                                     "label": "Vendor 3",
                                                     "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
                                                     "query": "Vendor 3",
@@ -4620,7 +4620,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 "placeholder": "Select a Data Type ...",
                                                 "promptTextCreator": undefined,
                                                 "screenReaderStatus": [Function],
-                                                "styles": Object {
+                                                "styles": {
                                                   "menu": [Function],
                                                   "menuPortal": [Function],
                                                   "multiValue": [Function],
@@ -4635,9 +4635,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             }
                                             setValue={[Function]}
                                             theme={
-                                              Object {
+                                              {
                                                 "borderRadius": 4,
-                                                "colors": Object {
+                                                "colors": {
                                                   "danger": "#D9534F",
                                                   "dangerLight": "#FFBDAD",
                                                   "neutral0": "hsl(0, 0%, 100%)",
@@ -4656,7 +4656,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                   "primary50": "#F2F9FC",
                                                   "primary75": "#009BF9",
                                                 },
-                                                "spacing": Object {
+                                                "spacing": {
                                                   "baseUnit": 4,
                                                   "controlHeight": 38,
                                                   "menuGutter": 8,
@@ -4670,8 +4670,8 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                               aria-hidden="true"
                                               className="select-input__indicator select-input__dropdown-indicator"
                                               css={
-                                                Object {
-                                                  ":hover": Object {
+                                                {
+                                                  ":hover": {
                                                     "color": "hsl(0, 0%, 60%)",
                                                   },
                                                   "boxSizing": "border-box",
@@ -4687,9 +4687,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                             >
                                               <Insertion
                                                 cache={
-                                                  Object {
+                                                  {
                                                     "insert": [Function],
-                                                    "inserted": Object {
+                                                    "inserted": {
                                                       "1f43avz-a11yText-A11yText": true,
                                                       "1hb7zxy-IndicatorsContainer": true,
                                                       "1okebmr-indicatorSeparator": true,
@@ -4703,7 +4703,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     },
                                                     "key": "css",
                                                     "nonce": undefined,
-                                                    "registered": Object {},
+                                                    "registered": {},
                                                     "sheet": StyleSheet {
                                                       "_alreadyInsertedOrderInsensitiveRule": true,
                                                       "_insertTag": [Function],
@@ -4821,7 +4821,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                       "key": "css",
                                                       "nonce": undefined,
                                                       "prepend": undefined,
-                                                      "tags": Array [
+                                                      "tags": [
                                                         <style
                                                           data-emotion="css"
                                                           data-s=""
@@ -4933,7 +4933,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                 }
                                                 isStringTag={true}
                                                 serialized={
-                                                  Object {
+                                                  {
                                                     "map": undefined,
                                                     "name": "tlfecz-indicatorContainer",
                                                     "next": undefined,
@@ -4956,7 +4956,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                       __EMOTION_TYPE_PLEASE_DO_NOT_USE__="svg"
                                                       aria-hidden="true"
                                                       css={
-                                                        Object {
+                                                        {
                                                           "map": "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGljYXRvcnMuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBa0JJIiwiZmlsZSI6ImluZGljYXRvcnMuanMiLCJzb3VyY2VzQ29udGVudCI6WyIvLyBAZmxvd1xuLyoqIEBqc3gganN4ICovXG5pbXBvcnQgeyB0eXBlIE5vZGUgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBqc3gsIGtleWZyYW1lcyB9IGZyb20gJ0BlbW90aW9uL3JlYWN0JztcblxuaW1wb3J0IHR5cGUgeyBDb21tb25Qcm9wcywgVGhlbWUgfSBmcm9tICcuLi90eXBlcyc7XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gRHJvcGRvd24gJiBDbGVhciBJY29uc1xuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbmNvbnN0IFN2ZyA9ICh7IHNpemUsIC4uLnByb3BzIH06IHsgc2l6ZTogbnVtYmVyIH0pID0+IChcbiAgPHN2Z1xuICAgIGhlaWdodD17c2l6ZX1cbiAgICB3aWR0aD17c2l6ZX1cbiAgICB2aWV3Qm94PVwiMCAwIDIwIDIwXCJcbiAgICBhcmlhLWhpZGRlbj1cInRydWVcIlxuICAgIGZvY3VzYWJsZT1cImZhbHNlXCJcbiAgICBjc3M9e3tcbiAgICAgIGRpc3BsYXk6ICdpbmxpbmUtYmxvY2snLFxuICAgICAgZmlsbDogJ2N1cnJlbnRDb2xvcicsXG4gICAgICBsaW5lSGVpZ2h0OiAxLFxuICAgICAgc3Ryb2tlOiAnY3VycmVudENvbG9yJyxcbiAgICAgIHN0cm9rZVdpZHRoOiAwLFxuICAgIH19XG4gICAgey4uLnByb3BzfVxuICAvPlxuKTtcblxuZXhwb3J0IGNvbnN0IENyb3NzSWNvbiA9IChwcm9wczogYW55KSA9PiAoXG4gIDxTdmcgc2l6ZT17MjB9IHsuLi5wcm9wc30+XG4gICAgPHBhdGggZD1cIk0xNC4zNDggMTQuODQ5Yy0wLjQ2OSAwLjQ2OS0xLjIyOSAwLjQ2OS0xLjY5NyAwbC0yLjY1MS0zLjAzMC0yLjY1MSAzLjAyOWMtMC40NjkgMC40NjktMS4yMjkgMC40NjktMS42OTcgMC0wLjQ2OS0wLjQ2OS0wLjQ2OS0xLjIyOSAwLTEuNjk3bDIuNzU4LTMuMTUtMi43NTktMy4xNTJjLTAuNDY5LTAuNDY5LTAuNDY5LTEuMjI4IDAtMS42OTdzMS4yMjgtMC40NjkgMS42OTcgMGwyLjY1MiAzLjAzMSAyLjY1MS0zLjAzMWMwLjQ2OS0wLjQ2OSAxLjIyOC0wLjQ2OSAxLjY5NyAwczAuNDY5IDEuMjI5IDAgMS42OTdsLTIuNzU4IDMuMTUyIDIuNzU4IDMuMTVjMC40NjkgMC40NjkgMC40NjkgMS4yMjkgMCAxLjY5OHpcIiAvPlxuICA8L1N2Zz5cbik7XG5leHBvcnQgY29uc3QgRG93bkNoZXZyb24gPSAocHJvcHM6IGFueSkgPT4gKFxuICA8U3ZnIHNpemU9ezIwfSB7Li4ucHJvcHN9PlxuICAgIDxwYXRoIGQ9XCJNNC41MTYgNy41NDhjMC40MzYtMC40NDYgMS4wNDMtMC40ODEgMS41NzYgMGwzLjkwOCAzLjc0NyAzLjkwOC0zLjc0N2MwLjUzMy0wLjQ4MSAxLjE0MS0wLjQ0NiAxLjU3NCAwIDAuNDM2IDAuNDQ1IDAuNDA4IDEuMTk3IDAgMS42MTUtMC40MDYgMC40MTgtNC42OTUgNC41MDItNC42OTUgNC41MDItMC4yMTcgMC4yMjMtMC41MDIgMC4zMzUtMC43ODcgMC4zMzVzLTAuNTctMC4xMTItMC43ODktMC4zMzVjMCAwLTQuMjg3LTQuMDg0LTQuNjk1LTQuNTAycy0wLjQzNi0xLjE3IDAtMS42MTV6XCIgLz5cbiAgPC9Tdmc+XG4pO1xuXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIERyb3Bkb3duICYgQ2xlYXIgQnV0dG9uc1xuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbmV4cG9ydCB0eXBlIEluZGljYXRvclByb3BzID0gQ29tbW9uUHJvcHMgJiB7XG4gIC8qKiBUaGUgY2hpbGRyZW4gdG8gYmUgcmVuZGVyZWQgaW5zaWRlIHRoZSBpbmRpY2F0b3IuICovXG4gIGNoaWxkcmVuOiBOb2RlLFxuICAvKiogUHJvcHMgdGhhdCB3aWxsIGJlIHBhc3NlZCBvbiB0byB0aGUgY2hpbGRyZW4uICovXG4gIGlubmVyUHJvcHM6IGFueSxcbiAgLyoqIFRoZSBmb2N1c2VkIHN0YXRlIG9mIHRoZSBzZWxlY3QuICovXG4gIGlzRm9jdXNlZDogYm9vbGVhbixcbiAgLyoqIFdoZXRoZXIgdGhlIHRleHQgaXMgcmlnaHQgdG8gbGVmdCAqL1xuICBpc1J0bDogYm9vbGVhbixcbn07XG5cbmNvbnN0IGJhc2VDU1MgPSAoe1xuICBpc0ZvY3VzZWQsXG4gIHRoZW1lOiB7XG4gICAgc3BhY2luZzogeyBiYXNlVW5pdCB9LFxuICAgIGNvbG9ycyxcbiAgfSxcbn06IEluZGljYXRvclByb3BzKSA9PiAoe1xuICBsYWJlbDogJ2luZGljYXRvckNvbnRhaW5lcicsXG4gIGNvbG9yOiBpc0ZvY3VzZWQgPyBjb2xvcnMubmV1dHJhbDYwIDogY29sb3JzLm5ldXRyYWwyMCxcbiAgZGlzcGxheTogJ2ZsZXgnLFxuICBwYWRkaW5nOiBiYXNlVW5pdCAqIDIsXG4gIHRyYW5zaXRpb246ICdjb2xvciAxNTBtcycsXG5cbiAgJzpob3Zlcic6IHtcbiAgICBjb2xvcjogaXNGb2N1c2VkID8gY29sb3JzLm5ldXRyYWw4MCA6IGNvbG9ycy5uZXV0cmFsNDAsXG4gIH0sXG59KTtcblxuZXhwb3J0IGNvbnN0IGRyb3Bkb3duSW5kaWNhdG9yQ1NTID0gYmFzZUNTUztcbmV4cG9ydCBjb25zdCBEcm9wZG93bkluZGljYXRvciA9IChwcm9wczogSW5kaWNhdG9yUHJvcHMpID0+IHtcbiAgY29uc3QgeyBjaGlsZHJlbiwgY2xhc3NOYW1lLCBjeCwgZ2V0U3R5bGVzLCBpbm5lclByb3BzIH0gPSBwcm9wcztcbiAgcmV0dXJuIChcbiAgICA8ZGl2XG4gICAgICBjc3M9e2dldFN0eWxlcygnZHJvcGRvd25JbmRpY2F0b3InLCBwcm9wcyl9XG4gICAgICBjbGFzc05hbWU9e2N4KFxuICAgICAgICB7XG4gICAgICAgICAgaW5kaWNhdG9yOiB0cnVlLFxuICAgICAgICAgICdkcm9wZG93bi1pbmRpY2F0b3InOiB0cnVlLFxuICAgICAgICB9LFxuICAgICAgICBjbGFzc05hbWVcbiAgICAgICl9XG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICA+XG4gICAgICB7Y2hpbGRyZW4gfHwgPERvd25DaGV2cm9uIC8+fVxuICAgIDwvZGl2PlxuICApO1xufTtcblxuZXhwb3J0IGNvbnN0IGNsZWFySW5kaWNhdG9yQ1NTID0gYmFzZUNTUztcbmV4cG9ydCBjb25zdCBDbGVhckluZGljYXRvciA9IChwcm9wczogSW5kaWNhdG9yUHJvcHMpID0+IHtcbiAgY29uc3QgeyBjaGlsZHJlbiwgY2xhc3NOYW1lLCBjeCwgZ2V0U3R5bGVzLCBpbm5lclByb3BzIH0gPSBwcm9wcztcbiAgcmV0dXJuIChcbiAgICA8ZGl2XG4gICAgICBjc3M9e2dldFN0eWxlcygnY2xlYXJJbmRpY2F0b3InLCBwcm9wcyl9XG4gICAgICBjbGFzc05hbWU9e2N4KFxuICAgICAgICB7XG4gICAgICAgICAgaW5kaWNhdG9yOiB0cnVlLFxuICAgICAgICAgICdjbGVhci1pbmRpY2F0b3InOiB0cnVlLFxuICAgICAgICB9LFxuICAgICAgICBjbGFzc05hbWVcbiAgICAgICl9XG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICA+XG4gICAgICB7Y2hpbGRyZW4gfHwgPENyb3NzSWNvbiAvPn1cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gU2VwYXJhdG9yXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxudHlwZSBTZXBhcmF0b3JTdGF0ZSA9IHsgaXNEaXNhYmxlZDogYm9vbGVhbiB9O1xuXG5leHBvcnQgY29uc3QgaW5kaWNhdG9yU2VwYXJhdG9yQ1NTID0gKHtcbiAgaXNEaXNhYmxlZCxcbiAgdGhlbWU6IHtcbiAgICBzcGFjaW5nOiB7IGJhc2VVbml0IH0sXG4gICAgY29sb3JzLFxuICB9LFxufTogQ29tbW9uUHJvcHMgJiBTZXBhcmF0b3JTdGF0ZSkgPT4gKHtcbiAgbGFiZWw6ICdpbmRpY2F0b3JTZXBhcmF0b3InLFxuICBhbGlnblNlbGY6ICdzdHJldGNoJyxcbiAgYmFja2dyb3VuZENvbG9yOiBpc0Rpc2FibGVkID8gY29sb3JzLm5ldXRyYWwxMCA6IGNvbG9ycy5uZXV0cmFsMjAsXG4gIG1hcmdpbkJvdHRvbTogYmFzZVVuaXQgKiAyLFxuICBtYXJnaW5Ub3A6IGJhc2VVbml0ICogMixcbiAgd2lkdGg6IDEsXG59KTtcblxuZXhwb3J0IGNvbnN0IEluZGljYXRvclNlcGFyYXRvciA9IChwcm9wczogSW5kaWNhdG9yUHJvcHMpID0+IHtcbiAgY29uc3QgeyBjbGFzc05hbWUsIGN4LCBnZXRTdHlsZXMsIGlubmVyUHJvcHMgfSA9IHByb3BzO1xuICByZXR1cm4gKFxuICAgIDxzcGFuXG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICAgIGNzcz17Z2V0U3R5bGVzKCdpbmRpY2F0b3JTZXBhcmF0b3InLCBwcm9wcyl9XG4gICAgICBjbGFzc05hbWU9e2N4KHsgJ2luZGljYXRvci1zZXBhcmF0b3InOiB0cnVlIH0sIGNsYXNzTmFtZSl9XG4gICAgLz5cbiAgKTtcbn07XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gTG9hZGluZ1xuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbmNvbnN0IGxvYWRpbmdEb3RBbmltYXRpb25zID0ga2V5ZnJhbWVzYFxuICAwJSwgODAlLCAxMDAlIHsgb3BhY2l0eTogMDsgfVxuICA0MCUgeyBvcGFjaXR5OiAxOyB9XG5gO1xuXG5leHBvcnQgY29uc3QgbG9hZGluZ0luZGljYXRvckNTUyA9ICh7XG4gIGlzRm9jdXNlZCxcbiAgc2l6ZSxcbiAgdGhlbWU6IHtcbiAgICBjb2xvcnMsXG4gICAgc3BhY2luZzogeyBiYXNlVW5pdCB9LFxuICB9LFxufToge1xuICBpc0ZvY3VzZWQ6IGJvb2xlYW4sXG4gIHNpemU6IG51bWJlcixcbiAgdGhlbWU6IFRoZW1lLFxufSkgPT4gKHtcbiAgbGFiZWw6ICdsb2FkaW5nSW5kaWNhdG9yJyxcbiAgY29sb3I6IGlzRm9jdXNlZCA/IGNvbG9ycy5uZXV0cmFsNjAgOiBjb2xvcnMubmV1dHJhbDIwLFxuICBkaXNwbGF5OiAnZmxleCcsXG4gIHBhZGRpbmc6IGJhc2VVbml0ICogMixcbiAgdHJhbnNpdGlvbjogJ2NvbG9yIDE1MG1zJyxcbiAgYWxpZ25TZWxmOiAnY2VudGVyJyxcbiAgZm9udFNpemU6IHNpemUsXG4gIGxpbmVIZWlnaHQ6IDEsXG4gIG1hcmdpblJpZ2h0OiBzaXplLFxuICB0ZXh0QWxpZ246ICdjZW50ZXInLFxuICB2ZXJ0aWNhbEFsaWduOiAnbWlkZGxlJyxcbn0pO1xuXG50eXBlIERvdFByb3BzID0geyBkZWxheTogbnVtYmVyLCBvZmZzZXQ6IGJvb2xlYW4gfTtcbmNvbnN0IExvYWRpbmdEb3QgPSAoeyBkZWxheSwgb2Zmc2V0IH06IERvdFByb3BzKSA9PiAoXG4gIDxzcGFuXG4gICAgY3NzPXt7XG4gICAgICBhbmltYXRpb246IGAke2xvYWRpbmdEb3RBbmltYXRpb25zfSAxcyBlYXNlLWluLW91dCAke2RlbGF5fW1zIGluZmluaXRlO2AsXG4gICAgICBiYWNrZ3JvdW5kQ29sb3I6ICdjdXJyZW50Q29sb3InLFxuICAgICAgYm9yZGVyUmFkaXVzOiAnMWVtJyxcbiAgICAgIGRpc3BsYXk6ICdpbmxpbmUtYmxvY2snLFxuICAgICAgbWFyZ2luTGVmdDogb2Zmc2V0ID8gJzFlbScgOiBudWxsLFxuICAgICAgaGVpZ2h0OiAnMWVtJyxcbiAgICAgIHZlcnRpY2FsQWxpZ246ICd0b3AnLFxuICAgICAgd2lkdGg6ICcxZW0nLFxuICAgIH19XG4gIC8+XG4pO1xuXG5leHBvcnQgdHlwZSBMb2FkaW5nSWNvblByb3BzID0ge1xuICAvKiogUHJvcHMgdGhhdCB3aWxsIGJlIHBhc3NlZCBvbiB0byB0aGUgY2hpbGRyZW4uICovXG4gIGlubmVyUHJvcHM6IGFueSxcbiAgLyoqIFRoZSBmb2N1c2VkIHN0YXRlIG9mIHRoZSBzZWxlY3QuICovXG4gIGlzRm9jdXNlZDogYm9vbGVhbixcbiAgLyoqIFdoZXRoZXIgdGhlIHRleHQgaXMgcmlnaHQgdG8gbGVmdCAqL1xuICBpc1J0bDogYm9vbGVhbixcbn0gJiBDb21tb25Qcm9wcyAmIHtcbiAgICAvKiogU2V0IHNpemUgb2YgdGhlIGNvbnRhaW5lci4gKi9cbiAgICBzaXplOiBudW1iZXIsXG4gIH07XG5leHBvcnQgY29uc3QgTG9hZGluZ0luZGljYXRvciA9IChwcm9wczogTG9hZGluZ0ljb25Qcm9wcykgPT4ge1xuICBjb25zdCB7IGNsYXNzTmFtZSwgY3gsIGdldFN0eWxlcywgaW5uZXJQcm9wcywgaXNSdGwgfSA9IHByb3BzO1xuXG4gIHJldHVybiAoXG4gICAgPGRpdlxuICAgICAgY3NzPXtnZXRTdHlsZXMoJ2xvYWRpbmdJbmRpY2F0b3InLCBwcm9wcyl9XG4gICAgICBjbGFzc05hbWU9e2N4KFxuICAgICAgICB7XG4gICAgICAgICAgaW5kaWNhdG9yOiB0cnVlLFxuICAgICAgICAgICdsb2FkaW5nLWluZGljYXRvcic6IHRydWUsXG4gICAgICAgIH0sXG4gICAgICAgIGNsYXNzTmFtZVxuICAgICAgKX1cbiAgICAgIHsuLi5pbm5lclByb3BzfVxuICAgID5cbiAgICAgIDxMb2FkaW5nRG90IGRlbGF5PXswfSBvZmZzZXQ9e2lzUnRsfSAvPlxuICAgICAgPExvYWRpbmdEb3QgZGVsYXk9ezE2MH0gb2Zmc2V0IC8+XG4gICAgICA8TG9hZGluZ0RvdCBkZWxheT17MzIwfSBvZmZzZXQ9eyFpc1J0bH0gLz5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG5Mb2FkaW5nSW5kaWNhdG9yLmRlZmF1bHRQcm9wcyA9IHsgc2l6ZTogNCB9O1xuIl19 */",
                                                           "name": "tj5bde-Svg",
                                                           "styles": "display:inline-block;fill:currentColor;line-height:1;stroke:currentColor;stroke-width:0;label:Svg;",
@@ -4970,9 +4970,9 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                     >
                                                       <Insertion
                                                         cache={
-                                                          Object {
+                                                          {
                                                             "insert": [Function],
-                                                            "inserted": Object {
+                                                            "inserted": {
                                                               "1f43avz-a11yText-A11yText": true,
                                                               "1hb7zxy-IndicatorsContainer": true,
                                                               "1okebmr-indicatorSeparator": true,
@@ -4986,7 +4986,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                             },
                                                             "key": "css",
                                                             "nonce": undefined,
-                                                            "registered": Object {},
+                                                            "registered": {},
                                                             "sheet": StyleSheet {
                                                               "_alreadyInsertedOrderInsensitiveRule": true,
                                                               "_insertTag": [Function],
@@ -5104,7 +5104,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                               "key": "css",
                                                               "nonce": undefined,
                                                               "prepend": undefined,
-                                                              "tags": Array [
+                                                              "tags": [
                                                                 <style
                                                                   data-emotion="css"
                                                                   data-s=""
@@ -5216,7 +5216,7 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                                                         }
                                                         isStringTag={true}
                                                         serialized={
-                                                          Object {
+                                                          {
                                                             "map": "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGljYXRvcnMuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBa0JJIiwiZmlsZSI6ImluZGljYXRvcnMuanMiLCJzb3VyY2VzQ29udGVudCI6WyIvLyBAZmxvd1xuLyoqIEBqc3gganN4ICovXG5pbXBvcnQgeyB0eXBlIE5vZGUgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBqc3gsIGtleWZyYW1lcyB9IGZyb20gJ0BlbW90aW9uL3JlYWN0JztcblxuaW1wb3J0IHR5cGUgeyBDb21tb25Qcm9wcywgVGhlbWUgfSBmcm9tICcuLi90eXBlcyc7XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gRHJvcGRvd24gJiBDbGVhciBJY29uc1xuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbmNvbnN0IFN2ZyA9ICh7IHNpemUsIC4uLnByb3BzIH06IHsgc2l6ZTogbnVtYmVyIH0pID0+IChcbiAgPHN2Z1xuICAgIGhlaWdodD17c2l6ZX1cbiAgICB3aWR0aD17c2l6ZX1cbiAgICB2aWV3Qm94PVwiMCAwIDIwIDIwXCJcbiAgICBhcmlhLWhpZGRlbj1cInRydWVcIlxuICAgIGZvY3VzYWJsZT1cImZhbHNlXCJcbiAgICBjc3M9e3tcbiAgICAgIGRpc3BsYXk6ICdpbmxpbmUtYmxvY2snLFxuICAgICAgZmlsbDogJ2N1cnJlbnRDb2xvcicsXG4gICAgICBsaW5lSGVpZ2h0OiAxLFxuICAgICAgc3Ryb2tlOiAnY3VycmVudENvbG9yJyxcbiAgICAgIHN0cm9rZVdpZHRoOiAwLFxuICAgIH19XG4gICAgey4uLnByb3BzfVxuICAvPlxuKTtcblxuZXhwb3J0IGNvbnN0IENyb3NzSWNvbiA9IChwcm9wczogYW55KSA9PiAoXG4gIDxTdmcgc2l6ZT17MjB9IHsuLi5wcm9wc30+XG4gICAgPHBhdGggZD1cIk0xNC4zNDggMTQuODQ5Yy0wLjQ2OSAwLjQ2OS0xLjIyOSAwLjQ2OS0xLjY5NyAwbC0yLjY1MS0zLjAzMC0yLjY1MSAzLjAyOWMtMC40NjkgMC40NjktMS4yMjkgMC40NjktMS42OTcgMC0wLjQ2OS0wLjQ2OS0wLjQ2OS0xLjIyOSAwLTEuNjk3bDIuNzU4LTMuMTUtMi43NTktMy4xNTJjLTAuNDY5LTAuNDY5LTAuNDY5LTEuMjI4IDAtMS42OTdzMS4yMjgtMC40NjkgMS42OTcgMGwyLjY1MiAzLjAzMSAyLjY1MS0zLjAzMWMwLjQ2OS0wLjQ2OSAxLjIyOC0wLjQ2OSAxLjY5NyAwczAuNDY5IDEuMjI5IDAgMS42OTdsLTIuNzU4IDMuMTUyIDIuNzU4IDMuMTVjMC40NjkgMC40NjkgMC40NjkgMS4yMjkgMCAxLjY5OHpcIiAvPlxuICA8L1N2Zz5cbik7XG5leHBvcnQgY29uc3QgRG93bkNoZXZyb24gPSAocHJvcHM6IGFueSkgPT4gKFxuICA8U3ZnIHNpemU9ezIwfSB7Li4ucHJvcHN9PlxuICAgIDxwYXRoIGQ9XCJNNC41MTYgNy41NDhjMC40MzYtMC40NDYgMS4wNDMtMC40ODEgMS41NzYgMGwzLjkwOCAzLjc0NyAzLjkwOC0zLjc0N2MwLjUzMy0wLjQ4MSAxLjE0MS0wLjQ0NiAxLjU3NCAwIDAuNDM2IDAuNDQ1IDAuNDA4IDEuMTk3IDAgMS42MTUtMC40MDYgMC40MTgtNC42OTUgNC41MDItNC42OTUgNC41MDItMC4yMTcgMC4yMjMtMC41MDIgMC4zMzUtMC43ODcgMC4zMzVzLTAuNTctMC4xMTItMC43ODktMC4zMzVjMCAwLTQuMjg3LTQuMDg0LTQuNjk1LTQuNTAycy0wLjQzNi0xLjE3IDAtMS42MTV6XCIgLz5cbiAgPC9Tdmc+XG4pO1xuXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIERyb3Bkb3duICYgQ2xlYXIgQnV0dG9uc1xuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbmV4cG9ydCB0eXBlIEluZGljYXRvclByb3BzID0gQ29tbW9uUHJvcHMgJiB7XG4gIC8qKiBUaGUgY2hpbGRyZW4gdG8gYmUgcmVuZGVyZWQgaW5zaWRlIHRoZSBpbmRpY2F0b3IuICovXG4gIGNoaWxkcmVuOiBOb2RlLFxuICAvKiogUHJvcHMgdGhhdCB3aWxsIGJlIHBhc3NlZCBvbiB0byB0aGUgY2hpbGRyZW4uICovXG4gIGlubmVyUHJvcHM6IGFueSxcbiAgLyoqIFRoZSBmb2N1c2VkIHN0YXRlIG9mIHRoZSBzZWxlY3QuICovXG4gIGlzRm9jdXNlZDogYm9vbGVhbixcbiAgLyoqIFdoZXRoZXIgdGhlIHRleHQgaXMgcmlnaHQgdG8gbGVmdCAqL1xuICBpc1J0bDogYm9vbGVhbixcbn07XG5cbmNvbnN0IGJhc2VDU1MgPSAoe1xuICBpc0ZvY3VzZWQsXG4gIHRoZW1lOiB7XG4gICAgc3BhY2luZzogeyBiYXNlVW5pdCB9LFxuICAgIGNvbG9ycyxcbiAgfSxcbn06IEluZGljYXRvclByb3BzKSA9PiAoe1xuICBsYWJlbDogJ2luZGljYXRvckNvbnRhaW5lcicsXG4gIGNvbG9yOiBpc0ZvY3VzZWQgPyBjb2xvcnMubmV1dHJhbDYwIDogY29sb3JzLm5ldXRyYWwyMCxcbiAgZGlzcGxheTogJ2ZsZXgnLFxuICBwYWRkaW5nOiBiYXNlVW5pdCAqIDIsXG4gIHRyYW5zaXRpb246ICdjb2xvciAxNTBtcycsXG5cbiAgJzpob3Zlcic6IHtcbiAgICBjb2xvcjogaXNGb2N1c2VkID8gY29sb3JzLm5ldXRyYWw4MCA6IGNvbG9ycy5uZXV0cmFsNDAsXG4gIH0sXG59KTtcblxuZXhwb3J0IGNvbnN0IGRyb3Bkb3duSW5kaWNhdG9yQ1NTID0gYmFzZUNTUztcbmV4cG9ydCBjb25zdCBEcm9wZG93bkluZGljYXRvciA9IChwcm9wczogSW5kaWNhdG9yUHJvcHMpID0+IHtcbiAgY29uc3QgeyBjaGlsZHJlbiwgY2xhc3NOYW1lLCBjeCwgZ2V0U3R5bGVzLCBpbm5lclByb3BzIH0gPSBwcm9wcztcbiAgcmV0dXJuIChcbiAgICA8ZGl2XG4gICAgICBjc3M9e2dldFN0eWxlcygnZHJvcGRvd25JbmRpY2F0b3InLCBwcm9wcyl9XG4gICAgICBjbGFzc05hbWU9e2N4KFxuICAgICAgICB7XG4gICAgICAgICAgaW5kaWNhdG9yOiB0cnVlLFxuICAgICAgICAgICdkcm9wZG93bi1pbmRpY2F0b3InOiB0cnVlLFxuICAgICAgICB9LFxuICAgICAgICBjbGFzc05hbWVcbiAgICAgICl9XG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICA+XG4gICAgICB7Y2hpbGRyZW4gfHwgPERvd25DaGV2cm9uIC8+fVxuICAgIDwvZGl2PlxuICApO1xufTtcblxuZXhwb3J0IGNvbnN0IGNsZWFySW5kaWNhdG9yQ1NTID0gYmFzZUNTUztcbmV4cG9ydCBjb25zdCBDbGVhckluZGljYXRvciA9IChwcm9wczogSW5kaWNhdG9yUHJvcHMpID0+IHtcbiAgY29uc3QgeyBjaGlsZHJlbiwgY2xhc3NOYW1lLCBjeCwgZ2V0U3R5bGVzLCBpbm5lclByb3BzIH0gPSBwcm9wcztcbiAgcmV0dXJuIChcbiAgICA8ZGl2XG4gICAgICBjc3M9e2dldFN0eWxlcygnY2xlYXJJbmRpY2F0b3InLCBwcm9wcyl9XG4gICAgICBjbGFzc05hbWU9e2N4KFxuICAgICAgICB7XG4gICAgICAgICAgaW5kaWNhdG9yOiB0cnVlLFxuICAgICAgICAgICdjbGVhci1pbmRpY2F0b3InOiB0cnVlLFxuICAgICAgICB9LFxuICAgICAgICBjbGFzc05hbWVcbiAgICAgICl9XG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICA+XG4gICAgICB7Y2hpbGRyZW4gfHwgPENyb3NzSWNvbiAvPn1cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gU2VwYXJhdG9yXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxudHlwZSBTZXBhcmF0b3JTdGF0ZSA9IHsgaXNEaXNhYmxlZDogYm9vbGVhbiB9O1xuXG5leHBvcnQgY29uc3QgaW5kaWNhdG9yU2VwYXJhdG9yQ1NTID0gKHtcbiAgaXNEaXNhYmxlZCxcbiAgdGhlbWU6IHtcbiAgICBzcGFjaW5nOiB7IGJhc2VVbml0IH0sXG4gICAgY29sb3JzLFxuICB9LFxufTogQ29tbW9uUHJvcHMgJiBTZXBhcmF0b3JTdGF0ZSkgPT4gKHtcbiAgbGFiZWw6ICdpbmRpY2F0b3JTZXBhcmF0b3InLFxuICBhbGlnblNlbGY6ICdzdHJldGNoJyxcbiAgYmFja2dyb3VuZENvbG9yOiBpc0Rpc2FibGVkID8gY29sb3JzLm5ldXRyYWwxMCA6IGNvbG9ycy5uZXV0cmFsMjAsXG4gIG1hcmdpbkJvdHRvbTogYmFzZVVuaXQgKiAyLFxuICBtYXJnaW5Ub3A6IGJhc2VVbml0ICogMixcbiAgd2lkdGg6IDEsXG59KTtcblxuZXhwb3J0IGNvbnN0IEluZGljYXRvclNlcGFyYXRvciA9IChwcm9wczogSW5kaWNhdG9yUHJvcHMpID0+IHtcbiAgY29uc3QgeyBjbGFzc05hbWUsIGN4LCBnZXRTdHlsZXMsIGlubmVyUHJvcHMgfSA9IHByb3BzO1xuICByZXR1cm4gKFxuICAgIDxzcGFuXG4gICAgICB7Li4uaW5uZXJQcm9wc31cbiAgICAgIGNzcz17Z2V0U3R5bGVzKCdpbmRpY2F0b3JTZXBhcmF0b3InLCBwcm9wcyl9XG4gICAgICBjbGFzc05hbWU9e2N4KHsgJ2luZGljYXRvci1zZXBhcmF0b3InOiB0cnVlIH0sIGNsYXNzTmFtZSl9XG4gICAgLz5cbiAgKTtcbn07XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gTG9hZGluZ1xuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbmNvbnN0IGxvYWRpbmdEb3RBbmltYXRpb25zID0ga2V5ZnJhbWVzYFxuICAwJSwgODAlLCAxMDAlIHsgb3BhY2l0eTogMDsgfVxuICA0MCUgeyBvcGFjaXR5OiAxOyB9XG5gO1xuXG5leHBvcnQgY29uc3QgbG9hZGluZ0luZGljYXRvckNTUyA9ICh7XG4gIGlzRm9jdXNlZCxcbiAgc2l6ZSxcbiAgdGhlbWU6IHtcbiAgICBjb2xvcnMsXG4gICAgc3BhY2luZzogeyBiYXNlVW5pdCB9LFxuICB9LFxufToge1xuICBpc0ZvY3VzZWQ6IGJvb2xlYW4sXG4gIHNpemU6IG51bWJlcixcbiAgdGhlbWU6IFRoZW1lLFxufSkgPT4gKHtcbiAgbGFiZWw6ICdsb2FkaW5nSW5kaWNhdG9yJyxcbiAgY29sb3I6IGlzRm9jdXNlZCA/IGNvbG9ycy5uZXV0cmFsNjAgOiBjb2xvcnMubmV1dHJhbDIwLFxuICBkaXNwbGF5OiAnZmxleCcsXG4gIHBhZGRpbmc6IGJhc2VVbml0ICogMixcbiAgdHJhbnNpdGlvbjogJ2NvbG9yIDE1MG1zJyxcbiAgYWxpZ25TZWxmOiAnY2VudGVyJyxcbiAgZm9udFNpemU6IHNpemUsXG4gIGxpbmVIZWlnaHQ6IDEsXG4gIG1hcmdpblJpZ2h0OiBzaXplLFxuICB0ZXh0QWxpZ246ICdjZW50ZXInLFxuICB2ZXJ0aWNhbEFsaWduOiAnbWlkZGxlJyxcbn0pO1xuXG50eXBlIERvdFByb3BzID0geyBkZWxheTogbnVtYmVyLCBvZmZzZXQ6IGJvb2xlYW4gfTtcbmNvbnN0IExvYWRpbmdEb3QgPSAoeyBkZWxheSwgb2Zmc2V0IH06IERvdFByb3BzKSA9PiAoXG4gIDxzcGFuXG4gICAgY3NzPXt7XG4gICAgICBhbmltYXRpb246IGAke2xvYWRpbmdEb3RBbmltYXRpb25zfSAxcyBlYXNlLWluLW91dCAke2RlbGF5fW1zIGluZmluaXRlO2AsXG4gICAgICBiYWNrZ3JvdW5kQ29sb3I6ICdjdXJyZW50Q29sb3InLFxuICAgICAgYm9yZGVyUmFkaXVzOiAnMWVtJyxcbiAgICAgIGRpc3BsYXk6ICdpbmxpbmUtYmxvY2snLFxuICAgICAgbWFyZ2luTGVmdDogb2Zmc2V0ID8gJzFlbScgOiBudWxsLFxuICAgICAgaGVpZ2h0OiAnMWVtJyxcbiAgICAgIHZlcnRpY2FsQWxpZ246ICd0b3AnLFxuICAgICAgd2lkdGg6ICcxZW0nLFxuICAgIH19XG4gIC8+XG4pO1xuXG5leHBvcnQgdHlwZSBMb2FkaW5nSWNvblByb3BzID0ge1xuICAvKiogUHJvcHMgdGhhdCB3aWxsIGJlIHBhc3NlZCBvbiB0byB0aGUgY2hpbGRyZW4uICovXG4gIGlubmVyUHJvcHM6IGFueSxcbiAgLyoqIFRoZSBmb2N1c2VkIHN0YXRlIG9mIHRoZSBzZWxlY3QuICovXG4gIGlzRm9jdXNlZDogYm9vbGVhbixcbiAgLyoqIFdoZXRoZXIgdGhlIHRleHQgaXMgcmlnaHQgdG8gbGVmdCAqL1xuICBpc1J0bDogYm9vbGVhbixcbn0gJiBDb21tb25Qcm9wcyAmIHtcbiAgICAvKiogU2V0IHNpemUgb2YgdGhlIGNvbnRhaW5lci4gKi9cbiAgICBzaXplOiBudW1iZXIsXG4gIH07XG5leHBvcnQgY29uc3QgTG9hZGluZ0luZGljYXRvciA9IChwcm9wczogTG9hZGluZ0ljb25Qcm9wcykgPT4ge1xuICBjb25zdCB7IGNsYXNzTmFtZSwgY3gsIGdldFN0eWxlcywgaW5uZXJQcm9wcywgaXNSdGwgfSA9IHByb3BzO1xuXG4gIHJldHVybiAoXG4gICAgPGRpdlxuICAgICAgY3NzPXtnZXRTdHlsZXMoJ2xvYWRpbmdJbmRpY2F0b3InLCBwcm9wcyl9XG4gICAgICBjbGFzc05hbWU9e2N4KFxuICAgICAgICB7XG4gICAgICAgICAgaW5kaWNhdG9yOiB0cnVlLFxuICAgICAgICAgICdsb2FkaW5nLWluZGljYXRvcic6IHRydWUsXG4gICAgICAgIH0sXG4gICAgICAgIGNsYXNzTmFtZVxuICAgICAgKX1cbiAgICAgIHsuLi5pbm5lclByb3BzfVxuICAgID5cbiAgICAgIDxMb2FkaW5nRG90IGRlbGF5PXswfSBvZmZzZXQ9e2lzUnRsfSAvPlxuICAgICAgPExvYWRpbmdEb3QgZGVsYXk9ezE2MH0gb2Zmc2V0IC8+XG4gICAgICA8TG9hZGluZ0RvdCBkZWxheT17MzIwfSBvZmZzZXQ9eyFpc1J0bH0gLz5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG5Mb2FkaW5nSW5kaWNhdG9yLmRlZmF1bHRQcm9wcyA9IHsgc2l6ZTogNCB9O1xuIl19 */",
                                                             "name": "tj5bde-Svg",
                                                             "styles": "display:inline-block;fill:currentColor;line-height:1;stroke:currentColor;stroke-width:0;label:Svg;",
@@ -5276,7 +5276,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
   editing={false}
   index={0}
   parentDataType={
-    Object {
+    {
       "ancestorColumnName": "Ancestors/OtherData",
       "deleteHelpLinkTopic": "dataClass",
       "dependencyText": "derived data or sample dependencies",
@@ -5311,7 +5311,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
   }
   parentTypeOptions={
     Immutable.List [
-      Object {
+      {
         "label": "Second Source",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
         "query": "Second Source",
@@ -5319,7 +5319,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         "schema": "exp.data",
         "value": "second source",
       },
-      Object {
+      {
         "label": "Source 1",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
         "query": "Source 1",
@@ -5327,7 +5327,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         "schema": "exp.data",
         "value": "source 1",
       },
-      Object {
+      {
         "label": "Vendor 3",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
         "query": "Vendor 3",
@@ -5345,7 +5345,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
     onTypeChange={[Function]}
     onValueChange={[Function]}
     parentDataType={
-      Object {
+      {
         "ancestorColumnName": "Ancestors/OtherData",
         "deleteHelpLinkTopic": "dataClass",
         "dependencyText": "derived data or sample dependencies",
@@ -5380,7 +5380,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
     }
     parentTypeOptions={
       Immutable.List [
-        Object {
+        {
           "label": "Second Source",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
           "query": "Second Source",
@@ -5388,7 +5388,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
           "schema": "exp.data",
           "value": "second source",
         },
-        Object {
+        {
           "label": "Source 1",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
           "query": "Source 1",
@@ -5396,7 +5396,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
           "schema": "exp.data",
           "value": "source 1",
         },
-        Object {
+        {
           "label": "Vendor 3",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
           "query": "Vendor 3",
@@ -5406,7 +5406,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         },
       ]
     }
-    queryConfigs={Object {}}
+    queryConfigs={{}}
   >
     <ComponentWithQueryModels
       autoLoad={false}
@@ -5414,7 +5414,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       editing={false}
       index={0}
       modelLoader={
-        Object {
+        {
           "clearSelections": [Function],
           "loadCharts": [Function],
           "loadQueryInfo": [Function],
@@ -5428,7 +5428,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       onTypeChange={[Function]}
       onValueChange={[Function]}
       parentDataType={
-        Object {
+        {
           "ancestorColumnName": "Ancestors/OtherData",
           "deleteHelpLinkTopic": "dataClass",
           "dependencyText": "derived data or sample dependencies",
@@ -5463,7 +5463,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
       }
       parentTypeOptions={
         Immutable.List [
-          Object {
+          {
             "label": "Second Source",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
             "query": "Second Source",
@@ -5471,7 +5471,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
             "schema": "exp.data",
             "value": "second source",
           },
-          Object {
+          {
             "label": "Source 1",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
             "query": "Source 1",
@@ -5479,7 +5479,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
             "schema": "exp.data",
             "value": "source 1",
           },
-          Object {
+          {
             "label": "Vendor 3",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
             "query": "Vendor 3",
@@ -5489,11 +5489,11 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
           },
         ]
       }
-      queryConfigs={Object {}}
+      queryConfigs={{}}
     >
       <SingleParentEntity
         actions={
-          Object {
+          {
             "addModel": [Function],
             "clearSelections": [Function],
             "loadAllModels": [Function],
@@ -5525,7 +5525,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         onTypeChange={[Function]}
         onValueChange={[Function]}
         parentDataType={
-          Object {
+          {
             "ancestorColumnName": "Ancestors/OtherData",
             "deleteHelpLinkTopic": "dataClass",
             "dependencyText": "derived data or sample dependencies",
@@ -5560,7 +5560,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
         }
         parentTypeOptions={
           Immutable.List [
-            Object {
+            {
               "label": "Second Source",
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
               "query": "Second Source",
@@ -5568,7 +5568,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
               "schema": "exp.data",
               "value": "second source",
             },
-            Object {
+            {
               "label": "Source 1",
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
               "query": "Source 1",
@@ -5576,7 +5576,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
               "schema": "exp.data",
               "value": "source 1",
             },
-            Object {
+            {
               "label": "Vendor 3",
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
               "query": "Vendor 3",
@@ -5586,7 +5586,7 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
             },
           ]
         }
-        queryModels={Object {}}
+        queryModels={{}}
       >
         <div
           className="top-spacing"
@@ -5641,9 +5641,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
   index={0}
   onRemoveParentType={[Function]}
   parentDataType={
-    Object {
+    {
       "ancestorColumnName": "Ancestors/OtherData",
-      "appUrlPrefixParts": Array [
+      "appUrlPrefixParts": [
         "sources",
       ],
       "deleteHelpLinkTopic": "dataClass",
@@ -5678,7 +5678,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
     }
   }
   parentEntityType={
-    Object {
+    {
       "label": "Second Source",
       "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
       "query": "Second Source",
@@ -5688,13 +5688,13 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
     }
   }
   parentLSIDs={
-    Array [
+    [
       "url:lsid:blah",
     ]
   }
   parentTypeOptions={
     Immutable.List [
-      Object {
+      {
         "label": "Second Source",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
         "query": "Second Source",
@@ -5702,7 +5702,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         "schema": "exp.data",
         "value": "second source",
       },
-      Object {
+      {
         "label": "Source 1",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
         "query": "Source 1",
@@ -5710,7 +5710,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         "schema": "exp.data",
         "value": "source 1",
       },
-      Object {
+      {
         "label": "Vendor 3",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
         "query": "Vendor 3",
@@ -5724,7 +5724,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
   <withRouter(ComponentWithQueryModels)
     childNounSingular="Sample"
     chosenType={
-      Object {
+      {
         "label": "Second Source",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
         "query": "Second Source",
@@ -5739,9 +5739,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
     onTypeChange={[Function]}
     onValueChange={[Function]}
     parentDataType={
-      Object {
+      {
         "ancestorColumnName": "Ancestors/OtherData",
-        "appUrlPrefixParts": Array [
+        "appUrlPrefixParts": [
           "sources",
         ],
         "deleteHelpLinkTopic": "dataClass",
@@ -5776,7 +5776,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       }
     }
     parentEntityType={
-      Object {
+      {
         "label": "Second Source",
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
         "query": "Second Source",
@@ -5786,13 +5786,13 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       }
     }
     parentLSIDs={
-      Array [
+      [
         "url:lsid:blah",
       ]
     }
     parentTypeOptions={
       Immutable.List [
-        Object {
+        {
           "label": "Second Source",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
           "query": "Second Source",
@@ -5800,7 +5800,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "schema": "exp.data",
           "value": "second source",
         },
-        Object {
+        {
           "label": "Source 1",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
           "query": "Source 1",
@@ -5808,7 +5808,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "schema": "exp.data",
           "value": "source 1",
         },
-        Object {
+        {
           "label": "Vendor 3",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
           "query": "Vendor 3",
@@ -5819,12 +5819,12 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       ]
     }
     queryConfigs={
-      Object {
-        "model": Object {
-          "baseFilters": Array [
+      {
+        "model": {
+          "baseFilters": [
             Filter {
               "columnName": "LSID",
-              "filterType": Object {
+              "filterType": {
                 "getDisplaySymbol": [Function],
                 "getDisplayText": [Function],
                 "getLabKeySqlOperator": [Function],
@@ -5843,17 +5843,17 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "parseValue": [Function],
                 "validate": [Function],
               },
-              "value": Array [
+              "value": [
                 "url:lsid:blah",
               ],
             },
           ],
           "bindURL": false,
           "containerPath": undefined,
-          "omittedColumns": Array [
+          "omittedColumns": [
             "Run",
           ],
-          "requiredColumns": Array [
+          "requiredColumns": [
             "Name",
           ],
           "schemaQuery": Immutable.Record {
@@ -5869,7 +5869,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       autoLoad={false}
       childNounSingular="Sample"
       chosenType={
-        Object {
+        {
           "label": "Second Source",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
           "query": "Second Source",
@@ -5881,7 +5881,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       editing={false}
       index={0}
       modelLoader={
-        Object {
+        {
           "clearSelections": [Function],
           "loadCharts": [Function],
           "loadQueryInfo": [Function],
@@ -5896,9 +5896,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
       onTypeChange={[Function]}
       onValueChange={[Function]}
       parentDataType={
-        Object {
+        {
           "ancestorColumnName": "Ancestors/OtherData",
-          "appUrlPrefixParts": Array [
+          "appUrlPrefixParts": [
             "sources",
           ],
           "deleteHelpLinkTopic": "dataClass",
@@ -5933,7 +5933,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         }
       }
       parentEntityType={
-        Object {
+        {
           "label": "Second Source",
           "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
           "query": "Second Source",
@@ -5943,13 +5943,13 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         }
       }
       parentLSIDs={
-        Array [
+        [
           "url:lsid:blah",
         ]
       }
       parentTypeOptions={
         Immutable.List [
-          Object {
+          {
             "label": "Second Source",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
             "query": "Second Source",
@@ -5957,7 +5957,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "schema": "exp.data",
             "value": "second source",
           },
-          Object {
+          {
             "label": "Source 1",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
             "query": "Source 1",
@@ -5965,7 +5965,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             "schema": "exp.data",
             "value": "source 1",
           },
-          Object {
+          {
             "label": "Vendor 3",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
             "query": "Vendor 3",
@@ -5976,12 +5976,12 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         ]
       }
       queryConfigs={
-        Object {
-          "model": Object {
-            "baseFilters": Array [
+        {
+          "model": {
+            "baseFilters": [
               Filter {
                 "columnName": "LSID",
-                "filterType": Object {
+                "filterType": {
                   "getDisplaySymbol": [Function],
                   "getDisplayText": [Function],
                   "getLabKeySqlOperator": [Function],
@@ -6000,17 +6000,17 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                   "parseValue": [Function],
                   "validate": [Function],
                 },
-                "value": Array [
+                "value": [
                   "url:lsid:blah",
                 ],
               },
             ],
             "bindURL": false,
             "containerPath": undefined,
-            "omittedColumns": Array [
+            "omittedColumns": [
               "Run",
             ],
-            "requiredColumns": Array [
+            "requiredColumns": [
               "Name",
             ],
             "schemaQuery": Immutable.Record {
@@ -6024,7 +6024,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
     >
       <SingleParentEntity
         actions={
-          Object {
+          {
             "addModel": [Function],
             "clearSelections": [Function],
             "loadAllModels": [Function],
@@ -6052,7 +6052,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         autoLoad={false}
         childNounSingular="Sample"
         chosenType={
-          Object {
+          {
             "label": "Second Source",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
             "query": "Second Source",
@@ -6067,9 +6067,9 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
         onTypeChange={[Function]}
         onValueChange={[Function]}
         parentDataType={
-          Object {
+          {
             "ancestorColumnName": "Ancestors/OtherData",
-            "appUrlPrefixParts": Array [
+            "appUrlPrefixParts": [
               "sources",
             ],
             "deleteHelpLinkTopic": "dataClass",
@@ -6104,7 +6104,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           }
         }
         parentEntityType={
-          Object {
+          {
             "label": "Second Source",
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
             "query": "Second Source",
@@ -6114,13 +6114,13 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           }
         }
         parentLSIDs={
-          Array [
+          [
             "url:lsid:blah",
           ]
         }
         parentTypeOptions={
           Immutable.List [
-            Object {
+            {
               "label": "Second Source",
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
               "query": "Second Source",
@@ -6128,7 +6128,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "schema": "exp.data",
               "value": "second source",
             },
-            Object {
+            {
               "label": "Source 1",
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
               "query": "Source 1",
@@ -6136,7 +6136,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "schema": "exp.data",
               "value": "source 1",
             },
-            Object {
+            {
               "label": "Vendor 3",
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
               "query": "Vendor 3",
@@ -6147,12 +6147,12 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           ]
         }
         queryModels={
-          Object {
+          {
             "model": QueryModel {
-              "baseFilters": Array [
+              "baseFilters": [
                 Filter {
                   "columnName": "LSID",
-                  "filterType": Object {
+                  "filterType": {
                     "getDisplaySymbol": [Function],
                     "getDisplayText": [Function],
                     "getLabKeySqlOperator": [Function],
@@ -6171,7 +6171,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "parseValue": [Function],
                     "validate": [Function],
                   },
-                  "value": Array [
+                  "value": [
                     "url:lsid:blah",
                   ],
                 },
@@ -6182,15 +6182,15 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "chartsLoadingState": "INITIALIZED",
               "containerFilter": undefined,
               "containerPath": undefined,
-              "filterArray": Array [],
+              "filterArray": [],
               "id": "model",
               "includeDetailsColumn": false,
               "includeUpdateColumn": false,
               "keyValue": undefined,
               "maxRows": 20,
-              "messages": Array [],
+              "messages": [],
               "offset": 0,
-              "omittedColumns": Array [
+              "omittedColumns": [
                 "Run",
               ],
               "orderedRows": undefined,
@@ -6198,7 +6198,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "queryInfoError": undefined,
               "queryInfoLoadingState": "LOADING",
               "queryParameters": undefined,
-              "requiredColumns": Array [
+              "requiredColumns": [
                 "Name",
               ],
               "rowCount": undefined,
@@ -6214,7 +6214,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
               "selections": undefined,
               "selectionsError": undefined,
               "selectionsLoadingState": "INITIALIZED",
-              "sorts": Array [],
+              "sorts": [],
               "title": undefined,
               "urlPrefix": "query",
               Symbol(immer-draftable): true,
@@ -6248,7 +6248,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           </table>
           <GridPanel
             actions={
-              Object {
+              {
                 "addModel": [Function],
                 "clearSelections": [Function],
                 "loadAllModels": [Function],
@@ -6284,10 +6284,10 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             loadOnMount={true}
             model={
               QueryModel {
-                "baseFilters": Array [
+                "baseFilters": [
                   Filter {
                     "columnName": "LSID",
-                    "filterType": Object {
+                    "filterType": {
                       "getDisplaySymbol": [Function],
                       "getDisplayText": [Function],
                       "getLabKeySqlOperator": [Function],
@@ -6306,7 +6306,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                       "parseValue": [Function],
                       "validate": [Function],
                     },
-                    "value": Array [
+                    "value": [
                       "url:lsid:blah",
                     ],
                   },
@@ -6317,15 +6317,15 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "chartsLoadingState": "INITIALIZED",
                 "containerFilter": undefined,
                 "containerPath": undefined,
-                "filterArray": Array [],
+                "filterArray": [],
                 "id": "model",
                 "includeDetailsColumn": false,
                 "includeUpdateColumn": false,
                 "keyValue": undefined,
                 "maxRows": 20,
-                "messages": Array [],
+                "messages": [],
                 "offset": 0,
-                "omittedColumns": Array [
+                "omittedColumns": [
                   "Run",
                 ],
                 "orderedRows": undefined,
@@ -6333,7 +6333,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "queryInfoError": undefined,
                 "queryInfoLoadingState": "LOADING",
                 "queryParameters": undefined,
-                "requiredColumns": Array [
+                "requiredColumns": [
                   "Name",
                 ],
                 "rowCount": undefined,
@@ -6349,7 +6349,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 "selections": undefined,
                 "selectionsError": undefined,
                 "selectionsLoadingState": "INITIALIZED",
-                "sorts": Array [],
+                "sorts": [],
                 "title": undefined,
                 "urlPrefix": "query",
                 Symbol(immer-draftable): true,
@@ -6370,7 +6370,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             >
               <Memo()
                 actions={
-                  Object {
+                  {
                     "addModel": [Function],
                     "clearSelections": [Function],
                     "loadAllModels": [Function],
@@ -6400,10 +6400,10 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                 isUpdated={false}
                 model={
                   QueryModel {
-                    "baseFilters": Array [
+                    "baseFilters": [
                       Filter {
                         "columnName": "LSID",
-                        "filterType": Object {
+                        "filterType": {
                           "getDisplaySymbol": [Function],
                           "getDisplayText": [Function],
                           "getLabKeySqlOperator": [Function],
@@ -6422,7 +6422,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                           "parseValue": [Function],
                           "validate": [Function],
                         },
-                        "value": Array [
+                        "value": [
                           "url:lsid:blah",
                         ],
                       },
@@ -6433,15 +6433,15 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "chartsLoadingState": "INITIALIZED",
                     "containerFilter": undefined,
                     "containerPath": undefined,
-                    "filterArray": Array [],
+                    "filterArray": [],
                     "id": "model",
                     "includeDetailsColumn": false,
                     "includeUpdateColumn": false,
                     "keyValue": undefined,
                     "maxRows": 20,
-                    "messages": Array [],
+                    "messages": [],
                     "offset": 0,
-                    "omittedColumns": Array [
+                    "omittedColumns": [
                       "Run",
                     ],
                     "orderedRows": undefined,
@@ -6449,7 +6449,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "queryInfoError": undefined,
                     "queryInfoLoadingState": "LOADING",
                     "queryParameters": undefined,
-                    "requiredColumns": Array [
+                    "requiredColumns": [
                       "Name",
                     ],
                     "rowCount": undefined,
@@ -6465,7 +6465,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "selections": undefined,
                     "selectionsError": undefined,
                     "selectionsLoadingState": "INITIALIZED",
-                    "sorts": Array [],
+                    "sorts": [],
                     "title": undefined,
                     "urlPrefix": "query",
                     Symbol(immer-draftable): true,
@@ -6507,7 +6507,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     </LoadingSpinner>
                   </div>
                   <Memo()
-                    actionValues={Array []}
+                    actionValues={[]}
                     onClick={[Function]}
                     onRemove={[Function]}
                     onRemoveAll={[Function]}

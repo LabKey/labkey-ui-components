@@ -16,7 +16,7 @@ exports[`<PermissionsRole/> not editable 1`] = `
       <i
         className="fa fa-users fa-3x"
         style={
-          Object {
+          {
             "padding": "5px",
           }
         }
@@ -144,7 +144,7 @@ exports[`<PermissionsRole/> showing a selected and disabled principal 1`] = `
       <i
         className="fa fa-users fa-3x"
         style={
-          Object {
+          {
             "padding": "5px",
           }
         }
@@ -338,7 +338,7 @@ exports[`<PermissionsRole/> showing a selected and disabled principal 1`] = `
                 <div
                   className="select-input__input"
                   style={
-                    Object {
+                    {
                       "display": "inline-block",
                     }
                   }
@@ -356,7 +356,7 @@ exports[`<PermissionsRole/> showing a selected and disabled principal 1`] = `
                     required={false}
                     spellCheck="false"
                     style={
-                      Object {
+                      {
                         "background": 0,
                         "border": 0,
                         "boxSizing": "content-box",
@@ -375,7 +375,7 @@ exports[`<PermissionsRole/> showing a selected and disabled principal 1`] = `
                   />
                   <div
                     style={
-                      Object {
+                      {
                         "height": 0,
                         "left": 0,
                         "overflow": "scroll",
@@ -446,7 +446,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
       <i
         className="fa fa-users fa-3x"
         style={
-          Object {
+          {
             "padding": "5px",
           }
         }
@@ -632,7 +632,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
                 <div
                   className="select-input__input"
                   style={
-                    Object {
+                    {
                       "display": "inline-block",
                     }
                   }
@@ -650,7 +650,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
                     required={false}
                     spellCheck="false"
                     style={
-                      Object {
+                      {
                         "background": 0,
                         "border": 0,
                         "boxSizing": "content-box",
@@ -669,7 +669,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
                   />
                   <div
                     style={
-                      Object {
+                      {
                         "height": 0,
                         "left": 0,
                         "overflow": "scroll",
@@ -740,7 +740,7 @@ exports[`<PermissionsRole/> without assignments 1`] = `
       <i
         className="fa fa-users fa-3x"
         style={
-          Object {
+          {
             "padding": "5px",
           }
         }
@@ -858,7 +858,7 @@ exports[`<PermissionsRole/> without assignments 1`] = `
                 <div
                   className="select-input__input"
                   style={
-                    Object {
+                    {
                       "display": "inline-block",
                     }
                   }
@@ -876,7 +876,7 @@ exports[`<PermissionsRole/> without assignments 1`] = `
                     required={false}
                     spellCheck="false"
                     style={
-                      Object {
+                      {
                         "background": 0,
                         "border": 0,
                         "boxSizing": "content-box",
@@ -895,7 +895,7 @@ exports[`<PermissionsRole/> without assignments 1`] = `
                   />
                   <div
                     style={
-                      Object {
+                      {
                         "height": 0,
                         "left": 0,
                         "overflow": "scroll",

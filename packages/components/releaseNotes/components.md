@@ -7,6 +7,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Refactor sample pages from LKB and LKSM and move shared pages to components packages
   * Create context in SampleDetailPage base components to be consumed in other smaple detail pages
 
+### version 2.243.0
+*Released*: 2 November 2022
+* Move configuration of `ts-jest` to the `transformers` section as the `globals` pattern is now deprecated.
+* Remove `use-immer` dependency in `@labkey/components` and refactor its sole usage `AssayPicker`.
+* Move `jest`, `@types/enzyme`, and `@types/jest` to be `devDependencies` for `@labkey/components`.
+
 ### version 2.242.3
 *Released*: 31 October 2022
 * Issue 44598: PHI TextChoice domain fields now warn

@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ?? November 2022
 * EditInlineField: remove showToggle prop, always render edit icon at end of content
 * ThreadEditor: Don't render user icon
+* Fix Issue 46604
+* Add scroll-margin to Domain Editor to assist with test failures
 
 ### version 2.242.3
 *Released*: 31 October 2022

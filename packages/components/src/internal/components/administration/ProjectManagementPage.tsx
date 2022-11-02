@@ -9,6 +9,8 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryConfig } from '../../../public/QueryModel/QueryModel';
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
+import { AUDIT_KEY } from '../../app/constants';
+import { AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY } from '../auditlog/constants';
 
 const Buttons: FC<RequiresModelAndActions> = memo(() => {
     return (
@@ -32,7 +34,11 @@ export const ProjectManagementPage: FC = memo(() => {
         () => () =>
             (
                 <ManageDropdownButton collapsed id="project-page-manage" pullRight>
-                    <MenuItem href={AppURL.create('audit', 'containerauditevent').toHref()}>
+                    <MenuItem
+                        href={AppURL.create(AUDIT_KEY)
+                            .addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value)
+                            .toHref()}
+                    >
                         View Audit History
                     </MenuItem>
                 </ManageDropdownButton>
